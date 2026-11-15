@@ -18,23 +18,139 @@
 				"name": "hubEntity.context",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+				"description": "A source snapshot for the hosted repository, including its source adapter, repository identity, selected commit, tree entries, cache and cache identity. It is used for catalog, contract, history, size and documentation reads."
 			},
 			{
 				"name": "hubEntity.query",
 				"type": "{ entityId: string; commit: string; branch: string; shared: CommittedThread[] }",
 				"required": true,
-				"description": "Entity ID, commit, branch and already-authorized shared threads."
+				"description": "Identifies the catalog entity and carries a commit string, branch and committed-thread list. The function matches entityId and uses shared for thread count and thread output; an unmatched ID throws not-found, query.commit is unused, and branch is only forwarded to history.",
+				"examples": [
+					{
+						"entityId": "hub.function.hub-entity",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"branch": "main",
+						"shared": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubEntity",
 				"type": "Promise<EntityDetail>",
-				"description": "Entity detail with source sizes, relationships, design introduction commits, shared-thread count and history coverage; performance is explicitly not measured."
+				"description": "Resolves to the matched catalog item with its contract, optional documentation, owned source paths and size, relationships, design versions, shared threads and the first history page. Performance is always {available:false,text:'Not measured'}, and an absent catalog item or unavailable history rejects the promise.",
+				"examples": [
+					{
+						"id": "hub.function.hub-entity",
+						"category": "functions",
+						"kind": "function",
+						"title": "Read hosted entity details",
+						"summary": "Combine a catalog entity with its contract, sources, designs, shared threads and first history page.",
+						"changed": false,
+						"planned": false,
+						"hasPlan": false,
+						"lifecycle": null,
+						"verification": "unknown",
+						"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+						"latestVersion": null,
+						"approvedVersion": null,
+						"threadCount": 0,
+						"thumbnail": null,
+						"contract": {
+							"inputs": [
+								{
+									"name": "hubEntity.context",
+									"type": "HubSourceContext",
+									"required": true,
+									"description": "A source snapshot for the hosted repository, including its source adapter, repository identity, selected commit, tree entries, cache and cache identity. It is used for catalog, contract, history, size and documentation reads."
+								},
+								{
+									"name": "hubEntity.query",
+									"type": "{ entityId: string; commit: string; branch: string; shared: CommittedThread[] }",
+									"required": true,
+									"description": "Identifies the catalog entity and carries a commit string, branch and committed-thread list. The function matches entityId and uses shared for thread count and thread output; an unmatched ID throws not-found, query.commit is unused, and branch is only forwarded to history."
+								}
+							],
+							"outputs": [
+								{
+									"name": "hubEntity",
+									"type": "Promise<EntityDetail>",
+									"description": "Resolves to the matched catalog item with its contract, optional documentation, owned source paths and size, relationships, design versions, shared threads and the first history page. Performance is always {available:false,text:'Not measured'}, and an absent catalog item or unavailable history rejects the promise."
+								}
+							],
+							"errors": [
+								{
+									"name": "not-found",
+									"type": "thrown",
+									"description": "The implementation throws an Error with code 'not-found' when entityId does not match an item in the loaded catalog. Catalog reads can also reject before this lookup if committed source data is missing."
+								},
+								{
+									"name": "history-unavailable",
+									"type": "thrown",
+									"description": "The history helper throws an Error with code 'history-unavailable' when the source context has no historyPage adapter. The detail request then rejects without returning an EntityDetail."
+								},
+								{
+									"name": "artifact-corrupt",
+									"type": "thrown",
+									"description": "Catalog loading throws an Error with code 'artifact-corrupt' when a committed catalog or metadata artifact cannot be decoded or validated. The function propagates that rejection."
+								},
+								{
+									"name": "metadata-too-large",
+									"type": "thrown",
+									"description": "Catalog metadata loading throws an Error with code 'metadata-too-large' when the metadata bundle exceeds its 16 MiB limit. The function propagates that rejection."
+								}
+							],
+							"hash": "fc5c19ef8cc4e8eaed756107036e4a34dd6db8c42a16b983b9a2bd71cfebbd73"
+						},
+						"relationships": [],
+						"versions": [],
+						"threads": [],
+						"historyCoverage": {
+							"complete": true,
+							"nextPage": null,
+							"loadedPages": 1
+						},
+						"history": [],
+						"sources": [
+							"packages/hub/src/routes/api/[...path]/hub-projection-service/hubEntity.ts",
+							"packages/hub/src/utils/hubEntity.ts"
+						],
+						"size": {
+							"available": false,
+							"text": "Not measured: source size unavailable"
+						},
+						"performance": {
+							"available": false,
+							"text": "Not measured"
+						}
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "not-found",
+				"type": "thrown",
+				"description": "The implementation throws an Error with code 'not-found' when entityId does not match an item in the loaded catalog. Catalog reads can also reject before this lookup if committed source data is missing."
+			},
+			{
+				"name": "history-unavailable",
+				"type": "thrown",
+				"description": "The history helper throws an Error with code 'history-unavailable' when the source context has no historyPage adapter. The detail request then rejects without returning an EntityDetail."
+			},
+			{
+				"name": "artifact-corrupt",
+				"type": "thrown",
+				"description": "Catalog loading throws an Error with code 'artifact-corrupt' when a committed catalog or metadata artifact cannot be decoded or validated. The function propagates that rejection."
+			},
+			{
+				"name": "metadata-too-large",
+				"type": "thrown",
+				"description": "Catalog metadata loading throws an Error with code 'metadata-too-large' when the metadata bundle exceeds its 16 MiB limit. The function propagates that rejection."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubEntity",
@@ -43,24 +159,139 @@
 						"name": "hubEntity.context",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+						"description": "A source snapshot for the hosted repository, including its source adapter, repository identity, selected commit, tree entries, cache and cache identity. It is used for catalog, contract, history, size and documentation reads."
 					},
 					{
 						"name": "hubEntity.query",
 						"type": "{ entityId: string; commit: string; branch: string; shared: CommittedThread[] }",
 						"required": true,
-						"description": "Entity ID, commit, branch and already-authorized shared threads."
+						"description": "Identifies the catalog entity and carries a commit string, branch and committed-thread list. The function matches entityId and uses shared for thread count and thread output; an unmatched ID throws not-found, query.commit is unused, and branch is only forwarded to history.",
+						"examples": [
+							{
+								"entityId": "hub.function.hub-entity",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"branch": "main",
+								"shared": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubEntity",
 						"type": "Promise<EntityDetail>",
-						"description": "Entity detail with source sizes, relationships, design introduction commits, shared-thread count and history coverage; performance is explicitly not measured."
+						"description": "Resolves to the matched catalog item with its contract, optional documentation, owned source paths and size, relationships, design versions, shared threads and the first history page. Performance is always {available:false,text:'Not measured'}, and an absent catalog item or unavailable history rejects the promise.",
+						"examples": [
+							{
+								"id": "hub.function.hub-entity",
+								"category": "functions",
+								"kind": "function",
+								"title": "Read hosted entity details",
+								"summary": "Combine a catalog entity with its contract, sources, designs, shared threads and first history page.",
+								"changed": false,
+								"planned": false,
+								"hasPlan": false,
+								"lifecycle": null,
+								"verification": "unknown",
+								"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+								"latestVersion": null,
+								"approvedVersion": null,
+								"threadCount": 0,
+								"thumbnail": null,
+								"contract": {
+									"inputs": [
+										{
+											"name": "hubEntity.context",
+											"type": "HubSourceContext",
+											"required": true,
+											"description": "A source snapshot for the hosted repository, including its source adapter, repository identity, selected commit, tree entries, cache and cache identity. It is used for catalog, contract, history, size and documentation reads."
+										},
+										{
+											"name": "hubEntity.query",
+											"type": "{ entityId: string; commit: string; branch: string; shared: CommittedThread[] }",
+											"required": true,
+											"description": "Identifies the catalog entity and carries a commit string, branch and committed-thread list. The function matches entityId and uses shared for thread count and thread output; an unmatched ID throws not-found, query.commit is unused, and branch is only forwarded to history."
+										}
+									],
+									"outputs": [
+										{
+											"name": "hubEntity",
+											"type": "Promise<EntityDetail>",
+											"description": "Resolves to the matched catalog item with its contract, optional documentation, owned source paths and size, relationships, design versions, shared threads and the first history page. Performance is always {available:false,text:'Not measured'}, and an absent catalog item or unavailable history rejects the promise."
+										}
+									],
+									"errors": [
+										{
+											"name": "not-found",
+											"type": "thrown",
+											"description": "The implementation throws an Error with code 'not-found' when entityId does not match an item in the loaded catalog. Catalog reads can also reject before this lookup if committed source data is missing."
+										},
+										{
+											"name": "history-unavailable",
+											"type": "thrown",
+											"description": "The history helper throws an Error with code 'history-unavailable' when the source context has no historyPage adapter. The detail request then rejects without returning an EntityDetail."
+										},
+										{
+											"name": "artifact-corrupt",
+											"type": "thrown",
+											"description": "Catalog loading throws an Error with code 'artifact-corrupt' when a committed catalog or metadata artifact cannot be decoded or validated. The function propagates that rejection."
+										},
+										{
+											"name": "metadata-too-large",
+											"type": "thrown",
+											"description": "Catalog metadata loading throws an Error with code 'metadata-too-large' when the metadata bundle exceeds its 16 MiB limit. The function propagates that rejection."
+										}
+									],
+									"hash": "fc5c19ef8cc4e8eaed756107036e4a34dd6db8c42a16b983b9a2bd71cfebbd73"
+								},
+								"relationships": [],
+								"versions": [],
+								"threads": [],
+								"historyCoverage": {
+									"complete": true,
+									"nextPage": null,
+									"loadedPages": 1
+								},
+								"history": [],
+								"sources": [
+									"packages/hub/src/routes/api/[...path]/hub-projection-service/hubEntity.ts",
+									"packages/hub/src/utils/hubEntity.ts"
+								],
+								"size": {
+									"available": false,
+									"text": "Not measured: source size unavailable"
+								},
+								"performance": {
+									"available": false,
+									"text": "Not measured"
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "not-found",
+						"type": "thrown",
+						"description": "The implementation throws an Error with code 'not-found' when entityId does not match an item in the loaded catalog. Catalog reads can also reject before this lookup if committed source data is missing."
+					},
+					{
+						"name": "history-unavailable",
+						"type": "thrown",
+						"description": "The history helper throws an Error with code 'history-unavailable' when the source context has no historyPage adapter. The detail request then rejects without returning an EntityDetail."
+					},
+					{
+						"name": "artifact-corrupt",
+						"type": "thrown",
+						"description": "Catalog loading throws an Error with code 'artifact-corrupt' when a committed catalog or metadata artifact cannot be decoded or validated. The function propagates that rejection."
+					},
+					{
+						"name": "metadata-too-large",
+						"type": "thrown",
+						"description": "Catalog metadata loading throws an Error with code 'metadata-too-large' when the metadata bundle exceeds its 16 MiB limit. The function propagates that rejection."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
