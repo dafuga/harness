@@ -22,87 +22,138 @@
 				"name": "gitFiles.root",
 				"type": "string",
 				"required": true,
-				"description": "The repository whose tracked files should be listed."
+				"description": "The repository directory that gitFiles passes to Git with -C for both the revision lookup and the tracked-file listing. The code does not validate it, so a directory that is not a Git repository makes the promise reject.",
+				"examples": ["/Users/dev/projects/harness", "/Users/dev/projects/harness/packages/desktop"]
 			},
 			{
 				"name": "gitFiles.revision",
 				"type": "string",
 				"required": true,
-				"description": "The revision to resolve before listing files."
+				"description": "The revision, such as a branch, tag or commit name, that gitFiles resolves to a commit before listing its files. gitRevision refuses an empty value, a value longer than 300 characters and a value containing a null character with 'Invalid revision.'",
+				"examples": ["HEAD", "main", "3f9a1c7e2b8d4f60a1c3e5b7d9f1a2c4e6b8d0f2"]
 			},
 			{
 				"name": "gitRead.root",
 				"type": "string",
 				"required": true,
-				"description": "The repository directory for the Git command."
+				"description": "The repository directory that gitRead passes to Git with -C before the Git arguments. The code does not validate it, so Git failures for that directory reject the promise.",
+				"examples": ["/Users/dev/projects/harness", "/Users/dev/projects/harness/packages/desktop"]
 			},
 			{
 				"name": "gitRead.args",
 				"type": "string[]",
 				"required": true,
-				"description": "The Git arguments to execute directly. Callers must choose read-only arguments when a read is intended; this helper does not restrict commands."
+				"description": "The Git arguments placed after -C and the root directory, one array element per argument, run directly through execFile without a shell. The helper does not restrict commands, so callers must choose read-only arguments when a read is intended.",
+				"examples": [
+					["rev-parse", "--verify", "--end-of-options", "HEAD^{commit}"],
+					["ls-tree", "-rz", "--name-only", "3f9a1c7e2b8d4f60a1c3e5b7d9f1a2c4e6b8d0f2"],
+					["show", "3f9a1c7e2b8d4f60a1c3e5b7d9f1a2c4e6b8d0f2:packages/desktop/src/utils/gitRead.ts"]
+				]
 			},
 			{
 				"name": "gitRevision.root",
 				"type": "string",
 				"required": true,
-				"description": "The repository whose revision should be resolved."
+				"description": "The repository directory that gitRevision passes to Git with -C when it resolves the revision. The code does not validate it, so Git failures for that directory reject the promise.",
+				"examples": ["/Users/dev/projects/harness", "/Users/dev/projects/harness/packages/desktop"]
 			},
 			{
 				"name": "gitRevision.revision",
 				"type": "string",
 				"required": false,
 				"default": "HEAD",
-				"description": "The revision to resolve as a commit; defaults to HEAD. Must be nonempty, at most 300 characters and contain no null character."
+				"description": "The revision to resolve as a commit; it defaults to HEAD only when the argument is omitted. Empty strings, values longer than 300 characters and values containing a null character are refused with 'Invalid revision.'",
+				"examples": ["HEAD", "main", "3f9a1c7e2b8d4f60a1c3e5b7d9f1a2c4e6b8d0f2"]
 			},
 			{
 				"name": "gitText.root",
 				"type": "string",
 				"required": true,
-				"description": "The repository containing the requested text."
+				"description": "The repository directory that gitText passes to Git with -C for both the revision lookup and the git show read. The code does not validate it, so Git failures for that directory reject the promise.",
+				"examples": ["/Users/dev/projects/harness", "/Users/dev/projects/harness/packages/desktop"]
 			},
 			{
 				"name": "gitText.revision",
 				"type": "string",
 				"required": true,
-				"description": "The revision to resolve before reading the file."
+				"description": "The revision that gitText resolves to a commit before reading the file. Empty strings, values longer than 300 characters and values containing a null character are refused by gitRevision with 'Invalid revision.'",
+				"examples": ["HEAD", "main", "b7e1d03c5a9f2e8d4c6b1a0f3e7d9c2b5a8f4e61"]
 			},
 			{
 				"name": "gitText.path",
 				"type": "string",
 				"required": true,
-				"description": "The repository-relative file path. Absolute slash-prefixed paths, parent-directory segments and null characters are refused."
+				"description": "The repository-relative path of the file to read, used as '<commit>:<path>' in git show. Paths that start with '/', contain a '..' segment or contain a null character are refused with 'Unsafe source path.'; the code does not check other values, including an empty string.",
+				"examples": [
+					"packages/desktop/src/utils/gitRead.ts",
+					"packages/desktop/src/utils/projects-sessions/gitRead.ts"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "gitRead",
 				"type": "Promise<string>",
-				"description": "A promise for standard output with Git terminal prompting disabled and a 64,000,000-byte output buffer limit. Git execution failures reject."
+				"description": "A promise for the standard output of the Git command, returned without trimming; Git runs with GIT_TERMINAL_PROMPT set to 0 so it does not prompt on the terminal. The promise rejects when Git fails or its output exceeds the 64,000,000-byte maxBuffer limit.",
+				"examples": [
+					"3f9a1c7e2b8d4f60a1c3e5b7d9f1a2c4e6b8d0f2\n",
+					"packages/desktop/src/utils/gitRead.ts\u0000packages/desktop/src/utils/projects-sessions/gitRead.ts\u0000"
+				]
 			},
 			{
 				"name": "gitRevision",
 				"type": "Promise<string>",
-				"description": "A promise for the resolved commit hash with surrounding whitespace removed."
+				"description": "A promise for the full commit name printed by git rev-parse --verify, with surrounding whitespace removed; in a SHA-1 repository it is a 40-character lowercase hexadecimal name.",
+				"examples": [
+					"3f9a1c7e2b8d4f60a1c3e5b7d9f1a2c4e6b8d0f2",
+					"b7e1d03c5a9f2e8d4c6b1a0f3e7d9c2b5a8f4e61"
+				]
 			},
 			{
 				"name": "gitFiles",
 				"type": "Promise<string[]>",
-				"description": "A promise for recursively listed tracked paths, split on null separators so spaces and newlines in names are preserved."
+				"description": "A promise for the tracked paths listed by git ls-tree -rz --name-only at the resolved commit, relative to root, split on NUL with empty entries removed so names with spaces or newlines are kept intact. When root is a subdirectory, only entries beneath it are listed.",
+				"examples": [
+					[
+						"packages/desktop/src/utils/gitRead.ts",
+						"packages/desktop/src/utils/projects-sessions/gitRead.ts"
+					],
+					["docs/release notes.md"]
+				]
 			},
 			{
 				"name": "gitText",
 				"type": "Promise<string>",
-				"description": "A promise for the file text at the resolved commit. Text exceeding 2,000,000 bytes is refused."
+				"description": "A promise for the file text at the resolved commit, returned without trimming. Text whose UTF-8 byte length is over 2,000,000 bytes makes the promise reject with 'Source file too large.'",
+				"examples": [
+					"// @harness-uid u_rnymveoz42\nexport { gitFiles } from './projects-sessions/gitRead';\n",
+					"{\n\t\"private\": true\n}\n"
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Throws or rejects invalid revisions, unsafe paths, oversized source text or Git execution failures."
+				"description": "Thrown with the message 'Invalid revision.' by gitRevision, and so by gitFiles and gitText, when the revision is empty, longer than 300 characters or contains a null character."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Unsafe source path.' by gitText when the path starts with '/', has a '..' segment or contains a null character."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Source file too large.' by gitText when the text's UTF-8 byte length is over 2,000,000 bytes."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejected by gitRead when the Git process cannot start, exits with a failure or its output exceeds the 64,000,000-byte maxBuffer limit, which also makes gitFiles, gitRevision and gitText reject."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "gitFiles",
@@ -111,24 +162,47 @@
 						"name": "gitFiles.root",
 						"type": "string",
 						"required": true,
-						"description": "The repository whose tracked files should be listed."
+						"description": "The repository directory that gitFiles passes to Git with -C for both the revision lookup and the tracked-file listing. The code does not validate it, so a directory that is not a Git repository makes the promise reject.",
+						"examples": [
+							"/Users/dev/projects/harness",
+							"/Users/dev/projects/harness/packages/desktop"
+						]
 					},
 					{
 						"name": "gitFiles.revision",
 						"type": "string",
 						"required": true,
-						"description": "The revision to resolve before listing files."
+						"description": "The revision, such as a branch, tag or commit name, that gitFiles resolves to a commit before listing its files. gitRevision refuses an empty value, a value longer than 300 characters and a value containing a null character with 'Invalid revision.'",
+						"examples": ["HEAD", "main", "3f9a1c7e2b8d4f60a1c3e5b7d9f1a2c4e6b8d0f2"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "gitFiles",
 						"type": "Promise<string[]>",
-						"description": "A promise for recursively listed tracked paths, split on null separators so spaces and newlines in names are preserved."
+						"description": "A promise for the tracked paths listed by git ls-tree -rz --name-only at the resolved commit, relative to root, split on NUL with empty entries removed so names with spaces or newlines are kept intact. When root is a subdirectory, only entries beneath it are listed.",
+						"examples": [
+							[
+								"packages/desktop/src/utils/gitRead.ts",
+								"packages/desktop/src/utils/projects-sessions/gitRead.ts"
+							],
+							["docs/release notes.md"]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid revision.' by gitRevision when the revision is empty, longer than 300 characters or contains a null character."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejected when a Git command in the revision lookup or the ls-tree listing fails, cannot start, or its output exceeds the 64,000,000-byte maxBuffer limit."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "gitRead",
@@ -137,24 +211,46 @@
 						"name": "gitRead.root",
 						"type": "string",
 						"required": true,
-						"description": "The repository directory for the Git command."
+						"description": "The repository directory that gitRead passes to Git with -C before the Git arguments. The code does not validate it, so Git failures for that directory reject the promise.",
+						"examples": [
+							"/Users/dev/projects/harness",
+							"/Users/dev/projects/harness/packages/desktop"
+						]
 					},
 					{
 						"name": "gitRead.args",
 						"type": "string[]",
 						"required": true,
-						"description": "The Git arguments to execute directly. Callers must choose read-only arguments when a read is intended; this helper does not restrict commands."
+						"description": "The Git arguments placed after -C and the root directory, one array element per argument, run directly through execFile without a shell. The helper does not restrict commands, so callers must choose read-only arguments when a read is intended.",
+						"examples": [
+							["rev-parse", "--verify", "--end-of-options", "HEAD^{commit}"],
+							["ls-tree", "-rz", "--name-only", "3f9a1c7e2b8d4f60a1c3e5b7d9f1a2c4e6b8d0f2"],
+							[
+								"show",
+								"3f9a1c7e2b8d4f60a1c3e5b7d9f1a2c4e6b8d0f2:packages/desktop/src/utils/gitRead.ts"
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "gitRead",
 						"type": "Promise<string>",
-						"description": "A promise for standard output with Git terminal prompting disabled and a 64,000,000-byte output buffer limit. Git execution failures reject."
+						"description": "A promise for the standard output of the Git command, returned without trimming; Git runs with GIT_TERMINAL_PROMPT set to 0 so it does not prompt on the terminal. The promise rejects when Git fails or its output exceeds the 64,000,000-byte maxBuffer limit.",
+						"examples": [
+							"3f9a1c7e2b8d4f60a1c3e5b7d9f1a2c4e6b8d0f2\n",
+							"packages/desktop/src/utils/gitRead.ts\u0000packages/desktop/src/utils/projects-sessions/gitRead.ts\u0000"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejected when the Git process cannot start, exits with a failure or its output exceeds the 64,000,000-byte maxBuffer limit."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "gitRevision",
@@ -163,30 +259,45 @@
 						"name": "gitRevision.root",
 						"type": "string",
 						"required": true,
-						"description": "The repository whose revision should be resolved."
+						"description": "The repository directory that gitRevision passes to Git with -C when it resolves the revision. The code does not validate it, so Git failures for that directory reject the promise.",
+						"examples": [
+							"/Users/dev/projects/harness",
+							"/Users/dev/projects/harness/packages/desktop"
+						]
 					},
 					{
 						"name": "gitRevision.revision",
 						"type": "string",
 						"required": false,
 						"default": "HEAD",
-						"description": "The revision to resolve as a commit; defaults to HEAD. Must be nonempty, at most 300 characters and contain no null character."
+						"description": "The revision to resolve as a commit; it defaults to HEAD only when the argument is omitted. Empty strings, values longer than 300 characters and values containing a null character are refused with 'Invalid revision.'",
+						"examples": ["HEAD", "main", "3f9a1c7e2b8d4f60a1c3e5b7d9f1a2c4e6b8d0f2"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "gitRevision",
 						"type": "Promise<string>",
-						"description": "A promise for the resolved commit hash with surrounding whitespace removed."
+						"description": "A promise for the full commit name printed by git rev-parse --verify, with surrounding whitespace removed; in a SHA-1 repository it is a 40-character lowercase hexadecimal name.",
+						"examples": [
+							"3f9a1c7e2b8d4f60a1c3e5b7d9f1a2c4e6b8d0f2",
+							"b7e1d03c5a9f2e8d4c6b1a0f3e7d9c2b5a8f4e61"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid revision.' when the revision is empty, longer than 300 characters or contains a null character."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejected when git rev-parse --verify fails, which includes a revision that cannot be resolved to a commit."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "gitText",
@@ -195,35 +306,64 @@
 						"name": "gitText.root",
 						"type": "string",
 						"required": true,
-						"description": "The repository containing the requested text."
+						"description": "The repository directory that gitText passes to Git with -C for both the revision lookup and the git show read. The code does not validate it, so Git failures for that directory reject the promise.",
+						"examples": [
+							"/Users/dev/projects/harness",
+							"/Users/dev/projects/harness/packages/desktop"
+						]
 					},
 					{
 						"name": "gitText.revision",
 						"type": "string",
 						"required": true,
-						"description": "The revision to resolve before reading the file."
+						"description": "The revision that gitText resolves to a commit before reading the file. Empty strings, values longer than 300 characters and values containing a null character are refused by gitRevision with 'Invalid revision.'",
+						"examples": ["HEAD", "main", "b7e1d03c5a9f2e8d4c6b1a0f3e7d9c2b5a8f4e61"]
 					},
 					{
 						"name": "gitText.path",
 						"type": "string",
 						"required": true,
-						"description": "The repository-relative file path. Absolute slash-prefixed paths, parent-directory segments and null characters are refused."
+						"description": "The repository-relative path of the file to read, used as '<commit>:<path>' in git show. Paths that start with '/', contain a '..' segment or contain a null character are refused with 'Unsafe source path.'; the code does not check other values, including an empty string.",
+						"examples": [
+							"packages/desktop/src/utils/gitRead.ts",
+							"packages/desktop/src/utils/projects-sessions/gitRead.ts"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "gitText",
 						"type": "Promise<string>",
-						"description": "A promise for the file text at the resolved commit. Text exceeding 2,000,000 bytes is refused."
+						"description": "A promise for the file text at the resolved commit, returned without trimming. Text whose UTF-8 byte length is over 2,000,000 bytes makes the promise reject with 'Source file too large.'",
+						"examples": [
+							"// @harness-uid u_rnymveoz42\nexport { gitFiles } from './projects-sessions/gitRead';\n",
+							"{\n\t\"private\": true\n}\n"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with the message 'Unsafe source path.' when the path starts with '/', has a '..' segment or contains a null character."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid revision.' by gitRevision when the revision is empty, longer than 300 characters or contains a null character."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Source file too large.' when the text's UTF-8 byte length is over 2,000,000 bytes."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejected when a Git command in the revision lookup or the git show read fails, cannot start, or its output exceeds the 64,000,000-byte maxBuffer limit."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
