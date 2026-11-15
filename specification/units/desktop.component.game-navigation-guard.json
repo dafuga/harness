@@ -22,17 +22,19 @@
 				"name": "GameNavigationGuard.active",
 				"type": "boolean",
 				"required": true,
-				"description": "True while the authoring document has unsaved changes; enables confirmation before leaving."
+				"description": "Turns the guard on or off; it is read each time a navigation is about to start, and only its truthiness is tested, with no type check. When true, a navigation flagged willUnload is always cancelled and any other navigation is cancelled unless window.confirm('Discard unsaved game changes?') returns true; when false, nothing is cancelled.",
+				"examples": [true, false]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameNavigationGuard",
 				"type": "markup",
-				"description": "Renders no visible markup. Registers a navigation guard that confirms in-app navigation and requests host unload prevention."
+				"description": "Renders no visible markup: its template holds only HTML comments. Each instance calls beforeNavigate once during setup, registering a callback that, while active is true, cancels navigations flagged willUnload and cancels other navigations unless window.confirm('Discard unsaved game changes?') returns true, and does nothing while active is false."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
