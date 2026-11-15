@@ -25,33 +25,32 @@
 				"name": "ConsoleChat.base",
 				"type": "string",
 				"required": true,
-				"description": "URL prefix of the local explorer.",
-				"examples": ["/harness"]
+				"description": "Required string prefix supplied by the host. It is concatenated directly with the path before the first ? when the component is mounted and open; no separator is inserted.",
+				"examples": ["/reports/"]
 			},
 			{
 				"name": "ConsoleChat.path",
 				"type": "string",
 				"required": true,
-				"description": "Selected branch, optional commit and entity path, including its tab query.",
-				"examples": ["/branch/main/components/app.component.toolbar?tab=contract"]
+				"description": "Required path string supplied by the host. When the component is mounted and open, text from the first ? onward is removed before concatenation with base; the value is not otherwise transformed here.",
+				"examples": ["/branch/main?tab=contract"]
 			},
 			{
 				"name": "ConsoleChat.navigate",
 				"type": "(path: string, replace: boolean) => void",
 				"required": true,
-				"description": "Host router callback. Receives the explorer path and whether to replace the current history entry.",
-				"examples": ["navigate(\"/branch/main/pages\", false)"]
+				"description": "Required host router callback passed to createConsoleWorkspaceStore; it accepts a string and a boolean and returns void. When mounted and open, the component asks the workspace to navigate with replace set to false."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ConsoleChat",
 				"type": "markup",
-				"description": "The shared round launcher and conversation, connected lazily to the local project executor.",
-				"examples": ["<button aria-label=\"Work with agent\">…</button>"]
+				"description": "Svelte markup for an hx-div.console-chat wrapper containing ProjectAgent, with open bound to the component state and workspace set to the created store workspace. The workspace route is updated only when the component is mounted and open."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
