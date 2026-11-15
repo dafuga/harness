@@ -15,31 +15,107 @@
 		"symbols": ["moduleCategoryFindings", "auditHarnessStructure"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "moduleCategoryFindings.structure",
 				"type": "AuditStructure",
-				"required": true
+				"required": true,
+				"description": "Repository structure snapshot supplied to the audit, with a root, discovered files and directories, and optionally declared module source folders. A falsy root makes moduleCategoryFindings return no findings; auditHarnessStructure uses files and dirs, and a missing moduleSourceFolders list behaves as empty.",
+				"examples": [
+					{
+						"root": "/Users/daniel/projects/example-app",
+						"profile": "app",
+						"files": [
+							"src/audit/structure-rules/moduleCategoryFindings.ts",
+							"src/routes/+page.svelte"
+						],
+						"dirs": ["src", "src/audit", "src/audit/structure-rules", "src/routes"],
+						"moduleSourceFolders": ["audit"]
+					},
+					{
+						"root": "/Users/daniel/projects/sample-app",
+						"profile": "lib",
+						"files": ["src/audit/development-tooling/structure-rules/structureRules.ts"],
+						"dirs": [
+							"src",
+							"src/audit",
+							"src/audit/development-tooling",
+							"src/audit/development-tooling/structure-rules"
+						],
+						"moduleSourceFolders": []
+					}
+				]
 			},
 			{
 				"name": "auditHarnessStructure.structure",
 				"type": "AuditStructure",
-				"required": true
+				"required": true,
+				"description": "Repository structure snapshot supplied to the audit, with a root, discovered files and directories, and optionally declared module source folders. A falsy root makes moduleCategoryFindings return no findings; auditHarnessStructure uses files and dirs, and a missing moduleSourceFolders list behaves as empty.",
+				"examples": [
+					{
+						"root": "/Users/daniel/projects/example-app",
+						"profile": "app",
+						"files": [
+							"src/audit/structure-rules/moduleCategoryFindings.ts",
+							"src/routes/+page.svelte"
+						],
+						"dirs": ["src", "src/audit", "src/audit/structure-rules", "src/routes"],
+						"moduleSourceFolders": ["audit"]
+					},
+					{
+						"root": "/Users/daniel/projects/sample-app",
+						"profile": "lib",
+						"files": ["src/audit/development-tooling/structure-rules/structureRules.ts"],
+						"dirs": [
+							"src",
+							"src/audit",
+							"src/audit/development-tooling",
+							"src/audit/development-tooling/structure-rules"
+						],
+						"moduleSourceFolders": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "moduleCategoryFindings",
-				"type": "AuditFinding[]"
+				"type": "AuditFinding[]",
+				"description": "Array of findings for source-like files under the loaded repository root that are neither in a declared module group nor recognized as preserved or legacy forwarding entries. Each finding contains the input path, the module-category-folder rule, and placement guidance; missing root/config or no violations yields an empty array.",
+				"examples": [
+					[
+						{
+							"path": "src/audit/structure-rules/moduleCategoryFindings.ts",
+							"rule": "module-category-folder",
+							"message": "Place this implementation in a declared responsibility category folder; use harness generate --group <category>."
+						}
+					]
+				]
 			},
 			{
 				"name": "auditHarnessStructure",
-				"type": "AuditFinding[]"
+				"type": "AuditFinding[]",
+				"description": "Array of findings for violations detected in planning artifacts, folder names, source/test/database layouts, root TypeScript files, module categories, and feature-spec paths. Each finding contains the offending path, a rule identifier, and a corrective message; accepted paths and folders are omitted.",
+				"examples": [
+					[
+						{
+							"path": "src/BadFolder",
+							"rule": "folder-name-pattern",
+							"message": "Folder \"BadFolder\" should use lowercase kebab-case or a SvelteKit route segment."
+						}
+					]
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A synchronous read can throw when a legacy entry is inspected for forwarding behavior and its source path is missing or unreadable."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "moduleCategoryFindings",
@@ -47,17 +123,58 @@
 					{
 						"name": "moduleCategoryFindings.structure",
 						"type": "AuditStructure",
-						"required": true
+						"required": true,
+						"description": "Repository structure snapshot supplied to the audit, with a root, discovered files and directories, and optionally declared module source folders. A falsy root makes moduleCategoryFindings return no findings; auditHarnessStructure uses files and dirs, and a missing moduleSourceFolders list behaves as empty.",
+						"examples": [
+							{
+								"root": "/Users/daniel/projects/example-app",
+								"profile": "app",
+								"files": [
+									"src/audit/structure-rules/moduleCategoryFindings.ts",
+									"src/routes/+page.svelte"
+								],
+								"dirs": ["src", "src/audit", "src/audit/structure-rules", "src/routes"],
+								"moduleSourceFolders": ["audit"]
+							},
+							{
+								"root": "/Users/daniel/projects/sample-app",
+								"profile": "lib",
+								"files": ["src/audit/development-tooling/structure-rules/structureRules.ts"],
+								"dirs": [
+									"src",
+									"src/audit",
+									"src/audit/development-tooling",
+									"src/audit/development-tooling/structure-rules"
+								],
+								"moduleSourceFolders": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "moduleCategoryFindings",
-						"type": "AuditFinding[]"
+						"type": "AuditFinding[]",
+						"description": "Array of findings for source-like files under the loaded repository root that are neither in a declared module group nor recognized as preserved or legacy forwarding entries. Each finding contains the input path, the module-category-folder rule, and placement guidance; missing root/config or no violations yields an empty array.",
+						"examples": [
+							[
+								{
+									"path": "src/audit/structure-rules/moduleCategoryFindings.ts",
+									"rule": "module-category-folder",
+									"message": "Place this implementation in a declared responsibility category folder; use harness generate --group <category>."
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A synchronous read can throw when a legacy entry is inspected for forwarding behavior and its source path is missing or unreadable."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "auditHarnessStructure",
@@ -65,17 +182,58 @@
 					{
 						"name": "auditHarnessStructure.structure",
 						"type": "AuditStructure",
-						"required": true
+						"required": true,
+						"description": "Repository structure snapshot supplied to the audit, with a root, discovered files and directories, and optionally declared module source folders. A falsy root makes moduleCategoryFindings return no findings; auditHarnessStructure uses files and dirs, and a missing moduleSourceFolders list behaves as empty.",
+						"examples": [
+							{
+								"root": "/Users/daniel/projects/example-app",
+								"profile": "app",
+								"files": [
+									"src/audit/structure-rules/moduleCategoryFindings.ts",
+									"src/routes/+page.svelte"
+								],
+								"dirs": ["src", "src/audit", "src/audit/structure-rules", "src/routes"],
+								"moduleSourceFolders": ["audit"]
+							},
+							{
+								"root": "/Users/daniel/projects/sample-app",
+								"profile": "lib",
+								"files": ["src/audit/development-tooling/structure-rules/structureRules.ts"],
+								"dirs": [
+									"src",
+									"src/audit",
+									"src/audit/development-tooling",
+									"src/audit/development-tooling/structure-rules"
+								],
+								"moduleSourceFolders": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "auditHarnessStructure",
-						"type": "AuditFinding[]"
+						"type": "AuditFinding[]",
+						"description": "Array of findings for violations detected in planning artifacts, folder names, source/test/database layouts, root TypeScript files, module categories, and feature-spec paths. Each finding contains the offending path, a rule identifier, and a corrective message; accepted paths and folders are omitted.",
+						"examples": [
+							[
+								{
+									"path": "src/BadFolder",
+									"rule": "folder-name-pattern",
+									"message": "Folder \"BadFolder\" should use lowercase kebab-case or a SvelteKit route segment."
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "This operation propagates the Error from moduleCategoryFindings if a legacy entry source cannot be read while its forwarding behavior is checked."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
