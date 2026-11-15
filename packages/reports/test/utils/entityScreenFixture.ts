@@ -5,6 +5,7 @@ import type { HarnessUnit } from '../../src/models/explorer-ui/Harness.types';
 import type { Revision } from './entity-screens.test.types';
 import { explorerEvidence } from '../../src/utils/explorer-ui/explorerEvidence';
 import { scope } from '../entityPlaces';
+import type { ExplorerEvidence } from '../../src/models/explorer-ui/Explorer.types';
 
 /** What the host gives for the page: the tip alone, or a commit beside the parent it names. */
 export function evidence(page: HarnessUnit, shown: Revision, parent?: Revision | null) {
@@ -49,6 +50,7 @@ export function assertVideoProjection(page: HarnessUnit, tip: Revision) {
 		}
 	});
 	expect(catalogShot(video)?.mimeType).not.toBe('video/mp4');
+	assertVideoSlots(video);
 	const inheritedVideo = structuredClone(video);
 	const inheritedClip = inheritedVideo.after.captures.at(-1)!;
 	inheritedClip.current = false;
@@ -68,4 +70,19 @@ export function assertVideoProjection(page: HarnessUnit, tip: Revision) {
 			freshness: 'inherited'
 		}
 	});
+}
+
+function assertVideoSlots(evidence: ExplorerEvidence) {
+	const several = structuredClone(evidence),
+		first = several.after.captures.at(-1)!;
+	several.after.captures.push({
+		...first,
+		capture: { ...first.capture, video: { ...first.capture.video!, clipId: 'spinner-secondary' } }
+	});
+	const items = galleryItems(several).filter((item) => item.mediaType === 'video');
+	expect(
+		new Set(items.map((item) => item.id)).size,
+		'independent clip IDs keep distinct gallery slots'
+	).toBe(2);
+	for (const item of items) expect(item.title).toContain(item.video!.clipId);
 }
