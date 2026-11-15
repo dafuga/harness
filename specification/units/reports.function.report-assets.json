@@ -21,92 +21,127 @@
 				"name": "reportAssets.directory",
 				"type": "string",
 				"required": true,
-				"description": "Report directory receiving an imported asset."
+				"description": "Destination report directory used to store the imported file beneath an assets subdirectory. The helper creates that subdirectory recursively.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports"
+				]
 			},
 			{
 				"name": "reportAssets.source",
 				"type": "string",
 				"required": true,
-				"description": "Local source file to import; symlinks and non-files are rejected."
+				"description": "Filesystem path inspected as the evidence source; symbolic links, non-files, and files larger than 50,000,000 bytes are rejected. Its detected media type selects the audio or image handling path.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports/test/fixtures/evidence.png"
+				]
 			},
 			{
 				"name": "imageAsset.bytes",
 				"type": "Buffer",
 				"required": true,
-				"description": "Nonempty image bytes, at most 50,000,000 bytes."
+				"description": "Nonempty image bytes in a Buffer no larger than 50,000,000 bytes. Signature checks recognize PNG, JPEG, and WebP headers but do not decode the full image."
 			},
 			{
 				"name": "imageAsset.filename",
 				"type": "string",
 				"required": true,
-				"description": "Image filename with PNG, JPG, JPEG or WebP extension matching the signature."
+				"description": "Image filename whose lowercased extension must be .png, .jpg, .jpeg, or .webp and agree with the detected signature. A JPEG named .jpeg is returned with a .jpg extension.",
+				"examples": ["evidence.png"]
 			},
 			{
 				"name": "writeImageAsset.directory",
 				"type": "string",
 				"required": true,
-				"description": "Report directory under which an assets folder is created."
+				"description": "Destination report directory; the helper writes under its assets subdirectory and creates that directory recursively.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports"
+				]
 			},
 			{
 				"name": "writeImageAsset.name",
 				"type": "string",
 				"required": true,
-				"description": "Destination asset filename, expected to be supplied by the trusted asset-name generator."
+				"description": "Filename joined beneath the assets subdirectory for the write. The helper does not validate or sanitize this string.",
+				"examples": ["9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"]
 			},
 			{
 				"name": "writeImageAsset.bytes",
 				"type": "Buffer",
 				"required": true,
-				"description": "Bytes to write without further validation by this helper."
+				"description": "Buffer written as supplied, without size, signature, or content validation. The file is created with mode 0600."
 			},
 			{
 				"name": "registeredAsset.directory",
 				"type": "string",
 				"required": true,
-				"description": "Asset directory to resolve through realpath."
+				"description": "Directory canonicalized with realpath to establish the boundary for resolving an asset name. Filesystem lookup failures reject the promise.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports/assets"
+				]
 			},
 			{
 				"name": "registeredAsset.name",
 				"type": "string",
 				"required": true,
-				"description": "Requested filename, which must be registered and contain no slash or backslash."
+				"description": "Requested filename that must exactly occur in registered and contain neither a slash nor a backslash. The joined path must resolve to a regular non-symlink file inside the canonical directory.",
+				"examples": ["9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"]
 			},
 			{
 				"name": "registeredAsset.registered",
 				"type": "string[]",
 				"required": true,
-				"description": "Allowed asset names."
+				"description": "Caller-provided list of allowed filenames; membership is checked by exact string equality before path resolution.",
+				"examples": [
+					["9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "imageAsset",
 				"type": "unknown",
-				"description": "SHA-256 filename with normalized image extension and MIME type after a lightweight signature check."
+				"description": "Object containing the SHA-256 digest of the bytes plus their detected extension and the corresponding MIME type. Detection checks PNG, JPEG, and WebP signatures without fully decoding the image.",
+				"examples": [
+					{
+						"name": "9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png",
+						"mime": "image/png"
+					}
+				]
 			},
 			{
 				"name": "writeImageAsset",
 				"type": "unknown",
-				"description": "Promise that creates the asset directory and writes bytes with restrictive creation modes; no value is returned."
+				"description": "Promise resolving to undefined after creating the assets directory recursively with mode 0700 and writing the supplied bytes with creation mode 0600."
 			},
 			{
 				"name": "reportAssets",
 				"type": "unknown",
-				"description": "Promise resolving to stored audio or image metadata after validation and writing the content-addressed file."
+				"description": "Promise resolving to metadata for the stored audio or image asset after source checks and a content-addressed write under directory/assets. The image branch returns name, mediaType, and mimeType; audio metadata comes from audioAsset.",
+				"examples": [
+					{
+						"name": "9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png",
+						"mediaType": "image",
+						"mimeType": "image/png"
+					}
+				]
 			},
 			{
 				"name": "registeredAsset",
 				"type": "unknown",
-				"description": "Promise resolving to a registered regular non-symlink file whose real path remains within the resolved asset directory."
+				"description": "Promise resolving to the canonical-base path for the requested registered file after confirming it is a regular non-symlink file whose real path remains inside the base directory.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports/assets/9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects invalid image size/type/signature, imported symlinks/non-files, unregistered names and invalid asset paths. Audio validation and filesystem errors propagate."
+				"description": "Validation failures are thrown as Error, including invalid source files, image content, and registered paths. Filesystem and delegated audio-validation failures also reject through the calling promise."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reportAssets",
@@ -115,29 +150,43 @@
 						"name": "reportAssets.directory",
 						"type": "string",
 						"required": true,
-						"description": "Report directory receiving an imported asset."
+						"description": "Destination report directory used to store the imported file beneath an assets subdirectory. The helper creates that subdirectory recursively.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports"
+						]
 					},
 					{
 						"name": "reportAssets.source",
 						"type": "string",
 						"required": true,
-						"description": "Local source file to import; symlinks and non-files are rejected."
+						"description": "Filesystem path inspected as the evidence source; symbolic links, non-files, and files larger than 50,000,000 bytes are rejected. Its detected media type selects the audio or image handling path.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports/test/fixtures/evidence.png"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reportAssets",
 						"type": "unknown",
-						"description": "Promise resolving to stored audio or image metadata after validation and writing the content-addressed file."
+						"description": "Promise resolving to metadata for the stored audio or image asset after source checks and a content-addressed write under directory/assets. The image branch returns name, mediaType, and mimeType; audio metadata comes from audioAsset.",
+						"examples": [
+							{
+								"name": "9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png",
+								"mediaType": "image",
+								"mimeType": "image/png"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws when the source is a symlink, is not a file, or exceeds 50,000,000 bytes; media-specific validation and filesystem failures also reject the promise."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "imageAsset",
@@ -146,29 +195,37 @@
 						"name": "imageAsset.bytes",
 						"type": "Buffer",
 						"required": true,
-						"description": "Nonempty image bytes, at most 50,000,000 bytes."
+						"description": "Nonempty image bytes in a Buffer no larger than 50,000,000 bytes. Signature checks recognize PNG, JPEG, and WebP headers but do not decode the full image."
 					},
 					{
 						"name": "imageAsset.filename",
 						"type": "string",
 						"required": true,
-						"description": "Image filename with PNG, JPG, JPEG or WebP extension matching the signature."
+						"description": "Image filename whose lowercased extension must be .png, .jpg, .jpeg, or .webp and agree with the detected signature. A JPEG named .jpeg is returned with a .jpg extension.",
+						"examples": ["evidence.png"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "imageAsset",
 						"type": "unknown",
-						"description": "SHA-256 filename with normalized image extension and MIME type after a lightweight signature check."
+						"description": "Object containing the SHA-256 digest of the bytes plus their detected extension and the corresponding MIME type. Detection checks PNG, JPEG, and WebP signatures without fully decoding the image.",
+						"examples": [
+							{
+								"name": "9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png",
+								"mime": "image/png"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws when bytes are empty or exceed 50,000,000 bytes, the extension is unsupported, no supported signature is found, or the filename extension disagrees with the detected signature."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "writeImageAsset",
@@ -177,30 +234,40 @@
 						"name": "writeImageAsset.directory",
 						"type": "string",
 						"required": true,
-						"description": "Report directory under which an assets folder is created."
+						"description": "Destination report directory; the helper writes under its assets subdirectory and creates that directory recursively.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports"
+						]
 					},
 					{
 						"name": "writeImageAsset.name",
 						"type": "string",
 						"required": true,
-						"description": "Destination asset filename, expected to be supplied by the trusted asset-name generator."
+						"description": "Filename joined beneath the assets subdirectory for the write. The helper does not validate or sanitize this string.",
+						"examples": ["9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"]
 					},
 					{
 						"name": "writeImageAsset.bytes",
 						"type": "Buffer",
 						"required": true,
-						"description": "Bytes to write without further validation by this helper."
+						"description": "Buffer written as supplied, without size, signature, or content validation. The file is created with mode 0600."
 					}
 				],
 				"outputs": [
 					{
 						"name": "writeImageAsset",
 						"type": "unknown",
-						"description": "Promise that creates the asset directory and writes bytes with restrictive creation modes; no value is returned."
+						"description": "Promise resolving to undefined after creating the assets directory recursively with mode 0700 and writing the supplied bytes with creation mode 0600."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects when creating the assets directory or writing the file fails; this helper performs no content validation."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "registeredAsset",
@@ -209,35 +276,46 @@
 						"name": "registeredAsset.directory",
 						"type": "string",
 						"required": true,
-						"description": "Asset directory to resolve through realpath."
+						"description": "Directory canonicalized with realpath to establish the boundary for resolving an asset name. Filesystem lookup failures reject the promise.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports/assets"
+						]
 					},
 					{
 						"name": "registeredAsset.name",
 						"type": "string",
 						"required": true,
-						"description": "Requested filename, which must be registered and contain no slash or backslash."
+						"description": "Requested filename that must exactly occur in registered and contain neither a slash nor a backslash. The joined path must resolve to a regular non-symlink file inside the canonical directory.",
+						"examples": ["9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"]
 					},
 					{
 						"name": "registeredAsset.registered",
 						"type": "string[]",
 						"required": true,
-						"description": "Allowed asset names."
+						"description": "Caller-provided list of allowed filenames; membership is checked by exact string equality before path resolution.",
+						"examples": [
+							["9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "registeredAsset",
 						"type": "unknown",
-						"description": "Promise resolving to a registered regular non-symlink file whose real path remains within the resolved asset directory."
+						"description": "Promise resolving to the canonical-base path for the requested registered file after confirming it is a regular non-symlink file whose real path remains inside the base directory.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports/assets/9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws for unregistered names, names containing a slash or backslash, symlinks, non-files, or paths outside the canonical directory; filesystem lookup failures also reject."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
