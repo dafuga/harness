@@ -18,17 +18,110 @@
 				"name": "entityRemoved.evidence",
 				"type": "ExplorerEvidence",
 				"required": true,
-				"description": "Before/after evidence coverage supplied by the host."
+				"description": "Reads before and after coverage, matching scenarios by scenario and states by state. It requires the after side; a null before side yields no removals, and capture data is ignored.",
+				"examples": [
+					{
+						"mode": "commit",
+						"scenarios": [],
+						"after": {
+							"commit": "fedcba9876543210fedcba9876543210fedcba98",
+							"detail": null,
+							"record": null,
+							"captures": [],
+							"coverage": [
+								{
+									"scenario": "checkout",
+									"title": "Checkout",
+									"kind": "ui",
+									"standing": "passed",
+									"reasons": [],
+									"tests": [],
+									"inheritedFrom": null,
+									"states": [
+										{
+											"state": "shipping",
+											"declared": "required",
+											"standing": "passed",
+											"reasons": [],
+											"slots": []
+										}
+									]
+								}
+							],
+							"gap": null
+						},
+						"before": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"detail": null,
+							"record": null,
+							"captures": [],
+							"coverage": [
+								{
+									"scenario": "checkout",
+									"title": "Checkout",
+									"kind": "ui",
+									"standing": "passed",
+									"reasons": [],
+									"tests": [],
+									"inheritedFrom": null,
+									"states": [
+										{
+											"state": "shipping",
+											"declared": "required",
+											"standing": "passed",
+											"reasons": [],
+											"slots": []
+										},
+										{
+											"state": "payment",
+											"declared": "required",
+											"standing": "passed",
+											"reasons": [],
+											"slots": []
+										}
+									]
+								},
+								{
+									"scenario": "account",
+									"title": "Account",
+									"kind": "ui",
+									"standing": "passed",
+									"reasons": [],
+									"tests": [],
+									"inheritedFrom": null,
+									"states": [
+										{
+											"state": "authenticated",
+											"declared": "required",
+											"standing": "passed",
+											"reasons": [],
+											"slots": []
+										}
+									]
+								}
+							],
+							"gap": null
+						},
+						"initial": null,
+						"incomparable": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "entityRemoved",
 				"type": "string[]",
-				"description": "Sentences for each removed whole scenario or removed state. Uses coverage declarations rather than inferring removals from absent captures; no before coverage yields an empty list."
+				"description": "Returns one sentence for each before-side scenario absent afterward or each state absent from a matching after-side scenario, preserving coverage and state order. Additions and captures are ignored.",
+				"examples": [
+					[],
+					["Checkout: the state payment."],
+					["Account: the scenario, with its states authenticated."]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "entityRemoved",
@@ -37,18 +130,110 @@
 						"name": "entityRemoved.evidence",
 						"type": "ExplorerEvidence",
 						"required": true,
-						"description": "Before/after evidence coverage supplied by the host."
+						"description": "Reads before and after coverage, matching scenarios by scenario and states by state. It requires the after side; a null before side yields no removals, and capture data is ignored.",
+						"examples": [
+							{
+								"mode": "commit",
+								"scenarios": [],
+								"after": {
+									"commit": "fedcba9876543210fedcba9876543210fedcba98",
+									"detail": null,
+									"record": null,
+									"captures": [],
+									"coverage": [
+										{
+											"scenario": "checkout",
+											"title": "Checkout",
+											"kind": "ui",
+											"standing": "passed",
+											"reasons": [],
+											"tests": [],
+											"inheritedFrom": null,
+											"states": [
+												{
+													"state": "shipping",
+													"declared": "required",
+													"standing": "passed",
+													"reasons": [],
+													"slots": []
+												}
+											]
+										}
+									],
+									"gap": null
+								},
+								"before": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"detail": null,
+									"record": null,
+									"captures": [],
+									"coverage": [
+										{
+											"scenario": "checkout",
+											"title": "Checkout",
+											"kind": "ui",
+											"standing": "passed",
+											"reasons": [],
+											"tests": [],
+											"inheritedFrom": null,
+											"states": [
+												{
+													"state": "shipping",
+													"declared": "required",
+													"standing": "passed",
+													"reasons": [],
+													"slots": []
+												},
+												{
+													"state": "payment",
+													"declared": "required",
+													"standing": "passed",
+													"reasons": [],
+													"slots": []
+												}
+											]
+										},
+										{
+											"scenario": "account",
+											"title": "Account",
+											"kind": "ui",
+											"standing": "passed",
+											"reasons": [],
+											"tests": [],
+											"inheritedFrom": null,
+											"states": [
+												{
+													"state": "authenticated",
+													"declared": "required",
+													"standing": "passed",
+													"reasons": [],
+													"slots": []
+												}
+											]
+										}
+									],
+									"gap": null
+								},
+								"initial": null,
+								"incomparable": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "entityRemoved",
 						"type": "string[]",
-						"description": "Sentences for each removed whole scenario or removed state. Uses coverage declarations rather than inferring removals from absent captures; no before coverage yields an empty list."
+						"description": "Returns one sentence for each before-side scenario absent afterward or each state absent from a matching after-side scenario, preserving coverage and state order. Additions and captures are ignored.",
+						"examples": [
+							[],
+							["Checkout: the state payment."],
+							["Account: the scenario, with its states authenticated."]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
