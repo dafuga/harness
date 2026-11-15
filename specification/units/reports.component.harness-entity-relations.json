@@ -34,40 +34,121 @@
 				"name": "EntityRelations.relations",
 				"type": "ExplorerRelations",
 				"required": true,
-				"description": "Required relationship data organized by the usage helper."
+				"description": "The relation lists of one entity, one per kind: pages and usedBy fill Used In, layouts, components, functions, configs, services, apis, models and types fill the Uses groups, and support fills the Other group. An absent apis, models or types list counts as empty, and when show is 'models' or 'apis', only the models or apis list is drawn.",
+				"examples": [
+					{
+						"pages": [],
+						"layouts": [],
+						"components": [],
+						"functions": [],
+						"configs": [],
+						"services": [],
+						"usedBy": [
+							{
+								"id": "reports.component.harness-entity-relations",
+								"category": "components",
+								"role": "Component",
+								"name": "EntityRelations",
+								"purpose": "Shows what uses an entity and what that entity uses.",
+								"unit": {
+									"id": "reports.component.harness-entity-relations",
+									"kind": "component",
+									"status": "active",
+									"title": "Used In and Uses",
+									"responsibility": "Shows what uses an entity and what that entity uses.",
+									"dependencies": [
+										{
+											"unit": "reports.function.entity-usage",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"packages/reports/src/components/explorer-ui/entity-relations/EntityRelations.svelte"
+										],
+										"symbols": ["EntityRelations", "EntityRelations.cards"]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/components/explorer-ui/entity-relations/EntityRelations.svelte"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "5e0a8c13d7b29f46"
+								},
+								"verdict": {
+									"passed": false,
+									"label": "Coverage incomplete",
+									"reasons": [
+										"No scenario covers this unit; tests alone do not show how it behaves."
+									]
+								},
+								"change": null,
+								"appRoute": null
+							}
+						],
+						"support": []
+					},
+					{
+						"pages": [],
+						"layouts": [],
+						"components": [],
+						"functions": [],
+						"configs": [],
+						"services": [],
+						"usedBy": [],
+						"support": []
+					}
+				]
 			},
 			{
 				"name": "EntityRelations.host",
 				"type": "ExplorerScreenProps",
 				"required": true,
-				"description": "Selected revision lens, known consumers and media base used by shared catalog items."
+				"description": "The host props for the shown scope: lens supplies the relations of the cards and Other rows, entities and head are the consumers and revision the cards are read against, mediaBase is passed to the catalog items, and scope.commit is part of the key that resets the cards and groups. It is required and has no default."
 			},
 			{
 				"name": "EntityRelations.nav",
 				"type": "EntityNav",
 				"required": true,
-				"description": "Required route context for related-entity links."
+				"description": "The navigation of the shown entity: its route supplies the branch, commit, entity and helper that key the cards and groups, and the whole nav is passed to each catalog item. It is required and has no default."
 			},
 			{
 				"name": "EntityRelations.show",
 				"type": "'both' | 'used-in' | 'uses' | 'models' | 'apis'",
 				"required": false,
 				"default": "both",
-				"description": "Optional both, used-in or uses, default both. Selects which sections appear."
+				"description": "Selects which sections are drawn: 'both' draws Used In and Uses, 'used-in' and 'uses' each draw only their own section, and 'models' or 'apis' draw only the Models or APIs section. It defaults to 'both', and any value outside these five draws no section, only the empty container.",
+				"examples": ["both", "used-in", "uses"]
 			},
 			{
 				"name": "EntityRelations.removed",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional flag, false by default, changing empty-state wording to explain removal at this commit."
+				"description": "True when the shown commit removed the entity, so the empty message of each section drawn says it was removed at this commit. It defaults to false, which keeps the ordinary messages, and it changes no card or count.",
+				"examples": [false, true]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityRelations",
 				"type": "markup",
-				"description": "Counted Uses and Used In groups render every dependency through shared module cards, including private callables, config modules and unclassified support. Cards omit verification marks and retain scoped navigation. States: empty: Both relationship sections display their no-recorded-relations messages. both: Used In and Uses sections appear together with their own recorded entries and counts."
+				"description": "The markup of one ex-relations container holding what show selects: Used In and Uses for 'both', just Used In or just Uses for 'used-in' or 'uses', and just the Models or APIs section for 'models' or 'apis'. Each section shows its count and its entries through ExplorerCatalogItems with verification off, the Uses section adds an Other group when there are support entries, and an empty section shows its no-relations message, or the removed-at-this-commit wording when removed is true."
 			}
 		],
 		"errors": [],
