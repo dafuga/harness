@@ -50,6 +50,7 @@ const reviewed = z
 	.array(z.string().uuid())
 	.max(256)
 	.parse(JSON.parse(process.env.HARNESS_VIDEO_REVIEWED_FLAGS ?? '[]'));
+const recording = { factories: 0, scripts: 0, contexts: 0 };
 const result = await new VideoCaptureService(context.repository).record({
 	snapshot: context.snapshot,
 	source: context.source,
@@ -62,8 +63,18 @@ const result = await new VideoCaptureService(context.repository).record({
 	...(process.env.HARNESS_VIDEO_RECORD_TASK === 'video-build-20261115'
 		? { recordingAuthorization: { task: 'video-build-20261115' } }
 		: {}),
-	browserFactory: () => chromium.launch({ headless: true }),
+	async browserFactory() {
+		recording.factories++;
+		const browser = await chromium.launch({ headless: true });
+		const createContext = browser.newContext.bind(browser);
+		browser.newContext = async (options) => {
+			recording.contexts++;
+			return createContext(options);
+		};
+		return browser;
+	},
 	async loadScript({ clip, viewport, pendingFlags }) {
+		recording.scripts++;
 		if (pendingFlags.some((flag) => !reviewed.includes(flag.id)))
 			throw Error(
 				'Review each pending frame flag and provide its explicit reviewed ID before recording.'
@@ -103,6 +114,8 @@ const result = await new VideoCaptureService(context.repository).record({
 console.log(
 	JSON.stringify({
 		source: result.source,
+		pinned: context.pinned,
+		recording,
 		recorded: result.recorded.length,
 		reused: result.reused.length,
 		clips: result.captures.length,
