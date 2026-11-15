@@ -709,7 +709,7 @@
 			},
 			{
 				"name": "otherOption",
-				"type": "unknown",
+				"type": "boolean",
 				"description": "Boolean indicating that the item has a nonempty option on the displayed version and that option differs from the one shown.",
 				"examples": [true, false]
 			},
@@ -1056,7 +1056,7 @@
 				"outputs": [
 					{
 						"name": "otherOption",
-						"type": "unknown",
+						"type": "boolean",
 						"description": "Boolean indicating that the item has a nonempty option on the displayed version and that option differs from the one shown.",
 						"examples": [true, false]
 					}

@@ -397,7 +397,7 @@
 			},
 			{
 				"name": "initializationEdits",
-				"type": "unknown",
+				"type": "{ start: number; end: number; text: string; }[]",
 				"description": "Ordered Edit objects that place the Begin call after any shebang and the Finish call at the end of the file, or an empty array when the module is not a data-only scope.",
 				"examples": [
 					[],
@@ -437,7 +437,7 @@
 			},
 			{
 				"name": "sourceProfilePlugin",
-				"type": "unknown",
+				"type": "{ name: string; enforce: \"pre\"; config(_config: unknown, environment: { mode: string; }): { test: { env: { HARNESS_RUNTIME_PROFILE_ROOT: string; HARNESS_RUNTIME_PROFILE_DIR: string; HARNESS_RUNTIME_PROFILE_CONTEXT: string; BUN_OPTIONS: string; }; setupFiles: string[]; }; } | undefined; transform(source: string, id: string): { code: string; map: null; } | null; }",
 				"description": "Vite plugin object for test-mode runs: its config hook assigns the profile environment to process.env, adds vitestSetup.ts and returns a test configuration, and its transform hook delegates to SourceProfileAdapter. The config hook returns nothing outside test mode or when no profile is selected."
 			},
 			{
@@ -514,7 +514,7 @@
 			},
 			{
 				"name": "profileEnvironment",
-				"type": "unknown",
+				"type": "{ HARNESS_RUNTIME_PROFILE_ROOT: string; HARNESS_RUNTIME_PROFILE_DIR: string; HARNESS_RUNTIME_PROFILE_CONTEXT: string; BUN_OPTIONS: string; }",
 				"description": "Environment object containing the canonical root, profile directory, runtime context (default standard-runner) and a single deduplicated --preload option for the bunPreload module.",
 				"examples": [
 					{
@@ -753,7 +753,7 @@
 				"outputs": [
 					{
 						"name": "initializationEdits",
-						"type": "unknown",
+						"type": "{ start: number; end: number; text: string; }[]",
 						"description": "Ordered Edit objects that place the Begin call after any shebang and the Finish call at the end of the file, or an empty array when the module is not a data-only scope.",
 						"examples": [
 							[],
@@ -922,7 +922,7 @@
 				"outputs": [
 					{
 						"name": "sourceProfilePlugin",
-						"type": "unknown",
+						"type": "{ name: string; enforce: \"pre\"; config(_config: unknown, environment: { mode: string; }): { test: { env: { HARNESS_RUNTIME_PROFILE_ROOT: string; HARNESS_RUNTIME_PROFILE_DIR: string; HARNESS_RUNTIME_PROFILE_CONTEXT: string; BUN_OPTIONS: string; }; setupFiles: string[]; }; } | undefined; transform(source: string, id: string): { code: string; map: null; } | null; }",
 						"description": "Vite plugin object for test-mode runs: its config hook assigns the profile environment to process.env, adds vitestSetup.ts and returns a test configuration, and its transform hook delegates to SourceProfileAdapter. The config hook returns nothing outside test mode or when no profile is selected."
 					}
 				],
@@ -1097,7 +1097,7 @@
 				"outputs": [
 					{
 						"name": "profileEnvironment",
-						"type": "unknown",
+						"type": "{ HARNESS_RUNTIME_PROFILE_ROOT: string; HARNESS_RUNTIME_PROFILE_DIR: string; HARNESS_RUNTIME_PROFILE_CONTEXT: string; BUN_OPTIONS: string; }",
 						"description": "Environment object containing the canonical root, profile directory, runtime context (default standard-runner) and a single deduplicated --preload option for the bunPreload module.",
 						"examples": [
 							{

@@ -27,7 +27,7 @@
 		"outputs": [
 			{
 				"name": "analyticsCpuClient",
-				"type": "unknown",
+				"type": "{ refresh: () => Promise<void>; stop: () => void; }",
 				"description": "The object returned by analyticsCpuClient, with refresh() and stop() members: refresh() fetches /api/analytics-cpu with cache 'no-store' and the client's abort signal, and resolves when that attempt finishes, returning at once without a request while a request is pending or after stop(); stop() clears the 5000 ms polling timer, aborts the in-flight request, and blocks later update calls. analyticsCpuClient starts one request immediately and then calls refresh every 5000 ms, skipping ticks while document.visibilityState is not 'visible', and refresh() rejects only if update throws while receiving null."
 			}
 		],
@@ -53,7 +53,7 @@
 				"outputs": [
 					{
 						"name": "analyticsCpuClient",
-						"type": "unknown",
+						"type": "{ refresh: () => Promise<void>; stop: () => void; }",
 						"description": "The object returned by analyticsCpuClient, with refresh() and stop() members: refresh() fetches /api/analytics-cpu with cache 'no-store' and the client's abort signal, and resolves when that attempt finishes, returning at once without a request while a request is pending or after stop(); stop() clears the 5000 ms polling timer, aborts the in-flight request, and blocks later update calls. analyticsCpuClient starts one request immediately and then calls refresh every 5000 ms, skipping ticks while document.visibilityState is not 'visible', and refresh() rejects only if update throws while receiving null."
 					}
 				],

@@ -28,7 +28,7 @@
 		"outputs": [
 			{
 				"name": "moduleTree",
-				"type": "unknown",
+				"type": "{ read: (path: string) => Promise<string>; list(): Promise<{ path: string; }[]>; }",
 				"description": "An object with read(path) and list() methods bound to root. read reads the path formed by join(root, path) as UTF-8; list returns {path} records for immediate directories under specification/modules whose module.json reads succeed, returns an empty list for a missing module directory, omits missing module files, and propagates other filesystem errors."
 			}
 		],
@@ -55,7 +55,7 @@
 				"outputs": [
 					{
 						"name": "moduleTree",
-						"type": "unknown",
+						"type": "{ read: (path: string) => Promise<string>; list(): Promise<{ path: string; }[]>; }",
 						"description": "An object with read(path) and list() methods bound to root. read reads the path formed by join(root, path) as UTF-8; list returns {path} records for immediate directories under specification/modules whose module.json reads succeed, returns an empty list for a missing module directory, omits missing module files, and propagates other filesystem errors."
 					}
 				],

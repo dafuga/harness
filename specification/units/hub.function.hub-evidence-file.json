@@ -56,7 +56,7 @@
 			},
 			{
 				"name": "hubEvidenceFile",
-				"type": "unknown",
+				"type": "Promise<Checked>",
 				"description": "Returns a problem when the file is missing or its stored LFS pointer does not match the declaration. Otherwise returns the bytes and problems, with a frozen fact containing the Git blob SHA only when the bytes match the declared size and SHA-256.",
 				"examples": [
 					{
@@ -119,7 +119,7 @@
 				"outputs": [
 					{
 						"name": "hubEvidenceFile",
-						"type": "unknown",
+						"type": "Promise<Checked>",
 						"description": "Returns a problem when the file is missing or its stored LFS pointer does not match the declaration. Otherwise returns the bytes and problems, with a frozen fact containing the Git blob SHA only when the bytes match the declared size and SHA-256.",
 						"examples": [
 							{

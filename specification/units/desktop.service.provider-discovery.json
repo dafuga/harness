@@ -52,7 +52,7 @@
 		"outputs": [
 			{
 				"name": "ProviderDiscoveryService.list",
-				"type": "unknown",
+				"type": "Promise<import(\"../../../models/development-tooling/Desktop.types\").ProviderState[]>",
 				"description": "Resolves to an array of each configured runner's ProviderState, in the order returned by Object.values(this.runners). The array length follows the configured record, and any rejected discover() call rejects the list operation.",
 				"examples": [
 					[
@@ -79,7 +79,7 @@
 			},
 			{
 				"name": "ProviderDiscoveryService.select",
-				"type": "unknown",
+				"type": "Promise<AgentRunner>",
 				"description": "Returns the stored AgentRunner for the selected provider after discover() reports it available and validateModel accepts the model and effort. The value is a runner instance, not the discovered state."
 			}
 		],
@@ -98,7 +98,7 @@
 				"outputs": [
 					{
 						"name": "ProviderDiscoveryService.list",
-						"type": "unknown",
+						"type": "Promise<import(\"../../../models/development-tooling/Desktop.types\").ProviderState[]>",
 						"description": "Resolves to an array of each configured runner's ProviderState, in the order returned by Object.values(this.runners). The array length follows the configured record, and any rejected discover() call rejects the list operation.",
 						"examples": [
 							[
@@ -161,7 +161,7 @@
 				"outputs": [
 					{
 						"name": "ProviderDiscoveryService.select",
-						"type": "unknown",
+						"type": "Promise<AgentRunner>",
 						"description": "Returns the stored AgentRunner for the selected provider after discover() reports it available and validateModel accepts the model and effort. The value is a runner instance, not the discovered state."
 					}
 				],

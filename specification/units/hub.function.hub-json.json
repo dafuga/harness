@@ -76,7 +76,7 @@
 			},
 			{
 				"name": "hubContractHash",
-				"type": "unknown",
+				"type": "Promise<string>",
 				"description": "A Promise resolving to the lowercase 64-character hexadecimal SHA-256 digest of canonicalJson(value). Serialization behavior and accepted values follow canonicalJson.",
 				"examples": ["44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"]
 			},
@@ -87,7 +87,7 @@
 			},
 			{
 				"name": "hubFile",
-				"type": "unknown",
+				"type": "string",
 				"description": "The original filename string when the value passes the filename rule. Invalid names throw Error with code invalid-path.",
 				"examples": ["artifact.json", "report_2026-11.txt"]
 			}
@@ -201,7 +201,7 @@
 				"outputs": [
 					{
 						"name": "hubContractHash",
-						"type": "unknown",
+						"type": "Promise<string>",
 						"description": "A Promise resolving to the lowercase 64-character hexadecimal SHA-256 digest of canonicalJson(value). Serialization behavior and accepted values follow canonicalJson.",
 						"examples": ["44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"]
 					}
@@ -257,7 +257,7 @@
 				"outputs": [
 					{
 						"name": "hubFile",
-						"type": "unknown",
+						"type": "string",
 						"description": "The original filename string when the value passes the filename rule. Invalid names throw Error with code invalid-path.",
 						"examples": ["artifact.json", "report_2026-11.txt"]
 					}

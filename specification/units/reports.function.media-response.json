@@ -47,7 +47,7 @@
 		"outputs": [
 			{
 				"name": "mediaResponse",
-				"type": "unknown",
+				"type": "Response",
 				"description": "Returns a Fetch Response with Content-Type, X-Content-Type-Options: nosniff, Cache-Control: no-store, Content-Disposition, and Accept-Ranges: bytes headers. A falsy range yields status 200 with all bytes and Content-Length; a valid single range yields status 206 with the selected bytes, Content-Range, and selected-byte Content-Length, while a malformed or unsatisfiable nonempty range yields status 416, a null body, and Content-Range: bytes */<total-size>."
 			}
 		],
@@ -96,7 +96,7 @@
 				"outputs": [
 					{
 						"name": "mediaResponse",
-						"type": "unknown",
+						"type": "Response",
 						"description": "Returns a Fetch Response with Content-Type, X-Content-Type-Options: nosniff, Cache-Control: no-store, Content-Disposition, and Accept-Ranges: bytes headers. A falsy range yields status 200 with all bytes and Content-Length; a valid single range yields status 206 with the selected bytes, Content-Range, and selected-byte Content-Length, while a malformed or unsatisfiable nonempty range yields status 416, a null body, and Content-Range: bytes */<total-size>."
 					}
 				],

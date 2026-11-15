@@ -17,7 +17,7 @@
 		"outputs": [
 			{
 				"name": "gameRenderOptions",
-				"type": "unknown",
+				"type": "{ readonly restyle: { readonly label: \"Lucy Restyle\"; readonly model: \"lucy-restyle-2\"; readonly fast: false; readonly rate: 0.6; }; readonly lucy: { readonly label: \"Lucy 2.5\"; readonly model: \"lucy-2.5\"; readonly fast: false; readonly rate: 1.2; }; readonly fast: { readonly label: \"Lucy 2.5 Fast\"; readonly model: \"lucy-2.5\"; readonly fast: true; readonly rate: 2.4; }; }",
 				"description": "This is the fixed object returned whenever gameRenderOptions is called, with restyle, lucy, and fast entries; each entry has label, model, fast, and rate fields. It matters when a caller invokes this function to obtain its supported options, and the function defines exactly these three entries.",
 				"examples": [
 					{
@@ -52,7 +52,7 @@
 				"outputs": [
 					{
 						"name": "gameRenderOptions",
-						"type": "unknown",
+						"type": "{ readonly restyle: { readonly label: \"Lucy Restyle\"; readonly model: \"lucy-restyle-2\"; readonly fast: false; readonly rate: 0.6; }; readonly lucy: { readonly label: \"Lucy 2.5\"; readonly model: \"lucy-2.5\"; readonly fast: false; readonly rate: 1.2; }; readonly fast: { readonly label: \"Lucy 2.5 Fast\"; readonly model: \"lucy-2.5\"; readonly fast: true; readonly rate: 2.4; }; }",
 						"description": "This is the fixed object returned whenever gameRenderOptions is called, with restyle, lucy, and fast entries; each entry has label, model, fast, and rate fields. It matters when a caller invokes this function to obtain its supported options, and the function defines exactly these three entries.",
 						"examples": [
 							{

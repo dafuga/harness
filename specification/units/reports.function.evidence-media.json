@@ -59,7 +59,7 @@
 		"outputs": [
 			{
 				"name": "mediaMime",
-				"type": "unknown",
+				"type": "string",
 				"description": "MIME type for each evidence file, taken from its final extension and matched case-insensitively against .png, .jpg, .jpeg, .webp, .wav, .mp3, .m4a, .ogg, .mp4, .pdf, .zip and .html; it is passed to the evidence store on upload and to the media response when a file is served. Any other extension, or none, gives application/octet-stream.",
 				"examples": ["audio/mpeg", "audio/mp4", "image/png"]
 			},
@@ -131,7 +131,7 @@
 				"outputs": [
 					{
 						"name": "mediaMime",
-						"type": "unknown",
+						"type": "string",
 						"description": "MIME type for each evidence file, taken from its final extension and matched case-insensitively against .png, .jpg, .jpeg, .webp, .wav, .mp3, .m4a, .ogg, .mp4, .pdf, .zip and .html; it is passed to the evidence store on upload and to the media response when a file is served. Any other extension, or none, gives application/octet-stream.",
 						"examples": ["audio/mpeg", "audio/mp4", "image/png"]
 					}

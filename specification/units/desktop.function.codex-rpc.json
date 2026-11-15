@@ -49,7 +49,7 @@
 		"outputs": [
 			{
 				"name": "codexRpc",
-				"type": "unknown",
+				"type": "Promise<{ send: (value: unknown) => void; request: <T = unknown>(method: string, params?: unknown, timeoutMs?: number) => Promise<T>; dispose: () => void; subscribe: (listener: (event: RpcEvent) => void) => () => boolean; }>",
 				"description": "A promise that resolves to an initialized connection with send, request, subscribe and dispose, after the initialize request succeeds and the initialized notification is sent. request assigns incrementing numeric ids and has a 30000 ms default timeout, subscribe returns an unsubscribe function, and dispose kills the owned process, ends stdin and rejects pending requests."
 			}
 		],
@@ -130,7 +130,7 @@
 				"outputs": [
 					{
 						"name": "codexRpc",
-						"type": "unknown",
+						"type": "Promise<{ send: (value: unknown) => void; request: <T = unknown>(method: string, params?: unknown, timeoutMs?: number) => Promise<T>; dispose: () => void; subscribe: (listener: (event: RpcEvent) => void) => () => boolean; }>",
 						"description": "A promise that resolves to an initialized connection with send, request, subscribe and dispose, after the initialize request succeeds and the initialized notification is sent. request assigns incrementing numeric ids and has a 30000 ms default timeout, subscribe returns an unsubscribe function, and dispose kills the owned process, ends stdin and rejects pending requests."
 					}
 				],

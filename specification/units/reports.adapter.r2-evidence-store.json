@@ -186,7 +186,7 @@
 		"outputs": [
 			{
 				"name": "evidenceObjectKey",
-				"type": "unknown",
+				"type": "string",
 				"description": "The R2 object key for an evidence file, built as report-evidence/runs/{reportId}/assets/{file} from the checked reportId and file.",
 				"examples": [
 					"report-evidence/runs/5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a/assets/2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.png",
@@ -195,7 +195,7 @@
 			},
 			{
 				"name": "replayObjectKey",
-				"type": "unknown",
+				"type": "string",
 				"description": "The R2 object key for a replay file, built as report-evidence/runs/{reportId}/replays/{file} from the checked reportId and file.",
 				"examples": [
 					"report-evidence/runs/5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a/replays/ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad.mp4",
@@ -204,27 +204,27 @@
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.fromEnvironment",
-				"type": "unknown",
+				"type": "R2EvidenceStoreAdapter | undefined",
 				"description": "A new R2EvidenceStoreAdapter built from the R2 settings, or undefined when r2EvidenceConfig returns undefined, which happens only inside an isolated test store (PROJECT_REPORTS_HOME under tmpdir(), /tmp or /private/tmp) when PROJECT_REPORTS_ASSET_STORAGE is local or all four R2 settings are empty."
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.put",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "Resolves with no value after the PutObject call succeeds; it rejects instead when the key check or the S3 call fails."
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.get",
-				"type": "unknown",
+				"type": "Promise<Buffer<ArrayBuffer>>",
 				"description": "Resolves with the object's bytes as a Buffer copied from the response body; it rejects when the key check fails, the S3 call fails, or the response has no Body."
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.putReplay",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "Resolves with no value after the PutObject call succeeds with ContentType video/mp4; it rejects instead when the key check or the S3 call fails."
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.getReplay",
-				"type": "unknown",
+				"type": "Promise<Buffer<ArrayBuffer>>",
 				"description": "Resolves with the replay bytes as a Buffer copied from the response body; it rejects when the key check fails, the S3 call fails, or the response has no Body."
 			}
 		],
@@ -310,7 +310,7 @@
 				"outputs": [
 					{
 						"name": "evidenceObjectKey",
-						"type": "unknown",
+						"type": "string",
 						"description": "The R2 object key for an evidence file, built as report-evidence/runs/{reportId}/assets/{file} from the checked reportId and file.",
 						"examples": [
 							"report-evidence/runs/5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a/assets/2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.png",
@@ -359,7 +359,7 @@
 				"outputs": [
 					{
 						"name": "replayObjectKey",
-						"type": "unknown",
+						"type": "string",
 						"description": "The R2 object key for a replay file, built as report-evidence/runs/{reportId}/replays/{file} from the checked reportId and file.",
 						"examples": [
 							"report-evidence/runs/5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a/replays/ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad.mp4",
@@ -387,7 +387,7 @@
 				"outputs": [
 					{
 						"name": "R2EvidenceStoreAdapter.fromEnvironment",
-						"type": "unknown",
+						"type": "R2EvidenceStoreAdapter | undefined",
 						"description": "A new R2EvidenceStoreAdapter built from the R2 settings, or undefined when r2EvidenceConfig returns undefined, which happens only inside an isolated test store (PROJECT_REPORTS_HOME under tmpdir(), /tmp or /private/tmp) when PROJECT_REPORTS_ASSET_STORAGE is local or all four R2 settings are empty."
 					}
 				],
@@ -456,7 +456,7 @@
 				"outputs": [
 					{
 						"name": "R2EvidenceStoreAdapter.put",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Resolves with no value after the PutObject call succeeds; it rejects instead when the key check or the S3 call fails."
 					}
 				],
@@ -507,7 +507,7 @@
 				"outputs": [
 					{
 						"name": "R2EvidenceStoreAdapter.get",
-						"type": "unknown",
+						"type": "Promise<Buffer<ArrayBuffer>>",
 						"description": "Resolves with the object's bytes as a Buffer copied from the response body; it rejects when the key check fails, the S3 call fails, or the response has no Body."
 					}
 				],
@@ -568,7 +568,7 @@
 				"outputs": [
 					{
 						"name": "R2EvidenceStoreAdapter.putReplay",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Resolves with no value after the PutObject call succeeds with ContentType video/mp4; it rejects instead when the key check or the S3 call fails."
 					}
 				],
@@ -618,7 +618,7 @@
 				"outputs": [
 					{
 						"name": "R2EvidenceStoreAdapter.getReplay",
-						"type": "unknown",
+						"type": "Promise<Buffer<ArrayBuffer>>",
 						"description": "Resolves with the replay bytes as a Buffer copied from the response body; it rejects when the key check fails, the S3 call fails, or the response has no Body."
 					}
 				],

@@ -63,7 +63,7 @@
 			},
 			{
 				"name": "reportRetention",
-				"type": "unknown",
+				"type": "boolean",
 				"description": "True once the start instant plus reportLifetimeMs is at or before now, meaning the report has reached its retention lifetime; false while the expiry instant is still after now. Invalid inputs make the call throw an Error instead of returning a value.",
 				"examples": [true, false]
 			}
@@ -105,7 +105,7 @@
 				"outputs": [
 					{
 						"name": "reportRetention",
-						"type": "unknown",
+						"type": "boolean",
 						"description": "True once the start instant plus reportLifetimeMs is at or before now, meaning the report has reached its retention lifetime; false while the expiry instant is still after now. Invalid inputs make the call throw an Error instead of returning a value.",
 						"examples": [true, false]
 					}

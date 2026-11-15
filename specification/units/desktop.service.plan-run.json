@@ -26,7 +26,7 @@
 		"outputs": [
 			{
 				"name": "PlanRunService.run",
-				"type": "unknown",
+				"type": "Promise<string>",
 				"description": "The string run resolves to: the result of planDesign after it has saved the design and appended the agent's message, 'Saved <version> for review.', where <version> is 'v' followed by the plan's existing design count plus one, zero-padded to at least three digits. The design is saved for review only and is not approved, and DesktopRunService reports this string as the summary of the finished run.",
 				"examples": ["Saved v001 for review.", "Saved v002 for review.", "Saved v013 for review."]
 			}
@@ -58,7 +58,7 @@
 				"outputs": [
 					{
 						"name": "PlanRunService.run",
-						"type": "unknown",
+						"type": "Promise<string>",
 						"description": "The string run resolves to: the result of planDesign after it has saved the design and appended the agent's message, 'Saved <version> for review.', where <version> is 'v' followed by the plan's existing design count plus one, zero-padded to at least three digits. The design is saved for review only and is not approved, and DesktopRunService reports this string as the summary of the finished run.",
 						"examples": [
 							"Saved v001 for review.",

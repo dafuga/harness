@@ -34,7 +34,7 @@
 		"outputs": [
 			{
 				"name": "remoteFixtureControl",
-				"type": "unknown",
+				"type": "Promise<{ origin: string; close: () => Promise<void>; }>",
 				"description": "This is the handle resolved after the listener binds, with `origin` set to its loopback URL and `close` providing asynchronous shutdown. The close callback closes all active connections first and resolves after `server.close` completes."
 			}
 		],
@@ -67,7 +67,7 @@
 				"outputs": [
 					{
 						"name": "remoteFixtureControl",
-						"type": "unknown",
+						"type": "Promise<{ origin: string; close: () => Promise<void>; }>",
 						"description": "This is the handle resolved after the listener binds, with `origin` set to its loopback URL and `close` providing asynchronous shutdown. The close callback closes all active connections first and resolves after `server.close` completes."
 					}
 				],

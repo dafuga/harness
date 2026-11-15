@@ -111,7 +111,7 @@
 		"outputs": [
 			{
 				"name": "browserArtifact",
-				"type": "unknown",
+				"type": "Promise<import(\"../../../models/verification-evidence/DesktopEvidence.types\").EvidenceArtifactResult>",
 				"description": "The value resolved by hostedArtifact after it accepts the supplied media and digest. This adapter does not declare the returned value's concrete shape."
 			}
 		],
@@ -221,7 +221,7 @@
 				"outputs": [
 					{
 						"name": "browserArtifact",
-						"type": "unknown",
+						"type": "Promise<import(\"../../../models/verification-evidence/DesktopEvidence.types\").EvidenceArtifactResult>",
 						"description": "The value resolved by hostedArtifact after it accepts the supplied media and digest. This adapter does not declare the returned value's concrete shape."
 					}
 				],

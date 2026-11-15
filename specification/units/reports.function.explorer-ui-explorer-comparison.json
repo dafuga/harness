@@ -202,7 +202,7 @@
 		"outputs": [
 			{
 				"name": "covering",
-				"type": "unknown",
+				"type": "HarnessScenario[]",
 				"description": "The scenarios that cover the unit, with each scenario’s states selected by scenarioFor using the revision’s units. The result is empty for a null revision or when no scenario covers the unit.",
 				"examples": [
 					[],
@@ -362,7 +362,7 @@
 				"outputs": [
 					{
 						"name": "covering",
-						"type": "unknown",
+						"type": "HarnessScenario[]",
 						"description": "The scenarios that cover the unit, with each scenario’s states selected by scenarioFor using the revision’s units. The result is empty for a null revision or when no scenario covers the unit.",
 						"examples": [
 							[],

@@ -26,7 +26,7 @@
 		"outputs": [
 			{
 				"name": "ChangeRunService.run",
-				"type": "unknown",
+				"type": "Promise<string>",
 				"description": "The value run resolves with, a string: the message promoteChange returns, reached only when changeExecute did not fail and recordChange resolved. With no environment requested the message says that code changes were recorded and verification is still required; with an environment it says the change was verified and committed and names the last environment its deployments are queued through.",
 				"examples": [
 					"Code changes recorded. Verification is still required.",
@@ -82,7 +82,7 @@
 				"outputs": [
 					{
 						"name": "ChangeRunService.run",
-						"type": "unknown",
+						"type": "Promise<string>",
 						"description": "The value run resolves with, a string: the message promoteChange returns, reached only when changeExecute did not fail and recordChange resolved. With no environment requested the message says that code changes were recorded and verification is still required; with an environment it says the change was verified and committed and names the last environment its deployments are queued through.",
 						"examples": [
 							"Code changes recorded. Verification is still required.",

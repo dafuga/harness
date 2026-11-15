@@ -109,7 +109,7 @@
 			},
 			{
 				"name": "budgetMeasure",
-				"type": "unknown",
+				"type": "Promise<{ partial?: string | undefined; unavailable?: string | undefined; value: number | null; unitOfMeasure: string; target?: \"process\" | \"http\" | \"wasm\" | \"module\" | undefined; unit: string; metric: string; }[]>",
 				"description": "Returns measurement rows for active manifests, optionally restricted to one exact manifest id. Rows include unit, metric, value, and unitOfMeasure, with target, unavailable, and partial only when present.",
 				"examples": [[]]
 			},
@@ -121,7 +121,7 @@
 			},
 			{
 				"name": "budgetStatus",
-				"type": "unknown",
+				"type": "Promise<{ baselined: number; inherited: string[]; unbaselined: string[]; unmeasured: { unit: string; metric: string; reason: string; }[]; }>",
 				"description": "Returns active-unit counts and lists for baselined, inherited, unbaselined, and unmeasured units. Each unmeasured entry contains unit, metric, and reason.",
 				"examples": [
 					{
@@ -205,7 +205,7 @@
 				"outputs": [
 					{
 						"name": "budgetMeasure",
-						"type": "unknown",
+						"type": "Promise<{ partial?: string | undefined; unavailable?: string | undefined; value: number | null; unitOfMeasure: string; target?: \"process\" | \"http\" | \"wasm\" | \"module\" | undefined; unit: string; metric: string; }[]>",
 						"description": "Returns measurement rows for active manifests, optionally restricted to one exact manifest id. Rows include unit, metric, value, and unitOfMeasure, with target, unavailable, and partial only when present.",
 						"examples": [[]]
 					}
@@ -263,7 +263,7 @@
 				"outputs": [
 					{
 						"name": "budgetStatus",
-						"type": "unknown",
+						"type": "Promise<{ baselined: number; inherited: string[]; unbaselined: string[]; unmeasured: { unit: string; metric: string; reason: string; }[]; }>",
 						"description": "Returns active-unit counts and lists for baselined, inherited, unbaselined, and unmeasured units. Each unmeasured entry contains unit, metric, and reason.",
 						"examples": [
 							{

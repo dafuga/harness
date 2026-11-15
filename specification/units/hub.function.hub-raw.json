@@ -94,7 +94,7 @@
 			},
 			{
 				"name": "hubMaterializedHash",
-				"type": "unknown",
+				"type": "Promise<{ hash: string; size: number; lfs: boolean; }>",
 				"description": "Resolved object with hash, size and lfs: for ordinary bytes, hash is the lowercase SHA-256 of the bytes, size is their length and lfs is false; for a Git LFS pointer, hash is its oid, size is its declared size and lfs is true. A pointer must match the exact v1 three-line format, with an optional final newline, and declare a size that is a safe integer no greater than 50000000; no LFS content is fetched.",
 				"examples": [
 					{
@@ -116,7 +116,7 @@
 			},
 			{
 				"name": "hubBlobProfile",
-				"type": "unknown",
+				"type": "Promise<string>",
 				"description": "Resolved string kind:sha256(path):sha built from the three inputs, where the middle part is the lowercase hex SHA-256 of the UTF-8 path and kind and sha are copied unchanged.",
 				"examples": [
 					"raw:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08:3b18e512dba79e4c8300dd08aeb37f8e728b8dad",
@@ -204,7 +204,7 @@
 				"outputs": [
 					{
 						"name": "hubMaterializedHash",
-						"type": "unknown",
+						"type": "Promise<{ hash: string; size: number; lfs: boolean; }>",
 						"description": "Resolved object with hash, size and lfs: for ordinary bytes, hash is the lowercase SHA-256 of the bytes, size is their length and lfs is false; for a Git LFS pointer, hash is its oid, size is its declared size and lfs is true. A pointer must match the exact v1 three-line format, with an optional final newline, and declare a size that is a safe integer no greater than 50000000; no LFS content is fetched.",
 						"examples": [
 							{
@@ -268,7 +268,7 @@
 				"outputs": [
 					{
 						"name": "hubBlobProfile",
-						"type": "unknown",
+						"type": "Promise<string>",
 						"description": "Resolved string kind:sha256(path):sha built from the three inputs, where the middle part is the lowercase hex SHA-256 of the UTF-8 path and kind and sha are copied unchanged.",
 						"examples": [
 							"raw:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08:3b18e512dba79e4c8300dd08aeb37f8e728b8dad",

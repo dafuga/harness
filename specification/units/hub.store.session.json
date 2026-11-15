@@ -27,7 +27,7 @@
 		"outputs": [
 			{
 				"name": "createSessionStore",
-				"type": "unknown",
+				"type": "SessionState",
 				"description": "The SessionState instance the factory creates, which is the type exported as Session: it holds status (starts as null), error (starts as an empty string) and busy (starts as false), plus its methods to read, challenge and change the session. Each call creates a new instance."
 			}
 		],
@@ -53,7 +53,7 @@
 				"outputs": [
 					{
 						"name": "createSessionStore",
-						"type": "unknown",
+						"type": "SessionState",
 						"description": "The SessionState instance the factory creates, which is the type exported as Session: it holds status (starts as null), error (starts as an empty string) and busy (starts as false), plus its methods to read, challenge and change the session. Each call creates a new instance."
 					}
 				],
