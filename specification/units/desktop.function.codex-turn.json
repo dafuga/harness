@@ -29,40 +29,55 @@
 				"name": "codexTurn.command",
 				"type": "CliCommand",
 				"required": true,
-				"description": "The executable and arguments for the Codex app-server connection."
+				"description": "The executable command and argument list used to start the Codex app-server connection.",
+				"examples": [
+					{
+						"command": "codex",
+						"args": ["app-server"]
+					}
+				]
 			},
 			{
 				"name": "codexTurn.turn",
 				"type": "TurnOptions",
 				"required": true,
-				"description": "The requested model, effort, working directory, prompt, access mode, signal and callbacks, plus an optional local reference image. Write access requests danger-full-access; read-only access requests the read-only sandbox. The thread uses OpenAI, never asks for approval, enables image generation and is ephemeral."
+				"description": "A TurnOptions request supplies the model, effort, working directory, prompt, access mode, abort signal and callbacks for one ephemeral OpenAI turn. Read-only access selects the read-only sandbox and write access selects danger-full-access; a truthy reference is added as a local image, callbacks receive nonempty agent text, image-generation status and file-change paths, and the declared image flag is unused."
 			},
 			{
 				"name": "codexTurn.queue",
 				"type": "ResourceQueueService",
 				"required": false,
-				"description": "Optional resource queue admitting the provider process; omitted to use the normal managed turn queue."
+				"default": "undefined",
+				"description": "An optional ResourceQueueService passed to managedAgentTurn for this request; if omitted, this function passes no explicit queue."
 			}
 		],
 		"outputs": [
 			{
 				"name": "codexTurn",
 				"type": "Promise<TurnResult>",
-				"description": "A promise for completed public message text joined with newlines, the selected model and image-generation result items. Public text, image status and reported file changes are forwarded to callbacks. The connection is disposed after success or failure."
+				"description": "The promise resolves with joined nonempty agent-message text, the model reported for the started thread, and image-generation items. Nonempty text, image-generation status and file-change paths are forwarded to callbacks, and the RPC connection is disposed when the turn finishes.",
+				"examples": [
+					{
+						"text": "Updated the README.",
+						"model": "gpt-6-luna",
+						"images": []
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects a different model or provider, startup/request failures, a non-retrying server error, an unsuccessful terminal status or a turn taking more than fifteen minutes."
+				"description": "Rejects when RPC startup or a request fails, the started model or provider does not match the request, a non-retrying server error arrives, the terminal turn status is not completed, or the turn exceeds fifteen minutes."
 			},
 			{
 				"name": "RunCancelled",
 				"type": "thrown",
-				"description": "Rejects when already cancelled or when cancellation is observed during the turn. Attempts to interrupt an active turn before closing its connection."
+				"description": "Rejects when the abort signal is set after RPC startup or fires during the turn; during an active turn the adapter attempts a best-effort interrupt before rejecting."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "codexTurn",
@@ -71,30 +86,55 @@
 						"name": "codexTurn.command",
 						"type": "CliCommand",
 						"required": true,
-						"description": "The executable and arguments for the Codex app-server connection."
+						"description": "The executable command and argument list used to start the Codex app-server connection.",
+						"examples": [
+							{
+								"command": "codex",
+								"args": ["app-server"]
+							}
+						]
 					},
 					{
 						"name": "codexTurn.turn",
 						"type": "TurnOptions",
 						"required": true,
-						"description": "The requested model, effort, working directory, prompt, access mode, signal and callbacks, plus an optional local reference image. Write access requests danger-full-access; read-only access requests the read-only sandbox. The thread uses OpenAI, never asks for approval, enables image generation and is ephemeral."
+						"description": "A TurnOptions request supplies the model, effort, working directory, prompt, access mode, abort signal and callbacks for one ephemeral OpenAI turn. Read-only access selects the read-only sandbox and write access selects danger-full-access; a truthy reference is added as a local image, callbacks receive nonempty agent text, image-generation status and file-change paths, and the declared image flag is unused."
 					},
 					{
 						"name": "codexTurn.queue",
 						"type": "ResourceQueueService",
 						"required": false,
-						"description": "Optional resource queue admitting the provider process; omitted to use the normal managed turn queue."
+						"default": "undefined",
+						"description": "An optional ResourceQueueService passed to managedAgentTurn for this request; if omitted, this function passes no explicit queue."
 					}
 				],
 				"outputs": [
 					{
 						"name": "codexTurn",
 						"type": "Promise<TurnResult>",
-						"description": "A promise for completed public message text joined with newlines, the selected model and image-generation result items. Public text, image status and reported file changes are forwarded to callbacks. The connection is disposed after success or failure."
+						"description": "The promise resolves with joined nonempty agent-message text, the model reported for the started thread, and image-generation items. Nonempty text, image-generation status and file-change paths are forwarded to callbacks, and the RPC connection is disposed when the turn finishes.",
+						"examples": [
+							{
+								"text": "Updated the README.",
+								"model": "gpt-6-luna",
+								"images": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects when RPC startup or a request fails, the started model or provider does not match the request, a non-retrying server error arrives, the terminal turn status is not completed, or the turn exceeds fifteen minutes."
+					},
+					{
+						"name": "RunCancelled",
+						"type": "thrown",
+						"description": "Rejects when the abort signal is set after RPC startup or fires during the turn; during an active turn the adapter attempts a best-effort interrupt before rejecting."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
