@@ -36,28 +36,28 @@
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Bindable panel visibility; closing preserves the mounted conversation.",
+				"description": "The bindable flag controls whether the panel is visible. It defaults to false; after the first opening, closing hides the panel while keeping its contents mounted.",
 				"examples": [false]
 			},
 			{
 				"name": "FloatingChat.label",
 				"type": "string",
 				"required": true,
-				"description": "Accessible name of the round launcher.",
+				"description": "Sets the accessible name on the launcher button. The component uses the string as provided and does not validate or alter it.",
 				"examples": ["Work with agent"]
 			},
 			{
 				"name": "FloatingChat.panelLabel",
 				"type": "string",
 				"required": true,
-				"description": "Accessible name of the conversation panel.",
+				"description": "Sets the accessible name on the conversation panel when it is mounted. The component uses the string as provided and does not validate or alter it.",
 				"examples": ["Project agent"]
 			},
 			{
 				"name": "FloatingChat.title",
 				"type": "string",
 				"required": true,
-				"description": "Short heading at the top of the panel.",
+				"description": "Text shown as the panel heading whenever the panel is mounted. It is rendered as an h2 and is not used as the panel's accessible name.",
 				"examples": ["Project chat"]
 			},
 			{
@@ -65,7 +65,7 @@
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Current capability or connection explanation below the heading.",
+				"description": "Optional explanatory text below the title; an empty string omits both the paragraph and its aria-describedby reference. It defaults to an empty string.",
 				"examples": ["Ask a question, plan a design, or request a code change."]
 			},
 			{
@@ -73,38 +73,38 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional caller-styled navigation below the header, outside the scrolling conversation. Defaults to JavaScript undefined, with no navigation."
+				"description": "Optional Svelte snippet rendered between the header and scrolling conversation body. When omitted, it is undefined and nothing is rendered in that slot."
 			},
 			{
 				"name": "FloatingChat.follow",
 				"type": "boolean",
 				"required": false,
 				"default": true,
-				"description": "Whether opening and new content follow the conversation end; true by default. False keeps an activity view at its beginning."
+				"description": "Controls automatic scrolling and defaults to true. When true, opening reveals the end and content mutations do so only if the reader is within 32 pixels of the bottom; when false, opening starts at the top and mutations do not auto-scroll.",
+				"examples": [true, false]
 			},
 			{
 				"name": "FloatingChat.children",
 				"type": "Snippet",
 				"required": true,
-				"description": "Conversation and input rendered inside the panel as a Svelte snippet.",
-				"examples": ["{#snippet children()}<p>No messages yet.</p>{/snippet}"]
+				"description": "Required Svelte snippet rendered inside the scrollable conversation body. Its contents are supplied by the caller, and the component observes body mutations for its follow behavior."
 			}
 		],
 		"outputs": [
 			{
 				"name": "FloatingChat",
 				"type": "markup",
-				"description": "A fixed round launcher and an optional keyboard-accessible conversation panel.",
-				"examples": ["<button aria-expanded=\"false\" aria-label=\"Work with agent\">…</button>"]
+				"description": "Renders a fixed 54-pixel launcher and a floating conversation panel, which mounts on first open and is hidden after closing. The panel is at most 400 pixels wide and 620 pixels tall subject to viewport constraints; opening focuses an enabled visible textarea when present (otherwise the panel), Escape closes it for events inside the component, and closing returns focus to the launcher."
 			}
 		],
 		"errors": [
 			{
 				"name": "snippet error",
 				"type": "thrown",
-				"description": "Errors thrown by the caller-supplied children or navigation snippet propagate while it renders."
+				"description": "If the caller-provided children or navigation snippet throws while Svelte renders it, that error propagates; this component does not catch or transform it."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
