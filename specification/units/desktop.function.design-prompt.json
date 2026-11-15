@@ -18,23 +18,31 @@
 				"name": "designPrompt.context",
 				"type": "RunContext",
 				"required": true,
-				"description": "The entity title and requested thread identity. A matching thread supplies state, viewport and optional region; defaults are default state, desktop viewport and the whole image."
+				"description": "A RunContext used to read `entity.title`, find the `entity.threads` entry whose `id` equals `request.threadId`, and read its state, viewport, and region; the other context fields are not read by this helper. If no matching thread exists, state and viewport are `default` and `desktop`; a missing or falsy region becomes `whole image`, while a truthy region is serialized with `JSON.stringify`."
 			},
 			{
 				"name": "designPrompt.prompt",
 				"type": "string",
 				"required": true,
-				"description": "The proposal or feedback to append unchanged after the design instructions."
+				"description": "The caller's feedback text, appended verbatim after the helper's fixed instructions and context lines. It is not parsed or length-checked by this helper.",
+				"examples": [
+					"Add a compact loading state.",
+					"Keep the primary action visible at narrow widths."
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "designPrompt",
 				"type": "string",
-				"description": "A prompt describing the navy-and-gold Harness interface, control placement, entity, state and viewport. When a reference image is attached by the caller, it asks for revisions focused on the thread’s region while preserving other design decisions. The helper generates text only."
+				"description": "A text-only prompt with fixed Harness visual and control instructions, the entity title, selected thread state and viewport, a reference-image revision instruction focused on the serialized thread region or `whole image`, and the supplied feedback. Missing thread state and viewport fall back to `default` and `desktop`, region fallback applies when falsy, and this function does not generate or inspect an image.",
+				"examples": [
+					"Generate a realistic product design, matching the existing dark navy/gold Harness form factor. Top icon navbar: Pages, Shells, Components, Helpers, Configs, Services, Models. Branch/commit controls at the right. No Reports, no global Plan/App toggle. Model, CLI provider and Plan/Change controls belong inside the comment composer. Verification is only a check or X with tooltip. Source files only in Details → Source.\nEntity: Button. State: default. Viewport: desktop.\nIf a reference image is attached, revise it according to this feedback. Focus on normalized rectangle whole image; preserve the other design decisions.\nAdd a compact loading state."
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "designPrompt",
@@ -43,24 +51,31 @@
 						"name": "designPrompt.context",
 						"type": "RunContext",
 						"required": true,
-						"description": "The entity title and requested thread identity. A matching thread supplies state, viewport and optional region; defaults are default state, desktop viewport and the whole image."
+						"description": "A RunContext used to read `entity.title`, find the `entity.threads` entry whose `id` equals `request.threadId`, and read its state, viewport, and region; the other context fields are not read by this helper. If no matching thread exists, state and viewport are `default` and `desktop`; a missing or falsy region becomes `whole image`, while a truthy region is serialized with `JSON.stringify`."
 					},
 					{
 						"name": "designPrompt.prompt",
 						"type": "string",
 						"required": true,
-						"description": "The proposal or feedback to append unchanged after the design instructions."
+						"description": "The caller's feedback text, appended verbatim after the helper's fixed instructions and context lines. It is not parsed or length-checked by this helper.",
+						"examples": [
+							"Add a compact loading state.",
+							"Keep the primary action visible at narrow widths."
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "designPrompt",
 						"type": "string",
-						"description": "A prompt describing the navy-and-gold Harness interface, control placement, entity, state and viewport. When a reference image is attached by the caller, it asks for revisions focused on the thread’s region while preserving other design decisions. The helper generates text only."
+						"description": "A text-only prompt with fixed Harness visual and control instructions, the entity title, selected thread state and viewport, a reference-image revision instruction focused on the serialized thread region or `whole image`, and the supplied feedback. Missing thread state and viewport fall back to `default` and `desktop`, region fallback applies when falsy, and this function does not generate or inspect an image.",
+						"examples": [
+							"Generate a realistic product design, matching the existing dark navy/gold Harness form factor. Top icon navbar: Pages, Shells, Components, Helpers, Configs, Services, Models. Branch/commit controls at the right. No Reports, no global Plan/App toggle. Model, CLI provider and Plan/Change controls belong inside the comment composer. Verification is only a check or X with tooltip. Source files only in Details → Source.\nEntity: Button. State: default. Viewport: desktop.\nIf a reference image is attached, revise it according to this feedback. Focus on normalized rectangle whole image; preserve the other design decisions.\nAdd a compact loading state."
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
