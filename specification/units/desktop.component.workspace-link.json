@@ -22,50 +22,59 @@
 				"name": "WorkspaceLink.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "The selected project and the navigation action used when the link is opened here."
+				"description": "The Workspace whose navigate(to) opens the address after a primary-button click with no meta, control, shift or alt key held and whose default was not already prevented. navigate does nothing without a connected bridge and never rejects, since a failure of the latest navigation is stored in the workspace's error field."
 			},
 			{
 				"name": "WorkspaceLink.to",
 				"type": "string",
 				"required": true,
-				"description": "The destination address within the app. The hosting app adds its own address prefix."
+				"description": "A workspace address, as workspace.path or workspace.link builds it, starting with /harness or /projects/{id}/harness; an address that does not parse makes navigate record an error in the workspace's error field. The rendered href is the hosting app's base from $app/paths followed by this value, and navigate receives it unchanged.",
+				"examples": [
+					"/projects/local-5e0a9c3d7b1f4e8a2c6d9b0f3e7a1c5d8b2e6f9a0c4d7e1b3f5a8c2d6e9b0f14/harness/branch/main/components/reports.component.evidence-grid",
+					"/projects/3f1c9a7e-52b4-4d8e-9a0f-6c2b8e1d7a43/harness/branch/main/commit/9d2f4c1e7a3b8d05f6e2c4a1b9d7e3f5a8c2b6d0/pages",
+					"/projects/local-a14c7e2b9d0f5a83c6e1b4d7f2a9c0e5b8d3f6a1c4e7b2d9f0a5c8e3b6d1f4a7/harness/branch/main/components/reports.component.evidence-grid/evidence"
+				]
 			},
 			{
 				"name": "WorkspaceLink.class",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional appearance classes for the link."
+				"description": "The class attribute of the rendered hx-a element, as a space-separated list of class names. It defaults to an empty string, which adds no classes.",
+				"examples": ["brand", "breadcrumb", "outline gold"]
 			},
 			{
 				"name": "WorkspaceLink.label",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional screen-reader name when the visible content does not explain the action."
+				"description": "The accessible name passed as aria-label, meant for a link whose visible children do not say what it does. It is undefined when omitted.",
+				"examples": ["Open Evidence grid", "Show at commit 9d2f4c1"]
 			},
 			{
 				"name": "WorkspaceLink.title",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional short tooltip shown when the pointer rests over the link."
+				"description": "The value passed as the title attribute, which the browser shows as a tooltip on hover; it is meant as short hover text for an icon-only link. It is undefined when omitted.",
+				"examples": ["Open the Pages category", "Show the Components category", "Evidence grid"]
 			},
 			{
 				"name": "WorkspaceLink.children",
 				"type": "Snippet",
 				"required": true,
-				"description": "The visible text or icon inside the link."
+				"description": "The visible text or icon of the link, rendered directly inside the hx-a element with no wrapper added by this component."
 			}
 		],
 		"outputs": [
 			{
 				"name": "WorkspaceLink",
 				"type": "markup",
-				"description": "A navigation link. Ordinary clicks open here; modified clicks keep the browser’s usual behavior."
+				"description": "An hx-a element whose href is the app base plus to, carrying the class, title and aria-label values it was given. A plain primary-button click with no modifier key is prevented and passed to workspace.navigate; a modified, non-primary, or already prevented click keeps the browser's usual behavior."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
