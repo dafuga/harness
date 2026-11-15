@@ -35,74 +35,561 @@
 				"name": "hubRelationships.unit",
 				"type": "ComponentManifest",
 				"required": true,
-				"description": "Unit whose dependencies are shown."
+				"description": "Manifest whose id and dependencies anchor the relationship query; candidates with the same id are excluded.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "hub.function.hub-catalog",
+						"uid": "u_ibenikpzyj",
+						"kind": "function",
+						"title": "Build the hosted unit catalog",
+						"responsibility": "Combine committed unit manifests and plans into catalog entries and relationships.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": [
+								"packages/hub/src/routes/api/[...path]/hub-projection-service/hubCatalog.ts",
+								"packages/hub/src/utils/hub-catalog/hubCatalog.ts",
+								"packages/hub/src/utils/hubCatalog.ts",
+								"packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts"
+							],
+							"symbols": [
+								"hubRelationships",
+								"hubCatalog",
+								"hubAttestPlan",
+								"hubOwnedPaths",
+								"hubCatalog",
+								"hubAttestPlan",
+								"hubOwnedPaths",
+								"hubRelationships",
+								"hubCatalog",
+								"hubAttestPlan",
+								"hubOwnedPaths"
+							]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"errorStatus": "none-found"
+						},
+						"dependencies": [
+							{
+								"unit": "desktop.function.catalog-unit",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "desktop.function.category-of",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "desktop.model.desktop-types",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "function.unit-types",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "hub.function.hub-json",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "hub.function.hub-plans",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "hub.function.hub-records",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "hub.function.hub-schemas",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "hub.function.hub-source",
+								"via": "import",
+								"origin": "derived"
+							}
+						],
+						"runtime": {
+							"kind": "module",
+							"entry": "packages/hub/src/utils/hubCatalog.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/hub/src/utils/hubCatalog.ts"
+								}
+							]
+						},
+						"scenarios": ["hosted-catalog"],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "hubRelationships.units",
 				"type": "ComponentManifest[]",
 				"required": true,
-				"description": "Candidate unit manifests."
+				"description": "Candidate manifests compared with the unit's dependencies and each candidate's dependencies; only direct links are returned, in candidate order.",
+				"examples": [
+					[
+						{
+							"schemaVersion": 1,
+							"id": "hub.function.hub-catalog",
+							"uid": "u_ibenikpzyj",
+							"kind": "function",
+							"title": "Build the hosted unit catalog",
+							"responsibility": "Combine committed unit manifests and plans into catalog entries and relationships.",
+							"responsibilityOrigin": "declared",
+							"status": "active",
+							"owns": {
+								"source": [
+									"packages/hub/src/routes/api/[...path]/hub-projection-service/hubCatalog.ts",
+									"packages/hub/src/utils/hub-catalog/hubCatalog.ts",
+									"packages/hub/src/utils/hubCatalog.ts",
+									"packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts"
+								],
+								"symbols": [
+									"hubRelationships",
+									"hubCatalog",
+									"hubAttestPlan",
+									"hubOwnedPaths",
+									"hubCatalog",
+									"hubAttestPlan",
+									"hubOwnedPaths",
+									"hubRelationships",
+									"hubCatalog",
+									"hubAttestPlan",
+									"hubOwnedPaths"
+								]
+							},
+							"contract": {
+								"origin": "declared",
+								"inputs": [],
+								"outputs": [],
+								"errors": [],
+								"errorStatus": "none-found"
+							},
+							"dependencies": [
+								{
+									"unit": "desktop.function.catalog-unit",
+									"via": "import",
+									"origin": "derived"
+								},
+								{
+									"unit": "desktop.function.category-of",
+									"via": "import",
+									"origin": "derived"
+								},
+								{
+									"unit": "desktop.model.desktop-types",
+									"via": "import",
+									"origin": "derived"
+								},
+								{
+									"unit": "function.unit-types",
+									"via": "import",
+									"origin": "derived"
+								},
+								{
+									"unit": "hub.function.hub-json",
+									"via": "import",
+									"origin": "derived"
+								},
+								{
+									"unit": "hub.function.hub-plans",
+									"via": "import",
+									"origin": "derived"
+								},
+								{
+									"unit": "hub.function.hub-records",
+									"via": "import",
+									"origin": "derived"
+								},
+								{
+									"unit": "hub.function.hub-schemas",
+									"via": "import",
+									"origin": "derived"
+								},
+								{
+									"unit": "hub.function.hub-source",
+									"via": "import",
+									"origin": "derived"
+								}
+							],
+							"runtime": {
+								"kind": "module",
+								"entry": "packages/hub/src/utils/hubCatalog.ts",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/hub/src/utils/hubCatalog.ts"
+									}
+								]
+							},
+							"scenarios": ["hosted-catalog"],
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "hubRelationships.items",
 				"type": "CatalogEntity[]",
 				"required": true,
-				"description": "Catalog entries supplying related plan and verification status."
+				"description": "Catalog entries are matched by candidate id to supply plan presence and verification. A missing entry yields hasPlan false and verification unknown.",
+				"examples": [
+					[
+						{
+							"id": "reports.component.evidence-grid",
+							"category": "components",
+							"kind": "component",
+							"title": "Evidence grid",
+							"summary": "Grid of evidence items.",
+							"changed": false,
+							"planned": false,
+							"hasPlan": false,
+							"lifecycle": null,
+							"verification": "unknown",
+							"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+							"latestVersion": null,
+							"approvedVersion": null,
+							"threadCount": 0,
+							"thumbnail": null
+						}
+					]
+				]
 			},
 			{
 				"name": "hubCatalog.context",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+				"description": "A snapshot of one authorized repository commit, including its source adapter, tree entries, cache, and cache identity. The catalog reads manifests and plans from this snapshot and asks the adapter for changed paths; adapter and cache failures can reject the build."
 			},
 			{
 				"name": "hubAttestPlan.plan",
 				"type": "HubPlan",
 				"required": true,
-				"description": "Plan to attest against a registered unit or draft identity."
+				"description": "Validated planning record with unit id, category, slug, path, revision, and contract metadata. This check uses only its category, unitId, and slug.",
+				"examples": [
+					{
+						"unitId": "hub.function.hub-catalog",
+						"category": "function",
+						"slug": "hub-catalog",
+						"title": "Build the hosted unit catalog",
+						"goal": "Combine committed unit manifests and plans into catalog entries and relationships.",
+						"path": "src/functions/hub-catalog",
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+						"contract": {
+							"responsibility": "Describe the hosted catalog helper.",
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"states": [],
+							"viewports": []
+						},
+						"contractHash": "a460f46fcd290bc589b7ee9481695dcce579f97a1180ef84e5ce7ac59198c5bd"
+					}
+				]
 			},
 			{
 				"name": "hubAttestPlan.unit",
 				"type": "ComponentManifest | undefined",
 				"required": true,
-				"description": "Matching manifest, or undefined for an unregistered draft."
+				"description": "Matching registered manifest, or undefined for a draft plan. When present, only its kind is compared with plan.category.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "hub.function.hub-catalog",
+						"uid": "u_ibenikpzyj",
+						"kind": "function",
+						"title": "Build the hosted unit catalog",
+						"responsibility": "Combine committed unit manifests and plans into catalog entries and relationships.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": [
+								"packages/hub/src/routes/api/[...path]/hub-projection-service/hubCatalog.ts",
+								"packages/hub/src/utils/hub-catalog/hubCatalog.ts",
+								"packages/hub/src/utils/hubCatalog.ts",
+								"packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts"
+							],
+							"symbols": [
+								"hubRelationships",
+								"hubCatalog",
+								"hubAttestPlan",
+								"hubOwnedPaths",
+								"hubCatalog",
+								"hubAttestPlan",
+								"hubOwnedPaths",
+								"hubRelationships",
+								"hubCatalog",
+								"hubAttestPlan",
+								"hubOwnedPaths"
+							]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"errorStatus": "none-found"
+						},
+						"dependencies": [
+							{
+								"unit": "desktop.function.catalog-unit",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "desktop.function.category-of",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "desktop.model.desktop-types",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "function.unit-types",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "hub.function.hub-json",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "hub.function.hub-plans",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "hub.function.hub-records",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "hub.function.hub-schemas",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "hub.function.hub-source",
+								"via": "import",
+								"origin": "derived"
+							}
+						],
+						"runtime": {
+							"kind": "module",
+							"entry": "packages/hub/src/utils/hubCatalog.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/hub/src/utils/hubCatalog.ts"
+								}
+							]
+						},
+						"scenarios": ["hosted-catalog"],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "hubOwnedPaths.context",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+				"description": "Repository snapshot whose tree entries identify paths and blob types; this helper does not read blob contents. Its source adapter and cache are present but unused by this helper."
 			},
 			{
 				"name": "hubOwnedPaths.unit",
 				"type": "ComponentManifest",
 				"required": true,
-				"description": "Manifest declaring source paths."
+				"description": "Manifest whose owns.source roots select matching repository paths. Only blobs equal to or nested beneath a declared root are returned.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "hub.function.hub-catalog",
+						"uid": "u_ibenikpzyj",
+						"kind": "function",
+						"title": "Build the hosted unit catalog",
+						"responsibility": "Combine committed unit manifests and plans into catalog entries and relationships.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": [
+								"packages/hub/src/routes/api/[...path]/hub-projection-service/hubCatalog.ts",
+								"packages/hub/src/utils/hub-catalog/hubCatalog.ts",
+								"packages/hub/src/utils/hubCatalog.ts",
+								"packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts"
+							],
+							"symbols": [
+								"hubRelationships",
+								"hubCatalog",
+								"hubAttestPlan",
+								"hubOwnedPaths",
+								"hubCatalog",
+								"hubAttestPlan",
+								"hubOwnedPaths",
+								"hubRelationships",
+								"hubCatalog",
+								"hubAttestPlan",
+								"hubOwnedPaths"
+							]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"errorStatus": "none-found"
+						},
+						"dependencies": [
+							{
+								"unit": "desktop.function.catalog-unit",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "desktop.function.category-of",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "desktop.model.desktop-types",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "function.unit-types",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "hub.function.hub-json",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "hub.function.hub-plans",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "hub.function.hub-records",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "hub.function.hub-schemas",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "hub.function.hub-source",
+								"via": "import",
+								"origin": "derived"
+							}
+						],
+						"runtime": {
+							"kind": "module",
+							"entry": "packages/hub/src/utils/hubCatalog.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/hub/src/utils/hubCatalog.ts"
+								}
+							]
+						},
+						"scenarios": ["hosted-catalog"],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubCatalog",
 				"type": "unknown",
-				"description": "Combined title-sorted items, listed entries, units, plans and plan records, with changed paths reflected in catalog metadata."
+				"description": "Object containing title-sorted catalog items, listed entries, manifests, plans, and generated plan records. Listed entries also follow catalog rules that omit route loaders and functions without listed helper contracts.",
+				"examples": [
+					{
+						"items": [],
+						"listed": [],
+						"units": [],
+						"plans": [],
+						"records": []
+					}
+				]
 			},
 			{
 				"name": "hubAttestPlan",
 				"type": "unknown",
-				"description": "Returns nothing when kinds match, or when an unregistered plan uses category.slug; otherwise rejects as artifact-corrupt."
+				"description": "Returns undefined when a registered unit kind matches the plan category or an unregistered plan id equals category.slug. Otherwise it throws an artifact-corrupt error."
 			},
 			{
 				"name": "hubRelationships",
 				"type": "Relationship[]",
-				"description": "Related units with uses/used-by direction, category, plan presence and verification; a reciprocal dependency is shown as used-by."
+				"description": "Relationship rows for direct inbound or outbound dependency links, excluding the unit itself. Missing catalog matches yield hasPlan false and verification unknown.",
+				"examples": [
+					[
+						{
+							"id": "reports.component.evidence-grid",
+							"title": "Evidence grid",
+							"category": "components",
+							"direction": "used-by",
+							"hasPlan": false,
+							"verification": "unknown"
+						}
+					]
+				]
 			},
 			{
 				"name": "hubOwnedPaths",
 				"type": "unknown",
-				"description": "Blob paths equal to or beneath the unit’s declared source paths."
+				"description": "Repository-relative paths for blob entries equal to or nested beneath a declared source root, in source-tree order. Non-blob entries are omitted and duplicates are preserved.",
+				"examples": [
+					["packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts"]
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "hubAttestPlan throws an Error with code artifact-corrupt for a registered-kind or draft-id mismatch. hubCatalog also propagates hubFail errors for invalid or missing committed artifacts, including artifact-corrupt, not-found, and metadata-too-large, and may propagate collaborator failures unchanged."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubRelationships",
@@ -111,30 +598,271 @@
 						"name": "hubRelationships.unit",
 						"type": "ComponentManifest",
 						"required": true,
-						"description": "Unit whose dependencies are shown."
+						"description": "Manifest whose id and dependencies anchor the relationship query; candidates with the same id are excluded.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "hub.function.hub-catalog",
+								"uid": "u_ibenikpzyj",
+								"kind": "function",
+								"title": "Build the hosted unit catalog",
+								"responsibility": "Combine committed unit manifests and plans into catalog entries and relationships.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": [
+										"packages/hub/src/routes/api/[...path]/hub-projection-service/hubCatalog.ts",
+										"packages/hub/src/utils/hub-catalog/hubCatalog.ts",
+										"packages/hub/src/utils/hubCatalog.ts",
+										"packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts"
+									],
+									"symbols": [
+										"hubRelationships",
+										"hubCatalog",
+										"hubAttestPlan",
+										"hubOwnedPaths",
+										"hubCatalog",
+										"hubAttestPlan",
+										"hubOwnedPaths",
+										"hubRelationships",
+										"hubCatalog",
+										"hubAttestPlan",
+										"hubOwnedPaths"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"errorStatus": "none-found"
+								},
+								"dependencies": [
+									{
+										"unit": "desktop.function.catalog-unit",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "desktop.function.category-of",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "desktop.model.desktop-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.unit-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "hub.function.hub-json",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "hub.function.hub-plans",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "hub.function.hub-records",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "hub.function.hub-schemas",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "hub.function.hub-source",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "packages/hub/src/utils/hubCatalog.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/hub/src/utils/hubCatalog.ts"
+										}
+									]
+								},
+								"scenarios": ["hosted-catalog"],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					},
 					{
 						"name": "hubRelationships.units",
 						"type": "ComponentManifest[]",
 						"required": true,
-						"description": "Candidate unit manifests."
+						"description": "Candidate manifests compared with the unit's dependencies and each candidate's dependencies; only direct links are returned, in candidate order.",
+						"examples": [
+							[
+								{
+									"schemaVersion": 1,
+									"id": "hub.function.hub-catalog",
+									"uid": "u_ibenikpzyj",
+									"kind": "function",
+									"title": "Build the hosted unit catalog",
+									"responsibility": "Combine committed unit manifests and plans into catalog entries and relationships.",
+									"responsibilityOrigin": "declared",
+									"status": "active",
+									"owns": {
+										"source": [
+											"packages/hub/src/routes/api/[...path]/hub-projection-service/hubCatalog.ts",
+											"packages/hub/src/utils/hub-catalog/hubCatalog.ts",
+											"packages/hub/src/utils/hubCatalog.ts",
+											"packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts"
+										],
+										"symbols": [
+											"hubRelationships",
+											"hubCatalog",
+											"hubAttestPlan",
+											"hubOwnedPaths",
+											"hubCatalog",
+											"hubAttestPlan",
+											"hubOwnedPaths",
+											"hubRelationships",
+											"hubCatalog",
+											"hubAttestPlan",
+											"hubOwnedPaths"
+										]
+									},
+									"contract": {
+										"origin": "declared",
+										"inputs": [],
+										"outputs": [],
+										"errors": [],
+										"errorStatus": "none-found"
+									},
+									"dependencies": [
+										{
+											"unit": "desktop.function.catalog-unit",
+											"via": "import",
+											"origin": "derived"
+										},
+										{
+											"unit": "desktop.function.category-of",
+											"via": "import",
+											"origin": "derived"
+										},
+										{
+											"unit": "desktop.model.desktop-types",
+											"via": "import",
+											"origin": "derived"
+										},
+										{
+											"unit": "function.unit-types",
+											"via": "import",
+											"origin": "derived"
+										},
+										{
+											"unit": "hub.function.hub-json",
+											"via": "import",
+											"origin": "derived"
+										},
+										{
+											"unit": "hub.function.hub-plans",
+											"via": "import",
+											"origin": "derived"
+										},
+										{
+											"unit": "hub.function.hub-records",
+											"via": "import",
+											"origin": "derived"
+										},
+										{
+											"unit": "hub.function.hub-schemas",
+											"via": "import",
+											"origin": "derived"
+										},
+										{
+											"unit": "hub.function.hub-source",
+											"via": "import",
+											"origin": "derived"
+										}
+									],
+									"runtime": {
+										"kind": "module",
+										"entry": "packages/hub/src/utils/hubCatalog.ts",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/hub/src/utils/hubCatalog.ts"
+											}
+										]
+									},
+									"scenarios": ["hosted-catalog"],
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									}
+								}
+							]
+						]
 					},
 					{
 						"name": "hubRelationships.items",
 						"type": "CatalogEntity[]",
 						"required": true,
-						"description": "Catalog entries supplying related plan and verification status."
+						"description": "Catalog entries are matched by candidate id to supply plan presence and verification. A missing entry yields hasPlan false and verification unknown.",
+						"examples": [
+							[
+								{
+									"id": "reports.component.evidence-grid",
+									"category": "components",
+									"kind": "component",
+									"title": "Evidence grid",
+									"summary": "Grid of evidence items.",
+									"changed": false,
+									"planned": false,
+									"hasPlan": false,
+									"lifecycle": null,
+									"verification": "unknown",
+									"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+									"latestVersion": null,
+									"approvedVersion": null,
+									"threadCount": 0,
+									"thumbnail": null
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubRelationships",
 						"type": "Relationship[]",
-						"description": "Related units with uses/used-by direction, category, plan presence and verification; a reciprocal dependency is shown as used-by."
+						"description": "Relationship rows for direct inbound or outbound dependency links, excluding the unit itself. Missing catalog matches yield hasPlan false and verification unknown.",
+						"examples": [
+							[
+								{
+									"id": "reports.component.evidence-grid",
+									"title": "Evidence grid",
+									"category": "components",
+									"direction": "used-by",
+									"hasPlan": false,
+									"verification": "unknown"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubCatalog",
@@ -143,18 +871,33 @@
 						"name": "hubCatalog.context",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+						"description": "A snapshot of one authorized repository commit, including its source adapter, tree entries, cache, and cache identity. The catalog reads manifests and plans from this snapshot and asks the adapter for changed paths; adapter and cache failures can reject the build."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubCatalog",
 						"type": "unknown",
-						"description": "Combined title-sorted items, listed entries, units, plans and plan records, with changed paths reflected in catalog metadata."
+						"description": "Object containing title-sorted catalog items, listed entries, manifests, plans, and generated plan records. Listed entries also follow catalog rules that omit route loaders and functions without listed helper contracts.",
+						"examples": [
+							{
+								"items": [],
+								"listed": [],
+								"units": [],
+								"plans": [],
+								"records": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "hubFail raises an Error with code artifact-corrupt, not-found, or metadata-too-large when committed records fail validation, required blobs are absent, or metadata exceeds its limit. Source, cache, and decoding failures from async collaborators also propagate without normalization."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubAttestPlan",
@@ -163,24 +906,154 @@
 						"name": "hubAttestPlan.plan",
 						"type": "HubPlan",
 						"required": true,
-						"description": "Plan to attest against a registered unit or draft identity."
+						"description": "Validated planning record with unit id, category, slug, path, revision, and contract metadata. This check uses only its category, unitId, and slug.",
+						"examples": [
+							{
+								"unitId": "hub.function.hub-catalog",
+								"category": "function",
+								"slug": "hub-catalog",
+								"title": "Build the hosted unit catalog",
+								"goal": "Combine committed unit manifests and plans into catalog entries and relationships.",
+								"path": "src/functions/hub-catalog",
+								"createdAt": "2026-11-15T12:00:00.000Z",
+								"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+								"contract": {
+									"responsibility": "Describe the hosted catalog helper.",
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"states": [],
+									"viewports": []
+								},
+								"contractHash": "a460f46fcd290bc589b7ee9481695dcce579f97a1180ef84e5ce7ac59198c5bd"
+							}
+						]
 					},
 					{
 						"name": "hubAttestPlan.unit",
 						"type": "ComponentManifest | undefined",
 						"required": true,
-						"description": "Matching manifest, or undefined for an unregistered draft."
+						"description": "Matching registered manifest, or undefined for a draft plan. When present, only its kind is compared with plan.category.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "hub.function.hub-catalog",
+								"uid": "u_ibenikpzyj",
+								"kind": "function",
+								"title": "Build the hosted unit catalog",
+								"responsibility": "Combine committed unit manifests and plans into catalog entries and relationships.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": [
+										"packages/hub/src/routes/api/[...path]/hub-projection-service/hubCatalog.ts",
+										"packages/hub/src/utils/hub-catalog/hubCatalog.ts",
+										"packages/hub/src/utils/hubCatalog.ts",
+										"packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts"
+									],
+									"symbols": [
+										"hubRelationships",
+										"hubCatalog",
+										"hubAttestPlan",
+										"hubOwnedPaths",
+										"hubCatalog",
+										"hubAttestPlan",
+										"hubOwnedPaths",
+										"hubRelationships",
+										"hubCatalog",
+										"hubAttestPlan",
+										"hubOwnedPaths"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"errorStatus": "none-found"
+								},
+								"dependencies": [
+									{
+										"unit": "desktop.function.catalog-unit",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "desktop.function.category-of",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "desktop.model.desktop-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.unit-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "hub.function.hub-json",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "hub.function.hub-plans",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "hub.function.hub-records",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "hub.function.hub-schemas",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "hub.function.hub-source",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "packages/hub/src/utils/hubCatalog.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/hub/src/utils/hubCatalog.ts"
+										}
+									]
+								},
+								"scenarios": ["hosted-catalog"],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubAttestPlan",
 						"type": "unknown",
-						"description": "Returns nothing when kinds match, or when an unregistered plan uses category.slug; otherwise rejects as artifact-corrupt."
+						"description": "Returns undefined when a registered unit kind matches the plan category or an unregistered plan id equals category.slug. Otherwise it throws an artifact-corrupt error."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws the Error created by hubFail with code artifact-corrupt when a registered unit kind differs from plan.category or an unregistered plan unitId differs from category.slug."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubOwnedPaths",
@@ -189,24 +1062,130 @@
 						"name": "hubOwnedPaths.context",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+						"description": "Repository snapshot whose tree entries identify paths and blob types; this helper does not read blob contents. Its source adapter and cache are present but unused by this helper."
 					},
 					{
 						"name": "hubOwnedPaths.unit",
 						"type": "ComponentManifest",
 						"required": true,
-						"description": "Manifest declaring source paths."
+						"description": "Manifest whose owns.source roots select matching repository paths. Only blobs equal to or nested beneath a declared root are returned.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "hub.function.hub-catalog",
+								"uid": "u_ibenikpzyj",
+								"kind": "function",
+								"title": "Build the hosted unit catalog",
+								"responsibility": "Combine committed unit manifests and plans into catalog entries and relationships.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": [
+										"packages/hub/src/routes/api/[...path]/hub-projection-service/hubCatalog.ts",
+										"packages/hub/src/utils/hub-catalog/hubCatalog.ts",
+										"packages/hub/src/utils/hubCatalog.ts",
+										"packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts"
+									],
+									"symbols": [
+										"hubRelationships",
+										"hubCatalog",
+										"hubAttestPlan",
+										"hubOwnedPaths",
+										"hubCatalog",
+										"hubAttestPlan",
+										"hubOwnedPaths",
+										"hubRelationships",
+										"hubCatalog",
+										"hubAttestPlan",
+										"hubOwnedPaths"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"errorStatus": "none-found"
+								},
+								"dependencies": [
+									{
+										"unit": "desktop.function.catalog-unit",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "desktop.function.category-of",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "desktop.model.desktop-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.unit-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "hub.function.hub-json",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "hub.function.hub-plans",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "hub.function.hub-records",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "hub.function.hub-schemas",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "hub.function.hub-source",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "packages/hub/src/utils/hubCatalog.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/hub/src/utils/hubCatalog.ts"
+										}
+									]
+								},
+								"scenarios": ["hosted-catalog"],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubOwnedPaths",
 						"type": "unknown",
-						"description": "Blob paths equal to or beneath the unit’s declared source paths."
+						"description": "Repository-relative paths for blob entries equal to or nested beneath a declared source root, in source-tree order. Non-blob entries are omitted and duplicates are preserved.",
+						"examples": [
+							["packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
