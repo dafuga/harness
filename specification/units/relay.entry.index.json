@@ -21,68 +21,81 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RemoteHostObject.constructor.state",
 				"type": "DurableObjectState",
-				"required": true
+				"required": true,
+				"description": "The DurableObjectState the runtime passes when it constructs the object, given to the DurableObject base class and to hostRuntime, and used to call setWebSocketAutoResponse. The constructor is the only place this file reads it, so the state matters only at construction."
 			},
 			{
 				"name": "RemoteHostObject.constructor.env",
 				"type": "RelayEnv",
-				"required": true
+				"required": true,
+				"description": "The RelayEnv bindings the runtime passes when it constructs the object, given to the DurableObject base class and to hostRuntime; the class comment names env.REMOTE_HOSTS.idFromName(hostId) as the way one object per host is addressed. This file does not check which bindings exist or what they contain."
 			},
 			{
 				"name": "RemoteHostObject.fetch.request",
 				"type": "Request",
-				"required": true
+				"required": true,
+				"description": "The HTTP Request the runtime delivers to fetch, which passes it unchanged to this.#runtime.http.handle and returns that call's promise. This file does not inspect the request's method, URL or body."
 			},
 			{
 				"name": "RemoteHostObject.webSocketMessage.socket",
 				"type": "WebSocket",
-				"required": true
+				"required": true,
+				"description": "The hibernatable WebSocket the message arrived on, which is passed unchanged with the message to this.#runtime.frames.message. This file keeps no per-socket state, so the socket matters only for that forwarded call."
 			},
 			{
 				"name": "RemoteHostObject.webSocketMessage.message",
 				"type": "string | ArrayBuffer",
-				"required": true
+				"required": true,
+				"description": "The frame payload the runtime delivers, a string or an ArrayBuffer, passed unchanged to this.#runtime.frames.message. The constructor's setWebSocketAutoResponse makes the runtime answer a 'ping' message with 'pong' without calling this method, so this method does not receive 'ping'.",
+				"examples": ["ping"]
 			},
 			{
 				"name": "RemoteHostObject.webSocketClose.socket",
 				"type": "WebSocket",
-				"required": true
+				"required": true,
+				"description": "The hibernatable WebSocket the runtime reports as closed, passed unchanged to this.#runtime.frames.closed. This method declares only the socket, so any close code or reason the runtime passes is not read here."
 			},
 			{
 				"name": "RemoteHostObject.webSocketError.socket",
 				"type": "WebSocket",
-				"required": true
+				"required": true,
+				"description": "The hibernatable WebSocket the runtime reports as errored, passed to this.#runtime.frames.closed, the same handler webSocketClose uses. The method declares no error parameter, so the error itself is not read here."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteHostObject.fetch",
-				"type": "Promise<Response>"
+				"type": "Promise<Response>",
+				"description": "The promise returned by this.#runtime.http.handle(request), which resolves to the Response for that request. The method adds no wrapping, so whatever that promise resolves or rejects with is what the caller receives."
 			},
 			{
 				"name": "RemoteHostObject.webSocketMessage",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "The promise returned by this.#runtime.frames.message(socket, message), returned unchanged. It resolves with no value, and the method adds no waiting or error handling of its own."
 			},
 			{
 				"name": "RemoteHostObject.webSocketClose",
-				"type": "void"
+				"type": "void",
+				"description": "Returns nothing: it calls this.#runtime.frames.closed(socket) without returning or awaiting the result. Any promise that call returns is therefore not waited on here."
 			},
 			{
 				"name": "RemoteHostObject.webSocketError",
-				"type": "void"
+				"type": "void",
+				"description": "Returns nothing: it calls this.#runtime.frames.closed(socket) without returning or awaiting the result, the same call webSocketClose makes."
 			},
 			{
 				"name": "RemoteHostObject.alarm",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "The promise returned by this.#runtime.offers.sweep(), returned unchanged, which resolves with no value. The method takes no input and does nothing itself beyond that call."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "RemoteHostObject.fetch",
@@ -90,17 +103,19 @@
 					{
 						"name": "RemoteHostObject.fetch.request",
 						"type": "Request",
-						"required": true
+						"required": true,
+						"description": "The HTTP Request the runtime delivers to fetch, which passes it unchanged to this.#runtime.http.handle and returns that call's promise. This file does not inspect the request's method, URL or body."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteHostObject.fetch",
-						"type": "Promise<Response>"
+						"type": "Promise<Response>",
+						"description": "The promise returned by this.#runtime.http.handle(request), which resolves to the Response for that request. The method adds no wrapping, so whatever that promise resolves or rejects with is what the caller receives."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostObject.webSocketMessage",
@@ -108,22 +123,26 @@
 					{
 						"name": "RemoteHostObject.webSocketMessage.socket",
 						"type": "WebSocket",
-						"required": true
+						"required": true,
+						"description": "The hibernatable WebSocket the message arrived on, which is passed unchanged with the message to this.#runtime.frames.message. This file keeps no per-socket state, so the socket matters only for that forwarded call."
 					},
 					{
 						"name": "RemoteHostObject.webSocketMessage.message",
 						"type": "string | ArrayBuffer",
-						"required": true
+						"required": true,
+						"description": "The frame payload the runtime delivers, a string or an ArrayBuffer, passed unchanged to this.#runtime.frames.message. The constructor's setWebSocketAutoResponse makes the runtime answer a 'ping' message with 'pong' without calling this method, so this method does not receive 'ping'.",
+						"examples": ["ping"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteHostObject.webSocketMessage",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "The promise returned by this.#runtime.frames.message(socket, message), returned unchanged. It resolves with no value, and the method adds no waiting or error handling of its own."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostObject.webSocketClose",
@@ -131,17 +150,19 @@
 					{
 						"name": "RemoteHostObject.webSocketClose.socket",
 						"type": "WebSocket",
-						"required": true
+						"required": true,
+						"description": "The hibernatable WebSocket the runtime reports as closed, passed unchanged to this.#runtime.frames.closed. This method declares only the socket, so any close code or reason the runtime passes is not read here."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteHostObject.webSocketClose",
-						"type": "void"
+						"type": "void",
+						"description": "Returns nothing: it calls this.#runtime.frames.closed(socket) without returning or awaiting the result. Any promise that call returns is therefore not waited on here."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostObject.webSocketError",
@@ -149,17 +170,19 @@
 					{
 						"name": "RemoteHostObject.webSocketError.socket",
 						"type": "WebSocket",
-						"required": true
+						"required": true,
+						"description": "The hibernatable WebSocket the runtime reports as errored, passed to this.#runtime.frames.closed, the same handler webSocketClose uses. The method declares no error parameter, so the error itself is not read here."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteHostObject.webSocketError",
-						"type": "void"
+						"type": "void",
+						"description": "Returns nothing: it calls this.#runtime.frames.closed(socket) without returning or awaiting the result, the same call webSocketClose makes."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostObject.alarm",
@@ -167,11 +190,12 @@
 				"outputs": [
 					{
 						"name": "RemoteHostObject.alarm",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "The promise returned by this.#runtime.offers.sweep(), returned unchanged, which resolves with no value. The method takes no input and does nothing itself beyond that call."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -181,22 +205,31 @@
 					{
 						"name": "RemoteHostObject.constructor.state",
 						"type": "DurableObjectState",
-						"required": true
+						"required": true,
+						"description": "The DurableObjectState the runtime passes when it constructs the object, given to the DurableObject base class and to hostRuntime, and used to call setWebSocketAutoResponse. The constructor is the only place this file reads it, so the state matters only at construction."
 					},
 					{
 						"name": "RemoteHostObject.constructor.env",
 						"type": "RelayEnv",
-						"required": true
+						"required": true,
+						"description": "The RelayEnv bindings the runtime passes when it constructs the object, given to the DurableObject base class and to hostRuntime; the class comment names env.REMOTE_HOSTS.idFromName(hostId) as the way one object per host is addressed. This file does not check which bindings exist or what they contain."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteHostObject.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new RemoteHostObject instance the runtime creates; the constructor has no return statement, so the instance is the only value it produces. Construction sets the #runtime field and calls setWebSocketAutoResponse on the state."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Any error thrown by super(state, env), hostRuntime(state, env) or state.setWebSocketAutoResponse(new WebSocketRequestResponsePair('ping', 'pong')) propagates out of the constructor unchanged, because the constructor has no try/catch and throws nothing of its own."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		]
 	},
