@@ -17,46 +17,100 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GameDocumentRepository.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository root used as the git working directory for commit reads and as the parent directory of game.json for working-tree reads and saves. The implementation does not validate its format.",
+				"examples": ["/Users/danielfugere/projects/sample-game"]
 			},
 			{
 				"name": "GameDocumentRepository.read.commit",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "An optional full lowercase hexadecimal commit SHA used to read <commit>:game.json; a truthy value must be exactly 40 hex characters, while omitted or empty values select the working-tree file. Defaults to undefined.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "GameDocumentRepository.save.document",
 				"type": "GameDocument",
-				"required": true
+				"required": true,
+				"description": "The GameDocument to validate and serialize as tab-indented JSON with a trailing newline before replacing game.json. It must pass assertDocument and the serialized UTF-8 text must not exceed 1,048,576 bytes.",
+				"examples": [
+					{
+						"version": 1,
+						"views": [
+							{
+								"id": "main",
+								"title": "First room",
+								"dimension": "2d",
+								"style": "pixel art",
+								"checkpoints": []
+							}
+						],
+						"mechanics": []
+					}
+				]
 			},
 			{
 				"name": "GameDocumentRepository.save.expectedRevision",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Expected SHA-256 digest of the current game.json text, compared with the current content before a save. It must match exactly for the save to proceed; the implementation performs no separate format check.",
+				"examples": ["d35844d32b53db066ac14f5315069e9d47ceac7e19573f00ed7e56a3c8b0f499"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameDocumentRepository.read",
-				"type": "Promise<{ document: GameDocument; revision: string }>"
+				"type": "Promise<{ document: GameDocument; revision: string }>",
+				"description": "Resolves to the parsed, validated document and the lowercase SHA-256 digest of the exact UTF-8 text that was read. Reading is limited to 1,048,576 bytes.",
+				"examples": [
+					{
+						"document": {
+							"version": 1,
+							"views": [
+								{
+									"id": "main",
+									"title": "First room",
+									"dimension": "2d",
+									"style": "pixel art",
+									"checkpoints": []
+								}
+							],
+							"mechanics": []
+						},
+						"revision": "d35844d32b53db066ac14f5315069e9d47ceac7e19573f00ed7e56a3c8b0f499"
+					}
+				]
 			},
 			{
 				"name": "GameDocumentRepository.save",
-				"type": "Promise<{ revision: string }>"
+				"type": "Promise<{ revision: string }>",
+				"description": "Resolves to the lowercase SHA-256 digest of the tab-indented JSON text written to game.json. The written text includes a trailing newline and must be no larger than 1,048,576 UTF-8 bytes.",
+				"examples": [
+					{
+						"revision": "d35844d32b53db066ac14f5315069e9d47ceac7e19573f00ed7e56a3c8b0f499"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown for a malformed commit, invalid document, file-size violation, or stale revision, and propagated for git and filesystem failures."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Rejected when JSON.parse cannot parse the text read from game.json."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "GameDocumentRepository.read",
@@ -64,22 +118,50 @@
 					{
 						"name": "GameDocumentRepository.read.commit",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "An optional full lowercase hexadecimal commit SHA used to read <commit>:game.json; a truthy value must be exactly 40 hex characters, while omitted or empty values select the working-tree file. Defaults to undefined.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GameDocumentRepository.read",
-						"type": "Promise<{ document: GameDocument; revision: string }>"
+						"type": "Promise<{ document: GameDocument; revision: string }>",
+						"description": "Resolves to the parsed, validated document and the lowercase SHA-256 digest of the exact UTF-8 text that was read. Reading is limited to 1,048,576 bytes.",
+						"examples": [
+							{
+								"document": {
+									"version": 1,
+									"views": [
+										{
+											"id": "main",
+											"title": "First room",
+											"dimension": "2d",
+											"style": "pixel art",
+											"checkpoints": []
+										}
+									],
+									"mechanics": []
+								},
+								"revision": "d35844d32b53db066ac14f5315069e9d47ceac7e19573f00ed7e56a3c8b0f499"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when a truthy commit is not a 40-character lowercase hexadecimal SHA or content exceeds 1,048,576 bytes; rejected when document validation or file/git access fails."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Rejected when JSON.parse cannot parse the text read from game.json."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GameDocumentRepository.save",
@@ -87,27 +169,52 @@
 					{
 						"name": "GameDocumentRepository.save.document",
 						"type": "GameDocument",
-						"required": true
+						"required": true,
+						"description": "The GameDocument to validate and serialize as tab-indented JSON with a trailing newline before replacing game.json. It must pass assertDocument and the serialized UTF-8 text must not exceed 1,048,576 bytes.",
+						"examples": [
+							{
+								"version": 1,
+								"views": [
+									{
+										"id": "main",
+										"title": "First room",
+										"dimension": "2d",
+										"style": "pixel art",
+										"checkpoints": []
+									}
+								],
+								"mechanics": []
+							}
+						]
 					},
 					{
 						"name": "GameDocumentRepository.save.expectedRevision",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Expected SHA-256 digest of the current game.json text, compared with the current content before a save. It must match exactly for the save to proceed; the implementation performs no separate format check.",
+						"examples": ["d35844d32b53db066ac14f5315069e9d47ceac7e19573f00ed7e56a3c8b0f499"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GameDocumentRepository.save",
-						"type": "Promise<{ revision: string }>"
+						"type": "Promise<{ revision: string }>",
+						"description": "Resolves to the lowercase SHA-256 digest of the tab-indented JSON text written to game.json. The written text includes a trailing newline and must be no larger than 1,048,576 UTF-8 bytes.",
+						"examples": [
+							{
+								"revision": "d35844d32b53db066ac14f5315069e9d47ceac7e19573f00ed7e56a3c8b0f499"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when document validation fails, current text differs from expectedRevision, or serialized output exceeds 1,048,576 bytes; rejected when file inspection or replacement operations fail."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -117,17 +224,20 @@
 					{
 						"name": "GameDocumentRepository.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository root used as the git working directory for commit reads and as the parent directory of game.json for working-tree reads and saves. The implementation does not validate its format.",
+						"examples": ["/Users/danielfugere/projects/sample-game"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GameDocumentRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed repository instance retains the supplied root for later reads and saves. The constructor does not inspect or validate the path."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
