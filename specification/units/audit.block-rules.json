@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/blockRules.ts", "src/audit/development-tooling/blockRules.ts"],
-		"symbols": ["auditBlocks", "auditBlocks"]
+		"source": ["src/audit/development-tooling/blockRules.ts"],
+		"symbols": ["auditBlocks"]
 	},
 	"contract": {
 		"origin": "derived",

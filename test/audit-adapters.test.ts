@@ -2,7 +2,7 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { auditProject } from '../src/audit/audit';
+import { auditProject } from '../src/audit/development-tooling/audit';
 import { adaptersForProfile, resolveAuditProfile } from '../src/audit/adapters/registry';
 
 test('audit profiles select ecosystem adapters', () => {

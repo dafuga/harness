@@ -8,13 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/cleanCodeConfig.ts", "src/audit/development-tooling/cleanCodeConfig.ts"],
-		"symbols": [
-			"cleanCodeDefaults",
-			"resolveCleanCodeSettings",
-			"cleanCodeDefaults",
-			"resolveCleanCodeSettings"
-		]
+		"source": ["src/audit/development-tooling/cleanCodeConfig.ts"],
+		"symbols": ["cleanCodeDefaults", "resolveCleanCodeSettings"]
 	},
 	"contract": {
 		"origin": "derived",

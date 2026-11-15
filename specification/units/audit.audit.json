@@ -9,13 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/audit/audit.ts",
 			"src/audit/development-tooling/audit.ts",
 			"src/audit/development-tooling/audit.types.ts"
 		],
 		"symbols": [
-			"auditPath",
-			"auditProject",
 			"AuditFinding",
 			"AuditOptions",
 			"AuditResult",

@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import { rm } from 'node:fs/promises';
-import { resolveCleanCodeSettings } from '../src/audit/cleanCodeConfig';
+import { resolveCleanCodeSettings } from '../src/audit/development-tooling/cleanCodeConfig';
 import { discoverCleanCodeFiles, matchesExclusion } from '../src/audit/cleanCodeDiscovery';
 import { BoundedCommandAdapter } from '../src/adapters/execution-runtimes/BoundedCommandAdapter';
 import { reviewCleanCode } from '../src/workflows/reviewCleanCode';

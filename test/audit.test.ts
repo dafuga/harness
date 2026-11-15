@@ -1,9 +1,11 @@
 import { assertModuleAuditAdmission } from './support/moduleAuditAdmission';
 import { mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { expect, test } from 'vitest';
-import { auditPath } from '../src/audit/audit';
+import groups from '../harness.groups.json';
+import { auditPath } from '../src/audit/development-tooling/audit';
 import { ruleFixtures } from './support/auditFixtures';
 import { measureWorkload } from './support/measureWorkload';
 
@@ -205,4 +207,15 @@ test('every SvelteKit route segment form is a valid folder name, and nothing els
 		.filter((finding) => finding.rule === 'folder-name-pattern')
 		.map((finding) => finding.path.replace(/\/$/, '').split('/').pop());
 	expect(flagged.sort()).toEqual([...invalid].sort());
+});
+
+test('relocated audit entries leave no stub at their old paths or in the legacy manifest', () => {
+	const root = join(import.meta.dirname, '..');
+	for (const name of ['architectureRules', 'audit', 'blockRules', 'cleanCodeConfig']) {
+		const stub = `src/audit/${name}.ts`;
+		const declaration = `src/audit/development-tooling/${name}.ts`;
+		expect(existsSync(join(root, stub)), stub).toBe(false);
+		expect(existsSync(join(root, declaration)), declaration).toBe(true);
+		expect(groups.legacy, stub).not.toContain(stub);
+	}
 });

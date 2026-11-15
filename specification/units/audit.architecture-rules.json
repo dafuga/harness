@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/audit/architectureRules.ts",
-			"src/audit/development-tooling/architectureRules.ts"
-		],
-		"symbols": ["auditArchitecture", "auditTypePlacement", "auditArchitecture"]
+		"source": ["src/audit/development-tooling/architectureRules.ts"],
+		"symbols": ["auditTypePlacement", "auditArchitecture"]
 	},
 	"contract": {
 		"origin": "declared",

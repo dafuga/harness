@@ -2,7 +2,7 @@ import { measureWorkload } from './measureWorkload';
 import { expect } from 'vitest';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { auditPath } from '../../src/audit/audit';
+import { auditPath } from '../../src/audit/development-tooling/audit';
 import { ModuleResourceService } from '../../src/services/module-system/ModuleResourceService';
 import { ModuleInstallService } from '../../src/services/module-system/ModuleInstallService';
 /** Standard structure boundary: defaults, available declarations, installed shapes and unknown siblings. */

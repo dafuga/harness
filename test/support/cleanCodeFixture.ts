@@ -1,7 +1,7 @@
 import { mkdtemp, mkdir, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { resolveCleanCodeSettings } from '../../src/audit/cleanCodeConfig';
+import { resolveCleanCodeSettings } from '../../src/audit/development-tooling/cleanCodeConfig';
 import type { JevEvaluation, JevRequest } from '../../src/audit/cleanCodeTypes';
 
 export const reviewSettings = resolveCleanCodeSettings({ mode: 'advisory' });

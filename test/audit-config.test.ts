@@ -2,7 +2,7 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { auditPath } from '../src/audit/audit';
+import { auditPath } from '../src/audit/development-tooling/audit';
 
 test('audit config overrides file limits while preserving function defaults', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-audit-config-'));
