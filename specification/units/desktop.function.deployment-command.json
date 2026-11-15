@@ -18,17 +18,46 @@
 				"name": "deploymentCommand.command",
 				"type": "DeployCommand",
 				"required": true,
-				"description": "Executable arguments, working directory and explicitly supplied environment for one deployment step."
+				"description": "One deployment step: args[0] is the executable, args.slice(1) are its arguments (run directly, with no shell), and cwd is the working directory. The optional env field is merged over the cliEnvironment() base, then CI is always forced to 'true', so an env entry can never override CI.",
+				"examples": [
+					{
+						"args": ["bun", "run", "check"],
+						"cwd": "/Users/dev/projects/acme-site"
+					},
+					{
+						"args": ["bun", "run", "build"],
+						"cwd": "/Users/dev/projects/acme-site",
+						"env": {
+							"NODE_ENV": "production"
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "deploymentCommand",
 				"type": "Promise<string>",
-				"description": "Captured stdout on success; rejects on spawn failure, timeout or unsuccessful exit."
+				"description": "Resolves with the child's stdout once it closes with code 0; only the last 1,000,000 characters are kept and stderr is discarded. It rejects when the child cannot start or closes with a non-zero or null code, and because the 20-minute timer only calls killOwnedProcess on the child, a timed-out step rejects only if it then closes with a non-zero or null code.",
+				"examples": [
+					"Checked 214 files. No problems found.\n",
+					"Uploaded 12 files\nDeployment complete: https://4f2c9a1e.acme-site.pages.dev\n"
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with new Error('Deployment command could not start.') when the child process emits an 'error' event, which the code treats as a failure to start."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with new Error('Deployment step <first three args joined by spaces> failed (<code>).') when the child closes with any code other than 0, including null; stderr is never part of the message."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "deploymentCommand",
@@ -37,18 +66,46 @@
 						"name": "deploymentCommand.command",
 						"type": "DeployCommand",
 						"required": true,
-						"description": "Executable arguments, working directory and explicitly supplied environment for one deployment step."
+						"description": "One deployment step: args[0] is the executable, args.slice(1) are its arguments (run directly, with no shell), and cwd is the working directory. The optional env field is merged over the cliEnvironment() base, then CI is always forced to 'true', so an env entry can never override CI.",
+						"examples": [
+							{
+								"args": ["bun", "run", "check"],
+								"cwd": "/Users/dev/projects/acme-site"
+							},
+							{
+								"args": ["bun", "run", "build"],
+								"cwd": "/Users/dev/projects/acme-site",
+								"env": {
+									"NODE_ENV": "production"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "deploymentCommand",
 						"type": "Promise<string>",
-						"description": "Captured stdout on success; rejects on spawn failure, timeout or unsuccessful exit."
+						"description": "Resolves with the child's stdout once it closes with code 0; only the last 1,000,000 characters are kept and stderr is discarded. It rejects when the child cannot start or closes with a non-zero or null code, and because the 20-minute timer only calls killOwnedProcess on the child, a timed-out step rejects only if it then closes with a non-zero or null code.",
+						"examples": [
+							"Checked 214 files. No problems found.\n",
+							"Uploaded 12 files\nDeployment complete: https://4f2c9a1e.acme-site.pages.dev\n"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with new Error('Deployment command could not start.') when the child process emits an 'error' event, which the code treats as a failure to start."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with new Error('Deployment step <first three args joined by spaces> failed (<code>).') when the child closes with any code other than 0, including null; stderr is never part of the message."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
