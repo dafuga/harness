@@ -18,31 +18,82 @@
 				"name": "revisionTime.snapshot",
 				"type": "ProjectSnapshot | null",
 				"required": true,
-				"description": "Current project revision, branch tips and commit metadata; may be absent before loading."
+				"description": "Project snapshot supplying revision.commit, revision.tip and the commits list to search by hash. A null snapshot matches no commit, so the result is null.",
+				"examples": [
+					{
+						"project": {
+							"name": "harness-app",
+							"root": "/Users/example/projects/harness-app",
+							"id": "local-9a3f0c7d2e5b81f46c0a9d3e7b2f5108c4e6a1d9b7f2034e8c5a6d1f9b0e72c3"
+						},
+						"capabilities": {
+							"comments": true,
+							"agents": true,
+							"planning": true,
+							"approval": true,
+							"source": "local",
+							"reason": "Comments are saved as local pending drafts until connected."
+						},
+						"revision": {
+							"branch": "main",
+							"commit": "3f9c2a7e5b1d84c60a9e2f71d3b5c8a4e6f01b72",
+							"tip": "7d1e4b09a6c3f2581e9b7d04c2a8f6e10b3d95a7",
+							"atTip": false
+						},
+						"branches": [
+							{
+								"name": "main",
+								"tip": "7d1e4b09a6c3f2581e9b7d04c2a8f6e10b3d95a7",
+								"current": true
+							}
+						],
+						"commits": [
+							{
+								"hash": "7d1e4b09a6c3f2581e9b7d04c2a8f6e10b3d95a7",
+								"subject": "Add revision time lookup",
+								"authoredAt": "2026-11-12T09:41:07+01:00",
+								"committedAt": "2026-11-12T10:02:18+01:00"
+							},
+							{
+								"hash": "3f9c2a7e5b1d84c60a9e2f71d3b5c8a4e6f01b72",
+								"subject": "Fix commit ordering",
+								"authoredAt": "2026-11-10T16:05:52+00:00",
+								"committedAt": "2026-11-10T16:05:52+00:00"
+							}
+						],
+						"entities": [],
+						"writable": false
+					},
+					null
+				]
 			},
 			{
 				"name": "revisionTime.kind",
 				"type": "'commit' | 'branch'",
 				"required": true,
-				"description": "Chooses the selected commit timestamp or the timestamp of the branch tip."
+				"description": "Selects the hash to match: 'branch' uses revision.tip and 'commit' uses revision.commit. Any other runtime value takes the 'commit' path.",
+				"examples": ["commit", "branch"]
 			},
 			{
 				"name": "displayTime.value",
 				"type": "string | null",
 				"required": true,
-				"description": "ISO timestamp to format; absent or invalid values produce the unknown-time label."
+				"description": "Timestamp string to format; null, an empty string, or a string Date.parse cannot read produces the 'Unknown' label.",
+				"examples": ["2026-11-12T10:02:18+01:00", "2026-11-10T16:05:52+00:00", null]
 			}
 		],
 		"outputs": [
 			{
 				"name": "revisionTime",
 				"type": "string | null",
-				"description": "Authored timestamp for the requested revision, or null when metadata is unavailable."
+				"description": "The matched commit's committedAt, or its authoredAt when committedAt is absent, returned as stored without formatting. It is null when the snapshot is null, no commit has the hash chosen by kind, or the matched commit has neither timestamp.",
+				"examples": ["2026-11-12T10:02:18+01:00", "2026-11-10T16:05:52+00:00", null]
 			},
 			{
 				"name": "displayTime",
 				"type": "string",
-				"description": "Localized date and time, or the explicit unknown fallback."
+				"description": "A localized date and time in the runtime's default locale, shown as medium date and short time, or the literal 'Unknown' when the input is null, empty, or not parseable as a date.",
+				"examples": ["Nov 12, 2026, 10:02 AM", "Unknown"]
 			}
 		],
 		"errors": [],
@@ -55,24 +106,73 @@
 						"name": "revisionTime.snapshot",
 						"type": "ProjectSnapshot | null",
 						"required": true,
-						"description": "Current project revision, branch tips and commit metadata; may be absent before loading."
+						"description": "Project snapshot supplying revision.commit, revision.tip and the commits list to search by hash. A null snapshot matches no commit, so the result is null.",
+						"examples": [
+							{
+								"project": {
+									"name": "harness-app",
+									"root": "/Users/example/projects/harness-app",
+									"id": "local-9a3f0c7d2e5b81f46c0a9d3e7b2f5108c4e6a1d9b7f2034e8c5a6d1f9b0e72c3"
+								},
+								"capabilities": {
+									"comments": true,
+									"agents": true,
+									"planning": true,
+									"approval": true,
+									"source": "local",
+									"reason": "Comments are saved as local pending drafts until connected."
+								},
+								"revision": {
+									"branch": "main",
+									"commit": "3f9c2a7e5b1d84c60a9e2f71d3b5c8a4e6f01b72",
+									"tip": "7d1e4b09a6c3f2581e9b7d04c2a8f6e10b3d95a7",
+									"atTip": false
+								},
+								"branches": [
+									{
+										"name": "main",
+										"tip": "7d1e4b09a6c3f2581e9b7d04c2a8f6e10b3d95a7",
+										"current": true
+									}
+								],
+								"commits": [
+									{
+										"hash": "7d1e4b09a6c3f2581e9b7d04c2a8f6e10b3d95a7",
+										"subject": "Add revision time lookup",
+										"authoredAt": "2026-11-12T09:41:07+01:00",
+										"committedAt": "2026-11-12T10:02:18+01:00"
+									},
+									{
+										"hash": "3f9c2a7e5b1d84c60a9e2f71d3b5c8a4e6f01b72",
+										"subject": "Fix commit ordering",
+										"authoredAt": "2026-11-10T16:05:52+00:00",
+										"committedAt": "2026-11-10T16:05:52+00:00"
+									}
+								],
+								"entities": [],
+								"writable": false
+							},
+							null
+						]
 					},
 					{
 						"name": "revisionTime.kind",
 						"type": "'commit' | 'branch'",
 						"required": true,
-						"description": "Chooses the selected commit timestamp or the timestamp of the branch tip."
+						"description": "Selects the hash to match: 'branch' uses revision.tip and 'commit' uses revision.commit. Any other runtime value takes the 'commit' path.",
+						"examples": ["commit", "branch"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "revisionTime",
 						"type": "string | null",
-						"description": "Authored timestamp for the requested revision, or null when metadata is unavailable."
+						"description": "The matched commit's committedAt, or its authoredAt when committedAt is absent, returned as stored without formatting. It is null when the snapshot is null, no commit has the hash chosen by kind, or the matched commit has neither timestamp.",
+						"examples": ["2026-11-12T10:02:18+01:00", "2026-11-10T16:05:52+00:00", null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "displayTime",
@@ -81,18 +181,20 @@
 						"name": "displayTime.value",
 						"type": "string | null",
 						"required": true,
-						"description": "ISO timestamp to format; absent or invalid values produce the unknown-time label."
+						"description": "Timestamp string to format; null, an empty string, or a string Date.parse cannot read produces the 'Unknown' label.",
+						"examples": ["2026-11-12T10:02:18+01:00", "2026-11-10T16:05:52+00:00", null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "displayTime",
 						"type": "string",
-						"description": "Localized date and time, or the explicit unknown fallback."
+						"description": "A localized date and time in the runtime's default locale, shown as medium date and short time, or the literal 'Unknown' when the input is null, empty, or not parseable as a date.",
+						"examples": ["Nov 12, 2026, 10:02 AM", "Unknown"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
