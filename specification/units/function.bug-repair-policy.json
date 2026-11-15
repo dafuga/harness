@@ -18,10 +18,17 @@
 			{
 				"name": "bugRepairPolicy",
 				"type": "string[]",
-				"description": "Reusable repair rules covering coverage diagnosis, immutable failing/passing commits, causal naming/API corrections, selected-callable acceptance and planning boundaries. Returns a fresh list; runs no tests or agent."
+				"description": "A fresh array of nine plain-string bug-repair policy rules for reported bugs in generated projects and app agent runs, covering coverage diagnosis, separate failing-test and fix commits with red and green loop-record phases, causal naming/API corrections, selected-callable acceptance and read-only planning boundaries. It matters whenever a reported bug needs the shared repair procedure; each call only returns this text, runs no tests, commands or agents, and does not check or enforce the rules.",
+				"examples": [
+					[
+						"For a reported bug, first diagnose why existing tests missed it. Name the responsible standardized test or scenario and its missing inputs, lifecycle, fixture or assertion; record the coverage gap before product repair.",
+						"Strengthen the existing standardized test and shared fixtures or assertions using the project's Harness scenario, state, viewport, registered-test and evidence format. Do not add a one-off bug-specific regression test."
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "bugRepairPolicy",
@@ -30,11 +37,17 @@
 					{
 						"name": "bugRepairPolicy",
 						"type": "string[]",
-						"description": "Reusable repair rules covering coverage diagnosis, immutable failing/passing commits, causal naming/API corrections, selected-callable acceptance and planning boundaries. Returns a fresh list; runs no tests or agent."
+						"description": "A fresh array of nine plain-string bug-repair policy rules for reported bugs in generated projects and app agent runs, covering coverage diagnosis, separate failing-test and fix commits with red and green loop-record phases, causal naming/API corrections, selected-callable acceptance and read-only planning boundaries. It matters whenever a reported bug needs the shared repair procedure; each call only returns this text, runs no tests, commands or agents, and does not check or enforce the rules.",
+						"examples": [
+							[
+								"For a reported bug, first diagnose why existing tests missed it. Name the responsible standardized test or scenario and its missing inputs, lifecycle, fixture or assertion; record the coverage gap before product repair.",
+								"Strengthen the existing standardized test and shared fixtures or assertions using the project's Harness scenario, state, viewport, registered-test and evidence format. Do not add a one-off bug-specific regression test."
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
