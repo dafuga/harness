@@ -28,44 +28,174 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RemoteHostStoreAdapter.constructor.config",
 				"type": "RemoteHostStoreAdapterConfig",
-				"required": true
+				"required": true,
+				"description": "The file that holds the sealed state, the encryption that seals it (Electron safeStorage in the app, a deterministic port in tests), and an optional platform that is passed to the native session gate, which uses process.platform when it is omitted. The constructor only stores these values and builds that gate, so it reads and writes nothing."
 			},
 			{
 				"name": "RemoteHostStoreAdapter.save.state",
 				"type": "RemoteHostState",
-				"required": true
+				"required": true,
+				"description": "The whole remote host state to store: hostId, host keys, credential, enabled flag, origin, generation, approved devices and revoked device ids. save() does not check its shape; it seals the JSON with config.encryption, writes it to a temporary file and renames that over the stored file, and read() later rejects the file if its shape is wrong.",
+				"examples": [
+					{
+						"enabled": false,
+						"origin": null,
+						"hostId": "3f9a1c7e0b5d24a86e91f0c3d7b2a5e84c1f6d09",
+						"keys": {
+							"d": "Hs4kR0tVzN8pLq2yXc7bM1eW9uAfD3jG6oT5iK0nZ2E",
+							"publicKey": "BQx7mN2kTrWv4sLa9ZdHc0FpYe6UgOtJ3iXb8RqKnS1uMh5CvAzD2eG7wPl4yT9jBf0oIsUhE8dWz4Lq3QkR6aY"
+						},
+						"credential": "Qm8vT2xK4rYw9Lz1aHdP0sNcE7uFgJ3iB5tXoWqRv6A",
+						"generation": 0,
+						"devices": [],
+						"revoked": []
+					},
+					{
+						"enabled": true,
+						"origin": "https://relay.example.com",
+						"hostId": "3f9a1c7e0b5d24a86e91f0c3d7b2a5e84c1f6d09",
+						"keys": {
+							"d": "Hs4kR0tVzN8pLq2yXc7bM1eW9uAfD3jG6oT5iK0nZ2E",
+							"publicKey": "BQx7mN2kTrWv4sLa9ZdHc0FpYe6UgOtJ3iXb8RqKnS1uMh5CvAzD2eG7wPl4yT9jBf0oIsUhE8dWz4Lq3QkR6aY"
+						},
+						"credential": "Qm8vT2xK4rYw9Lz1aHdP0sNcE7uFgJ3iB5tXoWqRv6A",
+						"generation": 1,
+						"devices": [
+							{
+								"deviceId": "a61d20f9c4be8375d0e2917ac53f4b06e8d19c2a",
+								"deviceKey": "BgM5tRz0Kx3Lh8WqYv2cNe6Fp1Ud9sAi4JoTb7ZkXw5Ch0EyGlPm3Qr8Vn2Sa6Dj4UfIt1Oy9WeBlRxM7KuHpCs",
+								"name": "Work iPhone",
+								"platform": "ios",
+								"projects": [
+									{
+										"id": "local-4f1c9a07e2b836d5c1e94a0f7b2d68c3a5e19f0b47d26c8e3a91f5d0b7c624e8",
+										"name": "storefront-web"
+									}
+								],
+								"comments": false,
+								"agents": false,
+								"approvedAt": "2026-11-12T09:41:07.236Z",
+								"generation": 1,
+								"lastSeenAt": "2026-11-15T08:15:44.117Z"
+							},
+							{
+								"deviceId": "5e07b9d3a2c41f8e6b09d7a35c2f10e4b8a6d9c1",
+								"deviceKey": "BfR7wKc2Lz0Ya4Nh9VsqIx6ZoDu3GePt1Mb8Wj5FrK2nTy7XdlUa9ECh4SvBqJ0gRm6Ni3Zo8LpHf1Tx5CwIyEQ",
+								"name": "Travel iPhone",
+								"platform": "ios",
+								"projects": [
+									{
+										"id": "local-9d0e53b6a71c28f4e09b3d5a6c1e72f8b4d03a9c5e61f27b8d4a0c3e95f1b62d",
+										"name": "reports-api"
+									}
+								],
+								"agents": true,
+								"approvedAt": "2026-11-14T18:22:50.903Z",
+								"generation": 1,
+								"lastSeenAt": null
+							}
+						],
+						"revoked": ["c3b08e6f1a9d425e7b0c93f6a18d2e5b07f4c9a2"]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteHostStoreAdapter.available",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when the native session gate for this file, encryption and platform reports OS encryption as usable: the encryption must report it available, and on Linux the selected storage backend must be gnome_libsecret, kwallet, kwallet5 or kwallet6. read() and save() throw an error with the message 'OS encryption is required for remote access.' while it is false, but clear() does not check it.",
+				"examples": [true, false]
 			},
 			{
 				"name": "RemoteHostStoreAdapter.read",
-				"type": "Promise<RemoteHostState | null>"
+				"type": "Promise<RemoteHostState | null>",
+				"description": "The state stored in the file, or null when no file exists, which is not an error. It rejects while available() is false, and also when the file cannot be decrypted or parsed as JSON, or when enabled is not a boolean, devices or revoked is not an array, or hostId, credential, keys.d or keys.publicKey is not a non-empty string.",
+				"examples": [
+					null,
+					{
+						"enabled": true,
+						"origin": "https://relay.example.com",
+						"hostId": "3f9a1c7e0b5d24a86e91f0c3d7b2a5e84c1f6d09",
+						"keys": {
+							"d": "Hs4kR0tVzN8pLq2yXc7bM1eW9uAfD3jG6oT5iK0nZ2E",
+							"publicKey": "BQx7mN2kTrWv4sLa9ZdHc0FpYe6UgOtJ3iXb8RqKnS1uMh5CvAzD2eG7wPl4yT9jBf0oIsUhE8dWz4Lq3QkR6aY"
+						},
+						"credential": "Qm8vT2xK4rYw9Lz1aHdP0sNcE7uFgJ3iB5tXoWqRv6A",
+						"generation": 1,
+						"devices": [
+							{
+								"deviceId": "a61d20f9c4be8375d0e2917ac53f4b06e8d19c2a",
+								"deviceKey": "BgM5tRz0Kx3Lh8WqYv2cNe6Fp1Ud9sAi4JoTb7ZkXw5Ch0EyGlPm3Qr8Vn2Sa6Dj4UfIt1Oy9WeBlRxM7KuHpCs",
+								"name": "Work iPhone",
+								"platform": "ios",
+								"projects": [
+									{
+										"id": "local-4f1c9a07e2b836d5c1e94a0f7b2d68c3a5e19f0b47d26c8e3a91f5d0b7c624e8",
+										"name": "storefront-web"
+									}
+								],
+								"comments": false,
+								"agents": false,
+								"approvedAt": "2026-11-12T09:41:07.236Z",
+								"generation": 1,
+								"lastSeenAt": "2026-11-15T08:15:44.117Z"
+							},
+							{
+								"deviceId": "5e07b9d3a2c41f8e6b09d7a35c2f10e4b8a6d9c1",
+								"deviceKey": "BfR7wKc2Lz0Ya4Nh9VsqIx6ZoDu3GePt1Mb8Wj5FrK2nTy7XdlUa9ECh4SvBqJ0gRm6Ni3Zo8LpHf1Tx5CwIyEQ",
+								"name": "Travel iPhone",
+								"platform": "ios",
+								"projects": [
+									{
+										"id": "local-9d0e53b6a71c28f4e09b3d5a6c1e72f8b4d03a9c5e61f27b8d4a0c3e95f1b62d",
+										"name": "reports-api"
+									}
+								],
+								"agents": true,
+								"approvedAt": "2026-11-14T18:22:50.903Z",
+								"generation": 1,
+								"lastSeenAt": null
+							}
+						],
+						"revoked": ["c3b08e6f1a9d425e7b0c93f6a18d2e5b07f4c9a2"]
+					}
+				]
 			},
 			{
 				"name": "RemoteHostStoreAdapter.save",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value once the sealed state has been renamed into place. It rejects while available() is false, and when the directory cannot be created or the temporary file cannot be written or renamed; a failed write can leave the temporary file behind, because nothing removes it."
 			},
 			{
 				"name": "RemoteHostStoreAdapter.clear",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value once the stored file is removed, and also when no file exists. It does not check available(), so it runs when OS encryption is unavailable, and it rejects on any file-system error other than ENOENT."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by read() and save() with the message 'OS encryption is required for remote access.' whenever available() is false."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by read() with the message 'Stored remote access state is unreadable. Turn remote access on again.' when the file cannot be decrypted or parsed as JSON, or when the parsed value fails the shape check."
+			},
+			{
+				"name": "NodeJS.ErrnoException",
+				"type": "thrown",
+				"description": "A Node file-system error passed on unchanged: read() and clear() rethrow every error except ENOENT, and save() lets mkdir, writeFile and rename rejections through."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RemoteHostStoreAdapter.available",
@@ -73,11 +203,13 @@
 				"outputs": [
 					{
 						"name": "RemoteHostStoreAdapter.available",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when the native session gate for this file, encryption and platform reports OS encryption as usable: the encryption must report it available, and on Linux the selected storage backend must be gnome_libsecret, kwallet, kwallet5 or kwallet6. read() and save() throw an error with the message 'OS encryption is required for remote access.' while it is false, but clear() does not check it.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostStoreAdapter.read",
@@ -85,16 +217,78 @@
 				"outputs": [
 					{
 						"name": "RemoteHostStoreAdapter.read",
-						"type": "Promise<RemoteHostState | null>"
+						"type": "Promise<RemoteHostState | null>",
+						"description": "The state stored in the file, or null when no file exists, which is not an error. It rejects while available() is false, and also when the file cannot be decrypted or parsed as JSON, or when enabled is not a boolean, devices or revoked is not an array, or hostId, credential, keys.d or keys.publicKey is not a non-empty string.",
+						"examples": [
+							null,
+							{
+								"enabled": true,
+								"origin": "https://relay.example.com",
+								"hostId": "3f9a1c7e0b5d24a86e91f0c3d7b2a5e84c1f6d09",
+								"keys": {
+									"d": "Hs4kR0tVzN8pLq2yXc7bM1eW9uAfD3jG6oT5iK0nZ2E",
+									"publicKey": "BQx7mN2kTrWv4sLa9ZdHc0FpYe6UgOtJ3iXb8RqKnS1uMh5CvAzD2eG7wPl4yT9jBf0oIsUhE8dWz4Lq3QkR6aY"
+								},
+								"credential": "Qm8vT2xK4rYw9Lz1aHdP0sNcE7uFgJ3iB5tXoWqRv6A",
+								"generation": 1,
+								"devices": [
+									{
+										"deviceId": "a61d20f9c4be8375d0e2917ac53f4b06e8d19c2a",
+										"deviceKey": "BgM5tRz0Kx3Lh8WqYv2cNe6Fp1Ud9sAi4JoTb7ZkXw5Ch0EyGlPm3Qr8Vn2Sa6Dj4UfIt1Oy9WeBlRxM7KuHpCs",
+										"name": "Work iPhone",
+										"platform": "ios",
+										"projects": [
+											{
+												"id": "local-4f1c9a07e2b836d5c1e94a0f7b2d68c3a5e19f0b47d26c8e3a91f5d0b7c624e8",
+												"name": "storefront-web"
+											}
+										],
+										"comments": false,
+										"agents": false,
+										"approvedAt": "2026-11-12T09:41:07.236Z",
+										"generation": 1,
+										"lastSeenAt": "2026-11-15T08:15:44.117Z"
+									},
+									{
+										"deviceId": "5e07b9d3a2c41f8e6b09d7a35c2f10e4b8a6d9c1",
+										"deviceKey": "BfR7wKc2Lz0Ya4Nh9VsqIx6ZoDu3GePt1Mb8Wj5FrK2nTy7XdlUa9ECh4SvBqJ0gRm6Ni3Zo8LpHf1Tx5CwIyEQ",
+										"name": "Travel iPhone",
+										"platform": "ios",
+										"projects": [
+											{
+												"id": "local-9d0e53b6a71c28f4e09b3d5a6c1e72f8b4d03a9c5e61f27b8d4a0c3e95f1b62d",
+												"name": "reports-api"
+											}
+										],
+										"agents": true,
+										"approvedAt": "2026-11-14T18:22:50.903Z",
+										"generation": 1,
+										"lastSeenAt": null
+									}
+								],
+								"revoked": ["c3b08e6f1a9d425e7b0c93f6a18d2e5b07f4c9a2"]
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when available() is false, before the file is opened."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when the file cannot be decrypted or parsed as JSON, or when the parsed value fails the shape check."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Thrown when readFile fails with any error code other than ENOENT."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostStoreAdapter.save",
@@ -102,22 +296,92 @@
 					{
 						"name": "RemoteHostStoreAdapter.save.state",
 						"type": "RemoteHostState",
-						"required": true
+						"required": true,
+						"description": "The whole remote host state to store: hostId, host keys, credential, enabled flag, origin, generation, approved devices and revoked device ids. save() does not check its shape; it seals the JSON with config.encryption, writes it to a temporary file and renames that over the stored file, and read() later rejects the file if its shape is wrong.",
+						"examples": [
+							{
+								"enabled": false,
+								"origin": null,
+								"hostId": "3f9a1c7e0b5d24a86e91f0c3d7b2a5e84c1f6d09",
+								"keys": {
+									"d": "Hs4kR0tVzN8pLq2yXc7bM1eW9uAfD3jG6oT5iK0nZ2E",
+									"publicKey": "BQx7mN2kTrWv4sLa9ZdHc0FpYe6UgOtJ3iXb8RqKnS1uMh5CvAzD2eG7wPl4yT9jBf0oIsUhE8dWz4Lq3QkR6aY"
+								},
+								"credential": "Qm8vT2xK4rYw9Lz1aHdP0sNcE7uFgJ3iB5tXoWqRv6A",
+								"generation": 0,
+								"devices": [],
+								"revoked": []
+							},
+							{
+								"enabled": true,
+								"origin": "https://relay.example.com",
+								"hostId": "3f9a1c7e0b5d24a86e91f0c3d7b2a5e84c1f6d09",
+								"keys": {
+									"d": "Hs4kR0tVzN8pLq2yXc7bM1eW9uAfD3jG6oT5iK0nZ2E",
+									"publicKey": "BQx7mN2kTrWv4sLa9ZdHc0FpYe6UgOtJ3iXb8RqKnS1uMh5CvAzD2eG7wPl4yT9jBf0oIsUhE8dWz4Lq3QkR6aY"
+								},
+								"credential": "Qm8vT2xK4rYw9Lz1aHdP0sNcE7uFgJ3iB5tXoWqRv6A",
+								"generation": 1,
+								"devices": [
+									{
+										"deviceId": "a61d20f9c4be8375d0e2917ac53f4b06e8d19c2a",
+										"deviceKey": "BgM5tRz0Kx3Lh8WqYv2cNe6Fp1Ud9sAi4JoTb7ZkXw5Ch0EyGlPm3Qr8Vn2Sa6Dj4UfIt1Oy9WeBlRxM7KuHpCs",
+										"name": "Work iPhone",
+										"platform": "ios",
+										"projects": [
+											{
+												"id": "local-4f1c9a07e2b836d5c1e94a0f7b2d68c3a5e19f0b47d26c8e3a91f5d0b7c624e8",
+												"name": "storefront-web"
+											}
+										],
+										"comments": false,
+										"agents": false,
+										"approvedAt": "2026-11-12T09:41:07.236Z",
+										"generation": 1,
+										"lastSeenAt": "2026-11-15T08:15:44.117Z"
+									},
+									{
+										"deviceId": "5e07b9d3a2c41f8e6b09d7a35c2f10e4b8a6d9c1",
+										"deviceKey": "BfR7wKc2Lz0Ya4Nh9VsqIx6ZoDu3GePt1Mb8Wj5FrK2nTy7XdlUa9ECh4SvBqJ0gRm6Ni3Zo8LpHf1Tx5CwIyEQ",
+										"name": "Travel iPhone",
+										"platform": "ios",
+										"projects": [
+											{
+												"id": "local-9d0e53b6a71c28f4e09b3d5a6c1e72f8b4d03a9c5e61f27b8d4a0c3e95f1b62d",
+												"name": "reports-api"
+											}
+										],
+										"agents": true,
+										"approvedAt": "2026-11-14T18:22:50.903Z",
+										"generation": 1,
+										"lastSeenAt": null
+									}
+								],
+								"revoked": ["c3b08e6f1a9d425e7b0c93f6a18d2e5b07f4c9a2"]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteHostStoreAdapter.save",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value once the sealed state has been renamed into place. It rejects while available() is false, and when the directory cannot be created or the temporary file cannot be written or renamed; a failed write can leave the temporary file behind, because nothing removes it."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown before anything is written when available() is false."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Thrown when mkdir, writeFile or rename rejects; no code removes the temporary file if one was created."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostStoreAdapter.clear",
@@ -125,11 +389,18 @@
 				"outputs": [
 					{
 						"name": "RemoteHostStoreAdapter.clear",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value once the stored file is removed, and also when no file exists. It does not check available(), so it runs when OS encryption is unavailable, and it rejects on any file-system error other than ENOENT."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Thrown when unlink fails with any error code other than ENOENT."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -139,17 +410,19 @@
 					{
 						"name": "RemoteHostStoreAdapter.constructor.config",
 						"type": "RemoteHostStoreAdapterConfig",
-						"required": true
+						"required": true,
+						"description": "The file that holds the sealed state, the encryption that seals it (Electron safeStorage in the app, a deterministic port in tests), and an optional platform that is passed to the native session gate, which uses process.platform when it is omitted. The constructor only stores these values and builds that gate, so it reads and writes nothing."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteHostStoreAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new RemoteHostStoreAdapter instance, which holds the config and the NativeSessionAdapter built from it."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
