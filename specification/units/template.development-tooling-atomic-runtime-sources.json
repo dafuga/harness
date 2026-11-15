@@ -12,12 +12,20 @@
 		"symbols": ["atomicRuntimeSources"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "atomicRuntimeSources",
-				"type": "Record<string, string>"
+				"type": "Record<string, string>",
+				"description": "Maps the three generated runtime filenames to their JavaScript source text. It is available when the template module is imported and contains exactly those three string-valued entries.",
+				"examples": [
+					{
+						"atomicComponents.js": "import { readFileSync } from 'node:fs';\nimport { dirname, resolve } from 'node:path';",
+						"atomicSyntax.js": "import { parse } from 'svelte/compiler';\nimport { atomTag, nativeAtoms } from './htmlElements.js';",
+						"htmlElements.js": "// Conforming HTML elements: https://html.spec.whatwg.org/multipage/indices.html#elements-3\n// SVG and dynamic elements preserve the existing native drawing and heading APIs."
+					}
+				]
 			}
 		],
 		"errors": [],
