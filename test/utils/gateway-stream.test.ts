@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { gatewayStream } from '../../src/services/codex-gateway-service/gatewayStream';
-import { CodexSessionRepository } from '../../src/repositories/codex-session-repository/CodexSessionRepository';
+import { CodexSessionRepository } from '../../src/cli/program/codex-gateway-service/codex-session-repository/CodexSessionRepository';
 test('stream cancellation interrupts pending Claude work', async () => {
 	const repository = new CodexSessionRepository();
 	const session = repository.create('thread');

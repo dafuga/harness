@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { CodexSessionRepository } from '../../src/repositories/codex-session-repository/CodexSessionRepository';
+import { CodexSessionRepository } from '../../src/cli/program/codex-gateway-service/codex-session-repository/CodexSessionRepository';
 vi.mock('@anthropic-ai/claude-agent-sdk', () => ({
 	query: () => ({
 		[Symbol.asyncIterator]: () => ({
