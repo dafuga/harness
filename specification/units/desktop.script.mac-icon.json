@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/scripts/mac-icon.ts",
-			"packages/desktop/scripts/mac-icon/mac-icon.ts"
-		],
-		"symbols": ["macIcon", "macIcon"]
+		"source": ["packages/desktop/scripts/mac-icon/mac-icon.ts"],
+		"symbols": ["macIcon"]
 	},
 	"contract": {
 		"origin": "derived",
