@@ -22,20 +22,33 @@
 		"symbols": ["load", "+page"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "load",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The exported async load function of +page.server.ts, which takes the ServerLoadEvent and either resolves to {} or throws a 308 redirect. For an exact explorer address, where explorerExact is truthy, it resolves to {} before index.json is read; for any other address it throws a 308 redirect to the target consoleCanonical returns when that target is truthy, and resolves to {} when the index read or that target is falsy."
 			},
 			{
 				"name": "+page",
-				"type": "markup"
+				"type": "markup",
+				"description": "The Svelte page of this route, the renderer for an address that no page of its own serves. It declares no props and renders HarnessScreen titled 'Explorer' with ExplorerContent as its content, the same screen for every address because it reads no route data or URL."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Redirect 308",
+				"type": "thrown",
+				"description": "Thrown by redirect(308, target) in load when the target from consoleCanonical is truthy; it is the redirect itself, not a failure."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse when the index read from index.json is not valid JSON; load does not catch it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "load",
@@ -43,22 +56,33 @@
 					{
 						"name": "load.url",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "It is the request URL, the url field of the ServerLoadEvent that load destructures. Its pathname sliced after the eighth character (the length of '/harness') and its search string go to explorerExact, and the whole URL goes to consoleCanonical with the parsed index and '/harness'."
 					}
 				],
 				"outputs": [
 					{
 						"name": "load",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The value that load resolves to, which is the empty object {} on every path that does not throw: an exact explorer address, and any address with no redirect target. It has no fields, so the page data gets nothing from this file.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Redirect 308",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by redirect(308, target) in load when the target from consoleCanonical is truthy; it is the redirect itself, not a failure."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when the index read from index.json is not valid JSON; load does not catch it."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
