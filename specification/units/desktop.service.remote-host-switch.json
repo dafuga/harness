@@ -25,34 +25,90 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RemoteHostSwitchService.constructor.options",
 				"type": "RemoteHostSwitchOptions",
-				"required": true
+				"required": true,
+				"description": "The collaborators the service calls: record (the RemoteHostRecordService that reads and writes the stored record), register (registers this computer under the signed-in hosted identity and rejects when there is none), name (returns the name passed to registration), run (takes the state and keys and brings the host online), close (ends the running host) and changed (is told when the shown status changes while a request is under way). All six are required, and the constructor keeps the object as given without checking it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteHostSwitchService.start",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value once the launch check ends. It calls run with the stored state and the imported keys only when the record is available, is stored as enabled with an origin, and no request came in while the record or its keys were read; it registers nothing."
 			},
 			{
 				"name": "RemoteHostSwitchService.enable",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value. When record.available() is false it returns at once and changes nothing; otherwise phase and reason are written only while this is still the latest request, and a registration failure is shown in them instead of being thrown, unless the failure is null or undefined, which makes enable() reject with a TypeError."
 			},
 			{
 				"name": "RemoteHostSwitchService.disable",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value after phase is reset to 'idle', reason to null, and the record is turned off. It rejects when close throws, before that reset, or when record.off() rejects, after it."
 			},
 			{
 				"name": "RemoteHostSwitchService.stop",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value after the record has settled, and it turns no toggle off. It rejects when close throws, before the phase is updated, or when record.settled() rejects, after that update."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "RemoteHostRecordService.available throw",
+				"type": "thrown",
+				"description": "record.available() is called without a catch by start() and enable(), so a throw from it rejects that call; disable() and stop() never call it."
+			},
+			{
+				"name": "importRemoteKeys rejection",
+				"type": "thrown",
+				"description": "start() awaits importRemoteKeys(state.keys) without a catch, so its rejection rejects start() and run is not called."
+			},
+			{
+				"name": "RemoteHostSwitchOptions.run throw",
+				"type": "thrown",
+				"description": "start() calls run without a catch, so a throw from it rejects start(); inside enable() the same throw is treated as a failed registration and shown in phase and reason."
+			},
+			{
+				"name": "RemoteHostRecordService.load rejection",
+				"type": "thrown",
+				"description": "enable() awaits record.load() without a catch, so an unreadable stored record rejects enable(), as its doc comment states; start() catches this rejection and treats the record as nothing stored."
+			},
+			{
+				"name": "remoteHostIdentity rejection",
+				"type": "thrown",
+				"description": "When record.load() resolves null or undefined, enable() awaits remoteHostIdentity() without a catch, so its rejection rejects enable()."
+			},
+			{
+				"name": "RemoteHostSwitchOptions.changed throw",
+				"type": "thrown",
+				"description": "enable() calls changed() without a catch after it sets phase to 'registering', so a throw from it rejects enable() before the registration starts."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by refused() when a registration step fails with null or undefined, because refused() reads .signedOut from that value; enable() then rejects with it and does not write its final status."
+			},
+			{
+				"name": "RemoteHostSwitchOptions.close throw",
+				"type": "thrown",
+				"description": "disable() and stop() call close() without a catch, so a throw from it rejects that call before disable() resets the status and turns the record off, or before stop() updates the phase and waits for the record to settle."
+			},
+			{
+				"name": "RemoteHostRecordService.off rejection",
+				"type": "thrown",
+				"description": "disable() awaits record.off() without a catch, so a rejection there rejects disable(); the status has already been reset to idle with a null reason by then."
+			},
+			{
+				"name": "RemoteHostRecordService.settled rejection",
+				"type": "thrown",
+				"description": "stop() awaits record.settled() without a catch, so a rejection there rejects stop(); any registering phase has already been set to idle by then."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RemoteHostSwitchService.start",
@@ -60,11 +116,28 @@
 				"outputs": [
 					{
 						"name": "RemoteHostSwitchService.start",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value once the launch check ends. It calls run with the stored state and the imported keys only when the record is available, is stored as enabled with an origin, and no request came in while the record or its keys were read; it registers nothing."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RemoteHostRecordService.available throw",
+						"type": "thrown",
+						"description": "record.available() is called without a catch, so a throw from it rejects start()."
+					},
+					{
+						"name": "importRemoteKeys rejection",
+						"type": "thrown",
+						"description": "importRemoteKeys(state.keys) is awaited without a catch, so its rejection rejects start() and run is not called."
+					},
+					{
+						"name": "RemoteHostSwitchOptions.run throw",
+						"type": "thrown",
+						"description": "run is called without a catch, so a throw from it rejects start()."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostSwitchService.enable",
@@ -72,11 +145,38 @@
 				"outputs": [
 					{
 						"name": "RemoteHostSwitchService.enable",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value. When record.available() is false it returns at once and changes nothing; otherwise phase and reason are written only while this is still the latest request, and a registration failure is shown in them instead of being thrown, unless the failure is null or undefined, which makes enable() reject with a TypeError."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RemoteHostRecordService.available throw",
+						"type": "thrown",
+						"description": "record.available() is called without a catch before any state changes, so a throw from it rejects enable()."
+					},
+					{
+						"name": "RemoteHostRecordService.load rejection",
+						"type": "thrown",
+						"description": "record.load() is awaited without a catch, so an unreadable stored record rejects enable(), as its doc comment states."
+					},
+					{
+						"name": "remoteHostIdentity rejection",
+						"type": "thrown",
+						"description": "When record.load() resolves null or undefined, remoteHostIdentity() is awaited without a catch, so its rejection rejects enable()."
+					},
+					{
+						"name": "RemoteHostSwitchOptions.changed throw",
+						"type": "thrown",
+						"description": "changed() is called without a catch after phase is set to 'registering', so a throw from it rejects enable() before the registration starts."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by refused() when a registration step fails with null or undefined, because refused() reads .signedOut from that value; enable() then rejects with it and does not write its final status."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostSwitchService.disable",
@@ -84,11 +184,23 @@
 				"outputs": [
 					{
 						"name": "RemoteHostSwitchService.disable",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value after phase is reset to 'idle', reason to null, and the record is turned off. It rejects when close throws, before that reset, or when record.off() rejects, after it."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RemoteHostSwitchOptions.close throw",
+						"type": "thrown",
+						"description": "close() is called without a catch before the status is reset and the record is turned off, so a throw from it rejects disable() before either happens."
+					},
+					{
+						"name": "RemoteHostRecordService.off rejection",
+						"type": "thrown",
+						"description": "record.off() is awaited without a catch, so a rejection there rejects disable(); the status has already been reset to idle with a null reason by then."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostSwitchService.stop",
@@ -96,11 +208,23 @@
 				"outputs": [
 					{
 						"name": "RemoteHostSwitchService.stop",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value after the record has settled, and it turns no toggle off. It rejects when close throws, before the phase is updated, or when record.settled() rejects, after that update."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RemoteHostSwitchOptions.close throw",
+						"type": "thrown",
+						"description": "close() is called without a catch before the phase is updated and record.settled() is awaited, so a throw from it rejects stop() before either happens."
+					},
+					{
+						"name": "RemoteHostRecordService.settled rejection",
+						"type": "thrown",
+						"description": "record.settled() is awaited without a catch, so a rejection there rejects stop(); any registering phase has already been set to idle by then."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -110,17 +234,19 @@
 					{
 						"name": "RemoteHostSwitchService.constructor.options",
 						"type": "RemoteHostSwitchOptions",
-						"required": true
+						"required": true,
+						"description": "The collaborators the service calls: record (the RemoteHostRecordService that reads and writes the stored record), register (registers this computer under the signed-in hosted identity and rejects when there is none), name (returns the name passed to registration), run (takes the state and keys and brings the host online), close (ends the running host) and changed (is told when the shown status changes while a request is under way). All six are required, and the constructor keeps the object as given without checking it."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteHostSwitchService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new RemoteHostSwitchService, with phase 'idle', reason null, and the options object kept by reference."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
