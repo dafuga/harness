@@ -1,7 +1,7 @@
 import { expect, test, vi } from 'vitest';
 import type { DesktopBridge } from '../src/models/DesktopBridge.types';
 import type { RemoteProjectPort } from '../src/models/projects-sessions/ProjectContext.types';
-import { HostedProjectService } from '../src/services/HostedProjectService';
+import { HostedProjectService } from '../src/services/development-tooling/desktop-bridge-service/HostedProjectService';
 import { ProjectSessionService } from '../src/services/ProjectSessionService';
 
 const commit = 'a'.repeat(40);

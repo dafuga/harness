@@ -1,5 +1,5 @@
 import { test, expect } from 'vitest';
-import { HostedReadService } from '../../src/services/HostedReadService';
+import { HostedReadService } from '../../src/services/development-tooling/HostedReadService';
 test('missing native credentials never execute a cached or online load', async () => {
 	const events: unknown[] = [];
 	const service = new HostedReadService({

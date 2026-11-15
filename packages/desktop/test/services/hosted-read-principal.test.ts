@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { HostedReadService } from '../../src/services/HostedReadService';
+import { HostedReadService } from '../../src/services/development-tooling/HostedReadService';
 
 test('an artifact response principal is checked even before metadata was pinned', async () => {
 	const origin = 'https://hub.example.invalid';

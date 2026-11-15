@@ -1,5 +1,5 @@
 import { test, expect, vi } from 'vitest';
-import { HostedProjectService } from '../../src/services/HostedProjectService';
+import { HostedProjectService } from '../../src/services/development-tooling/desktop-bridge-service/HostedProjectService';
 import { ProjectSessionService } from '../../src/services/ProjectSessionService';
 import type { RemoteProjectPort } from '../../src/models/projects-sessions/ProjectContext.types';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';

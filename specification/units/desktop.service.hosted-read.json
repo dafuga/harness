@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/services/HostedReadService.ts",
 			"packages/desktop/src/services/development-tooling/HostedReadService.ts",
 			"packages/desktop/src/services/development-tooling/HostedReadService.types.ts"
 		],
 		"symbols": [
-			"HostedReadService",
 			"HostedReadService",
 			"HostedReadService.constructor",
 			"HostedReadService.read",
