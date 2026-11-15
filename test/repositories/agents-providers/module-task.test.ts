@@ -55,30 +55,13 @@ async function preserveExtendedTasks(
 		dependsOn: ['source-task']
 	};
 	await repository.update((queue) => Object.assign(queue.tasks[0], metadata));
-	const current = await repository.read();
-	const foreign = JSON.parse(await f.git.run(['show', `${current.commit}:queue.json`]));
-	const example = JSON.parse(
-		'{"__proto__":{"opaque":"keep"},"constructor":{"kind":"data"},"prototype":[1]}'
-	);
-	foreign.tasks[0].wantedContract.inputs.push({
-		name: 'payload',
-		type: 'json',
-		examples: [example]
-	});
-	foreign.tasks[0].contractHash = createHash('sha256')
-		.update(stableJson(foreign.tasks[0].wantedContract))
-		.digest('hex');
-	const blob = await f.git.run(['hash-object', '-w', '--stdin'], {
-		input: JSON.stringify(foreign)
-	});
-	const tree = await f.git.run(['mktree'], { input: `100644 blob ${blob}\tqueue.json\n` });
-	const commit = await f.git.run(['commit-tree', tree, '-p', current.commit!], {
-		input: 'chore: simulate newer queue writer\n'
-	});
-	await f.git.run(['update-ref', repository.ref, commit, current.commit!]);
+	const foreign = await appendOpaqueContract(f, repository);
 	const loaded = await repository.read();
 	expect(
-		Object.hasOwn(loaded.data.tasks[0].wantedContract.inputs[0].examples![0]!, '__proto__'),
+		Object.hasOwn(
+			loaded.data.tasks[0].wantedContract.inputs[0].examples![0]! as object,
+			'__proto__'
+		),
 		'opaque contract example survives schema reading'
 	).toBe(true);
 	await repository.update((queue) =>
@@ -101,6 +84,34 @@ async function preserveExtendedTasks(
 		Object.assign(base.tasks[0], extra);
 		expect(claimedTask(base, 'owner', ['service.orders'], owner)).toBeNull();
 	}
+}
+
+async function appendOpaqueContract(
+	f: Awaited<ReturnType<typeof moduleTaskFixture>>,
+	repository: ModuleTaskRepository
+) {
+	const current = await repository.read();
+	const foreign = JSON.parse(await f.git.run(['show', `${current.commit}:queue.json`]));
+	const example = JSON.parse(
+		'{"__proto__":{"opaque":"keep"},"constructor":{"kind":"data"},"prototype":[1]}'
+	);
+	foreign.tasks[0].wantedContract.inputs.push({
+		name: 'payload',
+		type: 'json',
+		examples: [example]
+	});
+	foreign.tasks[0].contractHash = createHash('sha256')
+		.update(stableJson(foreign.tasks[0].wantedContract))
+		.digest('hex');
+	const blob = await f.git.run(['hash-object', '-w', '--stdin'], {
+		input: JSON.stringify(foreign)
+	});
+	const tree = await f.git.run(['mktree'], { input: `100644 blob ${blob}\tqueue.json\n` });
+	const commit = await f.git.run(['commit-tree', tree, '-p', current.commit!], {
+		input: 'chore: simulate newer queue writer\n'
+	});
+	await f.git.run(['update-ref', repository.ref, commit, current.commit!]);
+	return foreign;
 }
 
 async function observeCallbackInputs(repository: ModuleTaskRepository) {
