@@ -24,74 +24,181 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AgentActivityService.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The checkout path where this service stores its agent registry. It also identifies the unit registry used to mark stated unit IDs as known.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+				]
 			},
 			{
 				"name": "AgentActivityService.constructor.checkouts",
 				"type": "Checkout[]",
-				"required": true
+				"required": true,
+				"description": "The repository checkouts the service considers, each with its path, branch, HEAD SHA or null, and primary flag. A checkout whose path matches root supplies the branch for its initial heartbeat; without a match that branch is null.",
+				"examples": [
+					[
+						{
+							"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+							"branch": null,
+							"head": "0123456789abcdef0123456789abcdef01234567",
+							"primary": true
+						}
+					]
+				]
 			},
 			{
 				"name": "AgentActivityService.register.input",
 				"type": "AgentInput",
-				"required": true
+				"required": true,
+				"description": "Owner-stated registration fields in CLI form; the label is required by this service. The ID allows at most 64 ASCII letters, digits, dots, dashes, or underscores; text fields are trimmed single lines capped at 120 characters for label, 80 for provider/model/loop, and 200 for task/outcome; units accepts at most 40 comma-separated IDs matching the service unit-ID shape, pid is 1–2147483647, and ttl is 1–86400 seconds (default 900).",
+				"examples": [
+					{
+						"id": "0e87a6f0-81b0-4b3d-9338-12f2a501d4c6",
+						"label": "Code assistant",
+						"provider": "openai",
+						"model": "gpt-6-luna",
+						"task": "Implement the activity contract",
+						"loop": "contract-review",
+						"units": "service.agent-activity",
+						"ttl": "900"
+					}
+				]
 			},
 			{
 				"name": "AgentActivityService.heartbeat.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The ID of an agent registration in one of the configured repository checkouts. It must match the service lookup shape of letters, digits, underscores, dots, or dashes and refer to an agent without an end record.",
+				"examples": ["0e87a6f0-81b0-4b3d-9338-12f2a501d4c6"]
 			},
 			{
 				"name": "AgentActivityService.heartbeat.input",
 				"type": "AgentInput",
-				"required": true
+				"required": true,
+				"description": "Owner-stated CLI fields for this heartbeat; supplied fields are validated with the same limits as registration. Only task, loop, and units replace the heartbeat’s prior values, and omitted values among those three keep their previous values.",
+				"examples": [
+					{
+						"task": "Review heartbeat behavior",
+						"units": "service.agent-activity"
+					}
+				]
 			},
 			{
 				"name": "AgentActivityService.finish.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The ID of an agent registration in one of the configured repository checkouts. It must match the service lookup shape of letters, digits, underscores, dots, or dashes and refer to an agent without an end record.",
+				"examples": ["0e87a6f0-81b0-4b3d-9338-12f2a501d4c6"]
 			},
 			{
 				"name": "AgentActivityService.finish.failed",
 				"type": "boolean",
-				"required": true
+				"required": true,
+				"description": "Whether the end record is marked failed (true) or completed (false).",
+				"examples": [false]
 			},
 			{
 				"name": "AgentActivityService.finish.outcome",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional one-line outcome text saved on the end record after trimming; blank or omitted text is stored as null, and nonblank text is limited to 200 characters. Defaults to undefined.",
+				"examples": ["Completed after review"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "AgentActivityService.register",
-				"type": "Promise<StoredAgent>"
+				"type": "Promise<StoredAgent>",
+				"description": "The newly stored registration, its initial heartbeat, and end:null. A missing input ID is replaced by randomUUID; omitted provider/model/task/loop become null, units default to an empty array, pid to null, and ttl to 900 seconds.",
+				"examples": [
+					{
+						"registration": {
+							"schemaVersion": 1,
+							"id": "0e87a6f0-81b0-4b3d-9338-12f2a501d4c6",
+							"label": "Code assistant",
+							"provider": "openai",
+							"model": "gpt-6-luna",
+							"pid": null,
+							"processStartedAt": null,
+							"registeredAt": "2026-11-15T10:00:00.000Z",
+							"ttlSeconds": 900
+						},
+						"beat": {
+							"at": "2026-11-15T10:00:00.000Z",
+							"branch": null,
+							"task": "Implement the activity contract",
+							"loop": "contract-review",
+							"units": ["service.agent-activity"]
+						},
+						"end": null
+					}
+				]
 			},
 			{
 				"name": "AgentActivityService.heartbeat",
-				"type": "Promise<AgentBeat>"
+				"type": "Promise<AgentBeat>",
+				"description": "The heartbeat written for the registered agent, timestamped at the call and using its checkout branch. Only supplied task, loop, or units replace their prior values.",
+				"examples": [
+					{
+						"at": "2026-11-15T10:05:00.000Z",
+						"branch": null,
+						"task": "Review heartbeat behavior",
+						"loop": "contract-review",
+						"units": ["service.agent-activity"]
+					}
+				]
 			},
 			{
 				"name": "AgentActivityService.finish",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "This operation resolves with no value after writing the first end record, setting its status from failed and storing a trimmed outcome or null. A later finish for that registration throws ExpectedCliError."
 			},
 			{
 				"name": "AgentActivityService.roster",
-				"type": "Promise<AgentRoster>"
+				"type": "Promise<AgentRoster>",
+				"description": "A snapshot across the configured checkouts. Before any registration it returns tracking as never-used, working:null, and an empty roster; otherwise it reports working and unreadable counts and includes working entries plus non-working entries seen within 24 hours. Entries sort by working, stale, gone, failed, then completed, with newer heartbeats first within each state.",
+				"examples": [
+					{
+						"tracking": "available",
+						"working": 1,
+						"unreadable": 0,
+						"roster": [
+							{
+								"id": "0e87a6f0-81b0-4b3d-9338-12f2a501d4c6",
+								"label": "Code assistant",
+								"provider": "openai",
+								"model": "gpt-6-luna",
+								"worktree": "slot-10",
+								"branch": null,
+								"task": "Implement the activity contract",
+								"loop": "contract-review",
+								"units": ["service.agent-activity"],
+								"unknownUnits": [],
+								"registeredAt": "2026-11-15T10:00:00.000Z",
+								"heartbeatAt": "2026-11-15T10:00:00.000Z",
+								"expiresAt": "2026-11-15T10:15:00.000Z",
+								"state": "working",
+								"detail": "Last heartbeat at 2026-11-15T10:00:00.000Z"
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The expected CLI validation or lifecycle error. It is thrown for invalid stated fields, a missing registration label, a named PID that is not running, an unknown or ended registration, or a duplicate finish."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "AgentActivityService.register",
@@ -99,22 +206,60 @@
 					{
 						"name": "AgentActivityService.register.input",
 						"type": "AgentInput",
-						"required": true
+						"required": true,
+						"description": "Owner-stated registration fields in CLI form; the label is required by this service. The ID allows at most 64 ASCII letters, digits, dots, dashes, or underscores; text fields are trimmed single lines capped at 120 characters for label, 80 for provider/model/loop, and 200 for task/outcome; units accepts at most 40 comma-separated IDs matching the service unit-ID shape, pid is 1–2147483647, and ttl is 1–86400 seconds (default 900).",
+						"examples": [
+							{
+								"id": "0e87a6f0-81b0-4b3d-9338-12f2a501d4c6",
+								"label": "Code assistant",
+								"provider": "openai",
+								"model": "gpt-6-luna",
+								"task": "Implement the activity contract",
+								"loop": "contract-review",
+								"units": "service.agent-activity",
+								"ttl": "900"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AgentActivityService.register",
-						"type": "Promise<StoredAgent>"
+						"type": "Promise<StoredAgent>",
+						"description": "The newly stored registration, its initial heartbeat, and end:null. A missing input ID is replaced by randomUUID; omitted provider/model/task/loop become null, units default to an empty array, pid to null, and ttl to 900 seconds.",
+						"examples": [
+							{
+								"registration": {
+									"schemaVersion": 1,
+									"id": "0e87a6f0-81b0-4b3d-9338-12f2a501d4c6",
+									"label": "Code assistant",
+									"provider": "openai",
+									"model": "gpt-6-luna",
+									"pid": null,
+									"processStartedAt": null,
+									"registeredAt": "2026-11-15T10:00:00.000Z",
+									"ttlSeconds": 900
+								},
+								"beat": {
+									"at": "2026-11-15T10:00:00.000Z",
+									"branch": null,
+									"task": "Implement the activity contract",
+									"loop": "contract-review",
+									"units": ["service.agent-activity"]
+								},
+								"end": null
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The expected CLI validation error. It is thrown when a stated field fails its validation, the label is missing, or the supplied PID is not running."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AgentActivityService.heartbeat",
@@ -122,22 +267,47 @@
 					{
 						"name": "AgentActivityService.heartbeat.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The ID of an agent registration in one of the configured repository checkouts. It must match the service lookup shape of letters, digits, underscores, dots, or dashes and refer to an agent without an end record.",
+						"examples": ["0e87a6f0-81b0-4b3d-9338-12f2a501d4c6"]
 					},
 					{
 						"name": "AgentActivityService.heartbeat.input",
 						"type": "AgentInput",
-						"required": true
+						"required": true,
+						"description": "Owner-stated CLI fields for this heartbeat; supplied fields are validated with the same limits as registration. Only task, loop, and units replace the heartbeat’s prior values, and omitted values among those three keep their previous values.",
+						"examples": [
+							{
+								"task": "Review heartbeat behavior",
+								"units": "service.agent-activity"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AgentActivityService.heartbeat",
-						"type": "Promise<AgentBeat>"
+						"type": "Promise<AgentBeat>",
+						"description": "The heartbeat written for the registered agent, timestamped at the call and using its checkout branch. Only supplied task, loop, or units replace their prior values.",
+						"examples": [
+							{
+								"at": "2026-11-15T10:05:00.000Z",
+								"branch": null,
+								"task": "Review heartbeat behavior",
+								"loop": "contract-review",
+								"units": ["service.agent-activity"]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The expected CLI validation or lifecycle error. It is thrown for invalid stated fields, an ID that is invalid or unregistered in this repository, or a registration that already has an end record."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AgentActivityService.finish",
@@ -145,32 +315,41 @@
 					{
 						"name": "AgentActivityService.finish.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The ID of an agent registration in one of the configured repository checkouts. It must match the service lookup shape of letters, digits, underscores, dots, or dashes and refer to an agent without an end record.",
+						"examples": ["0e87a6f0-81b0-4b3d-9338-12f2a501d4c6"]
 					},
 					{
 						"name": "AgentActivityService.finish.failed",
 						"type": "boolean",
-						"required": true
+						"required": true,
+						"description": "Whether the end record is marked failed (true) or completed (false).",
+						"examples": [false]
 					},
 					{
 						"name": "AgentActivityService.finish.outcome",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional one-line outcome text saved on the end record after trimming; blank or omitted text is stored as null, and nonblank text is limited to 200 characters. Defaults to undefined.",
+						"examples": ["Completed after review"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AgentActivityService.finish",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "This operation resolves with no value after writing the first end record, setting its status from failed and storing a trimmed outcome or null. A later finish for that registration throws ExpectedCliError."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The expected CLI validation or lifecycle error. It is thrown for invalid outcome text, an ID that is invalid or unregistered in this repository, an ended registration, or a duplicate finish."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AgentActivityService.roster",
@@ -178,11 +357,38 @@
 				"outputs": [
 					{
 						"name": "AgentActivityService.roster",
-						"type": "Promise<AgentRoster>"
+						"type": "Promise<AgentRoster>",
+						"description": "A snapshot across the configured checkouts. Before any registration it returns tracking as never-used, working:null, and an empty roster; otherwise it reports working and unreadable counts and includes working entries plus non-working entries seen within 24 hours. Entries sort by working, stale, gone, failed, then completed, with newer heartbeats first within each state.",
+						"examples": [
+							{
+								"tracking": "available",
+								"working": 1,
+								"unreadable": 0,
+								"roster": [
+									{
+										"id": "0e87a6f0-81b0-4b3d-9338-12f2a501d4c6",
+										"label": "Code assistant",
+										"provider": "openai",
+										"model": "gpt-6-luna",
+										"worktree": "slot-10",
+										"branch": null,
+										"task": "Implement the activity contract",
+										"loop": "contract-review",
+										"units": ["service.agent-activity"],
+										"unknownUnits": [],
+										"registeredAt": "2026-11-15T10:00:00.000Z",
+										"heartbeatAt": "2026-11-15T10:00:00.000Z",
+										"expiresAt": "2026-11-15T10:15:00.000Z",
+										"state": "working",
+										"detail": "Last heartbeat at 2026-11-15T10:00:00.000Z"
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -192,22 +398,38 @@
 					{
 						"name": "AgentActivityService.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The checkout path where this service stores its agent registry. It also identifies the unit registry used to mark stated unit IDs as known.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+						]
 					},
 					{
 						"name": "AgentActivityService.constructor.checkouts",
 						"type": "Checkout[]",
-						"required": true
+						"required": true,
+						"description": "The repository checkouts the service considers, each with its path, branch, HEAD SHA or null, and primary flag. A checkout whose path matches root supplies the branch for its initial heartbeat; without a match that branch is null.",
+						"examples": [
+							[
+								{
+									"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+									"branch": null,
+									"head": "0123456789abcdef0123456789abcdef01234567",
+									"primary": true
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AgentActivityService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed service instance, with a registry rooted at the supplied checkout path and a process identity adapter for checking named PIDs."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
