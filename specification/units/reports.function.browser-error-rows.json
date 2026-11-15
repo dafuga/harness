@@ -22,17 +22,150 @@
 				"name": "browserErrorRows.diagnostic",
 				"type": "BrowserDiagnostic",
 				"required": true,
-				"description": "One attempt’s observed errors and declared expectations. Each expectation matches exact type and message and, when specified, exact source."
+				"description": "One test attempt's recorded console error messages and uncaught page exceptions (errors) and its declared expectations (expected), read together whenever those errors are classified. An expectation matches an error only when type and message are exactly equal and, when the expectation has a source, the error's source is exactly equal too; line, column, stack and page are never compared.",
+				"examples": [
+					{
+						"test": "an image that failed to load is rejected as capture evidence",
+						"file": "tests/e2e/explorer-shell-capture-readiness.spec.ts",
+						"project": "",
+						"retry": 0,
+						"browser": "chromium",
+						"errors": [
+							{
+								"type": "console",
+								"message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+								"page": "http://harness-readiness.test/",
+								"source": "http://harness-readiness.test/missing.png",
+								"line": 0,
+								"column": 0
+							},
+							{
+								"type": "pageerror",
+								"message": "Cannot read properties of undefined (reading 'length')",
+								"page": "http://harness-readiness.test/",
+								"stack": "TypeError: Cannot read properties of undefined (reading 'length')\n    at renderPreview (http://harness-readiness.test/app.js:12:19)"
+							}
+						],
+						"expected": [
+							{
+								"type": "console",
+								"message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+								"reason": "The capture must refuse this intentionally missing image.",
+								"source": "http://harness-readiness.test/missing.png"
+							}
+						]
+					},
+					{
+						"test": "an image that failed to load is rejected as capture evidence",
+						"file": "tests/e2e/explorer-shell-capture-readiness.spec.ts",
+						"project": "",
+						"retry": 1,
+						"browser": "chromium",
+						"errors": [],
+						"expected": [
+							{
+								"type": "console",
+								"message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+								"reason": "The capture must refuse this intentionally missing image.",
+								"source": "http://harness-readiness.test/missing.png"
+							}
+						]
+					},
+					{
+						"test": "an image that failed to load is rejected as capture evidence",
+						"file": "tests/e2e/explorer-shell-capture-readiness.spec.ts",
+						"project": "",
+						"retry": 0,
+						"browser": "chromium",
+						"errors": [
+							{
+								"type": "console",
+								"message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+								"page": "http://harness-readiness.test/",
+								"source": "http://harness-readiness.test/missing.png",
+								"line": 0,
+								"column": 0
+							},
+							{
+								"type": "console",
+								"message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+								"page": "http://harness-readiness.test/",
+								"source": "http://harness-readiness.test/missing.png",
+								"line": 0,
+								"column": 0
+							}
+						],
+						"expected": [
+							{
+								"type": "console",
+								"message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+								"reason": "The capture must refuse this intentionally missing image."
+							}
+						]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "browserErrorRows",
 				"type": "BrowserErrorRow[]",
-				"description": "Rows in observation order marked Expected or Unexpected, followed by unused expectations marked Missing expected error. Each expectation accounts for one occurrence; matching rows retain diagnostic context and add the expectation reason. Inputs are not modified."
+				"description": "One row per observed error, in observation order, marked Expected with the matched expectation's reason or Unexpected; each expectation left unused by any error follows as a Missing expected error row. Observed rows keep all fields of their error, Missing rows carry the expectation's fields, and the input diagnostic is not modified.",
+				"examples": [
+					[
+						{
+							"type": "console",
+							"message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+							"page": "http://harness-readiness.test/",
+							"source": "http://harness-readiness.test/missing.png",
+							"line": 0,
+							"column": 0,
+							"status": "Expected",
+							"reason": "The capture must refuse this intentionally missing image."
+						},
+						{
+							"type": "pageerror",
+							"message": "Cannot read properties of undefined (reading 'length')",
+							"page": "http://harness-readiness.test/",
+							"stack": "TypeError: Cannot read properties of undefined (reading 'length')\n    at renderPreview (http://harness-readiness.test/app.js:12:19)",
+							"status": "Unexpected"
+						}
+					],
+					[
+						{
+							"type": "console",
+							"message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+							"reason": "The capture must refuse this intentionally missing image.",
+							"source": "http://harness-readiness.test/missing.png",
+							"status": "Missing expected error"
+						}
+					],
+					[
+						{
+							"type": "console",
+							"message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+							"page": "http://harness-readiness.test/",
+							"source": "http://harness-readiness.test/missing.png",
+							"line": 0,
+							"column": 0,
+							"status": "Expected",
+							"reason": "The capture must refuse this intentionally missing image."
+						},
+						{
+							"type": "console",
+							"message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+							"page": "http://harness-readiness.test/",
+							"source": "http://harness-readiness.test/missing.png",
+							"line": 0,
+							"column": 0,
+							"status": "Unexpected"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "browserErrorRows",
@@ -41,18 +174,150 @@
 						"name": "browserErrorRows.diagnostic",
 						"type": "BrowserDiagnostic",
 						"required": true,
-						"description": "One attempt’s observed errors and declared expectations. Each expectation matches exact type and message and, when specified, exact source."
+						"description": "One test attempt's recorded console error messages and uncaught page exceptions (errors) and its declared expectations (expected), read together whenever those errors are classified. An expectation matches an error only when type and message are exactly equal and, when the expectation has a source, the error's source is exactly equal too; line, column, stack and page are never compared.",
+						"examples": [
+							{
+								"test": "an image that failed to load is rejected as capture evidence",
+								"file": "tests/e2e/explorer-shell-capture-readiness.spec.ts",
+								"project": "",
+								"retry": 0,
+								"browser": "chromium",
+								"errors": [
+									{
+										"type": "console",
+										"message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+										"page": "http://harness-readiness.test/",
+										"source": "http://harness-readiness.test/missing.png",
+										"line": 0,
+										"column": 0
+									},
+									{
+										"type": "pageerror",
+										"message": "Cannot read properties of undefined (reading 'length')",
+										"page": "http://harness-readiness.test/",
+										"stack": "TypeError: Cannot read properties of undefined (reading 'length')\n    at renderPreview (http://harness-readiness.test/app.js:12:19)"
+									}
+								],
+								"expected": [
+									{
+										"type": "console",
+										"message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+										"reason": "The capture must refuse this intentionally missing image.",
+										"source": "http://harness-readiness.test/missing.png"
+									}
+								]
+							},
+							{
+								"test": "an image that failed to load is rejected as capture evidence",
+								"file": "tests/e2e/explorer-shell-capture-readiness.spec.ts",
+								"project": "",
+								"retry": 1,
+								"browser": "chromium",
+								"errors": [],
+								"expected": [
+									{
+										"type": "console",
+										"message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+										"reason": "The capture must refuse this intentionally missing image.",
+										"source": "http://harness-readiness.test/missing.png"
+									}
+								]
+							},
+							{
+								"test": "an image that failed to load is rejected as capture evidence",
+								"file": "tests/e2e/explorer-shell-capture-readiness.spec.ts",
+								"project": "",
+								"retry": 0,
+								"browser": "chromium",
+								"errors": [
+									{
+										"type": "console",
+										"message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+										"page": "http://harness-readiness.test/",
+										"source": "http://harness-readiness.test/missing.png",
+										"line": 0,
+										"column": 0
+									},
+									{
+										"type": "console",
+										"message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+										"page": "http://harness-readiness.test/",
+										"source": "http://harness-readiness.test/missing.png",
+										"line": 0,
+										"column": 0
+									}
+								],
+								"expected": [
+									{
+										"type": "console",
+										"message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+										"reason": "The capture must refuse this intentionally missing image."
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "browserErrorRows",
 						"type": "BrowserErrorRow[]",
-						"description": "Rows in observation order marked Expected or Unexpected, followed by unused expectations marked Missing expected error. Each expectation accounts for one occurrence; matching rows retain diagnostic context and add the expectation reason. Inputs are not modified."
+						"description": "One row per observed error, in observation order, marked Expected with the matched expectation's reason or Unexpected; each expectation left unused by any error follows as a Missing expected error row. Observed rows keep all fields of their error, Missing rows carry the expectation's fields, and the input diagnostic is not modified.",
+						"examples": [
+							[
+								{
+									"type": "console",
+									"message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+									"page": "http://harness-readiness.test/",
+									"source": "http://harness-readiness.test/missing.png",
+									"line": 0,
+									"column": 0,
+									"status": "Expected",
+									"reason": "The capture must refuse this intentionally missing image."
+								},
+								{
+									"type": "pageerror",
+									"message": "Cannot read properties of undefined (reading 'length')",
+									"page": "http://harness-readiness.test/",
+									"stack": "TypeError: Cannot read properties of undefined (reading 'length')\n    at renderPreview (http://harness-readiness.test/app.js:12:19)",
+									"status": "Unexpected"
+								}
+							],
+							[
+								{
+									"type": "console",
+									"message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+									"reason": "The capture must refuse this intentionally missing image.",
+									"source": "http://harness-readiness.test/missing.png",
+									"status": "Missing expected error"
+								}
+							],
+							[
+								{
+									"type": "console",
+									"message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+									"page": "http://harness-readiness.test/",
+									"source": "http://harness-readiness.test/missing.png",
+									"line": 0,
+									"column": 0,
+									"status": "Expected",
+									"reason": "The capture must refuse this intentionally missing image."
+								},
+								{
+									"type": "console",
+									"message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+									"page": "http://harness-readiness.test/",
+									"source": "http://harness-readiness.test/missing.png",
+									"line": 0,
+									"column": 0,
+									"status": "Unexpected"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
