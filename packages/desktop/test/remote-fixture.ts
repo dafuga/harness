@@ -6,7 +6,7 @@ import { CommentOutboxService } from '../src/services/projects-sessions/CommentO
 import { DesktopRunService } from '../src/services/agents-providers/desktop-run-service/DesktopRunService';
 import { DeviceSessionService } from '../src/services/device-session-service/DeviceSessionService';
 import { ProjectRegistryService } from '../src/services/projects-sessions/ProjectRegistryService';
-import { ProjectSessionService } from '../src/services/ProjectSessionService';
+import { ProjectSessionService } from '../src/services/projects-sessions/project-session-service/ProjectSessionService';
 import { ProviderDiscoveryService } from '../src/services/provider-discovery-service/ProviderDiscoveryService';
 import { RepositoryArbiterService } from '../src/services/RepositoryArbiterService';
 import { desktopBridge } from '../src/utils/desktopBridge';

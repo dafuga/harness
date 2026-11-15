@@ -1,7 +1,7 @@
 // @harness-uid u_ypket7tnag
 import type { PromotionContext } from './promoteChange.types';
 import type { RunRequest } from '../../models/DesktopBridge.types';
-import type { ProjectSessionService } from '../../services/ProjectSessionService';
+import type { ProjectSessionService } from '../../services/projects-sessions/project-session-service/ProjectSessionService';
 import { DeploymentService } from '../../services/development-tooling/DeploymentService';
 import { changeEnvironment } from './changeEnvironment';
 import { deploymentConfig } from './deploymentConfig';

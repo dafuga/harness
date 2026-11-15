@@ -2,7 +2,7 @@ import { execFileSync } from 'node:child_process';
 import { mkdir, mkdtemp, realpath, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { ProjectSessionService } from '../src/services/ProjectSessionService';
+import { ProjectSessionService } from '../src/services/projects-sessions/project-session-service/ProjectSessionService';
 import { loaders, manifest, ordinary, rendered, twin } from './catalog-listing-manifests';
 import type { Listing } from './catalog-listing-manifests';
 import type { ComponentManifest } from '../../../src/lib/contracts';

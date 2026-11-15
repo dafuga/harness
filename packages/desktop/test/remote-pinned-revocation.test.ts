@@ -1,6 +1,6 @@
 import { expect } from '../../../test/verificationExpect';
 import { afterEach, test, vi } from 'vitest';
-import { ProjectSessionService } from '../src/services/ProjectSessionService';
+import { ProjectSessionService } from '../src/services/projects-sessions/project-session-service/ProjectSessionService';
 import { deferred, remoteFixture } from './remote-fixture';
 import { git } from './run-fixture';
 

@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { PNG } from 'pngjs';
 import { fixture, git } from '../project-fixture';
-import { ProjectSessionService } from '../../src/services/ProjectSessionService';
+import { ProjectSessionService } from '../../src/services/projects-sessions/project-session-service/ProjectSessionService';
 import { ProjectionCacheService } from '../../src/services/projection-cache-service/ProjectionCacheService';
 import { ProjectImageCacheService } from '../../src/lib/development-tooling/desktop-bridge/ProjectImageCacheService';
 test('real image reads revalidate project ownership and rebuild corrupt cache without changing canonical bytes', async () => {

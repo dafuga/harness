@@ -3,7 +3,7 @@ import { beforeEach, expect, it, vi } from 'vitest';
 import { createHash } from 'node:crypto';
 import { RecordedEvidenceService } from '../../src/lib/development-tooling/desktop-bridge/RecordedEvidenceService';
 import { sampleDetail, sampleScope, head, feed } from '../recorded-sample';
-import type { ProjectSessionService } from '../../src/services/ProjectSessionService';
+import type { ProjectSessionService } from '../../src/services/projects-sessions/project-session-service/ProjectSessionService';
 import type {
 	EntityEvidenceResult,
 	EvidenceArtifactResult

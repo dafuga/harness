@@ -5,7 +5,7 @@ import { PNG } from 'pngjs';
 import { createPlanning } from '../../planning/src/lib/planning/index';
 import type { RunEvent, RunRequest } from '../src/models/DesktopBridge.types';
 import { DesktopRunService } from '../src/services/agents-providers/desktop-run-service/DesktopRunService';
-import { ProjectSessionService } from '../src/services/ProjectSessionService';
+import { ProjectSessionService } from '../src/services/projects-sessions/project-session-service/ProjectSessionService';
 import { ProviderDiscoveryService } from '../src/services/provider-discovery-service/ProviderDiscoveryService';
 import {
 	fixtureImage,

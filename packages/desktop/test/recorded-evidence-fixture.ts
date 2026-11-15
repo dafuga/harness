@@ -9,7 +9,7 @@ import type {
 	EntityEvidenceResult,
 	EvidenceArtifactQuery
 } from '../src/models/verification-evidence/DesktopEvidence.types';
-import { ProjectSessionService } from '../src/services/ProjectSessionService';
+import { ProjectSessionService } from '../src/services/projects-sessions/project-session-service/ProjectSessionService';
 import { desktopBridge } from '../src/utils/desktopBridge';
 
 export const page = 'page.titles';

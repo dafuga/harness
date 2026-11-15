@@ -2,7 +2,7 @@ import { expect, test, vi } from 'vitest';
 import type { DesktopBridge } from '../src/models/DesktopBridge.types';
 import type { RemoteProjectPort } from '../src/models/projects-sessions/ProjectContext.types';
 import { HostedProjectService } from '../src/services/development-tooling/desktop-bridge-service/HostedProjectService';
-import { ProjectSessionService } from '../src/services/ProjectSessionService';
+import { ProjectSessionService } from '../src/services/projects-sessions/project-session-service/ProjectSessionService';
 
 const query = {
 	projectId: 'shared-one',

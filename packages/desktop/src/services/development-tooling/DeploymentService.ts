@@ -9,7 +9,7 @@ import type {
 	DeploymentQuery
 } from '../../models/development-tooling/Deployment.types';
 import type { ProjectContext } from '../../models/projects-sessions/ProjectContext.types';
-import type { ProjectSessionService } from '../ProjectSessionService';
+import type { ProjectSessionService } from '../projects-sessions/project-session-service/ProjectSessionService';
 import { deploymentCurrent } from '../../utils/projects-sessions/deploymentProof';
 import { deploymentStatus } from '../../utils/projects-sessions/deploymentState';
 import { deploymentExecution } from '../../utils/projects-sessions/deploymentExecution';
