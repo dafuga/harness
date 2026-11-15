@@ -1,0 +1,73 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-model.analytics-event",
+	"title": "Recorded calls of AnalyticsEvent: what each operation was given and what it returned",
+	"kind": "headless",
+	"units": ["model.analytics-event"],
+	"states": [
+		{
+			"id": "find",
+			"title": "find called with a stored id returns that events row, and with an unknown id returns null",
+			"coverage": "required"
+		},
+		{
+			"id": "find-by",
+			"title": "findBy called with a timestamp returns the events rows that have it, and with no match returns an empty list",
+			"coverage": "required"
+		},
+		{
+			"id": "create",
+			"title": "create called with a new event returns the row the adapter stored",
+			"coverage": "required"
+		},
+		{
+			"id": "update",
+			"title": "update called with a patch returns the updated row, and with an unknown id returns null",
+			"coverage": "required"
+		},
+		{
+			"id": "delete",
+			"title": "delete called for a stored id returns true, and for an id already removed returns false",
+			"coverage": "required"
+		},
+		{
+			"id": "adapter-rejection",
+			"title": "create called while the adapter fails rejects with the same error the adapter raised",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/model.analytics-event.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["find", "find-by", "create", "update", "delete", "adapter-rejection"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["find", "find-by", "create", "update", "delete", "adapter-rejection"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["find", "find-by", "create", "update", "delete", "adapter-rejection"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
