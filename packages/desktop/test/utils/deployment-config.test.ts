@@ -2,7 +2,10 @@ import { expect, test } from 'vitest';
 import { mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { deploymentConfig, deploymentPath } from '../../src/utils/deploymentConfig';
+import {
+	deploymentConfig,
+	deploymentPath
+} from '../../src/utils/projects-sessions/deploymentConfig';
 test.each(['jsonc', 'toml'])(
 	'Cloudflare %s discovery keeps explicit environment mapping and configuration fingerprint',
 	async (extension) => {
@@ -65,7 +68,7 @@ test.each(['bundled', 'external'])(
 					`import { desktopNodeOptions } from './scripts/build-main.ts';
 const external = process.argv[2] === 'external';
 const result = await Bun.build({ ...desktopNodeOptions,
-entrypoints: ['src/utils/deploymentConfig.ts'], outdir: process.argv[1], naming: 'deployment.cjs',
+entrypoints: ['src/utils/projects-sessions/deploymentConfig.ts'], outdir: process.argv[1], naming: 'deployment.cjs',
 ...(external ? { external: ['jsonc-parser'], plugins: [] } : {}) });
 if (!result.success) throw new Error(result.logs.map(String).join('\\n'));`,
 					root,

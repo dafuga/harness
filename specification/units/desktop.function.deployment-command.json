@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/deploymentCommand.ts",
-			"packages/desktop/src/utils/projects-sessions/deploymentCommand.ts"
-		],
-		"symbols": ["deploymentCommand", "deploymentCommand"]
+		"source": ["packages/desktop/src/utils/projects-sessions/deploymentCommand.ts"],
+		"symbols": ["deploymentCommand"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -75,11 +72,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/deploymentCommand.ts",
+		"entry": "packages/desktop/src/utils/projects-sessions/deploymentCommand.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/deploymentCommand.ts"
+				"entry": "packages/desktop/src/utils/projects-sessions/deploymentCommand.ts"
 			}
 		]
 	},

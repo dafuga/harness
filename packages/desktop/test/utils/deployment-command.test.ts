@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { deploymentCommand } from '../../src/utils/deploymentCommand';
+import { deploymentCommand } from '../../src/utils/projects-sessions/deploymentCommand';
 test('deployment commands pass literal arguments and hide command output on failure', async () => {
 	expect(
 		await deploymentCommand({
