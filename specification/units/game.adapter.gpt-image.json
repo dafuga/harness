@@ -20,37 +20,55 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GptImageAdapter.constructor.send",
 				"type": "ImageFetch",
-				"required": false
+				"required": false,
+				"description": "Function that sends the HTTP request as send(url, options) and resolves to a Response; the adapter reads that Response's ok and status properties and calls its text() method. Defaults to globalThis.fetch when the argument is undefined."
 			},
 			{
 				"name": "GptImageAdapter.generate.key",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "OpenAI API key sent as the Bearer credential in the Authorization header of the POST to https://api.openai.com/v1/images/generations; the adapter appends it unchanged to 'Bearer ' and does not check its format.",
+				"examples": [
+					"sk-proj-EXAMPLE00000000000000000000000000000001",
+					"sk-proj-EXAMPLE00000000000000000000000000000002"
+				]
 			},
 			{
 				"name": "GptImageAdapter.generate.prompt",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Text prompt sent unchanged as the prompt field of the JSON request body for model gpt-image-2; the adapter does not trim, validate or length-limit it.",
+				"examples": [
+					"A stone pyramid bathed in moonlight on a dark desert plateau, painterly game-art style",
+					"Isometric lunar temple with glowing blue runes on a night-time mesa, clean outlines, plain dark background"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GptImageAdapter.generate",
-				"type": "Promise<Buffer>"
+				"type": "Promise<Buffer>",
+				"description": "Resolves to a Buffer with the decoded PNG bytes of the first image, taken from data[0].b64_json in the provider response; the request asks for one 1536x1024 medium-quality PNG. The resolved buffer is at most 12,000,000 bytes and begins with the 8-byte PNG signature, and the promise rejects instead when a check fails."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown as a plain Error with these messages: 'Image generation failed. Check this project’s OpenAI configuration. No retry was made.' when the request is rejected (network failure, the 180-second timeout, or a redirect, since the request sets redirect: 'error'); 'Image generation failed (HTTP <status>). No retry was made.' when the HTTP status is not OK; 'Generated image exceeds the size limit.' when the response text is longer than 24,000,000 characters; 'Provider did not return a PNG image.' when the body is not JSON or data[0].b64_json is missing, empty or not base64; and 'Provider did not return a valid PNG image.' when the decoded image is over 12,000,000 bytes or lacks the PNG signature. Errors from reading the response body are not caught and propagate unchanged."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by unguarded reads and Buffer.from in the adapter: when send resolves to null or undefined (response.ok is read), when the parsed body is the JSON literal null (result.data is read), or when data[0].b64_json is a non-zero JSON number or true whose string form passes the base64 pattern test (Buffer.from then rejects it)."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "GptImageAdapter.generate",
@@ -58,27 +76,44 @@
 					{
 						"name": "GptImageAdapter.generate.key",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "OpenAI API key sent as the Bearer credential in the Authorization header of the POST to https://api.openai.com/v1/images/generations; the adapter appends it unchanged to 'Bearer ' and does not check its format.",
+						"examples": [
+							"sk-proj-EXAMPLE00000000000000000000000000000001",
+							"sk-proj-EXAMPLE00000000000000000000000000000002"
+						]
 					},
 					{
 						"name": "GptImageAdapter.generate.prompt",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Text prompt sent unchanged as the prompt field of the JSON request body for model gpt-image-2; the adapter does not trim, validate or length-limit it.",
+						"examples": [
+							"A stone pyramid bathed in moonlight on a dark desert plateau, painterly game-art style",
+							"Isometric lunar temple with glowing blue runes on a night-time mesa, clean outlines, plain dark background"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GptImageAdapter.generate",
-						"type": "Promise<Buffer>"
+						"type": "Promise<Buffer>",
+						"description": "Resolves to a Buffer with the decoded PNG bytes of the first image, taken from data[0].b64_json in the provider response; the request asks for one 1536x1024 medium-quality PNG. The resolved buffer is at most 12,000,000 bytes and begins with the 8-byte PNG signature, and the promise rejects instead when a check fails."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as a plain Error with these messages: 'Image generation failed. Check this project’s OpenAI configuration. No retry was made.' when the request is rejected (network failure, the 180-second timeout, or a redirect, since the request sets redirect: 'error'); 'Image generation failed (HTTP <status>). No retry was made.' when the HTTP status is not OK; 'Generated image exceeds the size limit.' when the response text is longer than 24,000,000 characters; 'Provider did not return a PNG image.' when the body is not JSON or data[0].b64_json is missing, empty or not base64; and 'Provider did not return a valid PNG image.' when the decoded image is over 12,000,000 bytes or lacks the PNG signature. Errors from reading the response body are not caught and propagate unchanged."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by unguarded reads and Buffer.from in the adapter: when send resolves to null or undefined (response.ok is read), when the parsed body is the JSON literal null (result.data is read), or when data[0].b64_json is a non-zero JSON number or true whose string form passes the base64 pattern test (Buffer.from then rejects it)."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -88,17 +123,19 @@
 					{
 						"name": "GptImageAdapter.constructor.send",
 						"type": "ImageFetch",
-						"required": false
+						"required": false,
+						"description": "Function that sends the HTTP request as send(url, options) and resolves to a Response; the adapter reads that Response's ok and status properties and calls its text() method. Defaults to globalThis.fetch when the argument is undefined."
 					}
 				],
 				"outputs": [
 					{
 						"name": "GptImageAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The GptImageAdapter instance created by the constructor, which stores the send function in its private send property."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
