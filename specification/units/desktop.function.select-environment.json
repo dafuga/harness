@@ -20,17 +20,21 @@
 				"name": "selectEnvironment.host",
 				"type": "EnvironmentHost",
 				"required": true,
-				"description": "Host providing Capacitor detection and an optional desktop bridge."
+				"description": "The runtime host inspected to choose an adapter. Native Capacitor detection takes precedence; otherwise only a truthy harness selects Electron, and harnessRemote alone does not select it.",
+				"examples": [
+					{}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "selectEnvironment",
 				"type": "Environment",
-				"description": "Mobile environment when Capacitor reports native, else desktop when the bridge exists, else web with no bridge and local false."
+				"description": "Returns the Capacitor adapter result when the optional native check returns true, otherwise the Electron adapter result when harness is truthy, otherwise the web value with kind web, bridge undefined and local false. Capacitor detection has priority, and web selection provides no bridge."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "selectEnvironment",
@@ -39,18 +43,21 @@
 						"name": "selectEnvironment.host",
 						"type": "EnvironmentHost",
 						"required": true,
-						"description": "Host providing Capacitor detection and an optional desktop bridge."
+						"description": "The runtime host inspected to choose an adapter. Native Capacitor detection takes precedence; otherwise only a truthy harness selects Electron, and harnessRemote alone does not select it.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "selectEnvironment",
 						"type": "Environment",
-						"description": "Mobile environment when Capacitor reports native, else desktop when the bridge exists, else web with no bridge and local false."
+						"description": "Returns the Capacitor adapter result when the optional native check returns true, otherwise the Electron adapter result when harness is truthy, otherwise the web value with kind web, bridge undefined and local false. Capacitor detection has priority, and web selection provides no bridge."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
