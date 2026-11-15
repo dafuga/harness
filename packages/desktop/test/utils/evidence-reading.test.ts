@@ -1,7 +1,7 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { record } from '../../../reports/test/entityFixture';
 import { expect, test } from 'vitest';
-import { evidenceReading } from '../../src/utils/evidenceReading';
+import { evidenceReading } from '../../src/utils/verification-evidence/evidenceReading';
 import { commits, data, evidenceBridge, ids, refusal, scopeOf } from '../evidence-fixture';
 
 const scope = scopeOf(ids.filter, commits.tip);

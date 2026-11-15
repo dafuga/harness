@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import type { ProjectSnapshot } from '../../src/models/Desktop.types';
-import { evidenceQuery } from '../../src/utils/evidenceQuery';
+import { evidenceQuery } from '../../src/utils/verification-evidence/evidenceQuery';
 
 const tip = 'a'.repeat(40);
 const older = 'b'.repeat(40);

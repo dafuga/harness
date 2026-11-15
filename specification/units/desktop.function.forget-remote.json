@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/forgetRemote.ts",
-			"packages/desktop/src/utils/networking-security/forgetRemote.ts"
-		],
-		"symbols": ["accountView", "forgetRemote", "accountView", "forgetRemote"]
+		"source": ["packages/desktop/src/utils/networking-security/forgetRemote.ts"],
+		"symbols": ["accountView", "forgetRemote"]
 	},
 	"contract": {
 		"origin": "declared",

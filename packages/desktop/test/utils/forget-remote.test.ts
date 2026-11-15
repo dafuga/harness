@@ -1,6 +1,6 @@
 import { afterEach, expect, test, vi } from 'vitest';
 import type { Workspace } from '../../src/lib/stores/workspace.svelte';
-import { forgetRemote } from '../../src/utils/forgetRemote';
+import { forgetRemote } from '../../src/utils/networking-security/forgetRemote';
 import { closedCapabilities } from '../../src/utils/projectCapabilities';
 
 function shown() {
