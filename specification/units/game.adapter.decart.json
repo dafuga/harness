@@ -22,60 +22,149 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DecartAdapter.constructor.tokens",
 				"type": "Pick<TokenClient, 'create'>",
-				"required": true
+				"required": true,
+				"description": "The token client; the adapter uses only its create method, which start calls at most once per start call with expiresIn 60 to mint the preview's apiKey and expiresAt."
 			},
 			{
 				"name": "DecartAdapter.constructor.now",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "Defaults to Date.now: a no-argument function returning the current time in milliseconds; start uses it to check the stored until time and to set that time to now plus (seconds + 60) * 1000 milliseconds."
 			},
 			{
 				"name": "DecartAdapter.start.input",
 				"type": "RenderSessionRequest",
-				"required": true
+				"required": true,
+				"description": "The preview request, which start checks first: model must be 'lucy-restyle-2' or 'lucy-2.5', fast must be a boolean and may be true only with 'lucy-2.5', and seconds must be an integer from 10 to 60. projectId is not checked; start passes it to the token client as metadata.",
+				"examples": [
+					{
+						"model": "lucy-2.5",
+						"fast": true,
+						"seconds": 30,
+						"projectId": "project-demo-01"
+					},
+					{
+						"model": "lucy-restyle-2",
+						"fast": false,
+						"seconds": 60,
+						"projectId": "project-demo-02"
+					},
+					{
+						"model": "lucy-2.5",
+						"fast": false,
+						"seconds": 10,
+						"projectId": "project-demo-03"
+					}
+				]
 			},
 			{
 				"name": "renderRate.model",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The model name that renderRate prices: exactly 'lucy-restyle-2' returns 0.01, and any other string takes the fast or standard rate. renderRate does not validate the name; start passes it only after validateSession accepts it.",
+				"examples": ["lucy-restyle-2", "lucy-2.5"]
 			},
 			{
 				"name": "renderRate.fast",
 				"type": "boolean",
-				"required": true
+				"required": true,
+				"description": "Selects the rate: true gives 0.04 and false gives 0.02 for every model except 'lucy-restyle-2', which returns 0.01 whatever this flag is. validateSession accepts true only with 'lucy-2.5', so start never passes true with another model.",
+				"examples": [true, false]
 			},
 			{
 				"name": "validateSession.input",
 				"type": "RenderSessionRequest",
-				"required": true
+				"required": true,
+				"description": "The request that validateSession checks: it throws unless model is 'lucy-restyle-2' or 'lucy-2.5', fast is a boolean that may be true only with 'lucy-2.5', and seconds is an integer from 10 to 60. projectId is not checked.",
+				"examples": [
+					{
+						"model": "lucy-2.5",
+						"fast": true,
+						"seconds": 30,
+						"projectId": "project-demo-01"
+					},
+					{
+						"model": "lucy-restyle-2",
+						"fast": false,
+						"seconds": 60,
+						"projectId": "project-demo-02"
+					},
+					{
+						"model": "lucy-2.5",
+						"fast": false,
+						"seconds": 10,
+						"projectId": "project-demo-03"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "DecartAdapter.start",
-				"type": "Promise<RenderSession>"
+				"type": "Promise<RenderSession>",
+				"description": "The resolved preview session: apiKey and expiresAt are copied from the created token, model, fast and seconds echo the request, and rate is renderRate(model, fast). The promise rejects instead when the request is invalid, a lease is still active, or token creation fails.",
+				"examples": [
+					{
+						"apiKey": "example-preview-key-01",
+						"expiresAt": "2026-11-15T12:01:00.000Z",
+						"model": "lucy-2.5",
+						"fast": true,
+						"seconds": 30,
+						"rate": 0.04
+					},
+					{
+						"apiKey": "example-preview-key-02",
+						"expiresAt": "2026-11-15T12:02:00.000Z",
+						"model": "lucy-restyle-2",
+						"fast": false,
+						"seconds": 60,
+						"rate": 0.01
+					},
+					{
+						"apiKey": "example-preview-key-03",
+						"expiresAt": "2026-11-15T12:01:10.000Z",
+						"model": "lucy-2.5",
+						"fast": false,
+						"seconds": 10,
+						"rate": 0.02
+					}
+				]
 			},
 			{
 				"name": "renderRate",
-				"type": "number"
+				"type": "number",
+				"description": "The rate for the model and fast flag: 0.01 for 'lucy-restyle-2', otherwise 0.04 when fast is true and 0.02 when it is false. It never throws and returns only one of those three values; the code does not name a unit.",
+				"examples": [0.01, 0.02, 0.04]
 			},
 			{
 				"name": "validateSession",
-				"type": "void"
+				"type": "void",
+				"description": "Returns nothing: it completes without error for a valid request and throws an Error for any request that breaks the model, fast or seconds rules."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by validateSession, and so by start as a rejection, when model is not 'lucy-restyle-2' or 'lucy-2.5', fast is not a boolean or is true for a model other than 'lucy-2.5', or seconds is not an integer from 10 to 60. This check runs before the lease check and before any token request."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by start, as a rejection, when an earlier preview lease is still active, meaning the stored until time is later than the current time. The token client is not called and the stored until time is left unchanged."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by start, as a rejection, when the token client's create call throws or rejects. The original error is discarded, the stored until time is reset to 0, and an Error with a fixed message is thrown instead."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "DecartAdapter.start",
@@ -83,22 +172,81 @@
 					{
 						"name": "DecartAdapter.start.input",
 						"type": "RenderSessionRequest",
-						"required": true
+						"required": true,
+						"description": "The preview request, which start checks first: model must be 'lucy-restyle-2' or 'lucy-2.5', fast must be a boolean and may be true only with 'lucy-2.5', and seconds must be an integer from 10 to 60. projectId is not checked; start passes it to the token client as metadata.",
+						"examples": [
+							{
+								"model": "lucy-2.5",
+								"fast": true,
+								"seconds": 30,
+								"projectId": "project-demo-01"
+							},
+							{
+								"model": "lucy-restyle-2",
+								"fast": false,
+								"seconds": 60,
+								"projectId": "project-demo-02"
+							},
+							{
+								"model": "lucy-2.5",
+								"fast": false,
+								"seconds": 10,
+								"projectId": "project-demo-03"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "DecartAdapter.start",
-						"type": "Promise<RenderSession>"
+						"type": "Promise<RenderSession>",
+						"description": "The resolved preview session: apiKey and expiresAt are copied from the created token, model, fast and seconds echo the request, and rate is renderRate(model, fast). The promise rejects instead when the request is invalid, a lease is still active, or token creation fails.",
+						"examples": [
+							{
+								"apiKey": "example-preview-key-01",
+								"expiresAt": "2026-11-15T12:01:00.000Z",
+								"model": "lucy-2.5",
+								"fast": true,
+								"seconds": 30,
+								"rate": 0.04
+							},
+							{
+								"apiKey": "example-preview-key-02",
+								"expiresAt": "2026-11-15T12:02:00.000Z",
+								"model": "lucy-restyle-2",
+								"fast": false,
+								"seconds": 60,
+								"rate": 0.01
+							},
+							{
+								"apiKey": "example-preview-key-03",
+								"expiresAt": "2026-11-15T12:01:10.000Z",
+								"model": "lucy-2.5",
+								"fast": false,
+								"seconds": 10,
+								"rate": 0.02
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by validateSession, and so by start as a rejection, when model is not 'lucy-restyle-2' or 'lucy-2.5', fast is not a boolean or is true for a model other than 'lucy-2.5', or seconds is not an integer from 10 to 60. This check runs before the lease check and before any token request."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by start, as a rejection, when an earlier preview lease is still active, meaning the stored until time is later than the current time. The token client is not called and the stored until time is left unchanged."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by start, as a rejection, when the token client's create call throws or rejects. The original error is discarded, the stored until time is reset to 0, and an Error with a fixed message is thrown instead."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderRate",
@@ -106,22 +254,28 @@
 					{
 						"name": "renderRate.model",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The model name that renderRate prices: exactly 'lucy-restyle-2' returns 0.01, and any other string takes the fast or standard rate. renderRate does not validate the name; start passes it only after validateSession accepts it.",
+						"examples": ["lucy-restyle-2", "lucy-2.5"]
 					},
 					{
 						"name": "renderRate.fast",
 						"type": "boolean",
-						"required": true
+						"required": true,
+						"description": "Selects the rate: true gives 0.04 and false gives 0.02 for every model except 'lucy-restyle-2', which returns 0.01 whatever this flag is. validateSession accepts true only with 'lucy-2.5', so start never passes true with another model.",
+						"examples": [true, false]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderRate",
-						"type": "number"
+						"type": "number",
+						"description": "The rate for the model and fast flag: 0.01 for 'lucy-restyle-2', otherwise 0.04 when fast is true and 0.02 when it is false. It never throws and returns only one of those three values; the code does not name a unit.",
+						"examples": [0.01, 0.02, 0.04]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "validateSession",
@@ -129,22 +283,45 @@
 					{
 						"name": "validateSession.input",
 						"type": "RenderSessionRequest",
-						"required": true
+						"required": true,
+						"description": "The request that validateSession checks: it throws unless model is 'lucy-restyle-2' or 'lucy-2.5', fast is a boolean that may be true only with 'lucy-2.5', and seconds is an integer from 10 to 60. projectId is not checked.",
+						"examples": [
+							{
+								"model": "lucy-2.5",
+								"fast": true,
+								"seconds": 30,
+								"projectId": "project-demo-01"
+							},
+							{
+								"model": "lucy-restyle-2",
+								"fast": false,
+								"seconds": 60,
+								"projectId": "project-demo-02"
+							},
+							{
+								"model": "lucy-2.5",
+								"fast": false,
+								"seconds": 10,
+								"projectId": "project-demo-03"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "validateSession",
-						"type": "void"
+						"type": "void",
+						"description": "Returns nothing: it completes without error for a valid request and throws an Error for any request that breaks the model, fast or seconds rules."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by validateSession, and so by start as a rejection, when model is not 'lucy-restyle-2' or 'lucy-2.5', fast is not a boolean or is true for a model other than 'lucy-2.5', or seconds is not an integer from 10 to 60. This check runs before the lease check and before any token request."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -154,22 +331,25 @@
 					{
 						"name": "DecartAdapter.constructor.tokens",
 						"type": "Pick<TokenClient, 'create'>",
-						"required": true
+						"required": true,
+						"description": "The token client; the adapter uses only its create method, which start calls at most once per start call with expiresIn 60 to mint the preview's apiKey and expiresAt."
 					},
 					{
 						"name": "DecartAdapter.constructor.now",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "Defaults to Date.now: a no-argument function returning the current time in milliseconds; start uses it to check the stored until time and to set that time to now plus (seconds + 60) * 1000 milliseconds."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DecartAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new DecartAdapter instance, whose until field starts at 0 and which keeps the tokens and now parameters as private fields."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
