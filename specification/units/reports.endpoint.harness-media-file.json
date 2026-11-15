@@ -12,22 +12,24 @@
 		"symbols": ["GET"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GET.event",
 				"type": "RequestEvent",
-				"required": true
+				"required": true,
+				"description": "The SvelteKit request event passed to GET. The handler forwards it to consoleServer().media and uses event.params.file ?? '' as the name, so a missing parameter becomes an empty name."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GET",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "A promise resolving to the Response returned by consoleServer().media for this request. Its status is 403 if the access policy refuses the request, 404 if the filename is invalid or the stored media is absent, 200 for a full response (including an invalid Range header), 206 for a valid satisfiable byte range, or 416 for an unsatisfiable range."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "GET",
@@ -35,17 +37,19 @@
 					{
 						"name": "GET.event",
 						"type": "RequestEvent",
-						"required": true
+						"required": true,
+						"description": "The SvelteKit request event passed to GET. The handler forwards it to consoleServer().media and uses event.params.file ?? '' as the name, so a missing parameter becomes an empty name."
 					}
 				],
 				"outputs": [
 					{
 						"name": "GET",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A promise resolving to the Response returned by consoleServer().media for this request. Its status is 403 if the access policy refuses the request, 404 if the filename is invalid or the stored media is absent, 200 for a full response (including an invalid Range header), 206 for a valid satisfiable byte range, or 416 for an unsatisfiable range."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
