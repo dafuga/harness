@@ -1,7 +1,10 @@
 import { expect, test } from 'vitest';
 import type { RemoteHostStatus, RemoteMobileStatus } from '../../src/models/Environment.types';
 import { awakeNote, identityLabel, keyLabel } from '../../src/utils/remoteLabels';
-import { grantSummary, remoteLabels } from '../../src/components/remote-phone-panel/remoteLabels';
+import {
+	grantSummary,
+	remoteLabels
+} from '../../src/components/networking-security/remote-phone-panel/remoteLabels';
 import {
 	hostLine,
 	hostSummary,
