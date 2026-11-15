@@ -7,21 +7,447 @@
 	"responsibility": "Captures native browser frames and maps scripted assertions into bounded admitted silent video.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
-		"source": ["src/services/verification-evidence/NativeVideoRecorderService.ts"],
-		"symbols": ["NativeVideoRecorderService", "NativeVideoRecorderService.run"]
+		"source": [
+			"src/services/verification-evidence/NativeVideoRecorderService.ts",
+			"src/services/verification-evidence/NativeVideoRecorderService.types.ts",
+			"src/services/verification-evidence/native-video-recorder-service/nativeCache.ts",
+			"src/services/verification-evidence/native-video-recorder-service/nativeCapture.ts",
+			"src/services/verification-evidence/native-video-recorder-service/nativeEncode.ts",
+			"src/services/verification-evidence/native-video-recorder-service/nativeFiles.ts",
+			"src/services/verification-evidence/native-video-recorder-service/nativeFrames.ts",
+			"src/services/verification-evidence/native-video-recorder-service/nativeMarker.ts",
+			"src/services/verification-evidence/native-video-recorder-service/nativeTimeline.ts"
+		],
+		"symbols": [
+			"NativeVideoRecorderService",
+			"NativeVideoRecorderService.constructor",
+			"NativeVideoRecorderService.run",
+			"NativeVideoRecorderService.lookup",
+			"NativeVideoRecorderService.record",
+			"NativeVideoRecorderService.acknowledge",
+			"NativeRecordingSession",
+			"NativeRecordingScript",
+			"NativeRecordingOptions",
+			"NativeAcquisitionFrame",
+			"NativeRecordingEvent",
+			"NativeRecordingMetadata",
+			"NativeRecordingMedia",
+			"NativeRecording",
+			"NativeRecordingReceipt",
+			"NativeCapture",
+			"NativeRecordingLease",
+			"NativeFrameWriter",
+			"recordingDirectory",
+			"cachedRecording",
+			"leaseRecording",
+			"finalizeRecording",
+			"acknowledgeRecording",
+			"captureNativeFrames",
+			"recordingDeadline",
+			"encodeNativeRecording",
+			"recordingHash",
+			"recordingFailure",
+			"recordingFile",
+			"recordingChild",
+			"recordingViewport",
+			"nativeFrameWriter",
+			"showRecordingMarker",
+			"removeRecordingMarker",
+			"verifyRecordingMarker",
+			"recordingTimeline"
+		]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "NativeVideoRecorderService.constructor.root",
+				"type": "string",
+				"required": false,
+				"default": "undefined",
+				"description": "Directory containing only task-owned native recording cache and diagnostics. Defaults to the resolved .cache/harness/native-video directory."
+			},
+			{
+				"name": "NativeVideoRecorderService.lookup.slotKey",
+				"type": "string",
+				"required": true,
+				"description": "Stable unit, clip, viewport and motion-profile identity used for an exclusive recording slot."
+			},
+			{
+				"name": "NativeVideoRecorderService.lookup.inputHash",
+				"type": "string",
+				"required": true,
+				"description": "Lowercase SHA-256 of all source, contract, script, fixture, toolchain and recording inputs supplied by the planner."
+			},
+			{
+				"name": "NativeVideoRecorderService.record.options",
+				"type": "NativeRecordingOptions",
+				"required": true,
+				"description": "Browser, admitted viewport, original revision, addressed flags, diagnostics and isolated prepare, perform and reset callbacks."
+			},
+			{
+				"name": "NativeVideoRecorderService.acknowledge.result",
+				"type": "NativeRecording",
+				"required": true,
+				"description": "Finalized canonical video, poster and exact native-to-encoded timeline returned by this recorder owner."
+			},
+			{
+				"name": "NativeVideoRecorderService.acknowledge.receipt",
+				"type": "NativeRecordingReceipt",
+				"required": true,
+				"description": "Caller attachment record identity and matching canonical video and poster hashes; permits deleting only this attempt raw frames."
+			},
+			{
+				"name": "recordingDirectory.root",
+				"type": "string",
+				"required": true,
+				"description": "Directory containing only task-owned native recording cache and diagnostics. Defaults to the resolved .cache/harness/native-video directory."
+			},
+			{
+				"name": "recordingDirectory.slotKey",
+				"type": "string",
+				"required": true,
+				"description": "Stable unit, clip, viewport and motion-profile identity used for an exclusive recording slot."
+			},
+			{
+				"name": "recordingDirectory.inputHash",
+				"type": "string",
+				"required": true,
+				"description": "Lowercase SHA-256 of all source, contract, script, fixture, toolchain and recording inputs supplied by the planner."
+			},
+			{
+				"name": "cachedRecording.directory",
+				"type": "string",
+				"required": true,
+				"description": "Task-owned recording attempt or finalized cache directory; no browser server is started."
+			},
+			{
+				"name": "leaseRecording.root",
+				"type": "string",
+				"required": true,
+				"description": "Directory containing only task-owned native recording cache and diagnostics. Defaults to the resolved .cache/harness/native-video directory."
+			},
+			{
+				"name": "leaseRecording.slotKey",
+				"type": "string",
+				"required": true,
+				"description": "Stable unit, clip, viewport and motion-profile identity used for an exclusive recording slot."
+			},
+			{
+				"name": "leaseRecording.inputHash",
+				"type": "string",
+				"required": true,
+				"description": "Lowercase SHA-256 of all source, contract, script, fixture, toolchain and recording inputs supplied by the planner."
+			},
+			{
+				"name": "finalizeRecording.lease",
+				"type": "NativeRecordingLease",
+				"required": true,
+				"description": "Exclusive slot lease with its owned partial directory and immutable final directory."
+			},
+			{
+				"name": "finalizeRecording.result",
+				"type": "NativeRecording",
+				"required": true,
+				"description": "Finalized canonical video, poster and exact native-to-encoded timeline returned by this recorder owner."
+			},
+			{
+				"name": "acknowledgeRecording.result",
+				"type": "NativeRecording",
+				"required": true,
+				"description": "Finalized canonical video, poster and exact native-to-encoded timeline returned by this recorder owner."
+			},
+			{
+				"name": "acknowledgeRecording.receipt",
+				"type": "NativeRecordingReceipt",
+				"required": true,
+				"description": "Caller attachment record identity and matching canonical video and poster hashes; permits deleting only this attempt raw frames."
+			},
+			{
+				"name": "captureNativeFrames.options",
+				"type": "NativeRecordingOptions",
+				"required": true,
+				"description": "Browser, admitted viewport, original revision, addressed flags, diagnostics and isolated prepare, perform and reset callbacks."
+			},
+			{
+				"name": "captureNativeFrames.directory",
+				"type": "string",
+				"required": true,
+				"description": "Task-owned recording attempt or finalized cache directory; no browser server is started."
+			},
+			{
+				"name": "recordingDeadline.operation",
+				"type": "Promise<T>",
+				"required": true,
+				"description": "Already-started asynchronous setup, capture or reset operation bounded by a deadline."
+			},
+			{
+				"name": "recordingDeadline.milliseconds",
+				"type": "number",
+				"required": true,
+				"description": "Maximum elapsed wall time before this operation fails."
+			},
+			{
+				"name": "recordingDeadline.message",
+				"type": "string",
+				"required": true,
+				"description": "Diagnostic message reported when admission or a timed operation fails."
+			},
+			{
+				"name": "encodeNativeRecording.options",
+				"type": "NativeRecordingOptions",
+				"required": true,
+				"description": "Browser, admitted viewport, original revision, addressed flags, diagnostics and isolated prepare, perform and reset callbacks."
+			},
+			{
+				"name": "encodeNativeRecording.capture",
+				"type": "NativeCapture",
+				"required": true,
+				"description": "Bounded native JPEG frame index, renderer assertion events, discarded marker and measured acquisition end."
+			},
+			{
+				"name": "encodeNativeRecording.directory",
+				"type": "string",
+				"required": true,
+				"description": "Task-owned recording attempt or finalized cache directory; no browser server is started."
+			},
+			{
+				"name": "recordingHash.bytes",
+				"type": "Buffer | string",
+				"required": true,
+				"description": "Buffer or UTF-8 text whose exact bytes are hashed with SHA-256."
+			},
+			{
+				"name": "recordingFailure.message",
+				"type": "string",
+				"required": true,
+				"description": "Diagnostic message reported when admission or a timed operation fails."
+			},
+			{
+				"name": "recordingFile.path",
+				"type": "string",
+				"required": true,
+				"description": "Regular non-symlink file whose encoded byte size is admitted before reading."
+			},
+			{
+				"name": "recordingFile.maximum",
+				"type": "number",
+				"required": true,
+				"description": "Maximum admitted encoded file bytes; empty or oversized files are refused before reading."
+			},
+			{
+				"name": "recordingChild.program",
+				"type": "string",
+				"required": true,
+				"description": "ffmpeg child executable invoked directly without a shell."
+			},
+			{
+				"name": "recordingChild.args",
+				"type": "string[]",
+				"required": true,
+				"description": "Bounded encoding or inspection arguments supplied to the child executable."
+			},
+			{
+				"name": "recordingChild.cwd",
+				"type": "string",
+				"required": true,
+				"description": "Owned attempt directory resolving the encoder numeric raw frame paths."
+			},
+			{
+				"name": "recordingViewport.viewport",
+				"type": "{ width: number; height: number }",
+				"required": true,
+				"description": "Fixed even CSS pixel dimensions at DPR 1, at most 1920 per axis and 2073600 total pixels."
+			},
+			{
+				"name": "nativeFrameWriter.directory",
+				"type": "string",
+				"required": true,
+				"description": "Task-owned recording attempt or finalized cache directory; no browser server is started."
+			},
+			{
+				"name": "nativeFrameWriter.viewport",
+				"type": "NativeRecordingOptions['viewport']",
+				"required": true,
+				"description": "Fixed even CSS pixel dimensions at DPR 1, at most 1920 per axis and 2073600 total pixels."
+			},
+			{
+				"name": "showRecordingMarker.page",
+				"type": "Page",
+				"required": true,
+				"description": "Fresh isolated page used for a discarded top-layer synchronization marker."
+			},
+			{
+				"name": "removeRecordingMarker.page",
+				"type": "Page",
+				"required": true,
+				"description": "Fresh isolated page used for a discarded top-layer synchronization marker."
+			},
+			{
+				"name": "verifyRecordingMarker.directory",
+				"type": "string",
+				"required": true,
+				"description": "Task-owned recording attempt or finalized cache directory; no browser server is started."
+			},
+			{
+				"name": "verifyRecordingMarker.frame",
+				"type": "NativeAcquisitionFrame",
+				"required": true,
+				"description": "Acquired JPEG frame whose sampled magenta pixel and native timestamp must match the renderer marker."
+			},
+			{
+				"name": "verifyRecordingMarker.marker",
+				"type": "NativeRecordingMetadata['marker']",
+				"required": true,
+				"description": "Shown and removed renderer timestamps and the corresponding acquired native-frame timestamp."
+			},
+			{
+				"name": "recordingTimeline.options",
+				"type": "NativeRecordingOptions",
+				"required": true,
+				"description": "Browser, admitted viewport, original revision, addressed flags, diagnostics and isolated prepare, perform and reset callbacks."
+			},
+			{
+				"name": "recordingTimeline.capture",
+				"type": "NativeCapture",
+				"required": true,
+				"description": "Bounded native JPEG frame index, renderer assertion events, discarded marker and measured acquisition end."
+			}
+		],
 		"outputs": [
 			{
 				"name": "NativeVideoRecorderService.run",
-				"type": "string"
+				"type": "string",
+				"description": "Stable native-video-recorder capability identifier."
+			},
+			{
+				"name": "NativeVideoRecorderService.lookup",
+				"type": "Promise<NativeRecording | undefined>",
+				"description": "Validated finalized cache with original capture provenance, or undefined without opening a context."
+			},
+			{
+				"name": "NativeVideoRecorderService.record",
+				"type": "Promise<NativeRecording>",
+				"description": "Admitted silent MP4 and asserted PNG poster with exact per-frame source mapping; failed raw diagnostics are retained."
+			},
+			{
+				"name": "NativeVideoRecorderService.acknowledge",
+				"type": "Promise<void>",
+				"description": "Matching attachment receipt persisted and only the finalized attempt raw JPEG directory removed."
+			},
+			{
+				"name": "recordingDirectory",
+				"type": "string",
+				"description": "Hashed slot directory and input-hash final address without creating browser state."
+			},
+			{
+				"name": "cachedRecording",
+				"type": "NativeRecording | undefined",
+				"description": "Finalized cache after encoded-size, media-decode and hash admission, retaining original metadata."
+			},
+			{
+				"name": "leaseRecording",
+				"type": "NativeRecordingLease",
+				"description": "Exclusive slot lock and bounded owned attempt directory; stale crash locks fail closed for owner inspection."
+			},
+			{
+				"name": "finalizeRecording",
+				"type": "NativeRecording",
+				"description": "Complete result made visible with an atomic attempt-directory rename."
+			},
+			{
+				"name": "acknowledgeRecording",
+				"type": "void",
+				"description": "Persisted matching receipt and removal of only this finalized attempt raw JPEGs."
+			},
+			{
+				"name": "captureNativeFrames",
+				"type": "Promise<NativeCapture>",
+				"description": "Native frames and renderer events from one fresh normal-motion context, closed after reset and diagnostics."
+			},
+			{
+				"name": "recordingDeadline",
+				"type": "Promise<T>",
+				"description": "Operation result, or rejection when the bounded operation deadline expires."
+			},
+			{
+				"name": "encodeNativeRecording",
+				"type": "NativeRecording",
+				"description": "H.264 yuv420p fast-start MP4 at 30 fps without audio and a decoded asserted-frame poster."
+			},
+			{
+				"name": "recordingHash",
+				"type": "string",
+				"description": "Lowercase SHA-256 of the supplied exact bytes."
+			},
+			{
+				"name": "recordingFailure",
+				"type": "never",
+				"description": "Always throws ExpectedCliError with the supplied recording diagnostic."
+			},
+			{
+				"name": "recordingFile",
+				"type": "Buffer",
+				"description": "Admitted regular-file bytes, read only after the encoded size check."
+			},
+			{
+				"name": "recordingChild",
+				"type": "Buffer",
+				"description": "Successful bounded ffmpeg child stdout; threads and dimensions are constrained by its caller."
+			},
+			{
+				"name": "recordingViewport",
+				"type": "void",
+				"description": "Validation succeeds only for fixed even dimensions within the native recording bounds."
+			},
+			{
+				"name": "nativeFrameWriter",
+				"type": "unknown",
+				"description": "Bounded disk writer with native frame index, callback append operation and deferred failure check."
+			},
+			{
+				"name": "showRecordingMarker",
+				"type": "Promise<number>",
+				"description": "Renderer epoch timestamp after the magenta synchronization marker is painted in the discarded lead-in."
+			},
+			{
+				"name": "removeRecordingMarker",
+				"type": "Promise<number>",
+				"description": "Renderer epoch timestamp when the synchronization marker is removed, after waiting for its repaint."
+			},
+			{
+				"name": "verifyRecordingMarker",
+				"type": "void",
+				"description": "Validation that the acquired marker pixel and native timestamp match the renderer marker interval."
+			},
+			{
+				"name": "recordingTimeline",
+				"type": "NativeRecordingMetadata",
+				"description": "Required lead-in and tail interval, original native cadence, exact sampled frame mapping and visible assertion positions."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Recording dimensions, bytes, timing, marker, mapping, media admission, cache integrity, lock ownership or receipt cannot satisfy the declared native recording bounds."
+			},
+			{
+				"name": "NodeJS.ErrnoException",
+				"type": "thrown",
+				"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+			},
+			{
+				"name": "callback rejection",
+				"type": "thrown",
+				"description": "The caller prepare, perform, reset or shared browser diagnostics callback rejects; its original failure is preserved."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "NativeVideoRecorderService.run",
@@ -29,16 +455,825 @@
 				"outputs": [
 					{
 						"name": "NativeVideoRecorderService.run",
-						"type": "string"
+						"type": "string",
+						"description": "Stable native-video-recorder capability identifier."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
+			},
+			{
+				"name": "NativeVideoRecorderService.lookup",
+				"inputs": [
+					{
+						"name": "NativeVideoRecorderService.lookup.slotKey",
+						"type": "string",
+						"required": true,
+						"description": "Stable unit, clip, viewport and motion-profile identity used for an exclusive recording slot."
+					},
+					{
+						"name": "NativeVideoRecorderService.lookup.inputHash",
+						"type": "string",
+						"required": true,
+						"description": "Lowercase SHA-256 of all source, contract, script, fixture, toolchain and recording inputs supplied by the planner."
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeVideoRecorderService.lookup",
+						"type": "Promise<NativeRecording | undefined>",
+						"description": "Validated finalized cache with original capture provenance, or undefined without opening a context."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Recording dimensions, bytes, timing, marker, mapping, media admission, cache integrity, lock ownership or receipt cannot satisfy the declared native recording bounds."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "NativeVideoRecorderService.record",
+				"inputs": [
+					{
+						"name": "NativeVideoRecorderService.record.options",
+						"type": "NativeRecordingOptions",
+						"required": true,
+						"description": "Browser, admitted viewport, original revision, addressed flags, diagnostics and isolated prepare, perform and reset callbacks."
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeVideoRecorderService.record",
+						"type": "Promise<NativeRecording>",
+						"description": "Admitted silent MP4 and asserted PNG poster with exact per-frame source mapping; failed raw diagnostics are retained."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Recording dimensions, bytes, timing, marker, mapping, media admission, cache integrity, lock ownership or receipt cannot satisfy the declared native recording bounds."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					},
+					{
+						"name": "callback rejection",
+						"type": "thrown",
+						"description": "The caller prepare, perform, reset or shared browser diagnostics callback rejects; its original failure is preserved."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "NativeVideoRecorderService.acknowledge",
+				"inputs": [
+					{
+						"name": "NativeVideoRecorderService.acknowledge.result",
+						"type": "NativeRecording",
+						"required": true,
+						"description": "Finalized canonical video, poster and exact native-to-encoded timeline returned by this recorder owner."
+					},
+					{
+						"name": "NativeVideoRecorderService.acknowledge.receipt",
+						"type": "NativeRecordingReceipt",
+						"required": true,
+						"description": "Caller attachment record identity and matching canonical video and poster hashes; permits deleting only this attempt raw frames."
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeVideoRecorderService.acknowledge",
+						"type": "Promise<void>",
+						"description": "Matching attachment receipt persisted and only the finalized attempt raw JPEG directory removed."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Recording dimensions, bytes, timing, marker, mapping, media admission, cache integrity, lock ownership or receipt cannot satisfy the declared native recording bounds."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "recordingDirectory",
+				"inputs": [
+					{
+						"name": "recordingDirectory.root",
+						"type": "string",
+						"required": true,
+						"description": "Directory containing only task-owned native recording cache and diagnostics. Defaults to the resolved .cache/harness/native-video directory."
+					},
+					{
+						"name": "recordingDirectory.slotKey",
+						"type": "string",
+						"required": true,
+						"description": "Stable unit, clip, viewport and motion-profile identity used for an exclusive recording slot."
+					},
+					{
+						"name": "recordingDirectory.inputHash",
+						"type": "string",
+						"required": true,
+						"description": "Lowercase SHA-256 of all source, contract, script, fixture, toolchain and recording inputs supplied by the planner."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordingDirectory",
+						"type": "string",
+						"description": "Hashed slot directory and input-hash final address without creating browser state."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Recording dimensions, bytes, timing, marker, mapping, media admission, cache integrity, lock ownership or receipt cannot satisfy the declared native recording bounds."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "cachedRecording",
+				"inputs": [
+					{
+						"name": "cachedRecording.directory",
+						"type": "string",
+						"required": true,
+						"description": "Task-owned recording attempt or finalized cache directory; no browser server is started."
+					}
+				],
+				"outputs": [
+					{
+						"name": "cachedRecording",
+						"type": "NativeRecording | undefined",
+						"description": "Finalized cache after encoded-size, media-decode and hash admission, retaining original metadata."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Recording dimensions, bytes, timing, marker, mapping, media admission, cache integrity, lock ownership or receipt cannot satisfy the declared native recording bounds."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "leaseRecording",
+				"inputs": [
+					{
+						"name": "leaseRecording.root",
+						"type": "string",
+						"required": true,
+						"description": "Directory containing only task-owned native recording cache and diagnostics. Defaults to the resolved .cache/harness/native-video directory."
+					},
+					{
+						"name": "leaseRecording.slotKey",
+						"type": "string",
+						"required": true,
+						"description": "Stable unit, clip, viewport and motion-profile identity used for an exclusive recording slot."
+					},
+					{
+						"name": "leaseRecording.inputHash",
+						"type": "string",
+						"required": true,
+						"description": "Lowercase SHA-256 of all source, contract, script, fixture, toolchain and recording inputs supplied by the planner."
+					}
+				],
+				"outputs": [
+					{
+						"name": "leaseRecording",
+						"type": "NativeRecordingLease",
+						"description": "Exclusive slot lock and bounded owned attempt directory; stale crash locks fail closed for owner inspection."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Recording dimensions, bytes, timing, marker, mapping, media admission, cache integrity, lock ownership or receipt cannot satisfy the declared native recording bounds."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "finalizeRecording",
+				"inputs": [
+					{
+						"name": "finalizeRecording.lease",
+						"type": "NativeRecordingLease",
+						"required": true,
+						"description": "Exclusive slot lease with its owned partial directory and immutable final directory."
+					},
+					{
+						"name": "finalizeRecording.result",
+						"type": "NativeRecording",
+						"required": true,
+						"description": "Finalized canonical video, poster and exact native-to-encoded timeline returned by this recorder owner."
+					}
+				],
+				"outputs": [
+					{
+						"name": "finalizeRecording",
+						"type": "NativeRecording",
+						"description": "Complete result made visible with an atomic attempt-directory rename."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Recording dimensions, bytes, timing, marker, mapping, media admission, cache integrity, lock ownership or receipt cannot satisfy the declared native recording bounds."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "acknowledgeRecording",
+				"inputs": [
+					{
+						"name": "acknowledgeRecording.result",
+						"type": "NativeRecording",
+						"required": true,
+						"description": "Finalized canonical video, poster and exact native-to-encoded timeline returned by this recorder owner."
+					},
+					{
+						"name": "acknowledgeRecording.receipt",
+						"type": "NativeRecordingReceipt",
+						"required": true,
+						"description": "Caller attachment record identity and matching canonical video and poster hashes; permits deleting only this attempt raw frames."
+					}
+				],
+				"outputs": [
+					{
+						"name": "acknowledgeRecording",
+						"type": "void",
+						"description": "Persisted matching receipt and removal of only this finalized attempt raw JPEGs."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Recording dimensions, bytes, timing, marker, mapping, media admission, cache integrity, lock ownership or receipt cannot satisfy the declared native recording bounds."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "captureNativeFrames",
+				"inputs": [
+					{
+						"name": "captureNativeFrames.options",
+						"type": "NativeRecordingOptions",
+						"required": true,
+						"description": "Browser, admitted viewport, original revision, addressed flags, diagnostics and isolated prepare, perform and reset callbacks."
+					},
+					{
+						"name": "captureNativeFrames.directory",
+						"type": "string",
+						"required": true,
+						"description": "Task-owned recording attempt or finalized cache directory; no browser server is started."
+					}
+				],
+				"outputs": [
+					{
+						"name": "captureNativeFrames",
+						"type": "Promise<NativeCapture>",
+						"description": "Native frames and renderer events from one fresh normal-motion context, closed after reset and diagnostics."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Recording dimensions, bytes, timing, marker, mapping, media admission, cache integrity, lock ownership or receipt cannot satisfy the declared native recording bounds."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					},
+					{
+						"name": "callback rejection",
+						"type": "thrown",
+						"description": "The caller prepare, perform, reset or shared browser diagnostics callback rejects; its original failure is preserved."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "recordingDeadline",
+				"inputs": [
+					{
+						"name": "recordingDeadline.operation",
+						"type": "Promise<T>",
+						"required": true,
+						"description": "Already-started asynchronous setup, capture or reset operation bounded by a deadline."
+					},
+					{
+						"name": "recordingDeadline.milliseconds",
+						"type": "number",
+						"required": true,
+						"description": "Maximum elapsed wall time before this operation fails."
+					},
+					{
+						"name": "recordingDeadline.message",
+						"type": "string",
+						"required": true,
+						"description": "Diagnostic message reported when admission or a timed operation fails."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordingDeadline",
+						"type": "Promise<T>",
+						"description": "Operation result, or rejection when the bounded operation deadline expires."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Recording dimensions, bytes, timing, marker, mapping, media admission, cache integrity, lock ownership or receipt cannot satisfy the declared native recording bounds."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					},
+					{
+						"name": "callback rejection",
+						"type": "thrown",
+						"description": "The caller prepare, perform, reset or shared browser diagnostics callback rejects; its original failure is preserved."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "encodeNativeRecording",
+				"inputs": [
+					{
+						"name": "encodeNativeRecording.options",
+						"type": "NativeRecordingOptions",
+						"required": true,
+						"description": "Browser, admitted viewport, original revision, addressed flags, diagnostics and isolated prepare, perform and reset callbacks."
+					},
+					{
+						"name": "encodeNativeRecording.capture",
+						"type": "NativeCapture",
+						"required": true,
+						"description": "Bounded native JPEG frame index, renderer assertion events, discarded marker and measured acquisition end."
+					},
+					{
+						"name": "encodeNativeRecording.directory",
+						"type": "string",
+						"required": true,
+						"description": "Task-owned recording attempt or finalized cache directory; no browser server is started."
+					}
+				],
+				"outputs": [
+					{
+						"name": "encodeNativeRecording",
+						"type": "NativeRecording",
+						"description": "H.264 yuv420p fast-start MP4 at 30 fps without audio and a decoded asserted-frame poster."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Recording dimensions, bytes, timing, marker, mapping, media admission, cache integrity, lock ownership or receipt cannot satisfy the declared native recording bounds."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "recordingHash",
+				"inputs": [
+					{
+						"name": "recordingHash.bytes",
+						"type": "Buffer | string",
+						"required": true,
+						"description": "Buffer or UTF-8 text whose exact bytes are hashed with SHA-256."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordingHash",
+						"type": "string",
+						"description": "Lowercase SHA-256 of the supplied exact bytes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "recordingFailure",
+				"inputs": [
+					{
+						"name": "recordingFailure.message",
+						"type": "string",
+						"required": true,
+						"description": "Diagnostic message reported when admission or a timed operation fails."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordingFailure",
+						"type": "never",
+						"description": "Always throws ExpectedCliError with the supplied recording diagnostic."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Recording dimensions, bytes, timing, marker, mapping, media admission, cache integrity, lock ownership or receipt cannot satisfy the declared native recording bounds."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "recordingFile",
+				"inputs": [
+					{
+						"name": "recordingFile.path",
+						"type": "string",
+						"required": true,
+						"description": "Regular non-symlink file whose encoded byte size is admitted before reading."
+					},
+					{
+						"name": "recordingFile.maximum",
+						"type": "number",
+						"required": true,
+						"description": "Maximum admitted encoded file bytes; empty or oversized files are refused before reading."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordingFile",
+						"type": "Buffer",
+						"description": "Admitted regular-file bytes, read only after the encoded size check."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Recording dimensions, bytes, timing, marker, mapping, media admission, cache integrity, lock ownership or receipt cannot satisfy the declared native recording bounds."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "recordingChild",
+				"inputs": [
+					{
+						"name": "recordingChild.program",
+						"type": "string",
+						"required": true,
+						"description": "ffmpeg child executable invoked directly without a shell."
+					},
+					{
+						"name": "recordingChild.args",
+						"type": "string[]",
+						"required": true,
+						"description": "Bounded encoding or inspection arguments supplied to the child executable."
+					},
+					{
+						"name": "recordingChild.cwd",
+						"type": "string",
+						"required": true,
+						"description": "Owned attempt directory resolving the encoder numeric raw frame paths."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordingChild",
+						"type": "Buffer",
+						"description": "Successful bounded ffmpeg child stdout; threads and dimensions are constrained by its caller."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Recording dimensions, bytes, timing, marker, mapping, media admission, cache integrity, lock ownership or receipt cannot satisfy the declared native recording bounds."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "recordingViewport",
+				"inputs": [
+					{
+						"name": "recordingViewport.viewport",
+						"type": "{ width: number; height: number }",
+						"required": true,
+						"description": "Fixed even CSS pixel dimensions at DPR 1, at most 1920 per axis and 2073600 total pixels."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordingViewport",
+						"type": "void",
+						"description": "Validation succeeds only for fixed even dimensions within the native recording bounds."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Recording dimensions, bytes, timing, marker, mapping, media admission, cache integrity, lock ownership or receipt cannot satisfy the declared native recording bounds."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "nativeFrameWriter",
+				"inputs": [
+					{
+						"name": "nativeFrameWriter.directory",
+						"type": "string",
+						"required": true,
+						"description": "Task-owned recording attempt or finalized cache directory; no browser server is started."
+					},
+					{
+						"name": "nativeFrameWriter.viewport",
+						"type": "NativeRecordingOptions['viewport']",
+						"required": true,
+						"description": "Fixed even CSS pixel dimensions at DPR 1, at most 1920 per axis and 2073600 total pixels."
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeFrameWriter",
+						"type": "NativeFrameWriter",
+						"description": "Bounded disk writer with native frame index, callback append operation and deferred failure check."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Recording dimensions, bytes, timing, marker, mapping, media admission, cache integrity, lock ownership or receipt cannot satisfy the declared native recording bounds."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "showRecordingMarker",
+				"inputs": [
+					{
+						"name": "showRecordingMarker.page",
+						"type": "Page",
+						"required": true,
+						"description": "Fresh isolated page used for a discarded top-layer synchronization marker."
+					}
+				],
+				"outputs": [
+					{
+						"name": "showRecordingMarker",
+						"type": "Promise<number>",
+						"description": "Renderer epoch timestamp after the magenta synchronization marker is painted in the discarded lead-in."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Recording dimensions, bytes, timing, marker, mapping, media admission, cache integrity, lock ownership or receipt cannot satisfy the declared native recording bounds."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "removeRecordingMarker",
+				"inputs": [
+					{
+						"name": "removeRecordingMarker.page",
+						"type": "Page",
+						"required": true,
+						"description": "Fresh isolated page used for a discarded top-layer synchronization marker."
+					}
+				],
+				"outputs": [
+					{
+						"name": "removeRecordingMarker",
+						"type": "Promise<number>",
+						"description": "Renderer epoch timestamp when the synchronization marker is removed, after waiting for its repaint."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Recording dimensions, bytes, timing, marker, mapping, media admission, cache integrity, lock ownership or receipt cannot satisfy the declared native recording bounds."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "verifyRecordingMarker",
+				"inputs": [
+					{
+						"name": "verifyRecordingMarker.directory",
+						"type": "string",
+						"required": true,
+						"description": "Task-owned recording attempt or finalized cache directory; no browser server is started."
+					},
+					{
+						"name": "verifyRecordingMarker.frame",
+						"type": "NativeAcquisitionFrame",
+						"required": true,
+						"description": "Acquired JPEG frame whose sampled magenta pixel and native timestamp must match the renderer marker."
+					},
+					{
+						"name": "verifyRecordingMarker.marker",
+						"type": "NativeRecordingMetadata['marker']",
+						"required": true,
+						"description": "Shown and removed renderer timestamps and the corresponding acquired native-frame timestamp."
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyRecordingMarker",
+						"type": "void",
+						"description": "Validation that the acquired marker pixel and native timestamp match the renderer marker interval."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Recording dimensions, bytes, timing, marker, mapping, media admission, cache integrity, lock ownership or receipt cannot satisfy the declared native recording bounds."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "recordingTimeline",
+				"inputs": [
+					{
+						"name": "recordingTimeline.options",
+						"type": "NativeRecordingOptions",
+						"required": true,
+						"description": "Browser, admitted viewport, original revision, addressed flags, diagnostics and isolated prepare, perform and reset callbacks."
+					},
+					{
+						"name": "recordingTimeline.capture",
+						"type": "NativeCapture",
+						"required": true,
+						"description": "Bounded native JPEG frame index, renderer assertion events, discarded marker and measured acquisition end."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordingTimeline",
+						"type": "NativeRecordingMetadata",
+						"description": "Required lead-in and tail interval, original native cadence, exact sampled frame mapping and visible assertion positions."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Recording dimensions, bytes, timing, marker, mapping, media admission, cache integrity, lock ownership or receipt cannot satisfy the declared native recording bounds."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
-		"initialization": []
+		"initialization": [
+			{
+				"name": "NativeVideoRecorderService.constructor",
+				"inputs": [
+					{
+						"name": "NativeVideoRecorderService.constructor.root",
+						"type": "string",
+						"required": false,
+						"default": "undefined",
+						"description": "Directory containing only task-owned native recording cache and diagnostics. Defaults to the resolved .cache/harness/native-video directory."
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeVideoRecorderService.constructor",
+						"type": "unknown",
+						"description": "Recorder service bound to the supplied owned cache directory."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.media-facts",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/services/verification-evidence/NativeVideoRecorderService.ts",
