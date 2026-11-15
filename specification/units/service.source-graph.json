@@ -31,67 +31,86 @@
 				"name": "fileNode.path",
 				"type": "string",
 				"required": true,
-				"description": "Repository-relative file path to prefix with file:; no path resolution or I/O occurs."
+				"description": "Repository-relative path used to form a file: graph node. It is interpolated as supplied, without normalization, existence checks or file I/O.",
+				"examples": ["src/services/development-tooling/SourceGraphService.ts"]
 			},
 			{
 				"name": "unitNode.id",
 				"type": "string",
 				"required": true,
-				"description": "Stable unit ID to prefix with unit:."
+				"description": "Unit id used to form a unit: graph node. It is interpolated as supplied and is not looked up or validated here.",
+				"examples": ["service.source-graph"]
 			},
 			{
 				"name": "scenarioNode.id",
 				"type": "string",
 				"required": true,
-				"description": "Authored scenario ID to prefix with scenario:."
+				"description": "Authored scenario id used to form a scenario: graph node. It is interpolated as supplied and is not validated here.",
+				"examples": ["source-graph-build"]
 			},
 			{
 				"name": "SourceGraphService.build.index",
 				"type": "SourceIndex",
 				"required": true,
-				"description": "Indexed files, resolved source references and unresolved-reference facts for one source revision."
+				"description": "Source index whose files map supplies indexed paths, file classifications and references used by graph construction. The service reads that map but does not index files, resolve imports or validate the index."
 			},
 			{
 				"name": "SourceGraphService.build.manifests",
 				"type": "ComponentManifest[]",
 				"required": true,
-				"description": "Registry records; only active owners with indexed source contribute unit nodes."
+				"description": "Component manifests supply unit ids, source ownership, status and declared dependencies. Only active manifests owning at least one indexed source path add unit nodes and ownership edges; only dependencies with via equal to process, http, wasm or contract add declared runtime edges.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "SourceGraphService.build.scenarios",
 				"type": "ScenarioManifest[]",
 				"required": false,
 				"default": [],
-				"description": "Authored scenario coverage and test declarations; defaults to an empty array."
+				"description": "Scenario manifests supply ids, covered units and test cwd/target paths. Every supplied scenario adds a node and its covers edges, while a proves edge is added only when the joined test path is indexed; defaults to an empty array and no test is run.",
+				"examples": [
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "fileNode",
 				"type": "string",
-				"description": "Graph file-node identity."
+				"description": "File-node identity formed by prefixing the supplied path with file:. The path is unchanged and is not guaranteed to exist.",
+				"examples": ["file:src/services/development-tooling/SourceGraphService.ts"]
 			},
 			{
 				"name": "unitNode",
 				"type": "string",
-				"description": "Graph unit-node identity."
+				"description": "Unit-node identity formed by prefixing the supplied unit id with unit:. The id is not checked against a manifest.",
+				"examples": ["unit:service.source-graph"]
 			},
 			{
 				"name": "scenarioNode",
 				"type": "string",
-				"description": "Graph scenario-node identity."
+				"description": "Scenario-node identity formed by prefixing the supplied scenario id with scenario:. The id is not checked against a scenario manifest.",
+				"examples": ["scenario:source-graph-build"]
 			},
 			{
 				"name": "SourceGraphService.build",
 				"type": "SourceGraph",
-				"description": "Sorted graph nodes and conservative dependency edges, including import mode and uncertainty; no test execution verdict."
+				"description": "SourceGraph with nodes sorted by id and unique edges sorted by source then destination, plus unresolved-reference uncertainty copied from indexed references. It records dependency structure and import mode but does not run tests or certify results.",
+				"examples": [
+					{
+						"nodes": [],
+						"edges": [],
+						"uncertain": []
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Input access failure",
-				"type": "propagated",
-				"description": "Caller-provided map or array iterators, getters and collection methods may throw; graph construction performs no I/O or schema validation."
+				"type": "thrown",
+				"description": "The builder may propagate exceptions raised by caller-supplied collection methods, iterators or property access while traversing the index and manifests. It performs no I/O or schema validation and does not wrap those exceptions."
 			}
 		],
 		"errorStatus": "declared",
@@ -103,14 +122,16 @@
 						"name": "fileNode.path",
 						"type": "string",
 						"required": true,
-						"description": "Repository-relative file path to prefix with file:; no path resolution or I/O occurs."
+						"description": "Repository-relative path used to form a file: graph node. It is interpolated as supplied, without normalization, existence checks or file I/O.",
+						"examples": ["src/services/development-tooling/SourceGraphService.ts"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "fileNode",
 						"type": "string",
-						"description": "Graph file-node identity."
+						"description": "File-node identity formed by prefixing the supplied path with file:. The path is unchanged and is not guaranteed to exist.",
+						"examples": ["file:src/services/development-tooling/SourceGraphService.ts"]
 					}
 				],
 				"errors": [],
@@ -123,14 +144,16 @@
 						"name": "unitNode.id",
 						"type": "string",
 						"required": true,
-						"description": "Stable unit ID to prefix with unit:."
+						"description": "Unit id used to form a unit: graph node. It is interpolated as supplied and is not looked up or validated here.",
+						"examples": ["service.source-graph"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "unitNode",
 						"type": "string",
-						"description": "Graph unit-node identity."
+						"description": "Unit-node identity formed by prefixing the supplied unit id with unit:. The id is not checked against a manifest.",
+						"examples": ["unit:service.source-graph"]
 					}
 				],
 				"errors": [],
@@ -143,14 +166,16 @@
 						"name": "scenarioNode.id",
 						"type": "string",
 						"required": true,
-						"description": "Authored scenario ID to prefix with scenario:."
+						"description": "Authored scenario id used to form a scenario: graph node. It is interpolated as supplied and is not validated here.",
+						"examples": ["source-graph-build"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scenarioNode",
 						"type": "string",
-						"description": "Graph scenario-node identity."
+						"description": "Scenario-node identity formed by prefixing the supplied scenario id with scenario:. The id is not checked against a scenario manifest.",
+						"examples": ["scenario:source-graph-build"]
 					}
 				],
 				"errors": [],
@@ -163,34 +188,47 @@
 						"name": "SourceGraphService.build.index",
 						"type": "SourceIndex",
 						"required": true,
-						"description": "Indexed files, resolved source references and unresolved-reference facts for one source revision."
+						"description": "Source index whose files map supplies indexed paths, file classifications and references used by graph construction. The service reads that map but does not index files, resolve imports or validate the index."
 					},
 					{
 						"name": "SourceGraphService.build.manifests",
 						"type": "ComponentManifest[]",
 						"required": true,
-						"description": "Registry records; only active owners with indexed source contribute unit nodes."
+						"description": "Component manifests supply unit ids, source ownership, status and declared dependencies. Only active manifests owning at least one indexed source path add unit nodes and ownership edges; only dependencies with via equal to process, http, wasm or contract add declared runtime edges.",
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "SourceGraphService.build.scenarios",
 						"type": "ScenarioManifest[]",
 						"required": false,
 						"default": [],
-						"description": "Authored scenario coverage and test declarations; defaults to an empty array."
+						"description": "Scenario manifests supply ids, covered units and test cwd/target paths. Every supplied scenario adds a node and its covers edges, while a proves edge is added only when the joined test path is indexed; defaults to an empty array and no test is run.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SourceGraphService.build",
 						"type": "SourceGraph",
-						"description": "Sorted graph nodes and conservative dependency edges, including import mode and uncertainty; no test execution verdict."
+						"description": "SourceGraph with nodes sorted by id and unique edges sorted by source then destination, plus unresolved-reference uncertainty copied from indexed references. It records dependency structure and import mode but does not run tests or certify results.",
+						"examples": [
+							{
+								"nodes": [],
+								"edges": [],
+								"uncertain": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Input access failure",
-						"type": "propagated",
-						"description": "Caller-provided map or array iterators, getters and collection methods may throw; graph construction performs no I/O or schema validation."
+						"type": "thrown",
+						"description": "The builder may propagate exceptions raised by caller-supplied collection methods, iterators or property access while traversing the index and manifests. It performs no I/O or schema validation and does not wrap those exceptions."
 					}
 				],
 				"errorStatus": "declared"
