@@ -32,73 +32,110 @@
 				"name": "activityDisplay.agents",
 				"type": "AgentRoster",
 				"required": true,
-				"description": "Registered agent roster with a working count or null for unknown."
+				"description": "Registered agent roster with a working count; null means no agent has registered and the count is unknown. Only the working count affects this label, and unregistered agents are not counted.",
+				"examples": [
+					{
+						"working": 2
+					},
+					{
+						"working": null
+					}
+				]
 			},
 			{
 				"name": "commitHref.base",
 				"type": "string",
 				"required": true,
-				"description": "Explorer address prefix."
+				"description": "Prefix concatenated directly before the history route returned by consoleRoutePath. The function does not normalize separators.",
+				"examples": ["https://reports.example.test"]
 			},
 			{
 				"name": "commitHref.commit",
 				"type": "string",
 				"required": true,
-				"description": "Commit to open in history."
+				"description": "Commit identifier passed to the history route. This function does not validate its format.",
+				"examples": ["3f2a6b8c1d4e5f60718293a4b5c6d7e8f9012345"]
 			},
 			{
 				"name": "commitHref.branches",
 				"type": "string[]",
 				"required": true,
-				"description": "Branch choices; uses the first or a retained-commit route when none exist."
+				"description": "Ordered branch names passed to the history route; only the first is used. An empty array passes null for the branch.",
+				"examples": [
+					["main"],
+					["release/1.4"]
+				]
 			},
 			{
 				"name": "plural.count",
 				"type": "number",
 				"required": true,
-				"description": "Count to display."
+				"description": "Number printed before the word; only exactly 1 selects the singular form. Every other number selects the form with an appended s.",
+				"examples": [1, 2, 0]
 			},
 			{
 				"name": "plural.word",
 				"type": "string",
 				"required": true,
-				"description": "Singular word to pluralize by appending s unless the count is exactly one."
+				"description": "Base word printed after the count; an s is appended unless the count is exactly 1. Irregular plural forms are not handled.",
+				"examples": ["agent", "commit"]
 			},
 			{
 				"name": "activityTime.iso",
 				"type": "string",
 				"required": true,
-				"description": "Timestamp to format."
+				"description": "Timestamp string parsed by JavaScript Date. Valid dates are formatted in UTC to the day and minute; invalid input is returned unchanged, and offset-free strings can depend on the host timezone.",
+				"examples": ["2026-03-18T14:27:43.000Z", "not-a-date"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "agentStates",
 				"type": "Record<AgentState, string>",
-				"description": "Labels for working, stale, ended, completed and failed agents."
+				"description": "Fixed display labels for the working, stale, gone, completed and failed states. The gone state is labeled Process ended.",
+				"examples": [
+					{
+						"working": "Working",
+						"stale": "Stale",
+						"gone": "Process ended",
+						"completed": "Finished",
+						"failed": "Failed"
+					}
+				]
 			},
 			{
 				"name": "commitHref",
 				"type": "string",
-				"description": "History address formed from the base and commit route."
+				"description": "Base concatenated with the consoleRoutePath for the history view, using the commit and first branch or null. Route formatting is defined by consoleRoutePath.",
+				"examples": [
+					"https://reports.example.test/history?branch=main&commit=3f2a6b8c1d4e5f60718293a4b5c6d7e8f9012345"
+				]
 			},
 			{
 				"name": "activityTime",
 				"type": "string",
-				"description": "UTC date and minute for a valid timestamp; otherwise the original text."
+				"description": "Valid timestamps become ISO UTC text sliced to YYYY-MM-DD HH:mm, dropping seconds and the zone suffix. An invalid date returns the original string.",
+				"examples": ["2026-03-18 14:27", "not-a-date"]
 			},
 			{
 				"name": "plural",
 				"type": "string",
-				"description": "Count followed by the word in singular or simple plural form."
+				"description": "Count and word joined with a space, with s appended unless the count is exactly 1. Irregular plural forms are not handled.",
+				"examples": ["1 agent", "2 agents", "0 commits"]
 			},
 			{
 				"name": "activityDisplay",
 				"type": "string",
-				"description": "Sentence stating the registered working-agent count, or that it is unknown when no agent has registered. Explicitly excludes unregistered agents."
+				"description": "When working is null, reports that no agent has registered and the count is unknown. Otherwise reports registered agent or agents working now, uses singular only for one, and excludes unregistered agents.",
+				"examples": [
+					"No agent has registered in this repository, so who is working is not known.",
+					"registered agent is working now. Agents that do not register are not counted.",
+					"registered agents are working now. Agents that do not register are not counted."
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "activityDisplay",
@@ -107,18 +144,31 @@
 						"name": "activityDisplay.agents",
 						"type": "AgentRoster",
 						"required": true,
-						"description": "Registered agent roster with a working count or null for unknown."
+						"description": "Registered agent roster with a working count; null means no agent has registered and the count is unknown. Only the working count affects this label, and unregistered agents are not counted.",
+						"examples": [
+							{
+								"working": 2
+							},
+							{
+								"working": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "activityDisplay",
 						"type": "string",
-						"description": "Sentence stating the registered working-agent count, or that it is unknown when no agent has registered. Explicitly excludes unregistered agents."
+						"description": "When working is null, reports that no agent has registered and the count is unknown. Otherwise reports registered agent or agents working now, uses singular only for one, and excludes unregistered agents.",
+						"examples": [
+							"No agent has registered in this repository, so who is working is not known.",
+							"registered agent is working now. Agents that do not register are not counted.",
+							"registered agents are working now. Agents that do not register are not counted."
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "commitHref",
@@ -127,30 +177,39 @@
 						"name": "commitHref.base",
 						"type": "string",
 						"required": true,
-						"description": "Explorer address prefix."
+						"description": "Prefix concatenated directly before the history route returned by consoleRoutePath. The function does not normalize separators.",
+						"examples": ["https://reports.example.test"]
 					},
 					{
 						"name": "commitHref.commit",
 						"type": "string",
 						"required": true,
-						"description": "Commit to open in history."
+						"description": "Commit identifier passed to the history route. This function does not validate its format.",
+						"examples": ["3f2a6b8c1d4e5f60718293a4b5c6d7e8f9012345"]
 					},
 					{
 						"name": "commitHref.branches",
 						"type": "string[]",
 						"required": true,
-						"description": "Branch choices; uses the first or a retained-commit route when none exist."
+						"description": "Ordered branch names passed to the history route; only the first is used. An empty array passes null for the branch.",
+						"examples": [
+							["main"],
+							["release/1.4"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "commitHref",
 						"type": "string",
-						"description": "History address formed from the base and commit route."
+						"description": "Base concatenated with the consoleRoutePath for the history view, using the commit and first branch or null. Route formatting is defined by consoleRoutePath.",
+						"examples": [
+							"https://reports.example.test/history?branch=main&commit=3f2a6b8c1d4e5f60718293a4b5c6d7e8f9012345"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "plural",
@@ -159,24 +218,27 @@
 						"name": "plural.count",
 						"type": "number",
 						"required": true,
-						"description": "Count to display."
+						"description": "Number printed before the word; only exactly 1 selects the singular form. Every other number selects the form with an appended s.",
+						"examples": [1, 2, 0]
 					},
 					{
 						"name": "plural.word",
 						"type": "string",
 						"required": true,
-						"description": "Singular word to pluralize by appending s unless the count is exactly one."
+						"description": "Base word printed after the count; an s is appended unless the count is exactly 1. Irregular plural forms are not handled.",
+						"examples": ["agent", "commit"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "plural",
 						"type": "string",
-						"description": "Count followed by the word in singular or simple plural form."
+						"description": "Count and word joined with a space, with s appended unless the count is exactly 1. Irregular plural forms are not handled.",
+						"examples": ["1 agent", "2 agents", "0 commits"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "activityTime",
@@ -185,18 +247,20 @@
 						"name": "activityTime.iso",
 						"type": "string",
 						"required": true,
-						"description": "Timestamp to format."
+						"description": "Timestamp string parsed by JavaScript Date. Valid dates are formatted in UTC to the day and minute; invalid input is returned unchanged, and offset-free strings can depend on the host timezone.",
+						"examples": ["2026-03-18T14:27:43.000Z", "not-a-date"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "activityTime",
 						"type": "string",
-						"description": "UTC date and minute for a valid timestamp; otherwise the original text."
+						"description": "Valid timestamps become ISO UTC text sliced to YYYY-MM-DD HH:mm, dropping seconds and the zone suffix. An invalid date returns the original string.",
+						"examples": ["2026-03-18 14:27", "not-a-date"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
