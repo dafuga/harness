@@ -21,40 +21,157 @@
 				"name": "replayVideo.report",
 				"type": "Report",
 				"required": true,
-				"description": "Report providing screenshots and registered evidence files."
+				"description": "Report whose evidence supplies the replay frames: items that are missing, have phase 'before' or are not image media are skipped, and the rest are sorted by order (falling back to array position). The report must yield between 1 and 500 frames or the call rejects.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "3b241101-e2bb-4255-8caf-4136c566a962",
+						"project": {
+							"id": "9f2c4e7a1b3d5c60",
+							"name": "example-app",
+							"path": "/home/reviewer/projects/example-app"
+						},
+						"title": "Checkout summary",
+						"mode": "feature",
+						"environment": "local",
+						"historical": false,
+						"startedAt": "2026-11-14T16:05:12.441Z",
+						"updatedAt": "2026-11-14T16:07:03.912Z",
+						"summary": "Checkout summary comparison captured for review.",
+						"status": "running",
+						"state": "active",
+						"checks": [],
+						"evidence": [
+							{
+								"id": "c6a8e2d0-4f1b-4c7e-9a35-0d2b7e1f8a44-before",
+								"title": "Checkout summary before",
+								"category": "Uploaded comparison",
+								"file": "5d1c8a0f3e7b92d4c6a1e8f05b3d7c29e4a6f1b8d0c3e5a7f9b2d4c6e8a0f1b3.png",
+								"status": "not-proven",
+								"source": "Manual upload · Cloudflare R2",
+								"capturedAt": "2026-11-14T16:07:03.912Z",
+								"viewport": "1440px desktop",
+								"phase": "before",
+								"comparison": "c6a8e2d0-4f1b-4c7e-9a35-0d2b7e1f8a44",
+								"storage": "r2"
+							},
+							{
+								"id": "c6a8e2d0-4f1b-4c7e-9a35-0d2b7e1f8a44-after",
+								"title": "Checkout summary after",
+								"category": "Uploaded comparison",
+								"file": "a92f4c1e7d0b3e861c5a9f24e0d7b3c86f1a4e9d2b8c0f57d3e6a1b94c7f2e05.png",
+								"status": "not-proven",
+								"source": "Manual upload · Cloudflare R2",
+								"capturedAt": "2026-11-14T16:07:03.912Z",
+								"viewport": "1440px desktop",
+								"phase": "after",
+								"comparison": "c6a8e2d0-4f1b-4c7e-9a35-0d2b7e1f8a44",
+								"storage": "r2"
+							}
+						],
+						"findings": [],
+						"coverage": [],
+						"acceptance": ["Checkout summary matches the approved design"]
+					}
+				]
 			},
 			{
 				"name": "replayVideo.directory",
 				"type": "string",
 				"required": true,
-				"description": "Report directory containing assets and the replay cache."
+				"description": "Report directory that holds the evidence files under assets/ and receives the replays/ cache folder, which is created when missing. A replays entry that is a symbolic link is rejected.",
+				"examples": [
+					"/home/reviewer/.codex/project-reports/runs/3b241101-e2bb-4255-8caf-4136c566a962",
+					"/srv/project-reports/runs/7e1d4b96-0c2a-4f58-8e3b-a5d9c1f6e027"
+				]
 			},
 			{
 				"name": "replayVideoKey.report",
 				"type": "Report",
 				"required": true,
-				"description": "Report whose ordered replay frame identifiers and filenames determine the cache key."
+				"description": "Report whose replay frames (selected exactly as replayVideo selects them) supply the cache key through each frame's id and file in replay order. replayVideoKey does not apply the 1 to 500 frame limit, so an empty frame list still yields a key.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "3b241101-e2bb-4255-8caf-4136c566a962",
+						"project": {
+							"id": "9f2c4e7a1b3d5c60",
+							"name": "example-app",
+							"path": "/home/reviewer/projects/example-app"
+						},
+						"title": "Checkout summary",
+						"mode": "feature",
+						"environment": "local",
+						"historical": false,
+						"startedAt": "2026-11-14T16:05:12.441Z",
+						"updatedAt": "2026-11-14T16:07:03.912Z",
+						"summary": "Checkout summary comparison captured for review.",
+						"status": "running",
+						"state": "active",
+						"checks": [],
+						"evidence": [
+							{
+								"id": "c6a8e2d0-4f1b-4c7e-9a35-0d2b7e1f8a44-before",
+								"title": "Checkout summary before",
+								"category": "Uploaded comparison",
+								"file": "5d1c8a0f3e7b92d4c6a1e8f05b3d7c29e4a6f1b8d0c3e5a7f9b2d4c6e8a0f1b3.png",
+								"status": "not-proven",
+								"source": "Manual upload · Cloudflare R2",
+								"capturedAt": "2026-11-14T16:07:03.912Z",
+								"viewport": "1440px desktop",
+								"phase": "before",
+								"comparison": "c6a8e2d0-4f1b-4c7e-9a35-0d2b7e1f8a44",
+								"storage": "r2"
+							},
+							{
+								"id": "c6a8e2d0-4f1b-4c7e-9a35-0d2b7e1f8a44-after",
+								"title": "Checkout summary after",
+								"category": "Uploaded comparison",
+								"file": "a92f4c1e7d0b3e861c5a9f24e0d7b3c86f1a4e9d2b8c0f57d3e6a1b94c7f2e05.png",
+								"status": "not-proven",
+								"source": "Manual upload · Cloudflare R2",
+								"capturedAt": "2026-11-14T16:07:03.912Z",
+								"viewport": "1440px desktop",
+								"phase": "after",
+								"comparison": "c6a8e2d0-4f1b-4c7e-9a35-0d2b7e1f8a44",
+								"storage": "r2"
+							}
+						],
+						"findings": [],
+						"coverage": [],
+						"acceptance": ["Checkout summary matches the approved design"]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "replayVideoKey",
 				"type": "unknown",
-				"description": "SHA-256 key of ordered frame identifiers/filenames and the fixed three-second, 1280-by-720 versioned encoding recipe."
+				"description": "Lowercase SHA-256 hex digest, 64 characters, of the JSON list of each replay frame's [id, file] pair in order plus the fixed ':3s:1280x720:v2' recipe suffix. It names the cached file replays/<key>.mp4, so a change in frame ids, file names, frame order or that suffix produces a different key.",
+				"examples": [
+					"e7b04c9d1a8f3e62b5d09c7a4f1e8b23d6a0c5f9e2b7418d3c6a9f0e5b2d8c14",
+					"0c95e2a7f1b38d649a0e5c12d7f4b8903e6a1c5d8b2f7e094d1c6a3fe5908b27"
+				]
 			},
 			{
 				"name": "replayVideo",
 				"type": "unknown",
-				"description": "Promise resolving to an existing regular cached MP4 or a newly encoded file. Frames are rendered in batches of four, fitted/padded to 1280 by 720, then encoded at ten frames per second with three seconds per screenshot. Temporary encoding files are removed in finally."
+				"description": "Promise resolving to the path <directory>/replays/<key>.mp4: an existing regular file there is returned as is, otherwise frames are rendered in batches of four, scaled to fit and padded to 1280 by 720, encoded at 10 fps with each screenshot held for three seconds, and renamed into place. The temporary encode folder is removed in finally, and the promise rejects if rendering or encoding fails.",
+				"examples": [
+					"/home/reviewer/.codex/project-reports/runs/3b241101-e2bb-4255-8caf-4136c566a962/replays/e7b04c9d1a8f3e62b5d09c7a4f1e8b23d6a0c5f9e2b7418d3c6a9f0e5b2d8c14.mp4",
+					"/srv/project-reports/runs/7e1d4b96-0c2a-4f58-8e3b-a5d9c1f6e027/replays/0c95e2a7f1b38d649a0e5c12d7f4b8903e6a1c5d8b2f7e094d1c6a3fe5908b27.mp4"
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects zero or over 500 frames, symlinked replay cache/artifact, screenshot conversion failure and encoding failure. Asset validation, subprocess and filesystem failures may also propagate."
+				"description": "Rejects with Error when the report yields no replay frames or more than 500, when the replays folder or the cached MP4 path is a symbolic link, when a screenshot fails to render, or when the video encode exits non-zero. Asset validation errors ('Unregistered asset', 'Invalid asset', 'Invalid asset path'), a missing asset file, a failed ffmpeg spawn and filesystem errors from mkdir, mkdtemp, writeFile, rename or rm also reject."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "replayVideo",
@@ -63,29 +180,90 @@
 						"name": "replayVideo.report",
 						"type": "Report",
 						"required": true,
-						"description": "Report providing screenshots and registered evidence files."
+						"description": "Report whose evidence supplies the replay frames: items that are missing, have phase 'before' or are not image media are skipped, and the rest are sorted by order (falling back to array position). The report must yield between 1 and 500 frames or the call rejects.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "3b241101-e2bb-4255-8caf-4136c566a962",
+								"project": {
+									"id": "9f2c4e7a1b3d5c60",
+									"name": "example-app",
+									"path": "/home/reviewer/projects/example-app"
+								},
+								"title": "Checkout summary",
+								"mode": "feature",
+								"environment": "local",
+								"historical": false,
+								"startedAt": "2026-11-14T16:05:12.441Z",
+								"updatedAt": "2026-11-14T16:07:03.912Z",
+								"summary": "Checkout summary comparison captured for review.",
+								"status": "running",
+								"state": "active",
+								"checks": [],
+								"evidence": [
+									{
+										"id": "c6a8e2d0-4f1b-4c7e-9a35-0d2b7e1f8a44-before",
+										"title": "Checkout summary before",
+										"category": "Uploaded comparison",
+										"file": "5d1c8a0f3e7b92d4c6a1e8f05b3d7c29e4a6f1b8d0c3e5a7f9b2d4c6e8a0f1b3.png",
+										"status": "not-proven",
+										"source": "Manual upload · Cloudflare R2",
+										"capturedAt": "2026-11-14T16:07:03.912Z",
+										"viewport": "1440px desktop",
+										"phase": "before",
+										"comparison": "c6a8e2d0-4f1b-4c7e-9a35-0d2b7e1f8a44",
+										"storage": "r2"
+									},
+									{
+										"id": "c6a8e2d0-4f1b-4c7e-9a35-0d2b7e1f8a44-after",
+										"title": "Checkout summary after",
+										"category": "Uploaded comparison",
+										"file": "a92f4c1e7d0b3e861c5a9f24e0d7b3c86f1a4e9d2b8c0f57d3e6a1b94c7f2e05.png",
+										"status": "not-proven",
+										"source": "Manual upload · Cloudflare R2",
+										"capturedAt": "2026-11-14T16:07:03.912Z",
+										"viewport": "1440px desktop",
+										"phase": "after",
+										"comparison": "c6a8e2d0-4f1b-4c7e-9a35-0d2b7e1f8a44",
+										"storage": "r2"
+									}
+								],
+								"findings": [],
+								"coverage": [],
+								"acceptance": ["Checkout summary matches the approved design"]
+							}
+						]
 					},
 					{
 						"name": "replayVideo.directory",
 						"type": "string",
 						"required": true,
-						"description": "Report directory containing assets and the replay cache."
+						"description": "Report directory that holds the evidence files under assets/ and receives the replays/ cache folder, which is created when missing. A replays entry that is a symbolic link is rejected.",
+						"examples": [
+							"/home/reviewer/.codex/project-reports/runs/3b241101-e2bb-4255-8caf-4136c566a962",
+							"/srv/project-reports/runs/7e1d4b96-0c2a-4f58-8e3b-a5d9c1f6e027"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "replayVideo",
 						"type": "unknown",
-						"description": "Promise resolving to an existing regular cached MP4 or a newly encoded file. Frames are rendered in batches of four, fitted/padded to 1280 by 720, then encoded at ten frames per second with three seconds per screenshot. Temporary encoding files are removed in finally."
+						"description": "Promise resolving to the path <directory>/replays/<key>.mp4: an existing regular file there is returned as is, otherwise frames are rendered in batches of four, scaled to fit and padded to 1280 by 720, encoded at 10 fps with each screenshot held for three seconds, and renamed into place. The temporary encode folder is removed in finally, and the promise rejects if rendering or encoding fails.",
+						"examples": [
+							"/home/reviewer/.codex/project-reports/runs/3b241101-e2bb-4255-8caf-4136c566a962/replays/e7b04c9d1a8f3e62b5d09c7a4f1e8b23d6a0c5f9e2b7418d3c6a9f0e5b2d8c14.mp4",
+							"/srv/project-reports/runs/7e1d4b96-0c2a-4f58-8e3b-a5d9c1f6e027/replays/0c95e2a7f1b38d649a0e5c12d7f4b8903e6a1c5d8b2f7e094d1c6a3fe5908b27.mp4"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects with Error when the report yields no replay frames or more than 500, when the replays folder or the cached MP4 path is a symbolic link, when a screenshot fails to render, or when the video encode exits non-zero. Asset validation errors ('Unregistered asset', 'Invalid asset', 'Invalid asset path'), a missing asset file, a failed ffmpeg spawn and filesystem errors from mkdir, mkdtemp, writeFile, rename or rm also reject."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "replayVideoKey",
@@ -94,18 +272,74 @@
 						"name": "replayVideoKey.report",
 						"type": "Report",
 						"required": true,
-						"description": "Report whose ordered replay frame identifiers and filenames determine the cache key."
+						"description": "Report whose replay frames (selected exactly as replayVideo selects them) supply the cache key through each frame's id and file in replay order. replayVideoKey does not apply the 1 to 500 frame limit, so an empty frame list still yields a key.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "3b241101-e2bb-4255-8caf-4136c566a962",
+								"project": {
+									"id": "9f2c4e7a1b3d5c60",
+									"name": "example-app",
+									"path": "/home/reviewer/projects/example-app"
+								},
+								"title": "Checkout summary",
+								"mode": "feature",
+								"environment": "local",
+								"historical": false,
+								"startedAt": "2026-11-14T16:05:12.441Z",
+								"updatedAt": "2026-11-14T16:07:03.912Z",
+								"summary": "Checkout summary comparison captured for review.",
+								"status": "running",
+								"state": "active",
+								"checks": [],
+								"evidence": [
+									{
+										"id": "c6a8e2d0-4f1b-4c7e-9a35-0d2b7e1f8a44-before",
+										"title": "Checkout summary before",
+										"category": "Uploaded comparison",
+										"file": "5d1c8a0f3e7b92d4c6a1e8f05b3d7c29e4a6f1b8d0c3e5a7f9b2d4c6e8a0f1b3.png",
+										"status": "not-proven",
+										"source": "Manual upload · Cloudflare R2",
+										"capturedAt": "2026-11-14T16:07:03.912Z",
+										"viewport": "1440px desktop",
+										"phase": "before",
+										"comparison": "c6a8e2d0-4f1b-4c7e-9a35-0d2b7e1f8a44",
+										"storage": "r2"
+									},
+									{
+										"id": "c6a8e2d0-4f1b-4c7e-9a35-0d2b7e1f8a44-after",
+										"title": "Checkout summary after",
+										"category": "Uploaded comparison",
+										"file": "a92f4c1e7d0b3e861c5a9f24e0d7b3c86f1a4e9d2b8c0f57d3e6a1b94c7f2e05.png",
+										"status": "not-proven",
+										"source": "Manual upload · Cloudflare R2",
+										"capturedAt": "2026-11-14T16:07:03.912Z",
+										"viewport": "1440px desktop",
+										"phase": "after",
+										"comparison": "c6a8e2d0-4f1b-4c7e-9a35-0d2b7e1f8a44",
+										"storage": "r2"
+									}
+								],
+								"findings": [],
+								"coverage": [],
+								"acceptance": ["Checkout summary matches the approved design"]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "replayVideoKey",
 						"type": "unknown",
-						"description": "SHA-256 key of ordered frame identifiers/filenames and the fixed three-second, 1280-by-720 versioned encoding recipe."
+						"description": "Lowercase SHA-256 hex digest, 64 characters, of the JSON list of each replay frame's [id, file] pair in order plus the fixed ':3s:1280x720:v2' recipe suffix. It names the cached file replays/<key>.mp4, so a change in frame ids, file names, frame order or that suffix produces a different key.",
+						"examples": [
+							"e7b04c9d1a8f3e62b5d09c7a4f1e8b23d6a0c5f9e2b7418d3c6a9f0e5b2d8c14",
+							"0c95e2a7f1b38d649a0e5c12d7f4b8903e6a1c5d8b2f7e094d1c6a3fe5908b27"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
