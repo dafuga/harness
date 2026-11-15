@@ -237,7 +237,7 @@
 				"name": "isShared.unit",
 				"type": "ExplorerEntity['unit']",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The optional unit checked first. When explorerCategory lists it under functions, shared use is whether one of its helpers passes helperContract (pure and at least two distinct consumers); otherwise related alone decides.",
 				"examples": [
 					{
@@ -1321,7 +1321,7 @@
 						"name": "isShared.unit",
 						"type": "ExplorerEntity['unit']",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The optional unit checked first. When explorerCategory lists it under functions, shared use is whether one of its helpers passes helperContract (pure and at least two distinct consumers); otherwise related alone decides.",
 						"examples": [
 							{

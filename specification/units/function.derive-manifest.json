@@ -40,7 +40,7 @@
 				"name": "deriveContract.entry",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Repository-relative source path used to select a primary component export when that file is present. If no matching component is found, inputs fall back to all deduplicated component exports; defaults to undefined.",
 				"examples": ["src/utils/development-tooling/deriveManifest.ts"]
 			},
@@ -214,7 +214,7 @@
 						"name": "deriveContract.entry",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Repository-relative source path used to select a primary component export when that file is present. If no matching component is found, inputs fall back to all deduplicated component exports; defaults to undefined.",
 						"examples": ["src/utils/development-tooling/deriveManifest.ts"]
 					}

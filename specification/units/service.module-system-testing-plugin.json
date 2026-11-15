@@ -45,7 +45,7 @@
 				"name": "TestingPluginService.run.signal",
 				"type": "AbortSignal",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional AbortSignal forwarded to resourceWork and runIsolated. Defaults to undefined when omitted."
 			}
 		],
@@ -97,7 +97,7 @@
 						"name": "TestingPluginService.run.signal",
 						"type": "AbortSignal",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional AbortSignal forwarded to resourceWork and runIsolated. Defaults to undefined when omitted."
 					}
 				],

@@ -81,7 +81,7 @@
 				"name": "HarnessApiService.call.requestId",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional request identifier forwarded to the agent only when it is truthy; an empty string is omitted. Defaults to undefined.",
 				"examples": ["api-call-2026-11-15-001"]
 			}
@@ -253,7 +253,7 @@
 						"name": "HarnessApiService.call.requestId",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional request identifier forwarded to the agent only when it is truthy; an empty string is omitted. Defaults to undefined.",
 						"examples": ["api-call-2026-11-15-001"]
 					}

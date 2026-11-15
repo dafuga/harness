@@ -40,7 +40,7 @@
 				"name": "ProjectSessionService.assertProject.projectId",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The project id the caller expects to be selected. When it is left out (undefined) no check runs, so the call succeeds even with no project open; when given, it must equal the selected project's id exactly, so any value throws while no project is open.",
 				"examples": [
 					"local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63",
@@ -441,7 +441,7 @@
 						"name": "ProjectSessionService.assertProject.projectId",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The project id the caller expects to be selected. When it is left out (undefined) no check runs, so the call succeeds even with no project open; when given, it must equal the selected project's id exactly, so any value throws while no project is open.",
 						"examples": [
 							"local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63",

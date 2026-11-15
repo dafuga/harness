@@ -198,7 +198,7 @@
 				"name": "heldBy.wanted",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional option ID the caller expects to own the file, such as o1. When it is given, a file owned by another option, or by no option, is refused with not-found.",
 				"examples": ["o1", "o2"]
 			},
@@ -675,7 +675,7 @@
 				"name": "approvable.option",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Option ID to approve, such as o1; an optioned version needs one, and an omitted or unmatched ID yields null. A single design must leave it out, because any ID yields null.",
 				"examples": ["o1", "o2"]
 			}
@@ -1080,7 +1080,7 @@
 						"name": "heldBy.wanted",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional option ID the caller expects to own the file, such as o1. When it is given, a file owned by another option, or by no option, is refused with not-found.",
 						"examples": ["o1", "o2"]
 					}
@@ -1687,7 +1687,7 @@
 						"name": "approvable.option",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Option ID to approve, such as o1; an optioned version needs one, and an omitted or unmatched ID yields null. A single design must leave it out, because any ID yields null.",
 						"examples": ["o1", "o2"]
 					}

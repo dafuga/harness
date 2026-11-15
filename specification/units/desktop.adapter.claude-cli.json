@@ -45,7 +45,7 @@
 				"name": "ClaudeCliAdapter.constructor.queue",
 				"type": "ResourceQueueService",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "An optional machine-wide resource queue through which `run` admits each turn under a reservation of 1 CPU and 2048 MiB of memory. When it is omitted, `run` falls back to `resourceWork`, which opens a fresh queue service for that turn, and `discover` never reads it."
 			},
 			{
@@ -388,7 +388,7 @@
 						"name": "ClaudeCliAdapter.constructor.queue",
 						"type": "ResourceQueueService",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "An optional machine-wide resource queue through which `run` admits each turn under a reservation of 1 CPU and 2048 MiB of memory. When it is omitted, `run` falls back to `resourceWork`, which opens a fresh queue service for that turn, and `discover` never reads it."
 					}
 				],

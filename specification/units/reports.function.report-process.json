@@ -34,7 +34,7 @@
 				"name": "reportProcess.cwd",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional working directory for the child process. When omitted, the code passes no cwd override and spawn uses the current working directory.",
 				"examples": ["/workspace/project"]
 			},
@@ -102,7 +102,7 @@
 						"name": "reportProcess.cwd",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional working directory for the child process. When omitted, the code passes no cwd override and spawn uses the current working directory.",
 						"examples": ["/workspace/project"]
 					},

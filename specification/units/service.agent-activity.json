@@ -104,7 +104,7 @@
 				"name": "AgentActivityService.finish.outcome",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional one-line outcome text saved on the end record after trimming; blank or omitted text is stored as null, and nonblank text is limited to 200 characters. Defaults to undefined.",
 				"examples": ["Completed after review"]
 			}
@@ -328,7 +328,7 @@
 						"name": "AgentActivityService.finish.outcome",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional one-line outcome text saved on the end record after trimming; blank or omitted text is stored as null, and nonblank text is limited to 200 characters. Defaults to undefined.",
 						"examples": ["Completed after review"]
 					}

@@ -78,7 +78,7 @@
 				"name": "textField.pattern",
 				"type": "RegExp",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "An optional RegExp that the text must match, checked with pattern.test(value); a non-matching text throws 'Invalid identifier.' When omitted, no pattern check runs."
 			},
 			{
@@ -92,7 +92,7 @@
 				"name": "nullableText.pattern",
 				"type": "RegExp",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "An optional RegExp that a non-null text must match, checked with pattern.test(value) inside textField; a non-matching text throws 'Invalid identifier.' Null is returned as null without any pattern check."
 			},
 			{
@@ -301,7 +301,7 @@
 						"name": "textField.pattern",
 						"type": "RegExp",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "An optional RegExp that the text must match, checked with pattern.test(value); a non-matching text throws 'Invalid identifier.' When omitted, no pattern check runs."
 					}
 				],
@@ -336,7 +336,7 @@
 						"name": "nullableText.pattern",
 						"type": "RegExp",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "An optional RegExp that a non-null text must match, checked with pattern.test(value) inside textField; a non-matching text throws 'Invalid identifier.' Null is returned as null without any pattern check."
 					}
 				],

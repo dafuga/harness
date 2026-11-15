@@ -27,7 +27,7 @@
 				"name": "buildStamp.slot",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The stamp text the emitted code holds starts with harness-build: and is followed by exactly 64 lowercase hexadecimal characters. A server that cannot read its own files, such as a Worker, passes this slot, and buildStamp returns null for an undefined slot, a missing marker, an identity that is not exactly 64 lowercase hexadecimal characters, or an all-zero identity.",
 				"examples": [
 					"harness-build:3c9f04a7d1e8b26f5a0c93e7d4b1f8a2c6e0d9b5f3a7c1e4d8b2f6a0c5e9d3b7",
@@ -93,7 +93,7 @@
 						"name": "buildStamp.slot",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The stamp text the emitted code holds starts with harness-build: and is followed by exactly 64 lowercase hexadecimal characters. A server that cannot read its own files, such as a Worker, passes this slot, and buildStamp returns null for an undefined slot, a missing marker, an identity that is not exactly 64 lowercase hexadecimal characters, or an all-zero identity.",
 						"examples": [
 							"harness-build:3c9f04a7d1e8b26f5a0c93e7d4b1f8a2c6e0d9b5f3a7c1e4d8b2f6a0c5e9d3b7",

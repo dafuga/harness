@@ -45,7 +45,7 @@
 				"name": "budgetMeasure.unit",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Exact manifest id used to restrict measurements to one active unit. Defaults to undefined, which includes every active unit.",
 				"examples": ["workflow.run-budget"]
 			},
@@ -60,7 +60,7 @@
 				"name": "budgetHistory.unit",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Exact event.unit value used to filter ledger history. Defaults to undefined, which returns all events.",
 				"examples": ["workflow.run-budget"]
 			},
@@ -194,7 +194,7 @@
 						"name": "budgetMeasure.unit",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Exact manifest id used to restrict measurements to one active unit. Defaults to undefined, which includes every active unit.",
 						"examples": ["workflow.run-budget"]
 					},
@@ -226,7 +226,7 @@
 						"name": "budgetHistory.unit",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Exact event.unit value used to filter ledger history. Defaults to undefined, which returns all events.",
 						"examples": ["workflow.run-budget"]
 					},

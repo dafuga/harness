@@ -169,7 +169,7 @@
 				"name": "ProjectionCacheService.purge.projectId",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional project identifier used to narrow the purge. Omitting it removes entries for the principal across projects; supplying it also removes that project's entries and entries marked for $projects.",
 				"examples": ["project-42"]
 			}
@@ -507,7 +507,7 @@
 						"name": "ProjectionCacheService.purge.projectId",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional project identifier used to narrow the purge. Omitting it removes entries for the principal across projects; supplying it also removes that project's entries and entries marked for $projects.",
 						"examples": ["project-42"]
 					}

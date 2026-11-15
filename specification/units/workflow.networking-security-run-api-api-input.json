@@ -18,7 +18,7 @@
 				"name": "apiInput.input",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The value is inline JSON text, '@' followed by a file path whose UTF-8 contents are read, or '-' to read a JSON body from piped stdin (a terminal stdin is rejected). When it is undefined, apiInput returns {} without reading or parsing anything; otherwise the text must parse to a JSON object, so arrays, null and primitives are rejected.",
 				"examples": ["{\"name\": \"sample\", \"count\": 2}", "@request.json", "-"]
 			},
@@ -89,7 +89,7 @@
 						"name": "apiInput.input",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The value is inline JSON text, '@' followed by a file path whose UTF-8 contents are read, or '-' to read a JSON body from piped stdin (a terminal stdin is rejected). When it is undefined, apiInput returns {} without reading or parsing anything; otherwise the text must parse to a JSON object, so arrays, null and primitives are rejected.",
 						"examples": ["{\"name\": \"sample\", \"count\": 2}", "@request.json", "-"]
 					}

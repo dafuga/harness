@@ -42,7 +42,7 @@
 				"name": "HistoryStatusService.constructor.pinned",
 				"type": "PinnedHistory",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The commits to read history at instead of the live refs: notes is the notes commit, a full 40-character hash or null for no notes, and evidence is the evidence commit whose history bounds which evidence pointers are followed (null follows none). Omitted, the live refs are read.",
 				"examples": [
 					{
@@ -557,7 +557,7 @@
 						"name": "HistoryStatusService.constructor.pinned",
 						"type": "PinnedHistory",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The commits to read history at instead of the live refs: notes is the notes commit, a full 40-character hash or null for no notes, and evidence is the evidence commit whose history bounds which evidence pointers are followed (null follows none). Omitted, the live refs are read.",
 						"examples": [
 							{

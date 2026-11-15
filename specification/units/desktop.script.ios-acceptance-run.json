@@ -58,7 +58,7 @@
 				"name": "control.body",
 				"type": "object",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional object JSON-encoded as the request body, with an application/json content-type header. Its fields are not validated by this function.",
 				"examples": [
 					{}
@@ -105,7 +105,7 @@
 				"name": "scanPressed.name",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional phone name filled into the Name of this phone field before pressing the scan action. When omitted, no name-fill expression is included.",
 				"examples": ["Harness fixture iPhone"]
 			},
@@ -262,7 +262,7 @@
 						"name": "control.body",
 						"type": "object",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional object JSON-encoded as the request body, with an application/json content-type header. Its fields are not validated by this function.",
 						"examples": [
 							{}
@@ -389,7 +389,7 @@
 						"name": "scanPressed.name",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional phone name filled into the Name of this phone field before pressing the scan action. When omitted, no name-fill expression is included.",
 						"examples": ["Harness fixture iPhone"]
 					}

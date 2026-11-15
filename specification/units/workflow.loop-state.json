@@ -56,7 +56,7 @@
 				"name": "loopRoot.input",
 				"type": "LoopInput",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "An optional options object that may supply a root directory and a clock callback; loopRoot reads only its root field. If root is absent or nullish, loopRoot returns process.cwd().",
 				"examples": [
 					{
@@ -349,7 +349,7 @@
 						"name": "loopRoot.input",
 						"type": "LoopInput",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "An optional options object that may supply a root directory and a clock callback; loopRoot reads only its root field. If root is absent or nullish, loopRoot returns process.cwd().",
 						"examples": [
 							{

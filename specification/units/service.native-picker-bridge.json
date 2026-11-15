@@ -30,7 +30,7 @@
 				"name": "NativePickerBridgeService.constructor.catalogPath",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional catalog path passed to the picker defaults and switch services and used as model_catalog_json when opening a harness-claude thread. Defaults to undefined.",
 				"examples": ["src/config/model-catalog.json"]
 			},
@@ -57,7 +57,7 @@
 				"name": "NativePickerBridgeService.send.options",
 				"type": "PickerData",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional options record passed through to the selected route's helper or RPC call. The bridge does not read its fields; when omitted, it remains undefined.",
 				"examples": [
 					{}
@@ -109,7 +109,7 @@
 						"name": "NativePickerBridgeService.send.options",
 						"type": "PickerData",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional options record passed through to the selected route's helper or RPC call. The bridge does not read its fields; when omitted, it remains undefined.",
 						"examples": [
 							{}
@@ -150,7 +150,7 @@
 						"name": "NativePickerBridgeService.constructor.catalogPath",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional catalog path passed to the picker defaults and switch services and used as model_catalog_json when opening a harness-claude thread. Defaults to undefined.",
 						"examples": ["src/config/model-catalog.json"]
 					}

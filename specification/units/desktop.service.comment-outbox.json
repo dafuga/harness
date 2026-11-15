@@ -27,7 +27,7 @@
 				"name": "CommentOutboxService.constructor.file",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Path of the JSON file that stores unsent drafts; when omitted or empty, drafts are kept only in memory and are lost when the instance is discarded. A set path is written through a temporary file that is renamed over the drafts file, its missing parent directory is created with mode 0700, and the file is created with mode 0600.",
 				"examples": ["/workspace/state/comment-outbox.json", "/workspace/state/outbox/drafts.json"]
 			},
@@ -504,7 +504,7 @@
 						"name": "CommentOutboxService.constructor.file",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Path of the JSON file that stores unsent drafts; when omitted or empty, drafts are kept only in memory and are lost when the instance is discarded. A set path is written through a temporary file that is renamed over the drafts file, its missing parent directory is created with mode 0700, and the file is created with mode 0600.",
 						"examples": [
 							"/workspace/state/comment-outbox.json",

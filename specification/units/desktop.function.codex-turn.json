@@ -47,7 +47,7 @@
 				"name": "codexTurn.queue",
 				"type": "ResourceQueueService",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "An optional ResourceQueueService passed to managedAgentTurn for this request; if omitted, this function passes no explicit queue."
 			}
 		],
@@ -104,7 +104,7 @@
 						"name": "codexTurn.queue",
 						"type": "ResourceQueueService",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "An optional ResourceQueueService passed to managedAgentTurn for this request; if omitted, this function passes no explicit queue."
 					}
 				],

@@ -61,7 +61,7 @@
 				"name": "JevAdapter.evaluate.signal",
 				"type": "AbortSignal",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "An optional AbortSignal lets the caller cancel evaluation and is combined with an adapter-created 30-second deadline. If it is already aborted, evaluate throws immediately; if either signal aborts during the request, the adapter reports cancellation or timeout."
 			}
 		],
@@ -110,7 +110,7 @@
 						"name": "JevAdapter.evaluate.signal",
 						"type": "AbortSignal",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "An optional AbortSignal lets the caller cancel evaluation and is combined with an adapter-created 30-second deadline. If it is already aborted, evaluate throws immediately; if either signal aborts during the request, the adapter reports cancellation or timeout."
 					}
 				],

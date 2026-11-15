@@ -18,7 +18,7 @@
 				"name": "hubEntityContract.unit",
 				"type": "Pick<ComponentManifest, 'contract'>",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The unit's ComponentManifest `contract`, which is hashed with hubContractHash only when `plan` is falsy; a truthy `plan` takes precedence and leaves it unused. The code does not validate it: a missing `contract` yields the SHA-256 of empty input, while a BigInt or circular value makes the call reject.",
 				"examples": [
 					{
@@ -83,7 +83,7 @@
 				"name": "hubEntityContract.plan",
 				"type": "Pick<PlanRecord, 'contract'>",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The plan's `contract`, returned unchanged whenever `plan` is truthy, so it takes precedence over `unit`. The code neither computes nor checks its `hash`; the EntityContract type documents that field as the SHA-256 of the contract an approval binds, or null when the entity has no contract yet.",
 				"examples": [
 					{
@@ -200,7 +200,7 @@
 						"name": "hubEntityContract.unit",
 						"type": "Pick<ComponentManifest, 'contract'>",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The unit's ComponentManifest `contract`, which is hashed with hubContractHash only when `plan` is falsy; a truthy `plan` takes precedence and leaves it unused. The code does not validate it: a missing `contract` yields the SHA-256 of empty input, while a BigInt or circular value makes the call reject.",
 						"examples": [
 							{
@@ -265,7 +265,7 @@
 						"name": "hubEntityContract.plan",
 						"type": "Pick<PlanRecord, 'contract'>",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The plan's `contract`, returned unchanged whenever `plan` is truthy, so it takes precedence over `unit`. The code neither computes nor checks its `hash`; the EntityContract type documents that field as the SHA-256 of the contract an approval binds, or null when the entity has no contract yet.",
 						"examples": [
 							{

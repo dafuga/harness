@@ -24,7 +24,7 @@
 				"name": "ProjectRegistryService.constructor.file",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional path passed to LocalDocumentAdapter for the project registry document. When omitted, the constructor passes undefined, and the service does not validate or normalize the path itself.",
 				"examples": ["/workspace/.config/desktop/projects.json"]
 			},
@@ -203,7 +203,7 @@
 						"name": "ProjectRegistryService.constructor.file",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional path passed to LocalDocumentAdapter for the project registry document. When omitted, the constructor passes undefined, and the service does not validate or normalize the path itself.",
 						"examples": ["/workspace/.config/desktop/projects.json"]
 					}

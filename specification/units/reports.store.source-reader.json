@@ -296,7 +296,7 @@
 				"name": "archivedSource.filePath",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "An optional archived path moved to the front of the files result when it is present there. Other values do not change the path order.",
 				"examples": ["packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.test.ts"]
 			}
@@ -657,7 +657,7 @@
 						"name": "archivedSource.filePath",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "An optional archived path moved to the front of the files result when it is present there. Other values do not change the path order.",
 						"examples": ["packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.test.ts"]
 					}

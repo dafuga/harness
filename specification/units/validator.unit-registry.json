@@ -42,7 +42,7 @@
 				"name": "UnitRegistryValidator.validate.sources",
 				"type": "ReadonlyMap<string, SourceFile>",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "An optional map of indexed source facts for canonical import inspection. If omitted, duplicate identity checks still run but canonical source dependency inspection is skipped."
 			},
 			{
@@ -67,7 +67,7 @@
 				"name": "registryOwnershipFindings.sources",
 				"type": "ReadonlyMap<string, SourceFile>",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "An optional map of indexed source facts used to inspect owned sources of reviewed canonical owners. If omitted, the function returns duplicate identity findings without inspecting source dependencies."
 			}
 		],
@@ -116,7 +116,7 @@
 						"name": "UnitRegistryValidator.validate.sources",
 						"type": "ReadonlyMap<string, SourceFile>",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "An optional map of indexed source facts for canonical import inspection. If omitted, duplicate identity checks still run but canonical source dependency inspection is skipped."
 					}
 				],
@@ -161,7 +161,7 @@
 						"name": "registryOwnershipFindings.sources",
 						"type": "ReadonlyMap<string, SourceFile>",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "An optional map of indexed source facts used to inspect owned sources of reviewed canonical owners. If omitted, the function returns duplicate identity findings without inspecting source dependencies."
 					}
 				],

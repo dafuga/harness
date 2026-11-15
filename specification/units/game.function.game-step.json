@@ -26,7 +26,7 @@
 				"name": "createRun.view",
 				"type": "GameView",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional view used to initialize view markers and level identity; if it has a world, its spawn x and z set the initial coordinates.",
 				"examples": [
 					{
@@ -115,7 +115,7 @@
 				"name": "stepGame.mechanics",
 				"type": "Mechanic[]",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "When present, this list replaces the built-in step; entries are sorted by id and receive the same frozen state and input snapshot, and overlapping or unsafe state writes throw."
 			},
 			{
@@ -274,7 +274,7 @@
 						"name": "createRun.view",
 						"type": "GameView",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional view used to initialize view markers and level identity; if it has a world, its spawn x and z set the initial coordinates.",
 						"examples": [
 							{
@@ -412,7 +412,7 @@
 						"name": "stepGame.mechanics",
 						"type": "Mechanic[]",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "When present, this list replaces the built-in step; entries are sorted by id and receive the same frozen state and input snapshot, and overlapping or unsafe state writes throw."
 					}
 				],

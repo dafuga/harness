@@ -46,7 +46,7 @@
 				"name": "CheckpointImageRepository.read.commit",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "This optional value is a full commit SHA; when it is not an empty string it must be 40 lowercase hex characters, or read throws 'A full commit is required.', and the image is then read with git show <commit>:<path> instead of from the working tree. An empty string behaves like no commit, and git failures, such as an unknown commit or a path missing from that commit, are thrown by execFileSync.",
 				"examples": [
 					"7c1e4b9d02a85f3e6b71d8c4f09a2e5d3b6c1a70",
@@ -129,7 +129,7 @@
 						"name": "CheckpointImageRepository.read.commit",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "This optional value is a full commit SHA; when it is not an empty string it must be 40 lowercase hex characters, or read throws 'A full commit is required.', and the image is then read with git show <commit>:<path> instead of from the working tree. An empty string behaves like no commit, and git failures, such as an unknown commit or a path missing from that commit, are thrown by execFileSync.",
 						"examples": [
 							"7c1e4b9d02a85f3e6b71d8c4f09a2e5d3b6c1a70",

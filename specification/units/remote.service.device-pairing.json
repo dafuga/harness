@@ -115,7 +115,7 @@
 				"name": "DevicePairingService.request.keys",
 				"type": "RemoteKeyPair",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The phone's own P-256 key pair: its public key is sealed into the request and gives the deviceId (the first 40 hex of its SHA-256). When it is omitted (default undefined), request creates a new pair with remoteKeys() and returns it in the PendingPairing."
 			},
 			{
@@ -284,7 +284,7 @@
 						"name": "DevicePairingService.request.keys",
 						"type": "RemoteKeyPair",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The phone's own P-256 key pair: its public key is sealed into the request and gives the deviceId (the first 40 hex of its SHA-256). When it is omitted (default undefined), request creates a new pair with remoteKeys() and returns it in the PendingPairing."
 					}
 				],

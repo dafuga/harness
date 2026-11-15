@@ -90,7 +90,7 @@
 				"name": "R2EvidenceStoreAdapter.constructor.client",
 				"type": "S3Client",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "An optional S3Client the adapter uses as given; when it is omitted the constructor creates one with region auto, path-style addressing, and the endpoint and credentials from config."
 			},
 			{
@@ -676,7 +676,7 @@
 						"name": "R2EvidenceStoreAdapter.constructor.client",
 						"type": "S3Client",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "An optional S3Client the adapter uses as given; when it is omitted the constructor creates one with region auto, path-style addressing, and the endpoint and credentials from config."
 					}
 				],

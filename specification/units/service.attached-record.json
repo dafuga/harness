@@ -34,7 +34,7 @@
 				"name": "AttachedRecordService.constructor.within",
 				"type": "string | null",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional evidence commit that pins pointer validation to that commit’s history. Null rejects every pointer; when omitted, evidence is unpinned and each stored evidence commit can be followed.",
 				"examples": ["0123456789abcdef0123456789abcdef01234567", null]
 			},
@@ -105,7 +105,7 @@
 						"name": "AttachedRecordService.constructor.within",
 						"type": "string | null",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional evidence commit that pins pointer validation to that commit’s history. Null rejects every pointer; when omitted, evidence is unpinned and each stored evidence commit can be followed.",
 						"examples": ["0123456789abcdef0123456789abcdef01234567", null]
 					}

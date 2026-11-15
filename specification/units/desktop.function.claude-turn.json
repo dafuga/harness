@@ -44,7 +44,7 @@
 				"name": "claudeTurn.queue",
 				"type": "ResourceQueueService",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional ResourceQueueService whose run method admits the Claude run with priority coding, memoryMiB 2048 and cpus 1; when omitted, managedAgentTurn calls resourceWork with process.env instead."
 			}
 		],
@@ -112,7 +112,7 @@
 						"name": "claudeTurn.queue",
 						"type": "ResourceQueueService",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional ResourceQueueService whose run method admits the Claude run with priority coding, memoryMiB 2048 and cpus 1; when omitted, managedAgentTurn calls resourceWork with process.env instead."
 					}
 				],

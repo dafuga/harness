@@ -38,7 +38,7 @@
 				"name": "EmptyState.role",
 				"type": "'note' | 'status' | 'alert'",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Sets the optional semantic role on the rendered element. Defaults to JavaScript `undefined`, which omits the role; accepted values are `note`, `status`, and `alert`.",
 				"examples": ["note", "status", "alert"]
 			},

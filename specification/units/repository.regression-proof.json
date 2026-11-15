@@ -41,7 +41,7 @@
 				"name": "RegressionProofRepository.constructor.within",
 				"type": "string | null",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional evidence-history commit pin used by load when checking a note’s evidence commit. If omitted, load uses the current evidence-ref tip; null is treated as no usable pin and causes the evidence-history check to fail.",
 				"examples": ["0123456789abcdef0123456789abcdef01234567", null]
 			},
@@ -469,7 +469,7 @@
 						"name": "RegressionProofRepository.constructor.within",
 						"type": "string | null",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional evidence-history commit pin used by load when checking a note’s evidence commit. If omitted, load uses the current evidence-ref tip; null is treated as no usable pin and causes the evidence-history check to fail.",
 						"examples": ["0123456789abcdef0123456789abcdef01234567", null]
 					}

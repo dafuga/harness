@@ -136,7 +136,7 @@
 				"name": "explorerReading.fetcher",
 				"type": "ArtifactFetcher",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional loader that takes an artifact address and resolves to a value with ok, status and arrayBuffer; it is called at most once per distinct SHA-256 in one explorerReading call, and only for captures with a stored media file. When it is undefined, explorerArtifact falls back to fetch(address)."
 			}
 		],
@@ -403,7 +403,7 @@
 						"name": "explorerReading.fetcher",
 						"type": "ArtifactFetcher",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional loader that takes an artifact address and resolves to a value with ok, status and arrayBuffer; it is called at most once per distinct SHA-256 in one explorerReading call, and only for captures with a stored media file. When it is undefined, explorerArtifact falls back to fetch(address)."
 					}
 				],

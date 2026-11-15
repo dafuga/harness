@@ -36,7 +36,7 @@
 				"name": "ProviderSwitchService.constructor.control",
 				"type": "SessionControl",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional desktop session control used by status to inspect a truthy session ID and set controlConnected. This service does not call resume or apply a provider switch; when omitted, active is null and the unavailable message is used."
 			},
 			{
@@ -395,7 +395,7 @@
 						"name": "ProviderSwitchService.constructor.control",
 						"type": "SessionControl",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional desktop session control used by status to inspect a truthy session ID and set controlConnected. This service does not call resume or apply a provider switch; when omitted, active is null and the unavailable message is used."
 					}
 				],

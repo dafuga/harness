@@ -27,7 +27,7 @@
 				"name": "HubRemoteController.constructor.remote",
 				"type": "HubRemoteRuntime | null",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional HubRemoteRuntime providing the relay origin and management adapter for matched actions. Defaults to undefined; explicit null or omission disables a matched action by throwing an Error with code `remote-disabled`.",
 				"examples": [null]
 			},
@@ -157,7 +157,7 @@
 						"name": "HubRemoteController.constructor.remote",
 						"type": "HubRemoteRuntime | null",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional HubRemoteRuntime providing the relay origin and management adapter for matched actions. Defaults to undefined; explicit null or omission disables a matched action by throwing an Error with code `remote-disabled`.",
 						"examples": [null]
 					}

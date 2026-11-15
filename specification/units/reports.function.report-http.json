@@ -47,7 +47,7 @@
 				"name": "reportFile.range",
 				"type": "string | null",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional HTTP byte range forwarded unchanged as the third argument of mediaResponse; this file does not parse it. The code declares no default, so it is undefined when a caller omits it, and null is forwarded as-is.",
 				"examples": ["bytes=0-1023", "bytes=2048-", null]
 			}
@@ -133,7 +133,7 @@
 						"name": "reportFile.range",
 						"type": "string | null",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional HTTP byte range forwarded unchanged as the third argument of mediaResponse; this file does not parse it. The code declares no default, so it is undefined when a caller omits it, and null is forwarded as-is.",
 						"examples": ["bytes=0-1023", "bytes=2048-", null]
 					}

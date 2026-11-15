@@ -31,7 +31,7 @@
 				"name": "NativePickerDefaultsService.constructor.catalogPath",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional path value assigned to model_catalog_json when the current model provider is harness-claude. It is not validated or synthesized; if omitted, it remains undefined.",
 				"examples": ["/workspace/project/model-catalog.json"]
 			},
@@ -50,7 +50,7 @@
 				"name": "NativePickerDefaultsService.write.options",
 				"type": "PickerData",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional RPC options passed through to config/batchWrite. If omitted, undefined is forwarded.",
 				"examples": [
 					{}
@@ -69,7 +69,7 @@
 				"name": "NativePickerDefaultsService.read.options",
 				"type": "PickerData",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional RPC options passed through to config/read. If omitted, undefined is forwarded.",
 				"examples": [
 					{}
@@ -123,7 +123,7 @@
 						"name": "NativePickerDefaultsService.write.options",
 						"type": "PickerData",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional RPC options passed through to config/batchWrite. If omitted, undefined is forwarded.",
 						"examples": [
 							{}
@@ -165,7 +165,7 @@
 						"name": "NativePickerDefaultsService.read.options",
 						"type": "PickerData",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional RPC options passed through to config/read. If omitted, undefined is forwarded.",
 						"examples": [
 							{}
@@ -202,7 +202,7 @@
 						"name": "NativePickerDefaultsService.constructor.catalogPath",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional path value assigned to model_catalog_json when the current model provider is harness-claude. It is not validated or synthesized; if omitted, it remains undefined.",
 						"examples": ["/workspace/project/model-catalog.json"]
 					}
