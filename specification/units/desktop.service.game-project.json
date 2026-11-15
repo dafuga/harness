@@ -31,7 +31,7 @@
 				"type": "unknown",
 				"required": false,
 				"description": "The folder that create uses as the parent of each new project folder; create creates it recursively when it is missing. Defaults to join(homedir(), 'projects'): the 'projects' folder inside the user's home directory.",
-				"examples": ["/Users/example/projects", "/home/example/projects"]
+				"examples": ["/workspace/home/projects", "/workspace/alternate-home/projects"]
 			},
 			{
 				"name": "GameProjectService.create.input",
@@ -58,7 +58,7 @@
 				"description": "The request to read a project document: read calls this.session.assertProject with input.projectId, then this.session.requireProject(), and passes input.commit to a new GameDocumentRepository(root).read call without checking it in this service.",
 				"examples": [
 					{
-						"projectId": "local-5e9c1f7a3b2d8e04c6f1a9b7d3e5c2f8a0b4d6e9c1f3a7b5d2e8c0f4a6b9d1e3",
+						"projectId": "local-ff4ab7869f49d4a5402a9e6248d21050fded6cd7f997c1116f3a5533c67fa9a8",
 						"commit": "3b7e9d1f0c4a6e2b8d5f7a9c1e3b5d7f9a1c3e5b"
 					},
 					{
@@ -73,7 +73,7 @@
 				"description": "The request to save a project document: save calls this.session.assertProject with input.projectId, awaits this.session.mutable(), and then runs a new GameDocumentRepository(root).save(input.document, input.expectedRevision) call inside this.session.arbiter.exclusive for the project root.",
 				"examples": [
 					{
-						"projectId": "local-5e9c1f7a3b2d8e04c6f1a9b7d3e5c2f8a0b4d6e9c1f3a7b5d2e8c0f4a6b9d1e3",
+						"projectId": "local-ff4ab7869f49d4a5402a9e6248d21050fded6cd7f997c1116f3a5533c67fa9a8",
 						"document": {
 							"version": 1,
 							"views": [
@@ -112,8 +112,8 @@
 					{
 						"project": {
 							"name": "moon-runner",
-							"root": "/Users/example/projects/moon-runner",
-							"id": "local-5e9c1f7a3b2d8e04c6f1a9b7d3e5c2f8a0b4d6e9c1f3a7b5d2e8c0f4a6b9d1e3",
+							"root": "/workspace/home/projects/moon-runner",
+							"id": "local-ff4ab7869f49d4a5402a9e6248d21050fded6cd7f997c1116f3a5533c67fa9a8",
 							"kind": "game",
 							"dimension": "2d"
 						},
@@ -301,8 +301,8 @@
 							{
 								"project": {
 									"name": "moon-runner",
-									"root": "/Users/example/projects/moon-runner",
-									"id": "local-5e9c1f7a3b2d8e04c6f1a9b7d3e5c2f8a0b4d6e9c1f3a7b5d2e8c0f4a6b9d1e3",
+									"root": "/workspace/home/projects/moon-runner",
+									"id": "local-ff4ab7869f49d4a5402a9e6248d21050fded6cd7f997c1116f3a5533c67fa9a8",
 									"kind": "game",
 									"dimension": "2d"
 								},
@@ -390,7 +390,7 @@
 						"description": "The request to read a project document: read calls this.session.assertProject with input.projectId, then this.session.requireProject(), and passes input.commit to a new GameDocumentRepository(root).read call without checking it in this service.",
 						"examples": [
 							{
-								"projectId": "local-5e9c1f7a3b2d8e04c6f1a9b7d3e5c2f8a0b4d6e9c1f3a7b5d2e8c0f4a6b9d1e3",
+								"projectId": "local-ff4ab7869f49d4a5402a9e6248d21050fded6cd7f997c1116f3a5533c67fa9a8",
 								"commit": "3b7e9d1f0c4a6e2b8d5f7a9c1e3b5d7f9a1c3e5b"
 							},
 							{
@@ -464,7 +464,7 @@
 						"description": "The request to save a project document: save calls this.session.assertProject with input.projectId, awaits this.session.mutable(), and then runs a new GameDocumentRepository(root).save(input.document, input.expectedRevision) call inside this.session.arbiter.exclusive for the project root.",
 						"examples": [
 							{
-								"projectId": "local-5e9c1f7a3b2d8e04c6f1a9b7d3e5c2f8a0b4d6e9c1f3a7b5d2e8c0f4a6b9d1e3",
+								"projectId": "local-ff4ab7869f49d4a5402a9e6248d21050fded6cd7f997c1116f3a5533c67fa9a8",
 								"document": {
 									"version": 1,
 									"views": [
@@ -546,7 +546,7 @@
 						"type": "unknown",
 						"required": false,
 						"description": "The folder that create uses as the parent of each new project folder; create creates it recursively when it is missing. Defaults to join(homedir(), 'projects'): the 'projects' folder inside the user's home directory.",
-						"examples": ["/Users/example/projects", "/home/example/projects"]
+						"examples": ["/workspace/home/projects", "/workspace/alternate-home/projects"]
 					}
 				],
 				"outputs": [

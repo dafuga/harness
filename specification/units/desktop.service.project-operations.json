@@ -43,7 +43,7 @@
 				"description": "Identifies a registered local project by the ID used by ProjectRegistryService. If the project is already selected and no switch is underway, the service returns its current snapshot.",
 				"examples": [
 					{
-						"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+						"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad"
 					}
 				]
 			},
@@ -56,7 +56,7 @@
 				"examples": [
 					{},
 					{
-						"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+						"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad"
 					}
 				]
 			},
@@ -67,7 +67,7 @@
 				"description": "Carries requestId, a revision anchor, and comment text; projectId and threadId are optional. The project discussion entity must have no thread or visual anchor details, while other anchors are checked against the project catalog.",
 				"examples": [
 					{
-						"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+						"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
 						"requestId": "de7a3f4d-a61a-4d15-8b68-55fbd24e3c17",
 						"anchor": {
 							"branch": "main",
@@ -92,7 +92,7 @@
 				"examples": [
 					{},
 					{
-						"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+						"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad"
 					}
 				]
 			}
@@ -106,10 +106,10 @@
 					[],
 					[
 						{
-							"id": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
-							"name": "slot-11",
+							"id": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
+							"name": "project",
 							"kind": "local",
-							"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+							"root": "/workspace/project"
 						}
 					]
 				]
@@ -121,9 +121,9 @@
 				"examples": [
 					{
 						"project": {
-							"name": "slot-11",
-							"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11",
-							"id": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+							"name": "project",
+							"root": "/workspace/project",
+							"id": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad"
 						},
 						"capabilities": {
 							"comments": true,
@@ -168,11 +168,11 @@
 				"examples": [
 					{
 						"kind": "pending",
-						"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+						"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
 						"draftId": "92f25f28-7cb0-4f6e-a073-c2da8cbf2ae1",
 						"savedAt": "2026-11-15T12:00:00.000Z",
 						"input": {
-							"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+							"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
 							"requestId": "de7a3f4d-a61a-4d15-8b68-55fbd24e3c17",
 							"anchor": {
 								"branch": "main",
@@ -199,11 +199,11 @@
 					[
 						{
 							"kind": "pending",
-							"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+							"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
 							"draftId": "92f25f28-7cb0-4f6e-a073-c2da8cbf2ae1",
 							"savedAt": "2026-11-15T12:00:00.000Z",
 							"input": {
-								"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+								"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
 								"requestId": "de7a3f4d-a61a-4d15-8b68-55fbd24e3c17",
 								"anchor": {
 									"branch": "main",
@@ -244,10 +244,10 @@
 							[],
 							[
 								{
-									"id": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
-									"name": "slot-11",
+									"id": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
+									"name": "project",
 									"kind": "local",
-									"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+									"root": "/workspace/project"
 								}
 							]
 						]
@@ -272,7 +272,7 @@
 						"description": "Identifies a registered local project by the ID used by ProjectRegistryService. If the project is already selected and no switch is underway, the service returns its current snapshot.",
 						"examples": [
 							{
-								"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+								"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad"
 							}
 						]
 					}
@@ -285,9 +285,9 @@
 						"examples": [
 							{
 								"project": {
-									"name": "slot-11",
-									"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11",
-									"id": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+									"name": "project",
+									"root": "/workspace/project",
+									"id": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad"
 								},
 								"capabilities": {
 									"comments": true,
@@ -332,7 +332,7 @@
 						"examples": [
 							{},
 							{
-								"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+								"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad"
 							}
 						]
 					}
@@ -373,7 +373,7 @@
 						"description": "Carries requestId, a revision anchor, and comment text; projectId and threadId are optional. The project discussion entity must have no thread or visual anchor details, while other anchors are checked against the project catalog.",
 						"examples": [
 							{
-								"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+								"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
 								"requestId": "de7a3f4d-a61a-4d15-8b68-55fbd24e3c17",
 								"anchor": {
 									"branch": "main",
@@ -398,11 +398,11 @@
 						"examples": [
 							{
 								"kind": "pending",
-								"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+								"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
 								"draftId": "92f25f28-7cb0-4f6e-a073-c2da8cbf2ae1",
 								"savedAt": "2026-11-15T12:00:00.000Z",
 								"input": {
-									"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+									"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
 									"requestId": "de7a3f4d-a61a-4d15-8b68-55fbd24e3c17",
 									"anchor": {
 										"branch": "main",
@@ -442,7 +442,7 @@
 						"examples": [
 							{},
 							{
-								"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+								"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad"
 							}
 						]
 					}
@@ -457,11 +457,11 @@
 							[
 								{
 									"kind": "pending",
-									"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+									"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
 									"draftId": "92f25f28-7cb0-4f6e-a073-c2da8cbf2ae1",
 									"savedAt": "2026-11-15T12:00:00.000Z",
 									"input": {
-										"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+										"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
 										"requestId": "de7a3f4d-a61a-4d15-8b68-55fbd24e3c17",
 										"anchor": {
 											"branch": "main",

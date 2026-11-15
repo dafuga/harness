@@ -31,9 +31,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Filesystem directory used as the base for projection and lookup cache files. The constructor stores it without validating or creating it; writes create it recursively when needed.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/packages/desktop/.cache/projection-cache"
-				]
+				"examples": ["/workspace/project/packages/desktop/.cache/projection-cache"]
 			},
 			{
 				"name": "ProjectionCacheService.get.identity",
@@ -559,9 +557,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem directory used as the base for projection and lookup cache files. The constructor stores it without validating or creating it; writes create it recursively when needed.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/packages/desktop/.cache/projection-cache"
-						]
+						"examples": ["/workspace/project/packages/desktop/.cache/projection-cache"]
 					}
 				],
 				"outputs": [

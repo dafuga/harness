@@ -21,10 +21,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The directory that holds the lookup and projection files; each path is this value joined with a generated file name, and nothing creates or checks it. A missing or wrong directory makes every read and unlink fail silently, so the call still resolves.",
-				"examples": [
-					"/Users/example/Library/Application Support/desktop/cache/projections",
-					"/home/example/.config/desktop/cache/projections"
-				]
+				"examples": ["/workspace/cache/projections", "/workspace/cache/shared-projections"]
 			},
 			{
 				"name": "projectionCacheDiscard.scope",
@@ -55,10 +52,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The directory that holds the lookup and projection files; each path is this value joined with a generated file name, and nothing creates or checks it. A missing or wrong directory makes every read and unlink fail silently, so the call still resolves.",
-						"examples": [
-							"/Users/example/Library/Application Support/desktop/cache/projections",
-							"/home/example/.config/desktop/cache/projections"
-						]
+						"examples": ["/workspace/cache/projections", "/workspace/cache/shared-projections"]
 					},
 					{
 						"name": "projectionCacheDiscard.scope",

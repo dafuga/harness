@@ -21,10 +21,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The directory whose immediate entries are listed (readdir is not recursive); only names exactly matching projection-<64 lowercase hex characters>.json or lookup-<64 lowercase hex characters>.json are read. If the listing fails for any reason, the directory is treated as empty and nothing is removed.",
-				"examples": [
-					"/Users/example/Library/Caches/harness/projection-cache",
-					"/home/example/.cache/harness/projection-cache"
-				]
+				"examples": ["/workspace/cache/projections", "/workspace/cache/alternate-projections"]
 			},
 			{
 				"name": "projectionCachePurge.principalId",
@@ -71,10 +68,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The directory whose immediate entries are listed (readdir is not recursive); only names exactly matching projection-<64 lowercase hex characters>.json or lookup-<64 lowercase hex characters>.json are read. If the listing fails for any reason, the directory is treated as empty and nothing is removed.",
-						"examples": [
-							"/Users/example/Library/Caches/harness/projection-cache",
-							"/home/example/.cache/harness/projection-cache"
-						]
+						"examples": ["/workspace/cache/projections", "/workspace/cache/alternate-projections"]
 					},
 					{
 						"name": "projectionCachePurge.principalId",
