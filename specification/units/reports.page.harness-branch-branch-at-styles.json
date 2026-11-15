@@ -25,10 +25,11 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The Styles design-token catalog under the selected branch and revision."
+				"description": "The page markup renders HarnessScreen with the title \"Styles\" and ExplorerStylesScreen as its content. This page passes no route parameters or other props directly."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
