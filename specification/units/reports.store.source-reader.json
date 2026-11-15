@@ -39,56 +39,308 @@
 				"name": "implementationFiles.unit",
 				"type": "HarnessUnit",
 				"required": true,
-				"description": "A source-owning unit with optional responsibility category."
+				"description": "The indexed unit whose paths come from sourceFiles when that property exists, otherwise from owns.source. If group is present, matching path segments select a category when at least one match exists.",
+				"examples": [
+					{
+						"id": "reports.store.source-reader",
+						"kind": "store",
+						"status": "active",
+						"title": "sourceReader",
+						"responsibility": "Reads revision-bound implementation and test archives.",
+						"dependencies": [
+							{
+								"unit": "reports.helper.strings-error-message",
+								"via": "import"
+							},
+							{
+								"unit": "reports.model.harness-types",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": [
+								"packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts",
+								"packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.types.ts",
+								"packages/reports/src/lib/stores/sourceReader.svelte.ts"
+							],
+							"symbols": [
+								"createSourceReaderStore",
+								"implementationFiles",
+								"testFiles",
+								"archivedSource",
+								"SourceState",
+								"SourceFiles",
+								"SourceRead"
+							]
+						},
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts"
+								},
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.types.ts"
+								},
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/lib/stores/sourceReader.svelte.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "1.0.0",
+						"sourceFiles": [
+							{
+								"path": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts",
+								"media": null
+							},
+							{
+								"path": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.types.ts",
+								"media": null
+							},
+							{
+								"path": "packages/reports/src/lib/stores/sourceReader.svelte.ts",
+								"media": null
+							}
+						],
+						"group": {
+							"id": "stores",
+							"title": "Stores"
+						}
+					}
+				]
 			},
 			{
 				"name": "testFiles.unit",
 				"type": "HarnessUnit",
 				"required": true,
-				"description": "Selected revision unit with associated test snapshots; paths are read by index without caller iteration."
+				"description": "The indexed unit whose testFiles snapshots are read by numeric index. An absent testFiles property produces an empty path list.",
+				"examples": [
+					{
+						"id": "reports.store.source-reader",
+						"kind": "store",
+						"status": "active",
+						"title": "sourceReader",
+						"responsibility": "Reads revision-bound implementation and test archives.",
+						"dependencies": [
+							{
+								"unit": "reports.helper.strings-error-message",
+								"via": "import"
+							},
+							{
+								"unit": "reports.model.harness-types",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": [
+								"packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts",
+								"packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.types.ts",
+								"packages/reports/src/lib/stores/sourceReader.svelte.ts"
+							],
+							"symbols": [
+								"createSourceReaderStore",
+								"implementationFiles",
+								"testFiles",
+								"archivedSource",
+								"SourceState",
+								"SourceFiles",
+								"SourceRead"
+							]
+						},
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts"
+								},
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.types.ts"
+								},
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/lib/stores/sourceReader.svelte.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "1.0.0",
+						"testFiles": [
+							{
+								"path": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.test.ts",
+								"media": null
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "archivedSource.unit",
 				"type": "HarnessUnit",
 				"required": true,
-				"description": "The selected revision’s implementation and test snapshots."
+				"description": "The indexed revision whose sourceFiles and testFiles provide archived paths, media references, and optional gaps. Reads use those archives and never a working-copy file.",
+				"examples": [
+					{
+						"id": "reports.store.source-reader",
+						"kind": "store",
+						"status": "active",
+						"title": "sourceReader",
+						"responsibility": "Reads revision-bound implementation and test archives.",
+						"dependencies": [
+							{
+								"unit": "reports.helper.strings-error-message",
+								"via": "import"
+							},
+							{
+								"unit": "reports.model.harness-types",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": [
+								"packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts",
+								"packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.types.ts",
+								"packages/reports/src/lib/stores/sourceReader.svelte.ts"
+							],
+							"symbols": [
+								"createSourceReaderStore",
+								"implementationFiles",
+								"testFiles",
+								"archivedSource",
+								"SourceState",
+								"SourceFiles",
+								"SourceRead"
+							]
+						},
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts"
+								},
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.types.ts"
+								},
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/lib/stores/sourceReader.svelte.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "1.0.0",
+						"sourceFiles": [
+							{
+								"path": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts",
+								"media": "media/0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef.txt"
+							}
+						],
+						"testFiles": [
+							{
+								"path": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.test.ts",
+								"media": "media/fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210.txt"
+							}
+						],
+						"group": {
+							"id": "stores",
+							"title": "Stores"
+						}
+					}
+				]
 			},
 			{
 				"name": "archivedSource.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "The host-controlled media address for this revision."
+				"description": "The base address concatenated with the filename from a validated media reference when archived text is fetched.",
+				"examples": ["https://reports.example.test/media/"]
 			},
 			{
 				"name": "archivedSource.filePath",
 				"type": "string",
 				"required": false,
-				"description": "Optional owned path to select first."
+				"default": "undefined",
+				"description": "An optional archived path moved to the front of the files result when it is present there. Other values do not change the path order.",
+				"examples": ["packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.test.ts"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "createSourceReaderStore",
 				"type": "unknown",
-				"description": "Returns reactive state plus initialise, select and cancel. Each selection clears prior contents and errors; superseded or disposed reads cannot overwrite the current session."
+				"description": "Creates reactive state with {files: [], path: '', text: '', loading: true, error: ''} and returns it with initialise, select, and cancel; accepted selections and initialization replace the active generation. Paths outside state.files are ignored, failures are stored in state.error, and cancellation or later generations prevent pending replies from updating state without aborting them."
 			},
 			{
 				"name": "implementationFiles",
 				"type": "string[]",
-				"description": "Category implementation paths, preserving recorded paths for older revisions and framework entries."
+				"description": "Uses sourceFiles paths whenever sourceFiles exists, including an empty array; otherwise it uses owns.source. If group exists, matching path segments are returned when any match exists, and all chosen paths are returned when none match.",
+				"examples": [
+					[
+						"packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts",
+						"packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.types.ts",
+						"packages/reports/src/lib/stores/sourceReader.svelte.ts"
+					]
+				]
 			},
 			{
 				"name": "archivedSource",
 				"type": "{ files: SourceFiles; read: SourceRead; empty?: string }",
-				"description": "Reads only archived committed text; missing source is an explicit gap and never uses a working copy."
+				"description": "Returns a files callback for de-duplicated archived source and test paths, moving filePath first only when it is archived; empty is set only when both archive properties are absent. Its read callback fetches a matching recorded archive entry and returns the response text."
 			},
 			{
 				"name": "testFiles",
 				"type": "string[]",
-				"description": "Associated test paths, independently of the implementation category folder."
+				"description": "Reads test snapshot paths by numeric index in their original order. It returns an empty array when testFiles is absent.",
+				"examples": [
+					["packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.test.ts"]
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The returned read(path) rejects with Error when the path is not archived with media, the recorded reference does not match media/<64 lowercase hex>.txt, or the fetch response is not OK; an available recorded gap supplies the message for an entry without media. Rejections from fetch and response.text() also propagate unchanged."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "createSourceReaderStore",
@@ -97,11 +349,11 @@
 					{
 						"name": "createSourceReaderStore",
 						"type": "unknown",
-						"description": "Returns reactive state plus initialise, select and cancel. Each selection clears prior contents and errors; superseded or disposed reads cannot overwrite the current session."
+						"description": "Creates reactive state with {files: [], path: '', text: '', loading: true, error: ''} and returns it with initialise, select, and cancel; accepted selections and initialization replace the active generation. Paths outside state.files are ignored, failures are stored in state.error, and cancellation or later generations prevent pending replies from updating state without aborting them."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "implementationFiles",
@@ -110,18 +362,107 @@
 						"name": "implementationFiles.unit",
 						"type": "HarnessUnit",
 						"required": true,
-						"description": "A source-owning unit with optional responsibility category."
+						"description": "The indexed unit whose paths come from sourceFiles when that property exists, otherwise from owns.source. If group is present, matching path segments select a category when at least one match exists.",
+						"examples": [
+							{
+								"id": "reports.store.source-reader",
+								"kind": "store",
+								"status": "active",
+								"title": "sourceReader",
+								"responsibility": "Reads revision-bound implementation and test archives.",
+								"dependencies": [
+									{
+										"unit": "reports.helper.strings-error-message",
+										"via": "import"
+									},
+									{
+										"unit": "reports.model.harness-types",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": [
+										"packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts",
+										"packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.types.ts",
+										"packages/reports/src/lib/stores/sourceReader.svelte.ts"
+									],
+									"symbols": [
+										"createSourceReaderStore",
+										"implementationFiles",
+										"testFiles",
+										"archivedSource",
+										"SourceState",
+										"SourceFiles",
+										"SourceRead"
+									]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts"
+										},
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.types.ts"
+										},
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/lib/stores/sourceReader.svelte.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "1.0.0",
+								"sourceFiles": [
+									{
+										"path": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts",
+										"media": null
+									},
+									{
+										"path": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.types.ts",
+										"media": null
+									},
+									{
+										"path": "packages/reports/src/lib/stores/sourceReader.svelte.ts",
+										"media": null
+									}
+								],
+								"group": {
+									"id": "stores",
+									"title": "Stores"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "implementationFiles",
 						"type": "string[]",
-						"description": "Category implementation paths, preserving recorded paths for older revisions and framework entries."
+						"description": "Uses sourceFiles paths whenever sourceFiles exists, including an empty array; otherwise it uses owns.source. If group exists, matching path segments are returned when any match exists, and all chosen paths are returned when none match.",
+						"examples": [
+							[
+								"packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts",
+								"packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.types.ts",
+								"packages/reports/src/lib/stores/sourceReader.svelte.ts"
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "testFiles",
@@ -130,18 +471,91 @@
 						"name": "testFiles.unit",
 						"type": "HarnessUnit",
 						"required": true,
-						"description": "Selected revision unit with associated test snapshots; paths are read by index without caller iteration."
+						"description": "The indexed unit whose testFiles snapshots are read by numeric index. An absent testFiles property produces an empty path list.",
+						"examples": [
+							{
+								"id": "reports.store.source-reader",
+								"kind": "store",
+								"status": "active",
+								"title": "sourceReader",
+								"responsibility": "Reads revision-bound implementation and test archives.",
+								"dependencies": [
+									{
+										"unit": "reports.helper.strings-error-message",
+										"via": "import"
+									},
+									{
+										"unit": "reports.model.harness-types",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": [
+										"packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts",
+										"packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.types.ts",
+										"packages/reports/src/lib/stores/sourceReader.svelte.ts"
+									],
+									"symbols": [
+										"createSourceReaderStore",
+										"implementationFiles",
+										"testFiles",
+										"archivedSource",
+										"SourceState",
+										"SourceFiles",
+										"SourceRead"
+									]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts"
+										},
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.types.ts"
+										},
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/lib/stores/sourceReader.svelte.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "1.0.0",
+								"testFiles": [
+									{
+										"path": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.test.ts",
+										"media": null
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "testFiles",
 						"type": "string[]",
-						"description": "Associated test paths, independently of the implementation category folder."
+						"description": "Reads test snapshot paths by numeric index in their original order. It returns an empty array when testFiles is absent.",
+						"examples": [
+							["packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.test.ts"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "archivedSource",
@@ -150,30 +564,119 @@
 						"name": "archivedSource.unit",
 						"type": "HarnessUnit",
 						"required": true,
-						"description": "The selected revision’s implementation and test snapshots."
+						"description": "The indexed revision whose sourceFiles and testFiles provide archived paths, media references, and optional gaps. Reads use those archives and never a working-copy file.",
+						"examples": [
+							{
+								"id": "reports.store.source-reader",
+								"kind": "store",
+								"status": "active",
+								"title": "sourceReader",
+								"responsibility": "Reads revision-bound implementation and test archives.",
+								"dependencies": [
+									{
+										"unit": "reports.helper.strings-error-message",
+										"via": "import"
+									},
+									{
+										"unit": "reports.model.harness-types",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": [
+										"packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts",
+										"packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.types.ts",
+										"packages/reports/src/lib/stores/sourceReader.svelte.ts"
+									],
+									"symbols": [
+										"createSourceReaderStore",
+										"implementationFiles",
+										"testFiles",
+										"archivedSource",
+										"SourceState",
+										"SourceFiles",
+										"SourceRead"
+									]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts"
+										},
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.types.ts"
+										},
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/lib/stores/sourceReader.svelte.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "1.0.0",
+								"sourceFiles": [
+									{
+										"path": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts",
+										"media": "media/0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef.txt"
+									}
+								],
+								"testFiles": [
+									{
+										"path": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.test.ts",
+										"media": "media/fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210.txt"
+									}
+								],
+								"group": {
+									"id": "stores",
+									"title": "Stores"
+								}
+							}
+						]
 					},
 					{
 						"name": "archivedSource.mediaBase",
 						"type": "string",
 						"required": true,
-						"description": "The host-controlled media address for this revision."
+						"description": "The base address concatenated with the filename from a validated media reference when archived text is fetched.",
+						"examples": ["https://reports.example.test/media/"]
 					},
 					{
 						"name": "archivedSource.filePath",
 						"type": "string",
 						"required": false,
-						"description": "Optional owned path to select first."
+						"default": "undefined",
+						"description": "An optional archived path moved to the front of the files result when it is present there. Other values do not change the path order.",
+						"examples": ["packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.test.ts"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "archivedSource",
 						"type": "{ files: SourceFiles; read: SourceRead; empty?: string }",
-						"description": "Reads only archived committed text; missing source is an explicit gap and never uses a working copy."
+						"description": "Returns a files callback for de-duplicated archived source and test paths, moving filePath first only when it is archived; empty is set only when both archive properties are absent. Its read callback fetches a matching recorded archive entry and returns the response text."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The returned read(path) rejects with Error when the path is not archived with media, the recorded reference does not match media/<64 lowercase hex>.txt, or the fetch response is not OK; an available recorded gap supplies the message for an entry without media. Rejections from fetch and response.text() also propagate unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
