@@ -50,147 +50,297 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "loopRoot.input",
 				"type": "LoopInput",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "An optional options object that may supply a root directory and a clock callback; loopRoot reads only its root field. If root is absent or nullish, loopRoot returns process.cwd().",
+				"examples": [
+					{
+						"root": "/Users/danielfugere/projects/example"
+					},
+					{}
+				]
 			},
 			{
 				"name": "loopPaths.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The root directory used to build the loop storage paths. The helper joins it with specification/loops and the supplied loop segment, without creating directories.",
+				"examples": ["/Users/danielfugere/projects/example"]
 			},
 			{
 				"name": "loopPaths.loop",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The loop name used as the final segment under specification/loops. This helper joins the string as given and does not validate its kebab-case form.",
+				"examples": ["release-tracker"]
 			},
 			{
 				"name": "writeNewLoop.paths",
 				"type": "LoopPaths",
-				"required": true
+				"required": true,
+				"description": "The directory, state-file, trace-file, and relative trace paths for the new loop. writeNewLoop creates paths.dir recursively and writes the state at paths.state.",
+				"examples": [
+					{
+						"dir": "/Users/danielfugere/projects/example/specification/loops/release-tracker",
+						"state": "/Users/danielfugere/projects/example/specification/loops/release-tracker/loop.json",
+						"trace": "/Users/danielfugere/projects/example/specification/loops/release-tracker/trace.ndjson",
+						"traceRelative": "specification/loops/release-tracker/trace.ndjson"
+					}
+				]
 			},
 			{
 				"name": "writeNewLoop.state",
 				"type": "LoopState",
-				"required": true
+				"required": true,
+				"description": "The loop state to serialize at paths.state after confirming that the state file does not already exist. Its name, goal, timestamps, and steps are required by the stored-state schema.",
+				"examples": [
+					{
+						"name": "release-tracker",
+						"goal": "Track the release checklist",
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"updatedAt": "2026-11-15T12:00:00.000Z",
+						"steps": [
+							{
+								"id": "prepare",
+								"title": "Prepare release",
+								"status": "pending"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "readLoop.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The filesystem path of a stored loop JSON file to parse and validate. Missing files and schema mismatches become ExpectedCliError; malformed JSON and other read failures propagate.",
+				"examples": [
+					"/Users/danielfugere/projects/example/specification/loops/release-tracker/loop.json"
+				]
 			},
 			{
 				"name": "assertLoopOpen.state",
 				"type": "LoopState",
-				"required": true
+				"required": true,
+				"description": "The stored loop state to check before continuing an operation that requires an open loop. It throws ExpectedCliError whenever state.closed is present.",
+				"examples": [
+					{
+						"name": "release-tracker",
+						"goal": "Track the release checklist",
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"updatedAt": "2026-11-15T12:00:00.000Z",
+						"steps": [
+							{
+								"id": "prepare",
+								"title": "Prepare release",
+								"status": "pending"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "writeLoop.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The filesystem path to overwrite with serialized loop state. The function writes tab-indented JSON followed by a newline and does not validate the state first.",
+				"examples": [
+					"/Users/danielfugere/projects/example/specification/loops/release-tracker/loop.json"
+				]
 			},
 			{
 				"name": "writeLoop.state",
 				"type": "LoopState",
-				"required": true
+				"required": true,
+				"description": "The loop state to serialize to the supplied path. JSON serialization must succeed, and the state is written with tab indentation and a trailing newline.",
+				"examples": [
+					{
+						"name": "release-tracker",
+						"goal": "Track the release checklist",
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"updatedAt": "2026-11-15T12:00:00.000Z",
+						"steps": [
+							{
+								"id": "prepare",
+								"title": "Prepare release",
+								"status": "pending"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "appendTrace.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The trace file path that receives the event. The function appends one compact JSON value and a newline without creating the parent directory.",
+				"examples": [
+					"/Users/danielfugere/projects/example/specification/loops/release-tracker/trace.ndjson"
+				]
 			},
 			{
 				"name": "appendTrace.event",
 				"type": "Record<string, unknown>",
-				"required": true
+				"required": true,
+				"description": "A JSON-serializable record appended as one compact JSON line to the trace file. The function does not validate event fields.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "validateLoopId.value",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The candidate loop identifier, trimmed and checked against lowercase ASCII letters and digits separated by single hyphens. Invalid values cause ExpectedCliError.",
+				"examples": ["release-tracker", "p1"]
 			},
 			{
 				"name": "validateLoopId.label",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The human-readable label inserted into the invalid-name error message. It does not affect the accepted identifier syntax.",
+				"examples": ["loop ID"]
 			},
 			{
 				"name": "validateRequiredText.value",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Text to trim and require to be nonempty. Whitespace-only input causes ExpectedCliError; otherwise the trimmed text is returned.",
+				"examples": ["  Track the release checklist  ", "Release goal"]
 			},
 			{
 				"name": "validateRequiredText.label",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The field label used in the error when the supplied text is empty after trimming. It does not change how text is validated.",
+				"examples": ["goal"]
 			},
 			{
 				"name": "timestamp.now",
 				"type": "(() => string) | undefined",
-				"required": true
+				"required": true,
+				"description": "An optional callback value used as the clock when present; its returned string is used unchanged. Pass undefined to use new Date().toISOString()."
 			},
 			{
 				"name": "isMissingFile.error",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The value to inspect after a filesystem failure. It returns true only for an Error instance whose code property is exactly ENOENT."
 			}
 		],
 		"outputs": [
 			{
 				"name": "loopRoot",
-				"type": "string"
+				"type": "string",
+				"description": "The selected loop root directory. It returns input.root when that value is non-nullish, otherwise the current working directory.",
+				"examples": ["/Users/danielfugere/projects/example"]
 			},
 			{
 				"name": "loopPaths",
-				"type": "LoopPaths"
+				"type": "LoopPaths",
+				"description": "The four paths used to store a loop: its directory, state JSON, trace file, and relative trace file. The helper computes paths only and performs no filesystem writes.",
+				"examples": [
+					{
+						"dir": "/Users/danielfugere/projects/example/specification/loops/release-tracker",
+						"state": "/Users/danielfugere/projects/example/specification/loops/release-tracker/loop.json",
+						"trace": "/Users/danielfugere/projects/example/specification/loops/release-tracker/trace.ndjson",
+						"traceRelative": "specification/loops/release-tracker/trace.ndjson"
+					}
+				]
 			},
 			{
 				"name": "writeNewLoop",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "No value is resolved after the state file is created and written. The promise rejects if the loop already exists or filesystem or JSON serialization work fails."
 			},
 			{
 				"name": "readLoop",
-				"type": "Promise<LoopState>"
+				"type": "Promise<LoopState>",
+				"description": "The validated state parsed from the loop JSON file. Stored state must contain nonempty name and goal strings, string timestamps, and a steps array; unknown keys are retained.",
+				"examples": [
+					{
+						"name": "release-tracker",
+						"goal": "Track the release checklist",
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"updatedAt": "2026-11-15T12:00:00.000Z",
+						"steps": [
+							{
+								"id": "prepare",
+								"title": "Prepare release",
+								"status": "pending"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "assertLoopOpen",
-				"type": "void"
+				"type": "void",
+				"description": "No value is returned when the state has no closed field. A present closed field causes ExpectedCliError."
 			},
 			{
 				"name": "writeLoop",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "No value is resolved after tab-indented JSON and a trailing newline are written. The promise rejects if serialization or the filesystem write fails."
 			},
 			{
 				"name": "appendTrace",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "No value is resolved after one compact JSON event line is appended. The promise rejects if serialization or the filesystem append fails."
 			},
 			{
 				"name": "validateLoopId",
-				"type": "string"
+				"type": "string",
+				"description": "The trimmed loop identifier when it matches lowercase kebab-case segments of ASCII letters and digits. Invalid values cause ExpectedCliError.",
+				"examples": ["release-tracker", "p1"]
 			},
 			{
 				"name": "validateRequiredText",
-				"type": "string"
+				"type": "string",
+				"description": "The supplied text after trimming surrounding whitespace. Empty trimmed text causes ExpectedCliError.",
+				"examples": ["Track the release checklist", "Release goal"]
 			},
 			{
 				"name": "timestamp",
-				"type": "string"
+				"type": "string",
+				"description": "The string returned by the supplied clock callback, or the current time from new Date().toISOString() when no callback is supplied. A supplied callback result is not reformatted.",
+				"examples": ["2026-11-15T12:00:00.000Z"]
 			},
 			{
 				"name": "isMissingFile",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Whether the value is an Error instance with code exactly ENOENT. Other values, including plain objects with a code field, return false.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "An intentional CLI-facing failure raised by fail(...), including an existing loop, a missing or schema-invalid loop file, a closed loop, an invalid loop identifier, or empty required text."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A filesystem Error can propagate when a loop file cannot be read, created, written, or appended; a supplied clock callback Error also propagates unchanged."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "JSON.parse raises this when a loop file contains malformed JSON; readLoop does not convert that parse failure."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "JSON.stringify raises this when the state or event cannot be serialized, such as when it contains a cycle or a BigInt."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "loopRoot",
@@ -198,17 +348,27 @@
 					{
 						"name": "loopRoot.input",
 						"type": "LoopInput",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "An optional options object that may supply a root directory and a clock callback; loopRoot reads only its root field. If root is absent or nullish, loopRoot returns process.cwd().",
+						"examples": [
+							{
+								"root": "/Users/danielfugere/projects/example"
+							},
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "loopRoot",
-						"type": "string"
+						"type": "string",
+						"description": "The selected loop root directory. It returns input.root when that value is non-nullish, otherwise the current working directory.",
+						"examples": ["/Users/danielfugere/projects/example"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "loopPaths",
@@ -216,22 +376,35 @@
 					{
 						"name": "loopPaths.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The root directory used to build the loop storage paths. The helper joins it with specification/loops and the supplied loop segment, without creating directories.",
+						"examples": ["/Users/danielfugere/projects/example"]
 					},
 					{
 						"name": "loopPaths.loop",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The loop name used as the final segment under specification/loops. This helper joins the string as given and does not validate its kebab-case form.",
+						"examples": ["release-tracker"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "loopPaths",
-						"type": "LoopPaths"
+						"type": "LoopPaths",
+						"description": "The four paths used to store a loop: its directory, state JSON, trace file, and relative trace file. The helper computes paths only and performs no filesystem writes.",
+						"examples": [
+							{
+								"dir": "/Users/danielfugere/projects/example/specification/loops/release-tracker",
+								"state": "/Users/danielfugere/projects/example/specification/loops/release-tracker/loop.json",
+								"trace": "/Users/danielfugere/projects/example/specification/loops/release-tracker/trace.ndjson",
+								"traceRelative": "specification/loops/release-tracker/trace.ndjson"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "writeNewLoop",
@@ -239,22 +412,64 @@
 					{
 						"name": "writeNewLoop.paths",
 						"type": "LoopPaths",
-						"required": true
+						"required": true,
+						"description": "The directory, state-file, trace-file, and relative trace paths for the new loop. writeNewLoop creates paths.dir recursively and writes the state at paths.state.",
+						"examples": [
+							{
+								"dir": "/Users/danielfugere/projects/example/specification/loops/release-tracker",
+								"state": "/Users/danielfugere/projects/example/specification/loops/release-tracker/loop.json",
+								"trace": "/Users/danielfugere/projects/example/specification/loops/release-tracker/trace.ndjson",
+								"traceRelative": "specification/loops/release-tracker/trace.ndjson"
+							}
+						]
 					},
 					{
 						"name": "writeNewLoop.state",
 						"type": "LoopState",
-						"required": true
+						"required": true,
+						"description": "The loop state to serialize at paths.state after confirming that the state file does not already exist. Its name, goal, timestamps, and steps are required by the stored-state schema.",
+						"examples": [
+							{
+								"name": "release-tracker",
+								"goal": "Track the release checklist",
+								"createdAt": "2026-11-15T12:00:00.000Z",
+								"updatedAt": "2026-11-15T12:00:00.000Z",
+								"steps": [
+									{
+										"id": "prepare",
+										"title": "Prepare release",
+										"status": "pending"
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "writeNewLoop",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "No value is resolved after the state file is created and written. The promise rejects if the loop already exists or filesystem or JSON serialization work fails."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown when the loop state file already exists; the helper refuses to overwrite it."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A filesystem Error can propagate when a loop file cannot be read, created, written, or appended; a supplied clock callback Error also propagates unchanged."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "JSON.stringify raises this when the state or event cannot be serialized, such as when it contains a cycle or a BigInt."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "readLoop",
@@ -262,22 +477,53 @@
 					{
 						"name": "readLoop.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The filesystem path of a stored loop JSON file to parse and validate. Missing files and schema mismatches become ExpectedCliError; malformed JSON and other read failures propagate.",
+						"examples": [
+							"/Users/danielfugere/projects/example/specification/loops/release-tracker/loop.json"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "readLoop",
-						"type": "Promise<LoopState>"
+						"type": "Promise<LoopState>",
+						"description": "The validated state parsed from the loop JSON file. Stored state must contain nonempty name and goal strings, string timestamps, and a steps array; unknown keys are retained.",
+						"examples": [
+							{
+								"name": "release-tracker",
+								"goal": "Track the release checklist",
+								"createdAt": "2026-11-15T12:00:00.000Z",
+								"updatedAt": "2026-11-15T12:00:00.000Z",
+								"steps": [
+									{
+										"id": "prepare",
+										"title": "Prepare release",
+										"status": "pending"
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the file is missing or parsed data fails the loop-state schema."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A filesystem Error can propagate when a loop file cannot be read, created, written, or appended; a supplied clock callback Error also propagates unchanged."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "JSON.parse raises this when a loop file contains malformed JSON; readLoop does not convert that parse failure."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "assertLoopOpen",
@@ -285,22 +531,40 @@
 					{
 						"name": "assertLoopOpen.state",
 						"type": "LoopState",
-						"required": true
+						"required": true,
+						"description": "The stored loop state to check before continuing an operation that requires an open loop. It throws ExpectedCliError whenever state.closed is present.",
+						"examples": [
+							{
+								"name": "release-tracker",
+								"goal": "Track the release checklist",
+								"createdAt": "2026-11-15T12:00:00.000Z",
+								"updatedAt": "2026-11-15T12:00:00.000Z",
+								"steps": [
+									{
+										"id": "prepare",
+										"title": "Prepare release",
+										"status": "pending"
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "assertLoopOpen",
-						"type": "void"
+						"type": "void",
+						"description": "No value is returned when the state has no closed field. A present closed field causes ExpectedCliError."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when state.closed is present."
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "writeLoop",
@@ -308,22 +572,54 @@
 					{
 						"name": "writeLoop.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The filesystem path to overwrite with serialized loop state. The function writes tab-indented JSON followed by a newline and does not validate the state first.",
+						"examples": [
+							"/Users/danielfugere/projects/example/specification/loops/release-tracker/loop.json"
+						]
 					},
 					{
 						"name": "writeLoop.state",
 						"type": "LoopState",
-						"required": true
+						"required": true,
+						"description": "The loop state to serialize to the supplied path. JSON serialization must succeed, and the state is written with tab indentation and a trailing newline.",
+						"examples": [
+							{
+								"name": "release-tracker",
+								"goal": "Track the release checklist",
+								"createdAt": "2026-11-15T12:00:00.000Z",
+								"updatedAt": "2026-11-15T12:00:00.000Z",
+								"steps": [
+									{
+										"id": "prepare",
+										"title": "Prepare release",
+										"status": "pending"
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "writeLoop",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "No value is resolved after tab-indented JSON and a trailing newline are written. The promise rejects if serialization or the filesystem write fails."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A filesystem Error can propagate when a loop file cannot be read, created, written, or appended; a supplied clock callback Error also propagates unchanged."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "JSON.stringify raises this when the state or event cannot be serialized, such as when it contains a cycle or a BigInt."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "appendTrace",
@@ -331,22 +627,42 @@
 					{
 						"name": "appendTrace.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The trace file path that receives the event. The function appends one compact JSON value and a newline without creating the parent directory.",
+						"examples": [
+							"/Users/danielfugere/projects/example/specification/loops/release-tracker/trace.ndjson"
+						]
 					},
 					{
 						"name": "appendTrace.event",
 						"type": "Record<string, unknown>",
-						"required": true
+						"required": true,
+						"description": "A JSON-serializable record appended as one compact JSON line to the trace file. The function does not validate event fields.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "appendTrace",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "No value is resolved after one compact JSON event line is appended. The promise rejects if serialization or the filesystem append fails."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A filesystem Error can propagate when a loop file cannot be read, created, written, or appended; a supplied clock callback Error also propagates unchanged."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "JSON.stringify raises this when the state or event cannot be serialized, such as when it contains a cycle or a BigInt."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "validateLoopId",
@@ -354,22 +670,34 @@
 					{
 						"name": "validateLoopId.value",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The candidate loop identifier, trimmed and checked against lowercase ASCII letters and digits separated by single hyphens. Invalid values cause ExpectedCliError.",
+						"examples": ["release-tracker", "p1"]
 					},
 					{
 						"name": "validateLoopId.label",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The human-readable label inserted into the invalid-name error message. It does not affect the accepted identifier syntax.",
+						"examples": ["loop ID"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "validateLoopId",
-						"type": "string"
+						"type": "string",
+						"description": "The trimmed loop identifier when it matches lowercase kebab-case segments of ASCII letters and digits. Invalid values cause ExpectedCliError.",
+						"examples": ["release-tracker", "p1"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown when the trimmed value does not match lowercase kebab-case identifier syntax."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "validateRequiredText",
@@ -377,27 +705,34 @@
 					{
 						"name": "validateRequiredText.value",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Text to trim and require to be nonempty. Whitespace-only input causes ExpectedCliError; otherwise the trimmed text is returned.",
+						"examples": ["  Track the release checklist  ", "Release goal"]
 					},
 					{
 						"name": "validateRequiredText.label",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The field label used in the error when the supplied text is empty after trimming. It does not change how text is validated.",
+						"examples": ["goal"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "validateRequiredText",
-						"type": "string"
+						"type": "string",
+						"description": "The supplied text after trimming surrounding whitespace. Empty trimmed text causes ExpectedCliError.",
+						"examples": ["Track the release checklist", "Release goal"]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the value is empty after trimming."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "timestamp",
@@ -405,17 +740,26 @@
 					{
 						"name": "timestamp.now",
 						"type": "(() => string) | undefined",
-						"required": true
+						"required": true,
+						"description": "An optional callback value used as the clock when present; its returned string is used unchanged. Pass undefined to use new Date().toISOString()."
 					}
 				],
 				"outputs": [
 					{
 						"name": "timestamp",
-						"type": "string"
+						"type": "string",
+						"description": "The string returned by the supplied clock callback, or the current time from new Date().toISOString() when no callback is supplied. A supplied callback result is not reformatted.",
+						"examples": ["2026-11-15T12:00:00.000Z"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A filesystem Error can propagate when a loop file cannot be read, created, written, or appended; a supplied clock callback Error also propagates unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "isMissingFile",
@@ -423,17 +767,20 @@
 					{
 						"name": "isMissingFile.error",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The value to inspect after a filesystem failure. It returns true only for an Error instance whose code property is exactly ENOENT."
 					}
 				],
 				"outputs": [
 					{
 						"name": "isMissingFile",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Whether the value is an Error instance with code exactly ENOENT. Other values, including plain objects with a code field, return false.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
