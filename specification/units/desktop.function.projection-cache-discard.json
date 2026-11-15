@@ -20,23 +20,32 @@
 				"name": "projectionCacheDiscard.directory",
 				"type": "string",
 				"required": true,
-				"description": "The directory containing the cached lookup and projection files."
+				"description": "The directory that holds the lookup and projection files; each path is this value joined with a generated file name, and nothing creates or checks it. A missing or wrong directory makes every read and unlink fail silently, so the call still resolves.",
+				"examples": [
+					"/Users/example/Library/Application Support/desktop/cache/projections",
+					"/home/example/.config/desktop/cache/projections"
+				]
 			},
 			{
 				"name": "projectionCacheDiscard.scope",
 				"type": "string",
 				"required": true,
-				"description": "The exact scope string whose hash selects the lookup."
+				"description": "The exact scope string; the function hashes it with SHA-256 to name the lookup file lookup-<digest>.json, so any change to the string, including case or whitespace, selects a different lookup. Production passes the JSON array of origin, principal id, project id and key that HostedReadService builds.",
+				"examples": [
+					"[\"https://hub.example.com\",\"google:ada\",\"$projects\",\"projects\"]",
+					"[\"https://hub.example.com\",\"google:ada\",\"550e8400-e29b-41d4-a716-446655440000\",\"/api/projects/550e8400-e29b-41d4-a716-446655440000/snapshot\"]"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "projectionCacheDiscard",
 				"type": "unknown",
-				"description": "A promise completing after attempts to remove the lookup and, when its identity can be read, its named projection. Missing, unreadable or malformed lookup files and unlink failures are swallowed; completion does not prove every file was removed."
+				"description": "A promise that resolves to undefined once the attempts are finished: when the lookup parses and its identity field is truthy, the projection file derived from that identity is unlinked first, then the lookup file. Missing, unreadable or malformed lookup files and every unlink failure are swallowed, so resolution does not prove that either file was removed."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "projectionCacheDiscard",
@@ -45,24 +54,32 @@
 						"name": "projectionCacheDiscard.directory",
 						"type": "string",
 						"required": true,
-						"description": "The directory containing the cached lookup and projection files."
+						"description": "The directory that holds the lookup and projection files; each path is this value joined with a generated file name, and nothing creates or checks it. A missing or wrong directory makes every read and unlink fail silently, so the call still resolves.",
+						"examples": [
+							"/Users/example/Library/Application Support/desktop/cache/projections",
+							"/home/example/.config/desktop/cache/projections"
+						]
 					},
 					{
 						"name": "projectionCacheDiscard.scope",
 						"type": "string",
 						"required": true,
-						"description": "The exact scope string whose hash selects the lookup."
+						"description": "The exact scope string; the function hashes it with SHA-256 to name the lookup file lookup-<digest>.json, so any change to the string, including case or whitespace, selects a different lookup. Production passes the JSON array of origin, principal id, project id and key that HostedReadService builds.",
+						"examples": [
+							"[\"https://hub.example.com\",\"google:ada\",\"$projects\",\"projects\"]",
+							"[\"https://hub.example.com\",\"google:ada\",\"550e8400-e29b-41d4-a716-446655440000\",\"/api/projects/550e8400-e29b-41d4-a716-446655440000/snapshot\"]"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "projectionCacheDiscard",
 						"type": "unknown",
-						"description": "A promise completing after attempts to remove the lookup and, when its identity can be read, its named projection. Missing, unreadable or malformed lookup files and unlink failures are swallowed; completion does not prove every file was removed."
+						"description": "A promise that resolves to undefined once the attempts are finished: when the lookup parses and its identity field is truthy, the projection file derived from that identity is unlinked first, then the lookup file. Missing, unreadable or malformed lookup files and every unlink failure are swallowed, so resolution does not prove that either file was removed."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
