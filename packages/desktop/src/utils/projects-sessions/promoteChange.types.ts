@@ -1,5 +1,5 @@
 // @harness-uid u_ypket7tnag
-import type { RunContext } from '../../models/RunContext.types';
+import type { RunContext } from '../../models/development-tooling/RunContext.types';
 import type { RunRequest } from '../../models/DesktopBridge.types';
 
 /** Runs inside the change run's existing repository lock; no remote branches are pushed. */
