@@ -36,54 +36,84 @@
 				"name": "remoteArtifact.value",
 				"type": "RemoteBinary",
 				"required": true,
-				"description": "Base64 content with media type, byte length and SHA-256 hash."
+				"description": "The recorded file as a computer sent it or as the phone kept it: base64 data with its mediaType, its decoded byteLength and its lowercase hex sha256. It is decoded only when its mediaType is in artifactMediaTypes, its byteLength is not above artifactLimit and its sha256 equals asked; remoteBinary then refuses it unless encoding is 'base64', data is a base64 string and the decoded length and SHA-256 match byteLength and sha256.",
+				"examples": [
+					{
+						"encoding": "base64",
+						"mediaType": "text/plain; charset=utf-8",
+						"byteLength": 3,
+						"sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+						"data": "YWJj"
+					}
+				]
 			},
 			{
 				"name": "remoteArtifact.asked",
 				"type": "string | undefined",
 				"required": true,
-				"description": "Required hash of the requested file; undefined is refused."
+				"description": "The SHA-256 the caller asked for, as 64 lowercase hex characters, which must equal the value's sha256 exactly. An undefined or empty value, or one that differs, is refused with otherArtifact before any bytes are decoded.",
+				"examples": [
+					"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+					"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "artifactLimit",
 				"type": "unknown",
-				"description": "Maximum accepted file size: 11 MiB."
+				"description": "The largest raw byte length accepted for one recorded artifact: 11 * 1024 * 1024 bytes, which is 11 MiB. A byteLength above it is refused with largeArtifact; the file is never cut.",
+				"examples": [11534336]
 			},
 			{
 				"name": "artifactMediaTypes",
 				"type": "readonly string[]",
-				"description": "Exact allowed media types for PNG, JPEG, WAV, MPEG audio, MP4 audio, Ogg audio, JSON and UTF-8 plain text."
+				"description": "The media types a recorded artifact may have, compared exactly: image/png, image/jpeg, audio/wav, audio/mpeg, audio/mp4, audio/ogg, application/json and text/plain; charset=utf-8. Any other media type is refused with unshownArtifact, and markup and anything a browser would run are not in the list.",
+				"examples": [
+					[
+						"image/png",
+						"image/jpeg",
+						"audio/wav",
+						"audio/mpeg",
+						"audio/mp4",
+						"audio/ogg",
+						"application/json",
+						"text/plain; charset=utf-8"
+					]
+				]
 			},
 			{
 				"name": "unshownArtifact",
 				"type": "unknown",
-				"description": "Message explaining that this kind of file cannot be shown."
+				"description": "The message of the Error that remoteArtifact throws when the value is absent or its mediaType is missing or not in artifactMediaTypes.",
+				"examples": ["The computer sent a recorded file of a kind this app does not show."]
 			},
 			{
 				"name": "largeArtifact",
 				"type": "unknown",
-				"description": "Message explaining that the file exceeds the size limit."
+				"description": "The message of the Error that remoteArtifact throws when Number(byteLength) is above artifactLimit.",
+				"examples": ["The recorded file is too large to be read on this connection."]
 			},
 			{
 				"name": "otherArtifact",
 				"type": "unknown",
-				"description": "Message explaining that the response is not the requested file."
+				"description": "The message of the Error that remoteArtifact throws when sha256 is missing or differs from asked, undefined asked included.",
+				"examples": ["The computer sent another recorded file than the one asked for."]
 			},
 			{
 				"name": "remoteArtifact",
 				"type": "Promise<EvidenceArtifactResult>",
-				"description": "Decoded bytes with their media type and verified SHA-256 hash."
+				"description": "The decoded bytes as a Uint8Array, with the value's mediaType and sha256; the sha256 is the one remoteBinary verified as the SHA-256 of those bytes. The promise resolves only after the media type, size and requested-hash checks pass and remoteBinary has decoded the data."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects unsupported types, oversized files, absent or mismatched requested hashes, unreadable base64 or mismatched decoded length or hash."
+				"description": "Thrown as an Error with the message of unshownArtifact when the value is absent or its mediaType is missing or not in artifactMediaTypes, of largeArtifact when Number(byteLength) is above artifactLimit, or of otherArtifact when sha256 is missing or differs from asked. Rejections from remoteBinary pass through: its unreadableMedia message when encoding is not 'base64', data is not a string or data cannot be decoded as base64, and its damagedMedia message when the decoded length or SHA-256 differs from byteLength or sha256."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "remoteArtifact",
@@ -92,29 +122,43 @@
 						"name": "remoteArtifact.value",
 						"type": "RemoteBinary",
 						"required": true,
-						"description": "Base64 content with media type, byte length and SHA-256 hash."
+						"description": "The recorded file as a computer sent it or as the phone kept it: base64 data with its mediaType, its decoded byteLength and its lowercase hex sha256. It is decoded only when its mediaType is in artifactMediaTypes, its byteLength is not above artifactLimit and its sha256 equals asked; remoteBinary then refuses it unless encoding is 'base64', data is a base64 string and the decoded length and SHA-256 match byteLength and sha256.",
+						"examples": [
+							{
+								"encoding": "base64",
+								"mediaType": "text/plain; charset=utf-8",
+								"byteLength": 3,
+								"sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+								"data": "YWJj"
+							}
+						]
 					},
 					{
 						"name": "remoteArtifact.asked",
 						"type": "string | undefined",
 						"required": true,
-						"description": "Required hash of the requested file; undefined is refused."
+						"description": "The SHA-256 the caller asked for, as 64 lowercase hex characters, which must equal the value's sha256 exactly. An undefined or empty value, or one that differs, is refused with otherArtifact before any bytes are decoded.",
+						"examples": [
+							"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+							"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "remoteArtifact",
 						"type": "Promise<EvidenceArtifactResult>",
-						"description": "Decoded bytes with their media type and verified SHA-256 hash."
+						"description": "The decoded bytes as a Uint8Array, with the value's mediaType and sha256; the sha256 is the one remoteBinary verified as the SHA-256 of those bytes. The promise resolves only after the media type, size and requested-hash checks pass and remoteBinary has decoded the data."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as an Error with the message of unshownArtifact when the value is absent or its mediaType is missing or not in artifactMediaTypes, of largeArtifact when Number(byteLength) is above artifactLimit, or of otherArtifact when sha256 is missing or differs from asked. Rejections from remoteBinary pass through: its unreadableMedia message when encoding is not 'base64', data is not a string or data cannot be decoded as base64, and its damagedMedia message when the decoded length or SHA-256 differs from byteLength or sha256."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
