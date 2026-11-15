@@ -190,6 +190,7 @@ test('archive reads never fetch and explicit fetch verifies the received evidenc
 			const head = client.git('rev-parse', 'HEAD'),
 				consumer = new VideoArchiveService(client.root);
 			client.git('remote', 'add', 'archive-fixture', remote);
+			client.git('config', 'remote.archive-fixture.fetch', '+refs/*:refs/*');
 			const run = vi.spyOn(GitAdapter.prototype, 'run');
 			try {
 				await expect(consumer.read(pointer)).rejects.toThrow(/ancestry/i);
@@ -198,7 +199,14 @@ test('archive reads never fetch and explicit fetch verifies the received evidenc
 				expect(fetched.batch.clips[0].original).toEqual(input.original);
 				expect(await new LfsAdapter(client.root).read(unrelated)).toBeUndefined();
 				const ref = sourceArchiveRef(input.original.revision);
-				expect(run).toHaveBeenCalledWith(['fetch', '--no-tags', '--', 'archive-fixture', ref]);
+				expect(run).toHaveBeenCalledWith([
+					'fetch',
+					'--no-tags',
+					'--refmap=',
+					'--',
+					'archive-fixture',
+					ref
+				]);
 				expect(client.git('rev-parse', ref)).toBe(input.original.revision);
 				expect(client.git('rev-parse', 'HEAD')).toBe(head);
 				expect(await new EvidenceBranchRepository(client.root).tip()).toBeUndefined();
