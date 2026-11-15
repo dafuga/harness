@@ -16,37 +16,101 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RemoteImageCacheService.constructor.cache",
 				"type": "ProjectionCacheService",
-				"required": true
+				"required": true,
+				"description": "The ProjectionCacheService that read() asks with get(identity, query.sha256) and then fills with put(identity, bytes, query.sha256) when get finds no bytes. The constructor stores it as the private cache field without any check, and a rejection from get or put propagates out of read() unchanged."
 			},
 			{
 				"name": "RemoteImageCacheService.read.context",
 				"type": "{ identity: CacheIdentity; principalId: string; query: ImageQuery & { projectId: string }; }",
-				"required": true
+				"required": true,
+				"description": "The image request: identity is the hosted cache identity, principalId is the principal that identity must belong to, and query is the image query with a required projectId. read() rejects with 'Hosted cache identity mismatch.' unless identity.principalId, identity.projectId, identity.sourceCommit and identity.artifactHash equal principalId, query.projectId, query.commit and query.sha256.",
+				"examples": [
+					{
+						"identity": {
+							"principalId": "google-104536891027345106678",
+							"projectId": "6f1d2a4b-3c5e-4d8f-9a7b-0e1c2d3f4a5b",
+							"repositoryId": 42,
+							"requestedRef": "4c9e7a1f0b3d52e8a6f1c0d9b7e4a2f5c8d3b6e1",
+							"sourceCommit": "4c9e7a1f0b3d52e8a6f1c0d9b7e4a2f5c8d3b6e1",
+							"sourceTree": "0a7f3e9c2d61b84e5f0c9a3d7b2e61f48c5a0d9e",
+							"notesRef": "refs/notes/harness",
+							"notesRevision": "e2b58d0c7a1f94e63d8b2c05a7f1e9d4b36c8a20",
+							"evidenceRef": "refs/heads/harness-evidence",
+							"evidenceRevision": "7d0c4e91a6b25f38c0d7e14a9b6f2c83d5e10a47",
+							"historyIndexRevision": null,
+							"collaborationRevision": null,
+							"artifactHash": "9b4e1d7a03c85f2e6a19d4b07c3e8f51a2d6c94b0e7f38a15d2c6b9e4f70a183",
+							"profile": null
+						},
+						"principalId": "google-104536891027345106678",
+						"query": {
+							"projectId": "6f1d2a4b-3c5e-4d8f-9a7b-0e1c2d3f4a5b",
+							"entityId": "page.activity",
+							"commit": "4c9e7a1f0b3d52e8a6f1c0d9b7e4a2f5c8d3b6e1",
+							"version": "v001",
+							"sha256": "9b4e1d7a03c85f2e6a19d4b07c3e8f51a2d6c94b0e7f38a15d2c6b9e4f70a183"
+						}
+					},
+					{
+						"identity": {
+							"principalId": "google-113906274850961223045",
+							"projectId": "b7e4c9a0-52d1-4f36-8e8a-19c3d7f0a6e2",
+							"repositoryId": 202,
+							"requestedRef": "main",
+							"sourceCommit": "b1f04d8e2c7a5936e0d4a1c8f7b2e95d03a6c4f1",
+							"sourceTree": "c83a0e5f19d7b62c4e0a8f3d91b57e6c2a4d0f8b",
+							"notesRef": "refs/notes/harness",
+							"notesRevision": "1e7d4b9a0c26f85e3d1b9a7c40e6f2d8a5b3c710",
+							"evidenceRef": "refs/heads/harness-evidence",
+							"evidenceRevision": null,
+							"historyIndexRevision": null,
+							"collaborationRevision": "a5c9e21f7d04b83e6c1a9f0d25e7b4c08d3f6a12",
+							"artifactHash": "3f8a1c6e9d02b7f45a0c8e3d61b9f24a7d5e0c83b1f96a4e2d07c5b8f3a1e6d9",
+							"profile": null
+						},
+						"principalId": "google-113906274850961223045",
+						"query": {
+							"projectId": "b7e4c9a0-52d1-4f36-8e8a-19c3d7f0a6e2",
+							"entityId": "reports.component.evidence-grid",
+							"commit": "b1f04d8e2c7a5936e0d4a1c8f7b2e95d03a6c4f1",
+							"version": "v002",
+							"sha256": "3f8a1c6e9d02b7f45a0c8e3d61b9f24a7d5e0c83b1f96a4e2d07c5b8f3a1e6d9"
+						}
+					}
+				]
 			},
 			{
 				"name": "RemoteImageCacheService.read.load",
 				"type": "() => Promise<Uint8Array>",
-				"required": true
+				"required": true,
+				"description": "Produces the image bytes when cache.get resolves with no bytes (null); read() awaits it at most once per call and stores its result with put before returning it. A rejection from load propagates out of read() and nothing is stored."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteImageCacheService.read",
-				"type": "Promise<Uint8Array>"
+				"type": "Promise<Uint8Array>",
+				"description": "The image bytes: the Uint8Array that cache.get resolves with when it is not null, otherwise the array that load() produced after read() stored it with put. read() returns that same array object without copying it."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects read() with the message 'Hosted cache identity mismatch.' when identity.principalId, identity.projectId, identity.sourceCommit or identity.artifactHash differs from principalId, query.projectId, query.commit or query.sha256. This check runs before the completeness check and before any cache or load call."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects read() with the message 'Incomplete hosted cache identity.' when identity has no own property for any of repositoryId, requestedRef, sourceTree, notesRef, notesRevision, evidenceRef, evidenceRevision, historyIndexRevision or profile; a property whose value is null still counts as present. This check runs after the identity match and before any cache or load call."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RemoteImageCacheService.read",
@@ -54,27 +118,90 @@
 					{
 						"name": "RemoteImageCacheService.read.context",
 						"type": "{ identity: CacheIdentity; principalId: string; query: ImageQuery & { projectId: string }; }",
-						"required": true
+						"required": true,
+						"description": "The image request: identity is the hosted cache identity, principalId is the principal that identity must belong to, and query is the image query with a required projectId. read() rejects with 'Hosted cache identity mismatch.' unless identity.principalId, identity.projectId, identity.sourceCommit and identity.artifactHash equal principalId, query.projectId, query.commit and query.sha256.",
+						"examples": [
+							{
+								"identity": {
+									"principalId": "google-104536891027345106678",
+									"projectId": "6f1d2a4b-3c5e-4d8f-9a7b-0e1c2d3f4a5b",
+									"repositoryId": 42,
+									"requestedRef": "4c9e7a1f0b3d52e8a6f1c0d9b7e4a2f5c8d3b6e1",
+									"sourceCommit": "4c9e7a1f0b3d52e8a6f1c0d9b7e4a2f5c8d3b6e1",
+									"sourceTree": "0a7f3e9c2d61b84e5f0c9a3d7b2e61f48c5a0d9e",
+									"notesRef": "refs/notes/harness",
+									"notesRevision": "e2b58d0c7a1f94e63d8b2c05a7f1e9d4b36c8a20",
+									"evidenceRef": "refs/heads/harness-evidence",
+									"evidenceRevision": "7d0c4e91a6b25f38c0d7e14a9b6f2c83d5e10a47",
+									"historyIndexRevision": null,
+									"collaborationRevision": null,
+									"artifactHash": "9b4e1d7a03c85f2e6a19d4b07c3e8f51a2d6c94b0e7f38a15d2c6b9e4f70a183",
+									"profile": null
+								},
+								"principalId": "google-104536891027345106678",
+								"query": {
+									"projectId": "6f1d2a4b-3c5e-4d8f-9a7b-0e1c2d3f4a5b",
+									"entityId": "page.activity",
+									"commit": "4c9e7a1f0b3d52e8a6f1c0d9b7e4a2f5c8d3b6e1",
+									"version": "v001",
+									"sha256": "9b4e1d7a03c85f2e6a19d4b07c3e8f51a2d6c94b0e7f38a15d2c6b9e4f70a183"
+								}
+							},
+							{
+								"identity": {
+									"principalId": "google-113906274850961223045",
+									"projectId": "b7e4c9a0-52d1-4f36-8e8a-19c3d7f0a6e2",
+									"repositoryId": 202,
+									"requestedRef": "main",
+									"sourceCommit": "b1f04d8e2c7a5936e0d4a1c8f7b2e95d03a6c4f1",
+									"sourceTree": "c83a0e5f19d7b62c4e0a8f3d91b57e6c2a4d0f8b",
+									"notesRef": "refs/notes/harness",
+									"notesRevision": "1e7d4b9a0c26f85e3d1b9a7c40e6f2d8a5b3c710",
+									"evidenceRef": "refs/heads/harness-evidence",
+									"evidenceRevision": null,
+									"historyIndexRevision": null,
+									"collaborationRevision": "a5c9e21f7d04b83e6c1a9f0d25e7b4c08d3f6a12",
+									"artifactHash": "3f8a1c6e9d02b7f45a0c8e3d61b9f24a7d5e0c83b1f96a4e2d07c5b8f3a1e6d9",
+									"profile": null
+								},
+								"principalId": "google-113906274850961223045",
+								"query": {
+									"projectId": "b7e4c9a0-52d1-4f36-8e8a-19c3d7f0a6e2",
+									"entityId": "reports.component.evidence-grid",
+									"commit": "b1f04d8e2c7a5936e0d4a1c8f7b2e95d03a6c4f1",
+									"version": "v002",
+									"sha256": "3f8a1c6e9d02b7f45a0c8e3d61b9f24a7d5e0c83b1f96a4e2d07c5b8f3a1e6d9"
+								}
+							}
+						]
 					},
 					{
 						"name": "RemoteImageCacheService.read.load",
 						"type": "() => Promise<Uint8Array>",
-						"required": true
+						"required": true,
+						"description": "Produces the image bytes when cache.get resolves with no bytes (null); read() awaits it at most once per call and stores its result with put before returning it. A rejection from load propagates out of read() and nothing is stored."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteImageCacheService.read",
-						"type": "Promise<Uint8Array>"
+						"type": "Promise<Uint8Array>",
+						"description": "The image bytes: the Uint8Array that cache.get resolves with when it is not null, otherwise the array that load() produced after read() stored it with put. read() returns that same array object without copying it."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects read() with the message 'Hosted cache identity mismatch.' when identity.principalId, identity.projectId, identity.sourceCommit or identity.artifactHash differs from principalId, query.projectId, query.commit or query.sha256. This check runs before the completeness check and before any cache or load call."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects read() with the message 'Incomplete hosted cache identity.' when identity has no own property for any of repositoryId, requestedRef, sourceTree, notesRef, notesRevision, evidenceRef, evidenceRevision, historyIndexRevision or profile; a property whose value is null still counts as present. This check runs after the identity match and before any cache or load call."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -84,17 +211,19 @@
 					{
 						"name": "RemoteImageCacheService.constructor.cache",
 						"type": "ProjectionCacheService",
-						"required": true
+						"required": true,
+						"description": "The ProjectionCacheService that read() asks with get(identity, query.sha256) and then fills with put(identity, bytes, query.sha256) when get finds no bytes. The constructor stores it as the private cache field without any check, and a rejection from get or put propagates out of read() unchanged."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteImageCacheService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The RemoteImageCacheService instance that new RemoteImageCacheService(cache) produces; the constructor body is empty, so the value is the new instance with cache stored in its private field."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
