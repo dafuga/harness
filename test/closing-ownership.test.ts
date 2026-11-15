@@ -3,8 +3,8 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { processDescendants, processTable, type ProcessRow } from '../src/utils/processDescendants';
-import { runIsolated } from '../src/utils/run-isolated/runIsolated';
-import { settleProcesses } from '../src/utils/run-isolated/settleProcesses';
+import { runIsolated } from '../src/utils/reports-media/run-isolated/runIsolated';
+import { settleProcesses } from '../src/utils/reports-media/run-isolated/settleProcesses';
 import {
 	adopted,
 	alive,

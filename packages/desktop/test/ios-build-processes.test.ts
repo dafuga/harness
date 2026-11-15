@@ -14,7 +14,7 @@ import { join, resolve } from 'node:path';
 import { afterAll, expect, onTestFinished, test } from 'vitest';
 import { observeResources } from '../../../test/support/resourceFixture';
 import { signalProcesses, type TrackedProcess } from '../../../src/utils/processDescendants';
-import { runIsolated } from '../../../src/utils/run-isolated/runIsolated';
+import { runIsolated } from '../../../src/utils/reports-media/run-isolated/runIsolated';
 
 /**
  * The simulator build under the Harness runner, which fails a command that leaves a process

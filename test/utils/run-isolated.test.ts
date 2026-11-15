@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
 import { processTable } from '../../src/utils/processDescendants';
-import { runIsolated } from '../../src/utils/run-isolated/runIsolated';
+import { runIsolated } from '../../src/utils/reports-media/run-isolated/runIsolated';
 
 const node = process.execPath;
 const started: number[] = [];

@@ -9,7 +9,10 @@ import {
 } from '../../../../../core/execution-runtimes/resourceTypes';
 import { resourceEnvironment } from '../../../../../utils/execution-runtimes/resourceEnvironment';
 import { resourceWork } from '../../../../../utils/execution-runtimes/resourceWork';
-import { runIsolated, type IsolatedResult } from '../../../../../utils/run-isolated/runIsolated';
+import {
+	runIsolated,
+	type IsolatedResult
+} from '../../../../../utils/reports-media/run-isolated/runIsolated';
 import type { PlannedCheck } from '../../../../../utils/verification-evidence/verifyPlan';
 import { evidenceDirectoryFailure } from './evidenceDirectoryFailure';
 import { RecordBudget } from './captureLimits';

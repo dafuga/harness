@@ -6,9 +6,9 @@ import {
 	type FollowedProcess,
 	type TrackedProcess
 } from '../src/utils/processDescendants';
-import { runIsolated } from '../src/utils/run-isolated/runIsolated';
-import { settleProcesses } from '../src/utils/run-isolated/settleProcesses';
-import { settlementReport } from '../src/utils/run-isolated/settlementReport';
+import { runIsolated } from '../src/utils/reports-media/run-isolated/runIsolated';
+import { settleProcesses } from '../src/utils/reports-media/run-isolated/settleProcesses';
+import { settlementReport } from '../src/utils/reports-media/run-isolated/settlementReport';
 import { type Judged } from '../src/utils/reports-media/settlementReport';
 import { realProbes } from './support/realProbes';
 import {

@@ -12,7 +12,7 @@
 			"src/utils/reports-media/run-isolated/settlementReport.ts",
 			"src/utils/reports-media/settlementReport.ts",
 			"src/utils/reports-media/settlementReport.types.ts",
-			"src/utils/run-isolated/settlementReport.ts"
+			"src/utils/settlementReport.ts"
 		],
 		"symbols": [
 			"settlementReport",
@@ -24,7 +24,8 @@
 			"Watched",
 			"Settlement",
 			"Judged",
-			"settlementReport"
+			"settlementReport",
+			"unknownSettlement"
 		]
 	},
 	"contract": {

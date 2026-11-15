@@ -9,7 +9,7 @@ import { digestFile } from '../src/workflows/verification-evidence/run-verify/ve
 import * as captureFiles from '../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/captureLimits';
 import { syntheticPng } from './support/syntheticPng';
 import type { ResourceContext } from '../src/core/execution-runtimes/resourceTypes';
-import type { IsolatedResult } from '../src/utils/run-isolated/runIsolated';
+import type { IsolatedResult } from '../src/utils/reports-media/run-isolated/runIsolated';
 
 const passed: IsolatedResult = {
 	status: 'passed',
@@ -124,7 +124,9 @@ test('the optional caps are validated and absent by default', () => {
 
 test('a check run keeps captures until maxRecordBytes and reports the rest as failures', () =>
 	withTempDir('harness-capture-limits-', async (directory) => {
-		vi.doMock('../src/utils/run-isolated/runIsolated', () => ({ runIsolated: async () => passed }));
+		vi.doMock('../src/utils/reports-media/run-isolated/runIsolated', () => ({
+			runIsolated: async () => passed
+		}));
 		vi.doMock('../src/utils/execution-runtimes/resourceWork', () => ({
 			resourceWork: async (
 				_request: unknown,
@@ -132,7 +134,7 @@ test('a check run keeps captures until maxRecordBytes and reports the rest as fa
 			) => action({ env: {}, track: () => undefined })
 		}));
 		const { CheckRunService } = await import('../src/services/CheckRunService');
-		vi.doUnmock('../src/utils/run-isolated/runIsolated');
+		vi.doUnmock('../src/utils/reports-media/run-isolated/runIsolated');
 		vi.doUnmock('../src/utils/execution-runtimes/resourceWork');
 		const commit = 'c'.repeat(40);
 		const context = { commit, tree: 'made-up', profile: 'made-up', env: {}, directory };

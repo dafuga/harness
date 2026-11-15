@@ -11,17 +11,9 @@
 		"source": [
 			"src/utils/reports-media/groupTeardown.ts",
 			"src/utils/reports-media/groupTeardown.types.ts",
-			"src/utils/reports-media/run-isolated/groupTeardown.ts",
-			"src/utils/run-isolated/groupTeardown.ts"
+			"src/utils/reports-media/run-isolated/groupTeardown.ts"
 		],
-		"symbols": [
-			"signalGroup",
-			"groupTeardown",
-			"GroupTiming",
-			"GroupTiming",
-			"groupTeardown",
-			"groupTeardown"
-		]
+		"symbols": ["signalGroup", "groupTeardown", "GroupTiming", "GroupTiming", "groupTeardown"]
 	},
 	"contract": {
 		"origin": "declared",

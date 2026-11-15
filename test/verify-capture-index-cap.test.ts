@@ -6,7 +6,7 @@ import { captureIndex } from '../src/core/verifyTypes';
 import { gatherCaptures } from '../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures';
 import * as captureFiles from '../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/captureLimits';
 import type { ResourceContext } from '../src/core/execution-runtimes/resourceTypes';
-import type { IsolatedResult } from '../src/utils/run-isolated/runIsolated';
+import type { IsolatedResult } from '../src/utils/reports-media/run-isolated/runIsolated';
 
 /** The fixed cap on one check's `captures.ndjson`; this value is the contract under test. */
 const indexCap = 2_000_000;
@@ -54,7 +54,9 @@ test('a check whose index is over the cap fails with the cap and the file in its
 			log: { path: '/made/up/page.log', bytes: 0, sha256: '' },
 			survivors: []
 		};
-		vi.doMock('../src/utils/run-isolated/runIsolated', () => ({ runIsolated: async () => passed }));
+		vi.doMock('../src/utils/reports-media/run-isolated/runIsolated', () => ({
+			runIsolated: async () => passed
+		}));
 		vi.doMock('../src/utils/execution-runtimes/resourceWork', () => ({
 			resourceWork: async (
 				_request: unknown,
@@ -62,7 +64,7 @@ test('a check whose index is over the cap fails with the cap and the file in its
 			) => action({ env: {}, track: () => undefined })
 		}));
 		const { CheckRunService } = await import('../src/services/CheckRunService');
-		vi.doUnmock('../src/utils/run-isolated/runIsolated');
+		vi.doUnmock('../src/utils/reports-media/run-isolated/runIsolated');
 		vi.doUnmock('../src/utils/execution-runtimes/resourceWork');
 		const commit = 'c'.repeat(40);
 		const service = new CheckRunService({
