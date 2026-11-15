@@ -1,4 +1,4 @@
-import type { AuthStore } from '../../src/models/HubAuthStore.types';
+import type { AuthStore } from '../../src/models/accounts-access/HubAuthStore.types';
 
 export type Expiring = { expiresAt: number };
 

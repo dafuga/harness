@@ -4,7 +4,7 @@ import type {
 	EmailProofRecord,
 	EmailProofStore,
 	VerifiedEmailRecord
-} from '../../src/models/HubAuthStore.types';
+} from '../../src/models/accounts-access/HubAuthStore.types';
 
 function proofStore(rows: Map<string, EmailProofRecord>): EmailProofStore {
 	return {

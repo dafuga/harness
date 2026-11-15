@@ -10,7 +10,7 @@ import type {
 	OneTimeStore,
 	SessionRecord,
 	SessionStore
-} from '../../src/models/HubAuthStore.types';
+} from '../../src/models/accounts-access/HubAuthStore.types';
 import { memoryEmailStores } from './memoryEmailStores';
 
 function oneTime<T extends Expiring & { idHash: string }>(rows: Rows<T>): OneTimeStore<T> {

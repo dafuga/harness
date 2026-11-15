@@ -4,7 +4,7 @@ import type {
 	GithubGrantRecord,
 	NativeExchangeRecord,
 	SessionRecord
-} from '../../src/models/HubAuthStore.types';
+} from '../../src/models/accounts-access/HubAuthStore.types';
 
 const actor = { id: 'google-1', email: 'ada@gmail.com', name: 'Ada', emailVerified: true as const };
 
