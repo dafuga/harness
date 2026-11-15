@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import type { RemoteAttachment, WireRequest, WireResponse } from '../../src/models/Remote.types';
-import { ResponseLedgerService } from '../../src/services/ResponseLedgerService';
-import { WireClientService } from '../../src/services/WireClientService';
+import { ResponseLedgerService } from '../../src/services/networking-security/wire-session-service/ResponseLedgerService';
+import { WireClientService } from '../../src/services/networking-security/WireClientService';
 import type { WireSessionService } from '../../src/services/wire-session-service/WireSessionService';
 import { codeOf, tick, wireLink, wireSession } from '../support/wireHarness';
 

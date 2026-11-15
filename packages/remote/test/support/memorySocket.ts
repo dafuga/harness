@@ -1,4 +1,4 @@
-import type { RemoteSocket } from '../../src/services/DeviceConnectionService';
+import type { RemoteSocket } from '../../src/services/networking-security/DeviceConnectionService';
 
 /** Both ends of one WebSocket in memory: what the device sent, and a way to answer it. */
 export function memorySocket() {

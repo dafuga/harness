@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { remoteLimits } from '../../src/models/Remote.types';
 import type { RemoteAttachment, WireRequest } from '../../src/models/Remote.types';
-import { WireClientService } from '../../src/services/WireClientService';
+import { WireClientService } from '../../src/services/networking-security/WireClientService';
 import { remotePatterns } from '../../src/utils/remoteIdentity';
 
 const epoch = 'e'.repeat(32);

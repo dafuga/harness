@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/remote/src/services/WireClientService.ts",
 			"packages/remote/src/services/networking-security/WireClientService.ts",
 			"packages/remote/src/services/networking-security/WireClientService.types.ts"
 		],
 		"symbols": [
-			"WireClientService",
 			"WireClientService",
 			"WireClientService.constructor",
 			"WireClientService.bind",

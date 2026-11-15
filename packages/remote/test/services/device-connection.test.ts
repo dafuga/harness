@@ -1,7 +1,7 @@
 import type { Peer } from './device-connection.test.types';
 import { expect, test } from 'vitest';
-import { DeviceConnectionService } from '../../src/services/DeviceConnectionService';
-import type { DeviceStatus } from '../../src/services/DeviceConnectionService';
+import { DeviceConnectionService } from '../../src/services/networking-security/DeviceConnectionService';
+import type { DeviceStatus } from '../../src/services/networking-security/DeviceConnectionService';
 import { hostPeer } from '../support/hostPeer';
 function connection(peer: Peer) {
 	const opened: { url: string; headers: Record<string, string> }[] = [],

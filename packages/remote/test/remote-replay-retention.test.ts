@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { ResponseLedgerService } from '../src/services/ResponseLedgerService';
+import { ResponseLedgerService } from '../src/services/networking-security/wire-session-service/ResponseLedgerService';
 
 test('an expired answer cannot cause the original mutation to execute again', async () => {
 	let now = 1;

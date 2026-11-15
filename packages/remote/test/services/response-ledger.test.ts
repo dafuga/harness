@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { ResponseLedgerService } from '../../src/services/ResponseLedgerService';
+import { ResponseLedgerService } from '../../src/services/networking-security/wire-session-service/ResponseLedgerService';
 import { deferred } from '../support/wireHarness';
 
 function counted() {

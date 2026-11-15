@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { EventLogService } from '../../src/services/EventLogService';
+import { EventLogService } from '../../src/services/networking-security/wire-session-service/EventLogService';
 
 const epoch = 'e'.repeat(32);
 function filled(count: number, capacity?: number) {
