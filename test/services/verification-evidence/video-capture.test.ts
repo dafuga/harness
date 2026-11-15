@@ -1,5 +1,5 @@
 import { expect, test, vi, afterEach } from 'vitest';
-import { existsSync, writeFileSync, readFileSync } from 'node:fs';
+import { existsSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { VideoCaptureService } from '../../../src/services/verification-evidence/VideoCaptureService';
 import { withTempRepo } from '../../support/temporary';
@@ -9,7 +9,7 @@ import { VideoEvidenceService } from '../../../src/services/verification-evidenc
 import { captureReviewFlag } from '../../support/videoCaptureFlags';
 import { assertRealVideoCapture } from '../../support/videoCaptureReal';
 import { measureWorkload } from '../../support/measureWorkload';
-import { assertCaptureIndexOwnership } from '../../support/videoCaptureProtocol';
+import { assertDurableVideoReceipt } from '../../support/videoCaptureReceipt';
 
 afterEach(() => vi.restoreAllMocks());
 
@@ -127,25 +127,7 @@ test('capture orchestration observes configured boundary signatures and preserve
 
 test('capture orchestration cleans owned raw only after an attached matching receipt', async () => {
 	expect(typeof new VideoCaptureService().record).toBe('function');
-	await withTempRepo(async (repo) => {
-		const f = await videoCaptureFixture(repo),
-			options = f.options();
-		const result = await f.service.record(options);
-		expect(result.raw.every((raw) => existsSync(join(raw.directory, 'raw')))).toBe(true);
-		expect(existsSync(join(options.directory, result.captures[0].path))).toBe(false);
-		const sidecar = JSON.parse(readFileSync(join(options.directory, 'video-batches.json'), 'utf8'));
-		expect(sidecar.captures).toHaveLength(2);
-		await expect(f.service.acknowledge(result, 'a'.repeat(64))).rejects.toThrow(/attached|receipt/);
-		expect(f.native.acknowledge).not.toHaveBeenCalled();
-		f.publish(result);
-		await f.service.acknowledgeDirectory(options.directory, 'a'.repeat(64));
-		expect(f.native.acknowledge).toHaveBeenCalledTimes(2);
-		expect(
-			f.native.produced.every((item) => existsSync(item.video.path) && existsSync(item.poster.path))
-		).toBe(true);
-		expect(result.raw.every((raw) => !existsSync(join(raw.directory, 'raw')))).toBe(true);
-		await assertCaptureIndexOwnership(f);
-	});
+	await expect(withTempRepo(assertDurableVideoReceipt)).resolves.toBeUndefined();
 }, 30_000);
 
 test('capture orchestration re-records a corrupt sibling and bypasses old native cache for uncertain inputs', async () => {
