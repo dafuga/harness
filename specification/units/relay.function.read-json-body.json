@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/relay/src/utils/development-tooling/readJsonBody.ts",
-			"packages/relay/src/utils/readJsonBody.ts"
-		],
-		"symbols": ["readJsonBody", "readJsonBody"]
+		"source": ["packages/relay/src/utils/development-tooling/readJsonBody.ts"],
+		"symbols": ["readJsonBody"]
 	},
 	"contract": {
 		"origin": "declared",

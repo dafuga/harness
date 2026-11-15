@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/relay/src/utils/development-tooling/matchesPattern.ts",
-			"packages/relay/src/utils/matchesPattern.ts"
-		],
-		"symbols": ["matchesPattern", "matchesPattern"]
+		"source": ["packages/relay/src/utils/development-tooling/matchesPattern.ts"],
+		"symbols": ["matchesPattern"]
 	},
 	"contract": {
 		"origin": "declared",

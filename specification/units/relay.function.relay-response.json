@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/relay/src/utils/networking-security/relayResponse.ts",
-			"packages/relay/src/utils/relayResponse.ts"
-		],
-		"symbols": ["relayResponse", "relayError", "relayResponse", "relayError"]
+		"source": ["packages/relay/src/utils/networking-security/relayResponse.ts"],
+		"symbols": ["relayResponse", "relayError"]
 	},
 	"contract": {
 		"origin": "declared",

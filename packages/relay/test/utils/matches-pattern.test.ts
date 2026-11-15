@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { matchesPattern } from '../../src/utils/matchesPattern';
+import { matchesPattern } from '../../src/utils/development-tooling/matchesPattern';
 
 const hex = /^[a-f0-9]{4}$/;
 

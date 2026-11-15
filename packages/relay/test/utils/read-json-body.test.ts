@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { readJsonBody } from '../../src/utils/readJsonBody';
+import { readJsonBody } from '../../src/utils/development-tooling/readJsonBody';
 
 const limit = 16 * 1024;
 

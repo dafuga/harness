@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { relayError, relayResponse } from '../../src/utils/relayResponse';
+import { relayError, relayResponse } from '../../src/utils/networking-security/relayResponse';
 
 test('relayResponse answers JSON that is neither cached nor sniffed', async () => {
 	const response = relayResponse(202, { state: 'requested' });

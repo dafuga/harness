@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { publicRoute } from '../../src/utils/publicRoute';
+import { publicRoute } from '../../src/utils/development-tooling/publicRoute';
 
 const hostId = 'a1'.repeat(20);
 const pairingId = 'b2'.repeat(16);

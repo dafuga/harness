@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/relay/src/utils/development-tooling/publicRoute.ts",
-			"packages/relay/src/utils/publicRoute.ts"
-		],
-		"symbols": ["publicRoute", "publicRoute"]
+		"source": ["packages/relay/src/utils/development-tooling/publicRoute.ts"],
+		"symbols": ["publicRoute"]
 	},
 	"contract": {
 		"origin": "declared",
