@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native animateMotion element; native HTML content rules still apply."
+				"description": "Optional Snippet that the component renders as the content of the animateMotion element through {@render children()} only when the value is truthy; when it is omitted the element has no content. The component calls it with no arguments, so the value must be a Snippet."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgAnimateMotion",
 				"type": "markup",
-				"description": "The actual native animateMotion element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native animateMotion SVG element, rendered through svelte:element with every prop except children spread onto it as an attribute and the children snippet, when provided, as its content. The component adds no wrapper element around it."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
