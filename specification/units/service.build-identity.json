@@ -28,64 +28,144 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "BuildIdentityService.declared.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem root against which each declared build directory is resolved. A build directory must resolve below the resolved root; the root directory itself is treated as outside.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+				]
 			},
 			{
 				"name": "BuildIdentityService.declared.builds",
 				"type": "DeclaredBuild[]",
-				"required": true
+				"required": true,
+				"description": "Declared builds to inspect under root, each with an id used in diagnostics and a directory resolved against root. Directories outside the resolved root produce failures.",
+				"examples": [
+					[
+						{
+							"id": "build-20261115T120000Z-linux-x64",
+							"directory": "dist/linux-x64"
+						}
+					]
+				]
 			},
 			{
 				"name": "BuildIdentityService.changed.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem root against which each build directory is resolved for the recheck. A build directory must resolve below the resolved root; the root directory itself is treated as outside.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+				]
 			},
 			{
 				"name": "BuildIdentityService.changed.builds",
 				"type": "BuiltIdentity[]",
-				"required": true
+				"required": true,
+				"description": "Previously identified builds whose current identities are checked. The service compares current buildId values by id and reports builds whose identity is missing or differs.",
+				"examples": [
+					[
+						{
+							"id": "build-20261115T120000Z-linux-x64",
+							"directory": "dist/linux-x64",
+							"buildId": "91bd1b92f4763f3a706b71a2bdc4e6f8d821c6238ed08a61fe3419b5c072da48",
+							"files": 3,
+							"stamp": "91bd1b92f4763f3a706b71a2bdc4e6f8d821c6238ed08a61fe3419b5c072da48"
+						}
+					]
+				]
 			},
 			{
 				"name": "BuildIdentityService.identify.directory",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem directory whose files are scanned to compute an identity and inspect embedded stamps. A directory scan that returns no files produces undefined; failure to read a discovered file rejects.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/dist/linux-x64"
+				]
 			},
 			{
 				"name": "BuildIdentityService.stamp.directory",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem directory whose files are scanned and whose stamp slots receive the computed identity. If no stamp slot exists, the method throws ExpectedCliError; file read or write failures also reject.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/dist/linux-x64"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "BuildIdentityService.declared",
-				"type": "Promise<{ found: BuiltIdentity[]; failures: string[] }>"
+				"type": "Promise<{ found: BuiltIdentity[]; failures: string[] }>",
+				"description": "The identities found for declared builds and diagnostic messages for builds outside root, with no files, or stamped for different contents. Each found entry includes the declared id and directory, computed buildId, file count, and any discovered stamp.",
+				"examples": [
+					{
+						"found": [
+							{
+								"id": "build-20261115T120000Z-linux-x64",
+								"directory": "dist/linux-x64",
+								"buildId": "91bd1b92f4763f3a706b71a2bdc4e6f8d821c6238ed08a61fe3419b5c072da48",
+								"files": 3,
+								"stamp": "91bd1b92f4763f3a706b71a2bdc4e6f8d821c6238ed08a61fe3419b5c072da48"
+							}
+						],
+						"failures": []
+					}
+				]
 			},
 			{
 				"name": "BuildIdentityService.changed",
-				"type": "Promise<string[]>"
+				"type": "Promise<string[]>",
+				"description": "Messages for previously identified builds whose current buildId is missing or differs for the same id. It does not return replacement identities or file-level details.",
+				"examples": [
+					[
+						"build build-20261115T120000Z-linux-x64 changed while checks ran, so no capture can be tied to it"
+					]
+				]
 			},
 			{
 				"name": "BuildIdentityService.identify",
-				"type": "Promise<IdentifiedBuild | undefined>"
+				"type": "Promise<IdentifiedBuild | undefined>",
+				"description": "The computed identity, number of scanned files, and selected embedded stamp, if any. The stamp is the first one that differs from the computed identity, or otherwise the first stamp; no scanned files yields undefined.",
+				"examples": [
+					{
+						"buildId": "91bd1b92f4763f3a706b71a2bdc4e6f8d821c6238ed08a61fe3419b5c072da48",
+						"files": 3,
+						"stamp": "91bd1b92f4763f3a706b71a2bdc4e6f8d821c6238ed08a61fe3419b5c072da48"
+					}
+				]
 			},
 			{
 				"name": "BuildIdentityService.stamp",
-				"type": "Promise<IdentifiedBuild>"
+				"type": "Promise<IdentifiedBuild>",
+				"description": "The computed identity, number of scanned files, and stamp value written into each slot. The returned stamp equals buildId; the method fails when there are no stamp slots.",
+				"examples": [
+					{
+						"buildId": "91bd1b92f4763f3a706b71a2bdc4e6f8d821c6238ed08a61fe3419b5c072da48",
+						"files": 3,
+						"stamp": "91bd1b92f4763f3a706b71a2bdc4e6f8d821c6238ed08a61fe3419b5c072da48"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when stamp finds no file with a stamp slot; the message identifies the directory and says nothing in it reports a build identity."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A file read or write failure rejects the operation; the underlying file-system error may include a platform-specific code."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "BuildIdentityService.declared",
@@ -93,22 +173,56 @@
 					{
 						"name": "BuildIdentityService.declared.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem root against which each declared build directory is resolved. A build directory must resolve below the resolved root; the root directory itself is treated as outside.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+						]
 					},
 					{
 						"name": "BuildIdentityService.declared.builds",
 						"type": "DeclaredBuild[]",
-						"required": true
+						"required": true,
+						"description": "Declared builds to inspect under root, each with an id used in diagnostics and a directory resolved against root. Directories outside the resolved root produce failures.",
+						"examples": [
+							[
+								{
+									"id": "build-20261115T120000Z-linux-x64",
+									"directory": "dist/linux-x64"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "BuildIdentityService.declared",
-						"type": "Promise<{ found: BuiltIdentity[]; failures: string[] }>"
+						"type": "Promise<{ found: BuiltIdentity[]; failures: string[] }>",
+						"description": "The identities found for declared builds and diagnostic messages for builds outside root, with no files, or stamped for different contents. Each found entry includes the declared id and directory, computed buildId, file count, and any discovered stamp.",
+						"examples": [
+							{
+								"found": [
+									{
+										"id": "build-20261115T120000Z-linux-x64",
+										"directory": "dist/linux-x64",
+										"buildId": "91bd1b92f4763f3a706b71a2bdc4e6f8d821c6238ed08a61fe3419b5c072da48",
+										"files": 3,
+										"stamp": "91bd1b92f4763f3a706b71a2bdc4e6f8d821c6238ed08a61fe3419b5c072da48"
+									}
+								],
+								"failures": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A file read or write failure rejects the operation; the underlying file-system error may include a platform-specific code."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "BuildIdentityService.changed",
@@ -116,22 +230,50 @@
 					{
 						"name": "BuildIdentityService.changed.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem root against which each build directory is resolved for the recheck. A build directory must resolve below the resolved root; the root directory itself is treated as outside.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+						]
 					},
 					{
 						"name": "BuildIdentityService.changed.builds",
 						"type": "BuiltIdentity[]",
-						"required": true
+						"required": true,
+						"description": "Previously identified builds whose current identities are checked. The service compares current buildId values by id and reports builds whose identity is missing or differs.",
+						"examples": [
+							[
+								{
+									"id": "build-20261115T120000Z-linux-x64",
+									"directory": "dist/linux-x64",
+									"buildId": "91bd1b92f4763f3a706b71a2bdc4e6f8d821c6238ed08a61fe3419b5c072da48",
+									"files": 3,
+									"stamp": "91bd1b92f4763f3a706b71a2bdc4e6f8d821c6238ed08a61fe3419b5c072da48"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "BuildIdentityService.changed",
-						"type": "Promise<string[]>"
+						"type": "Promise<string[]>",
+						"description": "Messages for previously identified builds whose current buildId is missing or differs for the same id. It does not return replacement identities or file-level details.",
+						"examples": [
+							[
+								"build build-20261115T120000Z-linux-x64 changed while checks ran, so no capture can be tied to it"
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A file read or write failure rejects the operation; the underlying file-system error may include a platform-specific code."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "BuildIdentityService.identify",
@@ -139,17 +281,35 @@
 					{
 						"name": "BuildIdentityService.identify.directory",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem directory whose files are scanned to compute an identity and inspect embedded stamps. A directory scan that returns no files produces undefined; failure to read a discovered file rejects.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/dist/linux-x64"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "BuildIdentityService.identify",
-						"type": "Promise<IdentifiedBuild | undefined>"
+						"type": "Promise<IdentifiedBuild | undefined>",
+						"description": "The computed identity, number of scanned files, and selected embedded stamp, if any. The stamp is the first one that differs from the computed identity, or otherwise the first stamp; no scanned files yields undefined.",
+						"examples": [
+							{
+								"buildId": "91bd1b92f4763f3a706b71a2bdc4e6f8d821c6238ed08a61fe3419b5c072da48",
+								"files": 3,
+								"stamp": "91bd1b92f4763f3a706b71a2bdc4e6f8d821c6238ed08a61fe3419b5c072da48"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A file read or write failure rejects the operation; the underlying file-system error may include a platform-specific code."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "BuildIdentityService.stamp",
@@ -157,22 +317,40 @@
 					{
 						"name": "BuildIdentityService.stamp.directory",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem directory whose files are scanned and whose stamp slots receive the computed identity. If no stamp slot exists, the method throws ExpectedCliError; file read or write failures also reject.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/dist/linux-x64"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "BuildIdentityService.stamp",
-						"type": "Promise<IdentifiedBuild>"
+						"type": "Promise<IdentifiedBuild>",
+						"description": "The computed identity, number of scanned files, and stamp value written into each slot. The returned stamp equals buildId; the method fails when there are no stamp slots.",
+						"examples": [
+							{
+								"buildId": "91bd1b92f4763f3a706b71a2bdc4e6f8d821c6238ed08a61fe3419b5c072da48",
+								"files": 3,
+								"stamp": "91bd1b92f4763f3a706b71a2bdc4e6f8d821c6238ed08a61fe3419b5c072da48"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when stamp finds no file with a stamp slot; the message identifies the directory and says nothing in it reports a build identity."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A file read or write failure rejects the operation; the underlying file-system error may include a platform-specific code."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
