@@ -48,50 +48,267 @@
 				"name": "EntityContract.unit",
 				"type": "HarnessUnit",
 				"required": true,
-				"description": "The entity at the selected revision, including source-declared model definitions, fields, methods and recorded examples."
+				"description": "The unit record of the entity at the selected revision, which the sections are built from: its contract items, owned source and symbols, callable helpers, model definitions, service classes and runtime targets. For a model, the declaration its title names is shown when there is one, and its fields are shown without examples.",
+				"examples": [
+					{
+						"id": "reports.component.entity-contract",
+						"kind": "component",
+						"status": "active",
+						"title": "Typed contract",
+						"responsibility": "Shows component fields, callable APIs and source-declared service or model methods with shared parameter, return and example tables.",
+						"dependencies": [
+							{
+								"unit": "reports.component.contract-table",
+								"via": "import"
+							},
+							{
+								"unit": "reports.function.contract-fields",
+								"via": "import"
+							},
+							{
+								"unit": "reports.model.harness-types",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": [
+								"packages/reports/src/components/explorer-ui/entity-contract/EntityContract.svelte",
+								"packages/reports/src/components/explorer-ui/entity-contract/entityContract.css"
+							],
+							"symbols": [
+								"EntityContract",
+								"EntityContract.summaryRows",
+								"EntityContract.label",
+								"EntityContract.children",
+								"EntityContract.callableSection"
+							]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "EntityContract.unit",
+									"type": "HarnessUnit",
+									"required": true
+								},
+								{
+									"name": "EntityContract.category",
+									"type": "ExplorerCategory",
+									"required": true
+								},
+								{
+									"name": "EntityContract.contract",
+									"type": "ContractRow[]",
+									"required": true
+								},
+								{
+									"name": "EntityContract.last",
+									"type": "string",
+									"required": false,
+									"default": "undefined (omitted)"
+								}
+							],
+							"outputs": [
+								{
+									"name": "EntityContract",
+									"type": "markup"
+								}
+							],
+							"errors": [
+								{
+									"name": "TypeError",
+									"type": "thrown"
+								},
+								{
+									"name": "RangeError",
+									"type": "thrown"
+								}
+							]
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/components/explorer-ui/entity-contract/EntityContract.svelte"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "5e0b2c9a71d4f836"
+					},
+					{
+						"id": "reports.function.contract-fields",
+						"kind": "function",
+						"status": "active",
+						"title": "Contract fields",
+						"responsibility": "The inputs, outputs and errors of one unit, each field with its exact public type, what it is in words and its examples.",
+						"dependencies": [
+							{
+								"unit": "reports.model.explorer-types",
+								"via": "import"
+							},
+							{
+								"unit": "reports.model.harness-types",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": [
+								"packages/reports/src/components/explorer-ui/entity-contract/contractFields.ts"
+							],
+							"symbols": [
+								"typeLabel",
+								"contractFields",
+								"contractFacts",
+								"callableContracts",
+								"returnField",
+								"fieldOf"
+							]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "contractFields.unit",
+									"type": "HarnessUnit",
+									"required": true
+								},
+								{
+									"name": "contractFields.category",
+									"type": "ExplorerCategory",
+									"required": true
+								}
+							],
+							"outputs": [
+								{
+									"name": "contractFields",
+									"type": "ContractGroup[]"
+								}
+							],
+							"errors": [
+								{
+									"name": "TypeError",
+									"type": "thrown"
+								},
+								{
+									"name": "RangeError",
+									"type": "thrown"
+								}
+							]
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/components/explorer-ui/entity-contract/contractFields.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "a41f0d7c93e2b608"
+					}
+				]
 			},
 			{
 				"name": "EntityContract.category",
 				"type": "ExplorerCategory",
 				"required": true,
-				"description": "The kind of entity; config outputs are labelled Provides."
+				"description": "The kind of entity, which sets the layout: a component labels its inputs Props and has no outputs table, a config labels its outputs Provides, a type lists the fields and methods of its declarations, and a function, service or model shows each callable or method apart.",
+				"examples": ["components", "functions", "services"]
 			},
 			{
 				"name": "EntityContract.contract",
 				"type": "ContractRow[]",
 				"required": true,
-				"description": "Prepared contract facts such as purpose, route and execution targets."
+				"description": "Prepared rows that say something of the whole contract, such as purpose, app route or runs as, and are shown above the field tables; rows labelled Inputs, Props, Output, Fails with or Provides are left out because those tables already show them. A function with recorded callable helpers shows no rows here.",
+				"examples": [
+					[
+						{
+							"label": "Props",
+							"value": "unit, category, contract, last"
+						},
+						{
+							"label": "Fails with",
+							"value": "type error, range error"
+						}
+					],
+					[
+						{
+							"label": "Purpose",
+							"value": "Lists the reports recorded for the selected branch."
+						},
+						{
+							"label": "App route",
+							"value": "/reports"
+						},
+						{
+							"label": "Inputs",
+							"value": "branch, commit"
+						},
+						{
+							"label": "Output",
+							"value": "rendered markup"
+						}
+					],
+					[
+						{
+							"label": "Inputs",
+							"value": "options"
+						},
+						{
+							"label": "Output",
+							"value": "return value"
+						},
+						{
+							"label": "Fails with",
+							"value": "type error"
+						},
+						{
+							"label": "Runs as",
+							"value": "Module"
+						}
+					]
+				]
 			},
 			{
 				"name": "EntityContract.last",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional parent commit, defaulting to JavaScript undefined and the current Contract heading. A supplied nonempty commit shows its first seven characters as the last contract."
+				"description": "The parent commit an entity removed at the shown commit was last held at; undefined (the default) or an empty string keeps the heading Contract. A nonempty commit's first seven characters follow Last contract in the heading, and a note says the shown commit removed the entity.",
+				"examples": [
+					"4f2a9c1e7b3d608a5f1c2e9b7d4a6f80c3e12b5d",
+					"b08d3e6a1f9c274e5d0b8a6f3c1e9d2a7b4c5f60"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityContract",
 				"type": "markup",
-				"description": "Component props, source fields and callable parameter/return tables retain requirement/default metadata. Declared errors or their explicit absence appear, and info controls open full examples."
+				"description": "Props, model and type fields, and callable parameters keep their requirement and default columns, while returns and throws do not. Declared errors appear in their own table, or as the note 'No errors declared.' when there are none, and each row's info control opens its full example."
 			}
 		],
 		"errors": [
 			{
 				"name": "TypeError",
 				"type": "thrown",
-				"description": "A literal default or example contains BigInt or circular data that JSON cannot serialize."
+				"description": "Thrown while the component renders a declared default or example that holds BigInt or circular data, which JSON cannot serialize; an error from a getter, proxy trap or toJSON method in that data propagates unchanged."
 			},
 			{
 				"name": "RangeError",
 				"type": "thrown",
-				"description": "Deeply nested default or example data exceeds the JSON serializer stack."
-			},
-			{
-				"name": "Getter, proxy or conversion error",
-				"type": "propagated",
-				"description": "Errors from supplied field/default/example getters, proxy traps or JSON conversion methods propagate."
+				"description": "Thrown while the component renders a declared default or example nested so deeply that JSON serialization exhausts the call stack."
 			}
 		],
 		"errorStatus": "declared",
