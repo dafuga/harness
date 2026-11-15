@@ -1,0 +1,115 @@
+{
+	"schemaVersion": 1,
+	"id": "command.development-tooling-contracts-command-register-contract-history",
+	"uid": "u_hstregiabc",
+	"kind": "command",
+	"title": "registerContractHistory",
+	"responsibility": "Registers contracts diff, log and last CLI arguments, snapshot selectors, filters, limits and JSON or terminal output actions.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/development-tooling/contracts-command/registerContractHistory.ts"],
+		"symbols": ["registerContractHistory"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "registerContractHistory.contracts",
+				"type": "Command",
+				"required": true,
+				"description": "Existing Commander contracts group to which read-only diff, log and last subcommands are attached; registration performs no snapshot reads."
+			}
+		],
+		"outputs": [
+			{
+				"name": "registerContractHistory",
+				"type": "void",
+				"description": "No value; installs three Commander commands, their validation and deferred read-only output actions."
+			}
+		],
+		"errors": [
+			{
+				"name": "InvalidArgumentError",
+				"type": "thrown",
+				"description": "Installed limit parsers reject tokens that are not positive safe decimal integers without leading zeros."
+			},
+			{
+				"name": "ExpectedCliError or Error",
+				"type": "thrown",
+				"description": "Deferred command actions propagate contract, revision, filesystem and Git diagnostics; registration itself performs no reads."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "registerContractHistory",
+				"inputs": [
+					{
+						"name": "registerContractHistory.contracts",
+						"type": "Command",
+						"required": true,
+						"description": "Existing Commander contracts group to which read-only diff, log and last subcommands are attached; registration performs no snapshot reads."
+					}
+				],
+				"outputs": [
+					{
+						"name": "registerContractHistory",
+						"type": "void",
+						"description": "No value; installs three Commander commands, their validation and deferred read-only output actions."
+					}
+				],
+				"errors": [
+					{
+						"name": "InvalidArgumentError",
+						"type": "thrown",
+						"description": "Installed limit parsers reject tokens that are not positive safe decimal integers without leading zeros."
+					},
+					{
+						"name": "ExpectedCliError or Error",
+						"type": "thrown",
+						"description": "Deferred command actions propagate contract, revision, filesystem and Git diagnostics; registration itself performs no reads."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.development-tooling-contracts-command-contract-history-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-read-contract-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-render-contract-history",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/development-tooling/contracts-command/registerContractHistory.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/development-tooling/contracts-command/registerContractHistory.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	}
+}

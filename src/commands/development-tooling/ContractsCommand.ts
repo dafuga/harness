@@ -1,14 +1,16 @@
 // @harness-uid u_n3xq7owie5
 import { InvalidArgumentError, type Command } from 'commander';
 import { runContracts } from './contracts-command/runContracts';
+import { registerContractHistory } from './contracts-command/registerContractHistory';
 
 /** Registers read-only stored-contract queries; no source indexing or registry writes. */
 export class ContractsCommand {
 	register(program: Command): void {
 		const contracts = program
 			.command('contracts')
-			.description('Read, list, search and map stored contracts without opening source.')
+			.description('Read, search, diff and trace stored contracts without opening source.')
 			.option('--root <path>', 'Project root (paths are relative to this root).', process.cwd());
+		registerContractHistory(contracts);
 		for (const [name, description] of [
 			['show <target>', 'Read full contracts by unit id, owned source file, or folder.'],
 			['list', 'List one line per contract: id, source path and short description.'],

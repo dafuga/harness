@@ -1,0 +1,171 @@
+{
+	"schemaVersion": 1,
+	"id": "command.development-tooling-contracts-command-diff-contract-snapshots",
+	"uid": "u_hstdiffabc",
+	"kind": "command",
+	"title": "diffContractSnapshots",
+	"responsibility": "Joins stored contracts by stable uid or fallback id, classifies moves and material changes, filters fields and counts ignored formatting or metadata ordering separately.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/development-tooling/contracts-command/diffContractSnapshots.ts"],
+		"symbols": ["diffContractSnapshots", "validateHistoryFields"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "diffContractSnapshots.before",
+				"type": "StoredContract[]",
+				"required": true,
+				"description": "Earlier stored JSON value or contract snapshot; undefined represents an absent field or contract."
+			},
+			{
+				"name": "diffContractSnapshots.after",
+				"type": "StoredContract[]",
+				"required": true,
+				"description": "Later stored JSON value or contract snapshot; undefined represents an absent field or contract."
+			},
+			{
+				"name": "diffContractSnapshots.options",
+				"type": "ContractHistoryOptions",
+				"required": true,
+				"description": "Project root, identity/path/kind/area and field filters, snapshot selectors, output mode and limits. Diff counts precede display limits; log limits matching commits."
+			},
+			{
+				"name": "validateHistoryFields.field",
+				"type": "string",
+				"required": false,
+				"description": "Optional comma-separated metadata categories: type, description, examples, errors and dependencies; unsupported categories are rejected."
+			}
+		],
+		"outputs": [
+			{
+				"name": "diffContractSnapshots",
+				"type": "ContractDiff",
+				"description": "Per-contract added, removed, moved or changed records, filtered field changes, pre-limit counts, ignored file counts, total and truncation state."
+			},
+			{
+				"name": "validateHistoryFields",
+				"type": "void",
+				"description": "No value; accepts omitted or supported comma-separated field categories and throws for any unsupported category."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Unsupported field category or a folder outside the project root is rejected; the comparison itself performs no source or filesystem reads."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "diffContractSnapshots",
+				"inputs": [
+					{
+						"name": "diffContractSnapshots.before",
+						"type": "StoredContract[]",
+						"required": true,
+						"description": "Earlier stored JSON value or contract snapshot; undefined represents an absent field or contract."
+					},
+					{
+						"name": "diffContractSnapshots.after",
+						"type": "StoredContract[]",
+						"required": true,
+						"description": "Later stored JSON value or contract snapshot; undefined represents an absent field or contract."
+					},
+					{
+						"name": "diffContractSnapshots.options",
+						"type": "ContractHistoryOptions",
+						"required": true,
+						"description": "Project root, identity/path/kind/area and field filters, snapshot selectors, output mode and limits. Diff counts precede display limits; log limits matching commits."
+					}
+				],
+				"outputs": [
+					{
+						"name": "diffContractSnapshots",
+						"type": "ContractDiff",
+						"description": "Per-contract added, removed, moved or changed records, filtered field changes, pre-limit counts, ignored file counts, total and truncation state."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Unsupported field category or a folder outside the project root is rejected; the comparison itself performs no source or filesystem reads."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "validateHistoryFields",
+				"inputs": [
+					{
+						"name": "validateHistoryFields.field",
+						"type": "string",
+						"required": false,
+						"description": "Optional comma-separated metadata categories: type, description, examples, errors and dependencies; unsupported categories are rejected."
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateHistoryFields",
+						"type": "void",
+						"description": "No value; accepts omitted or supported comma-separated field categories and throws for any unsupported category."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Unsupported field category or a folder outside the project root is rejected; the comparison itself performs no source or filesystem reads."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.development-tooling-contracts-command-contract-history-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-contract-selection",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-contract-semantics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/development-tooling/contracts-command/diffContractSnapshots.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/development-tooling/contracts-command/diffContractSnapshots.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	}
+}

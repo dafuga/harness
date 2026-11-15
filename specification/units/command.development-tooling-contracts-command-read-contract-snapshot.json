@@ -1,0 +1,130 @@
+{
+	"schemaVersion": 1,
+	"id": "command.development-tooling-contracts-command-read-contract-snapshot",
+	"uid": "u_hstsnapabc",
+	"kind": "command",
+	"title": "readContractSnapshot",
+	"responsibility": "Reads raw unit contract JSON from worktree, index or Git trees, batches immutable blobs and rejects invalid or duplicate identities without inspecting source.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/development-tooling/contracts-command/readContractSnapshot.ts"],
+		"symbols": ["createContractHistoryReader"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "createContractHistoryReader.root",
+				"type": "string",
+				"required": true,
+				"description": "Existing project directory inside a Git worktree; only its specification/units JSON files and Git contract metadata are read."
+			}
+		],
+		"outputs": [
+			{
+				"name": "createContractHistoryReader",
+				"type": "Promise<ContractHistoryReader>",
+				"description": "Git-bound reader with per-invocation immutable blob and parsed-JSON caches plus at most two cached commit snapshots. Worktree and index are always read afresh."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Non-worktree roots, malformed JSON, missing ids, duplicate ids or uids, unresolved index stages and malformed blob responses are rejected."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Filesystem and Git read errors propagate; symlink contracts are excluded from worktree, index and tree snapshots."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "createContractHistoryReader",
+				"inputs": [
+					{
+						"name": "createContractHistoryReader.root",
+						"type": "string",
+						"required": true,
+						"description": "Existing project directory inside a Git worktree; only its specification/units JSON files and Git contract metadata are read."
+					}
+				],
+				"outputs": [
+					{
+						"name": "createContractHistoryReader",
+						"type": "Promise<ContractHistoryReader>",
+						"description": "Git-bound reader with per-invocation immutable blob and parsed-JSON caches plus at most two cached commit snapshots. Worktree and index are always read afresh."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Non-worktree roots, malformed JSON, missing ids, duplicate ids or uids, unresolved index stages and malformed blob responses are rejected."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Filesystem and Git read errors propagate; symlink contracts are excluded from worktree, index and tree snapshots."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-contract-documents",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-contract-history-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-contract-semantics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.units-config",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/development-tooling/contracts-command/readContractSnapshot.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/development-tooling/contracts-command/readContractSnapshot.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	}
+}

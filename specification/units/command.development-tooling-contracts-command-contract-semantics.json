@@ -1,0 +1,223 @@
+{
+	"schemaVersion": 1,
+	"id": "command.development-tooling-contracts-command-contract-semantics",
+	"uid": "u_hstsemabcd",
+	"kind": "command",
+	"title": "contractSemantics",
+	"responsibility": "Compares raw JSON values field by field, matching named metadata and duplicate-preserving dependency collections while retaining meaningful example and ordinary array order.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/development-tooling/contracts-command/contractSemantics.ts"],
+		"symbols": ["canonicalContract", "compareContractFields", "isRecord"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "canonicalContract.data",
+				"type": "unknown",
+				"required": true,
+				"description": "Stored JSON value to canonicalize or classify; historical unknown fields remain intact and JSON string contents retain whitespace."
+			},
+			{
+				"name": "canonicalContract.path",
+				"type": "string",
+				"required": false,
+				"default": "",
+				"description": "Raw metadata field path used for collection semantics; empty starts at the document root. Display paths omit only the leading contract prefix."
+			},
+			{
+				"name": "canonicalContract.ordered",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "When true, retains all array order to distinguish formatting-only files from otherwise nonmaterial metadata reorderings; defaults to false."
+			},
+			{
+				"name": "compareContractFields.before",
+				"type": "unknown",
+				"required": true,
+				"description": "Earlier stored JSON value or contract snapshot; undefined represents an absent field or contract."
+			},
+			{
+				"name": "compareContractFields.after",
+				"type": "unknown",
+				"required": true,
+				"description": "Later stored JSON value or contract snapshot; undefined represents an absent field or contract."
+			},
+			{
+				"name": "compareContractFields.path",
+				"type": "string",
+				"required": false,
+				"default": "",
+				"description": "Raw metadata field path used for collection semantics; empty starts at the document root. Display paths omit only the leading contract prefix."
+			},
+			{
+				"name": "isRecord.data",
+				"type": "unknown",
+				"required": true,
+				"description": "Stored JSON value to canonicalize or classify; historical unknown fields remain intact and JSON string contents retain whitespace."
+			}
+		],
+		"outputs": [
+			{
+				"name": "canonicalContract",
+				"type": "string",
+				"description": "Deterministic JSON comparison key. Object key order is ignored; named metadata and known set-like arrays ignore order while examples and unknown arrays retain it."
+			},
+			{
+				"name": "compareContractFields",
+				"type": "ContractFieldChange[]",
+				"description": "Material leaf changes with stable named-item field paths and before/after values; duplicate dependency additions or removals remain separate records."
+			},
+			{
+				"name": "isRecord",
+				"type": "data is Record<string, unknown>",
+				"description": "Type predicate accepting non-null, non-array objects; it does not validate a contract schema."
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError or RangeError",
+				"type": "thrown",
+				"description": "Internal callers must provide serialized JSON values; unsupported cyclic or non-JSON values and throwing accessors can propagate native errors."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "canonicalContract",
+				"inputs": [
+					{
+						"name": "canonicalContract.data",
+						"type": "unknown",
+						"required": true,
+						"description": "Stored JSON value to canonicalize or classify; historical unknown fields remain intact and JSON string contents retain whitespace."
+					},
+					{
+						"name": "canonicalContract.path",
+						"type": "string",
+						"required": false,
+						"default": "",
+						"description": "Raw metadata field path used for collection semantics; empty starts at the document root. Display paths omit only the leading contract prefix."
+					},
+					{
+						"name": "canonicalContract.ordered",
+						"type": "boolean",
+						"required": false,
+						"default": false,
+						"description": "When true, retains all array order to distinguish formatting-only files from otherwise nonmaterial metadata reorderings; defaults to false."
+					}
+				],
+				"outputs": [
+					{
+						"name": "canonicalContract",
+						"type": "string",
+						"description": "Deterministic JSON comparison key. Object key order is ignored; named metadata and known set-like arrays ignore order while examples and unknown arrays retain it."
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError or RangeError",
+						"type": "thrown",
+						"description": "Internal callers must provide serialized JSON values; unsupported cyclic or non-JSON values and throwing accessors can propagate native errors."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "compareContractFields",
+				"inputs": [
+					{
+						"name": "compareContractFields.before",
+						"type": "unknown",
+						"required": true,
+						"description": "Earlier stored JSON value or contract snapshot; undefined represents an absent field or contract."
+					},
+					{
+						"name": "compareContractFields.after",
+						"type": "unknown",
+						"required": true,
+						"description": "Later stored JSON value or contract snapshot; undefined represents an absent field or contract."
+					},
+					{
+						"name": "compareContractFields.path",
+						"type": "string",
+						"required": false,
+						"default": "",
+						"description": "Raw metadata field path used for collection semantics; empty starts at the document root. Display paths omit only the leading contract prefix."
+					}
+				],
+				"outputs": [
+					{
+						"name": "compareContractFields",
+						"type": "ContractFieldChange[]",
+						"description": "Material leaf changes with stable named-item field paths and before/after values; duplicate dependency additions or removals remain separate records."
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError or RangeError",
+						"type": "thrown",
+						"description": "Internal callers must provide serialized JSON values; unsupported cyclic or non-JSON values and throwing accessors can propagate native errors."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "isRecord",
+				"inputs": [
+					{
+						"name": "isRecord.data",
+						"type": "unknown",
+						"required": true,
+						"description": "Stored JSON value to canonicalize or classify; historical unknown fields remain intact and JSON string contents retain whitespace."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isRecord",
+						"type": "data is Record<string, unknown>",
+						"description": "Type predicate accepting non-null, non-array objects; it does not validate a contract schema."
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError or RangeError",
+						"type": "thrown",
+						"description": "Internal callers must provide serialized JSON values; unsupported cyclic or non-JSON values and throwing accessors can propagate native errors."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.development-tooling-contracts-command-contract-history-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/development-tooling/contracts-command/contractSemantics.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/development-tooling/contracts-command/contractSemantics.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	}
+}

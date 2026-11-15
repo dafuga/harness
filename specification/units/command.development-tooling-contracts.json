@@ -4,7 +4,7 @@
 	"uid": "u_n3xq7owie5",
 	"kind": "command",
 	"title": "ContractsCommand",
-	"responsibility": "Registers the stored-contract show, list, search and map CLI commands, their flags and read-only output actions.",
+	"responsibility": "Registers stored-contract lookup, semantic diff, committed log and last-change CLI commands, flags and read-only output actions.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"catalog": {
@@ -21,7 +21,7 @@
 				"name": "ContractsCommand.register.program",
 				"type": "Command",
 				"required": true,
-				"description": "Commander instance to which the contracts group and its four subcommands are attached; registration itself performs no registry I/O."
+				"description": "Commander instance to which the contracts group and its seven subcommands are attached; registration itself performs no registry I/O."
 			}
 		],
 		"outputs": [
@@ -52,7 +52,7 @@
 						"name": "ContractsCommand.register.program",
 						"type": "Command",
 						"required": true,
-						"description": "Commander instance to which the contracts group and its four subcommands are attached; registration itself performs no registry I/O."
+						"description": "Commander instance to which the contracts group and its seven subcommands are attached; registration itself performs no registry I/O."
 					}
 				],
 				"outputs": [
@@ -69,6 +69,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "command.development-tooling-contracts-command-register-contract-history",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "command.development-tooling-contracts-command-run-contracts",
 			"via": "import",

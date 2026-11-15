@@ -1,0 +1,247 @@
+{
+	"schemaVersion": 1,
+	"id": "command.development-tooling-contracts-command-contract-revisions",
+	"uid": "u_hstrevaabc",
+	"kind": "command",
+	"title": "contractRevisions",
+	"responsibility": "Resolves user revision selectors to commit ids and chooses default, staged, range, since or first-parent commit comparison snapshots without invoking a shell.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/development-tooling/contracts-command/contractRevisions.ts"],
+		"symbols": ["resolveContractRevision", "contractComparison", "firstContractParent"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "resolveContractRevision.git",
+				"type": "GitAdapter",
+				"required": true,
+				"description": "Repository-bound Git adapter; revision tokens are passed as argument data with end-of-options protection and are resolved on each query."
+			},
+			{
+				"name": "resolveContractRevision.revision",
+				"type": "string",
+				"required": true,
+				"description": "User-supplied existing commit reference; empty, leading-option, control-character or unresolved inputs are rejected."
+			},
+			{
+				"name": "contractComparison.git",
+				"type": "GitAdapter",
+				"required": true,
+				"description": "Repository-bound Git adapter; revision tokens are passed as argument data with end-of-options protection and are resolved on each query."
+			},
+			{
+				"name": "contractComparison.revisions",
+				"type": "string[]",
+				"required": true,
+				"description": "Zero selectors for HEAD to working tree, one range or commit selector, or two explicit revisions; a lone commit compares its first parent or the empty root base."
+			},
+			{
+				"name": "contractComparison.options",
+				"type": "ContractHistoryOptions",
+				"required": true,
+				"description": "Project root, identity/path/kind/area and field filters, snapshot selectors, output mode and limits. Diff counts precede display limits; log limits matching commits."
+			},
+			{
+				"name": "firstContractParent.git",
+				"type": "GitAdapter",
+				"required": true,
+				"description": "Repository-bound Git adapter; revision tokens are passed as argument data with end-of-options protection and are resolved on each query."
+			},
+			{
+				"name": "firstContractParent.commit",
+				"type": "string",
+				"required": true,
+				"description": "Resolved commit object id whose first parent is requested; a root commit returns the empty snapshot marker."
+			}
+		],
+		"outputs": [
+			{
+				"name": "resolveContractRevision",
+				"type": "Promise<string>",
+				"description": "Full commit object id returned by Git, resolved afresh even when the input ref resembles a hash."
+			},
+			{
+				"name": "contractComparison",
+				"type": "Promise<string[]>",
+				"description": "Ordered base and head snapshot markers: resolved commits, working-tree, index or empty; root commits use empty as their base."
+			},
+			{
+				"name": "firstContractParent",
+				"type": "Promise<string>",
+				"description": "First parent commit object id, or the empty marker for a root commit."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Invalid, missing or incompatible revision selectors, including missing HEAD; malformed ranges and option-like refs are rejected."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Repository Git operations can fail; their stderr diagnostic propagates without invoking a shell."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "resolveContractRevision",
+				"inputs": [
+					{
+						"name": "resolveContractRevision.git",
+						"type": "GitAdapter",
+						"required": true,
+						"description": "Repository-bound Git adapter; revision tokens are passed as argument data with end-of-options protection and are resolved on each query."
+					},
+					{
+						"name": "resolveContractRevision.revision",
+						"type": "string",
+						"required": true,
+						"description": "User-supplied existing commit reference; empty, leading-option, control-character or unresolved inputs are rejected."
+					}
+				],
+				"outputs": [
+					{
+						"name": "resolveContractRevision",
+						"type": "Promise<string>",
+						"description": "Full commit object id returned by Git, resolved afresh even when the input ref resembles a hash."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid, missing or incompatible revision selectors, including missing HEAD; malformed ranges and option-like refs are rejected."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Repository Git operations can fail; their stderr diagnostic propagates without invoking a shell."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "contractComparison",
+				"inputs": [
+					{
+						"name": "contractComparison.git",
+						"type": "GitAdapter",
+						"required": true,
+						"description": "Repository-bound Git adapter; revision tokens are passed as argument data with end-of-options protection and are resolved on each query."
+					},
+					{
+						"name": "contractComparison.revisions",
+						"type": "string[]",
+						"required": true,
+						"description": "Zero selectors for HEAD to working tree, one range or commit selector, or two explicit revisions; a lone commit compares its first parent or the empty root base."
+					},
+					{
+						"name": "contractComparison.options",
+						"type": "ContractHistoryOptions",
+						"required": true,
+						"description": "Project root, identity/path/kind/area and field filters, snapshot selectors, output mode and limits. Diff counts precede display limits; log limits matching commits."
+					}
+				],
+				"outputs": [
+					{
+						"name": "contractComparison",
+						"type": "Promise<string[]>",
+						"description": "Ordered base and head snapshot markers: resolved commits, working-tree, index or empty; root commits use empty as their base."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid, missing or incompatible revision selectors, including missing HEAD; malformed ranges and option-like refs are rejected."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Repository Git operations can fail; their stderr diagnostic propagates without invoking a shell."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "firstContractParent",
+				"inputs": [
+					{
+						"name": "firstContractParent.git",
+						"type": "GitAdapter",
+						"required": true,
+						"description": "Repository-bound Git adapter; revision tokens are passed as argument data with end-of-options protection and are resolved on each query."
+					},
+					{
+						"name": "firstContractParent.commit",
+						"type": "string",
+						"required": true,
+						"description": "Resolved commit object id whose first parent is requested; a root commit returns the empty snapshot marker."
+					}
+				],
+				"outputs": [
+					{
+						"name": "firstContractParent",
+						"type": "Promise<string>",
+						"description": "First parent commit object id, or the empty marker for a root commit."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid, missing or incompatible revision selectors, including missing HEAD; malformed ranges and option-like refs are rejected."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Repository Git operations can fail; their stderr diagnostic propagates without invoking a shell."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-contract-history-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/development-tooling/contracts-command/contractRevisions.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/development-tooling/contracts-command/contractRevisions.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	}
+}
