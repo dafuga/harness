@@ -9,10 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/workflows/run-verify/verification-service/record-assembly-service/recordedBuilds.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedBuilds.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedBuilds.types.ts"
 		],
-		"symbols": ["recordedBuilds", "RecordedBuild"]
+		"symbols": ["recordedBuilds", "recordedBuilds", "RecordedBuild"]
 	},
 	"contract": {
 		"origin": "declared",

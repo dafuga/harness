@@ -10,10 +10,11 @@
 	"owns": {
 		"source": [
 			"src/utils/verification-evidence/verifyPlan.ts",
+			"src/utils/verifyPlan.ts",
 			"src/workflows/run-verify/verification-service/verifyPlan.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/verifyPlan.ts"
 		],
-		"symbols": ["PlannedCheck", "PlanInput", "verifyPlan", "verifyPlan", "verifyPlan"]
+		"symbols": ["PlannedCheck", "PlanInput", "verifyPlan", "verifyPlan", "verifyPlan", "verifyPlan"]
 	},
 	"contract": {
 		"origin": "declared",

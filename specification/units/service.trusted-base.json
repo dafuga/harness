@@ -8,8 +8,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/verification-evidence/run-verify/TrustedBaseService.ts"],
+		"source": [
+			"src/workflows/run-verify/TrustedBaseService.ts",
+			"src/workflows/verification-evidence/run-verify/TrustedBaseService.ts"
+		],
 		"symbols": [
+			"TrustedBaseService",
 			"TrustedBaseService",
 			"TrustedBaseService.constructor",
 			"TrustedBaseService.nearest",

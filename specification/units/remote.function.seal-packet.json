@@ -10,18 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/remote/src/services/networking-security/secure-channel-service/sealPacket.ts",
-			"packages/remote/src/utils/networking-security/sealPacket.ts",
-			"packages/remote/src/utils/sealPacket.ts"
+			"packages/remote/src/utils/networking-security/sealPacket.ts"
 		],
-		"symbols": [
-			"sealPacket",
-			"openPacket",
-			"SealContext",
-			"sealPacket",
-			"openPacket",
-			"sealPacket",
-			"openPacket"
-		]
+		"symbols": ["sealPacket", "openPacket", "SealContext", "sealPacket", "openPacket"]
 	},
 	"contract": {
 		"origin": "declared",

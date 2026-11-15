@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"src/cli/program/legacy-import-service/legacyReport.ts",
-			"src/services/legacy-import-service/legacyReport.ts",
 			"src/utils/reports-media/legacyReport.ts"
 		],
-		"symbols": ["legacyReport", "legacyReport", "LegacyReport", "legacyReport"]
+		"symbols": ["legacyReport", "LegacyReport", "legacyReport"]
 	},
 	"contract": {
 		"origin": "declared",
