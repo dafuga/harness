@@ -99,7 +99,9 @@ test('a result that claims no running software is judged as before', () =>
 	}));
 
 test('video slots require decoded motion media and retain versioned provenance', () =>
-	assertVideoCoverage(scenario, gathered, served));
+	measureWorkload('function.scenario-coverage', 'pending-video-flags-and-graph-coverage', () =>
+		assertVideoCoverage(scenario, gathered, served)
+	));
 
 const region = { x: 12, y: 56, width: 158, height: 50 };
 function picture(mode = 'element', scale = 1) {
