@@ -4,13 +4,14 @@
 	"uid": "u_a7rs3z4f6t",
 	"kind": "service",
 	"title": "VerificationCheckService",
-	"responsibility": "Decides whether a stored record proves a commit: identity, integrity and outcome.",
+	"responsibility": "Checks record identity, source integrity, lineage and current video reviewer obligations.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"src/services/verification-evidence/VerificationCheckService.ts",
-			"src/services/verification-evidence/VerificationCheckService.types.ts"
+			"src/services/verification-evidence/VerificationCheckService.types.ts",
+			"src/services/verification-evidence/verification-check-service/videoFlagProof.ts"
 		],
 		"symbols": [
 			"VerificationCheckService",
@@ -18,7 +19,8 @@
 			"VerificationCheckService.check",
 			"VerificationCheckService.integrity",
 			"CheckReport",
-			"CheckReport"
+			"CheckReport",
+			"videoFlagProofFailures"
 		]
 	},
 	"contract": {
@@ -35,7 +37,8 @@
 				"name": "VerificationCheckService.constructor.indexer",
 				"type": "SourceIndexService",
 				"required": false,
-				"description": "SourceIndexService passed to loadSide while rebuilding the committed source. Defaults to new SourceIndexService(): an instance may be shared and reuses parsing only for files with identical content, while each commit is still indexed and compared in full."
+				"description": "SourceIndexService passed to loadSide while rebuilding the committed source. Defaults to new SourceIndexService(): an instance may be shared and reuses parsing only for files with identical content, while each commit is still indexed and compared in full.",
+				"default": "new SourceIndexService()"
 			},
 			{
 				"name": "VerificationCheckService.check.commit",
@@ -166,6 +169,18 @@
 						"directory": "/workspace/project/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
 					}
 				]
+			},
+			{
+				"name": "videoFlagProofFailures.root",
+				"type": "string",
+				"required": true,
+				"description": "Original repository with durable Git evidence; clean source exports must not be used as evidence roots."
+			},
+			{
+				"name": "videoFlagProofFailures.record",
+				"type": "VerificationRecord",
+				"required": true,
+				"description": "Sealed verification record whose present clip slots are checked against current reviewer standing."
 			}
 		],
 		"outputs": [
@@ -386,6 +401,32 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "videoFlagProofFailures",
+				"inputs": [
+					{
+						"name": "videoFlagProofFailures.root",
+						"type": "string",
+						"required": true,
+						"description": "Original repository with durable Git evidence; clean source exports must not be used as evidence roots."
+					},
+					{
+						"name": "videoFlagProofFailures.record",
+						"type": "VerificationRecord",
+						"required": true,
+						"description": "Sealed verification record whose present clip slots are checked against current reviewer standing."
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoFlagProofFailures",
+						"type": "Promise<string[]>",
+						"description": "Current proof failures for video slots actually present in the record; records without video cause no reviewer-evidence reads."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -403,7 +444,8 @@
 						"name": "VerificationCheckService.constructor.indexer",
 						"type": "SourceIndexService",
 						"required": false,
-						"description": "SourceIndexService passed to loadSide while rebuilding the committed source. Defaults to new SourceIndexService(): an instance may be shared and reuses parsing only for files with identical content, while each commit is still indexed and compared in full."
+						"description": "SourceIndexService passed to loadSide while rebuilding the committed source. Defaults to new SourceIndexService(): an instance may be shared and reuses parsing only for files with identical content, while each commit is still indexed and compared in full.",
+						"default": "new SourceIndexService()"
 					}
 				],
 				"outputs": [
@@ -455,7 +497,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.evidence-attach",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.source-index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-frame-flag",
 			"via": "import",
 			"origin": "derived"
 		},

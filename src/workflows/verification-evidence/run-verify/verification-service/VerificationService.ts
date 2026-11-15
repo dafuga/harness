@@ -16,11 +16,11 @@ import { emittedTargets } from '../../../../utils/development-tooling/unitMeasur
 
 import { neededBuilds } from './buildScope';
 import { RecordAssemblyService } from './record-assembly-service/RecordAssemblyService';
-import { scenarioCoverage } from './scenarioCoverage';
-import { scopedCheck, scopedScenarios, scopeFailure } from './entityScope';
+import { verificationScenarioCoverage } from './verificationScenarioCoverage';
+import { scopeFailure } from './entityScope';
 import { referencedScenario } from './sealRecord';
 import { SnapshotRunService, type Executed } from './SnapshotRunService';
-import { verifyPlan } from './verifyPlan';
+import { pendingVideoScenarioIds, pendingVideoSelection } from './pendingVideoSelection';
 
 /** Verifies one exact commit in a clean snapshot and writes the record, whatever the outcome. */
 export class VerificationService {
@@ -35,7 +35,8 @@ export class VerificationService {
 		const { context } = this;
 		const startedAt = new Date().toISOString();
 		const directory = this.store.directoryFor(context.commit, startedAt);
-		const { plan, referenced, rerun } = this.selection();
+		const pending = await pendingVideoScenarioIds(context.root, context.head.scenarios);
+		const { plan, referenced, rerun } = this.selection(pending);
 		const needed = context.entity ? neededBuilds(rerun) : undefined;
 		const executed = await this.snapshotRun(directory, needed, rerun).execute(
 			plan,
@@ -57,26 +58,12 @@ export class VerificationService {
 		return this.selection().plan;
 	}
 
-	private selection() {
-		const { context } = this;
-		const { entity } = context;
-		const referenced = entity ? [] : this.referenced();
-		const kept = new Set(referenced.map((scenario) => scenario.id));
-		const rerun = entity
-			? scopedScenarios(context.head.scenarios, entity)
-			: context.head.scenarios.filter((scenario) => !kept.has(scenario.id));
-		const planned = verifyPlan({
-			selectedTests: entity ? [] : context.impact.tests.selected,
-			scenarios: rerun,
-			config: context.config,
-			unitsConfig: context.head.config,
-			testTimeoutMs: context.testTimeoutMs
-		});
-		return {
-			plan: entity ? planned.map((check) => scopedCheck(check, entity)) : planned,
-			referenced,
-			rerun
-		};
+	private selection(pending: ReadonlySet<string> = new Set()) {
+		return pendingVideoSelection(
+			this.context,
+			this.context.entity ? [] : this.referenced(),
+			pending
+		);
 	}
 
 	/** A scoped run passes the builds its scenarios need; a full run passes none. */
@@ -108,21 +95,7 @@ export class VerificationService {
 		scenario: ScenarioManifest,
 		executed: Executed
 	): { result: ScenarioResult; failures: string[] } {
-		const own = executed.outcomes.filter((outcome) => outcome.check.scenario === scenario.id);
-		const compiled = (executed.builds ?? []).map((build) => [build.id, build.buildId] as const);
-		const builds = {
-			declared: this.context.config.builds.map((build) => build.id),
-			compiled: new Map(compiled),
-			skipped: new Set(executed.skippedBuilds ?? [])
-		};
-		const coverage = scenarioCoverage({
-			scenario,
-			commit: this.context.commit,
-			gathered: own.flatMap((outcome) => outcome.gathered),
-			checkFailed: own.some((outcome) => !outcome.passed),
-			videoSlots: executed.videoSlots?.[scenario.id],
-			builds
-		});
+		const { own, coverage } = verificationScenarioCoverage(this.context, scenario, executed);
 		const ran = own.length === scenario.tests.length;
 		const failures = [
 			...own.flatMap((outcome) => outcome.failures),
@@ -134,7 +107,8 @@ export class VerificationService {
 				id: scenario.id,
 				status: failures.length === 0 ? 'passed' : 'failed',
 				testedRevision: this.context.commit,
-				states: coverage.states
+				states: coverage.states,
+				...(coverage.videoCoverage ? { videoCoverage: coverage.videoCoverage } : {})
 			},
 			failures: [...failures, ...(this.context.entity ? [scopeFailure(this.context.entity)] : [])]
 		};

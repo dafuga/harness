@@ -4,14 +4,18 @@
 	"uid": "u_x7kddegtw2",
 	"kind": "service",
 	"title": "Verification snapshot runner",
-	"responsibility": "Creates a clean commit snapshot, applies links and setup, runs planned checks, observes file drift, and reports declared artifacts and build identities.",
+	"responsibility": "Runs exact exported source checks with bounded capture and original-repository reviewer requirements.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"src/workflows/run-verify/verification-service/SnapshotRunService.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
-			"src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.types.ts"
+			"src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.types.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/snapshotVideoFlags.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/snapshotVideoInputs.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/snapshotVideoRun.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/snapshotVideoRun.types.ts"
 		],
 		"symbols": [
 			"SnapshotRunService",
@@ -21,7 +25,13 @@
 			"SnapshotRun",
 			"Executed",
 			"SnapshotRun",
-			"Executed"
+			"Executed",
+			"snapshotVideoFlags",
+			"pendingVideoEnvironment",
+			"snapshotVideoInputs",
+			"snapshotVideoRun",
+			"snapshotDriftObserver",
+			"SnapshotVideoRun"
 		]
 	},
 	"contract": {
@@ -88,9 +98,80 @@
 				"required": false,
 				"default": [],
 				"description": "Snapshot-relative file paths to hash and size after setup and checks. Only files readable inside the snapshot are included; missing paths and paths resolving outside the snapshot are omitted, and the default is [].",
-				"examples": [
-					["dist/server.js"]
-				]
+				"examples": [["dist/server.js"]]
+			},
+			{
+				"name": "snapshotVideoFlags.root",
+				"type": "string",
+				"required": true,
+				"description": "Original repository with durable Git evidence; clean source exports must not be used as evidence roots."
+			},
+			{
+				"name": "snapshotVideoFlags.scenarios",
+				"type": "ScenarioManifest[]",
+				"required": true,
+				"description": "Exact source-revision scenarios; unenrolled scenarios require no reviewer branch or LFS reads."
+			},
+			{
+				"name": "pendingVideoEnvironment.env",
+				"type": "Record<string, string | undefined>",
+				"required": true,
+				"description": "Existing check environment; only HARNESS_PENDING_VIDEO_FLAGS is authoritatively supplied for enrolled scenarios."
+			},
+			{
+				"name": "pendingVideoEnvironment.requirements",
+				"type": "Record<string, PendingVideoFlags>",
+				"required": true,
+				"description": "Known owning flag identities and unresolved ID/note requirements read from original Git evidence; absence proves no supplied flag identities."
+			},
+			{
+				"name": "snapshotVideoInputs.root",
+				"type": "string",
+				"required": true,
+				"description": "Clean exact-source directory hashed before setup writes; reviewer evidence comes separately from evidenceRoot."
+			},
+			{
+				"name": "snapshotVideoInputs.scenarios",
+				"type": "ScenarioManifest[]",
+				"required": true,
+				"description": "Exact source-revision scenarios; unenrolled scenarios require no reviewer branch or LFS reads."
+			},
+			{
+				"name": "snapshotVideoInputs.evidenceRoot",
+				"type": "string",
+				"required": false,
+				"description": "Original Git repository carrying reviewer evidence. Omission uses root, appropriate only when root itself is the repository.",
+				"default": "root"
+			},
+			{
+				"name": "snapshotVideoRun.run",
+				"type": "SnapshotRun",
+				"required": true,
+				"description": "Original repository, clean-export context, declared scenario inputs and ordinary snapshot runner configuration."
+			},
+			{
+				"name": "snapshotVideoRun.snapshot",
+				"type": "string",
+				"required": true,
+				"description": "Clean exact-source export or its adapter; it contains no repository evidence authority."
+			},
+			{
+				"name": "snapshotVideoRun.limits",
+				"type": "CaptureLimits",
+				"required": true,
+				"description": "The run existing byte limits, shared by all checks and captures."
+			},
+			{
+				"name": "snapshotDriftObserver.snapshot",
+				"type": "SnapshotAdapter",
+				"required": true,
+				"description": "Clean exact-source export or its adapter; it contains no repository evidence authority."
+			},
+			{
+				"name": "snapshotDriftObserver.seen",
+				"type": "{ mutated: Set<string>; added: Set<string> }",
+				"required": true,
+				"description": "Mutable sets accumulating every observed tracked mutation and undeclared output across setup and checks."
 			}
 		],
 		"outputs": [
@@ -116,6 +197,11 @@
 				"name": "Error",
 				"type": "thrown",
 				"description": "An uncaught Error from snapshot creation, linking, drift checks, check/tool execution, build identity work, or snapshot removal rejects the execution promise. Output misdeclarations, setup/check failures, unavailable tool versions, and build failures are reported in Executed when the delegated services return them as results."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Current reviewer evidence is corrupt, exceeds finite capture-environment bounds, or the replacement omits, misowns or predates a required flag."
 			}
 		],
 		"errorStatus": "declared",
@@ -149,9 +235,7 @@
 						"required": false,
 						"default": [],
 						"description": "Snapshot-relative file paths to hash and size after setup and checks. Only files readable inside the snapshot are included; missing paths and paths resolving outside the snapshot are omitted, and the default is [].",
-						"examples": [
-							["dist/server.js"]
-						]
+						"examples": [["dist/server.js"]]
 					}
 				],
 				"outputs": [
@@ -179,6 +263,167 @@
 						"description": "An uncaught Error from snapshot creation, linking, drift checks, check/tool execution, build identity work, or snapshot removal rejects the execution promise. Output misdeclarations, setup/check failures, unavailable tool versions, and build failures are reported in Executed when the delegated services return them as results."
 					}
 				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "snapshotVideoFlags",
+				"inputs": [
+					{
+						"name": "snapshotVideoFlags.root",
+						"type": "string",
+						"required": true,
+						"description": "Original repository with durable Git evidence; clean source exports must not be used as evidence roots."
+					},
+					{
+						"name": "snapshotVideoFlags.scenarios",
+						"type": "ScenarioManifest[]",
+						"required": true,
+						"description": "Exact source-revision scenarios; unenrolled scenarios require no reviewer branch or LFS reads."
+					}
+				],
+				"outputs": [
+					{
+						"name": "snapshotVideoFlags",
+						"type": "Promise<Record<string, PendingVideoFlags>>",
+						"description": "Per-enrolled-scenario known identities and pending notes read once from the original evidence branch; unenrolled input returns empty without reads."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Current reviewer evidence is corrupt, exceeds finite capture-environment bounds, or the replacement omits, misowns or predates a required flag."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "pendingVideoEnvironment",
+				"inputs": [
+					{
+						"name": "pendingVideoEnvironment.env",
+						"type": "Record<string, string | undefined>",
+						"required": true,
+						"description": "Existing check environment; only HARNESS_PENDING_VIDEO_FLAGS is authoritatively supplied for enrolled scenarios."
+					},
+					{
+						"name": "pendingVideoEnvironment.requirements",
+						"type": "Record<string, PendingVideoFlags>",
+						"required": true,
+						"description": "Known owning flag identities and unresolved ID/note requirements read from original Git evidence; absence proves no supplied flag identities."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pendingVideoEnvironment",
+						"type": "Record<string, string | undefined>",
+						"description": "Original environment plus bounded JSON schemaVersion 1 slots containing only pending owning IDs and notes."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Current reviewer evidence is corrupt, exceeds finite capture-environment bounds, or the replacement omits, misowns or predates a required flag."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "snapshotVideoInputs",
+				"inputs": [
+					{
+						"name": "snapshotVideoInputs.root",
+						"type": "string",
+						"required": true,
+						"description": "Clean exact-source directory hashed before setup writes; reviewer evidence comes separately from evidenceRoot."
+					},
+					{
+						"name": "snapshotVideoInputs.scenarios",
+						"type": "ScenarioManifest[]",
+						"required": true,
+						"description": "Exact source-revision scenarios; unenrolled scenarios require no reviewer branch or LFS reads."
+					},
+					{
+						"name": "snapshotVideoInputs.evidenceRoot",
+						"type": "string",
+						"required": false,
+						"description": "Original Git repository carrying reviewer evidence. Omission uses root, appropriate only when root itself is the repository.",
+						"default": "root"
+					}
+				],
+				"outputs": [
+					{
+						"name": "snapshotVideoInputs",
+						"type": "Promise<{ videoSlots: Record<string, VideoSlot[]>; pendingVideoFlags: Record<string, PendingVideoFlags>; failures: string[]; }>",
+						"description": "Current clean-source clip hashes, original-repository reviewer requirements and explicit setup diagnostics."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "snapshotVideoRun",
+				"inputs": [
+					{
+						"name": "snapshotVideoRun.run",
+						"type": "SnapshotRun",
+						"required": true,
+						"description": "Original repository, clean-export context, declared scenario inputs and ordinary snapshot runner configuration."
+					},
+					{
+						"name": "snapshotVideoRun.snapshot",
+						"type": "string",
+						"required": true,
+						"description": "Clean exact-source export or its adapter; it contains no repository evidence authority."
+					},
+					{
+						"name": "snapshotVideoRun.limits",
+						"type": "CaptureLimits",
+						"required": true,
+						"description": "The run existing byte limits, shared by all checks and captures."
+					}
+				],
+				"outputs": [
+					{
+						"name": "snapshotVideoRun",
+						"type": "Promise<SnapshotVideoRun>",
+						"description": "Check runner configured with authoritative pending JSON and the exact source slot and reviewer inputs used for judging."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Current reviewer evidence is corrupt, exceeds finite capture-environment bounds, or the replacement omits, misowns or predates a required flag."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "snapshotDriftObserver",
+				"inputs": [
+					{
+						"name": "snapshotDriftObserver.snapshot",
+						"type": "SnapshotAdapter",
+						"required": true,
+						"description": "Clean exact-source export or its adapter; it contains no repository evidence authority."
+					},
+					{
+						"name": "snapshotDriftObserver.seen",
+						"type": "{ mutated: Set<string>; added: Set<string> }",
+						"required": true,
+						"description": "Mutable sets accumulating every observed tracked mutation and undeclared output across setup and checks."
+					}
+				],
+				"outputs": [
+					{
+						"name": "snapshotDriftObserver",
+						"type": "()",
+						"description": "Asynchronous observer retaining every export mutation and addition in the supplied sets."
+					}
+				],
+				"errors": [],
 				"errorStatus": "declared"
 			}
 		],
@@ -241,7 +486,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.scenario-coverage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.unit-measurements",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -262,6 +522,16 @@
 		},
 		{
 			"unit": "service.check-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-frame-flag",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-evidence",
 			"via": "import",
 			"origin": "derived"
 		},

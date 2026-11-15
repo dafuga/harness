@@ -1,4 +1,5 @@
 // @harness-uid u_rfumv65ikl
+import { resolvedVideoAttachment } from './attachedVideoFlags';
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { Attached } from './EvidenceAttachService.types';
 import { createHash } from 'node:crypto';
@@ -55,7 +56,7 @@ export class EvidenceAttachService {
 	async attach(commit: string, stored: StoredRecord): Promise<Attached> {
 		const { record } = stored;
 		const known = this.done.get(record.id);
-		if (known) return known;
+		if (known) return resolvedVideoAttachment(this.root, record, known);
 		const problems = await this.checker.integrity(commit, stored);
 		if (problems.length > 0) {
 			return fail(`Record ${short(record.id)} cannot be attached: ${problems.join('\n')}`);
@@ -73,7 +74,7 @@ export class EvidenceAttachService {
 			created
 		};
 		this.done.set(record.id, attached);
-		return attached;
+		return resolvedVideoAttachment(this.root, record, attached);
 	}
 
 	/** Writes the record directory to the evidence branch and returns where it is. */

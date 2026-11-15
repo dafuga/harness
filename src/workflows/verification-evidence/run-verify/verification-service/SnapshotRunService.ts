@@ -5,10 +5,10 @@ import { verifyConfigFile } from '../../../../core/verification-evidence/verifyT
 import type { BuiltArtifacts } from '../../../../utils/development-tooling/unitMeasurements';
 import type { PlannedCheck } from '../../../../utils/verification-evidence/verifyPlan';
 import { BuildIdentityService } from '../../../../services/verification-evidence/BuildIdentityService';
-import { CheckRunService, type CheckOutcome } from './check-run-service/CheckRunService';
+import type { CheckRunService, CheckOutcome } from './check-run-service/CheckRunService';
 import type { CaptureLimits } from './check-run-service/captureLimits.types';
 import { scopedSetup } from './buildScope';
-import { snapshotVideoInputs } from './snapshotVideoInputs';
+import { snapshotDriftObserver, snapshotVideoRun } from './snapshotVideoRun';
 
 /**
  * Exports the commit and runs setup and every check inside the export. The export is compared
@@ -24,18 +24,13 @@ export class SnapshotRunService {
 		const { root, config, context, needed = 'all' } = this.run;
 		const snapshot = await SnapshotAdapter.create(root, context.commit, config.outputs);
 		const seen = { mutated: new Set<string>(), added: new Set<string>() };
-		const observe = async (): Promise<void> => {
-			const drift = await snapshot.drift();
-			for (const path of drift.mutated) seen.mutated.add(path);
-			for (const path of drift.added) seen.added.add(path);
-		};
+		const observe = snapshotDriftObserver(snapshot, seen);
 		try {
 			for (const path of config.link) await snapshot.link(root, path);
-			const limits = captureLimits(config);
-			const runner = new CheckRunService({ ...context, snapshot: snapshot.directory, limits });
-			const { videoSlots, failures } = snapshotVideoInputs(
+			const { runner, failures, videoInputs } = await snapshotVideoRun(
+				this.run,
 				snapshot.directory,
-				this.run.videos ?? []
+				captureLimits(config)
 			);
 			const misdeclared = [...snapshot.misdeclared().map(describeOutput), ...failures];
 			const setupFailures = misdeclared.length > 0 ? misdeclared : await this.setup(runner, needed);
@@ -48,9 +43,14 @@ export class SnapshotRunService {
 			const [mutated, added] = [[...seen.mutated].sort(), [...seen.added].sort()];
 			const moved = await this.identities.changed(snapshot.directory, compiled.found);
 			const builds = config.builds.length > 0 ? { builds: compiled.found } : {};
-			const buildFailures = [...compiled.failures, ...moved];
-			const observed = { outcomes, mutated, added, setupFailures, tools, artifacts, videoSlots };
-			return { ...observed, ...builds, ...skippedBuilds(config, needed), buildFailures };
+			const observed = { outcomes, mutated, added, setupFailures, tools, artifacts };
+			return {
+				...observed,
+				...videoInputs,
+				...builds,
+				...skippedBuilds(config, needed),
+				buildFailures: [...compiled.failures, ...moved]
+			};
 		} finally {
 			await snapshot.remove();
 		}

@@ -1,4 +1,5 @@
 // @harness-uid u_a7rs3z4f6t
+import { videoFlagProofFailures } from './verification-check-service/videoFlagProof';
 import type { CheckReport } from './VerificationCheckService.types';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
@@ -33,6 +34,7 @@ export class VerificationCheckService {
 		const problems = [
 			...integrity,
 			...(integrity.length > 0 ? [] : this.lineage(record)),
+			...(integrity.length > 0 ? [] : await videoFlagProofFailures(this.root, record)),
 			...(record.status === 'passed' ? [] : record.failures)
 		];
 		return {

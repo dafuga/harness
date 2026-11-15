@@ -1,4 +1,6 @@
 // @harness-uid u_lnqhwcablp
+import { videoFlagCoverageFailure } from './videoFlagCoverage';
+import type { VideoCoverageReport } from './videoCoverage.types';
 import type { CoverageInput } from '../../../../utils/verification-evidence/scenarioCoverage.types';
 import type { Gathered } from '../../../../utils/verification-evidence/gatherCaptures';
 import type { VideoClip } from '../../../../utils/verification-evidence/videoClipSchema.types';
@@ -7,8 +9,15 @@ import { VideoEvidenceService } from '../../../../services/verification-evidence
 
 /** Enrollment adds a completeness gate; unenrolled historical scenarios keep their own rules. */
 export function videoCoverageFailures(input: CoverageInput, admitted: Gathered[]): string[] {
+	return videoCoverageReport(input, admitted).failures;
+}
+
+export function videoCoverageReport(
+	input: CoverageInput,
+	admitted: Gathered[]
+): VideoCoverageReport {
 	const declaration = input.scenario.video;
-	if (!declaration) return [];
+	if (!declaration) return { failures: [], graphs: [] };
 	const failures: string[] = [],
 		observations: VideoObservation[] = [];
 	for (const clip of declaration.clips) {
@@ -19,10 +28,11 @@ export function videoCoverageFailures(input: CoverageInput, admitted: Gathered[]
 		}
 	}
 
-	for (const graph of new VideoEvidenceService().coverage(declaration, observations))
+	const graphs = new VideoEvidenceService().coverage(declaration, observations);
+	for (const graph of graphs)
 		if (!graph.complete)
 			failures.push(`video graph ${graph.graph} is incomplete: ${graph.missing.join(', ')}`);
-	return failures;
+	return { failures, graphs };
 }
 
 function clipObservation(
@@ -52,6 +62,8 @@ function clipObservation(
 		return { failure: `${prefix} has a stale or unproved current input hash` };
 	if (!clipBinding(clip, item))
 		return { failure: `${prefix} has an incompatible owner, checkpoint or graph proof` };
+	const flagFailure = videoFlagCoverageFailure(input.pendingVideoFlags, item);
+	if (flagFailure) return { failure: `${prefix} ${flagFailure}` };
 	return {
 		observation: {
 			clipId: clip.id,
