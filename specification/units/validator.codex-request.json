@@ -12,22 +12,123 @@
 		"symbols": ["CodexRequestValidator", "CodexRequestValidator.parse"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CodexRequestValidator.parse.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The raw request body passed to CodexRequestValidator.parse, typed unknown because nothing is checked until zod runs. It must be an object with model exactly 'claude-opus-5-5', stream exactly true, input as an array of objects (an empty array is accepted), optional tools as an array of objects (missing tools becomes []), optional instructions as a string, and previous_response_id absent or undefined; other keys are dropped, and any value that breaks these rules makes parse throw a ZodError.",
+				"examples": [
+					{
+						"model": "claude-opus-5-5",
+						"stream": true,
+						"input": [
+							{
+								"role": "user",
+								"content": "Summarize the last failing test output."
+							}
+						]
+					},
+					{
+						"model": "claude-opus-5-5",
+						"stream": true,
+						"input": [
+							{
+								"role": "user",
+								"content": "Explain what this function returns."
+							},
+							{
+								"role": "assistant",
+								"content": "It returns the parsed request object."
+							},
+							{
+								"role": "user",
+								"content": "Now list the fields as bullets."
+							}
+						],
+						"tools": [
+							{
+								"type": "function",
+								"name": "read_file",
+								"parameters": {
+									"type": "object",
+									"properties": {
+										"path": {
+											"type": "string"
+										}
+									},
+									"required": ["path"]
+								}
+							}
+						],
+						"instructions": "Answer in plain text."
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CodexRequestValidator.parse",
-				"type": "GatewayRequest"
+				"type": "GatewayRequest",
+				"description": "The GatewayRequest that zod's parse returns for the request: model is always 'claude-opus-5-5', stream is always true, input and tools are always arrays (tools is [] when the request omitted it), and instructions is set only when the request supplied a string. Keys the schema does not declare are removed.",
+				"examples": [
+					{
+						"model": "claude-opus-5-5",
+						"stream": true,
+						"input": [
+							{
+								"role": "user",
+								"content": "Summarize the last failing test output."
+							}
+						],
+						"tools": []
+					},
+					{
+						"model": "claude-opus-5-5",
+						"stream": true,
+						"input": [
+							{
+								"role": "user",
+								"content": "Explain what this function returns."
+							},
+							{
+								"role": "assistant",
+								"content": "It returns the parsed request object."
+							},
+							{
+								"role": "user",
+								"content": "Now list the fields as bullets."
+							}
+						],
+						"tools": [
+							{
+								"type": "function",
+								"name": "read_file",
+								"parameters": {
+									"type": "object",
+									"properties": {
+										"path": {
+											"type": "string"
+										}
+									},
+									"required": ["path"]
+								}
+							}
+						],
+						"instructions": "Answer in plain text."
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Thrown by zod's schema.parse when the value breaks a schema rule: not an object, model not exactly 'claude-opus-5-5', stream not exactly true, input missing or not an array of objects, tools or instructions defined with the wrong type, an entry of input or tools that is not an object, or any defined previous_response_id. parse does not catch it, so the ZodError reaches the caller unchanged."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CodexRequestValidator.parse",
@@ -35,17 +136,118 @@
 					{
 						"name": "CodexRequestValidator.parse.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The raw request body passed to CodexRequestValidator.parse, typed unknown because nothing is checked until zod runs. It must be an object with model exactly 'claude-opus-5-5', stream exactly true, input as an array of objects (an empty array is accepted), optional tools as an array of objects (missing tools becomes []), optional instructions as a string, and previous_response_id absent or undefined; other keys are dropped, and any value that breaks these rules makes parse throw a ZodError.",
+						"examples": [
+							{
+								"model": "claude-opus-5-5",
+								"stream": true,
+								"input": [
+									{
+										"role": "user",
+										"content": "Summarize the last failing test output."
+									}
+								]
+							},
+							{
+								"model": "claude-opus-5-5",
+								"stream": true,
+								"input": [
+									{
+										"role": "user",
+										"content": "Explain what this function returns."
+									},
+									{
+										"role": "assistant",
+										"content": "It returns the parsed request object."
+									},
+									{
+										"role": "user",
+										"content": "Now list the fields as bullets."
+									}
+								],
+								"tools": [
+									{
+										"type": "function",
+										"name": "read_file",
+										"parameters": {
+											"type": "object",
+											"properties": {
+												"path": {
+													"type": "string"
+												}
+											},
+											"required": ["path"]
+										}
+									}
+								],
+								"instructions": "Answer in plain text."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CodexRequestValidator.parse",
-						"type": "GatewayRequest"
+						"type": "GatewayRequest",
+						"description": "The GatewayRequest that zod's parse returns for the request: model is always 'claude-opus-5-5', stream is always true, input and tools are always arrays (tools is [] when the request omitted it), and instructions is set only when the request supplied a string. Keys the schema does not declare are removed.",
+						"examples": [
+							{
+								"model": "claude-opus-5-5",
+								"stream": true,
+								"input": [
+									{
+										"role": "user",
+										"content": "Summarize the last failing test output."
+									}
+								],
+								"tools": []
+							},
+							{
+								"model": "claude-opus-5-5",
+								"stream": true,
+								"input": [
+									{
+										"role": "user",
+										"content": "Explain what this function returns."
+									},
+									{
+										"role": "assistant",
+										"content": "It returns the parsed request object."
+									},
+									{
+										"role": "user",
+										"content": "Now list the fields as bullets."
+									}
+								],
+								"tools": [
+									{
+										"type": "function",
+										"name": "read_file",
+										"parameters": {
+											"type": "object",
+											"properties": {
+												"path": {
+													"type": "string"
+												}
+											},
+											"required": ["path"]
+										}
+									}
+								],
+								"instructions": "Answer in plain text."
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown by zod's schema.parse when the value breaks a schema rule: not an object, model not exactly 'claude-opus-5-5', stream not exactly true, input missing or not an array of objects, tools or instructions defined with the wrong type, an entry of input or tools that is not an object, or any defined previous_response_id. parse does not catch it, so the ZodError reaches the caller unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
