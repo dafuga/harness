@@ -14,27 +14,30 @@
 		"symbols": ["planningService"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "planningService.base",
 				"type": "Git",
-				"required": true
+				"required": true,
+				"description": "The base Git adapter supplied to construct the planning service. The service uses it to create operation-scoped read adapters and to run plan writes, so it must support the Git behavior those operations invoke."
 			}
 		],
 		"outputs": [
 			{
 				"name": "planningService",
-				"type": "PlanningApi"
+				"type": "PlanningApi",
+				"description": "The returned API exposes project snapshots, plan, branch, commit, image, and entity-history reads, plus plan, design, and thread operations. Each method obtains a Git adapter through planReads, and write methods clone their input before passing work through planWrite."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The plan-creation path can fail during its validation checks or when a plan already exists; the duplicate case is raised as already-exists with the message Plan already exists. Snapshot catches per-plan read failures and records their code and message in rejected instead of rejecting the whole snapshot."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "planningService",
@@ -42,17 +45,19 @@
 					{
 						"name": "planningService.base",
 						"type": "Git",
-						"required": true
+						"required": true,
+						"description": "The base Git adapter supplied to construct the planning service. The service uses it to create operation-scoped read adapters and to run plan writes, so it must support the Git behavior those operations invoke."
 					}
 				],
 				"outputs": [
 					{
 						"name": "planningService",
-						"type": "PlanningApi"
+						"type": "PlanningApi",
+						"description": "The returned API exposes project snapshots, plan, branch, commit, image, and entity-history reads, plus plan, design, and thread operations. Each method obtains a Git adapter through planReads, and write methods clone their input before passing work through planWrite."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
