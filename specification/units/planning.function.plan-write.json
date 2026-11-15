@@ -35,86 +35,126 @@
 				"name": "planWrite.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "Repository handle whose dir keys the in-process queue, so calls for the same dir run one after another, and is where planWrite creates the harness-planning.lock directory. planWrite sets transactionHead to the revision read after the lock is taken; a lock directory that already exists, or cannot be created, makes the call reject through fail('repository-busy', ...)."
 			},
 			{
 				"name": "planWrite.work",
 				"type": "() => Promise<T>",
 				"required": true,
-				"description": "Asynchronous operation to run under the repository planning lock."
+				"description": "Callback that runs once the lock is taken and transactionHead is set; planWrite resolves with its value or rejects with its error, and the lock is removed after it settles. It is not called when the lock is not acquired or revision(git) fails."
 			},
 			{
 				"name": "clean.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "Repository handle passed to safePath for unitPath and to assertClean, which uses it for the artifact-path checks."
 			},
 			{
 				"name": "clean.unitPath",
 				"type": "string",
 				"required": true,
-				"description": "Plan folder whose metadata, designs, threads and attributes must be clean."
+				"description": "Repository-relative plan folder path; clean passes it to safePath, then builds the plan.json, designs, threads and .gitattributes paths beneath it by template strings without normalizing it.",
+				"examples": [
+					"planning/reports.component.evidence-grid",
+					"planning/planning.function.plan-write"
+				]
 			},
 			{
 				"name": "assertClean.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "Repository handle used by safePath for each artifact path and by git.run for the git status command."
 			},
 			{
 				"name": "assertClean.artifactPaths",
 				"type": "string[]",
 				"required": true,
-				"description": "Repository-relative artifact paths to inspect, including ignored and untracked files."
+				"description": "Repository-relative paths that assertClean checks with safePath and passes as pathspecs to git status --porcelain --untracked-files=all --ignored. Any status output rejects through fail('artifact-dirty', ...), and an empty array adds no pathspec, so the status check is not limited to these paths.",
+				"examples": [
+					[
+						"planning/reports.component.evidence-grid/plan.json",
+						"planning/reports.component.evidence-grid/designs",
+						"planning/reports.component.evidence-grid/threads",
+						"planning/reports.component.evidence-grid/.gitattributes"
+					],
+					["planning/reports.component.evidence-grid/designs/evidence-grid-overview.png"]
+				]
 			},
 			{
 				"name": "commitFiles.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "Repository handle used for the revision read, the symbolic-ref lookup, the read-tree, write-tree and commit-tree commands, and the stageFiles, planCommit and requireLfsFilters calls (requireLfsFilters only when a path ends in .png). commitFiles rejects through fail('conflict', ...) unless the current revision equals git.transactionHead, which planWrite sets."
 			},
 			{
 				"name": "commitFiles.files",
 				"type": "Files",
 				"required": true,
-				"description": "Map of repository-relative paths to text or bytes to commit."
+				"description": "Map from repository-relative paths to file contents, where each value is text (string) or bytes (Uint8Array); the map is passed to stageFiles and planCommit, its keys are returned as paths, and any key ending in .png runs requireLfsFilters before the commit is built.",
+				"examples": [
+					{
+						"planning/reports.component.evidence-grid/plan.json": "{\n\t\"schemaVersion\": 1\n}\n"
+					},
+					{
+						"planning/reports.component.evidence-grid/.gitattributes": "designs/*.png filter=lfs diff=lfs merge=lfs -text\n"
+					}
+				]
 			},
 			{
 				"name": "commitFiles.message",
 				"type": "string",
 				"required": true,
-				"description": "Git commit message."
+				"description": "Commit message passed unchanged to git commit-tree with -m; this code neither trims nor validates it.",
+				"examples": ["Update evidence grid plan", "Record evidence grid design review"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "planWrite",
 				"type": "Promise<T>",
-				"description": "Result of the queued operation; records the starting HEAD and releases the planning lock afterward, including after failure."
+				"description": "Value resolved by work, returned only after the lock is removed in a finally block that also runs when work rejects."
 			},
 			{
 				"name": "clean",
 				"type": "Promise<void>",
-				"description": "Returns nothing when the plan artifact paths are safe and clean."
+				"description": "Resolves with no value when safePath accepts the plan folder and assertClean finds no status output for its four artifact paths; otherwise it rejects."
 			},
 			{
 				"name": "assertClean",
 				"type": "Promise<void>",
-				"description": "Returns nothing when all supplied paths are safe and Git reports no changes there."
+				"description": "Resolves with no value when safePath accepts every artifact path and git status prints nothing for them; otherwise it rejects."
 			},
 			{
 				"name": "commitFiles",
 				"type": "Promise<Omit<Committed<never>, 'value'>>",
-				"description": "Commit ID, parent, branch and prepared file paths after staging through a temporary index and installing the commit."
+				"description": "Object with the commit ID from git commit-tree, the parent revision (equal to git.transactionHead), the short name of the checked-out branch and the keys of the files map as paths; it resolves after planCommit completes.",
+				"examples": [
+					{
+						"commit": "5c1e0f3a9b7d2e4f6a8c0b1d3e5f7a9c2b4d6e8f",
+						"parent": "e4a2b9c07d1f5e8a3b6c9d2f0e7a4b1c8d5f3e26",
+						"branch": "main",
+						"paths": ["planning/reports.component.evidence-grid/plan.json"]
+					},
+					{
+						"commit": "a13f0c7e9d2b5846f1e3c0a9b7d4e2f6c8a1b5d3",
+						"parent": "d07b9e4c2a1f6d8b3e5c7a0f9d2b4e6c1a8f3d50",
+						"branch": "planning/evidence-grid",
+						"paths": [
+							"planning/reports.component.evidence-grid/plan.json",
+							"planning/reports.component.evidence-grid/.gitattributes"
+						]
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects a busy repository, unsafe or dirty artifact paths, changed transaction HEAD, unavailable branch or ineffective PNG LFS filters; Git/filesystem failures propagate."
+				"description": "Thrown through fail(...) for repository-busy when the lock directory cannot be created, for artifact-dirty when artifact paths have status output, and for conflict when the current revision differs from git.transactionHead or symbolic-ref returns an empty branch name. Other errors from safePath, requireLfsFilters, Git commands and filesystem calls propagate."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "planWrite",
@@ -123,24 +163,30 @@
 						"name": "planWrite.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "Repository handle whose dir keys the in-process queue, so calls for the same dir run one after another, and is where planWrite creates the harness-planning.lock directory. planWrite sets transactionHead to the revision read after the lock is taken; a lock directory that already exists, or cannot be created, makes the call reject through fail('repository-busy', ...)."
 					},
 					{
 						"name": "planWrite.work",
 						"type": "() => Promise<T>",
 						"required": true,
-						"description": "Asynchronous operation to run under the repository planning lock."
+						"description": "Callback that runs once the lock is taken and transactionHead is set; planWrite resolves with its value or rejects with its error, and the lock is removed after it settles. It is not called when the lock is not acquired or revision(git) fails."
 					}
 				],
 				"outputs": [
 					{
 						"name": "planWrite",
 						"type": "Promise<T>",
-						"description": "Result of the queued operation; records the starting HEAD and releases the planning lock afterward, including after failure."
+						"description": "Value resolved by work, returned only after the lock is removed in a finally block that also runs when work rejects."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown through fail('repository-busy', ...) when the harness-planning.lock directory cannot be created; errors from revision(git) and work propagate."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "clean",
@@ -149,24 +195,34 @@
 						"name": "clean.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "Repository handle passed to safePath for unitPath and to assertClean, which uses it for the artifact-path checks."
 					},
 					{
 						"name": "clean.unitPath",
 						"type": "string",
 						"required": true,
-						"description": "Plan folder whose metadata, designs, threads and attributes must be clean."
+						"description": "Repository-relative plan folder path; clean passes it to safePath, then builds the plan.json, designs, threads and .gitattributes paths beneath it by template strings without normalizing it.",
+						"examples": [
+							"planning/reports.component.evidence-grid",
+							"planning/planning.function.plan-write"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "clean",
 						"type": "Promise<void>",
-						"description": "Returns nothing when the plan artifact paths are safe and clean."
+						"description": "Resolves with no value when safePath accepts the plan folder and assertClean finds no status output for its four artifact paths; otherwise it rejects."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown by the assertClean call through fail('artifact-dirty', ...) when the artifact paths have status output; errors from safePath propagate."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "assertClean",
@@ -175,29 +231,39 @@
 						"name": "assertClean.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "Repository handle used by safePath for each artifact path and by git.run for the git status command."
 					},
 					{
 						"name": "assertClean.artifactPaths",
 						"type": "string[]",
 						"required": true,
-						"description": "Repository-relative artifact paths to inspect, including ignored and untracked files."
+						"description": "Repository-relative paths that assertClean checks with safePath and passes as pathspecs to git status --porcelain --untracked-files=all --ignored. Any status output rejects through fail('artifact-dirty', ...), and an empty array adds no pathspec, so the status check is not limited to these paths.",
+						"examples": [
+							[
+								"planning/reports.component.evidence-grid/plan.json",
+								"planning/reports.component.evidence-grid/designs",
+								"planning/reports.component.evidence-grid/threads",
+								"planning/reports.component.evidence-grid/.gitattributes"
+							],
+							["planning/reports.component.evidence-grid/designs/evidence-grid-overview.png"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "assertClean",
 						"type": "Promise<void>",
-						"description": "Returns nothing when all supplied paths are safe and Git reports no changes there."
+						"description": "Resolves with no value when safePath accepts every artifact path and git status prints nothing for them; otherwise it rejects."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown through fail('artifact-dirty', ...) when git status prints any output for the artifact paths; errors from safePath propagate."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "commitFiles",
@@ -206,35 +272,62 @@
 						"name": "commitFiles.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "Repository handle used for the revision read, the symbolic-ref lookup, the read-tree, write-tree and commit-tree commands, and the stageFiles, planCommit and requireLfsFilters calls (requireLfsFilters only when a path ends in .png). commitFiles rejects through fail('conflict', ...) unless the current revision equals git.transactionHead, which planWrite sets."
 					},
 					{
 						"name": "commitFiles.files",
 						"type": "Files",
 						"required": true,
-						"description": "Map of repository-relative paths to text or bytes to commit."
+						"description": "Map from repository-relative paths to file contents, where each value is text (string) or bytes (Uint8Array); the map is passed to stageFiles and planCommit, its keys are returned as paths, and any key ending in .png runs requireLfsFilters before the commit is built.",
+						"examples": [
+							{
+								"planning/reports.component.evidence-grid/plan.json": "{\n\t\"schemaVersion\": 1\n}\n"
+							},
+							{
+								"planning/reports.component.evidence-grid/.gitattributes": "designs/*.png filter=lfs diff=lfs merge=lfs -text\n"
+							}
+						]
 					},
 					{
 						"name": "commitFiles.message",
 						"type": "string",
 						"required": true,
-						"description": "Git commit message."
+						"description": "Commit message passed unchanged to git commit-tree with -m; this code neither trims nor validates it.",
+						"examples": ["Update evidence grid plan", "Record evidence grid design review"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "commitFiles",
 						"type": "Promise<Omit<Committed<never>, 'value'>>",
-						"description": "Commit ID, parent, branch and prepared file paths after staging through a temporary index and installing the commit."
+						"description": "Object with the commit ID from git commit-tree, the parent revision (equal to git.transactionHead), the short name of the checked-out branch and the keys of the files map as paths; it resolves after planCommit completes.",
+						"examples": [
+							{
+								"commit": "5c1e0f3a9b7d2e4f6a8c0b1d3e5f7a9c2b4d6e8f",
+								"parent": "e4a2b9c07d1f5e8a3b6c9d2f0e7a4b1c8d5f3e26",
+								"branch": "main",
+								"paths": ["planning/reports.component.evidence-grid/plan.json"]
+							},
+							{
+								"commit": "a13f0c7e9d2b5846f1e3c0a9b7d4e2f6c8a1b5d3",
+								"parent": "d07b9e4c2a1f6d8b3e5c7a0f9d2b4e6c1a8f3d50",
+								"branch": "planning/evidence-grid",
+								"paths": [
+									"planning/reports.component.evidence-grid/plan.json",
+									"planning/reports.component.evidence-grid/.gitattributes"
+								]
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown through fail('conflict', ...) when the current revision differs from git.transactionHead or symbolic-ref returns an empty branch name; errors from requireLfsFilters, Git commands and filesystem calls propagate."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
