@@ -30,48 +30,296 @@
 			{
 				"name": "RegressionProofService.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The repository root that run() snapshots the input commit from, reads scenario manifests from and saves regression records into. The constructor stores it without checking, so an invalid root is only detected when run() first reads from it.",
+				"examples": ["/home/ci/checkouts/app", "/Users/builder/src/app"]
 			},
 			{
 				"name": "RegressionProofService.run.input",
 				"type": "RegressionRun",
-				"required": true
+				"required": true,
+				"description": "The regression to run: the commit to snapshot, its loop and phase ('red', 'green' or 'capture'), the tests and units it covers, the shell command with its assertion text (which a red run's output must contain), and the timeoutMs limit. The optional knownUnits are the registered units that actual captures must resolve to, and the optional red record is the earlier red record whose environment profile this run must match.",
+				"examples": [
+					{
+						"commit": "a37d0c9e5b218f4d6e0a7c3b91f25d8e4c60b7a2",
+						"loop": "evidence-grid-review",
+						"phase": "red",
+						"tests": ["tests/e2e/evidence-grid.spec.ts"],
+						"units": ["reports.component.evidence-grid"],
+						"command": "bun x playwright test tests/e2e/evidence-grid.spec.ts",
+						"assertion": "evidence grid shows the populated state",
+						"timeoutMs": 600000
+					},
+					{
+						"commit": "5c0e8a7d2f41b96e3a0d8c17f4b2e9a6d1c35f80",
+						"loop": "evidence-grid-review",
+						"phase": "capture",
+						"tests": ["tests/e2e/evidence-grid.spec.ts"],
+						"units": ["reports.component.evidence-grid"],
+						"knownUnits": ["reports.component.evidence-grid"],
+						"command": "bun x playwright test tests/e2e/evidence-grid.spec.ts",
+						"assertion": "evidence grid shows the populated state",
+						"timeoutMs": 600000
+					}
+				]
 			},
 			{
 				"name": "environmentProfile.source",
 				"type": "Record<string, string | undefined>",
-				"required": false
+				"required": false,
+				"description": "Defaults to process.env: the variables fingerprinted into the environment profile. Variables named PWD, OLDPWD, _, SHLVL, XPC_SERVICE_NAME, HARNESS_AGENT_ID, HARNESS_VERIFY_REVISION, HARNESS_VERIFY_TREE, HARNESS_EVIDENCE_DIR or SCREENSHOT_LABEL are dropped, and the rest are hashed as canonical JSON with sorted keys.",
+				"examples": [
+					{
+						"CI": "true",
+						"NODE_ENV": "test",
+						"TZ": "UTC"
+					},
+					{
+						"LANG": "en_US.UTF-8",
+						"HOME": "/home/ci",
+						"TERM": "xterm-256color"
+					}
+				]
 			},
 			{
 				"name": "focusedScreens.gathered",
 				"type": "Gathered[]",
-				"required": true
+				"required": true,
+				"description": "The captures that one focused run inspected: each entry pairs a CaptureLine from captures.ndjson with its recorded Capture and, for screenshots and audio, its decoded MediaFacts. Only screenshot entries are retained, and each must decode to an image and, when it is an actual capture, have a server revision equal to context.commit.",
+				"examples": [
+					[
+						{
+							"line": {
+								"evidence": "reports.component.evidence-grid",
+								"kind": "screenshot",
+								"state": "populated",
+								"viewport": "desktop",
+								"file": "evidence-grid-desktop.png",
+								"mediaType": "image/png",
+								"provenance": "actual-capture",
+								"server": {
+									"buildId": "8a4d2f7c1e96b03d5a2f8c4e7b1d90a3f6e2c85b4d7a1f09e3c6b28d5a7f41e0",
+									"revision": "5c0e8a7d2f41b96e3a0d8c17f4b2e9a6d1c35f80"
+								}
+							},
+							"capture": {
+								"evidence": "reports.component.evidence-grid",
+								"kind": "screenshot",
+								"state": "populated",
+								"viewport": "desktop",
+								"status": "passed",
+								"path": "focused/evidence-grid-desktop.png",
+								"sha256": "2d8f6c1a9b07e54dc3a1f6280e97bd4ca5f3816e7b20c9d4e6a13f081c9d5b72",
+								"bytes": 48213,
+								"mediaType": "image/png",
+								"capturedAt": "2026-11-14T18:42:07.311Z",
+								"provenance": "actual-capture",
+								"server": {
+									"buildId": "8a4d2f7c1e96b03d5a2f8c4e7b1d90a3f6e2c85b4d7a1f09e3c6b28d5a7f41e0",
+									"revision": "5c0e8a7d2f41b96e3a0d8c17f4b2e9a6d1c35f80"
+								}
+							},
+							"facts": {
+								"kind": "image",
+								"width": 1280,
+								"height": 800
+							}
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "focusedScreens.directory",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The evidence directory the run wrote, which run() creates as a temporary directory and passes as HARNESS_EVIDENCE_DIR. Each retained screenshot's bytes are read from it by the file name in its CaptureLine, and a file missing there makes that read throw.",
+				"examples": [
+					"/tmp/harness-regression-d3Wv9A",
+					"/var/folders/k9/x3vq7d4n2t1b8w0c5m6r9f7h0000gn/T/harness-regression-Q8sK2d"
+				]
 			},
 			{
 				"name": "focusedScreens.context",
 				"type": "{ commit: string; scenarios: ScenarioManifest[]; knownUnits?: string[] }",
-				"required": true
+				"required": true,
+				"description": "The tested commit, the scenario manifests that resolve each screenshot's evidence, state and viewport to units, and the optional knownUnits. For an actual capture the server revision must be this commit and, when knownUnits is given, every resolved unit must be listed in it.",
+				"examples": [
+					{
+						"commit": "5c0e8a7d2f41b96e3a0d8c17f4b2e9a6d1c35f80",
+						"scenarios": [
+							{
+								"schemaVersion": 1,
+								"id": "reports.evidence-grid",
+								"title": "Evidence grid in the reports view",
+								"kind": "ui",
+								"units": ["reports.component.evidence-grid"],
+								"states": [
+									{
+										"id": "populated",
+										"title": "Grid with recorded captures",
+										"coverage": "required"
+									}
+								],
+								"viewports": [
+									{
+										"id": "desktop",
+										"width": 1280,
+										"height": 800
+									}
+								],
+								"tests": [
+									{
+										"id": "reports.evidence-grid.e2e",
+										"kind": "e2e",
+										"runner": "playwright",
+										"target": "tests/e2e/evidence-grid.spec.ts"
+									}
+								],
+								"evidence": [
+									{
+										"id": "reports.component.evidence-grid",
+										"kind": "screenshot",
+										"states": ["populated"],
+										"viewports": ["desktop"],
+										"provenance": "actual-capture",
+										"capture": "viewport",
+										"required": true
+									}
+								]
+							}
+						],
+						"knownUnits": ["reports.component.evidence-grid"]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "Result",
 				"type": "Regression result",
-				"description": "The observed exit status, assertion and hashed output"
+				"description": "The RegressionRecord that run() resolves with: its phase, status, exit code, assertion and log hash, plus an id that is the SHA-256 of the record without its id. It is saved only after every check passes, and as a focused result it never grants full verification or a budget baseline.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "9e3a7f10c5d82b64a1e0f9d37c58b2a6d4f1e09c7b3a85d2f6e41a0c9b7d3e58",
+						"loop": "evidence-grid-review",
+						"phase": "red",
+						"status": "failed",
+						"source": {
+							"commit": "a37d0c9e5b218f4d6e0a7c3b91f25d8e4c60b7a2",
+							"tree": "c48d2e91a7f05b36d8e1f40a92c7b5e0d3a68f14",
+							"parent": "7e2b9d4a15c83f60e9d7b2a4c1f58e03b6d9a7c2"
+						},
+						"units": ["reports.component.evidence-grid"],
+						"tests": ["tests/e2e/evidence-grid.spec.ts"],
+						"inputs": [
+							{
+								"path": "harness.verify.json",
+								"hash": "0f7a3c95e2d18b46a0c7f3e951b8d20c6e4fa173"
+							},
+							{
+								"path": "package.json",
+								"hash": "3b9e6d10f5c4a82e7d01b3f6c9e25a841f30d7bc"
+							},
+							{
+								"path": "tests/e2e/evidence-grid.spec.ts",
+								"hash": "d52a8f076c3e91b4ea7d0f28b53c6e9108f4a2d7"
+							}
+						],
+						"command": "bun x playwright test tests/e2e/evidence-grid.spec.ts",
+						"assertion": "evidence grid shows the populated state",
+						"profile": "darwin/arm64/1.3.2/6b0f3e8d2a57c1e94f0d8b36a2c7e10f5d9a4c83b1e6f27d0a9c5e38b4f1d6a2",
+						"startedAt": "2026-11-14T18:31:05.218Z",
+						"finishedAt": "2026-11-14T18:31:26.640Z",
+						"exitCode": 1,
+						"log": {
+							"path": "output.log",
+							"sha256": "e7c20b9d4a1f63e85d0c27b9a4e1f6d30b8c52a7e94d1f06c3b8a25e7d9f1c04",
+							"bytes": 6912
+						}
+					},
+					{
+						"schemaVersion": 1,
+						"id": "4f1c9e27b8a305d6e2f19c84b7a0d3e15c6f2a9b8d4e7013a5c2f6e90b8d7a41",
+						"loop": "evidence-grid-review",
+						"phase": "capture",
+						"status": "passed",
+						"source": {
+							"commit": "5c0e8a7d2f41b96e3a0d8c17f4b2e9a6d1c35f80",
+							"tree": "e91b4f27c06a83d5f2b7e0c49a1d8f63b2e75a10",
+							"parent": "a37d0c9e5b218f4d6e0a7c3b91f25d8e4c60b7a2"
+						},
+						"units": ["reports.component.evidence-grid"],
+						"tests": ["tests/e2e/evidence-grid.spec.ts"],
+						"inputs": [
+							{
+								"path": "harness.verify.json",
+								"hash": "0f7a3c95e2d18b46a0c7f3e951b8d20c6e4fa173"
+							},
+							{
+								"path": "package.json",
+								"hash": "3b9e6d10f5c4a82e7d01b3f6c9e25a841f30d7bc"
+							},
+							{
+								"path": "tests/e2e/evidence-grid.spec.ts",
+								"hash": "d52a8f076c3e91b4ea7d0f28b53c6e9108f4a2d7"
+							}
+						],
+						"command": "bun x playwright test tests/e2e/evidence-grid.spec.ts",
+						"assertion": "evidence grid shows the populated state",
+						"profile": "darwin/arm64/1.3.2/6b0f3e8d2a57c1e94f0d8b36a2c7e10f5d9a4c83b1e6f27d0a9c5e38b4f1d6a2",
+						"startedAt": "2026-11-14T18:41:52.104Z",
+						"finishedAt": "2026-11-14T18:42:09.877Z",
+						"exitCode": 0,
+						"log": {
+							"path": "output.log",
+							"sha256": "b1d6e04a72c95f38e0a4d716b9c2f5e83d0a7b14c6e9f2d58a3071e4c9b6d2f7",
+							"bytes": 7341
+						},
+						"captures": [
+							{
+								"unit": "reports.component.evidence-grid",
+								"capture": {
+									"evidence": "reports.component.evidence-grid",
+									"kind": "screenshot",
+									"state": "populated",
+									"viewport": "desktop",
+									"status": "passed",
+									"path": "focused/evidence-grid-desktop.png",
+									"sha256": "2d8f6c1a9b07e54dc3a1f6280e97bd4ca5f3816e7b20c9d4e6a13f081c9d5b72",
+									"bytes": 48213,
+									"mediaType": "image/png",
+									"capturedAt": "2026-11-14T18:42:07.311Z",
+									"provenance": "actual-capture",
+									"server": {
+										"buildId": "8a4d2f7c1e96b03d5a2f8c4e7b1d90a3f6e2c85b4d7a1f09e3c6b28d5a7f41e0",
+										"revision": "5c0e8a7d2f41b96e3a0d8c17f4b2e9a6d1c35f80"
+									}
+								},
+								"viewport": {
+									"width": 1280,
+									"height": 800
+								}
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Invalid proof",
 				"type": "Explicit rejection or gap",
-				"description": "Rejects timeouts, missing commands, snapshot drift and unfinished processes."
+				"description": "A run that is not valid proof is refused and nothing is recorded: a timeout, a missing or unfinished command, snapshot drift or an undeclared output write, a red or green outcome that does not match its phase, or a capture run that retains no evidence. Each refusal is raised through fail() as an ExpectedCliError, which is listed separately."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The error that fail() throws, named 'ExpectedCliError', for each explicit rejection the service makes. Other failures, such as a malformed harness.verify.json or an I/O error, are not wrapped and propagate unchanged."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RegressionProofService.run",
@@ -79,22 +327,154 @@
 					{
 						"name": "RegressionProofService.run.input",
 						"type": "RegressionRun",
-						"required": true
+						"required": true,
+						"description": "The regression to run: the commit to snapshot, its loop and phase ('red', 'green' or 'capture'), the tests and units it covers, the shell command with its assertion text (which a red run's output must contain), and the timeoutMs limit. The optional knownUnits are the registered units that actual captures must resolve to, and the optional red record is the earlier red record whose environment profile this run must match.",
+						"examples": [
+							{
+								"commit": "a37d0c9e5b218f4d6e0a7c3b91f25d8e4c60b7a2",
+								"loop": "evidence-grid-review",
+								"phase": "red",
+								"tests": ["tests/e2e/evidence-grid.spec.ts"],
+								"units": ["reports.component.evidence-grid"],
+								"command": "bun x playwright test tests/e2e/evidence-grid.spec.ts",
+								"assertion": "evidence grid shows the populated state",
+								"timeoutMs": 600000
+							},
+							{
+								"commit": "5c0e8a7d2f41b96e3a0d8c17f4b2e9a6d1c35f80",
+								"loop": "evidence-grid-review",
+								"phase": "capture",
+								"tests": ["tests/e2e/evidence-grid.spec.ts"],
+								"units": ["reports.component.evidence-grid"],
+								"knownUnits": ["reports.component.evidence-grid"],
+								"command": "bun x playwright test tests/e2e/evidence-grid.spec.ts",
+								"assertion": "evidence grid shows the populated state",
+								"timeoutMs": 600000
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RegressionProofService.run",
-						"type": "Promise<RegressionRecord>"
+						"type": "Promise<RegressionRecord>",
+						"description": "The RegressionRecord that run() resolves with, sealed with its id and saved only after every check passes; the snapshot and the temporary evidence directory are removed in every case.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "9e3a7f10c5d82b64a1e0f9d37c58b2a6d4f1e09c7b3a85d2f6e41a0c9b7d3e58",
+								"loop": "evidence-grid-review",
+								"phase": "red",
+								"status": "failed",
+								"source": {
+									"commit": "a37d0c9e5b218f4d6e0a7c3b91f25d8e4c60b7a2",
+									"tree": "c48d2e91a7f05b36d8e1f40a92c7b5e0d3a68f14",
+									"parent": "7e2b9d4a15c83f60e9d7b2a4c1f58e03b6d9a7c2"
+								},
+								"units": ["reports.component.evidence-grid"],
+								"tests": ["tests/e2e/evidence-grid.spec.ts"],
+								"inputs": [
+									{
+										"path": "harness.verify.json",
+										"hash": "0f7a3c95e2d18b46a0c7f3e951b8d20c6e4fa173"
+									},
+									{
+										"path": "package.json",
+										"hash": "3b9e6d10f5c4a82e7d01b3f6c9e25a841f30d7bc"
+									},
+									{
+										"path": "tests/e2e/evidence-grid.spec.ts",
+										"hash": "d52a8f076c3e91b4ea7d0f28b53c6e9108f4a2d7"
+									}
+								],
+								"command": "bun x playwright test tests/e2e/evidence-grid.spec.ts",
+								"assertion": "evidence grid shows the populated state",
+								"profile": "darwin/arm64/1.3.2/6b0f3e8d2a57c1e94f0d8b36a2c7e10f5d9a4c83b1e6f27d0a9c5e38b4f1d6a2",
+								"startedAt": "2026-11-14T18:31:05.218Z",
+								"finishedAt": "2026-11-14T18:31:26.640Z",
+								"exitCode": 1,
+								"log": {
+									"path": "output.log",
+									"sha256": "e7c20b9d4a1f63e85d0c27b9a4e1f6d30b8c52a7e94d1f06c3b8a25e7d9f1c04",
+									"bytes": 6912
+								}
+							},
+							{
+								"schemaVersion": 1,
+								"id": "4f1c9e27b8a305d6e2f19c84b7a0d3e15c6f2a9b8d4e7013a5c2f6e90b8d7a41",
+								"loop": "evidence-grid-review",
+								"phase": "capture",
+								"status": "passed",
+								"source": {
+									"commit": "5c0e8a7d2f41b96e3a0d8c17f4b2e9a6d1c35f80",
+									"tree": "e91b4f27c06a83d5f2b7e0c49a1d8f63b2e75a10",
+									"parent": "a37d0c9e5b218f4d6e0a7c3b91f25d8e4c60b7a2"
+								},
+								"units": ["reports.component.evidence-grid"],
+								"tests": ["tests/e2e/evidence-grid.spec.ts"],
+								"inputs": [
+									{
+										"path": "harness.verify.json",
+										"hash": "0f7a3c95e2d18b46a0c7f3e951b8d20c6e4fa173"
+									},
+									{
+										"path": "package.json",
+										"hash": "3b9e6d10f5c4a82e7d01b3f6c9e25a841f30d7bc"
+									},
+									{
+										"path": "tests/e2e/evidence-grid.spec.ts",
+										"hash": "d52a8f076c3e91b4ea7d0f28b53c6e9108f4a2d7"
+									}
+								],
+								"command": "bun x playwright test tests/e2e/evidence-grid.spec.ts",
+								"assertion": "evidence grid shows the populated state",
+								"profile": "darwin/arm64/1.3.2/6b0f3e8d2a57c1e94f0d8b36a2c7e10f5d9a4c83b1e6f27d0a9c5e38b4f1d6a2",
+								"startedAt": "2026-11-14T18:41:52.104Z",
+								"finishedAt": "2026-11-14T18:42:09.877Z",
+								"exitCode": 0,
+								"log": {
+									"path": "output.log",
+									"sha256": "b1d6e04a72c95f38e0a4d716b9c2f5e83d0a7b14c6e9f2d58a3071e4c9b6d2f7",
+									"bytes": 7341
+								},
+								"captures": [
+									{
+										"unit": "reports.component.evidence-grid",
+										"capture": {
+											"evidence": "reports.component.evidence-grid",
+											"kind": "screenshot",
+											"state": "populated",
+											"viewport": "desktop",
+											"status": "passed",
+											"path": "focused/evidence-grid-desktop.png",
+											"sha256": "2d8f6c1a9b07e54dc3a1f6280e97bd4ca5f3816e7b20c9d4e6a13f081c9d5b72",
+											"bytes": 48213,
+											"mediaType": "image/png",
+											"capturedAt": "2026-11-14T18:42:07.311Z",
+											"provenance": "actual-capture",
+											"server": {
+												"buildId": "8a4d2f7c1e96b03d5a2f8c4e7b1d90a3f6e2c85b4d7a1f09e3c6b28d5a7f41e0",
+												"revision": "5c0e8a7d2f41b96e3a0d8c17f4b2e9a6d1c35f80"
+											}
+										},
+										"viewport": {
+											"width": 1280,
+											"height": 800
+										}
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown through fail() for each explicit refusal during run(), such as a commit without a parent, misdeclared outputs, a profile that differs from the red record, a timeout or unfinished command, snapshot drift or undeclared output writes, a red run that exits 0 or lacks its assertion, a green run that does not pass, no named regression test or a test that is untracked or product source, scenario errors or capture failures, and a capture run with no retained evidence. Other failures, such as an I/O or parse error, propagate unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "environmentProfile",
@@ -102,17 +482,35 @@
 					{
 						"name": "environmentProfile.source",
 						"type": "Record<string, string | undefined>",
-						"required": false
+						"required": false,
+						"description": "Defaults to process.env: the variables fingerprinted into the environment profile. Variables named PWD, OLDPWD, _, SHLVL, XPC_SERVICE_NAME, HARNESS_AGENT_ID, HARNESS_VERIFY_REVISION, HARNESS_VERIFY_TREE, HARNESS_EVIDENCE_DIR or SCREENSHOT_LABEL are dropped, and the rest are hashed as canonical JSON with sorted keys.",
+						"examples": [
+							{
+								"CI": "true",
+								"NODE_ENV": "test",
+								"TZ": "UTC"
+							},
+							{
+								"LANG": "en_US.UTF-8",
+								"HOME": "/home/ci",
+								"TERM": "xterm-256color"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "environmentProfile",
-						"type": "string"
+						"type": "string",
+						"description": "The environment fingerprint, formatted as platform/arch/runtime/hash, where the runtime is process.versions.bun under Bun and process.version otherwise and the hash is the SHA-256 of the filtered variables in canonical JSON. A run that names a red record is refused unless its profile equals that record's profile.",
+						"examples": [
+							"darwin/arm64/1.3.2/6b0f3e8d2a57c1e94f0d8b36a2c7e10f5d9a4c83b1e6f27d0a9c5e38b4f1d6a2",
+							"linux/x64/1.3.2/c2e9a1d7f4308b56e1a9c03d8f72b4e5a6d0c19f3e8b7247d5a1c0f96e3b8d24"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "focusedScreens",
@@ -120,32 +518,131 @@
 					{
 						"name": "focusedScreens.gathered",
 						"type": "Gathered[]",
-						"required": true
+						"required": true,
+						"description": "The captures that one focused run inspected: each entry pairs a CaptureLine from captures.ndjson with its recorded Capture and, for screenshots and audio, its decoded MediaFacts. Only screenshot entries are retained, and each must decode to an image and, when it is an actual capture, have a server revision equal to context.commit.",
+						"examples": [
+							[
+								{
+									"line": {
+										"evidence": "reports.component.evidence-grid",
+										"kind": "screenshot",
+										"state": "populated",
+										"viewport": "desktop",
+										"file": "evidence-grid-desktop.png",
+										"mediaType": "image/png",
+										"provenance": "actual-capture",
+										"server": {
+											"buildId": "8a4d2f7c1e96b03d5a2f8c4e7b1d90a3f6e2c85b4d7a1f09e3c6b28d5a7f41e0",
+											"revision": "5c0e8a7d2f41b96e3a0d8c17f4b2e9a6d1c35f80"
+										}
+									},
+									"capture": {
+										"evidence": "reports.component.evidence-grid",
+										"kind": "screenshot",
+										"state": "populated",
+										"viewport": "desktop",
+										"status": "passed",
+										"path": "focused/evidence-grid-desktop.png",
+										"sha256": "2d8f6c1a9b07e54dc3a1f6280e97bd4ca5f3816e7b20c9d4e6a13f081c9d5b72",
+										"bytes": 48213,
+										"mediaType": "image/png",
+										"capturedAt": "2026-11-14T18:42:07.311Z",
+										"provenance": "actual-capture",
+										"server": {
+											"buildId": "8a4d2f7c1e96b03d5a2f8c4e7b1d90a3f6e2c85b4d7a1f09e3c6b28d5a7f41e0",
+											"revision": "5c0e8a7d2f41b96e3a0d8c17f4b2e9a6d1c35f80"
+										}
+									},
+									"facts": {
+										"kind": "image",
+										"width": 1280,
+										"height": 800
+									}
+								}
+							],
+							[]
+						]
 					},
 					{
 						"name": "focusedScreens.directory",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The evidence directory the run wrote, which run() creates as a temporary directory and passes as HARNESS_EVIDENCE_DIR. Each retained screenshot's bytes are read from it by the file name in its CaptureLine, and a file missing there makes that read throw.",
+						"examples": [
+							"/tmp/harness-regression-d3Wv9A",
+							"/var/folders/k9/x3vq7d4n2t1b8w0c5m6r9f7h0000gn/T/harness-regression-Q8sK2d"
+						]
 					},
 					{
 						"name": "focusedScreens.context",
 						"type": "{ commit: string; scenarios: ScenarioManifest[]; knownUnits?: string[] }",
-						"required": true
+						"required": true,
+						"description": "The tested commit, the scenario manifests that resolve each screenshot's evidence, state and viewport to units, and the optional knownUnits. For an actual capture the server revision must be this commit and, when knownUnits is given, every resolved unit must be listed in it.",
+						"examples": [
+							{
+								"commit": "5c0e8a7d2f41b96e3a0d8c17f4b2e9a6d1c35f80",
+								"scenarios": [
+									{
+										"schemaVersion": 1,
+										"id": "reports.evidence-grid",
+										"title": "Evidence grid in the reports view",
+										"kind": "ui",
+										"units": ["reports.component.evidence-grid"],
+										"states": [
+											{
+												"id": "populated",
+												"title": "Grid with recorded captures",
+												"coverage": "required"
+											}
+										],
+										"viewports": [
+											{
+												"id": "desktop",
+												"width": 1280,
+												"height": 800
+											}
+										],
+										"tests": [
+											{
+												"id": "reports.evidence-grid.e2e",
+												"kind": "e2e",
+												"runner": "playwright",
+												"target": "tests/e2e/evidence-grid.spec.ts"
+											}
+										],
+										"evidence": [
+											{
+												"id": "reports.component.evidence-grid",
+												"kind": "screenshot",
+												"states": ["populated"],
+												"viewports": ["desktop"],
+												"provenance": "actual-capture",
+												"capture": "viewport",
+												"required": true
+											}
+										]
+									}
+								],
+								"knownUnits": ["reports.component.evidence-grid"]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "focusedScreens",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The object { captures, files } that the regression record stores: captures has one entry per unit of each retained screenshot, with its recorded Capture and decoded viewport, and files pairs each capture path with the Buffer of its bytes, so the value is not plain JSON."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown through fail() when a retained screenshot does not decode to an image, when an actual capture's server revision is not context.commit, or, if knownUnits is given, when a screenshot's units are not all registered at that commit."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -155,17 +652,20 @@
 					{
 						"name": "RegressionProofService.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The repository root that run() snapshots the input commit from, reads scenario manifests from and saves regression records into. The constructor stores it without checking, so an invalid root is only detected when run() first reads from it.",
+						"examples": ["/home/ci/checkouts/app", "/Users/builder/src/app"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RegressionProofService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The RegressionProofService instance, whose private root field run() reads; it is a class instance, so its value is not plain JSON."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
