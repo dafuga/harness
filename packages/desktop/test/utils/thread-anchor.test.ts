@@ -12,7 +12,7 @@ import {
 	threadAnchor
 } from '../../src/components/thread-panel/threadAnchor';
 import { sameImage } from '../../src/components/explorer-ui/thread-links/threadAnchor';
-import { versionOption } from '../../src/components/entity-view/threadAnchor';
+import { versionOption } from '../../src/components/explorer-ui/entity-view/threadAnchor';
 import type { DesignVersion } from '../../src/models/Desktop.types';
 
 const image = { state: 'default', viewport: 'desktop', sha256: 'b'.repeat(64), bytes: 10 };

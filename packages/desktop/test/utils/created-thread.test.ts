@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { createdThread } from '../../src/components/entity-view/createdThread';
+import { createdThread } from '../../src/components/explorer-ui/entity-view/createdThread';
 import { rememberCreatedThread } from '../../src/utils/project-agent-events/rememberCreatedThread';
 import type { Workspace } from '../../src/lib/stores/workspace.svelte';
 import type { EntityDetail } from '../../src/models/Desktop.types';
