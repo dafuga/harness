@@ -22,36 +22,221 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ScenarioRepository.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The repository root directory on disk that write() writes under, creating any missing directories from the root down to specification/scenarios. read() never uses it, because it reads only through the SourceTree it is given.",
+				"examples": ["/srv/checkouts/luna-pyramid", "/workspace/luna-pyramid"]
 			},
 			{
 				"name": "ScenarioRepository.read.tree",
 				"type": "SourceTree",
-				"required": true
+				"required": true,
+				"description": "The snapshot that read() lists and reads through; only paths that start with specification/scenarios/ and end in .json are read, in the order the snapshot lists them. read() uses only the tree's list and read methods and never its revision."
 			},
 			{
 				"name": "ScenarioRepository.write.manifest",
 				"type": "ScenarioManifest",
-				"required": true
+				"required": true,
+				"description": "The scenario that write() stores as stable JSON without validating it. Its id is used unchanged as the file name specification/scenarios/<id>.json, so an existing file with that name is overwritten.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "reports.evidence-grid",
+						"title": "Evidence grid",
+						"kind": "ui",
+						"units": ["reports.component.evidence-grid"],
+						"states": [
+							{
+								"id": "loaded",
+								"title": "Grid with captured runs",
+								"coverage": "required"
+							}
+						],
+						"viewports": [
+							{
+								"id": "desktop",
+								"width": 1440,
+								"height": 900
+							}
+						],
+						"tests": [
+							{
+								"id": "evidence-grid-unit",
+								"kind": "unit",
+								"runner": "vitest",
+								"target": "tests/reports/evidence-grid.test.ts"
+							}
+						],
+						"evidence": [
+							{
+								"id": "loaded-screenshot",
+								"kind": "screenshot",
+								"states": ["loaded"],
+								"viewports": ["desktop"],
+								"provenance": "actual-capture",
+								"capture": "viewport",
+								"required": true
+							}
+						]
+					},
+					{
+						"schemaVersion": 1,
+						"id": "repository.scenario-round-trip",
+						"title": "Scenario round trip",
+						"kind": "headless",
+						"units": ["repository.scenario"],
+						"states": [
+							{
+								"id": "written",
+								"title": "A written scenario reads back unchanged",
+								"coverage": "required"
+							}
+						],
+						"viewports": [],
+						"tests": [
+							{
+								"id": "repository-scenario-unit",
+								"kind": "unit",
+								"runner": "vitest",
+								"target": "tests/repositories/ScenarioRepository.test.ts"
+							}
+						],
+						"evidence": [
+							{
+								"id": "round-trip-assertions",
+								"kind": "assertions",
+								"states": ["written"],
+								"viewports": [],
+								"required": true
+							}
+						]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ScenarioRepository.read",
-				"type": "Promise<ScenarioRead>"
+				"type": "Promise<ScenarioRead>",
+				"description": "Resolves to { manifests, errors }: manifests holds each scenario file that matches the schema, in listing order, and errors holds every schema or rule message. A scenario that matches the schema but breaks a rule appears in both lists, while a file that is not valid JSON or fails the schema is left out of manifests.",
+				"examples": [
+					{
+						"manifests": [
+							{
+								"schemaVersion": 1,
+								"id": "reports.evidence-grid",
+								"title": "Evidence grid",
+								"kind": "ui",
+								"units": ["reports.component.evidence-grid"],
+								"states": [
+									{
+										"id": "loaded",
+										"title": "Grid with captured runs",
+										"coverage": "required"
+									}
+								],
+								"viewports": [
+									{
+										"id": "desktop",
+										"width": 1440,
+										"height": 900
+									}
+								],
+								"tests": [
+									{
+										"id": "evidence-grid-unit",
+										"kind": "unit",
+										"runner": "vitest",
+										"target": "tests/reports/evidence-grid.test.ts"
+									}
+								],
+								"evidence": [
+									{
+										"id": "loaded-screenshot",
+										"kind": "screenshot",
+										"states": ["loaded"],
+										"viewports": ["desktop"],
+										"provenance": "actual-capture",
+										"capture": "viewport",
+										"required": true
+									}
+								]
+							}
+						],
+						"errors": []
+					},
+					{
+						"manifests": [],
+						"errors": []
+					},
+					{
+						"manifests": [
+							{
+								"schemaVersion": 1,
+								"id": "repository.scenario-round-trip",
+								"title": "Scenario round trip",
+								"kind": "headless",
+								"units": ["repository.scenario"],
+								"states": [
+									{
+										"id": "written",
+										"title": "A written scenario reads back unchanged",
+										"coverage": "required"
+									}
+								],
+								"viewports": [],
+								"tests": [
+									{
+										"id": "repository-scenario-unit",
+										"kind": "unit",
+										"runner": "vitest",
+										"target": "tests/repositories/ScenarioRepository.test.ts"
+									}
+								],
+								"evidence": [
+									{
+										"id": "round-trip-assertions",
+										"kind": "assertions",
+										"states": ["written"],
+										"viewports": [],
+										"required": false
+									}
+								]
+							}
+						],
+						"errors": [
+							"repository.scenario-round-trip: required state written has no required evidence"
+						]
+					}
+				]
 			},
 			{
 				"name": "ScenarioRepository.write",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Resolves to the repository-relative path of the written file, specification/scenarios/<id>.json, after writeFile has finished. The constructor's root is not part of the returned path.",
+				"examples": [
+					"specification/scenarios/reports.evidence-grid.json",
+					"specification/scenarios/repository.scenario-round-trip.json"
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with whatever tree.list() or tree.read() rejects with, passed through unchanged; read() catches nothing, so one unreadable scenario file rejects the whole read."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with the Node.js filesystem error (an Error with a system error code) from mkdir or writeFile when the scenario directory or file cannot be created or written under the root; directories already created are not removed."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ScenarioRepository.read",
@@ -59,17 +244,115 @@
 					{
 						"name": "ScenarioRepository.read.tree",
 						"type": "SourceTree",
-						"required": true
+						"required": true,
+						"description": "The snapshot that read() lists and reads through; only paths that start with specification/scenarios/ and end in .json are read, in the order the snapshot lists them. read() uses only the tree's list and read methods and never its revision."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ScenarioRepository.read",
-						"type": "Promise<ScenarioRead>"
+						"type": "Promise<ScenarioRead>",
+						"description": "Resolves to { manifests, errors }: manifests holds each scenario file that matches the schema, in listing order, and errors holds every schema or rule message. A scenario that matches the schema but breaks a rule appears in both lists, while a file that is not valid JSON or fails the schema is left out of manifests.",
+						"examples": [
+							{
+								"manifests": [
+									{
+										"schemaVersion": 1,
+										"id": "reports.evidence-grid",
+										"title": "Evidence grid",
+										"kind": "ui",
+										"units": ["reports.component.evidence-grid"],
+										"states": [
+											{
+												"id": "loaded",
+												"title": "Grid with captured runs",
+												"coverage": "required"
+											}
+										],
+										"viewports": [
+											{
+												"id": "desktop",
+												"width": 1440,
+												"height": 900
+											}
+										],
+										"tests": [
+											{
+												"id": "evidence-grid-unit",
+												"kind": "unit",
+												"runner": "vitest",
+												"target": "tests/reports/evidence-grid.test.ts"
+											}
+										],
+										"evidence": [
+											{
+												"id": "loaded-screenshot",
+												"kind": "screenshot",
+												"states": ["loaded"],
+												"viewports": ["desktop"],
+												"provenance": "actual-capture",
+												"capture": "viewport",
+												"required": true
+											}
+										]
+									}
+								],
+								"errors": []
+							},
+							{
+								"manifests": [],
+								"errors": []
+							},
+							{
+								"manifests": [
+									{
+										"schemaVersion": 1,
+										"id": "repository.scenario-round-trip",
+										"title": "Scenario round trip",
+										"kind": "headless",
+										"units": ["repository.scenario"],
+										"states": [
+											{
+												"id": "written",
+												"title": "A written scenario reads back unchanged",
+												"coverage": "required"
+											}
+										],
+										"viewports": [],
+										"tests": [
+											{
+												"id": "repository-scenario-unit",
+												"kind": "unit",
+												"runner": "vitest",
+												"target": "tests/repositories/ScenarioRepository.test.ts"
+											}
+										],
+										"evidence": [
+											{
+												"id": "round-trip-assertions",
+												"kind": "assertions",
+												"states": ["written"],
+												"viewports": [],
+												"required": false
+											}
+										]
+									}
+								],
+								"errors": [
+									"repository.scenario-round-trip: required state written has no required evidence"
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with whatever tree.list() or tree.read() rejects with, passed through unchanged; read() catches nothing, so one unreadable scenario file rejects the whole read."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ScenarioRepository.write",
@@ -77,17 +360,103 @@
 					{
 						"name": "ScenarioRepository.write.manifest",
 						"type": "ScenarioManifest",
-						"required": true
+						"required": true,
+						"description": "The scenario that write() stores as stable JSON without validating it. Its id is used unchanged as the file name specification/scenarios/<id>.json, so an existing file with that name is overwritten.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "reports.evidence-grid",
+								"title": "Evidence grid",
+								"kind": "ui",
+								"units": ["reports.component.evidence-grid"],
+								"states": [
+									{
+										"id": "loaded",
+										"title": "Grid with captured runs",
+										"coverage": "required"
+									}
+								],
+								"viewports": [
+									{
+										"id": "desktop",
+										"width": 1440,
+										"height": 900
+									}
+								],
+								"tests": [
+									{
+										"id": "evidence-grid-unit",
+										"kind": "unit",
+										"runner": "vitest",
+										"target": "tests/reports/evidence-grid.test.ts"
+									}
+								],
+								"evidence": [
+									{
+										"id": "loaded-screenshot",
+										"kind": "screenshot",
+										"states": ["loaded"],
+										"viewports": ["desktop"],
+										"provenance": "actual-capture",
+										"capture": "viewport",
+										"required": true
+									}
+								]
+							},
+							{
+								"schemaVersion": 1,
+								"id": "repository.scenario-round-trip",
+								"title": "Scenario round trip",
+								"kind": "headless",
+								"units": ["repository.scenario"],
+								"states": [
+									{
+										"id": "written",
+										"title": "A written scenario reads back unchanged",
+										"coverage": "required"
+									}
+								],
+								"viewports": [],
+								"tests": [
+									{
+										"id": "repository-scenario-unit",
+										"kind": "unit",
+										"runner": "vitest",
+										"target": "tests/repositories/ScenarioRepository.test.ts"
+									}
+								],
+								"evidence": [
+									{
+										"id": "round-trip-assertions",
+										"kind": "assertions",
+										"states": ["written"],
+										"viewports": [],
+										"required": true
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ScenarioRepository.write",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "Resolves to the repository-relative path of the written file, specification/scenarios/<id>.json, after writeFile has finished. The constructor's root is not part of the returned path.",
+						"examples": [
+							"specification/scenarios/reports.evidence-grid.json",
+							"specification/scenarios/repository.scenario-round-trip.json"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the Node.js filesystem error (an Error with a system error code) from mkdir or writeFile when the scenario directory or file cannot be created or written under the root; directories already created are not removed."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -97,17 +466,20 @@
 					{
 						"name": "ScenarioRepository.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The repository root directory on disk that write() writes under, creating any missing directories from the root down to specification/scenarios. read() never uses it, because it reads only through the SourceTree it is given.",
+						"examples": ["/srv/checkouts/luna-pyramid", "/workspace/luna-pyramid"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ScenarioRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new ScenarioRepository instance, which keeps root and a new ScenarioManifestValidator and provides read() and write()."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
