@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/relay/src/utils/connectClaims.ts",
-			"packages/relay/src/utils/development-tooling/connectClaims.ts"
-		],
-		"symbols": ["connectClaims", "connectClaims"]
+		"source": ["packages/relay/src/utils/development-tooling/connectClaims.ts"],
+		"symbols": ["connectClaims"]
 	},
 	"contract": {
 		"origin": "declared",

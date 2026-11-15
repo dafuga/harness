@@ -11,10 +11,9 @@
 		"source": [
 			"packages/relay/src/lib/execution-runtimes/host-runtime/socket-frame-service/frameTooLarge.ts",
 			"packages/relay/src/lib/host-runtime/socket-frame-service/frameTooLarge.ts",
-			"packages/relay/src/services/socket-frame-service/frameTooLarge.ts",
-			"packages/relay/src/utils/frameTooLarge.ts"
+			"packages/relay/src/services/socket-frame-service/frameTooLarge.ts"
 		],
-		"symbols": ["frameTooLarge", "frameTooLarge", "frameTooLarge", "frameTooLarge"]
+		"symbols": ["frameTooLarge", "frameTooLarge", "frameTooLarge"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -79,11 +78,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/utils/frameTooLarge.ts",
+		"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/socket-frame-service/frameTooLarge.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/utils/frameTooLarge.ts"
+				"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/socket-frame-service/frameTooLarge.ts"
 			}
 		]
 	},

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { isRecord } from '../../src/utils/isRecord';
+import { isRecord } from '../../src/utils/development-tooling/isRecord';
 
 test('isRecord accepts a JSON object', () => {
 	expect(isRecord({})).toBe(true);

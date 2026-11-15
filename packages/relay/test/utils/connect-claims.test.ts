@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { connectClaims } from '../../src/utils/connectClaims';
+import { connectClaims } from '../../src/utils/development-tooling/connectClaims';
 
 const credential = 'Ab0_-'.repeat(8) + 'xyz';
 const deviceId = 'c3'.repeat(20);
