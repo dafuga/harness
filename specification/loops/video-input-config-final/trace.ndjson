@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-11-15T21:02:48.681Z","name":"video-input-config-final","goal":"Close JSON config dependencies and reject unproven style reuse","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-11-15T21:02:49.791Z","loop":"video-input-config-final","step":"spec","evidence":"Follow literal config inheritance; reject missing, unsafe or cyclic bases; require recording for unproven style processing."}
+{"event":"step.completed","timestamp":"2026-11-15T21:02:50.506Z","loop":"video-input-config-final","step":"coverage","evidence":"Strengthen the same planning case with isolated config, producer, style, static asset and private canonical-path variants."}

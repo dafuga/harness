@@ -9,54 +9,15 @@ import { withTempDir } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
 import { assertTrackedVideoInputs } from '../../support/videoTrackedInputs';
 import { assertVideoCheckpoints } from '../../support/videoCheckpointAssertions';
+import {
+	videoManifest as manifest,
+	prepareVideoEvidence as fixture
+} from '../../support/videoEvidenceFixture';
+import { assertVideoInputBindings } from '../../support/videoInputConfigs';
 const videoUnit = 'service.verification-evidence-video-evidence';
 afterEach(() => vi.restoreAllMocks());
 vi.mock('node:fs', { spy: true });
 vi.mock('node:child_process', { spy: true });
-const manifest = {
-	schemaVersion: 1,
-	viewports: [
-		{ id: 'desktop', width: 920, height: 700 },
-		{ id: 'mobile', width: 390, height: 844 }
-	],
-	clips: ['first', 'second'].map((id) => ({
-		id,
-		unit: `component.${id}`,
-		state: 'moving',
-		viewports: ['desktop', 'mobile'],
-		inputs: [`src/${id}.ts`],
-		script: { path: `test/${id}.ts`, export: 'record' },
-		fixture: `test/${id}.json`,
-		entry: 'ready',
-		exit: 'done',
-		states: ['ready', 'done'],
-		edges: ['finish'],
-		durationSeconds: 3
-	})),
-	graphs: [],
-	playlists: [{ id: 'all', clips: ['first', 'second'] }]
-};
-async function fixture(root: string) {
-	for (const directory of ['src', 'test', 'specification/units'])
-		await mkdir(join(root, directory), { recursive: true });
-	for (const id of ['first', 'second']) {
-		for (const [path, text] of [
-			[`src/${id}.ts`, id],
-			[`test/${id}.ts`, 'export function record() {}'],
-			[`test/${id}.json`, '{}']
-		])
-			await writeFile(join(root, path), text);
-		await writeFile(
-			join(root, `specification/units/component.${id}.json`),
-			JSON.stringify({
-				id: `component.${id}`,
-				status: 'active',
-				owns: { source: [`src/${id}.ts`] },
-				dependencies: []
-			})
-		);
-	}
-}
 test('VideoEvidenceService runs', () =>
 	assertVideoCheckpoints(manifest, new VideoEvidenceService().run()));
 test('clip planning reuses unchanged inputs and invalidates only actual consumers', async () => {
@@ -108,9 +69,9 @@ test('clip planning reuses unchanged inputs and invalidates only actual consumer
 				'first'
 			]);
 			await assertTrackedVideoInputs(root, manifest);
-		})
+		}).then(async () => expect((await assertVideoInputBindings()).record).toEqual([]))
 	);
-});
+}, 15_000);
 test('clip planning follows shared dependencies and rejects missing source bindings', async () => {
 	await withTempDir('harness-video-', async (root) => {
 		await fixture(root);
