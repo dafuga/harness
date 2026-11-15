@@ -1,6 +1,6 @@
 import { expect } from '../../../test/verificationExpect';
 import { afterEach, test, vi } from 'vitest';
-import { createConsoleWorkspaceStore } from '../src/lib/stores/consoleWorkspace.svelte';
+import { createConsoleWorkspaceStore } from '../src/lib/projects-sessions/console-workspace/consoleWorkspace.svelte';
 const commit = 'a'.repeat(40);
 const entity = {
 	id: 'app.component.chat',
