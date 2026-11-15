@@ -34,51 +34,246 @@
 				"name": "artifactDifferences.before",
 				"type": "unknown",
 				"required": true,
-				"description": "Earlier recorded value or document."
+				"description": "Earlier recorded value: a parsed document, or the text of a result that is not one. An object whose harnessRun declares version 1 has its recognized run metadata set aside before the comparison; anything else is compared as it is.",
+				"examples": [
+					{
+						"scenario": "checkout.submit",
+						"output": {
+							"total": 42,
+							"currency": "EUR"
+						},
+						"harnessRun": {
+							"version": 1,
+							"startedAt": "2026-11-12T10:03:40.118Z",
+							"durationMs": 812
+						}
+					},
+					"Order placed for 42 EUR.\n"
+				]
 			},
 			{
 				"name": "artifactDifferences.after",
 				"type": "unknown",
 				"required": true,
-				"description": "Later recorded value or document."
+				"description": "Later recorded value: a parsed document, or the text of a result that is not one. It is prepared the same way as the earlier value, so the two are compared on what each holds.",
+				"examples": [
+					{
+						"scenario": "checkout.submit",
+						"output": {
+							"total": 45,
+							"currency": "EUR"
+						},
+						"harnessRun": {
+							"version": 1,
+							"startedAt": "2026-11-14T16:21:02.409Z",
+							"durationMs": 790
+						}
+					},
+					"Order placed for 45 EUR.\n"
+				]
 			},
 			{
 				"name": "explorerReading.behavior",
 				"type": "ExplorerBehavior",
 				"required": true,
-				"description": "Initial behavior comparison with capture references and uncertainty state."
+				"description": "Behavior comparison to resolve, as explorerBehavior builds it: rows with their before and after captures (null where a side is missing or not usable), plus the summary and reason it was given. Its mode and scenarios are returned unchanged.",
+				"examples": [
+					{
+						"mode": "commit",
+						"rows": [
+							{
+								"scenario": "checkout.submit",
+								"state": "default",
+								"evidence": "order-output",
+								"kind": "output",
+								"before": {
+									"evidence": "order-output",
+									"kind": "output",
+									"state": "default",
+									"status": "passed",
+									"path": "evidence/3f8a1c5e7d9b02e46a1f8c3d5b7e9a0c2d4f6b81/checkout.submit/order-output/output-default.json",
+									"sha256": "7c1e9a04b5d2f863e0a9c71b4d25f6e83a0c9b7d6e5f4a3b2c1d0e9f8a7b6c5d",
+									"mediaType": "application/json",
+									"capturedAt": "2026-11-12T10:03:44.912Z",
+									"media": "media/7c1e9a04b5d2f863e0a9c71b4d25f6e83a0c9b7d6e5f4a3b2c1d0e9f8a7b6c5d.json"
+								},
+								"after": {
+									"evidence": "order-output",
+									"kind": "output",
+									"state": "default",
+									"status": "passed",
+									"path": "evidence/9d2c4e7a1b3f58c06e2d9a4b7f1c8e3a5d6b0f21/checkout.submit/order-output/output-default.json",
+									"sha256": "e4b07d19c3a58f2e6d01b9c74a3e5f80d26c1b9a7e4f3d05c8b2a61f9e0d7c34",
+									"mediaType": "application/json",
+									"capturedAt": "2026-11-14T16:21:07.354Z",
+									"media": "media/e4b07d19c3a58f2e6d01b9c74a3e5f80d26c1b9a7e4f3d05c8b2a61f9e0d7c34.json"
+								},
+								"change": "differs",
+								"differences": []
+							}
+						],
+						"summary": "differs",
+						"reason": "The recorded results differ in bytes; reading them says whether the behaviour does.",
+						"scenarios": [
+							{
+								"id": "checkout.submit",
+								"title": "Submit checkout",
+								"before": "passed",
+								"after": "passed"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "explorerReading.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "Media address prefix used to read artifacts."
+				"description": "Prefix of the console's protected media path: each capture's file name, which is its media value without the leading media/, is appended to it directly, so it must end in /. The console builds it as its base followed by /media/.",
+				"examples": ["/harness/media/"]
 			},
 			{
 				"name": "explorerReading.fetcher",
 				"type": "ArtifactFetcher",
 				"required": false,
-				"description": "Optional artifact byte loader, forwarded to the verified artifact reader."
+				"default": "undefined",
+				"description": "Optional loader that takes an artifact address and resolves to a value with ok, status and arrayBuffer; it is called at most once per distinct SHA-256 in one explorerReading call, and only for captures with a stored media file. When it is undefined, explorerArtifact falls back to fetch(address)."
 			}
 		],
 		"outputs": [
 			{
 				"name": "artifactRun",
 				"type": "unknown",
-				"description": "Run metadata declaration: harnessRun, version 1, and the recognized startedAt, finishedAt, at, durationMs and pid keys."
+				"description": "The run-declaration constant: the field name harnessRun, version 1, and the five keys a declaration may set aside as metadata (startedAt, finishedAt, at, durationMs and pid). A declared key whose value is not of its kind (a time as a string or number, a duration or process id as a number) stays in the declaration and is compared.",
+				"examples": [
+					{
+						"field": "harnessRun",
+						"version": 1,
+						"metadata": ["startedAt", "finishedAt", "at", "durationMs", "pid"]
+					}
+				]
 			},
 			{
 				"name": "artifactDifferences",
 				"type": "string[]",
-				"description": "Paths where values differ, comparing arrays by index and objects by sorted key union. Properly typed metadata is excluded only inside a supported run declaration; undeclared times and process IDs remain behavior. Trace-entry declarations are considered when the root has a supported declaration."
+				"description": "The paths at which the two values differ, such as output.total or trace[2].durationMs; arrays are compared by index, objects by the sorted union of their keys, and a difference in the whole value is the empty string. Recognized run metadata is set aside only inside a supported harnessRun declaration, at the root or on trace entries when the root has one, so undeclared times and process IDs count as behavior.",
+				"examples": [
+					[],
+					["output.total"],
+					["assertions[0].passed", "trace[2].durationMs"]
+				]
 			},
 			{
 				"name": "explorerReading",
 				"type": "Promise<ExplorerBehavior>",
-				"description": "Resolves to rows carrying verified reads and content differences. Different-byte rows become changed or unchanged from their content; unverified reads become unknown. Existing not-compared or explained unknown summaries are retained. Reads within one invocation are cached by SHA-256."
+				"description": "The resolved behavior, with beforeRead and afterRead set on every row; a row whose bytes differ becomes changed or unchanged by what they hold, and a row with an unverified read becomes unknown. A not-compared summary, or an unknown summary with a reason, is retained; otherwise the summary is unknown with a fixed reason when any read is unverified, and is recomputed from the rows when none is.",
+				"examples": [
+					{
+						"mode": "commit",
+						"rows": [
+							{
+								"scenario": "checkout.submit",
+								"state": "default",
+								"evidence": "order-output",
+								"kind": "output",
+								"before": {
+									"evidence": "order-output",
+									"kind": "output",
+									"state": "default",
+									"status": "passed",
+									"path": "evidence/3f8a1c5e7d9b02e46a1f8c3d5b7e9a0c2d4f6b81/checkout.submit/order-output/output-default.json",
+									"sha256": "7c1e9a04b5d2f863e0a9c71b4d25f6e83a0c9b7d6e5f4a3b2c1d0e9f8a7b6c5d",
+									"mediaType": "application/json",
+									"capturedAt": "2026-11-12T10:03:44.912Z",
+									"media": "media/7c1e9a04b5d2f863e0a9c71b4d25f6e83a0c9b7d6e5f4a3b2c1d0e9f8a7b6c5d.json"
+								},
+								"after": {
+									"evidence": "order-output",
+									"kind": "output",
+									"state": "default",
+									"status": "passed",
+									"path": "evidence/9d2c4e7a1b3f58c06e2d9a4b7f1c8e3a5d6b0f21/checkout.submit/order-output/output-default.json",
+									"sha256": "e4b07d19c3a58f2e6d01b9c74a3e5f80d26c1b9a7e4f3d05c8b2a61f9e0d7c34",
+									"mediaType": "application/json",
+									"capturedAt": "2026-11-14T16:21:07.354Z",
+									"media": "media/e4b07d19c3a58f2e6d01b9c74a3e5f80d26c1b9a7e4f3d05c8b2a61f9e0d7c34.json"
+								},
+								"change": "changed",
+								"differences": ["output.total"],
+								"beforeRead": {
+									"verified": true,
+									"problem": null,
+									"text": "{\"scenario\":\"checkout.submit\",\"output\":{\"total\":42,\"currency\":\"EUR\"}}",
+									"document": {
+										"scenario": "checkout.submit",
+										"output": {
+											"total": 42,
+											"currency": "EUR"
+										}
+									},
+									"behavior": {
+										"scenario": "checkout.submit",
+										"environment": null,
+										"fixture": null,
+										"steps": [],
+										"output": {
+											"total": 42,
+											"currency": "EUR"
+										},
+										"assertions": [],
+										"trace": [],
+										"other": {}
+									}
+								},
+								"afterRead": {
+									"verified": true,
+									"problem": null,
+									"text": "{\"scenario\":\"checkout.submit\",\"output\":{\"total\":45,\"currency\":\"EUR\"}}",
+									"document": {
+										"scenario": "checkout.submit",
+										"output": {
+											"total": 45,
+											"currency": "EUR"
+										}
+									},
+									"behavior": {
+										"scenario": "checkout.submit",
+										"environment": null,
+										"fixture": null,
+										"steps": [],
+										"output": {
+											"total": 45,
+											"currency": "EUR"
+										},
+										"assertions": [],
+										"trace": [],
+										"other": {}
+									}
+								}
+							}
+						],
+						"summary": "changed",
+						"reason": null,
+						"scenarios": [
+							{
+								"id": "checkout.submit",
+								"title": "Submit checkout",
+								"before": "passed",
+								"after": "passed"
+							}
+						]
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with whatever the artifact loader, the read of a response's bytes or the SHA-256 digest rejects with, such as a failed fetch. explorerReading does not catch it, so one such rejection rejects the whole result."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "artifactDifferences",
@@ -87,24 +282,59 @@
 						"name": "artifactDifferences.before",
 						"type": "unknown",
 						"required": true,
-						"description": "Earlier recorded value or document."
+						"description": "Earlier recorded value: a parsed document, or the text of a result that is not one. An object whose harnessRun declares version 1 has its recognized run metadata set aside before the comparison; anything else is compared as it is.",
+						"examples": [
+							{
+								"scenario": "checkout.submit",
+								"output": {
+									"total": 42,
+									"currency": "EUR"
+								},
+								"harnessRun": {
+									"version": 1,
+									"startedAt": "2026-11-12T10:03:40.118Z",
+									"durationMs": 812
+								}
+							},
+							"Order placed for 42 EUR.\n"
+						]
 					},
 					{
 						"name": "artifactDifferences.after",
 						"type": "unknown",
 						"required": true,
-						"description": "Later recorded value or document."
+						"description": "Later recorded value: a parsed document, or the text of a result that is not one. It is prepared the same way as the earlier value, so the two are compared on what each holds.",
+						"examples": [
+							{
+								"scenario": "checkout.submit",
+								"output": {
+									"total": 45,
+									"currency": "EUR"
+								},
+								"harnessRun": {
+									"version": 1,
+									"startedAt": "2026-11-14T16:21:02.409Z",
+									"durationMs": 790
+								}
+							},
+							"Order placed for 45 EUR.\n"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "artifactDifferences",
 						"type": "string[]",
-						"description": "Paths where values differ, comparing arrays by index and objects by sorted key union. Properly typed metadata is excluded only inside a supported run declaration; undeclared times and process IDs remain behavior. Trace-entry declarations are considered when the root has a supported declaration."
+						"description": "The paths at which the two values differ, such as output.total or trace[2].durationMs; arrays are compared by index, objects by the sorted union of their keys, and a difference in the whole value is the empty string. Recognized run metadata is set aside only inside a supported harnessRun declaration, at the root or on trace entries when the root has one, so undeclared times and process IDs count as behavior.",
+						"examples": [
+							[],
+							["output.total"],
+							["assertions[0].passed", "trace[2].durationMs"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "explorerReading",
@@ -113,30 +343,182 @@
 						"name": "explorerReading.behavior",
 						"type": "ExplorerBehavior",
 						"required": true,
-						"description": "Initial behavior comparison with capture references and uncertainty state."
+						"description": "Behavior comparison to resolve, as explorerBehavior builds it: rows with their before and after captures (null where a side is missing or not usable), plus the summary and reason it was given. Its mode and scenarios are returned unchanged.",
+						"examples": [
+							{
+								"mode": "commit",
+								"rows": [
+									{
+										"scenario": "checkout.submit",
+										"state": "default",
+										"evidence": "order-output",
+										"kind": "output",
+										"before": {
+											"evidence": "order-output",
+											"kind": "output",
+											"state": "default",
+											"status": "passed",
+											"path": "evidence/3f8a1c5e7d9b02e46a1f8c3d5b7e9a0c2d4f6b81/checkout.submit/order-output/output-default.json",
+											"sha256": "7c1e9a04b5d2f863e0a9c71b4d25f6e83a0c9b7d6e5f4a3b2c1d0e9f8a7b6c5d",
+											"mediaType": "application/json",
+											"capturedAt": "2026-11-12T10:03:44.912Z",
+											"media": "media/7c1e9a04b5d2f863e0a9c71b4d25f6e83a0c9b7d6e5f4a3b2c1d0e9f8a7b6c5d.json"
+										},
+										"after": {
+											"evidence": "order-output",
+											"kind": "output",
+											"state": "default",
+											"status": "passed",
+											"path": "evidence/9d2c4e7a1b3f58c06e2d9a4b7f1c8e3a5d6b0f21/checkout.submit/order-output/output-default.json",
+											"sha256": "e4b07d19c3a58f2e6d01b9c74a3e5f80d26c1b9a7e4f3d05c8b2a61f9e0d7c34",
+											"mediaType": "application/json",
+											"capturedAt": "2026-11-14T16:21:07.354Z",
+											"media": "media/e4b07d19c3a58f2e6d01b9c74a3e5f80d26c1b9a7e4f3d05c8b2a61f9e0d7c34.json"
+										},
+										"change": "differs",
+										"differences": []
+									}
+								],
+								"summary": "differs",
+								"reason": "The recorded results differ in bytes; reading them says whether the behaviour does.",
+								"scenarios": [
+									{
+										"id": "checkout.submit",
+										"title": "Submit checkout",
+										"before": "passed",
+										"after": "passed"
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "explorerReading.mediaBase",
 						"type": "string",
 						"required": true,
-						"description": "Media address prefix used to read artifacts."
+						"description": "Prefix of the console's protected media path: each capture's file name, which is its media value without the leading media/, is appended to it directly, so it must end in /. The console builds it as its base followed by /media/.",
+						"examples": ["/harness/media/"]
 					},
 					{
 						"name": "explorerReading.fetcher",
 						"type": "ArtifactFetcher",
 						"required": false,
-						"description": "Optional artifact byte loader, forwarded to the verified artifact reader."
+						"default": "undefined",
+						"description": "Optional loader that takes an artifact address and resolves to a value with ok, status and arrayBuffer; it is called at most once per distinct SHA-256 in one explorerReading call, and only for captures with a stored media file. When it is undefined, explorerArtifact falls back to fetch(address)."
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerReading",
 						"type": "Promise<ExplorerBehavior>",
-						"description": "Resolves to rows carrying verified reads and content differences. Different-byte rows become changed or unchanged from their content; unverified reads become unknown. Existing not-compared or explained unknown summaries are retained. Reads within one invocation are cached by SHA-256."
+						"description": "The resolved behavior, with beforeRead and afterRead set on every row; a row whose bytes differ becomes changed or unchanged by what they hold, and a row with an unverified read becomes unknown. A not-compared summary, or an unknown summary with a reason, is retained; otherwise the summary is unknown with a fixed reason when any read is unverified, and is recomputed from the rows when none is.",
+						"examples": [
+							{
+								"mode": "commit",
+								"rows": [
+									{
+										"scenario": "checkout.submit",
+										"state": "default",
+										"evidence": "order-output",
+										"kind": "output",
+										"before": {
+											"evidence": "order-output",
+											"kind": "output",
+											"state": "default",
+											"status": "passed",
+											"path": "evidence/3f8a1c5e7d9b02e46a1f8c3d5b7e9a0c2d4f6b81/checkout.submit/order-output/output-default.json",
+											"sha256": "7c1e9a04b5d2f863e0a9c71b4d25f6e83a0c9b7d6e5f4a3b2c1d0e9f8a7b6c5d",
+											"mediaType": "application/json",
+											"capturedAt": "2026-11-12T10:03:44.912Z",
+											"media": "media/7c1e9a04b5d2f863e0a9c71b4d25f6e83a0c9b7d6e5f4a3b2c1d0e9f8a7b6c5d.json"
+										},
+										"after": {
+											"evidence": "order-output",
+											"kind": "output",
+											"state": "default",
+											"status": "passed",
+											"path": "evidence/9d2c4e7a1b3f58c06e2d9a4b7f1c8e3a5d6b0f21/checkout.submit/order-output/output-default.json",
+											"sha256": "e4b07d19c3a58f2e6d01b9c74a3e5f80d26c1b9a7e4f3d05c8b2a61f9e0d7c34",
+											"mediaType": "application/json",
+											"capturedAt": "2026-11-14T16:21:07.354Z",
+											"media": "media/e4b07d19c3a58f2e6d01b9c74a3e5f80d26c1b9a7e4f3d05c8b2a61f9e0d7c34.json"
+										},
+										"change": "changed",
+										"differences": ["output.total"],
+										"beforeRead": {
+											"verified": true,
+											"problem": null,
+											"text": "{\"scenario\":\"checkout.submit\",\"output\":{\"total\":42,\"currency\":\"EUR\"}}",
+											"document": {
+												"scenario": "checkout.submit",
+												"output": {
+													"total": 42,
+													"currency": "EUR"
+												}
+											},
+											"behavior": {
+												"scenario": "checkout.submit",
+												"environment": null,
+												"fixture": null,
+												"steps": [],
+												"output": {
+													"total": 42,
+													"currency": "EUR"
+												},
+												"assertions": [],
+												"trace": [],
+												"other": {}
+											}
+										},
+										"afterRead": {
+											"verified": true,
+											"problem": null,
+											"text": "{\"scenario\":\"checkout.submit\",\"output\":{\"total\":45,\"currency\":\"EUR\"}}",
+											"document": {
+												"scenario": "checkout.submit",
+												"output": {
+													"total": 45,
+													"currency": "EUR"
+												}
+											},
+											"behavior": {
+												"scenario": "checkout.submit",
+												"environment": null,
+												"fixture": null,
+												"steps": [],
+												"output": {
+													"total": 45,
+													"currency": "EUR"
+												},
+												"assertions": [],
+												"trace": [],
+												"other": {}
+											}
+										}
+									}
+								],
+								"summary": "changed",
+								"reason": null,
+								"scenarios": [
+									{
+										"id": "checkout.submit",
+										"title": "Submit checkout",
+										"before": "passed",
+										"after": "passed"
+									}
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with whatever the artifact loader, the read of a response's bytes or the SHA-256 digest rejects with, such as a failed fetch. explorerReading does not catch it, so one such rejection rejects the whole result."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
