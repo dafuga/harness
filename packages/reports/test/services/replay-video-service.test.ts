@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
 import { ReportRepository } from '../../src/repositories/reports-media/report-repository/ReportRepository';
 import { ReplayVideoService } from '../../src/routes/api/replay-video/replay-video-service/ReplayVideoService';
-import { reportProcess } from '../../src/utils/reportProcess';
+import { reportProcess } from '../../src/utils/reports-media/reportProcess';
 const roots: string[] = [];
 afterEach(async () => {
 	await Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true })));

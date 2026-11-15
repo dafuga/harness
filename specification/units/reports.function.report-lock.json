@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/reportLock.ts",
-			"packages/reports/src/utils/reports-media/reportLock.ts"
-		],
-		"symbols": ["reportLock", "reportLock"]
+		"source": ["packages/reports/src/utils/reports-media/reportLock.ts"],
+		"symbols": ["reportLock"]
 	},
 	"contract": {
 		"origin": "declared",

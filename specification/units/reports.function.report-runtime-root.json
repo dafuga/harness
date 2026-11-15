@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/reportRuntimeRoot.ts",
-			"packages/reports/src/utils/reports-media/reportRuntimeRoot.ts"
-		],
-		"symbols": ["reportRuntimeRoot", "reportRuntimeRoot"]
+		"source": ["packages/reports/src/utils/reports-media/reportRuntimeRoot.ts"],
+		"symbols": ["reportRuntimeRoot"]
 	},
 	"contract": {
 		"origin": "declared",
