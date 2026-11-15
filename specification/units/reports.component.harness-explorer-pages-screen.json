@@ -27,75 +27,347 @@
 				"name": "ExplorerPagesScreen.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Prepared history index for the selected repository and its recorded revisions."
+				"description": "Prepared history index of the selected repository and its recorded revisions, which the console loads through the client's index request. This screen and its frame never read it.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "4c1e8d7a9f02b35e6a71d4c0e9b28f5a3d6c7e10"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "4c1e8d7a9f02b35e6a71d4c0e9b28f5a3d6c7e10",
+								"parents": ["b82f0e6d3a1c9457e0f2d8b6a4c3e91f7d5a0b28"],
+								"subject": "Show each page's screenshot at the shown revision",
+								"author": "Maya Chen",
+								"committedAt": "2026-11-12T16:20:05+00:00",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "unverified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							},
+							{
+								"commit": "b82f0e6d3a1c9457e0f2d8b6a4c3e91f7d5a0b28",
+								"parents": [],
+								"subject": "Add the explorer pages screen",
+								"author": "Maya Chen",
+								"committedAt": "2026-11-10T09:14:32+00:00",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "unverified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							}
+						],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "ExplorerPagesScreen.head",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Exact selected source revision supplying every displayed contract, measurement and capture."
+				"description": "The selected revision, read by the console for exactly the shown commit. ExplorerFrame reads its registry: when registry.available is false, the frame shows its registry gap in place of the page cards.",
+				"examples": [
+					{
+						"commit": "4c1e8d7a9f02b35e6a71d4c0e9b28f5a3d6c7e10",
+						"registry": {
+							"available": true,
+							"units": [
+								{
+									"id": "hub.page.root",
+									"kind": "page",
+									"status": "active",
+									"title": "/",
+									"responsibility": "Owns the / route page.",
+									"dependencies": [
+										{
+											"unit": "hub.component.hub-frame",
+											"via": "import"
+										},
+										{
+											"unit": "hub.component.login-panel",
+											"via": "import"
+										},
+										{
+											"unit": "hub.component.project-list",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": ["packages/hub/src/routes/+page.svelte"],
+										"symbols": ["+page"]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [
+											{
+												"name": "+page",
+												"type": "markup"
+											}
+										],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/hub/src/routes/+page.svelte"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "9b3e1f6a0c7d2e84"
+								}
+							],
+							"scenarios": [],
+							"graph": {
+								"edges": [
+									{
+										"from": "unit:hub.page.root",
+										"to": "unit:hub.component.hub-frame",
+										"via": "import"
+									},
+									{
+										"from": "unit:hub.page.root",
+										"to": "unit:hub.component.login-panel",
+										"via": "import"
+									},
+									{
+										"from": "unit:hub.page.root",
+										"to": "unit:hub.component.project-list",
+										"via": "import"
+									}
+								]
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					},
+					{
+						"commit": "b82f0e6d3a1c9457e0f2d8b6a4c3e91f7d5a0b28",
+						"registry": {
+							"available": false,
+							"gap": "no unit registry is stored at this revision",
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "ExplorerPagesScreen.parent",
 				"type": "HarnessRevision | null",
 				"required": true,
-				"description": "First parent of the selected commit, or null at a branch tip or first commit."
+				"description": "The first parent of the selected commit, which the console reads only when the scope is a named commit (mode commit) and the index holds that parent; otherwise it is null, including for a branch address (mode current), a first commit and a failed read. This screen and its frame never read it.",
+				"examples": [
+					null,
+					{
+						"commit": "b82f0e6d3a1c9457e0f2d8b6a4c3e91f7d5a0b28",
+						"registry": {
+							"available": false,
+							"gap": "no unit registry is stored at this revision",
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "ExplorerPagesScreen.scope",
 				"type": "ExplorerScope",
 				"required": true,
-				"description": "Selected branch, commit and comparison scope shared by the explorer host."
+				"description": "The explorer scope of the shown revision; this screen passes the route's branch and the scope's commit to the index as its scope key, and ExplorerFrame reads its commit and sets the content's data-mode attribute from its mode.",
+				"examples": [
+					{
+						"location": {
+							"branch": "main",
+							"commit": null,
+							"category": "pages"
+						},
+						"mode": "current",
+						"branch": "main",
+						"tip": "4c1e8d7a9f02b35e6a71d4c0e9b28f5a3d6c7e10",
+						"commit": "4c1e8d7a9f02b35e6a71d4c0e9b28f5a3d6c7e10",
+						"atTip": true,
+						"parent": "b82f0e6d3a1c9457e0f2d8b6a4c3e91f7d5a0b28",
+						"summary": {
+							"commit": "4c1e8d7a9f02b35e6a71d4c0e9b28f5a3d6c7e10",
+							"parents": ["b82f0e6d3a1c9457e0f2d8b6a4c3e91f7d5a0b28"],
+							"subject": "Show each page's screenshot at the shown revision",
+							"author": "Maya Chen",
+							"committedAt": "2026-11-12T16:20:05+00:00",
+							"branches": ["main"],
+							"retained": true,
+							"coverage": "unverified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						}
+					}
+				]
 			},
 			{
 				"name": "ExplorerPagesScreen.route",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Current explorer location, including category, entity, section and tab."
+				"description": "The explorer location shown, which is the scope's location: its branch, commit, category and any entity, helper, section or tab. This screen reads its branch for the index's scope key, and the card links keep the location's branch and commit.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": null,
+						"category": "pages"
+					},
+					{
+						"branch": null,
+						"commit": "7a03d5c2e18b4f96c0d1a7e3b5f2c84d9e6a1f07",
+						"category": "pages"
+					}
+				]
 			},
 			{
 				"name": "ExplorerPagesScreen.entities",
 				"type": "ExplorerEntity[]",
 				"required": true,
-				"description": "Units projected from the selected revision, including entities removed by the shown commit."
+				"description": "The units of the selected revision as the explorer lists them, including those the shown commit removed when its first parent is held. Each entity whose category is pages becomes one card.",
+				"examples": [
+					[
+						{
+							"id": "hub.page.root",
+							"category": "pages",
+							"role": "Page",
+							"name": "Root",
+							"purpose": "Owns the / route page.",
+							"unit": {
+								"id": "hub.page.root",
+								"kind": "page",
+								"status": "active",
+								"title": "/",
+								"responsibility": "Owns the / route page.",
+								"dependencies": [
+									{
+										"unit": "hub.component.hub-frame",
+										"via": "import"
+									},
+									{
+										"unit": "hub.component.login-panel",
+										"via": "import"
+									},
+									{
+										"unit": "hub.component.project-list",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": ["packages/hub/src/routes/+page.svelte"],
+									"symbols": ["+page"]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [
+										{
+											"name": "+page",
+											"type": "markup"
+										}
+									],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/hub/src/routes/+page.svelte"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "9b3e1f6a0c7d2e84"
+							},
+							"verdict": {
+								"passed": false,
+								"label": "Evidence missing",
+								"reasons": ["No verification record is attached to this commit."]
+							},
+							"change": null,
+							"appRoute": "/"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "ExplorerPagesScreen.lens",
 				"type": "EntityLens",
 				"required": true,
-				"description": "Host-provided readers for entity relationships, history and selected-revision details."
+				"description": "The host's answers about entities: relations for each page entity (its users, where it has any, are shown beside its link), evidence for each card's screenshot, and href for the card links; the screen computes none of them."
 			},
 			{
 				"name": "ExplorerPagesScreen.client",
 				"type": "Pick<HarnessClient, 'revision'>",
 				"required": true,
-				"description": "Revision reader used only for commits the displayed history requests."
+				"description": "The revision reader (revision(commit)) that the host passes for the commits a history lists. Nothing this screen renders calls it."
 			},
 			{
 				"name": "ExplorerPagesScreen.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "Base URL for retained recorded evidence media."
+				"description": "Base URL for retained recorded evidence media: the console sets it to its base plus /media/, and each card's screenshot is this value followed by the capture's media file name.",
+				"examples": ["/harness/media/"]
 			},
 			{
 				"name": "ExplorerPagesScreen.onroute",
 				"type": "(to: ExplorerLocation) => void",
 				"required": true,
-				"description": "Receives the requested explorer destination for host-controlled navigation."
+				"description": "Receives the destination of a card link that a plain click follows: ExplorerFrame passes it to the links as navigation, and the console navigates there. This screen never changes the address itself."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerPagesScreen.pageCards",
 				"type": "markup",
-				"description": "Page screenshot cards selected from the shown revision, with the original capture commit visible. Validated unchanged captures may be reused; missing or rejected evidence stays an explicit gap. Search, changed-only, ordering and links retain the selected scope. States: empty: No registered pages exist at this revision. unindexed: The selected revision predates the registry and displays its registry gap. no-matches: The entered query matches no pages and the search-empty message is shown."
+				"description": "Page cards for the page entities of the shown revision, filtered by the index search and sorted by name within their unit groups (Uncategorized last), each with its usable screenshot whose link title names the commit it was captured at or reused from, or with an explicit gap when none is shown. A search that matches no page shows 'No pages match this search.', a revision with no pages shows 'No pages are in the registry of this revision.', and a revision without a registry shows the frame's 'No registry at this revision' message with its registry gap in place of the cards."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExplorerPagesScreen.callerError",
 				"type": "unknown",
-				"description": "Caller-provided snippets, navigation and synchronous reader callbacks may throw; those errors propagate. This component defines no additional error type."
+				"description": "This component throws and catches nothing of its own: an error thrown by a host lens reader while the screen renders (relations, evidence or href) propagates unchanged, and an error thrown by onroute comes from a card link's click handler, which this screen does not catch. It defines no error type of its own."
 			}
 		],
 		"errorStatus": "declared",
