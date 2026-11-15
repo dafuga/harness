@@ -30,23 +30,277 @@
 				"name": "harnessEmittedGrowth.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Index with unit growth, review ledger and newest-first revisions."
+				"description": "The harness index the growth is built from: only its `units` and `revisions` are read, the unit's growth points and reviews come from the `units` entry with the same `id`, and each row's position and subject come from `revisions`, which the code treats as listed newest first. A unit with no `units` entry yields no targets and no rows, and a growth point whose commit is missing from `revisions` is treated as the newest commit.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "e5b0c83d17a9f42e6c58b0d1a73f9e24d8c60b57"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "e5b0c83d17a9f42e6c58b0d1a73f9e24d8c60b57",
+								"parents": ["9a27f5c1e8d43b06f1a92c7e5d0b8f34c6e21a9d"],
+								"subject": "Bundle the panel font",
+								"author": "Sam Ortiz",
+								"committedAt": "2026-11-12T09:41:17+00:00",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [
+									{
+										"id": "f07c2d593ab8e164c9d02f7b58e6a31db42f9c07e1d85a6b3c90f2e47a1d6b58",
+										"status": "passed",
+										"profile": "3f9a1c7b0d2e4a58",
+										"finishedAt": "2026-11-12T10:02:44.913Z",
+										"base": null,
+										"valid": true,
+										"problems": []
+									}
+								],
+								"legacy": []
+							},
+							{
+								"commit": "9a27f5c1e8d43b06f1a92c7e5d0b8f34c6e21a9d",
+								"parents": ["4c1e0d9a7b3f52e8a61d0c94f7b2e35a8d6c1f07"],
+								"subject": "Add a diagnostics panel to the report",
+								"author": "Sam Ortiz",
+								"committedAt": "2026-11-10T16:12:39+00:00",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [
+									{
+										"id": "5e8d0a27c94b1f36d2e7a8059b3c61fd0a4e72b8c15d9f6ae3b07d4298f1a6c0",
+										"status": "passed",
+										"profile": "3f9a1c7b0d2e4a58",
+										"finishedAt": "2026-11-10T16:37:51.402Z",
+										"base": null,
+										"valid": true,
+										"problems": []
+									}
+								],
+								"legacy": []
+							},
+							{
+								"commit": "4c1e0d9a7b3f52e8a61d0c94f7b2e35a8d6c1f07",
+								"parents": [],
+								"subject": "Add emitted size limits for the growth table",
+								"author": "Priya Nair",
+								"committedAt": "2026-11-09T14:31:08+00:00",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [
+									{
+										"id": "a3f1c9e07b52d84f6e19c3a0b7d5e28f4c61a9b30d7e5f2c8a46b19e0d3c7f54",
+										"status": "passed",
+										"profile": "3f9a1c7b0d2e4a58",
+										"finishedAt": "2026-11-09T14:58:02.116Z",
+										"base": null,
+										"valid": true,
+										"problems": []
+									}
+								],
+								"legacy": []
+							}
+						],
+						"units": [
+							{
+								"id": "reports.function.harness-emitted-growth",
+								"growth": [
+									{
+										"commit": "4c1e0d9a7b3f52e8a61d0c94f7b2e35a8d6c1f07",
+										"record": "a3f1c9e07b52d84f6e19c3a0b7d5e28f4c61a9b30d7e5f2c8a46b19e0d3c7f54",
+										"emitted": {
+											"process": 1843200
+										},
+										"notes": {
+											"artifact-bytes:wasm": "wasm32-unknown-unknown target is not installed"
+										}
+									},
+									{
+										"commit": "9a27f5c1e8d43b06f1a92c7e5d0b8f34c6e21a9d",
+										"record": "5e8d0a27c94b1f36d2e7a8059b3c61fd0a4e72b8c15d9f6ae3b07d4298f1a6c0",
+										"emitted": {
+											"process": 1851000
+										},
+										"notes": {
+											"artifact-bytes:wasm": "wasm32-unknown-unknown target is not installed"
+										}
+									},
+									{
+										"commit": "e5b0c83d17a9f42e6c58b0d1a73f9e24d8c60b57",
+										"record": "f07c2d593ab8e164c9d02f7b58e6a31db42f9c07e1d85a6b3c90f2e47a1d6b58",
+										"emitted": {
+											"process": 1858000
+										},
+										"notes": {
+											"artifact-bytes:wasm": "wasm32-unknown-unknown target is not installed"
+										}
+									}
+								],
+								"reviews": [
+									{
+										"type": "baseline",
+										"commit": "4c1e0d9a7b3f52e8a61d0c94f7b2e35a8d6c1f07",
+										"record": "a3f1c9e07b52d84f6e19c3a0b7d5e28f4c61a9b30d7e5f2c8a46b19e0d3c7f54",
+										"reviewer": "Ada",
+										"reason": "First measured limits for the unit.",
+										"at": "2026-11-09T15:04:31.207Z",
+										"after": {
+											"artifact-bytes:process": 1843200
+										},
+										"unmeasured": {
+											"artifact-bytes:wasm": "wasm32-unknown-unknown target is not installed"
+										}
+									},
+									{
+										"type": "approval",
+										"commit": "e5b0c83d17a9f42e6c58b0d1a73f9e24d8c60b57",
+										"record": "f07c2d593ab8e164c9d02f7b58e6a31db42f9c07e1d85a6b3c90f2e47a1d6b58",
+										"reviewer": "Ada",
+										"reason": "Adds the bundled panel font, about 7 KB.",
+										"at": "2026-11-12T11:20:06.552Z",
+										"before": {
+											"artifact-bytes:process": 1843200
+										},
+										"after": {
+											"artifact-bytes:process": 1858000
+										},
+										"unmeasured": {
+											"artifact-bytes:wasm": "wasm32-unknown-unknown target is not installed"
+										}
+									}
+								]
+							}
+						],
+						"benchmarks": [],
+						"profiles": [
+							{
+								"id": "3f9a1c7b0d2e4a58",
+								"platform": "linux",
+								"arch": "x64",
+								"cpu": "AMD EPYC 7763 64-Core Processor",
+								"runtime": "node 22.11.0"
+							}
+						],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "harnessEmittedGrowth.unit",
 				"type": "string",
 				"required": true,
-				"description": "Unit identifier."
+				"description": "The `id` of the unit whose history is built, matched exactly against the `id` of each `units` entry in the index. An `id` with no entry yields `{ targets: [], rows: [] }`.",
+				"examples": ["reports.function.harness-emitted-growth", "reports.function.harness-emitted"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "harnessEmittedGrowth",
 				"type": "EmittedGrowth",
-				"description": "Targets and oldest-first rows, with measured size, nonzero delta from the last available size, missing notes and prior-review limit. Reviews at the row’s commit are attached separately. changed compares current availability/value to the immediately preceding row; the first row is not marked changed."
+				"description": "`targets` lists those of `process` and `wasm`, in that order, that some growth point of the unit has a size or a note for, labeled `process (native)` and `Wasm`, and `rows` holds one row per growth point, oldest first, each with a cell per target and the reviews made at that commit that concern its targets. A cell's `value` is absent, never zero, when nothing was measured; `delta` is the change from the last measured size and is omitted when it is zero; `note` is the growth point's note for the target; `limit` and `unlimited` come from the last review of an older commit, in the order the index lists reviews, that gave the target a limit or recorded it as unmeasured, with `limit` set when that review has a limit for the target and `unlimited` set to its reason otherwise; and a row's `changed` is true when a target's size differs from the previous row's, including appearing or disappearing, and is never true for the first row.",
+				"examples": [
+					{
+						"targets": [
+							{
+								"id": "process",
+								"label": "process (native)"
+							},
+							{
+								"id": "wasm",
+								"label": "Wasm"
+							}
+						],
+						"rows": [
+							{
+								"commit": "4c1e0d9a7b3f52e8a61d0c94f7b2e35a8d6c1f07",
+								"subject": "Add emitted size limits for the growth table",
+								"cells": {
+									"process": {
+										"value": 1843200
+									},
+									"wasm": {
+										"note": "wasm32-unknown-unknown target is not installed"
+									}
+								},
+								"reviews": [
+									{
+										"type": "baseline",
+										"reviewer": "Ada",
+										"reason": "First measured limits for the unit.",
+										"changes": [
+											"process (native) 1843200",
+											"Wasm not buildable: wasm32-unknown-unknown target is not installed"
+										]
+									}
+								],
+								"changed": false
+							},
+							{
+								"commit": "9a27f5c1e8d43b06f1a92c7e5d0b8f34c6e21a9d",
+								"subject": "Add a diagnostics panel to the report",
+								"cells": {
+									"process": {
+										"value": 1851000,
+										"delta": 7800,
+										"limit": 1843200
+									},
+									"wasm": {
+										"note": "wasm32-unknown-unknown target is not installed",
+										"unlimited": "wasm32-unknown-unknown target is not installed"
+									}
+								},
+								"reviews": [],
+								"changed": true
+							},
+							{
+								"commit": "e5b0c83d17a9f42e6c58b0d1a73f9e24d8c60b57",
+								"subject": "Bundle the panel font",
+								"cells": {
+									"process": {
+										"value": 1858000,
+										"delta": 7000,
+										"limit": 1843200
+									},
+									"wasm": {
+										"note": "wasm32-unknown-unknown target is not installed",
+										"unlimited": "wasm32-unknown-unknown target is not installed"
+									}
+								},
+								"reviews": [
+									{
+										"type": "approval",
+										"reviewer": "Ada",
+										"reason": "Adds the bundled panel font, about 7 KB.",
+										"changes": [
+											"process (native) 1843200 → 1858000",
+											"Wasm not buildable: wasm32-unknown-unknown target is not installed"
+										]
+									}
+								],
+								"changed": true
+							}
+						]
+					},
+					{
+						"targets": [],
+						"rows": []
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "harnessEmittedGrowth",
@@ -55,24 +309,280 @@
 						"name": "harnessEmittedGrowth.index",
 						"type": "HarnessIndex",
 						"required": true,
-						"description": "Index with unit growth, review ledger and newest-first revisions."
+						"description": "The harness index the growth is built from: only its `units` and `revisions` are read, the unit's growth points and reviews come from the `units` entry with the same `id`, and each row's position and subject come from `revisions`, which the code treats as listed newest first. A unit with no `units` entry yields no targets and no rows, and a growth point whose commit is missing from `revisions` is treated as the newest commit.",
+						"examples": [
+							{
+								"branches": [
+									{
+										"name": "main",
+										"head": "e5b0c83d17a9f42e6c58b0d1a73f9e24d8c60b57"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "e5b0c83d17a9f42e6c58b0d1a73f9e24d8c60b57",
+										"parents": ["9a27f5c1e8d43b06f1a92c7e5d0b8f34c6e21a9d"],
+										"subject": "Bundle the panel font",
+										"author": "Sam Ortiz",
+										"committedAt": "2026-11-12T09:41:17+00:00",
+										"branches": ["main"],
+										"retained": true,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [
+											{
+												"id": "f07c2d593ab8e164c9d02f7b58e6a31db42f9c07e1d85a6b3c90f2e47a1d6b58",
+												"status": "passed",
+												"profile": "3f9a1c7b0d2e4a58",
+												"finishedAt": "2026-11-12T10:02:44.913Z",
+												"base": null,
+												"valid": true,
+												"problems": []
+											}
+										],
+										"legacy": []
+									},
+									{
+										"commit": "9a27f5c1e8d43b06f1a92c7e5d0b8f34c6e21a9d",
+										"parents": ["4c1e0d9a7b3f52e8a61d0c94f7b2e35a8d6c1f07"],
+										"subject": "Add a diagnostics panel to the report",
+										"author": "Sam Ortiz",
+										"committedAt": "2026-11-10T16:12:39+00:00",
+										"branches": ["main"],
+										"retained": true,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [
+											{
+												"id": "5e8d0a27c94b1f36d2e7a8059b3c61fd0a4e72b8c15d9f6ae3b07d4298f1a6c0",
+												"status": "passed",
+												"profile": "3f9a1c7b0d2e4a58",
+												"finishedAt": "2026-11-10T16:37:51.402Z",
+												"base": null,
+												"valid": true,
+												"problems": []
+											}
+										],
+										"legacy": []
+									},
+									{
+										"commit": "4c1e0d9a7b3f52e8a61d0c94f7b2e35a8d6c1f07",
+										"parents": [],
+										"subject": "Add emitted size limits for the growth table",
+										"author": "Priya Nair",
+										"committedAt": "2026-11-09T14:31:08+00:00",
+										"branches": ["main"],
+										"retained": true,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [
+											{
+												"id": "a3f1c9e07b52d84f6e19c3a0b7d5e28f4c61a9b30d7e5f2c8a46b19e0d3c7f54",
+												"status": "passed",
+												"profile": "3f9a1c7b0d2e4a58",
+												"finishedAt": "2026-11-09T14:58:02.116Z",
+												"base": null,
+												"valid": true,
+												"problems": []
+											}
+										],
+										"legacy": []
+									}
+								],
+								"units": [
+									{
+										"id": "reports.function.harness-emitted-growth",
+										"growth": [
+											{
+												"commit": "4c1e0d9a7b3f52e8a61d0c94f7b2e35a8d6c1f07",
+												"record": "a3f1c9e07b52d84f6e19c3a0b7d5e28f4c61a9b30d7e5f2c8a46b19e0d3c7f54",
+												"emitted": {
+													"process": 1843200
+												},
+												"notes": {
+													"artifact-bytes:wasm": "wasm32-unknown-unknown target is not installed"
+												}
+											},
+											{
+												"commit": "9a27f5c1e8d43b06f1a92c7e5d0b8f34c6e21a9d",
+												"record": "5e8d0a27c94b1f36d2e7a8059b3c61fd0a4e72b8c15d9f6ae3b07d4298f1a6c0",
+												"emitted": {
+													"process": 1851000
+												},
+												"notes": {
+													"artifact-bytes:wasm": "wasm32-unknown-unknown target is not installed"
+												}
+											},
+											{
+												"commit": "e5b0c83d17a9f42e6c58b0d1a73f9e24d8c60b57",
+												"record": "f07c2d593ab8e164c9d02f7b58e6a31db42f9c07e1d85a6b3c90f2e47a1d6b58",
+												"emitted": {
+													"process": 1858000
+												},
+												"notes": {
+													"artifact-bytes:wasm": "wasm32-unknown-unknown target is not installed"
+												}
+											}
+										],
+										"reviews": [
+											{
+												"type": "baseline",
+												"commit": "4c1e0d9a7b3f52e8a61d0c94f7b2e35a8d6c1f07",
+												"record": "a3f1c9e07b52d84f6e19c3a0b7d5e28f4c61a9b30d7e5f2c8a46b19e0d3c7f54",
+												"reviewer": "Ada",
+												"reason": "First measured limits for the unit.",
+												"at": "2026-11-09T15:04:31.207Z",
+												"after": {
+													"artifact-bytes:process": 1843200
+												},
+												"unmeasured": {
+													"artifact-bytes:wasm": "wasm32-unknown-unknown target is not installed"
+												}
+											},
+											{
+												"type": "approval",
+												"commit": "e5b0c83d17a9f42e6c58b0d1a73f9e24d8c60b57",
+												"record": "f07c2d593ab8e164c9d02f7b58e6a31db42f9c07e1d85a6b3c90f2e47a1d6b58",
+												"reviewer": "Ada",
+												"reason": "Adds the bundled panel font, about 7 KB.",
+												"at": "2026-11-12T11:20:06.552Z",
+												"before": {
+													"artifact-bytes:process": 1843200
+												},
+												"after": {
+													"artifact-bytes:process": 1858000
+												},
+												"unmeasured": {
+													"artifact-bytes:wasm": "wasm32-unknown-unknown target is not installed"
+												}
+											}
+										]
+									}
+								],
+								"benchmarks": [],
+								"profiles": [
+									{
+										"id": "3f9a1c7b0d2e4a58",
+										"platform": "linux",
+										"arch": "x64",
+										"cpu": "AMD EPYC 7763 64-Core Processor",
+										"runtime": "node 22.11.0"
+									}
+								],
+								"legacy": [],
+								"truncated": false,
+								"problems": []
+							}
+						]
 					},
 					{
 						"name": "harnessEmittedGrowth.unit",
 						"type": "string",
 						"required": true,
-						"description": "Unit identifier."
+						"description": "The `id` of the unit whose history is built, matched exactly against the `id` of each `units` entry in the index. An `id` with no entry yields `{ targets: [], rows: [] }`.",
+						"examples": [
+							"reports.function.harness-emitted-growth",
+							"reports.function.harness-emitted"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "harnessEmittedGrowth",
 						"type": "EmittedGrowth",
-						"description": "Targets and oldest-first rows, with measured size, nonzero delta from the last available size, missing notes and prior-review limit. Reviews at the row’s commit are attached separately. changed compares current availability/value to the immediately preceding row; the first row is not marked changed."
+						"description": "`targets` lists those of `process` and `wasm`, in that order, that some growth point of the unit has a size or a note for, labeled `process (native)` and `Wasm`, and `rows` holds one row per growth point, oldest first, each with a cell per target and the reviews made at that commit that concern its targets. A cell's `value` is absent, never zero, when nothing was measured; `delta` is the change from the last measured size and is omitted when it is zero; `note` is the growth point's note for the target; `limit` and `unlimited` come from the last review of an older commit, in the order the index lists reviews, that gave the target a limit or recorded it as unmeasured, with `limit` set when that review has a limit for the target and `unlimited` set to its reason otherwise; and a row's `changed` is true when a target's size differs from the previous row's, including appearing or disappearing, and is never true for the first row.",
+						"examples": [
+							{
+								"targets": [
+									{
+										"id": "process",
+										"label": "process (native)"
+									},
+									{
+										"id": "wasm",
+										"label": "Wasm"
+									}
+								],
+								"rows": [
+									{
+										"commit": "4c1e0d9a7b3f52e8a61d0c94f7b2e35a8d6c1f07",
+										"subject": "Add emitted size limits for the growth table",
+										"cells": {
+											"process": {
+												"value": 1843200
+											},
+											"wasm": {
+												"note": "wasm32-unknown-unknown target is not installed"
+											}
+										},
+										"reviews": [
+											{
+												"type": "baseline",
+												"reviewer": "Ada",
+												"reason": "First measured limits for the unit.",
+												"changes": [
+													"process (native) 1843200",
+													"Wasm not buildable: wasm32-unknown-unknown target is not installed"
+												]
+											}
+										],
+										"changed": false
+									},
+									{
+										"commit": "9a27f5c1e8d43b06f1a92c7e5d0b8f34c6e21a9d",
+										"subject": "Add a diagnostics panel to the report",
+										"cells": {
+											"process": {
+												"value": 1851000,
+												"delta": 7800,
+												"limit": 1843200
+											},
+											"wasm": {
+												"note": "wasm32-unknown-unknown target is not installed",
+												"unlimited": "wasm32-unknown-unknown target is not installed"
+											}
+										},
+										"reviews": [],
+										"changed": true
+									},
+									{
+										"commit": "e5b0c83d17a9f42e6c58b0d1a73f9e24d8c60b57",
+										"subject": "Bundle the panel font",
+										"cells": {
+											"process": {
+												"value": 1858000,
+												"delta": 7000,
+												"limit": 1843200
+											},
+											"wasm": {
+												"note": "wasm32-unknown-unknown target is not installed",
+												"unlimited": "wasm32-unknown-unknown target is not installed"
+											}
+										},
+										"reviews": [
+											{
+												"type": "approval",
+												"reviewer": "Ada",
+												"reason": "Adds the bundled panel font, about 7 KB.",
+												"changes": [
+													"process (native) 1843200 → 1858000",
+													"Wasm not buildable: wasm32-unknown-unknown target is not installed"
+												]
+											}
+										],
+										"changed": true
+									}
+								]
+							},
+							{
+								"targets": [],
+								"rows": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
