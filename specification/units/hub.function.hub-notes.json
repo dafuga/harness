@@ -20,23 +20,41 @@
 				"name": "hubNotes.base",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+				"description": "The caller-owned immutable authorized context passed to pinned-source lookup. Reads are memoized by this object’s identity, so entries are not shared across contexts."
 			},
 			{
 				"name": "hubNotes.pinned",
 				"type": "string | null",
 				"required": true,
-				"description": "Exact notes revision, or null for no notes."
+				"description": "The source revision whose notes are loaded; null bypasses source lookup and resolves to an empty map. For a string, that revision participates with the context identity in memoization.",
+				"examples": [null, "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubNotes",
 				"type": "Promise<Map<string, ReadNote>>",
-				"description": "Map from 40-character commit IDs to parsed note lines; null pin yields an empty map. Reads for the same context and pin share a promise."
+				"description": "A promise for a map from commit IDs to the ReadNote values returned by readNoteLines. An entry is included only when it is a blob whose path becomes a 40-character lowercase hexadecimal ID after slashes are removed and whose mode is 100644 or 100755; null returns a fresh empty map, while non-null reads share a promise per context identity and pin."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "invalid-notes",
+				"type": "thrown",
+				"description": "The loader calls hubFail('invalid-notes') when a candidate note blob has a mode other than 100644 or 100755, or its path-derived commit key duplicates one already loaded."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Fatal UTF-8 decoding rejects with TypeError when a candidate note blob contains invalid UTF-8."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Errors thrown by readNoteLines or rejected by hubPinnedSource or hubRaw propagate through the returned promise because this function does not catch them."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubNotes",
@@ -45,24 +63,41 @@
 						"name": "hubNotes.base",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+						"description": "The caller-owned immutable authorized context passed to pinned-source lookup. Reads are memoized by this object’s identity, so entries are not shared across contexts."
 					},
 					{
 						"name": "hubNotes.pinned",
 						"type": "string | null",
 						"required": true,
-						"description": "Exact notes revision, or null for no notes."
+						"description": "The source revision whose notes are loaded; null bypasses source lookup and resolves to an empty map. For a string, that revision participates with the context identity in memoization.",
+						"examples": [null, "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubNotes",
 						"type": "Promise<Map<string, ReadNote>>",
-						"description": "Map from 40-character commit IDs to parsed note lines; null pin yields an empty map. Reads for the same context and pin share a promise."
+						"description": "A promise for a map from commit IDs to the ReadNote values returned by readNoteLines. An entry is included only when it is a blob whose path becomes a 40-character lowercase hexadecimal ID after slashes are removed and whose mode is 100644 or 100755; null returns a fresh empty map, while non-null reads share a promise per context identity and pin."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "invalid-notes",
+						"type": "thrown",
+						"description": "The loader calls hubFail('invalid-notes') when a candidate note blob has a mode other than 100644 or 100755, or its path-derived commit key duplicates one already loaded."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Fatal UTF-8 decoding rejects with TypeError when a candidate note blob contains invalid UTF-8."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Errors thrown by readNoteLines or rejected by hubPinnedSource or hubRaw propagate through the returned promise because this function does not catch them."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
