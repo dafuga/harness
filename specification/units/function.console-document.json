@@ -27,23 +27,67 @@
 				"name": "consoleDocument.assets",
 				"type": "ConsoleAssets",
 				"required": true,
-				"description": "Compiled JavaScript and CSS text to inline in the HTML document."
+				"description": "The compiled console as two strings: `style` is inlined into the head's `<style>` element and `script` into the final `<script>` element of every document. Each string is copied unchanged except that its own closing tag (`</style` in `style`, `</script` in `script`, matched in any case) and every `<!--` are rewritten so the text cannot close its element or contain `<!--`; nothing else is checked at runtime.",
+				"examples": [
+					{
+						"script": "(()=>{const app=document.getElementById('app');app.dataset.mounted='true';})();",
+						"style": "body{margin:0;font:14px/1.4 system-ui,sans-serif}#app{min-height:100vh}"
+					},
+					{
+						"script": "console.log('harness console ready');",
+						"style": ":root{color-scheme:light dark}"
+					}
+				]
 			},
 			{
 				"name": "consoleDocument.options",
 				"type": "ConsoleDocumentOptions",
 				"required": true,
-				"description": "Console base path with optional title and navigation links. Title defaults to Harness."
+				"description": "The console settings: `base` is the path the host serves the console under (for example `/harness`), `title` is an optional page title, and `links` is an optional list of `{label, href}` pairs. The object is serialized as JSON into `window.harnessConsole`, with `<` escaped as `\\u003c` and no validation, so `base` and `links` appear only there; `title` is also HTML-escaped into the `<title>` element, where a null or undefined title falls back to `Harness` and an empty string is kept.",
+				"examples": [
+					{
+						"base": "/harness"
+					},
+					{
+						"base": "/harness",
+						"title": "Harness console",
+						"links": [
+							{
+								"label": "Runs",
+								"href": "/harness/runs"
+							}
+						]
+					},
+					{
+						"base": "/console",
+						"title": "Build & release",
+						"links": [
+							{
+								"label": "Runs",
+								"href": "/console/runs"
+							},
+							{
+								"label": "Media",
+								"href": "/console/media"
+							}
+						]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "consoleDocument",
 				"type": "string",
-				"description": "Complete HTML string with escaped title, serialized settings and inline assets protected against closing their elements. It contains the viewer shell, not history data, and does not enforce access policy itself."
+				"description": "The complete HTML document as one string, from `<!doctype html>` to `</html>`, with the escaped title, the serialized settings and the inline style and script. It holds only the viewer shell, with history and media fetched later from the host's protected endpoints, and it does not enforce access policy itself, so the host has to serve it only after the policy admits the request.",
+				"examples": [
+					"<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta name=\"robots\" content=\"noindex\"><title>Harness</title><style>:root{color-scheme:light dark}</style></head><body><div id=\"app\"></div><script>window.harnessConsole={\"base\":\"/harness\"};</script><script>console.log('harness console ready');</script></body></html>",
+					"<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta name=\"robots\" content=\"noindex\"><title>Build &amp; release</title><style>#app{min-height:100vh}</style></head><body><div id=\"app\"></div><script>window.harnessConsole={\"base\":\"/console\",\"title\":\"Build & release\",\"links\":[{\"label\":\"Runs\",\"href\":\"/console/runs\"}]};</script><script>console.log('harness console ready');</script></body></html>"
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "consoleDocument",
@@ -52,24 +96,67 @@
 						"name": "consoleDocument.assets",
 						"type": "ConsoleAssets",
 						"required": true,
-						"description": "Compiled JavaScript and CSS text to inline in the HTML document."
+						"description": "The compiled console as two strings: `style` is inlined into the head's `<style>` element and `script` into the final `<script>` element of every document. Each string is copied unchanged except that its own closing tag (`</style` in `style`, `</script` in `script`, matched in any case) and every `<!--` are rewritten so the text cannot close its element or contain `<!--`; nothing else is checked at runtime.",
+						"examples": [
+							{
+								"script": "(()=>{const app=document.getElementById('app');app.dataset.mounted='true';})();",
+								"style": "body{margin:0;font:14px/1.4 system-ui,sans-serif}#app{min-height:100vh}"
+							},
+							{
+								"script": "console.log('harness console ready');",
+								"style": ":root{color-scheme:light dark}"
+							}
+						]
 					},
 					{
 						"name": "consoleDocument.options",
 						"type": "ConsoleDocumentOptions",
 						"required": true,
-						"description": "Console base path with optional title and navigation links. Title defaults to Harness."
+						"description": "The console settings: `base` is the path the host serves the console under (for example `/harness`), `title` is an optional page title, and `links` is an optional list of `{label, href}` pairs. The object is serialized as JSON into `window.harnessConsole`, with `<` escaped as `\\u003c` and no validation, so `base` and `links` appear only there; `title` is also HTML-escaped into the `<title>` element, where a null or undefined title falls back to `Harness` and an empty string is kept.",
+						"examples": [
+							{
+								"base": "/harness"
+							},
+							{
+								"base": "/harness",
+								"title": "Harness console",
+								"links": [
+									{
+										"label": "Runs",
+										"href": "/harness/runs"
+									}
+								]
+							},
+							{
+								"base": "/console",
+								"title": "Build & release",
+								"links": [
+									{
+										"label": "Runs",
+										"href": "/console/runs"
+									},
+									{
+										"label": "Media",
+										"href": "/console/media"
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "consoleDocument",
 						"type": "string",
-						"description": "Complete HTML string with escaped title, serialized settings and inline assets protected against closing their elements. It contains the viewer shell, not history data, and does not enforce access policy itself."
+						"description": "The complete HTML document as one string, from `<!doctype html>` to `</html>`, with the escaped title, the serialized settings and the inline style and script. It holds only the viewer shell, with history and media fetched later from the host's protected endpoints, and it does not enforce access policy itself, so the host has to serve it only after the policy admits the request.",
+						"examples": [
+							"<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta name=\"robots\" content=\"noindex\"><title>Harness</title><style>:root{color-scheme:light dark}</style></head><body><div id=\"app\"></div><script>window.harnessConsole={\"base\":\"/harness\"};</script><script>console.log('harness console ready');</script></body></html>",
+							"<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta name=\"robots\" content=\"noindex\"><title>Build &amp; release</title><style>#app{min-height:100vh}</style></head><body><div id=\"app\"></div><script>window.harnessConsole={\"base\":\"/console\",\"title\":\"Build & release\",\"links\":[{\"label\":\"Runs\",\"href\":\"/console/runs\"}]};</script><script>console.log('harness console ready');</script></body></html>"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
