@@ -23,54 +23,72 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ApiSessionRepository.constructor.origin",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The exact server origin that owns the session. It is hashed with SHA-256 to name the session file and is stored inside that file, and load() rejects a stored session whose origin does not match it exactly.",
+				"examples": ["https://harness.example.com", "http://127.0.0.1:8080"]
 			},
 			{
 				"name": "ApiSessionRepository.constructor.directory",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "The folder that holds the session files; save() and ensure() create it with mode 0700 when it is missing. Defaults to process.env.HARNESS_API_HOME ?? join(homedir(), '.codex/harness/api'): the HARNESS_API_HOME value whenever it is set, even to an empty string, otherwise the .codex/harness/api folder under the home directory.",
+				"examples": [
+					"/Users/example/.codex/harness/api",
+					"/home/example/.codex/harness/api",
+					"/tmp/harness-api"
+				]
 			},
 			{
 				"name": "ApiSessionRepository.ensure.create",
 				"type": "() => Promise<string>",
-				"required": true
+				"required": true,
+				"description": "Callback that creates a new token; ensure() calls it only when load() still finds no saved session after the lock is acquired. The token it resolves is saved and returned, and a rejection propagates after the lock is released."
 			},
 			{
 				"name": "ApiSessionRepository.save.token",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The session token to store; save() writes it unchanged alongside the origin and does not validate it. An empty string is written as-is, and load() later rejects it.",
+				"examples": ["4c7e1f09b2a8d3e6f5a1c0b9d8e7f6a5", "9f2b6d1a7e4c8b03f5d2a9e1c7b4f608"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ApiSessionRepository.load",
-				"type": "Promise<string | undefined>"
+				"type": "Promise<string | undefined>",
+				"description": "Resolves with the saved token, or undefined when no session file exists for this origin. It rejects when the file cannot be read or parsed, is not a regular file owned by the current user with no group or other permission bits, holds a different origin, or holds no non-empty token.",
+				"examples": ["4c7e1f09b2a8d3e6f5a1c0b9d8e7f6a5", "9f2b6d1a7e4c8b03f5d2a9e1c7b4f608"]
 			},
 			{
 				"name": "ApiSessionRepository.ensure",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Resolves with the saved token, reusing an existing session or saving the token that create() resolves. It rejects when the saved session cannot be loaded, when the session lock cannot be created, or when the lock stays held through 300 attempts that each wait 100 ms.",
+				"examples": ["4c7e1f09b2a8d3e6f5a1c0b9d8e7f6a5", "9f2b6d1a7e4c8b03f5d2a9e1c7b4f608"]
 			},
 			{
 				"name": "ApiSessionRepository.save",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value after the token is written to a uniquely named temporary file with mode 0600 and renamed over the session file. A failing directory creation, write, or rename rejects with its Node.js filesystem error, not ExpectedCliError."
 			},
 			{
 				"name": "ApiSessionRepository.forget",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value once the session file is removed or was already absent. Any other removal failure rejects with its Node.js filesystem error."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised through fail() when the saved session cannot be read or parsed, is not a regular file owned by the current user with no group or other permission bits, holds another origin or no non-empty token, when the session lock cannot be created, or when the lock stays held through 300 attempts. Other filesystem errors, such as from mkdir, writeFile, rename or rm, propagate unwrapped."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ApiSessionRepository.load",
@@ -78,16 +96,19 @@
 				"outputs": [
 					{
 						"name": "ApiSessionRepository.load",
-						"type": "Promise<string | undefined>"
+						"type": "Promise<string | undefined>",
+						"description": "Resolves with the saved token, or undefined when no session file exists for this origin. It rejects when the file cannot be read or parsed, is not a regular file owned by the current user with no group or other permission bits, holds a different origin, or holds no non-empty token.",
+						"examples": ["4c7e1f09b2a8d3e6f5a1c0b9d8e7f6a5", "9f2b6d1a7e4c8b03f5d2a9e1c7b4f608"]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised through fail() when the session file cannot be read or parsed, is not a regular file owned by the current user with no group or other permission bits, holds another origin, or holds no non-empty token."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ApiSessionRepository.ensure",
@@ -95,22 +116,26 @@
 					{
 						"name": "ApiSessionRepository.ensure.create",
 						"type": "() => Promise<string>",
-						"required": true
+						"required": true,
+						"description": "Callback that creates a new token; ensure() calls it only when load() still finds no saved session after the lock is acquired. The token it resolves is saved and returned, and a rejection propagates after the lock is released."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ApiSessionRepository.ensure",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "Resolves with the saved token, reusing an existing session or saving the token that create() resolves. It rejects when the saved session cannot be loaded, when the session lock cannot be created, or when the lock stays held through 300 attempts that each wait 100 ms.",
+						"examples": ["4c7e1f09b2a8d3e6f5a1c0b9d8e7f6a5", "9f2b6d1a7e4c8b03f5d2a9e1c7b4f608"]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised through fail() when loading the saved session fails, when the session lock cannot be created, or when the lock stays held through 300 attempts that each wait 100 ms."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ApiSessionRepository.save",
@@ -118,17 +143,20 @@
 					{
 						"name": "ApiSessionRepository.save.token",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The session token to store; save() writes it unchanged alongside the origin and does not validate it. An empty string is written as-is, and load() later rejects it.",
+						"examples": ["4c7e1f09b2a8d3e6f5a1c0b9d8e7f6a5", "9f2b6d1a7e4c8b03f5d2a9e1c7b4f608"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ApiSessionRepository.save",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value after the token is written to a uniquely named temporary file with mode 0600 and renamed over the session file. A failing directory creation, write, or rename rejects with its Node.js filesystem error, not ExpectedCliError."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ApiSessionRepository.forget",
@@ -136,11 +164,12 @@
 				"outputs": [
 					{
 						"name": "ApiSessionRepository.forget",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value once the session file is removed or was already absent. Any other removal failure rejects with its Node.js filesystem error."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -150,22 +179,31 @@
 					{
 						"name": "ApiSessionRepository.constructor.origin",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The exact server origin that owns the session. It is hashed with SHA-256 to name the session file and is stored inside that file, and load() rejects a stored session whose origin does not match it exactly.",
+						"examples": ["https://harness.example.com", "http://127.0.0.1:8080"]
 					},
 					{
 						"name": "ApiSessionRepository.constructor.directory",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "The folder that holds the session files; save() and ensure() create it with mode 0700 when it is missing. Defaults to process.env.HARNESS_API_HOME ?? join(homedir(), '.codex/harness/api'): the HARNESS_API_HOME value whenever it is set, even to an empty string, otherwise the .codex/harness/api folder under the home directory.",
+						"examples": [
+							"/Users/example/.codex/harness/api",
+							"/home/example/.codex/harness/api",
+							"/tmp/harness-api"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ApiSessionRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new repository instance; its session file is join(directory, SHA-256 hex digest of origin + '.json'), and its lock and temporary files are created beside it."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
