@@ -27,17 +27,18 @@
 				"type": "MediaStream",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Remote video stream explicitly provided by a running optional AI connection."
+				"description": "Optional MediaStream assigned to the video element's srcObject; when omitted, the component assigns null. FPS is measured only from requestVideoFrameCallback callbacks, so the status stays “waiting for video frames” until those callbacks arrive."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameLiveVideo",
 				"type": "markup",
-				"description": "Attach an explicitly supplied remote video stream to its preview and clear it when replaced. Renders reactive UI and publishes edits through its callbacks."
+				"description": "Markup renders an autoplaying, muted, inline video labeled “AI video” plus a status line that shows “waiting for video frames” or the measured FPS. FPS is rounded from video-frame callbacks over intervals of at least one second; when the video element supports callbacks and a stream is set, the effect attaches it and clears srcObject during cleanup."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
