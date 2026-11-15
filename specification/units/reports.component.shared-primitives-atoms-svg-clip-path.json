@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native clipPath element; native HTML content rules still apply."
+				"description": "An optional Svelte Snippet callback for content inside the native clipPath element. When supplied, it is rendered; when omitted, no child content is rendered."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgClipPath",
 				"type": "markup",
-				"description": "The actual native clipPath element, with forwarded attributes and content and no additional wrapper."
+				"description": "The rendered native SVG clipPath element. Remaining props are spread onto it, and the optional child snippet is rendered inside it only when supplied; no wrapper is added."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
