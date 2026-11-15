@@ -16,27 +16,41 @@
 		"symbols": ["handle", "handle", "handle"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "handle.event",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The SvelteKit RequestEvent of the incoming request. The hook itself reads only url.pathname, which selects the agent controller, and request, which that controller reads; the owner guard reads only getClientAddress from the event."
 			},
 			{
 				"name": "handle.resolve",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The SvelteKit resolve function, which the hook calls only for an admitted request whose pathname is not /api/agent. Its Response is returned after the hook sets cache-control to 'private, no-store' if the Response has none."
 			}
 		],
 		"outputs": [
 			{
 				"name": "handle",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The Response for the request: the guard's 403 'Forbidden' response when the request is denied, otherwise the agent controller's response for /api/agent or resolve's response. A response with no cache-control header gets 'private, no-store' before it is returned."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by response.headers.set when the response has no cache-control header but immutable headers, such as a response from fetch() or Response.redirect(); nothing in this hook catches it."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown while the module loads when reportBuildIdentity() cannot read the build files (for example a filesystem EACCES error from readdirSync or readFileSync), so the module fails to load."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "handle",
@@ -44,22 +58,31 @@
 					{
 						"name": "handle.event",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The SvelteKit RequestEvent of the incoming request. The hook itself reads only url.pathname, which selects the agent controller, and request, which that controller reads; the owner guard reads only getClientAddress from the event."
 					},
 					{
 						"name": "handle.resolve",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The SvelteKit resolve function, which the hook calls only for an admitted request whose pathname is not /api/agent. Its Response is returned after the hook sets cache-control to 'private, no-store' if the Response has none."
 					}
 				],
 				"outputs": [
 					{
 						"name": "handle",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The Response for the request: the guard's 403 'Forbidden' response when the request is denied, otherwise the agent controller's response for /api/agent or resolve's response. A response with no cache-control header gets 'private, no-store' before it is returned."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by response.headers.set when the response has no cache-control header but immutable headers, such as a response from fetch() or Response.redirect(); nothing in this hook catches it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
