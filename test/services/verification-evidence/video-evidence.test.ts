@@ -63,6 +63,7 @@ test('clip planning reuses unchanged inputs and invalidates only actual consumer
 		expect(first.record).toHaveLength(4);
 		expect(first.reuse).toEqual([]);
 		const previous = first.record.map((slot) => ({ ...slot, testedRevision: 'a'.repeat(40) }));
+		await writeFile(join(root, 'src/unrelated.ts'), 'unrelated change');
 		const warm = service.plan(manifest, previous);
 		expect(warm.record).toEqual([]);
 		expect(warm.reuse).toEqual(previous);
