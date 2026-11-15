@@ -19,57 +19,72 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "R2ReportRetentionAdapter.purge.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The report ID passed through safeId and appended to each reportCloudPrefixes entry with a trailing slash. It controls which report objects purge lists; purge adds no separate ID validation in this adapter.",
+				"examples": ["report_20261115_0042"]
 			},
 			{
 				"name": "R2ReportRetentionAdapter.purge.dryRun",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "When true, matching keys are counted without deletion; when false, the adapter attempts to remove them. Defaults to false.",
+				"examples": [false, true]
 			},
 			{
 				"name": "R2ReportRetentionAdapter.orphans.known",
 				"type": "Set<string>",
-				"required": true
+				"required": true,
+				"description": "The IDs of reports to keep; candidates whose first path segment is present in this set are excluded. Candidate IDs are checked against /^[a-zA-Z0-9_-]{1,100}$/ before this membership check."
 			},
 			{
 				"name": "R2ReportRetentionAdapter.orphans.cutoff",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Inclusive Unix epoch cutoff in milliseconds for orphan eligibility. A candidate must have LastModified and its getTime() must be less than or equal to this value.",
+				"examples": [1790000000000, 1800000000000]
 			},
 			{
 				"name": "R2ReportRetentionAdapter.orphans.dryRun",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "When true, matching orphan keys are counted without deletion; when false, the adapter attempts to remove them. Defaults to false.",
+				"examples": [false, true]
 			}
 		],
 		"outputs": [
 			{
 				"name": "R2ReportRetentionAdapter.fromEnvironment",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns undefined when r2EvidenceConfig() is falsy; otherwise it constructs and returns an R2ReportRetentionAdapter from that config. The returned adapter is a class instance."
 			},
 			{
 				"name": "R2ReportRetentionAdapter.purge",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the count of keys listed beneath safeId(id) for each reportCloudPrefixes entry. With dryRun true it returns that count without removing keys; otherwise removal is attempted before the promise resolves.",
+				"examples": [0, 3, 1001]
 			},
 			{
 				"name": "R2ReportRetentionAdapter.orphans",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the count of keys across reportCloudPrefixes whose first path segment passes /^[a-zA-Z0-9_-]{1,100}$/, is absent from known, and has LastModified at or before cutoff. With dryRun true the count is returned without removal; otherwise removal is attempted before the promise resolves.",
+				"examples": [0, 2, 37]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown if a listed object has no Key or its Key is outside the requested prefix, if a truncated listing has no next continuation token, or if a delete response reports per-object errors."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "R2ReportRetentionAdapter.fromEnvironment",
@@ -77,11 +92,12 @@
 				"outputs": [
 					{
 						"name": "R2ReportRetentionAdapter.fromEnvironment",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns undefined when r2EvidenceConfig() is falsy; otherwise it constructs and returns an R2ReportRetentionAdapter from that config. The returned adapter is a class instance."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "R2ReportRetentionAdapter.purge",
@@ -89,23 +105,35 @@
 					{
 						"name": "R2ReportRetentionAdapter.purge.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The report ID passed through safeId and appended to each reportCloudPrefixes entry with a trailing slash. It controls which report objects purge lists; purge adds no separate ID validation in this adapter.",
+						"examples": ["report_20261115_0042"]
 					},
 					{
 						"name": "R2ReportRetentionAdapter.purge.dryRun",
 						"type": "boolean",
 						"required": false,
-						"default": false
+						"default": false,
+						"description": "When true, matching keys are counted without deletion; when false, the adapter attempts to remove them. Defaults to false.",
+						"examples": [false, true]
 					}
 				],
 				"outputs": [
 					{
 						"name": "R2ReportRetentionAdapter.purge",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the count of keys listed beneath safeId(id) for each reportCloudPrefixes entry. With dryRun true it returns that count without removing keys; otherwise removal is attempted before the promise resolves.",
+						"examples": [0, 3, 1001]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown if a listed object has no Key or its Key is outside the requested prefix, if a truncated listing has no next continuation token, or if a delete response reports per-object errors."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "R2ReportRetentionAdapter.orphans",
@@ -113,28 +141,41 @@
 					{
 						"name": "R2ReportRetentionAdapter.orphans.known",
 						"type": "Set<string>",
-						"required": true
+						"required": true,
+						"description": "The IDs of reports to keep; candidates whose first path segment is present in this set are excluded. Candidate IDs are checked against /^[a-zA-Z0-9_-]{1,100}$/ before this membership check."
 					},
 					{
 						"name": "R2ReportRetentionAdapter.orphans.cutoff",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Inclusive Unix epoch cutoff in milliseconds for orphan eligibility. A candidate must have LastModified and its getTime() must be less than or equal to this value.",
+						"examples": [1790000000000, 1800000000000]
 					},
 					{
 						"name": "R2ReportRetentionAdapter.orphans.dryRun",
 						"type": "boolean",
 						"required": false,
-						"default": false
+						"default": false,
+						"description": "When true, matching orphan keys are counted without deletion; when false, the adapter attempts to remove them. Defaults to false.",
+						"examples": [false, true]
 					}
 				],
 				"outputs": [
 					{
 						"name": "R2ReportRetentionAdapter.orphans",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the count of keys across reportCloudPrefixes whose first path segment passes /^[a-zA-Z0-9_-]{1,100}$/, is absent from known, and has LastModified at or before cutoff. With dryRun true the count is returned without removal; otherwise removal is attempted before the promise resolves.",
+						"examples": [0, 2, 37]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown if a listed object has no Key or its Key is outside the requested prefix, if a truncated listing has no next continuation token, or if a delete response reports per-object errors."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
