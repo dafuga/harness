@@ -12,31 +12,477 @@
 		"symbols": ["cleanCodeExitCode", "renderCleanCode"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "cleanCodeExitCode.result",
 				"type": "AuditResult",
-				"required": true
+				"required": true,
+				"description": "The audit result for one project run, with the static findings and coverage plus the optional clean-code report. cleanCode is set only when clean-code review ran (mode is not off), so when it is absent the exit code depends on the findings alone.",
+				"examples": [
+					{
+						"findings": [],
+						"coverage": {
+							"profile": "app",
+							"adapters": [
+								{
+									"id": "typescript",
+									"label": "TypeScript and JavaScript",
+									"extensions": [".ts", ".tsx", ".js", ".jsx"],
+									"optionalTools": ["eslint"],
+									"files": [
+										"src/audit/cleanCodeRender.ts",
+										"src/audit/development-tooling/cleanCodeRender.ts"
+									]
+								},
+								{
+									"id": "svelte",
+									"label": "Svelte",
+									"extensions": [".svelte"],
+									"optionalTools": ["svelte-check", "eslint"],
+									"files": []
+								},
+								{
+									"id": "sql",
+									"label": "SQL",
+									"extensions": [".sql"],
+									"optionalTools": ["sqlfluff"],
+									"files": []
+								},
+								{
+									"id": "shell",
+									"label": "Shell",
+									"extensions": [".sh"],
+									"optionalTools": ["shellcheck"],
+									"files": []
+								}
+							],
+							"coveredFiles": [
+								"src/audit/cleanCodeRender.ts",
+								"src/audit/development-tooling/cleanCodeRender.ts"
+							],
+							"ignoredPaths": ["dist/", "node_modules/"],
+							"ignoredFindings": [],
+							"unknownFiles": []
+						}
+					},
+					{
+						"findings": [
+							{
+								"path": "src/audit/development-tooling/reportLines.ts",
+								"rule": "function-name-pattern",
+								"message": "Function \"format_line\" should use camelCase."
+							}
+						],
+						"coverage": {
+							"profile": "app",
+							"adapters": [
+								{
+									"id": "typescript",
+									"label": "TypeScript and JavaScript",
+									"extensions": [".ts", ".tsx", ".js", ".jsx"],
+									"optionalTools": ["eslint"],
+									"files": [
+										"src/audit/cleanCodeRender.ts",
+										"src/audit/development-tooling/cleanCodeRender.ts",
+										"src/audit/development-tooling/reportLines.ts"
+									]
+								},
+								{
+									"id": "svelte",
+									"label": "Svelte",
+									"extensions": [".svelte"],
+									"optionalTools": ["svelte-check", "eslint"],
+									"files": []
+								},
+								{
+									"id": "sql",
+									"label": "SQL",
+									"extensions": [".sql"],
+									"optionalTools": ["sqlfluff"],
+									"files": []
+								},
+								{
+									"id": "shell",
+									"label": "Shell",
+									"extensions": [".sh"],
+									"optionalTools": ["shellcheck"],
+									"files": []
+								}
+							],
+							"coveredFiles": [
+								"src/audit/cleanCodeRender.ts",
+								"src/audit/development-tooling/cleanCodeRender.ts",
+								"src/audit/development-tooling/reportLines.ts"
+							],
+							"ignoredPaths": ["dist/", "node_modules/"],
+							"ignoredFindings": [],
+							"unknownFiles": []
+						}
+					},
+					{
+						"findings": [],
+						"coverage": {
+							"profile": "app",
+							"adapters": [
+								{
+									"id": "typescript",
+									"label": "TypeScript and JavaScript",
+									"extensions": [".ts", ".tsx", ".js", ".jsx"],
+									"optionalTools": ["eslint"],
+									"files": ["src/audit/development-tooling/cleanCodeRender.ts"]
+								},
+								{
+									"id": "svelte",
+									"label": "Svelte",
+									"extensions": [".svelte"],
+									"optionalTools": ["svelte-check", "eslint"],
+									"files": []
+								},
+								{
+									"id": "sql",
+									"label": "SQL",
+									"extensions": [".sql"],
+									"optionalTools": ["sqlfluff"],
+									"files": []
+								},
+								{
+									"id": "shell",
+									"label": "Shell",
+									"extensions": [".sh"],
+									"optionalTools": ["shellcheck"],
+									"files": []
+								}
+							],
+							"coveredFiles": ["src/audit/development-tooling/cleanCodeRender.ts"],
+							"ignoredPaths": ["dist/", "node_modules/"],
+							"ignoredFindings": [],
+							"unknownFiles": []
+						},
+						"cleanCode": {
+							"mode": "advisory",
+							"status": "incomplete",
+							"rubricVersion": "clean-code-v1",
+							"requestedModel": "jev-1.13.0",
+							"minConfidence": 0.85,
+							"coverage": {
+								"selectedFiles": ["src/audit/development-tooling/cleanCodeRender.ts"],
+								"excludedPaths": [],
+								"unsupportedFiles": []
+							},
+							"files": [
+								{
+									"path": "src/audit/development-tooling/cleanCodeRender.ts",
+									"contentHash": "9b4e21d75c03a8f6e17d9b2c4a68f0e3c9d1b57a2f8e6c01b3a7d94e18c5f2a6",
+									"contextHash": "7d20fb93a4c61e580f9b3d27e68a5c1d4b72e0f9d1c59a368e0f7b423a6d1c9e",
+									"status": "incomplete",
+									"assessments": [],
+									"contextPaths": ["AGENTS.md", "harness.audit.json"],
+									"omittedContext": [],
+									"model": "jev-1.13.0",
+									"cached": false,
+									"usage": {
+										"input_tokens": 4870,
+										"output_tokens": 512
+									},
+									"error": "Source or supplied context changed before the review completed."
+								}
+							],
+							"usage": {
+								"input_tokens": 4870,
+								"output_tokens": 512
+							}
+						}
+					}
+				]
 			},
 			{
 				"name": "renderCleanCode.report",
 				"type": "CleanCodeReport",
-				"required": true
+				"required": true,
+				"description": "The clean-code report built by reviewCleanCode, with the mode, status, rubric and model settings, coverage, per-file reviews and total token usage. A dry-run report still carries empty files and zero usage, because the renderer reads those fields directly.",
+				"examples": [
+					{
+						"mode": "gate",
+						"status": "violations",
+						"rubricVersion": "clean-code-v1",
+						"requestedModel": "jev-1.13.0",
+						"minConfidence": 0.85,
+						"coverage": {
+							"selectedFiles": ["src/audit/development-tooling/cleanCodeRender.ts"],
+							"excludedPaths": [],
+							"unsupportedFiles": []
+						},
+						"files": [
+							{
+								"path": "src/audit/development-tooling/cleanCodeRender.ts",
+								"contentHash": "6f1c0a92b7d34e85c2a9f0e16d8b4c73a5e2f9d10c6b8a47e3d5f2a9c0b1e864",
+								"contextHash": "2e9a7c4f0b318d6ed4f25a1c98e7b03f6a1d5c2ef4b08e973c6a1d0be25f9a48",
+								"status": "violations",
+								"assessments": [
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.93,
+										"probabilities": {
+											"meets": 0.93,
+											"violates": 0.03,
+											"not_applicable": 0.01,
+											"insufficient_context": 0.03
+										},
+										"principle": "meaningful-names",
+										"title": "Meaningful names",
+										"guidance": "Name identifiers after their domain purpose; retain conventional framework and short local names when clear.",
+										"status": "meets"
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.9,
+										"probabilities": {
+											"meets": 0.9,
+											"violates": 0.05,
+											"not_applicable": 0.02,
+											"insufficient_context": 0.03
+										},
+										"principle": "single-responsibility",
+										"title": "Focused responsibility",
+										"guidance": "Extract unrelated responsibilities behind named boundaries; keep tightly related behavior together.",
+										"status": "meets"
+									},
+									{
+										"type": "choice",
+										"choice": "violates",
+										"confidence": 0.88,
+										"probabilities": {
+											"meets": 0.06,
+											"violates": 0.88,
+											"not_applicable": 0.02,
+											"insufficient_context": 0.04
+										},
+										"principle": "focused-functions",
+										"title": "Focused functions",
+										"guidance": "Extract independent tasks into clearly named functions without fragmenting an already coherent operation.",
+										"status": "violates"
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.87,
+										"probabilities": {
+											"meets": 0.87,
+											"violates": 0.08,
+											"not_applicable": 0.02,
+											"insufficient_context": 0.03
+										},
+										"principle": "abstraction-level",
+										"title": "Consistent abstraction",
+										"guidance": "Move low-level details behind a named operation when they obscure orchestration.",
+										"status": "meets"
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.95,
+										"probabilities": {
+											"meets": 0.95,
+											"violates": 0.02,
+											"not_applicable": 0.01,
+											"insufficient_context": 0.02
+										},
+										"principle": "duplication",
+										"title": "Avoid needless duplication",
+										"guidance": "Unify repeated domain knowledge; similar syntax or independent test examples alone are not a violation.",
+										"status": "meets"
+									},
+									{
+										"type": "choice",
+										"choice": "not_applicable",
+										"confidence": 0.96,
+										"probabilities": {
+											"meets": 0.01,
+											"violates": 0.01,
+											"not_applicable": 0.96,
+											"insufficient_context": 0.02
+										},
+										"principle": "side-effects",
+										"title": "Explicit side effects",
+										"guidance": "Make side effects explicit in names and contracts; ordinary UI event handlers and command operations may mutate.",
+										"status": "not-applicable"
+									},
+									{
+										"type": "choice",
+										"choice": "not_applicable",
+										"confidence": 0.9,
+										"probabilities": {
+											"meets": 0.03,
+											"violates": 0.01,
+											"not_applicable": 0.9,
+											"insufficient_context": 0.06
+										},
+										"principle": "error-handling",
+										"title": "Useful error handling",
+										"guidance": "Handle or propagate failures intentionally with useful context; use the language and project error conventions.",
+										"status": "not-applicable"
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.88,
+										"probabilities": {
+											"meets": 0.88,
+											"violates": 0.04,
+											"not_applicable": 0.05,
+											"insufficient_context": 0.03
+										},
+										"principle": "comments",
+										"title": "Useful comments",
+										"guidance": "Explain intent and constraints; remove misleading comments and obsolete commented-out code.",
+										"status": "meets"
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.9,
+										"probabilities": {
+											"meets": 0.9,
+											"violates": 0.04,
+											"not_applicable": 0.02,
+											"insufficient_context": 0.04
+										},
+										"principle": "boundaries",
+										"title": "Clear dependency boundaries",
+										"guidance": "Keep dependencies explicit and avoid exposing or depending on unrelated internals; do not require classes.",
+										"status": "meets"
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.92,
+										"probabilities": {
+											"meets": 0.92,
+											"violates": 0.02,
+											"not_applicable": 0.03,
+											"insufficient_context": 0.03
+										},
+										"principle": "testability",
+										"title": "Testable behavior",
+										"guidance": "Test observable success and failure behavior; avoid assertions that only mirror implementation.",
+										"status": "meets"
+									},
+									{
+										"type": "choice",
+										"choice": "not_applicable",
+										"confidence": 0.96,
+										"probabilities": {
+											"meets": 0.01,
+											"violates": 0.01,
+											"not_applicable": 0.96,
+											"insufficient_context": 0.02
+										},
+										"principle": "async-boundaries",
+										"title": "Clear asynchronous behavior",
+										"guidance": "Make completion, cancellation and shared-state ownership explicit where concurrent behavior exists.",
+										"status": "not-applicable"
+									}
+								],
+								"contextPaths": ["AGENTS.md", "harness.audit.json"],
+								"omittedContext": [],
+								"model": "jev-1.13.0",
+								"cached": false,
+								"usage": {
+									"input_tokens": 9120,
+									"output_tokens": 734
+								}
+							}
+						],
+						"usage": {
+							"input_tokens": 9120,
+							"output_tokens": 734
+						}
+					},
+					{
+						"mode": "advisory",
+						"status": "dry-run",
+						"rubricVersion": "clean-code-v1",
+						"requestedModel": "jev-1.13.0",
+						"minConfidence": 0.85,
+						"coverage": {
+							"selectedFiles": [
+								"src/audit/cleanCodeRender.ts",
+								"src/audit/development-tooling/cleanCodeRender.ts"
+							],
+							"excludedPaths": [
+								{
+									"path": "dist/",
+									"reason": "Artifact directory or symlink"
+								}
+							],
+							"unsupportedFiles": ["package.json"]
+						},
+						"files": [],
+						"usage": {
+							"input_tokens": 0,
+							"output_tokens": 0
+						}
+					},
+					{
+						"mode": "advisory",
+						"status": "incomplete",
+						"rubricVersion": "clean-code-v1",
+						"requestedModel": "jev-1.13.0",
+						"minConfidence": 0.85,
+						"coverage": {
+							"selectedFiles": ["src/audit/development-tooling/cleanCodeRender.ts"],
+							"excludedPaths": [],
+							"unsupportedFiles": []
+						},
+						"files": [
+							{
+								"path": "src/audit/development-tooling/cleanCodeRender.ts",
+								"contentHash": "9b4e21d75c03a8f6e17d9b2c4a68f0e3c9d1b57a2f8e6c01b3a7d94e18c5f2a6",
+								"contextHash": "7d20fb93a4c61e580f9b3d27e68a5c1d4b72e0f9d1c59a368e0f7b423a6d1c9e",
+								"status": "incomplete",
+								"assessments": [],
+								"contextPaths": ["AGENTS.md", "harness.audit.json"],
+								"omittedContext": [],
+								"model": "jev-1.13.0",
+								"cached": false,
+								"usage": {
+									"input_tokens": 4870,
+									"output_tokens": 512
+								},
+								"error": "Source or supplied context changed before the review completed."
+							}
+						],
+						"usage": {
+							"input_tokens": 4870,
+							"output_tokens": 512
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "cleanCodeExitCode",
-				"type": "number"
+				"type": "number",
+				"description": "The process exit code: 0 for a dry run or when nothing blocks, 1 when there are static findings or a gate-mode file has violations, and 2 when the clean-code report is incomplete. Checks run in this order: dry run, incomplete report, static findings, then gate-mode violations, so an incomplete report returns 2 even when findings exist.",
+				"examples": [0, 1, 2]
 			},
 			{
 				"name": "renderCleanCode",
-				"type": "string"
+				"type": "string",
+				"description": "The plain-text review summary, with lines joined by newlines: a header, a rubric line, a coverage line, per-file results, excluded and unsupported paths, and an API usage line. Planned files appear only for dry-run reports, and only assessments whose status is violates or needs-review are printed.",
+				"examples": [
+					"Clean Code review (gate): violations\nRubric: clean-code-v1; model: jev-1.13.0; confidence threshold: 0.85\nCoverage: 1/1 reviewed; 0 excluded; 0 unsupported\nsrc/audit/development-tooling/cleanCodeRender.ts: violations\n  [focused-functions] violates; confidence 0.88; file-level\n    Extract independent tasks into clearly named functions without fragmenting an already coherent operation.\nAPI usage: 9120 input, 734 output tokens",
+					"Clean Code review (advisory): dry-run\nRubric: clean-code-v1; model: jev-1.13.0; confidence threshold: 0.85\nCoverage: 0/2 reviewed; 1 excluded; 1 unsupported\n  planned: src/audit/cleanCodeRender.ts\n  planned: src/audit/development-tooling/cleanCodeRender.ts\n  excluded: dist/ (Artifact directory or symlink)\n  unsupported: package.json\nAPI usage: 0 input, 0 output tokens",
+					"Clean Code review (advisory): incomplete\nRubric: clean-code-v1; model: jev-1.13.0; confidence threshold: 0.85\nCoverage: 0/1 reviewed; 0 excluded; 0 unsupported\nsrc/audit/development-tooling/cleanCodeRender.ts: incomplete\n  Source or supplied context changed before the review completed.\nAPI usage: 4870 input, 512 output tokens"
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "cleanCodeExitCode",
@@ -44,17 +490,196 @@
 					{
 						"name": "cleanCodeExitCode.result",
 						"type": "AuditResult",
-						"required": true
+						"required": true,
+						"description": "The audit result for one project run, with the static findings and coverage plus the optional clean-code report. cleanCode is set only when clean-code review ran (mode is not off), so when it is absent the exit code depends on the findings alone.",
+						"examples": [
+							{
+								"findings": [],
+								"coverage": {
+									"profile": "app",
+									"adapters": [
+										{
+											"id": "typescript",
+											"label": "TypeScript and JavaScript",
+											"extensions": [".ts", ".tsx", ".js", ".jsx"],
+											"optionalTools": ["eslint"],
+											"files": [
+												"src/audit/cleanCodeRender.ts",
+												"src/audit/development-tooling/cleanCodeRender.ts"
+											]
+										},
+										{
+											"id": "svelte",
+											"label": "Svelte",
+											"extensions": [".svelte"],
+											"optionalTools": ["svelte-check", "eslint"],
+											"files": []
+										},
+										{
+											"id": "sql",
+											"label": "SQL",
+											"extensions": [".sql"],
+											"optionalTools": ["sqlfluff"],
+											"files": []
+										},
+										{
+											"id": "shell",
+											"label": "Shell",
+											"extensions": [".sh"],
+											"optionalTools": ["shellcheck"],
+											"files": []
+										}
+									],
+									"coveredFiles": [
+										"src/audit/cleanCodeRender.ts",
+										"src/audit/development-tooling/cleanCodeRender.ts"
+									],
+									"ignoredPaths": ["dist/", "node_modules/"],
+									"ignoredFindings": [],
+									"unknownFiles": []
+								}
+							},
+							{
+								"findings": [
+									{
+										"path": "src/audit/development-tooling/reportLines.ts",
+										"rule": "function-name-pattern",
+										"message": "Function \"format_line\" should use camelCase."
+									}
+								],
+								"coverage": {
+									"profile": "app",
+									"adapters": [
+										{
+											"id": "typescript",
+											"label": "TypeScript and JavaScript",
+											"extensions": [".ts", ".tsx", ".js", ".jsx"],
+											"optionalTools": ["eslint"],
+											"files": [
+												"src/audit/cleanCodeRender.ts",
+												"src/audit/development-tooling/cleanCodeRender.ts",
+												"src/audit/development-tooling/reportLines.ts"
+											]
+										},
+										{
+											"id": "svelte",
+											"label": "Svelte",
+											"extensions": [".svelte"],
+											"optionalTools": ["svelte-check", "eslint"],
+											"files": []
+										},
+										{
+											"id": "sql",
+											"label": "SQL",
+											"extensions": [".sql"],
+											"optionalTools": ["sqlfluff"],
+											"files": []
+										},
+										{
+											"id": "shell",
+											"label": "Shell",
+											"extensions": [".sh"],
+											"optionalTools": ["shellcheck"],
+											"files": []
+										}
+									],
+									"coveredFiles": [
+										"src/audit/cleanCodeRender.ts",
+										"src/audit/development-tooling/cleanCodeRender.ts",
+										"src/audit/development-tooling/reportLines.ts"
+									],
+									"ignoredPaths": ["dist/", "node_modules/"],
+									"ignoredFindings": [],
+									"unknownFiles": []
+								}
+							},
+							{
+								"findings": [],
+								"coverage": {
+									"profile": "app",
+									"adapters": [
+										{
+											"id": "typescript",
+											"label": "TypeScript and JavaScript",
+											"extensions": [".ts", ".tsx", ".js", ".jsx"],
+											"optionalTools": ["eslint"],
+											"files": ["src/audit/development-tooling/cleanCodeRender.ts"]
+										},
+										{
+											"id": "svelte",
+											"label": "Svelte",
+											"extensions": [".svelte"],
+											"optionalTools": ["svelte-check", "eslint"],
+											"files": []
+										},
+										{
+											"id": "sql",
+											"label": "SQL",
+											"extensions": [".sql"],
+											"optionalTools": ["sqlfluff"],
+											"files": []
+										},
+										{
+											"id": "shell",
+											"label": "Shell",
+											"extensions": [".sh"],
+											"optionalTools": ["shellcheck"],
+											"files": []
+										}
+									],
+									"coveredFiles": ["src/audit/development-tooling/cleanCodeRender.ts"],
+									"ignoredPaths": ["dist/", "node_modules/"],
+									"ignoredFindings": [],
+									"unknownFiles": []
+								},
+								"cleanCode": {
+									"mode": "advisory",
+									"status": "incomplete",
+									"rubricVersion": "clean-code-v1",
+									"requestedModel": "jev-1.13.0",
+									"minConfidence": 0.85,
+									"coverage": {
+										"selectedFiles": ["src/audit/development-tooling/cleanCodeRender.ts"],
+										"excludedPaths": [],
+										"unsupportedFiles": []
+									},
+									"files": [
+										{
+											"path": "src/audit/development-tooling/cleanCodeRender.ts",
+											"contentHash": "9b4e21d75c03a8f6e17d9b2c4a68f0e3c9d1b57a2f8e6c01b3a7d94e18c5f2a6",
+											"contextHash": "7d20fb93a4c61e580f9b3d27e68a5c1d4b72e0f9d1c59a368e0f7b423a6d1c9e",
+											"status": "incomplete",
+											"assessments": [],
+											"contextPaths": ["AGENTS.md", "harness.audit.json"],
+											"omittedContext": [],
+											"model": "jev-1.13.0",
+											"cached": false,
+											"usage": {
+												"input_tokens": 4870,
+												"output_tokens": 512
+											},
+											"error": "Source or supplied context changed before the review completed."
+										}
+									],
+									"usage": {
+										"input_tokens": 4870,
+										"output_tokens": 512
+									}
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "cleanCodeExitCode",
-						"type": "number"
+						"type": "number",
+						"description": "The process exit code: 0 for a dry run or when nothing blocks, 1 when there are static findings or a gate-mode file has violations, and 2 when the clean-code report is incomplete. Checks run in this order: dry run, incomplete report, static findings, then gate-mode violations, so an incomplete report returns 2 even when findings exist.",
+						"examples": [0, 1, 2]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderCleanCode",
@@ -62,17 +687,284 @@
 					{
 						"name": "renderCleanCode.report",
 						"type": "CleanCodeReport",
-						"required": true
+						"required": true,
+						"description": "The clean-code report built by reviewCleanCode, with the mode, status, rubric and model settings, coverage, per-file reviews and total token usage. A dry-run report still carries empty files and zero usage, because the renderer reads those fields directly.",
+						"examples": [
+							{
+								"mode": "gate",
+								"status": "violations",
+								"rubricVersion": "clean-code-v1",
+								"requestedModel": "jev-1.13.0",
+								"minConfidence": 0.85,
+								"coverage": {
+									"selectedFiles": ["src/audit/development-tooling/cleanCodeRender.ts"],
+									"excludedPaths": [],
+									"unsupportedFiles": []
+								},
+								"files": [
+									{
+										"path": "src/audit/development-tooling/cleanCodeRender.ts",
+										"contentHash": "6f1c0a92b7d34e85c2a9f0e16d8b4c73a5e2f9d10c6b8a47e3d5f2a9c0b1e864",
+										"contextHash": "2e9a7c4f0b318d6ed4f25a1c98e7b03f6a1d5c2ef4b08e973c6a1d0be25f9a48",
+										"status": "violations",
+										"assessments": [
+											{
+												"type": "choice",
+												"choice": "meets",
+												"confidence": 0.93,
+												"probabilities": {
+													"meets": 0.93,
+													"violates": 0.03,
+													"not_applicable": 0.01,
+													"insufficient_context": 0.03
+												},
+												"principle": "meaningful-names",
+												"title": "Meaningful names",
+												"guidance": "Name identifiers after their domain purpose; retain conventional framework and short local names when clear.",
+												"status": "meets"
+											},
+											{
+												"type": "choice",
+												"choice": "meets",
+												"confidence": 0.9,
+												"probabilities": {
+													"meets": 0.9,
+													"violates": 0.05,
+													"not_applicable": 0.02,
+													"insufficient_context": 0.03
+												},
+												"principle": "single-responsibility",
+												"title": "Focused responsibility",
+												"guidance": "Extract unrelated responsibilities behind named boundaries; keep tightly related behavior together.",
+												"status": "meets"
+											},
+											{
+												"type": "choice",
+												"choice": "violates",
+												"confidence": 0.88,
+												"probabilities": {
+													"meets": 0.06,
+													"violates": 0.88,
+													"not_applicable": 0.02,
+													"insufficient_context": 0.04
+												},
+												"principle": "focused-functions",
+												"title": "Focused functions",
+												"guidance": "Extract independent tasks into clearly named functions without fragmenting an already coherent operation.",
+												"status": "violates"
+											},
+											{
+												"type": "choice",
+												"choice": "meets",
+												"confidence": 0.87,
+												"probabilities": {
+													"meets": 0.87,
+													"violates": 0.08,
+													"not_applicable": 0.02,
+													"insufficient_context": 0.03
+												},
+												"principle": "abstraction-level",
+												"title": "Consistent abstraction",
+												"guidance": "Move low-level details behind a named operation when they obscure orchestration.",
+												"status": "meets"
+											},
+											{
+												"type": "choice",
+												"choice": "meets",
+												"confidence": 0.95,
+												"probabilities": {
+													"meets": 0.95,
+													"violates": 0.02,
+													"not_applicable": 0.01,
+													"insufficient_context": 0.02
+												},
+												"principle": "duplication",
+												"title": "Avoid needless duplication",
+												"guidance": "Unify repeated domain knowledge; similar syntax or independent test examples alone are not a violation.",
+												"status": "meets"
+											},
+											{
+												"type": "choice",
+												"choice": "not_applicable",
+												"confidence": 0.96,
+												"probabilities": {
+													"meets": 0.01,
+													"violates": 0.01,
+													"not_applicable": 0.96,
+													"insufficient_context": 0.02
+												},
+												"principle": "side-effects",
+												"title": "Explicit side effects",
+												"guidance": "Make side effects explicit in names and contracts; ordinary UI event handlers and command operations may mutate.",
+												"status": "not-applicable"
+											},
+											{
+												"type": "choice",
+												"choice": "not_applicable",
+												"confidence": 0.9,
+												"probabilities": {
+													"meets": 0.03,
+													"violates": 0.01,
+													"not_applicable": 0.9,
+													"insufficient_context": 0.06
+												},
+												"principle": "error-handling",
+												"title": "Useful error handling",
+												"guidance": "Handle or propagate failures intentionally with useful context; use the language and project error conventions.",
+												"status": "not-applicable"
+											},
+											{
+												"type": "choice",
+												"choice": "meets",
+												"confidence": 0.88,
+												"probabilities": {
+													"meets": 0.88,
+													"violates": 0.04,
+													"not_applicable": 0.05,
+													"insufficient_context": 0.03
+												},
+												"principle": "comments",
+												"title": "Useful comments",
+												"guidance": "Explain intent and constraints; remove misleading comments and obsolete commented-out code.",
+												"status": "meets"
+											},
+											{
+												"type": "choice",
+												"choice": "meets",
+												"confidence": 0.9,
+												"probabilities": {
+													"meets": 0.9,
+													"violates": 0.04,
+													"not_applicable": 0.02,
+													"insufficient_context": 0.04
+												},
+												"principle": "boundaries",
+												"title": "Clear dependency boundaries",
+												"guidance": "Keep dependencies explicit and avoid exposing or depending on unrelated internals; do not require classes.",
+												"status": "meets"
+											},
+											{
+												"type": "choice",
+												"choice": "meets",
+												"confidence": 0.92,
+												"probabilities": {
+													"meets": 0.92,
+													"violates": 0.02,
+													"not_applicable": 0.03,
+													"insufficient_context": 0.03
+												},
+												"principle": "testability",
+												"title": "Testable behavior",
+												"guidance": "Test observable success and failure behavior; avoid assertions that only mirror implementation.",
+												"status": "meets"
+											},
+											{
+												"type": "choice",
+												"choice": "not_applicable",
+												"confidence": 0.96,
+												"probabilities": {
+													"meets": 0.01,
+													"violates": 0.01,
+													"not_applicable": 0.96,
+													"insufficient_context": 0.02
+												},
+												"principle": "async-boundaries",
+												"title": "Clear asynchronous behavior",
+												"guidance": "Make completion, cancellation and shared-state ownership explicit where concurrent behavior exists.",
+												"status": "not-applicable"
+											}
+										],
+										"contextPaths": ["AGENTS.md", "harness.audit.json"],
+										"omittedContext": [],
+										"model": "jev-1.13.0",
+										"cached": false,
+										"usage": {
+											"input_tokens": 9120,
+											"output_tokens": 734
+										}
+									}
+								],
+								"usage": {
+									"input_tokens": 9120,
+									"output_tokens": 734
+								}
+							},
+							{
+								"mode": "advisory",
+								"status": "dry-run",
+								"rubricVersion": "clean-code-v1",
+								"requestedModel": "jev-1.13.0",
+								"minConfidence": 0.85,
+								"coverage": {
+									"selectedFiles": [
+										"src/audit/cleanCodeRender.ts",
+										"src/audit/development-tooling/cleanCodeRender.ts"
+									],
+									"excludedPaths": [
+										{
+											"path": "dist/",
+											"reason": "Artifact directory or symlink"
+										}
+									],
+									"unsupportedFiles": ["package.json"]
+								},
+								"files": [],
+								"usage": {
+									"input_tokens": 0,
+									"output_tokens": 0
+								}
+							},
+							{
+								"mode": "advisory",
+								"status": "incomplete",
+								"rubricVersion": "clean-code-v1",
+								"requestedModel": "jev-1.13.0",
+								"minConfidence": 0.85,
+								"coverage": {
+									"selectedFiles": ["src/audit/development-tooling/cleanCodeRender.ts"],
+									"excludedPaths": [],
+									"unsupportedFiles": []
+								},
+								"files": [
+									{
+										"path": "src/audit/development-tooling/cleanCodeRender.ts",
+										"contentHash": "9b4e21d75c03a8f6e17d9b2c4a68f0e3c9d1b57a2f8e6c01b3a7d94e18c5f2a6",
+										"contextHash": "7d20fb93a4c61e580f9b3d27e68a5c1d4b72e0f9d1c59a368e0f7b423a6d1c9e",
+										"status": "incomplete",
+										"assessments": [],
+										"contextPaths": ["AGENTS.md", "harness.audit.json"],
+										"omittedContext": [],
+										"model": "jev-1.13.0",
+										"cached": false,
+										"usage": {
+											"input_tokens": 4870,
+											"output_tokens": 512
+										},
+										"error": "Source or supplied context changed before the review completed."
+									}
+								],
+								"usage": {
+									"input_tokens": 4870,
+									"output_tokens": 512
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderCleanCode",
-						"type": "string"
+						"type": "string",
+						"description": "The plain-text review summary, with lines joined by newlines: a header, a rubric line, a coverage line, per-file results, excluded and unsupported paths, and an API usage line. Planned files appear only for dry-run reports, and only assessments whose status is violates or needs-review are printed.",
+						"examples": [
+							"Clean Code review (gate): violations\nRubric: clean-code-v1; model: jev-1.13.0; confidence threshold: 0.85\nCoverage: 1/1 reviewed; 0 excluded; 0 unsupported\nsrc/audit/development-tooling/cleanCodeRender.ts: violations\n  [focused-functions] violates; confidence 0.88; file-level\n    Extract independent tasks into clearly named functions without fragmenting an already coherent operation.\nAPI usage: 9120 input, 734 output tokens",
+							"Clean Code review (advisory): dry-run\nRubric: clean-code-v1; model: jev-1.13.0; confidence threshold: 0.85\nCoverage: 0/2 reviewed; 1 excluded; 1 unsupported\n  planned: src/audit/cleanCodeRender.ts\n  planned: src/audit/development-tooling/cleanCodeRender.ts\n  excluded: dist/ (Artifact directory or symlink)\n  unsupported: package.json\nAPI usage: 0 input, 0 output tokens",
+							"Clean Code review (advisory): incomplete\nRubric: clean-code-v1; model: jev-1.13.0; confidence threshold: 0.85\nCoverage: 0/1 reviewed; 0 excluded; 0 unsupported\nsrc/audit/development-tooling/cleanCodeRender.ts: incomplete\n  Source or supplied context changed before the review completed.\nAPI usage: 4870 input, 512 output tokens"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
