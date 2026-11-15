@@ -63,105 +63,243 @@
 				"name": "writingDeclared.config",
 				"type": "string | undefined",
 				"required": true,
-				"description": "Verification-config JSON text to check for an applicable numeric writing version."
+				"description": "The verification config as JSON text, in which a repository declares its `writing` version in harness.verify.json; it decides only whether a revision declares the limits at all. Undefined is read as `{}`, and text that cannot be parsed or a `writing` value that is not a number counts as no declaration.",
+				"examples": ["{\"writing\": 2}", "{\"writing\": 1}", "{}"]
 			},
 			{
 				"name": "writingPolicy.version",
 				"type": "WritingVersion",
 				"required": true,
-				"description": "Supported writing-policy version, 1 or 2."
+				"description": "The writing-policy version, 1 or 2, whose attempt word limit writingPolicy returns: 20 words under version 1 and 15 under version 2, with the same character limits under both. Any other value is not checked, so the attempt word count it yields is undefined.",
+				"examples": [2, 1]
 			},
 			{
 				"name": "writingHeld.config",
 				"type": "string | undefined",
 				"required": true,
-				"description": "Verification-config JSON text, or undefined when absent."
+				"description": "The verification config as JSON text, or undefined when absent, which is read as `{}`. It sets the version a revision is held to, and text that cannot be parsed, or a `writing` value that is not a number, yields null.",
+				"examples": ["{\"writing\": 2}", "{\"writing\": 1}", "{}"]
 			},
 			{
 				"name": "writingCount.text",
 				"type": "string",
 				"required": true,
-				"description": "Text to trim, normalize line endings and count."
+				"description": "The note or commit text to count, which is trimmed and has its CRLF and lone CR line endings normalized to LF before counting. Text that is empty after trimming counts as 0 words and 0 characters, and writingCount itself applies no limit.",
+				"examples": [
+					"Fix stale evidence-grid cache after rename",
+					"Keep the grid readable on narrow screens\r\n\r\nRows wrap instead of scrolling sideways.",
+					""
+				]
 			},
 			{
 				"name": "writingProblems.field",
 				"type": "string",
 				"required": true,
-				"description": "Field label to include in any violation message."
+				"description": "The label that begins each violation message, used exactly as given; explanationProblems passes `behavior`, `simplification attempt` and `performance attempt`. It appears in the empty-field message and in each word or character message.",
+				"examples": ["behavior", "simplification attempt", "performance attempt"]
 			},
 			{
 				"name": "writingProblems.text",
 				"type": "string",
 				"required": true,
-				"description": "Text to measure against the supplied bounds."
+				"description": "The text to measure against the bounds, counted the way writingCount counts it. Text that is empty after trimming yields only the empty-field message, and a word or character count above its bound yields a message that gives the count and the limit.",
+				"examples": [
+					"Hide the empty evidence rows so the grid fits the viewport.",
+					"",
+					"Reuse the row component for both evidence grids."
+				]
 			},
 			{
 				"name": "writingProblems.limit",
 				"type": "WritingLimit",
 				"required": true,
-				"description": "Character limit and optional word limit; null word limit means no word-count cap."
+				"description": "The bounds to check: characters is the most Unicode code points allowed, and words is the most whitespace-separated words allowed, where null means no word-count cap. A count equal to its bound is within it, and only a count above a bound yields a message.",
+				"examples": [
+					{
+						"words": 30,
+						"characters": 200
+					},
+					{
+						"words": 15,
+						"characters": 140
+					},
+					{
+						"words": null,
+						"characters": 72
+					}
+				]
 			},
 			{
 				"name": "explanationProblems.reason",
 				"type": "WrittenReason",
 				"required": true,
-				"description": "Unit/symbol reason with behavior and simplification/performance attempt text."
+				"description": "The recorded reason to check: its unit and symbol name what it explains, where * means the whole unit, and its behavior note and two attempts are the texts measured. Each text is measured against the limits of the version passed alongside it, though only the attempt word count changes between versions.",
+				"examples": [
+					{
+						"unit": "function.writing-limits",
+						"symbol": "writingHeld",
+						"behavior": "Reads the writing version a config declares and holds the revision to the newest version not above it.",
+						"simplification": {
+							"attempt": "Search the version list from newest to oldest."
+						},
+						"performance": {
+							"attempt": "Parse the verification config once per call."
+						}
+					},
+					{
+						"unit": "function.writing-limits",
+						"symbol": "*",
+						"behavior": "Counts note and commit text one way and holds each revision to its declared writing version.",
+						"simplification": {
+							"attempt": "Share one counting path for notes and commits."
+						},
+						"performance": {
+							"attempt": "Count each text once per check."
+						}
+					}
+				]
 			},
 			{
 				"name": "explanationProblems.version",
 				"type": "WritingVersion",
 				"required": true,
-				"description": "Policy version of the revision the reason explains."
+				"description": "The writing-policy version of the revision the reason explains, taken as given rather than read from the reason itself. It sets the word limit of each attempt: 20 words under version 1 and 15 under version 2.",
+				"examples": [2, 1]
 			}
 		],
 		"outputs": [
 			{
 				"name": "writingVersions",
 				"type": "unknown",
-				"description": "Supported writing versions 1 and 2."
+				"description": "The supported writing versions, 1 and 2, which a repository can declare as `writing` in harness.verify.json. writingHeld searches this list from the newest version down, so a declaration is held to the highest version in it that is not above the declared number.",
+				"examples": [
+					[1, 2]
+				]
 			},
 			{
 				"name": "writingVersion",
 				"type": "WritingVersion",
-				"description": "Current writing version, 2."
+				"description": "The newest writing version, 2, which a repository declares to be held to the limits as they are now. A declaration above 2 is held to this version, never to an older one.",
+				"examples": [2]
 			},
 			{
 				"name": "writingLimits",
 				"type": "unknown",
-				"description": "Shared bounds: behavior 30 words/200 characters; legacy attempt 20/140; subject 72 characters; body 60/400."
+				"description": "The shared bounds: behavior 30 words and 200 characters, attempt 20 words and 140 characters, subject 72 characters with no word cap, and body 60 words and 400 characters. These are the version 1 bounds, and writingPolicy builds a new object from them that sets the attempt words to 15 for version 2, leaving this object unchanged.",
+				"examples": [
+					{
+						"behavior": {
+							"words": 30,
+							"characters": 200
+						},
+						"attempt": {
+							"words": 20,
+							"characters": 140
+						},
+						"subject": {
+							"words": null,
+							"characters": 72
+						},
+						"body": {
+							"words": 60,
+							"characters": 400
+						}
+					}
+				]
 			},
 			{
 				"name": "writingPolicy",
 				"type": "WritingPolicy",
-				"description": "Bounds for the requested version, reducing attempt words to 15 under version 2."
+				"description": "The limits of one writing-policy version: the shared bounds of writingLimits with the attempt word count set to 20 under version 1 and 15 under version 2. Each call returns a new object, and the character limits are the same under both versions.",
+				"examples": [
+					{
+						"behavior": {
+							"words": 30,
+							"characters": 200
+						},
+						"attempt": {
+							"words": 15,
+							"characters": 140
+						},
+						"subject": {
+							"words": null,
+							"characters": 72
+						},
+						"body": {
+							"words": 60,
+							"characters": 400
+						}
+					},
+					{
+						"behavior": {
+							"words": 30,
+							"characters": 200
+						},
+						"attempt": {
+							"words": 20,
+							"characters": 140
+						},
+						"subject": {
+							"words": null,
+							"characters": 72
+						},
+						"body": {
+							"words": 60,
+							"characters": 400
+						}
+					}
+				]
 			},
 			{
 				"name": "writingHeld",
 				"type": "WritingVersion | null",
-				"description": "Highest supported version not above the numeric declaration, or null for absent/invalid/below-one declarations; future versions use the newest supported policy."
+				"description": "The version the config holds a revision to: the highest of writingVersions not above its numeric `writing` value, so 1 for values from 1 up to but not including 2 and 2 for values of 2 or more. It is null when the config is absent or cannot be parsed, when `writing` is not a number, or when the value is below 1.",
+				"examples": [2, 1, null]
 			},
 			{
 				"name": "writingDeclared",
 				"type": "boolean",
-				"description": "True when writingHeld finds an applicable policy."
+				"description": "True when writingHeld returns a version, which is when the config's `writing` value is a number of 1 or more, and false otherwise, including when the config is absent or cannot be parsed. It says whether a revision declares the limits at all, in any version.",
+				"examples": [true, false]
 			},
 			{
 				"name": "writingCount",
 				"type": "{ words: number; characters: number }",
-				"description": "Whitespace-delimited words and Unicode-code-point characters after trimming and CR/LF normalization."
+				"description": "The count of whitespace-separated words and of Unicode code points in the text, after trimming and normalizing CRLF and lone CR line endings to LF. An empty text after trimming counts 0 words and 0 characters.",
+				"examples": [
+					{
+						"words": 6,
+						"characters": 42
+					},
+					{
+						"words": 0,
+						"characters": 0
+					}
+				]
 			},
 			{
 				"name": "writingProblems",
 				"type": "string[]",
-				"description": "Empty-field or exceeded word/character messages, or an empty list when within bounds."
+				"description": "The violation messages for one text: a single empty-field message when the text is empty after trimming, otherwise one message for the word count when it is over the word limit and one for the character count when it is over the character limit. An empty list means the text is within its bounds.",
+				"examples": [
+					["behavior has 31 words; the limit is 30."],
+					["performance attempt is empty."],
+					[]
+				]
 			},
 			{
 				"name": "explanationProblems",
 				"type": "string[]",
-				"description": "Behavior and attempt violations prefixed with unit and symbol, using whole-unit naming for *."
+				"description": "The empty and over-limit messages for the behavior note and two attempts of one reason, judged under the version given, each prefixed with the unit and symbol, or with the unit alone when the symbol is `*`. An empty list means no part of the reason is empty or over its limit.",
+				"examples": [
+					["function.writing-limits writingHeld: behavior has 31 words; the limit is 30."],
+					["function.writing-limits: simplification attempt has 17 words; the limit is 15."],
+					[]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "writingDeclared",
@@ -170,18 +308,20 @@
 						"name": "writingDeclared.config",
 						"type": "string | undefined",
 						"required": true,
-						"description": "Verification-config JSON text to check for an applicable numeric writing version."
+						"description": "The verification config as JSON text, in which a repository declares its `writing` version in harness.verify.json; it decides only whether a revision declares the limits at all. Undefined is read as `{}`, and text that cannot be parsed or a `writing` value that is not a number counts as no declaration.",
+						"examples": ["{\"writing\": 2}", "{\"writing\": 1}", "{}"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "writingDeclared",
 						"type": "boolean",
-						"description": "True when writingHeld finds an applicable policy."
+						"description": "True when writingHeld returns a version, which is when the config's `writing` value is a number of 1 or more, and false otherwise, including when the config is absent or cannot be parsed. It says whether a revision declares the limits at all, in any version.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "writingPolicy",
@@ -190,18 +330,57 @@
 						"name": "writingPolicy.version",
 						"type": "WritingVersion",
 						"required": true,
-						"description": "Supported writing-policy version, 1 or 2."
+						"description": "The writing-policy version, 1 or 2, whose attempt word limit writingPolicy returns: 20 words under version 1 and 15 under version 2, with the same character limits under both. Any other value is not checked, so the attempt word count it yields is undefined.",
+						"examples": [2, 1]
 					}
 				],
 				"outputs": [
 					{
 						"name": "writingPolicy",
 						"type": "WritingPolicy",
-						"description": "Bounds for the requested version, reducing attempt words to 15 under version 2."
+						"description": "The limits of one writing-policy version: the shared bounds of writingLimits with the attempt word count set to 20 under version 1 and 15 under version 2. Each call returns a new object, and the character limits are the same under both versions.",
+						"examples": [
+							{
+								"behavior": {
+									"words": 30,
+									"characters": 200
+								},
+								"attempt": {
+									"words": 15,
+									"characters": 140
+								},
+								"subject": {
+									"words": null,
+									"characters": 72
+								},
+								"body": {
+									"words": 60,
+									"characters": 400
+								}
+							},
+							{
+								"behavior": {
+									"words": 30,
+									"characters": 200
+								},
+								"attempt": {
+									"words": 20,
+									"characters": 140
+								},
+								"subject": {
+									"words": null,
+									"characters": 72
+								},
+								"body": {
+									"words": 60,
+									"characters": 400
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "writingHeld",
@@ -210,18 +389,20 @@
 						"name": "writingHeld.config",
 						"type": "string | undefined",
 						"required": true,
-						"description": "Verification-config JSON text, or undefined when absent."
+						"description": "The verification config as JSON text, or undefined when absent, which is read as `{}`. It sets the version a revision is held to, and text that cannot be parsed, or a `writing` value that is not a number, yields null.",
+						"examples": ["{\"writing\": 2}", "{\"writing\": 1}", "{}"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "writingHeld",
 						"type": "WritingVersion | null",
-						"description": "Highest supported version not above the numeric declaration, or null for absent/invalid/below-one declarations; future versions use the newest supported policy."
+						"description": "The version the config holds a revision to: the highest of writingVersions not above its numeric `writing` value, so 1 for values from 1 up to but not including 2 and 2 for values of 2 or more. It is null when the config is absent or cannot be parsed, when `writing` is not a number, or when the value is below 1.",
+						"examples": [2, 1, null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "writingCount",
@@ -230,18 +411,33 @@
 						"name": "writingCount.text",
 						"type": "string",
 						"required": true,
-						"description": "Text to trim, normalize line endings and count."
+						"description": "The note or commit text to count, which is trimmed and has its CRLF and lone CR line endings normalized to LF before counting. Text that is empty after trimming counts as 0 words and 0 characters, and writingCount itself applies no limit.",
+						"examples": [
+							"Fix stale evidence-grid cache after rename",
+							"Keep the grid readable on narrow screens\r\n\r\nRows wrap instead of scrolling sideways.",
+							""
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "writingCount",
 						"type": "{ words: number; characters: number }",
-						"description": "Whitespace-delimited words and Unicode-code-point characters after trimming and CR/LF normalization."
+						"description": "The count of whitespace-separated words and of Unicode code points in the text, after trimming and normalizing CRLF and lone CR line endings to LF. An empty text after trimming counts 0 words and 0 characters.",
+						"examples": [
+							{
+								"words": 6,
+								"characters": 42
+							},
+							{
+								"words": 0,
+								"characters": 0
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "writingProblems",
@@ -250,30 +446,55 @@
 						"name": "writingProblems.field",
 						"type": "string",
 						"required": true,
-						"description": "Field label to include in any violation message."
+						"description": "The label that begins each violation message, used exactly as given; explanationProblems passes `behavior`, `simplification attempt` and `performance attempt`. It appears in the empty-field message and in each word or character message.",
+						"examples": ["behavior", "simplification attempt", "performance attempt"]
 					},
 					{
 						"name": "writingProblems.text",
 						"type": "string",
 						"required": true,
-						"description": "Text to measure against the supplied bounds."
+						"description": "The text to measure against the bounds, counted the way writingCount counts it. Text that is empty after trimming yields only the empty-field message, and a word or character count above its bound yields a message that gives the count and the limit.",
+						"examples": [
+							"Hide the empty evidence rows so the grid fits the viewport.",
+							"",
+							"Reuse the row component for both evidence grids."
+						]
 					},
 					{
 						"name": "writingProblems.limit",
 						"type": "WritingLimit",
 						"required": true,
-						"description": "Character limit and optional word limit; null word limit means no word-count cap."
+						"description": "The bounds to check: characters is the most Unicode code points allowed, and words is the most whitespace-separated words allowed, where null means no word-count cap. A count equal to its bound is within it, and only a count above a bound yields a message.",
+						"examples": [
+							{
+								"words": 30,
+								"characters": 200
+							},
+							{
+								"words": 15,
+								"characters": 140
+							},
+							{
+								"words": null,
+								"characters": 72
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "writingProblems",
 						"type": "string[]",
-						"description": "Empty-field or exceeded word/character messages, or an empty list when within bounds."
+						"description": "The violation messages for one text: a single empty-field message when the text is empty after trimming, otherwise one message for the word count when it is over the word limit and one for the character count when it is over the character limit. An empty list means the text is within its bounds.",
+						"examples": [
+							["behavior has 31 words; the limit is 30."],
+							["performance attempt is empty."],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "explanationProblems",
@@ -282,24 +503,54 @@
 						"name": "explanationProblems.reason",
 						"type": "WrittenReason",
 						"required": true,
-						"description": "Unit/symbol reason with behavior and simplification/performance attempt text."
+						"description": "The recorded reason to check: its unit and symbol name what it explains, where * means the whole unit, and its behavior note and two attempts are the texts measured. Each text is measured against the limits of the version passed alongside it, though only the attempt word count changes between versions.",
+						"examples": [
+							{
+								"unit": "function.writing-limits",
+								"symbol": "writingHeld",
+								"behavior": "Reads the writing version a config declares and holds the revision to the newest version not above it.",
+								"simplification": {
+									"attempt": "Search the version list from newest to oldest."
+								},
+								"performance": {
+									"attempt": "Parse the verification config once per call."
+								}
+							},
+							{
+								"unit": "function.writing-limits",
+								"symbol": "*",
+								"behavior": "Counts note and commit text one way and holds each revision to its declared writing version.",
+								"simplification": {
+									"attempt": "Share one counting path for notes and commits."
+								},
+								"performance": {
+									"attempt": "Count each text once per check."
+								}
+							}
+						]
 					},
 					{
 						"name": "explanationProblems.version",
 						"type": "WritingVersion",
 						"required": true,
-						"description": "Policy version of the revision the reason explains."
+						"description": "The writing-policy version of the revision the reason explains, taken as given rather than read from the reason itself. It sets the word limit of each attempt: 20 words under version 1 and 15 under version 2.",
+						"examples": [2, 1]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explanationProblems",
 						"type": "string[]",
-						"description": "Behavior and attempt violations prefixed with unit and symbol, using whole-unit naming for *."
+						"description": "The empty and over-limit messages for the behavior note and two attempts of one reason, judged under the version given, each prefixed with the unit and symbol, or with the unit alone when the symbol is `*`. An empty list means no part of the reason is empty or over its limit.",
+						"examples": [
+							["function.writing-limits writingHeld: behavior has 31 words; the limit is 30."],
+							["function.writing-limits: simplification attempt has 17 words; the limit is 15."],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
