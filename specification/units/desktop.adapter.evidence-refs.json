@@ -41,39 +41,88 @@
 			{
 				"name": "EvidenceRefsAdapter.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The repository root passed to Git ref listing and ancestry checks. The constructor stores this path without normalizing or validating it.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+				]
 			},
 			{
 				"name": "EvidenceRefsAdapter.pinned.wanted",
 				"type": "PinnedRevisions",
-				"required": true
+				"required": true,
+				"description": "The requested notes and evidence revisions for a read, each represented by a commit hash or null. Each value is accepted only when it matches its current ref tip or is an ancestor of that tip.",
+				"examples": [
+					{
+						"notesRevision": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+						"evidenceRevision": "fedcba0987654321fedcba0987654321fedcba09"
+					},
+					{
+						"notesRevision": null,
+						"evidenceRevision": null
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "notesRef",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The fixed Git reference name from which Harness notes revisions are read.",
+				"examples": ["refs/notes/harness"]
 			},
 			{
 				"name": "evidenceRef",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The fixed Git reference name from which evidence revisions are read.",
+				"examples": ["refs/heads/harness-evidence"]
 			},
 			{
 				"name": "EvidenceRefsAdapter.current",
-				"type": "Promise<CurrentRefs>"
+				"type": "Promise<CurrentRefs>",
+				"description": "A single ref-list snapshot containing the notes and evidence tip commits, using null when either ref is absent, and a SHA-256 digest of the raw listing. The digest fingerprints the listing, which also includes refs under refs/harness/, and is not a commit id.",
+				"examples": [
+					{
+						"notesRevision": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+						"evidenceRevision": "fedcba0987654321fedcba0987654321fedcba09",
+						"digest": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+					},
+					{
+						"notesRevision": null,
+						"evidenceRevision": null,
+						"digest": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
+					}
+				]
 			},
 			{
 				"name": "EvidenceRefsAdapter.pinned",
-				"type": "Promise<PinnedRevisions>"
+				"type": "Promise<PinnedRevisions>",
+				"description": "The requested notes and evidence revisions after validation against their current ref tips and ancestry. The promise rejects with an Error if either requested revision is not held by its corresponding ref.",
+				"examples": [
+					{
+						"notesRevision": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+						"evidenceRevision": "fedcba0987654321fedcba0987654321fedcba09"
+					},
+					{
+						"notesRevision": null,
+						"evidenceRevision": null
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "pin-not-held",
-				"type": "refused",
-				"description": "A repeated notes or evidence revision that its ref never held."
+				"type": "thrown",
+				"description": "The adapter throws an Error when a requested notes or evidence revision is neither the current corresponding ref tip nor an ancestor commit reachable from that tip."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by EvidenceRefsAdapter.held when a requested revision does not equal its corresponding current ref tip and is not a commit ancestor of that tip; the message identifies the notes or evidence ref."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "EvidenceRefsAdapter.current",
@@ -81,11 +130,24 @@
 				"outputs": [
 					{
 						"name": "EvidenceRefsAdapter.current",
-						"type": "Promise<CurrentRefs>"
+						"type": "Promise<CurrentRefs>",
+						"description": "A single ref-list snapshot containing the notes and evidence tip commits, using null when either ref is absent, and a SHA-256 digest of the raw listing. The digest fingerprints the listing, which also includes refs under refs/harness/, and is not a commit id.",
+						"examples": [
+							{
+								"notesRevision": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+								"evidenceRevision": "fedcba0987654321fedcba0987654321fedcba09",
+								"digest": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+							},
+							{
+								"notesRevision": null,
+								"evidenceRevision": null,
+								"digest": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "EvidenceRefsAdapter.pinned",
@@ -93,17 +155,50 @@
 					{
 						"name": "EvidenceRefsAdapter.pinned.wanted",
 						"type": "PinnedRevisions",
-						"required": true
+						"required": true,
+						"description": "The requested notes and evidence revisions for a read, each represented by a commit hash or null. Each value is accepted only when it matches its current ref tip or is an ancestor of that tip.",
+						"examples": [
+							{
+								"notesRevision": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+								"evidenceRevision": "fedcba0987654321fedcba0987654321fedcba09"
+							},
+							{
+								"notesRevision": null,
+								"evidenceRevision": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EvidenceRefsAdapter.pinned",
-						"type": "Promise<PinnedRevisions>"
+						"type": "Promise<PinnedRevisions>",
+						"description": "The requested notes and evidence revisions after validation against their current ref tips and ancestry. The promise rejects with an Error if either requested revision is not held by its corresponding ref.",
+						"examples": [
+							{
+								"notesRevision": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+								"evidenceRevision": "fedcba0987654321fedcba0987654321fedcba09"
+							},
+							{
+								"notesRevision": null,
+								"evidenceRevision": null
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "pin-not-held",
+						"type": "thrown",
+						"description": "The adapter throws an Error when a requested notes or evidence revision is neither the current corresponding ref tip nor an ancestor commit reachable from that tip."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by EvidenceRefsAdapter.held when a requested revision does not equal its corresponding current ref tip and is not a commit ancestor of that tip; the message identifies the notes or evidence ref."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -113,17 +208,22 @@
 					{
 						"name": "EvidenceRefsAdapter.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The repository root passed to Git ref listing and ancestry checks. The constructor stores this path without normalizing or validating it.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EvidenceRefsAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The EvidenceRefsAdapter instance that retains the repository root for later ref reads and ancestry checks."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
