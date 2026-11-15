@@ -12,7 +12,7 @@ import {
 	toBase64Url,
 	toHex
 } from '../../src/utils/remoteBytes';
-import { stableJson } from '../../src/services/wire-session-service/remoteBytes';
+import { stableJson } from '../../src/services/networking-security/wire-session-service/remoteBytes';
 
 test('text and base64 encodings round-trip, base64url without padding', () => {
 	expect(bytesText(remoteBytes('héllo ✓'))).toBe('héllo ✓');

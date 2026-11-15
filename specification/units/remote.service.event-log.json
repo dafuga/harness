@@ -10,8 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/remote/src/services/networking-security/wire-session-service/EventLogService.ts",
-			"packages/remote/src/services/networking-security/wire-session-service/EventLogService.types.ts",
-			"packages/remote/src/services/wire-session-service/EventLogService.ts"
+			"packages/remote/src/services/networking-security/wire-session-service/EventLogService.types.ts"
 		],
 		"symbols": [
 			"EventLogService",
@@ -20,8 +19,7 @@
 			"EventLogService.append",
 			"EventLogService.since",
 			"EventReplay",
-			"EventReplay",
-			"EventLogService"
+			"EventReplay"
 		]
 	},
 	"contract": {
