@@ -18,56 +18,83 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "SimulatorPage.constructor.simulator",
 				"type": "{ socketPath: string; runtime: string }",
-				"required": true
+				"required": true,
+				"description": "The simulator socket path and runtime are stored by the page helper and passed to appium-remote-debugger when it connects. The implementation does not validate either string.",
+				"examples": [
+					{
+						"socketPath": "/tmp/ios-simulator-webkit.sock",
+						"runtime": "18.5"
+					}
+				]
 			},
 			{
 				"name": "SimulatorPage.evaluate.expression",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "JavaScript appended after pagePrelude and executed in the selected app page. It is retried after connection or execution failures, up to eight attempts.",
+				"examples": [
+					"return document.title;",
+					"return document.querySelector('main')?.textContent;"
+				]
 			},
 			{
 				"name": "SimulatorPage.until.expression",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "JavaScript appended after pagePrelude and reevaluated through evaluate while waiting. It uses evaluate's retry behavior and must return text containing wanted for a match.",
+				"examples": [
+					"return document.title;",
+					"return document.querySelector('main')?.textContent;"
+				]
 			},
 			{
 				"name": "SimulatorPage.until.wanted",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Substring that must occur in the text returned by evaluate for until to resolve. Matching uses case-sensitive String.includes.",
+				"examples": ["Checkout", "Signed in"]
 			},
 			{
 				"name": "SimulatorPage.until.seconds",
 				"type": "number",
 				"required": false,
-				"default": 60
+				"default": 60,
+				"description": "Polling window in seconds, used to compute a Date.now deadline. Defaults to 60; the value is not validated and one evaluate call can run past the deadline.",
+				"examples": [60, 10]
 			}
 		],
 		"outputs": [
 			{
 				"name": "SimulatorPage.evaluate",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Text representation of the page expression's result: truthy objects are JSON-stringified and other values use String(value ?? ''). It resolves on the first successful evaluation or rejects with Error after eight failed attempts.",
+				"examples": ["Home", "{\"count\":2}", "true"]
 			},
 			{
 				"name": "SimulatorPage.until",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "A string returned by evaluate that includes wanted. Polling waits one second between unsuccessful checks and rejects with Error when the deadline passes without a match.",
+				"examples": ["Checkout", "Signed in"]
 			},
 			{
 				"name": "SimulatorPage.reset",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after clearing the cached inspector reference and disconnecting the previous inspector if present. A rejected disconnect is swallowed."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "An Error is thrown by evaluate after all eight connect or execute attempts fail, or by until when its deadline expires without wanted appearing in the evaluated text."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "SimulatorPage.evaluate",
@@ -75,22 +102,30 @@
 					{
 						"name": "SimulatorPage.evaluate.expression",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "JavaScript appended after pagePrelude and executed in the selected app page. It is retried after connection or execution failures, up to eight attempts.",
+						"examples": [
+							"return document.title;",
+							"return document.querySelector('main')?.textContent;"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SimulatorPage.evaluate",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "Text representation of the page expression's result: truthy objects are JSON-stringified and other values use String(value ?? ''). It resolves on the first successful evaluation or rejects with Error after eight failed attempts.",
+						"examples": ["Home", "{\"count\":2}", "true"]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "An Error is thrown by evaluate after all eight connect or execute attempts fail, or by until when its deadline expires without wanted appearing in the evaluated text."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SimulatorPage.until",
@@ -98,33 +133,45 @@
 					{
 						"name": "SimulatorPage.until.expression",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "JavaScript appended after pagePrelude and reevaluated through evaluate while waiting. It uses evaluate's retry behavior and must return text containing wanted for a match.",
+						"examples": [
+							"return document.title;",
+							"return document.querySelector('main')?.textContent;"
+						]
 					},
 					{
 						"name": "SimulatorPage.until.wanted",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Substring that must occur in the text returned by evaluate for until to resolve. Matching uses case-sensitive String.includes.",
+						"examples": ["Checkout", "Signed in"]
 					},
 					{
 						"name": "SimulatorPage.until.seconds",
 						"type": "number",
 						"required": false,
-						"default": 60
+						"default": 60,
+						"description": "Polling window in seconds, used to compute a Date.now deadline. Defaults to 60; the value is not validated and one evaluate call can run past the deadline.",
+						"examples": [60, 10]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SimulatorPage.until",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "A string returned by evaluate that includes wanted. Polling waits one second between unsuccessful checks and rejects with Error when the deadline passes without a match.",
+						"examples": ["Checkout", "Signed in"]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "An Error is thrown by evaluate after all eight connect or execute attempts fail, or by until when its deadline expires without wanted appearing in the evaluated text."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SimulatorPage.reset",
@@ -132,11 +179,12 @@
 				"outputs": [
 					{
 						"name": "SimulatorPage.reset",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves after clearing the cached inspector reference and disconnecting the previous inspector if present. A rejected disconnect is swallowed."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -146,17 +194,25 @@
 					{
 						"name": "SimulatorPage.constructor.simulator",
 						"type": "{ socketPath: string; runtime: string }",
-						"required": true
+						"required": true,
+						"description": "The simulator socket path and runtime are stored by the page helper and passed to appium-remote-debugger when it connects. The implementation does not validate either string.",
+						"examples": [
+							{
+								"socketPath": "/tmp/ios-simulator-webkit.sock",
+								"runtime": "18.5"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SimulatorPage.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A SimulatorPage instance storing the supplied simulator settings; its inspector starts unset and connects lazily on first evaluation."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
