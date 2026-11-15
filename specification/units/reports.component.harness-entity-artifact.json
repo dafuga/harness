@@ -48,40 +48,116 @@
 				"name": "EntityArtifact.cell",
 				"type": "BehaviorCell",
 				"required": true,
-				"description": "Required result cell with capture and read state. Missing capture or null media produces a gap; details require a verified read."
+				"description": "The recorded result on one side: capture (null when nothing was recorded) and read (undefined until it is read and checked) decide what is shown, and outcome is not read by this component. A capture whose media is null shows Not stored with its gap text (or a fallback sentence), and the EntityCases rows and details appear only when read.verified is true.",
+				"examples": [
+					{
+						"outcome": "passed",
+						"capture": {
+							"evidence": "cart-totals",
+							"kind": "output",
+							"state": "ready",
+							"status": "passed",
+							"path": "evidence/4f1b9c2d7e8a06b3c5d1e9f2a7b4c8d0e6f3a1b5/checkout-flow/cart/output.json",
+							"sha256": "7c3e1a9f04b2d86e5a1c7f3b9d0e2a4c6f8b1d3e5a7c9f0b2d4e6a8c1f3b5d7e",
+							"mediaType": "application/json",
+							"capturedAt": "2026-11-10T14:22:07.318Z",
+							"media": "media/7c3e1a9f04b2d86e5a1c7f3b9d0e2a4c6f8b1d3e5a7c9f0b2d4e6a8c1f3b5d7e.json"
+						},
+						"read": {
+							"verified": true,
+							"problem": null,
+							"text": "{\"scenario\":\"checkout-flow\",\"environment\":\"chromium 1280x720\",\"fixture\":\"seed-orders\",\"steps\":[\"add item to cart\",\"open checkout\",\"pay\"],\"assertions\":[{\"name\":\"total is shown\",\"passed\":true}],\"trace\":[\"GET /cart 200\"],\"output\":{\"total\":\"24.90\"}}",
+							"document": {
+								"scenario": "checkout-flow",
+								"environment": "chromium 1280x720",
+								"fixture": "seed-orders",
+								"steps": ["add item to cart", "open checkout", "pay"],
+								"assertions": [
+									{
+										"name": "total is shown",
+										"passed": true
+									}
+								],
+								"trace": ["GET /cart 200"],
+								"output": {
+									"total": "24.90"
+								}
+							},
+							"behavior": {
+								"scenario": "checkout-flow",
+								"environment": "chromium 1280x720",
+								"fixture": "seed-orders",
+								"steps": ["add item to cart", "open checkout", "pay"],
+								"output": {
+									"total": "24.90"
+								},
+								"assertions": [
+									{
+										"name": "total is shown",
+										"passed": true
+									}
+								],
+								"trace": ["GET /cart 200"],
+								"other": {}
+							}
+						}
+					},
+					{
+						"outcome": "passed",
+						"capture": {
+							"evidence": "cart-totals",
+							"kind": "trace",
+							"state": "ready",
+							"status": "passed",
+							"path": "evidence/4f1b9c2d7e8a06b3c5d1e9f2a7b4c8d0e6f3a1b5/checkout-flow/cart/trace.json",
+							"sha256": "b84d2e6f0a1c93e7d5b2f8a4c6e0d1b3f7a9c2e5d8b4f1a6c0e3d7b9f2a5c8e1",
+							"mediaType": "application/json",
+							"capturedAt": "2026-11-10T14:22:08.004Z",
+							"media": "media/b84d2e6f0a1c93e7d5b2f8a4c6e0d1b3f7a9c2e5d8b4f1a6c0e3d7b9f2a5c8e1.json"
+						}
+					},
+					{
+						"outcome": "missing",
+						"capture": null
+					}
+				]
 			},
 			{
 				"name": "EntityArtifact.label",
 				"type": "string",
 				"required": true,
-				"description": "Required accessible group name, also naming the original-file link."
+				"description": "The accessible name of the artifact group (aria-label), also used at the end of the original-file link text, Open the recorded {label}. It is used only for a capture with media, because the Not recorded and Not stored notices render neither the group nor the link.",
+				"examples": ["output of ready", "assertions of ready", "trace of empty-cart"]
 			},
 			{
 				"name": "EntityArtifact.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "Required prefix joined with the capture’s media path for the original-file link."
+				"description": "The prefix placed before mediaFile(cell.capture), which is the capture's media file name with its leading media/ removed, to form the href of the original-file link. The link is rendered for any capture with non-null media, including while the read is pending or unverified, and it opens in a new tab.",
+				"examples": ["/media/", "/harness/media/"]
 			},
 			{
 				"name": "EntityArtifact.lost",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional flag, false by default. True turns an absent read into an unverified state instead of pending."
+				"description": "When true and cell.read is undefined, the component shows the Not verified notice instead of the reading notice, and it has no effect once cell.read is defined. Defaults to false.",
+				"examples": [false, true]
 			},
 			{
 				"name": "EntityArtifact.unit",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional function identifier limiting direct-call rows; absent uses general recorded-case presentation. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "The unit id of the function these results are shown for: when given, it is passed to EntityCases with callable set to true, and a recorded case document that names another unitId shows a gap that names the other unit instead of rows. Defaults to undefined (omitted), not the string 'undefined': callable is then false and cases are not filtered by unit.",
+				"examples": ["reports.function.entity-behavior", "reports.function.harness-evidence"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityArtifact",
 				"type": "markup",
-				"description": "Recorded cases plus expandable assertions, facts, steps, trace and other content after verification. Steps and assertion rows share consistent spacing. Unknown assertions stay Not stated. Formatted values are shortened after 12,000 characters with a file-opening reminder. Raw JSON is inserted only while expanded. A stored capture always gets an original-file link, including while pending or unverified. States: not-recorded: The artifact has no capture and displays Not recorded. not-stored: The capture exists but its original bytes are unavailable, so Not stored is shown. loading: The artifact displays the reading notice while its bytes are pending. raw-open: The recorded JSON disclosure is expanded beneath the artifact summary. plain-text: The expanded artifact displays the recorded command output as text. long: Long recorded content is shortened with a link to open the complete recorded file."
+				"description": "The markup for one recorded result: Not recorded when the cell has no capture, Not stored with the capture's gap text (or a fallback sentence) when its media is null, a reading notice while read is undefined and lost is false, a Not verified notice when read is null, unverified, or undefined with lost true, and otherwise the EntityCases rows plus an Assertions and recorded result disclosure holding the facts, steps, assertions (Not stated when passed is null), trace and other recorded fields. Formatted values longer than 12,000 characters are cut to their first 12,000 characters followed by a reminder to open the recorded file, the Recorded JSON text is inserted only while its disclosure is open, a null document shows the text as preformatted text in place of the Recorded JSON disclosure, and a stored capture always gets an original-file link."
 			}
 		],
 		"errors": [],
