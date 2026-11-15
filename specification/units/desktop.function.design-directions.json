@@ -18,17 +18,25 @@
 				"name": "designDirections.count",
 				"type": "number",
 				"required": true,
-				"description": "The number of directions to take from the predefined list of ten. Callers normally supply a validated count from 1 to 10; this helper applies array slicing without validating it."
+				"description": "The end index passed to `slice` for the fixed list of ten directions, determining how many leading directions are returned. This matters when selecting the number of options; the function performs no validation, so JavaScript `slice` index conversion and negative-index behavior apply, and values above ten can return only ten.",
+				"examples": [2, 10]
 			}
 		],
 		"outputs": [
 			{
 				"name": "designDirections",
 				"type": "string[]",
-				"description": "A new list beginning with the most direct reading of the proposal, followed by the selected density, spacing, action-first, split-screen, cards, list, bold, calm and narrow-screen directions. Counts above ten return at most ten."
+				"description": "A new string array containing directions from the fixed, ordered list, starting with the plainest reading of the proposal. It matters when presenting design options; the list has ten entries, so large counts cannot return more than ten, while other values follow JavaScript `slice` end-index behavior.",
+				"examples": [
+					[
+						"Follow the proposal most directly, as its plainest reading.",
+						"Show more at once: a dense, information-first layout."
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "designDirections",
@@ -37,18 +45,25 @@
 						"name": "designDirections.count",
 						"type": "number",
 						"required": true,
-						"description": "The number of directions to take from the predefined list of ten. Callers normally supply a validated count from 1 to 10; this helper applies array slicing without validating it."
+						"description": "The end index passed to `slice` for the fixed list of ten directions, determining how many leading directions are returned. This matters when selecting the number of options; the function performs no validation, so JavaScript `slice` index conversion and negative-index behavior apply, and values above ten can return only ten.",
+						"examples": [2, 10]
 					}
 				],
 				"outputs": [
 					{
 						"name": "designDirections",
 						"type": "string[]",
-						"description": "A new list beginning with the most direct reading of the proposal, followed by the selected density, spacing, action-first, split-screen, cards, list, bold, calm and narrow-screen directions. Counts above ten return at most ten."
+						"description": "A new string array containing directions from the fixed, ordered list, starting with the plainest reading of the proposal. It matters when presenting design options; the list has ten entries, so large counts cannot return more than ten, while other values follow JavaScript `slice` end-index behavior.",
+						"examples": [
+							[
+								"Follow the proposal most directly, as its plainest reading.",
+								"Show more at once: a dense, information-first layout."
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
