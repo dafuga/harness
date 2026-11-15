@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import type { Explanation, RequiredReason } from '../../src/core/explanationTypes';
-import { revisionReasons } from '../../src/utils/revisionReasons';
+import { revisionReasons } from '../../src/utils/development-tooling/revisionReasons';
 
 const [parent, earlier] = ['p'.repeat(40), 'e'.repeat(40)];
 const attempt = { attempt: 'Nothing simpler was found.', outcome: 'not-improved' as const };

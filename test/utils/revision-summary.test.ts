@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { revisionSummary } from '../../src/utils/revisionSummary';
+import { revisionSummary } from '../../src/utils/development-tooling/revisionSummary';
 
 const commit = 'a'.repeat(40);
 const evidence = { commit, path: 'records/x', manifest: 'b'.repeat(64) };

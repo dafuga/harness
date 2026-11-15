@@ -16,7 +16,10 @@ import {
 	type RecordView,
 	type ResolvedMedia
 } from '../../../utils/development-tooling/recordView';
-import { revisionReasons, type RevisionReasons } from '../../../utils/revisionReasons';
+import {
+	revisionReasons,
+	type RevisionReasons
+} from '../../../utils/development-tooling/revisionReasons';
 import { revisionRegistry, type RevisionRegistry } from '../../../utils/revisionRegistry';
 import type { AttachedRecord } from '../../verification-evidence/history-status-service/attached-record-service/AttachedRecordService';
 import type { HistoryStatusService } from '../../verification-evidence/history-status-service/HistoryStatusService';

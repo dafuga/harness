@@ -1,7 +1,7 @@
 // @harness-uid u_qvnfvutbor
 import type { VerificationRecord } from '../../../../../../src/core/verificationTypes';
-import { revisionSummary } from '../../../../../../src/utils/revisionSummary';
-import { revisionReasons } from '../../../../../../src/utils/revisionReasons';
+import { revisionSummary } from '../../../../../../src/utils/development-tooling/revisionSummary';
+import { revisionReasons } from '../../../../../../src/utils/development-tooling/revisionReasons';
 import type { HarnessRevision } from '$reports/models/explorer-ui/Harness.types';
 import type { HubRecordStatusService } from '../../../services/verification-evidence/hub-evidence-service/HubRecordStatusService';
 import type { HubSourceContext } from '../../development-tooling/hubSource';

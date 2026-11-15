@@ -5,7 +5,7 @@ import {
 	RuntimeServerService,
 	type ServedRuntime
 } from '../../src/cli/program/run-kernel/RuntimeServerService';
-import { runtimeFetch } from '../../src/utils/runtimeFetch';
+import { runtimeFetch } from '../../src/utils/execution-runtimes/runtimeFetch';
 
 const runtime = new HandlerRuntimeAdapter((request) =>
 	request.operation === 'fail'

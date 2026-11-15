@@ -10,16 +10,9 @@
 	"owns": {
 		"source": [
 			"src/utils/development-tooling/revisionSummary.ts",
-			"src/utils/development-tooling/revisionSummary.types.ts",
-			"src/utils/revisionSummary.ts"
+			"src/utils/development-tooling/revisionSummary.types.ts"
 		],
-		"symbols": [
-			"revisionSummary",
-			"RevisionRecords",
-			"RevisionRecords",
-			"Viewed",
-			"revisionSummary"
-		]
+		"symbols": ["revisionSummary", "RevisionRecords", "RevisionRecords", "Viewed"]
 	},
 	"contract": {
 		"origin": "declared",

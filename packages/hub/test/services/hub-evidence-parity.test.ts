@@ -4,7 +4,7 @@ import { BudgetService } from '../../../../src/services/budget-service/BudgetSer
 import { mediaPlace } from '../../../../src/cli/program/history-index-service/history-media-service/mediaPlace';
 import { recordView } from '../../../../src/utils/development-tooling/recordView';
 import { revisionRegistry } from '../../../../src/utils/revision-registry/revisionRegistry';
-import { revisionSummary } from '../../../../src/utils/revisionSummary';
+import { revisionSummary } from '../../../../src/utils/development-tooling/revisionSummary';
 import { recordedAnswer } from '../../../desktop/src/utils/recorded-answer/recordedAnswer';
 import { recordedScope } from '../../../desktop/src/utils/reports-media/recordedScope';
 import type { HarnessRevision } from '../../../reports/src/models/explorer-ui/Harness.types';
