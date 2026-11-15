@@ -21,23 +21,115 @@
 				"name": "explorerScope.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Stored branches and revision summaries."
+				"description": "The stored explorer history supplies branch names and heads, revision summaries, and the other index sections. A branch address requires its recorded head to appear in revisions, and a selected commit must also be stored there.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "9fceb02f48e3e06a58c9a2f60b8a2e3d2f4c6e17"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "9fceb02f48e3e06a58c9a2f60b8a2e3d2f4c6e17",
+								"parents": ["da39a3ee5e6b4b0d3255bfef95601890afd80709"],
+								"subject": "Resolve explorer branch addresses",
+								"author": "Alex Morgan",
+								"committedAt": "2026-11-15T09:30:00.000Z",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							},
+							{
+								"commit": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+								"parents": [],
+								"subject": "Add explorer history index",
+								"author": "Alex Morgan",
+								"committedAt": "2026-11-14T16:20:00.000Z",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							}
+						],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "explorerScope.location",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Requested branch, optional selected commit and screen address."
+				"description": "The requested explorer address includes a branch, an optional selected full commit, and a category; optional entity and view selectors are carried through. Resolution uses the branch and commit and reports missing when the branch, tip, commit, or branch and commit pairing is absent from the index.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": null,
+						"category": "functions"
+					},
+					{
+						"branch": "main",
+						"commit": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+						"category": "functions"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "explorerScope",
 				"type": "ExplorerResolved",
-				"description": "Resolved scope with current/commit mode, branch tip, viewed commit, at-tip flag, first parent and summary. Returns a missing message for an unknown branch, unstored tip or commit, or a commit not recorded on the requested branch; never substitutes a different revision."
+				"description": "Returns a scope for a commit present in the history, or a missing message when the requested address cannot be resolved. With no selected commit it uses the recorded branch tip; it never substitutes a different revision.",
+				"examples": [
+					{
+						"kind": "scope",
+						"scope": {
+							"location": {
+								"branch": "main",
+								"commit": null,
+								"category": "functions"
+							},
+							"mode": "current",
+							"branch": "main",
+							"tip": "9fceb02f48e3e06a58c9a2f60b8a2e3d2f4c6e17",
+							"commit": "9fceb02f48e3e06a58c9a2f60b8a2e3d2f4c6e17",
+							"atTip": true,
+							"parent": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+							"summary": {
+								"commit": "9fceb02f48e3e06a58c9a2f60b8a2e3d2f4c6e17",
+								"parents": ["da39a3ee5e6b4b0d3255bfef95601890afd80709"],
+								"subject": "Resolve explorer branch addresses",
+								"author": "Alex Morgan",
+								"committedAt": "2026-11-15T09:30:00.000Z",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							}
+						}
+					},
+					{
+						"kind": "missing",
+						"message": "Branch release is not in this history."
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "explorerScope",
@@ -46,24 +138,115 @@
 						"name": "explorerScope.index",
 						"type": "HarnessIndex",
 						"required": true,
-						"description": "Stored branches and revision summaries."
+						"description": "The stored explorer history supplies branch names and heads, revision summaries, and the other index sections. A branch address requires its recorded head to appear in revisions, and a selected commit must also be stored there.",
+						"examples": [
+							{
+								"branches": [
+									{
+										"name": "main",
+										"head": "9fceb02f48e3e06a58c9a2f60b8a2e3d2f4c6e17"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "9fceb02f48e3e06a58c9a2f60b8a2e3d2f4c6e17",
+										"parents": ["da39a3ee5e6b4b0d3255bfef95601890afd80709"],
+										"subject": "Resolve explorer branch addresses",
+										"author": "Alex Morgan",
+										"committedAt": "2026-11-15T09:30:00.000Z",
+										"branches": ["main"],
+										"retained": true,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [],
+										"legacy": []
+									},
+									{
+										"commit": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+										"parents": [],
+										"subject": "Add explorer history index",
+										"author": "Alex Morgan",
+										"committedAt": "2026-11-14T16:20:00.000Z",
+										"branches": ["main"],
+										"retained": true,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [],
+										"legacy": []
+									}
+								],
+								"units": [],
+								"benchmarks": [],
+								"profiles": [],
+								"legacy": [],
+								"truncated": false,
+								"problems": []
+							}
+						]
 					},
 					{
 						"name": "explorerScope.location",
 						"type": "ExplorerLocation",
 						"required": true,
-						"description": "Requested branch, optional selected commit and screen address."
+						"description": "The requested explorer address includes a branch, an optional selected full commit, and a category; optional entity and view selectors are carried through. Resolution uses the branch and commit and reports missing when the branch, tip, commit, or branch and commit pairing is absent from the index.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": null,
+								"category": "functions"
+							},
+							{
+								"branch": "main",
+								"commit": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+								"category": "functions"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerScope",
 						"type": "ExplorerResolved",
-						"description": "Resolved scope with current/commit mode, branch tip, viewed commit, at-tip flag, first parent and summary. Returns a missing message for an unknown branch, unstored tip or commit, or a commit not recorded on the requested branch; never substitutes a different revision."
+						"description": "Returns a scope for a commit present in the history, or a missing message when the requested address cannot be resolved. With no selected commit it uses the recorded branch tip; it never substitutes a different revision.",
+						"examples": [
+							{
+								"kind": "scope",
+								"scope": {
+									"location": {
+										"branch": "main",
+										"commit": null,
+										"category": "functions"
+									},
+									"mode": "current",
+									"branch": "main",
+									"tip": "9fceb02f48e3e06a58c9a2f60b8a2e3d2f4c6e17",
+									"commit": "9fceb02f48e3e06a58c9a2f60b8a2e3d2f4c6e17",
+									"atTip": true,
+									"parent": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+									"summary": {
+										"commit": "9fceb02f48e3e06a58c9a2f60b8a2e3d2f4c6e17",
+										"parents": ["da39a3ee5e6b4b0d3255bfef95601890afd80709"],
+										"subject": "Resolve explorer branch addresses",
+										"author": "Alex Morgan",
+										"committedAt": "2026-11-15T09:30:00.000Z",
+										"branches": ["main"],
+										"retained": true,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [],
+										"legacy": []
+									}
+								}
+							},
+							{
+								"kind": "missing",
+								"message": "Branch release is not in this history."
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
