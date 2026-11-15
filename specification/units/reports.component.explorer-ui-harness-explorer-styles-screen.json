@@ -50,80 +50,201 @@
 				"name": "ExplorerStylesScreen.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Prepared history index for the selected repository and its recorded revisions."
+				"description": "The prepared history index of the selected repository: its branches, revisions, units, benchmarks, profiles, legacy reports, truncated flag and problems. This screen and its frame never read it, so it has no effect on what is shown.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "9c1e4f7a2b83d5e06f1a9c47b2d8e3f50a6b1c24"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "9c1e4f7a2b83d5e06f1a9c47b2d8e3f50a6b1c24",
+								"parents": ["4d07a9e2c1f85b36a0d9e7c42f18b5a3e6d20f79"],
+								"subject": "Read Styles roles from the app token config",
+								"author": "Mara Lind",
+								"committedAt": "2026-11-12T16:40:21+01:00",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "unverified",
+								"gaps": ["No verification record is attached to this commit."],
+								"records": [],
+								"legacy": []
+							}
+						],
+						"units": [
+							{
+								"id": "reports.component.explorer-ui-harness-explorer-styles-screen",
+								"growth": []
+							}
+						],
+						"benchmarks": [],
+						"profiles": [
+							{
+								"id": "5e0b7c91a3d24f68",
+								"platform": "darwin",
+								"arch": "arm64",
+								"cpu": "Apple M3 Pro",
+								"runtime": "node 22.11.0"
+							}
+						],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "ExplorerStylesScreen.head",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Exact selected source revision supplying every displayed contract, measurement and capture."
+				"description": "The selected revision, of which the frame reads only registry: when registry.available is false it shows a 'No registry at this revision' notice in place of the styles, with registry.gap (or a line naming the short scope.commit when there is no gap) as its message. The style tokens come from the page's stylesheets, so this revision supplies none of them.",
+				"examples": [
+					{
+						"commit": "9c1e4f7a2b83d5e06f1a9c47b2d8e3f50a6b1c24",
+						"registry": {
+							"available": false,
+							"gap": "no unit registry is stored at this revision",
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "ExplorerStylesScreen.parent",
 				"type": "HarnessRevision | null",
 				"required": true,
-				"description": "First parent of the selected commit, or null at a branch tip or first commit."
+				"description": "The first parent of the selected commit as a full revision, or null at the branch tip and for a first commit. This screen and its frame never read it.",
+				"examples": [
+					null,
+					{
+						"commit": "4d07a9e2c1f85b36a0d9e7c42f18b5a3e6d20f79",
+						"registry": {
+							"available": false,
+							"gap": "no unit registry is stored at this revision",
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "ExplorerStylesScreen.scope",
 				"type": "ExplorerScope",
 				"required": true,
-				"description": "Selected branch, commit and comparison scope shared by the explorer host."
+				"description": "The shown scope: the screen passes scope.commit to each style group as its resetKey, so a group re-expands when the commit changes, and the frame reads scope.mode for its data-mode and scope.commit for the short commit in the missing-registry message when registry.gap is absent. Location, branch, tip, atTip, parent and summary are not read here.",
+				"examples": [
+					{
+						"location": {
+							"branch": "main",
+							"commit": "9c1e4f7a2b83d5e06f1a9c47b2d8e3f50a6b1c24",
+							"category": "pages",
+							"screen": "styles"
+						},
+						"mode": "commit",
+						"branch": "main",
+						"tip": "9c1e4f7a2b83d5e06f1a9c47b2d8e3f50a6b1c24",
+						"commit": "9c1e4f7a2b83d5e06f1a9c47b2d8e3f50a6b1c24",
+						"atTip": true,
+						"parent": "4d07a9e2c1f85b36a0d9e7c42f18b5a3e6d20f79",
+						"summary": {
+							"commit": "9c1e4f7a2b83d5e06f1a9c47b2d8e3f50a6b1c24",
+							"parents": ["4d07a9e2c1f85b36a0d9e7c42f18b5a3e6d20f79"],
+							"subject": "Read Styles roles from the app token config",
+							"author": "Mara Lind",
+							"committedAt": "2026-11-12T16:40:21+01:00",
+							"branches": ["main"],
+							"retained": false,
+							"coverage": "unverified",
+							"gaps": ["No verification record is attached to this commit."],
+							"records": [],
+							"legacy": []
+						}
+					}
+				]
 			},
 			{
 				"name": "ExplorerStylesScreen.route",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Current explorer location, including category, entity, section and tab."
+				"description": "The current explorer address: the frame reads its branch, category, entity and helper to close an open source dialog when the address changes, and builds the missing-registry notice's link from it. The screen itself does not read it.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "9c1e4f7a2b83d5e06f1a9c47b2d8e3f50a6b1c24",
+						"category": "pages",
+						"screen": "styles"
+					},
+					{
+						"branch": null,
+						"commit": "7b52e0c9d14a68f3b2e7c15d0a94f8e6c3b1d527",
+						"category": "pages",
+						"screen": "styles"
+					}
+				]
 			},
 			{
 				"name": "ExplorerStylesScreen.entities",
 				"type": "ExplorerEntity[]",
 				"required": true,
-				"description": "Units projected from the selected revision, including entities removed by the shown commit."
+				"description": "The units of the selected revision as the explorer lists them, with the entities the shown commit removed. This screen and its frame never read it.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "ExplorerStylesScreen.lens",
 				"type": "EntityLens",
 				"required": true,
-				"description": "Host-provided readers for entity relationships, history and selected-revision details."
+				"description": "The host's entity lens: the frame gives its href to the missing-registry notice, which calls it while rendering its link. This screen never calls relations, evidence, behavior or history."
 			},
 			{
 				"name": "ExplorerStylesScreen.client",
 				"type": "Pick<HarnessClient, 'revision'>",
 				"required": true,
-				"description": "Revision reader used only for commits the displayed history requests."
+				"description": "The revision reader the host supplies; neither this screen nor its frame calls it."
 			},
 			{
 				"name": "ExplorerStylesScreen.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "Base URL for retained recorded evidence media."
+				"description": "The URL prefix that the frame joins with an archived source file's media name to fetch its text; it is read only while a source dialog is open, and this screen never opens one.",
+				"examples": ["/harness/media/"]
 			},
 			{
 				"name": "ExplorerStylesScreen.onroute",
 				"type": "(to: ExplorerLocation) => void",
 				"required": true,
-				"description": "Receives the requested explorer destination for host-controlled navigation."
+				"description": "The callback that the missing-registry notice's 'Stay on this revision' action calls with the location the notice links to; this screen never calls it otherwise."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerStylesScreen",
 				"type": "markup",
-				"description": "Each semantic color, typography and spacing role shows its variable, resolved assignment, specimen and usage; supported foundation tokens appear exactly once and legacy aliases are omitted."
+				"description": "The Styles page with one group per token group: the color, typography and spacing roles show their base variable with its resolved value, specimen, treatments and where it is used, and every other --hx- token appears once with its declared value and specimen. Only --hx- custom properties declared in :root rules are listed, legacy aliases are omitted, and a stylesheet the page cannot read contributes nothing."
 			}
 		],
 		"errors": [
 			{
-				"name": "Cross-origin stylesheet",
-				"type": "caught",
-				"description": "A stylesheet whose rules the page cannot read is skipped without an error; its tokens are not listed."
-			},
-			{
 				"name": "Host reader error",
-				"type": "propagated",
-				"description": "Errors from the host-supplied index, revision and lens readers propagate; the screen does not catch them."
+				"type": "thrown",
+				"description": "Thrown by the host's lens.href while the missing-registry notice renders (when head.registry.available is false), or by its onroute callback when that notice's action is clicked; the screen catches neither."
 			}
 		],
 		"errorStatus": "declared",
