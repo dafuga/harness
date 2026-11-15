@@ -43,7 +43,7 @@
 				"description": "An object giving the absolute path of a new temporary Git repository (root), the id of its one planned page (entityId) and the id of a thread opened on that page (threadId). Each call creates a new repository under the OS temp directory, with a design image for the page, and the code never removes it.",
 				"examples": [
 					{
-						"root": "/private/var/folders/6z/q1x7n0kd2jv8f4b5w9mrt3sc0000gn/T/harness-remote-fixture-Yc5Qe2",
+						"root": "/workspace/tmp/harness-remote-fixture-abc123",
 						"entityId": "page.fixture-page",
 						"threadId": "b7e4c2a1-9d3f-4e6b-8a52-1f0c7d9e3b48"
 					},
@@ -114,7 +114,7 @@
 						"description": "An object giving the absolute path of a new temporary Git repository (root), the id of its one planned page (entityId) and the id of a thread opened on that page (threadId). Each call creates a new repository under the OS temp directory, with a design image for the page, and the code never removes it.",
 						"examples": [
 							{
-								"root": "/private/var/folders/6z/q1x7n0kd2jv8f4b5w9mrt3sc0000gn/T/harness-remote-fixture-Yc5Qe2",
+								"root": "/workspace/tmp/harness-remote-fixture-abc123",
 								"entityId": "page.fixture-page",
 								"threadId": "b7e4c2a1-9d3f-4e6b-8a52-1f0c7d9e3b48"
 							},

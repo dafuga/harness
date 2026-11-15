@@ -19,7 +19,7 @@
 				"type": "string",
 				"required": true,
 				"description": "This must be an existing, writable directory, because write creates a temporary directory whose name starts with .catalog- inside it and then places the finished database at catalog.sqlite; write does not create the directory itself.",
-				"examples": ["/home/dev/app/.harness/catalog", "/var/lib/harness/catalog"]
+				"examples": ["/workspace/project/.harness/catalog", "/var/lib/harness/catalog"]
 			},
 			{
 				"name": "CatalogIndexService.write.index",
@@ -189,9 +189,7 @@
 				"type": "CatalogSnapshot[]",
 				"required": true,
 				"description": "The array is forwarded unchanged to CatalogRepository.replace on the temporary database, alongside index. write does not check its length or read its elements, so an empty array is passed through as-is.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			}
 		],
 		"outputs": [
@@ -200,7 +198,7 @@
 				"type": "Promise<string>",
 				"description": "The method resolves to the path made by joining directory with catalog.sqlite, and only after the temporary database has been renamed onto that path and the temporary directory has been removed. The string is the database location, not the database contents.",
 				"examples": [
-					"/home/dev/app/.harness/catalog/catalog.sqlite",
+					"/workspace/project/.harness/catalog/catalog.sqlite",
 					"/var/lib/harness/catalog/catalog.sqlite"
 				]
 			}
@@ -247,7 +245,7 @@
 						"type": "string",
 						"required": true,
 						"description": "This must be an existing, writable directory, because write creates a temporary directory whose name starts with .catalog- inside it and then places the finished database at catalog.sqlite; write does not create the directory itself.",
-						"examples": ["/home/dev/app/.harness/catalog", "/var/lib/harness/catalog"]
+						"examples": ["/workspace/project/.harness/catalog", "/var/lib/harness/catalog"]
 					},
 					{
 						"name": "CatalogIndexService.write.index",
@@ -417,9 +415,7 @@
 						"type": "CatalogSnapshot[]",
 						"required": true,
 						"description": "The array is forwarded unchanged to CatalogRepository.replace on the temporary database, alongside index. write does not check its length or read its elements, so an empty array is passed through as-is.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"outputs": [
@@ -428,7 +424,7 @@
 						"type": "Promise<string>",
 						"description": "The method resolves to the path made by joining directory with catalog.sqlite, and only after the temporary database has been renamed onto that path and the temporary directory has been removed. The string is the database location, not the database contents.",
 						"examples": [
-							"/home/dev/app/.harness/catalog/catalog.sqlite",
+							"/workspace/project/.harness/catalog/catalog.sqlite",
 							"/var/lib/harness/catalog/catalog.sqlite"
 						]
 					}

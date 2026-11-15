@@ -33,7 +33,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The directory the repository reads from: checkouts(), changes() and loops(commit) run Git in it, and loops() without a commit reads specification/loops beneath it. The constructor does not check it; outside Git, checkouts() returns this directory alone.",
-				"examples": ["/home/dev/projects/harness-app", "/home/dev/src/orders-api"]
+				"examples": ["/workspace/project", "/workspace/orders-api"]
 			},
 			{
 				"name": "ProjectWorkRepository.changes.commits",
@@ -50,7 +50,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The checkout directory to read: git status runs in it, and the path is not checked against checkouts(). A directory with no Git repository around it gives an empty result, because the exit code is not read, while a directory that cannot be started (such as a missing path) makes the call reject.",
-				"examples": ["/home/dev/projects/harness-app", "/home/dev/projects/harness-app-fix"]
+				"examples": ["/workspace/project", "/workspace/project-fix"]
 			},
 			{
 				"name": "ProjectWorkRepository.uncommitted.limit",
@@ -79,13 +79,13 @@
 				"examples": [
 					[
 						{
-							"path": "/home/dev/projects/harness-app",
+							"path": "/workspace/project",
 							"branch": "main",
 							"head": "5c1e9d0a7b3f24e8d6c1a09b7e2f4d8c3a6b1e05",
 							"primary": true
 						},
 						{
-							"path": "/home/dev/projects/harness-app-fix",
+							"path": "/workspace/project-fix",
 							"branch": "fix/loop-evidence",
 							"head": "a84f2c6e1d9b07f35c2e8a41d6b9f0c7e3a25d18",
 							"primary": false
@@ -93,13 +93,13 @@
 					],
 					[
 						{
-							"path": "/home/dev/projects/harness-app",
+							"path": "/workspace/project",
 							"branch": "main",
 							"head": "5c1e9d0a7b3f24e8d6c1a09b7e2f4d8c3a6b1e05",
 							"primary": true
 						},
 						{
-							"path": "/home/dev/projects/harness-app-review",
+							"path": "/workspace/project-review",
 							"branch": null,
 							"head": "e27b40d9c1a685f3b0d4e92c7a1f6b58d0c3e94a",
 							"primary": false
@@ -107,7 +107,7 @@
 					],
 					[
 						{
-							"path": "/home/dev/projects/harness-app",
+							"path": "/workspace/project",
 							"branch": null,
 							"head": null,
 							"primary": true
@@ -267,13 +267,13 @@
 						"examples": [
 							[
 								{
-									"path": "/home/dev/projects/harness-app",
+									"path": "/workspace/project",
 									"branch": "main",
 									"head": "5c1e9d0a7b3f24e8d6c1a09b7e2f4d8c3a6b1e05",
 									"primary": true
 								},
 								{
-									"path": "/home/dev/projects/harness-app-fix",
+									"path": "/workspace/project-fix",
 									"branch": "fix/loop-evidence",
 									"head": "a84f2c6e1d9b07f35c2e8a41d6b9f0c7e3a25d18",
 									"primary": false
@@ -281,13 +281,13 @@
 							],
 							[
 								{
-									"path": "/home/dev/projects/harness-app",
+									"path": "/workspace/project",
 									"branch": "main",
 									"head": "5c1e9d0a7b3f24e8d6c1a09b7e2f4d8c3a6b1e05",
 									"primary": true
 								},
 								{
-									"path": "/home/dev/projects/harness-app-review",
+									"path": "/workspace/project-review",
 									"branch": null,
 									"head": "e27b40d9c1a685f3b0d4e92c7a1f6b58d0c3e94a",
 									"primary": false
@@ -295,7 +295,7 @@
 							],
 							[
 								{
-									"path": "/home/dev/projects/harness-app",
+									"path": "/workspace/project",
 									"branch": null,
 									"head": null,
 									"primary": true
@@ -359,7 +359,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The checkout directory to read: git status runs in it, and the path is not checked against checkouts(). A directory with no Git repository around it gives an empty result, because the exit code is not read, while a directory that cannot be started (such as a missing path) makes the call reject.",
-						"examples": ["/home/dev/projects/harness-app", "/home/dev/projects/harness-app-fix"]
+						"examples": ["/workspace/project", "/workspace/project-fix"]
 					},
 					{
 						"name": "ProjectWorkRepository.uncommitted.limit",
@@ -537,7 +537,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The directory the repository reads from: checkouts(), changes() and loops(commit) run Git in it, and loops() without a commit reads specification/loops beneath it. The constructor does not check it; outside Git, checkouts() returns this directory alone.",
-						"examples": ["/home/dev/projects/harness-app", "/home/dev/src/orders-api"]
+						"examples": ["/workspace/project", "/workspace/orders-api"]
 					}
 				],
 				"outputs": [

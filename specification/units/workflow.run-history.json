@@ -34,9 +34,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository path passed to GitAdapter for the revision lookup. It must identify a Git repository.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "sourceCommit.reference",
@@ -55,7 +53,7 @@
 				"examples": [
 					{},
 					{
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+						"root": "/workspace/project",
 						"commit": "0123456789abcdef0123456789abcdef01234567",
 						"record": "verify-20261115T120000Z"
 					}
@@ -70,7 +68,7 @@
 				"examples": [
 					{},
 					{
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+						"root": "/workspace/project",
 						"commit": "0123456789abcdef0123456789abcdef01234567"
 					}
 				]
@@ -180,9 +178,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository path passed to GitAdapter for the revision lookup. It must identify a Git repository.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "sourceCommit.reference",
@@ -222,7 +218,7 @@
 						"examples": [
 							{},
 							{
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+								"root": "/workspace/project",
 								"commit": "0123456789abcdef0123456789abcdef01234567",
 								"record": "verify-20261115T120000Z"
 							}
@@ -272,7 +268,7 @@
 						"examples": [
 							{},
 							{
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+								"root": "/workspace/project",
 								"commit": "0123456789abcdef0123456789abcdef01234567"
 							}
 						]

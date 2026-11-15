@@ -29,7 +29,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root directory that every registered path and target is resolved against: the check reads scripts/verification-forward-registry.json under it, reads each registered source and target file, and scans its compatibility roots for discovered forwards. A root whose registry is absent, unreadable or not valid JSON, or a non-string root, makes the check return the single issue 'scripts/verification-forward-registry.json is missing or invalid' instead of throwing.",
-				"examples": ["/home/ci/build/app-repo", "/workspaces/app", "/srv/checkouts/app-main"]
+				"examples": ["/workspace/project", "/workspaces/app", "/srv/checkouts/app-main"]
 			}
 		],
 		"outputs": [
@@ -68,7 +68,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root directory that every registered path and target is resolved against: the check reads scripts/verification-forward-registry.json under it, reads each registered source and target file, and scans its compatibility roots for discovered forwards. A root whose registry is absent, unreadable or not valid JSON, or a non-string root, makes the check return the single issue 'scripts/verification-forward-registry.json is missing or invalid' instead of throwing.",
-						"examples": ["/home/ci/build/app-repo", "/workspaces/app", "/srv/checkouts/app-main"]
+						"examples": ["/workspace/project", "/workspaces/app", "/srv/checkouts/app-main"]
 					}
 				],
 				"outputs": [

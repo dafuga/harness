@@ -22,9 +22,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project root passed to ModuleCatalogService.load and ModuleInstallService.add, and used as the runner process working directory. The service does not normalize or validate this path itself.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "TestingPluginService.run.id",
@@ -39,9 +37,7 @@
 				"required": false,
 				"default": [],
 				"description": "Additional strings appended after the configured testing script in the bun run invocation. Arguments beginning with --headed, --debug, --ui, or --config followed by = or end of argument, and arguments beginning with -c, are rejected; no other argument validation is performed here.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "TestingPluginService.run.signal",
@@ -76,9 +72,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project root passed to ModuleCatalogService.load and ModuleInstallService.add, and used as the runner process working directory. The service does not normalize or validate this path itself.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "TestingPluginService.run.id",
@@ -93,9 +87,7 @@
 						"required": false,
 						"default": [],
 						"description": "Additional strings appended after the configured testing script in the bun run invocation. Arguments beginning with --headed, --debug, --ui, or --config followed by = or end of argument, and arguments beginning with -c, are rejected; no other argument validation is performed here.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					},
 					{
 						"name": "TestingPluginService.run.signal",
