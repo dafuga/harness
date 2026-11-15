@@ -18,41 +18,78 @@
 				"name": "declaredE2eTests.script",
 				"type": "string",
 				"required": true,
-				"description": "Script command text from which literal test/... .e2e.test.ts path references are extracted."
+				"description": "The package script command text that declaredE2eTests scans; main calls it with the test:e2e and test:package script strings from package.json, so their text decides which files count as declared. A match is the text test/ then ASCII letters, digits, underscore, dot, slash or hyphen ending in .e2e.test.ts, and it needs whitespace or the end of the text immediately after it; text before test/ is not checked, so a path followed by a quote, semicolon or other non-space character is skipped.",
+				"examples": [
+					"test/auth/login.e2e.test.ts test/checkout/cart.e2e.test.ts",
+					"test/api/orders.e2e.test.ts",
+					"test/auth/login.e2e.test.ts test/unit/math.test.ts"
+				]
 			},
 			{
 				"name": "compareE2eTests.actualFiles",
 				"type": "readonly string[]",
 				"required": true,
-				"description": "E2E test paths discovered on disk."
+				"description": "E2E test paths found on disk: the CLI walks test/ recursively and lists each file ending in .e2e.test.ts as test/ plus its path below test/. The values are compared as exact strings, duplicates have no effect because they are collected in a Set, and each path absent from declaredFiles is returned in missing.",
+				"examples": [
+					["test/auth/login.e2e.test.ts", "test/checkout/cart.e2e.test.ts"],
+					[
+						"test/checkout/cart.e2e.test.ts",
+						"test/api/orders.e2e.test.ts",
+						"test/login.e2e.test.ts"
+					]
+				]
 			},
 			{
 				"name": "compareE2eTests.declaredFiles",
 				"type": "readonly string[]",
 				"required": true,
-				"description": "E2E path references extracted from the package scripts."
+				"description": "E2E test paths declared by the test:e2e and test:package scripts: the CLI concatenates the declaredE2eTests results for those two scripts and passes that list. The values are compared as exact strings, duplicates have no effect, and each path absent from actualFiles is returned in stale.",
+				"examples": [
+					["test/auth/login.e2e.test.ts", "test/legacy/removed.e2e.test.ts"],
+					["test/auth/login.e2e.test.ts", "test/checkout/cart.e2e.test.ts"]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "declaredE2eTests",
 				"type": "string[]",
-				"description": "Sorted E2E test paths explicitly referenced in the supplied script text."
+				"description": "The E2E test paths matched in the script text, sorted with the default Array sort (UTF-16 code unit order). Repeated matches are kept as separate entries, and the array is empty when nothing matches.",
+				"examples": [
+					["test/auth/login.e2e.test.ts", "test/checkout/cart.e2e.test.ts"],
+					["test/api/orders.e2e.test.ts"],
+					[]
+				]
 			},
 			{
 				"name": "compareE2eTests",
 				"type": "{ missing: string[]; stale: string[] }",
-				"description": "Sorted missing paths (present on disk but not declared) and stale paths (declared but absent on disk)."
+				"description": "An object whose missing array lists the unique paths in actualFiles but not in declaredFiles and whose stale array lists the unique paths in declaredFiles but not in actualFiles, both sorted with the default Array sort. Both arrays are empty when the two lists hold the same paths, and a mismatch is returned rather than thrown.",
+				"examples": [
+					{
+						"missing": ["test/checkout/cart.e2e.test.ts"],
+						"stale": ["test/legacy/removed.e2e.test.ts"]
+					},
+					{
+						"missing": [],
+						"stale": []
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Invalid test script configuration or discovery failure",
 				"type": "thrown",
-				"description": "The CLI throws when package.json lacks either required script; file or JSON reads can also fail."
+				"description": "main, which runs only when import.meta.main is true, throws an Error that names the test:e2e or test:package script when package.json has no non-empty entry for that script, and fs or JSON errors from reading package.json, parsing it, or listing test/ propagate uncaught. Paths that differ between disk and the scripts do not throw; main writes them to stderr and sets process.exitCode to 1."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "main, which runs only when import.meta.main is true, throws new Error with the message 'package.json is missing the test:e2e script.' or 'package.json is missing the test:package script.' when package.json has no non-empty entry for that script in its scripts object. Node fs errors from reading package.json or listing test/ are also Error objects that propagate uncaught."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "declaredE2eTests",
@@ -61,14 +98,24 @@
 						"name": "declaredE2eTests.script",
 						"type": "string",
 						"required": true,
-						"description": "Script command text from which literal test/... .e2e.test.ts path references are extracted."
+						"description": "The package script command text that declaredE2eTests scans; main calls it with the test:e2e and test:package script strings from package.json, so their text decides which files count as declared. A match is the text test/ then ASCII letters, digits, underscore, dot, slash or hyphen ending in .e2e.test.ts, and it needs whitespace or the end of the text immediately after it; text before test/ is not checked, so a path followed by a quote, semicolon or other non-space character is skipped.",
+						"examples": [
+							"test/auth/login.e2e.test.ts test/checkout/cart.e2e.test.ts",
+							"test/api/orders.e2e.test.ts",
+							"test/auth/login.e2e.test.ts test/unit/math.test.ts"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "declaredE2eTests",
 						"type": "string[]",
-						"description": "Sorted E2E test paths explicitly referenced in the supplied script text."
+						"description": "The E2E test paths matched in the script text, sorted with the default Array sort (UTF-16 code unit order). Repeated matches are kept as separate entries, and the array is empty when nothing matches.",
+						"examples": [
+							["test/auth/login.e2e.test.ts", "test/checkout/cart.e2e.test.ts"],
+							["test/api/orders.e2e.test.ts"],
+							[]
+						]
 					}
 				],
 				"errors": [],
@@ -81,20 +128,42 @@
 						"name": "compareE2eTests.actualFiles",
 						"type": "readonly string[]",
 						"required": true,
-						"description": "E2E test paths discovered on disk."
+						"description": "E2E test paths found on disk: the CLI walks test/ recursively and lists each file ending in .e2e.test.ts as test/ plus its path below test/. The values are compared as exact strings, duplicates have no effect because they are collected in a Set, and each path absent from declaredFiles is returned in missing.",
+						"examples": [
+							["test/auth/login.e2e.test.ts", "test/checkout/cart.e2e.test.ts"],
+							[
+								"test/checkout/cart.e2e.test.ts",
+								"test/api/orders.e2e.test.ts",
+								"test/login.e2e.test.ts"
+							]
+						]
 					},
 					{
 						"name": "compareE2eTests.declaredFiles",
 						"type": "readonly string[]",
 						"required": true,
-						"description": "E2E path references extracted from the package scripts."
+						"description": "E2E test paths declared by the test:e2e and test:package scripts: the CLI concatenates the declaredE2eTests results for those two scripts and passes that list. The values are compared as exact strings, duplicates have no effect, and each path absent from actualFiles is returned in stale.",
+						"examples": [
+							["test/auth/login.e2e.test.ts", "test/legacy/removed.e2e.test.ts"],
+							["test/auth/login.e2e.test.ts", "test/checkout/cart.e2e.test.ts"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "compareE2eTests",
 						"type": "{ missing: string[]; stale: string[] }",
-						"description": "Sorted missing paths (present on disk but not declared) and stale paths (declared but absent on disk)."
+						"description": "An object whose missing array lists the unique paths in actualFiles but not in declaredFiles and whose stale array lists the unique paths in declaredFiles but not in actualFiles, both sorted with the default Array sort. Both arrays are empty when the two lists hold the same paths, and a mismatch is returned rather than thrown.",
+						"examples": [
+							{
+								"missing": ["test/checkout/cart.e2e.test.ts"],
+								"stale": ["test/legacy/removed.e2e.test.ts"]
+							},
+							{
+								"missing": [],
+								"stale": []
+							}
+						]
 					}
 				],
 				"errors": [],
