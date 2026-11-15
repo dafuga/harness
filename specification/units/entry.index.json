@@ -171,7 +171,8 @@
 			"scenarioHealth",
 			"ContractsCommand",
 			"VideoEvidenceService",
-			"videoClipSchema"
+			"videoClipSchema",
+			"FrameFlagService"
 		]
 	},
 	"contract": {
@@ -761,6 +762,11 @@
 		},
 		{
 			"unit": "service.task-completion",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-frame-flag",
 			"via": "reexport",
 			"origin": "derived"
 		},
