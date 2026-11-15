@@ -19,7 +19,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project filesystem root passed to VerificationStoreRepository, VerificationCheckService, CommitTreeAdapter.open and loadSide. It matters on every call: when no verification record for the commit is found under this root, the function throws, and codeAudit does not validate the value itself.",
-				"examples": ["/home/dev/harness-app", "/srv/checkouts/harness-app"]
+				"examples": ["/workspace/project", "/workspace/checkouts/project"]
 			},
 			{
 				"name": "codeAudit.commit",
@@ -121,7 +121,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project filesystem root passed to VerificationStoreRepository, VerificationCheckService, CommitTreeAdapter.open and loadSide. It matters on every call: when no verification record for the commit is found under this root, the function throws, and codeAudit does not validate the value itself.",
-						"examples": ["/home/dev/harness-app", "/srv/checkouts/harness-app"]
+						"examples": ["/workspace/project", "/workspace/checkouts/project"]
 					},
 					{
 						"name": "codeAudit.commit",

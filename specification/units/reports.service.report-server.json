@@ -46,9 +46,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The repository working directory used for HARNESS_SITE_ROOT when base.HARNESS_SITE_ROOT is nullish.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "ReportServerService.constructor.repository",
@@ -86,7 +84,7 @@
 						"PORT": "5588",
 						"ORIGIN": "http://127.0.0.1:5588",
 						"BODY_SIZE_LIMIT": "110M",
-						"HARNESS_SITE_ROOT": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+						"HARNESS_SITE_ROOT": "/workspace/project",
 						"HARNESS_OWNER_MODE": "loopback",
 						"HARNESS_BIND": "127.0.0.1"
 					}
@@ -171,9 +169,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository working directory used for HARNESS_SITE_ROOT when base.HARNESS_SITE_ROOT is nullish.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -189,7 +185,7 @@
 								"PORT": "5588",
 								"ORIGIN": "http://127.0.0.1:5588",
 								"BODY_SIZE_LIMIT": "110M",
-								"HARNESS_SITE_ROOT": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+								"HARNESS_SITE_ROOT": "/workspace/project",
 								"HARNESS_OWNER_MODE": "loopback",
 								"HARNESS_BIND": "127.0.0.1"
 							}

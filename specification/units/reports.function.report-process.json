@@ -26,9 +26,7 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Strings passed as separate argument entries to the executable. An empty array supplies no arguments.",
-				"examples": [
-					["--version"]
-				]
+				"examples": [["--version"]]
 			},
 			{
 				"name": "reportProcess.cwd",
@@ -36,15 +34,13 @@
 				"required": false,
 				"default": "undefined",
 				"description": "Optional working directory for the child process. When omitted, the code passes no cwd override and spawn uses the current working directory.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "reportProcess.environment",
 				"type": "NodeJS.ProcessEnv",
 				"required": false,
-				"description": "Optional environment-variable map supplied to the child process. Defaults to process.env when omitted; a supplied map replaces the inherited environment.",
+				"description": "Optional environment passed to spawn. When omitted or null at runtime, the child inherits process.env; an explicit object is passed through without merging.",
 				"examples": [
 					{
 						"NODE_ENV": "test",
@@ -96,9 +92,7 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Strings passed as separate argument entries to the executable. An empty array supplies no arguments.",
-						"examples": [
-							["--version"]
-						]
+						"examples": [["--version"]]
 					},
 					{
 						"name": "reportProcess.cwd",
@@ -106,15 +100,13 @@
 						"required": false,
 						"default": "undefined",
 						"description": "Optional working directory for the child process. When omitted, the code passes no cwd override and spawn uses the current working directory.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "reportProcess.environment",
 						"type": "NodeJS.ProcessEnv",
 						"required": false,
-						"description": "Optional environment-variable map supplied to the child process. Defaults to process.env when omitted; a supplied map replaces the inherited environment.",
+						"description": "Optional environment passed to spawn. When omitted or null at runtime, the child inherits process.env; an explicit object is passed through without merging.",
 						"examples": [
 							{
 								"NODE_ENV": "test",

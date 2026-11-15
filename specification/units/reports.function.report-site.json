@@ -24,7 +24,7 @@
 				"description": "Checkout path to check for ownership by this report site. The implementation compares it with the cached site root using repository identity, so a worktree or fresh clone of the same application can match while a same-named directory from another repository does not.",
 				"examples": [
 					{
-						"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19"
+						"path": "/workspace/worktrees/example-checkout"
 					}
 				]
 			}
@@ -82,7 +82,7 @@
 						"description": "Checkout path to check for ownership by this report site. The implementation compares it with the cached site root using repository identity, so a worktree or fresh clone of the same application can match while a same-named directory from another repository does not.",
 						"examples": [
 							{
-								"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19"
+								"path": "/workspace/worktrees/example-checkout"
 							}
 						]
 					}

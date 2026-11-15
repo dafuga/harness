@@ -34,7 +34,7 @@
 						"project": {
 							"id": "357f144b4cee261e",
 							"name": "slot-8",
-							"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+							"path": "/workspace/project"
 						},
 						"title": "Replay storage verification",
 						"mode": "feature",
@@ -59,7 +59,7 @@
 				"required": true,
 				"description": "Report-run directory containing storage.json and the local replay file. store checks that the directory itself is not a symlink and writes the receipt after upload.",
 				"examples": [
-					"/Users/danielfugere/.codex/project-reports/runs/378413ad-29d3-4b7c-be71-828250cf0123"
+					"/workspace/project/.codex/project-reports/runs/378413ad-29d3-4b7c-be71-828250cf0123"
 				]
 			},
 			{
@@ -81,7 +81,7 @@
 						"project": {
 							"id": "357f144b4cee261e",
 							"name": "slot-8",
-							"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+							"path": "/workspace/project"
 						},
 						"title": "Replay storage verification",
 						"mode": "feature",
@@ -106,7 +106,7 @@
 				"required": true,
 				"description": "Report-run directory containing storage.json and the restored replay destination. A missing directory is treated like no receipt; a symlinked directory is rejected.",
 				"examples": [
-					"/Users/danielfugere/.codex/project-reports/runs/378413ad-29d3-4b7c-be71-828250cf0123"
+					"/workspace/project/.codex/project-reports/runs/378413ad-29d3-4b7c-be71-828250cf0123"
 				]
 			},
 			{
@@ -154,7 +154,7 @@
 								"project": {
 									"id": "357f144b4cee261e",
 									"name": "slot-8",
-									"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+									"path": "/workspace/project"
 								},
 								"title": "Replay storage verification",
 								"mode": "feature",
@@ -179,7 +179,7 @@
 						"required": true,
 						"description": "Report-run directory containing storage.json and the local replay file. store checks that the directory itself is not a symlink and writes the receipt after upload.",
 						"examples": [
-							"/Users/danielfugere/.codex/project-reports/runs/378413ad-29d3-4b7c-be71-828250cf0123"
+							"/workspace/project/.codex/project-reports/runs/378413ad-29d3-4b7c-be71-828250cf0123"
 						]
 					},
 					{
@@ -222,7 +222,7 @@
 								"project": {
 									"id": "357f144b4cee261e",
 									"name": "slot-8",
-									"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+									"path": "/workspace/project"
 								},
 								"title": "Replay storage verification",
 								"mode": "feature",
@@ -247,7 +247,7 @@
 						"required": true,
 						"description": "Report-run directory containing storage.json and the restored replay destination. A missing directory is treated like no receipt; a symlinked directory is rejected.",
 						"examples": [
-							"/Users/danielfugere/.codex/project-reports/runs/378413ad-29d3-4b7c-be71-828250cf0123"
+							"/workspace/project/.codex/project-reports/runs/378413ad-29d3-4b7c-be71-828250cf0123"
 						]
 					},
 					{

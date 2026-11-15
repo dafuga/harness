@@ -29,9 +29,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root used to resolve commit and verification-store data for the service. It matters to every check because Git history, stored record lookup, and evidence paths are read relative to it.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "VerificationCheckService.constructor.indexer",
@@ -56,7 +54,7 @@
 						"record": {
 							"id": "66121b631169356fc8c32135156ebc982dfb28d5b9c75285ce69a231576d62e5",
 							"schemaVersion": 1,
-							"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+							"repository": "/workspace/project",
 							"source": {
 								"commit": "0123456789abcdef0123456789abcdef01234567",
 								"tree": "89abcdef0123456789abcdef0123456789abcdef",
@@ -100,7 +98,7 @@
 							},
 							"failures": []
 						},
-						"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
+						"directory": "/workspace/project/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
 					}
 				]
 			},
@@ -121,7 +119,7 @@
 						"record": {
 							"id": "66121b631169356fc8c32135156ebc982dfb28d5b9c75285ce69a231576d62e5",
 							"schemaVersion": 1,
-							"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+							"repository": "/workspace/project",
 							"source": {
 								"commit": "0123456789abcdef0123456789abcdef01234567",
 								"tree": "89abcdef0123456789abcdef0123456789abcdef",
@@ -165,7 +163,7 @@
 							},
 							"failures": []
 						},
-						"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
+						"directory": "/workspace/project/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
 					}
 				]
 			}
@@ -225,7 +223,7 @@
 								"record": {
 									"id": "66121b631169356fc8c32135156ebc982dfb28d5b9c75285ce69a231576d62e5",
 									"schemaVersion": 1,
-									"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+									"repository": "/workspace/project",
 									"source": {
 										"commit": "0123456789abcdef0123456789abcdef01234567",
 										"tree": "89abcdef0123456789abcdef0123456789abcdef",
@@ -269,7 +267,7 @@
 									},
 									"failures": []
 								},
-								"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
+								"directory": "/workspace/project/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
 							}
 						]
 					}
@@ -318,7 +316,7 @@
 								"record": {
 									"id": "66121b631169356fc8c32135156ebc982dfb28d5b9c75285ce69a231576d62e5",
 									"schemaVersion": 1,
-									"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+									"repository": "/workspace/project",
 									"source": {
 										"commit": "0123456789abcdef0123456789abcdef01234567",
 										"tree": "89abcdef0123456789abcdef0123456789abcdef",
@@ -362,7 +360,7 @@
 									},
 									"failures": []
 								},
-								"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
+								"directory": "/workspace/project/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
 							}
 						]
 					}
@@ -399,9 +397,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root used to resolve commit and verification-store data for the service. It matters to every check because Git history, stored record lookup, and evidence paths are read relative to it.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "VerificationCheckService.constructor.indexer",

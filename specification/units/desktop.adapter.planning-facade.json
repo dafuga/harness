@@ -36,9 +36,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root passed to createPlanning; it must resolve to the root of a Git repository or opening rejects.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "PlanningFacadeAdapter.plans.revision",
@@ -433,9 +431,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root passed to createPlanning; it must resolve to the root of a Git repository or opening rejects.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [

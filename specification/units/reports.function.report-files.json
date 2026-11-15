@@ -37,9 +37,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Path passed to readFile; the file is read as UTF-8 and parsed as JSON. The helper does not create the file or validate the parsed value against a runtime schema.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna/reports.function.report-files/unit.json"
-				]
+				"examples": ["/workspace/project/reports/example.json"]
 			},
 			{
 				"name": "atomicJson.path",
@@ -47,7 +45,7 @@
 				"required": true,
 				"description": "Destination path for the JSON file. Its parent directory is created recursively before the temporary file is renamed over this path.",
 				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19/packages/reports/.codex/project-reports/reports/report-2026-11-15.json"
+					"/workspace/project/packages/reports/.codex/project-reports/reports/report-2026-11-15.json"
 				]
 			},
 			{
@@ -75,7 +73,7 @@
 				"name": "reportFiles",
 				"type": "unknown",
 				"description": "Returns a string root path. A truthy root wins, then PROJECT_REPORTS_HOME, otherwise the result is join(homedir(), '.codex', 'project-reports'); an empty root does not override either fallback.",
-				"examples": ["/srv/project-reports", "/Users/danielfugere/.codex/project-reports"]
+				"examples": ["/srv/project-reports", "/workspace/project/.codex/project-reports"]
 			},
 			{
 				"name": "safeId",
@@ -141,7 +139,7 @@
 						"name": "reportFiles",
 						"type": "unknown",
 						"description": "Returns a string root path. A truthy root wins, then PROJECT_REPORTS_HOME, otherwise the result is join(homedir(), '.codex', 'project-reports'); an empty root does not override either fallback.",
-						"examples": ["/srv/project-reports", "/Users/danielfugere/.codex/project-reports"]
+						"examples": ["/srv/project-reports", "/workspace/project/.codex/project-reports"]
 					}
 				],
 				"errors": [],
@@ -183,9 +181,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Path passed to readFile; the file is read as UTF-8 and parsed as JSON. The helper does not create the file or validate the parsed value against a runtime schema.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna/reports.function.report-files/unit.json"
-						]
+						"examples": ["/workspace/project/reports/example.json"]
 					}
 				],
 				"outputs": [
@@ -229,7 +225,7 @@
 						"required": true,
 						"description": "Destination path for the JSON file. Its parent directory is created recursively before the temporary file is renamed over this path.",
 						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19/packages/reports/.codex/project-reports/reports/report-2026-11-15.json"
+							"/workspace/project/packages/reports/.codex/project-reports/reports/report-2026-11-15.json"
 						]
 					},
 					{

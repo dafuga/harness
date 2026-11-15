@@ -28,9 +28,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root used to construct the verification store, evidence branch, history-note repository, LFS adapter, and checker.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "EvidenceAttachService.attach.commit",
@@ -49,7 +47,7 @@
 						"record": {
 							"id": "bf46f2cf6af18fe825e90b63bb15f0cac31bbb39ec43a02b302d7bd29e639815",
 							"schemaVersion": 1,
-							"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+							"repository": "/workspace/project",
 							"source": {
 								"commit": "0123456789abcdef0123456789abcdef01234567",
 								"tree": "89abcdef0123456789abcdef0123456789abcdef",
@@ -115,7 +113,7 @@
 							},
 							"failures": []
 						},
-						"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
+						"directory": "/workspace/project/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
 					}
 				]
 			}
@@ -171,7 +169,7 @@
 								"record": {
 									"id": "bf46f2cf6af18fe825e90b63bb15f0cac31bbb39ec43a02b302d7bd29e639815",
 									"schemaVersion": 1,
-									"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+									"repository": "/workspace/project",
 									"source": {
 										"commit": "0123456789abcdef0123456789abcdef01234567",
 										"tree": "89abcdef0123456789abcdef0123456789abcdef",
@@ -237,7 +235,7 @@
 									},
 									"failures": []
 								},
-								"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
+								"directory": "/workspace/project/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
 							}
 						]
 					}
@@ -283,9 +281,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root used to construct the verification store, evidence branch, history-note repository, LFS adapter, and checker.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [

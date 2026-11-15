@@ -21,7 +21,7 @@
 				"description": "A string: the HARNESS_REPORTS_RUNTIME_ROOT value whenever that variable is set (an empty string counts as set and is returned unchanged); otherwise the packages/reports directory three parent steps above the defining module's directory, as an absolute path. The override is returned as-is without path.resolve(), normalization or an existence check, and the fallback has no trailing slash because path.resolve() strips it.",
 				"examples": [
 					"/workspace/monorepo/packages/reports",
-					"/home/runner/work/monorepo/monorepo/packages/reports",
+					"/workspace/project/packages/reports",
 					"/opt/harness/reports-runtime"
 				]
 			}
@@ -45,7 +45,7 @@
 						"description": "A string: the HARNESS_REPORTS_RUNTIME_ROOT value whenever that variable is set (an empty string counts as set and is returned unchanged); otherwise the packages/reports directory three parent steps above the defining module's directory, as an absolute path. The override is returned as-is without path.resolve(), normalization or an existence check, and the fallback has no trailing slash because path.resolve() strips it.",
 						"examples": [
 							"/workspace/monorepo/packages/reports",
-							"/home/runner/work/monorepo/monorepo/packages/reports",
+							"/workspace/project/packages/reports",
 							"/opt/harness/reports-runtime"
 						]
 					}

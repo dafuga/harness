@@ -28,9 +28,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Filesystem path of the repository root used to construct the evidence branch repository and LFS adapter. It determines where evidence history and LFS objects are read.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "AttachedRecordService.constructor.within",
@@ -101,9 +99,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem path of the repository root used to construct the evidence branch repository and LFS adapter. It determines where evidence history and LFS objects are read.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "AttachedRecordService.constructor.within",

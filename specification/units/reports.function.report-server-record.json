@@ -32,9 +32,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Store root used to locate `<root>/servers/<port>.json`; it determines which recorded server is considered for stopping. A file-read failure is treated as no record.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18/packages/reports"
-				]
+				"examples": ["/workspace/project/packages/reports"]
 			},
 			{
 				"name": "stopReportServer.port",
@@ -55,9 +53,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Root directory prefixed to the `servers/<port>.json` record path; it determines where the handle reads, writes and removes this record. The directory is created recursively only by `write()`, not by constructing the handle.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18/packages/reports"
-				]
+				"examples": ["/workspace/project/packages/reports"]
 			},
 			{
 				"name": "reportServerRecord.port",
@@ -125,9 +121,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Store root used to locate `<root>/servers/<port>.json`; it determines which recorded server is considered for stopping. A file-read failure is treated as no record.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18/packages/reports"
-						]
+						"examples": ["/workspace/project/packages/reports"]
 					},
 					{
 						"name": "stopReportServer.port",
@@ -206,9 +200,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Root directory prefixed to the `servers/<port>.json` record path; it determines where the handle reads, writes and removes this record. The directory is created recursively only by `write()`, not by constructing the handle.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18/packages/reports"
-						]
+						"examples": ["/workspace/project/packages/reports"]
 					},
 					{
 						"name": "reportServerRecord.port",

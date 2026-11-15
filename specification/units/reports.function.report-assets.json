@@ -22,18 +22,14 @@
 				"type": "string",
 				"required": true,
 				"description": "Destination report directory used to store the imported file beneath an assets subdirectory. The helper creates that subdirectory recursively.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports"
-				]
+				"examples": ["/workspace/project/packages/reports"]
 			},
 			{
 				"name": "reportAssets.source",
 				"type": "string",
 				"required": true,
 				"description": "Filesystem path inspected as the evidence source; symbolic links, non-files, and files larger than 50,000,000 bytes are rejected. Its detected media type selects the audio or image handling path.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports/test/fixtures/evidence.png"
-				]
+				"examples": ["/workspace/project/packages/reports/test/fixtures/evidence.png"]
 			},
 			{
 				"name": "imageAsset.bytes",
@@ -53,9 +49,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Destination report directory; the helper writes under its assets subdirectory and creates that directory recursively.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports"
-				]
+				"examples": ["/workspace/project/packages/reports"]
 			},
 			{
 				"name": "writeImageAsset.name",
@@ -75,9 +69,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Directory canonicalized with realpath to establish the boundary for resolving an asset name. Filesystem lookup failures reject the promise.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports/assets"
-				]
+				"examples": ["/workspace/project/packages/reports/assets"]
 			},
 			{
 				"name": "registeredAsset.name",
@@ -91,9 +83,7 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Caller-provided list of allowed filenames; membership is checked by exact string equality before path resolution.",
-				"examples": [
-					["9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"]
-				]
+				"examples": [["9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"]]
 			}
 		],
 		"outputs": [
@@ -130,7 +120,7 @@
 				"type": "unknown",
 				"description": "Promise resolving to the canonical-base path for the requested registered file after confirming it is a regular non-symlink file whose real path remains inside the base directory.",
 				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports/assets/9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"
+					"/workspace/project/packages/reports/assets/9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"
 				]
 			}
 		],
@@ -151,18 +141,14 @@
 						"type": "string",
 						"required": true,
 						"description": "Destination report directory used to store the imported file beneath an assets subdirectory. The helper creates that subdirectory recursively.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports"
-						]
+						"examples": ["/workspace/project/packages/reports"]
 					},
 					{
 						"name": "reportAssets.source",
 						"type": "string",
 						"required": true,
 						"description": "Filesystem path inspected as the evidence source; symbolic links, non-files, and files larger than 50,000,000 bytes are rejected. Its detected media type selects the audio or image handling path.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports/test/fixtures/evidence.png"
-						]
+						"examples": ["/workspace/project/packages/reports/test/fixtures/evidence.png"]
 					}
 				],
 				"outputs": [
@@ -235,9 +221,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Destination report directory; the helper writes under its assets subdirectory and creates that directory recursively.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports"
-						]
+						"examples": ["/workspace/project/packages/reports"]
 					},
 					{
 						"name": "writeImageAsset.name",
@@ -277,9 +261,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Directory canonicalized with realpath to establish the boundary for resolving an asset name. Filesystem lookup failures reject the promise.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports/assets"
-						]
+						"examples": ["/workspace/project/packages/reports/assets"]
 					},
 					{
 						"name": "registeredAsset.name",
@@ -293,9 +275,7 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Caller-provided list of allowed filenames; membership is checked by exact string equality before path resolution.",
-						"examples": [
-							["9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"]
-						]
+						"examples": [["9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"]]
 					}
 				],
 				"outputs": [
@@ -304,7 +284,7 @@
 						"type": "unknown",
 						"description": "Promise resolving to the canonical-base path for the requested registered file after confirming it is a regular non-symlink file whose real path remains inside the base directory.",
 						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports/assets/9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"
+							"/workspace/project/packages/reports/assets/9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"
 						]
 					}
 				],
