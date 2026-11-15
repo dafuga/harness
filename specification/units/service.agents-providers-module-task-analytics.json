@@ -31,52 +31,313 @@
 				"name": "ModuleTaskAnalyticsService.constructor.store",
 				"type": "TaskAnalyticsStoreFactory",
 				"required": false,
-				"description": "Factory for a synchronous or promised analytics store; defaults to the asynchronous AnalyticsRepository.open factory."
+				"description": "Factory that returns the analytics store, directly or as a promise; the constructor only keeps it, and sync() calls it only when analytics are enabled and the queue has tasks. Defaults to () => AnalyticsRepository.open(), the async static open method of AnalyticsRepository."
 			},
 			{
 				"name": "ModuleTaskAnalyticsService.quote.model",
 				"type": "string",
 				"required": true,
-				"description": "Model identifier used to select the existing local task pricing rates."
+				"description": "Exact key into the local rate table (claude-haiku-5-5, claude-opus-5-5, claude-sonnet-5-5, gpt-6-luna, gpt-6.1-sol, gpt-6-astra); a key missing from the table yields basis 'unavailable' with null amounts, but inherited names such as 'constructor' can throw instead (see errors).",
+				"examples": ["claude-sonnet-5-5", "gpt-6.1-sol", "claude-haiku-5-5"]
 			},
 			{
 				"name": "ModuleTaskAnalyticsService.quote.usage",
 				"type": "TaskUsage",
 				"required": false,
-				"description": "Reported token usage; missing counts remain unknown in the resulting estimate."
+				"default": "undefined",
+				"description": "CLI token usage for one run: a finite, non-negative reportedCostUsd is returned as the exact cost, and otherwise inputTokens and outputTokens must both be non-null. Omitted usage, cacheReadTokens (alone or with cacheWriteTokens) above inputTokens, or cacheWriteLongTokens above cacheWriteTokens make the quote unavailable, while null cache counts widen the range rather than counting as zero.",
+				"examples": [
+					{
+						"inputTokens": 48210,
+						"outputTokens": 6114,
+						"cacheReadTokens": 40000,
+						"cacheWriteTokens": 8000,
+						"reportedCostUsd": null
+					},
+					{
+						"inputTokens": 12550,
+						"outputTokens": 1480,
+						"cacheReadTokens": null,
+						"cacheWriteTokens": null,
+						"reportedCostUsd": 0.0421
+					}
+				]
 			},
 			{
 				"name": "ModuleTaskAnalyticsService.metrics.events",
 				"type": "AnalyticsEvent[]",
 				"required": true,
-				"description": "Analytics events to deduplicate and summarize; only task events with module-task details contribute."
+				"description": "Analytics events to deduplicate by id and summarize; only events with kind 'task' and a moduleTask detail contribute, and when an id repeats the last occurrence is kept.",
+				"examples": [
+					[
+						{
+							"id": "5e0b7c2d9a41f8e36b1d04a7c92f58e1d3a6b09c4f7e2d81a5c3b96e0f4d7a21",
+							"timestamp": "2026-11-14T16:40:52.104Z",
+							"project": "/srv/checkouts/payments-api",
+							"kind": "task",
+							"action": "executed",
+							"status": "succeeded",
+							"task": "service.agents-providers-module-task-analytics",
+							"requestedModel": "claude-sonnet-5-5",
+							"agentModel": "claude-sonnet-5-5",
+							"moduleTask": {
+								"attempt": "3f1c9a52-6e7d-4b8e-9a31-2c5d7e8f9a10",
+								"feature": "module-tasks",
+								"module": "agents-providers.module-task-analytics",
+								"provider": "claude",
+								"model": "claude-sonnet-5-5",
+								"intelligence": "high",
+								"reportedModel": "claude-sonnet-5-5",
+								"usage": {
+									"inputTokens": 48210,
+									"outputTokens": 6114,
+									"cacheReadTokens": 40000,
+									"cacheWriteTokens": 8000,
+									"reportedCostUsd": null
+								},
+								"apiCost": {
+									"rateCard": "standard-global-2026-10-25",
+									"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+									"usd": null,
+									"minimumUsd": 0.08556,
+									"maximumUsd": 0.09756,
+									"basis": "standard-api-estimate",
+									"note": "Standard global token rates, excluding tools, regional and fast-tier surcharges. Ranges preserve missing cache-write duration and per-request context tiers."
+								}
+							}
+						},
+						{
+							"id": "a13f6e0c8d2b57a94e1c3f08d6b2a75e9c4d1f3b0a8e6d27c5b9f14e2a0d368c",
+							"timestamp": "2026-11-14T16:41:03.877Z",
+							"project": "/srv/checkouts/payments-api",
+							"kind": "task",
+							"action": "submitted",
+							"task": "service.agents-providers-module-task-analytics",
+							"requestedModel": "claude-sonnet-5-5",
+							"agentModel": "claude-sonnet-5-5",
+							"moduleTask": {
+								"attempt": "3f1c9a52-6e7d-4b8e-9a31-2c5d7e8f9a10",
+								"feature": "module-tasks",
+								"module": "agents-providers.module-task-analytics",
+								"provider": "claude",
+								"model": "claude-sonnet-5-5",
+								"intelligence": "high",
+								"reportedModel": "claude-sonnet-5-5"
+							}
+						},
+						{
+							"id": "7d20b9e4c1a6f385d0e27b9c4a1f6e83b5d0c27a9e4f1b63d8c0a2e7f5b9d014",
+							"timestamp": "2026-11-14T17:05:19.462Z",
+							"project": "/srv/checkouts/payments-api",
+							"kind": "task",
+							"action": "accepted",
+							"task": "service.agents-providers-module-task-analytics",
+							"requestedModel": "claude-sonnet-5-5",
+							"agentModel": "claude-sonnet-5-5",
+							"moduleTask": {
+								"attempt": "3f1c9a52-6e7d-4b8e-9a31-2c5d7e8f9a10",
+								"feature": "module-tasks",
+								"module": "agents-providers.module-task-analytics",
+								"provider": "claude",
+								"model": "claude-sonnet-5-5",
+								"intelligence": "high",
+								"reportedModel": "claude-sonnet-5-5"
+							}
+						}
+					],
+					[
+						{
+							"id": "e8a05c3d7b1f9024a6d8e3c17f5b0a92d4c6e18b3f7a0d25c9e1b4f8a6d3c70e",
+							"timestamp": "2026-11-13T09:12:44.330Z",
+							"project": "/srv/checkouts/reports-service",
+							"kind": "task",
+							"action": "executed",
+							"status": "failed",
+							"task": "reports.component.evidence-grid",
+							"requestedModel": "gpt-6.1-sol",
+							"moduleTask": {
+								"attempt": "b7e2d4c1-0a9f-4e6b-8c3d-5f1a2b3c4d5e",
+								"feature": "reports-evidence",
+								"module": "reports.component",
+								"provider": "codex",
+								"model": "gpt-6.1-sol",
+								"intelligence": "xhigh",
+								"reportedModel": null,
+								"apiCost": {
+									"rateCard": "standard-global-2026-10-25",
+									"source": "https://developers.openai.com/api/docs/pricing",
+									"usd": null,
+									"minimumUsd": null,
+									"maximumUsd": null,
+									"basis": "unavailable",
+									"note": "CLI token usage is incomplete."
+								}
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "ModuleTaskAnalyticsService.sync.root",
 				"type": "string",
 				"required": true,
-				"description": "Project root whose persisted module-task queue is reconciled into analytics."
+				"description": "Project root whose persisted module-task queue is read by ModuleTaskRepository and reconciled into analytics. Each event's project field is the git primary worktree path, or the resolved root when git cannot report one.",
+				"examples": ["/srv/checkouts/payments-api", "/srv/checkouts/reports-service"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleTaskAnalyticsService.quote",
 				"type": "TaskApiCost",
-				"description": "Locally estimated task cost and range from the current taskPricing helper; this is not an authoritative billing meter."
+				"description": "Token-equivalent API cost from the local rate table: basis 'cli-reported' uses the reported cost as usd, 'standard-api-estimate' sets usd only when minimumUsd and maximumUsd agree (otherwise usd is null), and 'unavailable' nulls every amount. It is never a subscription invoice.",
+				"examples": [
+					{
+						"rateCard": "standard-global-2026-10-25",
+						"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+						"usd": null,
+						"minimumUsd": 0.08556,
+						"maximumUsd": 0.09756,
+						"basis": "standard-api-estimate",
+						"note": "Standard global token rates, excluding tools, regional and fast-tier surcharges. Ranges preserve missing cache-write duration and per-request context tiers."
+					},
+					{
+						"rateCard": "standard-global-2026-10-25",
+						"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+						"usd": 0.0421,
+						"minimumUsd": 0.0421,
+						"maximumUsd": 0.0421,
+						"basis": "cli-reported",
+						"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+					},
+					{
+						"rateCard": "standard-global-2026-10-25",
+						"source": "https://developers.openai.com/api/docs/pricing",
+						"usd": null,
+						"minimumUsd": null,
+						"maximumUsd": null,
+						"basis": "unavailable",
+						"note": "CLI token usage is incomplete."
+					}
+				]
 			},
 			{
 				"name": "ModuleTaskAnalyticsService.metrics",
 				"type": "ReturnType<typeof taskMetrics>",
-				"description": "Task, execution, submission and review counters with token/cost totals and per-model groups; incomplete usage and costs remain null."
+				"description": "Counters for distinct tasks, executions, submissions, accepted and incomplete (bounced) reviews, token totals, API cost totals with their range, and per-model groups. A total is null when there are no executions or any execution lacks that value, and bounceRate is null when there are no reviews.",
+				"examples": [
+					{
+						"tasks": 1,
+						"executions": 1,
+						"submissions": 1,
+						"accepted": 1,
+						"bounces": 0,
+						"reviewed": 1,
+						"bounceRate": 0,
+						"executionFailures": 0,
+						"inputTokens": 48210,
+						"outputTokens": 6114,
+						"cacheReadTokens": 40000,
+						"cacheWriteTokens": 8000,
+						"apiCostUsd": null,
+						"apiCostRangeUsd": {
+							"minimum": 0.08556,
+							"maximum": 0.09756
+						},
+						"unpricedExecutions": 0,
+						"unreportedUsage": 0,
+						"byModel": [
+							{
+								"provider": "claude",
+								"model": "claude-sonnet-5-5",
+								"intelligence": "high",
+								"modelSource": "reported",
+								"tasks": 1,
+								"executions": 1,
+								"submissions": 1,
+								"accepted": 1,
+								"bounces": 0,
+								"reviewed": 1,
+								"bounceRate": 0,
+								"executionFailures": 0,
+								"inputTokens": 48210,
+								"outputTokens": 6114,
+								"cacheReadTokens": 40000,
+								"cacheWriteTokens": 8000,
+								"apiCostUsd": null,
+								"apiCostRangeUsd": {
+									"minimum": 0.08556,
+									"maximum": 0.09756
+								},
+								"unpricedExecutions": 0,
+								"unreportedUsage": 0
+							}
+						]
+					},
+					{
+						"tasks": 1,
+						"executions": 1,
+						"submissions": 0,
+						"accepted": 0,
+						"bounces": 0,
+						"reviewed": 0,
+						"bounceRate": null,
+						"executionFailures": 1,
+						"inputTokens": null,
+						"outputTokens": null,
+						"cacheReadTokens": null,
+						"cacheWriteTokens": null,
+						"apiCostUsd": null,
+						"apiCostRangeUsd": {
+							"minimum": null,
+							"maximum": null
+						},
+						"unpricedExecutions": 1,
+						"unreportedUsage": 1,
+						"byModel": [
+							{
+								"provider": "codex",
+								"model": "gpt-6.1-sol",
+								"intelligence": "xhigh",
+								"modelSource": "requested",
+								"tasks": 1,
+								"executions": 1,
+								"submissions": 0,
+								"accepted": 0,
+								"bounces": 0,
+								"reviewed": 0,
+								"bounceRate": null,
+								"executionFailures": 1,
+								"inputTokens": null,
+								"outputTokens": null,
+								"cacheReadTokens": null,
+								"cacheWriteTokens": null,
+								"apiCostUsd": null,
+								"apiCostRangeUsd": {
+									"minimum": null,
+									"maximum": null
+								},
+								"unpricedExecutions": 1,
+								"unreportedUsage": 1
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "ModuleTaskAnalyticsService.sync",
 				"type": "Promise<number>",
-				"description": "Number of imported events; returns zero when disabled, empty, or after a caught storage/queue failure and warning."
+				"description": "Number of events built from the queue and handed to recordImported, which is not a count of rows newly stored because recordImported's result is never read. It resolves to 0 when HARNESS_ANALYTICS_DISABLED is '1', when the queue has no tasks, or after any caught error, which also prints a warning with console.error.",
+				"examples": [3, 0, 6]
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by quote() through taskApiCost when model is an inherited Object.prototype name such as 'constructor' or '__proto__' and usage has non-null inputTokens and outputTokens without a valid reportedCostUsd, because rates[model] then returns an inherited value with no rate arrays. It comes from an unguarded lookup, not from a designed error path."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ModuleTaskAnalyticsService.quote",
@@ -85,23 +346,76 @@
 						"name": "ModuleTaskAnalyticsService.quote.model",
 						"type": "string",
 						"required": true,
-						"description": "Model identifier used to select the existing local task pricing rates."
+						"description": "Exact key into the local rate table (claude-haiku-5-5, claude-opus-5-5, claude-sonnet-5-5, gpt-6-luna, gpt-6.1-sol, gpt-6-astra); a key missing from the table yields basis 'unavailable' with null amounts, but inherited names such as 'constructor' can throw instead (see errors).",
+						"examples": ["claude-sonnet-5-5", "gpt-6.1-sol", "claude-haiku-5-5"]
 					},
 					{
 						"name": "ModuleTaskAnalyticsService.quote.usage",
 						"type": "TaskUsage",
 						"required": false,
-						"description": "Reported token usage; missing counts remain unknown in the resulting estimate."
+						"default": "undefined",
+						"description": "CLI token usage for one run: a finite, non-negative reportedCostUsd is returned as the exact cost, and otherwise inputTokens and outputTokens must both be non-null. Omitted usage, cacheReadTokens (alone or with cacheWriteTokens) above inputTokens, or cacheWriteLongTokens above cacheWriteTokens make the quote unavailable, while null cache counts widen the range rather than counting as zero.",
+						"examples": [
+							{
+								"inputTokens": 48210,
+								"outputTokens": 6114,
+								"cacheReadTokens": 40000,
+								"cacheWriteTokens": 8000,
+								"reportedCostUsd": null
+							},
+							{
+								"inputTokens": 12550,
+								"outputTokens": 1480,
+								"cacheReadTokens": null,
+								"cacheWriteTokens": null,
+								"reportedCostUsd": 0.0421
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskAnalyticsService.quote",
 						"type": "TaskApiCost",
-						"description": "Locally estimated task cost and range from the current taskPricing helper; this is not an authoritative billing meter."
+						"description": "Token-equivalent API cost from the local rate table: basis 'cli-reported' uses the reported cost as usd, 'standard-api-estimate' sets usd only when minimumUsd and maximumUsd agree (otherwise usd is null), and 'unavailable' nulls every amount. It is never a subscription invoice.",
+						"examples": [
+							{
+								"rateCard": "standard-global-2026-10-25",
+								"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+								"usd": null,
+								"minimumUsd": 0.08556,
+								"maximumUsd": 0.09756,
+								"basis": "standard-api-estimate",
+								"note": "Standard global token rates, excluding tools, regional and fast-tier surcharges. Ranges preserve missing cache-write duration and per-request context tiers."
+							},
+							{
+								"rateCard": "standard-global-2026-10-25",
+								"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+								"usd": 0.0421,
+								"minimumUsd": 0.0421,
+								"maximumUsd": 0.0421,
+								"basis": "cli-reported",
+								"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+							},
+							{
+								"rateCard": "standard-global-2026-10-25",
+								"source": "https://developers.openai.com/api/docs/pricing",
+								"usd": null,
+								"minimumUsd": null,
+								"maximumUsd": null,
+								"basis": "unavailable",
+								"note": "CLI token usage is incomplete."
+							}
+						]
 					}
 				],
-				"errors": [],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by quote() through taskApiCost when model is an inherited Object.prototype name such as 'constructor' or '__proto__' and usage has non-null inputTokens and outputTokens without a valid reportedCostUsd, because rates[model] then returns an inherited value with no rate arrays. It comes from an unguarded lookup, not from a designed error path."
+					}
+				],
 				"errorStatus": "declared"
 			},
 			{
@@ -111,14 +425,220 @@
 						"name": "ModuleTaskAnalyticsService.metrics.events",
 						"type": "AnalyticsEvent[]",
 						"required": true,
-						"description": "Analytics events to deduplicate and summarize; only task events with module-task details contribute."
+						"description": "Analytics events to deduplicate by id and summarize; only events with kind 'task' and a moduleTask detail contribute, and when an id repeats the last occurrence is kept.",
+						"examples": [
+							[
+								{
+									"id": "5e0b7c2d9a41f8e36b1d04a7c92f58e1d3a6b09c4f7e2d81a5c3b96e0f4d7a21",
+									"timestamp": "2026-11-14T16:40:52.104Z",
+									"project": "/srv/checkouts/payments-api",
+									"kind": "task",
+									"action": "executed",
+									"status": "succeeded",
+									"task": "service.agents-providers-module-task-analytics",
+									"requestedModel": "claude-sonnet-5-5",
+									"agentModel": "claude-sonnet-5-5",
+									"moduleTask": {
+										"attempt": "3f1c9a52-6e7d-4b8e-9a31-2c5d7e8f9a10",
+										"feature": "module-tasks",
+										"module": "agents-providers.module-task-analytics",
+										"provider": "claude",
+										"model": "claude-sonnet-5-5",
+										"intelligence": "high",
+										"reportedModel": "claude-sonnet-5-5",
+										"usage": {
+											"inputTokens": 48210,
+											"outputTokens": 6114,
+											"cacheReadTokens": 40000,
+											"cacheWriteTokens": 8000,
+											"reportedCostUsd": null
+										},
+										"apiCost": {
+											"rateCard": "standard-global-2026-10-25",
+											"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+											"usd": null,
+											"minimumUsd": 0.08556,
+											"maximumUsd": 0.09756,
+											"basis": "standard-api-estimate",
+											"note": "Standard global token rates, excluding tools, regional and fast-tier surcharges. Ranges preserve missing cache-write duration and per-request context tiers."
+										}
+									}
+								},
+								{
+									"id": "a13f6e0c8d2b57a94e1c3f08d6b2a75e9c4d1f3b0a8e6d27c5b9f14e2a0d368c",
+									"timestamp": "2026-11-14T16:41:03.877Z",
+									"project": "/srv/checkouts/payments-api",
+									"kind": "task",
+									"action": "submitted",
+									"task": "service.agents-providers-module-task-analytics",
+									"requestedModel": "claude-sonnet-5-5",
+									"agentModel": "claude-sonnet-5-5",
+									"moduleTask": {
+										"attempt": "3f1c9a52-6e7d-4b8e-9a31-2c5d7e8f9a10",
+										"feature": "module-tasks",
+										"module": "agents-providers.module-task-analytics",
+										"provider": "claude",
+										"model": "claude-sonnet-5-5",
+										"intelligence": "high",
+										"reportedModel": "claude-sonnet-5-5"
+									}
+								},
+								{
+									"id": "7d20b9e4c1a6f385d0e27b9c4a1f6e83b5d0c27a9e4f1b63d8c0a2e7f5b9d014",
+									"timestamp": "2026-11-14T17:05:19.462Z",
+									"project": "/srv/checkouts/payments-api",
+									"kind": "task",
+									"action": "accepted",
+									"task": "service.agents-providers-module-task-analytics",
+									"requestedModel": "claude-sonnet-5-5",
+									"agentModel": "claude-sonnet-5-5",
+									"moduleTask": {
+										"attempt": "3f1c9a52-6e7d-4b8e-9a31-2c5d7e8f9a10",
+										"feature": "module-tasks",
+										"module": "agents-providers.module-task-analytics",
+										"provider": "claude",
+										"model": "claude-sonnet-5-5",
+										"intelligence": "high",
+										"reportedModel": "claude-sonnet-5-5"
+									}
+								}
+							],
+							[
+								{
+									"id": "e8a05c3d7b1f9024a6d8e3c17f5b0a92d4c6e18b3f7a0d25c9e1b4f8a6d3c70e",
+									"timestamp": "2026-11-13T09:12:44.330Z",
+									"project": "/srv/checkouts/reports-service",
+									"kind": "task",
+									"action": "executed",
+									"status": "failed",
+									"task": "reports.component.evidence-grid",
+									"requestedModel": "gpt-6.1-sol",
+									"moduleTask": {
+										"attempt": "b7e2d4c1-0a9f-4e6b-8c3d-5f1a2b3c4d5e",
+										"feature": "reports-evidence",
+										"module": "reports.component",
+										"provider": "codex",
+										"model": "gpt-6.1-sol",
+										"intelligence": "xhigh",
+										"reportedModel": null,
+										"apiCost": {
+											"rateCard": "standard-global-2026-10-25",
+											"source": "https://developers.openai.com/api/docs/pricing",
+											"usd": null,
+											"minimumUsd": null,
+											"maximumUsd": null,
+											"basis": "unavailable",
+											"note": "CLI token usage is incomplete."
+										}
+									}
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskAnalyticsService.metrics",
 						"type": "ReturnType<typeof taskMetrics>",
-						"description": "Task, execution, submission and review counters with token/cost totals and per-model groups; incomplete usage and costs remain null."
+						"description": "Counters for distinct tasks, executions, submissions, accepted and incomplete (bounced) reviews, token totals, API cost totals with their range, and per-model groups. A total is null when there are no executions or any execution lacks that value, and bounceRate is null when there are no reviews.",
+						"examples": [
+							{
+								"tasks": 1,
+								"executions": 1,
+								"submissions": 1,
+								"accepted": 1,
+								"bounces": 0,
+								"reviewed": 1,
+								"bounceRate": 0,
+								"executionFailures": 0,
+								"inputTokens": 48210,
+								"outputTokens": 6114,
+								"cacheReadTokens": 40000,
+								"cacheWriteTokens": 8000,
+								"apiCostUsd": null,
+								"apiCostRangeUsd": {
+									"minimum": 0.08556,
+									"maximum": 0.09756
+								},
+								"unpricedExecutions": 0,
+								"unreportedUsage": 0,
+								"byModel": [
+									{
+										"provider": "claude",
+										"model": "claude-sonnet-5-5",
+										"intelligence": "high",
+										"modelSource": "reported",
+										"tasks": 1,
+										"executions": 1,
+										"submissions": 1,
+										"accepted": 1,
+										"bounces": 0,
+										"reviewed": 1,
+										"bounceRate": 0,
+										"executionFailures": 0,
+										"inputTokens": 48210,
+										"outputTokens": 6114,
+										"cacheReadTokens": 40000,
+										"cacheWriteTokens": 8000,
+										"apiCostUsd": null,
+										"apiCostRangeUsd": {
+											"minimum": 0.08556,
+											"maximum": 0.09756
+										},
+										"unpricedExecutions": 0,
+										"unreportedUsage": 0
+									}
+								]
+							},
+							{
+								"tasks": 1,
+								"executions": 1,
+								"submissions": 0,
+								"accepted": 0,
+								"bounces": 0,
+								"reviewed": 0,
+								"bounceRate": null,
+								"executionFailures": 1,
+								"inputTokens": null,
+								"outputTokens": null,
+								"cacheReadTokens": null,
+								"cacheWriteTokens": null,
+								"apiCostUsd": null,
+								"apiCostRangeUsd": {
+									"minimum": null,
+									"maximum": null
+								},
+								"unpricedExecutions": 1,
+								"unreportedUsage": 1,
+								"byModel": [
+									{
+										"provider": "codex",
+										"model": "gpt-6.1-sol",
+										"intelligence": "xhigh",
+										"modelSource": "requested",
+										"tasks": 1,
+										"executions": 1,
+										"submissions": 0,
+										"accepted": 0,
+										"bounces": 0,
+										"reviewed": 0,
+										"bounceRate": null,
+										"executionFailures": 1,
+										"inputTokens": null,
+										"outputTokens": null,
+										"cacheReadTokens": null,
+										"cacheWriteTokens": null,
+										"apiCostUsd": null,
+										"apiCostRangeUsd": {
+											"minimum": null,
+											"maximum": null
+										},
+										"unpricedExecutions": 1,
+										"unreportedUsage": 1
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
@@ -131,14 +651,16 @@
 						"name": "ModuleTaskAnalyticsService.sync.root",
 						"type": "string",
 						"required": true,
-						"description": "Project root whose persisted module-task queue is reconciled into analytics."
+						"description": "Project root whose persisted module-task queue is read by ModuleTaskRepository and reconciled into analytics. Each event's project field is the git primary worktree path, or the resolved root when git cannot report one.",
+						"examples": ["/srv/checkouts/payments-api", "/srv/checkouts/reports-service"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskAnalyticsService.sync",
 						"type": "Promise<number>",
-						"description": "Number of imported events; returns zero when disabled, empty, or after a caught storage/queue failure and warning."
+						"description": "Number of events built from the queue and handed to recordImported, which is not a count of rows newly stored because recordImported's result is never read. It resolves to 0 when HARNESS_ANALYTICS_DISABLED is '1', when the queue has no tasks, or after any caught error, which also prints a warning with console.error.",
+						"examples": [3, 0, 6]
 					}
 				],
 				"errors": [],
@@ -153,14 +675,14 @@
 						"name": "ModuleTaskAnalyticsService.constructor.store",
 						"type": "TaskAnalyticsStoreFactory",
 						"required": false,
-						"description": "Factory for a synchronous or promised analytics store; defaults to the asynchronous AnalyticsRepository.open factory."
+						"description": "Factory that returns the analytics store, directly or as a promise; the constructor only keeps it, and sync() calls it only when analytics are enabled and the queue has tasks. Defaults to () => AnalyticsRepository.open(), the async static open method of AnalyticsRepository."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskAnalyticsService.constructor",
 						"type": "ModuleTaskAnalyticsService",
-						"description": "Task analytics service retaining the supplied store factory without opening storage."
+						"description": "The service instance; it keeps the supplied store factory and neither calls it nor opens storage until sync() runs."
 					}
 				],
 				"errors": [],
