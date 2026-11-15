@@ -36,44 +36,68 @@
 				"name": "UnitIndexService.index.index",
 				"type": "SourceIndex",
 				"required": true,
-				"description": "Source facts and conventional identities for one revision; the source map is not reordered."
+				"description": "The source index for one revision: each SourceFile in its files map supplies its path, classification, identity, exports and storage, and only files classified as source with an identity form unit groups. A .types.ts companion takes the identity of its single concrete sibling when exactly one exists, the index revision is stamped on the retired record of each merged model companion, and the files map is never reordered."
 			},
 			{
 				"name": "UnitIndexService.index.existing",
 				"type": "ComponentManifest[]",
 				"required": true,
-				"description": "Existing active and retired registry records whose stable identities and authored declarations must survive reconciliation."
+				"description": "Prior registry records, active and retired: an active record's owns.source paths decide which unit already owns each file, and a retired record is revived when one of its owns.source paths matches an unowned file or is offered as a predecessor when no indexed file remains. The stable JSON of each record is the baseline that decides whether a unit is reported as updated.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "modelCompanions.index",
 				"type": "SourceIndex",
 				"required": true,
-				"description": "Indexed storage declarations used to identify persisted-model companions."
+				"description": "The source index for one revision, read only for the storage list of the .ts implementation file derived from each .types.ts companion path and for the index revision. A companion merges only when that implementation file has at least one storage entry, and no other index fact affects this function."
 			},
 			{
 				"name": "modelCompanions.existing",
 				"type": "ComponentManifest[]",
 				"required": true,
-				"description": "Prior registry records; matching persisted companions retain retired identities and predecessor lineage."
+				"description": "Prior registry records; only active records of kind model take part. A model whose sole source path ends in .types.ts merges into another active model whose owns.source includes the .ts path that replaces that suffix, and only when the index reports storage for that .ts file.",
+				"examples": [
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "UnitIndexService.index",
 				"type": "UnitIndexResult",
-				"description": "Reconciled manifests plus explicit added, updated, moved, revived and orphaned ID lists; does not write the registry."
+				"description": "The reconciled result: manifests holds every record sorted by id, while added, updated, moved, revived and orphaned list minted ids, changed records, moves with their old and new source paths, retired records revived by a reappearing source path, and active records left with no indexed file. The result is returned to the caller and nothing is written to the registry; a group becomes a move only when it announces no uid and exactly one active record with no remaining source files lists the same exported symbols in the same order, and that record matches no other unclaimed group.",
+				"examples": [
+					{
+						"manifests": [],
+						"added": [],
+						"updated": [],
+						"moved": [],
+						"revived": [],
+						"orphaned": []
+					}
+				]
 			},
 			{
 				"name": "modelCompanions",
 				"type": "ComponentManifest[]",
-				"description": "Registry projection that folds persisted-model companion ownership and redirects dependencies while retaining tombstones."
+				"description": "The same records in the same order, where each merged model companion becomes a retired record (retired.reason names its owner and retired.at is the index revision) and the model that owns its implementation gains the companion's source paths and id as lineage predecessors. An owner's owns.source and lineage.predecessors are sorted and deduplicated, and a dependency on a merged companion is redirected to its owner, or dropped when that would point at the owner itself.",
+				"examples": [
+					[]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Input access failure",
 				"type": "propagated",
-				"description": "Schema validation, caller-provided getters, iterators or serialization can throw; this value operation does not perform filesystem I/O."
+				"description": "An exception raised by a caller-supplied getter, iterator or method, or by a helper the unit's operations call (modelCompanions, adoptUids, mergedByUid, unitUid, unitLineage, deriveManifest, stableJson), can pass through because nothing in these files catches it; none of the five implementation files performs filesystem I/O."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown as a TypeError when existing is not an array, when a record has no dependencies array, or when index has no files Map, because these values are read directly; nothing in these files catches it."
 			}
 		],
 		"errorStatus": "declared",
@@ -85,27 +109,45 @@
 						"name": "UnitIndexService.index.index",
 						"type": "SourceIndex",
 						"required": true,
-						"description": "Source facts and conventional identities for one revision; the source map is not reordered."
+						"description": "The source index for one revision: each SourceFile in its files map supplies its path, classification, identity, exports and storage, and only files classified as source with an identity form unit groups. A .types.ts companion takes the identity of its single concrete sibling when exactly one exists, the index revision is stamped on the retired record of each merged model companion, and the files map is never reordered."
 					},
 					{
 						"name": "UnitIndexService.index.existing",
 						"type": "ComponentManifest[]",
 						"required": true,
-						"description": "Existing active and retired registry records whose stable identities and authored declarations must survive reconciliation."
+						"description": "Prior registry records, active and retired: an active record's owns.source paths decide which unit already owns each file, and a retired record is revived when one of its owns.source paths matches an unowned file or is offered as a predecessor when no indexed file remains. The stable JSON of each record is the baseline that decides whether a unit is reported as updated.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "UnitIndexService.index",
 						"type": "UnitIndexResult",
-						"description": "Reconciled manifests plus explicit added, updated, moved, revived and orphaned ID lists; does not write the registry."
+						"description": "The reconciled result: manifests holds every record sorted by id, while added, updated, moved, revived and orphaned list minted ids, changed records, moves with their old and new source paths, retired records revived by a reappearing source path, and active records left with no indexed file. The result is returned to the caller and nothing is written to the registry; a group becomes a move only when it announces no uid and exactly one active record with no remaining source files lists the same exported symbols in the same order, and that record matches no other unclaimed group.",
+						"examples": [
+							{
+								"manifests": [],
+								"added": [],
+								"updated": [],
+								"moved": [],
+								"revived": [],
+								"orphaned": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Input access failure",
 						"type": "propagated",
-						"description": "Schema validation, caller-provided getters, iterators or serialization can throw; this value operation does not perform filesystem I/O."
+						"description": "An exception raised by a caller-supplied getter, iterator or method, or by a helper the unit's operations call (modelCompanions, adoptUids, mergedByUid, unitUid, unitLineage, deriveManifest, stableJson), can pass through because nothing in these files catches it; none of the five implementation files performs filesystem I/O."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown as a TypeError when existing is not an array, when a record has no dependencies array, or when index has no files Map, because these values are read directly; nothing in these files catches it."
 					}
 				],
 				"errorStatus": "declared"
@@ -117,27 +159,38 @@
 						"name": "modelCompanions.index",
 						"type": "SourceIndex",
 						"required": true,
-						"description": "Indexed storage declarations used to identify persisted-model companions."
+						"description": "The source index for one revision, read only for the storage list of the .ts implementation file derived from each .types.ts companion path and for the index revision. A companion merges only when that implementation file has at least one storage entry, and no other index fact affects this function."
 					},
 					{
 						"name": "modelCompanions.existing",
 						"type": "ComponentManifest[]",
 						"required": true,
-						"description": "Prior registry records; matching persisted companions retain retired identities and predecessor lineage."
+						"description": "Prior registry records; only active records of kind model take part. A model whose sole source path ends in .types.ts merges into another active model whose owns.source includes the .ts path that replaces that suffix, and only when the index reports storage for that .ts file.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "modelCompanions",
 						"type": "ComponentManifest[]",
-						"description": "Registry projection that folds persisted-model companion ownership and redirects dependencies while retaining tombstones."
+						"description": "The same records in the same order, where each merged model companion becomes a retired record (retired.reason names its owner and retired.at is the index revision) and the model that owns its implementation gains the companion's source paths and id as lineage predecessors. An owner's owns.source and lineage.predecessors are sorted and deduplicated, and a dependency on a merged companion is redirected to its owner, or dropped when that would point at the owner itself.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Input access failure",
 						"type": "propagated",
-						"description": "Schema validation, caller-provided getters, iterators or serialization can throw; this value operation does not perform filesystem I/O."
+						"description": "An exception raised by a caller-supplied getter, iterator or method on index or existing can pass through because nothing in this file catches it; the function calls no other helper and performs no filesystem I/O."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown as a TypeError when existing is not an array or a record has no dependencies array, since the function maps over every record. index.files is read only when a candidate companion has an owner, so a missing files Map throws only then."
 					}
 				],
 				"errorStatus": "declared"
