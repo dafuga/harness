@@ -31,17 +31,36 @@
 				"name": "EmailProofPanel.proof",
 				"type": "EmailProofStatus",
 				"required": true,
-				"description": "Required email-proof status with target email, sent flag and optional expiry. Input is disabled until sent; the sent flag also chooses Send or Resend wording."
+				"description": "Email-proof status of a pending Google sign-in whose address still has to be proven: email is the address to confirm, sent is true while the code that was sent can still be entered, and expiresAt is the ISO 8601 UTC time that code stops working (null whenever sent is false). The code field is disabled unless sent is true, and sent also chooses the 'Send code' or 'Resend code' button label.",
+				"examples": [
+					{
+						"email": "ada@example.invalid",
+						"sent": true,
+						"expiresAt": "2026-11-15T10:10:00.000Z"
+					},
+					{
+						"email": "grace@example.invalid",
+						"sent": false,
+						"expiresAt": null
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EmailProofPanel",
 				"type": "markup",
-				"description": "Email confirmation form with send/resend, numeric code entry, Verify and Cancel. Verify requires exactly the configured number of digits and a nonbusy session, and clears code on reported success. Cancel clears code then signs out. Session errors are shown; successful verification does not itself assume a signed-in actor."
+				"description": "The markup is a heading, a paragraph naming the address and a form for confirming an email address, with a status line while a code is sent (including its expiry time), a 'Send code' or 'Resend code' button, a numeric code field of EMAIL_CODE_LENGTH (8) digits enabled only while proof.sent is true, a Verify submit button, a Cancel button and any session.error shown as an alert. Verify is disabled unless the code is exactly 8 digits and no session request is busy, the code is cleared after a submit only when session.verifyEmail then reports a signed-in actor, and Cancel clears the code before calling session.signOut."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown while the component is created if no hosted browser context was provided above it (browserContext() then returns undefined, so destructuring session fails), or while it renders if proof is undefined. Session call failures never reject out of this component, because the session store catches them."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
