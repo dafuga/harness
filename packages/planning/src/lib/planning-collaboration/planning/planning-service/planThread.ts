@@ -22,7 +22,11 @@ import { blob, revision } from '../../../../utils/planGit';
 import { planRead } from '../../../../utils/planning-collaboration/plan-read/planRead';
 import { readImage } from '../../../../utils/plan-design/readImage';
 import { optionOf } from '../../../../utils/planOptions';
-import { clean, commitFiles, type Files } from '../../../../utils/plan-write/clean';
+import {
+	clean,
+	commitFiles,
+	type Files
+} from '../../../../utils/planning-collaboration/plan-write/clean';
 import { fail, hash, json, now, planData } from '../../../../utils/planData';
 import { author, filename, region, text } from '../../../../utils/planValidate';
 function messageValue(
