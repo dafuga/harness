@@ -18,20 +18,20 @@
 				"name": "browserApi.fetcher",
 				"type": "typeof fetch",
 				"required": false,
-				"description": "Fetch implementation; defaults to the global fetch."
+				"description": "Fetch implementation used for each request. Defaults to the global fetch function; the helper supplies the same-origin credentials, no-store cache, headers, body, and timeout options."
 			},
 			{
 				"name": "browserApi.failed",
 				"type": "(failure: ApiFailure) => void",
 				"required": false,
-				"description": "Callback for non-success HTTP responses; defaults to a no-op. Network failures do not call it."
+				"description": "Callback invoked for each non-OK HTTP response with an Error carrying its status and code. Defaults to a no-op and is not called when fetching itself rejects."
 			}
 		],
 		"outputs": [
 			{
 				"name": "browserApi",
 				"type": "BrowserApi",
-				"description": "get/send return parsed JSON, bytes returns raw bytes, and media returns bounded bytes plus Content-Type. Calls require /api/ paths, omit empty query values, disable caching and use a 30-second abort signal. Writes send JSON."
+				"description": "Object of asynchronous GET, POST/DELETE, media, and byte request helpers. Paths must begin with /api/; GET query values that are empty or otherwise falsy are omitted, JSON writes use same-origin credentials and no-store caching, and requests use a 30-second timeout."
 			}
 		],
 		"errors": [
@@ -41,6 +41,7 @@
 				"description": "Rejects non-API paths, coded HTTP failures, network/timeouts, invalid response JSON and media read failures. HTTP failures include status/code and readable wording."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "browserApi",
@@ -49,24 +50,24 @@
 						"name": "browserApi.fetcher",
 						"type": "typeof fetch",
 						"required": false,
-						"description": "Fetch implementation; defaults to the global fetch."
+						"description": "Fetch implementation used for each request. Defaults to the global fetch function; the helper supplies the same-origin credentials, no-store cache, headers, body, and timeout options."
 					},
 					{
 						"name": "browserApi.failed",
 						"type": "(failure: ApiFailure) => void",
 						"required": false,
-						"description": "Callback for non-success HTTP responses; defaults to a no-op. Network failures do not call it."
+						"description": "Callback invoked for each non-OK HTTP response with an Error carrying its status and code. Defaults to a no-op and is not called when fetching itself rejects."
 					}
 				],
 				"outputs": [
 					{
 						"name": "browserApi",
 						"type": "BrowserApi",
-						"description": "get/send return parsed JSON, bytes returns raw bytes, and media returns bounded bytes plus Content-Type. Calls require /api/ paths, omit empty query values, disable caching and use a 30-second abort signal. Writes send JSON."
+						"description": "Object of asynchronous GET, POST/DELETE, media, and byte request helpers. Paths must begin with /api/; GET query values that are empty or otherwise falsy are omitted, JSON writes use same-origin credentials and no-store caching, and requests use a 30-second timeout."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
