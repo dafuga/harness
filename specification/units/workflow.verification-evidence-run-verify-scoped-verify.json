@@ -29,103 +29,294 @@
 				"name": "scopedVerify.context",
 				"type": "Base",
 				"required": true,
-				"description": "Verification context containing the target commit, repository root, and trusted head revision."
+				"description": "The source verification context, including repository root, commit/tree revisions, base/head sides, and verify configuration. Its revision-side indexes contain Map values, which JSON examples cannot represent."
 			},
 			{
 				"name": "scopedVerify.runtime",
 				"type": "ImpactReport['runtime']",
 				"required": true,
-				"description": "Impact-analysis runtime selected for this scoped verification."
+				"description": "Execution runtime recorded in the scoped impact report. It must be one of the declared runtime kinds: module, wasm, process, or http.",
+				"examples": ["module"]
 			},
 			{
 				"name": "scopedVerify.options",
 				"type": "VerifyOptions",
 				"required": true,
-				"description": "Verification settings including the entity id and applicable runner/runtime options."
+				"description": "Verification options passed to the service. This function reads entity and converts a truthy testTimeout with Number; it does not read the other options.",
+				"examples": [
+					{
+						"entity": "reports.component.evidence-grid",
+						"testTimeout": "30000"
+					}
+				]
 			},
 			{
 				"name": "scopedVerify.env",
 				"type": "Record<string, string | undefined>",
 				"required": true,
-				"description": "Base environment inherited by scoped verification child processes."
+				"description": "Environment variables forwarded to the verification service and snapshot checks. The supplied record is passed through as given, with each value either a string or undefined.",
+				"examples": [
+					{
+						"CI": "true",
+						"HARNESS_RESOURCE_PRIORITY": "environment"
+					}
+				]
 			},
 			{
 				"name": "renderAttachment.attachment",
 				"type": "VerifyResult['attachment']",
 				"required": true,
-				"description": "Optional screenshot attachment status returned for entity-scoped verification."
+				"description": "Optional attachment summary from a verification result. An absent value produces no lines; a present value carries an attachment status, entity, record id, states, and viewports.",
+				"examples": [
+					{
+						"status": "attached",
+						"entity": "reports.component.evidence-grid",
+						"record": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"states": ["reports.state.initial"],
+						"viewports": ["desktop"]
+					},
+					{
+						"status": "skipped",
+						"entity": "reports.component.evidence-grid",
+						"record": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"states": [],
+						"viewports": []
+					}
+				]
 			},
 			{
 				"name": "scopedContext.context",
 				"type": "Base",
 				"required": true,
-				"description": "Entity-verification context containing the commit and head revision."
+				"description": "The source verification context whose head side will replace its base side. Its revision-side indexes contain Map values, which JSON examples cannot represent."
 			},
 			{
 				"name": "scopedImpact.head",
 				"type": "string",
 				"required": true,
-				"description": "Commit whose entity-scoped scenarios are being checked."
+				"description": "Revision string copied into the scoped impact report head field. This helper does not resolve or validate the revision.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "scopedImpact.runtime",
 				"type": "ImpactReport['runtime']",
 				"required": true,
-				"description": "Local impact runtime recorded in the scoped impact report."
+				"description": "Execution runtime copied into the scoped impact report. It must be one of the declared runtime kinds: module, wasm, process, or http.",
+				"examples": ["module"]
 			},
 			{
 				"name": "timer.entity",
 				"type": "string | undefined",
 				"required": true,
-				"description": "Optional entity id; absent disables timing messages."
+				"description": "Optional entity identifier used to prefix timing messages. A falsy value suppresses writes, and the identifier is not validated here.",
+				"examples": ["reports.component.evidence-grid"]
 			},
 			{
 				"name": "verifyEnv.options",
 				"type": "VerifyOptions",
 				"required": true,
-				"description": "Verify options used to derive resource priority and entity-scoped environment markers."
+				"description": "Verification options used to set resource priority and optionally mark entity-scoped checks. Only priority and a truthy entity affect the returned environment.",
+				"examples": [
+					{
+						"priority": "agent-test",
+						"entity": "reports.component.evidence-grid"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "scopedVerify",
 				"type": "Promise<VerifyResult>",
-				"description": "Stored verification result for scenarios covering the entity; includes any screenshot-attachment outcome."
+				"description": "Resolves to the stored verification record with an attachment summary. Attachment is skipped unless there is at least one passing test and scenario, all failures are the scoped marker, and a screenshot exists; qualifying proof is attached or unchanged.",
+				"examples": [
+					{
+						"record": {
+							"schemaVersion": 1,
+							"componentSchemaVersion": 2,
+							"id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13",
+							"source": {
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"tree": "89abcdef0123456789abcdef0123456789abcdef",
+								"base": null
+							},
+							"profile": {
+								"id": "0123456789abcdef",
+								"platform": "darwin",
+								"arch": "arm64",
+								"cpu": "Apple M5 Max",
+								"cores": 16,
+								"memoryBytes": 38654705664,
+								"runtime": "bun 1.3.0"
+							},
+							"tools": [
+								{
+									"id": "harness",
+									"version": "0.1.4"
+								}
+							],
+							"startedAt": "2026-11-15T12:34:56.789Z",
+							"finishedAt": "2026-11-15T12:34:57.012Z",
+							"status": "failed",
+							"components": [],
+							"measurements": [],
+							"impact": {
+								"runtime": "module",
+								"expanded": false,
+								"changed": [],
+								"units": {
+									"direct": [],
+									"indirect": [],
+									"added": [],
+									"removed": []
+								},
+								"uncertain": []
+							},
+							"tests": [
+								{
+									"id": "reports.scenario.evidence-grid.test",
+									"kind": "e2e",
+									"runner": "playwright",
+									"target": "tests/evidence-grid.spec.ts",
+									"status": "passed",
+									"durationMs": 800,
+									"log": {
+										"path": "logs/evidence-grid.log",
+										"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+										"bytes": 128
+									}
+								}
+							],
+							"scenarios": [
+								{
+									"id": "reports.scenario.evidence-grid",
+									"status": "passed",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"states": [
+										{
+											"id": "reports.state.initial",
+											"coverage": "required",
+											"captures": [
+												{
+													"evidence": "reports.evidence.evidence-grid",
+													"kind": "screenshot",
+													"state": "reports.state.initial",
+													"viewport": "desktop",
+													"status": "passed",
+													"path": "captures/evidence-grid-initial.png",
+													"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+													"bytes": 2048,
+													"mediaType": "image/png",
+													"capturedAt": "2026-11-15T12:34:56.789Z"
+												}
+											]
+										}
+									]
+								}
+							],
+							"budgets": {
+								"status": "passed",
+								"findings": []
+							},
+							"reasons": {
+								"status": "passed",
+								"missing": []
+							},
+							"failures": [
+								"Scoped to reports.component.evidence-grid: only its scenario states ran, so this record is partial and never a full pass."
+							]
+						},
+						"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115123456789",
+						"attachment": {
+							"status": "attached",
+							"entity": "reports.component.evidence-grid",
+							"record": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"states": ["reports.state.initial"],
+							"viewports": ["desktop"]
+						}
+					}
+				]
 			},
 			{
 				"name": "renderAttachment",
 				"type": "string[]",
-				"description": "Human-readable screenshot states, viewports, and attached record, or the reason no attachment was made."
+				"description": "Returns no lines when attachment is absent, one skipped message for skipped status, or one summary with states, viewports, and record for attached or unchanged status.",
+				"examples": [
+					[],
+					[
+						"No screenshots attached for reports.component.evidence-grid: failed or incomplete run."
+					],
+					[
+						"Screenshots attached for reports.component.evidence-grid: states reports.state.initial; viewports desktop; record aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa."
+					]
+				]
 			},
 			{
 				"name": "scopedContext",
 				"type": "Base",
-				"description": "Context whose base is replaced by the head so scoped proof does not claim a full comparison."
+				"description": "Shallow copy of the context with base set to the same revision side as head; all other fields are retained. Its revision-side indexes contain Map values, which JSON examples cannot represent."
 			},
 			{
 				"name": "scopedImpact",
 				"type": "ImpactReport",
-				"description": "Empty-impact report tagged with the requested head and runtime; selected tests and affected scenarios start empty."
+				"description": "Report with base none, the supplied head and runtime, expanded false, and empty changed, unit, test, scenario, and uncertainty lists. It does not compute impact.",
+				"examples": [
+					{
+						"base": "none",
+						"head": "0123456789abcdef0123456789abcdef01234567",
+						"runtime": "module",
+						"expanded": false,
+						"changed": [],
+						"units": {
+							"direct": [],
+							"indirect": [],
+							"added": [],
+							"removed": []
+						},
+						"tests": {
+							"selected": [],
+							"excluded": [],
+							"removed": []
+						},
+						"scenarios": {
+							"affected": [],
+							"unaffected": []
+						},
+						"uncertain": []
+					}
+				]
 			},
 			{
 				"name": "timer",
 				"type": "(step: string)",
-				"description": "Callback that writes elapsed milliseconds for each named workflow step to stderr when an entity is set."
+				"description": "Callback that writes [verify <entity>] <step> +<elapsed>ms to stderr when entity is truthy. Elapsed time is measured from callback creation; an absent or empty entity suppresses output."
 			},
 			{
 				"name": "verifyEnv",
 				"type": "Record<string, string | undefined>",
-				"description": "Child-process environment copied from process.env with normalized resource priority and entity scope marker when applicable."
+				"description": "Returns a copy of process.env with HARNESS_RESOURCE_PRIORITY set from options.priority ?? process.env.HARNESS_RESOURCE_PRIORITY ?? 'environment' after enum parsing. It sets HARNESS_VERIFY_ENTITY only when options.entity is truthy.",
+				"examples": [
+					{
+						"HARNESS_RESOURCE_PRIORITY": "environment",
+						"HARNESS_VERIFY_ENTITY": "reports.component.evidence-grid"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Entity is not covered by a scenario, or verification setup/runtime fails."
+				"description": "Thrown when no head scenario covers the requested entity; the scoped verification cannot run without a covering scenario."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Thrown by resourcePriority.parse when the selected resource priority is not agent-test, coding, or environment."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "scopedVerify",
@@ -134,39 +325,160 @@
 						"name": "scopedVerify.context",
 						"type": "Base",
 						"required": true,
-						"description": "Verification context containing the target commit, repository root, and trusted head revision."
+						"description": "The source verification context, including repository root, commit/tree revisions, base/head sides, and verify configuration. Its revision-side indexes contain Map values, which JSON examples cannot represent."
 					},
 					{
 						"name": "scopedVerify.runtime",
 						"type": "ImpactReport['runtime']",
 						"required": true,
-						"description": "Impact-analysis runtime selected for this scoped verification."
+						"description": "Execution runtime recorded in the scoped impact report. It must be one of the declared runtime kinds: module, wasm, process, or http.",
+						"examples": ["module"]
 					},
 					{
 						"name": "scopedVerify.options",
 						"type": "VerifyOptions",
 						"required": true,
-						"description": "Verification settings including the entity id and applicable runner/runtime options."
+						"description": "Verification options passed to the service. This function reads entity and converts a truthy testTimeout with Number; it does not read the other options.",
+						"examples": [
+							{
+								"entity": "reports.component.evidence-grid",
+								"testTimeout": "30000"
+							}
+						]
 					},
 					{
 						"name": "scopedVerify.env",
 						"type": "Record<string, string | undefined>",
 						"required": true,
-						"description": "Base environment inherited by scoped verification child processes."
+						"description": "Environment variables forwarded to the verification service and snapshot checks. The supplied record is passed through as given, with each value either a string or undefined.",
+						"examples": [
+							{
+								"CI": "true",
+								"HARNESS_RESOURCE_PRIORITY": "environment"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scopedVerify",
 						"type": "Promise<VerifyResult>",
-						"description": "Stored verification result for scenarios covering the entity; includes any screenshot-attachment outcome."
+						"description": "Resolves to the stored verification record with an attachment summary. Attachment is skipped unless there is at least one passing test and scenario, all failures are the scoped marker, and a screenshot exists; qualifying proof is attached or unchanged.",
+						"examples": [
+							{
+								"record": {
+									"schemaVersion": 1,
+									"componentSchemaVersion": 2,
+									"id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13",
+									"source": {
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"tree": "89abcdef0123456789abcdef0123456789abcdef",
+										"base": null
+									},
+									"profile": {
+										"id": "0123456789abcdef",
+										"platform": "darwin",
+										"arch": "arm64",
+										"cpu": "Apple M5 Max",
+										"cores": 16,
+										"memoryBytes": 38654705664,
+										"runtime": "bun 1.3.0"
+									},
+									"tools": [
+										{
+											"id": "harness",
+											"version": "0.1.4"
+										}
+									],
+									"startedAt": "2026-11-15T12:34:56.789Z",
+									"finishedAt": "2026-11-15T12:34:57.012Z",
+									"status": "failed",
+									"components": [],
+									"measurements": [],
+									"impact": {
+										"runtime": "module",
+										"expanded": false,
+										"changed": [],
+										"units": {
+											"direct": [],
+											"indirect": [],
+											"added": [],
+											"removed": []
+										},
+										"uncertain": []
+									},
+									"tests": [
+										{
+											"id": "reports.scenario.evidence-grid.test",
+											"kind": "e2e",
+											"runner": "playwright",
+											"target": "tests/evidence-grid.spec.ts",
+											"status": "passed",
+											"durationMs": 800,
+											"log": {
+												"path": "logs/evidence-grid.log",
+												"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+												"bytes": 128
+											}
+										}
+									],
+									"scenarios": [
+										{
+											"id": "reports.scenario.evidence-grid",
+											"status": "passed",
+											"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+											"states": [
+												{
+													"id": "reports.state.initial",
+													"coverage": "required",
+													"captures": [
+														{
+															"evidence": "reports.evidence.evidence-grid",
+															"kind": "screenshot",
+															"state": "reports.state.initial",
+															"viewport": "desktop",
+															"status": "passed",
+															"path": "captures/evidence-grid-initial.png",
+															"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+															"bytes": 2048,
+															"mediaType": "image/png",
+															"capturedAt": "2026-11-15T12:34:56.789Z"
+														}
+													]
+												}
+											]
+										}
+									],
+									"budgets": {
+										"status": "passed",
+										"findings": []
+									},
+									"reasons": {
+										"status": "passed",
+										"missing": []
+									},
+									"failures": [
+										"Scoped to reports.component.evidence-grid: only its scenario states ran, so this record is partial and never a full pass."
+									]
+								},
+								"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115123456789",
+								"attachment": {
+									"status": "attached",
+									"entity": "reports.component.evidence-grid",
+									"record": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"states": ["reports.state.initial"],
+									"viewports": ["desktop"]
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Entity is not covered by a scenario, or verification setup/runtime fails."
+						"description": "Thrown when no head scenario covers the requested entity; the scoped verification cannot run without a covering scenario."
 					}
 				],
 				"errorStatus": "declared"
@@ -178,14 +490,39 @@
 						"name": "renderAttachment.attachment",
 						"type": "VerifyResult['attachment']",
 						"required": true,
-						"description": "Optional screenshot attachment status returned for entity-scoped verification."
+						"description": "Optional attachment summary from a verification result. An absent value produces no lines; a present value carries an attachment status, entity, record id, states, and viewports.",
+						"examples": [
+							{
+								"status": "attached",
+								"entity": "reports.component.evidence-grid",
+								"record": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"states": ["reports.state.initial"],
+								"viewports": ["desktop"]
+							},
+							{
+								"status": "skipped",
+								"entity": "reports.component.evidence-grid",
+								"record": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"states": [],
+								"viewports": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderAttachment",
 						"type": "string[]",
-						"description": "Human-readable screenshot states, viewports, and attached record, or the reason no attachment was made."
+						"description": "Returns no lines when attachment is absent, one skipped message for skipped status, or one summary with states, viewports, and record for attached or unchanged status.",
+						"examples": [
+							[],
+							[
+								"No screenshots attached for reports.component.evidence-grid: failed or incomplete run."
+							],
+							[
+								"Screenshots attached for reports.component.evidence-grid: states reports.state.initial; viewports desktop; record aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa."
+							]
+						]
 					}
 				],
 				"errors": [],
@@ -198,14 +535,14 @@
 						"name": "scopedContext.context",
 						"type": "Base",
 						"required": true,
-						"description": "Entity-verification context containing the commit and head revision."
+						"description": "The source verification context whose head side will replace its base side. Its revision-side indexes contain Map values, which JSON examples cannot represent."
 					}
 				],
 				"outputs": [
 					{
 						"name": "scopedContext",
 						"type": "Base",
-						"description": "Context whose base is replaced by the head so scoped proof does not claim a full comparison."
+						"description": "Shallow copy of the context with base set to the same revision side as head; all other fields are retained. Its revision-side indexes contain Map values, which JSON examples cannot represent."
 					}
 				],
 				"errors": [],
@@ -218,20 +555,47 @@
 						"name": "scopedImpact.head",
 						"type": "string",
 						"required": true,
-						"description": "Commit whose entity-scoped scenarios are being checked."
+						"description": "Revision string copied into the scoped impact report head field. This helper does not resolve or validate the revision.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					},
 					{
 						"name": "scopedImpact.runtime",
 						"type": "ImpactReport['runtime']",
 						"required": true,
-						"description": "Local impact runtime recorded in the scoped impact report."
+						"description": "Execution runtime copied into the scoped impact report. It must be one of the declared runtime kinds: module, wasm, process, or http.",
+						"examples": ["module"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scopedImpact",
 						"type": "ImpactReport",
-						"description": "Empty-impact report tagged with the requested head and runtime; selected tests and affected scenarios start empty."
+						"description": "Report with base none, the supplied head and runtime, expanded false, and empty changed, unit, test, scenario, and uncertainty lists. It does not compute impact.",
+						"examples": [
+							{
+								"base": "none",
+								"head": "0123456789abcdef0123456789abcdef01234567",
+								"runtime": "module",
+								"expanded": false,
+								"changed": [],
+								"units": {
+									"direct": [],
+									"indirect": [],
+									"added": [],
+									"removed": []
+								},
+								"tests": {
+									"selected": [],
+									"excluded": [],
+									"removed": []
+								},
+								"scenarios": {
+									"affected": [],
+									"unaffected": []
+								},
+								"uncertain": []
+							}
+						]
 					}
 				],
 				"errors": [],
@@ -244,14 +608,15 @@
 						"name": "timer.entity",
 						"type": "string | undefined",
 						"required": true,
-						"description": "Optional entity id; absent disables timing messages."
+						"description": "Optional entity identifier used to prefix timing messages. A falsy value suppresses writes, and the identifier is not validated here.",
+						"examples": ["reports.component.evidence-grid"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "timer",
 						"type": "(step: string)",
-						"description": "Callback that writes elapsed milliseconds for each named workflow step to stderr when an entity is set."
+						"description": "Callback that writes [verify <entity>] <step> +<elapsed>ms to stderr when entity is truthy. Elapsed time is measured from callback creation; an absent or empty entity suppresses output."
 					}
 				],
 				"errors": [],
@@ -264,17 +629,35 @@
 						"name": "verifyEnv.options",
 						"type": "VerifyOptions",
 						"required": true,
-						"description": "Verify options used to derive resource priority and entity-scoped environment markers."
+						"description": "Verification options used to set resource priority and optionally mark entity-scoped checks. Only priority and a truthy entity affect the returned environment.",
+						"examples": [
+							{
+								"priority": "agent-test",
+								"entity": "reports.component.evidence-grid"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "verifyEnv",
 						"type": "Record<string, string | undefined>",
-						"description": "Child-process environment copied from process.env with normalized resource priority and entity scope marker when applicable."
+						"description": "Returns a copy of process.env with HARNESS_RESOURCE_PRIORITY set from options.priority ?? process.env.HARNESS_RESOURCE_PRIORITY ?? 'environment' after enum parsing. It sets HARNESS_VERIFY_ENTITY only when options.entity is truthy.",
+						"examples": [
+							{
+								"HARNESS_RESOURCE_PRIORITY": "environment",
+								"HARNESS_VERIFY_ENTITY": "reports.component.evidence-grid"
+							}
+						]
 					}
 				],
-				"errors": [],
+				"errors": [
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown by resourcePriority.parse when the selected resource priority is not agent-test, coding, or environment."
+					}
+				],
 				"errorStatus": "declared"
 			}
 		],
