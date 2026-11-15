@@ -21,36 +21,49 @@
 				"type": "string",
 				"required": false,
 				"default": "/sys/fs/cgroup",
-				"description": "Linux cgroup-v2 filesystem root, replaceable by a fixture directory."
+				"description": "Filesystem root used to inspect cgroup-v2 limits on Linux; it defaults to /sys/fs/cgroup and can point to a fixture tree.",
+				"examples": ["/sys/fs/cgroup"]
 			},
 			{
 				"name": "hostResourceLimits.membership",
 				"type": "string",
 				"required": false,
 				"default": "/proc/self/cgroup",
-				"description": "Proc cgroup membership file identifying this process namespace."
+				"description": "Proc cgroup membership file used to locate this process in the cgroup-v2 hierarchy; it defaults to /proc/self/cgroup.",
+				"examples": ["/proc/self/cgroup"]
 			},
 			{
 				"name": "hostResourceLimits.system",
 				"type": "string",
 				"required": false,
-				"description": "Operating system identifier; non-Linux systems have no cgroup limits."
+				"description": "Operating system identifier used to decide whether to read Linux cgroup files; defaults to platform(), and any value other than \"linux\" returns an empty HostLimits object.",
+				"examples": ["linux", "darwin"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hostResourceLimits",
 				"type": "HostLimits",
-				"description": "Tightest applicable CPU quota, quota usage and memory limits; empty outside Linux."
+				"description": "On Linux, contains the tightest cgroup-v2 CPU and memory limits found from the process cgroup through visible ancestors; fields are omitted when no finite quota is reported. On other platforms it is an empty object.",
+				"examples": [
+					{},
+					{
+						"cores": 2,
+						"cpuUsedUs": 125000,
+						"memoryTotalBytes": 1073741824,
+						"memoryAvailableBytes": 536870912
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Missing cgroup-v2 support, unsafe membership paths, malformed quotas or unreadable diagnostics reject."
+				"description": "Throws Error with messages 'Resource admission requires cgroup v2 on Linux', 'Cannot establish cgroup membership', 'Invalid cgroup path', 'Invalid CPU quota', or 'Invalid memory quota' when those checks fail. Filesystem read errors for membership, selected cpu.stat, memory.current, or non-ENOENT cpu.max and memory.max reads also propagate."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hostResourceLimits",
@@ -60,31 +73,49 @@
 						"type": "string",
 						"required": false,
 						"default": "/sys/fs/cgroup",
-						"description": "Linux cgroup-v2 filesystem root, replaceable by a fixture directory."
+						"description": "Filesystem root used to inspect cgroup-v2 limits on Linux; it defaults to /sys/fs/cgroup and can point to a fixture tree.",
+						"examples": ["/sys/fs/cgroup"]
 					},
 					{
 						"name": "hostResourceLimits.membership",
 						"type": "string",
 						"required": false,
 						"default": "/proc/self/cgroup",
-						"description": "Proc cgroup membership file identifying this process namespace."
+						"description": "Proc cgroup membership file used to locate this process in the cgroup-v2 hierarchy; it defaults to /proc/self/cgroup.",
+						"examples": ["/proc/self/cgroup"]
 					},
 					{
 						"name": "hostResourceLimits.system",
 						"type": "string",
 						"required": false,
-						"description": "Operating system identifier; non-Linux systems have no cgroup limits."
+						"description": "Operating system identifier used to decide whether to read Linux cgroup files; defaults to platform(), and any value other than \"linux\" returns an empty HostLimits object.",
+						"examples": ["linux", "darwin"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hostResourceLimits",
 						"type": "HostLimits",
-						"description": "Tightest applicable CPU quota, quota usage and memory limits; empty outside Linux."
+						"description": "On Linux, contains the tightest cgroup-v2 CPU and memory limits found from the process cgroup through visible ancestors; fields are omitted when no finite quota is reported. On other platforms it is an empty object.",
+						"examples": [
+							{},
+							{
+								"cores": 2,
+								"cpuUsedUs": 125000,
+								"memoryTotalBytes": 1073741824,
+								"memoryAvailableBytes": 536870912
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws Error with messages 'Resource admission requires cgroup v2 on Linux', 'Cannot establish cgroup membership', 'Invalid cgroup path', 'Invalid CPU quota', or 'Invalid memory quota' when those checks fail. Filesystem read errors for membership, selected cpu.stat, memory.current, or non-ENOENT cpu.max and memory.max reads also propagate."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
