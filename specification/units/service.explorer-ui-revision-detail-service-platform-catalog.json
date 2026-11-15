@@ -12,27 +12,80 @@
 		"symbols": ["readPlatformCatalog"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "readPlatformCatalog.tree",
 				"type": "SourceTree",
-				"required": true
+				"required": true,
+				"description": "The tree of the revision being read: the catalog comes only from this tree, and the function uses it only through list() and read(). It reads only the listed entry whose path is exactly harness.platforms.json, and when that entry is absent it returns a gap result instead of an error."
 			}
 		],
 		"outputs": [
 			{
 				"name": "readPlatformCatalog",
-				"type": "Promise<PlatformCatalog>"
+				"type": "Promise<PlatformCatalog>",
+				"description": "Resolves to the platform catalog of the tree: on success, entries holds the validated declarations from harness.platforms.json (at most four, with each platform id declared once) and gap is not set. When the file is absent or cannot be read (read() fails, its string length is above 131072, it is not JSON, or it fails the platform schema), entries is empty and gap says why, returned as a value rather than thrown.",
+				"examples": [
+					{
+						"entries": [
+							{
+								"id": "web",
+								"runtime": "Node.js 22",
+								"status": "configured",
+								"summary": "Browser build of the explorer UI.",
+								"configuration": [
+									{
+										"name": "BUILD_OUTPUT",
+										"value": "dist",
+										"description": "Directory that the production build writes to."
+									}
+								],
+								"commands": [
+									{
+										"name": "build",
+										"command": "npm run build"
+									}
+								],
+								"requirements": ["Node.js 22 or later"],
+								"sources": ["package.json", "tsconfig.json"]
+							},
+							{
+								"id": "android",
+								"runtime": "JDK 17",
+								"status": "setup-required",
+								"summary": "Android app packaged with Gradle.",
+								"configuration": [],
+								"commands": [
+									{
+										"name": "assemble",
+										"command": "./gradlew assembleDebug"
+									}
+								],
+								"requirements": ["Android SDK platform 34"],
+								"sources": ["android/app/build.gradle"]
+							}
+						]
+					},
+					{
+						"entries": [],
+						"gap": "No platform configuration is recorded at this revision."
+					},
+					{
+						"entries": [],
+						"gap": "Platform configuration could not be read at this revision. Check harness.platforms.json."
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised by tree.list(), which sits outside the try block, so readPlatformCatalog rejects with that same error unchanged. Errors from read(), the size check, JSON parsing and schema validation are caught and returned as a gap instead."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "readPlatformCatalog",
@@ -40,22 +93,75 @@
 					{
 						"name": "readPlatformCatalog.tree",
 						"type": "SourceTree",
-						"required": true
+						"required": true,
+						"description": "The tree of the revision being read: the catalog comes only from this tree, and the function uses it only through list() and read(). It reads only the listed entry whose path is exactly harness.platforms.json, and when that entry is absent it returns a gap result instead of an error."
 					}
 				],
 				"outputs": [
 					{
 						"name": "readPlatformCatalog",
-						"type": "Promise<PlatformCatalog>"
+						"type": "Promise<PlatformCatalog>",
+						"description": "Resolves to the platform catalog of the tree: on success, entries holds the validated declarations from harness.platforms.json (at most four, with each platform id declared once) and gap is not set. When the file is absent or cannot be read (read() fails, its string length is above 131072, it is not JSON, or it fails the platform schema), entries is empty and gap says why, returned as a value rather than thrown.",
+						"examples": [
+							{
+								"entries": [
+									{
+										"id": "web",
+										"runtime": "Node.js 22",
+										"status": "configured",
+										"summary": "Browser build of the explorer UI.",
+										"configuration": [
+											{
+												"name": "BUILD_OUTPUT",
+												"value": "dist",
+												"description": "Directory that the production build writes to."
+											}
+										],
+										"commands": [
+											{
+												"name": "build",
+												"command": "npm run build"
+											}
+										],
+										"requirements": ["Node.js 22 or later"],
+										"sources": ["package.json", "tsconfig.json"]
+									},
+									{
+										"id": "android",
+										"runtime": "JDK 17",
+										"status": "setup-required",
+										"summary": "Android app packaged with Gradle.",
+										"configuration": [],
+										"commands": [
+											{
+												"name": "assemble",
+												"command": "./gradlew assembleDebug"
+											}
+										],
+										"requirements": ["Android SDK platform 34"],
+										"sources": ["android/app/build.gradle"]
+									}
+								]
+							},
+							{
+								"entries": [],
+								"gap": "No platform configuration is recorded at this revision."
+							},
+							{
+								"entries": [],
+								"gap": "Platform configuration could not be read at this revision. Check harness.platforms.json."
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised by tree.list(), which sits outside the try block, so readPlatformCatalog rejects with that same error unchanged. Errors from read(), the size check, JSON parsing and schema validation are caught and returned as a gap instead."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
