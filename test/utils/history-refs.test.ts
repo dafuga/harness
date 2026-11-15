@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { refKind, sourceArchiveRef } from '../../src/utils/historyRefs';
+import { refKind, sourceArchiveRef } from '../../src/utils/git-source-history/historyRefs';
 
 test('refKind separates source branches from evidence, notes and archived source', () => {
 	expect(refKind('refs/heads/main')).toBe('source');

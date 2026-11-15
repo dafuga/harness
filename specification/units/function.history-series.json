@@ -11,8 +11,7 @@
 		"source": [
 			"src/cli/program/history-index-service/historySeries.ts",
 			"src/cli/program/history-index-service/historySeries.types.ts",
-			"src/services/history-index-service/historySeries.ts",
-			"src/utils/historySeries.ts"
+			"src/services/history-index-service/historySeries.ts"
 		],
 		"symbols": [
 			"unitGrowth",
@@ -21,8 +20,6 @@
 			"Point",
 			"Line",
 			"Head",
-			"unitGrowth",
-			"historySeries",
 			"unitGrowth",
 			"historySeries"
 		]
@@ -165,11 +162,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/historySeries.ts",
+		"entry": "src/cli/program/history-index-service/historySeries.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/historySeries.ts"
+				"entry": "src/cli/program/history-index-service/historySeries.ts"
 			}
 		]
 	},
