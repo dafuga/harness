@@ -47,40 +47,109 @@
 				"name": "RuntimeArtifact.cell",
 				"type": "BehaviorCell",
 				"required": true,
-				"description": "Required result cell with capture and optional read. Missing capture means Not recorded; null media means bytes not stored. Only read.verified allows details."
+				"description": "The recorded result for one side of a comparison: capture is the HarnessCapture that holds its bytes, null when nothing was recorded (shown as Not recorded), and read is the checked contents, undefined until it has been read. Its contents are shown only when read.verified is true, and a capture whose media is null shows Not stored instead.",
+				"examples": [
+					{
+						"outcome": "passed",
+						"capture": {
+							"evidence": "run",
+							"kind": "output",
+							"state": "default",
+							"status": "passed",
+							"path": "slugify-run.json",
+							"sha256": "5b9c0f1e7a3d2c48e6f1a0b9d7c3e5f2a1b8c4d6e9f0a3b7c2d5e8f1a4b6c9d2",
+							"mediaType": "application/json",
+							"capturedAt": "2026-11-14T18:02:37.512Z",
+							"media": "media/5b9c0f1e7a3d2c48e6f1a0b9d7c3e5f2a1b8c4d6e9f0a3b7c2d5e8f1a4b6c9d2.json"
+						},
+						"read": {
+							"verified": true,
+							"problem": null,
+							"text": "{\"scenario\":\"slugify\",\"output\":\"hello-world\"}",
+							"document": {
+								"scenario": "slugify",
+								"output": "hello-world"
+							},
+							"behavior": {
+								"scenario": "slugify",
+								"environment": null,
+								"fixture": null,
+								"steps": [],
+								"output": "hello-world",
+								"assertions": [],
+								"trace": [],
+								"other": {}
+							}
+						}
+					},
+					{
+						"outcome": "failed",
+						"capture": {
+							"evidence": "checks",
+							"kind": "assertions",
+							"state": "default",
+							"status": "failed",
+							"path": "slugify-checks.json",
+							"sha256": "c41e7a92d03b5f68e1a4c7d9b2f05e83a6d1c4b97f2e0a58d3c6b1e9f47a2d05",
+							"mediaType": "application/json",
+							"capturedAt": "2026-11-14T18:02:41.087Z",
+							"media": null
+						},
+						"read": {
+							"verified": false,
+							"problem": "The artifact is not stored.",
+							"text": "",
+							"document": null,
+							"behavior": null
+						}
+					},
+					{
+						"outcome": "missing",
+						"capture": null,
+						"read": null
+					}
+				]
 			},
 			{
 				"name": "RuntimeArtifact.label",
 				"type": "string",
 				"required": true,
-				"description": "Required accessible name for the artifact group when a stored capture exists."
+				"description": "The accessible name (aria-label) of the group that wraps the artifact, which is rendered only when the cell has a capture whose media is not null. It is never shown as visible text.",
+				"examples": ["output of default", "assertions of default", "trace of default"]
 			},
 			{
 				"name": "RuntimeArtifact.lost",
 				"type": "boolean",
 				"required": true,
-				"description": "Whether reading failed instead of still pending. True makes absent reads unverified rather than loading."
+				"description": "Whether reading the cell failed (true) rather than still being in progress (false). It changes only a cell that has a capture with media and no read yet: true shows the Not verified notice instead of the Reading what it holds… placeholder.",
+				"examples": [false, true]
 			},
 			{
 				"name": "RuntimeArtifact.refusal",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional backend refusal, preferred over the read problem and generic hash-check failure message. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "The backend's refusal message for this cell's bytes, shown first when the cell is not verified, before the read problem and the generic hash-check message. Defaults to JavaScript undefined (omitted), not the literal string.",
+				"examples": [
+					"The recorded file is too large for this page.",
+					"The service sent a file of a kind this page does not show.",
+					"This is not the recorded file that was asked for (SHA-256)."
+				]
 			},
 			{
 				"name": "RuntimeArtifact.unit",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional function identifier passed to case rendering, enabling callable rows scoped to that function. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "The unit id of the function this result is shown for, passed to EntityCases with callable set to true whenever it is defined, so that only that function's own calls become rows. Defaults to JavaScript undefined (omitted), not the literal string, which leaves callable false.",
+				"examples": ["reports.function.entity-behavior", "reports.function.explorer-artifact"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RuntimeArtifact",
 				"type": "markup",
-				"description": "Verified recorded contents with readable case rows, assertions and lazily opened original JSON. Assertion captures use Assertions and recorded result; output captures use Recorded output details. Missing, unstored, pending and unreadable cells retain explicit messages. States: text: The recorded result is shown as plain text rather than JSON fields. recorded-open: The recorded-result disclosure is expanded to show the artifact contents. json-open: The recorded JSON disclosure is expanded inside the result."
+				"description": "The verified contents of one result: case rows when its document is an object that has a cases, output, outputs or response field, or that states no steps or assertions; a disclosure, titled Recorded output details for output captures and Assertions and recorded result otherwise, holds its steps, assertions, trace and other fields, and the recorded JSON sits in a nested disclosure (plain text when the bytes are not JSON). A cell with no capture, a capture whose media is null, a read still pending or an unverified read shows an explicit message instead, and an unverified read shows the backend refusal first, then the read problem, then the generic hash-check message."
 			}
 		],
 		"errors": [],
