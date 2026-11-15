@@ -33,33 +33,91 @@
 				"name": "consoleRoutePath.route",
 				"type": "ConsoleRoute",
 				"required": true,
-				"description": "Branch or null, commit, supported view and optional comparison base, history record and selected unit to encode."
+				"description": "The route to encode: the branch (null for a commit that no branch reaches), the commit, the view, and the optional base, record and unit. Each branch segment, the record and the unit are URI-encoded, the commit, view and base are written as given without validation, base is written only for the compare view and record only for the history view, and an empty-string branch yields a path that consoleRoute cannot read back.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "9c1f0a7e3b2d4c58a6e1f90b7d3c2a1e4f5b6d78",
+						"view": "map"
+					},
+					{
+						"branch": "feature/console-routes",
+						"commit": "4a7d2e9f01b8c63e5d2a7f4c9b0e1d8a3c6f5b27",
+						"view": "compare",
+						"base": "e05b3c7a9d1f2846b0c9e3a7d5f1b8c26e4a0d9f"
+					},
+					{
+						"branch": null,
+						"commit": "4a7d2e9f01b8c63e5d2a7f4c9b0e1d8a3c6f5b27",
+						"view": "activity",
+						"unit": "reports.component.evidence-grid"
+					}
+				]
 			},
 			{
 				"name": "consoleRoute.path",
 				"type": "string",
 				"required": true,
-				"description": "Console-relative path naming an optional branch, 40-character lowercase hexadecimal commit and supported view, optionally followed by base, record or unit selection."
+				"description": "The console-relative path of a console page, /branch/<name>/commit/<sha>/<view> or /commit/<sha>/<view> for a commit on no branch, optionally followed by selections. The <sha> must be 40 lowercase hexadecimal characters, the view must be one of the consoleViews names, trailing slashes are removed first, and a branch name keeps any slashes it contains.",
+				"examples": [
+					"/branch/main/commit/9c1f0a7e3b2d4c58a6e1f90b7d3c2a1e4f5b6d78/map",
+					"/branch/feature/console-routes/commit/4a7d2e9f01b8c63e5d2a7f4c9b0e1d8a3c6f5b27/compare/e05b3c7a9d1f2846b0c9e3a7d5f1b8c26e4a0d9f",
+					"/commit/4a7d2e9f01b8c63e5d2a7f4c9b0e1d8a3c6f5b27/activity/unit/reports.component.evidence-grid"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "consoleViews",
 				"type": "unknown",
-				"description": "Supported view names: map, compare, history, growth and activity."
+				"description": "The five console view names, in the order map, compare, history, growth and activity, declared with as const so that ConsoleView is their union. The array is typed readonly but is not frozen at runtime, and consoleRoute accepts only these names as the view segment.",
+				"examples": [
+					["map", "compare", "history", "growth", "activity"]
+				]
 			},
 			{
 				"name": "consoleRoute",
 				"type": "ConsoleRoute | undefined",
-				"description": "Parsed route with decoded branch and selections, or undefined for an invalid page shape, branch encoding or unknown view. Trailing slashes are ignored and unrelated selection parts are skipped."
+				"description": "The parsed route, with the branch decoded (null when the path has no branch part), base kept only for the compare view when the first part after the view is a 40-character lowercase hexadecimal commit, record kept only for the history view, and unit kept for any view. Trailing slashes are ignored, the result is undefined when the path does not match that shape, when a branch fails URI decoding, or when the view is missing or unknown, and a malformed record or unit encoding is left out instead of failing.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "9c1f0a7e3b2d4c58a6e1f90b7d3c2a1e4f5b6d78",
+						"view": "map"
+					},
+					{
+						"branch": "feature/console-routes",
+						"commit": "4a7d2e9f01b8c63e5d2a7f4c9b0e1d8a3c6f5b27",
+						"view": "compare",
+						"base": "e05b3c7a9d1f2846b0c9e3a7d5f1b8c26e4a0d9f"
+					},
+					{
+						"branch": null,
+						"commit": "4a7d2e9f01b8c63e5d2a7f4c9b0e1d8a3c6f5b27",
+						"view": "activity",
+						"unit": "reports.component.evidence-grid"
+					}
+				]
 			},
 			{
 				"name": "consoleRoutePath",
 				"type": "string",
-				"description": "Canonical commit-based path with encoded branch segments and selections; comparison base appears only for compare and record only for history."
+				"description": "The canonical path, with each branch segment, the record and the unit URI-encoded, the branch part left out for a null branch, and the commit, view and base written as given. The base appears only for the compare view, the record only for the history view, and the unit for any view, each only when it is non-empty.",
+				"examples": [
+					"/branch/main/commit/9c1f0a7e3b2d4c58a6e1f90b7d3c2a1e4f5b6d78/map",
+					"/branch/feature/console-routes/commit/4a7d2e9f01b8c63e5d2a7f4c9b0e1d8a3c6f5b27/compare/e05b3c7a9d1f2846b0c9e3a7d5f1b8c26e4a0d9f",
+					"/commit/4a7d2e9f01b8c63e5d2a7f4c9b0e1d8a3c6f5b27/activity/unit/reports.component.evidence-grid"
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "URIError",
+				"type": "thrown",
+				"description": "Thrown by encodeURIComponent in consoleRoutePath when the branch, the unit, or the record of a history route contains an unpaired UTF-16 surrogate. The commit, view and base are written without encoding, so they cannot cause this error."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "consoleRoutePath",
@@ -68,18 +126,48 @@
 						"name": "consoleRoutePath.route",
 						"type": "ConsoleRoute",
 						"required": true,
-						"description": "Branch or null, commit, supported view and optional comparison base, history record and selected unit to encode."
+						"description": "The route to encode: the branch (null for a commit that no branch reaches), the commit, the view, and the optional base, record and unit. Each branch segment, the record and the unit are URI-encoded, the commit, view and base are written as given without validation, base is written only for the compare view and record only for the history view, and an empty-string branch yields a path that consoleRoute cannot read back.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": "9c1f0a7e3b2d4c58a6e1f90b7d3c2a1e4f5b6d78",
+								"view": "map"
+							},
+							{
+								"branch": "feature/console-routes",
+								"commit": "4a7d2e9f01b8c63e5d2a7f4c9b0e1d8a3c6f5b27",
+								"view": "compare",
+								"base": "e05b3c7a9d1f2846b0c9e3a7d5f1b8c26e4a0d9f"
+							},
+							{
+								"branch": null,
+								"commit": "4a7d2e9f01b8c63e5d2a7f4c9b0e1d8a3c6f5b27",
+								"view": "activity",
+								"unit": "reports.component.evidence-grid"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "consoleRoutePath",
 						"type": "string",
-						"description": "Canonical commit-based path with encoded branch segments and selections; comparison base appears only for compare and record only for history."
+						"description": "The canonical path, with each branch segment, the record and the unit URI-encoded, the branch part left out for a null branch, and the commit, view and base written as given. The base appears only for the compare view, the record only for the history view, and the unit for any view, each only when it is non-empty.",
+						"examples": [
+							"/branch/main/commit/9c1f0a7e3b2d4c58a6e1f90b7d3c2a1e4f5b6d78/map",
+							"/branch/feature/console-routes/commit/4a7d2e9f01b8c63e5d2a7f4c9b0e1d8a3c6f5b27/compare/e05b3c7a9d1f2846b0c9e3a7d5f1b8c26e4a0d9f",
+							"/commit/4a7d2e9f01b8c63e5d2a7f4c9b0e1d8a3c6f5b27/activity/unit/reports.component.evidence-grid"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "URIError",
+						"type": "thrown",
+						"description": "Thrown by encodeURIComponent in consoleRoutePath when the branch, the unit, or the record of a history route contains an unpaired UTF-16 surrogate. The commit, view and base are written without encoding, so they cannot cause this error."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "consoleRoute",
@@ -88,18 +176,42 @@
 						"name": "consoleRoute.path",
 						"type": "string",
 						"required": true,
-						"description": "Console-relative path naming an optional branch, 40-character lowercase hexadecimal commit and supported view, optionally followed by base, record or unit selection."
+						"description": "The console-relative path of a console page, /branch/<name>/commit/<sha>/<view> or /commit/<sha>/<view> for a commit on no branch, optionally followed by selections. The <sha> must be 40 lowercase hexadecimal characters, the view must be one of the consoleViews names, trailing slashes are removed first, and a branch name keeps any slashes it contains.",
+						"examples": [
+							"/branch/main/commit/9c1f0a7e3b2d4c58a6e1f90b7d3c2a1e4f5b6d78/map",
+							"/branch/feature/console-routes/commit/4a7d2e9f01b8c63e5d2a7f4c9b0e1d8a3c6f5b27/compare/e05b3c7a9d1f2846b0c9e3a7d5f1b8c26e4a0d9f",
+							"/commit/4a7d2e9f01b8c63e5d2a7f4c9b0e1d8a3c6f5b27/activity/unit/reports.component.evidence-grid"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "consoleRoute",
 						"type": "ConsoleRoute | undefined",
-						"description": "Parsed route with decoded branch and selections, or undefined for an invalid page shape, branch encoding or unknown view. Trailing slashes are ignored and unrelated selection parts are skipped."
+						"description": "The parsed route, with the branch decoded (null when the path has no branch part), base kept only for the compare view when the first part after the view is a 40-character lowercase hexadecimal commit, record kept only for the history view, and unit kept for any view. Trailing slashes are ignored, the result is undefined when the path does not match that shape, when a branch fails URI decoding, or when the view is missing or unknown, and a malformed record or unit encoding is left out instead of failing.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": "9c1f0a7e3b2d4c58a6e1f90b7d3c2a1e4f5b6d78",
+								"view": "map"
+							},
+							{
+								"branch": "feature/console-routes",
+								"commit": "4a7d2e9f01b8c63e5d2a7f4c9b0e1d8a3c6f5b27",
+								"view": "compare",
+								"base": "e05b3c7a9d1f2846b0c9e3a7d5f1b8c26e4a0d9f"
+							},
+							{
+								"branch": null,
+								"commit": "4a7d2e9f01b8c63e5d2a7f4c9b0e1d8a3c6f5b27",
+								"view": "activity",
+								"unit": "reports.component.evidence-grid"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
