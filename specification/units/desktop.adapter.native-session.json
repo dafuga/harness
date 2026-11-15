@@ -25,58 +25,94 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "NativeSessionAdapter.constructor.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Path of the file that stores the encrypted hosted session, which read, save and clear all use; the constructor does not validate it. save creates the parent directory, writes a temporary sibling named <file>.<uuid>.tmp and renames it over this path.",
+				"examples": [
+					"/Users/example/Library/Application Support/Harness/hosted-session.bin",
+					"/home/example/.config/Harness/hosted-session.bin"
+				]
 			},
 			{
 				"name": "NativeSessionAdapter.constructor.encryption",
 				"type": "NativeEncryption",
-				"required": true
+				"required": true,
+				"description": "The encryption port that reports whether OS encryption is available and encrypts and decrypts the session bytes; available, read and save call it, and Electron safeStorage is injected only by the main process while fixtures supply a deterministic port."
 			},
 			{
 				"name": "NativeSessionAdapter.constructor.platform",
 				"type": "NodeJS.Platform",
-				"required": false
+				"required": false,
+				"description": "Defaults to process.platform: the platform of the running Node.js process. Only the value 'linux' changes behavior: available() then also requires getSelectedStorageBackend() to return gnome_libsecret, kwallet, kwallet5 or kwallet6.",
+				"examples": ["darwin", "linux", "win32"]
 			},
 			{
 				"name": "NativeSessionAdapter.save.credential",
 				"type": "NativeHostedCredential",
-				"required": true
+				"required": true,
+				"description": "The hosted credential that save JSON-stringifies in full and encrypts before writing. read accepts a stored value only when its origin, principalId and token are all strings.",
+				"examples": [
+					{
+						"origin": "https://hosted.example.com",
+						"principalId": "principal_7d41c09e",
+						"token": "tok_9f2c71ab56e04d3c"
+					},
+					{
+						"origin": "https://staging.hosted.example.com",
+						"principalId": "principal_b03e58a1",
+						"token": "tok_4e8d1c7f2a9b6035"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "NativeSessionAdapter.invalidate",
-				"type": "void"
+				"type": "void",
+				"description": "Returns nothing: the call only increments the public generation counter, the same counter that save (before its availability check) and clear increment."
 			},
 			{
 				"name": "NativeSessionAdapter.available",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when isEncryptionAvailable() returns true and either the constructor platform is not 'linux' or getSelectedStorageBackend() returns gnome_libsecret, kwallet, kwallet5 or kwallet6. A missing or throwing backend lookup on Linux yields false, and an exception from isEncryptionAvailable() is not caught.",
+				"examples": [true, false]
 			},
 			{
 				"name": "NativeSessionAdapter.read",
-				"type": "Promise<NativeHostedCredential | null>"
+				"type": "Promise<NativeHostedCredential | null>",
+				"description": "Resolves to the decrypted stored credential, or to null when available() is false or the session file does not exist. Any other failure to read, decrypt, parse or validate the file rejects with 'Stored hosted session is unavailable. Sign in again.'",
+				"examples": [
+					{
+						"origin": "https://hosted.example.com",
+						"principalId": "principal_7d41c09e",
+						"token": "tok_9f2c71ab56e04d3c"
+					},
+					null
+				]
 			},
 			{
 				"name": "NativeSessionAdapter.save",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with nothing once the encrypted credential is written to a temporary file and renamed over the session file. It rejects with 'OS encryption is required for hosted sessions.' when available() is false, and filesystem or encryption errors propagate unchanged."
 			},
 			{
 				"name": "NativeSessionAdapter.clear",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with nothing once the session file is removed or was already missing (ENOENT). Any other unlink failure rejects with the original filesystem error."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown or rejected by read, save and clear: read throws 'Stored hosted session is unavailable. Sign in again.' for any failure other than a missing file, save throws 'OS encryption is required for hosted sessions.' when available() is false, save passes filesystem errors through unchanged, and clear passes through every filesystem error except ENOENT."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "NativeSessionAdapter.invalidate",
@@ -84,11 +120,12 @@
 				"outputs": [
 					{
 						"name": "NativeSessionAdapter.invalidate",
-						"type": "void"
+						"type": "void",
+						"description": "Returns nothing: the call only increments the public generation counter, the same counter that save (before its availability check) and clear increment."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "NativeSessionAdapter.available",
@@ -96,11 +133,13 @@
 				"outputs": [
 					{
 						"name": "NativeSessionAdapter.available",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when isEncryptionAvailable() returns true and either the constructor platform is not 'linux' or getSelectedStorageBackend() returns gnome_libsecret, kwallet, kwallet5 or kwallet6. A missing or throwing backend lookup on Linux yields false, and an exception from isEncryptionAvailable() is not caught.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "NativeSessionAdapter.read",
@@ -108,16 +147,26 @@
 				"outputs": [
 					{
 						"name": "NativeSessionAdapter.read",
-						"type": "Promise<NativeHostedCredential | null>"
+						"type": "Promise<NativeHostedCredential | null>",
+						"description": "Resolves to the decrypted stored credential, or to null when available() is false or the session file does not exist. Any other failure to read, decrypt, parse or validate the file rejects with 'Stored hosted session is unavailable. Sign in again.'",
+						"examples": [
+							{
+								"origin": "https://hosted.example.com",
+								"principalId": "principal_7d41c09e",
+								"token": "tok_9f2c71ab56e04d3c"
+							},
+							null
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown for any failure to read, decrypt, parse or validate the session file other than a missing file, with the message 'Stored hosted session is unavailable. Sign in again.' Exceptions from the encryption port's isEncryptionAvailable are not caught and propagate unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "NativeSessionAdapter.save",
@@ -125,22 +174,37 @@
 					{
 						"name": "NativeSessionAdapter.save.credential",
 						"type": "NativeHostedCredential",
-						"required": true
+						"required": true,
+						"description": "The hosted credential that save JSON-stringifies in full and encrypts before writing. read accepts a stored value only when its origin, principalId and token are all strings.",
+						"examples": [
+							{
+								"origin": "https://hosted.example.com",
+								"principalId": "principal_7d41c09e",
+								"token": "tok_9f2c71ab56e04d3c"
+							},
+							{
+								"origin": "https://staging.hosted.example.com",
+								"principalId": "principal_b03e58a1",
+								"token": "tok_4e8d1c7f2a9b6035"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "NativeSessionAdapter.save",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with nothing once the encrypted credential is written to a temporary file and renamed over the session file. It rejects with 'OS encryption is required for hosted sessions.' when available() is false, and filesystem or encryption errors propagate unchanged."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with 'OS encryption is required for hosted sessions.' when available() is false; filesystem errors from mkdir, writeFile and rename and exceptions from the encryption port's isEncryptionAvailable or encryptString propagate unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "NativeSessionAdapter.clear",
@@ -148,11 +212,18 @@
 				"outputs": [
 					{
 						"name": "NativeSessionAdapter.clear",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with nothing once the session file is removed or was already missing (ENOENT). Any other unlink failure rejects with the original filesystem error."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rethrows the original unlink error unless its code is ENOENT, which is swallowed so that clear resolves."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -162,27 +233,36 @@
 					{
 						"name": "NativeSessionAdapter.constructor.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Path of the file that stores the encrypted hosted session, which read, save and clear all use; the constructor does not validate it. save creates the parent directory, writes a temporary sibling named <file>.<uuid>.tmp and renames it over this path.",
+						"examples": [
+							"/Users/example/Library/Application Support/Harness/hosted-session.bin",
+							"/home/example/.config/Harness/hosted-session.bin"
+						]
 					},
 					{
 						"name": "NativeSessionAdapter.constructor.encryption",
 						"type": "NativeEncryption",
-						"required": true
+						"required": true,
+						"description": "The encryption port that reports whether OS encryption is available and encrypts and decrypts the session bytes; available, read and save call it, and Electron safeStorage is injected only by the main process while fixtures supply a deterministic port."
 					},
 					{
 						"name": "NativeSessionAdapter.constructor.platform",
 						"type": "NodeJS.Platform",
-						"required": false
+						"required": false,
+						"description": "Defaults to process.platform: the platform of the running Node.js process. Only the value 'linux' changes behavior: available() then also requires getSelectedStorageBackend() to return gnome_libsecret, kwallet, kwallet5 or kwallet6.",
+						"examples": ["darwin", "linux", "win32"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "NativeSessionAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new NativeSessionAdapter instance, with generation set to 0 and the file, encryption and platform values stored as private fields."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
