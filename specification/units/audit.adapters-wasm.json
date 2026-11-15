@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/adapters/wasm.ts", "src/audit/development-tooling/adapters/wasm.ts"],
-		"symbols": ["wasmAdapter", "wasmAdapter"]
+		"source": ["src/audit/development-tooling/adapters/wasm.ts"],
+		"symbols": ["wasmAdapter"]
 	},
 	"contract": {
 		"origin": "derived",

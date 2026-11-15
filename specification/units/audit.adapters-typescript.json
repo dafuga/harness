@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/audit/adapters/typescript.ts",
-			"src/audit/development-tooling/adapters/typescript.ts"
-		],
-		"symbols": ["typeScriptAdapter", "typeScriptAdapter"]
+		"source": ["src/audit/development-tooling/adapters/typescript.ts"],
+		"symbols": ["typeScriptAdapter"]
 	},
 	"contract": {
 		"origin": "derived",
