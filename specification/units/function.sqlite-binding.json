@@ -18,29 +18,58 @@
 				"name": "sqliteBinding.value",
 				"type": "unknown",
 				"required": true,
-				"description": "The application value to encode; JSON values are serialized and null is encoded for JSON fields or accepted for nullable fields."
+				"description": "The application value to encode: `null` passes through as `null` for a nullable field, `json` fields serialize any value that `JSON.stringify` accepts (so a non-nullable `json` field encodes `null` as the text 'null'), and `boolean`, `string`, `number` and `blob` fields need a boolean, a string, a finite number or a Uint8Array respectively. `undefined` is always rejected.",
+				"examples": [
+					"Ada Lovelace",
+					{
+						"theme": "dark",
+						"pageSize": 25
+					},
+					null
+				]
 			},
 			{
 				"name": "sqliteBinding.field",
 				"type": "SqliteField",
 				"required": true,
-				"description": "The model field's SQLite storage type and nullability rules."
+				"description": "The field's SQLite storage type and nullability: `type` selects the encoding and must be `json`, `boolean`, `string`, `number` or `blob` (other types throw unless the value is `null` on a nullable field), and `nullable: true` lets a `null` value pass through as `null`.",
+				"examples": [
+					{
+						"type": "json",
+						"nullable": false
+					},
+					{
+						"type": "string",
+						"nullable": true
+					},
+					{
+						"type": "boolean",
+						"nullable": false
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "sqliteBinding",
 				"type": "SqliteValue",
-				"description": "A string, number, byte array or null suitable for a prepared-statement binding; booleans become 0 or 1 and JSON becomes text."
+				"description": "The value to bind: `null` for a `null` input to a nullable field, the JSON text for `json` fields, `0` or `1` for `boolean` fields, the unchanged string or number for `string` and `number` fields, and the same `Uint8Array` instance (not a copy) for `blob` fields. It is never `undefined`, because unsupported input throws instead.",
+				"examples": ["{\"theme\":\"dark\",\"pageSize\":25}", 1, null]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Raised when the supplied value cannot be encoded for its declared field type."
+				"description": "Thrown with the message 'Invalid SQLite <type> field value' whenever the value cannot be encoded for the field: `undefined`, a function or symbol in a `json` field, a value of the wrong JavaScript kind (such as a string in a `number` field), `NaN` or an infinite number in a `number` field, and `null` in a non-nullable field other than `json`. Unsupported field types throw with the same message for every value except `null` on a nullable field."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Propagated unchanged from `JSON.stringify`, which this function does not catch: a `json` field value that is or contains a BigInt or a circular reference throws a TypeError, and a `toJSON` method or getter that throws propagates its own exception."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "sqliteBinding",
@@ -49,29 +78,58 @@
 						"name": "sqliteBinding.value",
 						"type": "unknown",
 						"required": true,
-						"description": "The application value to encode; JSON values are serialized and null is encoded for JSON fields or accepted for nullable fields."
+						"description": "The application value to encode: `null` passes through as `null` for a nullable field, `json` fields serialize any value that `JSON.stringify` accepts (so a non-nullable `json` field encodes `null` as the text 'null'), and `boolean`, `string`, `number` and `blob` fields need a boolean, a string, a finite number or a Uint8Array respectively. `undefined` is always rejected.",
+						"examples": [
+							"Ada Lovelace",
+							{
+								"theme": "dark",
+								"pageSize": 25
+							},
+							null
+						]
 					},
 					{
 						"name": "sqliteBinding.field",
 						"type": "SqliteField",
 						"required": true,
-						"description": "The model field's SQLite storage type and nullability rules."
+						"description": "The field's SQLite storage type and nullability: `type` selects the encoding and must be `json`, `boolean`, `string`, `number` or `blob` (other types throw unless the value is `null` on a nullable field), and `nullable: true` lets a `null` value pass through as `null`.",
+						"examples": [
+							{
+								"type": "json",
+								"nullable": false
+							},
+							{
+								"type": "string",
+								"nullable": true
+							},
+							{
+								"type": "boolean",
+								"nullable": false
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sqliteBinding",
 						"type": "SqliteValue",
-						"description": "A string, number, byte array or null suitable for a prepared-statement binding; booleans become 0 or 1 and JSON becomes text."
+						"description": "The value to bind: `null` for a `null` input to a nullable field, the JSON text for `json` fields, `0` or `1` for `boolean` fields, the unchanged string or number for `string` and `number` fields, and the same `Uint8Array` instance (not a copy) for `blob` fields. It is never `undefined`, because unsupported input throws instead.",
+						"examples": ["{\"theme\":\"dark\",\"pageSize\":25}", 1, null]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid SQLite <type> field value' whenever the value cannot be encoded for the field: `undefined`, a function or symbol in a `json` field, a value of the wrong JavaScript kind (such as a string in a `number` field), `NaN` or an infinite number in a `number` field, and `null` in a non-nullable field other than `json`. Unsupported field types throw with the same message for every value except `null` on a nullable field."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Propagated unchanged from `JSON.stringify`, which this function does not catch: a `json` field value that is or contains a BigInt or a circular reference throws a TypeError, and a `toJSON` method or getter that throws propagates its own exception."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
