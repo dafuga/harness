@@ -18,52 +18,232 @@
 				"name": "listScenarios.root",
 				"type": "string",
 				"required": false,
-				"description": "Optional repository root; defaults to process.cwd() and reads working-tree manifests."
+				"description": "Repository root whose working-tree scenario and unit manifests are read; a relative value is resolved against process.cwd() by path.resolve. It matters when the process is not running at the repository root, and it defaults to process.cwd() when omitted.",
+				"examples": ["/workspace/harness", "/home/runner/work/harness/harness"]
 			},
 			{
 				"name": "showScenario.id",
 				"type": "string",
 				"required": true,
-				"description": "Scenario id to find in the working-tree scenario registry."
+				"description": "Scenario id matched by strict equality against the id of each valid working-tree scenario manifest, with no trimming or case folding. A value with no match makes showScenario reject with ExpectedCliError.",
+				"examples": ["evidence-grid.populated", "inspect-scenarios.listing"]
 			},
 			{
 				"name": "showScenario.root",
 				"type": "string",
 				"required": false,
-				"description": "Optional repository root; defaults to process.cwd()."
+				"description": "Repository root whose working-tree scenario and unit manifests are read; a relative value is resolved against process.cwd() by path.resolve. It matters when the process is not running at the repository root, and it defaults to process.cwd() when omitted.",
+				"examples": ["/workspace/harness", "/home/runner/work/harness/harness"]
 			},
 			{
 				"name": "checkScenarios.root",
 				"type": "string",
 				"required": false,
-				"description": "Optional repository root; defaults to process.cwd()."
+				"description": "Repository root whose working-tree scenario and unit manifests are read; a relative value is resolved against process.cwd() by path.resolve. It matters when the process is not running at the repository root, and it defaults to process.cwd() when omitted.",
+				"examples": ["/workspace/harness", "/home/runner/work/harness/harness"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "listScenarios",
 				"type": "Promise<Array<{ id: string; kind: ScenarioManifest['kind']; title: string; units: string[]; captures: number; unproven: number; excluded: number }>>",
-				"description": "Scenarios sorted by id, each with id, kind, title, covered units, required capture count, unproven state count, and excluded state count."
+				"description": "Each valid scenario manifest in the working tree, sorted by id with JavaScript string comparison, as its id, kind, title, and covered units, plus captures (the required capture count), unproven (states with missing coverage), and excluded (states with inapplicable coverage). Manifests that fail validation are omitted here, and their errors appear only in checkScenarios.",
+				"examples": [
+					[
+						{
+							"id": "evidence-grid.populated",
+							"kind": "ui",
+							"title": "Evidence grid with captured rows",
+							"units": ["reports.component.evidence-grid"],
+							"captures": 2,
+							"unproven": 1,
+							"excluded": 1
+						},
+						{
+							"id": "inspect-scenarios.listing",
+							"kind": "headless",
+							"title": "Scenario listing from the working tree",
+							"units": ["workflow.inspect-scenarios"],
+							"captures": 1,
+							"unproven": 0,
+							"excluded": 0
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "showScenario",
 				"type": "Promise<ScenarioRequirements & { scenario: ScenarioManifest }>",
-				"description": "Scenario manifest plus its required captures, unproven states, and inapplicable states."
+				"description": "The validated scenario manifest under scenario, plus required (each capture a passing verification must contain, with its evidence, kind, state, and viewport when the evidence lists viewports), unproven (states with missing coverage), and excluded (states with inapplicable coverage). Each unproven or excluded row carries the state's reason, or an empty string when the manifest gives none.",
+				"examples": [
+					{
+						"required": [
+							{
+								"evidence": "grid-screenshot",
+								"kind": "screenshot",
+								"state": "populated",
+								"viewport": "desktop"
+							},
+							{
+								"evidence": "grid-screenshot",
+								"kind": "screenshot",
+								"state": "populated",
+								"viewport": "mobile"
+							}
+						],
+						"unproven": [
+							{
+								"state": "loading",
+								"reason": ""
+							}
+						],
+						"excluded": [
+							{
+								"state": "print",
+								"reason": "The grid has no print layout."
+							}
+						],
+						"scenario": {
+							"schemaVersion": 1,
+							"id": "evidence-grid.populated",
+							"title": "Evidence grid with captured rows",
+							"kind": "ui",
+							"units": ["reports.component.evidence-grid"],
+							"states": [
+								{
+									"id": "populated",
+									"title": "Grid with captured rows",
+									"coverage": "required"
+								},
+								{
+									"id": "loading",
+									"title": "Grid while captures load",
+									"coverage": "missing"
+								},
+								{
+									"id": "print",
+									"title": "Print layout",
+									"coverage": "inapplicable",
+									"reason": "The grid has no print layout."
+								}
+							],
+							"viewports": [
+								{
+									"id": "desktop",
+									"width": 1440,
+									"height": 900
+								},
+								{
+									"id": "mobile",
+									"width": 390,
+									"height": 844,
+									"scale": 3
+								}
+							],
+							"tests": [
+								{
+									"id": "grid-render",
+									"kind": "unit",
+									"runner": "vitest",
+									"target": "src/reports/evidence-grid.test.ts"
+								}
+							],
+							"evidence": [
+								{
+									"id": "grid-screenshot",
+									"kind": "screenshot",
+									"states": ["populated"],
+									"viewports": ["desktop", "mobile"],
+									"required": true
+								}
+							]
+						}
+					}
+				]
 			},
 			{
 				"name": "checkScenarios",
 				"type": "Promise<{ scenarios: number; errors: string[]; health: ScenarioHealth }>",
-				"description": "Scenario count, schema and unknown-unit errors, and report-only viewport, coverage, and uncovered-unit health."
+				"description": "The scenarios field counts the valid scenario manifests, and errors lists the validation errors from reading them, followed by one \"<scenario id> covers unknown unit <unit id>\" message for each scenario unit that has no valid unit manifest. The health field is the report-only summary of viewport ids and sizes, state coverage, and active units that no scenario covers, and it is never added to errors.",
+				"examples": [
+					{
+						"scenarios": 2,
+						"errors": [],
+						"health": {
+							"scenarios": 2,
+							"viewports": {
+								"known": ["desktop", "tablet", "mobile"],
+								"unknown": [],
+								"conflicts": [],
+								"offPreset": []
+							},
+							"coverage": {
+								"required": 2,
+								"missing": 1,
+								"inapplicable": 1
+							},
+							"noScenario": {
+								"total": 1,
+								"retired": 0,
+								"counts": {
+									"components": 1,
+									"pages": 0,
+									"other": 0
+								},
+								"components": ["reports.component.evidence-table"],
+								"pages": [],
+								"other": [],
+								"byPrefix": {
+									"reports.component": 1
+								}
+							}
+						}
+					},
+					{
+						"scenarios": 2,
+						"errors": ["inspect-scenarios.listing covers unknown unit workflow.inspect-scenarios"],
+						"health": {
+							"scenarios": 2,
+							"viewports": {
+								"known": ["desktop", "tablet", "mobile"],
+								"unknown": [],
+								"conflicts": [],
+								"offPreset": []
+							},
+							"coverage": {
+								"required": 2,
+								"missing": 1,
+								"inapplicable": 1
+							},
+							"noScenario": {
+								"total": 1,
+								"retired": 0,
+								"counts": {
+									"components": 1,
+									"pages": 0,
+									"other": 0
+								},
+								"components": ["reports.component.evidence-table"],
+								"pages": [],
+								"other": [],
+								"byPrefix": {
+									"reports.component": 1
+								}
+							}
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Unknown scenario id."
+				"description": "Thrown by fail() when no valid scenario manifest has the requested id, with the message Unknown scenario \"<id>\"; showScenario is async, so callers receive it as a rejected promise."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "listScenarios",
@@ -72,14 +252,38 @@
 						"name": "listScenarios.root",
 						"type": "string",
 						"required": false,
-						"description": "Optional repository root; defaults to process.cwd() and reads working-tree manifests."
+						"description": "Repository root whose working-tree scenario and unit manifests are read; a relative value is resolved against process.cwd() by path.resolve. It matters when the process is not running at the repository root, and it defaults to process.cwd() when omitted.",
+						"examples": ["/workspace/harness", "/home/runner/work/harness/harness"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "listScenarios",
 						"type": "Promise<Array<{ id: string; kind: ScenarioManifest['kind']; title: string; units: string[]; captures: number; unproven: number; excluded: number }>>",
-						"description": "Scenarios sorted by id, each with id, kind, title, covered units, required capture count, unproven state count, and excluded state count."
+						"description": "Each valid scenario manifest in the working tree, sorted by id with JavaScript string comparison, as its id, kind, title, and covered units, plus captures (the required capture count), unproven (states with missing coverage), and excluded (states with inapplicable coverage). Manifests that fail validation are omitted here, and their errors appear only in checkScenarios.",
+						"examples": [
+							[
+								{
+									"id": "evidence-grid.populated",
+									"kind": "ui",
+									"title": "Evidence grid with captured rows",
+									"units": ["reports.component.evidence-grid"],
+									"captures": 2,
+									"unproven": 1,
+									"excluded": 1
+								},
+								{
+									"id": "inspect-scenarios.listing",
+									"kind": "headless",
+									"title": "Scenario listing from the working tree",
+									"units": ["workflow.inspect-scenarios"],
+									"captures": 1,
+									"unproven": 0,
+									"excluded": 0
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
@@ -92,27 +296,114 @@
 						"name": "showScenario.id",
 						"type": "string",
 						"required": true,
-						"description": "Scenario id to find in the working-tree scenario registry."
+						"description": "Scenario id matched by strict equality against the id of each valid working-tree scenario manifest, with no trimming or case folding. A value with no match makes showScenario reject with ExpectedCliError.",
+						"examples": ["evidence-grid.populated", "inspect-scenarios.listing"]
 					},
 					{
 						"name": "showScenario.root",
 						"type": "string",
 						"required": false,
-						"description": "Optional repository root; defaults to process.cwd()."
+						"description": "Repository root whose working-tree scenario and unit manifests are read; a relative value is resolved against process.cwd() by path.resolve. It matters when the process is not running at the repository root, and it defaults to process.cwd() when omitted.",
+						"examples": ["/workspace/harness", "/home/runner/work/harness/harness"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "showScenario",
 						"type": "Promise<ScenarioRequirements & { scenario: ScenarioManifest }>",
-						"description": "Scenario manifest plus its required captures, unproven states, and inapplicable states."
+						"description": "The validated scenario manifest under scenario, plus required (each capture a passing verification must contain, with its evidence, kind, state, and viewport when the evidence lists viewports), unproven (states with missing coverage), and excluded (states with inapplicable coverage). Each unproven or excluded row carries the state's reason, or an empty string when the manifest gives none.",
+						"examples": [
+							{
+								"required": [
+									{
+										"evidence": "grid-screenshot",
+										"kind": "screenshot",
+										"state": "populated",
+										"viewport": "desktop"
+									},
+									{
+										"evidence": "grid-screenshot",
+										"kind": "screenshot",
+										"state": "populated",
+										"viewport": "mobile"
+									}
+								],
+								"unproven": [
+									{
+										"state": "loading",
+										"reason": ""
+									}
+								],
+								"excluded": [
+									{
+										"state": "print",
+										"reason": "The grid has no print layout."
+									}
+								],
+								"scenario": {
+									"schemaVersion": 1,
+									"id": "evidence-grid.populated",
+									"title": "Evidence grid with captured rows",
+									"kind": "ui",
+									"units": ["reports.component.evidence-grid"],
+									"states": [
+										{
+											"id": "populated",
+											"title": "Grid with captured rows",
+											"coverage": "required"
+										},
+										{
+											"id": "loading",
+											"title": "Grid while captures load",
+											"coverage": "missing"
+										},
+										{
+											"id": "print",
+											"title": "Print layout",
+											"coverage": "inapplicable",
+											"reason": "The grid has no print layout."
+										}
+									],
+									"viewports": [
+										{
+											"id": "desktop",
+											"width": 1440,
+											"height": 900
+										},
+										{
+											"id": "mobile",
+											"width": 390,
+											"height": 844,
+											"scale": 3
+										}
+									],
+									"tests": [
+										{
+											"id": "grid-render",
+											"kind": "unit",
+											"runner": "vitest",
+											"target": "src/reports/evidence-grid.test.ts"
+										}
+									],
+									"evidence": [
+										{
+											"id": "grid-screenshot",
+											"kind": "screenshot",
+											"states": ["populated"],
+											"viewports": ["desktop", "mobile"],
+											"required": true
+										}
+									]
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Unknown scenario id."
+						"description": "Thrown by fail() when no valid scenario manifest has the requested id, with the message Unknown scenario \"<id>\"; showScenario is async, so callers receive it as a rejected promise."
 					}
 				],
 				"errorStatus": "declared"
@@ -124,14 +415,85 @@
 						"name": "checkScenarios.root",
 						"type": "string",
 						"required": false,
-						"description": "Optional repository root; defaults to process.cwd()."
+						"description": "Repository root whose working-tree scenario and unit manifests are read; a relative value is resolved against process.cwd() by path.resolve. It matters when the process is not running at the repository root, and it defaults to process.cwd() when omitted.",
+						"examples": ["/workspace/harness", "/home/runner/work/harness/harness"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "checkScenarios",
 						"type": "Promise<{ scenarios: number; errors: string[]; health: ScenarioHealth }>",
-						"description": "Scenario count, schema and unknown-unit errors, and report-only viewport, coverage, and uncovered-unit health."
+						"description": "The scenarios field counts the valid scenario manifests, and errors lists the validation errors from reading them, followed by one \"<scenario id> covers unknown unit <unit id>\" message for each scenario unit that has no valid unit manifest. The health field is the report-only summary of viewport ids and sizes, state coverage, and active units that no scenario covers, and it is never added to errors.",
+						"examples": [
+							{
+								"scenarios": 2,
+								"errors": [],
+								"health": {
+									"scenarios": 2,
+									"viewports": {
+										"known": ["desktop", "tablet", "mobile"],
+										"unknown": [],
+										"conflicts": [],
+										"offPreset": []
+									},
+									"coverage": {
+										"required": 2,
+										"missing": 1,
+										"inapplicable": 1
+									},
+									"noScenario": {
+										"total": 1,
+										"retired": 0,
+										"counts": {
+											"components": 1,
+											"pages": 0,
+											"other": 0
+										},
+										"components": ["reports.component.evidence-table"],
+										"pages": [],
+										"other": [],
+										"byPrefix": {
+											"reports.component": 1
+										}
+									}
+								}
+							},
+							{
+								"scenarios": 2,
+								"errors": [
+									"inspect-scenarios.listing covers unknown unit workflow.inspect-scenarios"
+								],
+								"health": {
+									"scenarios": 2,
+									"viewports": {
+										"known": ["desktop", "tablet", "mobile"],
+										"unknown": [],
+										"conflicts": [],
+										"offPreset": []
+									},
+									"coverage": {
+										"required": 2,
+										"missing": 1,
+										"inapplicable": 1
+									},
+									"noScenario": {
+										"total": 1,
+										"retired": 0,
+										"counts": {
+											"components": 1,
+											"pages": 0,
+											"other": 0
+										},
+										"components": ["reports.component.evidence-table"],
+										"pages": [],
+										"other": [],
+										"byPrefix": {
+											"reports.component": 1
+										}
+									}
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
