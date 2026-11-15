@@ -18,77 +18,324 @@
 				"name": "covering.detail",
 				"type": "HarnessRevision | null",
 				"required": true,
-				"description": "The revision whose registry is read; null when it is not available."
+				"description": "The revision whose registry supplies the scenarios and units used for this lookup. A null revision produces an empty result.",
+				"examples": [null]
 			},
 			{
 				"name": "covering.unit",
 				"type": "string",
 				"required": true,
-				"description": "The id of the unit."
+				"description": "The registry unit id matched against scenario unit lists and passed to state selection. It must use the unit id namespace, not a scenario, record, or commit id.",
+				"examples": ["reports.component.evidence-grid"]
 			},
 			{
 				"name": "united.now",
 				"type": "Item[]",
 				"required": true,
-				"description": "The entries of the first side."
+				"description": "The first list is kept in its original order and is not deduplicated. Its ids determine which entries from the second list are skipped.",
+				"examples": [
+					[
+						{
+							"id": "checkout-smoke"
+						}
+					]
+				]
 			},
 			{
 				"name": "united.was",
 				"type": "Item[]",
 				"required": true,
-				"description": "The entries of the second side."
+				"description": "Entries with ids already present in the first list are skipped. Repeated ids that occur only in this list remain repeated.",
+				"examples": [
+					[
+						{
+							"id": "checkout-smoke"
+						},
+						{
+							"id": "checkout-regression"
+						}
+					]
+				]
 			},
 			{
 				"name": "merged.now",
 				"type": "HarnessScenario",
 				"required": true,
-				"description": "The scenario as the first side declares it."
+				"description": "The current side’s scenario supplies the base object. It is returned as is when the other side is undefined; otherwise its states, viewports, and evidence are merged by id.",
+				"examples": [
+					{
+						"id": "checkout-smoke",
+						"title": "Checkout",
+						"kind": "browser",
+						"units": ["reports.component.evidence-grid"],
+						"states": [
+							{
+								"id": "review",
+								"title": "Review form",
+								"coverage": "passed",
+								"reason": "",
+								"units": ["reports.component.evidence-grid"]
+							}
+						],
+						"viewports": [
+							{
+								"id": "desktop",
+								"width": 1280,
+								"height": 800
+							}
+						],
+						"tests": [
+							{
+								"id": "checkout.e2e",
+								"kind": "browser",
+								"runner": "playwright"
+							}
+						],
+						"evidence": [
+							{
+								"id": "checkout-review-current",
+								"kind": "screenshot",
+								"states": ["review"],
+								"viewports": ["desktop"]
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "merged.was",
 				"type": "HarnessScenario | undefined",
 				"required": true,
-				"description": "The same scenario on the other side, if it has one."
+				"description": "The prior side’s declaration contributes states, viewports, and evidence whose ids are missing from the current scenario. Undefined means there is no prior declaration to merge.",
+				"examples": [
+					{
+						"id": "checkout-smoke",
+						"title": "Checkout",
+						"kind": "browser",
+						"units": ["reports.component.evidence-grid"],
+						"states": [
+							{
+								"id": "review",
+								"title": "Review form",
+								"coverage": "passed",
+								"reason": "",
+								"units": ["reports.component.evidence-grid"]
+							},
+							{
+								"id": "empty",
+								"title": "Empty cart",
+								"coverage": "passed",
+								"reason": "",
+								"units": ["reports.component.evidence-grid"]
+							}
+						],
+						"viewports": [
+							{
+								"id": "desktop",
+								"width": 1024,
+								"height": 768
+							},
+							{
+								"id": "mobile",
+								"width": 390,
+								"height": 844
+							}
+						],
+						"tests": [
+							{
+								"id": "checkout.unit",
+								"kind": "unit",
+								"runner": "vitest"
+							}
+						],
+						"evidence": [
+							{
+								"id": "checkout-review-before",
+								"kind": "screenshot",
+								"states": ["empty"],
+								"viewports": ["desktop"]
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "incomparable.before",
 				"type": "ExplorerSide",
 				"required": true,
-				"description": "The earlier side of the comparison."
+				"description": "The earlier side supplies the record profile and revision detail used for comparison. Its scenarios are checked only against later scenarios with the same id.",
+				"examples": [
+					{
+						"commit": "7f3a9c2d1b6e4a8f0c5d2e7a9b1c6d4e8f0a3b5c",
+						"detail": null,
+						"record": null,
+						"captures": [],
+						"coverage": [],
+						"gap": null
+					}
+				]
 			},
 			{
 				"name": "incomparable.after",
 				"type": "ExplorerSide",
 				"required": true,
-				"description": "The later side of the comparison."
+				"description": "The later side supplies the record profile and revision detail used for comparison. Only matching earlier scenario ids can produce viewport or test differences.",
+				"examples": [
+					{
+						"commit": "7f3a9c2d1b6e4a8f0c5d2e7a9b1c6d4e8f0a3b5c",
+						"detail": null,
+						"record": null,
+						"captures": [],
+						"coverage": [],
+						"gap": null
+					}
+				]
 			},
 			{
 				"name": "incomparable.unit",
 				"type": "string",
 				"required": true,
-				"description": "The id of the unit compared."
+				"description": "The registry unit id whose covering scenarios are compared on both sides. Both revisions must use the same unit id for the comparison to refer to the same unit.",
+				"examples": ["reports.component.evidence-grid"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "covering",
 				"type": "unknown",
-				"description": "The scenarios that cover the unit, each with the states that show it; empty without a revision."
+				"description": "The scenarios that cover the unit, with each scenario’s states selected by scenarioFor using the revision’s units. The result is empty for a null revision or when no scenario covers the unit.",
+				"examples": [
+					[],
+					[
+						{
+							"id": "checkout-smoke",
+							"title": "Checkout",
+							"kind": "browser",
+							"units": ["reports.component.evidence-grid"],
+							"states": [
+								{
+									"id": "review",
+									"title": "Review form",
+									"coverage": "passed",
+									"reason": "",
+									"units": ["reports.component.evidence-grid"]
+								}
+							],
+							"viewports": [
+								{
+									"id": "desktop",
+									"width": 1280,
+									"height": 800
+								}
+							],
+							"tests": [
+								{
+									"id": "checkout.e2e",
+									"kind": "browser",
+									"runner": "playwright"
+								}
+							],
+							"evidence": [
+								{
+									"id": "checkout-review-current",
+									"kind": "screenshot",
+									"states": ["review"],
+									"viewports": ["desktop"]
+								}
+							]
+						}
+					]
+				]
 			},
 			{
 				"name": "united",
 				"type": "Item[]",
-				"description": "Every entry once: those of the first list, then those only the second has."
+				"description": "All entries from the first list are followed by second-list entries whose ids do not occur in the first list. Repeated ids within either list are not removed.",
+				"examples": [
+					[
+						{
+							"id": "checkout-smoke"
+						},
+						{
+							"id": "checkout-regression"
+						}
+					]
+				]
 			},
 			{
 				"name": "merged",
 				"type": "HarnessScenario",
-				"description": "The scenario with the states, viewports and evidence of both sides, so what one dropped stays."
+				"description": "The current scenario is the base; when a prior scenario exists, states, viewports, and evidence are united by id, with missing evidence lists treated as empty. Other fields remain from the current scenario.",
+				"examples": [
+					{
+						"id": "checkout-smoke",
+						"title": "Checkout",
+						"kind": "browser",
+						"units": ["reports.component.evidence-grid"],
+						"states": [
+							{
+								"id": "review",
+								"title": "Review form",
+								"coverage": "passed",
+								"reason": "",
+								"units": ["reports.component.evidence-grid"]
+							},
+							{
+								"id": "empty",
+								"title": "Empty cart",
+								"coverage": "passed",
+								"reason": "",
+								"units": ["reports.component.evidence-grid"]
+							}
+						],
+						"viewports": [
+							{
+								"id": "desktop",
+								"width": 1280,
+								"height": 800
+							},
+							{
+								"id": "mobile",
+								"width": 390,
+								"height": 844
+							}
+						],
+						"tests": [
+							{
+								"id": "checkout.e2e",
+								"kind": "browser",
+								"runner": "playwright"
+							}
+						],
+						"evidence": [
+							{
+								"id": "checkout-review-current",
+								"kind": "screenshot",
+								"states": ["review"],
+								"viewports": ["desktop"]
+							},
+							{
+								"id": "checkout-review-before",
+								"kind": "screenshot",
+								"states": ["empty"],
+								"viewports": ["desktop"]
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "incomparable",
 				"type": "string[]",
-				"description": "The reasons the sides are not like for like, such as other profiles, viewport sizes or tests; empty when they are."
+				"description": "The reasons can include differing truthy profiles, changed dimensions for matching viewport ids in matching scenarios, and tests whose JSON serialization differs. Added or removed scenario ids alone produce no reason.",
+				"examples": [
+					[],
+					[
+						"The two sides were recorded under different profiles (chromium-desktop and firefox-desktop).",
+						"Checkout: viewport desktop is 1024×768 before and 1280×800 after.",
+						"Checkout runs other tests after than before."
+					]
+				]
 			}
 		],
 		"errors": [],
@@ -101,20 +348,64 @@
 						"name": "covering.detail",
 						"type": "HarnessRevision | null",
 						"required": true,
-						"description": "The revision whose registry is read; null when it is not available."
+						"description": "The revision whose registry supplies the scenarios and units used for this lookup. A null revision produces an empty result.",
+						"examples": [null]
 					},
 					{
 						"name": "covering.unit",
 						"type": "string",
 						"required": true,
-						"description": "The id of the unit."
+						"description": "The registry unit id matched against scenario unit lists and passed to state selection. It must use the unit id namespace, not a scenario, record, or commit id.",
+						"examples": ["reports.component.evidence-grid"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "covering",
 						"type": "unknown",
-						"description": "The scenarios that cover the unit, each with the states that show it; empty without a revision."
+						"description": "The scenarios that cover the unit, with each scenario’s states selected by scenarioFor using the revision’s units. The result is empty for a null revision or when no scenario covers the unit.",
+						"examples": [
+							[],
+							[
+								{
+									"id": "checkout-smoke",
+									"title": "Checkout",
+									"kind": "browser",
+									"units": ["reports.component.evidence-grid"],
+									"states": [
+										{
+											"id": "review",
+											"title": "Review form",
+											"coverage": "passed",
+											"reason": "",
+											"units": ["reports.component.evidence-grid"]
+										}
+									],
+									"viewports": [
+										{
+											"id": "desktop",
+											"width": 1280,
+											"height": 800
+										}
+									],
+									"tests": [
+										{
+											"id": "checkout.e2e",
+											"kind": "browser",
+											"runner": "playwright"
+										}
+									],
+									"evidence": [
+										{
+											"id": "checkout-review-current",
+											"kind": "screenshot",
+											"states": ["review"],
+											"viewports": ["desktop"]
+										}
+									]
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
@@ -127,20 +418,47 @@
 						"name": "united.now",
 						"type": "Item[]",
 						"required": true,
-						"description": "The entries of the first side."
+						"description": "The first list is kept in its original order and is not deduplicated. Its ids determine which entries from the second list are skipped.",
+						"examples": [
+							[
+								{
+									"id": "checkout-smoke"
+								}
+							]
+						]
 					},
 					{
 						"name": "united.was",
 						"type": "Item[]",
 						"required": true,
-						"description": "The entries of the second side."
+						"description": "Entries with ids already present in the first list are skipped. Repeated ids that occur only in this list remain repeated.",
+						"examples": [
+							[
+								{
+									"id": "checkout-smoke"
+								},
+								{
+									"id": "checkout-regression"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "united",
 						"type": "Item[]",
-						"description": "Every entry once: those of the first list, then those only the second has."
+						"description": "All entries from the first list are followed by second-list entries whose ids do not occur in the first list. Repeated ids within either list are not removed.",
+						"examples": [
+							[
+								{
+									"id": "checkout-smoke"
+								},
+								{
+									"id": "checkout-regression"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
@@ -153,20 +471,167 @@
 						"name": "merged.now",
 						"type": "HarnessScenario",
 						"required": true,
-						"description": "The scenario as the first side declares it."
+						"description": "The current side’s scenario supplies the base object. It is returned as is when the other side is undefined; otherwise its states, viewports, and evidence are merged by id.",
+						"examples": [
+							{
+								"id": "checkout-smoke",
+								"title": "Checkout",
+								"kind": "browser",
+								"units": ["reports.component.evidence-grid"],
+								"states": [
+									{
+										"id": "review",
+										"title": "Review form",
+										"coverage": "passed",
+										"reason": "",
+										"units": ["reports.component.evidence-grid"]
+									}
+								],
+								"viewports": [
+									{
+										"id": "desktop",
+										"width": 1280,
+										"height": 800
+									}
+								],
+								"tests": [
+									{
+										"id": "checkout.e2e",
+										"kind": "browser",
+										"runner": "playwright"
+									}
+								],
+								"evidence": [
+									{
+										"id": "checkout-review-current",
+										"kind": "screenshot",
+										"states": ["review"],
+										"viewports": ["desktop"]
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "merged.was",
 						"type": "HarnessScenario | undefined",
 						"required": true,
-						"description": "The same scenario on the other side, if it has one."
+						"description": "The prior side’s declaration contributes states, viewports, and evidence whose ids are missing from the current scenario. Undefined means there is no prior declaration to merge.",
+						"examples": [
+							{
+								"id": "checkout-smoke",
+								"title": "Checkout",
+								"kind": "browser",
+								"units": ["reports.component.evidence-grid"],
+								"states": [
+									{
+										"id": "review",
+										"title": "Review form",
+										"coverage": "passed",
+										"reason": "",
+										"units": ["reports.component.evidence-grid"]
+									},
+									{
+										"id": "empty",
+										"title": "Empty cart",
+										"coverage": "passed",
+										"reason": "",
+										"units": ["reports.component.evidence-grid"]
+									}
+								],
+								"viewports": [
+									{
+										"id": "desktop",
+										"width": 1024,
+										"height": 768
+									},
+									{
+										"id": "mobile",
+										"width": 390,
+										"height": 844
+									}
+								],
+								"tests": [
+									{
+										"id": "checkout.unit",
+										"kind": "unit",
+										"runner": "vitest"
+									}
+								],
+								"evidence": [
+									{
+										"id": "checkout-review-before",
+										"kind": "screenshot",
+										"states": ["empty"],
+										"viewports": ["desktop"]
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "merged",
 						"type": "HarnessScenario",
-						"description": "The scenario with the states, viewports and evidence of both sides, so what one dropped stays."
+						"description": "The current scenario is the base; when a prior scenario exists, states, viewports, and evidence are united by id, with missing evidence lists treated as empty. Other fields remain from the current scenario.",
+						"examples": [
+							{
+								"id": "checkout-smoke",
+								"title": "Checkout",
+								"kind": "browser",
+								"units": ["reports.component.evidence-grid"],
+								"states": [
+									{
+										"id": "review",
+										"title": "Review form",
+										"coverage": "passed",
+										"reason": "",
+										"units": ["reports.component.evidence-grid"]
+									},
+									{
+										"id": "empty",
+										"title": "Empty cart",
+										"coverage": "passed",
+										"reason": "",
+										"units": ["reports.component.evidence-grid"]
+									}
+								],
+								"viewports": [
+									{
+										"id": "desktop",
+										"width": 1280,
+										"height": 800
+									},
+									{
+										"id": "mobile",
+										"width": 390,
+										"height": 844
+									}
+								],
+								"tests": [
+									{
+										"id": "checkout.e2e",
+										"kind": "browser",
+										"runner": "playwright"
+									}
+								],
+								"evidence": [
+									{
+										"id": "checkout-review-current",
+										"kind": "screenshot",
+										"states": ["review"],
+										"viewports": ["desktop"]
+									},
+									{
+										"id": "checkout-review-before",
+										"kind": "screenshot",
+										"states": ["empty"],
+										"viewports": ["desktop"]
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
@@ -179,26 +644,55 @@
 						"name": "incomparable.before",
 						"type": "ExplorerSide",
 						"required": true,
-						"description": "The earlier side of the comparison."
+						"description": "The earlier side supplies the record profile and revision detail used for comparison. Its scenarios are checked only against later scenarios with the same id.",
+						"examples": [
+							{
+								"commit": "7f3a9c2d1b6e4a8f0c5d2e7a9b1c6d4e8f0a3b5c",
+								"detail": null,
+								"record": null,
+								"captures": [],
+								"coverage": [],
+								"gap": null
+							}
+						]
 					},
 					{
 						"name": "incomparable.after",
 						"type": "ExplorerSide",
 						"required": true,
-						"description": "The later side of the comparison."
+						"description": "The later side supplies the record profile and revision detail used for comparison. Only matching earlier scenario ids can produce viewport or test differences.",
+						"examples": [
+							{
+								"commit": "7f3a9c2d1b6e4a8f0c5d2e7a9b1c6d4e8f0a3b5c",
+								"detail": null,
+								"record": null,
+								"captures": [],
+								"coverage": [],
+								"gap": null
+							}
+						]
 					},
 					{
 						"name": "incomparable.unit",
 						"type": "string",
 						"required": true,
-						"description": "The id of the unit compared."
+						"description": "The registry unit id whose covering scenarios are compared on both sides. Both revisions must use the same unit id for the comparison to refer to the same unit.",
+						"examples": ["reports.component.evidence-grid"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "incomparable",
 						"type": "string[]",
-						"description": "The reasons the sides are not like for like, such as other profiles, viewport sizes or tests; empty when they are."
+						"description": "The reasons can include differing truthy profiles, changed dimensions for matching viewport ids in matching scenarios, and tests whose JSON serialization differs. Added or removed scenario ids alone produce no reason.",
+						"examples": [
+							[],
+							[
+								"The two sides were recorded under different profiles (chromium-desktop and firefox-desktop).",
+								"Checkout: viewport desktop is 1024×768 before and 1280×800 after.",
+								"Checkout runs other tests after than before."
+							]
+						]
 					}
 				],
 				"errors": [],
