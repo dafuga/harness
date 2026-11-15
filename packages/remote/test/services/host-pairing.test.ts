@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import type { PairingApproval } from '../../src/models/RemoteSecure.types';
+import type { PairingApproval } from '../../src/models/networking-security/RemoteSecure.types';
 import { HostPairingService } from '../../src/services/host-pairing-service/HostPairingService';
 import {
 	openPairing,

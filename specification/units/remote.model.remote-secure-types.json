@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/remote/src/models/RemoteSecure.types.ts",
 			"packages/remote/src/models/networking-security/RemoteSecure.types.ts",
 			"packages/remote/src/models/networking-security/RemoteSecureValues.ts"
 		],
 		"symbols": [
-			"SecureFailure",
 			"RemoteKeyPair",
 			"StoredRemoteKeys",
 			"SecureRole",

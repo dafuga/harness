@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { SecureFailure } from '../../src/models/RemoteSecure.types';
+import { SecureFailure } from '../../src/models/networking-security/RemoteSecure.types';
 import { bytesText, fromBase64Url, remoteBytes } from '../../src/utils/remoteBytes';
 import { importRemoteKeys, remoteKeys } from '../../src/utils/remoteKeys';
 import { openPacket, sealPacket } from '../../src/services/secure-channel-service/sealPacket';

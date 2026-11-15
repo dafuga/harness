@@ -1,5 +1,5 @@
-import type { SecureDirection } from '../../src/models/RemoteSecure.types';
-import type { StoredRemoteKeys } from '../../src/models/RemoteSecure.types';
+import type { SecureDirection } from '../../src/models/networking-security/RemoteSecure.types';
+import type { StoredRemoteKeys } from '../../src/models/networking-security/RemoteSecure.types';
 
 export interface VectorPacket {
 	direction: SecureDirection;

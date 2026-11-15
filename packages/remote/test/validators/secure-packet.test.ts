@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { remoteLimits } from '../../src/models/Remote.types';
-import { SecureFailure } from '../../src/models/RemoteSecure.types';
+import { SecureFailure } from '../../src/models/networking-security/RemoteSecure.types';
 import { SecurePacketValidator } from '../../src/validators/networking-security/SecurePacketValidator';
 import { vectors } from '../support/vectors';
 
