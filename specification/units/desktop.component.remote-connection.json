@@ -22,24 +22,26 @@
 				"name": "RemoteConnection.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace whose remote.host or remote.phone selects the panel; host takes precedence if both are set."
+				"description": "Workspace state whose remote.host and remote.phone values select the panel when remote context stores are available. The host panel takes precedence if both values are truthy; without context stores, neither panel renders."
 			},
 			{
 				"name": "RemoteConnection.compact",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional compact flag, false by default, forwarded to the chosen panel."
+				"description": "Controls the compact mode passed to the selected host or phone panel. It defaults to false and has no effect when neither panel renders.",
+				"examples": [false, true]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteConnection",
 				"type": "markup",
-				"description": "Host panel or phone panel when matching remote mode and context stores exist; otherwise nothing. Does not initiate pairing itself."
+				"description": "Renders the host panel with the host store when context stores and workspace.remote.host are truthy; otherwise it renders the phone panel with the phone store when context stores and workspace.remote.phone are truthy, or renders nothing. The host branch takes precedence when both remote values are truthy, and the compact value is forwarded to the rendered panel."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
