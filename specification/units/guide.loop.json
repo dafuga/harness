@@ -12,12 +12,41 @@
 		"symbols": ["loopGuide"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "loopGuide",
-				"type": "Guide"
+				"type": "Guide",
+				"description": "The static Guide for the loop workflow, including its topic, summary, ordered steps, rules, anti-patterns, and example commands. It matters when choosing and completing inherited work loops; it is guidance only, and normal tests, browser checks, audit, build, and deployment proof remain the source of truth.",
+				"examples": [
+					{
+						"topic": "loop",
+						"summary": "Use inherited loop templates to drive, evaluate, and trace agent work.",
+						"steps": [
+							"Search templates and existing loops before choosing the work loop.",
+							"Create the loop from a built-in or project template with the human-facing goal.",
+							"Use next-step guidance to keep work aligned with inherited steps and evaluators.",
+							"Complete steps with concrete evidence such as tests, browser checks, screenshots, or deployment proof.",
+							"Run loop evaluators as a repeatable proof layer, not as a substitute for judgment."
+						],
+						"rules": [
+							"Built-in loops cover feature, fix, bug-fix, regression-prevention, refactor, and visual-change work.",
+							"Choose bug-fix for failing-test-first repairs; choose regression-prevention for root-cause repairs with enforced guards.",
+							"Agents perform retries; Harness evaluators do not launch an AI runner or automatically complete steps.",
+							"Normal tests, browser checks, audit, build, and deployment proof remain source of truth."
+						],
+						"antiPatterns": [
+							"Do not make vague steps like \"finish feature\".",
+							"Do not mark a step complete without concrete evidence."
+						],
+						"exampleCommands": [
+							"harness loop search feature",
+							"harness loop create newsletter-signup --from feature --goal \"Visitors can subscribe\"",
+							"harness loop evaluate newsletter-signup"
+						]
+					}
+				]
 			}
 		],
 		"errors": [],
