@@ -21,29 +21,87 @@
 				"name": "priorImage.versions",
 				"type": "DesignVersion[]",
 				"required": true,
-				"description": "The design versions in historical order."
+				"description": "The ordered design history searched for the displayed version. A prior image requires that version's commit to equal the selected commit; without revises, fallback pairing uses only the immediately preceding version and only when the shown version has no options.",
+				"examples": [
+					[
+						{
+							"version": "v1",
+							"createdAt": "2026-11-10T09:00:00.000Z",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"generator": "codex",
+							"prompt": "Set the header image to a coastal view.",
+							"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+							"images": [
+								{
+									"state": "default",
+									"viewport": "desktop",
+									"sha256": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+									"bytes": 124800
+								}
+							],
+							"approval": null
+						},
+						{
+							"version": "v2",
+							"createdAt": "2026-11-10T10:00:00.000Z",
+							"commit": "89abcdef0123456789abcdef0123456789abcdef",
+							"generator": "codex",
+							"prompt": "Refine the header image lighting.",
+							"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+							"images": [
+								{
+									"state": "default",
+									"viewport": "desktop",
+									"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+									"bytes": 131072
+								}
+							],
+							"approval": null
+						}
+					]
+				]
 			},
 			{
 				"name": "priorImage.shown",
 				"type": "{ version: string; image: DesignImage | undefined }",
 				"required": true,
-				"description": "The displayed version identity and optional selected image."
+				"description": "The displayed version identifier and optional selected image used by the lookup. A prior image can be returned only when image is defined; its viewport and state select the corresponding image from the preceding version in the single-design fallback.",
+				"examples": [
+					{
+						"version": "v2",
+						"image": {
+							"state": "default",
+							"viewport": "desktop",
+							"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+							"bytes": 131072
+						}
+					}
+				]
 			},
 			{
 				"name": "priorImage.commit",
 				"type": "string | null",
 				"required": true,
-				"description": "The selected commit, or null for a branch view."
+				"description": "The commit selected in the commit view; it must exactly equal the matching design version's commit. Null denotes a branch view and causes the function to return null.",
+				"examples": [null, "89abcdef0123456789abcdef0123456789abcdef"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "priorImage",
 				"type": "PriorImage | null",
-				"description": "The prior version and image hash, or null without a selected image or matching introducing commit. Uses an explicit revised-image binding first. Without one, versions with design options are not paired; a single design falls back to the preceding version’s image with the same state and viewport."
+				"description": "The exact image named by the version's revises binding when present; otherwise, only a version without options can use the preceding version's image with the same viewport and state. It is null when the commit, image, matching version, or eligible prior image is missing.",
+				"examples": [
+					{
+						"version": "v1",
+						"sha256": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+					},
+					null
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "priorImage",
@@ -52,30 +110,87 @@
 						"name": "priorImage.versions",
 						"type": "DesignVersion[]",
 						"required": true,
-						"description": "The design versions in historical order."
+						"description": "The ordered design history searched for the displayed version. A prior image requires that version's commit to equal the selected commit; without revises, fallback pairing uses only the immediately preceding version and only when the shown version has no options.",
+						"examples": [
+							[
+								{
+									"version": "v1",
+									"createdAt": "2026-11-10T09:00:00.000Z",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"generator": "codex",
+									"prompt": "Set the header image to a coastal view.",
+									"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+									"images": [
+										{
+											"state": "default",
+											"viewport": "desktop",
+											"sha256": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+											"bytes": 124800
+										}
+									],
+									"approval": null
+								},
+								{
+									"version": "v2",
+									"createdAt": "2026-11-10T10:00:00.000Z",
+									"commit": "89abcdef0123456789abcdef0123456789abcdef",
+									"generator": "codex",
+									"prompt": "Refine the header image lighting.",
+									"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+									"images": [
+										{
+											"state": "default",
+											"viewport": "desktop",
+											"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+											"bytes": 131072
+										}
+									],
+									"approval": null
+								}
+							]
+						]
 					},
 					{
 						"name": "priorImage.shown",
 						"type": "{ version: string; image: DesignImage | undefined }",
 						"required": true,
-						"description": "The displayed version identity and optional selected image."
+						"description": "The displayed version identifier and optional selected image used by the lookup. A prior image can be returned only when image is defined; its viewport and state select the corresponding image from the preceding version in the single-design fallback.",
+						"examples": [
+							{
+								"version": "v2",
+								"image": {
+									"state": "default",
+									"viewport": "desktop",
+									"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+									"bytes": 131072
+								}
+							}
+						]
 					},
 					{
 						"name": "priorImage.commit",
 						"type": "string | null",
 						"required": true,
-						"description": "The selected commit, or null for a branch view."
+						"description": "The commit selected in the commit view; it must exactly equal the matching design version's commit. Null denotes a branch view and causes the function to return null.",
+						"examples": [null, "89abcdef0123456789abcdef0123456789abcdef"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "priorImage",
 						"type": "PriorImage | null",
-						"description": "The prior version and image hash, or null without a selected image or matching introducing commit. Uses an explicit revised-image binding first. Without one, versions with design options are not paired; a single design falls back to the preceding version’s image with the same state and viewport."
+						"description": "The exact image named by the version's revises binding when present; otherwise, only a version without options can use the preceding version's image with the same viewport and state. It is null when the commit, image, matching version, or eligible prior image is missing.",
+						"examples": [
+							{
+								"version": "v1",
+								"sha256": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
