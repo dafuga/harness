@@ -22,32 +22,42 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AgentSettingsAdapter.constructor.config",
 				"type": "AgentSettingsAdapterConfig",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "The optional configuration for selecting the adapter storage object. If omitted, the constructor uses an empty configuration and read/write use globalThis.localStorage.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "AgentSettingsAdapter.write.designOptions",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The requested number of design options to persist. Only integer values from 1 through 10 are accepted; other numbers make write return false.",
+				"examples": [1, 3, 10]
 			}
 		],
 		"outputs": [
 			{
 				"name": "AgentSettingsAdapter.read",
-				"type": "number"
+				"type": "number",
+				"description": "The design count selected for use, taken from stored designOptions only when it is a number from 1 through 10. Missing, invalid, inaccessible, or malformed stored data yields the default count of 3.",
+				"examples": [1, 3, 10]
 			},
 			{
 				"name": "AgentSettingsAdapter.write",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Whether the requested design count was saved. The result is false for an unsupported count, unavailable storage, or storage failure, and true after the value is stored.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "AgentSettingsAdapter.read",
@@ -55,11 +65,13 @@
 				"outputs": [
 					{
 						"name": "AgentSettingsAdapter.read",
-						"type": "number"
+						"type": "number",
+						"description": "The design count selected for use, taken from stored designOptions only when it is a number from 1 through 10. Missing, invalid, inaccessible, or malformed stored data yields the default count of 3.",
+						"examples": [1, 3, 10]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AgentSettingsAdapter.write",
@@ -67,17 +79,21 @@
 					{
 						"name": "AgentSettingsAdapter.write.designOptions",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "The requested number of design options to persist. Only integer values from 1 through 10 are accepted; other numbers make write return false.",
+						"examples": [1, 3, 10]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AgentSettingsAdapter.write",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Whether the requested design count was saved. The result is false for an unsupported count, unavailable storage, or storage failure, and true after the value is stored.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -88,17 +104,22 @@
 						"name": "AgentSettingsAdapter.constructor.config",
 						"type": "AgentSettingsAdapterConfig",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "The optional configuration for selecting the adapter storage object. If omitted, the constructor uses an empty configuration and read/write use globalThis.localStorage.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AgentSettingsAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed AgentSettingsAdapter instance, which retains the supplied configuration or an empty configuration for later storage access."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
