@@ -21,40 +21,52 @@
 				"name": "hubEvidencePath.path",
 				"type": "string",
 				"required": true,
-				"description": "Repository-relative path to check."
+				"description": "Repository-relative candidate for a stored evidence path, checked only as text and never resolved against a tree, so a path that passes may still be missing from the repository. It has no length cap, and spaces and non-ASCII characters are accepted.",
+				"examples": [
+					"packages/hub/src/utils/hubPinnedSource.ts",
+					"packages/hub/src/utils/verification-evidence/hubPinnedSource.ts",
+					"packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/hubPinnedSource.ts"
+				]
 			},
 			{
 				"name": "hubPinnedSource.base",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+				"description": "Source context whose source adapter, repository, cache and identity carry into the result: the adapter's resolve must return commit, its tree call supplies the entries, and the identity is copied with requestedRef replaced. Its own commit and entries are never read, because the result replaces both."
 			},
 			{
 				"name": "hubPinnedSource.commit",
 				"type": "string",
 				"required": true,
-				"description": "Full 40-character lowercase hexadecimal commit ID that the source must resolve unchanged."
+				"description": "Full commit ID to pin the context to, which must be exactly 40 lowercase hexadecimal characters. Any other form, such as a short SHA, uppercase hex or a branch or tag name, throws invalid-evidence-revision before the source is consulted, and so does any commit for which base.source.resolve returns a different commit.",
+				"examples": [
+					"7c3e9a1f5b02d84e6a9c1f3b7d20e5a8c4f96b31",
+					"d19a4c7e2f8b06a35e9d1c4f7b2a80e6d3c59f14",
+					"a6f20b9d4e1c7835f2a0d6b9e4c1f73a58d2e0b7"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubPinnedSource",
 				"type": "Promise<HubSourceContext>",
-				"description": "New context for the exact commit/tree, sharing source/cache and retaining the original authorization identity while changing requestedRef."
+				"description": "Promise of a context for exactly commit: source, repository and cache are shared with base, commit is set to commit, entries is the tree that base.source.tree returns for commit, and identity is base.identity copied with requestedRef set to commit. It fulfills only when base.source.resolve returns a revision whose commit equals commit, and otherwise it rejects with invalid-evidence-revision."
 			},
 			{
 				"name": "hubEvidencePath",
 				"type": "boolean",
-				"description": "True for a nonempty slash-separated path with no empty, dot or parent segments, backslashes or control/delete characters."
+				"description": "True when the path is nonempty, holds no backslash and no control or delete character (U+0000 to U+001F or U+007F), and every slash-separated segment is non-empty and neither '.' nor '..'; false otherwise. It reads only the text, so true does not prove that anything exists at that path in the repository.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [
 			{
 				"name": "invalid-evidence-revision",
-				"type": "refused",
-				"description": "Commit format is invalid or the source resolves it to a different commit."
+				"type": "thrown",
+				"description": "Thrown by hubPinnedSource through hubFail when commit is not 40 lowercase hexadecimal characters, or when base.source.resolve returns a commit that differs from commit. It is thrown before base.source.tree is called, so no entries are read."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubEvidencePath",
@@ -63,18 +75,24 @@
 						"name": "hubEvidencePath.path",
 						"type": "string",
 						"required": true,
-						"description": "Repository-relative path to check."
+						"description": "Repository-relative candidate for a stored evidence path, checked only as text and never resolved against a tree, so a path that passes may still be missing from the repository. It has no length cap, and spaces and non-ASCII characters are accepted.",
+						"examples": [
+							"packages/hub/src/utils/hubPinnedSource.ts",
+							"packages/hub/src/utils/verification-evidence/hubPinnedSource.ts",
+							"packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/hubPinnedSource.ts"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubEvidencePath",
 						"type": "boolean",
-						"description": "True for a nonempty slash-separated path with no empty, dot or parent segments, backslashes or control/delete characters."
+						"description": "True when the path is nonempty, holds no backslash and no control or delete character (U+0000 to U+001F or U+007F), and every slash-separated segment is non-empty and neither '.' nor '..'; false otherwise. It reads only the text, so true does not prove that anything exists at that path in the repository.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubPinnedSource",
@@ -83,24 +101,35 @@
 						"name": "hubPinnedSource.base",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+						"description": "Source context whose source adapter, repository, cache and identity carry into the result: the adapter's resolve must return commit, its tree call supplies the entries, and the identity is copied with requestedRef replaced. Its own commit and entries are never read, because the result replaces both."
 					},
 					{
 						"name": "hubPinnedSource.commit",
 						"type": "string",
 						"required": true,
-						"description": "Full 40-character lowercase hexadecimal commit ID that the source must resolve unchanged."
+						"description": "Full commit ID to pin the context to, which must be exactly 40 lowercase hexadecimal characters. Any other form, such as a short SHA, uppercase hex or a branch or tag name, throws invalid-evidence-revision before the source is consulted, and so does any commit for which base.source.resolve returns a different commit.",
+						"examples": [
+							"7c3e9a1f5b02d84e6a9c1f3b7d20e5a8c4f96b31",
+							"d19a4c7e2f8b06a35e9d1c4f7b2a80e6d3c59f14",
+							"a6f20b9d4e1c7835f2a0d6b9e4c1f73a58d2e0b7"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubPinnedSource",
 						"type": "Promise<HubSourceContext>",
-						"description": "New context for the exact commit/tree, sharing source/cache and retaining the original authorization identity while changing requestedRef."
+						"description": "Promise of a context for exactly commit: source, repository and cache are shared with base, commit is set to commit, entries is the tree that base.source.tree returns for commit, and identity is base.identity copied with requestedRef set to commit. It fulfills only when base.source.resolve returns a revision whose commit equals commit, and otherwise it rejects with invalid-evidence-revision."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "invalid-evidence-revision",
+						"type": "thrown",
+						"description": "Thrown by hubPinnedSource through hubFail when commit is not 40 lowercase hexadecimal characters, or when base.source.resolve returns a commit that differs from commit. It is thrown before base.source.tree is called, so no entries are read."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
