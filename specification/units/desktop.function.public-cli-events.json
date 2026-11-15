@@ -20,17 +20,35 @@
 				"name": "publicCliEvents.value",
 				"type": "unknown",
 				"required": true,
-				"description": "The candidate CLI event. It must be an assistant event with a message object and content array to yield text."
+				"description": "The candidate CLI event passed to the extractor. Only a truthy object whose type is \"assistant\", whose message is a truthy object, and whose message.content is an array can yield text; all other values return an empty list.",
+				"examples": [
+					{
+						"type": "assistant",
+						"message": {
+							"content": [
+								{
+									"type": "text",
+									"text": "Ready."
+								}
+							]
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "publicCliEvents",
 				"type": "string[]",
-				"description": "An ordered list of string text parts whose type is text. Non-assistant events, malformed structures, reasoning parts and tool bodies produce no text entries."
+				"description": "The result contains text strings from content parts in their original order. Only parts with type \"text\" and a string text value are included; other parts and malformed events yield no entries.",
+				"examples": [
+					["Ready."],
+					[]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "publicCliEvents",
@@ -39,18 +57,35 @@
 						"name": "publicCliEvents.value",
 						"type": "unknown",
 						"required": true,
-						"description": "The candidate CLI event. It must be an assistant event with a message object and content array to yield text."
+						"description": "The candidate CLI event passed to the extractor. Only a truthy object whose type is \"assistant\", whose message is a truthy object, and whose message.content is an array can yield text; all other values return an empty list.",
+						"examples": [
+							{
+								"type": "assistant",
+								"message": {
+									"content": [
+										{
+											"type": "text",
+											"text": "Ready."
+										}
+									]
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "publicCliEvents",
 						"type": "string[]",
-						"description": "An ordered list of string text parts whose type is text. Non-assistant events, malformed structures, reasoning parts and tool bodies produce no text entries."
+						"description": "The result contains text strings from content parts in their original order. Only parts with type \"text\" and a string text value are included; other parts and malformed events yield no entries.",
+						"examples": [
+							["Ready."],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
