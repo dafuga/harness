@@ -21,7 +21,7 @@
 				"description": "An AuditFile supplies absolute and relative paths, extension, source contents, line views, rule limits and size for the file under review. These rules use relativePath and, for TypeScript, extension and structuralLines; the SQL rule only inspects paths beginning with db/migrations/, and TypeScript skips paths ending in .types.ts.",
 				"examples": [
 					{
-						"absolutePath": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/src/utils/getUser.ts",
+						"absolutePath": "/workspace/project/src/utils/getUser.ts",
 						"relativePath": "src/utils/getUser.ts",
 						"extension": ".ts",
 						"contents": "export function getUser() {}\nexport function Bad_Name() {}",
@@ -48,7 +48,7 @@
 				"description": "An AuditFile supplies absolute and relative paths, extension, source contents, line views, rule limits and size for the file under review. This rule examines only relativePath: it ignores paths outside db/migrations/ and checks the filename stem inside that directory.",
 				"examples": [
 					{
-						"absolutePath": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/db/migrations/2026-11-15-Add_users.sql",
+						"absolutePath": "/workspace/project/db/migrations/2026-11-15-Add_users.sql",
 						"relativePath": "db/migrations/2026-11-15-Add_users.sql",
 						"extension": ".sql",
 						"contents": "CREATE TABLE users (id INTEGER);",
@@ -112,7 +112,7 @@
 						"description": "An AuditFile supplies absolute and relative paths, extension, source contents, line views, rule limits and size for the file under review. These rules use relativePath and, for TypeScript, extension and structuralLines; the SQL rule only inspects paths beginning with db/migrations/, and TypeScript skips paths ending in .types.ts.",
 						"examples": [
 							{
-								"absolutePath": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/src/utils/getUser.ts",
+								"absolutePath": "/workspace/project/src/utils/getUser.ts",
 								"relativePath": "src/utils/getUser.ts",
 								"extension": ".ts",
 								"contents": "export function getUser() {}\nexport function Bad_Name() {}",
@@ -165,7 +165,7 @@
 						"description": "An AuditFile supplies absolute and relative paths, extension, source contents, line views, rule limits and size for the file under review. This rule examines only relativePath: it ignores paths outside db/migrations/ and checks the filename stem inside that directory.",
 						"examples": [
 							{
-								"absolutePath": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/db/migrations/2026-11-15-Add_users.sql",
+								"absolutePath": "/workspace/project/db/migrations/2026-11-15-Add_users.sql",
 								"relativePath": "db/migrations/2026-11-15-Add_users.sql",
 								"extension": ".sql",
 								"contents": "CREATE TABLE users (id INTEGER);",

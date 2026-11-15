@@ -27,7 +27,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project root directory in which harness.audit.json is looked up; the value is combined with that file name using path.join and is not validated. When the file does not exist, readAuditConfig returns the default configuration instead of throwing.",
-				"examples": ["/home/dev/code/billing-api", "/workspace/harness-app"]
+				"examples": ["/workspace/project/code/billing-api", "/workspace/harness-app"]
 			},
 			{
 				"name": "filterIgnoredFindings.findings",
@@ -241,7 +241,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project root directory in which harness.audit.json is looked up; the value is combined with that file name using path.join and is not validated. When the file does not exist, readAuditConfig returns the default configuration instead of throwing.",
-						"examples": ["/home/dev/code/billing-api", "/workspace/harness-app"]
+						"examples": ["/workspace/project/code/billing-api", "/workspace/harness-app"]
 					}
 				],
 				"outputs": [

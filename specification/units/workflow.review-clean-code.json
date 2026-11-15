@@ -24,7 +24,7 @@
 				"description": "Supplies a resolvable repository root and required clean-code settings for file discovery and review. Optional options control dry-run or cancellation, findings add snapshot context, and a supplied evaluator replaces the lazy Jev adapter; per-file failures become incomplete results, while discovery or final freshness-check failures can reject.",
 				"examples": [
 					{
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6",
+						"root": "/workspace/project",
 						"settings": {
 							"mode": "advisory",
 							"model": "jev-model",
@@ -84,7 +84,7 @@
 						"description": "Supplies a resolvable repository root and required clean-code settings for file discovery and review. Optional options control dry-run or cancellation, findings add snapshot context, and a supplied evaluator replaces the lazy Jev adapter; per-file failures become incomplete results, while discovery or final freshness-check failures can reject.",
 						"examples": [
 							{
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6",
+								"root": "/workspace/project",
 								"settings": {
 									"mode": "advisory",
 									"model": "jev-model",

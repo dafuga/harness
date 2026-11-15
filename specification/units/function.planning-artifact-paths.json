@@ -19,7 +19,7 @@
 				"type": "string | undefined",
 				"required": true,
 				"description": "Repository root directory from which each listed plan.json under src/<category directory>/ is read, and from which the listed specification/units manifest of any plan whose unitId is not category.slug is read. Undefined or an empty string returns an empty set before any file is read.",
-				"examples": ["/workspace/checkout-service", "/home/dev/src/platform-web"]
+				"examples": ["/workspace/checkout-service", "/workspace/project/src/platform-web"]
 			},
 			{
 				"name": "planningArtifactPaths.files",
@@ -65,7 +65,7 @@
 						"type": "string | undefined",
 						"required": true,
 						"description": "Repository root directory from which each listed plan.json under src/<category directory>/ is read, and from which the listed specification/units manifest of any plan whose unitId is not category.slug is read. Undefined or an empty string returns an empty set before any file is read.",
-						"examples": ["/workspace/checkout-service", "/home/dev/src/platform-web"]
+						"examples": ["/workspace/checkout-service", "/workspace/project/src/platform-web"]
 					},
 					{
 						"name": "planningArtifactPaths.files",

@@ -32,7 +32,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository directory that gitRead passes to git -C, which decides the working tree that is listed, and each listed path is resolved against it before hashing. It must be a directory inside a Git working tree, otherwise git exits with an error and sourceSnapshot rejects.",
-				"examples": ["/workspace/acme-web", "/home/dev/src/billing-service"]
+				"examples": ["/workspace/acme-web", "/workspace/project/src/billing-service"]
 			}
 		],
 		"outputs": [
@@ -109,7 +109,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository directory that gitRead passes to git -C, which decides the working tree that is listed, and each listed path is resolved against it before hashing. It must be a directory inside a Git working tree, otherwise git exits with an error and sourceSnapshot rejects.",
-						"examples": ["/workspace/acme-web", "/home/dev/src/billing-service"]
+						"examples": ["/workspace/acme-web", "/workspace/project/src/billing-service"]
 					}
 				],
 				"outputs": [

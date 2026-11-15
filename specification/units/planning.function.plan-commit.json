@@ -56,13 +56,13 @@
 						"parent": "3f6c1a0d9b2e47c5a8f1d0e3b6a9c2d4e7f80a12",
 						"branch": "main",
 						"commit": "9d2b7e4f1a0c8e6d3b5a7f9c1e2d4b6a8f0c3e5d",
-						"temp": "/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Xk3pQ9"
+						"temp": "/workspace/tmp/planning-index-a"
 					},
 					{
 						"parent": "b71e0c4d82a95f3e6107d2c8b4f9a0e3d5c76b18",
 						"branch": "planning/daily-sync",
 						"commit": "e04a9d2c7f1b6e8350a4d9c2f7b1e6083a5d4c9f",
-						"temp": "/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Qb7mZ2"
+						"temp": "/workspace/tmp/planning-index-b"
 					}
 				]
 			},
@@ -98,8 +98,8 @@
 				"required": true,
 				"description": "Index file path passed as GIT_INDEX_FILE to each update-index call, which records every file as a 100644 entry. planCommit passes temp/next-index, a copy of the real index, so the real index is replaced only later by the rename.",
 				"examples": [
-					"/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Xk3pQ9/next-index",
-					"/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Qb7mZ2/index"
+					"/workspace/tmp/planning-index-a/next-index",
+					"/workspace/tmp/planning-index-b/index"
 				]
 			}
 		],
@@ -167,13 +167,13 @@
 								"parent": "3f6c1a0d9b2e47c5a8f1d0e3b6a9c2d4e7f80a12",
 								"branch": "main",
 								"commit": "9d2b7e4f1a0c8e6d3b5a7f9c1e2d4b6a8f0c3e5d",
-								"temp": "/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Xk3pQ9"
+								"temp": "/workspace/tmp/planning-index-a"
 							},
 							{
 								"parent": "b71e0c4d82a95f3e6107d2c8b4f9a0e3d5c76b18",
 								"branch": "planning/daily-sync",
 								"commit": "e04a9d2c7f1b6e8350a4d9c2f7b1e6083a5d4c9f",
-								"temp": "/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Qb7mZ2"
+								"temp": "/workspace/tmp/planning-index-b"
 							}
 						]
 					}
@@ -259,8 +259,8 @@
 						"required": true,
 						"description": "Index file path passed as GIT_INDEX_FILE to each update-index call, which records every file as a 100644 entry. planCommit passes temp/next-index, a copy of the real index, so the real index is replaced only later by the rename.",
 						"examples": [
-							"/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Xk3pQ9/next-index",
-							"/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Qb7mZ2/index"
+							"/workspace/tmp/planning-index-a/next-index",
+							"/workspace/tmp/planning-index-b/index"
 						]
 					}
 				],

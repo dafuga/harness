@@ -30,13 +30,15 @@
 				"name": "fail.code",
 				"type": "PlanningErrorCode",
 				"required": true,
-				"description": "Planning failure code to attach."
+				"description": "Planning failure code to attach.",
+				"examples": ["artifact-corrupt"]
 			},
 			{
 				"name": "fail.message",
 				"type": "string",
 				"required": true,
-				"description": "Human-readable failure message."
+				"description": "Human-readable failure message.",
+				"examples": ["Invalid artifact JSON"]
 			},
 			{
 				"name": "json.value",
@@ -55,11 +57,12 @@
 			{
 				"name": "planData",
 				"type": "string",
-				"description": "Serialized value with sorted object keys, omitted undefined object properties and preserved array order."
+				"description": "Serialized value with sorted object keys, omitted undefined object properties and preserved array order.",
+				"examples": ["{\"a\":1,\"b\":[true]}"]
 			},
 			{
 				"name": "hash",
-				"type": "unknown",
+				"type": "string",
 				"description": "Lowercase SHA-256 hexadecimal digest."
 			},
 			{
@@ -69,12 +72,12 @@
 			},
 			{
 				"name": "json",
-				"type": "unknown",
+				"type": "string",
 				"description": "Serialized record followed by a newline."
 			},
 			{
 				"name": "now",
-				"type": "unknown",
+				"type": "string",
 				"description": "Current time as an ISO timestamp."
 			},
 			{
@@ -85,7 +88,7 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "Error",
 				"type": "thrown",
 				"description": "parse reports artifact-corrupt for invalid JSON; fail throws the supplied code and message."
 			}
@@ -105,7 +108,8 @@
 					{
 						"name": "planData",
 						"type": "string",
-						"description": "Serialized value with sorted object keys, omitted undefined object properties and preserved array order."
+						"description": "Serialized value with sorted object keys, omitted undefined object properties and preserved array order.",
+						"examples": ["{\"a\":1,\"b\":[true]}"]
 					}
 				],
 				"errors": [],
@@ -124,7 +128,7 @@
 				"outputs": [
 					{
 						"name": "hash",
-						"type": "unknown",
+						"type": "string",
 						"description": "Lowercase SHA-256 hexadecimal digest."
 					}
 				],
@@ -138,13 +142,15 @@
 						"name": "fail.code",
 						"type": "PlanningErrorCode",
 						"required": true,
-						"description": "Planning failure code to attach."
+						"description": "Planning failure code to attach.",
+						"examples": ["artifact-corrupt"]
 					},
 					{
 						"name": "fail.message",
 						"type": "string",
 						"required": true,
-						"description": "Human-readable failure message."
+						"description": "Human-readable failure message.",
+						"examples": ["Invalid artifact JSON"]
 					}
 				],
 				"outputs": [
@@ -170,7 +176,7 @@
 				"outputs": [
 					{
 						"name": "json",
-						"type": "unknown",
+						"type": "string",
 						"description": "Serialized record followed by a newline."
 					}
 				],
@@ -183,7 +189,7 @@
 				"outputs": [
 					{
 						"name": "now",
-						"type": "unknown",
+						"type": "string",
 						"description": "Current time as an ISO timestamp."
 					}
 				],
@@ -209,11 +215,12 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
-						"type": "thrown"
+						"name": "Error",
+						"type": "thrown",
+						"description": "parse replaces any JSON parse failure with an Error whose code is artifact-corrupt, message is Invalid artifact JSON and path is null."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

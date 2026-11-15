@@ -25,8 +25,8 @@
 				"description": "Object that maps each provider to its catalog file: the openai path is read as provider openai and the claude path as provider harness-claude. The files are re-read on every list() call, a missing, unreadable or invalid file contributes no models instead of an error, and the constructor does not check that the paths exist.",
 				"examples": [
 					{
-						"openai": "/Users/example/.codex/models_cache.json",
-						"claude": "/Users/example/.codex/harness-gateway/claude-models.json"
+						"openai": "/workspace/project/.codex/models_cache.json",
+						"claude": "/workspace/project/.codex/harness-gateway/claude-models.json"
 					},
 					{
 						"openai": "/opt/codex-home/models_cache.json",
@@ -132,8 +132,8 @@
 						"description": "Object that maps each provider to its catalog file: the openai path is read as provider openai and the claude path as provider harness-claude. The files are re-read on every list() call, a missing, unreadable or invalid file contributes no models instead of an error, and the constructor does not check that the paths exist.",
 						"examples": [
 							{
-								"openai": "/Users/example/.codex/models_cache.json",
-								"claude": "/Users/example/.codex/harness-gateway/claude-models.json"
+								"openai": "/workspace/project/.codex/models_cache.json",
+								"claude": "/workspace/project/.codex/harness-gateway/claude-models.json"
 							},
 							{
 								"openai": "/opt/codex-home/models_cache.json",

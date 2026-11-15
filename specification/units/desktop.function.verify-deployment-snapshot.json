@@ -40,7 +40,7 @@
 							"expiresAt": "2026-11-15T12:05:00.000Z"
 						},
 						"fingerprint": "8259a49b8a9e05ccc1e9c59a704fd28118d311db9f9bb05ec3ece6103bd80cec",
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11",
+						"root": "/workspace/project",
 						"projectId": null,
 						"target": {
 							"environment": "dev",
@@ -69,9 +69,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root to validate against the reviewed root and inspect for an isolated source checkout. When it differs from reviewed.root, its Git revision must equal plan.commit and its worktree must be clean.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "verifyDeploymentSnapshot.reviewed",
@@ -99,7 +97,7 @@
 							"expiresAt": "2026-11-15T12:05:00.000Z"
 						},
 						"fingerprint": "8259a49b8a9e05ccc1e9c59a704fd28118d311db9f9bb05ec3ece6103bd80cec",
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11",
+						"root": "/workspace/project",
 						"projectId": null,
 						"target": {
 							"environment": "dev",
@@ -215,7 +213,7 @@
 									"expiresAt": "2026-11-15T12:05:00.000Z"
 								},
 								"fingerprint": "8259a49b8a9e05ccc1e9c59a704fd28118d311db9f9bb05ec3ece6103bd80cec",
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11",
+								"root": "/workspace/project",
 								"projectId": null,
 								"target": {
 									"environment": "dev",
@@ -305,9 +303,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root to validate against the reviewed root and inspect for an isolated source checkout. When it differs from reviewed.root, its Git revision must equal plan.commit and its worktree must be clean.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "verifyDeploymentSnapshot.reviewed",
@@ -335,7 +331,7 @@
 									"expiresAt": "2026-11-15T12:05:00.000Z"
 								},
 								"fingerprint": "8259a49b8a9e05ccc1e9c59a704fd28118d311db9f9bb05ec3ece6103bd80cec",
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11",
+								"root": "/workspace/project",
 								"projectId": null,
 								"target": {
 									"environment": "dev",

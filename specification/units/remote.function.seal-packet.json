@@ -114,7 +114,8 @@
 				"errors": [
 					{
 						"name": "SecureFailure",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Any exception while decoding the base64url data, constructing authentication parameters or decrypting is replaced with SecureFailure with reason tag; the original error is not propagated."
 					}
 				],
 				"errorStatus": "unknown"

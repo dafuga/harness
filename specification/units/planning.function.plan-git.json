@@ -36,7 +36,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Filesystem path canonicalized before Git is queried. It must resolve to the repository root itself; a nested directory raises not-a-repository.",
-				"examples": ["/Users/daniel/projects/planning-repo"]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "containing.git",
@@ -163,10 +163,7 @@
 				"name": "paths",
 				"type": "Promise<string[]>",
 				"description": "Repository paths emitted by git ls-tree for the selected revision and pathspec; the array may be empty.",
-				"examples": [
-					["packages/planning/src/utils/planning-collaboration/planGit.ts"],
-					[]
-				]
+				"examples": [["packages/planning/src/utils/planning-collaboration/planGit.ts"], []]
 			},
 			{
 				"name": "blob",
@@ -207,7 +204,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem path canonicalized before Git is queried. It must resolve to the repository root itself; a nested directory raises not-a-repository.",
-						"examples": ["/Users/daniel/projects/planning-repo"]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -332,10 +329,7 @@
 						"name": "paths",
 						"type": "Promise<string[]>",
 						"description": "Repository paths emitted by git ls-tree for the selected revision and pathspec; the array may be empty.",
-						"examples": [
-							["packages/planning/src/utils/planning-collaboration/planGit.ts"],
-							[]
-						]
+						"examples": [["packages/planning/src/utils/planning-collaboration/planGit.ts"], []]
 					}
 				],
 				"errors": [],
