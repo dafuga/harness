@@ -21,24 +21,101 @@
 				"name": "closeLoopAbandoned.input",
 				"type": "CloseLoopInput",
 				"required": true,
-				"description": "Loop directory identity and abandonment reason; root and timestamp provider are optional through LoopInput."
+				"description": "The input gives the loop to abandon as a lowercase kebab-case name (surrounding whitespace is trimmed) that selects specification/loops/<loop>/loop.json, and the abandon reason, which is trimmed, must not be empty, and is stored in closed.reason and the trace event. The optional root defaults to process.cwd(), the optional now defaults to new Date().toISOString() for closed.closedAt and updatedAt, and the loop must be open with at least one pending step.",
+				"examples": [
+					{
+						"loop": "fix-login-redirect",
+						"reason": "Superseded by the session-cookie loop."
+					},
+					{
+						"loop": "add-csv-export",
+						"reason": "Scope dropped after the planning review.",
+						"root": "/workspace/app"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "closeLoopAbandoned",
 				"type": "Promise<LoopStatus>",
-				"description": "Updated loop state and relative trace path after marking an open loop abandoned; step status and evidence remain unchanged."
+				"description": "Resolves to the closed loop state, with closed set to { status: 'abandoned', reason, closedAt } and updatedAt set to the same closedAt, plus tracePath, the trace file path relative to root. Steps, their statuses and their evidence come back unchanged, because only closed and updatedAt change.",
+				"examples": [
+					{
+						"state": {
+							"name": "fix-login-redirect",
+							"goal": "Return users to the page they opened after signing in.",
+							"createdAt": "2026-11-02T09:14:05.221Z",
+							"updatedAt": "2026-11-09T16:40:12.907Z",
+							"steps": [
+								{
+									"id": "spec",
+									"title": "Identify the failing behavior and expected replacement behavior.",
+									"status": "pending"
+								},
+								{
+									"id": "implement",
+									"title": "Patch the defect without broad refactors.",
+									"status": "pending"
+								}
+							],
+							"closed": {
+								"status": "abandoned",
+								"reason": "Superseded by the session-cookie loop.",
+								"closedAt": "2026-11-09T16:40:12.907Z"
+							}
+						},
+						"tracePath": "specification/loops/fix-login-redirect/trace.ndjson"
+					},
+					{
+						"state": {
+							"name": "add-csv-export",
+							"goal": "Let report owners export a filtered report as CSV.",
+							"createdAt": "2026-11-02T14:51:09.035Z",
+							"updatedAt": "2026-11-12T11:03:37.640Z",
+							"steps": [
+								{
+									"id": "spec",
+									"title": "Confirm scope, success criteria, constraints, and proof.",
+									"status": "complete",
+									"completedAt": "2026-11-03T10:22:48.104Z",
+									"evidence": "Scope agreed: filtered rows only, no PDF output."
+								},
+								{
+									"id": "implement",
+									"title": "Implement the smallest complete feature slice.",
+									"status": "pending"
+								}
+							],
+							"closed": {
+								"status": "abandoned",
+								"reason": "Scope dropped after the planning review.",
+								"closedAt": "2026-11-12T11:03:37.640Z"
+							}
+						},
+						"tracePath": "specification/loops/add-csv-export/trace.ndjson"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Loop name/reason validation, missing/invalid state, identity mismatch, already closed, no pending steps."
+				"description": "Thrown by fail() for expected problems, with a message meant for the user: an invalid loop name or empty abandon reason, a missing loop ('Loop does not exist.'), an invalid loop.json ('Invalid loop state: ...'), a state whose name differs from its directory, a loop that is already closed, or a loop with no pending steps."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse when loop.json is not valid JSON; readLoop propagates it unchanged because only a missing file is converted to ExpectedCliError."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Node.js file-system error from reading loop.json (other than ENOENT), writing loop.json or appending trace.ndjson; it is propagated unchanged and is not an ExpectedCliError. loop.json is written before the trace event, so a failed append leaves the loop closed without a loop.closed event."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "closeLoopAbandoned",
@@ -47,21 +124,98 @@
 						"name": "closeLoopAbandoned.input",
 						"type": "CloseLoopInput",
 						"required": true,
-						"description": "Loop directory identity and abandonment reason; root and timestamp provider are optional through LoopInput."
+						"description": "The input gives the loop to abandon as a lowercase kebab-case name (surrounding whitespace is trimmed) that selects specification/loops/<loop>/loop.json, and the abandon reason, which is trimmed, must not be empty, and is stored in closed.reason and the trace event. The optional root defaults to process.cwd(), the optional now defaults to new Date().toISOString() for closed.closedAt and updatedAt, and the loop must be open with at least one pending step.",
+						"examples": [
+							{
+								"loop": "fix-login-redirect",
+								"reason": "Superseded by the session-cookie loop."
+							},
+							{
+								"loop": "add-csv-export",
+								"reason": "Scope dropped after the planning review.",
+								"root": "/workspace/app"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "closeLoopAbandoned",
 						"type": "Promise<LoopStatus>",
-						"description": "Updated loop state and relative trace path after marking an open loop abandoned; step status and evidence remain unchanged."
+						"description": "Resolves to the closed loop state, with closed set to { status: 'abandoned', reason, closedAt } and updatedAt set to the same closedAt, plus tracePath, the trace file path relative to root. Steps, their statuses and their evidence come back unchanged, because only closed and updatedAt change.",
+						"examples": [
+							{
+								"state": {
+									"name": "fix-login-redirect",
+									"goal": "Return users to the page they opened after signing in.",
+									"createdAt": "2026-11-02T09:14:05.221Z",
+									"updatedAt": "2026-11-09T16:40:12.907Z",
+									"steps": [
+										{
+											"id": "spec",
+											"title": "Identify the failing behavior and expected replacement behavior.",
+											"status": "pending"
+										},
+										{
+											"id": "implement",
+											"title": "Patch the defect without broad refactors.",
+											"status": "pending"
+										}
+									],
+									"closed": {
+										"status": "abandoned",
+										"reason": "Superseded by the session-cookie loop.",
+										"closedAt": "2026-11-09T16:40:12.907Z"
+									}
+								},
+								"tracePath": "specification/loops/fix-login-redirect/trace.ndjson"
+							},
+							{
+								"state": {
+									"name": "add-csv-export",
+									"goal": "Let report owners export a filtered report as CSV.",
+									"createdAt": "2026-11-02T14:51:09.035Z",
+									"updatedAt": "2026-11-12T11:03:37.640Z",
+									"steps": [
+										{
+											"id": "spec",
+											"title": "Confirm scope, success criteria, constraints, and proof.",
+											"status": "complete",
+											"completedAt": "2026-11-03T10:22:48.104Z",
+											"evidence": "Scope agreed: filtered rows only, no PDF output."
+										},
+										{
+											"id": "implement",
+											"title": "Implement the smallest complete feature slice.",
+											"status": "pending"
+										}
+									],
+									"closed": {
+										"status": "abandoned",
+										"reason": "Scope dropped after the planning review.",
+										"closedAt": "2026-11-12T11:03:37.640Z"
+									}
+								},
+								"tracePath": "specification/loops/add-csv-export/trace.ndjson"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Loop name/reason validation, missing/invalid state, identity mismatch, already closed, no pending steps."
+						"description": "Thrown by fail() for expected problems, with a message meant for the user: an invalid loop name or empty abandon reason, a missing loop ('Loop does not exist.'), an invalid loop.json ('Invalid loop state: ...'), a state whose name differs from its directory, a loop that is already closed, or a loop with no pending steps."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when loop.json is not valid JSON; readLoop propagates it unchanged because only a missing file is converted to ExpectedCliError."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Node.js file-system error from reading loop.json (other than ENOENT), writing loop.json or appending trace.ndjson; it is propagated unchanged and is not an ExpectedCliError. loop.json is written before the trace event, so a failed append leaves the loop closed without a loop.closed event."
 					}
 				],
 				"errorStatus": "declared"
