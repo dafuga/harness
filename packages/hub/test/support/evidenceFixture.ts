@@ -8,7 +8,7 @@ import type {
 import { artifactQuery, type EvidenceSide } from '../../../desktop/src/utils/artifactQuery';
 import { mediaFile } from '../../../reports/src/utils/harnessEvidence';
 import { HubApiController } from '../../src/controllers/hub-api-controller/HubApiController';
-import { HubProjectionService } from '../../src/services/hub-projection-service/HubProjectionService';
+import { HubProjectionService } from '../../src/routes/api/[...path]/hub-projection-service/HubProjectionService';
 import { hubCache } from '../../src/routes/api/[...path]/hubCache';
 import { hubSource } from '../../src/utils/hubSource';
 import { fakeGit, gitSource } from './evidenceGit';

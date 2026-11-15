@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/routes/api/[...path]/hub-projection-service/hubPng.ts",
-			"packages/hub/src/services/hub-projection-service/hubPng.ts",
 			"packages/hub/src/utils/hubPng.ts"
 		],
-		"symbols": ["hubPng", "hubPng", "hubPng"]
+		"symbols": ["hubPng", "hubPng"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -10,8 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
-			"packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.types.ts",
-			"packages/hub/src/services/hub-projection-service/HubProjectionService.ts"
+			"packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.types.ts"
 		],
 		"symbols": [
 			"HubProjectionService",
@@ -25,8 +24,7 @@
 			"HubProjectionService.source",
 			"HubProjectionService.image",
 			"HubProjectionService.messages",
-			"Dependencies",
-			"HubProjectionService"
+			"Dependencies"
 		]
 	},
 	"contract": {
