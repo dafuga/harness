@@ -18,41 +18,73 @@
 				"name": "runSteps.steps",
 				"type": "readonly string[]",
 				"required": true,
-				"description": "Ordered check names to run sequentially."
+				"description": "The step names to process in the supplied order; each is run sequentially and processing stops at the first nonzero result. An empty list returns 0 without invoking run.",
+				"examples": [
+					["typecheck", "lint"]
+				]
 			},
 			{
 				"name": "runSteps.run",
 				"type": "(name: string) => Promise<number>",
 				"required": true,
-				"description": "Async callback that runs one named step and returns its exit status."
+				"description": "The callback invoked once for each step name, in order, and expected to resolve to that step's numeric status. A thrown error or rejection is converted to status 1."
 			},
 			{
 				"name": "runSteps.report",
 				"type": "(line: string) => void",
 				"required": false,
-				"description": "Optional line reporter; defaults to console.log and receives start and completion timing messages."
+				"description": "The reporter receives a start line and a completion line with elapsed milliseconds for each attempted step. Defaults to console.log; a thrown reporter error rejects runSteps."
 			}
 		],
 		"outputs": [
 			{
 				"name": "checkSteps",
 				"type": "string[]",
-				"description": "Ordered list of the existing broad-check script names."
+				"description": "The fixed list of broad-check script names exported by the module, in the declared order. The CLI passes all 24 names to runSteps sequentially.",
+				"examples": [
+					[
+						"check:verification-forwards",
+						"check:debt-ratchets",
+						"check:e2e-list",
+						"check:doc-links",
+						"check:feature-status",
+						"format:check",
+						"typecheck",
+						"lint",
+						"check:kernel",
+						"build:kernel",
+						"test:unit",
+						"test:e2e",
+						"build",
+						"test:package",
+						"audit:root",
+						"units:check",
+						"check:reports-source",
+						"check:planning",
+						"check:desktop",
+						"check:collaboration",
+						"check:hub",
+						"check:remote",
+						"check:relay",
+						"check:game"
+					]
+				]
 			},
 			{
 				"name": "runSteps",
 				"type": "Promise<number>",
-				"description": "Exit status of the first failing step, or 0 after every step passes."
+				"description": "Resolves to 0 when every supplied step succeeds, or to the first nonzero status and stops there. A thrown report callback rejects the promise.",
+				"examples": [0, 1, 2]
 			}
 		],
 		"errors": [
 			{
 				"name": "Check runner callback or launcher failure",
 				"type": "thrown",
-				"description": "A throwing report callback is not caught and can reject runSteps; CLI spawn or package-script failures may also reject."
+				"description": "A throw from report is uncaught and rejects runSteps; throws or rejections from run are caught and converted to status 1."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "runSteps",
@@ -61,33 +93,37 @@
 						"name": "runSteps.steps",
 						"type": "readonly string[]",
 						"required": true,
-						"description": "Ordered check names to run sequentially."
+						"description": "The step names to process in the supplied order; each is run sequentially and processing stops at the first nonzero result. An empty list returns 0 without invoking run.",
+						"examples": [
+							["typecheck", "lint"]
+						]
 					},
 					{
 						"name": "runSteps.run",
 						"type": "(name: string) => Promise<number>",
 						"required": true,
-						"description": "Async callback that runs one named step and returns its exit status."
+						"description": "The callback invoked once for each step name, in order, and expected to resolve to that step's numeric status. A thrown error or rejection is converted to status 1."
 					},
 					{
 						"name": "runSteps.report",
 						"type": "(line: string) => void",
 						"required": false,
-						"description": "Optional line reporter; defaults to console.log and receives start and completion timing messages."
+						"description": "The reporter receives a start line and a completion line with elapsed milliseconds for each attempted step. Defaults to console.log; a thrown reporter error rejects runSteps."
 					}
 				],
 				"outputs": [
 					{
 						"name": "runSteps",
 						"type": "Promise<number>",
-						"description": "Exit status of the first failing step, or 0 after every step passes."
+						"description": "Resolves to 0 when every supplied step succeeds, or to the first nonzero status and stops there. A thrown report callback rejects the promise.",
+						"examples": [0, 1, 2]
 					}
 				],
 				"errors": [
 					{
 						"name": "Check runner callback or launcher failure",
 						"type": "thrown",
-						"description": "A throwing report callback propagates; exceptions from the run callback are converted to exit status 1."
+						"description": "A throw or rejection from run is caught and converted to status 1; a throw from report is uncaught and rejects runSteps."
 					}
 				],
 				"errorStatus": "declared"
