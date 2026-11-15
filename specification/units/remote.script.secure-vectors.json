@@ -12,11 +12,17 @@
 		"symbols": []
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "An Error whose code property holds the system error code (for example EACCES), thrown by mkdirSync('test/support', { recursive: true }) when that directory cannot be created or by writeFileSync('test/support/secure-vectors.json', ...) when the file cannot be written; both paths are relative to the current working directory. Nothing in the script catches it, so the run stops at the failed call."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
