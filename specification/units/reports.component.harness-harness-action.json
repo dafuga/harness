@@ -27,69 +27,75 @@
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional address. Nonempty and enabled renders an anchor; otherwise a button. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "Optional address passed as the href of the rendered link. A nonempty href with disabled false renders an hx-a link, while an empty or omitted href, or disabled set to true, renders an hx-button instead.",
+				"examples": ["/reports/explorer/index.html", "https://example.com/reports/summary"]
 			},
 			{
 				"name": "HarnessAction.onclick",
 				"type": "(event: MouseEvent) => void",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional handler. For links, only plain clicks are intercepted; other clicks remain native. Buttons invoke it directly if supplied. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "Optional click handler that receives the MouseEvent; on a link it runs only for a plain click, with preventDefault called first, and a click with a modifier or with another mouse button is left to the browser. On a button it is called for each click the button receives."
 			},
 			{
 				"name": "HarnessAction.disabled",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional flag, false by default. True renders a disabled button even when href exists."
+				"description": "Defaults to false. When true, the action renders as a disabled hx-button even if href is set, so no link is rendered.",
+				"examples": [false, true]
 			},
 			{
 				"name": "HarnessAction.tone",
 				"type": "'gold' | 'plain'",
 				"required": false,
 				"default": "gold",
-				"description": "Optional gold or plain styling, default gold."
+				"description": "Defaults to gold. The chosen value is added as a class beside hx-action to select the gold or plain styling, and the styles for those classes are not defined in this file.",
+				"examples": ["gold", "plain"]
 			},
 			{
 				"name": "HarnessAction.icon",
 				"type": "HarnessIconName",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional trailing icon. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "Optional trailing icon, drawn after the children content at size 18. Its value is a HarnessIconName, one of the keys of harnessIcons; when undefined, no trailing icon is rendered.",
+				"examples": ["arrow-right", "external", "chevron-right"]
 			},
 			{
 				"name": "HarnessAction.lead",
 				"type": "HarnessIconName",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional leading icon. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "Optional leading icon, drawn before the children content at size 18. Its value is a HarnessIconName, one of the keys of harnessIcons; when undefined, no leading icon is rendered.",
+				"examples": ["search", "file", "list"]
 			},
 			{
 				"name": "HarnessAction.label",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional fuller accessible name. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "Optional fuller accessible name, set as the aria-label of the rendered link or button. When undefined, the component sets no aria-label.",
+				"examples": ["Open the full explorer report", "Show every unit in this group"]
 			},
 			{
 				"name": "HarnessAction.children",
 				"type": "Snippet",
 				"required": true,
-				"description": "Required visible action content."
+				"description": "Required visible content of the action, rendered between the optional lead and icon. It is a Svelte Snippet that the component renders with the @render tag."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessAction",
 				"type": "markup",
-				"description": "Styled action with leading/trailing icons at size 18. Complete caller content wraps within the available width. Buttons have type button. Handler failures are not caught. States: trailing-icon: The action shows its icon after the text without a leading icon. long: The complete long action label wraps within the available control width. focused: The action retains its visible keyboard-focus treatment. gold: The action uses the gold treatment while retaining normal enabled-link or button behavior."
+				"description": "The rendered action element is an hx-a link when href is nonempty and disabled is false, otherwise an hx-button with type button and its disabled flag, and it carries the hx-action class plus the tone class. It holds the optional lead icon, the children content and the optional icon, with both icons at size 18; it wraps long content within the control (max-width 100%, white-space normal, overflow-wrap anywhere), sets no focus-specific styling, and does not catch handler errors."
 			}
 		],
 		"errors": [
 			{
 				"name": "Caller callback or content error",
 				"type": "propagated",
-				"description": "Errors from supplied onclick, children callbacks or snippets propagate when invoked; this component does not provide an error boundary."
+				"description": "The component contains no throw or catch of its own; errors thrown by the supplied onclick handler or by the children snippet pass through it uncaught, since it has no error boundary. For a link, preventDefault is called before the handler runs, so the default link action is canceled even when the handler throws."
 			}
 		],
 		"errorStatus": "declared",
