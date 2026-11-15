@@ -17,6 +17,7 @@ test('flag stores an exact version-bound extracted frame in Git evidence and LFS
 	await withTempRepo(async ({ root, git }) => {
 		const f = await frameFlagFixture(root, git),
 			service = new FrameFlagService(root, f.reader);
+		const sourceTree = git('write-tree');
 		const flag = await measureWorkload(
 			'service.verification-evidence-frame-flag',
 			'flag-extract-persist',
@@ -49,6 +50,8 @@ test('flag stores an exact version-bound extracted frame in Git evidence and LFS
 			))!.toString()
 		).toContain('git-lfs.github.com/spec/v1');
 		expect(git('status', '--porcelain')).toBe('');
+		expect(git('rev-parse', 'HEAD')).toBe(f.reference.revision);
+		expect(git('write-tree')).toBe(sourceTree);
 	});
 });
 
