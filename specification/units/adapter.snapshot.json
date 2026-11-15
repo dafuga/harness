@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/adapters/snapshot-adapter/SnapshotAdapter.ts",
 			"src/adapters/verification-evidence/snapshot-adapter/SnapshotAdapter.ts",
 			"src/adapters/verification-evidence/snapshot-adapter/SnapshotAdapter.types.ts"
 		],
 		"symbols": [
-			"SnapshotAdapter",
 			"SnapshotAdapter",
 			"SnapshotAdapter.create",
 			"SnapshotAdapter.link",
