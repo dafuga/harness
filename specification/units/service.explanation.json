@@ -22,42 +22,345 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ExplanationService.report.required",
 				"type": "RequiredReason[]",
-				"required": true
+				"required": true,
+				"description": "The changes that need a reason, each with its unit, symbol, optional file, change kind and the content fingerprints it goes from and to, which are null where there is no earlier or later content. A requirement is explained when a chain of recorded reasons for exactly the same unit, symbol and file leads from its from to its to; otherwise it is stale when a recorded reason for that subject starts at its from, and missing when none does.",
+				"examples": [
+					[
+						{
+							"unit": "service.explanation",
+							"symbol": "ExplanationService.report",
+							"file": "src/services/development-tooling/ExplanationService.ts",
+							"change": "modified",
+							"from": "5e7a2c91b0d4f836",
+							"to": "b3f0a8d6e2c17495"
+						},
+						{
+							"unit": "service.explanation",
+							"symbol": "describe",
+							"file": "src/services/development-tooling/ExplanationService.ts",
+							"change": "added",
+							"from": null,
+							"to": "7d2e9b04c1f6a853"
+						}
+					],
+					[
+						{
+							"unit": "service.explanation",
+							"symbol": "entryKey",
+							"file": "src/services/development-tooling/ExplanationService.ts",
+							"change": "removed",
+							"from": "c04e8b1d6a93f27e",
+							"to": null
+						}
+					]
+				]
 			},
 			{
 				"name": "ExplanationService.report.explanations",
 				"type": "Explanation[]",
-				"required": true
+				"required": true,
+				"description": "The recorded reasons to match against the requirements, in the order given; where several reasons leave the same content, the one given last is used for that step. The service reads only the unit, symbol, file, from, to, behavior and both attempt texts; the change, outcome and recordedAt values are passed through unchanged.",
+				"examples": [
+					[
+						{
+							"unit": "service.explanation",
+							"symbol": "describe",
+							"file": "src/services/development-tooling/ExplanationService.ts",
+							"change": "added",
+							"from": null,
+							"to": "7d2e9b04c1f6a853",
+							"behavior": "Adds the describe function that names a requirement's change and state in one line.",
+							"simplification": {
+								"attempt": "Tried a shared helper for the status text; no shorter.",
+								"outcome": "not-improved"
+							},
+							"performance": {
+								"attempt": "Nothing applies; the function only formats one line.",
+								"outcome": "not-applicable"
+							},
+							"recordedAt": "2026-11-13T10:12:08.447Z"
+						},
+						{
+							"unit": "service.explanation",
+							"symbol": "ExplanationService.report",
+							"file": "src/services/development-tooling/ExplanationService.ts",
+							"change": "modified",
+							"from": "5e7a2c91b0d4f836",
+							"to": "0c8d41e7f9a2b356",
+							"behavior": "Marks a requirement stale when a reason starts at its from but does not reach its to.",
+							"simplification": {
+								"attempt": "Merged two loops into one pass; the code was not shorter.",
+								"outcome": "not-improved"
+							},
+							"performance": {
+								"attempt": "Nothing applies; the list is short and the search runs once per change.",
+								"outcome": "not-applicable"
+							},
+							"recordedAt": "2026-11-14T16:05:42.901Z"
+						},
+						{
+							"unit": "service.explanation",
+							"symbol": "ExplanationService.report",
+							"file": "src/services/development-tooling/ExplanationService.ts",
+							"change": "modified",
+							"from": "0c8d41e7f9a2b356",
+							"to": "b3f0a8d6e2c17495",
+							"behavior": "Lists a long reason under failures only when the report declares a writing version.",
+							"simplification": {
+								"attempt": "Kept the reversed copy; an index walk read no simpler.",
+								"outcome": "not-improved"
+							},
+							"performance": {
+								"attempt": "Nothing applies: the chain search is one pass per requirement over a short list.",
+								"outcome": "not-applicable"
+							},
+							"recordedAt": "2026-11-15T08:37:19.264Z"
+						}
+					],
+					[
+						{
+							"unit": "service.explanation",
+							"symbol": "entryKey",
+							"file": "src/services/development-tooling/ExplanationService.ts",
+							"change": "removed",
+							"from": "c04e8b1d6a93f27e",
+							"to": null,
+							"behavior": "Removes entryKey, which the subject match no longer needs.",
+							"simplification": {
+								"attempt": "Tried one filter on unit, symbol and file; it was simpler.",
+								"outcome": "improved"
+							},
+							"performance": {
+								"attempt": "Nothing applies; the match runs once per requirement.",
+								"outcome": "not-applicable"
+							},
+							"recordedAt": "2026-11-15T09:02:51.118Z"
+						}
+					]
+				]
 			},
 			{
 				"name": "ExplanationService.report.writing",
 				"type": "WritingVersion | null",
 				"required": false,
-				"default": null
+				"default": null,
+				"description": "The version of the writing limits that the revision these changes lead to declares, or null when it declares none; overlong and the writing-limit problems in failures are judged under that version. Defaults to null, which lists no writing-limit problem in failures, while overlong is judged under writingVersions[0], which is version 1.",
+				"examples": [2, 1, null]
 			},
 			{
 				"name": "describe.status",
 				"type": "ReasonStatus",
-				"required": true
+				"required": true,
+				"description": "The requirement to describe, with its unit, symbol (where '*' names the whole unit), optional file, change kind, fingerprints and state, which is explained, missing or stale. A stale state ends the message with 'after its reason was written', and any other state, including explained, ends it with 'without a reason'.",
+				"examples": [
+					{
+						"unit": "service.explanation",
+						"symbol": "ExplanationService.report",
+						"file": "src/services/development-tooling/ExplanationService.ts",
+						"change": "modified",
+						"from": "5e7a2c91b0d4f836",
+						"to": "b3f0a8d6e2c17495",
+						"state": "stale"
+					},
+					{
+						"unit": "service.explanation",
+						"symbol": "describe",
+						"file": "src/services/development-tooling/ExplanationService.ts",
+						"change": "added",
+						"from": null,
+						"to": "7d2e9b04c1f6a853",
+						"state": "missing"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplanationService.report",
-				"type": "ReasonReport"
+				"type": "ReasonReport",
+				"description": "The result of one check: each requirement with its state, the reasons that satisfy them in requirement order, the requirements with an overlong reason, and the failure messages. Failures lists the describe message of each requirement that is not explained, then each writing-limit problem of a used reason under the writing version given; when writing is null it lists no writing-limit problem.",
+				"examples": [
+					{
+						"required": [
+							{
+								"unit": "service.explanation",
+								"symbol": "ExplanationService.report",
+								"file": "src/services/development-tooling/ExplanationService.ts",
+								"change": "modified",
+								"from": "5e7a2c91b0d4f836",
+								"to": "b3f0a8d6e2c17495",
+								"state": "explained"
+							},
+							{
+								"unit": "service.explanation",
+								"symbol": "describe",
+								"file": "src/services/development-tooling/ExplanationService.ts",
+								"change": "added",
+								"from": null,
+								"to": "7d2e9b04c1f6a853",
+								"state": "explained"
+							}
+						],
+						"entries": [
+							{
+								"unit": "service.explanation",
+								"symbol": "ExplanationService.report",
+								"file": "src/services/development-tooling/ExplanationService.ts",
+								"change": "modified",
+								"from": "5e7a2c91b0d4f836",
+								"to": "0c8d41e7f9a2b356",
+								"behavior": "Marks a requirement stale when a reason starts at its from but does not reach its to.",
+								"simplification": {
+									"attempt": "Merged two loops into one pass; the code was not shorter.",
+									"outcome": "not-improved"
+								},
+								"performance": {
+									"attempt": "Nothing applies; the list is short and the search runs once per change.",
+									"outcome": "not-applicable"
+								},
+								"recordedAt": "2026-11-14T16:05:42.901Z"
+							},
+							{
+								"unit": "service.explanation",
+								"symbol": "ExplanationService.report",
+								"file": "src/services/development-tooling/ExplanationService.ts",
+								"change": "modified",
+								"from": "0c8d41e7f9a2b356",
+								"to": "b3f0a8d6e2c17495",
+								"behavior": "Lists a long reason under failures only when the report declares a writing version.",
+								"simplification": {
+									"attempt": "Kept the reversed copy; an index walk read no simpler.",
+									"outcome": "not-improved"
+								},
+								"performance": {
+									"attempt": "Nothing applies: the chain search is one pass per requirement over a short list.",
+									"outcome": "not-applicable"
+								},
+								"recordedAt": "2026-11-15T08:37:19.264Z"
+							},
+							{
+								"unit": "service.explanation",
+								"symbol": "describe",
+								"file": "src/services/development-tooling/ExplanationService.ts",
+								"change": "added",
+								"from": null,
+								"to": "7d2e9b04c1f6a853",
+								"behavior": "Adds the describe function that names a requirement's change and state in one line.",
+								"simplification": {
+									"attempt": "Tried a shared helper for the status text; no shorter.",
+									"outcome": "not-improved"
+								},
+								"performance": {
+									"attempt": "Nothing applies; the function only formats one line.",
+									"outcome": "not-applicable"
+								},
+								"recordedAt": "2026-11-13T10:12:08.447Z"
+							}
+						],
+						"overlong": [],
+						"failures": []
+					},
+					{
+						"required": [
+							{
+								"unit": "service.explanation",
+								"symbol": "describe",
+								"file": "src/services/development-tooling/ExplanationService.ts",
+								"change": "added",
+								"from": null,
+								"to": "7d2e9b04c1f6a853",
+								"state": "missing"
+							}
+						],
+						"entries": [],
+						"overlong": [],
+						"failures": [
+							"service.explanation: describe in src/services/development-tooling/ExplanationService.ts was added without a reason"
+						]
+					},
+					{
+						"required": [
+							{
+								"unit": "service.explanation",
+								"symbol": "ExplanationService.report",
+								"file": "src/services/development-tooling/ExplanationService.ts",
+								"change": "modified",
+								"from": "5e7a2c91b0d4f836",
+								"to": "b3f0a8d6e2c17495",
+								"state": "explained"
+							}
+						],
+						"entries": [
+							{
+								"unit": "service.explanation",
+								"symbol": "ExplanationService.report",
+								"file": "src/services/development-tooling/ExplanationService.ts",
+								"change": "modified",
+								"from": "5e7a2c91b0d4f836",
+								"to": "0c8d41e7f9a2b356",
+								"behavior": "Marks a requirement stale when a reason starts at its from but does not reach its to.",
+								"simplification": {
+									"attempt": "Merged two loops into one pass; the code was not shorter.",
+									"outcome": "not-improved"
+								},
+								"performance": {
+									"attempt": "Nothing applies; the list is short and the search runs once per change.",
+									"outcome": "not-applicable"
+								},
+								"recordedAt": "2026-11-14T16:05:42.901Z"
+							},
+							{
+								"unit": "service.explanation",
+								"symbol": "ExplanationService.report",
+								"file": "src/services/development-tooling/ExplanationService.ts",
+								"change": "modified",
+								"from": "0c8d41e7f9a2b356",
+								"to": "b3f0a8d6e2c17495",
+								"behavior": "Lists a long reason under failures only when the report declares a writing version.",
+								"simplification": {
+									"attempt": "Replaced the reversed copy with an index walk, keeping the same order and one less array.",
+									"outcome": "improved"
+								},
+								"performance": {
+									"attempt": "Nothing applies: the chain search is one pass per requirement over a short list.",
+									"outcome": "not-applicable"
+								},
+								"recordedAt": "2026-11-14T11:20:03.772Z"
+							}
+						],
+						"overlong": [
+							{
+								"unit": "service.explanation",
+								"symbol": "ExplanationService.report",
+								"file": "src/services/development-tooling/ExplanationService.ts",
+								"change": "modified",
+								"from": "5e7a2c91b0d4f836",
+								"to": "b3f0a8d6e2c17495"
+							}
+						],
+						"failures": [
+							"service.explanation ExplanationService.report: simplification attempt has 16 words; the limit is 15."
+						]
+					}
+				]
 			},
 			{
 				"name": "describe",
-				"type": "string"
+				"type": "string",
+				"description": "The one-line message for one requirement: its unit, then its symbol with its file when it has one (or 'the unit' alone when the symbol is '*'), then its change kind and the ending its state gives. ExplanationService.report adds this message to failures for each requirement that is not explained.",
+				"examples": [
+					"service.explanation: ExplanationService.report in src/services/development-tooling/ExplanationService.ts was modified after its reason was written",
+					"service.explanation: describe in src/services/development-tooling/ExplanationService.ts was added without a reason"
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "ExplanationService.report",
@@ -65,28 +368,305 @@
 					{
 						"name": "ExplanationService.report.required",
 						"type": "RequiredReason[]",
-						"required": true
+						"required": true,
+						"description": "The changes that need a reason, each with its unit, symbol, optional file, change kind and the content fingerprints it goes from and to, which are null where there is no earlier or later content. A requirement is explained when a chain of recorded reasons for exactly the same unit, symbol and file leads from its from to its to; otherwise it is stale when a recorded reason for that subject starts at its from, and missing when none does.",
+						"examples": [
+							[
+								{
+									"unit": "service.explanation",
+									"symbol": "ExplanationService.report",
+									"file": "src/services/development-tooling/ExplanationService.ts",
+									"change": "modified",
+									"from": "5e7a2c91b0d4f836",
+									"to": "b3f0a8d6e2c17495"
+								},
+								{
+									"unit": "service.explanation",
+									"symbol": "describe",
+									"file": "src/services/development-tooling/ExplanationService.ts",
+									"change": "added",
+									"from": null,
+									"to": "7d2e9b04c1f6a853"
+								}
+							],
+							[
+								{
+									"unit": "service.explanation",
+									"symbol": "entryKey",
+									"file": "src/services/development-tooling/ExplanationService.ts",
+									"change": "removed",
+									"from": "c04e8b1d6a93f27e",
+									"to": null
+								}
+							]
+						]
 					},
 					{
 						"name": "ExplanationService.report.explanations",
 						"type": "Explanation[]",
-						"required": true
+						"required": true,
+						"description": "The recorded reasons to match against the requirements, in the order given; where several reasons leave the same content, the one given last is used for that step. The service reads only the unit, symbol, file, from, to, behavior and both attempt texts; the change, outcome and recordedAt values are passed through unchanged.",
+						"examples": [
+							[
+								{
+									"unit": "service.explanation",
+									"symbol": "describe",
+									"file": "src/services/development-tooling/ExplanationService.ts",
+									"change": "added",
+									"from": null,
+									"to": "7d2e9b04c1f6a853",
+									"behavior": "Adds the describe function that names a requirement's change and state in one line.",
+									"simplification": {
+										"attempt": "Tried a shared helper for the status text; no shorter.",
+										"outcome": "not-improved"
+									},
+									"performance": {
+										"attempt": "Nothing applies; the function only formats one line.",
+										"outcome": "not-applicable"
+									},
+									"recordedAt": "2026-11-13T10:12:08.447Z"
+								},
+								{
+									"unit": "service.explanation",
+									"symbol": "ExplanationService.report",
+									"file": "src/services/development-tooling/ExplanationService.ts",
+									"change": "modified",
+									"from": "5e7a2c91b0d4f836",
+									"to": "0c8d41e7f9a2b356",
+									"behavior": "Marks a requirement stale when a reason starts at its from but does not reach its to.",
+									"simplification": {
+										"attempt": "Merged two loops into one pass; the code was not shorter.",
+										"outcome": "not-improved"
+									},
+									"performance": {
+										"attempt": "Nothing applies; the list is short and the search runs once per change.",
+										"outcome": "not-applicable"
+									},
+									"recordedAt": "2026-11-14T16:05:42.901Z"
+								},
+								{
+									"unit": "service.explanation",
+									"symbol": "ExplanationService.report",
+									"file": "src/services/development-tooling/ExplanationService.ts",
+									"change": "modified",
+									"from": "0c8d41e7f9a2b356",
+									"to": "b3f0a8d6e2c17495",
+									"behavior": "Lists a long reason under failures only when the report declares a writing version.",
+									"simplification": {
+										"attempt": "Kept the reversed copy; an index walk read no simpler.",
+										"outcome": "not-improved"
+									},
+									"performance": {
+										"attempt": "Nothing applies: the chain search is one pass per requirement over a short list.",
+										"outcome": "not-applicable"
+									},
+									"recordedAt": "2026-11-15T08:37:19.264Z"
+								}
+							],
+							[
+								{
+									"unit": "service.explanation",
+									"symbol": "entryKey",
+									"file": "src/services/development-tooling/ExplanationService.ts",
+									"change": "removed",
+									"from": "c04e8b1d6a93f27e",
+									"to": null,
+									"behavior": "Removes entryKey, which the subject match no longer needs.",
+									"simplification": {
+										"attempt": "Tried one filter on unit, symbol and file; it was simpler.",
+										"outcome": "improved"
+									},
+									"performance": {
+										"attempt": "Nothing applies; the match runs once per requirement.",
+										"outcome": "not-applicable"
+									},
+									"recordedAt": "2026-11-15T09:02:51.118Z"
+								}
+							]
+						]
 					},
 					{
 						"name": "ExplanationService.report.writing",
 						"type": "WritingVersion | null",
 						"required": false,
-						"default": null
+						"default": null,
+						"description": "The version of the writing limits that the revision these changes lead to declares, or null when it declares none; overlong and the writing-limit problems in failures are judged under that version. Defaults to null, which lists no writing-limit problem in failures, while overlong is judged under writingVersions[0], which is version 1.",
+						"examples": [2, 1, null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ExplanationService.report",
-						"type": "ReasonReport"
+						"type": "ReasonReport",
+						"description": "The result of one check: each requirement with its state, the reasons that satisfy them in requirement order, the requirements with an overlong reason, and the failure messages. Failures lists the describe message of each requirement that is not explained, then each writing-limit problem of a used reason under the writing version given; when writing is null it lists no writing-limit problem.",
+						"examples": [
+							{
+								"required": [
+									{
+										"unit": "service.explanation",
+										"symbol": "ExplanationService.report",
+										"file": "src/services/development-tooling/ExplanationService.ts",
+										"change": "modified",
+										"from": "5e7a2c91b0d4f836",
+										"to": "b3f0a8d6e2c17495",
+										"state": "explained"
+									},
+									{
+										"unit": "service.explanation",
+										"symbol": "describe",
+										"file": "src/services/development-tooling/ExplanationService.ts",
+										"change": "added",
+										"from": null,
+										"to": "7d2e9b04c1f6a853",
+										"state": "explained"
+									}
+								],
+								"entries": [
+									{
+										"unit": "service.explanation",
+										"symbol": "ExplanationService.report",
+										"file": "src/services/development-tooling/ExplanationService.ts",
+										"change": "modified",
+										"from": "5e7a2c91b0d4f836",
+										"to": "0c8d41e7f9a2b356",
+										"behavior": "Marks a requirement stale when a reason starts at its from but does not reach its to.",
+										"simplification": {
+											"attempt": "Merged two loops into one pass; the code was not shorter.",
+											"outcome": "not-improved"
+										},
+										"performance": {
+											"attempt": "Nothing applies; the list is short and the search runs once per change.",
+											"outcome": "not-applicable"
+										},
+										"recordedAt": "2026-11-14T16:05:42.901Z"
+									},
+									{
+										"unit": "service.explanation",
+										"symbol": "ExplanationService.report",
+										"file": "src/services/development-tooling/ExplanationService.ts",
+										"change": "modified",
+										"from": "0c8d41e7f9a2b356",
+										"to": "b3f0a8d6e2c17495",
+										"behavior": "Lists a long reason under failures only when the report declares a writing version.",
+										"simplification": {
+											"attempt": "Kept the reversed copy; an index walk read no simpler.",
+											"outcome": "not-improved"
+										},
+										"performance": {
+											"attempt": "Nothing applies: the chain search is one pass per requirement over a short list.",
+											"outcome": "not-applicable"
+										},
+										"recordedAt": "2026-11-15T08:37:19.264Z"
+									},
+									{
+										"unit": "service.explanation",
+										"symbol": "describe",
+										"file": "src/services/development-tooling/ExplanationService.ts",
+										"change": "added",
+										"from": null,
+										"to": "7d2e9b04c1f6a853",
+										"behavior": "Adds the describe function that names a requirement's change and state in one line.",
+										"simplification": {
+											"attempt": "Tried a shared helper for the status text; no shorter.",
+											"outcome": "not-improved"
+										},
+										"performance": {
+											"attempt": "Nothing applies; the function only formats one line.",
+											"outcome": "not-applicable"
+										},
+										"recordedAt": "2026-11-13T10:12:08.447Z"
+									}
+								],
+								"overlong": [],
+								"failures": []
+							},
+							{
+								"required": [
+									{
+										"unit": "service.explanation",
+										"symbol": "describe",
+										"file": "src/services/development-tooling/ExplanationService.ts",
+										"change": "added",
+										"from": null,
+										"to": "7d2e9b04c1f6a853",
+										"state": "missing"
+									}
+								],
+								"entries": [],
+								"overlong": [],
+								"failures": [
+									"service.explanation: describe in src/services/development-tooling/ExplanationService.ts was added without a reason"
+								]
+							},
+							{
+								"required": [
+									{
+										"unit": "service.explanation",
+										"symbol": "ExplanationService.report",
+										"file": "src/services/development-tooling/ExplanationService.ts",
+										"change": "modified",
+										"from": "5e7a2c91b0d4f836",
+										"to": "b3f0a8d6e2c17495",
+										"state": "explained"
+									}
+								],
+								"entries": [
+									{
+										"unit": "service.explanation",
+										"symbol": "ExplanationService.report",
+										"file": "src/services/development-tooling/ExplanationService.ts",
+										"change": "modified",
+										"from": "5e7a2c91b0d4f836",
+										"to": "0c8d41e7f9a2b356",
+										"behavior": "Marks a requirement stale when a reason starts at its from but does not reach its to.",
+										"simplification": {
+											"attempt": "Merged two loops into one pass; the code was not shorter.",
+											"outcome": "not-improved"
+										},
+										"performance": {
+											"attempt": "Nothing applies; the list is short and the search runs once per change.",
+											"outcome": "not-applicable"
+										},
+										"recordedAt": "2026-11-14T16:05:42.901Z"
+									},
+									{
+										"unit": "service.explanation",
+										"symbol": "ExplanationService.report",
+										"file": "src/services/development-tooling/ExplanationService.ts",
+										"change": "modified",
+										"from": "0c8d41e7f9a2b356",
+										"to": "b3f0a8d6e2c17495",
+										"behavior": "Lists a long reason under failures only when the report declares a writing version.",
+										"simplification": {
+											"attempt": "Replaced the reversed copy with an index walk, keeping the same order and one less array.",
+											"outcome": "improved"
+										},
+										"performance": {
+											"attempt": "Nothing applies: the chain search is one pass per requirement over a short list.",
+											"outcome": "not-applicable"
+										},
+										"recordedAt": "2026-11-14T11:20:03.772Z"
+									}
+								],
+								"overlong": [
+									{
+										"unit": "service.explanation",
+										"symbol": "ExplanationService.report",
+										"file": "src/services/development-tooling/ExplanationService.ts",
+										"change": "modified",
+										"from": "5e7a2c91b0d4f836",
+										"to": "b3f0a8d6e2c17495"
+									}
+								],
+								"failures": [
+									"service.explanation ExplanationService.report: simplification attempt has 16 words; the limit is 15."
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "describe",
@@ -94,17 +674,43 @@
 					{
 						"name": "describe.status",
 						"type": "ReasonStatus",
-						"required": true
+						"required": true,
+						"description": "The requirement to describe, with its unit, symbol (where '*' names the whole unit), optional file, change kind, fingerprints and state, which is explained, missing or stale. A stale state ends the message with 'after its reason was written', and any other state, including explained, ends it with 'without a reason'.",
+						"examples": [
+							{
+								"unit": "service.explanation",
+								"symbol": "ExplanationService.report",
+								"file": "src/services/development-tooling/ExplanationService.ts",
+								"change": "modified",
+								"from": "5e7a2c91b0d4f836",
+								"to": "b3f0a8d6e2c17495",
+								"state": "stale"
+							},
+							{
+								"unit": "service.explanation",
+								"symbol": "describe",
+								"file": "src/services/development-tooling/ExplanationService.ts",
+								"change": "added",
+								"from": null,
+								"to": "7d2e9b04c1f6a853",
+								"state": "missing"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "describe",
-						"type": "string"
+						"type": "string",
+						"description": "The one-line message for one requirement: its unit, then its symbol with its file when it has one (or 'the unit' alone when the symbol is '*'), then its change kind and the ending its state gives. ExplanationService.report adds this message to failures for each requirement that is not explained.",
+						"examples": [
+							"service.explanation: ExplanationService.report in src/services/development-tooling/ExplanationService.ts was modified after its reason was written",
+							"service.explanation: describe in src/services/development-tooling/ExplanationService.ts was added without a reason"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
