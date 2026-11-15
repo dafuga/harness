@@ -18,34 +18,106 @@
 				"name": "ModuleCategoryService.load.directory",
 				"type": "string",
 				"required": true,
-				"description": "Project or workspace directory; lookup stops at the repository boundary."
+				"description": "Starting directory for the upward search, resolved to an absolute path with resolve(), so a relative value is measured from the process working directory. The search checks each directory for harness.groups.json, including the first directory that contains a .git entry, and stops at the filesystem root when no .git entry appears first.",
+				"examples": [
+					"/workspace/review-app",
+					"/workspace/review-app/apps/web/src/routes/reports",
+					"/workspace/review-app/packages/reports"
+				]
 			},
 			{
 				"name": "ModuleCategoryService.at.tree",
 				"type": "Pick<SourceTree, 'read'>",
 				"required": true,
-				"description": "Readable source tree of the selected revision, never the current checkout."
+				"description": "Readable source tree of the selected revision, which the class comment describes as an immutable source tree. at calls only tree.read(moduleGroupsFile), where moduleGroupsFile is 'harness.groups.json', and parses the awaited value only when it is a string."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleCategoryService.load",
 				"type": "{ root: string; config: ModuleGroupsConfig } | undefined",
-				"description": "Nearest project root and validated category data, or undefined before category adoption."
+				"description": "Object with root, the absolute directory of the nearest harness.groups.json found by the upward search (the starting directory or one of its ancestors), and config, its validated ModuleGroupsConfig. The value is undefined when no harness.groups.json is found in the directories searched, which end at the first directory with a .git entry or at the filesystem root, and an invalid file throws ExpectedCliError instead.",
+				"examples": [
+					{
+						"root": "/workspace/review-app",
+						"config": {
+							"schemaVersion": 1,
+							"groups": [
+								{
+									"id": "reports",
+									"title": "Reports",
+									"terms": ["evidence", "export"],
+									"folders": ["apps/web/src/routes/reports/"]
+								},
+								{
+									"id": "design-system",
+									"title": "Design System",
+									"terms": []
+								}
+							],
+							"legacy": ["src/services/LegacyExport.ts"]
+						}
+					},
+					{
+						"root": "/workspace/review-app/apps/web",
+						"config": {
+							"schemaVersion": 1,
+							"groups": [
+								{
+									"id": "billing-ledger",
+									"title": "Billing Ledger",
+									"terms": ["invoice", "ledger"]
+								}
+							],
+							"legacy": []
+						}
+					}
+				]
 			},
 			{
 				"name": "ModuleCategoryService.at",
 				"type": "Promise<ModuleGroupsConfig | undefined>",
-				"description": "Validated taxonomy stored by that revision; undefined when no category file is present."
+				"description": "The validated ModuleGroupsConfig parsed from the harness.groups.json text that tree.read returns, or undefined when read throws or returns a value that is not a string. Invalid text rejects with ExpectedCliError rather than resolving to undefined.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"groups": [
+							{
+								"id": "reports",
+								"title": "Reports",
+								"terms": ["evidence", "export"],
+								"folders": ["apps/web/src/routes/reports/"]
+							},
+							{
+								"id": "design-system",
+								"title": "Design System",
+								"terms": []
+							}
+						],
+						"legacy": ["src/services/LegacyExport.ts"]
+					},
+					{
+						"schemaVersion": 1,
+						"groups": [
+							{
+								"id": "billing-ledger",
+								"title": "Billing Ledger",
+								"terms": ["invoice", "ledger"]
+							}
+						],
+						"legacy": []
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "The category file is not valid JSON or has invalid or duplicate category definitions."
+				"description": "Thrown by fail() inside parseGroups when the category text is not valid JSON or fails moduleGroupsConfig validation, such as a non-kebab-case or 'uncategorized' id, duplicate ids, or an unknown field. load throws it synchronously, and at rejects with it because its parsing runs outside the try block around tree.read."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ModuleCategoryService.load",
@@ -54,18 +126,65 @@
 						"name": "ModuleCategoryService.load.directory",
 						"type": "string",
 						"required": true,
-						"description": "Project or workspace directory; lookup stops at the repository boundary."
+						"description": "Starting directory for the upward search, resolved to an absolute path with resolve(), so a relative value is measured from the process working directory. The search checks each directory for harness.groups.json, including the first directory that contains a .git entry, and stops at the filesystem root when no .git entry appears first.",
+						"examples": [
+							"/workspace/review-app",
+							"/workspace/review-app/apps/web/src/routes/reports",
+							"/workspace/review-app/packages/reports"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleCategoryService.load",
 						"type": "{ root: string; config: ModuleGroupsConfig } | undefined",
-						"description": "Nearest project root and validated category data, or undefined before category adoption."
+						"description": "Object with root, the absolute directory of the nearest harness.groups.json found by the upward search (the starting directory or one of its ancestors), and config, its validated ModuleGroupsConfig. The value is undefined when no harness.groups.json is found in the directories searched, which end at the first directory with a .git entry or at the filesystem root, and an invalid file throws ExpectedCliError instead.",
+						"examples": [
+							{
+								"root": "/workspace/review-app",
+								"config": {
+									"schemaVersion": 1,
+									"groups": [
+										{
+											"id": "reports",
+											"title": "Reports",
+											"terms": ["evidence", "export"],
+											"folders": ["apps/web/src/routes/reports/"]
+										},
+										{
+											"id": "design-system",
+											"title": "Design System",
+											"terms": []
+										}
+									],
+									"legacy": ["src/services/LegacyExport.ts"]
+								}
+							},
+							{
+								"root": "/workspace/review-app/apps/web",
+								"config": {
+									"schemaVersion": 1,
+									"groups": [
+										{
+											"id": "billing-ledger",
+											"title": "Billing Ledger",
+											"terms": ["invoice", "ledger"]
+										}
+									],
+									"legacy": []
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown synchronously by parseGroups when the nearest harness.groups.json is not valid JSON or fails moduleGroupsConfig validation."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ModuleCategoryService.at",
@@ -74,18 +193,54 @@
 						"name": "ModuleCategoryService.at.tree",
 						"type": "Pick<SourceTree, 'read'>",
 						"required": true,
-						"description": "Readable source tree of the selected revision, never the current checkout."
+						"description": "Readable source tree of the selected revision, which the class comment describes as an immutable source tree. at calls only tree.read(moduleGroupsFile), where moduleGroupsFile is 'harness.groups.json', and parses the awaited value only when it is a string."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleCategoryService.at",
 						"type": "Promise<ModuleGroupsConfig | undefined>",
-						"description": "Validated taxonomy stored by that revision; undefined when no category file is present."
+						"description": "The validated ModuleGroupsConfig parsed from the harness.groups.json text that tree.read returns, or undefined when read throws or returns a value that is not a string. Invalid text rejects with ExpectedCliError rather than resolving to undefined.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"groups": [
+									{
+										"id": "reports",
+										"title": "Reports",
+										"terms": ["evidence", "export"],
+										"folders": ["apps/web/src/routes/reports/"]
+									},
+									{
+										"id": "design-system",
+										"title": "Design System",
+										"terms": []
+									}
+								],
+								"legacy": ["src/services/LegacyExport.ts"]
+							},
+							{
+								"schemaVersion": 1,
+								"groups": [
+									{
+										"id": "billing-ledger",
+										"title": "Billing Ledger",
+										"terms": ["invoice", "ledger"]
+									}
+								],
+								"legacy": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Rejects the promise returned by at when the text from tree.read is not valid JSON or fails moduleGroupsConfig validation. Errors thrown by tree.read are caught and produce undefined instead, so they never produce this error."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
