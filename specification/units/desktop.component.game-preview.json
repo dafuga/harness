@@ -34,54 +34,75 @@
 				"name": "GamePreview.view",
 				"type": "GameView",
 				"required": true,
-				"description": "Game view defining geometry, checkpoints, rendering dimension and visual style."
+				"description": "Supplies the level data and render dimension used by the canvas, gameplay steps, reset and AI prompt. Its style updates an active AI prompt, and a change to the derived level key or dimension resets the run to initialRun or a fresh spawn run.",
+				"examples": [
+					{
+						"id": "view-main",
+						"title": "Moonlit Courtyard",
+						"dimension": "2d",
+						"style": "Moonlit stone courtyard",
+						"checkpoints": []
+					}
+				]
 			},
 			{
 				"name": "GamePreview.initialRun",
 				"type": "GameRun",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional saved gameplay state; without it a fresh run starts at the view spawn. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "Optional run snapshot used when the derived view scope initializes and to restore progress at that view's spawn. Defaults to undefined; when absent the component creates createRun(1, view) before calling atSpawn.",
+				"examples": [
+					{
+						"tick": 0,
+						"seed": 1,
+						"state": {},
+						"completed": [],
+						"events": [],
+						"trace": []
+					}
+				]
 			},
 			{
 				"name": "GamePreview.projectId",
 				"type": "string | null",
 				"required": true,
-				"description": "Project identifier for rendering requests, or null when no project is open."
+				"description": "Project identifier forwarded to bridge.gameRender when AI video starts. A null or empty string prevents AI video availability and start.",
+				"examples": ["project-42", null]
 			},
 			{
 				"name": "GamePreview.readonly",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Prevents starting an AI video session when true; defaults to false. Gameplay movement and reset remain interactive, and run changes still reach onRun."
+				"description": "When true, disables AI video availability while local gameplay and reset remain interactive. Defaults to false.",
+				"examples": [false, true]
 			},
 			{
 				"name": "GamePreview.onRun",
 				"type": "(run: GameRun) => void",
 				"required": true,
-				"description": "Receives each updated gameplay state so the workspace can retain progress."
+				"description": "Called with the run after scope initialization, each gameplay step and reset. Its return value is ignored."
 			},
 			{
 				"name": "GamePreview.bridge",
 				"type": "DesktopBridge",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional native bridge providing the authorized game rendering operation. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "Optional desktop bridge supplying gameRender for AI video sessions; without the bridge or method, AI video is unavailable. Defaults to undefined."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GamePreview",
 				"type": "markup",
-				"description": "Interactive 2D or 3D gameplay canvas, movement and reset controls, current run readout and optional AI video controls. A read-only preview explains that AI generation is disabled. Initial, movement and reset run snapshots are published through onRun. States: off: The game canvas and controls remain visible with Start AI video rather than a live stream. three-dimensional: A 3D level renders through its canvas and retains the same game controls."
+				"description": "Provides a dimension-selected 2D or 3D canvas, GameControls, and AI video model and start-stop status controls. AI video availability requires a ready Decart transport, a truthy projectId, a gameRender bridge method, and readonly=false; sessions pass a 60-second limit and failures appear as an alert."
 			}
 		],
 		"errors": [
 			{
 				"name": "Renderer initialization or run callback error",
-				"type": "propagated",
-				"description": "WebGL renderer initialization can fail when unavailable; errors from onRun propagate during initialization, reset or movement. AI video failures are caught and displayed."
+				"type": "thrown",
+				"description": "Exceptions from run creation or stepping, canvas drawing or rendering, renderer setup, or onRun are not caught here and can propagate from the lifecycle or interaction that invokes them. Rejections from bridge.gameRender or connectDecart are caught and displayed as alert text instead."
 			}
 		],
 		"errorStatus": "declared",
