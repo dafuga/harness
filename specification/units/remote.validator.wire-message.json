@@ -20,36 +20,113 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "WireMessageValidator.request.text",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The JSON text of one request frame that the host receives. It is refused as 'too-large' when its UTF-8 length is over its limit (65536 bytes by default), and otherwise must be a JSON object with exactly the fields id, input, method and type.",
+				"examples": [
+					"{\"type\":\"request\",\"id\":\"3f2a9c1e-7b4d-4e8a-9c0f-5d6e7a8b9c0d\",\"method\":\"listProjects\",\"input\":{}}",
+					"{\"type\":\"request\",\"id\":\"c0a8f3d2-19e4-4b7a-8d55-2e6f9a1b7c43\",\"method\":\"session.attach\",\"input\":{\"protocol\":1,\"client\":{\"kind\":\"ios\",\"name\":\"iPhone 15\"},\"resume\":null}}"
+				]
 			},
 			{
 				"name": "WireMessageValidator.request.limit",
 				"type": "number",
-				"required": false
+				"required": false,
+				"description": "The largest UTF-8 byte length of text that is accepted, which decides when text is refused as 'too-large'; the value itself is not range-checked. Defaults to remoteLimits.requestBytes: 65536 bytes.",
+				"examples": [65536, 4096]
 			},
 			{
 				"name": "WireMessageValidator.message.text",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The JSON text of one client-side wire message, which must be a JSON object whose type is 'event' or 'response'. Text over remoteLimits.messageBytes (16777216 UTF-8 bytes) is refused as 'too-large'.",
+				"examples": [
+					"{\"type\":\"event\",\"channel\":\"run\",\"sequence\":12,\"value\":{\"done\":false}}",
+					"{\"type\":\"response\",\"id\":\"3f2a9c1e-7b4d-4e8a-9c0f-5d6e7a8b9c0d\",\"ok\":true,\"value\":[]}",
+					"{\"type\":\"response\",\"id\":\"3f2a9c1e-7b4d-4e8a-9c0f-5d6e7a8b9c0d\",\"ok\":false,\"error\":{\"code\":\"not-attached\",\"message\":\"The connection has not been attached.\"}}"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "WireMessageValidator.request",
-				"type": "WireRequest"
+				"type": "WireRequest",
+				"description": "The validated request: type 'request', the request id, a method from remoteMethods, and the parsed input object. Only these four fields are returned, and the fields inside input are not checked.",
+				"examples": [
+					{
+						"type": "request",
+						"id": "3f2a9c1e-7b4d-4e8a-9c0f-5d6e7a8b9c0d",
+						"method": "listProjects",
+						"input": {}
+					},
+					{
+						"type": "request",
+						"id": "c0a8f3d2-19e4-4b7a-8d55-2e6f9a1b7c43",
+						"method": "session.attach",
+						"input": {
+							"protocol": 1,
+							"client": {
+								"kind": "ios",
+								"name": "iPhone 15"
+							},
+							"resume": null
+						}
+					}
+				]
 			},
 			{
 				"name": "WireMessageValidator.message",
-				"type": "WireResponse | WireEvent"
+				"type": "WireResponse | WireEvent",
+				"description": "A text with type 'event' becomes a WireEvent whose channel is 'run', 'cache' or 'connection' and whose sequence is a safe integer of at least 1. A text with type 'response' becomes a WireResponse that carries value when ok is true, or its RemoteError when ok is false.",
+				"examples": [
+					{
+						"type": "event",
+						"channel": "run",
+						"sequence": 12,
+						"value": {
+							"done": false
+						}
+					},
+					{
+						"type": "response",
+						"id": "3f2a9c1e-7b4d-4e8a-9c0f-5d6e7a8b9c0d",
+						"ok": true,
+						"value": []
+					},
+					{
+						"type": "response",
+						"id": "3f2a9c1e-7b4d-4e8a-9c0f-5d6e7a8b9c0d",
+						"ok": false,
+						"error": {
+							"code": "not-attached",
+							"message": "The connection has not been attached."
+						}
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "RemoteFailure",
+				"type": "thrown",
+				"description": "Code 'too-large': the text's UTF-8 length is over its byte limit (the limit argument for request(), remoteLimits.messageBytes for message()), checked before parsing; no requestId is set."
+			},
+			{
+				"name": "RemoteFailure",
+				"type": "thrown",
+				"description": "Code 'invalid-message': the text is not a JSON object, or it does not match any of the three wire shapes (request, response, event) exactly; request() sets requestId whenever the id is valid."
+			},
+			{
+				"name": "RemoteFailure",
+				"type": "thrown",
+				"description": "Code 'unknown-method': request() received a request whose id is valid but whose method is not in remoteMethods; the error carries its requestId."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "WireMessageValidator.request",
@@ -57,22 +134,67 @@
 					{
 						"name": "WireMessageValidator.request.text",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The JSON text of one request frame that the host receives. It is refused as 'too-large' when its UTF-8 length is over its limit (65536 bytes by default), and otherwise must be a JSON object with exactly the fields id, input, method and type.",
+						"examples": [
+							"{\"type\":\"request\",\"id\":\"3f2a9c1e-7b4d-4e8a-9c0f-5d6e7a8b9c0d\",\"method\":\"listProjects\",\"input\":{}}",
+							"{\"type\":\"request\",\"id\":\"c0a8f3d2-19e4-4b7a-8d55-2e6f9a1b7c43\",\"method\":\"session.attach\",\"input\":{\"protocol\":1,\"client\":{\"kind\":\"ios\",\"name\":\"iPhone 15\"},\"resume\":null}}"
+						]
 					},
 					{
 						"name": "WireMessageValidator.request.limit",
 						"type": "number",
-						"required": false
+						"required": false,
+						"description": "The largest UTF-8 byte length of text that is accepted, which decides when text is refused as 'too-large'; the value itself is not range-checked. Defaults to remoteLimits.requestBytes: 65536 bytes.",
+						"examples": [65536, 4096]
 					}
 				],
 				"outputs": [
 					{
 						"name": "WireMessageValidator.request",
-						"type": "WireRequest"
+						"type": "WireRequest",
+						"description": "The validated request: type 'request', the request id, a method from remoteMethods, and the parsed input object. Only these four fields are returned, and the fields inside input are not checked.",
+						"examples": [
+							{
+								"type": "request",
+								"id": "3f2a9c1e-7b4d-4e8a-9c0f-5d6e7a8b9c0d",
+								"method": "listProjects",
+								"input": {}
+							},
+							{
+								"type": "request",
+								"id": "c0a8f3d2-19e4-4b7a-8d55-2e6f9a1b7c43",
+								"method": "session.attach",
+								"input": {
+									"protocol": 1,
+									"client": {
+										"kind": "ios",
+										"name": "iPhone 15"
+									},
+									"resume": null
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RemoteFailure",
+						"type": "thrown",
+						"description": "Code 'too-large': the text's UTF-8 length is over the limit argument, checked before parsing; no requestId is set."
+					},
+					{
+						"name": "RemoteFailure",
+						"type": "thrown",
+						"description": "Code 'invalid-message': the text is not a JSON object, does not have exactly the fields id, input, method and type, or has a type other than 'request', an invalid id, a non-string method or a non-object input; requestId is set whenever the id is valid."
+					},
+					{
+						"name": "RemoteFailure",
+						"type": "thrown",
+						"description": "Code 'unknown-method': the method is a string that is not in remoteMethods; the error carries the requestId."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "WireMessageValidator.message",
@@ -80,17 +202,60 @@
 					{
 						"name": "WireMessageValidator.message.text",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The JSON text of one client-side wire message, which must be a JSON object whose type is 'event' or 'response'. Text over remoteLimits.messageBytes (16777216 UTF-8 bytes) is refused as 'too-large'.",
+						"examples": [
+							"{\"type\":\"event\",\"channel\":\"run\",\"sequence\":12,\"value\":{\"done\":false}}",
+							"{\"type\":\"response\",\"id\":\"3f2a9c1e-7b4d-4e8a-9c0f-5d6e7a8b9c0d\",\"ok\":true,\"value\":[]}",
+							"{\"type\":\"response\",\"id\":\"3f2a9c1e-7b4d-4e8a-9c0f-5d6e7a8b9c0d\",\"ok\":false,\"error\":{\"code\":\"not-attached\",\"message\":\"The connection has not been attached.\"}}"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "WireMessageValidator.message",
-						"type": "WireResponse | WireEvent"
+						"type": "WireResponse | WireEvent",
+						"description": "A text with type 'event' becomes a WireEvent whose channel is 'run', 'cache' or 'connection' and whose sequence is a safe integer of at least 1. A text with type 'response' becomes a WireResponse that carries value when ok is true, or its RemoteError when ok is false.",
+						"examples": [
+							{
+								"type": "event",
+								"channel": "run",
+								"sequence": 12,
+								"value": {
+									"done": false
+								}
+							},
+							{
+								"type": "response",
+								"id": "3f2a9c1e-7b4d-4e8a-9c0f-5d6e7a8b9c0d",
+								"ok": true,
+								"value": []
+							},
+							{
+								"type": "response",
+								"id": "3f2a9c1e-7b4d-4e8a-9c0f-5d6e7a8b9c0d",
+								"ok": false,
+								"error": {
+									"code": "not-attached",
+									"message": "The connection has not been attached."
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RemoteFailure",
+						"type": "thrown",
+						"description": "Code 'too-large': the text's UTF-8 length is over remoteLimits.messageBytes, checked before parsing; no requestId is set."
+					},
+					{
+						"name": "RemoteFailure",
+						"type": "thrown",
+						"description": "Code 'invalid-message': the text is not a JSON object, has a type other than 'event' or 'response', or fails the exact event or response shape, such as an unknown error code or a sequence that is not a safe integer of at least 1; no requestId is set."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
