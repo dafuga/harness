@@ -9,14 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/adapters/browser-project-adapter/browserBridge.ts",
 			"packages/desktop/src/adapters/explorer-ui/browser-project-adapter/browserBridge.ts",
 			"packages/desktop/src/adapters/explorer-ui/browser-project-adapter/browserBridge.types.ts",
 			"packages/hub/src/utils/browser-bridge/browserBridge.ts",
 			"packages/hub/src/utils/browserBridge.ts"
 		],
 		"symbols": [
-			"browserBridge",
 			"browserBridge",
 			"Reads",
 			"Listener",

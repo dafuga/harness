@@ -9,11 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/adapters/browser-project-adapter/browserError.ts",
 			"packages/desktop/src/adapters/explorer-ui/browser-project-adapter/browserError.ts",
 			"packages/hub/src/utils/browserError.ts"
 		],
-		"symbols": ["browserError", "browserError", "browserError"]
+		"symbols": ["browserError", "browserError"]
 	},
 	"contract": {
 		"origin": "declared",
