@@ -191,3 +191,4 @@ export { VideoEvidenceService } from './services/verification-evidence/VideoEvid
 export { videoClipSchema } from './utils/verification-evidence/videoClipSchema';
 export { FrameFlagService } from './services/verification-evidence/FrameFlagService';
 export { NativeVideoRecorderService } from './services/verification-evidence/NativeVideoRecorderService';
+export { VideoArchiveService } from './services/verification-evidence/VideoArchiveService';
