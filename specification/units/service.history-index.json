@@ -24,37 +24,154 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HistoryIndexService.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Path of the Git repository the index is built from; GitAdapter runs git in it as the working directory. The constructor stores it unchecked and passes it to HistoryStatusService, and build passes it to Git-backed collaborators such as SourceHistoryRepository and EvidenceTreeAdapter.",
+				"examples": [
+					"/workspace/luna-pyramid",
+					"/srv/ci/checkouts/luna-pyramid",
+					"/home/dev/luna-pyramid"
+				]
 			},
 			{
 				"name": "HistoryIndexService.build.out",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Directory build writes the index into. Before writing, build removes only index.json, activity.json, revisions, sides and media from it, so other files there are kept; it then creates empty revisions and sides directories.",
+				"examples": [
+					"/workspace/luna-pyramid/build/history",
+					"/srv/ci/out/history-index",
+					"/workspace/luna-pyramid/dist/history"
+				]
 			},
 			{
 				"name": "HistoryIndexService.build.limit",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Maximum number of source revisions the index keeps. SourceHistoryRepository.read lists at most limit + 1 commits and returns the first limit, and the index is marked truncated when more were listed; build does not check the value.",
+				"examples": [200, 500, 1000]
 			},
 			{
 				"name": "HistoryIndexService.build.legacy",
 				"type": "LegacyReader",
-				"required": true
+				"required": true,
+				"description": "Callback that receives the build's HistoryMediaService and resolves to the LegacyEntry list. build stores that list as the index's legacy field, gives each revision the ids of the entries linked to its commit, reports entry media gaps as problems, and a rejection from the callback rejects build."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HistoryIndexService.build",
-				"type": "Promise<BuiltHistory>"
+				"type": "Promise<BuiltHistory>",
+				"description": "Resolves to the BuiltHistory: the output directory, the sha256 hex digest of index.json, the media resolved and missing counts, the problems list, the index, and the path of catalog.sqlite inside the output directory.",
+				"examples": [
+					{
+						"out": "/workspace/luna-pyramid/build/history",
+						"digest": "6b1f0e9c3d7a24b85e1c0f9d2a6b7e3c4d8f1a0b9e2c7d5f3a6b8e1c0d4f9a27",
+						"media": {
+							"resolved": 12,
+							"missing": 0
+						},
+						"problems": [],
+						"index": {
+							"schemaVersion": 1,
+							"sourceRepository": "https://github.com/acme/luna-pyramid",
+							"refs": {
+								"evidence": "e0a6c3d9b25f71084ce3a9d6f2b15e70c8d4a9b1",
+								"notes": "1d8f4b0e7a3c92d56b1e0f8a4c7d23e9b5a60c42"
+							},
+							"branches": [
+								{
+									"name": "main",
+									"head": "9c41e7d2a0b8f36e15d4c7a9e2b0f8d31a6c5e47"
+								}
+							],
+							"revisions": [
+								{
+									"commit": "9c41e7d2a0b8f36e15d4c7a9e2b0f8d31a6c5e47",
+									"tree": "b7d03f2c9e1a48d65f0b3c7e2a9d14f8e6c0b5a3",
+									"parents": ["5e2b8a0f47d1c39e6b2a8d05f4c7e91b3d6a2f08"],
+									"subject": "Show each revision's evidence grid",
+									"author": "Sam Okafor",
+									"authoredAt": "2026-11-12T09:14:03+01:00",
+									"committedAt": "2026-11-12T09:20:41+01:00",
+									"branches": ["main"],
+									"retained": false,
+									"coverage": "verified",
+									"gaps": [],
+									"records": [
+										{
+											"id": "c3e0a71f5d92b84e60f1a3c7d9e2b5084f6a1d3c97e0b2f8d4a6c1e5b3f7092a",
+											"status": "passed",
+											"profile": "linux-x64-node22",
+											"finishedAt": "2026-11-12T09:31:18.402Z",
+											"base": "5e2b8a0f47d1c39e6b2a8d05f4c7e91b3d6a2f08",
+											"valid": true,
+											"problems": []
+										}
+									],
+									"reasons": 0,
+									"legacy": [],
+									"changes": {
+										"base": "5e2b8a0f47d1c39e6b2a8d05f4c7e91b3d6a2f08",
+										"direct": ["reports.component.evidence-grid"],
+										"added": [],
+										"removed": []
+									},
+									"detail": "revisions/9c41e7d2a0b8f36e15d4c7a9e2b0f8d31a6c5e47.json"
+								}
+							],
+							"units": [
+								{
+									"id": "reports.component.evidence-grid",
+									"growth": [
+										{
+											"commit": "9c41e7d2a0b8f36e15d4c7a9e2b0f8d31a6c5e47",
+											"record": "c3e0a71f5d92b84e60f1a3c7d9e2b5084f6a1d3c97e0b2f8d4a6c1e5b3f7092a",
+											"source-bytes": 18432,
+											"complexity": 14,
+											"dependencies": 3
+										}
+									]
+								}
+							],
+							"benchmarks": [],
+							"profiles": [
+								{
+									"id": "linux-x64-node22",
+									"platform": "linux",
+									"arch": "x64",
+									"cpu": "AMD EPYC 7763 8-Core Processor",
+									"cores": 8,
+									"memoryBytes": 17179869184,
+									"runtime": "node 22.11.0"
+								}
+							],
+							"legacy": [],
+							"truncated": false,
+							"problems": []
+						},
+						"catalog": "/workspace/luna-pyramid/build/history/catalog.sqlite"
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A Node filesystem error, such as one with code EACCES or ENOTDIR, from the rm, mkdir and writeFile calls that empty the output directory or write its files. rm is called with force: true, so a stale path that does not exist is not an error."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A rejection or throw from any other call that build makes, passed through unchanged: the legacy callback, SourceHistoryRepository.read, RevisionDetailService.build, SourceArchiveService.archive, EvidenceTreeAdapter.tip, ProjectActivityService.recorded or CatalogIndexService.write. Where SourceHistoryRepository.read uses GitAdapter.run and git exits non-zero, the rejection is GitAdapter.run's Error, whose message reads 'git <arguments> failed: <stderr>'."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HistoryIndexService.build",
@@ -62,27 +179,138 @@
 					{
 						"name": "HistoryIndexService.build.out",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Directory build writes the index into. Before writing, build removes only index.json, activity.json, revisions, sides and media from it, so other files there are kept; it then creates empty revisions and sides directories.",
+						"examples": [
+							"/workspace/luna-pyramid/build/history",
+							"/srv/ci/out/history-index",
+							"/workspace/luna-pyramid/dist/history"
+						]
 					},
 					{
 						"name": "HistoryIndexService.build.limit",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Maximum number of source revisions the index keeps. SourceHistoryRepository.read lists at most limit + 1 commits and returns the first limit, and the index is marked truncated when more were listed; build does not check the value.",
+						"examples": [200, 500, 1000]
 					},
 					{
 						"name": "HistoryIndexService.build.legacy",
 						"type": "LegacyReader",
-						"required": true
+						"required": true,
+						"description": "Callback that receives the build's HistoryMediaService and resolves to the LegacyEntry list. build stores that list as the index's legacy field, gives each revision the ids of the entries linked to its commit, reports entry media gaps as problems, and a rejection from the callback rejects build."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HistoryIndexService.build",
-						"type": "Promise<BuiltHistory>"
+						"type": "Promise<BuiltHistory>",
+						"description": "Resolves to the BuiltHistory: the output directory, the sha256 hex digest of index.json, the media resolved and missing counts, the problems list, the index, and the path of catalog.sqlite inside the output directory.",
+						"examples": [
+							{
+								"out": "/workspace/luna-pyramid/build/history",
+								"digest": "6b1f0e9c3d7a24b85e1c0f9d2a6b7e3c4d8f1a0b9e2c7d5f3a6b8e1c0d4f9a27",
+								"media": {
+									"resolved": 12,
+									"missing": 0
+								},
+								"problems": [],
+								"index": {
+									"schemaVersion": 1,
+									"sourceRepository": "https://github.com/acme/luna-pyramid",
+									"refs": {
+										"evidence": "e0a6c3d9b25f71084ce3a9d6f2b15e70c8d4a9b1",
+										"notes": "1d8f4b0e7a3c92d56b1e0f8a4c7d23e9b5a60c42"
+									},
+									"branches": [
+										{
+											"name": "main",
+											"head": "9c41e7d2a0b8f36e15d4c7a9e2b0f8d31a6c5e47"
+										}
+									],
+									"revisions": [
+										{
+											"commit": "9c41e7d2a0b8f36e15d4c7a9e2b0f8d31a6c5e47",
+											"tree": "b7d03f2c9e1a48d65f0b3c7e2a9d14f8e6c0b5a3",
+											"parents": ["5e2b8a0f47d1c39e6b2a8d05f4c7e91b3d6a2f08"],
+											"subject": "Show each revision's evidence grid",
+											"author": "Sam Okafor",
+											"authoredAt": "2026-11-12T09:14:03+01:00",
+											"committedAt": "2026-11-12T09:20:41+01:00",
+											"branches": ["main"],
+											"retained": false,
+											"coverage": "verified",
+											"gaps": [],
+											"records": [
+												{
+													"id": "c3e0a71f5d92b84e60f1a3c7d9e2b5084f6a1d3c97e0b2f8d4a6c1e5b3f7092a",
+													"status": "passed",
+													"profile": "linux-x64-node22",
+													"finishedAt": "2026-11-12T09:31:18.402Z",
+													"base": "5e2b8a0f47d1c39e6b2a8d05f4c7e91b3d6a2f08",
+													"valid": true,
+													"problems": []
+												}
+											],
+											"reasons": 0,
+											"legacy": [],
+											"changes": {
+												"base": "5e2b8a0f47d1c39e6b2a8d05f4c7e91b3d6a2f08",
+												"direct": ["reports.component.evidence-grid"],
+												"added": [],
+												"removed": []
+											},
+											"detail": "revisions/9c41e7d2a0b8f36e15d4c7a9e2b0f8d31a6c5e47.json"
+										}
+									],
+									"units": [
+										{
+											"id": "reports.component.evidence-grid",
+											"growth": [
+												{
+													"commit": "9c41e7d2a0b8f36e15d4c7a9e2b0f8d31a6c5e47",
+													"record": "c3e0a71f5d92b84e60f1a3c7d9e2b5084f6a1d3c97e0b2f8d4a6c1e5b3f7092a",
+													"source-bytes": 18432,
+													"complexity": 14,
+													"dependencies": 3
+												}
+											]
+										}
+									],
+									"benchmarks": [],
+									"profiles": [
+										{
+											"id": "linux-x64-node22",
+											"platform": "linux",
+											"arch": "x64",
+											"cpu": "AMD EPYC 7763 8-Core Processor",
+											"cores": 8,
+											"memoryBytes": 17179869184,
+											"runtime": "node 22.11.0"
+										}
+									],
+									"legacy": [],
+									"truncated": false,
+									"problems": []
+								},
+								"catalog": "/workspace/luna-pyramid/build/history/catalog.sqlite"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A Node filesystem error, such as one with code EACCES or ENOTDIR, from the rm, mkdir and writeFile calls that empty the output directory or write its files. rm is called with force: true, so a stale path that does not exist is not an error."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A rejection or throw from any other call that build makes, passed through unchanged: the legacy callback, SourceHistoryRepository.read, RevisionDetailService.build, SourceArchiveService.archive, EvidenceTreeAdapter.tip, ProjectActivityService.recorded or CatalogIndexService.write. Where SourceHistoryRepository.read uses GitAdapter.run and git exits non-zero, the rejection is GitAdapter.run's Error, whose message reads 'git <arguments> failed: <stderr>'."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -92,17 +320,24 @@
 					{
 						"name": "HistoryIndexService.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Path of the Git repository the index is built from; GitAdapter runs git in it as the working directory. The constructor stores it unchecked and passes it to HistoryStatusService, and build passes it to Git-backed collaborators such as SourceHistoryRepository and EvidenceTreeAdapter.",
+						"examples": [
+							"/workspace/luna-pyramid",
+							"/srv/ci/checkouts/luna-pyramid",
+							"/home/dev/luna-pyramid"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HistoryIndexService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The HistoryIndexService instance: it holds root and a HistoryStatusService made from it, and creating it runs no git command and reads no file."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
