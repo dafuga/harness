@@ -34,82 +34,47 @@
 				"name": "CatalogBranch.id",
 				"type": "string",
 				"required": true,
-				"description": "Caller-supplied row ID for a catalog_branches record, used by lookup, update, and deletion. The model also forwards it on creation and does not generate or validate an ID.",
-				"examples": ["catalog-branch-42"]
+				"description": "Stored row identity; the model passes it to the adapter without generating a key."
 			},
 			{
 				"name": "CatalogBranch.head",
 				"type": "string",
 				"required": true,
-				"description": "Branch head value stored as a string on the row. The model forwards it without validating commit syntax.",
-				"examples": ["0123456789abcdef0123456789abcdef01234567"]
+				"description": "Git commit at the recorded branch head."
 			}
 		],
 		"outputs": [
 			{
 				"name": "CatalogBranch.find",
 				"type": "Promise<CatalogBranchAttributes | null>",
-				"description": "Promise resolving to the CatalogBranchAttributes value or null returned by adapter.find for the supplied ID. The model passes the adapter result through unchanged.",
-				"examples": [
-					{
-						"id": "catalog-branch-42",
-						"head": "0123456789abcdef0123456789abcdef01234567"
-					},
-					null
-				]
+				"description": "Promise of the matching catalog_branches row, or null according to the adapter lookup result."
 			},
 			{
 				"name": "CatalogBranch.findBy",
 				"type": "Promise<CatalogBranchAttributes[]>",
-				"description": "Promise resolving to the CatalogBranchAttributes array returned by adapter.findBy. The model supplies a shallow copy of fields and returns the adapter result unchanged.",
-				"examples": [
-					[
-						{
-							"id": "catalog-branch-42",
-							"head": "0123456789abcdef0123456789abcdef01234567"
-						},
-						{
-							"id": "catalog-branch-43",
-							"head": "fedcba9876543210fedcba9876543210fedcba98"
-						}
-					]
-				]
+				"description": "Promise of catalog_branches rows matching the supplied attribute filters."
 			},
 			{
 				"name": "CatalogBranch.create",
 				"type": "Promise<CatalogBranchAttributes>",
-				"description": "Promise resolving to the CatalogBranchAttributes value returned by adapter.create for a shallow copy of input. The model does not generate a row ID or validate attributes.",
-				"examples": [
-					{
-						"id": "catalog-branch-42",
-						"head": "0123456789abcdef0123456789abcdef01234567"
-					}
-				]
+				"description": "Promise of the catalog_branches row returned by the adapter after creation."
 			},
 			{
 				"name": "CatalogBranch.update",
 				"type": "Promise<CatalogBranchAttributes | null>",
-				"description": "Promise resolving to the CatalogBranchAttributes value or null returned by adapter.update for the supplied ID and shallow-copied patch. The model does not apply or validate the patch itself.",
-				"examples": [
-					{
-						"id": "catalog-branch-42",
-						"head": "0123456789abcdef0123456789abcdef01234567"
-					},
-					null
-				]
+				"description": "Promise of the updated catalog_branches row, or null according to the adapter update result."
 			},
 			{
 				"name": "CatalogBranch.delete",
 				"type": "Promise<boolean>",
-				"description": "Promise resolving to the boolean returned by adapter.delete for the supplied ID. The model does not reinterpret the result.",
-				"examples": [true, false]
+				"description": "Promise of the adapter deletion result for the requested catalog_branches row."
 			}
 		],
 		"errors": [
 			{
 				"name": "Persistence operation failure",
-				"type": "thrown",
-				"description": "Exceptions thrown by adapter methods and rejections from their returned promises propagate without translation. Shallow-copying fields or inputs in findBy, create, or update can also propagate an exception from an enumerable getter."
+				"type": "propagated",
+				"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
 			}
 		],
 		"errorStatus": "declared",
@@ -121,35 +86,27 @@
 						"name": "CatalogBranch.find.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter supplied for this lookup; the method calls its find operation for catalog_branches. The model does not construct or manage the adapter."
+						"description": "Persistence adapter used for the catalog_branches table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogBranch.find.id",
 						"type": "string",
 						"required": true,
-						"description": "Row ID passed to the adapter's find operation. The model forwards the string without formatting or validating it.",
-						"examples": ["catalog-branch-42"]
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogBranch.find",
 						"type": "Promise<CatalogBranchAttributes | null>",
-						"description": "Promise resolving to the CatalogBranchAttributes value or null returned by adapter.find for the supplied ID. The model passes the adapter result through unchanged.",
-						"examples": [
-							{
-								"id": "catalog-branch-42",
-								"head": "0123456789abcdef0123456789abcdef01234567"
-							},
-							null
-						]
+						"description": "Promise of the matching catalog_branches row, or null according to the adapter lookup result."
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "thrown",
-						"description": "A synchronous exception from adapter.find escapes unchanged, and a rejection from its returned promise remains a rejection. The model does not translate either failure."
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
 					}
 				],
 				"errorStatus": "declared"
@@ -161,47 +118,27 @@
 						"name": "CatalogBranch.findBy.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter supplied for this lookup; the method calls its findBy operation for catalog_branches. The model does not construct or manage the adapter."
+						"description": "Persistence adapter used for the catalog_branches table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogBranch.findBy.fields",
 						"type": "Partial<CatalogBranchAttributes>",
 						"required": true,
-						"description": "Optional id and head fields supplied to the adapter's findBy operation as a shallow copy. The model does not interpret or validate filter values.",
-						"examples": [
-							{
-								"id": "catalog-branch-42"
-							},
-							{
-								"head": "0123456789abcdef0123456789abcdef01234567"
-							}
-						]
+						"description": "Partial stored attributes used as equality filters for catalog_branches."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogBranch.findBy",
 						"type": "Promise<CatalogBranchAttributes[]>",
-						"description": "Promise resolving to the CatalogBranchAttributes array returned by adapter.findBy. The model supplies a shallow copy of fields and returns the adapter result unchanged.",
-						"examples": [
-							[
-								{
-									"id": "catalog-branch-42",
-									"head": "0123456789abcdef0123456789abcdef01234567"
-								},
-								{
-									"id": "catalog-branch-43",
-									"head": "fedcba9876543210fedcba9876543210fedcba98"
-								}
-							]
-						]
+						"description": "Promise of catalog_branches rows matching the supplied attribute filters."
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "thrown",
-						"description": "A synchronous exception from adapter.findBy escapes unchanged, and a rejection from its returned promise remains a rejection. Copying fields can also throw if an enumerable getter throws."
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
 					}
 				],
 				"errorStatus": "declared"
@@ -213,39 +150,27 @@
 						"name": "CatalogBranch.create.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter supplied for creation; the method calls its create operation for catalog_branches. The model does not construct or manage the adapter."
+						"description": "Persistence adapter used for the catalog_branches table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogBranch.create.input",
 						"type": "CatalogBranchCreateInput",
 						"required": true,
-						"description": "Required row attributes passed to the adapter's create operation as a shallow copy. Both id and head are required strings, and the model performs no field validation.",
-						"examples": [
-							{
-								"id": "catalog-branch-42",
-								"head": "0123456789abcdef0123456789abcdef01234567"
-							}
-						]
+						"description": "Create attributes or update patch forwarded to catalog_branches; omitted update fields remain the adapter's responsibility."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogBranch.create",
 						"type": "Promise<CatalogBranchAttributes>",
-						"description": "Promise resolving to the CatalogBranchAttributes value returned by adapter.create for a shallow copy of input. The model does not generate a row ID or validate attributes.",
-						"examples": [
-							{
-								"id": "catalog-branch-42",
-								"head": "0123456789abcdef0123456789abcdef01234567"
-							}
-						]
+						"description": "Promise of the catalog_branches row returned by the adapter after creation."
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "thrown",
-						"description": "A synchronous exception from adapter.create escapes unchanged, and a rejection from its returned promise remains a rejection. Copying input can also throw if an enumerable getter throws."
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
 					}
 				],
 				"errorStatus": "declared"
@@ -257,47 +182,33 @@
 						"name": "CatalogBranch.update.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter supplied for this update; the method calls its update operation for catalog_branches. The model does not construct or manage the adapter."
+						"description": "Persistence adapter used for the catalog_branches table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogBranch.update.id",
 						"type": "string",
 						"required": true,
-						"description": "Row ID passed separately to the adapter's update operation. The model forwards the string without formatting or validating it.",
-						"examples": ["catalog-branch-42"]
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					},
 					{
 						"name": "CatalogBranch.update.input",
 						"type": "CatalogBranchUpdateInput",
 						"required": true,
-						"description": "Patch containing only an optional head field, passed to the adapter as a shallow copy. The row ID is a separate argument, and patch application is left to the adapter.",
-						"examples": [
-							{},
-							{
-								"head": "fedcba9876543210fedcba9876543210fedcba98"
-							}
-						]
+						"description": "Create attributes or update patch forwarded to catalog_branches; omitted update fields remain the adapter's responsibility."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogBranch.update",
 						"type": "Promise<CatalogBranchAttributes | null>",
-						"description": "Promise resolving to the CatalogBranchAttributes value or null returned by adapter.update for the supplied ID and shallow-copied patch. The model does not apply or validate the patch itself.",
-						"examples": [
-							{
-								"id": "catalog-branch-42",
-								"head": "0123456789abcdef0123456789abcdef01234567"
-							},
-							null
-						]
+						"description": "Promise of the updated catalog_branches row, or null according to the adapter update result."
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "thrown",
-						"description": "A synchronous exception from adapter.update escapes unchanged, and a rejection from its returned promise remains a rejection. Copying input can also throw if an enumerable getter throws."
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
 					}
 				],
 				"errorStatus": "declared"
@@ -309,29 +220,27 @@
 						"name": "CatalogBranch.delete.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter supplied for deletion; the method calls its delete operation for catalog_branches. The model does not construct or manage the adapter."
+						"description": "Persistence adapter used for the catalog_branches table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogBranch.delete.id",
 						"type": "string",
 						"required": true,
-						"description": "Row ID passed to the adapter's delete operation. The model forwards the string without formatting or validating it.",
-						"examples": ["catalog-branch-42"]
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogBranch.delete",
 						"type": "Promise<boolean>",
-						"description": "Promise resolving to the boolean returned by adapter.delete for the supplied ID. The model does not reinterpret the result.",
-						"examples": [true, false]
+						"description": "Promise of the adapter deletion result for the requested catalog_branches row."
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "thrown",
-						"description": "A synchronous exception from adapter.delete escapes unchanged, and a rejection from its returned promise remains a rejection. The model does not translate either failure."
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
 					}
 				],
 				"errorStatus": "declared"

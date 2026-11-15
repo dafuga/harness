@@ -23,28 +23,40 @@
 				"type": "RecordedBuild[]",
 				"required": false,
 				"default": "undefined",
-				"description": "The build identities a run observed, each with id, directory, buildId and files; undefined means the project declared no build, so the result has no builds key. Only those four fields are copied and the entries are not validated, so anything else an observation carries, such as its stamp, is left out.",
+				"description": "The builds a run identified; each entry keeps only its id, directory, buildId and files, so a stamp or any other extra field is dropped. Undefined, which a run passes when the project declares no build, leaves out the builds key, and an explicitly empty array is kept as builds: [].",
 				"examples": [
 					[
 						{
-							"id": "reports",
-							"directory": "packages/reports/build",
-							"buildId": "9c4e1b7a02d3f85e6a1c9b0d47e2f83a5b6c1d0e9f8a7b6c5d4e3f2a1b0c9d8e",
-							"files": 37
+							"id": "web-client",
+							"directory": "dist/web",
+							"buildId": "9c1e4f0a7b2d86e35f1a0c9d4b7e2f83a6d15c0e9f4b2a7d38c6e1f05a9b4d72",
+							"files": 48
+						},
+						{
+							"id": "api-server",
+							"directory": "build/api",
+							"buildId": "e27a09c4d8f13b6e5a92c7d0f48e1b3a6c95d2e0f7a4b18c3d6e9f25a07b4c1d",
+							"files": 7
 						}
 					],
 					[
 						{
-							"id": "desktop-renderer",
-							"directory": "packages/desktop/build",
-							"buildId": "e51a8c3d0b7f29a4c63d10e87a25f9b1d04c6e3a8f1b52c73e9a0d6fb2c47e15",
-							"files": 214
+							"id": "web-client",
+							"directory": "dist/web",
+							"buildId": "9c1e4f0a7b2d86e35f1a0c9d4b7e2f83a6d15c0e9f4b2a7d38c6e1f05a9b4d72",
+							"files": 48
 						},
 						{
-							"id": "desktop-main",
-							"directory": "packages/desktop/dist",
-							"buildId": "4d0e7b92a16f3c58e0b9d4276c3a1f8e95d20b4cf7e1a36d2b8c5e09d3a6f107",
-							"files": 6
+							"id": "api-server",
+							"directory": "build/api",
+							"buildId": "e27a09c4d8f13b6e5a92c7d0f48e1b3a6c95d2e0f7a4b18c3d6e9f25a07b4c1d",
+							"files": 7
+						},
+						{
+							"id": "docs.site",
+							"directory": "public/docs",
+							"buildId": "51d8b0e7a3c69f24d1e05b8a7c3f92e6b0d4a18c7e5f3b29d6a0c4e8f1b7a35d",
+							"files": 212
 						}
 					],
 					[]
@@ -53,23 +65,42 @@
 			{
 				"name": "recordedBuilds.skipped",
 				"type": "string[]",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "The ids of the declared builds that an entity-scoped run skipped because it did not need them. When given, even as an empty array, it is copied into skippedBuilds; when undefined, the result has no skippedBuilds key.",
+				"examples": [
+					["docs.site"],
+					["api-server", "docs.site"],
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordedBuilds",
 				"type": "Pick<VerificationRecord, 'builds'>",
-				"description": "Empty object when observations are undefined, otherwise builds containing only id, directory, buildId and files. An explicitly empty array remains builds: [].",
+				"description": "It is an empty object when neither input is given, and has builds only when observed is given, holding id, directory, buildId and files for each entry (an explicitly empty array stays builds: []). When skipped is given, the implementation also returns skippedBuilds, which this output type does not list.",
 				"examples": [
 					{},
 					{
 						"builds": [
 							{
-								"id": "reports",
-								"directory": "packages/reports/build",
-								"buildId": "9c4e1b7a02d3f85e6a1c9b0d47e2f83a5b6c1d0e9f8a7b6c5d4e3f2a1b0c9d8e",
-								"files": 37
+								"id": "web-client",
+								"directory": "dist/web",
+								"buildId": "9c1e4f0a7b2d86e35f1a0c9d4b7e2f83a6d15c0e9f4b2a7d38c6e1f05a9b4d72",
+								"files": 48
+							},
+							{
+								"id": "api-server",
+								"directory": "build/api",
+								"buildId": "e27a09c4d8f13b6e5a92c7d0f48e1b3a6c95d2e0f7a4b18c3d6e9f25a07b4c1d",
+								"files": 7
+							},
+							{
+								"id": "docs.site",
+								"directory": "public/docs",
+								"buildId": "51d8b0e7a3c69f24d1e05b8a7c3f92e6b0d4a18c7e5f3b29d6a0c4e8f1b7a35d",
+								"files": 212
 							}
 						]
 					},
@@ -90,28 +121,40 @@
 						"type": "RecordedBuild[]",
 						"required": false,
 						"default": "undefined",
-						"description": "The build identities a run observed, each with id, directory, buildId and files; undefined means the project declared no build, so the result has no builds key. Only those four fields are copied and the entries are not validated, so anything else an observation carries, such as its stamp, is left out.",
+						"description": "The builds a run identified; each entry keeps only its id, directory, buildId and files, so a stamp or any other extra field is dropped. Undefined, which a run passes when the project declares no build, leaves out the builds key, and an explicitly empty array is kept as builds: [].",
 						"examples": [
 							[
 								{
-									"id": "reports",
-									"directory": "packages/reports/build",
-									"buildId": "9c4e1b7a02d3f85e6a1c9b0d47e2f83a5b6c1d0e9f8a7b6c5d4e3f2a1b0c9d8e",
-									"files": 37
+									"id": "web-client",
+									"directory": "dist/web",
+									"buildId": "9c1e4f0a7b2d86e35f1a0c9d4b7e2f83a6d15c0e9f4b2a7d38c6e1f05a9b4d72",
+									"files": 48
+								},
+								{
+									"id": "api-server",
+									"directory": "build/api",
+									"buildId": "e27a09c4d8f13b6e5a92c7d0f48e1b3a6c95d2e0f7a4b18c3d6e9f25a07b4c1d",
+									"files": 7
 								}
 							],
 							[
 								{
-									"id": "desktop-renderer",
-									"directory": "packages/desktop/build",
-									"buildId": "e51a8c3d0b7f29a4c63d10e87a25f9b1d04c6e3a8f1b52c73e9a0d6fb2c47e15",
-									"files": 214
+									"id": "web-client",
+									"directory": "dist/web",
+									"buildId": "9c1e4f0a7b2d86e35f1a0c9d4b7e2f83a6d15c0e9f4b2a7d38c6e1f05a9b4d72",
+									"files": 48
 								},
 								{
-									"id": "desktop-main",
-									"directory": "packages/desktop/dist",
-									"buildId": "4d0e7b92a16f3c58e0b9d4276c3a1f8e95d20b4cf7e1a36d2b8c5e09d3a6f107",
-									"files": 6
+									"id": "api-server",
+									"directory": "build/api",
+									"buildId": "e27a09c4d8f13b6e5a92c7d0f48e1b3a6c95d2e0f7a4b18c3d6e9f25a07b4c1d",
+									"files": 7
+								},
+								{
+									"id": "docs.site",
+									"directory": "public/docs",
+									"buildId": "51d8b0e7a3c69f24d1e05b8a7c3f92e6b0d4a18c7e5f3b29d6a0c4e8f1b7a35d",
+									"files": 212
 								}
 							],
 							[]
@@ -120,28 +163,61 @@
 					{
 						"name": "recordedBuilds.skipped",
 						"type": "string[]",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "The ids of the declared builds that an entity-scoped run skipped because it did not need them. When given, even as an empty array, it is copied into skippedBuilds; when undefined, the result has no skippedBuilds key.",
+						"examples": [
+							["docs.site"],
+							["api-server", "docs.site"],
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordedBuilds",
 						"type": "Pick<VerificationRecord, 'builds' | 'skippedBuilds'>",
-						"description": "Empty object when observations are undefined, otherwise builds containing only id, directory, buildId and files. An explicitly empty array remains builds: [].",
+						"description": "It is an empty object when neither input is given, and has builds only when observed is given, holding id, directory, buildId and files for each entry (an explicitly empty array stays builds: []). The skippedBuilds field is a copy of skipped when skipped is given, even when empty, and is absent otherwise.",
 						"examples": [
 							{},
 							{
 								"builds": [
 									{
-										"id": "reports",
-										"directory": "packages/reports/build",
-										"buildId": "9c4e1b7a02d3f85e6a1c9b0d47e2f83a5b6c1d0e9f8a7b6c5d4e3f2a1b0c9d8e",
-										"files": 37
+										"id": "web-client",
+										"directory": "dist/web",
+										"buildId": "9c1e4f0a7b2d86e35f1a0c9d4b7e2f83a6d15c0e9f4b2a7d38c6e1f05a9b4d72",
+										"files": 48
+									},
+									{
+										"id": "api-server",
+										"directory": "build/api",
+										"buildId": "e27a09c4d8f13b6e5a92c7d0f48e1b3a6c95d2e0f7a4b18c3d6e9f25a07b4c1d",
+										"files": 7
 									}
-								]
+								],
+								"skippedBuilds": ["docs.site"]
 							},
 							{
-								"builds": []
+								"builds": [
+									{
+										"id": "web-client",
+										"directory": "dist/web",
+										"buildId": "9c1e4f0a7b2d86e35f1a0c9d4b7e2f83a6d15c0e9f4b2a7d38c6e1f05a9b4d72",
+										"files": 48
+									},
+									{
+										"id": "api-server",
+										"directory": "build/api",
+										"buildId": "e27a09c4d8f13b6e5a92c7d0f48e1b3a6c95d2e0f7a4b18c3d6e9f25a07b4c1d",
+										"files": 7
+									},
+									{
+										"id": "docs.site",
+										"directory": "public/docs",
+										"buildId": "51d8b0e7a3c69f24d1e05b8a7c3f92e6b0d4a18c7e5f3b29d6a0c4e8f1b7a35d",
+										"files": 212
+									}
+								]
 							}
 						]
 					}
