@@ -20,29 +20,30 @@
 				"name": "githubLfs.options",
 				"type": "GitHubOptions",
 				"required": true,
-				"description": "Repository identity, scoped read-token callback and optional fetch implementation."
+				"description": "The GitHub repository identity and access configuration used for an LFS pointer: repository owner, name, ID and installation ID build the batch endpoint and token scope, and the token callback supplies a contents-read installation token. The optional fetch implementation replaces global fetch for both requests; otherwise global fetch is used."
 			},
 			{
 				"name": "githubLfs.bytes",
 				"type": "Uint8Array",
 				"required": true,
-				"description": "Raw blob bytes; ordinary blobs pass through, while recognized LFS pointers must use the exact supported v1 format."
+				"description": "The raw repository blob bytes to inspect; bytes not starting with `version https://git-lfs.github.com/spec/` are returned unchanged. If that prefix is present, the bytes must decode to the exact v1 pointer form with a lowercase 64-character SHA-256 and canonical decimal size, with an optional final newline; the size must be a safe integer no greater than 50,000,000."
 			}
 		],
 		"outputs": [
 			{
 				"name": "githubLfs",
 				"type": "Promise<Uint8Array>",
-				"description": "Original bytes for ordinary blobs, or downloaded bytes matching the pointer’s SHA-256 and declared size of at most 50,000,000 bytes."
+				"description": "The resolved value is the same input bytes when they are not an LFS pointer, or the downloaded object bytes after a pointer is recognized. Pointer bytes are returned only when their length matches the declared size and their SHA-256 matches the OID; the declared size is capped at 50,000,000, and the download URL must be credential-free HTTPS on githubusercontent.com or github-cloud.s3.amazonaws.com (including subdomains), with no explicit port."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Malformed pointers and oversized declarations fail directly; download, location, response and integrity failures become lfs-unavailable."
+				"description": "Malformed prefixed pointers and declarations above the size limit are rejected directly as invalid-lfs-pointer or lfs-size-limit. Failures during token acquisition, batch parsing, URL validation, download, response handling or integrity checking are caught and rejected as lfs-unavailable."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "githubLfs",
@@ -51,29 +52,30 @@
 						"name": "githubLfs.options",
 						"type": "GitHubOptions",
 						"required": true,
-						"description": "Repository identity, scoped read-token callback and optional fetch implementation."
+						"description": "The GitHub repository identity and access configuration used for an LFS pointer: repository owner, name, ID and installation ID build the batch endpoint and token scope, and the token callback supplies a contents-read installation token. The optional fetch implementation replaces global fetch for both requests; otherwise global fetch is used."
 					},
 					{
 						"name": "githubLfs.bytes",
 						"type": "Uint8Array",
 						"required": true,
-						"description": "Raw blob bytes; ordinary blobs pass through, while recognized LFS pointers must use the exact supported v1 format."
+						"description": "The raw repository blob bytes to inspect; bytes not starting with `version https://git-lfs.github.com/spec/` are returned unchanged. If that prefix is present, the bytes must decode to the exact v1 pointer form with a lowercase 64-character SHA-256 and canonical decimal size, with an optional final newline; the size must be a safe integer no greater than 50,000,000."
 					}
 				],
 				"outputs": [
 					{
 						"name": "githubLfs",
 						"type": "Promise<Uint8Array>",
-						"description": "Original bytes for ordinary blobs, or downloaded bytes matching the pointer’s SHA-256 and declared size of at most 50,000,000 bytes."
+						"description": "The resolved value is the same input bytes when they are not an LFS pointer, or the downloaded object bytes after a pointer is recognized. Pointer bytes are returned only when their length matches the declared size and their SHA-256 matches the OID; the declared size is capped at 50,000,000, and the download URL must be credential-free HTTPS on githubusercontent.com or github-cloud.s3.amazonaws.com (including subdomains), with no explicit port."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Malformed prefixed pointers and declarations above the size limit are rejected directly as invalid-lfs-pointer or lfs-size-limit. Failures during token acquisition, batch parsing, URL validation, download, response handling or integrity checking are caught and rejected as lfs-unavailable."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
