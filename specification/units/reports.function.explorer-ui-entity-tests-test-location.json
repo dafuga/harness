@@ -18,36 +18,53 @@
 				"name": "testLocation.route",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Required current explorer location, retaining branch and the canonical navigation context."
+				"description": "The current explorer address supplies the branch retained in the tests location. For a truthy target id, entityLens replaces its commit, category, entity and tab; a matching function helper may carry over.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": null,
+						"category": "pages"
+					}
+				]
 			},
 			{
 				"name": "testLocation.entity",
 				"type": "Pick<ExplorerEntity, 'id' | 'category'>",
 				"required": true,
-				"description": "Required target entity identity and category, read without mutating the entity."
+				"description": "Only its id and category are read and used as the target location entity and category. A falsy id makes entityLens return before adding either the entity or tests tab; this function does not validate the id.",
+				"examples": [
+					{
+						"id": "reports.function.explorer-ui-entity-tests-test-location",
+						"category": "functions"
+					}
+				]
 			},
 			{
 				"name": "testLocation.commit",
 				"type": "string",
 				"required": true,
-				"description": "Required recorded regression commit, passed unchanged to the canonical route helper."
+				"description": "Commit revision to use for the target entity tests. It is passed to entityLens unchanged, without validation or normalization.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "testLocation",
 				"type": "ExplorerLocation",
-				"description": "Canonical explorer location for the same entity and branch, with the selected recorded commit and tests tab."
+				"description": "Explorer address for the target entity tests at the supplied commit, retaining the route branch and using the entity category. When the entity id is truthy, the address includes that entity and the tests tab; entityLens may also retain a matching function helper from the route.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"category": "functions",
+						"entity": "reports.function.explorer-ui-entity-tests-test-location",
+						"tab": "tests"
+					}
+				]
 			}
 		],
-		"errors": [
-			{
-				"name": "Input access error",
-				"type": "propagated",
-				"description": "Errors from supplied property or string-operation access propagate unchanged."
-			}
-		],
-		"errorStatus": "declared",
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "testLocation",
@@ -56,35 +73,52 @@
 						"name": "testLocation.route",
 						"type": "ExplorerLocation",
 						"required": true,
-						"description": "Required current explorer location, retaining branch and the canonical navigation context."
+						"description": "The current explorer address supplies the branch retained in the tests location. For a truthy target id, entityLens replaces its commit, category, entity and tab; a matching function helper may carry over.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": null,
+								"category": "pages"
+							}
+						]
 					},
 					{
 						"name": "testLocation.entity",
 						"type": "Pick<ExplorerEntity, 'id' | 'category'>",
 						"required": true,
-						"description": "Required target entity identity and category, read without mutating the entity."
+						"description": "Only its id and category are read and used as the target location entity and category. A falsy id makes entityLens return before adding either the entity or tests tab; this function does not validate the id.",
+						"examples": [
+							{
+								"id": "reports.function.explorer-ui-entity-tests-test-location",
+								"category": "functions"
+							}
+						]
 					},
 					{
 						"name": "testLocation.commit",
 						"type": "string",
 						"required": true,
-						"description": "Required recorded regression commit, passed unchanged to the canonical route helper."
+						"description": "Commit revision to use for the target entity tests. It is passed to entityLens unchanged, without validation or normalization.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "testLocation",
 						"type": "ExplorerLocation",
-						"description": "Canonical explorer location for the same entity and branch, with the selected recorded commit and tests tab."
+						"description": "Explorer address for the target entity tests at the supplied commit, retaining the route branch and using the entity category. When the entity id is truthy, the address includes that entity and the tests tab; entityLens may also retain a matching function helper from the route.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"category": "functions",
+								"entity": "reports.function.explorer-ui-entity-tests-test-location",
+								"tab": "tests"
+							}
+						]
 					}
 				],
-				"errors": [
-					{
-						"name": "Input access error",
-						"type": "propagated",
-						"description": "Errors from supplied property or string-operation access propagate unchanged."
-					}
-				],
+				"errors": [],
 				"errorStatus": "declared"
 			}
 		],
