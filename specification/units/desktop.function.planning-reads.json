@@ -11,7 +11,6 @@
 		"source": [
 			"packages/desktop/src/services/project-session-service/planning-facade-adapter/planningReads.ts",
 			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningReads.ts",
-			"packages/desktop/src/utils/planning-reads/planRecord.ts",
 			"packages/desktop/src/utils/planningReads.ts",
 			"packages/desktop/src/utils/projects-sessions/planning-reads/planRecord.ts",
 			"packages/desktop/src/utils/projects-sessions/planning-reads/planRecord.types.ts"
@@ -25,8 +24,6 @@
 			"readPlanMessages",
 			"readPlanImage",
 			"readPlanHistory",
-			"planRecord",
-			"planVersion",
 			"PlanningContext",
 			"planRecord",
 			"planVersion",
