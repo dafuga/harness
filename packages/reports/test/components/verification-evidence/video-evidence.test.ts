@@ -17,6 +17,8 @@ test('VideoEvidence.svelte is generated', () => {
 	expect(body).not.toContain('autoplay');
 	expect(body).toContain('/harness/media/clip.mp4');
 	expect(body).toContain('/harness/media/poster.png');
+	expect(body).toContain('Clip SHA-256');
+	expect(body).toContain('Input hash');
 	for (const text of [
 		'Flag current frame',
 		'Frame note',

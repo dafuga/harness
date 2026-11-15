@@ -301,6 +301,7 @@
 		"reports.component.source-viewer",
 		"reports.component.usage-examples-usage-examples",
 		"reports.component.verification-evidence-audio-icon",
+		"reports.component.verification-evidence-video-evidence",
 		"reports.layout.explorer-layout",
 		"reports.page.harness-branch-branch-at-apis",
 		"reports.page.harness-branch-branch-at-apis-entity",
@@ -7849,6 +7850,12 @@
 			"units": ["reports.component.verification-evidence-audio-icon"]
 		},
 		{
+			"id": "reports-component-verification-evidence-video-evidence",
+			"title": "VideoEvidence: retained clip and frame feedback",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-evidence"]
+		},
+		{
 			"id": "reports-layout-explorer-layout",
 			"coverage": "required",
 			"units": ["reports.layout.explorer-layout"],
@@ -9311,6 +9318,7 @@
 				"reports-component-usage-examples-usage-examples-void",
 				"reports-component-usage-examples-usage-examples-empty",
 				"reports-component-verification-evidence-audio-icon",
+				"reports-component-verification-evidence-video-evidence",
 				"reports-layout-explorer-layout",
 				"reports-page-harness-branch-branch-at-apis",
 				"reports-page-harness-branch-branch-at-apis-entity",

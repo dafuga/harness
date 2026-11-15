@@ -48,6 +48,7 @@ export async function servePreview(route: Route, home: string, markup = '') {
 	if (url.pathname === '/tools') return pickerFixture(route);
 	const shown = historyOf(route, url);
 	const given: Record<string, unknown> = {
+		'/api/video-flags': { flags: [] },
 		'/harness/data/index.json': shown.index,
 		'/harness/data/activity.json': shellActivity(route)
 	};
