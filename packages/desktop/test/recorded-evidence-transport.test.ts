@@ -4,7 +4,7 @@ import { afterAll, beforeAll, test } from 'vitest';
 import type { RemoteBinary } from '../../remote/src/index';
 import type { ProjectSnapshot } from '../src/models/development-tooling/Desktop.types';
 import type { EntityEvidenceResult } from '../src/models/verification-evidence/DesktopEvidence.types';
-import { remoteBinary } from '../src/utils/remoteBinary';
+import { remoteBinary } from '../src/utils/networking-security/remoteBinary';
 import { localFixture } from './local-transport-fixture';
 import { remoteFixture } from './remote-fixture';
 import { binding, page, recordedRepo, sha256, type Recorded } from './recorded-evidence-fixture';

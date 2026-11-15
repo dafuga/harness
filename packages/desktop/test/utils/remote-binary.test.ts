@@ -1,7 +1,11 @@
 import { createHash } from 'node:crypto';
 import { expect, test } from 'vitest';
 import type { RemoteBinary } from '../../src/models/development-tooling/Environment.types';
-import { damagedMedia, remoteBinary, unreadableMedia } from '../../src/utils/remoteBinary';
+import {
+	damagedMedia,
+	remoteBinary,
+	unreadableMedia
+} from '../../src/utils/networking-security/remoteBinary';
 
 const bytes = Uint8Array.from([137, 80, 78, 71, 0, 255, 1, 2]);
 const sent = (): RemoteBinary => ({

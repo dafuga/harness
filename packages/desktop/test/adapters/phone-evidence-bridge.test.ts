@@ -12,7 +12,7 @@ import type {
 	RemoteNativeStatus
 } from '../../src/models/development-tooling/Environment.types';
 import { largeArtifact, otherArtifact, unshownArtifact } from '../../src/utils/remoteArtifact';
-import { damagedMedia, unreadableMedia } from '../../src/utils/remoteBinary';
+import { damagedMedia, unreadableMedia } from '../../src/utils/networking-security/remoteBinary';
 const attached: RemoteMethod[] = ['listProjects', 'snapshot', 'entity', 'evidence', 'artifact'];
 const online: RemoteNativeStatus = {
 	state: 'online',

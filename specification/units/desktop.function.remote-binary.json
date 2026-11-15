@@ -8,18 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/networking-security/remoteBinary.ts",
-			"packages/desktop/src/utils/remoteBinary.ts"
-		],
-		"symbols": [
-			"unreadableMedia",
-			"damagedMedia",
-			"remoteBinary",
-			"unreadableMedia",
-			"damagedMedia",
-			"remoteBinary"
-		]
+		"source": ["packages/desktop/src/utils/networking-security/remoteBinary.ts"],
+		"symbols": ["unreadableMedia", "damagedMedia", "remoteBinary"]
 	},
 	"contract": {
 		"origin": "declared",

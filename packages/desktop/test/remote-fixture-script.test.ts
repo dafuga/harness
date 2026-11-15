@@ -20,7 +20,7 @@ import type {
 	ProjectSnapshot
 } from '../src/models/development-tooling/Desktop.types';
 import type { RunEvent } from '../src/models/DesktopBridge.types';
-import { remoteBinary } from '../src/utils/remoteBinary';
+import { remoteBinary } from '../src/utils/networking-security/remoteBinary';
 const settle = { timeout: 20000 },
 	sockets = new RelaySocketAdapter(),
 	lines: string[] = [],

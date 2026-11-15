@@ -11,7 +11,7 @@ import type {
 	ProjectSnapshot
 } from '../src/models/development-tooling/Desktop.types';
 import type { RunEvent } from '../src/models/DesktopBridge.types';
-import { remoteBinary } from '../src/utils/remoteBinary';
+import { remoteBinary } from '../src/utils/networking-security/remoteBinary';
 import { largeGame, largeImage, localFixture } from './local-transport-fixture';
 import { deferred } from './remote-fixture';
 import { git } from './run-fixture';

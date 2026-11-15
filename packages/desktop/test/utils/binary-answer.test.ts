@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { createHash, randomBytes } from 'node:crypto';
 import { binaryAnswer } from '../../src/utils/reports-media/binaryAnswer';
-import { remoteBinary } from '../../src/utils/remoteBinary';
+import { remoteBinary } from '../../src/utils/networking-security/remoteBinary';
 
 test('media is answered with its length and hash, and decodes to the same bytes', async () => {
 	const bytes = randomBytes(70000),

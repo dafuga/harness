@@ -1,7 +1,7 @@
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import type { RemoteBinary, WirePart } from '../../remote/src/index';
-import { remoteBinary } from '../src/utils/remoteBinary';
+import { remoteBinary } from '../src/utils/networking-security/remoteBinary';
 import { largeImage, localFixture } from './local-transport-fixture';
 import { git } from './run-fixture';
 

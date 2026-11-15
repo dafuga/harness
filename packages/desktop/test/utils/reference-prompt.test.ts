@@ -1,6 +1,6 @@
 import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
-import { referencePrompt } from '../../src/utils/referencePrompt';
+import { referencePrompt } from '../../src/utils/agents-providers/referencePrompt';
 
 /** The lines that ask an agent for references list each grammatical id once, in a bounded list. */
 const listed = (prompt: string) =>

@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/agents-providers/referencePrompt.ts",
-			"packages/desktop/src/utils/referencePrompt.ts"
-		],
-		"symbols": ["referencePrompt", "referencePrompt"]
+		"source": ["packages/desktop/src/utils/agents-providers/referencePrompt.ts"],
+		"symbols": ["referencePrompt"]
 	},
 	"contract": {
 		"origin": "declared",

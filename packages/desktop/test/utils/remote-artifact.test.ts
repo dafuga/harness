@@ -9,7 +9,7 @@ import {
 	unshownArtifact
 } from '../../src/utils/remoteArtifact';
 import { remoteArtifact } from '../../src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/remoteArtifact';
-import { damagedMedia, unreadableMedia } from '../../src/utils/remoteBinary';
+import { damagedMedia, unreadableMedia } from '../../src/utils/networking-security/remoteBinary';
 
 const hash = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex');
 const sent = (bytes: Uint8Array, mediaType = 'application/json'): RemoteBinary => ({
