@@ -9,13 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/lib/desktop-initialization/NativeAuthService.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.types.ts",
 			"packages/desktop/src/services/NativeAuthService.ts"
 		],
 		"symbols": [
-			"NativeAuthService",
 			"NativeAuthService",
 			"NativeAuthService.constructor",
 			"NativeAuthService.connect",

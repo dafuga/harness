@@ -9,13 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/lib/desktop-initialization/RemoteLifecycleService.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteLifecycleService.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteLifecycleService.types.ts",
 			"packages/desktop/src/services/RemoteLifecycleService.ts"
 		],
 		"symbols": [
-			"RemoteLifecycleService",
 			"RemoteLifecycleService",
 			"RemoteLifecycleService.constructor",
 			"RemoteLifecycleService.start",
