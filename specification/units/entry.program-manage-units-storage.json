@@ -25,7 +25,7 @@
 		"outputs": [
 			{
 				"name": "specificationStorageReport",
-				"type": "unknown",
+				"type": "Promise<{ units: { files: number; bytes: number; }; budgetLedger: { bytes: number; lines: number; }; operatorHeadsUpBytes: { units: number; budgetLedger: number; }; warnings: string[]; }>",
 				"description": "The report gives the number and total bytes of .json unit files, the ledger byte and line counts, the fixed operator heads-up thresholds, and any warnings. A warning appears when its byte total is at or above the corresponding threshold; filesystem enumeration and stat failures are treated as empty or zero.",
 				"examples": [
 					{
@@ -87,7 +87,7 @@
 				"outputs": [
 					{
 						"name": "specificationStorageReport",
-						"type": "unknown",
+						"type": "Promise<{ units: { files: number; bytes: number; }; budgetLedger: { bytes: number; lines: number; }; operatorHeadsUpBytes: { units: number; budgetLedger: number; }; warnings: string[]; }>",
 						"description": "The report gives the number and total bytes of .json unit files, the ledger byte and line counts, the fixed operator heads-up thresholds, and any warnings. A warning appears when its byte total is at or above the corresponding threshold; filesystem enumeration and stat failures are treated as empty or zero.",
 						"examples": [
 							{

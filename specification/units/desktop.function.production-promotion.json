@@ -36,7 +36,7 @@
 		"outputs": [
 			{
 				"name": "productionPromotion",
-				"type": "unknown",
+				"type": "Promise<{ blockers: string[]; branch: string; promotion: { preprod: DeploymentReceipt | null; production: DeploymentReceipt | null; commitsBehind: number | null; }; }>",
 				"description": "Both verified receipts, their commit distance and reasons that block production promotion."
 			}
 		],
@@ -67,7 +67,7 @@
 				"outputs": [
 					{
 						"name": "productionPromotion",
-						"type": "unknown",
+						"type": "Promise<{ blockers: string[]; branch: string; promotion: { preprod: DeploymentReceipt | null; production: DeploymentReceipt | null; commitsBehind: number | null; }; }>",
 						"description": "Both verified receipts, their commit distance and reasons that block production promotion."
 					}
 				],

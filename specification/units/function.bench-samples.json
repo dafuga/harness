@@ -195,7 +195,7 @@
 			},
 			{
 				"name": "roundMeasurements",
-				"type": "unknown",
+				"type": "{ metric: string; unitOfMeasure: string; value: number; method: string; }[]",
 				"description": "Three records in latency-floor-ms, latency-warm-ms, then throughput-ops order. Each record contains metric, unitOfMeasure, value, and a method string describing the timing boundary.",
 				"examples": [
 					[
@@ -447,7 +447,7 @@
 				"outputs": [
 					{
 						"name": "roundMeasurements",
-						"type": "unknown",
+						"type": "{ metric: string; unitOfMeasure: string; value: number; method: string; }[]",
 						"description": "Three records in latency-floor-ms, latency-warm-ms, then throughput-ops order. Each record contains metric, unitOfMeasure, value, and a method string describing the timing boundary.",
 						"examples": [
 							[

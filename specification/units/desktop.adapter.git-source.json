@@ -641,7 +641,7 @@
 			},
 			{
 				"name": "GitSourceAdapter.source",
-				"type": "unknown",
+				"type": "Promise<{ path: string; text: string; }>",
 				"description": "Returns the requested repository-relative path and its text read from the selected revision. The path is returned only after it passes the unit source check.",
 				"examples": [
 					{
@@ -652,12 +652,12 @@
 			},
 			{
 				"name": "GitSourceAdapter.documentation",
-				"type": "unknown",
+				"type": "Promise<import(\"../../../../../../../src/utils/unit-documentation/unitDocumentation\").UnitDocumentation | undefined>",
 				"description": "Returns undefined when the unit has no documentation field; otherwise returns the result of readUnitDocumentation using Git text from the resolved commit. The documentation result shape is determined by that reader."
 			},
 			{
 				"name": "GitSourceAdapter.size",
-				"type": "unknown",
+				"type": "Promise<{ available: boolean; text: string; }>",
 				"description": "Returns available and text fields for the total size of files selected by the unit source rules. The size is the summed Git blob byte count divided by 1024 and formatted to one decimal place, or Not measured when no paths match.",
 				"examples": [
 					{
@@ -672,7 +672,7 @@
 			},
 			{
 				"name": "GitSourceAdapter.contractHash",
-				"type": "unknown",
+				"type": "string",
 				"description": "Returns the lowercase hexadecimal SHA-256 digest of JSON.stringify(unit.contract). The digest does not cover the rest of the manifest.",
 				"examples": ["3353d2f60ca6b5237e40223c69c0792a81da459302e8f844da86dfeadf78d6f8"]
 			}
@@ -1094,7 +1094,7 @@
 				"outputs": [
 					{
 						"name": "GitSourceAdapter.source",
-						"type": "unknown",
+						"type": "Promise<{ path: string; text: string; }>",
 						"description": "Returns the requested repository-relative path and its text read from the selected revision. The path is returned only after it passes the unit source check.",
 						"examples": [
 							{
@@ -1218,7 +1218,7 @@
 				"outputs": [
 					{
 						"name": "GitSourceAdapter.documentation",
-						"type": "unknown",
+						"type": "Promise<import(\"../../../../../../../src/utils/unit-documentation/unitDocumentation\").UnitDocumentation | undefined>",
 						"description": "Returns undefined when the unit has no documentation field; otherwise returns the result of readUnitDocumentation using Git text from the resolved commit. The documentation result shape is determined by that reader."
 					}
 				],
@@ -1336,7 +1336,7 @@
 				"outputs": [
 					{
 						"name": "GitSourceAdapter.size",
-						"type": "unknown",
+						"type": "Promise<{ available: boolean; text: string; }>",
 						"description": "Returns available and text fields for the total size of files selected by the unit source rules. The size is the summed Git blob byte count divided by 1024 and formatted to one decimal place, or Not measured when no paths match.",
 						"examples": [
 							{
@@ -1457,7 +1457,7 @@
 				"outputs": [
 					{
 						"name": "GitSourceAdapter.contractHash",
-						"type": "unknown",
+						"type": "string",
 						"description": "Returns the lowercase hexadecimal SHA-256 digest of JSON.stringify(unit.contract). The digest does not cover the rest of the manifest.",
 						"examples": ["3353d2f60ca6b5237e40223c69c0792a81da459302e8f844da86dfeadf78d6f8"]
 					}

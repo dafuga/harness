@@ -226,7 +226,7 @@
 			},
 			{
 				"name": "benchmarkSchedule",
-				"type": "unknown",
+				"type": "{ candidate: string; repetition: number; }[]",
 				"description": "Flat execution order of {candidate, repetition} entries: for each repetition from 1 to budget.repetitions, one entry per candidate, sorted by the SHA-256 fingerprint of [run.seed, entry].",
 				"examples": [
 					[
@@ -591,7 +591,7 @@
 				"outputs": [
 					{
 						"name": "benchmarkSchedule",
-						"type": "unknown",
+						"type": "{ candidate: string; repetition: number; }[]",
 						"description": "Flat execution order of {candidate, repetition} entries: for each repetition from 1 to budget.repetitions, one entry per candidate, sorted by the SHA-256 fingerprint of [run.seed, entry].",
 						"examples": [
 							[

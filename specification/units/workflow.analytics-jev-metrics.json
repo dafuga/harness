@@ -82,7 +82,7 @@
 		"outputs": [
 			{
 				"name": "jevMetrics",
-				"type": "unknown",
+				"type": "{ checks: number; outcomes: Record<string, number>; excluded: number; firstTry: { numerator: number; denominator: number; rate: number | null; }; tasks: { project: string; loop: string | undefined; step: string | undefined; task: string | undefined; agentModel: string; attempts: number; attemptsToPass: number | null; firstPassed: boolean; report: string | undefined; }[]; }",
 				"description": "The result contains matching check and status counts, the excluded-record count, first-try pass totals and rate, and summaries of eligible task groups. The first-try rate is null when there are no task groups; groups use project, loopRun, task identity, and check type, and each summary carries the first attempt’s report value.",
 				"examples": [
 					{
@@ -188,7 +188,7 @@
 				"outputs": [
 					{
 						"name": "jevMetrics",
-						"type": "unknown",
+						"type": "{ checks: number; outcomes: Record<string, number>; excluded: number; firstTry: { numerator: number; denominator: number; rate: number | null; }; tasks: { project: string; loop: string | undefined; step: string | undefined; task: string | undefined; agentModel: string; attempts: number; attemptsToPass: number | null; firstPassed: boolean; report: string | undefined; }[]; }",
 						"description": "The result contains matching check and status counts, the excluded-record count, first-try pass totals and rate, and summaries of eligible task groups. The first-try rate is null when there are no task groups; groups use project, loopRun, task identity, and check type, and each summary carries the first attempt’s report value.",
 						"examples": [
 							{

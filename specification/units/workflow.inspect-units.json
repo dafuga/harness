@@ -227,7 +227,7 @@
 			},
 			{
 				"name": "listUnits",
-				"type": "unknown",
+				"type": "Promise<{ id: string; kind: string; responsibility: string; }[]>",
 				"description": "The active units from the stored registry, each projected to id, kind, and responsibility. A supplied kind filter is applied after active-status filtering, so inactive units never appear.",
 				"examples": [
 					[
@@ -476,7 +476,7 @@
 				"outputs": [
 					{
 						"name": "listUnits",
-						"type": "unknown",
+						"type": "Promise<{ id: string; kind: string; responsibility: string; }[]>",
 						"description": "The active units from the stored registry, each projected to id, kind, and responsibility. A supplied kind filter is applied after active-status filtering, so inactive units never appear.",
 						"examples": [
 							[

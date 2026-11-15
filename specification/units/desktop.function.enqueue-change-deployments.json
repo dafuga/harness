@@ -54,7 +54,7 @@
 		"outputs": [
 			{
 				"name": "enqueueChangeDeployments",
-				"type": "unknown",
+				"type": "Promise<import(\"../../models/development-tooling/Deployment.types\").DeploymentActivity[]>",
 				"description": "The activity records returned by activities.schedule, in the order selected by changeEnvironment. The function returns after scheduling and chains each later activity on the previous activity’s wait promise; it does not await completed deployments.",
 				"examples": [
 					[
@@ -154,7 +154,7 @@
 				"outputs": [
 					{
 						"name": "enqueueChangeDeployments",
-						"type": "unknown",
+						"type": "Promise<import(\"../../models/development-tooling/Deployment.types\").DeploymentActivity[]>",
 						"description": "The activity records returned by activities.schedule, in the order selected by changeEnvironment. The function returns after scheduling and chains each later activity on the previous activity’s wait promise; it does not await completed deployments.",
 						"examples": [
 							[

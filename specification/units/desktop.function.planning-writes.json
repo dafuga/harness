@@ -296,7 +296,7 @@
 			},
 			{
 				"name": "planningWrites",
-				"type": "unknown",
+				"type": "Promise<import(\"../../../../models/planning-collaboration/PlanningPort.types\").PlanRecord>",
 				"description": "A promise for the new plan's record, read back after the commit: its id is the singular category and slug joined by a dot, its path is src/ followed by the plural category and the slug, its lifecycle is draft, and it has no versions or threads. Its contract holds the proposed inputs, outputs and errors, with empty lists where none were proposed.",
 				"examples": [
 					{
@@ -351,7 +351,7 @@
 			},
 			{
 				"name": "ensurePlan",
-				"type": "unknown",
+				"type": "Promise<import(\"../../../../models/planning-collaboration/PlanningPort.types\").PlanRecord>",
 				"description": "A promise for the unit's plan record: the existing plan read at HEAD with its designs and threads, or a new draft seeded from the unit with no versions or threads. A new draft's contract keeps the unit's inputs and outputs as written, and its errors are shown as {name, type: 'error'} entries.",
 				"examples": [
 					{
@@ -456,7 +456,7 @@
 			},
 			{
 				"name": "addPlanDesign",
-				"type": "unknown",
+				"type": "Promise<import(\"../../../../models/planning-collaboration/DesignVersion.types\").DesignVersion>",
 				"description": "A promise for the design version just added, read back with its plan: its version is the next in sequence (such as v002), its commit is the commit that added it, and its images are one PNG, one per option, or none for a notes-only design. Its approval is null for a new version, and options and revises appear only when the design has them.",
 				"examples": [
 					{
@@ -502,7 +502,7 @@
 			},
 			{
 				"name": "openPlanThread",
-				"type": "unknown",
+				"type": "Promise<import(\"../../../../models/development-tooling/Desktop.types\").ThreadInfo>",
 				"description": "A promise for the new thread's summary: its id, its pin (the next number on the unit), its anchor's version, image hash, state, viewport and region (all null when unanchored), and its option when the image has one. messageCount is 0 because this operation writes no first message.",
 				"examples": [
 					{
@@ -534,7 +534,7 @@
 			},
 			{
 				"name": "approvePlanDesign",
-				"type": "unknown",
+				"type": "Promise<import(\"../../../../models/development-tooling/Desktop.types\").ApprovalInfo>",
 				"description": "A promise for the saved approval summary: its id, the approved version, the image hashes it binds, its contract hash and approval time, with option for a version with options. current is true when it is returned, because the approval binds the latest version.",
 				"examples": [
 					{
@@ -612,7 +612,7 @@
 				"outputs": [
 					{
 						"name": "planningWrites",
-						"type": "unknown",
+						"type": "Promise<import(\"../../../../models/planning-collaboration/PlanningPort.types\").PlanRecord>",
 						"description": "A promise for the new plan's record, read back after the commit: its id is the singular category and slug joined by a dot, its path is src/ followed by the plural category and the slug, its lifecycle is draft, and it has no versions or threads. Its contract holds the proposed inputs, outputs and errors, with empty lists where none were proposed.",
 						"examples": [
 							{
@@ -762,7 +762,7 @@
 				"outputs": [
 					{
 						"name": "ensurePlan",
-						"type": "unknown",
+						"type": "Promise<import(\"../../../../models/planning-collaboration/PlanningPort.types\").PlanRecord>",
 						"description": "A promise for the unit's plan record: the existing plan read at HEAD with its designs and threads, or a new draft seeded from the unit with no versions or threads. A new draft's contract keeps the unit's inputs and outputs as written, and its errors are shown as {name, type: 'error'} entries.",
 						"examples": [
 							{
@@ -924,7 +924,7 @@
 				"outputs": [
 					{
 						"name": "addPlanDesign",
-						"type": "unknown",
+						"type": "Promise<import(\"../../../../models/planning-collaboration/DesignVersion.types\").DesignVersion>",
 						"description": "A promise for the design version just added, read back with its plan: its version is the next in sequence (such as v002), its commit is the commit that added it, and its images are one PNG, one per option, or none for a notes-only design. Its approval is null for a new version, and options and revises appear only when the design has them.",
 						"examples": [
 							{
@@ -1029,7 +1029,7 @@
 				"outputs": [
 					{
 						"name": "openPlanThread",
-						"type": "unknown",
+						"type": "Promise<import(\"../../../../models/development-tooling/Desktop.types\").ThreadInfo>",
 						"description": "A promise for the new thread's summary: its id, its pin (the next number on the unit), its anchor's version, image hash, state, viewport and region (all null when unanchored), and its option when the image has one. messageCount is 0 because this operation writes no first message.",
 						"examples": [
 							{
@@ -1109,7 +1109,7 @@
 				"outputs": [
 					{
 						"name": "approvePlanDesign",
-						"type": "unknown",
+						"type": "Promise<import(\"../../../../models/development-tooling/Desktop.types\").ApprovalInfo>",
 						"description": "A promise for the saved approval summary: its id, the approved version, the image hashes it binds, its contract hash and approval time, with option for a version with options. current is true when it is returned, because the approval binds the latest version.",
 						"examples": [
 							{

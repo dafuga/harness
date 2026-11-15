@@ -151,7 +151,7 @@
 			},
 			{
 				"name": "deploymentBlockers",
-				"type": "unknown",
+				"type": "Promise<{ blockers: string[]; branch: string; promotion: { preprod: import(\"../../models/development-tooling/Deployment.types\").DeploymentReceipt | null; production: import(\"../../models/development-tooling/Deployment.types\").DeploymentReceipt | null; commitsBehind: number | null; }; } | { blockers: string[]; branch: string; promotion: undefined; }>",
 				"description": "For non-prod, returns blocker strings, the current branch, and promotion as undefined; for prod, forwards blockers, branch, and the preprod/production comparison. It reports state and target issues but does not perform a deployment.",
 				"examples": [
 					{
@@ -176,7 +176,7 @@
 			},
 			{
 				"name": "deploymentCurrent",
-				"type": "unknown",
+				"type": "Promise<DeploymentConfig>",
 				"description": "Returns the discovered DeploymentConfig, filling an empty sourceBranch from plan.branch. It throws when the fingerprint, production comparison, or blocker state changed; discovery and blocker-check failures also propagate.",
 				"examples": [
 					{
@@ -299,7 +299,7 @@
 				"outputs": [
 					{
 						"name": "deploymentBlockers",
-						"type": "unknown",
+						"type": "Promise<{ blockers: string[]; branch: string; promotion: { preprod: import(\"../../models/development-tooling/Deployment.types\").DeploymentReceipt | null; production: import(\"../../models/development-tooling/Deployment.types\").DeploymentReceipt | null; commitsBehind: number | null; }; } | { blockers: string[]; branch: string; promotion: undefined; }>",
 						"description": "For non-prod, returns blocker strings, the current branch, and promotion as undefined; for prod, forwards blockers, branch, and the preprod/production comparison. It reports state and target issues but does not perform a deployment.",
 						"examples": [
 							{
@@ -406,7 +406,7 @@
 				"outputs": [
 					{
 						"name": "deploymentCurrent",
-						"type": "unknown",
+						"type": "Promise<DeploymentConfig>",
 						"description": "Returns the discovered DeploymentConfig, filling an empty sourceBranch from plan.branch. It throws when the fingerprint, production comparison, or blocker state changed; discovery and blocker-check failures also propagate.",
 						"examples": [
 							{

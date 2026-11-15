@@ -48,7 +48,7 @@
 				"outputs": [
 					{
 						"name": "ProjectSyncService.start",
-						"type": "unknown",
+						"type": "void",
 						"description": "Activates syncing once, installs focus, online and visibility listeners when the browser objects support them, and waits one interval before the first read while shown. It returns undefined."
 					}
 				],
@@ -61,7 +61,7 @@
 				"outputs": [
 					{
 						"name": "ProjectSyncService.stop",
-						"type": "unknown",
+						"type": "void",
 						"description": "Deactivates syncing, clears its timer and queued follow-up, and removes installed listeners; an in-flight refresh is not cancelled. It returns undefined."
 					}
 				],

@@ -108,12 +108,12 @@
 			},
 			{
 				"name": "saveDeployment",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "Resolves with undefined once the updated receipt list has been written to a temporary file in the receipts directory and renamed over receipts.json. Saves to that directory are queued in this process so they run one at a time, and read, validation or write errors reject the promise."
 			},
 			{
 				"name": "deploymentStatus",
-				"type": "unknown",
+				"type": "Promise<{ environment: \"dev\" | \"stage\" | \"preprod\" | \"prod\"; receipt: DeploymentReceipt | null; available: boolean; reason: string; }[]>",
 				"description": "One entry per environment, in the order dev, stage, preprod and prod, with its stored receipt or null and available set to whether discover reports a target for that environment. The reason is 'Cloudflare target configured.' or 'Deployment target not configured.' for each entry, or 'Cloudflare configuration is unavailable or invalid.' for every entry when discover rejects.",
 				"examples": [
 					[
@@ -312,7 +312,7 @@
 				"outputs": [
 					{
 						"name": "saveDeployment",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Resolves with undefined once the updated receipt list has been written to a temporary file in the receipts directory and renamed over receipts.json. Saves to that directory are queued in this process so they run one at a time, and read, validation or write errors reject the promise."
 					}
 				],
@@ -358,7 +358,7 @@
 				"outputs": [
 					{
 						"name": "deploymentStatus",
-						"type": "unknown",
+						"type": "Promise<{ environment: \"dev\" | \"stage\" | \"preprod\" | \"prod\"; receipt: DeploymentReceipt | null; available: boolean; reason: string; }[]>",
 						"description": "One entry per environment, in the order dev, stage, preprod and prod, with its stored receipt or null and available set to whether discover reports a target for that environment. The reason is 'Cloudflare target configured.' or 'Deployment target not configured.' for each entry, or 'Cloudflare configuration is unavailable or invalid.' for every entry when discover rejects.",
 						"examples": [
 							[

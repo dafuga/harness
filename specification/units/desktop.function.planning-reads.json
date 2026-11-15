@@ -278,7 +278,7 @@
 		"outputs": [
 			{
 				"name": "planningReads",
-				"type": "unknown",
+				"type": "Promise<import(\"../../../../models/planning-collaboration/PlanningPort.types\").PlanRecord[]>",
 				"description": "Resolves to one converted PlanRecord for each plan in the snapshot at the requested revision. A nonempty rejected list throws an Error containing the rejected paths and messages; API or Git read failures also reject.",
 				"examples": [
 					[]
@@ -326,7 +326,7 @@
 			},
 			{
 				"name": "readPlanMessages",
-				"type": "unknown",
+				"type": "Promise<import(\"../../../../models/development-tooling/Desktop.types\").ThreadMessage[]>",
 				"description": "Resolves to the selected thread's messages converted to desktop ThreadMessage records. The requested thread must belong to the entity at the requested revision.",
 				"examples": [
 					[
@@ -346,12 +346,12 @@
 			},
 			{
 				"name": "readPlanImage",
-				"type": "unknown",
+				"type": "Promise<Uint8Array<ArrayBufferLike>>",
 				"description": "Resolves to the image bytes returned by readImage after the image is found in the requested entity and version. The optional design option is forwarded to readImage."
 			},
 			{
 				"name": "readPlanHistory",
-				"type": "unknown",
+				"type": "Promise<{ id: string; at: string; kind: \"commit\"; title: string; detail: string; commit: string; version: null; }[]>",
 				"description": "Resolves to history entries mapped from commits, with event kinds joined into detail and version set to null. The returned entry ID and commit are the same commit identifier.",
 				"examples": [
 					[
@@ -397,7 +397,7 @@
 				"outputs": [
 					{
 						"name": "planningReads",
-						"type": "unknown",
+						"type": "Promise<import(\"../../../../models/planning-collaboration/PlanningPort.types\").PlanRecord[]>",
 						"description": "Resolves to one converted PlanRecord for each plan in the snapshot at the requested revision. A nonempty rejected list throws an Error containing the rejected paths and messages; API or Git read failures also reject.",
 						"examples": [
 							[]
@@ -439,7 +439,7 @@
 				"outputs": [
 					{
 						"name": "readPlanMessages",
-						"type": "unknown",
+						"type": "Promise<import(\"../../../../models/development-tooling/Desktop.types\").ThreadMessage[]>",
 						"description": "Resolves to the selected thread's messages converted to desktop ThreadMessage records. The requested thread must belong to the entity at the requested revision.",
 						"examples": [
 							[
@@ -495,7 +495,7 @@
 				"outputs": [
 					{
 						"name": "readPlanImage",
-						"type": "unknown",
+						"type": "Promise<Uint8Array<ArrayBufferLike>>",
 						"description": "Resolves to the image bytes returned by readImage after the image is found in the requested entity and version. The optional design option is forwarded to readImage."
 					}
 				],
@@ -535,7 +535,7 @@
 				"outputs": [
 					{
 						"name": "readPlanHistory",
-						"type": "unknown",
+						"type": "Promise<{ id: string; at: string; kind: \"commit\"; title: string; detail: string; commit: string; version: null; }[]>",
 						"description": "Resolves to history entries mapped from commits, with event kinds joined into detail and version set to null. The returned entry ID and commit are the same commit identifier.",
 						"examples": [
 							[

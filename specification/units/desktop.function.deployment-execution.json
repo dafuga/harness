@@ -92,7 +92,7 @@
 		"outputs": [
 			{
 				"name": "deploymentExecution",
-				"type": "unknown",
+				"type": "Promise<{ environment: \"dev\" | \"stage\" | \"preprod\" | \"prod\"; commit: string; branch: string; adapter: string; updatedAt: string; deploymentId: string; url: string; configuration: string; }>",
 				"description": "The receipt saved for the root after the health check and both final snapshot verifications pass: configuration is reviewed.fingerprint, deploymentId and url come from the plugin.deploy result, environment, commit and branch come from the plan, adapter is the plugin id, and updatedAt is the time the receipt is built. A failure at any earlier step throws before saveDeployment runs, so the stored receipt is not advanced.",
 				"examples": [
 					{
@@ -205,7 +205,7 @@
 				"outputs": [
 					{
 						"name": "deploymentExecution",
-						"type": "unknown",
+						"type": "Promise<{ environment: \"dev\" | \"stage\" | \"preprod\" | \"prod\"; commit: string; branch: string; adapter: string; updatedAt: string; deploymentId: string; url: string; configuration: string; }>",
 						"description": "The receipt saved for the root after the health check and both final snapshot verifications pass: configuration is reviewed.fingerprint, deploymentId and url come from the plugin.deploy result, environment, commit and branch come from the plan, adapter is the plugin id, and updatedAt is the time the receipt is built. A failure at any earlier step throws before saveDeployment runs, so the stored receipt is not advanced.",
 						"examples": [
 							{
