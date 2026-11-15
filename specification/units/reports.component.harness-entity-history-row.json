@@ -33,68 +33,173 @@
 				"name": "EntityHistoryRow.row",
 				"type": "ExplorerHistoryRow",
 				"required": true,
-				"description": "Required commit history row with date, subject, measured size/complexity, deltas, reviews and change classification."
+				"description": "The commit row this component shows: committedAt gives the relative date with the exact timestamp as hover text, the first seven characters of commit are the link text, and subject, bounded to the subject writing limit, stands in for behavior text when the detail has none. Size and complexity come from measured and fall back to the detail's sourceSize and sourceComplexity when measured has no value; sizeChange and complexityChange are signed deltas, and an approval review adds a Budget increase approved badge.",
+				"examples": [
+					{
+						"commit": "9c41e7a0d2b35f8e6a1c4d7b90e2f3a5c6d8b1e4",
+						"subject": "Keep entity history rows compact",
+						"author": "Avery Chen",
+						"committedAt": "2026-11-09T16:42:10+01:00",
+						"coverage": "verified",
+						"previous": "4e8b2d7f1a9c03e6b5d2f8a1c7e4b9d0a3f6c2e8",
+						"standing": "changed",
+						"change": "direct",
+						"gap": null,
+						"measured": null,
+						"sizeChange": null,
+						"complexityChange": null,
+						"reviews": []
+					},
+					{
+						"commit": "b7d1f3a9e0c4285d6f1a9b3e7c0d4f2a8e6b1c93",
+						"subject": "Tidy explorer copy",
+						"author": "Sam Okafor",
+						"committedAt": "2026-10-28T09:15:44-05:00",
+						"coverage": "unverified",
+						"previous": "a2c8e5f1d7b94036e9c2a8f5d1b7e3c6a0f4d921",
+						"standing": "unknown",
+						"change": null,
+						"gap": "This history was built before it recorded what each commit changed.",
+						"measured": null,
+						"sizeChange": null,
+						"complexityChange": null,
+						"reviews": []
+					},
+					{
+						"commit": "1f0a6d3c8e5b92f47a0d6c1e9b3f8a5d2c7e4b60",
+						"subject": "Remove the old row layout",
+						"author": "Avery Chen",
+						"committedAt": "2026-11-12T11:03:27+00:00",
+						"coverage": "invalid",
+						"previous": "d4a7c0e9f2b15836a8d1c4e7f0b9a2d5c3e6f819",
+						"standing": "changed",
+						"change": "removed",
+						"gap": null,
+						"measured": null,
+						"sizeChange": null,
+						"complexityChange": null,
+						"reviews": []
+					}
+				]
 			},
 			{
 				"name": "EntityHistoryRow.detail",
 				"type": "ExplorerHistoryDetail | undefined",
 				"required": true,
-				"description": "Required loaded detail or undefined. Its explanations supply summarized reasons and attempts; subject is the fallback when behavior text is absent."
+				"description": "The loaded revision detail of this entity at this commit, or undefined until its revision has been read. Its explanations are summarized by entityReasons and the summary is passed to EntityReasons; its sourceSize and sourceComplexity fill in a size or complexity the row does not measure, and the row shows its subject instead when no behavior text is summarized.",
+				"examples": [
+					{
+						"sourceSize": null,
+						"sourceComplexity": null,
+						"known": false,
+						"present": false,
+						"change": null,
+						"version": null,
+						"explanations": [],
+						"verdict": null
+					}
+				]
 			},
 			{
 				"name": "EntityHistoryRow.timing",
 				"type": "HistoryTiming | undefined",
 				"required": true,
-				"description": "Required selected-profile timing or undefined. Displays before-to-after when before exists, otherwise after only; missing timing is Not measured."
+				"description": "The timing of the chosen profile at this commit, or undefined when it has none. It shows before → after in its unit when a before value exists, after alone otherwise, and Not measured when the timing is undefined.",
+				"examples": [
+					{
+						"profile": "7c3e9a1f5b0d2846",
+						"workload": "explorer-history-rows",
+						"metric": "latency-warm-ms",
+						"target": "module",
+						"unit": "ms",
+						"before": 1.84,
+						"after": 1.62
+					},
+					{
+						"profile": "7c3e9a1f5b0d2846",
+						"workload": "explorer-history-rows",
+						"metric": "latency-observed-ms",
+						"target": "module",
+						"unit": "ms",
+						"after": 2.37
+					}
+				]
 			},
 			{
 				"name": "EntityHistoryRow.verdict",
 				"type": "Pick<ExplorerVerdict, 'passed' | 'label'> & { reasons?: string[] }",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional legacy verdict input; this compact commit row does not render a verdict."
+				"description": "Optional legacy verdict with passed, label and reasons. The props type accepts it, but the component never reads it, so this compact commit row renders no verdict.",
+				"examples": [
+					{
+						"passed": true,
+						"label": "Full coverage passed"
+					},
+					{
+						"passed": false,
+						"label": "Evidence missing"
+					}
+				]
 			},
 			{
 				"name": "EntityHistoryRow.selected",
 				"type": "boolean",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional legacy selection input; the row uses viewed to identify the displayed commit."
+				"description": "Optional legacy selection flag. The props type accepts it, but the component never reads it; the viewed flag alone marks the displayed commit.",
+				"examples": [false, true]
 			},
 			{
 				"name": "EntityHistoryRow.viewed",
 				"type": "boolean",
 				"required": true,
-				"description": "Required flag marking this as the currently viewed commit and adding its badge."
+				"description": "Required flag for the commit being viewed: when true, the row gets the viewed class and a Viewed commit badge beside its hash link.",
+				"examples": [true, false]
 			},
 			{
 				"name": "EntityHistoryRow.to",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Required destination for opening this entity at this row’s commit."
+				"description": "Required location that the commit hash links to, meaning the entity at this commit, which the source compares with its own parent. It is passed unchanged to EntityLink together with nav.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "9c41e7a0d2b35f8e6a1c4d7b90e2f3a5c6d8b1e4",
+						"category": "functions",
+						"entity": "reports.function.entity-history"
+					},
+					{
+						"branch": null,
+						"commit": "1f0a6d3c8e5b92f47a0d6c1e9b3f8a5d2c7e4b60",
+						"category": "components",
+						"entity": "reports.component.harness-entity-history-row"
+					}
+				]
 			},
 			{
 				"name": "EntityHistoryRow.nav",
 				"type": "EntityNav",
 				"required": true,
-				"description": "Required navigation context passed to the revision link."
+				"description": "Required navigation context (EntityNav: route, href and go, plus an optional source), passed unchanged to EntityLink together with to, which wraps the commit hash."
 			},
 			{
 				"name": "EntityHistoryRow.onselect",
 				"type": "(full: boolean) => void",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional legacy selection callback retained by the input type; the row navigates through its entity link."
+				"description": "Optional legacy selection callback declared in the props type; the component never calls it, because the commit link is an EntityLink driven by to and nav."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityHistoryRow",
 				"type": "markup",
-				"description": "A compact commit row: relative date with exact timestamp on hover, commit link, behavior, source size, complexity and measured latency. Long reasons use an inline disclosure; no verdict or duplicate revision control. Registry lifecycle badges are omitted because they do not establish helper introduction dates."
+				"description": "The row element hx-tr, carrying data-harness-component harness-entity-history-row and the viewed class when viewed, with six cells: the relative date with the exact timestamp as its title, the short commit link with the Viewed commit badge and summarized reasons, the behavior text or subject, the size with its signed change and, when approved, a Budget increase approved badge, the complexity with its signed change, and the timing or Not measured."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
