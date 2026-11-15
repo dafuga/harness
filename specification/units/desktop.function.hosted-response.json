@@ -18,29 +18,31 @@
 				"name": "hostedResponse.response",
 				"type": "Response",
 				"required": true,
-				"description": "The HTTP response whose body should be consumed. A numeric Content-Length above the limit is refused before reading."
+				"description": "The HTTP response whose body is read. A Content-Length consisting of decimal digits and greater than the limit causes rejection before the body is read."
 			},
 			{
 				"name": "hostedResponse.limit",
 				"type": "number",
 				"required": true,
-				"description": "The maximum accepted byte count. Exactly that many bytes is allowed; the caller supplies the appropriate limit."
+				"description": "The maximum accepted byte count. Reading rejects when the accumulated size first exceeds it, while exactly the limit is allowed; 11534336 is rendered as 11 MiB in an oversize message and other values as 16 MiB.",
+				"examples": [11534336, 16777216]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hostedResponse",
 				"type": "Promise<Uint8Array>",
-				"description": "A promise for all response bytes joined in order, or an empty array when no body exists. Cancels a read that fails or exceeds the limit and releases its reader lock."
+				"description": "A promise that resolves to the response body bytes in order as a Uint8Array, or an empty Uint8Array when no reader is available. Reading rejects as soon as the accumulated size exceeds the limit."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects an oversized declared or actual body and propagates stream failures. The message names the byte limit during streaming."
+				"description": "Explicitly throws Error when a decimal Content-Length exceeds the limit or the streamed byte count crosses it. Read failures from the response stream are also propagated as rejections."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hostedResponse",
@@ -49,29 +51,31 @@
 						"name": "hostedResponse.response",
 						"type": "Response",
 						"required": true,
-						"description": "The HTTP response whose body should be consumed. A numeric Content-Length above the limit is refused before reading."
+						"description": "The HTTP response whose body is read. A Content-Length consisting of decimal digits and greater than the limit causes rejection before the body is read."
 					},
 					{
 						"name": "hostedResponse.limit",
 						"type": "number",
 						"required": true,
-						"description": "The maximum accepted byte count. Exactly that many bytes is allowed; the caller supplies the appropriate limit."
+						"description": "The maximum accepted byte count. Reading rejects when the accumulated size first exceeds it, while exactly the limit is allowed; 11534336 is rendered as 11 MiB in an oversize message and other values as 16 MiB.",
+						"examples": [11534336, 16777216]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hostedResponse",
 						"type": "Promise<Uint8Array>",
-						"description": "A promise for all response bytes joined in order, or an empty array when no body exists. Cancels a read that fails or exceeds the limit and releases its reader lock."
+						"description": "A promise that resolves to the response body bytes in order as a Uint8Array, or an empty Uint8Array when no reader is available. Reading rejects as soon as the accumulated size exceeds the limit."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Explicitly throws Error when a decimal Content-Length exceeds the limit or the streamed byte count crosses it. Read failures from the response stream are also propagated as rejections."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
