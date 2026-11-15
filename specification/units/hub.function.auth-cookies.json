@@ -37,78 +37,104 @@
 				"name": "authCookies.request",
 				"type": "Request",
 				"required": true,
-				"description": "Request whose Cookie header is inspected."
+				"description": "The Request whose Cookie header is read. Only that header is inspected; a missing header is treated as empty."
 			},
 			{
 				"name": "authCookies.name",
 				"type": "string",
 				"required": true,
-				"description": "Exact cookie name to read."
+				"description": "Selects the cookie key to match in each semicolon-delimited header part after trimming. Matching uses the case-sensitive name= prefix.",
+				"examples": ["__Host-harness_session"]
 			},
 			{
 				"name": "issueCookie.name",
 				"type": "string",
 				"required": true,
-				"description": "Cookie name to place in the header."
+				"description": "The cookie name interpolated verbatim before = in the Set-Cookie string. The function does not validate or escape it.",
+				"examples": ["__Host-harness_session"]
 			},
 			{
 				"name": "issueCookie.value",
 				"type": "string",
 				"required": true,
-				"description": "Cookie value to place in the header."
+				"description": "The cookie value interpolated verbatim after =. The function does not validate or escape it.",
+				"examples": ["K9v2Qm7xN4pR8sT3bH6cL1wF5dZ0aG2e"]
 			},
 			{
 				"name": "issueCookie.options",
 				"type": "CookieOptions",
 				"required": true,
-				"description": "Max age in seconds and Lax or Strict SameSite choice."
+				"description": "Supplies a numeric maxAge and sameSite of Lax or Strict for the header. The object is not validated before its fields are interpolated.",
+				"examples": [
+					{
+						"maxAge": 900,
+						"sameSite": "Lax"
+					},
+					{
+						"maxAge": 0,
+						"sameSite": "Strict"
+					}
+				]
 			},
 			{
 				"name": "clearCookie.name",
 				"type": "string",
 				"required": true,
-				"description": "Cookie name to expire."
+				"description": "The cookie name interpolated verbatim before = in the expired Set-Cookie string. The function does not validate or escape it.",
+				"examples": ["__Host-harness_session"]
 			},
 			{
 				"name": "clearCookie.sameSite",
 				"type": "CookieOptions['sameSite']",
 				"required": true,
-				"description": "Lax or Strict SameSite choice for the expired cookie."
+				"description": "Selects Lax or Strict for the expired cookie's SameSite attribute. clearCookie sets the value empty and Max-Age=0.",
+				"examples": ["Lax", "Strict"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "SESSION_COOKIE",
 				"type": "unknown",
-				"description": "Host-prefixed session cookie name."
+				"description": "Cookie name for session authentication. It is only the name constant; the cookie header is formed separately by issueCookie.",
+				"examples": ["__Host-harness_session"]
 			},
 			{
 				"name": "CHALLENGE_COOKIE",
 				"type": "unknown",
-				"description": "Host-prefixed login-challenge cookie name."
+				"description": "Cookie name for the authentication challenge. It is only the name constant; the cookie header is formed separately by issueCookie.",
+				"examples": ["__Host-harness_challenge"]
 			},
 			{
 				"name": "EMAIL_PROOF_COOKIE",
 				"type": "unknown",
-				"description": "Host-prefixed email-proof cookie name."
+				"description": "Cookie name for email proof. It is only the name constant; the cookie header is formed separately by issueCookie.",
+				"examples": ["__Host-harness_email_proof"]
 			},
 			{
 				"name": "authCookies",
 				"type": "string | null",
-				"description": "Single value containing 32 to 128 letters, digits, underscores or hyphens; null for missing, malformed or duplicate cookies."
+				"description": "Returns a single matching value only if it is 32–128 characters from A-Z, a-z, 0-9, _ or -. Missing, malformed, or duplicate matches return null.",
+				"examples": ["K9v2Qm7xN4pR8sT3bH6cL1wF5dZ0aG2e", null]
 			},
 			{
 				"name": "issueCookie",
 				"type": "string",
-				"description": "Set-Cookie value with root path, supplied max age, HttpOnly, Secure and supplied SameSite."
+				"description": "A Set-Cookie string containing the supplied name, value, Max-Age, and SameSite, plus Path=/, HttpOnly, and Secure. It has no Domain attribute.",
+				"examples": [
+					"__Host-harness_session=K9v2Qm7xN4pR8sT3bH6cL1wF5dZ0aG2e; Path=/; Max-Age=900; HttpOnly; Secure; SameSite=Lax"
+				]
 			},
 			{
 				"name": "clearCookie",
 				"type": "string",
-				"description": "Set-Cookie value with an empty value and max age zero."
+				"description": "A Set-Cookie string for the supplied name with an empty value and Max-Age=0, plus Path=/, HttpOnly, Secure, and the supplied SameSite. It has no Domain attribute.",
+				"examples": [
+					"__Host-harness_session=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Strict"
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "authCookies",
@@ -117,24 +143,26 @@
 						"name": "authCookies.request",
 						"type": "Request",
 						"required": true,
-						"description": "Request whose Cookie header is inspected."
+						"description": "The Request whose Cookie header is read. Only that header is inspected; a missing header is treated as empty."
 					},
 					{
 						"name": "authCookies.name",
 						"type": "string",
 						"required": true,
-						"description": "Exact cookie name to read."
+						"description": "Selects the cookie key to match in each semicolon-delimited header part after trimming. Matching uses the case-sensitive name= prefix.",
+						"examples": ["__Host-harness_session"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "authCookies",
 						"type": "string | null",
-						"description": "Single value containing 32 to 128 letters, digits, underscores or hyphens; null for missing, malformed or duplicate cookies."
+						"description": "Returns a single matching value only if it is 32–128 characters from A-Z, a-z, 0-9, _ or -. Missing, malformed, or duplicate matches return null.",
+						"examples": ["K9v2Qm7xN4pR8sT3bH6cL1wF5dZ0aG2e", null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "issueCookie",
@@ -143,30 +171,45 @@
 						"name": "issueCookie.name",
 						"type": "string",
 						"required": true,
-						"description": "Cookie name to place in the header."
+						"description": "The cookie name interpolated verbatim before = in the Set-Cookie string. The function does not validate or escape it.",
+						"examples": ["__Host-harness_session"]
 					},
 					{
 						"name": "issueCookie.value",
 						"type": "string",
 						"required": true,
-						"description": "Cookie value to place in the header."
+						"description": "The cookie value interpolated verbatim after =. The function does not validate or escape it.",
+						"examples": ["K9v2Qm7xN4pR8sT3bH6cL1wF5dZ0aG2e"]
 					},
 					{
 						"name": "issueCookie.options",
 						"type": "CookieOptions",
 						"required": true,
-						"description": "Max age in seconds and Lax or Strict SameSite choice."
+						"description": "Supplies a numeric maxAge and sameSite of Lax or Strict for the header. The object is not validated before its fields are interpolated.",
+						"examples": [
+							{
+								"maxAge": 900,
+								"sameSite": "Lax"
+							},
+							{
+								"maxAge": 0,
+								"sameSite": "Strict"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "issueCookie",
 						"type": "string",
-						"description": "Set-Cookie value with root path, supplied max age, HttpOnly, Secure and supplied SameSite."
+						"description": "A Set-Cookie string containing the supplied name, value, Max-Age, and SameSite, plus Path=/, HttpOnly, and Secure. It has no Domain attribute.",
+						"examples": [
+							"__Host-harness_session=K9v2Qm7xN4pR8sT3bH6cL1wF5dZ0aG2e; Path=/; Max-Age=900; HttpOnly; Secure; SameSite=Lax"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "clearCookie",
@@ -175,24 +218,29 @@
 						"name": "clearCookie.name",
 						"type": "string",
 						"required": true,
-						"description": "Cookie name to expire."
+						"description": "The cookie name interpolated verbatim before = in the expired Set-Cookie string. The function does not validate or escape it.",
+						"examples": ["__Host-harness_session"]
 					},
 					{
 						"name": "clearCookie.sameSite",
 						"type": "CookieOptions['sameSite']",
 						"required": true,
-						"description": "Lax or Strict SameSite choice for the expired cookie."
+						"description": "Selects Lax or Strict for the expired cookie's SameSite attribute. clearCookie sets the value empty and Max-Age=0.",
+						"examples": ["Lax", "Strict"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "clearCookie",
 						"type": "string",
-						"description": "Set-Cookie value with an empty value and max age zero."
+						"description": "A Set-Cookie string for the supplied name with an empty value and Max-Age=0, plus Path=/, HttpOnly, Secure, and the supplied SameSite. It has no Domain attribute.",
+						"examples": [
+							"__Host-harness_session=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Strict"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
