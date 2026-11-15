@@ -1,6 +1,6 @@
 // @harness-uid u_ceiamj74gt
 import type { CommittedThread } from 'collaboration';
-import type { ThreadInfo } from '../../../../desktop/src/models/Desktop.types';
+import type { ThreadInfo } from '../../../../desktop/src/models/development-tooling/Desktop.types';
 
 export function hubThreads(threads: CommittedThread[], offset = 0): ThreadInfo[] {
 	return [...threads]

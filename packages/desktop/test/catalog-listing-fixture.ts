@@ -6,7 +6,7 @@ import { ProjectSessionService } from '../src/services/ProjectSessionService';
 import { loaders, manifest, ordinary, rendered, twin } from './catalog-listing-manifests';
 import type { Listing } from './catalog-listing-manifests';
 import type { ComponentManifest } from '../../../src/lib/contracts';
-import type { DesignVersion } from '../src/models/Desktop.types';
+import type { DesignVersion } from '../src/models/development-tooling/Desktop.types';
 import type { PlanRecord } from '../src/models/planning-collaboration/PlanningPort.types';
 
 export function previewReads(

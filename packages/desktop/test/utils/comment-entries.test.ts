@@ -3,7 +3,7 @@ import { commentEntries } from '../../../hub/src/utils/browser-bridge/commentEnt
 import { pendingEntries, threadInfo } from '../../src/components/thread-panel/commentEntries';
 import type { CommittedThread } from '../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import type { HumanCommentResult } from '../../src/models/ProjectContext.types';
-import type { ThreadInfo } from '../../src/models/Desktop.types';
+import type { ThreadInfo } from '../../src/models/development-tooling/Desktop.types';
 
 const anchor = {
 	branch: 'main',

@@ -2,7 +2,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { afterEach, test, vi } from 'vitest';
 import { createWorkspaceStore } from '../../src/lib/stores/projects-sessions/workspace.svelte';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
-import type { ProjectSnapshot } from '../../src/models/Desktop.types';
+import type { ProjectSnapshot } from '../../src/models/development-tooling/Desktop.types';
 
 afterEach(() => vi.unstubAllGlobals());
 test('preview cannot open or navigate without the native bridge', async () => {

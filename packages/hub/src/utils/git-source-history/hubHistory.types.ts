@@ -1,5 +1,5 @@
 // @harness-uid u_zqt7glcuak
-import type { HistoryEvent } from '../../../../desktop/src/models/Desktop.types';
+import type { HistoryEvent } from '../../../../desktop/src/models/development-tooling/Desktop.types';
 
 export interface HubHistoryPage {
 	entries: HistoryEvent[];

@@ -2,7 +2,10 @@ import type { Client } from './remote-permissions.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { agentMethods, controlMethods, localMethods } from '../../remote/src/index';
-import type { EntityDetail, ProjectSnapshot } from '../src/models/Desktop.types';
+import type {
+	EntityDetail,
+	ProjectSnapshot
+} from '../src/models/development-tooling/Desktop.types';
 import { remoteFixture } from './remote-fixture';
 import { fixture, git } from './run-fixture';
 /** The refusal code of a request, or `accepted`. */

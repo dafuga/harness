@@ -13,7 +13,7 @@ import {
 } from '../../src/components/thread-panel/threadAnchor';
 import { sameImage } from '../../src/components/explorer-ui/thread-links/threadAnchor';
 import { versionOption } from '../../src/components/explorer-ui/entity-view/threadAnchor';
-import type { DesignVersion } from '../../src/models/Desktop.types';
+import type { DesignVersion } from '../../src/models/development-tooling/Desktop.types';
 
 const image = { state: 'default', viewport: 'desktop', sha256: 'b'.repeat(64), bytes: 10 };
 const revision = { branch: 'feat/x', commit: 'c'.repeat(40), tip: 'a'.repeat(40), atTip: false };

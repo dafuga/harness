@@ -9,7 +9,7 @@ import { explorerScope } from '../../../reports/src/utils/explorer-ui/harness-pa
 import { index } from '../../../reports/test/entityFixture';
 import { commits, ids, units } from '../../../reports/test/entityUnits';
 import type { EntityEvidenceResult } from '../../src/models/DesktopEvidence.types';
-import type { CatalogEntity } from '../../src/models/Desktop.types';
+import type { CatalogEntity } from '../../src/models/development-tooling/Desktop.types';
 import { catalogListed } from '../../src/utils/catalogUnit';
 import { evidenceEntity } from './ui-evidence-entity';
 import { nativeImageFixture } from './native-image-fixture';

@@ -7,7 +7,7 @@ import type {
 } from '../../../../../../desktop/src/models/DesktopEvidence.types';
 import { hubHistory } from '../../../../utils/git-source-history/hubHistory';
 import type { Actor } from 'collaboration';
-import type { ThreadMessage } from '../../../../../../desktop/src/models/Desktop.types';
+import type { ThreadMessage } from '../../../../../../desktop/src/models/development-tooling/Desktop.types';
 import { hubSource, hubRead } from '../../../../utils/development-tooling/hubSource';
 import type { HubSourceContext } from '../../../../utils/development-tooling/hubSource';
 import {

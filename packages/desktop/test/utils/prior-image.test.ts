@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { priorImage } from '../../src/components/planning-collaboration/design-panel/priorImage';
-import type { DesignVersion } from '../../src/models/Desktop.types';
+import type { DesignVersion } from '../../src/models/development-tooling/Desktop.types';
 
 const first = 'c'.repeat(40);
 const second = 'a'.repeat(40);

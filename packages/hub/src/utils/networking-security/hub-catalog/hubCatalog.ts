@@ -5,7 +5,7 @@ import {
 	planCatalog
 } from '../../../../../desktop/src/utils/catalogUnit';
 import type { ComponentManifest } from '../../../../../../src/core/unitTypes';
-import type { CatalogEntity } from '../../../../../desktop/src/models/Desktop.types';
+import type { CatalogEntity } from '../../../../../desktop/src/models/development-tooling/Desktop.types';
 import type { HubSourceContext } from '../../development-tooling/hubSource';
 import { hubPlans } from '../hubPlans';
 import { hubPlanRecord } from './hubPlanRecord';

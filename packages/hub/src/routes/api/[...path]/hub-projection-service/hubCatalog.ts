@@ -4,7 +4,7 @@ import type { ComponentManifest } from '../../../../../../../src/core/unitTypes'
 import type {
 	CatalogEntity,
 	Relationship
-} from '../../../../../../desktop/src/models/Desktop.types';
+} from '../../../../../../desktop/src/models/development-tooling/Desktop.types';
 
 export function hubRelationships(
 	unit: ComponentManifest,

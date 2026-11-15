@@ -1,4 +1,4 @@
-import type { Relationship } from '../src/models/Desktop.types';
+import type { Relationship } from '../src/models/development-tooling/Desktop.types';
 
 /**
  * What the workspace shows of the things around an entity: a section named Used In and one

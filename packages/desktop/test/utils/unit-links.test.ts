@@ -5,7 +5,11 @@ import {
 	createWorkspaceStore,
 	type Workspace
 } from '../../src/lib/stores/projects-sessions/workspace.svelte';
-import type { CatalogEntity, EntityDetail, ProjectSnapshot } from '../../src/models/Desktop.types';
+import type {
+	CatalogEntity,
+	EntityDetail,
+	ProjectSnapshot
+} from '../../src/models/development-tooling/Desktop.types';
 import { unitLinks } from '../../src/components/explorer-ui/reference-text/unitLinks';
 
 /**

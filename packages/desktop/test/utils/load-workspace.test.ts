@@ -2,7 +2,7 @@ import { expect, test, vi } from 'vitest';
 import { loadWorkspace } from '../../src/utils/load-workspace/loadWorkspace';
 import { workspaceRoute } from '../../src/utils/workspaceRoute';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
-import type { ProjectSnapshot } from '../../src/models/Desktop.types';
+import type { ProjectSnapshot } from '../../src/models/development-tooling/Desktop.types';
 
 const tip = 'a'.repeat(40);
 const snapshotOf = (id: string, branch: string) =>

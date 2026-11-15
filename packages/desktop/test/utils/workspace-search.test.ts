@@ -1,6 +1,9 @@
 import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
-import type { CatalogEntity, ProjectSnapshot } from '../../src/models/Desktop.types';
+import type {
+	CatalogEntity,
+	ProjectSnapshot
+} from '../../src/models/development-tooling/Desktop.types';
 import { workspaceSearch } from '../../src/components/projects-sessions/nav-bar/workspaceSearch';
 import { explorerName } from '../../../reports/src/utils/explorer-ui/explorerName';
 import { measureWorkload } from '../../../../test/support/measureWorkload';

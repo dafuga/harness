@@ -6,7 +6,7 @@ import type { HubSourceContext } from '../../development-tooling/hubSource';
 import { hubFail } from '../../development-tooling/hubJson';
 import { hubImageOption, hubOptionInfos, hubRevision } from './hubImageOption';
 import type { HubPlan, HubDesign } from '../../development-tooling/hubSchemas';
-import type { DesignVersion } from '../../../../../desktop/src/models/Desktop.types';
+import type { DesignVersion } from '../../../../../desktop/src/models/development-tooling/Desktop.types';
 
 async function version(
 	context: HubSourceContext,

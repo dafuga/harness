@@ -2,7 +2,7 @@ import { children, done, stamp } from './shared';
 import type { PreviewCases } from './shared';
 import { desktopData } from './sealedData';
 import { workspacePath } from '../../../../../desktop/src/utils/projects-sessions/workspaceRoute';
-import type { ProjectSnapshot } from '../../../../../desktop/src/models/Desktop.types';
+import type { ProjectSnapshot } from '../../../../../desktop/src/models/development-tooling/Desktop.types';
 const actor = { id: 'preview-person', name: 'Ada Morgan', email: 'ada@example.invalid' };
 const project = {
 	id: 'preview-project',

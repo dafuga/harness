@@ -18,7 +18,7 @@ import type { BehaviorCell } from '../../reports/src/utils/entityBehavior';
 import EntityCard from '../src/components/explorer-ui/EntityCard.svelte';
 import RuntimeArtifact from '../src/components/execution-runtimes/RuntimeArtifact.svelte';
 import type { Workspace } from '../src/lib/stores/projects-sessions/workspace.svelte';
-import type { CatalogEntity } from '../src/models/Desktop.types';
+import type { CatalogEntity } from '../src/models/development-tooling/Desktop.types';
 import { workspaceRoute } from '../src/utils/workspaceRoute';
 import { drawn } from './evidence-fixture';
 

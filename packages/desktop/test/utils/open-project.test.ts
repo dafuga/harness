@@ -1,7 +1,7 @@
 import { afterEach, expect, test, vi } from 'vitest';
 import { createWorkspaceStore } from '../../src/lib/stores/projects-sessions/workspace.svelte';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
-import type { ProjectSnapshot } from '../../src/models/Desktop.types';
+import type { ProjectSnapshot } from '../../src/models/development-tooling/Desktop.types';
 
 const tip = 'a'.repeat(40);
 const snapshot = {

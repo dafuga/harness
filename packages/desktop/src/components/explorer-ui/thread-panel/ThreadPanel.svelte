@@ -6,7 +6,7 @@
 
 	import { onMount, untrack } from 'svelte';
 	import { explorerName } from '$reports/utils/explorer-ui/explorerName';
-	import type { ProviderState } from '../../../models/Desktop.types';
+	import type { ProviderState } from '../../../models/development-tooling/Desktop.types';
 	import type { ThreadPanelProps } from './ThreadPanel.types';
 	import type { RunEvent } from '../../../models/development-tooling/DesktopBridge.types';
 	import { createThreadCommentsStore } from '../../../lib/stores/development-tooling/threadComments.svelte';

@@ -1,7 +1,7 @@
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { existsSync } from 'node:fs';
-import type { EntityDetail, ThreadInfo } from '../src/models/Desktop.types';
+import type { EntityDetail, ThreadInfo } from '../src/models/development-tooling/Desktop.types';
 import type { RunRequest } from '../src/models/DesktopBridge.types';
 import { approvalMatch } from '../src/services/agents-providers/desktop-run-service/approvalMatch';
 import { runPayload } from '../src/utils/ipc-payload/ipcPayload';

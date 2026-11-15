@@ -1,7 +1,7 @@
 import { expect } from '../../../../test/verificationExpect';
 import { afterEach, test, vi } from 'vitest';
 import { AgentHttpAdapter } from '../../src/adapters/AgentHttpAdapter';
-import type { ProjectSnapshot } from '../../src/models/Desktop.types';
+import type { ProjectSnapshot } from '../../src/models/development-tooling/Desktop.types';
 import type { RunEvent } from '../../src/models/DesktopBridge.types';
 
 const denied = () => Object.assign(new Error('Denied'), { status: 403 });

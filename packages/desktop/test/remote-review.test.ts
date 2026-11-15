@@ -1,7 +1,7 @@
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import type { RemoteAttachment, WireResponse } from '../../remote/src/index';
-import type { EntityDetail, ThreadInfo } from '../src/models/Desktop.types';
+import type { EntityDetail, ThreadInfo } from '../src/models/development-tooling/Desktop.types';
 import { RemoteHostService } from '../src/services/remote-host-service/RemoteHostService';
 import { RemoteLifecycleService } from '../src/services/RemoteLifecycleService';
 import type { PowerEvent } from '../src/services/RemoteLifecycleService';

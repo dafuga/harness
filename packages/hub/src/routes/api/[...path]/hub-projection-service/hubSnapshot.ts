@@ -5,7 +5,7 @@ import type {
 	ProjectSummary,
 	SourceHistoryAdapter
 } from 'collaboration';
-import type { ProjectSnapshot } from '../../../../../../desktop/src/models/Desktop.types';
+import type { ProjectSnapshot } from '../../../../../../desktop/src/models/development-tooling/Desktop.types';
 import { hubSource } from '../../../../utils/development-tooling/hubSource';
 import { hubCatalog } from '../../../../utils/networking-security/hub-catalog/hubCatalog';
 import { hubFail, hubHash } from '../../../../utils/development-tooling/hubJson';

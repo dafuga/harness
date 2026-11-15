@@ -2,7 +2,7 @@ import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
 import NavBar from '../src/components/projects-sessions/nav-bar/NavBar.svelte';
 import { createWorkspaceStore } from '../src/lib/stores/projects-sessions/workspace.svelte';
-import type { ProjectSnapshot } from '../src/models/Desktop.types';
+import type { ProjectSnapshot } from '../src/models/development-tooling/Desktop.types';
 
 /**
  * The top bar of every project page holds one search over the shown project and revision. It

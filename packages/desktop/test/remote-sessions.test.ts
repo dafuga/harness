@@ -1,6 +1,6 @@
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
-import type { ProjectSnapshot } from '../src/models/Desktop.types';
+import type { ProjectSnapshot } from '../src/models/development-tooling/Desktop.types';
 import type { RunEvent } from '../src/models/DesktopBridge.types';
 import { deferred, remoteFixture } from './remote-fixture';
 import { fixture, git } from './run-fixture';

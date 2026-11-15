@@ -2,7 +2,7 @@ import type { Ask } from './recorded-evidence-transport.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { afterAll, beforeAll, test } from 'vitest';
 import type { RemoteBinary } from '../../remote/src/index';
-import type { ProjectSnapshot } from '../src/models/Desktop.types';
+import type { ProjectSnapshot } from '../src/models/development-tooling/Desktop.types';
 import type { EntityEvidenceResult } from '../src/models/DesktopEvidence.types';
 import { remoteBinary } from '../src/utils/remoteBinary';
 import { localFixture } from './local-transport-fixture';

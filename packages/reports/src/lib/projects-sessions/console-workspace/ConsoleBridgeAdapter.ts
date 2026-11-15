@@ -8,7 +8,7 @@ import type {
 	DesktopBridge,
 	RunEvent
 } from '../../../../../desktop/src/models/DesktopBridge.types';
-import type { ProjectSnapshot } from '../../../../../desktop/src/models/Desktop.types';
+import type { ProjectSnapshot } from '../../../../../desktop/src/models/development-tooling/Desktop.types';
 /** Per-tab owner transport. Event polling is active only while a run has listeners. */
 export class ConsoleBridgeAdapter {
 	private token = '';

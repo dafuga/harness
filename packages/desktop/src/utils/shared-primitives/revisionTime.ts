@@ -1,6 +1,6 @@
 // @harness-uid u_vy4anfwv7v
 import { displayTime as sharedDisplayTime } from '$reports/helpers/strings/formatTime';
-import type { ProjectSnapshot } from '../../models/Desktop.types';
+import type { ProjectSnapshot } from '../../models/development-tooling/Desktop.types';
 export function revisionTime(
 	snapshot: ProjectSnapshot | null,
 	kind: 'commit' | 'branch'

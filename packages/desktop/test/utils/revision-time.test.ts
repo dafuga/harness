@@ -1,7 +1,7 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { displayTime, revisionTime } from '../../src/utils/shared-primitives/revisionTime';
-import type { ProjectSnapshot } from '../../src/models/Desktop.types';
+import type { ProjectSnapshot } from '../../src/models/development-tooling/Desktop.types';
 test('commit and branch timestamps follow their own revisions, never a deployment or current clock', async () =>
 	measureWorkload('desktop.function.revision-time', 'revision-time-normal-behavior', async () => {
 		const snapshot = {

@@ -1,6 +1,6 @@
 // @harness-uid u_ceiamj74gt
 import type { CommittedThread } from 'collaboration';
-import type { ThreadMessage } from '../../../../../../desktop/src/models/Desktop.types';
+import type { ThreadMessage } from '../../../../../../desktop/src/models/development-tooling/Desktop.types';
 
 export function hubMessages(thread: CommittedThread): ThreadMessage[] {
 	return thread.comments.map((c) => ({

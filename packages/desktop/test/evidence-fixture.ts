@@ -3,7 +3,7 @@ import type { Component } from 'svelte';
 import { render } from 'svelte/server';
 import { vi } from 'vitest';
 import { createEntityEvidenceStore } from '../src/lib/stores/explorer-ui/entityEvidence.svelte';
-import type { EntityDetail } from '../src/models/Desktop.types';
+import type { EntityDetail } from '../src/models/development-tooling/Desktop.types';
 import type { DesktopBridge } from '../src/models/DesktopBridge.types';
 import type { EntityEvidenceQuery } from '../src/models/DesktopEvidence.types';
 import {

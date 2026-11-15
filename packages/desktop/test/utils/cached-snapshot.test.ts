@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import type { ProjectSnapshot } from '../../src/models/Desktop.types';
+import type { ProjectSnapshot } from '../../src/models/development-tooling/Desktop.types';
 import { offlineView } from '../../src/utils/load-workspace/offlineView';
 import { cachedSnapshot } from '../../src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/cachedSnapshot';
 

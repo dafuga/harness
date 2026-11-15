@@ -2,7 +2,7 @@ import { expect, test, vi } from 'vitest';
 import { listedProjects } from '../../src/utils/projectList';
 import { projectList } from '../../src/components/projects-sessions/project-switcher/projectList';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
-import type { ProjectSnapshot } from '../../src/models/Desktop.types';
+import type { ProjectSnapshot } from '../../src/models/development-tooling/Desktop.types';
 
 const bridge = (value: object) => value as unknown as DesktopBridge;
 const shown = (id: string | undefined, source?: 'local' | 'github') =>

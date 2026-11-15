@@ -2,7 +2,7 @@ import { measureWorkload } from '../../../test/support/measureWorkload';
 import { expect } from '../../../test/verificationExpect';
 import { afterEach, test, vi } from 'vitest';
 import { createWorkspaceStore } from '../src/lib/stores/projects-sessions/workspace.svelte';
-import { categories, type ProjectSnapshot } from '../src/models/Desktop.types';
+import { categories, type ProjectSnapshot } from '../src/models/development-tooling/Desktop.types';
 import type { DesktopBridge } from '../src/models/DesktopBridge.types';
 import { categoryOf } from '../src/utils/shared-primitives/categoryOf';
 import { ipcPayload } from '../src/utils/ipc-payload/ipcPayload';

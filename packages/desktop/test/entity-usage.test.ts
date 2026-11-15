@@ -2,8 +2,8 @@ import type { Direction } from './entity-usage.test.types';
 import { expect, test } from 'vitest';
 import RelationshipsPanel from '../src/components/shared-primitives/RelationshipsPanel.svelte';
 import type { Workspace } from '../src/lib/stores/projects-sessions/workspace.svelte';
-import type { Category, Relationship } from '../src/models/Desktop.types';
-import { categories } from '../src/models/Desktop.types';
+import type { Category, Relationship } from '../src/models/development-tooling/Desktop.types';
+import { categories } from '../src/models/development-tooling/Desktop.types';
 import { workspaceRoute } from '../src/utils/workspaceRoute';
 import { drawn } from './evidence-fixture';
 const link = (direction: Direction, id: string, title: string, category: Category | null) =>

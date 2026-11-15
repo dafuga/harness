@@ -6,7 +6,10 @@ import { join } from 'node:path';
 import { exampleDocument } from '../../game/src/utils/game-authoring/keyDoor';
 import { remoteLimits } from '../../remote/src/index';
 import type { RemoteBinary, WirePart } from '../../remote/src/index';
-import type { EntityDetail, ProjectSnapshot } from '../src/models/Desktop.types';
+import type {
+	EntityDetail,
+	ProjectSnapshot
+} from '../src/models/development-tooling/Desktop.types';
 import type { RunEvent } from '../src/models/DesktopBridge.types';
 import { remoteBinary } from '../src/utils/remoteBinary';
 import { largeGame, largeImage, localFixture } from './local-transport-fixture';

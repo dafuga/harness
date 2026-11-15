@@ -1,7 +1,7 @@
 // @harness-uid u_kzlvamifcc
 import type { CommittedThread } from 'collaboration';
 import type { ComponentManifest } from '../../../../../../../src/core/unitTypes';
-import type { EntityDetail } from '../../../../../../desktop/src/models/Desktop.types';
+import type { EntityDetail } from '../../../../../../desktop/src/models/development-tooling/Desktop.types';
 import { hubRead, type HubSourceContext } from '../../../../utils/development-tooling/hubSource';
 import { readUnitDocumentation } from '../../../../../../../src/utils/unit-documentation/unitDocumentation';
 import {

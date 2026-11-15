@@ -1,5 +1,8 @@
 import type { DesktopData } from './desktopData.svelte';
-import type { HistoryEvent, Relationship } from '../../../../../desktop/src/models/Desktop.types';
+import type {
+	HistoryEvent,
+	Relationship
+} from '../../../../../desktop/src/models/development-tooling/Desktop.types';
 import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
 
 const relationships: Relationship[] = [

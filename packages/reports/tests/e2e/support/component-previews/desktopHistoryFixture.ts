@@ -1,6 +1,9 @@
 import type { DesktopData } from './desktopData.svelte';
 import type { RegressionView } from '../../../../../../src/core/regressionTypes';
-import type { EntityDetail, HistoryEvent } from '../../../../../desktop/src/models/Desktop.types';
+import type {
+	EntityDetail,
+	HistoryEvent
+} from '../../../../../desktop/src/models/development-tooling/Desktop.types';
 import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
 
 /** Meaningful history for the invented orders application's filtering function. */

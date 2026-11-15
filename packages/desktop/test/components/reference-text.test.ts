@@ -3,7 +3,10 @@ import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
 import ReferenceText from '../../src/components/explorer-ui/reference-text/ReferenceText.svelte';
 import { createWorkspaceStore } from '../../src/lib/stores/projects-sessions/workspace.svelte';
-import type { CatalogEntity, ProjectSnapshot } from '../../src/models/Desktop.types';
+import type {
+	CatalogEntity,
+	ProjectSnapshot
+} from '../../src/models/development-tooling/Desktop.types';
 
 /**
  * The shared renderer adds no element around the text: words are text nodes, markup is shown
