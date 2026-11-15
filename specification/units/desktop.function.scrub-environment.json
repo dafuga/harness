@@ -18,17 +18,43 @@
 				"name": "scrubEnvironment.env",
 				"type": "NodeJS.ProcessEnv",
 				"required": false,
-				"description": "Environment map; defaults to process.env."
+				"description": "Environment-variable map to filter. When omitted, the function uses process.env; each value is a string or undefined.",
+				"examples": [
+					{
+						"PATH": "/usr/bin:/bin",
+						"OPENAI_API_KEY": "sk-example",
+						"CF_API_TOKEN": "example-token",
+						"ELECTRON_RUN_AS_NODE": "1",
+						"APP_MODE": "desktop"
+					},
+					{
+						"HOME": "/Users/alex",
+						"WRANGLER_CONFIG": "/repo/wrangler.toml",
+						"ANTHROPIC_API_KEY": "sk-ant-example",
+						"NODE_ENV": "development"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "scrubEnvironment",
 				"type": "NodeJS.ProcessEnv",
-				"description": "New map excluding case-sensitive OPENAI_ and ANTHROPIC_ prefixes and ELECTRON_RUN_AS_NODE; other entries are retained."
+				"description": "A new environment map containing the input's enumerable own string-keyed entries except keys starting with OPENAI_ or ANTHROPIC_, keys matching /^(CLOUDFLARE_|CF_|WRANGLER_|HARNESS_.*(?:TOKEN|SECRET|KEY))/, and the exact key ELECTRON_RUN_AS_NODE. Matching is case-sensitive, and all remaining entries and values are copied unchanged.",
+				"examples": [
+					{
+						"PATH": "/usr/bin:/bin",
+						"APP_MODE": "desktop"
+					},
+					{
+						"HOME": "/Users/alex",
+						"NODE_ENV": "development"
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "scrubEnvironment",
@@ -37,18 +63,43 @@
 						"name": "scrubEnvironment.env",
 						"type": "NodeJS.ProcessEnv",
 						"required": false,
-						"description": "Environment map; defaults to process.env."
+						"description": "Environment-variable map to filter. When omitted, the function uses process.env; each value is a string or undefined.",
+						"examples": [
+							{
+								"PATH": "/usr/bin:/bin",
+								"OPENAI_API_KEY": "sk-example",
+								"CF_API_TOKEN": "example-token",
+								"ELECTRON_RUN_AS_NODE": "1",
+								"APP_MODE": "desktop"
+							},
+							{
+								"HOME": "/Users/alex",
+								"WRANGLER_CONFIG": "/repo/wrangler.toml",
+								"ANTHROPIC_API_KEY": "sk-ant-example",
+								"NODE_ENV": "development"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scrubEnvironment",
 						"type": "NodeJS.ProcessEnv",
-						"description": "New map excluding case-sensitive OPENAI_ and ANTHROPIC_ prefixes and ELECTRON_RUN_AS_NODE; other entries are retained."
+						"description": "A new environment map containing the input's enumerable own string-keyed entries except keys starting with OPENAI_ or ANTHROPIC_, keys matching /^(CLOUDFLARE_|CF_|WRANGLER_|HARNESS_.*(?:TOKEN|SECRET|KEY))/, and the exact key ELECTRON_RUN_AS_NODE. Matching is case-sensitive, and all remaining entries and values are copied unchanged.",
+						"examples": [
+							{
+								"PATH": "/usr/bin:/bin",
+								"APP_MODE": "desktop"
+							},
+							{
+								"HOME": "/Users/alex",
+								"NODE_ENV": "development"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
