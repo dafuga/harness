@@ -11,7 +11,7 @@
 		"source": [
 			"src/services/development-tooling/source-index-service/componentSyntax.ts",
 			"src/services/development-tooling/source-index-service/scanComponent.ts",
-			"src/utils/scanComponent.ts"
+			"src/services/source-index-service/scanComponent.ts"
 		],
 		"symbols": [
 			"instanceScript",
@@ -370,11 +370,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/scanComponent.ts",
+		"entry": "src/services/development-tooling/source-index-service/componentSyntax.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/scanComponent.ts"
+				"entry": "src/services/development-tooling/source-index-service/componentSyntax.ts"
 			}
 		]
 	},

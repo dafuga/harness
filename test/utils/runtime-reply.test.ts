@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { HandlerRuntimeAdapter } from '../../packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter';
-import { runtimeReply } from '../../src/utils/runtimeReply';
+import { runtimeReply } from '../../src/utils/execution-runtimes/runtimeReply';
 
 let calls = 0;
 const runtime = new HandlerRuntimeAdapter((request) => {

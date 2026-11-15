@@ -85,7 +85,6 @@ test('a result that claims no running software is judged as before', () =>
 		});
 		assertColdEntries(
 			[
-				'src/utils/scenarioCoverage.ts',
 				'src/utils/verification-evidence/scenarioCoverage.ts',
 				'src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts',
 				'src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts'

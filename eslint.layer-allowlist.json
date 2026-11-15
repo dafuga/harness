@@ -282,11 +282,6 @@
 			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
 		},
 		{
-			"from": "src/utils/scanComponent.ts",
-			"to": "src/services/development-tooling/source-index-service/scanComponent",
-			"todo": "TODO: compatibility forward to an owner-local service module; retire once no consumer imports this utils path."
-		},
-		{
 			"from": "src/utils/unitDocumentation.ts",
 			"to": "src/services/explorer-ui/revision-detail-service/unitDocumentation",
 			"todo": "TODO: compatibility forward to an owner-local service module; retire once no consumer imports this utils path."

@@ -11,18 +11,9 @@
 		"source": [
 			"src/utils/development-tooling/scanExports.ts",
 			"src/utils/development-tooling/scanExports.types.ts",
-			"src/utils/development-tooling/scanSymbolErrors.ts",
-			"src/utils/scanExports.ts"
+			"src/utils/development-tooling/scanSymbolErrors.ts"
 		],
-		"symbols": [
-			"scanExports",
-			"ExportScan",
-			"ExportScan",
-			"Source",
-			"Located",
-			"scanSymbolErrors",
-			"scanExports"
-		]
+		"symbols": ["scanExports", "ExportScan", "ExportScan", "Source", "Located", "scanSymbolErrors"]
 	},
 	"contract": {
 		"origin": "declared",

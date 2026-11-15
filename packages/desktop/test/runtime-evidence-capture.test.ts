@@ -100,7 +100,8 @@ test('bytes that are not the recorded clip are never kept as it', async () => {
 // These modeled capture descriptors exercise the real scenario gate, not renderer pixels.
 test('the runtime scenario refuses missing current, comparison, inherited and audio evidence', async () => {
 	const { scenarioManifestSchema } = await import('../../../src/core/unitTypes');
-	const { scenarioCoverage } = await import('../../../src/utils/scenarioCoverage');
+	const { scenarioCoverage } =
+		await import('../../../src/utils/verification-evidence/scenarioCoverage');
 	const { readFileSync } = await import('node:fs');
 	const scenario = scenarioManifestSchema.parse(
 		JSON.parse(

@@ -1,5 +1,5 @@
 import type { Indexed } from './memoryTree.types';
-import { scanExports } from '../../src/utils/scanExports';
+import { scanExports } from '../../src/utils/development-tooling/scanExports';
 import { existsSync, readFileSync } from 'node:fs';
 import { posix, resolve } from 'node:path';
 import ts from 'typescript';
