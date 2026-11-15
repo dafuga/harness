@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
 import { processStarted, reportServerRecord } from '../../src/utils/reportServerRecord';
-import { stopReportServer } from '../../src/services/report-server-service/reportServerRecord';
+import { stopReportServer } from '../../src/services/reports-media/report-command-service/report-server-service/reportServerRecord';
 
 const started: number[] = [];
 const roots: string[] = [];
