@@ -12,22 +12,24 @@
 		"symbols": ["registerResponseCheckCommand"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerResponseCheckCommand.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "The commander `Command` on which the function creates the `response-check` subcommand, via `program.command('response-check')`. The function does no validation of it and uses it only for that one `command` call."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerResponseCheckCommand",
-				"type": "void"
+				"type": "void",
+				"description": "The function returns nothing: it is declared `void` and has no return statement, so callers get no subcommand handle back. Its effect is registering the `response-check` subcommand, with its options, description and action, on the program passed in."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "registerResponseCheckCommand",
@@ -35,17 +37,19 @@
 					{
 						"name": "registerResponseCheckCommand.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "The commander `Command` on which the function creates the `response-check` subcommand, via `program.command('response-check')`. The function does no validation of it and uses it only for that one `command` call."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerResponseCheckCommand",
-						"type": "void"
+						"type": "void",
+						"description": "The function returns nothing: it is declared `void` and has no return statement, so callers get no subcommand handle back. Its effect is registering the `response-check` subcommand, with its options, description and action, on the program passed in."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
