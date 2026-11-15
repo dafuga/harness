@@ -1,0 +1,117 @@
+{
+	"schemaVersion": 1,
+	"id": "command.development-tooling-contracts-command-render-contracts",
+	"uid": "u_t54qlfjow6",
+	"kind": "command",
+	"title": "renderContracts",
+	"responsibility": "Formats full contracts, compact lists, ranked matches and relationship maps as readable terminal text.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["src/commands/development-tooling/contracts-command/renderContracts.ts"],
+		"symbols": ["renderContracts"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "renderContracts.operation",
+				"type": "string",
+				"required": true,
+				"description": "One of show, list, search or map, selecting the text layout for the corresponding result shape."
+			},
+			{
+				"name": "renderContracts.result",
+				"type": "ContractMap | ContractSummary[]",
+				"required": true,
+				"description": "The matching result payload: full records for show, summaries for list, scored matches for search or a ContractMap for map."
+			}
+		],
+		"outputs": [
+			{
+				"name": "renderContracts",
+				"type": "string",
+				"description": "Readable terminal text. List/search use one row per result; show retains full stored fields; map separates roots, directions and unresolved ids."
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Malformed direct-call result data does not match the requested operation layout."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Cyclic or excessively nested direct-call objects can exceed recursive text rendering depth; CLI stored JSON is acyclic."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "renderContracts",
+				"inputs": [
+					{
+						"name": "renderContracts.operation",
+						"type": "string",
+						"required": true,
+						"description": "One of show, list, search or map, selecting the text layout for the corresponding result shape."
+					},
+					{
+						"name": "renderContracts.result",
+						"type": "ContractMap | ContractSummary[]",
+						"required": true,
+						"description": "The matching result payload: full records for show, summaries for list, scored matches for search or a ContractMap for map."
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderContracts",
+						"type": "string",
+						"description": "Readable terminal text. List/search use one row per result; show retains full stored fields; map separates roots, directions and unresolved ids."
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Malformed direct-call result data does not match the requested operation layout."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Cyclic or excessively nested direct-call objects can exceed recursive text rendering depth; CLI stored JSON is acyclic."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.development-tooling-contracts-command-contracts-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/development-tooling/contracts-command/renderContracts.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/development-tooling/contracts-command/renderContracts.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

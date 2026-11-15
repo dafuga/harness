@@ -1,0 +1,144 @@
+{
+	"schemaVersion": 1,
+	"id": "command.development-tooling-contracts-command-read-contract-catalog",
+	"uid": "u_3wdb3ltytd",
+	"kind": "command",
+	"title": "readContractCatalog",
+	"responsibility": "Reads and validates the current nested unit registry into sorted query records, optionally attaching stored scenario states.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["src/commands/development-tooling/contracts-command/readContractCatalog.ts"],
+		"symbols": ["readContractCatalog"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "readContractCatalog.root",
+				"type": "string",
+				"required": true,
+				"description": "Project root whose specification/units JSON documents are loaded and schema-validated; source is never listed or read."
+			},
+			{
+				"name": "readContractCatalog.includeStates",
+				"type": "boolean",
+				"required": false,
+				"default": true,
+				"description": "When true, also attach stored scenario state declarations; false avoids scenario reads for list and map queries."
+			}
+		],
+		"outputs": [
+			{
+				"name": "readContractCatalog",
+				"type": "Promise<ContractEntry[]>",
+				"description": "Records sorted by id, each with its validated manifest, current contract file path, primary owned path or runtime fallback and optional declared states; duplicate ids fail."
+			}
+		],
+		"errors": [
+			{
+				"name": "Filesystem rejection",
+				"type": "NodeJS.ErrnoException",
+				"description": "Original Node filesystem error while listing a specification directory, except ENOENT which is treated as empty. The original code and message are preserved."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "A unit JSON document is unreadable, invalid or duplicates another unit id; optional scenario loading can also fail validation."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "readContractCatalog",
+				"inputs": [
+					{
+						"name": "readContractCatalog.root",
+						"type": "string",
+						"required": true,
+						"description": "Project root whose specification/units JSON documents are loaded and schema-validated; source is never listed or read."
+					},
+					{
+						"name": "readContractCatalog.includeStates",
+						"type": "boolean",
+						"required": false,
+						"default": true,
+						"description": "When true, also attach stored scenario state declarations; false avoids scenario reads for list and map queries."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readContractCatalog",
+						"type": "Promise<ContractEntry[]>",
+						"description": "Records sorted by id, each with its validated manifest, current contract file path, primary owned path or runtime fallback and optional declared states; duplicate ids fail."
+					}
+				],
+				"errors": [
+					{
+						"name": "Filesystem rejection",
+						"type": "NodeJS.ErrnoException",
+						"description": "Original Node filesystem error while listing a specification directory, except ENOENT which is treated as empty. The original code and message are preserved."
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "A unit JSON document is unreadable, invalid or duplicates another unit id; optional scenario loading can also fail validation."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.development-tooling-contracts-command-contract-documents",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-contract-states",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-contracts-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.units-config",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/development-tooling/contracts-command/readContractCatalog.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/development-tooling/contracts-command/readContractCatalog.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

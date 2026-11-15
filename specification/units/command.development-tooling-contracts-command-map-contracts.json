@@ -1,0 +1,136 @@
+{
+	"schemaVersion": 1,
+	"id": "command.development-tooling-contracts-command-map-contracts",
+	"uid": "u_sdhrrgf2hf",
+	"kind": "command",
+	"title": "mapContracts",
+	"responsibility": "Maps selected contracts to their recorded dependencies and dependents using bounded, deduplicated breadth-first traversal.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["src/commands/development-tooling/contracts-command/mapContracts.ts"],
+		"symbols": ["mapContracts"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "mapContracts.entries",
+				"type": "ContractEntry[]",
+				"required": true,
+				"description": "Eligible complete catalog used to resolve edges and build the reverse dependency index; source is never inspected."
+			},
+			{
+				"name": "mapContracts.matches",
+				"type": "ContractEntry[]",
+				"required": true,
+				"description": "Selected owning records that form traversal roots and remain separate from dependency and dependent results."
+			},
+			{
+				"name": "mapContracts.query",
+				"type": "string",
+				"required": true,
+				"description": "Original requested identity or path, preserved as the returned map query label."
+			},
+			{
+				"name": "mapContracts.depth",
+				"type": "number",
+				"required": true,
+				"description": "Relationship hops to traverse; CLI admission allows integers from zero through ten, with zero returning roots only."
+			}
+		],
+		"outputs": [
+			{
+				"name": "mapContracts",
+				"type": "ContractMap",
+				"description": "Roots plus separately sorted dependency and dependent summaries and unresolved ids. Roots are excluded from neighbors, cycles are bounded, and repeated edges expand each distinct frontier id once."
+			}
+		],
+		"errors": [
+			{
+				"name": "Caller accessor or iterator rejection",
+				"type": "thrown",
+				"description": "Direct in-memory callers can supply getters, iterators or array species; any error they throw propagates. CLI JSON contains plain data, with no such overrides."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "mapContracts",
+				"inputs": [
+					{
+						"name": "mapContracts.entries",
+						"type": "ContractEntry[]",
+						"required": true,
+						"description": "Eligible complete catalog used to resolve edges and build the reverse dependency index; source is never inspected."
+					},
+					{
+						"name": "mapContracts.matches",
+						"type": "ContractEntry[]",
+						"required": true,
+						"description": "Selected owning records that form traversal roots and remain separate from dependency and dependent results."
+					},
+					{
+						"name": "mapContracts.query",
+						"type": "string",
+						"required": true,
+						"description": "Original requested identity or path, preserved as the returned map query label."
+					},
+					{
+						"name": "mapContracts.depth",
+						"type": "number",
+						"required": true,
+						"description": "Relationship hops to traverse; CLI admission allows integers from zero through ten, with zero returning roots only."
+					}
+				],
+				"outputs": [
+					{
+						"name": "mapContracts",
+						"type": "ContractMap",
+						"description": "Roots plus separately sorted dependency and dependent summaries and unresolved ids. Roots are excluded from neighbors, cycles are bounded, and repeated edges expand each distinct frontier id once."
+					}
+				],
+				"errors": [
+					{
+						"name": "Caller accessor or iterator rejection",
+						"type": "thrown",
+						"description": "Direct in-memory callers can supply getters, iterators or array species; any error they throw propagates. CLI JSON contains plain data, with no such overrides."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.development-tooling-contracts-command-contract-selection",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-contracts-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/development-tooling/contracts-command/mapContracts.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/development-tooling/contracts-command/mapContracts.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

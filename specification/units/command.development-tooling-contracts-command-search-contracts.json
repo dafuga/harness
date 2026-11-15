@@ -1,0 +1,129 @@
+{
+	"schemaVersion": 1,
+	"id": "command.development-tooling-contracts-command-search-contracts",
+	"uid": "u_gbvrpedrgl",
+	"kind": "command",
+	"title": "searchContracts",
+	"responsibility": "Ranks literal or regular-expression matches across stored contract metadata and returns one bounded snippet per contract.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["src/commands/development-tooling/contracts-command/searchContracts.ts"],
+		"symbols": ["searchContracts"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "searchContracts.entries",
+				"type": "ContractEntry[]",
+				"required": true,
+				"description": "Filtered stored records, including declared state metadata when available; executable source is outside the search domain."
+			},
+			{
+				"name": "searchContracts.query",
+				"type": "string",
+				"required": true,
+				"description": "Nonempty literal substring by default, or a JavaScript expression without slash delimiters when regex is enabled."
+			},
+			{
+				"name": "searchContracts.options",
+				"type": "ContractOptions",
+				"required": true,
+				"description": "Case sensitivity, regex mode and result limit. Search defaults to twenty results; upstream filtering is already applied."
+			}
+		],
+		"outputs": [
+			{
+				"name": "searchContracts",
+				"type": "ContractMatch[]",
+				"description": "At most limit or twenty ranked records, each with its best field, score and at-most-160-character context plus ellipses. Identity outranks title, responsibility, fields and dependencies/states; ties sort by id."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The search query is empty or the requested JavaScript regular expression cannot be compiled."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "searchContracts",
+				"inputs": [
+					{
+						"name": "searchContracts.entries",
+						"type": "ContractEntry[]",
+						"required": true,
+						"description": "Filtered stored records, including declared state metadata when available; executable source is outside the search domain."
+					},
+					{
+						"name": "searchContracts.query",
+						"type": "string",
+						"required": true,
+						"description": "Nonempty literal substring by default, or a JavaScript expression without slash delimiters when regex is enabled."
+					},
+					{
+						"name": "searchContracts.options",
+						"type": "ContractOptions",
+						"required": true,
+						"description": "Case sensitivity, regex mode and result limit. Search defaults to twenty results; upstream filtering is already applied."
+					}
+				],
+				"outputs": [
+					{
+						"name": "searchContracts",
+						"type": "ContractMatch[]",
+						"description": "At most limit or twenty ranked records, each with its best field, score and at-most-160-character context plus ellipses. Identity outranks title, responsibility, fields and dependencies/states; ties sort by id."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The search query is empty or the requested JavaScript regular expression cannot be compiled."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.development-tooling-contracts-command-contract-selection",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-contracts-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/development-tooling/contracts-command/searchContracts.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/development-tooling/contracts-command/searchContracts.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

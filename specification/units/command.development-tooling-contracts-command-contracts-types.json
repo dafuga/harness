@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "command.development-tooling-contracts-command-contracts-types",
+	"uid": "u_pdt5z35y2a",
+	"kind": "type",
+	"title": "contracts",
+	"responsibility": "Defines the compile-time query records, options, matched fields and relationship results; it exports no runtime values.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["src/commands/development-tooling/contracts-command/contracts.types.ts"],
+		"symbols": [
+			"ContractEntry",
+			"ContractSummary",
+			"ContractOptions",
+			"ContractMatch",
+			"ContractMap",
+			"ContractField"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "ContractEntry",
+				"type": "{ id: string; kind: string; title: string; path: string; contractPath: string; responsibility: string; manifest: ComponentManifest; states: Array<ScenarioManifest[\"states\"][number] & { scenario: string }> }",
+				"description": "Exported compile-time record shape, not a runtime return value. Contains the validated manifest, its current file and owned source paths, summary metadata and attached scenario states."
+			},
+			{
+				"name": "ContractSummary",
+				"type": "Omit<ContractEntry, \"manifest\" | \"states\">",
+				"description": "Exported type alias retaining only id, kind, title, path, contractPath and responsibility; it declares no runtime value."
+			},
+			{
+				"name": "ContractOptions",
+				"type": "{ root?: string; kind?: string; area?: string; folder?: string; includeRetired?: boolean; limit?: number; json?: boolean; regex?: boolean; ignoreCase?: boolean; depth?: number }",
+				"description": "Exported optional query settings. CLI parsing validates limit and depth; dispatch applies current-directory root, twenty search matches and one relationship hop when omitted."
+			},
+			{
+				"name": "ContractMatch",
+				"type": "ContractSummary & { field: string; snippet: string; score: number }",
+				"description": "Exported search-result type extending summary metadata with the best matched field, bounded text context and ranking score; no runtime value is exported."
+			},
+			{
+				"name": "ContractMap",
+				"type": "{ query: string; matches: ContractSummary[]; dependencies: ContractSummary[]; dependents: ContractSummary[]; unresolved: string[] }",
+				"description": "Exported relationship-result shape with original query, owning contracts, separate edge directions and unresolved contract ids; no runtime value is exported."
+			},
+			{
+				"name": "ContractField",
+				"type": "{ field: string; text: string; weight: number }",
+				"description": "Exported internal search-projection type: a field label, its stored text value and relative ranking weight; no runtime value is exported."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/development-tooling/contracts-command/contracts.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/development-tooling/contracts-command/contracts.types.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

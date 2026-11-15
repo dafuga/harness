@@ -1,0 +1,137 @@
+{
+	"schemaVersion": 1,
+	"id": "command.development-tooling-contracts-command-contract-states",
+	"uid": "u_hf5ptnnuk7",
+	"kind": "command",
+	"title": "contractStates",
+	"responsibility": "Attaches declared stored scenario states to their covered unit records without loading executable catalogs.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["src/commands/development-tooling/contracts-command/contractStates.ts"],
+		"symbols": ["attachContractStates"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "attachContractStates.entries",
+				"type": "ContractEntry[]",
+				"required": true,
+				"description": "Mutable query records whose states arrays receive matching declared scenario states. Existing states are appended to, not cleared."
+			},
+			{
+				"name": "attachContractStates.root",
+				"type": "string",
+				"required": true,
+				"description": "Project root containing specification/scenarios; only its JSON declarations are read, including nested directories."
+			}
+		],
+		"outputs": [
+			{
+				"name": "attachContractStates",
+				"type": "Promise<void>",
+				"description": "Resolves without a return value after appending covered scenario id and state metadata to the supplied records."
+			}
+		],
+		"errors": [
+			{
+				"name": "Filesystem rejection",
+				"type": "NodeJS.ErrnoException",
+				"description": "Original Node filesystem error while listing a specification directory, except ENOENT which is treated as empty. The original code and message are preserved."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "A scenario JSON document cannot be read or parsed, or fails the stored scenario schema."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "attachContractStates",
+				"inputs": [
+					{
+						"name": "attachContractStates.entries",
+						"type": "ContractEntry[]",
+						"required": true,
+						"description": "Mutable query records whose states arrays receive matching declared scenario states. Existing states are appended to, not cleared."
+					},
+					{
+						"name": "attachContractStates.root",
+						"type": "string",
+						"required": true,
+						"description": "Project root containing specification/scenarios; only its JSON declarations are read, including nested directories."
+					}
+				],
+				"outputs": [
+					{
+						"name": "attachContractStates",
+						"type": "Promise<void>",
+						"description": "Resolves without a return value after appending covered scenario id and state metadata to the supplied records."
+					}
+				],
+				"errors": [
+					{
+						"name": "Filesystem rejection",
+						"type": "NodeJS.ErrnoException",
+						"description": "Original Node filesystem error while listing a specification directory, except ENOENT which is treated as empty. The original code and message are preserved."
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "A scenario JSON document cannot be read or parsed, or fails the stored scenario schema."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.development-tooling-contracts-command-contract-documents",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-contracts-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.units-config",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/development-tooling/contracts-command/contractStates.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/development-tooling/contracts-command/contractStates.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
