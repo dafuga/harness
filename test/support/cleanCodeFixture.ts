@@ -2,7 +2,7 @@ import { mkdtemp, mkdir, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { resolveCleanCodeSettings } from '../../src/audit/development-tooling/cleanCodeConfig';
-import type { JevEvaluation, JevRequest } from '../../src/audit/cleanCodeTypes';
+import type { JevEvaluation, JevRequest } from '../../src/audit/development-tooling/cleanCodeTypes';
 
 export const reviewSettings = resolveCleanCodeSettings({ mode: 'advisory' });
 export const greetCode = 'export function greet(name: string) { return `Hello ${name}`; }\n';

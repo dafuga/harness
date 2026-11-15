@@ -9,13 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/audit/config.ts",
 			"src/audit/development-tooling/config.ts",
 			"src/audit/development-tooling/config.types.ts"
 		],
 		"symbols": [
-			"readAuditConfig",
-			"filterIgnoredFindings",
 			"readAuditConfig",
 			"filterIgnoredFindings",
 			"ResolvedAuditConfig",

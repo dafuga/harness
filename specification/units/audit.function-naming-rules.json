@@ -8,16 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/audit/development-tooling/functionNamingRules.ts",
-			"src/audit/functionNamingRules.ts"
-		],
-		"symbols": [
-			"auditFunctionNames",
-			"hasNamedValueExport",
-			"auditFunctionNames",
-			"hasNamedValueExport"
-		]
+		"source": ["src/audit/development-tooling/functionNamingRules.ts"],
+		"symbols": ["auditFunctionNames", "hasNamedValueExport"]
 	},
 	"contract": {
 		"origin": "derived",

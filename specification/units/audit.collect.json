@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/audit/collect.ts",
 			"src/audit/development-tooling/collect.ts",
 			"src/audit/development-tooling/collect.types.ts"
 		],
 		"symbols": [
-			"collectAuditedFiles",
 			"collectAuditedFiles",
 			"CollectedFile",
 			"CollectedFiles",
