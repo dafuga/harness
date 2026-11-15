@@ -18,35 +18,66 @@
 				"name": "claudeTurn.command",
 				"type": "CliCommand",
 				"required": true,
-				"description": "The Claude executable and initial arguments. The helper adds noninteractive streaming output, the requested model, bypassPermissions and disabled session persistence."
+				"description": "The CliCommand whose command is the Claude executable and whose args are its initial arguments; the helper spawns the executable with those args followed by -p, --verbose, --output-format stream-json, --model set to the turn's model, --permission-mode bypassPermissions and --no-session-persistence.",
+				"examples": [
+					{
+						"command": "claude",
+						"args": []
+					},
+					{
+						"command": "/opt/homebrew/bin/claude",
+						"args": []
+					},
+					{
+						"command": "node",
+						"args": ["/usr/local/lib/claude-code/cli.js"]
+					}
+				]
 			},
 			{
 				"name": "claudeTurn.turn",
 				"type": "AgentTurn",
 				"required": true,
-				"description": "The model, optional effort, working directory, prompt, access mode, cancellation signal and callbacks. The prompt goes to standard input. Read-only access limits available tools to Read, Glob and Grep; reported Write and Edit paths are sent to the optional file callback."
+				"description": "The AgentTurn for one request: model is passed as --model and must match the model Claude reports, effort adds --effort when non-empty, cwd is the process working directory, prompt goes to standard input and signal cancels the run. Access 'read-only' adds --tools Read,Glob,Grep and 'write' adds no --tools argument; onText receives public streamed text, onStatus receives the 'Waiting for resources:' notices from managedAgentTurn, and onFile receives the file_path of each Write or Edit tool use in an assistant event."
 			},
 			{
 				"name": "claudeTurn.queue",
 				"type": "ResourceQueueService",
 				"required": false,
-				"description": "Optional resource queue admitting the provider process; omitted to use the normal managed turn queue."
+				"default": "undefined",
+				"description": "Optional ResourceQueueService whose run method admits the Claude run with priority coding, memoryMiB 2048 and cpus 1; when omitted, managedAgentTurn calls resourceWork with process.env instead."
 			}
 		],
 		"outputs": [
 			{
 				"name": "claudeTurn",
 				"type": "unknown",
-				"description": "A promise for the final public result text and the exact model reported by Claude. Public streamed events are forwarded while it runs; malformed JSON lines are ignored."
+				"description": "A promise that resolves to { text, model } after the CLI exits with code 0 and its last result event is not an error: text is that event's result as a string (empty when missing or null) and model is the model its init event reported, which equals the requested model. Public text extracted from each parsed event is forwarded to onText while it runs, and lines that are not valid JSON are ignored.",
+				"examples": [
+					{
+						"text": "Added the retry helper to the upload client and updated its unit test.",
+						"model": "claude-sonnet-5-5"
+					},
+					{
+						"text": "The function already rejects empty input, so no change was needed.",
+						"model": "claude-haiku-5-5"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects if Claude reports another model, returns no completed result, marks its final result as an error, or the CLI process fails. Cancellation and process time or output limits also propagate."
+				"description": "Rejects with Error when no system init event reports the requested model ('Claude did not run the requested model.'), or when there is no result event or its is_error flag is set (the message is its result text when present, else 'Claude returned no completed result.'). A CLI exit other than code 0, a process error event, a run longer than 600000 ms or output over 16000000 bytes also rejects with Error, and resource queue or resourceWork failures propagate unchanged unless turn.signal is aborted."
+			},
+			{
+				"name": "RunCancelled",
+				"type": "thrown",
+				"description": "Rejects with RunCancelled when turn.signal is aborted: the CLI process is sent SIGTERM, and any error that managedAgentTurn catches after the abort is reported as RunCancelled instead."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "claudeTurn",
@@ -55,30 +86,66 @@
 						"name": "claudeTurn.command",
 						"type": "CliCommand",
 						"required": true,
-						"description": "The Claude executable and initial arguments. The helper adds noninteractive streaming output, the requested model, bypassPermissions and disabled session persistence."
+						"description": "The CliCommand whose command is the Claude executable and whose args are its initial arguments; the helper spawns the executable with those args followed by -p, --verbose, --output-format stream-json, --model set to the turn's model, --permission-mode bypassPermissions and --no-session-persistence.",
+						"examples": [
+							{
+								"command": "claude",
+								"args": []
+							},
+							{
+								"command": "/opt/homebrew/bin/claude",
+								"args": []
+							},
+							{
+								"command": "node",
+								"args": ["/usr/local/lib/claude-code/cli.js"]
+							}
+						]
 					},
 					{
 						"name": "claudeTurn.turn",
 						"type": "AgentTurn",
 						"required": true,
-						"description": "The model, optional effort, working directory, prompt, access mode, cancellation signal and callbacks. The prompt goes to standard input. Read-only access limits available tools to Read, Glob and Grep; reported Write and Edit paths are sent to the optional file callback."
+						"description": "The AgentTurn for one request: model is passed as --model and must match the model Claude reports, effort adds --effort when non-empty, cwd is the process working directory, prompt goes to standard input and signal cancels the run. Access 'read-only' adds --tools Read,Glob,Grep and 'write' adds no --tools argument; onText receives public streamed text, onStatus receives the 'Waiting for resources:' notices from managedAgentTurn, and onFile receives the file_path of each Write or Edit tool use in an assistant event."
 					},
 					{
 						"name": "claudeTurn.queue",
 						"type": "ResourceQueueService",
 						"required": false,
-						"description": "Optional resource queue admitting the provider process; omitted to use the normal managed turn queue."
+						"default": "undefined",
+						"description": "Optional ResourceQueueService whose run method admits the Claude run with priority coding, memoryMiB 2048 and cpus 1; when omitted, managedAgentTurn calls resourceWork with process.env instead."
 					}
 				],
 				"outputs": [
 					{
 						"name": "claudeTurn",
 						"type": "unknown",
-						"description": "A promise for the final public result text and the exact model reported by Claude. Public streamed events are forwarded while it runs; malformed JSON lines are ignored."
+						"description": "A promise that resolves to { text, model } after the CLI exits with code 0 and its last result event is not an error: text is that event's result as a string (empty when missing or null) and model is the model its init event reported, which equals the requested model. Public text extracted from each parsed event is forwarded to onText while it runs, and lines that are not valid JSON are ignored.",
+						"examples": [
+							{
+								"text": "Added the retry helper to the upload client and updated its unit test.",
+								"model": "claude-sonnet-5-5"
+							},
+							{
+								"text": "The function already rejects empty input, so no change was needed.",
+								"model": "claude-haiku-5-5"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with Error when no system init event reports the requested model ('Claude did not run the requested model.'), or when there is no result event or its is_error flag is set (the message is its result text when present, else 'Claude returned no completed result.'). A CLI exit other than code 0, a process error event, a run longer than 600000 ms or output over 16000000 bytes also rejects with Error, and resource queue or resourceWork failures propagate unchanged unless turn.signal is aborted."
+					},
+					{
+						"name": "RunCancelled",
+						"type": "thrown",
+						"description": "Rejects with RunCancelled when turn.signal is aborted: the CLI process is sent SIGTERM, and any error that managedAgentTurn catches after the abort is reported as RunCancelled instead."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
