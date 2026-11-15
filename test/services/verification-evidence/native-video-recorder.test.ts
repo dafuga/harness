@@ -153,3 +153,29 @@ test('NativeVideoRecorderService record preserves failed diagnostics and release
 	writeFileSync(result.video.path, Buffer.alloc(20));
 	await expect(service.lookup('failure', 'a'.repeat(64))).rejects.toThrow(/cache/);
 }, 30_000);
+
+test('NativeVideoRecorderService record refuses overlapping slot ownership', async () => {
+	let release: () => void = () => {};
+	let entered: () => void = () => {};
+	const waiting = new Promise<void>((resolve) => {
+		release = resolve;
+	});
+	const started = new Promise<void>((resolve) => {
+		entered = resolve;
+	});
+	const first = service.record({
+		...options('locked'),
+		prepare: async ({ page }) => {
+			entered();
+			await waiting;
+			await page.setContent('<button>Move</button>');
+		}
+	});
+	try {
+		await started;
+		await expect(service.record(options('locked'))).rejects.toThrow(/locked/);
+	} finally {
+		release();
+		await first;
+	}
+}, 30_000);
