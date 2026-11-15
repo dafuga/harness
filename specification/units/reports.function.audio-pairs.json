@@ -21,17 +21,21 @@
 				"name": "audioPairs.items",
 				"type": "Evidence[]",
 				"required": true,
-				"description": "Evidence items; only audio with a nonblank comparison name and before/after phase participate."
+				"description": "The evidence records supplied for comparison. A record participates only if `evidenceMedia(item)` is `audio`, `comparison?.trim()` is nonempty, and `phase` is exactly `before` or `after`; grouping retains the original comparison string and uses `viewport || \"\"`.",
+				"examples": [
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "audioPairs",
 				"type": "unknown",
-				"description": "Map from each after-item identifier to its before item, grouped by exact comparison text and viewport. Only groups with exactly one item on each side are paired; ambiguous and incomplete groups are omitted."
+				"description": "A `Map<string, Evidence>` from each eligible group's after-record `id` to its before record. An entry is made only when the `[comparison, viewport || \"\"]` group contains exactly one before and exactly one after record; incomplete or duplicate groups are omitted."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "audioPairs",
@@ -40,18 +44,21 @@
 						"name": "audioPairs.items",
 						"type": "Evidence[]",
 						"required": true,
-						"description": "Evidence items; only audio with a nonblank comparison name and before/after phase participate."
+						"description": "The evidence records supplied for comparison. A record participates only if `evidenceMedia(item)` is `audio`, `comparison?.trim()` is nonempty, and `phase` is exactly `before` or `after`; grouping retains the original comparison string and uses `viewport || \"\"`.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "audioPairs",
 						"type": "unknown",
-						"description": "Map from each after-item identifier to its before item, grouped by exact comparison text and viewport. Only groups with exactly one item on each side are paired; ambiguous and incomplete groups are omitted."
+						"description": "A `Map<string, Evidence>` from each eligible group's after-record `id` to its before record. An entry is made only when the `[comparison, viewport || \"\"]` group contains exactly one before and exactly one after record; incomplete or duplicate groups are omitted."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
