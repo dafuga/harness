@@ -16,42 +16,57 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "PairingExchangeService.constructor.store",
 				"type": "HostStorageAdapter",
-				"required": true
+				"required": true,
+				"description": "Storage adapter used to look up the host, pairing, and device, remove the pairing, and save the enrolled device record. Every exchange depends on it; the pairing is removed before approval, expiry, device, or proof checks finish."
 			},
 			{
 				"name": "PairingExchangeService.constructor.sockets",
 				"type": "HostSocketsAdapter",
-				"required": true
+				"required": true,
+				"description": "Socket adapter used after a pairing is accepted to get the device's current sockets. Each returned socket is passed to the link service for closure before the replacement device is saved."
 			},
 			{
 				"name": "PairingExchangeService.constructor.link",
 				"type": "HostLinkService",
-				"required": true
+				"required": true,
+				"description": "Link service used to drop each existing device socket with the unauthorized close code during enrollment. It matters only after the pairing is consumed successfully and before the new device record is saved."
 			},
 			{
 				"name": "PairingExchangeService.exchange.pairingId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "String key used to look up and consume the pairing. It is removed on each exchange attempt, and this method does not validate an identifier format.",
+				"examples": ["pairing-01"]
 			},
 			{
 				"name": "PairingExchangeService.exchange.verifier",
 				"type": "string | undefined",
-				"required": true
+				"required": true,
+				"description": "Verifier passed to pkceChallenge before the pairing is consumed. A truthy string is converted to a proof; undefined or an empty string supplies an empty proof, which cannot pass the proof check.",
+				"examples": ["dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "PairingExchangeService.exchange",
-				"type": "Promise<RelayPairingExchange | undefined>"
+				"type": "Promise<RelayPairingExchange | undefined>",
+				"description": "Resolves to an object containing the pairing's deviceId, a newly generated credential, and its sealed approval when the host exists, the pairing is approved and unexpired, the device matches, and the verifier proof matches. Otherwise it resolves to undefined; on success it removes the pairing and saves the new credential hash as the device's next generation.",
+				"examples": [
+					{
+						"deviceId": "device-01",
+						"credential": "c3V2N2Y0Y2E5MWQ2ZTgzYjEwNWEyZjZjOTQ",
+						"sealed": "sealed-approval-example"
+					}
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "PairingExchangeService.exchange",
@@ -59,22 +74,34 @@
 					{
 						"name": "PairingExchangeService.exchange.pairingId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "String key used to look up and consume the pairing. It is removed on each exchange attempt, and this method does not validate an identifier format.",
+						"examples": ["pairing-01"]
 					},
 					{
 						"name": "PairingExchangeService.exchange.verifier",
 						"type": "string | undefined",
-						"required": true
+						"required": true,
+						"description": "Verifier passed to pkceChallenge before the pairing is consumed. A truthy string is converted to a proof; undefined or an empty string supplies an empty proof, which cannot pass the proof check.",
+						"examples": ["dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PairingExchangeService.exchange",
-						"type": "Promise<RelayPairingExchange | undefined>"
+						"type": "Promise<RelayPairingExchange | undefined>",
+						"description": "Resolves to an object containing the pairing's deviceId, a newly generated credential, and its sealed approval when the host exists, the pairing is approved and unexpired, the device matches, and the verifier proof matches. Otherwise it resolves to undefined; on success it removes the pairing and saves the new credential hash as the device's next generation.",
+						"examples": [
+							{
+								"deviceId": "device-01",
+								"credential": "c3V2N2Y0Y2E5MWQ2ZTgzYjEwNWEyZjZjOTQ",
+								"sealed": "sealed-approval-example"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -84,27 +111,31 @@
 					{
 						"name": "PairingExchangeService.constructor.store",
 						"type": "HostStorageAdapter",
-						"required": true
+						"required": true,
+						"description": "Storage adapter used to look up the host, pairing, and device, remove the pairing, and save the enrolled device record. Every exchange depends on it; the pairing is removed before approval, expiry, device, or proof checks finish."
 					},
 					{
 						"name": "PairingExchangeService.constructor.sockets",
 						"type": "HostSocketsAdapter",
-						"required": true
+						"required": true,
+						"description": "Socket adapter used after a pairing is accepted to get the device's current sockets. Each returned socket is passed to the link service for closure before the replacement device is saved."
 					},
 					{
 						"name": "PairingExchangeService.constructor.link",
 						"type": "HostLinkService",
-						"required": true
+						"required": true,
+						"description": "Link service used to drop each existing device socket with the unauthorized close code during enrollment. It matters only after the pairing is consumed successfully and before the new device record is saved."
 					}
 				],
 				"outputs": [
 					{
 						"name": "PairingExchangeService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The PairingExchangeService instance created with the supplied storage, sockets, and link adapters."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
