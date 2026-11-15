@@ -42,26 +42,27 @@
 				"type": "string",
 				"required": false,
 				"default": "Model picker",
-				"description": "Optional heading, defaulting to Model picker."
+				"description": "The heading text rendered above the picker. It defaults to \"Model picker\" and changes only the heading.",
+				"examples": ["Model picker", "Choose a model"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProviderPicker",
 				"type": "markup",
-				"description": "Connects to the picker client on mount and closes that connection on destruction. Displays session status and active/queued selections, allows binding a trimmed session identifier, refreshes state, and queues supported model/effort selections. Queuing does not immediately change the observed active model or global defaults. Operation failures appear as error text and controls lock while an operation runs. Catalog states: default, connection and loading (loading, connection-error, unbound, unobserved, control-unavailable, refreshing), provider-claude, queue and switch (queue-empty, queue-populated, queue-error, cancelled, applying, applied, failed, request-cancelled, queueing, cancelling, loading-queue), binding (bind-ready, binding), no-models and in-use."
+				"description": "The rendered picker section for binding a session, displaying catalog and queued state, and selecting a provider, model, and effort to refresh, queue, cancel, or list requests. Queueing submits a request only; it does not itself change the active selection or defaults, and queued sessions are loaded only on request."
 			}
 		],
 		"errors": [
 			{
-				"name": "Connection or request failure",
-				"type": "caught",
-				"description": "A rejected connection, status read or model switch request is caught and shown as error text; the controls unlock."
+				"name": "Picker client rejection",
+				"type": "thrown",
+				"description": "Opening the picker client or calling it for status, switch, cancellation, or observed-session data can reject. The component catches these failures and displays failure text with the relevant fallback message."
 			},
 			{
 				"name": "Error",
-				"type": "caught",
-				"description": "Thrown when queued sessions cannot be read; the request handler catches it and shows it as error text."
+				"type": "thrown",
+				"description": "Loading observed sessions throws Error('Queued sessions could not be read.') when readSessions produces no list. The action handler catches it and displays the failure text."
 			}
 		],
 		"errorStatus": "declared",
