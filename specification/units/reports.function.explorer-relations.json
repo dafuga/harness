@@ -30,41 +30,430 @@
 				"name": "explorerRelationsReader.head",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "The recorded, read-only revision to browse. Create a new reader when its data changes."
+				"description": "The revision the reader answers from: its active units (status 'active') and their dependency edges form the graph, which is built on the first question asked. Each answer is kept for as long as the reader is held, so a new reader is needed when the revision's data changes.",
+				"examples": [
+					{
+						"commit": "3f9c2a7d41be58e06c9a1f4d2b7e8c0a5d613b92",
+						"registry": {
+							"available": true,
+							"units": [
+								{
+									"id": "reports.function.explorer-relations",
+									"kind": "function",
+									"status": "active",
+									"title": "Revision entity relationships",
+									"responsibility": "Finds categorized dependencies, consumers and containing pages within an active revision registry.",
+									"dependencies": [
+										{
+											"unit": "reports.model.explorer-types",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"packages/reports/src/utils/explorer-ui/explorerRelations.ts",
+											"packages/reports/src/utils/explorer-ui/explorerRelations.types.ts",
+											"packages/reports/src/utils/explorerRelations.ts"
+										],
+										"symbols": [
+											"explorerRelationsReader",
+											"explorerRelations",
+											"RelationsReader",
+											"Edges",
+											"Reached",
+											"Graph",
+											"Entity"
+										]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/utils/explorer-ui/explorerRelations.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "5b0e7d2c94a1f863"
+								},
+								{
+									"id": "reports.model.explorer-types",
+									"kind": "model",
+									"status": "active",
+									"title": "Explorer types",
+									"responsibility": "Declares the entity, verdict, support and relation types that the explorer reads for each listed unit.",
+									"dependencies": [],
+									"scenarios": [],
+									"owns": {
+										"source": ["packages/reports/src/models/explorer-ui/Explorer.types.ts"],
+										"symbols": [
+											"ExplorerEntity",
+											"ExplorerVerdict",
+											"ExplorerSupport",
+											"ExplorerRelations"
+										]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/models/explorer-ui/Explorer.types.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "e27a91c4d05b38f6",
+									"modelDefinitions": [
+										{
+											"name": "ExplorerEntity",
+											"kind": "interface",
+											"source": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
+											"fields": [],
+											"methods": []
+										}
+									]
+								}
+							],
+							"scenarios": [],
+							"graph": {
+								"edges": [
+									{
+										"from": "reports.function.explorer-relations",
+										"to": "reports.model.explorer-types",
+										"via": "import"
+									}
+								]
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "explorerRelationsReader.built",
 				"type": "ExplorerEntity[]",
 				"required": false,
 				"default": [],
-				"description": "Optional entities already listed for this same revision. Their existing verdicts are reused; removed entries from a parent are excluded."
+				"description": "Entities already built for this same revision: an entry without `lastAt` is handed out as it is, with its verdict, when its `unit` is the very object this revision holds for that unit, while an entry with `lastAt` (a unit its parent last held) is worked out again from head. The default `[]` means every entity is worked out from head.",
+				"examples": [
+					[],
+					[
+						{
+							"id": "reports.model.explorer-types",
+							"category": "types",
+							"role": "Type definitions",
+							"name": "Explorer",
+							"purpose": "Declares the entity, verdict, support and relation types that the explorer reads for each listed unit.",
+							"unit": {
+								"id": "reports.model.explorer-types",
+								"kind": "model",
+								"status": "active",
+								"title": "Explorer types",
+								"responsibility": "Declares the entity, verdict, support and relation types that the explorer reads for each listed unit.",
+								"dependencies": [],
+								"scenarios": [],
+								"owns": {
+									"source": ["packages/reports/src/models/explorer-ui/Explorer.types.ts"],
+									"symbols": [
+										"ExplorerEntity",
+										"ExplorerVerdict",
+										"ExplorerSupport",
+										"ExplorerRelations"
+									]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/models/explorer-ui/Explorer.types.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "e27a91c4d05b38f6",
+								"modelDefinitions": [
+									{
+										"name": "ExplorerEntity",
+										"kind": "interface",
+										"source": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
+										"fields": [],
+										"methods": []
+									}
+								]
+							},
+							"verdict": {
+								"passed": false,
+								"label": "Evidence missing",
+								"reasons": ["No verification record is attached to this commit."]
+							},
+							"change": null,
+							"appRoute": null
+						}
+					]
+				]
 			},
 			{
 				"name": "explorerRelations.head",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Revision providing active unit definitions and dependency edges."
+				"description": "The revision whose active units (status 'active') and dependency edges answer this one question; nothing is kept between calls, so each call reads the revision afresh.",
+				"examples": [
+					{
+						"commit": "3f9c2a7d41be58e06c9a1f4d2b7e8c0a5d613b92",
+						"registry": {
+							"available": true,
+							"units": [
+								{
+									"id": "reports.function.explorer-relations",
+									"kind": "function",
+									"status": "active",
+									"title": "Revision entity relationships",
+									"responsibility": "Finds categorized dependencies, consumers and containing pages within an active revision registry.",
+									"dependencies": [
+										{
+											"unit": "reports.model.explorer-types",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"packages/reports/src/utils/explorer-ui/explorerRelations.ts",
+											"packages/reports/src/utils/explorer-ui/explorerRelations.types.ts",
+											"packages/reports/src/utils/explorerRelations.ts"
+										],
+										"symbols": [
+											"explorerRelationsReader",
+											"explorerRelations",
+											"RelationsReader",
+											"Edges",
+											"Reached",
+											"Graph",
+											"Entity"
+										]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/utils/explorer-ui/explorerRelations.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "5b0e7d2c94a1f863"
+								},
+								{
+									"id": "reports.model.explorer-types",
+									"kind": "model",
+									"status": "active",
+									"title": "Explorer types",
+									"responsibility": "Declares the entity, verdict, support and relation types that the explorer reads for each listed unit.",
+									"dependencies": [],
+									"scenarios": [],
+									"owns": {
+										"source": ["packages/reports/src/models/explorer-ui/Explorer.types.ts"],
+										"symbols": [
+											"ExplorerEntity",
+											"ExplorerVerdict",
+											"ExplorerSupport",
+											"ExplorerRelations"
+										]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/models/explorer-ui/Explorer.types.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "e27a91c4d05b38f6",
+									"modelDefinitions": [
+										{
+											"name": "ExplorerEntity",
+											"kind": "interface",
+											"source": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
+											"fields": [],
+											"methods": []
+										}
+									]
+								}
+							],
+							"scenarios": [],
+							"graph": {
+								"edges": [
+									{
+										"from": "reports.function.explorer-relations",
+										"to": "reports.model.explorer-types",
+										"via": "import"
+									}
+								]
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "explorerRelations.id",
 				"type": "string",
 				"required": true,
-				"description": "Entity identifier whose relationships should be traversed."
+				"description": "The id of the unit whose relationships are traversed, matched against the ids of the revision's active units. An id that is missing or not active gives empty groups in every section.",
+				"examples": [
+					"reports.function.explorer-relations",
+					"reports.model.explorer-types",
+					"reports.function.explorer-category"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "explorerRelations",
 				"type": "ExplorerRelations",
-				"description": "Categorized dependencies, non-page users, containing pages and support units. Traversal stops at categorized entities but passes through support units; containing pages are reached upward to any depth. Cycles and duplicate visits are bounded by identifier sets. Missing or inactive identifiers return empty groups."
+				"description": "The unit's relations at this revision, in sections: `pages` that show it (found upward at any depth), the categorized units it uses (stopping at each one, passing through support units), `usedBy` the nearest non-page users, and `support` units it depends on. For a page, `apis` and `models` hold everything used anywhere in its dependency graph, and a missing or inactive id gives empty sections.",
+				"examples": [
+					{
+						"pages": [],
+						"layouts": [],
+						"components": [],
+						"functions": [],
+						"configs": [],
+						"services": [],
+						"models": [],
+						"apis": [],
+						"types": [
+							{
+								"id": "reports.model.explorer-types",
+								"category": "types",
+								"role": "Type definitions",
+								"name": "Explorer",
+								"purpose": "Declares the entity, verdict, support and relation types that the explorer reads for each listed unit.",
+								"unit": {
+									"id": "reports.model.explorer-types",
+									"kind": "model",
+									"status": "active",
+									"title": "Explorer types",
+									"responsibility": "Declares the entity, verdict, support and relation types that the explorer reads for each listed unit.",
+									"dependencies": [],
+									"scenarios": [],
+									"owns": {
+										"source": ["packages/reports/src/models/explorer-ui/Explorer.types.ts"],
+										"symbols": [
+											"ExplorerEntity",
+											"ExplorerVerdict",
+											"ExplorerSupport",
+											"ExplorerRelations"
+										]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/models/explorer-ui/Explorer.types.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "e27a91c4d05b38f6",
+									"modelDefinitions": [
+										{
+											"name": "ExplorerEntity",
+											"kind": "interface",
+											"source": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
+											"fields": [],
+											"methods": []
+										}
+									]
+								},
+								"verdict": {
+									"passed": false,
+									"label": "Evidence missing",
+									"reasons": ["No verification record is attached to this commit."]
+								},
+								"change": null,
+								"appRoute": null
+							}
+						],
+						"usedBy": [],
+						"support": []
+					}
+				]
 			},
 			{
 				"name": "explorerRelationsReader",
 				"type": "(id: string) => ExplorerRelations",
-				"description": "A reusable lookup of Uses and Used In at this revision. It builds the dependency graph once and keeps each answer while the reader is held. Its answers are read-only; no global cache is created."
+				"description": "A lookup from a unit id to that unit's ExplorerRelations at this revision. It builds the dependency graph on the first call and keeps each answer while the reader is held, so asking again for an id gives the same object, and no cache outlives the reader."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "explorerRelationsReader",
@@ -73,25 +462,211 @@
 						"name": "explorerRelationsReader.head",
 						"type": "HarnessRevision",
 						"required": true,
-						"description": "The recorded, read-only revision to browse. Create a new reader when its data changes."
+						"description": "The revision the reader answers from: its active units (status 'active') and their dependency edges form the graph, which is built on the first question asked. Each answer is kept for as long as the reader is held, so a new reader is needed when the revision's data changes.",
+						"examples": [
+							{
+								"commit": "3f9c2a7d41be58e06c9a1f4d2b7e8c0a5d613b92",
+								"registry": {
+									"available": true,
+									"units": [
+										{
+											"id": "reports.function.explorer-relations",
+											"kind": "function",
+											"status": "active",
+											"title": "Revision entity relationships",
+											"responsibility": "Finds categorized dependencies, consumers and containing pages within an active revision registry.",
+											"dependencies": [
+												{
+													"unit": "reports.model.explorer-types",
+													"via": "import"
+												}
+											],
+											"scenarios": [],
+											"owns": {
+												"source": [
+													"packages/reports/src/utils/explorer-ui/explorerRelations.ts",
+													"packages/reports/src/utils/explorer-ui/explorerRelations.types.ts",
+													"packages/reports/src/utils/explorerRelations.ts"
+												],
+												"symbols": [
+													"explorerRelationsReader",
+													"explorerRelations",
+													"RelationsReader",
+													"Edges",
+													"Reached",
+													"Graph",
+													"Entity"
+												]
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/utils/explorer-ui/explorerRelations.ts"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "5b0e7d2c94a1f863"
+										},
+										{
+											"id": "reports.model.explorer-types",
+											"kind": "model",
+											"status": "active",
+											"title": "Explorer types",
+											"responsibility": "Declares the entity, verdict, support and relation types that the explorer reads for each listed unit.",
+											"dependencies": [],
+											"scenarios": [],
+											"owns": {
+												"source": ["packages/reports/src/models/explorer-ui/Explorer.types.ts"],
+												"symbols": [
+													"ExplorerEntity",
+													"ExplorerVerdict",
+													"ExplorerSupport",
+													"ExplorerRelations"
+												]
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/models/explorer-ui/Explorer.types.ts"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "e27a91c4d05b38f6",
+											"modelDefinitions": [
+												{
+													"name": "ExplorerEntity",
+													"kind": "interface",
+													"source": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
+													"fields": [],
+													"methods": []
+												}
+											]
+										}
+									],
+									"scenarios": [],
+									"graph": {
+										"edges": [
+											{
+												"from": "reports.function.explorer-relations",
+												"to": "reports.model.explorer-types",
+												"via": "import"
+											}
+										]
+									}
+								},
+								"comparison": null,
+								"records": [],
+								"explanations": []
+							}
+						]
 					},
 					{
 						"name": "explorerRelationsReader.built",
 						"type": "ExplorerEntity[]",
 						"required": false,
 						"default": [],
-						"description": "Optional entities already listed for this same revision. Their existing verdicts are reused; removed entries from a parent are excluded."
+						"description": "Entities already built for this same revision: an entry without `lastAt` is handed out as it is, with its verdict, when its `unit` is the very object this revision holds for that unit, while an entry with `lastAt` (a unit its parent last held) is worked out again from head. The default `[]` means every entity is worked out from head.",
+						"examples": [
+							[],
+							[
+								{
+									"id": "reports.model.explorer-types",
+									"category": "types",
+									"role": "Type definitions",
+									"name": "Explorer",
+									"purpose": "Declares the entity, verdict, support and relation types that the explorer reads for each listed unit.",
+									"unit": {
+										"id": "reports.model.explorer-types",
+										"kind": "model",
+										"status": "active",
+										"title": "Explorer types",
+										"responsibility": "Declares the entity, verdict, support and relation types that the explorer reads for each listed unit.",
+										"dependencies": [],
+										"scenarios": [],
+										"owns": {
+											"source": ["packages/reports/src/models/explorer-ui/Explorer.types.ts"],
+											"symbols": [
+												"ExplorerEntity",
+												"ExplorerVerdict",
+												"ExplorerSupport",
+												"ExplorerRelations"
+											]
+										},
+										"contract": {
+											"inputs": [],
+											"outputs": [],
+											"errors": []
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "packages/reports/src/models/explorer-ui/Explorer.types.ts"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"version": "e27a91c4d05b38f6",
+										"modelDefinitions": [
+											{
+												"name": "ExplorerEntity",
+												"kind": "interface",
+												"source": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
+												"fields": [],
+												"methods": []
+											}
+										]
+									},
+									"verdict": {
+										"passed": false,
+										"label": "Evidence missing",
+										"reasons": ["No verification record is attached to this commit."]
+									},
+									"change": null,
+									"appRoute": null
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerRelationsReader",
 						"type": "RelationsReader",
-						"description": "A reusable lookup of Uses and Used In at this revision. It builds the dependency graph once and keeps each answer while the reader is held. Its answers are read-only; no global cache is created."
+						"description": "A lookup from a unit id to that unit's ExplorerRelations at this revision. It builds the dependency graph on the first call and keeps each answer while the reader is held, so asking again for an id gives the same object, and no cache outlives the reader."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "explorerRelations",
@@ -100,24 +675,226 @@
 						"name": "explorerRelations.head",
 						"type": "HarnessRevision",
 						"required": true,
-						"description": "Revision providing active unit definitions and dependency edges."
+						"description": "The revision whose active units (status 'active') and dependency edges answer this one question; nothing is kept between calls, so each call reads the revision afresh.",
+						"examples": [
+							{
+								"commit": "3f9c2a7d41be58e06c9a1f4d2b7e8c0a5d613b92",
+								"registry": {
+									"available": true,
+									"units": [
+										{
+											"id": "reports.function.explorer-relations",
+											"kind": "function",
+											"status": "active",
+											"title": "Revision entity relationships",
+											"responsibility": "Finds categorized dependencies, consumers and containing pages within an active revision registry.",
+											"dependencies": [
+												{
+													"unit": "reports.model.explorer-types",
+													"via": "import"
+												}
+											],
+											"scenarios": [],
+											"owns": {
+												"source": [
+													"packages/reports/src/utils/explorer-ui/explorerRelations.ts",
+													"packages/reports/src/utils/explorer-ui/explorerRelations.types.ts",
+													"packages/reports/src/utils/explorerRelations.ts"
+												],
+												"symbols": [
+													"explorerRelationsReader",
+													"explorerRelations",
+													"RelationsReader",
+													"Edges",
+													"Reached",
+													"Graph",
+													"Entity"
+												]
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/utils/explorer-ui/explorerRelations.ts"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "5b0e7d2c94a1f863"
+										},
+										{
+											"id": "reports.model.explorer-types",
+											"kind": "model",
+											"status": "active",
+											"title": "Explorer types",
+											"responsibility": "Declares the entity, verdict, support and relation types that the explorer reads for each listed unit.",
+											"dependencies": [],
+											"scenarios": [],
+											"owns": {
+												"source": ["packages/reports/src/models/explorer-ui/Explorer.types.ts"],
+												"symbols": [
+													"ExplorerEntity",
+													"ExplorerVerdict",
+													"ExplorerSupport",
+													"ExplorerRelations"
+												]
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/models/explorer-ui/Explorer.types.ts"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "e27a91c4d05b38f6",
+											"modelDefinitions": [
+												{
+													"name": "ExplorerEntity",
+													"kind": "interface",
+													"source": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
+													"fields": [],
+													"methods": []
+												}
+											]
+										}
+									],
+									"scenarios": [],
+									"graph": {
+										"edges": [
+											{
+												"from": "reports.function.explorer-relations",
+												"to": "reports.model.explorer-types",
+												"via": "import"
+											}
+										]
+									}
+								},
+								"comparison": null,
+								"records": [],
+								"explanations": []
+							}
+						]
 					},
 					{
 						"name": "explorerRelations.id",
 						"type": "string",
 						"required": true,
-						"description": "Entity identifier whose relationships should be traversed."
+						"description": "The id of the unit whose relationships are traversed, matched against the ids of the revision's active units. An id that is missing or not active gives empty groups in every section.",
+						"examples": [
+							"reports.function.explorer-relations",
+							"reports.model.explorer-types",
+							"reports.function.explorer-category"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerRelations",
 						"type": "ExplorerRelations",
-						"description": "Categorized dependencies, non-page users, containing pages and support units. Traversal stops at categorized entities but passes through support units; containing pages are reached upward to any depth. Cycles and duplicate visits are bounded by identifier sets. Missing or inactive identifiers return empty groups."
+						"description": "The unit's relations at this revision, in sections: `pages` that show it (found upward at any depth), the categorized units it uses (stopping at each one, passing through support units), `usedBy` the nearest non-page users, and `support` units it depends on. For a page, `apis` and `models` hold everything used anywhere in its dependency graph, and a missing or inactive id gives empty sections.",
+						"examples": [
+							{
+								"pages": [],
+								"layouts": [],
+								"components": [],
+								"functions": [],
+								"configs": [],
+								"services": [],
+								"models": [],
+								"apis": [],
+								"types": [
+									{
+										"id": "reports.model.explorer-types",
+										"category": "types",
+										"role": "Type definitions",
+										"name": "Explorer",
+										"purpose": "Declares the entity, verdict, support and relation types that the explorer reads for each listed unit.",
+										"unit": {
+											"id": "reports.model.explorer-types",
+											"kind": "model",
+											"status": "active",
+											"title": "Explorer types",
+											"responsibility": "Declares the entity, verdict, support and relation types that the explorer reads for each listed unit.",
+											"dependencies": [],
+											"scenarios": [],
+											"owns": {
+												"source": ["packages/reports/src/models/explorer-ui/Explorer.types.ts"],
+												"symbols": [
+													"ExplorerEntity",
+													"ExplorerVerdict",
+													"ExplorerSupport",
+													"ExplorerRelations"
+												]
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/models/explorer-ui/Explorer.types.ts"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "e27a91c4d05b38f6",
+											"modelDefinitions": [
+												{
+													"name": "ExplorerEntity",
+													"kind": "interface",
+													"source": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
+													"fields": [],
+													"methods": []
+												}
+											]
+										},
+										"verdict": {
+											"passed": false,
+											"label": "Evidence missing",
+											"reasons": ["No verification record is attached to this commit."]
+										},
+										"change": null,
+										"appRoute": null
+									}
+								],
+								"usedBy": [],
+								"support": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
