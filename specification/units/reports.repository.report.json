@@ -25,100 +25,342 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ReportRepository.constructor.root",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional storage root. The constructor has no parameter initializer, so omission passes undefined; reportFiles then uses a truthy PROJECT_REPORTS_HOME or falls back to join(homedir(), '.codex', 'project-reports').",
+				"examples": ["/tmp/project-reports", "/var/tmp/project-reports"]
 			},
 			{
 				"name": "ReportRepository.directory.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Report run identifier used under the runs directory; safeId accepts 1–100 ASCII letters, digits, underscores, or hyphens.",
+				"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 			},
 			{
 				"name": "ReportRepository.begin.input",
 				"type": "BeginInput",
-				"required": true
+				"required": true,
+				"description": "Defines the project, title, mode, and environment for a new report; project and title must be truthy, and mode must be feature or suite. Falsey environment, summary, and acceptance become local, an empty string, and an empty array; historical is boolean-coerced and revision is copied when supplied.",
+				"examples": [
+					{
+						"project": "/tmp/reports-demo",
+						"title": "Report contract example",
+						"mode": "feature",
+						"environment": "local",
+						"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"historical": false,
+						"summary": "Acceptance checks are recorded.",
+						"acceptance": ["Review the generated report"]
+					}
+				]
 			},
 			{
 				"name": "ReportRepository.get.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Report run identifier whose manifest is loaded; safeId accepts 1–100 ASCII letters, digits, underscores, or hyphens.",
+				"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 			},
 			{
 				"name": "ReportRepository.record.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Report run identifier to update; safeId accepts 1–100 ASCII letters, digits, underscores, or hyphens.",
+				"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 			},
 			{
 				"name": "ReportRepository.record.record",
 				"type": "RecordInput",
-				"required": true
+				"required": true,
+				"description": "Discriminated record to validate and ingest; kind is check, evidence, finding, coverage, acceptance, summary, or heartbeat, and data must be a non-array object. Summary requires string text, acceptance allows at most 30 short nonempty strings, and item/evidence kinds have title, status, and path constraints.",
+				"examples": [
+					{
+						"kind": "summary",
+						"data": {
+							"text": "All required checks passed."
+						}
+					}
+				]
 			},
 			{
 				"name": "ReportRepository.mutateActive.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Report run identifier to update; safeId accepts 1–100 ASCII letters, digits, underscores, or hyphens.",
+				"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 			},
 			{
 				"name": "ReportRepository.mutateActive.update",
 				"type": "(run: Report, directory: string) => Promise<void>",
-				"required": true
+				"required": true,
+				"description": "Async callback invoked with the active Report and its directory while the report lock is held; it is awaited before evidence storage and manifest writing."
 			},
 			{
 				"name": "ReportRepository.seal.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Report run identifier to finalize; safeId accepts 1–100 ASCII letters, digits, underscores, or hyphens.",
+				"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 			},
 			{
 				"name": "ReportRepository.finish.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Report run identifier whose finalizing state is to be completed; safeId accepts 1–100 ASCII letters, digits, underscores, or hyphens.",
+				"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ReportRepository.directory",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns the filesystem path join(root, 'runs', safeId(id)) for the requested report.",
+				"examples": ["/tmp/project-reports/runs/550e8400-e29b-41d4-a716-446655440000"]
 			},
 			{
 				"name": "ReportRepository.begin",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the new Report created by reportState after its run directory and manifest are written.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "550e8400-e29b-41d4-a716-446655440000",
+						"project": {
+							"id": "cc0217aff07b38a2",
+							"name": "reports-demo",
+							"path": "/tmp/reports-demo"
+						},
+						"title": "Report contract example",
+						"mode": "feature",
+						"environment": "local",
+						"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"historical": false,
+						"startedAt": "2026-11-15T10:00:00.000Z",
+						"updatedAt": "2026-11-15T10:00:00.000Z",
+						"summary": "Acceptance checks are recorded.",
+						"status": "running",
+						"state": "active",
+						"checks": [],
+						"evidence": [],
+						"findings": [],
+						"coverage": [],
+						"acceptance": ["Review the generated report"]
+					}
+				]
 			},
 			{
 				"name": "ReportRepository.get",
-				"type": "Promise<Report>"
+				"type": "Promise<Report>",
+				"description": "Resolves to the parsed manifest at runs/<id>/manifest.json; rejects when the report directory is a symlink or filesystem/JSON loading fails.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "550e8400-e29b-41d4-a716-446655440000",
+						"project": {
+							"id": "cc0217aff07b38a2",
+							"name": "reports-demo",
+							"path": "/tmp/reports-demo"
+						},
+						"title": "Report contract example",
+						"mode": "feature",
+						"environment": "local",
+						"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"historical": false,
+						"startedAt": "2026-11-15T10:00:00.000Z",
+						"updatedAt": "2026-11-15T10:00:00.000Z",
+						"summary": "Acceptance checks are recorded.",
+						"status": "running",
+						"state": "active",
+						"checks": [],
+						"evidence": [],
+						"findings": [],
+						"coverage": [],
+						"acceptance": ["Review the generated report"]
+					}
+				]
 			},
 			{
 				"name": "ReportRepository.list",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to directory-backed reports sorted by startedAt descending; unreadable runs directories and individual manifests are skipped.",
+				"examples": [
+					[
+						{
+							"schemaVersion": 1,
+							"id": "550e8400-e29b-41d4-a716-446655440000",
+							"project": {
+								"id": "cc0217aff07b38a2",
+								"name": "reports-demo",
+								"path": "/tmp/reports-demo"
+							},
+							"title": "Report contract example",
+							"mode": "feature",
+							"environment": "local",
+							"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"historical": false,
+							"startedAt": "2026-11-15T10:00:00.000Z",
+							"updatedAt": "2026-11-15T10:00:00.000Z",
+							"summary": "Acceptance checks are recorded.",
+							"status": "running",
+							"state": "active",
+							"checks": [],
+							"evidence": [],
+							"findings": [],
+							"coverage": [],
+							"acceptance": ["Review the generated report"]
+						}
+					]
+				]
 			},
 			{
 				"name": "ReportRepository.record",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the updated active Report after record ingestion, evidence storage for evidence records, and manifest writing.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "550e8400-e29b-41d4-a716-446655440000",
+						"project": {
+							"id": "cc0217aff07b38a2",
+							"name": "reports-demo",
+							"path": "/tmp/reports-demo"
+						},
+						"title": "Report contract example",
+						"mode": "feature",
+						"environment": "local",
+						"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"historical": false,
+						"startedAt": "2026-11-15T10:00:00.000Z",
+						"updatedAt": "2026-11-15T11:00:00.000Z",
+						"summary": "All required checks passed.",
+						"status": "running",
+						"state": "active",
+						"checks": [],
+						"evidence": [],
+						"findings": [],
+						"coverage": [],
+						"acceptance": ["Review the generated report"]
+					}
+				]
 			},
 			{
 				"name": "ReportRepository.mutateActive",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the active Report after the callback, evidence storage, and manifest writing complete.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "550e8400-e29b-41d4-a716-446655440000",
+						"project": {
+							"id": "cc0217aff07b38a2",
+							"name": "reports-demo",
+							"path": "/tmp/reports-demo"
+						},
+						"title": "Report contract example",
+						"mode": "feature",
+						"environment": "local",
+						"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"historical": false,
+						"startedAt": "2026-11-15T10:00:00.000Z",
+						"updatedAt": "2026-11-15T10:00:00.000Z",
+						"summary": "Acceptance checks are recorded.",
+						"status": "running",
+						"state": "active",
+						"checks": [],
+						"evidence": [],
+						"findings": [],
+						"coverage": [],
+						"acceptance": ["Review the generated report"]
+					}
+				]
 			},
 			{
 				"name": "ReportRepository.seal",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the Report in finalizing state with resultStatus applied; evidence unavailable during finalization is marked missing and not-proven.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "550e8400-e29b-41d4-a716-446655440000",
+						"project": {
+							"id": "cc0217aff07b38a2",
+							"name": "reports-demo",
+							"path": "/tmp/reports-demo"
+						},
+						"title": "Report contract example",
+						"mode": "feature",
+						"environment": "local",
+						"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"historical": false,
+						"startedAt": "2026-11-15T10:00:00.000Z",
+						"updatedAt": "2026-11-15T12:00:00.000Z",
+						"summary": "Acceptance checks are recorded.",
+						"status": "not-proven",
+						"state": "finalizing",
+						"checks": [],
+						"evidence": [],
+						"findings": [],
+						"coverage": [],
+						"acceptance": ["Review the generated report"]
+					}
+				]
 			},
 			{
 				"name": "ReportRepository.finish",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the Report in finalized state after updating updatedAt and writing the manifest.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "550e8400-e29b-41d4-a716-446655440000",
+						"project": {
+							"id": "cc0217aff07b38a2",
+							"name": "reports-demo",
+							"path": "/tmp/reports-demo"
+						},
+						"title": "Report contract example",
+						"mode": "feature",
+						"environment": "local",
+						"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"historical": false,
+						"startedAt": "2026-11-15T10:00:00.000Z",
+						"updatedAt": "2026-11-15T12:00:00.000Z",
+						"summary": "Acceptance checks are recorded.",
+						"status": "not-proven",
+						"state": "finalized",
+						"checks": [],
+						"evidence": [],
+						"findings": [],
+						"coverage": [],
+						"acceptance": ["Review the generated report"]
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised for invalid report IDs, invalid begin or record values, prohibited state transitions, and failures propagated from filesystem, locking, persistence, or storage operations."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Raised by JSON.parse when a stored manifest is not valid JSON; get and operations that load a report propagate it."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "list can reject while sorting if a parsed manifest has a startedAt value without a callable localeCompare method."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ReportRepository.directory",
@@ -126,17 +368,27 @@
 					{
 						"name": "ReportRepository.directory.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Report run identifier used under the runs directory; safeId accepts 1–100 ASCII letters, digits, underscores, or hyphens.",
+						"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportRepository.directory",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns the filesystem path join(root, 'runs', safeId(id)) for the requested report.",
+						"examples": ["/tmp/project-reports/runs/550e8400-e29b-41d4-a716-446655440000"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Raised for invalid report IDs, invalid begin or record values, prohibited state transitions, and failures propagated from filesystem, locking, persistence, or storage operations."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ReportRepository.begin",
@@ -144,17 +396,63 @@
 					{
 						"name": "ReportRepository.begin.input",
 						"type": "BeginInput",
-						"required": true
+						"required": true,
+						"description": "Defines the project, title, mode, and environment for a new report; project and title must be truthy, and mode must be feature or suite. Falsey environment, summary, and acceptance become local, an empty string, and an empty array; historical is boolean-coerced and revision is copied when supplied.",
+						"examples": [
+							{
+								"project": "/tmp/reports-demo",
+								"title": "Report contract example",
+								"mode": "feature",
+								"environment": "local",
+								"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"historical": false,
+								"summary": "Acceptance checks are recorded.",
+								"acceptance": ["Review the generated report"]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportRepository.begin",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the new Report created by reportState after its run directory and manifest are written.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "550e8400-e29b-41d4-a716-446655440000",
+								"project": {
+									"id": "cc0217aff07b38a2",
+									"name": "reports-demo",
+									"path": "/tmp/reports-demo"
+								},
+								"title": "Report contract example",
+								"mode": "feature",
+								"environment": "local",
+								"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"historical": false,
+								"startedAt": "2026-11-15T10:00:00.000Z",
+								"updatedAt": "2026-11-15T10:00:00.000Z",
+								"summary": "Acceptance checks are recorded.",
+								"status": "running",
+								"state": "active",
+								"checks": [],
+								"evidence": [],
+								"findings": [],
+								"coverage": [],
+								"acceptance": ["Review the generated report"]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when project or title is falsey or mode is not feature/suite; filesystem directory or manifest writes may also reject."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ReportRepository.get",
@@ -162,22 +460,57 @@
 					{
 						"name": "ReportRepository.get.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Report run identifier whose manifest is loaded; safeId accepts 1–100 ASCII letters, digits, underscores, or hyphens.",
+						"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportRepository.get",
-						"type": "Promise<Report>"
+						"type": "Promise<Report>",
+						"description": "Resolves to the parsed manifest at runs/<id>/manifest.json; rejects when the report directory is a symlink or filesystem/JSON loading fails.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "550e8400-e29b-41d4-a716-446655440000",
+								"project": {
+									"id": "cc0217aff07b38a2",
+									"name": "reports-demo",
+									"path": "/tmp/reports-demo"
+								},
+								"title": "Report contract example",
+								"mode": "feature",
+								"environment": "local",
+								"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"historical": false,
+								"startedAt": "2026-11-15T10:00:00.000Z",
+								"updatedAt": "2026-11-15T10:00:00.000Z",
+								"summary": "Acceptance checks are recorded.",
+								"status": "running",
+								"state": "active",
+								"checks": [],
+								"evidence": [],
+								"findings": [],
+								"coverage": [],
+								"acceptance": ["Review the generated report"]
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown for an invalid safe ID or a symbolic-link report directory; filesystem lookup/read failures also reject."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Raised by JSON.parse when a stored manifest is not valid JSON; get and operations that load a report propagate it."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ReportRepository.list",
@@ -185,11 +518,46 @@
 				"outputs": [
 					{
 						"name": "ReportRepository.list",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to directory-backed reports sorted by startedAt descending; unreadable runs directories and individual manifests are skipped.",
+						"examples": [
+							[
+								{
+									"schemaVersion": 1,
+									"id": "550e8400-e29b-41d4-a716-446655440000",
+									"project": {
+										"id": "cc0217aff07b38a2",
+										"name": "reports-demo",
+										"path": "/tmp/reports-demo"
+									},
+									"title": "Report contract example",
+									"mode": "feature",
+									"environment": "local",
+									"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"historical": false,
+									"startedAt": "2026-11-15T10:00:00.000Z",
+									"updatedAt": "2026-11-15T10:00:00.000Z",
+									"summary": "Acceptance checks are recorded.",
+									"status": "running",
+									"state": "active",
+									"checks": [],
+									"evidence": [],
+									"findings": [],
+									"coverage": [],
+									"acceptance": ["Review the generated report"]
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "list can reject while sorting if a parsed manifest has a startedAt value without a callable localeCompare method."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ReportRepository.record",
@@ -197,22 +565,71 @@
 					{
 						"name": "ReportRepository.record.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Report run identifier to update; safeId accepts 1–100 ASCII letters, digits, underscores, or hyphens.",
+						"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 					},
 					{
 						"name": "ReportRepository.record.record",
 						"type": "RecordInput",
-						"required": true
+						"required": true,
+						"description": "Discriminated record to validate and ingest; kind is check, evidence, finding, coverage, acceptance, summary, or heartbeat, and data must be a non-array object. Summary requires string text, acceptance allows at most 30 short nonempty strings, and item/evidence kinds have title, status, and path constraints.",
+						"examples": [
+							{
+								"kind": "summary",
+								"data": {
+									"text": "All required checks passed."
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportRepository.record",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the updated active Report after record ingestion, evidence storage for evidence records, and manifest writing.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "550e8400-e29b-41d4-a716-446655440000",
+								"project": {
+									"id": "cc0217aff07b38a2",
+									"name": "reports-demo",
+									"path": "/tmp/reports-demo"
+								},
+								"title": "Report contract example",
+								"mode": "feature",
+								"environment": "local",
+								"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"historical": false,
+								"startedAt": "2026-11-15T10:00:00.000Z",
+								"updatedAt": "2026-11-15T11:00:00.000Z",
+								"summary": "All required checks passed.",
+								"status": "running",
+								"state": "active",
+								"checks": [],
+								"evidence": [],
+								"findings": [],
+								"coverage": [],
+								"acceptance": ["Review the generated report"]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown for an invalid safe ID, invalid record data, or a report state other than active; persistence and evidence storage failures also reject."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Raised by JSON.parse when a stored manifest is not valid JSON; get and operations that load a report propagate it."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ReportRepository.mutateActive",
@@ -220,22 +637,63 @@
 					{
 						"name": "ReportRepository.mutateActive.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Report run identifier to update; safeId accepts 1–100 ASCII letters, digits, underscores, or hyphens.",
+						"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 					},
 					{
 						"name": "ReportRepository.mutateActive.update",
 						"type": "(run: Report, directory: string) => Promise<void>",
-						"required": true
+						"required": true,
+						"description": "Async callback invoked with the active Report and its directory while the report lock is held; it is awaited before evidence storage and manifest writing."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportRepository.mutateActive",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the active Report after the callback, evidence storage, and manifest writing complete.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "550e8400-e29b-41d4-a716-446655440000",
+								"project": {
+									"id": "cc0217aff07b38a2",
+									"name": "reports-demo",
+									"path": "/tmp/reports-demo"
+								},
+								"title": "Report contract example",
+								"mode": "feature",
+								"environment": "local",
+								"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"historical": false,
+								"startedAt": "2026-11-15T10:00:00.000Z",
+								"updatedAt": "2026-11-15T10:00:00.000Z",
+								"summary": "Acceptance checks are recorded.",
+								"status": "running",
+								"state": "active",
+								"checks": [],
+								"evidence": [],
+								"findings": [],
+								"coverage": [],
+								"acceptance": ["Review the generated report"]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown for an invalid safe ID or a report state other than active; callback, evidence storage, and persistence rejections propagate."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Raised by JSON.parse when a stored manifest is not valid JSON; get and operations that load a report propagate it."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ReportRepository.seal",
@@ -243,17 +701,57 @@
 					{
 						"name": "ReportRepository.seal.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Report run identifier to finalize; safeId accepts 1–100 ASCII letters, digits, underscores, or hyphens.",
+						"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportRepository.seal",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the Report in finalizing state with resultStatus applied; evidence unavailable during finalization is marked missing and not-proven.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "550e8400-e29b-41d4-a716-446655440000",
+								"project": {
+									"id": "cc0217aff07b38a2",
+									"name": "reports-demo",
+									"path": "/tmp/reports-demo"
+								},
+								"title": "Report contract example",
+								"mode": "feature",
+								"environment": "local",
+								"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"historical": false,
+								"startedAt": "2026-11-15T10:00:00.000Z",
+								"updatedAt": "2026-11-15T12:00:00.000Z",
+								"summary": "Acceptance checks are recorded.",
+								"status": "not-proven",
+								"state": "finalizing",
+								"checks": [],
+								"evidence": [],
+								"findings": [],
+								"coverage": [],
+								"acceptance": ["Review the generated report"]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown for an invalid safe ID or an already-finalized report; filesystem and manifest-write failures reject. Asset verification failures are caught and mark evidence unavailable."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Raised by JSON.parse when a stored manifest is not valid JSON; get and operations that load a report propagate it."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ReportRepository.finish",
@@ -261,17 +759,57 @@
 					{
 						"name": "ReportRepository.finish.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Report run identifier whose finalizing state is to be completed; safeId accepts 1–100 ASCII letters, digits, underscores, or hyphens.",
+						"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportRepository.finish",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the Report in finalized state after updating updatedAt and writing the manifest.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "550e8400-e29b-41d4-a716-446655440000",
+								"project": {
+									"id": "cc0217aff07b38a2",
+									"name": "reports-demo",
+									"path": "/tmp/reports-demo"
+								},
+								"title": "Report contract example",
+								"mode": "feature",
+								"environment": "local",
+								"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"historical": false,
+								"startedAt": "2026-11-15T10:00:00.000Z",
+								"updatedAt": "2026-11-15T12:00:00.000Z",
+								"summary": "Acceptance checks are recorded.",
+								"status": "not-proven",
+								"state": "finalized",
+								"checks": [],
+								"evidence": [],
+								"findings": [],
+								"coverage": [],
+								"acceptance": ["Review the generated report"]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown for an invalid safe ID or when the report is not finalizing; filesystem and manifest-write failures reject."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Raised by JSON.parse when a stored manifest is not valid JSON; get and operations that load a report propagate it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -281,17 +819,21 @@
 					{
 						"name": "ReportRepository.constructor.root",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional storage root. The constructor has no parameter initializer, so omission passes undefined; reportFiles then uses a truthy PROJECT_REPORTS_HOME or falls back to join(homedir(), '.codex', 'project-reports').",
+						"examples": ["/tmp/project-reports", "/var/tmp/project-reports"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A ReportRepository class instance whose readonly root is selected by reportFiles from the supplied root, PROJECT_REPORTS_HOME, or the homedir fallback."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
