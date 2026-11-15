@@ -49,145 +49,820 @@
 				"name": "typeLabel.type",
 				"type": "string",
 				"required": true,
-				"description": "A public type expression that may contain an inferred module import."
+				"description": "The public type expression to display, which may contain an inferred import('...') path. Only quoted module specifiers are removed, whitespace collapses to single spaces, and a result that is empty afterwards is shown as 'module'.",
+				"examples": [
+					"ContractRow[]",
+					"Item | undefined",
+					"import('../../../models/explorer-ui/Harness.types').HarnessUnit"
+				]
 			},
 			{
 				"name": "fieldOf.item",
 				"type": "Item",
 				"required": true,
-				"description": "Declared input, output or error item whose type, explanation and examples are presented."
+				"description": "The declared input, output or error entry to present; its readable name is the last dotted segment of its name, and its trimmed description, own default and non-empty examples carry over. Without examples, a type that is plain data gets one illustrative value instead.",
+				"examples": [
+					{
+						"name": "typeLabel.type",
+						"type": "string",
+						"required": true,
+						"description": "The public type expression to display, which may contain an inferred import('...') path. Only quoted module specifiers are removed, whitespace collapses to single spaces, and a result that is empty afterwards is shown as 'module'."
+					},
+					{
+						"name": "fieldOf",
+						"type": "ContractField",
+						"description": "A readable field whose name is the last dotted segment of the item name, keeping the item's required flag and own default (false, 0, null and empty text included); its source is declared for authored examples, illustrative for a placeholder of plain data, or missing when neither applies."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by JSON.stringify when an authored example holds BigInt or circular data; nothing in these files catches it."
+					}
+				]
 			},
 			{
 				"name": "fieldOf.unit",
 				"type": "HarnessUnit",
 				"required": true,
-				"description": "Selected unit supplying callable identity and source context for the contract field."
+				"description": "The unit whose title, owned symbols and owned source file names decide whether a markup item reads as 'rendered markup' rather than its own name. No other part of the field depends on it.",
+				"examples": [
+					{
+						"id": "reports.function.contract-fields",
+						"kind": "function",
+						"status": "active",
+						"title": "Prepare typed contract fields",
+						"responsibility": "Prepares declared callable contracts and shared type fields with honest examples and source gaps.",
+						"dependencies": [
+							{
+								"unit": "reports.model.harness-types",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": ["packages/reports/src/utils/explorer-ui/contractFields.ts"],
+							"symbols": [
+								"typeLabel",
+								"contractFields",
+								"contractFacts",
+								"callableContracts",
+								"fieldOf",
+								"returnField",
+								"guess"
+							]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "typeLabel.type",
+									"type": "string",
+									"required": true,
+									"description": "The public type expression to display, which may contain an inferred import('...') path. Only quoted module specifiers are removed, whitespace collapses to single spaces, and a result that is empty afterwards is shown as 'module'."
+								}
+							],
+							"outputs": [
+								{
+									"name": "typeLabel",
+									"type": "string",
+									"description": "The type expression with each quoted import(...) path and its trailing dot removed, whitespace collapsed and trimmed, or 'module' when nothing remains."
+								}
+							],
+							"errors": [
+								{
+									"name": "TypeError",
+									"type": "thrown",
+									"description": "Thrown by JSON.stringify when an authored example holds BigInt or circular data; nothing in these files catches it."
+								}
+							]
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/utils/explorer-ui/contractFields.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "3f9a0c7d12e4b856"
+					}
+				]
 			},
 			{
 				"name": "contractFields.unit",
 				"type": "HarnessUnit",
 				"required": true,
-				"description": "The entity whose contract fields and declared JSON examples will be displayed."
+				"description": "The unit whose contract inputs, outputs and errors become the field groups; for the types category, its non-class model definitions in its owned source become the groups instead, and its contract inputs supply the method requirement flags.",
+				"examples": [
+					{
+						"id": "reports.function.contract-fields",
+						"kind": "function",
+						"status": "active",
+						"title": "Prepare typed contract fields",
+						"responsibility": "Prepares declared callable contracts and shared type fields with honest examples and source gaps.",
+						"dependencies": [
+							{
+								"unit": "reports.model.harness-types",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": ["packages/reports/src/utils/explorer-ui/contractFields.ts"],
+							"symbols": [
+								"typeLabel",
+								"contractFields",
+								"contractFacts",
+								"callableContracts",
+								"fieldOf",
+								"returnField",
+								"guess"
+							]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "typeLabel.type",
+									"type": "string",
+									"required": true,
+									"description": "The public type expression to display, which may contain an inferred import('...') path. Only quoted module specifiers are removed, whitespace collapses to single spaces, and a result that is empty afterwards is shown as 'module'."
+								}
+							],
+							"outputs": [
+								{
+									"name": "typeLabel",
+									"type": "string",
+									"description": "The type expression with each quoted import(...) path and its trailing dot removed, whitespace collapsed and trimmed, or 'module' when nothing remains."
+								}
+							],
+							"errors": [
+								{
+									"name": "TypeError",
+									"type": "thrown",
+									"description": "Thrown by JSON.stringify when an authored example holds BigInt or circular data; nothing in these files catches it."
+								}
+							]
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/utils/explorer-ui/contractFields.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "3f9a0c7d12e4b856"
+					}
+				]
 			},
 			{
 				"name": "contractFields.category",
 				"type": "ExplorerCategory",
 				"required": true,
-				"description": "The entity category; configs provide values and Types show source-declared interfaces and aliases."
+				"description": "The entity category: types lists its model definitions as groups, components title the inputs Props and omit the outputs, configs title the outputs Provides, and every other category titles them Inputs and Outputs.",
+				"examples": ["functions", "components", "configs"]
 			},
 			{
 				"name": "contractFacts.rows",
 				"type": "ContractRow[]",
 				"required": true,
-				"description": "Prepared readable contract rows, including facts beyond individual fields."
+				"description": "The prepared contract rows; rows labelled Inputs, Props, Output, Fails with or Provides are dropped because the field groups already show them, and the remaining rows, such as Purpose, are kept.",
+				"examples": [
+					[
+						{
+							"label": "Inputs",
+							"value": "type, item, unit, category, rows, declared, callable, depth"
+						},
+						{
+							"label": "Output",
+							"value": "type label, contract fields, contract facts, callable contracts, field of, return field, guess"
+						},
+						{
+							"label": "Fails with",
+							"value": "type error, range error, getter, proxy or conversion error"
+						}
+					],
+					[
+						{
+							"label": "Inputs",
+							"value": "None"
+						},
+						{
+							"label": "Output",
+							"value": "Nothing declared"
+						}
+					]
+				]
 			},
 			{
 				"name": "contractFacts.unit",
 				"type": "HarnessUnit",
 				"required": true,
-				"description": "The entity whose execution targets may be listed as contract facts."
+				"description": "The unit whose runtime targets are read, for functions only: each target kind becomes a readable name (module, wasm, process and http map to Module, Wasm, Native process and HTTP; other kinds stay as written), and with no targets its runtime kind, named the same way, is shown.",
+				"examples": [
+					{
+						"id": "reports.function.contract-fields",
+						"kind": "function",
+						"status": "active",
+						"title": "Prepare typed contract fields",
+						"responsibility": "Prepares declared callable contracts and shared type fields with honest examples and source gaps.",
+						"dependencies": [
+							{
+								"unit": "reports.model.harness-types",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": ["packages/reports/src/utils/explorer-ui/contractFields.ts"],
+							"symbols": [
+								"typeLabel",
+								"contractFields",
+								"contractFacts",
+								"callableContracts",
+								"fieldOf",
+								"returnField",
+								"guess"
+							]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "typeLabel.type",
+									"type": "string",
+									"required": true,
+									"description": "The public type expression to display, which may contain an inferred import('...') path. Only quoted module specifiers are removed, whitespace collapses to single spaces, and a result that is empty afterwards is shown as 'module'."
+								}
+							],
+							"outputs": [
+								{
+									"name": "typeLabel",
+									"type": "string",
+									"description": "The type expression with each quoted import(...) path and its trailing dot removed, whitespace collapsed and trimmed, or 'module' when nothing remains."
+								}
+							],
+							"errors": [
+								{
+									"name": "TypeError",
+									"type": "thrown",
+									"description": "Thrown by JSON.stringify when an authored example holds BigInt or circular data; nothing in these files catches it."
+								}
+							]
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/utils/explorer-ui/contractFields.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "3f9a0c7d12e4b856"
+					}
+				]
 			},
 			{
 				"name": "contractFacts.category",
 				"type": "ExplorerCategory",
 				"required": true,
-				"description": "The entity category; functions also expose execution targets."
+				"description": "The entity category; only functions add a 'Runs as' row listing their execution targets, and every other category returns the remaining rows as they are.",
+				"examples": ["functions", "components", "configs"]
 			},
 			{
 				"name": "callableContracts.unit",
 				"type": "HarnessUnit",
 				"required": true,
-				"description": "Source-derived callable metadata and declared examples at the selected revision."
+				"description": "The unit whose recorded helpers each become one callable entry, with inputs and outputs matched to its contract by name and errors matched by the helper's name prefix. A unit with a single helper takes all its errors and, when no output matches, its first output.",
+				"examples": [
+					{
+						"id": "reports.function.contract-fields",
+						"kind": "function",
+						"status": "active",
+						"title": "Prepare typed contract fields",
+						"responsibility": "Prepares declared callable contracts and shared type fields with honest examples and source gaps.",
+						"dependencies": [
+							{
+								"unit": "reports.model.harness-types",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": ["packages/reports/src/utils/explorer-ui/contractFields.ts"],
+							"symbols": [
+								"typeLabel",
+								"contractFields",
+								"contractFacts",
+								"callableContracts",
+								"fieldOf",
+								"returnField",
+								"guess"
+							]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "typeLabel.type",
+									"type": "string",
+									"required": true,
+									"description": "The public type expression to display, which may contain an inferred import('...') path. Only quoted module specifiers are removed, whitespace collapses to single spaces, and a result that is empty afterwards is shown as 'module'."
+								}
+							],
+							"outputs": [
+								{
+									"name": "typeLabel",
+									"type": "string",
+									"description": "The type expression with each quoted import(...) path and its trailing dot removed, whitespace collapsed and trimmed, or 'module' when nothing remains."
+								}
+							],
+							"errors": [
+								{
+									"name": "TypeError",
+									"type": "thrown",
+									"description": "Thrown by JSON.stringify when an authored example holds BigInt or circular data; nothing in these files catches it."
+								}
+							]
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/utils/explorer-ui/contractFields.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "3f9a0c7d12e4b856"
+					}
+				]
 			},
 			{
 				"name": "returnField.declared",
 				"type": "Item | undefined",
 				"required": true,
-				"description": "Optional authored return item; absent declarations retain an explicit source-derived gap."
+				"description": "The authored output entry of the callable, or undefined when none is declared. Without one, or when its name equals the callable name, the field is named returnValue and its examples come from the declared entry if it has any, otherwise from its type.",
+				"examples": [
+					{
+						"name": "fieldOf",
+						"type": "ContractField",
+						"description": "A readable field whose name is the last dotted segment of the item name, keeping the item's required flag and own default (false, 0, null and empty text included); its source is declared for authored examples, illustrative for a placeholder of plain data, or missing when neither applies."
+					},
+					{
+						"name": "guess",
+						"type": "Guess",
+						"description": "A { value } wrapper around a bounded placeholder when the type is plain data within the depth limit, or undefined when the type cannot be represented."
+					},
+					{
+						"name": "typeLabel",
+						"type": "string",
+						"description": "The type expression with each quoted import(...) path and its trailing dot removed, whitespace collapsed and trimmed, or 'module' when nothing remains."
+					}
+				]
 			},
 			{
 				"name": "returnField.type",
 				"type": "string",
 				"required": true,
-				"description": "Source-declared return type to display and use for illustrative value shapes."
+				"description": "The return type as declared: void gives the field the description 'This function returns no value.' with no examples, and any other type has its import path removed, is shown as the type, and builds an illustrative value when it is plain data and no examples are declared.",
+				"examples": ["ContractField", "CallableContract[]", "void"]
 			},
 			{
 				"name": "returnField.callable",
 				"type": "string",
 				"required": true,
-				"description": "Canonical callable name used to identify this return field."
+				"description": "The canonical name of the callable that returns this value; a declared output named exactly this way gives returnValue, and a declared name that begins with this name and a dot loses that prefix to become the return name.",
+				"examples": ["fieldOf", "callableContracts", "guess"]
 			},
 			{
 				"name": "returnField.unit",
 				"type": "HarnessUnit",
 				"required": true,
-				"description": "Selected-revision unit supplying contract documentation and identity."
+				"description": "Only passed on to the field builder, whose readable name this function replaces with the return name, so the unit does not change the returned field.",
+				"examples": [
+					{
+						"id": "reports.function.contract-fields",
+						"kind": "function",
+						"status": "active",
+						"title": "Prepare typed contract fields",
+						"responsibility": "Prepares declared callable contracts and shared type fields with honest examples and source gaps.",
+						"dependencies": [
+							{
+								"unit": "reports.model.harness-types",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": ["packages/reports/src/utils/explorer-ui/contractFields.ts"],
+							"symbols": [
+								"typeLabel",
+								"contractFields",
+								"contractFacts",
+								"callableContracts",
+								"fieldOf",
+								"returnField",
+								"guess"
+							]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "typeLabel.type",
+									"type": "string",
+									"required": true,
+									"description": "The public type expression to display, which may contain an inferred import('...') path. Only quoted module specifiers are removed, whitespace collapses to single spaces, and a result that is empty afterwards is shown as 'module'."
+								}
+							],
+							"outputs": [
+								{
+									"name": "typeLabel",
+									"type": "string",
+									"description": "The type expression with each quoted import(...) path and its trailing dot removed, whitespace collapsed and trimmed, or 'module' when nothing remains."
+								}
+							],
+							"errors": [
+								{
+									"name": "TypeError",
+									"type": "thrown",
+									"description": "Thrown by JSON.stringify when an authored example holds BigInt or circular data; nothing in these files catches it."
+								}
+							]
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/utils/explorer-ui/contractFields.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "3f9a0c7d12e4b856"
+					}
+				]
 			},
 			{
 				"name": "guess.type",
 				"type": "string",
 				"required": true,
-				"description": "Type expression for which a bounded illustrative value may be constructed."
+				"description": "The type expression a placeholder is built for: primitives, literals, arrays, Record<string, ...> and markup are handled, a union only when every member is, and named or opaque types such as Item yield undefined.",
+				"examples": ["string", "ContractRow[]", "'open' | 'closed'"]
 			},
 			{
 				"name": "guess.depth",
 				"type": "number",
 				"required": true,
-				"description": "Current recursion depth limiting nested illustrative type expansion."
+				"description": "The current nesting level: a field's own example starts at 0, each union or array level adds one, and a depth above 4 yields undefined.",
+				"examples": [0, 1, 2]
 			}
 		],
 		"outputs": [
 			{
 				"name": "typeLabel",
 				"type": "string",
-				"description": "The type expression with inferred import paths removed."
+				"description": "The type expression with each quoted import(...) path and its trailing dot removed, whitespace collapsed and trimmed, or 'module' when nothing remains.",
+				"examples": ["ContractRow[]", "HarnessUnit", "Item | undefined"]
 			},
 			{
 				"name": "contractFields",
 				"type": "ContractGroup[]",
-				"description": "Typed inputs, outputs and explicit error declarations. Source fields retain optionality, callable members retain authored requirement flags, and missing metadata stays explicit without invented defaults."
+				"description": "The field groups of an entity: Inputs (Props for components), Outputs (Provides for configs, absent for components) and Errors, or for types one group per non-class model definition. Model fields set required from their optional flag and carry source 'missing' with no invented default, callable members keep their authored requirement flags, and other fields keep each item's declared required flag, default and examples.",
+				"examples": [
+					[
+						{
+							"id": "inputs",
+							"title": "Inputs",
+							"none": "No inputs declared.",
+							"fields": [
+								{
+									"name": "Type",
+									"type": "string",
+									"required": true,
+									"description": "The public type expression to display, which may contain an inferred import('...') path. Only quoted module specifiers are removed, whitespace collapses to single spaces, and a result that is empty afterwards is shown as 'module'.",
+									"source": "declared",
+									"examples": [
+										{
+											"form": "literal",
+											"value": "ContractRow[]",
+											"text": "\"ContractRow[]\""
+										},
+										{
+											"form": "literal",
+											"value": "Item | undefined",
+											"text": "\"Item | undefined\""
+										},
+										{
+											"form": "literal",
+											"value": "import('../../../models/explorer-ui/Harness.types').HarnessUnit",
+											"text": "\"import('../../../models/explorer-ui/Harness.types').HarnessUnit\""
+										}
+									]
+								}
+							]
+						},
+						{
+							"id": "outputs",
+							"title": "Outputs",
+							"none": "No outputs declared.",
+							"fields": [
+								{
+									"name": "Type label",
+									"type": "string",
+									"description": "The type expression with each quoted import(...) path and its trailing dot removed, whitespace collapsed and trimmed, or 'module' when nothing remains.",
+									"source": "declared",
+									"examples": [
+										{
+											"form": "literal",
+											"value": "ContractRow[]",
+											"text": "\"ContractRow[]\""
+										},
+										{
+											"form": "literal",
+											"value": "HarnessUnit",
+											"text": "\"HarnessUnit\""
+										},
+										{
+											"form": "literal",
+											"value": "Item | undefined",
+											"text": "\"Item | undefined\""
+										}
+									]
+								}
+							]
+						},
+						{
+							"id": "errors",
+							"title": "Errors",
+							"none": "No errors declared.",
+							"fields": [
+								{
+									"name": "Type error",
+									"type": "thrown",
+									"description": "Thrown by JSON.stringify when an authored example holds BigInt or circular data; nothing in these files catches it.",
+									"source": "missing",
+									"examples": []
+								}
+							]
+						}
+					]
+				]
 			},
 			{
 				"name": "contractFacts",
 				"type": "ContractRow[]",
-				"description": "Whole-contract facts without duplicate field summaries, plus execution targets for functions."
+				"description": "The contract's rows that the field groups do not already show, plus a 'Runs as' row for functions naming their execution targets, falling back to the runtime kind.",
+				"examples": [
+					[
+						{
+							"label": "Runs as",
+							"value": "Module"
+						}
+					],
+					[
+						{
+							"label": "Runs as",
+							"value": "Native process, HTTP"
+						}
+					]
+				]
 			},
 			{
 				"name": "callableContracts",
 				"type": "{ name: string; signature: string; groups: ContractGroup[] }[]",
-				"description": "Literal callable parameters with requirement/default metadata, named return values and declared errors or an explicit No errors declared message."
+				"description": "One entry per recorded callable, with its signature, a Parameters group whose fields keep the matched input's required flag and own default, a Returns group holding the named return value, and a Throws group listing its errors or stating 'No errors declared.'",
+				"examples": [
+					[
+						{
+							"name": "guess",
+							"signature": "guess(type: string, depth: number): Guess",
+							"groups": [
+								{
+									"id": "inputs",
+									"title": "Parameters",
+									"none": "No parameters.",
+									"keepEmpty": true,
+									"fields": [
+										{
+											"name": "type",
+											"type": "string",
+											"required": true,
+											"description": "The type expression a placeholder is built for: primitives, literals, arrays, Record<string, ...> and markup are handled, a union only when every member is, and named or opaque types such as Item yield undefined.",
+											"source": "declared",
+											"examples": [
+												{
+													"form": "literal",
+													"value": "string",
+													"text": "\"string\""
+												},
+												{
+													"form": "literal",
+													"value": "ContractRow[]",
+													"text": "\"ContractRow[]\""
+												},
+												{
+													"form": "literal",
+													"value": "'open' | 'closed'",
+													"text": "\"'open' | 'closed'\""
+												}
+											]
+										},
+										{
+											"name": "depth",
+											"type": "number",
+											"required": true,
+											"description": "The current nesting level: a field's own example starts at 0, each union or array level adds one, and a depth above 4 yields undefined.",
+											"source": "declared",
+											"examples": [
+												{
+													"form": "literal",
+													"value": 0,
+													"text": "0"
+												},
+												{
+													"form": "literal",
+													"value": 1,
+													"text": "1"
+												},
+												{
+													"form": "literal",
+													"value": 2,
+													"text": "2"
+												}
+											]
+										}
+									]
+								},
+								{
+									"id": "outputs",
+									"title": "Returns",
+									"none": "",
+									"fields": [
+										{
+											"name": "returnValue",
+											"type": "Guess",
+											"description": "A { value } wrapper around a bounded placeholder when the type is plain data within the depth limit, or undefined when the type cannot be represented.",
+											"source": "declared",
+											"examples": [
+												{
+													"form": "structure",
+													"value": {
+														"value": "example"
+													},
+													"text": "{\n  \"value\": \"example\"\n}"
+												},
+												{
+													"form": "structure",
+													"value": {
+														"value": true
+													},
+													"text": "{\n  \"value\": true\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"id": "errors",
+									"title": "Throws",
+									"none": "No errors declared.",
+									"hideNames": true,
+									"fields": []
+								}
+							]
+						}
+					]
+				]
 			},
 			{
 				"name": "fieldOf",
 				"type": "ContractField",
-				"description": "A readable field preserving requiredness, own literal defaults and authored or illustrative examples."
+				"description": "A readable field whose name is the last dotted segment of the item name, keeping the item's required flag and own default (false, 0, null and empty text included); its source is declared for authored examples, illustrative for a placeholder of plain data, or missing when neither applies.",
+				"examples": [
+					{
+						"name": "Type",
+						"type": "string",
+						"required": true,
+						"description": "The public type expression to display, which may contain an inferred import('...') path. Only quoted module specifiers are removed, whitespace collapses to single spaces, and a result that is empty afterwards is shown as 'module'.",
+						"source": "declared",
+						"examples": [
+							{
+								"form": "literal",
+								"value": "ContractRow[]",
+								"text": "\"ContractRow[]\""
+							},
+							{
+								"form": "literal",
+								"value": "Item | undefined",
+								"text": "\"Item | undefined\""
+							},
+							{
+								"form": "literal",
+								"value": "import('../../../models/explorer-ui/Harness.types').HarnessUnit",
+								"text": "\"import('../../../models/explorer-ui/Harness.types').HarnessUnit\""
+							}
+						]
+					},
+					{
+						"name": "Type error",
+						"type": "thrown",
+						"description": "Thrown by JSON.stringify when an authored example holds BigInt or circular data; nothing in these files catches it.",
+						"source": "missing",
+						"examples": []
+					}
+				]
 			},
 			{
 				"name": "returnField",
 				"type": "ContractField",
-				"description": "A declared return value with its literal name and public type, or an explicit void return."
+				"description": "The named return value of a callable with its public type and examples, or for a void return the field 'This function returns no value.' with source missing and no examples.",
+				"examples": [
+					{
+						"name": "returnValue",
+						"type": "void",
+						"description": "This function returns no value.",
+						"source": "missing",
+						"examples": []
+					},
+					{
+						"name": "returnValue",
+						"type": "Guess",
+						"description": "A { value } wrapper around a bounded placeholder when the type is plain data within the depth limit, or undefined when the type cannot be represented.",
+						"source": "declared",
+						"examples": [
+							{
+								"form": "structure",
+								"value": {
+									"value": "example"
+								},
+								"text": "{\n  \"value\": \"example\"\n}"
+							},
+							{
+								"form": "structure",
+								"value": {
+									"value": true
+								},
+								"text": "{\n  \"value\": true\n}"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "guess",
 				"type": "Guess",
-				"description": "A bounded illustrative plain-data value when its type can be represented; otherwise JavaScript undefined."
+				"description": "A { value } wrapper around a bounded placeholder when the type is plain data within the depth limit, or undefined when the type cannot be represented.",
+				"examples": [
+					{
+						"value": "example"
+					},
+					{
+						"value": true
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "TypeError",
 				"type": "thrown",
-				"description": "An authored example contains BigInt or circular data that JSON cannot serialize."
+				"description": "Thrown by JSON.stringify when an authored example holds BigInt or circular data; nothing in these files catches it."
 			},
 			{
 				"name": "RangeError",
 				"type": "thrown",
-				"description": "Deeply nested authored examples exceed the JSON serializer stack."
+				"description": "Thrown by JSON.stringify when an authored example nests too deeply for the serializer's call stack; nothing in these files catches it."
 			},
 			{
 				"name": "Getter, proxy or conversion error",
 				"type": "propagated",
-				"description": "Errors from supplied field/default/example getters, proxy traps or JSON conversion methods propagate."
+				"description": "An error raised by a supplied field, default or example getter, a proxy trap or a toJSON conversion method passes through unchanged, because these files never catch it."
 			}
 		],
 		"errorStatus": "declared",
@@ -199,18 +874,24 @@
 						"name": "typeLabel.type",
 						"type": "string",
 						"required": true,
-						"description": "A public type expression that may contain an inferred module import."
+						"description": "The public type expression to display, which may contain an inferred import('...') path. Only quoted module specifiers are removed, whitespace collapses to single spaces, and a result that is empty afterwards is shown as 'module'.",
+						"examples": [
+							"ContractRow[]",
+							"Item | undefined",
+							"import('../../../models/explorer-ui/Harness.types').HarnessUnit"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "typeLabel",
 						"type": "string",
-						"description": "The type expression with inferred import paths removed."
+						"description": "The type expression with each quoted import(...) path and its trailing dot removed, whitespace collapsed and trimmed, or 'module' when nothing remains.",
+						"examples": ["ContractRow[]", "HarnessUnit", "Item | undefined"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "fieldOf",
@@ -219,37 +900,155 @@
 						"name": "fieldOf.item",
 						"type": "Item",
 						"required": true,
-						"description": "Declared input, output or error item whose type, explanation and examples are presented."
+						"description": "The declared input, output or error entry to present; its readable name is the last dotted segment of its name, and its trimmed description, own default and non-empty examples carry over. Without examples, a type that is plain data gets one illustrative value instead.",
+						"examples": [
+							{
+								"name": "typeLabel.type",
+								"type": "string",
+								"required": true,
+								"description": "The public type expression to display, which may contain an inferred import('...') path. Only quoted module specifiers are removed, whitespace collapses to single spaces, and a result that is empty afterwards is shown as 'module'."
+							},
+							{
+								"name": "fieldOf",
+								"type": "ContractField",
+								"description": "A readable field whose name is the last dotted segment of the item name, keeping the item's required flag and own default (false, 0, null and empty text included); its source is declared for authored examples, illustrative for a placeholder of plain data, or missing when neither applies."
+							},
+							{
+								"name": "TypeError",
+								"type": "thrown",
+								"description": "Thrown by JSON.stringify when an authored example holds BigInt or circular data; nothing in these files catches it."
+							}
+						]
 					},
 					{
 						"name": "fieldOf.unit",
 						"type": "HarnessUnit",
 						"required": true,
-						"description": "Selected unit supplying callable identity and source context for the contract field."
+						"description": "The unit whose title, owned symbols and owned source file names decide whether a markup item reads as 'rendered markup' rather than its own name. No other part of the field depends on it.",
+						"examples": [
+							{
+								"id": "reports.function.contract-fields",
+								"kind": "function",
+								"status": "active",
+								"title": "Prepare typed contract fields",
+								"responsibility": "Prepares declared callable contracts and shared type fields with honest examples and source gaps.",
+								"dependencies": [
+									{
+										"unit": "reports.model.harness-types",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": ["packages/reports/src/utils/explorer-ui/contractFields.ts"],
+									"symbols": [
+										"typeLabel",
+										"contractFields",
+										"contractFacts",
+										"callableContracts",
+										"fieldOf",
+										"returnField",
+										"guess"
+									]
+								},
+								"contract": {
+									"inputs": [
+										{
+											"name": "typeLabel.type",
+											"type": "string",
+											"required": true,
+											"description": "The public type expression to display, which may contain an inferred import('...') path. Only quoted module specifiers are removed, whitespace collapses to single spaces, and a result that is empty afterwards is shown as 'module'."
+										}
+									],
+									"outputs": [
+										{
+											"name": "typeLabel",
+											"type": "string",
+											"description": "The type expression with each quoted import(...) path and its trailing dot removed, whitespace collapsed and trimmed, or 'module' when nothing remains."
+										}
+									],
+									"errors": [
+										{
+											"name": "TypeError",
+											"type": "thrown",
+											"description": "Thrown by JSON.stringify when an authored example holds BigInt or circular data; nothing in these files catches it."
+										}
+									]
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/utils/explorer-ui/contractFields.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "3f9a0c7d12e4b856"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "fieldOf",
 						"type": "ContractField",
-						"description": "A readable field preserving requiredness, own literal defaults and authored or illustrative examples."
+						"description": "A readable field whose name is the last dotted segment of the item name, keeping the item's required flag and own default (false, 0, null and empty text included); its source is declared for authored examples, illustrative for a placeholder of plain data, or missing when neither applies.",
+						"examples": [
+							{
+								"name": "Type",
+								"type": "string",
+								"required": true,
+								"description": "The public type expression to display, which may contain an inferred import('...') path. Only quoted module specifiers are removed, whitespace collapses to single spaces, and a result that is empty afterwards is shown as 'module'.",
+								"source": "declared",
+								"examples": [
+									{
+										"form": "literal",
+										"value": "ContractRow[]",
+										"text": "\"ContractRow[]\""
+									},
+									{
+										"form": "literal",
+										"value": "Item | undefined",
+										"text": "\"Item | undefined\""
+									},
+									{
+										"form": "literal",
+										"value": "import('../../../models/explorer-ui/Harness.types').HarnessUnit",
+										"text": "\"import('../../../models/explorer-ui/Harness.types').HarnessUnit\""
+									}
+								]
+							},
+							{
+								"name": "Type error",
+								"type": "thrown",
+								"description": "Thrown by JSON.stringify when an authored example holds BigInt or circular data; nothing in these files catches it.",
+								"source": "missing",
+								"examples": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "TypeError",
 						"type": "thrown",
-						"description": "An authored example contains BigInt or circular data that JSON cannot serialize."
+						"description": "Thrown by JSON.stringify when an authored example holds BigInt or circular data; nothing in these files catches it."
 					},
 					{
 						"name": "RangeError",
 						"type": "thrown",
-						"description": "Deeply nested authored examples exceed the JSON serializer stack."
+						"description": "Thrown by JSON.stringify when an authored example nests too deeply for the serializer's call stack; nothing in these files catches it."
 					},
 					{
 						"name": "Getter, proxy or conversion error",
 						"type": "propagated",
-						"description": "Errors from supplied field/default/example getters, proxy traps or JSON conversion methods propagate."
+						"description": "An error raised by a supplied field, default or example getter, a proxy trap or a toJSON conversion method passes through unchanged, because these files never catch it."
 					}
 				],
 				"errorStatus": "declared"
@@ -261,37 +1060,184 @@
 						"name": "contractFields.unit",
 						"type": "HarnessUnit",
 						"required": true,
-						"description": "The entity whose contract fields and declared JSON examples will be displayed."
+						"description": "The unit whose contract inputs, outputs and errors become the field groups; for the types category, its non-class model definitions in its owned source become the groups instead, and its contract inputs supply the method requirement flags.",
+						"examples": [
+							{
+								"id": "reports.function.contract-fields",
+								"kind": "function",
+								"status": "active",
+								"title": "Prepare typed contract fields",
+								"responsibility": "Prepares declared callable contracts and shared type fields with honest examples and source gaps.",
+								"dependencies": [
+									{
+										"unit": "reports.model.harness-types",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": ["packages/reports/src/utils/explorer-ui/contractFields.ts"],
+									"symbols": [
+										"typeLabel",
+										"contractFields",
+										"contractFacts",
+										"callableContracts",
+										"fieldOf",
+										"returnField",
+										"guess"
+									]
+								},
+								"contract": {
+									"inputs": [
+										{
+											"name": "typeLabel.type",
+											"type": "string",
+											"required": true,
+											"description": "The public type expression to display, which may contain an inferred import('...') path. Only quoted module specifiers are removed, whitespace collapses to single spaces, and a result that is empty afterwards is shown as 'module'."
+										}
+									],
+									"outputs": [
+										{
+											"name": "typeLabel",
+											"type": "string",
+											"description": "The type expression with each quoted import(...) path and its trailing dot removed, whitespace collapsed and trimmed, or 'module' when nothing remains."
+										}
+									],
+									"errors": [
+										{
+											"name": "TypeError",
+											"type": "thrown",
+											"description": "Thrown by JSON.stringify when an authored example holds BigInt or circular data; nothing in these files catches it."
+										}
+									]
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/utils/explorer-ui/contractFields.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "3f9a0c7d12e4b856"
+							}
+						]
 					},
 					{
 						"name": "contractFields.category",
 						"type": "ExplorerCategory",
 						"required": true,
-						"description": "The entity category; configs provide values and Types show source-declared interfaces and aliases."
+						"description": "The entity category: types lists its model definitions as groups, components title the inputs Props and omit the outputs, configs title the outputs Provides, and every other category titles them Inputs and Outputs.",
+						"examples": ["functions", "components", "configs"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "contractFields",
 						"type": "ContractGroup[]",
-						"description": "Typed inputs, outputs and explicit error declarations. Source fields retain optionality, callable members retain authored requirement flags, and missing metadata stays explicit without invented defaults."
+						"description": "The field groups of an entity: Inputs (Props for components), Outputs (Provides for configs, absent for components) and Errors, or for types one group per non-class model definition. Model fields set required from their optional flag and carry source 'missing' with no invented default, callable members keep their authored requirement flags, and other fields keep each item's declared required flag, default and examples.",
+						"examples": [
+							[
+								{
+									"id": "inputs",
+									"title": "Inputs",
+									"none": "No inputs declared.",
+									"fields": [
+										{
+											"name": "Type",
+											"type": "string",
+											"required": true,
+											"description": "The public type expression to display, which may contain an inferred import('...') path. Only quoted module specifiers are removed, whitespace collapses to single spaces, and a result that is empty afterwards is shown as 'module'.",
+											"source": "declared",
+											"examples": [
+												{
+													"form": "literal",
+													"value": "ContractRow[]",
+													"text": "\"ContractRow[]\""
+												},
+												{
+													"form": "literal",
+													"value": "Item | undefined",
+													"text": "\"Item | undefined\""
+												},
+												{
+													"form": "literal",
+													"value": "import('../../../models/explorer-ui/Harness.types').HarnessUnit",
+													"text": "\"import('../../../models/explorer-ui/Harness.types').HarnessUnit\""
+												}
+											]
+										}
+									]
+								},
+								{
+									"id": "outputs",
+									"title": "Outputs",
+									"none": "No outputs declared.",
+									"fields": [
+										{
+											"name": "Type label",
+											"type": "string",
+											"description": "The type expression with each quoted import(...) path and its trailing dot removed, whitespace collapsed and trimmed, or 'module' when nothing remains.",
+											"source": "declared",
+											"examples": [
+												{
+													"form": "literal",
+													"value": "ContractRow[]",
+													"text": "\"ContractRow[]\""
+												},
+												{
+													"form": "literal",
+													"value": "HarnessUnit",
+													"text": "\"HarnessUnit\""
+												},
+												{
+													"form": "literal",
+													"value": "Item | undefined",
+													"text": "\"Item | undefined\""
+												}
+											]
+										}
+									]
+								},
+								{
+									"id": "errors",
+									"title": "Errors",
+									"none": "No errors declared.",
+									"fields": [
+										{
+											"name": "Type error",
+											"type": "thrown",
+											"description": "Thrown by JSON.stringify when an authored example holds BigInt or circular data; nothing in these files catches it.",
+											"source": "missing",
+											"examples": []
+										}
+									]
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "TypeError",
 						"type": "thrown",
-						"description": "An authored example contains BigInt or circular data that JSON cannot serialize."
+						"description": "Thrown by JSON.stringify when an authored example holds BigInt or circular data; nothing in these files catches it."
 					},
 					{
 						"name": "RangeError",
 						"type": "thrown",
-						"description": "Deeply nested authored examples exceed the JSON serializer stack."
+						"description": "Thrown by JSON.stringify when an authored example nests too deeply for the serializer's call stack; nothing in these files catches it."
 					},
 					{
 						"name": "Getter, proxy or conversion error",
 						"type": "propagated",
-						"description": "Errors from supplied field/default/example getters, proxy traps or JSON conversion methods propagate."
+						"description": "An error raised by a supplied field, default or example getter, a proxy trap or a toJSON conversion method passes through unchanged, because these files never catch it."
 					}
 				],
 				"errorStatus": "declared"
@@ -303,30 +1249,138 @@
 						"name": "contractFacts.rows",
 						"type": "ContractRow[]",
 						"required": true,
-						"description": "Prepared readable contract rows, including facts beyond individual fields."
+						"description": "The prepared contract rows; rows labelled Inputs, Props, Output, Fails with or Provides are dropped because the field groups already show them, and the remaining rows, such as Purpose, are kept.",
+						"examples": [
+							[
+								{
+									"label": "Inputs",
+									"value": "type, item, unit, category, rows, declared, callable, depth"
+								},
+								{
+									"label": "Output",
+									"value": "type label, contract fields, contract facts, callable contracts, field of, return field, guess"
+								},
+								{
+									"label": "Fails with",
+									"value": "type error, range error, getter, proxy or conversion error"
+								}
+							],
+							[
+								{
+									"label": "Inputs",
+									"value": "None"
+								},
+								{
+									"label": "Output",
+									"value": "Nothing declared"
+								}
+							]
+						]
 					},
 					{
 						"name": "contractFacts.unit",
 						"type": "HarnessUnit",
 						"required": true,
-						"description": "The entity whose execution targets may be listed as contract facts."
+						"description": "The unit whose runtime targets are read, for functions only: each target kind becomes a readable name (module, wasm, process and http map to Module, Wasm, Native process and HTTP; other kinds stay as written), and with no targets its runtime kind, named the same way, is shown.",
+						"examples": [
+							{
+								"id": "reports.function.contract-fields",
+								"kind": "function",
+								"status": "active",
+								"title": "Prepare typed contract fields",
+								"responsibility": "Prepares declared callable contracts and shared type fields with honest examples and source gaps.",
+								"dependencies": [
+									{
+										"unit": "reports.model.harness-types",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": ["packages/reports/src/utils/explorer-ui/contractFields.ts"],
+									"symbols": [
+										"typeLabel",
+										"contractFields",
+										"contractFacts",
+										"callableContracts",
+										"fieldOf",
+										"returnField",
+										"guess"
+									]
+								},
+								"contract": {
+									"inputs": [
+										{
+											"name": "typeLabel.type",
+											"type": "string",
+											"required": true,
+											"description": "The public type expression to display, which may contain an inferred import('...') path. Only quoted module specifiers are removed, whitespace collapses to single spaces, and a result that is empty afterwards is shown as 'module'."
+										}
+									],
+									"outputs": [
+										{
+											"name": "typeLabel",
+											"type": "string",
+											"description": "The type expression with each quoted import(...) path and its trailing dot removed, whitespace collapsed and trimmed, or 'module' when nothing remains."
+										}
+									],
+									"errors": [
+										{
+											"name": "TypeError",
+											"type": "thrown",
+											"description": "Thrown by JSON.stringify when an authored example holds BigInt or circular data; nothing in these files catches it."
+										}
+									]
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/utils/explorer-ui/contractFields.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "3f9a0c7d12e4b856"
+							}
+						]
 					},
 					{
 						"name": "contractFacts.category",
 						"type": "ExplorerCategory",
 						"required": true,
-						"description": "The entity category; functions also expose execution targets."
+						"description": "The entity category; only functions add a 'Runs as' row listing their execution targets, and every other category returns the remaining rows as they are.",
+						"examples": ["functions", "components", "configs"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "contractFacts",
 						"type": "ContractRow[]",
-						"description": "Whole-contract facts without duplicate field summaries, plus execution targets for functions."
+						"description": "The contract's rows that the field groups do not already show, plus a 'Runs as' row for functions naming their execution targets, falling back to the runtime kind.",
+						"examples": [
+							[
+								{
+									"label": "Runs as",
+									"value": "Module"
+								}
+							],
+							[
+								{
+									"label": "Runs as",
+									"value": "Native process, HTTP"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "callableContracts",
@@ -335,31 +1389,200 @@
 						"name": "callableContracts.unit",
 						"type": "HarnessUnit",
 						"required": true,
-						"description": "Source-derived callable metadata and declared examples at the selected revision."
+						"description": "The unit whose recorded helpers each become one callable entry, with inputs and outputs matched to its contract by name and errors matched by the helper's name prefix. A unit with a single helper takes all its errors and, when no output matches, its first output.",
+						"examples": [
+							{
+								"id": "reports.function.contract-fields",
+								"kind": "function",
+								"status": "active",
+								"title": "Prepare typed contract fields",
+								"responsibility": "Prepares declared callable contracts and shared type fields with honest examples and source gaps.",
+								"dependencies": [
+									{
+										"unit": "reports.model.harness-types",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": ["packages/reports/src/utils/explorer-ui/contractFields.ts"],
+									"symbols": [
+										"typeLabel",
+										"contractFields",
+										"contractFacts",
+										"callableContracts",
+										"fieldOf",
+										"returnField",
+										"guess"
+									]
+								},
+								"contract": {
+									"inputs": [
+										{
+											"name": "typeLabel.type",
+											"type": "string",
+											"required": true,
+											"description": "The public type expression to display, which may contain an inferred import('...') path. Only quoted module specifiers are removed, whitespace collapses to single spaces, and a result that is empty afterwards is shown as 'module'."
+										}
+									],
+									"outputs": [
+										{
+											"name": "typeLabel",
+											"type": "string",
+											"description": "The type expression with each quoted import(...) path and its trailing dot removed, whitespace collapsed and trimmed, or 'module' when nothing remains."
+										}
+									],
+									"errors": [
+										{
+											"name": "TypeError",
+											"type": "thrown",
+											"description": "Thrown by JSON.stringify when an authored example holds BigInt or circular data; nothing in these files catches it."
+										}
+									]
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/utils/explorer-ui/contractFields.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "3f9a0c7d12e4b856"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "callableContracts",
 						"type": "CallableContract[]",
-						"description": "Callable parameters and named returns preserve declared metadata; Throws lists errors or states No errors declared."
+						"description": "One entry per recorded callable, with its signature, a Parameters group whose fields keep the matched input's required flag and own default, a Returns group holding the named return value, and a Throws group listing its errors or stating 'No errors declared.'",
+						"examples": [
+							[
+								{
+									"name": "guess",
+									"signature": "guess(type: string, depth: number): Guess",
+									"groups": [
+										{
+											"id": "inputs",
+											"title": "Parameters",
+											"none": "No parameters.",
+											"keepEmpty": true,
+											"fields": [
+												{
+													"name": "type",
+													"type": "string",
+													"required": true,
+													"description": "The type expression a placeholder is built for: primitives, literals, arrays, Record<string, ...> and markup are handled, a union only when every member is, and named or opaque types such as Item yield undefined.",
+													"source": "declared",
+													"examples": [
+														{
+															"form": "literal",
+															"value": "string",
+															"text": "\"string\""
+														},
+														{
+															"form": "literal",
+															"value": "ContractRow[]",
+															"text": "\"ContractRow[]\""
+														},
+														{
+															"form": "literal",
+															"value": "'open' | 'closed'",
+															"text": "\"'open' | 'closed'\""
+														}
+													]
+												},
+												{
+													"name": "depth",
+													"type": "number",
+													"required": true,
+													"description": "The current nesting level: a field's own example starts at 0, each union or array level adds one, and a depth above 4 yields undefined.",
+													"source": "declared",
+													"examples": [
+														{
+															"form": "literal",
+															"value": 0,
+															"text": "0"
+														},
+														{
+															"form": "literal",
+															"value": 1,
+															"text": "1"
+														},
+														{
+															"form": "literal",
+															"value": 2,
+															"text": "2"
+														}
+													]
+												}
+											]
+										},
+										{
+											"id": "outputs",
+											"title": "Returns",
+											"none": "",
+											"fields": [
+												{
+													"name": "returnValue",
+													"type": "Guess",
+													"description": "A { value } wrapper around a bounded placeholder when the type is plain data within the depth limit, or undefined when the type cannot be represented.",
+													"source": "declared",
+													"examples": [
+														{
+															"form": "structure",
+															"value": {
+																"value": "example"
+															},
+															"text": "{\n  \"value\": \"example\"\n}"
+														},
+														{
+															"form": "structure",
+															"value": {
+																"value": true
+															},
+															"text": "{\n  \"value\": true\n}"
+														}
+													]
+												}
+											]
+										},
+										{
+											"id": "errors",
+											"title": "Throws",
+											"none": "No errors declared.",
+											"hideNames": true,
+											"fields": []
+										}
+									]
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "TypeError",
 						"type": "thrown",
-						"description": "An authored example contains BigInt or circular data that JSON cannot serialize."
+						"description": "Thrown by JSON.stringify when an authored example holds BigInt or circular data; nothing in these files catches it."
 					},
 					{
 						"name": "RangeError",
 						"type": "thrown",
-						"description": "Deeply nested authored examples exceed the JSON serializer stack."
+						"description": "Thrown by JSON.stringify when an authored example nests too deeply for the serializer's call stack; nothing in these files catches it."
 					},
 					{
 						"name": "Getter, proxy or conversion error",
 						"type": "propagated",
-						"description": "Errors from supplied field/default/example getters, proxy traps or JSON conversion methods propagate."
+						"description": "An error raised by a supplied field, default or example getter, a proxy trap or a toJSON conversion method passes through unchanged, because these files never catch it."
 					}
 				],
 				"errorStatus": "declared"
@@ -371,49 +1594,166 @@
 						"name": "returnField.declared",
 						"type": "Item | undefined",
 						"required": true,
-						"description": "Optional authored return item; absent declarations retain an explicit source-derived gap."
+						"description": "The authored output entry of the callable, or undefined when none is declared. Without one, or when its name equals the callable name, the field is named returnValue and its examples come from the declared entry if it has any, otherwise from its type.",
+						"examples": [
+							{
+								"name": "fieldOf",
+								"type": "ContractField",
+								"description": "A readable field whose name is the last dotted segment of the item name, keeping the item's required flag and own default (false, 0, null and empty text included); its source is declared for authored examples, illustrative for a placeholder of plain data, or missing when neither applies."
+							},
+							{
+								"name": "guess",
+								"type": "Guess",
+								"description": "A { value } wrapper around a bounded placeholder when the type is plain data within the depth limit, or undefined when the type cannot be represented."
+							},
+							{
+								"name": "typeLabel",
+								"type": "string",
+								"description": "The type expression with each quoted import(...) path and its trailing dot removed, whitespace collapsed and trimmed, or 'module' when nothing remains."
+							}
+						]
 					},
 					{
 						"name": "returnField.type",
 						"type": "string",
 						"required": true,
-						"description": "Source-declared return type to display and use for illustrative value shapes."
+						"description": "The return type as declared: void gives the field the description 'This function returns no value.' with no examples, and any other type has its import path removed, is shown as the type, and builds an illustrative value when it is plain data and no examples are declared.",
+						"examples": ["ContractField", "CallableContract[]", "void"]
 					},
 					{
 						"name": "returnField.callable",
 						"type": "string",
 						"required": true,
-						"description": "Canonical callable name used to identify this return field."
+						"description": "The canonical name of the callable that returns this value; a declared output named exactly this way gives returnValue, and a declared name that begins with this name and a dot loses that prefix to become the return name.",
+						"examples": ["fieldOf", "callableContracts", "guess"]
 					},
 					{
 						"name": "returnField.unit",
 						"type": "HarnessUnit",
 						"required": true,
-						"description": "Selected-revision unit supplying contract documentation and identity."
+						"description": "Only passed on to the field builder, whose readable name this function replaces with the return name, so the unit does not change the returned field.",
+						"examples": [
+							{
+								"id": "reports.function.contract-fields",
+								"kind": "function",
+								"status": "active",
+								"title": "Prepare typed contract fields",
+								"responsibility": "Prepares declared callable contracts and shared type fields with honest examples and source gaps.",
+								"dependencies": [
+									{
+										"unit": "reports.model.harness-types",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": ["packages/reports/src/utils/explorer-ui/contractFields.ts"],
+									"symbols": [
+										"typeLabel",
+										"contractFields",
+										"contractFacts",
+										"callableContracts",
+										"fieldOf",
+										"returnField",
+										"guess"
+									]
+								},
+								"contract": {
+									"inputs": [
+										{
+											"name": "typeLabel.type",
+											"type": "string",
+											"required": true,
+											"description": "The public type expression to display, which may contain an inferred import('...') path. Only quoted module specifiers are removed, whitespace collapses to single spaces, and a result that is empty afterwards is shown as 'module'."
+										}
+									],
+									"outputs": [
+										{
+											"name": "typeLabel",
+											"type": "string",
+											"description": "The type expression with each quoted import(...) path and its trailing dot removed, whitespace collapsed and trimmed, or 'module' when nothing remains."
+										}
+									],
+									"errors": [
+										{
+											"name": "TypeError",
+											"type": "thrown",
+											"description": "Thrown by JSON.stringify when an authored example holds BigInt or circular data; nothing in these files catches it."
+										}
+									]
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/utils/explorer-ui/contractFields.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "3f9a0c7d12e4b856"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "returnField",
 						"type": "ContractField",
-						"description": "A declared return value with its literal name and public type, or an explicit void return."
+						"description": "The named return value of a callable with its public type and examples, or for a void return the field 'This function returns no value.' with source missing and no examples.",
+						"examples": [
+							{
+								"name": "returnValue",
+								"type": "void",
+								"description": "This function returns no value.",
+								"source": "missing",
+								"examples": []
+							},
+							{
+								"name": "returnValue",
+								"type": "Guess",
+								"description": "A { value } wrapper around a bounded placeholder when the type is plain data within the depth limit, or undefined when the type cannot be represented.",
+								"source": "declared",
+								"examples": [
+									{
+										"form": "structure",
+										"value": {
+											"value": "example"
+										},
+										"text": "{\n  \"value\": \"example\"\n}"
+									},
+									{
+										"form": "structure",
+										"value": {
+											"value": true
+										},
+										"text": "{\n  \"value\": true\n}"
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "TypeError",
 						"type": "thrown",
-						"description": "An authored example contains BigInt or circular data that JSON cannot serialize."
+						"description": "Thrown by JSON.stringify when an authored example holds BigInt or circular data; nothing in these files catches it."
 					},
 					{
 						"name": "RangeError",
 						"type": "thrown",
-						"description": "Deeply nested authored examples exceed the JSON serializer stack."
+						"description": "Thrown by JSON.stringify when an authored example nests too deeply for the serializer's call stack; nothing in these files catches it."
 					},
 					{
 						"name": "Getter, proxy or conversion error",
 						"type": "propagated",
-						"description": "Errors from supplied field/default/example getters, proxy traps or JSON conversion methods propagate."
+						"description": "An error raised by a supplied field, default or example getter, a proxy trap or a toJSON conversion method passes through unchanged, because these files never catch it."
 					}
 				],
 				"errorStatus": "declared"
@@ -425,24 +1765,34 @@
 						"name": "guess.type",
 						"type": "string",
 						"required": true,
-						"description": "Type expression for which a bounded illustrative value may be constructed."
+						"description": "The type expression a placeholder is built for: primitives, literals, arrays, Record<string, ...> and markup are handled, a union only when every member is, and named or opaque types such as Item yield undefined.",
+						"examples": ["string", "ContractRow[]", "'open' | 'closed'"]
 					},
 					{
 						"name": "guess.depth",
 						"type": "number",
 						"required": true,
-						"description": "Current recursion depth limiting nested illustrative type expansion."
+						"description": "The current nesting level: a field's own example starts at 0, each union or array level adds one, and a depth above 4 yields undefined.",
+						"examples": [0, 1, 2]
 					}
 				],
 				"outputs": [
 					{
 						"name": "guess",
 						"type": "Guess",
-						"description": "A bounded illustrative plain-data value when its type can be represented; otherwise JavaScript undefined."
+						"description": "A { value } wrapper around a bounded placeholder when the type is plain data within the depth limit, or undefined when the type cannot be represented.",
+						"examples": [
+							{
+								"value": "example"
+							},
+							{
+								"value": true
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
