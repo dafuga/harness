@@ -32,144 +32,290 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "builtProduct.configuration",
 				"type": "'Debug' | 'Release'",
-				"required": true
+				"required": true,
+				"description": "Selects the simulator build configuration used in the product path. Only Debug and Release are supported.",
+				"examples": ["Debug", "Release"]
 			},
 			{
 				"name": "tried.command",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Provides an executable at index 0 and its arguments in the remaining strings; the process runs with desktopRoot as its working directory. An empty vector leaves the executable undefined and causes spawnSync to throw a TypeError.",
+				"examples": [
+					[
+						"codesign",
+						"--verify",
+						"--strict",
+						"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+					]
+				]
 			},
 			{
 				"name": "succeeded.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Names the command in the Error message when the supplied result has a nonzero code. It does not affect the success result.",
+				"examples": ["codesign"]
 			},
 			{
 				"name": "succeeded.ended",
 				"type": "{ code: number; output: string }",
-				"required": true
+				"required": true,
+				"description": "Contains the numeric exit code and combined stdout and stderr from a completed command. A code other than 0 throws an Error whose message includes at most the final 25 lines of trimmed output.",
+				"examples": [
+					{
+						"code": 0,
+						"output": ""
+					},
+					{
+						"code": 1,
+						"output": "verification failed"
+					}
+				]
 			},
 			{
 				"name": "tool.command",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Provides an executable and arguments passed to tried, then requires the resulting code to be 0. A nonzero code throws through succeeded, and an empty vector can make spawnSync throw a TypeError.",
+				"examples": [
+					[
+						"/usr/libexec/PlistBuddy",
+						"-c",
+						"Print :CFBundleIdentifier",
+						"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/Info.plist"
+					]
+				]
 			},
 			{
 				"name": "fileDigest.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Names a readable file whose bytes are hashed with SHA-256. The result is a 64-character lowercase hexadecimal digest; file access failures throw.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/App"
+				]
 			},
 			{
 				"name": "contents.folder",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Names a directory whose entries are traversed recursively. Only regular files are returned, while directories and other entry types such as symbolic links are omitted.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+				]
 			},
 			{
 				"name": "verifiedSignature.product",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Names an app product checked by strict codesign verification, ad hoc signature flags, and the embedded app identity. It succeeds only when no team or provisioning profile is found and each application identifier equals the bundle identifier.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+				]
 			},
 			{
 				"name": "allowsLocalNetworking.product",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Names an app product whose Info.plist is queried for NSAppTransportSecurity. The result reflects whether PlistBuddy can print that key, not the value of NSAllowsLocalNetworking.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+				]
 			},
 			{
 				"name": "inspectable.product",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Names an app product whose capacitor.config.json is parsed. The result is true only when ios.webContentsDebuggingEnabled is exactly true; unreadable files and invalid JSON can fail.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+				]
 			},
 			{
 				"name": "productFacts.product",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Names an app product summarized by its desktopRoot-relative path, executable digest, verified signature, local-networking key presence, and inspectability. Required file, command, signature, or JSON failures propagate.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+				]
 			},
 			{
 				"name": "changedCopy.source",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Names the app bundle recursively copied before test-only edits and ad hoc signing. The source must differ from target because changedCopy removes target before copying.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+				]
 			},
 			{
 				"name": "changedCopy.target",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Names the destination app bundle, which is recursively removed before source is copied there. It must differ from source or the source would be removed first.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/fixture/App.app"
+				]
 			},
 			{
 				"name": "changedCopy.change",
 				"type": "ProductChange",
-				"required": true
+				"required": true,
+				"description": "Supplies the required localNetworking and inspection booleans to request adding the local-networking plist keys or enabling WebKit inspection; false leaves that copied setting unchanged. PlistBuddy add failures are ignored, so success does not prove the requested networking key was added.",
+				"examples": [
+					{
+						"localNetworking": true,
+						"inspection": false
+					},
+					{
+						"localNetworking": false,
+						"inspection": true
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "desktopRoot",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The absolute desktop package directory resolved from the script module location. Other exported paths are based on this directory.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop"
+				]
 			},
 			{
 				"name": "derivedData",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The absolute Xcode DerivedData directory at desktopRoot/.cache/ios/DerivedData. builtProduct places configuration-specific simulator products beneath it.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData"
+				]
 			},
 			{
 				"name": "fixtureProduct",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The absolute fixture app bundle path at desktopRoot/.cache/ios/fixture/App.app. The script exports this location but does not create it during module initialization.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/fixture/App.app"
+				]
 			},
 			{
 				"name": "builtProduct",
-				"type": "string"
+				"type": "string",
+				"description": "The absolute path to App.app under the selected Debug-iphonesimulator or Release-iphonesimulator products directory. It constructs the path without checking that the product exists.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app",
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Release-iphonesimulator/App.app"
+				]
 			},
 			{
 				"name": "tried",
-				"type": "{ code: number; output: string }"
+				"type": "{ code: number; output: string }",
+				"description": "Returns code as result.status ?? 1 and output as stdout followed by stderr. A failed spawn with no status therefore returns code 1 rather than throwing an error from the process result.",
+				"examples": [
+					{
+						"code": 0,
+						"output": ""
+					},
+					{
+						"code": 1,
+						"output": "command not found"
+					}
+				]
 			},
 			{
 				"name": "succeeded",
-				"type": "string"
+				"type": "string",
+				"description": "Returns ended.output unchanged when ended.code is 0. Otherwise it throws an Error containing the command name, code, and final 25 lines of trimmed output.",
+				"examples": [""]
 			},
 			{
 				"name": "tool",
-				"type": "string"
+				"type": "string",
+				"description": "Returns the successful output from tried after succeeded checks for code 0. A nonzero code is converted to an Error.",
+				"examples": [""]
 			},
 			{
 				"name": "fileDigest",
-				"type": "string"
+				"type": "string",
+				"description": "Returns the lowercase hexadecimal SHA-256 digest of the supplied file bytes. The digest is 64 characters long.",
+				"examples": ["ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"]
 			},
 			{
 				"name": "contents",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Returns absolute paths for regular files found recursively under the supplied folder. Directories and entries that are not regular files are omitted.",
+				"examples": [
+					[
+						"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/App",
+						"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/Info.plist"
+					]
+				]
 			},
 			{
 				"name": "verifiedSignature",
-				"type": "string"
+				"type": "string",
+				"description": "Returns the fixed text ad hoc, no team, no account after strict signature and embedded account checks pass. Failed checks throw an Error.",
+				"examples": ["ad hoc, no team, no account"]
 			},
 			{
 				"name": "allowsLocalNetworking",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Returns true when PlistBuddy successfully prints NSAppTransportSecurity from Info.plist and false when its command result is nonzero. It does not inspect whether NSAllowsLocalNetworking itself is true.",
+				"examples": [true, false]
 			},
 			{
 				"name": "inspectable",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Returns true only when parsed capacitor.config.json has ios.webContentsDebuggingEnabled exactly true. Other values return false.",
+				"examples": [true, false]
 			},
 			{
 				"name": "productFacts",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns exactly path, executable, signature, localNetworking, and inspectable fields; path is relative to desktopRoot and executable is a SHA-256 digest. Signature validation must pass before the object is returned.",
+				"examples": [
+					{
+						"path": ".cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app",
+						"executable": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+						"signature": "ad hoc, no team, no account",
+						"localNetworking": true,
+						"inspectable": false
+					}
+				]
 			},
 			{
 				"name": "changedCopy",
-				"type": "string"
+				"type": "string",
+				"description": "Returns verifiedSignature(target) after requested copy edits and signing succeed and the simulator entitlement digest remains unchanged. A changed entitlement digest throws an Error.",
+				"examples": ["ad hoc, no team, no account"]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when a required command fails, signature or account validation fails, re-signing changes the simulator entitlement digest, or a required filesystem operation fails. Nonzero command errors include the command name, exit code, and final 25 lines of trimmed output."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when tried passes an empty command vector to spawnSync, leaving no executable path."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse when capacitor.config.json is invalid JSON. This can occur in inspectable or when changedCopy enables inspection."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "builtProduct",
@@ -177,17 +323,24 @@
 					{
 						"name": "builtProduct.configuration",
 						"type": "'Debug' | 'Release'",
-						"required": true
+						"required": true,
+						"description": "Selects the simulator build configuration used in the product path. Only Debug and Release are supported.",
+						"examples": ["Debug", "Release"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "builtProduct",
-						"type": "string"
+						"type": "string",
+						"description": "The absolute path to App.app under the selected Debug-iphonesimulator or Release-iphonesimulator products directory. It constructs the path without checking that the product exists.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app",
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Release-iphonesimulator/App.app"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "tried",
@@ -195,17 +348,43 @@
 					{
 						"name": "tried.command",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Provides an executable at index 0 and its arguments in the remaining strings; the process runs with desktopRoot as its working directory. An empty vector leaves the executable undefined and causes spawnSync to throw a TypeError.",
+						"examples": [
+							[
+								"codesign",
+								"--verify",
+								"--strict",
+								"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "tried",
-						"type": "{ code: number; output: string }"
+						"type": "{ code: number; output: string }",
+						"description": "Returns code as result.status ?? 1 and output as stdout followed by stderr. A failed spawn with no status therefore returns code 1 rather than throwing an error from the process result.",
+						"examples": [
+							{
+								"code": 0,
+								"output": ""
+							},
+							{
+								"code": 1,
+								"output": "command not found"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when tried passes an empty command vector to spawnSync, leaving no executable path."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "succeeded",
@@ -213,27 +392,43 @@
 					{
 						"name": "succeeded.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Names the command in the Error message when the supplied result has a nonzero code. It does not affect the success result.",
+						"examples": ["codesign"]
 					},
 					{
 						"name": "succeeded.ended",
 						"type": "{ code: number; output: string }",
-						"required": true
+						"required": true,
+						"description": "Contains the numeric exit code and combined stdout and stderr from a completed command. A code other than 0 throws an Error whose message includes at most the final 25 lines of trimmed output.",
+						"examples": [
+							{
+								"code": 0,
+								"output": ""
+							},
+							{
+								"code": 1,
+								"output": "verification failed"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "succeeded",
-						"type": "string"
+						"type": "string",
+						"description": "Returns ended.output unchanged when ended.code is 0. Otherwise it throws an Error containing the command name, code, and final 25 lines of trimmed output.",
+						"examples": [""]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when a required command fails, signature or account validation fails, re-signing changes the simulator entitlement digest, or a required filesystem operation fails. Nonzero command errors include the command name, exit code, and final 25 lines of trimmed output."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "tool",
@@ -241,17 +436,39 @@
 					{
 						"name": "tool.command",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Provides an executable and arguments passed to tried, then requires the resulting code to be 0. A nonzero code throws through succeeded, and an empty vector can make spawnSync throw a TypeError.",
+						"examples": [
+							[
+								"/usr/libexec/PlistBuddy",
+								"-c",
+								"Print :CFBundleIdentifier",
+								"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/Info.plist"
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "tool",
-						"type": "string"
+						"type": "string",
+						"description": "Returns the successful output from tried after succeeded checks for code 0. A nonzero code is converted to an Error.",
+						"examples": [""]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when a required command fails, signature or account validation fails, re-signing changes the simulator entitlement digest, or a required filesystem operation fails. Nonzero command errors include the command name, exit code, and final 25 lines of trimmed output."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when tried passes an empty command vector to spawnSync, leaving no executable path."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "fileDigest",
@@ -259,17 +476,29 @@
 					{
 						"name": "fileDigest.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Names a readable file whose bytes are hashed with SHA-256. The result is a 64-character lowercase hexadecimal digest; file access failures throw.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/App"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "fileDigest",
-						"type": "string"
+						"type": "string",
+						"description": "Returns the lowercase hexadecimal SHA-256 digest of the supplied file bytes. The digest is 64 characters long.",
+						"examples": ["ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when a required command fails, signature or account validation fails, re-signing changes the simulator entitlement digest, or a required filesystem operation fails. Nonzero command errors include the command name, exit code, and final 25 lines of trimmed output."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "contents",
@@ -277,17 +506,34 @@
 					{
 						"name": "contents.folder",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Names a directory whose entries are traversed recursively. Only regular files are returned, while directories and other entry types such as symbolic links are omitted.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "contents",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Returns absolute paths for regular files found recursively under the supplied folder. Directories and entries that are not regular files are omitted.",
+						"examples": [
+							[
+								"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/App",
+								"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/Info.plist"
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when a required command fails, signature or account validation fails, re-signing changes the simulator entitlement digest, or a required filesystem operation fails. Nonzero command errors include the command name, exit code, and final 25 lines of trimmed output."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "verifiedSignature",
@@ -295,22 +541,29 @@
 					{
 						"name": "verifiedSignature.product",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Names an app product checked by strict codesign verification, ad hoc signature flags, and the embedded app identity. It succeeds only when no team or provisioning profile is found and each application identifier equals the bundle identifier.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "verifiedSignature",
-						"type": "string"
+						"type": "string",
+						"description": "Returns the fixed text ad hoc, no team, no account after strict signature and embedded account checks pass. Failed checks throw an Error.",
+						"examples": ["ad hoc, no team, no account"]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when a required command fails, signature or account validation fails, re-signing changes the simulator entitlement digest, or a required filesystem operation fails. Nonzero command errors include the command name, exit code, and final 25 lines of trimmed output."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "allowsLocalNetworking",
@@ -318,17 +571,23 @@
 					{
 						"name": "allowsLocalNetworking.product",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Names an app product whose Info.plist is queried for NSAppTransportSecurity. The result reflects whether PlistBuddy can print that key, not the value of NSAllowsLocalNetworking.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "allowsLocalNetworking",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Returns true when PlistBuddy successfully prints NSAppTransportSecurity from Info.plist and false when its command result is nonzero. It does not inspect whether NSAllowsLocalNetworking itself is true.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "inspectable",
@@ -336,17 +595,34 @@
 					{
 						"name": "inspectable.product",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Names an app product whose capacitor.config.json is parsed. The result is true only when ios.webContentsDebuggingEnabled is exactly true; unreadable files and invalid JSON can fail.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "inspectable",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Returns true only when parsed capacitor.config.json has ios.webContentsDebuggingEnabled exactly true. Other values return false.",
+						"examples": [true, false]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when a required command fails, signature or account validation fails, re-signing changes the simulator entitlement digest, or a required filesystem operation fails. Nonzero command errors include the command name, exit code, and final 25 lines of trimmed output."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when capacitor.config.json is invalid JSON. This can occur in inspectable or when changedCopy enables inspection."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "productFacts",
@@ -354,17 +630,42 @@
 					{
 						"name": "productFacts.product",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Names an app product summarized by its desktopRoot-relative path, executable digest, verified signature, local-networking key presence, and inspectability. Required file, command, signature, or JSON failures propagate.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "productFacts",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns exactly path, executable, signature, localNetworking, and inspectable fields; path is relative to desktopRoot and executable is a SHA-256 digest. Signature validation must pass before the object is returned.",
+						"examples": [
+							{
+								"path": ".cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app",
+								"executable": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+								"signature": "ad hoc, no team, no account",
+								"localNetworking": true,
+								"inspectable": false
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when a required command fails, signature or account validation fails, re-signing changes the simulator entitlement digest, or a required filesystem operation fails. Nonzero command errors include the command name, exit code, and final 25 lines of trimmed output."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when capacitor.config.json is invalid JSON. This can occur in inspectable or when changedCopy enables inspection."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "changedCopy",
@@ -372,32 +673,59 @@
 					{
 						"name": "changedCopy.source",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Names the app bundle recursively copied before test-only edits and ad hoc signing. The source must differ from target because changedCopy removes target before copying.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+						]
 					},
 					{
 						"name": "changedCopy.target",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Names the destination app bundle, which is recursively removed before source is copied there. It must differ from source or the source would be removed first.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/fixture/App.app"
+						]
 					},
 					{
 						"name": "changedCopy.change",
 						"type": "ProductChange",
-						"required": true
+						"required": true,
+						"description": "Supplies the required localNetworking and inspection booleans to request adding the local-networking plist keys or enabling WebKit inspection; false leaves that copied setting unchanged. PlistBuddy add failures are ignored, so success does not prove the requested networking key was added.",
+						"examples": [
+							{
+								"localNetworking": true,
+								"inspection": false
+							},
+							{
+								"localNetworking": false,
+								"inspection": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "changedCopy",
-						"type": "string"
+						"type": "string",
+						"description": "Returns verifiedSignature(target) after requested copy edits and signing succeed and the simulator entitlement digest remains unchanged. A changed entitlement digest throws an Error.",
+						"examples": ["ad hoc, no team, no account"]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when a required command fails, signature or account validation fails, re-signing changes the simulator entitlement digest, or a required filesystem operation fails. Nonzero command errors include the command name, exit code, and final 25 lines of trimmed output."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when capacitor.config.json is invalid JSON. This can occur in inspectable or when changedCopy enables inspection."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
