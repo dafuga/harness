@@ -28,78 +28,216 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "WireClientService.constructor.options",
 				"type": "WireClientOptions",
-				"required": true
+				"required": true,
+				"description": "The client identity sent as `client` on every attach, plus optional `deadlineMs`, which bounds how long a request waits for its answer across reconnects (defaults to remoteLimits.mutationDeadlineMs + 5000, which is 125000 ms), and optional `uuid`, the source of request ids (defaults to crypto.randomUUID()).",
+				"examples": [
+					{
+						"client": {
+							"kind": "electron",
+							"name": "Harness Desktop"
+						}
+					},
+					{
+						"client": {
+							"kind": "ios",
+							"name": "Harness for iOS"
+						},
+						"deadlineMs": 30000
+					}
+				]
 			},
 			{
 				"name": "WireClientService.bind.send",
 				"type": "(text: string) => void",
-				"required": true
+				"required": true,
+				"description": "The function that sends one text frame to the connection: the client passes it each JSON-encoded request, the attach request first. After a successful attach it sends every request still waiting again, and unbind drops it, so nothing is sent while the client is unbound."
 			},
 			{
 				"name": "WireClientService.request.method",
 				"type": "RemoteMethod",
-				"required": true
+				"required": true,
+				"description": "The host operation name, typed as one of the remoteMethods names but not checked at runtime. For a name in mutationMethods the client adds `epoch` to the input, and when the epoch later changes, that pending change is rejected with request-expired instead of being sent again.",
+				"examples": ["listProjects", "snapshot", "addComment"]
 			},
 			{
 				"name": "WireClientService.request.input",
 				"type": "Record<string, unknown>",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "The arguments object sent with the request, unchanged unless the method is in mutationMethods, where any `epoch` key is overwritten with the current cursor epoch. It defaults to {} when no argument is passed.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "WireClientService.on.channel",
 				"type": "WireChannel",
-				"required": true
+				"required": true,
+				"description": "The event channel to subscribe to: `run`, `cache` or `connection`, the only channels the validator accepts. The `connection` channel also receives the client's own `{ kind: 'resync' }` notice when the attach replay is `gap` or the epoch changed.",
+				"examples": ["run", "cache", "connection"]
 			},
 			{
 				"name": "WireClientService.on.listener",
 				"type": "Listener",
-				"required": true
+				"required": true,
+				"description": "The function called with the value of each event on the subscribed channel, and never with an event whose sequence is at or below the cursor. Adding the same function twice to a channel keeps one entry, and the function that `on` returns removes it."
 			},
 			{
 				"name": "WireClientService.receive.text",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "One text frame from the host, parsed as JSON and used only when it is a response or an event within remoteLimits.messageBytes (16777216); any other frame is ignored without an error. A valid response settles the request with that id, and a valid event reaches its channel's listeners only when its sequence is above the cursor.",
+				"examples": [
+					"{\"type\":\"event\",\"channel\":\"run\",\"sequence\":8,\"value\":{}}",
+					"{\"type\":\"response\",\"id\":\"3c9f1e2a-7b4d-4e8a-9f10-2d6c5b8a1e7f\",\"ok\":true,\"value\":null}",
+					"{\"type\":\"response\",\"id\":\"3c9f1e2a-7b4d-4e8a-9f10-2d6c5b8a1e7f\",\"ok\":false,\"error\":{\"code\":\"busy\",\"message\":\"Another run or change is active in this project.\"}}"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "WireClientService.bind",
-				"type": "Promise<RemoteAttachment>"
+				"type": "Promise<RemoteAttachment>",
+				"description": "The host's attach answer, resolved once this connection is attached and also kept as `attachment`. Its `epoch` and `sequence` become the resume point when none is set yet, or when the epoch changed or `replay` is `gap`, and a changed epoch or `gap` also raises a `{ kind: 'resync' }` notice on the connection channel.",
+				"examples": [
+					{
+						"protocol": 1,
+						"role": "device",
+						"epoch": "7d4a0c9e2b1f58a36e0d4c7b9a2f1e85",
+						"sequence": 57,
+						"replay": "resumed",
+						"host": {
+							"id": "a3f19c07e4d2b6058c1e9f74d3a0b2c6e8f51d94",
+							"name": "Studio Mac",
+							"platform": "darwin",
+							"locked": false
+						},
+						"device": {
+							"id": "4c8f1a6d9e2b07c3f5a8d1e6b9c2f4a7d0e3b685",
+							"name": "iPhone"
+						},
+						"grant": {
+							"projects": [
+								{
+									"id": "local-3e9b0f4a7c21d85e6a2f8c1d9b07e43ab5d0e7a92c4f18660f7c3e9a5d18b2e4",
+									"name": "Harness Shots"
+								},
+								{
+									"id": "local-91c4e0b7d26f3a85e0d3a6f92b8c17475a1f9d0e6c3b82f4d6e28b1a7c4f0953",
+									"name": "Field notes"
+								}
+							],
+							"comments": true,
+							"agents": false
+						},
+						"methods": ["listProjects", "snapshot", "addComment"],
+						"limits": {
+							"frameBytes": 262144,
+							"chunkBytes": 131072,
+							"requestBytes": 65536,
+							"messageBytes": 16777216,
+							"pendingRequests": 32,
+							"ledgerEntries": 256,
+							"ledgerTtlMs": 900000,
+							"eventLog": 512,
+							"requestDeadlineMs": 30000,
+							"mutationDeadlineMs": 120000,
+							"handshakeDeadlineMs": 10000,
+							"pingMs": 25000,
+							"idleMs": 90000,
+							"pairingTtlMs": 300000,
+							"pairingAttempts": 5
+						}
+					},
+					{
+						"protocol": 1,
+						"role": "device",
+						"epoch": "c18e5f0b7a4d29e6315b8c0f7d2a9e44",
+						"sequence": 412,
+						"replay": "gap",
+						"host": {
+							"id": "a3f19c07e4d2b6058c1e9f74d3a0b2c6e8f51d94",
+							"name": "Studio Mac",
+							"platform": "darwin"
+						},
+						"device": {
+							"id": "4c8f1a6d9e2b07c3f5a8d1e6b9c2f4a7d0e3b685",
+							"name": "iPhone"
+						},
+						"grant": {
+							"projects": [
+								{
+									"id": "local-3e9b0f4a7c21d85e6a2f8c1d9b07e43ab5d0e7a92c4f18660f7c3e9a5d18b2e4",
+									"name": "Harness Shots"
+								}
+							],
+							"agents": true
+						},
+						"methods": ["listProjects", "snapshot", "addComment", "startRun", "cancelRun"],
+						"limits": {
+							"frameBytes": 262144,
+							"chunkBytes": 131072,
+							"requestBytes": 65536,
+							"messageBytes": 16777216,
+							"pendingRequests": 32,
+							"ledgerEntries": 256,
+							"ledgerTtlMs": 900000,
+							"eventLog": 512,
+							"requestDeadlineMs": 30000,
+							"mutationDeadlineMs": 120000,
+							"handshakeDeadlineMs": 10000,
+							"pingMs": 25000,
+							"idleMs": 90000,
+							"pairingTtlMs": 300000,
+							"pairingAttempts": 5
+						}
+					}
+				]
 			},
 			{
 				"name": "WireClientService.unbind",
-				"type": "void"
+				"type": "void",
+				"description": "Returns nothing: it drops the connection and rejects a bind still waiting for its attach answer with `offline`."
 			},
 			{
 				"name": "WireClientService.close",
-				"type": "void"
+				"type": "void",
+				"description": "Returns nothing: the client is closed for good, every request still waiting is rejected with `offline`, and any later bind rejects with `offline`."
 			},
 			{
 				"name": "WireClientService.request",
-				"type": "Promise<T>"
+				"type": "Promise<T>",
+				"description": "The `value` of an ok response from the host, returned without any check and typed as `T`, which defaults to `unknown`.",
+				"examples": [
+					null,
+					true,
+					[]
+				]
 			},
 			{
 				"name": "WireClientService.on",
-				"type": "()"
+				"type": "()",
+				"description": "The unsubscribe function that `on` returns; calling it removes this listener from its channel."
 			},
 			{
 				"name": "WireClientService.receive",
-				"type": "void"
+				"type": "void",
+				"description": "Returns nothing: a frame that fails validation is dropped, a valid event above the cursor goes to its channel's listeners, and a valid response settles the request it answers."
 			}
 		],
 		"errors": [
 			{
 				"name": "RemoteFailure",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "A RemoteFailure, the only error the client raises itself: its `code` is `offline` when the client is closed or not bound, `deadline` when no answer arrives in time, `request-expired` for a change pending across an epoch change, or the code of an error response from the host. Errors thrown by the caller's `send`, `uuid` or listener functions propagate unchanged."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "WireClientService.bind",
@@ -107,22 +245,119 @@
 					{
 						"name": "WireClientService.bind.send",
 						"type": "(text: string) => void",
-						"required": true
+						"required": true,
+						"description": "The function that sends one text frame to the connection: the client passes it each JSON-encoded request, the attach request first. After a successful attach it sends every request still waiting again, and unbind drops it, so nothing is sent while the client is unbound."
 					}
 				],
 				"outputs": [
 					{
 						"name": "WireClientService.bind",
-						"type": "Promise<RemoteAttachment>"
+						"type": "Promise<RemoteAttachment>",
+						"description": "The host's attach answer, resolved once this connection is attached and also kept as `attachment`. Its `epoch` and `sequence` become the resume point when none is set yet, or when the epoch changed or `replay` is `gap`, and a changed epoch or `gap` also raises a `{ kind: 'resync' }` notice on the connection channel.",
+						"examples": [
+							{
+								"protocol": 1,
+								"role": "device",
+								"epoch": "7d4a0c9e2b1f58a36e0d4c7b9a2f1e85",
+								"sequence": 57,
+								"replay": "resumed",
+								"host": {
+									"id": "a3f19c07e4d2b6058c1e9f74d3a0b2c6e8f51d94",
+									"name": "Studio Mac",
+									"platform": "darwin",
+									"locked": false
+								},
+								"device": {
+									"id": "4c8f1a6d9e2b07c3f5a8d1e6b9c2f4a7d0e3b685",
+									"name": "iPhone"
+								},
+								"grant": {
+									"projects": [
+										{
+											"id": "local-3e9b0f4a7c21d85e6a2f8c1d9b07e43ab5d0e7a92c4f18660f7c3e9a5d18b2e4",
+											"name": "Harness Shots"
+										},
+										{
+											"id": "local-91c4e0b7d26f3a85e0d3a6f92b8c17475a1f9d0e6c3b82f4d6e28b1a7c4f0953",
+											"name": "Field notes"
+										}
+									],
+									"comments": true,
+									"agents": false
+								},
+								"methods": ["listProjects", "snapshot", "addComment"],
+								"limits": {
+									"frameBytes": 262144,
+									"chunkBytes": 131072,
+									"requestBytes": 65536,
+									"messageBytes": 16777216,
+									"pendingRequests": 32,
+									"ledgerEntries": 256,
+									"ledgerTtlMs": 900000,
+									"eventLog": 512,
+									"requestDeadlineMs": 30000,
+									"mutationDeadlineMs": 120000,
+									"handshakeDeadlineMs": 10000,
+									"pingMs": 25000,
+									"idleMs": 90000,
+									"pairingTtlMs": 300000,
+									"pairingAttempts": 5
+								}
+							},
+							{
+								"protocol": 1,
+								"role": "device",
+								"epoch": "c18e5f0b7a4d29e6315b8c0f7d2a9e44",
+								"sequence": 412,
+								"replay": "gap",
+								"host": {
+									"id": "a3f19c07e4d2b6058c1e9f74d3a0b2c6e8f51d94",
+									"name": "Studio Mac",
+									"platform": "darwin"
+								},
+								"device": {
+									"id": "4c8f1a6d9e2b07c3f5a8d1e6b9c2f4a7d0e3b685",
+									"name": "iPhone"
+								},
+								"grant": {
+									"projects": [
+										{
+											"id": "local-3e9b0f4a7c21d85e6a2f8c1d9b07e43ab5d0e7a92c4f18660f7c3e9a5d18b2e4",
+											"name": "Harness Shots"
+										}
+									],
+									"agents": true
+								},
+								"methods": ["listProjects", "snapshot", "addComment", "startRun", "cancelRun"],
+								"limits": {
+									"frameBytes": 262144,
+									"chunkBytes": 131072,
+									"requestBytes": 65536,
+									"messageBytes": 16777216,
+									"pendingRequests": 32,
+									"ledgerEntries": 256,
+									"ledgerTtlMs": 900000,
+									"eventLog": 512,
+									"requestDeadlineMs": 30000,
+									"mutationDeadlineMs": 120000,
+									"handshakeDeadlineMs": 10000,
+									"pingMs": 25000,
+									"idleMs": 90000,
+									"pairingTtlMs": 300000,
+									"pairingAttempts": 5
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "RemoteFailure",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "A RemoteFailure with code `offline` when the client is closed, or unbound before the attach answers (a newer bind also does this), `deadline` when the attach gets no answer in time, or the code of an error response from the host."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "WireClientService.unbind",
@@ -130,11 +365,12 @@
 				"outputs": [
 					{
 						"name": "WireClientService.unbind",
-						"type": "void"
+						"type": "void",
+						"description": "Returns nothing: it drops the connection and rejects a bind still waiting for its attach answer with `offline`."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "WireClientService.close",
@@ -142,11 +378,12 @@
 				"outputs": [
 					{
 						"name": "WireClientService.close",
-						"type": "void"
+						"type": "void",
+						"description": "Returns nothing: the client is closed for good, every request still waiting is rejected with `offline`, and any later bind rejects with `offline`."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "WireClientService.request",
@@ -154,23 +391,41 @@
 					{
 						"name": "WireClientService.request.method",
 						"type": "RemoteMethod",
-						"required": true
+						"required": true,
+						"description": "The host operation name, typed as one of the remoteMethods names but not checked at runtime. For a name in mutationMethods the client adds `epoch` to the input, and when the epoch later changes, that pending change is rejected with request-expired instead of being sent again.",
+						"examples": ["listProjects", "snapshot", "addComment"]
 					},
 					{
 						"name": "WireClientService.request.input",
 						"type": "Record<string, unknown>",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "The arguments object sent with the request, unchanged unless the method is in mutationMethods, where any `epoch` key is overwritten with the current cursor epoch. It defaults to {} when no argument is passed.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "WireClientService.request",
-						"type": "Promise<T>"
+						"type": "Promise<T>",
+						"description": "The `value` of an ok response from the host, returned without any check and typed as `T`, which defaults to `unknown`.",
+						"examples": [
+							null,
+							true,
+							[]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RemoteFailure",
+						"type": "thrown",
+						"description": "A RemoteFailure with code `offline` when the client is closed or not bound, `deadline` when no answer arrives in time, `request-expired` for a change pending across an epoch change, or the code of an error response from the host."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "WireClientService.on",
@@ -178,22 +433,26 @@
 					{
 						"name": "WireClientService.on.channel",
 						"type": "WireChannel",
-						"required": true
+						"required": true,
+						"description": "The event channel to subscribe to: `run`, `cache` or `connection`, the only channels the validator accepts. The `connection` channel also receives the client's own `{ kind: 'resync' }` notice when the attach replay is `gap` or the epoch changed.",
+						"examples": ["run", "cache", "connection"]
 					},
 					{
 						"name": "WireClientService.on.listener",
 						"type": "Listener",
-						"required": true
+						"required": true,
+						"description": "The function called with the value of each event on the subscribed channel, and never with an event whose sequence is at or below the cursor. Adding the same function twice to a channel keeps one entry, and the function that `on` returns removes it."
 					}
 				],
 				"outputs": [
 					{
 						"name": "WireClientService.on",
-						"type": "()"
+						"type": "()",
+						"description": "The unsubscribe function that `on` returns; calling it removes this listener from its channel."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "WireClientService.receive",
@@ -201,17 +460,24 @@
 					{
 						"name": "WireClientService.receive.text",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "One text frame from the host, parsed as JSON and used only when it is a response or an event within remoteLimits.messageBytes (16777216); any other frame is ignored without an error. A valid response settles the request with that id, and a valid event reaches its channel's listeners only when its sequence is above the cursor.",
+						"examples": [
+							"{\"type\":\"event\",\"channel\":\"run\",\"sequence\":8,\"value\":{}}",
+							"{\"type\":\"response\",\"id\":\"3c9f1e2a-7b4d-4e8a-9f10-2d6c5b8a1e7f\",\"ok\":true,\"value\":null}",
+							"{\"type\":\"response\",\"id\":\"3c9f1e2a-7b4d-4e8a-9f10-2d6c5b8a1e7f\",\"ok\":false,\"error\":{\"code\":\"busy\",\"message\":\"Another run or change is active in this project.\"}}"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "WireClientService.receive",
-						"type": "void"
+						"type": "void",
+						"description": "Returns nothing: a frame that fails validation is dropped, a valid event above the cursor goes to its channel's listeners, and a valid response settles the request it answers."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -221,17 +487,34 @@
 					{
 						"name": "WireClientService.constructor.options",
 						"type": "WireClientOptions",
-						"required": true
+						"required": true,
+						"description": "The client identity sent as `client` on every attach, plus optional `deadlineMs`, which bounds how long a request waits for its answer across reconnects (defaults to remoteLimits.mutationDeadlineMs + 5000, which is 125000 ms), and optional `uuid`, the source of request ids (defaults to crypto.randomUUID()).",
+						"examples": [
+							{
+								"client": {
+									"kind": "electron",
+									"name": "Harness Desktop"
+								}
+							},
+							{
+								"client": {
+									"kind": "ios",
+									"name": "Harness for iOS"
+								},
+								"deadlineMs": 30000
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "WireClientService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new client, which starts unbound with no cursor, so each request rejects with `offline` until a bind succeeds."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
