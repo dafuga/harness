@@ -25,41 +25,306 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registryGate.base",
 				"type": "Registry",
-				"required": true
+				"required": true,
+				"description": "The registry snapshot before the change, with component manifests stored at the base revision. The gate reads only their IDs, so base scenarios and other base manifest fields are not validated.",
+				"examples": [
+					{
+						"stored": [
+							{
+								"schemaVersion": 1,
+								"id": "service.verification-gates",
+								"uid": "u_fkuot3slc7",
+								"kind": "service",
+								"title": "VerificationGates",
+								"responsibility": "Keeps registry identities stable, checks active preview bindings, and enforces cited append-only budget ledger entries.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": [
+										"src/services/VerificationGates.ts",
+										"src/workflows/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
+										"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
+										"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.types.ts"
+									],
+									"symbols": [
+										"registryGate",
+										"ledgerGate",
+										"registryGate",
+										"ledgerGate",
+										"registryGate",
+										"ledgerGate",
+										"Registry"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [
+										{
+											"name": "registryGate.base",
+											"type": "Registry",
+											"required": true
+										},
+										{
+											"name": "registryGate.head",
+											"type": "Registry",
+											"required": true
+										},
+										{
+											"name": "ledgerGate.ledger",
+											"type": "{ base: LedgerRead; head: LedgerRead }",
+											"required": true
+										},
+										{
+											"name": "ledgerGate.store",
+											"type": "VerificationStoreRepository",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "registryGate",
+											"type": "string[]"
+										},
+										{
+											"name": "ledgerGate",
+											"type": "string[]"
+										}
+									],
+									"errors": []
+								},
+								"dependencies": [
+									{
+										"unit": "function.preview-binding",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.unit-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "repository.budget-ledger",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "repository.verification-store",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts"
+										}
+									]
+								},
+								"scenarios": [],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "registryGate.head",
 				"type": "Registry",
-				"required": true
+				"required": true,
+				"description": "The current registry snapshot, including stored manifests and optional scenarios. The gate checks IDs against base and passes active stored manifests to previewBinding with head.scenarios ?? [], so omitted scenarios act as an empty list and retired manifests are not preview-checked.",
+				"examples": [
+					{
+						"stored": [
+							{
+								"schemaVersion": 1,
+								"id": "service.verification-gates",
+								"uid": "u_fkuot3slc7",
+								"kind": "service",
+								"title": "VerificationGates",
+								"responsibility": "Keeps registry identities stable, checks active preview bindings, and enforces cited append-only budget ledger entries.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": [
+										"src/services/VerificationGates.ts",
+										"src/workflows/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
+										"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
+										"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.types.ts"
+									],
+									"symbols": [
+										"registryGate",
+										"ledgerGate",
+										"registryGate",
+										"ledgerGate",
+										"registryGate",
+										"ledgerGate",
+										"Registry"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [
+										{
+											"name": "registryGate.base",
+											"type": "Registry",
+											"required": true
+										},
+										{
+											"name": "registryGate.head",
+											"type": "Registry",
+											"required": true
+										},
+										{
+											"name": "ledgerGate.ledger",
+											"type": "{ base: LedgerRead; head: LedgerRead }",
+											"required": true
+										},
+										{
+											"name": "ledgerGate.store",
+											"type": "VerificationStoreRepository",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "registryGate",
+											"type": "string[]"
+										},
+										{
+											"name": "ledgerGate",
+											"type": "string[]"
+										}
+									],
+									"errors": []
+								},
+								"dependencies": [
+									{
+										"unit": "function.preview-binding",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.unit-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "repository.budget-ledger",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "repository.verification-store",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts"
+										}
+									]
+								},
+								"scenarios": [],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "ledgerGate.ledger",
 				"type": "{ base: LedgerRead; head: LedgerRead }",
-				"required": true
+				"required": true,
+				"description": "The base and head LedgerRead snapshots, each with raw ledger text, parsed events, and parse errors. The gate requires head text to start with base text, then inspects events after the base event count; a rewrite returns its warning without combining head errors.",
+				"examples": [
+					{
+						"base": {
+							"text": "",
+							"events": [],
+							"errors": []
+						},
+						"head": {
+							"text": "{\"type\":\"baseline\",\"unit\":\"reports.component.evidence-grid\",\"record\":{\"id\":\"abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789\",\"commit\":\"1111111111111111111111111111111111111111\",\"tree\":\"2222222222222222222222222222222222222222\"},\"reviewer\":\"reviewer@example.test\",\"reason\":\"Record the reviewed bundle-size baseline.\",\"at\":\"2026-11-15T09:00:00.000Z\",\"metrics\":{\"bundleBytes\":32768},\"performance\":[]}\n",
+							"events": [
+								{
+									"type": "baseline",
+									"unit": "reports.component.evidence-grid",
+									"record": {
+										"id": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+										"commit": "1111111111111111111111111111111111111111",
+										"tree": "2222222222222222222222222222222222222222"
+									},
+									"reviewer": "reviewer@example.test",
+									"reason": "Record the reviewed bundle-size baseline.",
+									"at": "2026-11-15T09:00:00.000Z",
+									"metrics": {
+										"bundleBytes": 32768
+									},
+									"performance": []
+								}
+							],
+							"errors": []
+						}
+					}
+				]
 			},
 			{
 				"name": "ledgerGate.store",
 				"type": "VerificationStoreRepository",
-				"required": true
+				"required": true,
+				"description": "A VerificationStoreRepository instance used to load records named by newly added events. Each loaded record must match both the event's cited source commit and tree; otherwise the event is reported as uncited."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registryGate",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Returns messages for base identities absent from the head, followed by preview-binding messages for active head units. It compares stored IDs and checks head preview bindings; it does not compare all manifest fields across revisions.",
+				"examples": [
+					[],
+					[
+						"unit service.verification-gates was removed from the registry; identities may only be retired"
+					],
+					["reports.component.evidence-grid: unknown preview scenario reports.scenario.desktop"]
+				]
 			},
 			{
 				"name": "ledgerGate",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Returns a rewrite warning immediately if the head text does not start with the base text. Otherwise it combines head parse errors with messages for added events whose referenced record is absent or has a different source commit or tree.",
+				"examples": [
+					[],
+					["budget ledger was rewritten; recorded baselines and approvals are append-only"],
+					[
+						"budget baseline for reports.component.evidence-grid cites record abcdef012345, which is not available"
+					]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "registryGate",
@@ -67,22 +332,246 @@
 					{
 						"name": "registryGate.base",
 						"type": "Registry",
-						"required": true
+						"required": true,
+						"description": "The registry snapshot before the change, with component manifests stored at the base revision. The gate reads only their IDs, so base scenarios and other base manifest fields are not validated.",
+						"examples": [
+							{
+								"stored": [
+									{
+										"schemaVersion": 1,
+										"id": "service.verification-gates",
+										"uid": "u_fkuot3slc7",
+										"kind": "service",
+										"title": "VerificationGates",
+										"responsibility": "Keeps registry identities stable, checks active preview bindings, and enforces cited append-only budget ledger entries.",
+										"responsibilityOrigin": "declared",
+										"status": "active",
+										"owns": {
+											"source": [
+												"src/services/VerificationGates.ts",
+												"src/workflows/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
+												"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
+												"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.types.ts"
+											],
+											"symbols": [
+												"registryGate",
+												"ledgerGate",
+												"registryGate",
+												"ledgerGate",
+												"registryGate",
+												"ledgerGate",
+												"Registry"
+											]
+										},
+										"contract": {
+											"origin": "declared",
+											"inputs": [
+												{
+													"name": "registryGate.base",
+													"type": "Registry",
+													"required": true
+												},
+												{
+													"name": "registryGate.head",
+													"type": "Registry",
+													"required": true
+												},
+												{
+													"name": "ledgerGate.ledger",
+													"type": "{ base: LedgerRead; head: LedgerRead }",
+													"required": true
+												},
+												{
+													"name": "ledgerGate.store",
+													"type": "VerificationStoreRepository",
+													"required": true
+												}
+											],
+											"outputs": [
+												{
+													"name": "registryGate",
+													"type": "string[]"
+												},
+												{
+													"name": "ledgerGate",
+													"type": "string[]"
+												}
+											],
+											"errors": []
+										},
+										"dependencies": [
+											{
+												"unit": "function.preview-binding",
+												"via": "import",
+												"origin": "derived"
+											},
+											{
+												"unit": "function.unit-types",
+												"via": "import",
+												"origin": "derived"
+											},
+											{
+												"unit": "repository.budget-ledger",
+												"via": "import",
+												"origin": "derived"
+											},
+											{
+												"unit": "repository.verification-store",
+												"via": "import",
+												"origin": "derived"
+											}
+										],
+										"runtime": {
+											"kind": "module",
+											"entry": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts"
+												}
+											]
+										},
+										"scenarios": [],
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										}
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "registryGate.head",
 						"type": "Registry",
-						"required": true
+						"required": true,
+						"description": "The current registry snapshot, including stored manifests and optional scenarios. The gate checks IDs against base and passes active stored manifests to previewBinding with head.scenarios ?? [], so omitted scenarios act as an empty list and retired manifests are not preview-checked.",
+						"examples": [
+							{
+								"stored": [
+									{
+										"schemaVersion": 1,
+										"id": "service.verification-gates",
+										"uid": "u_fkuot3slc7",
+										"kind": "service",
+										"title": "VerificationGates",
+										"responsibility": "Keeps registry identities stable, checks active preview bindings, and enforces cited append-only budget ledger entries.",
+										"responsibilityOrigin": "declared",
+										"status": "active",
+										"owns": {
+											"source": [
+												"src/services/VerificationGates.ts",
+												"src/workflows/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
+												"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
+												"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.types.ts"
+											],
+											"symbols": [
+												"registryGate",
+												"ledgerGate",
+												"registryGate",
+												"ledgerGate",
+												"registryGate",
+												"ledgerGate",
+												"Registry"
+											]
+										},
+										"contract": {
+											"origin": "declared",
+											"inputs": [
+												{
+													"name": "registryGate.base",
+													"type": "Registry",
+													"required": true
+												},
+												{
+													"name": "registryGate.head",
+													"type": "Registry",
+													"required": true
+												},
+												{
+													"name": "ledgerGate.ledger",
+													"type": "{ base: LedgerRead; head: LedgerRead }",
+													"required": true
+												},
+												{
+													"name": "ledgerGate.store",
+													"type": "VerificationStoreRepository",
+													"required": true
+												}
+											],
+											"outputs": [
+												{
+													"name": "registryGate",
+													"type": "string[]"
+												},
+												{
+													"name": "ledgerGate",
+													"type": "string[]"
+												}
+											],
+											"errors": []
+										},
+										"dependencies": [
+											{
+												"unit": "function.preview-binding",
+												"via": "import",
+												"origin": "derived"
+											},
+											{
+												"unit": "function.unit-types",
+												"via": "import",
+												"origin": "derived"
+											},
+											{
+												"unit": "repository.budget-ledger",
+												"via": "import",
+												"origin": "derived"
+											},
+											{
+												"unit": "repository.verification-store",
+												"via": "import",
+												"origin": "derived"
+											}
+										],
+										"runtime": {
+											"kind": "module",
+											"entry": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts"
+												}
+											]
+										},
+										"scenarios": [],
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										}
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "registryGate",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Returns messages for base identities absent from the head, followed by preview-binding messages for active head units. It compares stored IDs and checks head preview bindings; it does not compare all manifest fields across revisions.",
+						"examples": [
+							[],
+							[
+								"unit service.verification-gates was removed from the registry; identities may only be retired"
+							],
+							["reports.component.evidence-grid: unknown preview scenario reports.scenario.desktop"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ledgerGate",
@@ -90,22 +579,63 @@
 					{
 						"name": "ledgerGate.ledger",
 						"type": "{ base: LedgerRead; head: LedgerRead }",
-						"required": true
+						"required": true,
+						"description": "The base and head LedgerRead snapshots, each with raw ledger text, parsed events, and parse errors. The gate requires head text to start with base text, then inspects events after the base event count; a rewrite returns its warning without combining head errors.",
+						"examples": [
+							{
+								"base": {
+									"text": "",
+									"events": [],
+									"errors": []
+								},
+								"head": {
+									"text": "{\"type\":\"baseline\",\"unit\":\"reports.component.evidence-grid\",\"record\":{\"id\":\"abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789\",\"commit\":\"1111111111111111111111111111111111111111\",\"tree\":\"2222222222222222222222222222222222222222\"},\"reviewer\":\"reviewer@example.test\",\"reason\":\"Record the reviewed bundle-size baseline.\",\"at\":\"2026-11-15T09:00:00.000Z\",\"metrics\":{\"bundleBytes\":32768},\"performance\":[]}\n",
+									"events": [
+										{
+											"type": "baseline",
+											"unit": "reports.component.evidence-grid",
+											"record": {
+												"id": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+												"commit": "1111111111111111111111111111111111111111",
+												"tree": "2222222222222222222222222222222222222222"
+											},
+											"reviewer": "reviewer@example.test",
+											"reason": "Record the reviewed bundle-size baseline.",
+											"at": "2026-11-15T09:00:00.000Z",
+											"metrics": {
+												"bundleBytes": 32768
+											},
+											"performance": []
+										}
+									],
+									"errors": []
+								}
+							}
+						]
 					},
 					{
 						"name": "ledgerGate.store",
 						"type": "VerificationStoreRepository",
-						"required": true
+						"required": true,
+						"description": "A VerificationStoreRepository instance used to load records named by newly added events. Each loaded record must match both the event's cited source commit and tree; otherwise the event is reported as uncited."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ledgerGate",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Returns a rewrite warning immediately if the head text does not start with the base text. Otherwise it combines head parse errors with messages for added events whose referenced record is absent or has a different source commit or tree.",
+						"examples": [
+							[],
+							["budget ledger was rewritten; recorded baselines and approvals are append-only"],
+							[
+								"budget baseline for reports.component.evidence-grid cites record abcdef012345, which is not available"
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
