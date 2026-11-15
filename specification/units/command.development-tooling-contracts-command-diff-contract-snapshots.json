@@ -39,8 +39,8 @@
 				"name": "validateHistoryFields.field",
 				"type": "string",
 				"required": false,
-				"description": "Empty or omitted means no field restriction; otherwise comma-separated type, description, examples, errors and dependencies categories. Unsupported categories are rejected.",
-				"default": ""
+				"default": "",
+				"description": "Empty or omitted means no field restriction; otherwise comma-separated type, description, examples, errors and dependencies categories. Unsupported categories are rejected."
 			}
 		],
 		"outputs": [
@@ -109,8 +109,8 @@
 						"name": "validateHistoryFields.field",
 						"type": "string",
 						"required": false,
-						"description": "Empty or omitted means no field restriction; otherwise comma-separated type, description, examples, errors and dependencies categories. Unsupported categories are rejected.",
-						"default": ""
+						"default": "",
+						"description": "Empty or omitted means no field restriction; otherwise comma-separated type, description, examples, errors and dependencies categories. Unsupported categories are rejected."
 					}
 				],
 				"outputs": [
