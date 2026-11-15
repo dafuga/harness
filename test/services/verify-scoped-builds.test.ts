@@ -1,3 +1,4 @@
+import { measureWorkload } from '../support/measureWorkload';
 import { withTempRepo } from '../support/temporary';
 import { frameFlagFixture, seedTaskFrameFlag } from '../support/frameFlagFixture';
 import { videoLibraryFixture } from '../support/videoCoverageFixture';
@@ -158,46 +159,53 @@ test('a capture that names a declared build setup did not produce still says so'
 });
 
 test('same-source reviewer flags rerun an otherwise inherited enrolled scenario', async () => {
-	await withTempRepo(async ({ root, git }) => {
-		const fixture = await frameFlagFixture(root, git);
-		const video = videoLibraryFixture();
-		video.clips[0].unit = webFlow.units[0];
-		video.clips[0].id = 'play';
-		video.graphs[0].unit = webFlow.units[0];
-		video.graphs[0].clips = ['play'];
-		video.playlists[0].clips = ['play'];
-		const enrolled = scenarioManifestSchema.parse({
-			...webFlow,
-			kind: 'ui',
-			viewports: video.viewports,
-			video
-		});
-		const prior = verificationSample();
-		prior.scenarios = [
-			{ id: enrolled.id, status: 'passed', testedRevision: fixture.reference.revision, states: [] }
-		];
-		vi.spyOn(VerificationStoreRepository.prototype, 'load').mockReturnValue({
-			record: prior,
-			directory: root
-		});
-		const received: SnapshotRun[] = [];
-		vi.spyOn(SnapshotRunService.prototype, 'execute').mockImplementation(async function (
-			this: SnapshotRunService
-		) {
-			received.push(runOf(this));
-			throw new Error(reachedSnapshot);
-		});
-		const service = () =>
-			verification(undefined, {
-				root,
-				commit: fixture.reference.revision,
-				baseRecord: prior.id,
-				head: { ...emptySide(), scenarios: [enrolled] }
+	await measureWorkload('service.verification', 'pending-flags-invalidate-inherited-scenario', () =>
+		withTempRepo(async ({ root, git }) => {
+			const fixture = await frameFlagFixture(root, git);
+			const video = videoLibraryFixture();
+			video.clips[0].unit = webFlow.units[0];
+			video.clips[0].id = 'play';
+			video.graphs[0].unit = webFlow.units[0];
+			video.graphs[0].clips = ['play'];
+			video.playlists[0].clips = ['play'];
+			const enrolled = scenarioManifestSchema.parse({
+				...webFlow,
+				kind: 'ui',
+				viewports: video.viewports,
+				video
 			});
-		await expect(service().run()).rejects.toThrow(reachedSnapshot);
-		expect(received.at(-1)?.videos).toEqual([]);
-		await seedTaskFrameFlag(root, fixture.reference.revision, webFlow.units[0]);
-		await expect(service().run()).rejects.toThrow(reachedSnapshot);
-		expect(received.at(-1)?.videos?.map((scenario) => scenario.id)).toEqual([enrolled.id]);
-	});
+			const prior = verificationSample();
+			prior.scenarios = [
+				{
+					id: enrolled.id,
+					status: 'passed',
+					testedRevision: fixture.reference.revision,
+					states: []
+				}
+			];
+			vi.spyOn(VerificationStoreRepository.prototype, 'load').mockReturnValue({
+				record: prior,
+				directory: root
+			});
+			const received: SnapshotRun[] = [];
+			vi.spyOn(SnapshotRunService.prototype, 'execute').mockImplementation(async function (
+				this: SnapshotRunService
+			) {
+				received.push(runOf(this));
+				throw new Error(reachedSnapshot);
+			});
+			const service = () =>
+				verification(undefined, {
+					root,
+					commit: fixture.reference.revision,
+					baseRecord: prior.id,
+					head: { ...emptySide(), scenarios: [enrolled] }
+				});
+			await expect(service().run()).rejects.toThrow(reachedSnapshot);
+			expect(received.at(-1)?.videos).toEqual([]);
+			await seedTaskFrameFlag(root, fixture.reference.revision, webFlow.units[0]);
+			await expect(service().run()).rejects.toThrow(reachedSnapshot);
+			expect(received.at(-1)?.videos?.map((scenario) => scenario.id)).toEqual([enrolled.id]);
+		})
+	);
 });

@@ -1,3 +1,4 @@
+import { measureWorkload } from '../support/measureWorkload';
 import { mkdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { withTempRepo } from '../support/temporary';
@@ -88,53 +89,58 @@ test.each([undefined, 'all'] as const)(
 );
 
 test('enrolled snapshots expose only pending owning slots from original repository evidence', async () => {
-	await withTempRepo(async ({ root, git }) => {
-		const f = await frameFlagFixture(root, git);
-		const flag = await seedTaskFrameFlag(root, f.reference.revision, video.unit);
-		await seedTaskFrameFlag(root, f.reference.revision, 'component.other');
-		vi.spyOn(VideoEvidenceService.prototype, 'plan').mockReturnValue({
-			record: [
-				{ unit: video.unit, clipId: 'play', viewport: 'desktop', inputHash: video.inputHash }
-			],
-			reuse: []
-		});
-		const scenario = pendingMotionScenario();
-		const directory = join(root, '.cache/run');
-		await mkdir(directory, { recursive: true });
-		const context = {
-			directory,
-			commit: f.reference.revision,
-			tree: git('rev-parse', 'HEAD^{tree}'),
-			profile: 'test',
-			env: { ...process.env }
-		};
-		const run = new SnapshotRunService({
-			root,
-			config: { ...defaultVerifyConfig, link: [], setup: [], tools: [], builds: [] },
-			context,
-			videos: [scenario]
-		});
-		const command = `node -e 'console.log(process.env.HARNESS_PENDING_VIDEO_FLAGS || "missing")'`;
-		const result = await run.execute([
-			{
-				id: 'pending-env',
-				name: 'pending-env',
-				kind: 'unit',
-				runner: 'command',
-				target: 'pending-env',
-				cwd: '.',
-				command,
-				timeoutMs: 5000
-			}
-		]);
-		expect(result.setupFailures).toEqual([]);
-		expect(result.outcomes[0].passed).toBe(true);
-		const printed = await readFile(join(directory, 'logs/pending-env.log'), 'utf8');
-		expect(printed).toContain(flag.id);
-		expect(printed).toContain('Inspect this edge');
-		expect(printed).not.toContain('component.other');
-		expect(result).toHaveProperty('pendingVideoFlags.pending-motion.pending');
-	});
+	await measureWorkload(
+		'service.snapshot-run',
+		'pending-original-evidence-capture-environment',
+		() =>
+			withTempRepo(async ({ root, git }) => {
+				const f = await frameFlagFixture(root, git);
+				const flag = await seedTaskFrameFlag(root, f.reference.revision, video.unit);
+				await seedTaskFrameFlag(root, f.reference.revision, 'component.other');
+				vi.spyOn(VideoEvidenceService.prototype, 'plan').mockReturnValue({
+					record: [
+						{ unit: video.unit, clipId: 'play', viewport: 'desktop', inputHash: video.inputHash }
+					],
+					reuse: []
+				});
+				const scenario = pendingMotionScenario();
+				const directory = join(root, '.cache/run');
+				await mkdir(directory, { recursive: true });
+				const context = {
+					directory,
+					commit: f.reference.revision,
+					tree: git('rev-parse', 'HEAD^{tree}'),
+					profile: 'test',
+					env: { ...process.env }
+				};
+				const run = new SnapshotRunService({
+					root,
+					config: { ...defaultVerifyConfig, link: [], setup: [], tools: [], builds: [] },
+					context,
+					videos: [scenario]
+				});
+				const command = `node -e 'console.log(process.env.HARNESS_PENDING_VIDEO_FLAGS || "missing")'`;
+				const result = await run.execute([
+					{
+						id: 'pending-env',
+						name: 'pending-env',
+						kind: 'unit',
+						runner: 'command',
+						target: 'pending-env',
+						cwd: '.',
+						command,
+						timeoutMs: 5000
+					}
+				]);
+				expect(result.setupFailures).toEqual([]);
+				expect(result.outcomes[0].passed).toBe(true);
+				const printed = await readFile(join(directory, 'logs/pending-env.log'), 'utf8');
+				expect(printed).toContain(flag.id);
+				expect(printed).toContain('Inspect this edge');
+				expect(printed).not.toContain('component.other');
+				expect(result).toHaveProperty('pendingVideoFlags.pending-motion.pending');
+			})
+	);
 });
 
 function pendingMotionScenario() {
