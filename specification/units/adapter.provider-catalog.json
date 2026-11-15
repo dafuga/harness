@@ -145,7 +145,7 @@
 				"outputs": [
 					{
 						"name": "ProviderCatalogAdapter.constructor",
-						"type": "unknown",
+						"type": "ProviderCatalogAdapter",
 						"description": "The new ProviderCatalogAdapter instance, which keeps the paths object in its private readonly paths field and performs no file access until list() is called."
 					}
 				],

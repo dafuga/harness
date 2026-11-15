@@ -32,9 +32,7 @@
 				"type": "SourceFile[]",
 				"required": true,
 				"description": "Source records whose paths, exports, optional storage declarations, and scanned errors are folded into the contract. An empty array produces an empty derived contract.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "deriveContract.entry",
@@ -206,9 +204,7 @@
 						"type": "SourceFile[]",
 						"required": true,
 						"description": "Source records whose paths, exports, optional storage declarations, and scanned errors are folded into the contract. An empty array produces an empty derived contract.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					},
 					{
 						"name": "deriveContract.entry",
@@ -322,7 +318,7 @@
 				"outputs": [
 					{
 						"name": "operationContract",
-						"type": "unknown",
+						"type": "{ name: string; inputs: ExportedSymbol['inputs']; outputs: { name: string; type: string }[]; errors: { name: string; type: string }[]; errorStatus: NonNullable<ExportedSymbol['errorStatus']> }",
 						"description": "A contract representation of one scanned export, with input items, zero or one return item, thrown-error names, and the export's scanned error status.",
 						"examples": [
 							{

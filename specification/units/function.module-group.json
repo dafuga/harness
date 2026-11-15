@@ -129,7 +129,7 @@
 		"outputs": [
 			{
 				"name": "moduleFolders",
-				"type": "unknown",
+				"type": "readonly string[]",
 				"description": "Frozen list of the 39 folder names that modulePath accepts directly after a src/ segment; any other folder name makes modulePath return undefined.",
 				"examples": [
 					[

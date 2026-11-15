@@ -522,7 +522,7 @@
 				"outputs": [
 					{
 						"name": "BenchmarkRepository.constructor",
-						"type": "unknown",
+						"type": "BenchmarkRepository",
 						"description": "The BenchmarkRepository instance itself, whose readonly home property is the storage root that directory(), save() and read() use."
 					}
 				],

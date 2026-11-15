@@ -59,7 +59,7 @@
 		"outputs": [
 			{
 				"name": "emittedMetric",
-				"type": "unknown",
+				"type": "\"artifact-bytes\"",
 				"description": "The constant 'artifact-bytes', the metric name that every emitted size is measured under. emittedSizes keeps only entries whose metric equals this constant, so entries with any other metric are never selected.",
 				"examples": ["artifact-bytes"]
 			},

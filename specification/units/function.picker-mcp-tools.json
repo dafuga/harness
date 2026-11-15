@@ -61,22 +61,22 @@
 		"outputs": [
 			{
 				"name": "pickerSessionSchema",
-				"type": "unknown",
+				"type": "typeof pickerSessionSchema",
 				"description": "Strict zod object schema for open_model_picker and get_provider_status arguments: it accepts an optional string session_id and rejects any other key. The dispatcher parses input with it and passes session_id, or null when it is absent, to service.status."
 			},
 			{
 				"name": "pickerSwitchSchema",
-				"type": "unknown",
+				"type": "typeof pickerSwitchSchema",
 				"description": "Strict zod object schema for request_model_switch arguments: session_id, model and effort must be strings, provider must be 'openai' or 'harness-claude', and any other key is rejected. The dispatcher passes session_id as the first argument to service.request and provider, model and effort in an object as the second argument."
 			},
 			{
 				"name": "pickerCancelSchema",
-				"type": "unknown",
+				"type": "typeof pickerCancelSchema",
 				"description": "Strict zod object schema for cancel_model_switch arguments: session_id and request_id must both be strings, and any other key is rejected. The dispatcher passes session_id and request_id, in that order, to service.cancel."
 			},
 			{
 				"name": "pickerMcpTools",
-				"type": "unknown",
+				"type": "Promise<Awaited<ReturnType<ProviderSwitchService['status']>> | { models: Awaited<ReturnType<ProviderSwitchService['catalog']['list']>> } | { sessions: ReturnType<ProviderSwitchService['store']['list']> }>",
 				"description": "Resolves to { models: <catalog.list() result> } for list_models, to { sessions: <store.list() result> } for list_observed_sessions, and otherwise to the result of service.request, service.cancel or service.status. For open_model_picker and get_provider_status a missing session_id reaches service.status as null, and the dispatcher does not launch a UI itself.",
 				"examples": [
 					{
@@ -148,7 +148,7 @@
 				"outputs": [
 					{
 						"name": "pickerMcpTools",
-						"type": "unknown",
+						"type": "Promise<Awaited<ReturnType<ProviderSwitchService['status']>> | { models: Awaited<ReturnType<ProviderSwitchService['catalog']['list']>> } | { sessions: ReturnType<ProviderSwitchService['store']['list']> }>",
 						"description": "Resolves to { models: <catalog.list() result> } for list_models, to { sessions: <store.list() result> } for list_observed_sessions, and otherwise to the result of service.request, service.cancel or service.status. For open_model_picker and get_provider_status a missing session_id reaches service.status as null, and the dispatcher does not launch a UI itself.",
 						"examples": [
 							{

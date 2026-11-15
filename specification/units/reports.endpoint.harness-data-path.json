@@ -24,7 +24,7 @@
 		"outputs": [
 			{
 				"name": "GET",
-				"type": "unknown",
+				"type": "Promise<Response>",
 				"description": "The `Response` that `consoleServer().json` resolves to: a 403 `text/plain` `Forbidden` when the guard refuses, a 200 `application/json` body for `build.json` or for a stored `index.json`, `activity.json`, `revisions/<commit>.json` or `sides/<commit>.json`, and otherwise a 404 `text/plain` `Not found` (any other path, or a file that is missing or unreadable). Stored JSON is returned as the file's text, except that with `HARNESS_SITE_ROOT` set a `revisions/<commit>.json` body may be re-serialized with recomputed `sourceMeasurements` when a unit lacks its source-bytes or complexity figure for that commit."
 			}
 		],
@@ -50,7 +50,7 @@
 				"outputs": [
 					{
 						"name": "GET",
-						"type": "unknown",
+						"type": "Promise<Response>",
 						"description": "The `Response` that `consoleServer().json` resolves to: a 403 `text/plain` `Forbidden` when the guard refuses, a 200 `application/json` body for `build.json` or for a stored `index.json`, `activity.json`, `revisions/<commit>.json` or `sides/<commit>.json`, and otherwise a 404 `text/plain` `Not found` (any other path, or a file that is missing or unreadable). Stored JSON is returned as the file's text, except that with `HARNESS_SITE_ROOT` set a `revisions/<commit>.json` body may be re-serialized with recomputed `sourceMeasurements` when a unit lacks its source-bytes or complexity figure for that commit."
 					}
 				],

@@ -111,7 +111,7 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskWorktreeAdapter.constructor",
-						"type": "unknown",
+						"type": "ModuleTaskWorktreeAdapter",
 						"description": "New adapter retaining root as its private repository root; construction performs no Git access, so root is checked only when checkpoint is called."
 					}
 				],
