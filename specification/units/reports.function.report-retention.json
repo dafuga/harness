@@ -28,39 +28,54 @@
 				"name": "reportRetention.report",
 				"type": "Pick<Report, 'startedAt'>",
 				"required": true,
-				"description": "Report start timestamp; later updates do not extend this calculation."
+				"description": "Report whose startedAt string is passed to Date.parse to get the start instant that reportLifetimeMs is added to; only startedAt is read, so other fields have no effect. startedAt must parse to a finite time, otherwise the call throws an Error.",
+				"examples": [
+					{
+						"startedAt": "2026-10-12T14:05:00.000Z"
+					},
+					{
+						"startedAt": "2026-11-10T09:30:00.000Z"
+					}
+				]
 			},
 			{
 				"name": "reportRetention.now",
 				"type": "unknown",
 				"required": false,
-				"description": "Optional current time in epoch milliseconds, defaulting to Date.now()."
+				"description": "Defaults to Date.now(), the current time in epoch milliseconds, when the argument is undefined; the value is compared with the start instant plus reportLifetimeMs. Any other value that is not a finite number, such as NaN, Infinity, null or a numeric string, makes the call throw an Error.",
+				"examples": [1794745800000, 1794700800000]
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportLifetimeMs",
 				"type": "unknown",
-				"description": "Thirty days expressed in milliseconds."
+				"description": "Retention lifetime in milliseconds, 30 days computed as 30 * 24 * 60 * 60 * 1000 (2592000000); reportRetention adds it to the start instant to find the expiry instant. It is a fixed module constant, the same for every report.",
+				"examples": [2592000000]
 			},
 			{
 				"name": "reportCloudPrefixes",
 				"type": "unknown",
-				"description": "Cloud storage prefixes for report evidence, uploaded screenshots and published reports."
+				"description": "Array of three cloud storage key prefixes in this order: 'report-evidence/runs/' for report evidence, 'uploaded-screenshots/runs/' for uploaded screenshots and 'published-reports/' for published reports. Every prefix ends with a slash, and reportRetention does not read this list.",
+				"examples": [
+					["report-evidence/runs/", "uploaded-screenshots/runs/", "published-reports/"]
+				]
 			},
 			{
 				"name": "reportRetention",
 				"type": "unknown",
-				"description": "True once the start time plus thirty days is at or before now; false before that boundary."
+				"description": "True once the start instant plus reportLifetimeMs is at or before now, meaning the report has reached its retention lifetime; false while the expiry instant is still after now. Invalid inputs make the call throw an Error instead of returning a value.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Throws Invalid report retention timestamp when the start date or current time is not finite."
+				"description": "Error with the message 'Invalid report retention timestamp', thrown when Date.parse(report.startedAt) is not a finite number or when now is not a finite number."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reportRetention",
@@ -69,29 +84,40 @@
 						"name": "reportRetention.report",
 						"type": "Pick<Report, 'startedAt'>",
 						"required": true,
-						"description": "Report start timestamp; later updates do not extend this calculation."
+						"description": "Report whose startedAt string is passed to Date.parse to get the start instant that reportLifetimeMs is added to; only startedAt is read, so other fields have no effect. startedAt must parse to a finite time, otherwise the call throws an Error.",
+						"examples": [
+							{
+								"startedAt": "2026-10-12T14:05:00.000Z"
+							},
+							{
+								"startedAt": "2026-11-10T09:30:00.000Z"
+							}
+						]
 					},
 					{
 						"name": "reportRetention.now",
 						"type": "unknown",
 						"required": false,
-						"description": "Optional current time in epoch milliseconds, defaulting to Date.now()."
+						"description": "Defaults to Date.now(), the current time in epoch milliseconds, when the argument is undefined; the value is compared with the start instant plus reportLifetimeMs. Any other value that is not a finite number, such as NaN, Infinity, null or a numeric string, makes the call throw an Error.",
+						"examples": [1794745800000, 1794700800000]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reportRetention",
 						"type": "unknown",
-						"description": "True once the start time plus thirty days is at or before now; false before that boundary."
+						"description": "True once the start instant plus reportLifetimeMs is at or before now, meaning the report has reached its retention lifetime; false while the expiry instant is still after now. Invalid inputs make the call throw an Error instead of returning a value.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Error with the message 'Invalid report retention timestamp', thrown when Date.parse(report.startedAt) is not a finite number or when now is not a finite number."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
