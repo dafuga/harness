@@ -14,7 +14,7 @@ test.each(['.prettierignore', 'packages/reports/.prettierignore'])(
 		])
 			expect([path, (await getFileInfo(path, { ignorePath })).ignored]).toEqual([path, true]);
 		for (const path of [
-			'packages/reports/src/utils/previewNode.ts',
+			'packages/reports/src/lib/development-tooling/preview-node/previewNode.ts',
 			'packages/reports/src/services/PreviewWorkerService.ts',
 			'packages/reports/test/preview-lifecycle.test.ts',
 			'packages/reports/src/cache/worker.ts'

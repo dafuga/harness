@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/lib/development-tooling/preview-node/previewNode.ts",
-			"packages/reports/src/lib/preview-node/previewNode.ts",
-			"packages/reports/src/utils/previewNode.ts"
+			"packages/reports/src/lib/preview-node/previewNode.ts"
 		],
-		"symbols": ["previewNode", "previewNode", "previewNode"]
+		"symbols": ["previewNode", "previewNode"]
 	},
 	"contract": {
 		"origin": "declared",
