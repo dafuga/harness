@@ -24,59 +24,86 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "loadSide.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository root passed to loadUnits alongside the source tree and indexer. It is used while loading and reconciling unit data for this side.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+				]
 			},
 			{
 				"name": "loadSide.tree",
 				"type": "SourceTree",
-				"required": true
+				"required": true,
+				"description": "Source tree for the revision being loaded. Its revision, read, and list methods supply the revision label, verification config, and entries; a verification-config read failure is treated as absent."
 			},
 			{
 				"name": "loadSide.indexer",
 				"type": "SourceIndexService",
-				"required": true
+				"required": true,
+				"description": "SourceIndexService instance passed to loadUnits to build the source index for this side. It is a runtime service object and has no JSON representation."
 			},
 			{
 				"name": "openRange.range",
 				"type": "RevisionRange",
-				"required": true
+				"required": true,
+				"description": "Selects the repository and revisions to compare. root defaults to process.cwd(), base defaults to HEAD (the value \"none\" selects emptySide), and an omitted head uses the working tree; the resolved root must be a Git repository, and opened commit trees containing evidenceMarker are rejected.",
+				"examples": [
+					{
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+						"base": "none"
+					},
+					{
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+						"base": "0123456789abcdef0123456789abcdef01234567",
+						"head": "89abcdef0123456789abcdef0123456789abcdef"
+					}
+				]
 			},
 			{
 				"name": "commitLoader.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository root bound to the returned commit loader. It is used when opening each requested commit tree.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "loadSide",
-				"type": "Promise<RevisionSide>"
+				"type": "Promise<RevisionSide>",
+				"description": "Resolves to a RevisionSide containing the tree revision, config, entries, manifests, scenarios, graph, source index, stored manifests, tree, and writing state. The verification config is read best-effort, with a read failure passed to writingHeld as undefined."
 			},
 			{
 				"name": "emptySide",
-				"type": "RevisionSide"
+				"type": "RevisionSide",
+				"description": "Creates the state before the first commit: revision is \"none\", config is defaultUnitsConfig, entries/manifests/scenarios/stored are empty, graph lists are empty, and the source index has revision \"none\" with an empty files Map. This side is used as the base when openRange receives base \"none\"."
 			},
 			{
 				"name": "openRange",
-				"type": "Promise<{ root: string; base: RevisionSide; head: RevisionSide }>"
+				"type": "Promise<{ root: string; base: RevisionSide; head: RevisionSide }>",
+				"description": "Resolves the root to an absolute path and returns the selected base and head as RevisionSide values, using an empty base for \"none\" and a working-tree head when omitted. The base defaults to HEAD, root defaults to process.cwd(), and non-repositories or opened commit trees containing evidenceMarker raise ExpectedCliError."
 			},
 			{
 				"name": "commitLoader",
-				"type": "(commit: string)"
+				"type": "(commit: string)",
+				"description": "Returns a callback bound to this root and a shared SourceIndexService; calling it opens the requested commit and resolves to a compact ReasonSide. The compact result includes indexed owned source files and only active manifests with at least one such file present."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised by openRange when the resolved root is not a Git repository or an opened commit tree contains evidenceMarker. The marker check applies to commit trees opened for revisions; base \"none\" and an omitted working-tree head do not use that check."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "loadSide",
@@ -84,27 +111,34 @@
 					{
 						"name": "loadSide.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository root passed to loadUnits alongside the source tree and indexer. It is used while loading and reconciling unit data for this side.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+						]
 					},
 					{
 						"name": "loadSide.tree",
 						"type": "SourceTree",
-						"required": true
+						"required": true,
+						"description": "Source tree for the revision being loaded. Its revision, read, and list methods supply the revision label, verification config, and entries; a verification-config read failure is treated as absent."
 					},
 					{
 						"name": "loadSide.indexer",
 						"type": "SourceIndexService",
-						"required": true
+						"required": true,
+						"description": "SourceIndexService instance passed to loadUnits to build the source index for this side. It is a runtime service object and has no JSON representation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "loadSide",
-						"type": "Promise<RevisionSide>"
+						"type": "Promise<RevisionSide>",
+						"description": "Resolves to a RevisionSide containing the tree revision, config, entries, manifests, scenarios, graph, source index, stored manifests, tree, and writing state. The verification config is read best-effort, with a read failure passed to writingHeld as undefined."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "emptySide",
@@ -112,11 +146,12 @@
 				"outputs": [
 					{
 						"name": "emptySide",
-						"type": "RevisionSide"
+						"type": "RevisionSide",
+						"description": "Creates the state before the first commit: revision is \"none\", config is defaultUnitsConfig, entries/manifests/scenarios/stored are empty, graph lists are empty, and the source index has revision \"none\" with an empty files Map. This side is used as the base when openRange receives base \"none\"."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "openRange",
@@ -124,22 +159,36 @@
 					{
 						"name": "openRange.range",
 						"type": "RevisionRange",
-						"required": true
+						"required": true,
+						"description": "Selects the repository and revisions to compare. root defaults to process.cwd(), base defaults to HEAD (the value \"none\" selects emptySide), and an omitted head uses the working tree; the resolved root must be a Git repository, and opened commit trees containing evidenceMarker are rejected.",
+						"examples": [
+							{
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+								"base": "none"
+							},
+							{
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+								"base": "0123456789abcdef0123456789abcdef01234567",
+								"head": "89abcdef0123456789abcdef0123456789abcdef"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "openRange",
-						"type": "Promise<{ root: string; base: RevisionSide; head: RevisionSide }>"
+						"type": "Promise<{ root: string; base: RevisionSide; head: RevisionSide }>",
+						"description": "Resolves the root to an absolute path and returns the selected base and head as RevisionSide values, using an empty base for \"none\" and a working-tree head when omitted. The base defaults to HEAD, root defaults to process.cwd(), and non-repositories or opened commit trees containing evidenceMarker raise ExpectedCliError."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised by openRange when the resolved root is not a Git repository or an opened commit tree contains evidenceMarker. The marker check applies to commit trees opened for revisions; base \"none\" and an omitted working-tree head do not use that check."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "commitLoader",
@@ -147,17 +196,22 @@
 					{
 						"name": "commitLoader.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository root bound to the returned commit loader. It is used when opening each requested commit tree.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "commitLoader",
-						"type": "(commit: string)"
+						"type": "(commit: string)",
+						"description": "Returns a callback bound to this root and a shared SourceIndexService; calling it opens the requested commit and resolves to a compact ReasonSide. The compact result includes indexed owned source files and only active manifests with at least one such file present."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
