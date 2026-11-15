@@ -1,5 +1,5 @@
 // @harness-uid u_k4gv6lw2oq
-import { helperContract } from '../../../../../src/utils/helperContract';
+import { helperContract } from '../../../../../src/utils/development-tooling/helperContract';
 import { explorerName } from '$reports/utils/explorer-ui/explorerName';
 import type { ComponentManifest } from '../../../../../src/lib/contracts';
 import type { CatalogEntity, DesignVersion } from '../../models/development-tooling/Desktop.types';

@@ -1,6 +1,6 @@
 // @harness-uid u_h3o6k5lkxv
 import type { CatalogOrder, Relations, CatalogRow } from './entityCatalog.types';
-import { helperContract } from '../../../../../src/utils/helperContract';
+import { helperContract } from '../../../../../src/utils/development-tooling/helperContract';
 import { explorerCategory } from './explorerCategory';
 import { helperConsumers, usageOwners } from './entityUsage';
 import type { HarnessRevision } from '../../models/explorer-ui/Harness.types';

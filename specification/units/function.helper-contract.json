@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"src/utils/development-tooling/helperContract.ts",
-			"src/utils/development-tooling/helperContract.types.ts",
-			"src/utils/helperContract.ts"
+			"src/utils/development-tooling/helperContract.types.ts"
 		],
-		"symbols": ["helperContract", "CallableContract", "helperContract"]
+		"symbols": ["helperContract", "CallableContract"]
 	},
 	"contract": {
 		"origin": "declared",

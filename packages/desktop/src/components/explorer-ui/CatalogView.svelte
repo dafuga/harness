@@ -3,7 +3,7 @@
 <!-- @harness-uid u_lo2f475bxn -->
 <script lang="ts">
 	import EmptyState from '$shared/explorer-ui/explorer-kit/EmptyState.svelte';
-	import { helperContract } from '../../../../../src/utils/helperContract';
+	import { helperContract } from '../../../../../src/utils/development-tooling/helperContract';
 	import Select from '$shared/Select.svelte';
 	import FilterDialog from '$shared/FilterDialog.svelte';
 	import { explorerName } from '$reports/utils/explorer-ui/explorerName';

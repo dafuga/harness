@@ -252,11 +252,6 @@
 			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
 		},
 		{
-			"from": "src/utils/helperTemplates.ts",
-			"to": "src/services/explorer-ui/revision-detail-service/helperTemplates",
-			"todo": "TODO: compatibility forward to an owner-local service module; retire once no consumer imports this utils path."
-		},
-		{
 			"from": "src/utils/impactKernel.ts",
 			"to": "src/cli/program/run-kernel/impactKernel",
 			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
