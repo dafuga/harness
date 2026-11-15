@@ -18,28 +18,60 @@
 				"name": "sanitize.value",
 				"type": "string",
 				"required": true,
-				"description": "Text to sanitize."
+				"description": "Text to scan for Bearer or Basic scheme words, assignments to sensitive keys, sk-, AIza, PVT_K1_ or JWT-shaped values, and http or https URLs. Non-string values such as undefined, null or a number are not converted: they make sanitize throw a TypeError.",
+				"examples": [
+					"Retry with Bearer abc.def-123 after the timeout",
+					"GET https://user:pw@api.example.com/v1/items?page=2#top",
+					"DB_PASSWORD=hunter2 ./deploy.sh"
+				]
 			},
 			{
 				"name": "cleanData.input",
 				"type": "T",
 				"required": true,
-				"description": "Value to recursively clean."
+				"description": "Any value to clean: strings are sanitized, arrays and object fields are cleaned recursively, fields with sensitive keys are replaced by [REDACTED], and other values such as numbers, booleans and null are returned unchanged. Circular references and very deeply nested values exhaust the call stack, so cleanData throws a RangeError for them.",
+				"examples": [
+					{
+						"event": "deploy",
+						"target": "https://user:pw@deploy.example.com/hook?token=abc",
+						"headers": {
+							"Authorization": "Bearer abc.def"
+						}
+					},
+					"retry with secret=abc123"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "sanitize",
 				"type": "string",
-				"description": "Text with recognized authorization tokens, secret assignments and key/token patterns replaced by redaction markers. HTTP(S) URLs lose user information, query and fragment; Stripe checkout URLs also lose their path."
+				"description": "The input text with each Bearer or Basic scheme word and the token-like text after it replaced by [REDACTED], each sk-, AIza, PVT_K1_ or JWT-shaped value replaced by [REDACTED], and each assignment whose key contains apikey, api_key, api-key, token, password, secret, authorization, cookie or set-cookie rewritten as key=[REDACTED]. Every http or https URL is re-serialized by the URL class without user information, query or fragment, URLs whose host is checkout.stripe.com also get '/' as their path, and a URL that cannot be parsed becomes [invalid URL].",
+				"examples": [
+					"Retry with [REDACTED] after the timeout",
+					"GET https://api.example.com/v1/items",
+					"DB_PASSWORD=[REDACTED] ./deploy.sh"
+				]
 			},
 			{
 				"name": "cleanData",
 				"type": "T",
-				"description": "Strings sanitized recursively through arrays and enumerable object fields, with matching sensitive keys replaced entirely by a redaction marker. Other primitive values remain unchanged."
+				"description": "The input with each string sanitized, arrays and object fields rebuilt recursively, every object field whose key ends with secret, password, token or apiKey, or is exactly authorization or cookie, replaced entirely by [REDACTED] whatever its value (key matching is case-insensitive), and all other values returned unchanged. Objects come back as plain objects that keep only their own enumerable string-keyed fields, so class instances, Dates and Maps lose their prototype and other state."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by sanitize when its value is not a string at runtime, such as undefined, null or a number, because sanitize calls value.replace without checking the type."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Thrown by cleanData when its recursion exceeds the call stack, which happens for circular references and very deeply nested values, because cleanData recurses into every array item and object field without tracking visited objects."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "sanitize",
@@ -48,18 +80,34 @@
 						"name": "sanitize.value",
 						"type": "string",
 						"required": true,
-						"description": "Text to sanitize."
+						"description": "Text to scan for Bearer or Basic scheme words, assignments to sensitive keys, sk-, AIza, PVT_K1_ or JWT-shaped values, and http or https URLs. Non-string values such as undefined, null or a number are not converted: they make sanitize throw a TypeError.",
+						"examples": [
+							"Retry with Bearer abc.def-123 after the timeout",
+							"GET https://user:pw@api.example.com/v1/items?page=2#top",
+							"DB_PASSWORD=hunter2 ./deploy.sh"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sanitize",
 						"type": "string",
-						"description": "Text with recognized authorization tokens, secret assignments and key/token patterns replaced by redaction markers. HTTP(S) URLs lose user information, query and fragment; Stripe checkout URLs also lose their path."
+						"description": "The input text with each Bearer or Basic scheme word and the token-like text after it replaced by [REDACTED], each sk-, AIza, PVT_K1_ or JWT-shaped value replaced by [REDACTED], and each assignment whose key contains apikey, api_key, api-key, token, password, secret, authorization, cookie or set-cookie rewritten as key=[REDACTED]. Every http or https URL is re-serialized by the URL class without user information, query or fragment, URLs whose host is checkout.stripe.com also get '/' as their path, and a URL that cannot be parsed becomes [invalid URL].",
+						"examples": [
+							"Retry with [REDACTED] after the timeout",
+							"GET https://api.example.com/v1/items",
+							"DB_PASSWORD=[REDACTED] ./deploy.sh"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when value is not a string at runtime, such as undefined, null or a number, because sanitize calls value.replace without checking the type."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "cleanData",
@@ -68,18 +116,34 @@
 						"name": "cleanData.input",
 						"type": "T",
 						"required": true,
-						"description": "Value to recursively clean."
+						"description": "Any value to clean: strings are sanitized, arrays and object fields are cleaned recursively, fields with sensitive keys are replaced by [REDACTED], and other values such as numbers, booleans and null are returned unchanged. Circular references and very deeply nested values exhaust the call stack, so cleanData throws a RangeError for them.",
+						"examples": [
+							{
+								"event": "deploy",
+								"target": "https://user:pw@deploy.example.com/hook?token=abc",
+								"headers": {
+									"Authorization": "Bearer abc.def"
+								}
+							},
+							"retry with secret=abc123"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "cleanData",
 						"type": "T",
-						"description": "Strings sanitized recursively through arrays and enumerable object fields, with matching sensitive keys replaced entirely by a redaction marker. Other primitive values remain unchanged."
+						"description": "The input with each string sanitized, arrays and object fields rebuilt recursively, every object field whose key ends with secret, password, token or apiKey, or is exactly authorization or cookie, replaced entirely by [REDACTED] whatever its value (key matching is case-insensitive), and all other values returned unchanged. Objects come back as plain objects that keep only their own enumerable string-keyed fields, so class instances, Dates and Maps lose their prototype and other state."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Thrown when recursion exceeds the call stack, which happens for circular references and very deeply nested values, because cleanData recurses into every array item and object field without tracking visited objects."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
