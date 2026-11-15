@@ -34,36 +34,70 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "createPlanning.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The repository root string passed to planGit to produce the Git context used to create the planning API. Path and repository validation are delegated to planGit.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
+				]
 			},
 			{
 				"name": "handlePlanningRequest.api",
 				"type": "PlanningApi",
-				"required": true
+				"required": true,
+				"description": "The PlanningApi object used as the dispatch table for the request. The handler calls an own property selected by request.operation with request.input, so the selected property must be callable."
 			},
 			{
 				"name": "handlePlanningRequest.request",
 				"type": "PlanningRequest",
-				"required": true
+				"required": true,
+				"description": "The request object whose operation selects an own API property and whose input is passed to that property. A missing request or an operation not owned by the API becomes an invalid-input result.",
+				"examples": [
+					{
+						"operation": "snapshot",
+						"input": {}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "createPlanning",
-				"type": "Promise<PlanningApi>"
+				"type": "Promise<PlanningApi>",
+				"description": "The resolved value is the PlanningApi returned by planningService for the Git context produced by planGit(root). It exposes the service API rather than the Git context itself."
 			},
 			{
 				"name": "handlePlanningRequest",
-				"type": "Promise<PlanningResult<unknown>>"
+				"type": "Promise<PlanningResult<unknown>>",
+				"description": "The resolved value reports either the selected operation's value or a failure object. Errors from request dispatch or the operation are caught and returned with a code, message, and null path.",
+				"examples": [
+					{
+						"ok": true,
+						"value": null
+					},
+					{
+						"ok": false,
+						"error": {
+							"code": "invalid-input",
+							"message": "Unknown planning operation",
+							"path": null
+						}
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "An unknown operation creates an Error that the handler catches and converts to a failure result. Rejections from planGit or planningService propagate from createPlanning without being caught here."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "createPlanning",
@@ -71,17 +105,28 @@
 					{
 						"name": "createPlanning.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The repository root string passed to planGit to produce the Git context used to create the planning API. Path and repository validation are delegated to planGit.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "createPlanning",
-						"type": "Promise<PlanningApi>"
+						"type": "Promise<PlanningApi>",
+						"description": "The resolved value is the PlanningApi returned by planningService for the Git context produced by planGit(root). It exposes the service API rather than the Git context itself."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The returned promise propagates a rejection from planGit(root) or planningService(...) because createPlanning does not catch setup errors."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "handlePlanningRequest",
@@ -89,22 +134,51 @@
 					{
 						"name": "handlePlanningRequest.api",
 						"type": "PlanningApi",
-						"required": true
+						"required": true,
+						"description": "The PlanningApi object used as the dispatch table for the request. The handler calls an own property selected by request.operation with request.input, so the selected property must be callable."
 					},
 					{
 						"name": "handlePlanningRequest.request",
 						"type": "PlanningRequest",
-						"required": true
+						"required": true,
+						"description": "The request object whose operation selects an own API property and whose input is passed to that property. A missing request or an operation not owned by the API becomes an invalid-input result.",
+						"examples": [
+							{
+								"operation": "snapshot",
+								"input": {}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "handlePlanningRequest",
-						"type": "Promise<PlanningResult<unknown>>"
+						"type": "Promise<PlanningResult<unknown>>",
+						"description": "The resolved value reports either the selected operation's value or a failure object. Errors from request dispatch or the operation are caught and returned with a code, message, and null path.",
+						"examples": [
+							{
+								"ok": true,
+								"value": null
+							},
+							{
+								"ok": false,
+								"error": {
+									"code": "invalid-input",
+									"message": "Unknown planning operation",
+									"path": null
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "An unknown operation throws an Error internally; handlePlanningRequest catches it and returns it as a failure result."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
