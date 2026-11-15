@@ -20,62 +20,129 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "reportServerEnvironment.port",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The TCP port used for the loopback server. It is written to PORT and ORIGIN without numeric range validation.",
+				"examples": [5588]
 			},
 			{
 				"name": "reportServerEnvironment.base",
 				"type": "NodeJS.ProcessEnv",
-				"required": true
+				"required": true,
+				"description": "The inherited environment variables copied into the server environment before server-specific values are set. HARNESS_SITE_ROOT is preserved when present.",
+				"examples": [
+					{
+						"PATH": "/usr/local/bin",
+						"CI": "true"
+					}
+				]
 			},
 			{
 				"name": "reportServerEnvironment.cwd",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The repository working directory used for HARNESS_SITE_ROOT when base.HARNESS_SITE_ROOT is nullish.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+				]
 			},
 			{
 				"name": "ReportServerService.constructor.repository",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "The ReportRepository instance whose root identifies the report store for health matching and server records. Defaults to new ReportRepository()."
 			},
 			{
 				"name": "ReportServerService.serve.preferred",
 				"type": "number",
 				"required": false,
-				"default": 5588
+				"default": 5588,
+				"description": "The first loopback port checked by serve; it checks this port and the next 29, reusing a matching server or starting on the first free port. The implementation does not validate or clamp this range.",
+				"examples": [5588]
 			},
 			{
 				"name": "ReportServerService.stop.port",
 				"type": "number",
 				"required": false,
-				"default": 5588
+				"default": 5588,
+				"description": "The port whose recorded server for this repository is stopped; a server not started for this store is left alone. Defaults to 5588.",
+				"examples": [5588]
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportServerEnvironment",
-				"type": "NodeJS.ProcessEnv"
+				"type": "NodeJS.ProcessEnv",
+				"description": "The loopback server environment copies base, sets HOST and HARNESS_BIND to 127.0.0.1, stringifies PORT, sets the matching HTTP ORIGIN, BODY_SIZE_LIMIT to 110M, and HARNESS_OWNER_MODE to loopback. HARNESS_SITE_ROOT keeps base.HARNESS_SITE_ROOT unless it is nullish, then uses cwd.",
+				"examples": [
+					{
+						"PATH": "/usr/local/bin",
+						"CI": "true",
+						"HOST": "127.0.0.1",
+						"PORT": "5588",
+						"ORIGIN": "http://127.0.0.1:5588",
+						"BODY_SIZE_LIMIT": "110M",
+						"HARNESS_SITE_ROOT": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+						"HARNESS_OWNER_MODE": "loopback",
+						"HARNESS_BIND": "127.0.0.1"
+					}
+				]
 			},
 			{
 				"name": "ReportServerService.serve",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to an object with port, reused, url, and pid; url is the loopback HTTP address and reused indicates whether a matching server was already running. pid is the recorded pid on reuse, or the spawned pid (falling back to -1) on start, and can be undefined when a reused record has no pid.",
+				"examples": [
+					{
+						"port": 5588,
+						"reused": true,
+						"url": "http://127.0.0.1:5588",
+						"pid": 4312
+					},
+					{
+						"port": 5589,
+						"reused": false,
+						"url": "http://127.0.0.1:5589",
+						"pid": 19347
+					}
+				]
 			},
 			{
 				"name": "ReportServerService.stop",
-				"type": "Promise<StoppedServer>"
+				"type": "Promise<StoppedServer>",
+				"description": "Resolves with the StoppedServer value returned by stopReportServer for this repository root and port.",
+				"examples": [
+					{
+						"port": 5588,
+						"stopped": false,
+						"reason": "This report store recorded no server on this port."
+					},
+					{
+						"port": 5588,
+						"stopped": true,
+						"pid": 19347
+					},
+					{
+						"port": 5588,
+						"stopped": false,
+						"pid": 19347,
+						"reason": "The recorded server had already ended."
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "serve throws Error when no free port is found in the 30-port range or a started server fails its readiness check. Errors from startup, build identity, and server-record operations can also reject serve."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reportServerEnvironment",
@@ -83,27 +150,54 @@
 					{
 						"name": "reportServerEnvironment.port",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "The TCP port used for the loopback server. It is written to PORT and ORIGIN without numeric range validation.",
+						"examples": [5588]
 					},
 					{
 						"name": "reportServerEnvironment.base",
 						"type": "NodeJS.ProcessEnv",
-						"required": true
+						"required": true,
+						"description": "The inherited environment variables copied into the server environment before server-specific values are set. HARNESS_SITE_ROOT is preserved when present.",
+						"examples": [
+							{
+								"PATH": "/usr/local/bin",
+								"CI": "true"
+							}
+						]
 					},
 					{
 						"name": "reportServerEnvironment.cwd",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The repository working directory used for HARNESS_SITE_ROOT when base.HARNESS_SITE_ROOT is nullish.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reportServerEnvironment",
-						"type": "NodeJS.ProcessEnv"
+						"type": "NodeJS.ProcessEnv",
+						"description": "The loopback server environment copies base, sets HOST and HARNESS_BIND to 127.0.0.1, stringifies PORT, sets the matching HTTP ORIGIN, BODY_SIZE_LIMIT to 110M, and HARNESS_OWNER_MODE to loopback. HARNESS_SITE_ROOT keeps base.HARNESS_SITE_ROOT unless it is nullish, then uses cwd.",
+						"examples": [
+							{
+								"PATH": "/usr/local/bin",
+								"CI": "true",
+								"HOST": "127.0.0.1",
+								"PORT": "5588",
+								"ORIGIN": "http://127.0.0.1:5588",
+								"BODY_SIZE_LIMIT": "110M",
+								"HARNESS_SITE_ROOT": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+								"HARNESS_OWNER_MODE": "loopback",
+								"HARNESS_BIND": "127.0.0.1"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ReportServerService.serve",
@@ -112,22 +206,40 @@
 						"name": "ReportServerService.serve.preferred",
 						"type": "number",
 						"required": false,
-						"default": 5588
+						"default": 5588,
+						"description": "The first loopback port checked by serve; it checks this port and the next 29, reusing a matching server or starting on the first free port. The implementation does not validate or clamp this range.",
+						"examples": [5588]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportServerService.serve",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to an object with port, reused, url, and pid; url is the loopback HTTP address and reused indicates whether a matching server was already running. pid is the recorded pid on reuse, or the spawned pid (falling back to -1) on start, and can be undefined when a reused record has no pid.",
+						"examples": [
+							{
+								"port": 5588,
+								"reused": true,
+								"url": "http://127.0.0.1:5588",
+								"pid": 4312
+							},
+							{
+								"port": 5589,
+								"reused": false,
+								"url": "http://127.0.0.1:5589",
+								"pid": 19347
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "serve throws Error when no free port is found in the 30-port range or a started server fails its readiness check. Errors from startup, build identity, and server-record operations can also reject serve."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ReportServerService.stop",
@@ -136,17 +248,38 @@
 						"name": "ReportServerService.stop.port",
 						"type": "number",
 						"required": false,
-						"default": 5588
+						"default": 5588,
+						"description": "The port whose recorded server for this repository is stopped; a server not started for this store is left alone. Defaults to 5588.",
+						"examples": [5588]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportServerService.stop",
-						"type": "Promise<StoppedServer>"
+						"type": "Promise<StoppedServer>",
+						"description": "Resolves with the StoppedServer value returned by stopReportServer for this repository root and port.",
+						"examples": [
+							{
+								"port": 5588,
+								"stopped": false,
+								"reason": "This report store recorded no server on this port."
+							},
+							{
+								"port": 5588,
+								"stopped": true,
+								"pid": 19347
+							},
+							{
+								"port": 5588,
+								"stopped": false,
+								"pid": 19347,
+								"reason": "The recorded server had already ended."
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -156,17 +289,19 @@
 					{
 						"name": "ReportServerService.constructor.repository",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "The ReportRepository instance whose root identifies the report store for health matching and server records. Defaults to new ReportRepository()."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportServerService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The initialized ReportServerService instance, which uses the supplied repository or creates a ReportRepository when omitted."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
