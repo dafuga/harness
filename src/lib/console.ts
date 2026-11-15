@@ -53,6 +53,6 @@ export type {
 	ExplorerTab
 } from '../utils/explorer-ui/explorerRoute';
 export { consoleRoute } from '../utils/projects-sessions/console-canonical/consoleRoute';
-export { consoleRoutePath } from '../../packages/reports/src/components/project-activity/consoleRoute';
+export { consoleRoutePath } from '../../packages/reports/src/components/projects-sessions/project-activity/consoleRoute';
 export { consoleViews } from '../utils/projects-sessions/consoleRoute';
 export type { ConsoleRoute, ConsoleView } from '../utils/projects-sessions/consoleRoute';
