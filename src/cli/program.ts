@@ -1,5 +1,6 @@
 // @harness-uid u_3tibsmkofv
 import { PermissionsCommand } from '../commands/networking-security/PermissionsCommand';
+import { ContractsCommand } from '../commands/development-tooling/ContractsCommand';
 import { registerTaskCommand } from './program/TaskCommand';
 import { ModuleCommand } from '../commands/module-system/ModuleCommand';
 import { ApiCommand } from '../commands/networking-security/ApiCommand';
@@ -47,6 +48,7 @@ export function buildProgram(): Command {
 	registerInfoCommand(program);
 	registerLoopCommand(program);
 	registerUnitsCommand(program);
+	new ContractsCommand().register(program);
 	registerImpactCommand(program);
 	registerKernelCommand(program);
 	registerScenariosCommand(program);

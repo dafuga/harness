@@ -8,8 +8,8 @@ const unitGuide: Guide = {
 		'Generate the unit, or index existing source into the registry.',
 		'Replace the derived responsibility and contract with declared ones when they matter.',
 		'Declare dependencies that cross a runtime boundary: process, HTTP, Wasm or contract.',
-		'Before changing code, name the units you change and read only their source.',
-		'Read dependency contracts with harness units show instead of their implementations.',
+		'Start with harness contracts map <path-or-folder>, search contract metadata, and read harness contracts show <id-or-path> before source.',
+		'Read dependency contracts with harness contracts show; units show additionally derives source hashes, graph and test impact.',
 		'Run harness units check-contract <id> when writing or changing a contract; review each heuristic finding.',
 		'Run harness units guide <id>, write and commit the standard test for NEXT, run harness verify run --priority agent-test --entity <id>, and repeat the guide until DONE.',
 		'Re-index after every source change and commit the manifests with the code.'
@@ -52,4 +52,35 @@ const unitGuide: Guide = {
 	]
 };
 
-export const unitGuides: Guide[] = [unitGuide];
+const contractGuide: Guide = {
+	topic: 'contracts',
+	summary: 'Fast read-only lookup of stored contracts without indexing or searching source.',
+	steps: [
+		'Map an id, source file or folder to its owning contracts and recorded neighbours.',
+		'List or search contracts, then show the full contract before opening implementation.'
+	],
+	rules: [
+		'Reads specification/units JSON recursively; show and search also read stored specification/scenarios state declarations. No source files, executable state catalogs, source index or persistent search cache are read.',
+		'Active contracts including internal units are included; --include-retired also includes tombstones.',
+		'Paths are project-root relative, including missing owned files; use --root from elsewhere. Folder matching respects slash boundaries.',
+		'--area matches a source-path segment or dotted id prefix; --folder and --kind combine with it.',
+		'Search is a case-sensitive literal substring by default; -i ignores case; --regex uses JavaScript expressions without slash delimiters.',
+		'Ranking: identity, title, responsibility, contract fields, dependencies/states, owned names/paths. Ties sort by id; each result has its best matching field and a bounded snippet.',
+		'Search returns at most 20 matches by default; --limit changes it. Other commands are unlimited by default. Map limits root matches and includes one hop of dependencies and dependents, with --depth 0 through 10.',
+		'JSON show/list/search return arrays; map returns matches, dependencies, dependents and unresolved ids. Empty list/search return []; missing show/map targets fail.',
+		'Every invocation reloads current contracts, so edits, nested moves and deletions need no reindex. Stored metadata is not a source-freshness verdict; use units check for that.'
+	],
+	antiPatterns: [
+		'Do not grep source when contract search answers the question.',
+		'Do not treat missing state contracts or unresolved dependency ids as inferred knowledge.'
+	],
+	exampleCommands: [
+		'harness contracts show command.units',
+		'harness contracts show src/cli/program/UnitsCommand.ts --json',
+		'harness contracts list --area development-tooling --kind command',
+		'harness contracts search "RangeError|TypeError" --regex -i --limit 10 --json',
+		'harness contracts map src/cli/program --depth 1 --json'
+	]
+};
+
+export const unitGuides: Guide[] = [unitGuide, contractGuide];

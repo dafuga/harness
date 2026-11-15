@@ -79,6 +79,13 @@ export const commandHelp = [
 		aliases: []
 	},
 	{
+		name: 'contracts',
+		signature: 'contracts',
+		description: 'Read, list, search and map stored contracts without opening source.',
+		term: 'contracts [options]',
+		aliases: []
+	},
+	{
 		name: 'impact',
 		signature: 'impact',
 		description: 'Report the units, tests and scenarios a change affects, across base and head.',

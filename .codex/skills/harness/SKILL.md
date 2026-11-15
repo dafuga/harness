@@ -7,6 +7,12 @@ description: Use this repository's Harness generators, audits, loops and revisio
 
 Use this skill whenever you are planning, implementing, reviewing, or verifying code in this Harness CLI project.
 
+## Contracts first
+
+Start with `bun src/index.ts contracts map <source-path-or-folder>` to find the owning contracts and their recorded dependencies/dependents. Use `contracts list --area <category>` or `contracts search "term" -i --limit 10`, then `contracts show <id-or-path>` before opening implementation. Add `--json` for structured output; search also supports `--regex`, `--folder` and `--kind`. Run `info contracts` for examples and exact matching rules.
+
+These commands read stored unit/scenario JSON only and reload it on each invocation. They do not inspect source, infer missing states, or verify registry freshness. Paths are project-root relative; use `--root <project>` from elsewhere. Read dependency contracts first; open source for the units you need to change or a specific contract gap. Use `units check` to verify freshness.
+
 ## Operating Rules
 
 Compose UI as atoms → molecules → organisms → layouts/templates → pages. Reuse existing shared controls and canonical element atoms. Native markup belongs inside atoms; molecules compose atoms, and organisms compose smaller controls and feature sections. Keep feature categories and stable identities separate from level. Declare `@harness-tier` and the relative `@harness-atoms` directory; use native atom calls for bindings/actions and keep `atomicComponents()` plus generated native typings installed. Read `harness info component`; install the library with `harness generate elements`, and use `generate component --level organism` for feature sections. Validate composition with audit and units check, then exercise real interactions and the standard visual catalog.

@@ -208,6 +208,25 @@ A unit is one responsibility with a stable identity, owned source and a contract
 live in `specification/units`, one canonical JSON file per unit, and are checked by
 `bun run check` through `harness units check`.
 
+### Fast contract lookup
+
+Start with stored contracts before reading implementation. These commands never index or search source:
+
+```sh
+harness contracts show command.units
+harness contracts show src/cli/program/UnitsCommand.ts --json
+harness contracts list --area development-tooling --kind command
+harness contracts list --folder src/cli/program --limit 10
+harness contracts search 'RangeError|TypeError' --regex -i --limit 10 --json
+harness contracts map src/cli/program --depth 1 --json
+```
+
+`show` accepts an id, owned source file, contract file or folder; text includes the full stored contract and declared scenario states, while JSON returns an array of records with the original manifest. `list` prints one line per contract with id, source path and short responsibility. `search` returns ranked matches with the best field and snippet: id, title, responsibility, inputs/outputs/types, helper contracts, dependencies, scenario ids and stored state declarations. Literal case-sensitive substring matching is the default; `--regex` accepts a JavaScript expression without slash delimiters and `-i` ignores case. Search defaults to 20 results; `--limit` sets a positive maximum. Ties sort by id.
+
+`map` separates owning contracts, dependencies and dependents; missing dependency contracts appear as unresolved ids. It follows stored edges for one hop by default (`--depth 0..10`), handles cycles, and applies `--limit` to owning matches. `--area` matches a source-path segment or dotted id prefix; `--folder` respects path boundaries; `--kind` is exact. Filters combine. Internal units are included, and `--include-retired` adds tombstones. Paths are project-root relative; `--root <project>` works from any directory. JSON list/search empty results are `[]`; show/map fail for unknown targets.
+
+The commands reload the existing JSON registry recursively on every invocation, so moved/nested/edited/deleted contracts need no separate search-index rebuild. They read `specification/units` and, for show/search, `specification/scenarios`; executable catalogs are outside their scope. Contract content can be stale or incomplete: use `harness units check` to verify freshness, and `units show` when you need source-derived hashes, graph and test impact. Run `harness info contracts` or `harness contracts <verb> --help` for details.
+
 ```bash
 harness generate unit PriceQuote                 # any scaffold kind, plus its manifest
 harness generate unit Billing --kind service --responsibility "Charges an invoice once."

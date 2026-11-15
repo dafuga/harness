@@ -2,6 +2,12 @@
 
 This is a Harness CLI project. Treat Harness as the operating contract for every code change in this repository.
 
+## Contracts first
+
+Start with `bun src/index.ts contracts map <source-path-or-folder>` to find the owning contracts and their recorded dependencies/dependents. Use `contracts list --area <category>` or `contracts search "term" -i --limit 10`, then `contracts show <id-or-path>` before opening implementation. Add `--json` for structured output; search also supports `--regex`, `--folder` and `--kind`. Run `info contracts` for examples and exact matching rules.
+
+These commands read stored unit/scenario JSON only and reload it on each invocation. They do not inspect source, infer missing states, or verify registry freshness. Paths are project-root relative; use `--root <project>` from elsewhere. Read dependency contracts first; open source for the units you need to change or a specific contract gap. Use `units check` to verify freshness.
+
 ## Required Harness Workflow
 
 - Read this file and `.codex/skills/harness/SKILL.md` before changing code.

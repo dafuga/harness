@@ -186,3 +186,4 @@ export { PermissionsCommand } from './commands/networking-security/PermissionsCo
 export { BoundedCommandAdapter } from './adapters/execution-runtimes/BoundedCommandAdapter';
 export { staleBuild } from './utils/development-tooling/staleBuild';
 export { scenarioHealth } from './utils/verification-evidence/scenarioHealth';
+export { ContractsCommand } from './commands/development-tooling/ContractsCommand';

@@ -46,6 +46,10 @@ export const commandLoaders = {
 		const m = await import('./program/UnitsCommand');
 		m.registerUnitsCommand(program);
 	},
+	contracts: async (program: Command) => {
+		const m = await import('../commands/development-tooling/ContractsCommand');
+		new m.ContractsCommand().register(program);
+	},
 	impact: async (program: Command) => {
 		const m = await import('./program/ImpactCommand');
 		m.registerImpactCommand(program);
