@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/development-tooling/sanitize.ts",
-			"packages/reports/src/utils/sanitize.ts"
-		],
-		"symbols": ["sanitize", "cleanData", "sanitize", "cleanData"]
+		"source": ["packages/reports/src/utils/development-tooling/sanitize.ts"],
+		"symbols": ["sanitize", "cleanData"]
 	},
 	"contract": {
 		"origin": "declared",
