@@ -18,28 +18,37 @@
 				"name": "load.params",
 				"type": "{ id: string }",
 				"required": true,
-				"description": "The legacy report identifier to carry into the console address."
+				"description": "The route params object passed to load; only params.id is read, as the legacy report identifier. It is percent-encoded with encodeURIComponent and appended to /harness/reports/ without any format check, so an id containing an unpaired UTF-16 surrogate makes the call throw a URIError instead of redirecting.",
+				"examples": [
+					{
+						"id": "rpt-1042"
+					},
+					{
+						"id": "rpt-88117"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "load",
 				"type": "never",
-				"description": "Does not return; throws the permanent redirect to the report address in the explorer."
+				"description": "Never returns: the call always ends by throwing, either the 308 redirect or a URIError, so no value reaches a caller."
 			}
 		],
 		"errors": [
 			{
 				"name": "Redirect",
 				"type": "SvelteKit redirect",
-				"description": "Throws HTTP 308 to /harness/reports/{encoded id}."
+				"description": "The 308 permanent redirect thrown by redirect(308, ...) from @sveltejs/kit, with the location /harness/reports/ followed by encodeURIComponent(params.id). It is the outcome for every id that encodes without error."
 			},
 			{
 				"name": "URIError",
 				"type": "URIError",
-				"description": "A report identifier containing an unpaired UTF-16 surrogate cannot be URL encoded."
+				"description": "Thrown by encodeURIComponent(params.id) when the id contains an unpaired UTF-16 surrogate, so the call ends with this error and no redirect is thrown."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "load",
@@ -48,23 +57,37 @@
 						"name": "load.params",
 						"type": "{ id: string }",
 						"required": true,
-						"description": "The legacy report identifier to carry into the console address."
+						"description": "The route params object passed to load; only params.id is read, as the legacy report identifier. It is percent-encoded with encodeURIComponent and appended to /harness/reports/ without any format check, so an id containing an unpaired UTF-16 surrogate makes the call throw a URIError instead of redirecting.",
+						"examples": [
+							{
+								"id": "rpt-1042"
+							},
+							{
+								"id": "rpt-88117"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "load",
 						"type": "never",
-						"description": "Does not return; throws the permanent redirect to the report address in the explorer."
+						"description": "Never returns: the call always ends by throwing, either the 308 redirect or a URIError, so no value reaches a caller."
 					}
 				],
 				"errors": [
 					{
 						"name": "Redirect 308",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The 308 redirect thrown by redirect() for an id that encodes without error; the location is /harness/reports/ followed by the encoded id."
+					},
+					{
+						"name": "URIError",
+						"type": "thrown",
+						"description": "Thrown by encodeURIComponent when the id contains an unpaired UTF-16 surrogate; no redirect is thrown."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
