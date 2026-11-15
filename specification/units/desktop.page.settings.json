@@ -28,10 +28,11 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "Shared Settings UI for the renderer; no agent execution or project mutation."
+				"description": "Renders the Settings heading, a Back to project link, and the AgentSettings component. The initial link points to `/`; on mount, only a same-origin workspace path from the `from` query parameter is retained with its search string, while absent, malformed, cross-origin, or non-workspace values resolve to `/`."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
