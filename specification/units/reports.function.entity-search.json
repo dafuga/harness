@@ -22,30 +22,95 @@
 				"name": "entitySearch.entries",
 				"type": "SearchEntry[]",
 				"required": true,
-				"description": "Searchable entities retaining their category and commit."
+				"description": "The SearchEntry objects to search: each needs a string id, name and purpose and a string[] terms, which the function reads without checking, while category only orders tied results. The function does not change them and returns these same objects, so each result keeps its category and commit.",
+				"examples": [
+					[
+						{
+							"id": "reports.component.evidence-grid",
+							"category": "components",
+							"name": "Evidence grid",
+							"purpose": "Shows the evidence rows of one revision with their status.",
+							"terms": ["evidenceGrid.rows", "evidenceGrid.revision"],
+							"commit": "5e0c9a7b41d2f863ce9a0b57d18f4e2a6c3b9d10"
+						},
+						{
+							"id": "reports.function.entity-search",
+							"category": "functions",
+							"name": "Entity text search",
+							"purpose": "Ranks revision-bound entity search results using names, identifiers, purpose and contract terms.",
+							"terms": [
+								"entitySearch.entries",
+								"entitySearch.query",
+								"entitySearch.limit",
+								"entitySearch"
+							],
+							"commit": "5e0c9a7b41d2f863ce9a0b57d18f4e2a6c3b9d10"
+						}
+					],
+					[
+						{
+							"id": "reports.model.revision-summary",
+							"category": "models",
+							"name": "Revision summary",
+							"purpose": "Holds the counts shown for one revision.",
+							"terms": ["revisionSummary.counts"],
+							"commit": "a7c31e0f94b25d68e1f07a3c49d52b0e8f6a1c27"
+						}
+					]
+				]
 			},
 			{
 				"name": "entitySearch.query",
 				"type": "string",
 				"required": true,
-				"description": "Whitespace-separated query words, matched case-insensitively. Every word must match an entry."
+				"description": "Whitespace-separated words, matched case-insensitively and each on its own against an entry's name, id, purpose or contract terms; an entry is returned only when every word matches. A blank query (empty or only whitespace) returns no results.",
+				"examples": ["evidence grid", "reports.function", "entity search"]
 			},
 			{
 				"name": "entitySearch.limit",
 				"type": "number",
 				"required": false,
 				"default": 20,
-				"description": "Maximum returned results, defaulting to 20; applied with array slicing."
+				"description": "Maximum number of results, defaulting to 20 when the argument is omitted or undefined; it is applied after ranking with array slicing, so 0 returns no results and a negative value returns every result except its last |limit|.",
+				"examples": [5, 20, 50]
 			}
 		],
 		"outputs": [
 			{
 				"name": "entitySearch",
 				"type": "SearchEntry[]",
-				"description": "Matching entries ranked by exact name/id, name prefix, id-part prefix, name-word prefix, name/id substring, purpose and contract-term matches. Ties use category order then name. Blank queries return no results."
+				"description": "The entries that match every query word, as the same objects that were passed in, sorted by the sum over the query words of each word's best tier score (exact name or id 100, name prefix 80, id or id-part prefix 70, name-word prefix 60, name or id substring 40, purpose substring 20, contract-term substring 10), then by the category's index in explorerCategories (unknown categories last), then by name with localeCompare. The sorted list is cut to limit by array slicing, and a blank query returns an empty array.",
+				"examples": [
+					[
+						{
+							"id": "reports.component.evidence-grid",
+							"category": "components",
+							"name": "Evidence grid",
+							"purpose": "Shows the evidence rows of one revision with their status.",
+							"terms": ["evidenceGrid.rows", "evidenceGrid.revision"],
+							"commit": "5e0c9a7b41d2f863ce9a0b57d18f4e2a6c3b9d10"
+						}
+					],
+					[
+						{
+							"id": "reports.function.entity-search",
+							"category": "functions",
+							"name": "Entity text search",
+							"purpose": "Ranks revision-bound entity search results using names, identifiers, purpose and contract terms.",
+							"terms": [
+								"entitySearch.entries",
+								"entitySearch.query",
+								"entitySearch.limit",
+								"entitySearch"
+							],
+							"commit": "5e0c9a7b41d2f863ce9a0b57d18f4e2a6c3b9d10"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "entitySearch",
@@ -54,31 +119,95 @@
 						"name": "entitySearch.entries",
 						"type": "SearchEntry[]",
 						"required": true,
-						"description": "Searchable entities retaining their category and commit."
+						"description": "The SearchEntry objects to search: each needs a string id, name and purpose and a string[] terms, which the function reads without checking, while category only orders tied results. The function does not change them and returns these same objects, so each result keeps its category and commit.",
+						"examples": [
+							[
+								{
+									"id": "reports.component.evidence-grid",
+									"category": "components",
+									"name": "Evidence grid",
+									"purpose": "Shows the evidence rows of one revision with their status.",
+									"terms": ["evidenceGrid.rows", "evidenceGrid.revision"],
+									"commit": "5e0c9a7b41d2f863ce9a0b57d18f4e2a6c3b9d10"
+								},
+								{
+									"id": "reports.function.entity-search",
+									"category": "functions",
+									"name": "Entity text search",
+									"purpose": "Ranks revision-bound entity search results using names, identifiers, purpose and contract terms.",
+									"terms": [
+										"entitySearch.entries",
+										"entitySearch.query",
+										"entitySearch.limit",
+										"entitySearch"
+									],
+									"commit": "5e0c9a7b41d2f863ce9a0b57d18f4e2a6c3b9d10"
+								}
+							],
+							[
+								{
+									"id": "reports.model.revision-summary",
+									"category": "models",
+									"name": "Revision summary",
+									"purpose": "Holds the counts shown for one revision.",
+									"terms": ["revisionSummary.counts"],
+									"commit": "a7c31e0f94b25d68e1f07a3c49d52b0e8f6a1c27"
+								}
+							]
+						]
 					},
 					{
 						"name": "entitySearch.query",
 						"type": "string",
 						"required": true,
-						"description": "Whitespace-separated query words, matched case-insensitively. Every word must match an entry."
+						"description": "Whitespace-separated words, matched case-insensitively and each on its own against an entry's name, id, purpose or contract terms; an entry is returned only when every word matches. A blank query (empty or only whitespace) returns no results.",
+						"examples": ["evidence grid", "reports.function", "entity search"]
 					},
 					{
 						"name": "entitySearch.limit",
 						"type": "number",
 						"required": false,
 						"default": 20,
-						"description": "Maximum returned results, defaulting to 20; applied with array slicing."
+						"description": "Maximum number of results, defaulting to 20 when the argument is omitted or undefined; it is applied after ranking with array slicing, so 0 returns no results and a negative value returns every result except its last |limit|.",
+						"examples": [5, 20, 50]
 					}
 				],
 				"outputs": [
 					{
 						"name": "entitySearch",
 						"type": "SearchEntry[]",
-						"description": "Matching entries ranked by exact name/id, name prefix, id-part prefix, name-word prefix, name/id substring, purpose and contract-term matches. Ties use category order then name. Blank queries return no results."
+						"description": "The entries that match every query word, as the same objects that were passed in, sorted by the sum over the query words of each word's best tier score (exact name or id 100, name prefix 80, id or id-part prefix 70, name-word prefix 60, name or id substring 40, purpose substring 20, contract-term substring 10), then by the category's index in explorerCategories (unknown categories last), then by name with localeCompare. The sorted list is cut to limit by array slicing, and a blank query returns an empty array.",
+						"examples": [
+							[
+								{
+									"id": "reports.component.evidence-grid",
+									"category": "components",
+									"name": "Evidence grid",
+									"purpose": "Shows the evidence rows of one revision with their status.",
+									"terms": ["evidenceGrid.rows", "evidenceGrid.revision"],
+									"commit": "5e0c9a7b41d2f863ce9a0b57d18f4e2a6c3b9d10"
+								}
+							],
+							[
+								{
+									"id": "reports.function.entity-search",
+									"category": "functions",
+									"name": "Entity text search",
+									"purpose": "Ranks revision-bound entity search results using names, identifiers, purpose and contract terms.",
+									"terms": [
+										"entitySearch.entries",
+										"entitySearch.query",
+										"entitySearch.limit",
+										"entitySearch"
+									],
+									"commit": "5e0c9a7b41d2f863ce9a0b57d18f4e2a6c3b9d10"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
