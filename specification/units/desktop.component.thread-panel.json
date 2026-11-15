@@ -40,57 +40,109 @@
 				"name": "ThreadPanel.entity",
 				"type": "EntityDetail",
 				"required": true,
-				"description": "Required current entity with versions, history, threads, category and latest version. Supplies identity for comments and requests. Function comments default to the function rather than an old image."
+				"description": "The required entity detail passed into the panel. Its identity, category, versions, threads, latest version and kind supply the conversation and design context; function entities skip the design image fallback.",
+				"examples": [
+					{
+						"id": "desktop.component.thread-panel",
+						"category": "components",
+						"kind": "component",
+						"title": "Thread panel",
+						"summary": "Design conversation",
+						"changed": false,
+						"planned": false,
+						"hasPlan": false,
+						"lifecycle": null,
+						"verification": "unknown",
+						"verificationNote": "",
+						"latestVersion": null,
+						"approvedVersion": null,
+						"threadCount": 0,
+						"thumbnail": null,
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"hash": null
+						},
+						"relationships": [],
+						"versions": [],
+						"threads": [],
+						"history": [],
+						"sources": [
+							"packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
+							"packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.types.ts"
+						],
+						"size": {
+							"available": false,
+							"text": ""
+						},
+						"performance": {
+							"available": false,
+							"text": ""
+						}
+					}
+				]
 			},
 			{
 				"name": "ThreadPanel.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace held by the run and comment stores for this view. Supplies bridge, revision, context and capabilities, which determine offered modes and approval controls. Loads comments/providers and subscribes to run events on mount."
+				"description": "The required WorkspaceState-backed store for this view. Its bridge, context, snapshot, capabilities and refresh method drive comment and run access, available modes, provider loading and approval visibility."
 			},
 			{
 				"name": "ThreadPanel.thread",
 				"type": "ThreadInfo | null",
 				"required": false,
 				"default": null,
-				"description": "Optional bindable current thread, initially null. Takes precedence over target and design when choosing the conversation anchor. Selecting/opening a thread updates it; a thread on another option of the same version is cleared when that option changes."
+				"description": "The optional bindable selected thread, defaulting to null. It takes precedence over target and design for the anchor and is cleared when it belongs to another option of the shown version.",
+				"examples": [null]
 			},
 			{
 				"name": "ThreadPanel.target",
 				"type": "ThreadTarget | null",
 				"required": false,
 				"default": null,
-				"description": "Optional bindable image or region awaiting a thread, initially null. Used when no thread is selected. Cleared on thread selection or creation and when it belongs to a different option of the shown version."
+				"description": "The optional bindable anchor for a new thread, defaulting to null. It is used when no thread is selected and cleared on thread selection or creation, or when it belongs to another option of the shown version.",
+				"examples": [null]
 			},
 			{
 				"name": "ThreadPanel.version",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional bindable version, initially empty. Chooses design and approval context; history selection updates it. A handled run event may advance it to the entity latest version."
+				"description": "The optional bindable version string, defaulting to the empty string. It selects the design and approval context, can be updated by history selection, and a handled run event may advance it to entity.latestVersion.",
+				"examples": [""]
 			},
 			{
 				"name": "ThreadPanel.option",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional bindable current design option, empty by default. Determines approval and image target. Selecting a same-version thread can adopt its option."
+				"description": "The optional bindable design-option string, defaulting to the empty string. It selects the design and approval context, and a selected thread changes it only when that thread matches the shown version and names an option.",
+				"examples": [""]
 			},
 			{
 				"name": "ThreadPanel.close",
 				"type": "() => void",
 				"required": true,
-				"description": "Required callback for closing the conversation; invoked by its close button."
+				"description": "The required zero-argument callback invoked by the close button."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ThreadPanel",
 				"type": "markup",
-				"description": "Conversation sidebar with history, grouped threads, saved/pending messages, streaming response, status/cancel, errors and a composer. Plan/Change opens a planning thread when necessary; Change includes recorded approval details. Human comments use the comments store without starting an agent. Shared comment success refreshes and selects the saved thread. Approval appears only for a selected design with approval capability."
+				"description": "The rendered sidebar shows the conversation heading and anchor, thread history and links, messages and run status, with error and approval UI when their state permits. Plan/Change sends open a planning thread when needed, while comments use the comment store without starting a run and shared comments refresh the workspace and select the saved thread."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "The async comment callback rejects with TypeError if workspace.snapshot is null before it reads revision; a Plan/Change request with no selected thread can also reach planningThread while workspace.bridge is unset."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
