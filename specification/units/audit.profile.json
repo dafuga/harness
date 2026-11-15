@@ -12,27 +12,32 @@
 		"symbols": ["parseAuditProfile"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "parseAuditProfile.profile",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The audit profile name to validate. Only the exact, case-sensitive values auto, app, dapp and lib are accepted, since the code applies no trimming, case folding or default, and any other value, including an empty string, makes the call throw.",
+				"examples": ["auto", "app", "dapp"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "parseAuditProfile",
-				"type": "AuditProfile"
+				"type": "AuditProfile",
+				"description": "The validated audit profile, which is the input string returned unchanged. It is returned only when the input is exactly auto, app, dapp or lib, so no other AuditProfile value is produced by this function.",
+				"examples": ["auto", "app", "dapp"]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown via fail() as an ExpectedCliError (an Error subclass) whenever the input is not exactly auto, app, dapp or lib; its message echoes the raw input value and lists the four accepted names."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "parseAuditProfile",
@@ -40,22 +45,27 @@
 					{
 						"name": "parseAuditProfile.profile",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The audit profile name to validate. Only the exact, case-sensitive values auto, app, dapp and lib are accepted, since the code applies no trimming, case folding or default, and any other value, including an empty string, makes the call throw.",
+						"examples": ["auto", "app", "dapp"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "parseAuditProfile",
-						"type": "AuditProfile"
+						"type": "AuditProfile",
+						"description": "The validated audit profile, which is the input string returned unchanged. It is returned only when the input is exactly auto, app, dapp or lib, so no other AuditProfile value is produced by this function.",
+						"examples": ["auto", "app", "dapp"]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown via fail() as an ExpectedCliError (an Error subclass) whenever the input is not exactly auto, app, dapp or lib; its message echoes the raw input value and lists the four accepted names."
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
