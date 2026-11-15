@@ -16,32 +16,44 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CodexGatewayService.constructor.config",
 				"type": "{ token: string }",
-				"required": true
+				"required": true,
+				"description": "The gateway configuration object whose `token` is the shared bearer secret: fetch accepts a request only when its `authorization` header is exactly `Bearer ${token}` (checked by length, then timingSafeEqual), and it reads `token` on every call, so changing `token` after construction changes what fetch accepts. The constructor does not check the token; the `codex serve` command passes only a trimmed token of at least 32 characters, read from an owner-only token file.",
+				"examples": [
+					{
+						"token": "a41d7e0c9b3f5a682d1e4c7b0f9a3d6e8c2b5f1a7d4e0c9b3f6a2d8e1c5b7f04"
+					},
+					{
+						"token": "Qm8xYv3RzT1kLp9WsE4hNc7UjD2gFa5I"
+					}
+				]
 			},
 			{
 				"name": "CodexGatewayService.fetch.request",
 				"type": "globalThis.Request",
-				"required": true
+				"required": true,
+				"description": "The incoming Fetch API Request: fetch reads its `origin` and `authorization` headers and its URL pathname and method, and for POST /v1/responses also its body and `thread-id` header, and an abort of its `signal` while a streamed response is open cancels the session. A body over 33,554,432 bytes, or a missing `thread-id` or one longer than 256 characters, produces a 400 invalid_request response rather than a thrown error."
 			}
 		],
 		"outputs": [
 			{
 				"name": "CodexGatewayService.fetch",
-				"type": "Promise<Response>"
+				"type": "Promise<Response>",
+				"description": "The Response the promise resolves to: a successful POST /v1/responses gets a 200 text/event-stream (a cached replay or a live stream), /healthz gets a 200 JSON health report, and every other case is a JSON error: 403 for a non-empty Origin header, 401 for a missing or mismatched bearer token, 404 for anything except /healthz and POST /v1/responses, 409 while the session has an active response, or 400 for any other failure in POST /v1/responses (error.code is invalid_request, or unsupported_content for a GatewayContentError). The promise does not reject for a Request object, because every error thrown while handling POST /v1/responses is caught and returned as a 400 response."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "An Error that the private `respond` method throws for three conditions: a body over 33,554,432 bytes (message 'Request too large'), a missing or empty `thread-id` header or one longer than 256 characters (message 'thread-id required'), and an uncached request on a session that already holds 16 or more replays (message 'Prototype request limit reached'). `respond`'s own catch block turns each of these into a 400 invalid_request response, so fetch never rejects with it."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CodexGatewayService.fetch",
@@ -49,17 +61,19 @@
 					{
 						"name": "CodexGatewayService.fetch.request",
 						"type": "globalThis.Request",
-						"required": true
+						"required": true,
+						"description": "The incoming Fetch API Request: fetch reads its `origin` and `authorization` headers and its URL pathname and method, and for POST /v1/responses also its body and `thread-id` header, and an abort of its `signal` while a streamed response is open cancels the session. A body over 33,554,432 bytes, or a missing `thread-id` or one longer than 256 characters, produces a 400 invalid_request response rather than a thrown error."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CodexGatewayService.fetch",
-						"type": "Promise<Response>"
+						"type": "Promise<Response>",
+						"description": "The Response the promise resolves to: a successful POST /v1/responses gets a 200 text/event-stream (a cached replay or a live stream), /healthz gets a 200 JSON health report, and every other case is a JSON error: 403 for a non-empty Origin header, 401 for a missing or mismatched bearer token, 404 for anything except /healthz and POST /v1/responses, 409 while the session has an active response, or 400 for any other failure in POST /v1/responses (error.code is invalid_request, or unsupported_content for a GatewayContentError). The promise does not reject for a Request object, because every error thrown while handling POST /v1/responses is caught and returned as a 400 response."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -69,17 +83,27 @@
 					{
 						"name": "CodexGatewayService.constructor.config",
 						"type": "{ token: string }",
-						"required": true
+						"required": true,
+						"description": "The gateway configuration object whose `token` is the shared bearer secret: fetch accepts a request only when its `authorization` header is exactly `Bearer ${token}` (checked by length, then timingSafeEqual), and it reads `token` on every call, so changing `token` after construction changes what fetch accepts. The constructor does not check the token; the `codex serve` command passes only a trimmed token of at least 32 characters, read from an owner-only token file.",
+						"examples": [
+							{
+								"token": "a41d7e0c9b3f5a682d1e4c7b0f9a3d6e8c2b5f1a7d4e0c9b3f6a2d8e1c5b7f04"
+							},
+							{
+								"token": "Qm8xYv3RzT1kLp9WsE4hNc7UjD2gFa5I"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CodexGatewayService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new CodexGatewayService instance that `new` returns, which keeps the config object by reference and an empty CodexSessionRepository in its private `repository` field. The constructor does no validation and cannot throw, because the only work CodexSessionRepository does on construction is creating an empty Map."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
