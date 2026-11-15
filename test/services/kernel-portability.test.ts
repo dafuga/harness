@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { HttpRuntimeAdapter } from '../../src/adapters/HttpRuntimeAdapter';
-import { ProcessRuntimeAdapter } from '../../src/adapters/process-runtime-adapter/ProcessRuntimeAdapter';
+import { ProcessRuntimeAdapter } from '../../src/adapters/execution-runtimes/process-runtime-adapter/ProcessRuntimeAdapter';
 import type { RuntimeRequest, UnitRuntime } from '../../src/core/runtimeTypes';
 import {
 	RuntimeServerService,

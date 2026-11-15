@@ -10,8 +10,7 @@
 	"owns": {
 		"source": [
 			"src/adapters/execution-runtimes/process-runtime-adapter/ProcessRuntimeAdapter.ts",
-			"src/adapters/execution-runtimes/process-runtime-adapter/ProcessRuntimeAdapter.types.ts",
-			"src/adapters/process-runtime-adapter/ProcessRuntimeAdapter.ts"
+			"src/adapters/execution-runtimes/process-runtime-adapter/ProcessRuntimeAdapter.types.ts"
 		],
 		"symbols": [
 			"ProcessRuntimeAdapter",
@@ -20,8 +19,7 @@
 			"ProcessRuntimeAdapter.invokeText",
 			"ProcessRuntimeAdapter.close",
 			"ProcessRuntimeConfig",
-			"ProcessRuntimeConfig",
-			"ProcessRuntimeAdapter"
+			"ProcessRuntimeConfig"
 		]
 	},
 	"contract": {
