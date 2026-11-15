@@ -2,7 +2,7 @@ import { test } from 'vitest';
 import { recordCapture } from '../../../src/utils/record-capture/recordCapture';
 import { expect } from '../../../test/verificationExpect';
 import type { ProjectCapabilities } from '../src/models/ProjectContext.types';
-import { composeModes } from '../src/components/thread-panel/composeModes';
+import { composeModes } from '../src/components/explorer-ui/thread-panel/composeModes';
 
 /**
  * The real composeModes, called with the capabilities of four synthetic projects. What it was
