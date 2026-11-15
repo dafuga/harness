@@ -21,29 +21,386 @@
 				"name": "catalogDetail.context",
 				"type": "DetailContext",
 				"required": true,
-				"description": "The source adapter and planning reader used to obtain history, source details, size and contract hashes."
+				"description": "The git source adapter (`context.source`) supplies documentation, source file lists, size, contract hashes and the repository root for unit history, and the planning port (`context.planning`) supplies plan history and is called only when the data has a plan."
 			},
 			{
 				"name": "catalogDetail.data",
 				"type": "DetailData",
 				"required": true,
-				"description": "The requested identity and revision, catalog entries, unit definitions and optional plan from that revision. The identity must appear in the supplied catalog entries."
+				"description": "The requested entity `id` and `revision`, the catalog `items` for that revision (one of which must have that `id`) and the unit manifests `units`; a manifest with the same `id` makes the entity source-backed, and dependency links in either direction between it and the other manifests in `units` (for a page, also the APIs it reaches) supply its relationships. `plan` is the entity's plan at that revision, or `undefined` when it has none.",
+				"examples": [
+					{
+						"id": "desktop.function.catalog-detail",
+						"revision": "6c1f0a9e2b7d4f83c5a1e09d7b2f4c8a3e6d1b50",
+						"items": [
+							{
+								"id": "desktop.function.catalog-detail",
+								"category": "functions",
+								"kind": "function",
+								"title": "catalogDetail",
+								"summary": "Show each entity's contract, relationships and history from one revision.",
+								"changed": false,
+								"planned": false,
+								"hasPlan": true,
+								"lifecycle": "draft",
+								"verification": "unknown",
+								"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+								"latestVersion": null,
+								"approvedVersion": null,
+								"threadCount": 0,
+								"thumbnail": null
+							}
+						],
+						"units": [
+							{
+								"schemaVersion": 1,
+								"id": "desktop.function.catalog-detail",
+								"uid": "u_uhs2ykpale",
+								"kind": "function",
+								"title": "Assemble entity details",
+								"responsibility": "Combines an entity’s catalog entry, contract, relationships, plan and source history for a revision.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": [
+										"packages/desktop/src/services/project-session-service/catalog-service/catalogDetail.ts",
+										"packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogDetail.ts",
+										"packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogDetail.types.ts",
+										"packages/desktop/src/utils/catalogDetail.ts"
+									],
+									"symbols": [
+										"catalogDetail",
+										"catalogDetail",
+										"DetailContext",
+										"DetailData",
+										"catalogDetail"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [
+										{
+											"name": "catalogDetail.context",
+											"type": "DetailContext",
+											"required": true
+										},
+										{
+											"name": "catalogDetail.data",
+											"type": "DetailData",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "catalogDetail",
+											"type": "Promise<EntityDetail>"
+										}
+									],
+									"errors": [
+										{
+											"name": "Error",
+											"type": "thrown"
+										}
+									],
+									"errorStatus": "declared"
+								},
+								"dependencies": [
+									{
+										"unit": "desktop.adapter.git-source",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "desktop.function.catalog-history",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "desktop.function.category-of",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "desktop.model.desktop-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "desktop.model.planning-port-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "module.contracts",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "packages/desktop/src/utils/catalogDetail.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/desktop/src/utils/catalogDetail.ts"
+										}
+									]
+								},
+								"scenarios": ["desktop-native", "desktop-project-runs"],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						],
+						"plan": {
+							"id": "desktop.function.catalog-detail",
+							"path": "src/functions/catalog-detail",
+							"category": "functions",
+							"title": "Entity detail contract",
+							"goal": "Show each entity's contract, relationships and history from one revision.",
+							"lifecycle": "draft",
+							"contract": {
+								"inputs": [
+									{
+										"name": "catalogDetail.context",
+										"type": "DetailContext",
+										"required": true
+									},
+									{
+										"name": "catalogDetail.data",
+										"type": "DetailData",
+										"required": true
+									}
+								],
+								"outputs": [
+									{
+										"name": "catalogDetail",
+										"type": "Promise<EntityDetail>"
+									}
+								],
+								"errors": [
+									{
+										"name": "Error",
+										"type": "error"
+									}
+								],
+								"hash": "3f9a1c7e5d2b8046a1f7c3e9d5b2a08e4c6f1d9b7a3e25c8d0f4b6a92e1c7d35"
+							},
+							"versions": [],
+							"threads": []
+						}
+					},
+					{
+						"id": "desktop.function.catalog-export",
+						"revision": "6c1f0a9e2b7d4f83c5a1e09d7b2f4c8a3e6d1b50",
+						"items": [
+							{
+								"id": "desktop.function.catalog-export",
+								"category": "functions",
+								"kind": "function",
+								"title": "Export catalog entries",
+								"summary": "Write each catalog entry of a revision to a JSON file for review.",
+								"changed": false,
+								"planned": true,
+								"hasPlan": true,
+								"lifecycle": "draft",
+								"verification": "unverified",
+								"verificationNote": "This is a plan. Approval does not verify running behavior.",
+								"latestVersion": null,
+								"approvedVersion": null,
+								"threadCount": 0,
+								"thumbnail": null
+							}
+						],
+						"units": [],
+						"plan": {
+							"id": "desktop.function.catalog-export",
+							"path": "src/functions/catalog-export",
+							"category": "functions",
+							"title": "Export catalog entries",
+							"goal": "Write each catalog entry of a revision to a JSON file for review.",
+							"lifecycle": "draft",
+							"contract": {
+								"inputs": [
+									{
+										"name": "catalogExport.data",
+										"type": "CatalogEntity[]",
+										"required": true
+									}
+								],
+								"outputs": [
+									{
+										"name": "catalogExport",
+										"type": "Promise<string>"
+									}
+								],
+								"errors": [
+									{
+										"name": "Error",
+										"type": "error"
+									}
+								],
+								"hash": "9b2d4e7f1a6c3085d9e2b7f4a1c6d30e8f5b2a97c4d1e6083f2a9b5c7d4e1f06"
+							},
+							"versions": [],
+							"threads": []
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "catalogDetail",
 				"type": "Promise<EntityDetail>",
-				"description": "A promise for the catalog entry enriched with a plan contract when present, otherwise the unit contract and hash; relationships; design versions and threads; source details; and merged history deduplicated by identity and sorted newest first. Design-only entries have no source files or size measurement. Performance is reported as not measured."
+				"description": "Resolves to the catalog item's fields plus `contract` (the plan's contract when `data.plan` is set, otherwise the unit contract with its SHA-256 `hash`, or empty inputs, outputs and errors with a `null` hash when there is no unit), `documentation` (undefined when there is no unit or the unit declares no documentation file), `relationships` (empty without a unit), `versions` and `threads` (from the plan, empty without one), `history`, `sources`, `size` and `performance`. `history` merges the planning history of the plan with the commit history of the unit's owned source and documentation, deduplicated by `id` and sorted newest first by `at`; without a unit, `sources` is empty and `size` is `{ available: false, text: 'Not measured: design only' }`, and `performance` is always `{ available: false, text: 'Not measured' }`.",
+				"examples": [
+					{
+						"id": "desktop.function.catalog-detail",
+						"category": "functions",
+						"kind": "function",
+						"title": "catalogDetail",
+						"summary": "Show each entity's contract, relationships and history from one revision.",
+						"changed": false,
+						"planned": false,
+						"hasPlan": true,
+						"lifecycle": "draft",
+						"verification": "unknown",
+						"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+						"latestVersion": null,
+						"approvedVersion": null,
+						"threadCount": 0,
+						"thumbnail": null,
+						"contract": {
+							"inputs": [
+								{
+									"name": "catalogDetail.context",
+									"type": "DetailContext",
+									"required": true
+								},
+								{
+									"name": "catalogDetail.data",
+									"type": "DetailData",
+									"required": true
+								}
+							],
+							"outputs": [
+								{
+									"name": "catalogDetail",
+									"type": "Promise<EntityDetail>"
+								}
+							],
+							"errors": [
+								{
+									"name": "Error",
+									"type": "error"
+								}
+							],
+							"hash": "3f9a1c7e5d2b8046a1f7c3e9d5b2a08e4c6f1d9b7a3e25c8d0f4b6a92e1c7d35"
+						},
+						"relationships": [],
+						"versions": [],
+						"threads": [],
+						"history": [
+							{
+								"id": "d07a9c3e5b12f48a6e90c17d3b5f2a8e4c6091d7",
+								"at": "2026-11-12T10:18:44+01:00",
+								"kind": "commit",
+								"title": "Read unit history from the source root",
+								"detail": "Source changed. Verification is recorded separately.",
+								"commit": "d07a9c3e5b12f48a6e90c17d3b5f2a8e4c6091d7",
+								"version": null
+							},
+							{
+								"id": "b41e7c2d90a35f6e18c4d7b2a9f03e5c61d8a274",
+								"at": "2026-11-10T16:05:09+01:00",
+								"kind": "commit",
+								"title": "Move catalog detail assembly into its own function",
+								"detail": "Source changed. Verification is recorded separately.",
+								"commit": "b41e7c2d90a35f6e18c4d7b2a9f03e5c61d8a274",
+								"version": null
+							}
+						],
+						"sources": [
+							"packages/desktop/src/services/project-session-service/catalog-service/catalogDetail.ts",
+							"packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogDetail.ts",
+							"packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogDetail.types.ts",
+							"packages/desktop/src/utils/catalogDetail.ts"
+						],
+						"size": {
+							"available": true,
+							"text": "6.3 KB"
+						},
+						"performance": {
+							"available": false,
+							"text": "Not measured"
+						}
+					},
+					{
+						"id": "desktop.function.catalog-export",
+						"category": "functions",
+						"kind": "function",
+						"title": "Export catalog entries",
+						"summary": "Write each catalog entry of a revision to a JSON file for review.",
+						"changed": false,
+						"planned": true,
+						"hasPlan": true,
+						"lifecycle": "draft",
+						"verification": "unverified",
+						"verificationNote": "This is a plan. Approval does not verify running behavior.",
+						"latestVersion": null,
+						"approvedVersion": null,
+						"threadCount": 0,
+						"thumbnail": null,
+						"contract": {
+							"inputs": [
+								{
+									"name": "catalogExport.data",
+									"type": "CatalogEntity[]",
+									"required": true
+								}
+							],
+							"outputs": [
+								{
+									"name": "catalogExport",
+									"type": "Promise<string>"
+								}
+							],
+							"errors": [
+								{
+									"name": "Error",
+									"type": "error"
+								}
+							],
+							"hash": "9b2d4e7f1a6c3085d9e2b7f4a1c6d30e8f5b2a97c4d1e6083f2a9b5c7d4e1f06"
+						},
+						"relationships": [],
+						"versions": [],
+						"threads": [],
+						"history": [],
+						"sources": [],
+						"size": {
+							"available": false,
+							"text": "Not measured: design only"
+						},
+						"performance": {
+							"available": false,
+							"text": "Not measured"
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects when the requested identity is absent from the supplied catalog entries. Failures from history, source or size readers also propagate."
+				"description": "Rejects with `Error('Entity not found at this revision.')` when no entry in `data.items` has the id `data.id`; errors from the planning, history, documentation, source and size readers propagate unchanged."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "catalogDetail",
@@ -52,29 +409,386 @@
 						"name": "catalogDetail.context",
 						"type": "DetailContext",
 						"required": true,
-						"description": "The source adapter and planning reader used to obtain history, source details, size and contract hashes."
+						"description": "The git source adapter (`context.source`) supplies documentation, source file lists, size, contract hashes and the repository root for unit history, and the planning port (`context.planning`) supplies plan history and is called only when the data has a plan."
 					},
 					{
 						"name": "catalogDetail.data",
 						"type": "DetailData",
 						"required": true,
-						"description": "The requested identity and revision, catalog entries, unit definitions and optional plan from that revision. The identity must appear in the supplied catalog entries."
+						"description": "The requested entity `id` and `revision`, the catalog `items` for that revision (one of which must have that `id`) and the unit manifests `units`; a manifest with the same `id` makes the entity source-backed, and dependency links in either direction between it and the other manifests in `units` (for a page, also the APIs it reaches) supply its relationships. `plan` is the entity's plan at that revision, or `undefined` when it has none.",
+						"examples": [
+							{
+								"id": "desktop.function.catalog-detail",
+								"revision": "6c1f0a9e2b7d4f83c5a1e09d7b2f4c8a3e6d1b50",
+								"items": [
+									{
+										"id": "desktop.function.catalog-detail",
+										"category": "functions",
+										"kind": "function",
+										"title": "catalogDetail",
+										"summary": "Show each entity's contract, relationships and history from one revision.",
+										"changed": false,
+										"planned": false,
+										"hasPlan": true,
+										"lifecycle": "draft",
+										"verification": "unknown",
+										"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+										"latestVersion": null,
+										"approvedVersion": null,
+										"threadCount": 0,
+										"thumbnail": null
+									}
+								],
+								"units": [
+									{
+										"schemaVersion": 1,
+										"id": "desktop.function.catalog-detail",
+										"uid": "u_uhs2ykpale",
+										"kind": "function",
+										"title": "Assemble entity details",
+										"responsibility": "Combines an entity’s catalog entry, contract, relationships, plan and source history for a revision.",
+										"responsibilityOrigin": "declared",
+										"status": "active",
+										"owns": {
+											"source": [
+												"packages/desktop/src/services/project-session-service/catalog-service/catalogDetail.ts",
+												"packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogDetail.ts",
+												"packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogDetail.types.ts",
+												"packages/desktop/src/utils/catalogDetail.ts"
+											],
+											"symbols": [
+												"catalogDetail",
+												"catalogDetail",
+												"DetailContext",
+												"DetailData",
+												"catalogDetail"
+											]
+										},
+										"contract": {
+											"origin": "declared",
+											"inputs": [
+												{
+													"name": "catalogDetail.context",
+													"type": "DetailContext",
+													"required": true
+												},
+												{
+													"name": "catalogDetail.data",
+													"type": "DetailData",
+													"required": true
+												}
+											],
+											"outputs": [
+												{
+													"name": "catalogDetail",
+													"type": "Promise<EntityDetail>"
+												}
+											],
+											"errors": [
+												{
+													"name": "Error",
+													"type": "thrown"
+												}
+											],
+											"errorStatus": "declared"
+										},
+										"dependencies": [
+											{
+												"unit": "desktop.adapter.git-source",
+												"via": "import",
+												"origin": "derived"
+											},
+											{
+												"unit": "desktop.function.catalog-history",
+												"via": "import",
+												"origin": "derived"
+											},
+											{
+												"unit": "desktop.function.category-of",
+												"via": "import",
+												"origin": "derived"
+											},
+											{
+												"unit": "desktop.model.desktop-types",
+												"via": "import",
+												"origin": "derived"
+											},
+											{
+												"unit": "desktop.model.planning-port-types",
+												"via": "import",
+												"origin": "derived"
+											},
+											{
+												"unit": "module.contracts",
+												"via": "import",
+												"origin": "derived"
+											}
+										],
+										"runtime": {
+											"kind": "module",
+											"entry": "packages/desktop/src/utils/catalogDetail.ts",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "packages/desktop/src/utils/catalogDetail.ts"
+												}
+											]
+										},
+										"scenarios": ["desktop-native", "desktop-project-runs"],
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										}
+									}
+								],
+								"plan": {
+									"id": "desktop.function.catalog-detail",
+									"path": "src/functions/catalog-detail",
+									"category": "functions",
+									"title": "Entity detail contract",
+									"goal": "Show each entity's contract, relationships and history from one revision.",
+									"lifecycle": "draft",
+									"contract": {
+										"inputs": [
+											{
+												"name": "catalogDetail.context",
+												"type": "DetailContext",
+												"required": true
+											},
+											{
+												"name": "catalogDetail.data",
+												"type": "DetailData",
+												"required": true
+											}
+										],
+										"outputs": [
+											{
+												"name": "catalogDetail",
+												"type": "Promise<EntityDetail>"
+											}
+										],
+										"errors": [
+											{
+												"name": "Error",
+												"type": "error"
+											}
+										],
+										"hash": "3f9a1c7e5d2b8046a1f7c3e9d5b2a08e4c6f1d9b7a3e25c8d0f4b6a92e1c7d35"
+									},
+									"versions": [],
+									"threads": []
+								}
+							},
+							{
+								"id": "desktop.function.catalog-export",
+								"revision": "6c1f0a9e2b7d4f83c5a1e09d7b2f4c8a3e6d1b50",
+								"items": [
+									{
+										"id": "desktop.function.catalog-export",
+										"category": "functions",
+										"kind": "function",
+										"title": "Export catalog entries",
+										"summary": "Write each catalog entry of a revision to a JSON file for review.",
+										"changed": false,
+										"planned": true,
+										"hasPlan": true,
+										"lifecycle": "draft",
+										"verification": "unverified",
+										"verificationNote": "This is a plan. Approval does not verify running behavior.",
+										"latestVersion": null,
+										"approvedVersion": null,
+										"threadCount": 0,
+										"thumbnail": null
+									}
+								],
+								"units": [],
+								"plan": {
+									"id": "desktop.function.catalog-export",
+									"path": "src/functions/catalog-export",
+									"category": "functions",
+									"title": "Export catalog entries",
+									"goal": "Write each catalog entry of a revision to a JSON file for review.",
+									"lifecycle": "draft",
+									"contract": {
+										"inputs": [
+											{
+												"name": "catalogExport.data",
+												"type": "CatalogEntity[]",
+												"required": true
+											}
+										],
+										"outputs": [
+											{
+												"name": "catalogExport",
+												"type": "Promise<string>"
+											}
+										],
+										"errors": [
+											{
+												"name": "Error",
+												"type": "error"
+											}
+										],
+										"hash": "9b2d4e7f1a6c3085d9e2b7f4a1c6d30e8f5b2a97c4d1e6083f2a9b5c7d4e1f06"
+									},
+									"versions": [],
+									"threads": []
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "catalogDetail",
 						"type": "Promise<EntityDetail>",
-						"description": "A promise for the catalog entry enriched with a plan contract when present, otherwise the unit contract and hash; relationships; design versions and threads; source details; and merged history deduplicated by identity and sorted newest first. Design-only entries have no source files or size measurement. Performance is reported as not measured."
+						"description": "Resolves to the catalog item's fields plus `contract` (the plan's contract when `data.plan` is set, otherwise the unit contract with its SHA-256 `hash`, or empty inputs, outputs and errors with a `null` hash when there is no unit), `documentation` (undefined when there is no unit or the unit declares no documentation file), `relationships` (empty without a unit), `versions` and `threads` (from the plan, empty without one), `history`, `sources`, `size` and `performance`. `history` merges the planning history of the plan with the commit history of the unit's owned source and documentation, deduplicated by `id` and sorted newest first by `at`; without a unit, `sources` is empty and `size` is `{ available: false, text: 'Not measured: design only' }`, and `performance` is always `{ available: false, text: 'Not measured' }`.",
+						"examples": [
+							{
+								"id": "desktop.function.catalog-detail",
+								"category": "functions",
+								"kind": "function",
+								"title": "catalogDetail",
+								"summary": "Show each entity's contract, relationships and history from one revision.",
+								"changed": false,
+								"planned": false,
+								"hasPlan": true,
+								"lifecycle": "draft",
+								"verification": "unknown",
+								"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+								"latestVersion": null,
+								"approvedVersion": null,
+								"threadCount": 0,
+								"thumbnail": null,
+								"contract": {
+									"inputs": [
+										{
+											"name": "catalogDetail.context",
+											"type": "DetailContext",
+											"required": true
+										},
+										{
+											"name": "catalogDetail.data",
+											"type": "DetailData",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "catalogDetail",
+											"type": "Promise<EntityDetail>"
+										}
+									],
+									"errors": [
+										{
+											"name": "Error",
+											"type": "error"
+										}
+									],
+									"hash": "3f9a1c7e5d2b8046a1f7c3e9d5b2a08e4c6f1d9b7a3e25c8d0f4b6a92e1c7d35"
+								},
+								"relationships": [],
+								"versions": [],
+								"threads": [],
+								"history": [
+									{
+										"id": "d07a9c3e5b12f48a6e90c17d3b5f2a8e4c6091d7",
+										"at": "2026-11-12T10:18:44+01:00",
+										"kind": "commit",
+										"title": "Read unit history from the source root",
+										"detail": "Source changed. Verification is recorded separately.",
+										"commit": "d07a9c3e5b12f48a6e90c17d3b5f2a8e4c6091d7",
+										"version": null
+									},
+									{
+										"id": "b41e7c2d90a35f6e18c4d7b2a9f03e5c61d8a274",
+										"at": "2026-11-10T16:05:09+01:00",
+										"kind": "commit",
+										"title": "Move catalog detail assembly into its own function",
+										"detail": "Source changed. Verification is recorded separately.",
+										"commit": "b41e7c2d90a35f6e18c4d7b2a9f03e5c61d8a274",
+										"version": null
+									}
+								],
+								"sources": [
+									"packages/desktop/src/services/project-session-service/catalog-service/catalogDetail.ts",
+									"packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogDetail.ts",
+									"packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogDetail.types.ts",
+									"packages/desktop/src/utils/catalogDetail.ts"
+								],
+								"size": {
+									"available": true,
+									"text": "6.3 KB"
+								},
+								"performance": {
+									"available": false,
+									"text": "Not measured"
+								}
+							},
+							{
+								"id": "desktop.function.catalog-export",
+								"category": "functions",
+								"kind": "function",
+								"title": "Export catalog entries",
+								"summary": "Write each catalog entry of a revision to a JSON file for review.",
+								"changed": false,
+								"planned": true,
+								"hasPlan": true,
+								"lifecycle": "draft",
+								"verification": "unverified",
+								"verificationNote": "This is a plan. Approval does not verify running behavior.",
+								"latestVersion": null,
+								"approvedVersion": null,
+								"threadCount": 0,
+								"thumbnail": null,
+								"contract": {
+									"inputs": [
+										{
+											"name": "catalogExport.data",
+											"type": "CatalogEntity[]",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "catalogExport",
+											"type": "Promise<string>"
+										}
+									],
+									"errors": [
+										{
+											"name": "Error",
+											"type": "error"
+										}
+									],
+									"hash": "9b2d4e7f1a6c3085d9e2b7f4a1c6d30e8f5b2a97c4d1e6083f2a9b5c7d4e1f06"
+								},
+								"relationships": [],
+								"versions": [],
+								"threads": [],
+								"history": [],
+								"sources": [],
+								"size": {
+									"available": false,
+									"text": "Not measured: design only"
+								},
+								"performance": {
+									"available": false,
+									"text": "Not measured"
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects with `Error('Entity not found at this revision.')` when no entry in `data.items` has the id `data.id`; errors from the planning, history, documentation, source and size readers propagate unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
