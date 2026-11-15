@@ -37,110 +37,529 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "activityRoot.directory",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "The directory the checkout is found from, as a path. Defaults to process.cwd(), the directory the command runs in: Git gives the top level of the checkout there, and when Git gives none, the resolved directory itself is used.",
+				"examples": ["/work/harness", "/work/harness/src/workflows"]
 			},
 			{
 				"name": "showActivity.options",
 				"type": "{ limit?: string }",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "The options of the show command: limit is the number of recent commits shown, given as a string that must be a whole number from 1 to 200. Defaults to {}, which shows 20 commits.",
+				"examples": [
+					{},
+					{
+						"limit": "50"
+					}
+				]
 			},
 			{
 				"name": "registerAgent.input",
 				"type": "AgentInput",
-				"required": true
+				"required": true,
+				"description": "What the agent states about itself when it registers: label is required, and id, when given, must be letters, digits, dots, dashes or underscores (64 at most, starting with a letter or digit) and becomes its registration id, with a random UUID used when none is given. Each text field is one line of printable text within its limit (label 120 characters, provider and model 80, task 200, loop 80, outcome 200), units is a comma-separated list of at most 40 unit ids, pid, when given, names a process that must be running, and ttl is a whole number of seconds from 1 to 86400 that defaults to 900.",
+				"examples": [
+					{
+						"label": "Reviewer",
+						"provider": "anthropic",
+						"model": "claude-sonnet-5-5",
+						"task": "Review the evidence grid",
+						"loop": "sol-12-cli-startup",
+						"units": "reports.component.evidence-grid,reports.function.entity-lens",
+						"pid": "48213",
+						"ttl": "600"
+					},
+					{
+						"id": "reviewer-evidence",
+						"label": "Evidence reviewer"
+					}
+				]
 			},
 			{
 				"name": "beatAgent.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The id of an agent registered in any checkout of this repository, as registerAgent returned it: it must match letters, digits, underscores, dots or dashes, and a malformed id, an unregistered one and one that has finished are all refused.",
+				"examples": ["6f1c2a9e-3b7d-4e8a-9c41-2d5b8e7f0a13", "reviewer-evidence"]
 			},
 			{
 				"name": "beatAgent.input",
 				"type": "AgentInput",
-				"required": true
+				"required": true,
+				"description": "What the agent says it is working on now, as an AgentInput: only task, loop and units are kept, and a task, loop or units value that is not given or is blank keeps what was stated before. Every field is checked as at registration, so a refused value refuses the beat.",
+				"examples": [
+					{},
+					{
+						"task": "Writing the evidence grid tests",
+						"units": "reports.component.evidence-grid"
+					}
+				]
 			},
 			{
 				"name": "finishAgent.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The id of the registered agent that is ending, as registerAgent returned it: it is checked as the beatAgent id is, and an agent that has already finished is refused.",
+				"examples": ["0b9e4d27-5a1f-4c3e-8d60-7f2a9c1b5e84", "reviewer-evidence"]
 			},
 			{
 				"name": "finishAgent.options",
 				"type": "{ failed?: boolean; outcome?: string }",
-				"required": true
+				"required": true,
+				"description": "How the agent ended: failed set to true records it as failed and any other value records it as completed, and outcome, when not blank, is kept as one line of at most 200 characters or stored as null. The first end recorded for an agent stands, so a later finish is refused.",
+				"examples": [
+					{
+						"outcome": "Evidence grid tests pass"
+					},
+					{
+						"failed": true,
+						"outcome": "The unit registry check failed"
+					}
+				]
 			},
 			{
 				"name": "beatFromEnvironment.env",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "Only HARNESS_AGENT_ID is read from it, trimmed, and a value that is missing or blank means nothing is beaten. Defaults to process.env, the environment of the running process.",
+				"examples": [
+					{
+						"HARNESS_AGENT_ID": "6f1c2a9e-3b7d-4e8a-9c41-2d5b8e7f0a13",
+						"PATH": "/usr/local/bin:/usr/bin:/bin"
+					},
+					{
+						"PATH": "/usr/local/bin:/usr/bin:/bin"
+					}
+				]
 			},
 			{
 				"name": "renderRoster.roster",
 				"type": "AgentRoster",
-				"required": true
+				"required": true,
+				"description": "The roster to render, as listAgents returns it. A never-used roster renders as one sentence; otherwise the text counts the working agents, lists each entry with its state, label, provider and model, checkout, branch and detail, and notes any unreadable registrations.",
+				"examples": [
+					{
+						"tracking": "never-used",
+						"working": null,
+						"unreadable": 0,
+						"roster": []
+					},
+					{
+						"tracking": "available",
+						"working": 1,
+						"unreadable": 0,
+						"roster": [
+							{
+								"id": "6f1c2a9e-3b7d-4e8a-9c41-2d5b8e7f0a13",
+								"label": "Reviewer",
+								"provider": "anthropic",
+								"model": "claude-sonnet-5-5",
+								"worktree": "harness-slot-7",
+								"branch": "feature/activity-roster",
+								"task": "Writing the evidence grid tests",
+								"loop": "sol-12-cli-startup",
+								"units": ["reports.component.evidence-grid"],
+								"unknownUnits": [],
+								"registeredAt": "2026-11-15T08:57:03.114Z",
+								"heartbeatAt": "2026-11-15T09:12:44.318Z",
+								"expiresAt": "2026-11-15T09:22:44.318Z",
+								"state": "working",
+								"detail": "Last heartbeat at 2026-11-15T09:12:44.318Z"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "renderShown.activity",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The project activity to render: renderShown reads its repository name, branch and head, its loop types and its recent work, and does not read its changed files.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"kind": "live",
+						"repository": {
+							"name": "harness",
+							"branch": "main",
+							"head": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b"
+						},
+						"asOf": {
+							"commit": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b",
+							"committedAt": "2026-11-14T16:22:08+01:00"
+						},
+						"loops": {
+							"total": 1,
+							"types": [
+								{
+									"template": "regression-prevention",
+									"loops": 1,
+									"complete": 0,
+									"open": 1,
+									"lastUsedAt": "2026-11-02T00:17:26.223Z",
+									"names": ["sol-12-cli-startup"]
+								}
+							]
+						},
+						"work": [
+							{
+								"commit": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b",
+								"subject": "Show agents in the activity roster",
+								"author": "Sam Rivera",
+								"committedAt": "2026-11-14T16:22:08+01:00",
+								"branches": ["main"],
+								"units": ["workflow.run-activity"],
+								"unitCount": 1,
+								"reasons": [
+									{
+										"unit": "workflow.run-activity",
+										"behavior": "Lists the agents of every checkout in one roster."
+									}
+								],
+								"reasonCount": 1,
+								"files": 1
+							},
+							{
+								"commit": "a71d05c2e9b34f8d6c10e2a7b9d4f3c85e0a6b12",
+								"subject": "Refuse a limit outside 1 to 200",
+								"author": "Sam Rivera",
+								"committedAt": "2026-11-13T10:04:51+01:00",
+								"branches": ["main"],
+								"units": ["workflow.run-activity"],
+								"unitCount": 1,
+								"reasons": [],
+								"reasonCount": 0,
+								"files": 1
+							}
+						],
+						"files": [
+							{
+								"path": "src/workflows/projects-sessions/runActivity.ts",
+								"status": "modified",
+								"units": ["workflow.run-activity"],
+								"commit": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b",
+								"committedAt": "2026-11-14T16:22:08+01:00"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "renderShown.live",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The live activity to render: renderShown reads the name, branch and count of uncommitted changes of each checkout, and renders the agent roster it holds.",
+				"examples": [
+					{
+						"sampledAt": "2026-11-15T09:12:45.002Z",
+						"worktrees": [
+							{
+								"name": "harness",
+								"branch": "main",
+								"head": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b",
+								"primary": true,
+								"changes": [
+									{
+										"path": "src/workflows/projects-sessions/runActivity.ts",
+										"status": "modified",
+										"units": ["workflow.run-activity"]
+									}
+								],
+								"truncated": false
+							},
+							{
+								"name": "harness-slot-7",
+								"branch": "feature/activity-roster",
+								"head": "5c0e8b2f7a91d46e3b8c0f25a7d19e4b6c3f08d2",
+								"primary": false,
+								"changes": [],
+								"truncated": false
+							}
+						],
+						"agents": {
+							"tracking": "available",
+							"working": 1,
+							"unreadable": 0,
+							"roster": [
+								{
+									"id": "6f1c2a9e-3b7d-4e8a-9c41-2d5b8e7f0a13",
+									"label": "Reviewer",
+									"provider": "anthropic",
+									"model": "claude-sonnet-5-5",
+									"worktree": "harness-slot-7",
+									"branch": "feature/activity-roster",
+									"task": "Writing the evidence grid tests",
+									"loop": "sol-12-cli-startup",
+									"units": ["reports.component.evidence-grid"],
+									"unknownUnits": [],
+									"registeredAt": "2026-11-15T08:57:03.114Z",
+									"heartbeatAt": "2026-11-15T09:12:44.318Z",
+									"expiresAt": "2026-11-15T09:22:44.318Z",
+									"state": "working",
+									"detail": "Last heartbeat at 2026-11-15T09:12:44.318Z"
+								}
+							]
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "activityRoot",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "The absolute path of the checkout a command runs in: the top level of its Git checkout, or the resolved directory when it is outside Git.",
+				"examples": ["/work/harness", "/work/notes/inbox"]
 			},
 			{
 				"name": "showActivity",
-				"type": "Promise<Shown>"
+				"type": "Promise<Shown>",
+				"description": "The activity of the repository this command runs in: activity holds up to limit recent commits with their loop types and changed files, and live holds the checkouts' uncommitted changes and the agent roster as they were sampled when the command ran.",
+				"examples": [
+					{
+						"activity": {
+							"schemaVersion": 1,
+							"kind": "live",
+							"repository": {
+								"name": "harness",
+								"branch": "main",
+								"head": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b"
+							},
+							"asOf": {
+								"commit": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b",
+								"committedAt": "2026-11-14T16:22:08+01:00"
+							},
+							"loops": {
+								"total": 1,
+								"types": [
+									{
+										"template": "regression-prevention",
+										"loops": 1,
+										"complete": 0,
+										"open": 1,
+										"lastUsedAt": "2026-11-02T00:17:26.223Z",
+										"names": ["sol-12-cli-startup"]
+									}
+								]
+							},
+							"work": [
+								{
+									"commit": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b",
+									"subject": "Show agents in the activity roster",
+									"author": "Sam Rivera",
+									"committedAt": "2026-11-14T16:22:08+01:00",
+									"branches": ["main"],
+									"units": ["workflow.run-activity"],
+									"unitCount": 1,
+									"reasons": [
+										{
+											"unit": "workflow.run-activity",
+											"behavior": "Lists the agents of every checkout in one roster."
+										}
+									],
+									"reasonCount": 1,
+									"files": 1
+								},
+								{
+									"commit": "a71d05c2e9b34f8d6c10e2a7b9d4f3c85e0a6b12",
+									"subject": "Refuse a limit outside 1 to 200",
+									"author": "Sam Rivera",
+									"committedAt": "2026-11-13T10:04:51+01:00",
+									"branches": ["main"],
+									"units": ["workflow.run-activity"],
+									"unitCount": 1,
+									"reasons": [],
+									"reasonCount": 0,
+									"files": 1
+								}
+							],
+							"files": [
+								{
+									"path": "src/workflows/projects-sessions/runActivity.ts",
+									"status": "modified",
+									"units": ["workflow.run-activity"],
+									"commit": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b",
+									"committedAt": "2026-11-14T16:22:08+01:00"
+								}
+							]
+						},
+						"live": {
+							"sampledAt": "2026-11-15T09:12:45.002Z",
+							"worktrees": [
+								{
+									"name": "harness",
+									"branch": "main",
+									"head": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b",
+									"primary": true,
+									"changes": [
+										{
+											"path": "src/workflows/projects-sessions/runActivity.ts",
+											"status": "modified",
+											"units": ["workflow.run-activity"]
+										}
+									],
+									"truncated": false
+								},
+								{
+									"name": "harness-slot-7",
+									"branch": "feature/activity-roster",
+									"head": "5c0e8b2f7a91d46e3b8c0f25a7d19e4b6c3f08d2",
+									"primary": false,
+									"changes": [],
+									"truncated": false
+								}
+							],
+							"agents": {
+								"tracking": "available",
+								"working": 1,
+								"unreadable": 0,
+								"roster": [
+									{
+										"id": "6f1c2a9e-3b7d-4e8a-9c41-2d5b8e7f0a13",
+										"label": "Reviewer",
+										"provider": "anthropic",
+										"model": "claude-sonnet-5-5",
+										"worktree": "harness-slot-7",
+										"branch": "feature/activity-roster",
+										"task": "Writing the evidence grid tests",
+										"loop": "sol-12-cli-startup",
+										"units": ["reports.component.evidence-grid"],
+										"unknownUnits": [],
+										"registeredAt": "2026-11-15T08:57:03.114Z",
+										"heartbeatAt": "2026-11-15T09:12:44.318Z",
+										"expiresAt": "2026-11-15T09:22:44.318Z",
+										"state": "working",
+										"detail": "Last heartbeat at 2026-11-15T09:12:44.318Z"
+									}
+								]
+							}
+						}
+					}
+				]
 			},
 			{
 				"name": "registerAgent",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The registration just written: the agent's id, the branch of the checkout it registered in or null when there is none, when it registered, and its time to live in seconds.",
+				"examples": [
+					{
+						"id": "6f1c2a9e-3b7d-4e8a-9c41-2d5b8e7f0a13",
+						"branch": "feature/activity-roster",
+						"registeredAt": "2026-11-15T08:57:03.114Z",
+						"ttlSeconds": 600
+					},
+					{
+						"id": "reviewer-evidence",
+						"branch": null,
+						"registeredAt": "2026-11-15T09:01:40.827Z",
+						"ttlSeconds": 900
+					}
+				]
 			},
 			{
 				"name": "beatAgent",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The heartbeat just written, with the agent's id: at is when it was written, branch is the branch of the checkout the agent registered in, and task, loop and units are what the agent says now.",
+				"examples": [
+					{
+						"id": "6f1c2a9e-3b7d-4e8a-9c41-2d5b8e7f0a13",
+						"at": "2026-11-15T09:12:44.318Z",
+						"branch": "feature/activity-roster",
+						"task": "Writing the evidence grid tests",
+						"loop": "sol-12-cli-startup",
+						"units": ["reports.component.evidence-grid"]
+					}
+				]
 			},
 			{
 				"name": "finishAgent",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The agent's id with its final status, which is failed when failed was true and completed otherwise.",
+				"examples": [
+					{
+						"id": "0b9e4d27-5a1f-4c3e-8d60-7f2a9c1b5e84",
+						"status": "completed"
+					},
+					{
+						"id": "reviewer-evidence",
+						"status": "failed"
+					}
+				]
 			},
 			{
 				"name": "beatFromEnvironment",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves to nothing: when HARNESS_AGENT_ID names an agent, a beat is written for it, and any failure of that beat is ignored so the command it follows is never failed by it."
 			},
 			{
 				"name": "listAgents",
-				"type": "Promise<AgentRoster>"
+				"type": "Promise<AgentRoster>",
+				"description": "The roster of every checkout of this repository: tracking is never-used until an agent has registered in any of them, working counts the agents working now, unreadable counts damaged registrations, and roster lists the working agents first, then those that finished or last said anything within the last day.",
+				"examples": [
+					{
+						"tracking": "never-used",
+						"working": null,
+						"unreadable": 0,
+						"roster": []
+					},
+					{
+						"tracking": "available",
+						"working": 1,
+						"unreadable": 0,
+						"roster": [
+							{
+								"id": "6f1c2a9e-3b7d-4e8a-9c41-2d5b8e7f0a13",
+								"label": "Reviewer",
+								"provider": "anthropic",
+								"model": "claude-sonnet-5-5",
+								"worktree": "harness-slot-7",
+								"branch": "feature/activity-roster",
+								"task": "Writing the evidence grid tests",
+								"loop": "sol-12-cli-startup",
+								"units": ["reports.component.evidence-grid"],
+								"unknownUnits": [],
+								"registeredAt": "2026-11-15T08:57:03.114Z",
+								"heartbeatAt": "2026-11-15T09:12:44.318Z",
+								"expiresAt": "2026-11-15T09:22:44.318Z",
+								"state": "working",
+								"detail": "Last heartbeat at 2026-11-15T09:12:44.318Z"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "renderRoster",
-				"type": "string"
+				"type": "string",
+				"description": "The roster as plain text: one sentence saying no agent has registered when tracking is never-used, and otherwise a line counting the working agents, one line per entry with its state, label, provider and model, checkout, branch and detail, and a line for any unreadable registrations.",
+				"examples": [
+					"No agent has registered in this repository, so who is working is not known.",
+					"1 registered agents are working now.\n  working   Reviewer (anthropic · claude-sonnet-5-5) in harness-slot-7 · branch feature/activity-roster: Last heartbeat at 2026-11-15T09:12:44.318Z"
+				]
 			},
 			{
 				"name": "renderShown",
-				"type": "string"
+				"type": "string",
+				"description": "The activity as plain text: a heading with the repository name, branch and short head commit, then the loop types, the recent work with short commits, commit times and subjects, the checkouts with their uncommitted change counts, and the agent roster.",
+				"examples": [
+					"harness · branch main · 3f9a1c7\nLoop types:\n  regression-prevention: 1 loops, 0 complete\nRecent work:\n  3f9a1c7 2026-11-14T16:22:08+01:00 Show agents in the activity roster\n  a71d05c 2026-11-13T10:04:51+01:00 Refuse a limit outside 1 to 200\nCheckouts:\n  harness (main): 1 uncommitted\n  harness-slot-7 (feature/activity-roster): 0 uncommitted\n1 registered agents are working now.\n  working   Reviewer (anthropic · claude-sonnet-5-5) in harness-slot-7 · branch feature/activity-roster: Last heartbeat at 2026-11-15T09:12:44.318Z"
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The error a refused command throws, carrying a message meant for the person at the command line. The workflow throws it for a limit that is not from 1 to 200, for input that is refused, for an agent that is unknown or has finished, and for a pid whose process is not running."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "activityRoot",
@@ -148,17 +567,21 @@
 					{
 						"name": "activityRoot.directory",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "The directory the checkout is found from, as a path. Defaults to process.cwd(), the directory the command runs in: Git gives the top level of the checkout there, and when Git gives none, the resolved directory itself is used.",
+						"examples": ["/work/harness", "/work/harness/src/workflows"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "activityRoot",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "The absolute path of the checkout a command runs in: the top level of its Git checkout, or the resolved directory when it is outside Git.",
+						"examples": ["/work/harness", "/work/notes/inbox"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "showActivity",
@@ -167,22 +590,152 @@
 						"name": "showActivity.options",
 						"type": "{ limit?: string }",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "The options of the show command: limit is the number of recent commits shown, given as a string that must be a whole number from 1 to 200. Defaults to {}, which shows 20 commits.",
+						"examples": [
+							{},
+							{
+								"limit": "50"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "showActivity",
-						"type": "Promise<Shown>"
+						"type": "Promise<Shown>",
+						"description": "The activity of the repository this command runs in: activity holds up to limit recent commits with their loop types and changed files, and live holds the checkouts' uncommitted changes and the agent roster as they were sampled when the command ran.",
+						"examples": [
+							{
+								"activity": {
+									"schemaVersion": 1,
+									"kind": "live",
+									"repository": {
+										"name": "harness",
+										"branch": "main",
+										"head": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b"
+									},
+									"asOf": {
+										"commit": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b",
+										"committedAt": "2026-11-14T16:22:08+01:00"
+									},
+									"loops": {
+										"total": 1,
+										"types": [
+											{
+												"template": "regression-prevention",
+												"loops": 1,
+												"complete": 0,
+												"open": 1,
+												"lastUsedAt": "2026-11-02T00:17:26.223Z",
+												"names": ["sol-12-cli-startup"]
+											}
+										]
+									},
+									"work": [
+										{
+											"commit": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b",
+											"subject": "Show agents in the activity roster",
+											"author": "Sam Rivera",
+											"committedAt": "2026-11-14T16:22:08+01:00",
+											"branches": ["main"],
+											"units": ["workflow.run-activity"],
+											"unitCount": 1,
+											"reasons": [
+												{
+													"unit": "workflow.run-activity",
+													"behavior": "Lists the agents of every checkout in one roster."
+												}
+											],
+											"reasonCount": 1,
+											"files": 1
+										},
+										{
+											"commit": "a71d05c2e9b34f8d6c10e2a7b9d4f3c85e0a6b12",
+											"subject": "Refuse a limit outside 1 to 200",
+											"author": "Sam Rivera",
+											"committedAt": "2026-11-13T10:04:51+01:00",
+											"branches": ["main"],
+											"units": ["workflow.run-activity"],
+											"unitCount": 1,
+											"reasons": [],
+											"reasonCount": 0,
+											"files": 1
+										}
+									],
+									"files": [
+										{
+											"path": "src/workflows/projects-sessions/runActivity.ts",
+											"status": "modified",
+											"units": ["workflow.run-activity"],
+											"commit": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b",
+											"committedAt": "2026-11-14T16:22:08+01:00"
+										}
+									]
+								},
+								"live": {
+									"sampledAt": "2026-11-15T09:12:45.002Z",
+									"worktrees": [
+										{
+											"name": "harness",
+											"branch": "main",
+											"head": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b",
+											"primary": true,
+											"changes": [
+												{
+													"path": "src/workflows/projects-sessions/runActivity.ts",
+													"status": "modified",
+													"units": ["workflow.run-activity"]
+												}
+											],
+											"truncated": false
+										},
+										{
+											"name": "harness-slot-7",
+											"branch": "feature/activity-roster",
+											"head": "5c0e8b2f7a91d46e3b8c0f25a7d19e4b6c3f08d2",
+											"primary": false,
+											"changes": [],
+											"truncated": false
+										}
+									],
+									"agents": {
+										"tracking": "available",
+										"working": 1,
+										"unreadable": 0,
+										"roster": [
+											{
+												"id": "6f1c2a9e-3b7d-4e8a-9c41-2d5b8e7f0a13",
+												"label": "Reviewer",
+												"provider": "anthropic",
+												"model": "claude-sonnet-5-5",
+												"worktree": "harness-slot-7",
+												"branch": "feature/activity-roster",
+												"task": "Writing the evidence grid tests",
+												"loop": "sol-12-cli-startup",
+												"units": ["reports.component.evidence-grid"],
+												"unknownUnits": [],
+												"registeredAt": "2026-11-15T08:57:03.114Z",
+												"heartbeatAt": "2026-11-15T09:12:44.318Z",
+												"expiresAt": "2026-11-15T09:22:44.318Z",
+												"state": "working",
+												"detail": "Last heartbeat at 2026-11-15T09:12:44.318Z"
+											}
+										]
+									}
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the limit is not a whole number from 1 to 200; the message says so."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "registerAgent",
@@ -190,17 +743,55 @@
 					{
 						"name": "registerAgent.input",
 						"type": "AgentInput",
-						"required": true
+						"required": true,
+						"description": "What the agent states about itself when it registers: label is required, and id, when given, must be letters, digits, dots, dashes or underscores (64 at most, starting with a letter or digit) and becomes its registration id, with a random UUID used when none is given. Each text field is one line of printable text within its limit (label 120 characters, provider and model 80, task 200, loop 80, outcome 200), units is a comma-separated list of at most 40 unit ids, pid, when given, names a process that must be running, and ttl is a whole number of seconds from 1 to 86400 that defaults to 900.",
+						"examples": [
+							{
+								"label": "Reviewer",
+								"provider": "anthropic",
+								"model": "claude-sonnet-5-5",
+								"task": "Review the evidence grid",
+								"loop": "sol-12-cli-startup",
+								"units": "reports.component.evidence-grid,reports.function.entity-lens",
+								"pid": "48213",
+								"ttl": "600"
+							},
+							{
+								"id": "reviewer-evidence",
+								"label": "Evidence reviewer"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerAgent",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The registration just written: the agent's id, the branch of the checkout it registered in or null when there is none, when it registered, and its time to live in seconds.",
+						"examples": [
+							{
+								"id": "6f1c2a9e-3b7d-4e8a-9c41-2d5b8e7f0a13",
+								"branch": "feature/activity-roster",
+								"registeredAt": "2026-11-15T08:57:03.114Z",
+								"ttlSeconds": 600
+							},
+							{
+								"id": "reviewer-evidence",
+								"branch": null,
+								"registeredAt": "2026-11-15T09:01:40.827Z",
+								"ttlSeconds": 900
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown when the input is refused (no label, or an id, text, unit list, pid or ttl outside its form) or when the pid names a process that is not running."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "beatAgent",
@@ -208,22 +799,49 @@
 					{
 						"name": "beatAgent.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The id of an agent registered in any checkout of this repository, as registerAgent returned it: it must match letters, digits, underscores, dots or dashes, and a malformed id, an unregistered one and one that has finished are all refused.",
+						"examples": ["6f1c2a9e-3b7d-4e8a-9c41-2d5b8e7f0a13", "reviewer-evidence"]
 					},
 					{
 						"name": "beatAgent.input",
 						"type": "AgentInput",
-						"required": true
+						"required": true,
+						"description": "What the agent says it is working on now, as an AgentInput: only task, loop and units are kept, and a task, loop or units value that is not given or is blank keeps what was stated before. Every field is checked as at registration, so a refused value refuses the beat.",
+						"examples": [
+							{},
+							{
+								"task": "Writing the evidence grid tests",
+								"units": "reports.component.evidence-grid"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "beatAgent",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The heartbeat just written, with the agent's id: at is when it was written, branch is the branch of the checkout the agent registered in, and task, loop and units are what the agent says now.",
+						"examples": [
+							{
+								"id": "6f1c2a9e-3b7d-4e8a-9c41-2d5b8e7f0a13",
+								"at": "2026-11-15T09:12:44.318Z",
+								"branch": "feature/activity-roster",
+								"task": "Writing the evidence grid tests",
+								"loop": "sol-12-cli-startup",
+								"units": ["reports.component.evidence-grid"]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown when the id is malformed or not registered in this repository, when that agent has finished, or when the input is refused by the same checks as at registration."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "finishAgent",
@@ -231,22 +849,51 @@
 					{
 						"name": "finishAgent.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The id of the registered agent that is ending, as registerAgent returned it: it is checked as the beatAgent id is, and an agent that has already finished is refused.",
+						"examples": ["0b9e4d27-5a1f-4c3e-8d60-7f2a9c1b5e84", "reviewer-evidence"]
 					},
 					{
 						"name": "finishAgent.options",
 						"type": "{ failed?: boolean; outcome?: string }",
-						"required": true
+						"required": true,
+						"description": "How the agent ended: failed set to true records it as failed and any other value records it as completed, and outcome, when not blank, is kept as one line of at most 200 characters or stored as null. The first end recorded for an agent stands, so a later finish is refused.",
+						"examples": [
+							{
+								"outcome": "Evidence grid tests pass"
+							},
+							{
+								"failed": true,
+								"outcome": "The unit registry check failed"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "finishAgent",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The agent's id with its final status, which is failed when failed was true and completed otherwise.",
+						"examples": [
+							{
+								"id": "0b9e4d27-5a1f-4c3e-8d60-7f2a9c1b5e84",
+								"status": "completed"
+							},
+							{
+								"id": "reviewer-evidence",
+								"status": "failed"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown when the id is malformed or not registered in this repository, when the agent has already finished or another finish was recorded first, or when the outcome is refused."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "beatFromEnvironment",
@@ -254,17 +901,28 @@
 					{
 						"name": "beatFromEnvironment.env",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "Only HARNESS_AGENT_ID is read from it, trimmed, and a value that is missing or blank means nothing is beaten. Defaults to process.env, the environment of the running process.",
+						"examples": [
+							{
+								"HARNESS_AGENT_ID": "6f1c2a9e-3b7d-4e8a-9c41-2d5b8e7f0a13",
+								"PATH": "/usr/local/bin:/usr/bin:/bin"
+							},
+							{
+								"PATH": "/usr/local/bin:/usr/bin:/bin"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "beatFromEnvironment",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves to nothing: when HARNESS_AGENT_ID names an agent, a beat is written for it, and any failure of that beat is ignored so the command it follows is never failed by it."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "listAgents",
@@ -272,11 +930,44 @@
 				"outputs": [
 					{
 						"name": "listAgents",
-						"type": "Promise<AgentRoster>"
+						"type": "Promise<AgentRoster>",
+						"description": "The roster of every checkout of this repository: tracking is never-used until an agent has registered in any of them, working counts the agents working now, unreadable counts damaged registrations, and roster lists the working agents first, then those that finished or last said anything within the last day.",
+						"examples": [
+							{
+								"tracking": "never-used",
+								"working": null,
+								"unreadable": 0,
+								"roster": []
+							},
+							{
+								"tracking": "available",
+								"working": 1,
+								"unreadable": 0,
+								"roster": [
+									{
+										"id": "6f1c2a9e-3b7d-4e8a-9c41-2d5b8e7f0a13",
+										"label": "Reviewer",
+										"provider": "anthropic",
+										"model": "claude-sonnet-5-5",
+										"worktree": "harness-slot-7",
+										"branch": "feature/activity-roster",
+										"task": "Writing the evidence grid tests",
+										"loop": "sol-12-cli-startup",
+										"units": ["reports.component.evidence-grid"],
+										"unknownUnits": [],
+										"registeredAt": "2026-11-15T08:57:03.114Z",
+										"heartbeatAt": "2026-11-15T09:12:44.318Z",
+										"expiresAt": "2026-11-15T09:22:44.318Z",
+										"state": "working",
+										"detail": "Last heartbeat at 2026-11-15T09:12:44.318Z"
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderRoster",
@@ -284,17 +975,55 @@
 					{
 						"name": "renderRoster.roster",
 						"type": "AgentRoster",
-						"required": true
+						"required": true,
+						"description": "The roster to render, as listAgents returns it. A never-used roster renders as one sentence; otherwise the text counts the working agents, lists each entry with its state, label, provider and model, checkout, branch and detail, and notes any unreadable registrations.",
+						"examples": [
+							{
+								"tracking": "never-used",
+								"working": null,
+								"unreadable": 0,
+								"roster": []
+							},
+							{
+								"tracking": "available",
+								"working": 1,
+								"unreadable": 0,
+								"roster": [
+									{
+										"id": "6f1c2a9e-3b7d-4e8a-9c41-2d5b8e7f0a13",
+										"label": "Reviewer",
+										"provider": "anthropic",
+										"model": "claude-sonnet-5-5",
+										"worktree": "harness-slot-7",
+										"branch": "feature/activity-roster",
+										"task": "Writing the evidence grid tests",
+										"loop": "sol-12-cli-startup",
+										"units": ["reports.component.evidence-grid"],
+										"unknownUnits": [],
+										"registeredAt": "2026-11-15T08:57:03.114Z",
+										"heartbeatAt": "2026-11-15T09:12:44.318Z",
+										"expiresAt": "2026-11-15T09:22:44.318Z",
+										"state": "working",
+										"detail": "Last heartbeat at 2026-11-15T09:12:44.318Z"
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderRoster",
-						"type": "string"
+						"type": "string",
+						"description": "The roster as plain text: one sentence saying no agent has registered when tracking is never-used, and otherwise a line counting the working agents, one line per entry with its state, label, provider and model, checkout, branch and detail, and a line for any unreadable registrations.",
+						"examples": [
+							"No agent has registered in this repository, so who is working is not known.",
+							"1 registered agents are working now.\n  working   Reviewer (anthropic · claude-sonnet-5-5) in harness-slot-7 · branch feature/activity-roster: Last heartbeat at 2026-11-15T09:12:44.318Z"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderShown",
@@ -302,22 +1031,149 @@
 					{
 						"name": "renderShown.activity",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The project activity to render: renderShown reads its repository name, branch and head, its loop types and its recent work, and does not read its changed files.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"kind": "live",
+								"repository": {
+									"name": "harness",
+									"branch": "main",
+									"head": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b"
+								},
+								"asOf": {
+									"commit": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b",
+									"committedAt": "2026-11-14T16:22:08+01:00"
+								},
+								"loops": {
+									"total": 1,
+									"types": [
+										{
+											"template": "regression-prevention",
+											"loops": 1,
+											"complete": 0,
+											"open": 1,
+											"lastUsedAt": "2026-11-02T00:17:26.223Z",
+											"names": ["sol-12-cli-startup"]
+										}
+									]
+								},
+								"work": [
+									{
+										"commit": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b",
+										"subject": "Show agents in the activity roster",
+										"author": "Sam Rivera",
+										"committedAt": "2026-11-14T16:22:08+01:00",
+										"branches": ["main"],
+										"units": ["workflow.run-activity"],
+										"unitCount": 1,
+										"reasons": [
+											{
+												"unit": "workflow.run-activity",
+												"behavior": "Lists the agents of every checkout in one roster."
+											}
+										],
+										"reasonCount": 1,
+										"files": 1
+									},
+									{
+										"commit": "a71d05c2e9b34f8d6c10e2a7b9d4f3c85e0a6b12",
+										"subject": "Refuse a limit outside 1 to 200",
+										"author": "Sam Rivera",
+										"committedAt": "2026-11-13T10:04:51+01:00",
+										"branches": ["main"],
+										"units": ["workflow.run-activity"],
+										"unitCount": 1,
+										"reasons": [],
+										"reasonCount": 0,
+										"files": 1
+									}
+								],
+								"files": [
+									{
+										"path": "src/workflows/projects-sessions/runActivity.ts",
+										"status": "modified",
+										"units": ["workflow.run-activity"],
+										"commit": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b",
+										"committedAt": "2026-11-14T16:22:08+01:00"
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "renderShown.live",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The live activity to render: renderShown reads the name, branch and count of uncommitted changes of each checkout, and renders the agent roster it holds.",
+						"examples": [
+							{
+								"sampledAt": "2026-11-15T09:12:45.002Z",
+								"worktrees": [
+									{
+										"name": "harness",
+										"branch": "main",
+										"head": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b",
+										"primary": true,
+										"changes": [
+											{
+												"path": "src/workflows/projects-sessions/runActivity.ts",
+												"status": "modified",
+												"units": ["workflow.run-activity"]
+											}
+										],
+										"truncated": false
+									},
+									{
+										"name": "harness-slot-7",
+										"branch": "feature/activity-roster",
+										"head": "5c0e8b2f7a91d46e3b8c0f25a7d19e4b6c3f08d2",
+										"primary": false,
+										"changes": [],
+										"truncated": false
+									}
+								],
+								"agents": {
+									"tracking": "available",
+									"working": 1,
+									"unreadable": 0,
+									"roster": [
+										{
+											"id": "6f1c2a9e-3b7d-4e8a-9c41-2d5b8e7f0a13",
+											"label": "Reviewer",
+											"provider": "anthropic",
+											"model": "claude-sonnet-5-5",
+											"worktree": "harness-slot-7",
+											"branch": "feature/activity-roster",
+											"task": "Writing the evidence grid tests",
+											"loop": "sol-12-cli-startup",
+											"units": ["reports.component.evidence-grid"],
+											"unknownUnits": [],
+											"registeredAt": "2026-11-15T08:57:03.114Z",
+											"heartbeatAt": "2026-11-15T09:12:44.318Z",
+											"expiresAt": "2026-11-15T09:22:44.318Z",
+											"state": "working",
+											"detail": "Last heartbeat at 2026-11-15T09:12:44.318Z"
+										}
+									]
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderShown",
-						"type": "string"
+						"type": "string",
+						"description": "The activity as plain text: a heading with the repository name, branch and short head commit, then the loop types, the recent work with short commits, commit times and subjects, the checkouts with their uncommitted change counts, and the agent roster.",
+						"examples": [
+							"harness · branch main · 3f9a1c7\nLoop types:\n  regression-prevention: 1 loops, 0 complete\nRecent work:\n  3f9a1c7 2026-11-14T16:22:08+01:00 Show agents in the activity roster\n  a71d05c 2026-11-13T10:04:51+01:00 Refuse a limit outside 1 to 200\nCheckouts:\n  harness (main): 1 uncommitted\n  harness-slot-7 (feature/activity-roster): 0 uncommitted\n1 registered agents are working now.\n  working   Reviewer (anthropic · claude-sonnet-5-5) in harness-slot-7 · branch feature/activity-roster: Last heartbeat at 2026-11-15T09:12:44.318Z"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
