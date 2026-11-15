@@ -9,14 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/repositories/SessionRepository.ts",
 			"packages/hub/src/repositories/projects-sessions/SessionRepository.ts",
 			"packages/hub/src/repositories/projects-sessions/SessionRepository.types.ts"
 		],
 		"symbols": [
-			"BROWSER_TTL",
-			"NATIVE_TTL",
-			"SessionRepository",
 			"BROWSER_TTL",
 			"NATIVE_TTL",
 			"SessionRepository",

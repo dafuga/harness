@@ -3,7 +3,7 @@ import {
 	BROWSER_TTL,
 	NATIVE_TTL,
 	SessionRepository
-} from '../../src/repositories/SessionRepository';
+} from '../../src/repositories/projects-sessions/SessionRepository';
 import { authSecrets } from '../../src/lib/server/auth/authSecrets';
 import { ada, authFixture, browserGrant } from '../support/authFixture';
 
