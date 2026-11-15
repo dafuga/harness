@@ -30,97 +30,154 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DeploymentService.constructor.session",
 				"type": "ProjectSessionService",
-				"required": true
+				"required": true,
+				"description": "ProjectSessionService instance used to validate project IDs and provide the selected local project root. Methods that require a root fail when no local project is selected."
 			},
 			{
 				"name": "DeploymentService.constructor.options",
 				"type": "DeploymentOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional deployment plugin, executor, health check, and activity service overrides. Missing plugin and activities use CloudflareDeployAdapter and desktopDeployments respectively; execute and health are forwarded to deployment execution.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "DeploymentService.status.input",
 				"type": "ProjectContext",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Project context used to validate the project ID and resolve the selected local root. If omitted, the input is {}; a local project root is still required.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "DeploymentService.plan.input",
 				"type": "DeploymentQuery",
-				"required": true
+				"required": true,
+				"description": "Deployment query passed to plan review with the configured plugin and the session project ID. The reviewed plan is cached by ID until expiry, and the in-memory cache is capped at 32 plans.",
+				"examples": [
+					{
+						"environment": "dev",
+						"commit": "9fceb02e63b57330f44d8a4bdc16c55b255d6bce"
+					}
+				]
 			},
 			{
 				"name": "DeploymentService.start.input",
 				"type": "DeployInput",
-				"required": true
+				"required": true,
+				"description": "Deployment plan ID and project context used to find and consume a reviewed plan, verify the selected project and current deployment state, and schedule a job. The referenced plan must be fresh and belong to this service instance.",
+				"examples": [
+					{
+						"planId": "plan-id-returned-by-plan"
+					}
+				]
 			},
 			{
 				"name": "DeploymentService.deploy.input",
 				"type": "DeployInput",
-				"required": true
+				"required": true,
+				"description": "Deployment plan ID and project context used to start a job and wait for its activity result. The plan is subject to the same freshness and selected-project checks as start.",
+				"examples": [
+					{
+						"planId": "plan-id-returned-by-plan"
+					}
+				]
 			},
 			{
 				"name": "DeploymentService.automatic.input",
 				"type": "DeploymentQuery",
-				"required": true
+				"required": true,
+				"description": "Deployment query used to create a fresh plan and deploy it automatically. This path accepts only dev, stage, or preprod environments; production requires the Deploy UI.",
+				"examples": [
+					{
+						"environment": "preprod",
+						"commit": "9fceb02e63b57330f44d8a4bdc16c55b255d6bce"
+					}
+				]
 			},
 			{
 				"name": "DeploymentService.enqueue.input",
 				"type": "DeploymentQuery",
-				"required": true
+				"required": true,
+				"description": "Deployment query forwarded to enqueueChangeDeployments with the active root, current session project ID, configured plugin, options, and activity service. The current session project ID replaces any projectId in the query passed downstream.",
+				"examples": [
+					{
+						"environment": "dev",
+						"commit": "9fceb02e63b57330f44d8a4bdc16c55b255d6bce"
+					}
+				]
 			},
 			{
 				"name": "DeploymentService.progress.input",
 				"type": "DeployInput",
-				"required": true
+				"required": true,
+				"description": "Deployment plan ID and project context used to request activity progress for the active local root. Progress is looked up by plan ID through the configured activity service.",
+				"examples": [
+					{
+						"planId": "plan-id-returned-by-plan"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeploymentService.status",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns the value produced by deploymentStatus for the validated local root and configured plugin. This service returns that helper's result without reshaping it."
 			},
 			{
 				"name": "DeploymentService.activities",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns the current activity list from the configured activity service by calling list()."
 			},
 			{
 				"name": "DeploymentService.plan",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to a structured clone of the reviewed deployment plan. Its plan ID is cached for later start or deploy calls until expiry, subject to the 32-entry cache cap."
 			},
 			{
 				"name": "DeploymentService.start",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the scheduled deployment activity after validating and consuming the cached plan and checking the current project and deployment state. A plan ID cannot be reused after this call."
 			},
 			{
 				"name": "DeploymentService.deploy",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the activity result returned by waiting for the job scheduled from the supplied plan. It performs the start flow's plan and project checks."
 			},
 			{
 				"name": "DeploymentService.automatic",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the activity result after planning and deploying for an allowed non-production environment. The allowed environments are dev, stage, and preprod."
 			},
 			{
 				"name": "DeploymentService.enqueue",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns the value produced by enqueueChangeDeployments for the active root and query, with the session project ID, configured options, plugin, and activity service."
 			},
 			{
 				"name": "DeploymentService.progress",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns the activity service's progress result for the supplied plan ID and validated local root."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Service calls can throw or reject with Error when project validation fails, no local root is selected, a reviewed plan is missing or expired, the selected project changes, or automatic deployment targets production; delegated deployment and activity operations can also reject."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "DeploymentService.status",
@@ -129,17 +186,28 @@
 						"name": "DeploymentService.status.input",
 						"type": "ProjectContext",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Project context used to validate the project ID and resolve the selected local root. If omitted, the input is {}; a local project root is still required.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeploymentService.status",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns the value produced by deploymentStatus for the validated local root and configured plugin. This service returns that helper's result without reshaping it."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Can throw when the session rejects the requested project ID or when no local project root is selected; the latter is an Error with message 'Select a local project first.'."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "DeploymentService.activities",
@@ -147,11 +215,12 @@
 				"outputs": [
 					{
 						"name": "DeploymentService.activities",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns the current activity list from the configured activity service by calling list()."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "DeploymentService.plan",
@@ -159,17 +228,31 @@
 					{
 						"name": "DeploymentService.plan.input",
 						"type": "DeploymentQuery",
-						"required": true
+						"required": true,
+						"description": "Deployment query passed to plan review with the configured plugin and the session project ID. The reviewed plan is cached by ID until expiry, and the in-memory cache is capped at 32 plans.",
+						"examples": [
+							{
+								"environment": "dev",
+								"commit": "9fceb02e63b57330f44d8a4bdc16c55b255d6bce"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeploymentService.plan",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to a structured clone of the reviewed deployment plan. Its plan ID is cached for later start or deploy calls until expiry, subject to the 32-entry cache cap."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Can throw when the session rejects the requested project ID or when no local project root is selected; the latter is an Error with message 'Select a local project first.'. Plan review can also reject this async operation."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "DeploymentService.start",
@@ -177,22 +260,30 @@
 					{
 						"name": "DeploymentService.start.input",
 						"type": "DeployInput",
-						"required": true
+						"required": true,
+						"description": "Deployment plan ID and project context used to find and consume a reviewed plan, verify the selected project and current deployment state, and schedule a job. The referenced plan must be fresh and belong to this service instance.",
+						"examples": [
+							{
+								"planId": "plan-id-returned-by-plan"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeploymentService.start",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the scheduled deployment activity after validating and consuming the cached plan and checking the current project and deployment state. A plan ID cannot be reused after this call."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error with message 'Please review a fresh deployment plan.' when the plan is missing or expired, and Error with message 'The selected project changed.' when the root or session project differs from the reviewed plan. Current-state validation or job scheduling can also reject."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "DeploymentService.deploy",
@@ -200,17 +291,30 @@
 					{
 						"name": "DeploymentService.deploy.input",
 						"type": "DeployInput",
-						"required": true
+						"required": true,
+						"description": "Deployment plan ID and project context used to start a job and wait for its activity result. The plan is subject to the same freshness and selected-project checks as start.",
+						"examples": [
+							{
+								"planId": "plan-id-returned-by-plan"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeploymentService.deploy",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the activity result returned by waiting for the job scheduled from the supplied plan. It performs the start flow's plan and project checks."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Can reject with start's plan or project errors and with a failure from waiting for the scheduled job."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "DeploymentService.automatic",
@@ -218,22 +322,31 @@
 					{
 						"name": "DeploymentService.automatic.input",
 						"type": "DeploymentQuery",
-						"required": true
+						"required": true,
+						"description": "Deployment query used to create a fresh plan and deploy it automatically. This path accepts only dev, stage, or preprod environments; production requires the Deploy UI.",
+						"examples": [
+							{
+								"environment": "preprod",
+								"commit": "9fceb02e63b57330f44d8a4bdc16c55b255d6bce"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeploymentService.automatic",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the activity result after planning and deploying for an allowed non-production environment. The allowed environments are dev, stage, and preprod."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error with message 'Production requires the Deploy UI.' when environment is not dev, stage, or preprod. Planning and deployment failures can also reject this async operation."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "DeploymentService.enqueue",
@@ -241,17 +354,31 @@
 					{
 						"name": "DeploymentService.enqueue.input",
 						"type": "DeploymentQuery",
-						"required": true
+						"required": true,
+						"description": "Deployment query forwarded to enqueueChangeDeployments with the active root, current session project ID, configured plugin, options, and activity service. The current session project ID replaces any projectId in the query passed downstream.",
+						"examples": [
+							{
+								"environment": "dev",
+								"commit": "9fceb02e63b57330f44d8a4bdc16c55b255d6bce"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeploymentService.enqueue",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns the value produced by enqueueChangeDeployments for the active root and query, with the session project ID, configured options, plugin, and activity service."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Can throw when the session rejects the requested project ID or when no local project root is selected; the latter is an Error with message 'Select a local project first.'. The enqueue helper can also reject."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "DeploymentService.progress",
@@ -259,17 +386,30 @@
 					{
 						"name": "DeploymentService.progress.input",
 						"type": "DeployInput",
-						"required": true
+						"required": true,
+						"description": "Deployment plan ID and project context used to request activity progress for the active local root. Progress is looked up by plan ID through the configured activity service.",
+						"examples": [
+							{
+								"planId": "plan-id-returned-by-plan"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeploymentService.progress",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns the activity service's progress result for the supplied plan ID and validated local root."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Can throw when the session rejects the requested project ID or when no local project root is selected; the latter is an Error with message 'Select a local project first.'. The activity service can also reject the progress request."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -279,23 +419,29 @@
 					{
 						"name": "DeploymentService.constructor.session",
 						"type": "ProjectSessionService",
-						"required": true
+						"required": true,
+						"description": "ProjectSessionService instance used to validate project IDs and provide the selected local project root. Methods that require a root fail when no local project is selected."
 					},
 					{
 						"name": "DeploymentService.constructor.options",
 						"type": "DeploymentOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional deployment plugin, executor, health check, and activity service overrides. Missing plugin and activities use CloudflareDeployAdapter and desktopDeployments respectively; execute and health are forwarded to deployment execution.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeploymentService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns a DeploymentService instance initialized with the supplied session and options; omitted options select the default Cloudflare deployment plugin and activity service."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
