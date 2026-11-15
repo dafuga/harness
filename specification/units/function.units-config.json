@@ -43,63 +43,112 @@
 				"name": "pathMatches.path",
 				"type": "string",
 				"required": true,
-				"description": "Forward-slash path to compare with a pattern."
+				"description": "Path string passed to the matcher; wildcard matching treats `/` as the segment boundary.",
+				"examples": ["src/core/development-tooling/unitsConfig.ts", "src/core/unitsConfig.ts"]
 			},
 			{
 				"name": "pathMatches.pattern",
 				"type": "string",
 				"required": true,
-				"description": "Exact path, directory prefix ending slash, or supported wildcard pattern."
+				"description": "Pattern checked against the path; without `*` it matches exactly, a trailing `/` is a prefix, and wildcard `*` stays within one segment while `**/` can cross directories.",
+				"examples": ["src/core/", "**/*.ts", "src/core/unitsConfig.ts"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "unitsConfigFile",
 				"type": "unknown",
-				"description": "Configuration filename harness.units.json."
+				"description": "Fixed filename constant for the units configuration; its value is `harness.units.json` and it is included in `defaultGlobalFiles`.",
+				"examples": ["harness.units.json"]
 			},
 			{
 				"name": "unitsDirectory",
 				"type": "unknown",
-				"description": "Unit manifest directory specification/units."
+				"description": "Fixed path constant for unit specifications; its value is `specification/units`.",
+				"examples": ["specification/units"]
 			},
 			{
 				"name": "scenariosDirectory",
 				"type": "unknown",
-				"description": "Scenario manifest directory specification/scenarios."
+				"description": "Fixed path constant for scenario specifications; its value is `specification/scenarios`.",
+				"examples": ["specification/scenarios"]
 			},
 			{
 				"name": "budgetsLedger",
 				"type": "unknown",
-				"description": "Budget ledger path specification/budgets/ledger.ndjson."
+				"description": "Fixed path constant for the budget ledger; its value is `specification/budgets/ledger.ndjson`.",
+				"examples": ["specification/budgets/ledger.ndjson"]
 			},
 			{
 				"name": "workloadsDirectory",
 				"type": "unknown",
-				"description": "Benchmark workload directory specification/workloads."
+				"description": "Fixed path constant for benchmark workloads; changing a workload changes what every measurement of it means.",
+				"examples": ["specification/workloads"]
 			},
 			{
 				"name": "unitsConfigSchema",
 				"type": "unknown",
-				"description": "Strict version 1 schema for workspaces, test/global/ignored patterns and declared source-reference mappings."
+				"description": "Strict Zod schema for objects with `schemaVersion: 1` and at least one workspace; unknown fields are rejected. Workspace roots, test/global/ignored entries, and reference from/specifier/reason fields must be nonempty strings, while reference to/external fields are optional strings."
 			},
 			{
 				"name": "defaultGlobalFiles",
 				"type": "unknown",
-				"description": "Known root/workspace configuration filenames whose changes can affect every unit and test."
+				"description": "Fixed list of files whose changes can affect every unit and therefore every test.",
+				"examples": [
+					[
+						"package.json",
+						"bun.lock",
+						"bun.lockb",
+						"tsconfig.json",
+						"vitest.config.ts",
+						"vite.config.ts",
+						"svelte.config.js",
+						"playwright.config.ts",
+						"eslint.config.js",
+						"eslint.harness-rules.js",
+						"harness.audit.json",
+						"harness.groups.json",
+						"harness.units.json",
+						"harness.verify.json",
+						"tailwind.config.js",
+						"postcss.config.js",
+						".prettierrc",
+						"Cargo.toml",
+						"Cargo.lock",
+						"rust-toolchain.toml",
+						"test/setup.ts"
+					]
+				]
 			},
 			{
 				"name": "defaultUnitsConfig",
 				"type": "UnitsConfig",
-				"description": "Default root workspace, test/ and tests/ patterns, no explicit globals or references, and ignored Markdown, feature/loop specs and .gitignore."
+				"description": "Default configuration has one workspace with an empty name and root `.`, tests `test/` and `tests/`, no global patterns or references, and ignores Markdown files, feature/loop specifications, and `.gitignore`.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"workspaces": [
+							{
+								"name": "",
+								"root": "."
+							}
+						],
+						"tests": ["test/", "tests/"],
+						"global": [],
+						"ignored": ["**/*.md", "specification/features/", "specification/loops/", ".gitignore"],
+						"references": []
+					}
+				]
 			},
 			{
 				"name": "pathMatches",
 				"type": "boolean",
-				"description": "True for exact match, trailing-slash prefix or wildcard match; **/ can span zero or more directories and * remains within a segment."
+				"description": "Returns true for exact matches, trailing-slash prefix matches, and supported wildcard matches; `**/` can match zero or more directories and `*` cannot cross `/`.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "pathMatches",
@@ -108,24 +157,27 @@
 						"name": "pathMatches.path",
 						"type": "string",
 						"required": true,
-						"description": "Forward-slash path to compare with a pattern."
+						"description": "Path string passed to the matcher; wildcard matching treats `/` as the segment boundary.",
+						"examples": ["src/core/development-tooling/unitsConfig.ts", "src/core/unitsConfig.ts"]
 					},
 					{
 						"name": "pathMatches.pattern",
 						"type": "string",
 						"required": true,
-						"description": "Exact path, directory prefix ending slash, or supported wildcard pattern."
+						"description": "Pattern checked against the path; without `*` it matches exactly, a trailing `/` is a prefix, and wildcard `*` stays within one segment while `**/` can cross directories.",
+						"examples": ["src/core/", "**/*.ts", "src/core/unitsConfig.ts"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "pathMatches",
 						"type": "boolean",
-						"description": "True for exact match, trailing-slash prefix or wildcard match; **/ can span zero or more directories and * remains within a segment."
+						"description": "Returns true for exact matches, trailing-slash prefix matches, and supported wildcard matches; `**/` can match zero or more directories and `*` cannot cross `/`.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
