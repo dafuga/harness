@@ -35,51 +35,728 @@
 				"name": "verdictRecord.detail",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Revision whose records should be selected."
+				"description": "The revision whose attached records are searched for the one that judges it; its registry is not read. Only a record marked valid whose source commit equals this revision's commit can be selected.",
+				"examples": [
+					{
+						"commit": "6c1f0a8e2d94b37f5a0e61c8d2b7f94a3e05d812",
+						"registry": {
+							"available": false,
+							"gap": "no unit registry is stored at this revision",
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [
+							{
+								"id": "3b8e5f1d0a92c74e6f2b18d9a50c3e7f4b61d20a8c95e3f7b04d2a6c19e8f5b3",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "6c1f0a8e2d94b37f5a0e61c8d2b7f94a3e05d812",
+									"base": "1e9b4d7a03c6f258e8d1a94b7c0e3f62d5a8b019"
+								},
+								"profile": "7d0c4a2e91b5f836",
+								"startedAt": "2026-11-14T10:02:17.384Z",
+								"finishedAt": "2026-11-14T10:04:52.907Z",
+								"gates": {
+									"snapshot": "passed",
+									"registry": "passed",
+									"ledger": "passed",
+									"tests": "passed",
+									"scenarios": "passed",
+									"reasons": "passed",
+									"budgets": "passed"
+								},
+								"failures": [],
+								"tests": [
+									{
+										"id": "test/utils/explorer-verdict.test.ts",
+										"kind": "unit",
+										"target": "test/utils/explorer-verdict.test.ts",
+										"status": "passed",
+										"durationMs": 1842
+									}
+								],
+								"scenarios": [],
+								"measurements": [
+									{
+										"unit": "reports.function.explorer-verdict",
+										"metric": "source-bytes",
+										"method": "Sum of the byte sizes of the owned source files.",
+										"unitOfMeasure": "bytes",
+										"value": 9124,
+										"workload": null,
+										"profile": null,
+										"testedRevision": "6c1f0a8e2d94b37f5a0e61c8d2b7f94a3e05d812"
+									}
+								],
+								"budgets": {
+									"findings": []
+								}
+							}
+						],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "verdictCoverage.unit",
 				"type": "Pick<HarnessUnit, 'id'>",
 				"required": true,
-				"description": "Unit identifier whose scenarios should be judged."
+				"description": "The unit whose id alone is read: each registry scenario that lists this id among its units is judged for it. The unit's other fields are not used.",
+				"examples": [
+					{
+						"id": "reports.function.explorer-verdict"
+					},
+					{
+						"id": "reports.function.explorer-coverage"
+					}
+				]
 			},
 			{
 				"name": "verdictCoverage.detail",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Revision providing registry and verification records."
+				"description": "The revision whose registry supplies the units and scenarios, whose verdict record judges their states, and whose comparison or source impact shows whether an inherited result is still affected. Without an available registry the result is an empty list.",
+				"examples": [
+					{
+						"commit": "a84d1f6e0b27c93d5e1a8f40b62c97d13e0f5a28",
+						"registry": {
+							"available": false,
+							"gap": "no unit registry is stored at this revision",
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					},
+					{
+						"commit": "3d8e62b0f9a15c47e0d3b6a81f2c95e7d04a1b63",
+						"registry": {
+							"available": true,
+							"units": [
+								{
+									"id": "reports.function.explorer-verdict",
+									"kind": "function",
+									"status": "active",
+									"title": "Entity verification verdict",
+									"responsibility": "Judges an entity using the newest valid record of its exact revision and its applicable coverage.",
+									"dependencies": [
+										{
+											"unit": "reports.function.explorer-coverage",
+											"via": "import"
+										},
+										{
+											"unit": "reports.function.explorer-state",
+											"via": "import"
+										},
+										{
+											"unit": "reports.model.explorer-types",
+											"via": "import"
+										},
+										{
+											"unit": "reports.model.harness-types",
+											"via": "import"
+										}
+									],
+									"scenarios": ["explorer-verdict"],
+									"owns": {
+										"source": [
+											"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.ts",
+											"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.types.ts",
+											"packages/reports/src/utils/explorer-verdict/explorerVerdict.ts",
+											"packages/reports/src/utils/explorerVerdict.ts"
+										],
+										"symbols": [
+											"verdictRecord",
+											"verdictCoverage",
+											"explorerVerdict",
+											"Kind",
+											"Reason",
+											"verdictRecord",
+											"verdictCoverage",
+											"explorerVerdict",
+											"verdictRecord",
+											"verdictCoverage",
+											"explorerVerdict"
+										]
+									},
+									"contract": {
+										"inputs": [
+											{
+												"name": "verdictRecord.detail",
+												"type": "HarnessRevision",
+												"required": true
+											},
+											{
+												"name": "verdictCoverage.unit",
+												"type": "Pick<HarnessUnit, 'id'>",
+												"required": true
+											},
+											{
+												"name": "verdictCoverage.detail",
+												"type": "HarnessRevision",
+												"required": true
+											},
+											{
+												"name": "explorerVerdict.unit",
+												"type": "HarnessUnit",
+												"required": true
+											},
+											{
+												"name": "explorerVerdict.detail",
+												"type": "HarnessRevision",
+												"required": true
+											}
+										],
+										"outputs": [
+											{
+												"name": "verdictRecord",
+												"type": "HarnessRecord | null"
+											},
+											{
+												"name": "verdictCoverage",
+												"type": "ExplorerScenarioCoverage[]"
+											},
+											{
+												"name": "explorerVerdict",
+												"type": "ExplorerVerdict"
+											}
+										],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/utils/explorerVerdict.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "a09f3c6d18e7b254"
+								}
+							],
+							"scenarios": [
+								{
+									"id": "explorer-verdict",
+									"title": "Verdict judged for each entity",
+									"kind": "headless",
+									"units": ["reports.function.explorer-verdict"],
+									"states": [
+										{
+											"id": "judged",
+											"title": "Verdict judged",
+											"coverage": "required"
+										}
+									],
+									"viewports": [],
+									"tests": [
+										{
+											"id": "verdict-judgement",
+											"kind": "unit",
+											"runner": "vitest"
+										}
+									],
+									"evidence": [
+										{
+											"id": "verdict-assertions",
+											"kind": "assertions",
+											"states": ["judged"],
+											"viewports": []
+										}
+									]
+								}
+							],
+							"graph": {
+								"edges": [
+									{
+										"from": "scenario:explorer-verdict",
+										"to": "unit:reports.function.explorer-verdict",
+										"via": "covers"
+									}
+								]
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "explorerVerdict.unit",
 				"type": "HarnessUnit",
 				"required": true,
-				"description": "Unit whose overall proof is requested."
+				"description": "The unit whose id alone is read: it selects the scenarios that cover the unit and the failures and budget findings of the verdict record that name it. Its other fields are not used.",
+				"examples": [
+					{
+						"id": "reports.function.explorer-verdict",
+						"kind": "function",
+						"status": "active",
+						"title": "Entity verification verdict",
+						"responsibility": "Judges an entity using the newest valid record of its exact revision and its applicable coverage.",
+						"dependencies": [
+							{
+								"unit": "reports.function.explorer-coverage",
+								"via": "import"
+							},
+							{
+								"unit": "reports.function.explorer-state",
+								"via": "import"
+							},
+							{
+								"unit": "reports.model.explorer-types",
+								"via": "import"
+							},
+							{
+								"unit": "reports.model.harness-types",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": [
+								"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.ts",
+								"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.types.ts",
+								"packages/reports/src/utils/explorer-verdict/explorerVerdict.ts",
+								"packages/reports/src/utils/explorerVerdict.ts"
+							],
+							"symbols": [
+								"verdictRecord",
+								"verdictCoverage",
+								"explorerVerdict",
+								"Kind",
+								"Reason",
+								"verdictRecord",
+								"verdictCoverage",
+								"explorerVerdict",
+								"verdictRecord",
+								"verdictCoverage",
+								"explorerVerdict"
+							]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "verdictRecord.detail",
+									"type": "HarnessRevision",
+									"required": true
+								},
+								{
+									"name": "verdictCoverage.unit",
+									"type": "Pick<HarnessUnit, 'id'>",
+									"required": true
+								},
+								{
+									"name": "verdictCoverage.detail",
+									"type": "HarnessRevision",
+									"required": true
+								},
+								{
+									"name": "explorerVerdict.unit",
+									"type": "HarnessUnit",
+									"required": true
+								},
+								{
+									"name": "explorerVerdict.detail",
+									"type": "HarnessRevision",
+									"required": true
+								}
+							],
+							"outputs": [
+								{
+									"name": "verdictRecord",
+									"type": "HarnessRecord | null"
+								},
+								{
+									"name": "verdictCoverage",
+									"type": "ExplorerScenarioCoverage[]"
+								},
+								{
+									"name": "explorerVerdict",
+									"type": "ExplorerVerdict"
+								}
+							],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/utils/explorerVerdict.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "4b7e91c0d25a8f36"
+					}
+				]
 			},
 			{
 				"name": "explorerVerdict.detail",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Revision supplying records, coverage and budget findings."
+				"description": "The revision whose registry, comparison and records supply the verdict. Without an available registry or a valid record of its commit, the verdict names the missing or unusable evidence instead of judging the unit.",
+				"examples": [
+					{
+						"commit": "6c1f0a8e2d94b37f5a0e61c8d2b7f94a3e05d812",
+						"registry": {
+							"available": true,
+							"units": [
+								{
+									"id": "reports.function.explorer-verdict",
+									"kind": "function",
+									"status": "active",
+									"title": "Entity verification verdict",
+									"responsibility": "Judges an entity using the newest valid record of its exact revision and its applicable coverage.",
+									"dependencies": [
+										{
+											"unit": "reports.function.explorer-coverage",
+											"via": "import"
+										},
+										{
+											"unit": "reports.function.explorer-state",
+											"via": "import"
+										},
+										{
+											"unit": "reports.model.explorer-types",
+											"via": "import"
+										},
+										{
+											"unit": "reports.model.harness-types",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.ts",
+											"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.types.ts",
+											"packages/reports/src/utils/explorer-verdict/explorerVerdict.ts",
+											"packages/reports/src/utils/explorerVerdict.ts"
+										],
+										"symbols": [
+											"verdictRecord",
+											"verdictCoverage",
+											"explorerVerdict",
+											"Kind",
+											"Reason",
+											"verdictRecord",
+											"verdictCoverage",
+											"explorerVerdict",
+											"verdictRecord",
+											"verdictCoverage",
+											"explorerVerdict"
+										]
+									},
+									"contract": {
+										"inputs": [
+											{
+												"name": "verdictRecord.detail",
+												"type": "HarnessRevision",
+												"required": true
+											},
+											{
+												"name": "verdictCoverage.unit",
+												"type": "Pick<HarnessUnit, 'id'>",
+												"required": true
+											},
+											{
+												"name": "verdictCoverage.detail",
+												"type": "HarnessRevision",
+												"required": true
+											},
+											{
+												"name": "explorerVerdict.unit",
+												"type": "HarnessUnit",
+												"required": true
+											},
+											{
+												"name": "explorerVerdict.detail",
+												"type": "HarnessRevision",
+												"required": true
+											}
+										],
+										"outputs": [
+											{
+												"name": "verdictRecord",
+												"type": "HarnessRecord | null"
+											},
+											{
+												"name": "verdictCoverage",
+												"type": "ExplorerScenarioCoverage[]"
+											},
+											{
+												"name": "explorerVerdict",
+												"type": "ExplorerVerdict"
+											}
+										],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/utils/explorerVerdict.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "4b7e91c0d25a8f36"
+								}
+							],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [
+							{
+								"id": "3b8e5f1d0a92c74e6f2b18d9a50c3e7f4b61d20a8c95e3f7b04d2a6c19e8f5b3",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "6c1f0a8e2d94b37f5a0e61c8d2b7f94a3e05d812",
+									"base": "1e9b4d7a03c6f258e8d1a94b7c0e3f62d5a8b019"
+								},
+								"profile": "7d0c4a2e91b5f836",
+								"startedAt": "2026-11-14T10:02:17.384Z",
+								"finishedAt": "2026-11-14T10:04:52.907Z",
+								"gates": {
+									"snapshot": "passed",
+									"registry": "passed",
+									"ledger": "passed",
+									"tests": "passed",
+									"scenarios": "passed",
+									"reasons": "passed",
+									"budgets": "passed"
+								},
+								"failures": [],
+								"tests": [
+									{
+										"id": "test/utils/explorer-verdict.test.ts",
+										"kind": "unit",
+										"target": "test/utils/explorer-verdict.test.ts",
+										"status": "passed",
+										"durationMs": 1842
+									}
+								],
+								"scenarios": [],
+								"measurements": [
+									{
+										"unit": "reports.function.explorer-verdict",
+										"metric": "source-bytes",
+										"method": "Sum of the byte sizes of the owned source files.",
+										"unitOfMeasure": "bytes",
+										"value": 9124,
+										"workload": null,
+										"profile": null,
+										"testedRevision": "6c1f0a8e2d94b37f5a0e61c8d2b7f94a3e05d812"
+									}
+								],
+								"budgets": {
+									"findings": []
+								}
+							}
+						],
+						"explanations": []
+					},
+					{
+						"commit": "b5e0d27c93a4f1e86d0b3c52a7f9e14d8c6a20f5",
+						"registry": {
+							"available": false,
+							"gap": "no unit registry is stored at this revision",
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "verdictRecord",
 				"type": "HarnessRecord | null",
-				"description": "Newest valid record whose source commit exactly matches the revision, ordered by finishedAt text, or null."
+				"description": "The newest record that is valid and whose source commit is exactly the revision's commit, with finishedAt compared as text; it is null when no record qualifies. A record of another commit, or one that is not valid, is never returned even when it is newer.",
+				"examples": [
+					{
+						"id": "3b8e5f1d0a92c74e6f2b18d9a50c3e7f4b61d20a8c95e3f7b04d2a6c19e8f5b3",
+						"status": "passed",
+						"valid": true,
+						"problems": [],
+						"source": {
+							"commit": "6c1f0a8e2d94b37f5a0e61c8d2b7f94a3e05d812",
+							"base": "1e9b4d7a03c6f258e8d1a94b7c0e3f62d5a8b019"
+						},
+						"profile": "7d0c4a2e91b5f836",
+						"startedAt": "2026-11-14T10:02:17.384Z",
+						"finishedAt": "2026-11-14T10:04:52.907Z",
+						"gates": {
+							"snapshot": "passed",
+							"registry": "passed",
+							"ledger": "passed",
+							"tests": "passed",
+							"scenarios": "passed",
+							"reasons": "passed",
+							"budgets": "passed"
+						},
+						"failures": [],
+						"tests": [
+							{
+								"id": "test/utils/explorer-verdict.test.ts",
+								"kind": "unit",
+								"target": "test/utils/explorer-verdict.test.ts",
+								"status": "passed",
+								"durationMs": 1842
+							}
+						],
+						"scenarios": [],
+						"measurements": [
+							{
+								"unit": "reports.function.explorer-verdict",
+								"metric": "source-bytes",
+								"method": "Sum of the byte sizes of the owned source files.",
+								"unitOfMeasure": "bytes",
+								"value": 9124,
+								"workload": null,
+								"profile": null,
+								"testedRevision": "6c1f0a8e2d94b37f5a0e61c8d2b7f94a3e05d812"
+							}
+						],
+						"budgets": {
+							"findings": []
+						}
+					},
+					{
+						"id": "e72d9a0c4f13b8685a1d7e0c92f4b6a3d58e1c07f9b24a6e0d3c8f571a2b94e6",
+						"status": "failed",
+						"valid": true,
+						"problems": [],
+						"source": {
+							"commit": "a84d1f6e0b27c93d5e1a8f40b62c97d13e0f5a28",
+							"base": "6c1f0a8e2d94b37f5a0e61c8d2b7f94a3e05d812"
+						},
+						"profile": "7d0c4a2e91b5f836",
+						"startedAt": "2026-11-14T16:40:03.215Z",
+						"finishedAt": "2026-11-14T16:41:27.650Z",
+						"gates": {
+							"snapshot": "passed",
+							"registry": "passed",
+							"ledger": "passed",
+							"tests": "failed",
+							"scenarios": "passed",
+							"reasons": "passed",
+							"budgets": "passed"
+						},
+						"failures": ["test test/utils/explorer-verdict.test.ts failed with exit code 1"],
+						"tests": [
+							{
+								"id": "test/utils/explorer-verdict.test.ts",
+								"kind": "unit",
+								"target": "test/utils/explorer-verdict.test.ts",
+								"status": "failed",
+								"durationMs": 2107
+							}
+						],
+						"scenarios": [],
+						"measurements": [],
+						"budgets": {
+							"findings": []
+						}
+					},
+					null
+				]
 			},
 			{
 				"name": "verdictCoverage",
 				"type": "ExplorerScenarioCoverage[]",
-				"description": "Coverage of scenarios naming the unit, narrowed state by state. No registry yields an empty list; absent usable records leave required states without proof."
+				"description": "One entry for each registry scenario that lists the unit, judged state by state against the revision's verdict record, with the worst standing of its own findings and states. Without an available registry the list is empty; without a usable record every entry stands as missing with the reason the revision is unjudged.",
+				"examples": [
+					[],
+					[
+						{
+							"scenario": "explorer-verdict",
+							"title": "Verdict judged for each entity",
+							"kind": "headless",
+							"standing": "missing",
+							"reasons": ["No verification record is attached to this commit."],
+							"tests": [
+								{
+									"id": "verdict-judgement",
+									"status": null
+								}
+							],
+							"inheritedFrom": null,
+							"states": [
+								{
+									"state": "judged",
+									"declared": "required",
+									"standing": "missing",
+									"reasons": [],
+									"slots": []
+								}
+							]
+						}
+					]
+				]
 			},
 			{
 				"name": "explorerVerdict",
 				"type": "ExplorerVerdict",
-				"description": "Passed only when applicable checks leave no blocking reason: required gates exist, global gates and tests pass, scenarios establish applicable coverage, and the unit has no open failures or budget findings. Labels distinguish unusable, failed, stale, missing and incomplete evidence; reasons are deduplicated and stripped of matching file-location wording."
+				"description": "Whether the unit is proven at the revision: a verdict passes only when no reason blocks it, and otherwise its label names the worst kind of reason among unusable, failed, stale, missing and incomplete. Each reason is listed once, with file locations removed from its wording.",
+				"examples": [
+					{
+						"passed": true,
+						"label": "Full coverage passed",
+						"reasons": []
+					},
+					{
+						"passed": false,
+						"label": "Coverage incomplete",
+						"reasons": ["No scenario covers this unit; tests alone do not show how it behaves."]
+					},
+					{
+						"passed": false,
+						"label": "Evidence missing",
+						"reasons": ["no unit registry is stored at this revision"]
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "verdictRecord",
@@ -88,18 +765,172 @@
 						"name": "verdictRecord.detail",
 						"type": "HarnessRevision",
 						"required": true,
-						"description": "Revision whose records should be selected."
+						"description": "The revision whose attached records are searched for the one that judges it; its registry is not read. Only a record marked valid whose source commit equals this revision's commit can be selected.",
+						"examples": [
+							{
+								"commit": "6c1f0a8e2d94b37f5a0e61c8d2b7f94a3e05d812",
+								"registry": {
+									"available": false,
+									"gap": "no unit registry is stored at this revision",
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"records": [
+									{
+										"id": "3b8e5f1d0a92c74e6f2b18d9a50c3e7f4b61d20a8c95e3f7b04d2a6c19e8f5b3",
+										"status": "passed",
+										"valid": true,
+										"problems": [],
+										"source": {
+											"commit": "6c1f0a8e2d94b37f5a0e61c8d2b7f94a3e05d812",
+											"base": "1e9b4d7a03c6f258e8d1a94b7c0e3f62d5a8b019"
+										},
+										"profile": "7d0c4a2e91b5f836",
+										"startedAt": "2026-11-14T10:02:17.384Z",
+										"finishedAt": "2026-11-14T10:04:52.907Z",
+										"gates": {
+											"snapshot": "passed",
+											"registry": "passed",
+											"ledger": "passed",
+											"tests": "passed",
+											"scenarios": "passed",
+											"reasons": "passed",
+											"budgets": "passed"
+										},
+										"failures": [],
+										"tests": [
+											{
+												"id": "test/utils/explorer-verdict.test.ts",
+												"kind": "unit",
+												"target": "test/utils/explorer-verdict.test.ts",
+												"status": "passed",
+												"durationMs": 1842
+											}
+										],
+										"scenarios": [],
+										"measurements": [
+											{
+												"unit": "reports.function.explorer-verdict",
+												"metric": "source-bytes",
+												"method": "Sum of the byte sizes of the owned source files.",
+												"unitOfMeasure": "bytes",
+												"value": 9124,
+												"workload": null,
+												"profile": null,
+												"testedRevision": "6c1f0a8e2d94b37f5a0e61c8d2b7f94a3e05d812"
+											}
+										],
+										"budgets": {
+											"findings": []
+										}
+									}
+								],
+								"explanations": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "verdictRecord",
 						"type": "HarnessRecord | null",
-						"description": "Newest valid record whose source commit exactly matches the revision, ordered by finishedAt text, or null."
+						"description": "The newest record that is valid and whose source commit is exactly the revision's commit, with finishedAt compared as text; it is null when no record qualifies. A record of another commit, or one that is not valid, is never returned even when it is newer.",
+						"examples": [
+							{
+								"id": "3b8e5f1d0a92c74e6f2b18d9a50c3e7f4b61d20a8c95e3f7b04d2a6c19e8f5b3",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "6c1f0a8e2d94b37f5a0e61c8d2b7f94a3e05d812",
+									"base": "1e9b4d7a03c6f258e8d1a94b7c0e3f62d5a8b019"
+								},
+								"profile": "7d0c4a2e91b5f836",
+								"startedAt": "2026-11-14T10:02:17.384Z",
+								"finishedAt": "2026-11-14T10:04:52.907Z",
+								"gates": {
+									"snapshot": "passed",
+									"registry": "passed",
+									"ledger": "passed",
+									"tests": "passed",
+									"scenarios": "passed",
+									"reasons": "passed",
+									"budgets": "passed"
+								},
+								"failures": [],
+								"tests": [
+									{
+										"id": "test/utils/explorer-verdict.test.ts",
+										"kind": "unit",
+										"target": "test/utils/explorer-verdict.test.ts",
+										"status": "passed",
+										"durationMs": 1842
+									}
+								],
+								"scenarios": [],
+								"measurements": [
+									{
+										"unit": "reports.function.explorer-verdict",
+										"metric": "source-bytes",
+										"method": "Sum of the byte sizes of the owned source files.",
+										"unitOfMeasure": "bytes",
+										"value": 9124,
+										"workload": null,
+										"profile": null,
+										"testedRevision": "6c1f0a8e2d94b37f5a0e61c8d2b7f94a3e05d812"
+									}
+								],
+								"budgets": {
+									"findings": []
+								}
+							},
+							{
+								"id": "e72d9a0c4f13b8685a1d7e0c92f4b6a3d58e1c07f9b24a6e0d3c8f571a2b94e6",
+								"status": "failed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "a84d1f6e0b27c93d5e1a8f40b62c97d13e0f5a28",
+									"base": "6c1f0a8e2d94b37f5a0e61c8d2b7f94a3e05d812"
+								},
+								"profile": "7d0c4a2e91b5f836",
+								"startedAt": "2026-11-14T16:40:03.215Z",
+								"finishedAt": "2026-11-14T16:41:27.650Z",
+								"gates": {
+									"snapshot": "passed",
+									"registry": "passed",
+									"ledger": "passed",
+									"tests": "failed",
+									"scenarios": "passed",
+									"reasons": "passed",
+									"budgets": "passed"
+								},
+								"failures": ["test test/utils/explorer-verdict.test.ts failed with exit code 1"],
+								"tests": [
+									{
+										"id": "test/utils/explorer-verdict.test.ts",
+										"kind": "unit",
+										"target": "test/utils/explorer-verdict.test.ts",
+										"status": "failed",
+										"durationMs": 2107
+									}
+								],
+								"scenarios": [],
+								"measurements": [],
+								"budgets": {
+									"findings": []
+								}
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "verdictCoverage",
@@ -108,24 +939,234 @@
 						"name": "verdictCoverage.unit",
 						"type": "Pick<HarnessUnit, 'id'>",
 						"required": true,
-						"description": "Unit identifier whose scenarios should be judged."
+						"description": "The unit whose id alone is read: each registry scenario that lists this id among its units is judged for it. The unit's other fields are not used.",
+						"examples": [
+							{
+								"id": "reports.function.explorer-verdict"
+							},
+							{
+								"id": "reports.function.explorer-coverage"
+							}
+						]
 					},
 					{
 						"name": "verdictCoverage.detail",
 						"type": "HarnessRevision",
 						"required": true,
-						"description": "Revision providing registry and verification records."
+						"description": "The revision whose registry supplies the units and scenarios, whose verdict record judges their states, and whose comparison or source impact shows whether an inherited result is still affected. Without an available registry the result is an empty list.",
+						"examples": [
+							{
+								"commit": "a84d1f6e0b27c93d5e1a8f40b62c97d13e0f5a28",
+								"registry": {
+									"available": false,
+									"gap": "no unit registry is stored at this revision",
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"records": [],
+								"explanations": []
+							},
+							{
+								"commit": "3d8e62b0f9a15c47e0d3b6a81f2c95e7d04a1b63",
+								"registry": {
+									"available": true,
+									"units": [
+										{
+											"id": "reports.function.explorer-verdict",
+											"kind": "function",
+											"status": "active",
+											"title": "Entity verification verdict",
+											"responsibility": "Judges an entity using the newest valid record of its exact revision and its applicable coverage.",
+											"dependencies": [
+												{
+													"unit": "reports.function.explorer-coverage",
+													"via": "import"
+												},
+												{
+													"unit": "reports.function.explorer-state",
+													"via": "import"
+												},
+												{
+													"unit": "reports.model.explorer-types",
+													"via": "import"
+												},
+												{
+													"unit": "reports.model.harness-types",
+													"via": "import"
+												}
+											],
+											"scenarios": ["explorer-verdict"],
+											"owns": {
+												"source": [
+													"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.ts",
+													"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.types.ts",
+													"packages/reports/src/utils/explorer-verdict/explorerVerdict.ts",
+													"packages/reports/src/utils/explorerVerdict.ts"
+												],
+												"symbols": [
+													"verdictRecord",
+													"verdictCoverage",
+													"explorerVerdict",
+													"Kind",
+													"Reason",
+													"verdictRecord",
+													"verdictCoverage",
+													"explorerVerdict",
+													"verdictRecord",
+													"verdictCoverage",
+													"explorerVerdict"
+												]
+											},
+											"contract": {
+												"inputs": [
+													{
+														"name": "verdictRecord.detail",
+														"type": "HarnessRevision",
+														"required": true
+													},
+													{
+														"name": "verdictCoverage.unit",
+														"type": "Pick<HarnessUnit, 'id'>",
+														"required": true
+													},
+													{
+														"name": "verdictCoverage.detail",
+														"type": "HarnessRevision",
+														"required": true
+													},
+													{
+														"name": "explorerVerdict.unit",
+														"type": "HarnessUnit",
+														"required": true
+													},
+													{
+														"name": "explorerVerdict.detail",
+														"type": "HarnessRevision",
+														"required": true
+													}
+												],
+												"outputs": [
+													{
+														"name": "verdictRecord",
+														"type": "HarnessRecord | null"
+													},
+													{
+														"name": "verdictCoverage",
+														"type": "ExplorerScenarioCoverage[]"
+													},
+													{
+														"name": "explorerVerdict",
+														"type": "ExplorerVerdict"
+													}
+												],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/utils/explorerVerdict.ts"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "a09f3c6d18e7b254"
+										}
+									],
+									"scenarios": [
+										{
+											"id": "explorer-verdict",
+											"title": "Verdict judged for each entity",
+											"kind": "headless",
+											"units": ["reports.function.explorer-verdict"],
+											"states": [
+												{
+													"id": "judged",
+													"title": "Verdict judged",
+													"coverage": "required"
+												}
+											],
+											"viewports": [],
+											"tests": [
+												{
+													"id": "verdict-judgement",
+													"kind": "unit",
+													"runner": "vitest"
+												}
+											],
+											"evidence": [
+												{
+													"id": "verdict-assertions",
+													"kind": "assertions",
+													"states": ["judged"],
+													"viewports": []
+												}
+											]
+										}
+									],
+									"graph": {
+										"edges": [
+											{
+												"from": "scenario:explorer-verdict",
+												"to": "unit:reports.function.explorer-verdict",
+												"via": "covers"
+											}
+										]
+									}
+								},
+								"comparison": null,
+								"records": [],
+								"explanations": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "verdictCoverage",
 						"type": "ExplorerScenarioCoverage[]",
-						"description": "Coverage of scenarios naming the unit, narrowed state by state. No registry yields an empty list; absent usable records leave required states without proof."
+						"description": "One entry for each registry scenario that lists the unit, judged state by state against the revision's verdict record, with the worst standing of its own findings and states. Without an available registry the list is empty; without a usable record every entry stands as missing with the reason the revision is unjudged.",
+						"examples": [
+							[],
+							[
+								{
+									"scenario": "explorer-verdict",
+									"title": "Verdict judged for each entity",
+									"kind": "headless",
+									"standing": "missing",
+									"reasons": ["No verification record is attached to this commit."],
+									"tests": [
+										{
+											"id": "verdict-judgement",
+											"status": null
+										}
+									],
+									"inheritedFrom": null,
+									"states": [
+										{
+											"state": "judged",
+											"declared": "required",
+											"standing": "missing",
+											"reasons": [],
+											"slots": []
+										}
+									]
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "explorerVerdict",
@@ -134,24 +1175,336 @@
 						"name": "explorerVerdict.unit",
 						"type": "HarnessUnit",
 						"required": true,
-						"description": "Unit whose overall proof is requested."
+						"description": "The unit whose id alone is read: it selects the scenarios that cover the unit and the failures and budget findings of the verdict record that name it. Its other fields are not used.",
+						"examples": [
+							{
+								"id": "reports.function.explorer-verdict",
+								"kind": "function",
+								"status": "active",
+								"title": "Entity verification verdict",
+								"responsibility": "Judges an entity using the newest valid record of its exact revision and its applicable coverage.",
+								"dependencies": [
+									{
+										"unit": "reports.function.explorer-coverage",
+										"via": "import"
+									},
+									{
+										"unit": "reports.function.explorer-state",
+										"via": "import"
+									},
+									{
+										"unit": "reports.model.explorer-types",
+										"via": "import"
+									},
+									{
+										"unit": "reports.model.harness-types",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": [
+										"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.ts",
+										"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.types.ts",
+										"packages/reports/src/utils/explorer-verdict/explorerVerdict.ts",
+										"packages/reports/src/utils/explorerVerdict.ts"
+									],
+									"symbols": [
+										"verdictRecord",
+										"verdictCoverage",
+										"explorerVerdict",
+										"Kind",
+										"Reason",
+										"verdictRecord",
+										"verdictCoverage",
+										"explorerVerdict",
+										"verdictRecord",
+										"verdictCoverage",
+										"explorerVerdict"
+									]
+								},
+								"contract": {
+									"inputs": [
+										{
+											"name": "verdictRecord.detail",
+											"type": "HarnessRevision",
+											"required": true
+										},
+										{
+											"name": "verdictCoverage.unit",
+											"type": "Pick<HarnessUnit, 'id'>",
+											"required": true
+										},
+										{
+											"name": "verdictCoverage.detail",
+											"type": "HarnessRevision",
+											"required": true
+										},
+										{
+											"name": "explorerVerdict.unit",
+											"type": "HarnessUnit",
+											"required": true
+										},
+										{
+											"name": "explorerVerdict.detail",
+											"type": "HarnessRevision",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "verdictRecord",
+											"type": "HarnessRecord | null"
+										},
+										{
+											"name": "verdictCoverage",
+											"type": "ExplorerScenarioCoverage[]"
+										},
+										{
+											"name": "explorerVerdict",
+											"type": "ExplorerVerdict"
+										}
+									],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/utils/explorerVerdict.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "4b7e91c0d25a8f36"
+							}
+						]
 					},
 					{
 						"name": "explorerVerdict.detail",
 						"type": "HarnessRevision",
 						"required": true,
-						"description": "Revision supplying records, coverage and budget findings."
+						"description": "The revision whose registry, comparison and records supply the verdict. Without an available registry or a valid record of its commit, the verdict names the missing or unusable evidence instead of judging the unit.",
+						"examples": [
+							{
+								"commit": "6c1f0a8e2d94b37f5a0e61c8d2b7f94a3e05d812",
+								"registry": {
+									"available": true,
+									"units": [
+										{
+											"id": "reports.function.explorer-verdict",
+											"kind": "function",
+											"status": "active",
+											"title": "Entity verification verdict",
+											"responsibility": "Judges an entity using the newest valid record of its exact revision and its applicable coverage.",
+											"dependencies": [
+												{
+													"unit": "reports.function.explorer-coverage",
+													"via": "import"
+												},
+												{
+													"unit": "reports.function.explorer-state",
+													"via": "import"
+												},
+												{
+													"unit": "reports.model.explorer-types",
+													"via": "import"
+												},
+												{
+													"unit": "reports.model.harness-types",
+													"via": "import"
+												}
+											],
+											"scenarios": [],
+											"owns": {
+												"source": [
+													"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.ts",
+													"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.types.ts",
+													"packages/reports/src/utils/explorer-verdict/explorerVerdict.ts",
+													"packages/reports/src/utils/explorerVerdict.ts"
+												],
+												"symbols": [
+													"verdictRecord",
+													"verdictCoverage",
+													"explorerVerdict",
+													"Kind",
+													"Reason",
+													"verdictRecord",
+													"verdictCoverage",
+													"explorerVerdict",
+													"verdictRecord",
+													"verdictCoverage",
+													"explorerVerdict"
+												]
+											},
+											"contract": {
+												"inputs": [
+													{
+														"name": "verdictRecord.detail",
+														"type": "HarnessRevision",
+														"required": true
+													},
+													{
+														"name": "verdictCoverage.unit",
+														"type": "Pick<HarnessUnit, 'id'>",
+														"required": true
+													},
+													{
+														"name": "verdictCoverage.detail",
+														"type": "HarnessRevision",
+														"required": true
+													},
+													{
+														"name": "explorerVerdict.unit",
+														"type": "HarnessUnit",
+														"required": true
+													},
+													{
+														"name": "explorerVerdict.detail",
+														"type": "HarnessRevision",
+														"required": true
+													}
+												],
+												"outputs": [
+													{
+														"name": "verdictRecord",
+														"type": "HarnessRecord | null"
+													},
+													{
+														"name": "verdictCoverage",
+														"type": "ExplorerScenarioCoverage[]"
+													},
+													{
+														"name": "explorerVerdict",
+														"type": "ExplorerVerdict"
+													}
+												],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/utils/explorerVerdict.ts"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "4b7e91c0d25a8f36"
+										}
+									],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"records": [
+									{
+										"id": "3b8e5f1d0a92c74e6f2b18d9a50c3e7f4b61d20a8c95e3f7b04d2a6c19e8f5b3",
+										"status": "passed",
+										"valid": true,
+										"problems": [],
+										"source": {
+											"commit": "6c1f0a8e2d94b37f5a0e61c8d2b7f94a3e05d812",
+											"base": "1e9b4d7a03c6f258e8d1a94b7c0e3f62d5a8b019"
+										},
+										"profile": "7d0c4a2e91b5f836",
+										"startedAt": "2026-11-14T10:02:17.384Z",
+										"finishedAt": "2026-11-14T10:04:52.907Z",
+										"gates": {
+											"snapshot": "passed",
+											"registry": "passed",
+											"ledger": "passed",
+											"tests": "passed",
+											"scenarios": "passed",
+											"reasons": "passed",
+											"budgets": "passed"
+										},
+										"failures": [],
+										"tests": [
+											{
+												"id": "test/utils/explorer-verdict.test.ts",
+												"kind": "unit",
+												"target": "test/utils/explorer-verdict.test.ts",
+												"status": "passed",
+												"durationMs": 1842
+											}
+										],
+										"scenarios": [],
+										"measurements": [
+											{
+												"unit": "reports.function.explorer-verdict",
+												"metric": "source-bytes",
+												"method": "Sum of the byte sizes of the owned source files.",
+												"unitOfMeasure": "bytes",
+												"value": 9124,
+												"workload": null,
+												"profile": null,
+												"testedRevision": "6c1f0a8e2d94b37f5a0e61c8d2b7f94a3e05d812"
+											}
+										],
+										"budgets": {
+											"findings": []
+										}
+									}
+								],
+								"explanations": []
+							},
+							{
+								"commit": "b5e0d27c93a4f1e86d0b3c52a7f9e14d8c6a20f5",
+								"registry": {
+									"available": false,
+									"gap": "no unit registry is stored at this revision",
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"records": [],
+								"explanations": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerVerdict",
 						"type": "ExplorerVerdict",
-						"description": "Passed only when applicable checks leave no blocking reason: required gates exist, global gates and tests pass, scenarios establish applicable coverage, and the unit has no open failures or budget findings. Labels distinguish unusable, failed, stale, missing and incomplete evidence; reasons are deduplicated and stripped of matching file-location wording."
+						"description": "Whether the unit is proven at the revision: a verdict passes only when no reason blocks it, and otherwise its label names the worst kind of reason among unusable, failed, stale, missing and incomplete. Each reason is listed once, with file locations removed from its wording.",
+						"examples": [
+							{
+								"passed": true,
+								"label": "Full coverage passed",
+								"reasons": []
+							},
+							{
+								"passed": false,
+								"label": "Coverage incomplete",
+								"reasons": ["No scenario covers this unit; tests alone do not show how it behaves."]
+							},
+							{
+								"passed": false,
+								"label": "Evidence missing",
+								"reasons": ["no unit registry is stored at this revision"]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
