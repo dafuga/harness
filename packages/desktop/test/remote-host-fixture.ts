@@ -7,7 +7,7 @@ import { DeviceConnectionService, DevicePairingService } from '../../remote/src/
 import type { DeviceCredentials, DeviceStatus } from '../../remote/src/index';
 import { RemoteHostStoreAdapter } from '../src/adapters/RemoteHostStoreAdapter';
 import type { AgentTurn } from '../src/models/AgentRunner.types';
-import { CommentOutboxService } from '../src/services/CommentOutboxService';
+import { CommentOutboxService } from '../src/services/projects-sessions/CommentOutboxService';
 import { RemoteHostService } from '../src/services/remote-host-service/RemoteHostService';
 import type { RemoteHostOptions } from '../src/services/remote-host-service/RemoteHostService';
 import { remoteFixture } from './remote-fixture';

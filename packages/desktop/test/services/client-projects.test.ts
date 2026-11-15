@@ -1,6 +1,6 @@
 import { afterEach, expect, test, vi } from 'vitest';
 import { ClientProjectsService } from '../../src/services/ClientProjectsService';
-import { CommentOutboxService } from '../../src/services/CommentOutboxService';
+import { CommentOutboxService } from '../../src/services/projects-sessions/CommentOutboxService';
 import { ProjectSessionService } from '../../src/services/ProjectSessionService';
 import { deferred, remoteFixture } from '../remote-fixture';
 

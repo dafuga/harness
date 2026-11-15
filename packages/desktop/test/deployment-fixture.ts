@@ -3,8 +3,8 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { DeploymentActivityService } from '../src/services/DeploymentActivityService';
-import { DeploymentService } from '../src/services/DeploymentService';
+import { DeploymentActivityService } from '../src/services/development-tooling/DeploymentActivityService';
+import { DeploymentService } from '../src/services/development-tooling/DeploymentService';
 import { ProjectSessionService } from '../src/services/ProjectSessionService';
 import type {
 	CloudflareTarget,

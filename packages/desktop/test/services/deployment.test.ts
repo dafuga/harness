@@ -1,6 +1,6 @@
 import { expect, test, vi } from 'vitest';
 import { execFileSync } from 'node:child_process';
-import { DeploymentService } from '../../src/services/DeploymentService';
+import { DeploymentService } from '../../src/services/development-tooling/DeploymentService';
 import { deploymentFixture as fixture } from '../deployment-fixture';
 test('promotion requires the same commit in every preceding environment and a reviewed single-use plan', async () => {
 	const f = await fixture();

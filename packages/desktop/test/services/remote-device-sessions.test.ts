@@ -10,7 +10,7 @@ import {
 } from '../../../remote/src/index';
 import type { RemoteKeyPair, SecurePacket } from '../../../remote/src/index';
 import type { RemoteHostDevice } from '../../src/adapters/RemoteHostStoreAdapter';
-import { CommentOutboxService } from '../../src/services/CommentOutboxService';
+import { CommentOutboxService } from '../../src/services/projects-sessions/CommentOutboxService';
 import { RemoteDeviceSessionsService } from '../../src/services/RemoteDeviceSessionsService';
 import type { DeviceAddress } from '../../src/services/RemoteDeviceSessionsService';
 import { remoteFixture } from '../remote-fixture';

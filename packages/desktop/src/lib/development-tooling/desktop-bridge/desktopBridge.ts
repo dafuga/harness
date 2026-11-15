@@ -6,7 +6,7 @@ import type { BridgeContext } from './desktopBridge.types';
 import { GameImageService } from './GameImageService';
 import { GameProjectService } from './GameProjectService';
 import { GameRenderService } from './GameRenderService';
-import { DeploymentService } from '../../../services/DeploymentService';
+import { DeploymentService } from '../../../services/development-tooling/DeploymentService';
 import { repositoryLease } from '../../../utils/projects-sessions/repositoryLease';
 import { ProjectImageCacheService } from './ProjectImageCacheService';
 import { ProjectOperationsService } from './ProjectOperationsService';

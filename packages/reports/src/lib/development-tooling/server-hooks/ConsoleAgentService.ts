@@ -11,7 +11,7 @@ import { IpcRequestValidator } from '../../../../../desktop/src/validators/IpcRe
 import { channels, type RunEvent } from '../../../../../desktop/src/models/DesktopBridge.types';
 import type { RevisionQuery } from '../../../../../desktop/src/models/DesktopBridge.types';
 import { join } from 'node:path';
-import { CommentOutboxService } from '../../../../../desktop/src/services/CommentOutboxService';
+import { CommentOutboxService } from '../../../../../desktop/src/services/projects-sessions/CommentOutboxService';
 import { reportSite } from '../../../utils/reports-media/reportSite';
 
 const arbiter = new RepositoryArbiterService();

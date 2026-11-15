@@ -7,7 +7,7 @@ import type { GameDocument } from '../../game/src/models/game-authoring/Game.typ
 import { WebSocket as SocketClient } from 'ws';
 import type { RemoteHostStatus } from '../../remote/src/index';
 import type { AgentTurn } from '../src/models/AgentRunner.types';
-import { CommentOutboxService } from '../src/services/CommentOutboxService';
+import { CommentOutboxService } from '../src/services/projects-sessions/CommentOutboxService';
 import { LocalClientService } from '../src/services/LocalClientService';
 import type { LocalClientOptions } from '../src/services/LocalClientService';
 import type { LocalControl } from '../src/services/LocalOperationsService';
