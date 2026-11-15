@@ -52,16 +52,13 @@ const portable: Array<[string, unknown]> = [
 	['the largest finite double', { operation: 'version', ignored: Number.MAX_VALUE }]
 ];
 
-const artifacts = kernelArtifacts();
-const built = Boolean(artifacts.wasm && artifacts.native);
-const builtTest = test.skipIf(!built);
 const service = new UnitRuntimeService();
 let runtimes: Record<string, UnitRuntime>;
 let served: ServedRuntime;
 
 beforeAll(async () => {
-	if (!built) return;
-	const native = artifacts.native!;
+	const native = kernelArtifacts().native ?? '';
+	expect(native, 'run bun run build:kernel').not.toBe('');
 	served = await new RuntimeServerService().serve(service.kernel('module'), { port: 0 });
 	runtimes = {
 		module: service.kernel('module'),
@@ -73,17 +70,16 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-	if (!runtimes || !served) return;
 	await Promise.all(Object.values(runtimes).map((runtime) => runtime.close()));
 	await served.close();
 });
 
-builtTest('the reference refuses requests that are not portable JSON', () => {
+test('the reference refuses requests that are not portable JSON', () => {
 	for (const [name, request] of nonPortable) expect(impactKernel(request), name).toEqual(refused);
 	for (const [name, request] of portable) expect(impactKernel(request), name).toEqual(version);
 });
 
-builtTest('every runtime refuses a structured request it could not carry faithfully', async () => {
+test('every runtime refuses a structured request it could not carry faithfully', async () => {
 	for (const [name, request] of nonPortable) {
 		for (const [runtime, adapter] of Object.entries(runtimes)) {
 			const response = await adapter.invoke(request as RuntimeRequest);
@@ -92,7 +88,7 @@ builtTest('every runtime refuses a structured request it could not carry faithfu
 	}
 });
 
-builtTest('every runtime accepts the portable edge cases identically', async () => {
+test('every runtime accepts the portable edge cases identically', async () => {
 	for (const [name, request] of portable) {
 		for (const [runtime, adapter] of Object.entries(runtimes)) {
 			const response = await adapter.invoke(request as RuntimeRequest);
@@ -101,17 +97,14 @@ builtTest('every runtime accepts the portable edge cases identically', async () 
 	}
 });
 
-builtTest(
-	'a served unit refuses non-portable request text before it reaches the unit',
-	async () => {
-		for (const text of [
-			'{"operation":"version","ignored":1e400}',
-			'{"operation":"version","\\ud800":1}'
-		]) {
-			const response = await fetch(served.url, { method: 'POST', body: text });
-			expect(response.status).toBe(400);
-			expect(await response.json()).toEqual(refused);
-			expect(JSON.parse(impactKernelText(text))).toEqual(refused);
-		}
+test('a served unit refuses non-portable request text before it reaches the unit', async () => {
+	for (const text of [
+		'{"operation":"version","ignored":1e400}',
+		'{"operation":"version","\\ud800":1}'
+	]) {
+		const response = await fetch(served.url, { method: 'POST', body: text });
+		expect(response.status).toBe(400);
+		expect(await response.json()).toEqual(refused);
+		expect(JSON.parse(impactKernelText(text))).toEqual(refused);
 	}
-);
+});

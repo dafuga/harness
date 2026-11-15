@@ -41,8 +41,6 @@ const shared: Record<string, string> = {
 	'desktop.service.project-sync': sourceOf('desktop.service.project-sync'),
 	'desktop.store.workspace': sourceOf('desktop.store.workspace')
 };
-/** The Web workspace also imports the browser bridge, by relative path; a hub unit owns it. */
-const bridge = sourceOf('hub.function.browser-bridge');
 const indexer = new SourceIndexService();
 let loaded: LoadedUnits;
 beforeAll(async () => {
@@ -89,10 +87,8 @@ test('the source index resolves what the Web workspace imports of the shared wor
 	const owner = (path: string) =>
 		loaded.stored.find((unit) => unit.status === 'active' && unit.owns.source.includes(path))?.id;
 	const through = reached.filter((path) => path.startsWith('packages/desktop/'));
-	const aliased = through.filter((path) => path !== bridge);
-	expect(through.sort()).toEqual([...written().map(built), bridge].sort());
-	expect(owner(bridge)).toBe('hub.function.browser-bridge');
-	expect(Object.fromEntries(aliased.map((path) => [owner(path), path]))).toEqual(shared);
+	expect(through.sort()).toEqual(written().map(built).sort());
+	expect(Object.fromEntries(through.map((path) => [owner(path), path]))).toEqual(shared);
 	// None of them is left as a package from outside, and none is left unresolved.
 	expect(references.filter((item) => item.uncertain ?? item.external?.startsWith('$'))).toEqual([]);
 });

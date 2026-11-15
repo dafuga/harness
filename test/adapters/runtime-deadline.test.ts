@@ -13,7 +13,7 @@ const timeout = (ms: number): RuntimeResponse => ({
 	ok: false,
 	error: { code: 'runtime-timeout', message: `no response within ${ms} ms` }
 });
-const wasm = kernelArtifacts().wasm;
+const wasm = kernelArtifacts().wasm ?? '';
 const large = kernelWorkload(20_000, 3);
 
 /** Occupies the thread, so no timer can fire until it returns. */
@@ -62,24 +62,16 @@ test('a handler that finishes inside its deadline still succeeds', async () => {
 	expect(await runtime.invoke({ operation: 'version' })).toEqual(completed);
 });
 
-test.skipIf(!wasm)(
-	'a Wasm call that overruns its deadline is a timeout, and succeeds when given room',
-	async () => {
-		expect(await new WasmRuntimeAdapter(wasm!, { timeoutMs: 1 }).invoke(large)).toEqual(timeout(1));
-		expect((await new WasmRuntimeAdapter(wasm!, { timeoutMs: 60_000 }).invoke(large)).ok).toBe(
-			true
-		);
-	}
-);
+test('a Wasm call that overruns its deadline is a timeout, and succeeds when given room', async () => {
+	expect(wasm, 'run bun run build:kernel').not.toBe('');
+	expect(await new WasmRuntimeAdapter(wasm, { timeoutMs: 1 }).invoke(large)).toEqual(timeout(1));
+	expect((await new WasmRuntimeAdapter(wasm, { timeoutMs: 60_000 }).invoke(large)).ok).toBe(true);
+});
 
 test('declared targets and the kernel carry the deadline to in-process runtimes', async () => {
 	const strict = new UnitRuntimeService(resolve('.'), { timeoutMs: 1 });
-	if (wasm) {
-		expect(await strict.forTarget({ kind: 'wasm', entry: wasm }).invoke(large)).toEqual(timeout(1));
-		expect(await strict.kernel('wasm').invoke(large)).toEqual(timeout(1));
-	} else {
-		expect(() => strict.kernel('wasm')).toThrow('The wasm runtime is not built');
-	}
+	expect(await strict.forTarget({ kind: 'wasm', entry: wasm }).invoke(large)).toEqual(timeout(1));
+	expect(await strict.kernel('wasm').invoke(large)).toEqual(timeout(1));
 	expect(await strict.kernel('module').invoke(large)).toEqual(timeout(1));
 	const module = {
 		kind: 'module' as const,

@@ -25,21 +25,23 @@ beforeAll(async () => {
 		entry: 'src/utils/impactKernel.ts',
 		handler: 'impactKernel'
 	};
-	const targets = [
-		module,
-		...(artifacts.wasm ? [{ kind: 'wasm' as const, entry: artifacts.wasm }] : []),
-		...(artifacts.native ? [{ kind: 'process' as const, entry: artifacts.native }] : []),
-		{ kind: 'http' as const, entry: served.url }
-	];
 	manifest = {
 		...derived,
-		runtime: { ...module, targets }
+		runtime: {
+			...module,
+			targets: [
+				module,
+				{ kind: 'wasm', entry: artifacts.wasm ?? '' },
+				{ kind: 'process', entry: artifacts.native ?? '' },
+				{ kind: 'http', entry: served.url }
+			]
+		}
 	};
 });
 
 afterAll(() => served.close());
 
-test('a manifest with a handler and its declared targets is a valid unit', () => {
+test('a manifest with a handler and four targets is a valid unit', () => {
 	expect(
 		new ComponentManifestValidator().validate(manifest, 'function.impact-kernel.json').errors
 	).toEqual([]);
@@ -47,7 +49,7 @@ test('a manifest with a handler and its declared targets is a valid unit', () =>
 
 test('each declared execution target selects a working adapter of that kind', async () => {
 	const expected = { ok: true, output: { contract: 'impact-kernel/1' } };
-	for (const { kind } of manifest.runtime.targets) {
+	for (const kind of ['module', 'wasm', 'process', 'http'] as const) {
 		const runtime = service.forUnit(manifest, kind);
 		expect(runtime.kind).toBe(kind);
 		expect(await runtime.invoke({ operation: 'version' }), kind).toEqual(expected);
