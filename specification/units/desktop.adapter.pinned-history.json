@@ -31,60 +31,221 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "PinnedHistoryAdapter.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The path of the project's Git repository root, passed unchanged to every service and repository this adapter creates, so that all of its reads are made in that repository. The constructor does not check the path.",
+				"examples": ["/srv/git/harness-app", "/home/ci/work/harness-app"]
 			},
 			{
 				"name": "PinnedHistoryAdapter.facts.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Any revision of this repository that Git resolves to a commit, such as its full hash. facts returns the full hash that Git states, and it rejects when the repository holds no such commit.",
+				"examples": [
+					"3f9c2a1d7e4b6058c9a2d1f0e8b7c6a5d4e3f2b1",
+					"e2c9a47b5d1f8036a9e4c2d718b6f0ea4c7d93b5"
+				]
 			},
 			{
 				"name": "PinnedHistoryAdapter.revision.pins",
 				"type": "PinnedRevisions",
-				"required": true
+				"required": true,
+				"description": "The notes commit and the evidence commit the history is read at, each null where the repository has no such ref. The adapter keeps the reads of the last two pairs of pins and drops the others.",
+				"examples": [
+					{
+						"notesRevision": "a61d3f0e8c52b9d71e4f0a63d9b8c27e5a0f3e91",
+						"evidenceRevision": "7d20c4e9b1a6f85c03e7d2b49f5c1a8e6b3d0e27"
+					},
+					{
+						"notesRevision": null,
+						"evidenceRevision": "7d20c4e9b1a6f85c03e7d2b49f5c1a8e6b3d0e27"
+					}
+				]
 			},
 			{
 				"name": "PinnedHistoryAdapter.revision.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The commit to read at these pins, cached under exactly this string; the last four commits read at one pair of pins are kept. An unknown commit makes the read reject.",
+				"examples": [
+					"3f9c2a1d7e4b6058c9a2d1f0e8b7c6a5d4e3f2b1",
+					"e2c9a47b5d1f8036a9e4c2d718b6f0ea4c7d93b5"
+				]
 			},
 			{
 				"name": "PinnedHistoryAdapter.files.pins",
 				"type": "PinnedRevisions",
-				"required": true
+				"required": true,
+				"description": "The notes commit and the evidence commit the record is looked up at, each null where the repository has no such ref. Both the note lines that name the record and its evidence are read at these commits.",
+				"examples": [
+					{
+						"notesRevision": "a61d3f0e8c52b9d71e4f0a63d9b8c27e5a0f3e91",
+						"evidenceRevision": "7d20c4e9b1a6f85c03e7d2b49f5c1a8e6b3d0e27"
+					},
+					{
+						"notesRevision": null,
+						"evidenceRevision": "7d20c4e9b1a6f85c03e7d2b49f5c1a8e6b3d0e27"
+					}
+				]
 			},
 			{
 				"name": "PinnedHistoryAdapter.files.record",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The id of the record whose files are wanted, a 64-character sha256 hex digest as a verification or regression note line writes it. An id that no verification or regression line names gives undefined.",
+				"examples": [
+					"5e0c7b9a41d2f8e63a7c0b5d9e12f4a8c6b3d7e90f1a2c4b8d6e3f7a0c9b5d12",
+					"a3f81c6d02b9e7457c1d8f3a6b20e94d5c7a1f8e3b6d0c2a9e4f7b15d8c3a60e"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "PinnedHistoryAdapter.facts",
-				"type": "Promise<CommitFacts>"
+				"type": "Promise<CommitFacts>",
+				"description": "The commit as Git states it, with its full hash, its parent hashes, its subject line, its author's name and its committer date in strict ISO 8601, and nothing that is stored for it. The promise rejects when the repository holds no such commit.",
+				"examples": [
+					{
+						"commit": "3f9c2a1d7e4b6058c9a2d1f0e8b7c6a5d4e3f2b1",
+						"parents": ["9b1e6d470a3c8f25e7d91b6c4f2a0e83c5d7b19a"],
+						"subject": "Pin history reads to the notes and evidence revisions",
+						"author": "Sam Ortiz",
+						"committedAt": "2026-11-13T18:12:09+01:00"
+					},
+					{
+						"commit": "e2c9a47b5d1f8036a9e4c2d718b6f0ea4c7d93b5",
+						"parents": [],
+						"subject": "Initial commit",
+						"author": "Lee Park",
+						"committedAt": "2026-10-02T09:12:44-07:00"
+					}
+				]
 			},
 			{
 				"name": "PinnedHistoryAdapter.revision",
-				"type": "Promise<PinnedRevision>"
+				"type": "Promise<PinnedRevision>",
+				"description": "Everything stored for one commit at one pair of pinned revisions: its facts, its detail, the records attached to it as they are judged, and the ids of its legacy reports. The detail is the revision detail built by the revision detail service, cast to HarnessRevision without a check, and a read that fails or whose records are not all valid removes what is cached for these pins.",
+				"examples": [
+					{
+						"facts": {
+							"commit": "3f9c2a1d7e4b6058c9a2d1f0e8b7c6a5d4e3f2b1",
+							"parents": ["9b1e6d470a3c8f25e7d91b6c4f2a0e83c5d7b19a"],
+							"subject": "Pin history reads to the notes and evidence revisions",
+							"author": "Sam Ortiz",
+							"committedAt": "2026-11-13T18:12:09+01:00"
+						},
+						"detail": {
+							"commit": "3f9c2a1d7e4b6058c9a2d1f0e8b7c6a5d4e3f2b1",
+							"registry": {
+								"available": true,
+								"units": [],
+								"scenarios": [],
+								"graph": {
+									"edges": []
+								}
+							},
+							"comparison": {
+								"base": "9b1e6d470a3c8f25e7d91b6c4f2a0e83c5d7b19a",
+								"record": "5e0c7b9a41d2f8e63a7c0b5d9e12f4a8c6b3d7e90f1a2c4b8d6e3f7a0c9b5d12",
+								"units": {
+									"direct": [],
+									"indirect": [],
+									"added": [],
+									"removed": []
+								},
+								"scenarios": [],
+								"uncertain": []
+							},
+							"records": [
+								{
+									"id": "5e0c7b9a41d2f8e63a7c0b5d9e12f4a8c6b3d7e90f1a2c4b8d6e3f7a0c9b5d12",
+									"status": "passed",
+									"valid": true,
+									"problems": [],
+									"source": {
+										"commit": "3f9c2a1d7e4b6058c9a2d1f0e8b7c6a5d4e3f2b1",
+										"base": "9b1e6d470a3c8f25e7d91b6c4f2a0e83c5d7b19a"
+									},
+									"profile": "6f2b0a91d4c83e57",
+									"startedAt": "2026-11-13T17:31:02.417Z",
+									"finishedAt": "2026-11-13T17:40:27.963Z",
+									"failures": [],
+									"tests": [],
+									"scenarios": [],
+									"measurements": [],
+									"budgets": {
+										"findings": []
+									}
+								}
+							],
+							"explanations": []
+						},
+						"judged": {
+							"coverage": "verified",
+							"gaps": [],
+							"records": [
+								{
+									"id": "5e0c7b9a41d2f8e63a7c0b5d9e12f4a8c6b3d7e90f1a2c4b8d6e3f7a0c9b5d12",
+									"status": "passed",
+									"profile": "6f2b0a91d4c83e57",
+									"finishedAt": "2026-11-13T17:40:27.963Z",
+									"base": "9b1e6d470a3c8f25e7d91b6c4f2a0e83c5d7b19a",
+									"valid": true,
+									"problems": []
+								}
+							]
+						},
+						"legacy": []
+					},
+					{
+						"facts": {
+							"commit": "e2c9a47b5d1f8036a9e4c2d718b6f0ea4c7d93b5",
+							"parents": [],
+							"subject": "Initial commit",
+							"author": "Lee Park",
+							"committedAt": "2026-10-02T09:12:44-07:00"
+						},
+						"detail": {
+							"commit": "e2c9a47b5d1f8036a9e4c2d718b6f0ea4c7d93b5",
+							"registry": {
+								"available": true,
+								"units": [],
+								"scenarios": [],
+								"graph": {
+									"edges": []
+								}
+							},
+							"comparison": null,
+							"records": [],
+							"explanations": []
+						},
+						"judged": {
+							"coverage": "unverified",
+							"gaps": ["no verification record is attached to this commit"],
+							"records": []
+						},
+						"legacy": []
+					}
+				]
 			},
 			{
 				"name": "PinnedHistoryAdapter.files",
-				"type": "Promise<Map<string, Buffer> | undefined>"
+				"type": "Promise<Map<string, Buffer> | undefined>",
+				"description": "The files of the record with this id, keyed by path, or undefined when the verification line for this id names a record that is not intact (its id differs or it has problems) or when no verification or regression line names the id. A regression line's files come from its regression proof at the pinned evidence commit."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by facts with the message 'This commit is not in the repository of this project.' when the source-history repository returns no revision for the commit; revision rejects with it as well, because a read that is not cached awaits facts first."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "PinnedHistoryAdapter.facts",
@@ -92,22 +253,45 @@
 					{
 						"name": "PinnedHistoryAdapter.facts.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Any revision of this repository that Git resolves to a commit, such as its full hash. facts returns the full hash that Git states, and it rejects when the repository holds no such commit.",
+						"examples": [
+							"3f9c2a1d7e4b6058c9a2d1f0e8b7c6a5d4e3f2b1",
+							"e2c9a47b5d1f8036a9e4c2d718b6f0ea4c7d93b5"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PinnedHistoryAdapter.facts",
-						"type": "Promise<CommitFacts>"
+						"type": "Promise<CommitFacts>",
+						"description": "The commit as Git states it, with its full hash, its parent hashes, its subject line, its author's name and its committer date in strict ISO 8601, and nothing that is stored for it. The promise rejects when the repository holds no such commit.",
+						"examples": [
+							{
+								"commit": "3f9c2a1d7e4b6058c9a2d1f0e8b7c6a5d4e3f2b1",
+								"parents": ["9b1e6d470a3c8f25e7d91b6c4f2a0e83c5d7b19a"],
+								"subject": "Pin history reads to the notes and evidence revisions",
+								"author": "Sam Ortiz",
+								"committedAt": "2026-11-13T18:12:09+01:00"
+							},
+							{
+								"commit": "e2c9a47b5d1f8036a9e4c2d718b6f0ea4c7d93b5",
+								"parents": [],
+								"subject": "Initial commit",
+								"author": "Lee Park",
+								"committedAt": "2026-10-02T09:12:44-07:00"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by facts with the message 'This commit is not in the repository of this project.' when the source-history repository returns no revision for the commit, and the promise rejects with it."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PinnedHistoryAdapter.revision",
@@ -115,22 +299,147 @@
 					{
 						"name": "PinnedHistoryAdapter.revision.pins",
 						"type": "PinnedRevisions",
-						"required": true
+						"required": true,
+						"description": "The notes commit and the evidence commit the history is read at, each null where the repository has no such ref. The adapter keeps the reads of the last two pairs of pins and drops the others.",
+						"examples": [
+							{
+								"notesRevision": "a61d3f0e8c52b9d71e4f0a63d9b8c27e5a0f3e91",
+								"evidenceRevision": "7d20c4e9b1a6f85c03e7d2b49f5c1a8e6b3d0e27"
+							},
+							{
+								"notesRevision": null,
+								"evidenceRevision": "7d20c4e9b1a6f85c03e7d2b49f5c1a8e6b3d0e27"
+							}
+						]
 					},
 					{
 						"name": "PinnedHistoryAdapter.revision.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The commit to read at these pins, cached under exactly this string; the last four commits read at one pair of pins are kept. An unknown commit makes the read reject.",
+						"examples": [
+							"3f9c2a1d7e4b6058c9a2d1f0e8b7c6a5d4e3f2b1",
+							"e2c9a47b5d1f8036a9e4c2d718b6f0ea4c7d93b5"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PinnedHistoryAdapter.revision",
-						"type": "Promise<PinnedRevision>"
+						"type": "Promise<PinnedRevision>",
+						"description": "Everything stored for one commit at one pair of pinned revisions: its facts, its detail, the records attached to it as they are judged, and the ids of its legacy reports. The detail is the revision detail built by the revision detail service, cast to HarnessRevision without a check, and a read that fails or whose records are not all valid removes what is cached for these pins.",
+						"examples": [
+							{
+								"facts": {
+									"commit": "3f9c2a1d7e4b6058c9a2d1f0e8b7c6a5d4e3f2b1",
+									"parents": ["9b1e6d470a3c8f25e7d91b6c4f2a0e83c5d7b19a"],
+									"subject": "Pin history reads to the notes and evidence revisions",
+									"author": "Sam Ortiz",
+									"committedAt": "2026-11-13T18:12:09+01:00"
+								},
+								"detail": {
+									"commit": "3f9c2a1d7e4b6058c9a2d1f0e8b7c6a5d4e3f2b1",
+									"registry": {
+										"available": true,
+										"units": [],
+										"scenarios": [],
+										"graph": {
+											"edges": []
+										}
+									},
+									"comparison": {
+										"base": "9b1e6d470a3c8f25e7d91b6c4f2a0e83c5d7b19a",
+										"record": "5e0c7b9a41d2f8e63a7c0b5d9e12f4a8c6b3d7e90f1a2c4b8d6e3f7a0c9b5d12",
+										"units": {
+											"direct": [],
+											"indirect": [],
+											"added": [],
+											"removed": []
+										},
+										"scenarios": [],
+										"uncertain": []
+									},
+									"records": [
+										{
+											"id": "5e0c7b9a41d2f8e63a7c0b5d9e12f4a8c6b3d7e90f1a2c4b8d6e3f7a0c9b5d12",
+											"status": "passed",
+											"valid": true,
+											"problems": [],
+											"source": {
+												"commit": "3f9c2a1d7e4b6058c9a2d1f0e8b7c6a5d4e3f2b1",
+												"base": "9b1e6d470a3c8f25e7d91b6c4f2a0e83c5d7b19a"
+											},
+											"profile": "6f2b0a91d4c83e57",
+											"startedAt": "2026-11-13T17:31:02.417Z",
+											"finishedAt": "2026-11-13T17:40:27.963Z",
+											"failures": [],
+											"tests": [],
+											"scenarios": [],
+											"measurements": [],
+											"budgets": {
+												"findings": []
+											}
+										}
+									],
+									"explanations": []
+								},
+								"judged": {
+									"coverage": "verified",
+									"gaps": [],
+									"records": [
+										{
+											"id": "5e0c7b9a41d2f8e63a7c0b5d9e12f4a8c6b3d7e90f1a2c4b8d6e3f7a0c9b5d12",
+											"status": "passed",
+											"profile": "6f2b0a91d4c83e57",
+											"finishedAt": "2026-11-13T17:40:27.963Z",
+											"base": "9b1e6d470a3c8f25e7d91b6c4f2a0e83c5d7b19a",
+											"valid": true,
+											"problems": []
+										}
+									]
+								},
+								"legacy": []
+							},
+							{
+								"facts": {
+									"commit": "e2c9a47b5d1f8036a9e4c2d718b6f0ea4c7d93b5",
+									"parents": [],
+									"subject": "Initial commit",
+									"author": "Lee Park",
+									"committedAt": "2026-10-02T09:12:44-07:00"
+								},
+								"detail": {
+									"commit": "e2c9a47b5d1f8036a9e4c2d718b6f0ea4c7d93b5",
+									"registry": {
+										"available": true,
+										"units": [],
+										"scenarios": [],
+										"graph": {
+											"edges": []
+										}
+									},
+									"comparison": null,
+									"records": [],
+									"explanations": []
+								},
+								"judged": {
+									"coverage": "unverified",
+									"gaps": ["no verification record is attached to this commit"],
+									"records": []
+								},
+								"legacy": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The error from facts, which a read that is not cached awaits first, so the promise rejects with it when the commit is not in the repository of this project."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PinnedHistoryAdapter.files",
@@ -138,22 +447,39 @@
 					{
 						"name": "PinnedHistoryAdapter.files.pins",
 						"type": "PinnedRevisions",
-						"required": true
+						"required": true,
+						"description": "The notes commit and the evidence commit the record is looked up at, each null where the repository has no such ref. Both the note lines that name the record and its evidence are read at these commits.",
+						"examples": [
+							{
+								"notesRevision": "a61d3f0e8c52b9d71e4f0a63d9b8c27e5a0f3e91",
+								"evidenceRevision": "7d20c4e9b1a6f85c03e7d2b49f5c1a8e6b3d0e27"
+							},
+							{
+								"notesRevision": null,
+								"evidenceRevision": "7d20c4e9b1a6f85c03e7d2b49f5c1a8e6b3d0e27"
+							}
+						]
 					},
 					{
 						"name": "PinnedHistoryAdapter.files.record",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The id of the record whose files are wanted, a 64-character sha256 hex digest as a verification or regression note line writes it. An id that no verification or regression line names gives undefined.",
+						"examples": [
+							"5e0c7b9a41d2f8e63a7c0b5d9e12f4a8c6b3d7e90f1a2c4b8d6e3f7a0c9b5d12",
+							"a3f81c6d02b9e7457c1d8f3a6b20e94d5c7a1f8e3b6d0c2a9e4f7b15d8c3a60e"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PinnedHistoryAdapter.files",
-						"type": "Promise<Map<string, Buffer> | undefined>"
+						"type": "Promise<Map<string, Buffer> | undefined>",
+						"description": "The files of the record with this id, keyed by path, or undefined when the verification line for this id names a record that is not intact (its id differs or it has problems) or when no verification or regression line names the id. A regression line's files come from its regression proof at the pinned evidence commit."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -163,17 +489,20 @@
 					{
 						"name": "PinnedHistoryAdapter.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The path of the project's Git repository root, passed unchanged to every service and repository this adapter creates, so that all of its reads are made in that repository. The constructor does not check the path.",
+						"examples": ["/srv/git/harness-app", "/home/ci/work/harness-app"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PinnedHistoryAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The PinnedHistoryAdapter instance, with empty caches; its constructor keeps the root and creates the source-history repository and the revision sources for it."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
