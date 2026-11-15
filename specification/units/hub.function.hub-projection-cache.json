@@ -18,29 +18,51 @@
 				"name": "hubProjectionCache.context",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+				"description": "Source context whose identity fields are spread into the cache identity (the function then sets artifactHash to null and profile to 'projection:' plus a hash of the profile name) and whose cache store is used for reads, writes and deleting unusable entries. The caller must resolve current GitHub refs and permissions before consulting this cache, and this function performs no such check."
 			},
 			{
 				"name": "hubProjectionCache.projection",
 				"type": "{ profile: string; accept: (value: unknown) => T }",
 				"required": true,
-				"description": "Profile name separating projection variants and accept callback that validates or converts candidate values."
+				"description": "The profile string is UTF-8 encoded and hashed into the cache identity, so each profile name maps to its own cache identity. The accept callback receives either the parsed cached JSON or a freshly loaded value and returns the value to use; a throw from it on cached data deletes that entry and triggers a reload, while a throw on fresh data propagates unchanged."
 			},
 			{
 				"name": "hubProjectionCache.load",
 				"type": "() => Promise<T>",
 				"required": true,
-				"description": "Asynchronous loader called when no usable cached projection exists."
+				"description": "Asynchronous loader that runs only when readCache returns a falsy value or the cached bytes fail UTF-8 decoding, JSON.parse or accept. Its resolved value is passed through accept and then cached, while a rejection propagates to the caller and nothing is written to the cache."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubProjectionCache",
 				"type": "Promise<T>",
-				"description": "Accepted cached or newly loaded value. Cached JSON/validation failures delete the entry before loading; fresh values are accepted before serialization and storage."
+				"description": "Resolves to the accept result for a usable cache entry, or to the accept result for a fresh load that is written to the cache before the promise resolves. Because fresh values are JSON-serialized before storage, T must be JSON-serializable, and an unusable cached entry is deleted before loading."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by JSON.stringify when the accepted fresh value cannot be serialized, such as a BigInt or a circular reference. It is raised after load and accept succeed and before writeCache runs, so nothing is stored."
+			},
+			{
+				"name": "load() rejection",
+				"type": "thrown",
+				"description": "Any rejection from load() propagates unchanged and nothing is written to the cache. An unusable cache entry has already been deleted by the time load() runs."
+			},
+			{
+				"name": "projection.accept throw",
+				"type": "thrown",
+				"description": "A throw from accept on a freshly loaded value propagates unchanged and nothing is cached. A throw from accept on a cached value is swallowed: the entry is deleted and load() runs instead."
+			},
+			{
+				"name": "cache or hubHash rejection",
+				"type": "thrown",
+				"description": "Rejections from hubHash, readCache, writeCache, cacheKey and context.cache.delete propagate unchanged, since none of these calls is wrapped in the try block."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubProjectionCache",
@@ -49,30 +71,51 @@
 						"name": "hubProjectionCache.context",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+						"description": "Source context whose identity fields are spread into the cache identity (the function then sets artifactHash to null and profile to 'projection:' plus a hash of the profile name) and whose cache store is used for reads, writes and deleting unusable entries. The caller must resolve current GitHub refs and permissions before consulting this cache, and this function performs no such check."
 					},
 					{
 						"name": "hubProjectionCache.projection",
 						"type": "{ profile: string; accept: (value: unknown) => T }",
 						"required": true,
-						"description": "Profile name separating projection variants and accept callback that validates or converts candidate values."
+						"description": "The profile string is UTF-8 encoded and hashed into the cache identity, so each profile name maps to its own cache identity. The accept callback receives either the parsed cached JSON or a freshly loaded value and returns the value to use; a throw from it on cached data deletes that entry and triggers a reload, while a throw on fresh data propagates unchanged."
 					},
 					{
 						"name": "hubProjectionCache.load",
 						"type": "() => Promise<T>",
 						"required": true,
-						"description": "Asynchronous loader called when no usable cached projection exists."
+						"description": "Asynchronous loader that runs only when readCache returns a falsy value or the cached bytes fail UTF-8 decoding, JSON.parse or accept. Its resolved value is passed through accept and then cached, while a rejection propagates to the caller and nothing is written to the cache."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubProjectionCache",
 						"type": "Promise<T>",
-						"description": "Accepted cached or newly loaded value. Cached JSON/validation failures delete the entry before loading; fresh values are accepted before serialization and storage."
+						"description": "Resolves to the accept result for a usable cache entry, or to the accept result for a fresh load that is written to the cache before the promise resolves. Because fresh values are JSON-serialized before storage, T must be JSON-serializable, and an unusable cached entry is deleted before loading."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by JSON.stringify when the accepted fresh value cannot be serialized, such as a BigInt or a circular reference. It is raised after load and accept succeed and before writeCache runs, so nothing is stored."
+					},
+					{
+						"name": "load() rejection",
+						"type": "thrown",
+						"description": "Any rejection from load() propagates unchanged and nothing is written to the cache. An unusable cache entry has already been deleted by the time load() runs."
+					},
+					{
+						"name": "projection.accept throw",
+						"type": "thrown",
+						"description": "A throw from accept on a freshly loaded value propagates unchanged and nothing is cached. A throw from accept on a cached value is swallowed: the entry is deleted and load() runs instead."
+					},
+					{
+						"name": "cache or hubHash rejection",
+						"type": "thrown",
+						"description": "Rejections from hubHash, readCache, writeCache, cacheKey and context.cache.delete propagate unchanged, since none of these calls is wrapped in the try block."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
