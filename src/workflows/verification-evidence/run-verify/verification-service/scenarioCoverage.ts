@@ -6,7 +6,7 @@ import type {
 import { problem } from './captureProblem';
 import type { Gathered } from '../../../../utils/verification-evidence/gatherCaptures';
 import { scenarioRequirements } from '../../../../utils/verification-evidence/scenarioRequirements';
-import { videoCoverageFailures } from './videoCoverage';
+import { videoCoverageReport } from './videoCoverage';
 
 /** Judges gathered captures against the scenario contract: completeness, validity, freshness. */
 export function scenarioCoverage(input: CoverageInput): CoverageResult {
@@ -19,15 +19,16 @@ export function scenarioCoverage(input: CoverageInput): CoverageResult {
 			const where = need.viewport ? ` at viewport ${need.viewport}` : '';
 			return `missing ${need.kind} for state ${need.state}${where}`;
 		});
+	const video = videoCoverageReport(
+		input,
+		gathered.filter((item) => problems.get(item) === undefined)
+	);
 	const failures = [
 		...requirements.unproven.map(
 			(item) => `state ${item.state} is declared missing: ${item.reason}`
 		),
 		...absent,
-		...videoCoverageFailures(
-			input,
-			gathered.filter((item) => problems.get(item) === undefined)
-		),
+		...video.failures,
 		...[...problems.values()].flatMap((found) => found ?? [])
 	];
 	const failed = (item: Gathered) => input.checkFailed || problems.get(item) !== undefined;
@@ -42,7 +43,11 @@ export function scenarioCoverage(input: CoverageInput): CoverageResult {
 				status: failed(item) ? ('failed' as const) : ('passed' as const)
 			}))
 	}));
-	return { states, failures: failures.map((failure) => `${scenario.id}: ${failure}`) };
+	return {
+		states,
+		failures: failures.map((failure) => `${scenario.id}: ${failure}`),
+		...(scenario.video ? { videoCoverage: video.graphs } : {})
+	};
 }
 
 function matches(
