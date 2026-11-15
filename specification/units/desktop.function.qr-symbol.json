@@ -10,21 +10,11 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/networking-security/remote-offer-code/qrSymbol.ts",
-			"packages/desktop/src/components/remote-offer-code/qrSymbol.ts",
 			"packages/desktop/src/utils/networking-security/qrSymbol.ts",
 			"packages/desktop/src/utils/networking-security/qrSymbol.types.ts",
 			"packages/desktop/src/utils/qrSymbol.ts"
 		],
-		"symbols": [
-			"qrSymbol",
-			"qrSymbol",
-			"qrLimits",
-			"qrSymbol",
-			"QrSymbol",
-			"QrSymbol",
-			"qrSymbol",
-			"qrLimits"
-		]
+		"symbols": ["qrSymbol", "qrLimits", "qrSymbol", "QrSymbol", "QrSymbol", "qrSymbol", "qrLimits"]
 	},
 	"contract": {
 		"origin": "declared",

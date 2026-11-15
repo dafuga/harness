@@ -7,7 +7,7 @@ import {
 	hostSummary,
 	relayName
 } from '../../src/components/remote-host-panel/remoteLabels';
-import { timeLeft } from '../../src/components/remote-offer-code/remoteLabels';
+import { timeLeft } from '../../src/components/networking-security/remote-offer-code/remoteLabels';
 
 const phone = (state: RemoteMobileStatus['state'], reason: string | null = null) =>
 	({
