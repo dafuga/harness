@@ -21,22 +21,137 @@
 				"name": "replayFrames.items",
 				"type": "Evidence[]",
 				"required": true,
-				"description": "Evidence to filter and order."
+				"description": "Evidence records to filter and order; the array and its items are only read, never changed. An item is kept only when it is not `missing`, its `phase` is not `'before'`, and `evidenceMedia` returns `'image'`; a set `mediaType` decides that, and without one only `.wav`, `.mp3`, `.m4a`, `.ogg` or `data:audio/` files count as audio, so `.mp4` and `.pdf` files count as images.",
+				"examples": [
+					[
+						{
+							"id": "pw-2-0",
+							"title": "Scene 2 checkout - screenshot",
+							"category": "Playwright",
+							"file": "e3b8f1a6d4c92e07b5a1f8d3c6e09b2a4d7f1c5e8b3a6d9f02c4e7b1a8d5f360.png",
+							"status": "passed",
+							"checkId": "pw-2",
+							"order": 2,
+							"mediaType": "image",
+							"mimeType": "image/png"
+						},
+						{
+							"id": "pw-1-0",
+							"title": "Scene 1 sign in - screenshot",
+							"category": "Playwright",
+							"file": "9d2b7e41c08f35a6e1d94b27f0c8a3e5b6d1f9072e4c8a3b5d6e7f0a1c2b3d4e.png",
+							"status": "passed",
+							"checkId": "pw-1",
+							"order": 1,
+							"mediaType": "image",
+							"mimeType": "image/png"
+						}
+					],
+					[
+						{
+							"id": "2f9c8a64-1b7e-4d03-a5c2-9e8f7d6c5b4a-before",
+							"title": "Checkout summary before",
+							"category": "Uploaded comparison",
+							"file": "0e5a9d2c7f4b81e3a6d0c9f5b2e8714d3a6c0f9e2b5d8a1c4e7f0b3d6a9c2e85.png",
+							"status": "not-proven",
+							"source": "Manual upload · Cloudflare R2",
+							"capturedAt": "2026-11-14T09:41:07.302Z",
+							"comparison": "2f9c8a64-1b7e-4d03-a5c2-9e8f7d6c5b4a",
+							"storage": "r2",
+							"viewport": "1440px desktop",
+							"phase": "before"
+						},
+						{
+							"id": "2f9c8a64-1b7e-4d03-a5c2-9e8f7d6c5b4a-after",
+							"title": "Checkout summary after",
+							"category": "Uploaded comparison",
+							"file": "4a7e0c3d9b1f526e8a0d4c7b3e9f1a25c6d8b0e4f2a7c93d1b5e8f0a6c4d2b71.png",
+							"status": "not-proven",
+							"source": "Manual upload · Cloudflare R2",
+							"capturedAt": "2026-11-14T09:41:07.302Z",
+							"comparison": "2f9c8a64-1b7e-4d03-a5c2-9e8f7d6c5b4a",
+							"storage": "r2",
+							"viewport": "1440px desktop",
+							"phase": "after"
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "FRAME_SECONDS",
 				"type": "unknown",
-				"description": "Three-second duration per frame."
+				"description": "The exported constant `FRAME_SECONDS = 3` is the fixed length of each replay frame in seconds; `replayFrames` takes no duration argument, so this value cannot vary per call. It sets every frame's `duration` and, multiplied by a frame's `index`, gives its `start`.",
+				"examples": [3]
 			},
 			{
 				"name": "replayFrames",
 				"type": "ReplayFrame[]",
-				"description": "Available image frames excluding before-phase items, sorted by explicit order or original position. Each gets a sequential index, three-second start/duration and optional scene number parsed from a title beginning Scene followed by digits."
+				"description": "One frame for each kept evidence item, in replay order: sorted by `order`, with the item's input position used in place of a missing `order`, and ties keeping input order; each frame's `item` is the original Evidence object. Each frame has a 0-based `index` in that sequence, a `start` of `index * FRAME_SECONDS` (3) seconds, a `duration` of 3 seconds, and a `scene` number taken from a title that starts with `Scene`, one or more whitespace characters, and digits (matched case-insensitively, with the digits ending at a word boundary), or `null` otherwise.",
+				"examples": [
+					[
+						{
+							"item": {
+								"id": "pw-1-0",
+								"title": "Scene 1 sign in - screenshot",
+								"category": "Playwright",
+								"file": "9d2b7e41c08f35a6e1d94b27f0c8a3e5b6d1f9072e4c8a3b5d6e7f0a1c2b3d4e.png",
+								"status": "passed",
+								"checkId": "pw-1",
+								"order": 1,
+								"mediaType": "image",
+								"mimeType": "image/png"
+							},
+							"scene": 1,
+							"index": 0,
+							"start": 0,
+							"duration": 3
+						},
+						{
+							"item": {
+								"id": "pw-2-0",
+								"title": "Scene 2 checkout - screenshot",
+								"category": "Playwright",
+								"file": "e3b8f1a6d4c92e07b5a1f8d3c6e09b2a4d7f1c5e8b3a6d9f02c4e7b1a8d5f360.png",
+								"status": "passed",
+								"checkId": "pw-2",
+								"order": 2,
+								"mediaType": "image",
+								"mimeType": "image/png"
+							},
+							"scene": 2,
+							"index": 1,
+							"start": 3,
+							"duration": 3
+						}
+					],
+					[
+						{
+							"item": {
+								"id": "2f9c8a64-1b7e-4d03-a5c2-9e8f7d6c5b4a-after",
+								"title": "Checkout summary after",
+								"category": "Uploaded comparison",
+								"file": "4a7e0c3d9b1f526e8a0d4c7b3e9f1a25c6d8b0e4f2a7c93d1b5e8f0a6c4d2b71.png",
+								"status": "not-proven",
+								"source": "Manual upload · Cloudflare R2",
+								"capturedAt": "2026-11-14T09:41:07.302Z",
+								"comparison": "2f9c8a64-1b7e-4d03-a5c2-9e8f7d6c5b4a",
+								"storage": "r2",
+								"viewport": "1440px desktop",
+								"phase": "after"
+							},
+							"scene": null,
+							"index": 0,
+							"start": 0,
+							"duration": 3
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "replayFrames",
@@ -45,18 +160,131 @@
 						"name": "replayFrames.items",
 						"type": "Evidence[]",
 						"required": true,
-						"description": "Evidence to filter and order."
+						"description": "Evidence records to filter and order; the array and its items are only read, never changed. An item is kept only when it is not `missing`, its `phase` is not `'before'`, and `evidenceMedia` returns `'image'`; a set `mediaType` decides that, and without one only `.wav`, `.mp3`, `.m4a`, `.ogg` or `data:audio/` files count as audio, so `.mp4` and `.pdf` files count as images.",
+						"examples": [
+							[
+								{
+									"id": "pw-2-0",
+									"title": "Scene 2 checkout - screenshot",
+									"category": "Playwright",
+									"file": "e3b8f1a6d4c92e07b5a1f8d3c6e09b2a4d7f1c5e8b3a6d9f02c4e7b1a8d5f360.png",
+									"status": "passed",
+									"checkId": "pw-2",
+									"order": 2,
+									"mediaType": "image",
+									"mimeType": "image/png"
+								},
+								{
+									"id": "pw-1-0",
+									"title": "Scene 1 sign in - screenshot",
+									"category": "Playwright",
+									"file": "9d2b7e41c08f35a6e1d94b27f0c8a3e5b6d1f9072e4c8a3b5d6e7f0a1c2b3d4e.png",
+									"status": "passed",
+									"checkId": "pw-1",
+									"order": 1,
+									"mediaType": "image",
+									"mimeType": "image/png"
+								}
+							],
+							[
+								{
+									"id": "2f9c8a64-1b7e-4d03-a5c2-9e8f7d6c5b4a-before",
+									"title": "Checkout summary before",
+									"category": "Uploaded comparison",
+									"file": "0e5a9d2c7f4b81e3a6d0c9f5b2e8714d3a6c0f9e2b5d8a1c4e7f0b3d6a9c2e85.png",
+									"status": "not-proven",
+									"source": "Manual upload · Cloudflare R2",
+									"capturedAt": "2026-11-14T09:41:07.302Z",
+									"comparison": "2f9c8a64-1b7e-4d03-a5c2-9e8f7d6c5b4a",
+									"storage": "r2",
+									"viewport": "1440px desktop",
+									"phase": "before"
+								},
+								{
+									"id": "2f9c8a64-1b7e-4d03-a5c2-9e8f7d6c5b4a-after",
+									"title": "Checkout summary after",
+									"category": "Uploaded comparison",
+									"file": "4a7e0c3d9b1f526e8a0d4c7b3e9f1a25c6d8b0e4f2a7c93d1b5e8f0a6c4d2b71.png",
+									"status": "not-proven",
+									"source": "Manual upload · Cloudflare R2",
+									"capturedAt": "2026-11-14T09:41:07.302Z",
+									"comparison": "2f9c8a64-1b7e-4d03-a5c2-9e8f7d6c5b4a",
+									"storage": "r2",
+									"viewport": "1440px desktop",
+									"phase": "after"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "replayFrames",
 						"type": "ReplayFrame[]",
-						"description": "Available image frames excluding before-phase items, sorted by explicit order or original position. Each gets a sequential index, three-second start/duration and optional scene number parsed from a title beginning Scene followed by digits."
+						"description": "One frame for each kept evidence item, in replay order: sorted by `order`, with the item's input position used in place of a missing `order`, and ties keeping input order; each frame's `item` is the original Evidence object. Each frame has a 0-based `index` in that sequence, a `start` of `index * FRAME_SECONDS` (3) seconds, a `duration` of 3 seconds, and a `scene` number taken from a title that starts with `Scene`, one or more whitespace characters, and digits (matched case-insensitively, with the digits ending at a word boundary), or `null` otherwise.",
+						"examples": [
+							[
+								{
+									"item": {
+										"id": "pw-1-0",
+										"title": "Scene 1 sign in - screenshot",
+										"category": "Playwright",
+										"file": "9d2b7e41c08f35a6e1d94b27f0c8a3e5b6d1f9072e4c8a3b5d6e7f0a1c2b3d4e.png",
+										"status": "passed",
+										"checkId": "pw-1",
+										"order": 1,
+										"mediaType": "image",
+										"mimeType": "image/png"
+									},
+									"scene": 1,
+									"index": 0,
+									"start": 0,
+									"duration": 3
+								},
+								{
+									"item": {
+										"id": "pw-2-0",
+										"title": "Scene 2 checkout - screenshot",
+										"category": "Playwright",
+										"file": "e3b8f1a6d4c92e07b5a1f8d3c6e09b2a4d7f1c5e8b3a6d9f02c4e7b1a8d5f360.png",
+										"status": "passed",
+										"checkId": "pw-2",
+										"order": 2,
+										"mediaType": "image",
+										"mimeType": "image/png"
+									},
+									"scene": 2,
+									"index": 1,
+									"start": 3,
+									"duration": 3
+								}
+							],
+							[
+								{
+									"item": {
+										"id": "2f9c8a64-1b7e-4d03-a5c2-9e8f7d6c5b4a-after",
+										"title": "Checkout summary after",
+										"category": "Uploaded comparison",
+										"file": "4a7e0c3d9b1f526e8a0d4c7b3e9f1a25c6d8b0e4f2a7c93d1b5e8f0a6c4d2b71.png",
+										"status": "not-proven",
+										"source": "Manual upload · Cloudflare R2",
+										"capturedAt": "2026-11-14T09:41:07.302Z",
+										"comparison": "2f9c8a64-1b7e-4d03-a5c2-9e8f7d6c5b4a",
+										"storage": "r2",
+										"viewport": "1440px desktop",
+										"phase": "after"
+									},
+									"scene": null,
+									"index": 0,
+									"start": 0,
+									"duration": 3
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
