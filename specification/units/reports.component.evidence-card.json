@@ -39,50 +39,84 @@
 				"name": "EvidenceCard.item",
 				"type": "Evidence",
 				"required": true,
-				"description": "Required evidence record. Media classification selects screenshot or audio display. For screenshots, missing flag or image-load error disables opening and changes displayed status to not-proven."
+				"description": "Required Evidence record passed to evidenceMedia(item) to choose audio or image presentation. For image cards, item.missing or an image-load error disables opening and forces displayed status to not-proven; the component does not rewrite the record or verify file bytes.",
+				"examples": [
+					{
+						"id": "checkout-desktop",
+						"title": "Checkout desktop",
+						"category": "visual-regression",
+						"file": "d3c936ebdd73f46e6422d5946044c99d524554082272019ab738800318b04892.png",
+						"status": "passed",
+						"mediaType": "image",
+						"capturedAt": "2026-11-15T10:30:00.000Z",
+						"viewport": "1440x900"
+					},
+					{
+						"id": "onboarding-voiceover",
+						"title": "Onboarding voiceover",
+						"category": "audio",
+						"file": "79fe866c2e9da535330801d9b16532addba8cc5f3bdebb186d9461f32e0764d7.wav",
+						"status": "passed",
+						"mediaType": "audio",
+						"durationSeconds": 2
+					}
+				]
 			},
 			{
 				"name": "EvidenceCard.before",
 				"type": "Evidence",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional original recording. Default: undefined. For audio items, presence selects a paired comparison card; otherwise audio is rendered individually. Ignored for screenshots."
+				"description": "Optional Evidence record used only when item classifies as audio; its presence selects AudioComparison instead of AudioEvidence. It is ignored for image cards.",
+				"examples": [
+					{
+						"id": "onboarding-voiceover-original",
+						"title": "Original onboarding voiceover",
+						"category": "audio",
+						"file": "f8d3a307e875aa37138036569fb12570b505665c6d34127fca47e93c18e5b59d.wav",
+						"status": "passed",
+						"mediaType": "audio",
+						"durationSeconds": 1.5
+					}
+				]
 			},
 			{
 				"name": "EvidenceCard.assetBase",
 				"type": "string",
 				"required": true,
-				"description": "Required prefix concatenated with screenshot files or passed to audio playback."
+				"description": "Required URL or path prefix concatenated directly with item.file for the image source and passed to standalone AudioEvidence. It is not passed to the paired AudioComparison branch or normalized here.",
+				"examples": ["/assets/", "https://reports.example.test/assets/"]
 			},
 			{
 				"name": "EvidenceCard.compact",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional screenshot presentation: false by default. True keeps provenance in a Capture details disclosure beneath the image. Audio rendering is unchanged.",
-				"examples": [true]
+				"description": "Optional boolean for non-audio cards, defaulting to false. When true it puts provenance in a Capture details disclosure; audio rendering ignores it.",
+				"examples": [false, true]
 			},
 			{
 				"name": "EvidenceCard.onopen",
 				"type": "() => void",
 				"required": true,
-				"description": "Required callback invoked by screenshot or paired-audio opening controls. Individual audio playback uses its own controls."
+				"description": "Required zero-argument callback used by the image button and forwarded to AudioComparison for paired audio. It is not passed to standalone AudioEvidence."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EvidenceCard",
 				"type": "markup",
-				"description": "Screenshot card with lazy image, title anchor, category, status, provenance and optional viewport/time. Missing screenshots show a placeholder and note. Audio delegates to its single or paired card. The component does not verify evidence bytes."
+				"description": "Audio items render through AudioEvidence, or AudioComparison when before is present; other items render an image article with a lazy image or missing placeholder. In full mode the card shows title, category, status and provenance plus optional note, viewport and capture time; missing disables opening and forces not-proven, while compact mode shows provenance in a disclosure."
 			}
 		],
 		"errors": [
 			{
 				"name": "onopen callback error",
 				"type": "thrown",
-				"description": "An error thrown by onopen propagates when a screenshot or paired audio is opened."
+				"description": "A synchronous error thrown by onopen escapes the image click handler; for paired audio the callback is passed to AudioComparison without a catch here."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
