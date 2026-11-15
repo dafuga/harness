@@ -28,35 +28,45 @@
 				"name": "complexityCoverage.path",
 				"type": "string",
 				"required": true,
-				"description": "File path whose lowercased extension determines the supported language or declarative format."
+				"description": "Path of the file to classify; only the lowercased extension of its last segment selects the coverage class, and the file itself is never read. A path with no extension, such as Makefile or the dotfile .gitignore, has an empty extension and is classified as unsupported.",
+				"examples": [
+					"src/utils/development-tooling/complexityCoverage.ts",
+					"docs/architecture.md",
+					"scripts/release.sh"
+				]
 			},
 			{
 				"name": "complexityCoverage.scripted",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Whether an HTML file contains script; defaults to false and has no effect on other extensions."
+				"description": "Whether an HTML file carries a script: true makes a .html path unsupported and false makes it declarative, and the flag has no effect on any other extension. It defaults to false.",
+				"examples": [false, true]
 			},
 			{
 				"name": "uncountedLanguage.path",
 				"type": "string",
 				"required": true,
-				"description": "Path of an unsupported file to label by its lowercased extension."
+				"description": "Path of the file to name; only the lowercased extension of its last segment is used, and the file itself is never read. The function does not check that the file is unsupported, so a path with a counted extension such as .ts is named '.ts files'.",
+				"examples": ["src/bin/worker.rs", "tools/seed_db.py", "bin/deploy"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "complexityCoverage",
 				"type": "ComplexityCoverage",
-				"description": "Counted for supported JavaScript, TypeScript and Svelte files; declarative for supported data or presentation formats and scriptless HTML; unsupported otherwise."
+				"description": "The coverage class of the file: 'counted' for .ts, .tsx, .js, .jsx, .mjs, .cjs and .svelte; 'declarative' for .css, .json, .toml, .yml, .yaml, .md, .txt, .svg, .lock and .html without a script; 'unsupported' for any other extension, including .html with a script and paths with no extension. 'declarative' means the file declares and does not decide, while 'unsupported' means nothing here reads its language, so its decision points are not counted.",
+				"examples": ["counted", "declarative", "unsupported"]
 			},
 			{
 				"name": "uncountedLanguage",
 				"type": "string",
-				"description": "Known language name, an extension followed by files, or files without an extension when no extension exists."
+				"description": "The language name a reader would give the file: a fixed name for .rs (Rust), .py (Python), .sh (shell), .sql (SQL), .go (Go), .java (Java), .kt (Kotlin), .swift (Swift), .c and .h (C), .cpp (C++), .rb (Ruby) and .html ('HTML with an inline script'); otherwise the lowercased extension followed by ' files', or 'files without an extension' when there is none. The label is computed from the extension alone and is not checked against complexityCoverage.",
+				"examples": ["Rust", ".scala files", "files without an extension"]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "complexityCoverage",
@@ -65,25 +75,32 @@
 						"name": "complexityCoverage.path",
 						"type": "string",
 						"required": true,
-						"description": "File path whose lowercased extension determines the supported language or declarative format."
+						"description": "Path of the file to classify; only the lowercased extension of its last segment selects the coverage class, and the file itself is never read. A path with no extension, such as Makefile or the dotfile .gitignore, has an empty extension and is classified as unsupported.",
+						"examples": [
+							"src/utils/development-tooling/complexityCoverage.ts",
+							"docs/architecture.md",
+							"scripts/release.sh"
+						]
 					},
 					{
 						"name": "complexityCoverage.scripted",
 						"type": "boolean",
 						"required": false,
 						"default": false,
-						"description": "Whether an HTML file contains script; defaults to false and has no effect on other extensions."
+						"description": "Whether an HTML file carries a script: true makes a .html path unsupported and false makes it declarative, and the flag has no effect on any other extension. It defaults to false.",
+						"examples": [false, true]
 					}
 				],
 				"outputs": [
 					{
 						"name": "complexityCoverage",
 						"type": "ComplexityCoverage",
-						"description": "Counted for supported JavaScript, TypeScript and Svelte files; declarative for supported data or presentation formats and scriptless HTML; unsupported otherwise."
+						"description": "The coverage class of the file: 'counted' for .ts, .tsx, .js, .jsx, .mjs, .cjs and .svelte; 'declarative' for .css, .json, .toml, .yml, .yaml, .md, .txt, .svg, .lock and .html without a script; 'unsupported' for any other extension, including .html with a script and paths with no extension. 'declarative' means the file declares and does not decide, while 'unsupported' means nothing here reads its language, so its decision points are not counted.",
+						"examples": ["counted", "declarative", "unsupported"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "uncountedLanguage",
@@ -92,18 +109,20 @@
 						"name": "uncountedLanguage.path",
 						"type": "string",
 						"required": true,
-						"description": "Path of an unsupported file to label by its lowercased extension."
+						"description": "Path of the file to name; only the lowercased extension of its last segment is used, and the file itself is never read. The function does not check that the file is unsupported, so a path with a counted extension such as .ts is named '.ts files'.",
+						"examples": ["src/bin/worker.rs", "tools/seed_db.py", "bin/deploy"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "uncountedLanguage",
 						"type": "string",
-						"description": "Known language name, an extension followed by files, or files without an extension when no extension exists."
+						"description": "The language name a reader would give the file: a fixed name for .rs (Rust), .py (Python), .sh (shell), .sql (SQL), .go (Go), .java (Java), .kt (Kotlin), .swift (Swift), .c and .h (C), .cpp (C++), .rb (Ruby) and .html ('HTML with an inline script'); otherwise the lowercased extension followed by ' files', or 'files without an extension' when there is none. The label is computed from the extension alone and is not checked against complexityCoverage.",
+						"examples": ["Rust", ".scala files", "files without an extension"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
