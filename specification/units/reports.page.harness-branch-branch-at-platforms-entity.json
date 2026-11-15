@@ -18,12 +18,13 @@
 		"symbols": ["+page"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
-				"type": "markup"
+				"type": "markup",
+				"description": "The rendered page markup places ExplorerPlatforms inside HarnessScreen with the title “Platform configuration.” It matters whenever this route renders; this file declares no other page output."
 			}
 		],
 		"errors": [],
