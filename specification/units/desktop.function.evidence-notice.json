@@ -33,39 +33,56 @@
 				"name": "evidenceNotice.status",
 				"type": "EvidenceStatus",
 				"required": true,
-				"description": "The evidence state: idle, planned, unavailable, loading, ready or failed."
+				"description": "The evidence state, one of idle, planned, unavailable, loading, ready or failed, which selects the notice: ready gives null, failed gives the only alert, planned and unavailable give their own explanations, and idle and loading use the reading text.",
+				"examples": ["planned", "unavailable", "failed"]
 			},
 			{
 				"name": "evidenceNotice.error",
 				"type": "string",
 				"required": true,
-				"description": "The backend failure text, used only for a failed read."
+				"description": "The failure text from the backend, inserted unchanged after 'Recorded evidence could not be read: ' when status is failed, and the function does not check or trim it. For every other status the value is ignored.",
+				"examples": ["request timed out", "connection reset by peer", "unexpected end of response"]
 			},
 			{
 				"name": "evidenceNotice.kind",
 				"type": "string",
 				"required": true,
-				"description": "The entity kind inserted into the planned-but-not-implemented notice."
+				"description": "The entity kind inserted unchanged into the planned notice, which reads 'This <kind> is planned and not implemented: nothing is recorded for it.' It matters only when status is planned, and the function does not check it.",
+				"examples": ["function", "module", "component"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "unavailableEvidence",
 				"type": "unknown",
-				"description": "The notice that recorded runtime evidence is unavailable on this connection."
+				"description": "The fixed notice text used when status is unavailable, which means this connection cannot read recorded runtime evidence. It is an exported constant, so it never changes and does not depend on any input.",
+				"examples": ["Recorded runtime evidence is not available on this connection."]
 			},
 			{
 				"name": "readingEvidence",
 				"type": "unknown",
-				"description": "The notice that recorded evidence is being read."
+				"description": "The fixed notice text used when status is idle or loading, which means recorded evidence is being read. It is an exported constant, so it never changes and does not depend on any input.",
+				"examples": ["Reading recorded evidence…"]
 			},
 			{
 				"name": "evidenceNotice",
 				"type": "EvidenceNotice | null",
-				"description": "Null for ready evidence. Otherwise a text notice with alert true only for failed reads. Planned and unavailable states have specific explanations; idle and loading use the reading notice."
+				"description": "Null when status is ready; otherwise an EvidenceNotice whose alert is true only when status is failed, and whose text is then 'Recorded evidence could not be read: ' followed by the error. Planned and unavailable give their own explanation with alert false, and idle and loading give the reading text with alert false.",
+				"examples": [
+					null,
+					{
+						"text": "Recorded evidence could not be read: request timed out",
+						"alert": true
+					},
+					{
+						"text": "This function is planned and not implemented: nothing is recorded for it.",
+						"alert": false
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "evidenceNotice",
@@ -74,30 +91,48 @@
 						"name": "evidenceNotice.status",
 						"type": "EvidenceStatus",
 						"required": true,
-						"description": "The evidence state: idle, planned, unavailable, loading, ready or failed."
+						"description": "The evidence state, one of idle, planned, unavailable, loading, ready or failed, which selects the notice: ready gives null, failed gives the only alert, planned and unavailable give their own explanations, and idle and loading use the reading text.",
+						"examples": ["planned", "unavailable", "failed"]
 					},
 					{
 						"name": "evidenceNotice.error",
 						"type": "string",
 						"required": true,
-						"description": "The backend failure text, used only for a failed read."
+						"description": "The failure text from the backend, inserted unchanged after 'Recorded evidence could not be read: ' when status is failed, and the function does not check or trim it. For every other status the value is ignored.",
+						"examples": [
+							"request timed out",
+							"connection reset by peer",
+							"unexpected end of response"
+						]
 					},
 					{
 						"name": "evidenceNotice.kind",
 						"type": "string",
 						"required": true,
-						"description": "The entity kind inserted into the planned-but-not-implemented notice."
+						"description": "The entity kind inserted unchanged into the planned notice, which reads 'This <kind> is planned and not implemented: nothing is recorded for it.' It matters only when status is planned, and the function does not check it.",
+						"examples": ["function", "module", "component"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "evidenceNotice",
 						"type": "EvidenceNotice | null",
-						"description": "Null for ready evidence. Otherwise a text notice with alert true only for failed reads. Planned and unavailable states have specific explanations; idle and loading use the reading notice."
+						"description": "Null when status is ready; otherwise an EvidenceNotice whose alert is true only when status is failed, and whose text is then 'Recorded evidence could not be read: ' followed by the error. Planned and unavailable give their own explanation with alert false, and idle and loading give the reading text with alert false.",
+						"examples": [
+							null,
+							{
+								"text": "Recorded evidence could not be read: request timed out",
+								"alert": true
+							},
+							{
+								"text": "This function is planned and not implemented: nothing is recorded for it.",
+								"alert": false
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
