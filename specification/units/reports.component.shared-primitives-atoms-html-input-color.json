@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional child snippet accepted for native-element API compatibility; this void element renders no child content."
+				"description": "An optional Svelte snippet accepted as a prop but not forwarded or rendered, because the component emits no child content for the native input. Its value has no effect on the rendered control."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlInputColor",
 				"type": "markup",
-				"description": "The actual native input element, with forwarded attributes and content and no additional wrapper."
+				"description": "A native input element with type color is rendered, with the remaining props spread as attributes and no wrapper or child content."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
