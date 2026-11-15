@@ -21,32 +21,39 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RateLimitService.constructor.store",
 				"type": "RateStore",
-				"required": true
+				"required": true,
+				"description": "Adapter backed by host-object storage for rate-window records. rate(bucket) returns the current record or undefined, and saveRate(bucket, record) persists the updated record so windows outlive service memory."
 			},
 			{
 				"name": "RateLimitService.hit.bucket",
 				"type": "RateBucket",
-				"required": true
+				"required": true,
+				"description": "Bucket key for the per-host-object fixed-window counter that this hit reads and may update; accepted values are connect and pairing.",
+				"examples": ["connect", "pairing"]
 			},
 			{
 				"name": "RateLimitService.hit.limit",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Maximum hit count for this bucket during one relayConfig.rateWindowMs window. When an unexpired record already has count >= limit, this method returns false without saving; the number is not validated.",
+				"examples": [10, 30]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RateLimitService.hit",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Indicates whether this hit was accepted: true after an increment is saved, false when the active window has already reached the supplied limit.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "RateLimitService.hit",
@@ -54,22 +61,28 @@
 					{
 						"name": "RateLimitService.hit.bucket",
 						"type": "RateBucket",
-						"required": true
+						"required": true,
+						"description": "Bucket key for the per-host-object fixed-window counter that this hit reads and may update; accepted values are connect and pairing.",
+						"examples": ["connect", "pairing"]
 					},
 					{
 						"name": "RateLimitService.hit.limit",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Maximum hit count for this bucket during one relayConfig.rateWindowMs window. When an unexpired record already has count >= limit, this method returns false without saving; the number is not validated.",
+						"examples": [10, 30]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RateLimitService.hit",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Indicates whether this hit was accepted: true after an increment is saved, false when the active window has already reached the supplied limit.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -79,17 +92,19 @@
 					{
 						"name": "RateLimitService.constructor.store",
 						"type": "RateStore",
-						"required": true
+						"required": true,
+						"description": "Adapter backed by host-object storage for rate-window records. rate(bucket) returns the current record or undefined, and saveRate(bucket, record) persists the updated record so windows outlive service memory."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RateLimitService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed RateLimitService instance holding the supplied RateStore."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
