@@ -34,39 +34,161 @@
 				"name": "shortCommit.commit",
 				"type": "string",
 				"required": true,
-				"description": "Commit text to abbreviate."
+				"description": "The commit text whose prefix is returned; it is not checked to be a hash, so any string is accepted. Text of seven characters or fewer is returned unchanged, and longer text is cut to its first seven characters.",
+				"examples": [
+					"3f9c2a7b1d4e8f06a5c3b2d1e0f9a8b7c6d5e4f3",
+					"9c1e4f27ab03d58e6f1a2b7c4d9e0f3a5b8c6d21",
+					"0b7d3a59e2c6f81d4a7b3e0c9d5f2a8e6b1c4d70"
+				]
 			},
 			{
 				"name": "entityLens.from",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Current explorer location."
+				"description": "The location a link starts from (`from`). Its branch is always kept, its commit and category are kept when `to` omits them, and its section and tab are never carried over; its helper is carried over only when `to` names the same entity and names no helper of its own.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": null,
+						"category": "components",
+						"entity": "reports.component.source-viewer",
+						"tab": "source"
+					},
+					{
+						"branch": "feature/entity-lens",
+						"commit": "3f9c2a7b1d4e8f06a5c3b2d1e0f9a8b7c6d5e4f3",
+						"category": "functions",
+						"entity": "reports.function.entity-lens",
+						"helper": "entityLens",
+						"section": "history"
+					},
+					{
+						"branch": null,
+						"commit": "9c1e4f27ab03d58e6f1a2b7c4d9e0f3a5b8c6d21",
+						"category": "pages"
+					}
+				]
 			},
 			{
 				"name": "entityLens.to",
 				"type": "Target",
 				"required": true,
-				"description": "Optional target commit, category, entity, section and tab. Omitted commit/category retain the current values; null commit explicitly selects current mode."
+				"description": "The place the link goes to (`to`); commit, category, entity, helper, section and tab are each optional. An omitted commit or category keeps the value from `from`, a null commit selects the branch at its tip, and a target without an entity opens the category index, ignoring its helper, section and tab.",
+				"examples": [
+					{
+						"entity": "reports.component.harness-entity-summary",
+						"tab": "contract"
+					},
+					{
+						"commit": null,
+						"category": "functions"
+					},
+					{
+						"commit": "0b7d3a59e2c6f81d4a7b3e0c9d5f2a8e6b1c4d70",
+						"category": "functions",
+						"entity": "reports.function.entity-lens",
+						"helper": "shortCommit",
+						"section": "history"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "entityLabels",
 				"type": "Record<ExplorerCategory, EntityLabel>",
-				"description": "Titles, singular labels and descriptions for the six explorer collections."
+				"description": "The title, singular label and subtitle of each of the ten explorer categories, pages first; the keys are every ExplorerCategory, platforms included. It is a module constant, so it does not change with the location or the branch.",
+				"examples": [
+					{
+						"pages": {
+							"title": "Pages",
+							"one": "Page",
+							"subtitle": "Start with the pages people use."
+						},
+						"apis": {
+							"title": "APIs",
+							"one": "API",
+							"subtitle": "HTTP endpoints defined by this project at the selected revision."
+						},
+						"layouts": {
+							"title": "Layouts",
+							"one": "Layout",
+							"subtitle": "Reusable page frames with a clearly marked child-content area."
+						},
+						"components": {
+							"title": "Components",
+							"one": "Component",
+							"subtitle": "Reusable pieces of the app, at any level."
+						},
+						"functions": {
+							"title": "Helpers",
+							"one": "Helper",
+							"subtitle": "Pure, reusable functions. Same inputs, same result; no side effects."
+						},
+						"configs": {
+							"title": "Configs",
+							"one": "Config",
+							"subtitle": "The settings and budgets that shape the app."
+						},
+						"services": {
+							"title": "Services",
+							"one": "Service",
+							"subtitle": "Single-purpose capabilities behind the app."
+						},
+						"models": {
+							"title": "Models",
+							"one": "Model",
+							"subtitle": "Persisted data models and their database schemas."
+						},
+						"types": {
+							"title": "Types",
+							"one": "Type",
+							"subtitle": "Shared interfaces and type aliases used by the app."
+						},
+						"platforms": {
+							"title": "Platforms",
+							"one": "Platform",
+							"subtitle": "Build and deployment configuration for each app platform."
+						}
+					}
+				]
 			},
 			{
 				"name": "entityLens",
 				"type": "ExplorerLocation",
-				"description": "Location retaining branch and revision; helper identity follows tabs and commits only within the same owning entity. Catalog and different-entity links discard it."
+				"description": "The place a link opens: it always keeps the branch of `from`, takes the commit and category from `to` when it names them and from `from` otherwise, and has no entity, helper, section or tab unless `to` names an entity. A helper comes from `to`, or from `from` when both name the same entity, and is kept only in the functions category.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": null,
+						"category": "components",
+						"entity": "reports.component.harness-entity-summary",
+						"tab": "contract"
+					},
+					{
+						"branch": "feature/entity-lens",
+						"commit": null,
+						"category": "functions"
+					},
+					{
+						"branch": null,
+						"commit": "0b7d3a59e2c6f81d4a7b3e0c9d5f2a8e6b1c4d70",
+						"category": "functions",
+						"entity": "reports.function.entity-lens",
+						"helper": "shortCommit",
+						"section": "history"
+					}
+				]
 			},
 			{
 				"name": "shortCommit",
 				"type": "string",
-				"description": "First seven characters of the supplied commit."
+				"description": "The first seven characters of the commit text passed in, or all of it when it has seven characters or fewer; the result is always a prefix of the input.",
+				"examples": ["3f9c2a7", "9c1e4f2", "0b7d3a5"]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "shortCommit",
@@ -75,18 +197,24 @@
 						"name": "shortCommit.commit",
 						"type": "string",
 						"required": true,
-						"description": "Commit text to abbreviate."
+						"description": "The commit text whose prefix is returned; it is not checked to be a hash, so any string is accepted. Text of seven characters or fewer is returned unchanged, and longer text is cut to its first seven characters.",
+						"examples": [
+							"3f9c2a7b1d4e8f06a5c3b2d1e0f9a8b7c6d5e4f3",
+							"9c1e4f27ab03d58e6f1a2b7c4d9e0f3a5b8c6d21",
+							"0b7d3a59e2c6f81d4a7b3e0c9d5f2a8e6b1c4d70"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "shortCommit",
 						"type": "string",
-						"description": "First seven characters of the supplied commit."
+						"description": "The first seven characters of the commit text passed in, or all of it when it has seven characters or fewer; the result is always a prefix of the input.",
+						"examples": ["3f9c2a7", "9c1e4f2", "0b7d3a5"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "entityLens",
@@ -95,24 +223,85 @@
 						"name": "entityLens.from",
 						"type": "ExplorerLocation",
 						"required": true,
-						"description": "Current explorer location."
+						"description": "The location a link starts from (`from`). Its branch is always kept, its commit and category are kept when `to` omits them, and its section and tab are never carried over; its helper is carried over only when `to` names the same entity and names no helper of its own.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": null,
+								"category": "components",
+								"entity": "reports.component.source-viewer",
+								"tab": "source"
+							},
+							{
+								"branch": "feature/entity-lens",
+								"commit": "3f9c2a7b1d4e8f06a5c3b2d1e0f9a8b7c6d5e4f3",
+								"category": "functions",
+								"entity": "reports.function.entity-lens",
+								"helper": "entityLens",
+								"section": "history"
+							},
+							{
+								"branch": null,
+								"commit": "9c1e4f27ab03d58e6f1a2b7c4d9e0f3a5b8c6d21",
+								"category": "pages"
+							}
+						]
 					},
 					{
 						"name": "entityLens.to",
 						"type": "Target",
 						"required": true,
-						"description": "Optional target commit, category, entity, section and tab. Omitted commit/category retain the current values; null commit explicitly selects current mode."
+						"description": "The place the link goes to (`to`); commit, category, entity, helper, section and tab are each optional. An omitted commit or category keeps the value from `from`, a null commit selects the branch at its tip, and a target without an entity opens the category index, ignoring its helper, section and tab.",
+						"examples": [
+							{
+								"entity": "reports.component.harness-entity-summary",
+								"tab": "contract"
+							},
+							{
+								"commit": null,
+								"category": "functions"
+							},
+							{
+								"commit": "0b7d3a59e2c6f81d4a7b3e0c9d5f2a8e6b1c4d70",
+								"category": "functions",
+								"entity": "reports.function.entity-lens",
+								"helper": "shortCommit",
+								"section": "history"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "entityLens",
 						"type": "ExplorerLocation",
-						"description": "Location retaining branch and revision; helper identity follows tabs and commits only within the same owning entity. Catalog and different-entity links discard it."
+						"description": "The place a link opens: it always keeps the branch of `from`, takes the commit and category from `to` when it names them and from `from` otherwise, and has no entity, helper, section or tab unless `to` names an entity. A helper comes from `to`, or from `from` when both name the same entity, and is kept only in the functions category.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": null,
+								"category": "components",
+								"entity": "reports.component.harness-entity-summary",
+								"tab": "contract"
+							},
+							{
+								"branch": "feature/entity-lens",
+								"commit": null,
+								"category": "functions"
+							},
+							{
+								"branch": null,
+								"commit": "0b7d3a59e2c6f81d4a7b3e0c9d5f2a8e6b1c4d70",
+								"category": "functions",
+								"entity": "reports.function.entity-lens",
+								"helper": "shortCommit",
+								"section": "history"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
@@ -145,15 +334,15 @@
 			"examples": [
 				{
 					"name": "Abbreviate a commit to its first seven characters",
-					"call": "shortCommit(\"0123456789abcdef\")",
-					"input": ["0123456789abcdef"],
-					"output": "0123456"
+					"call": "shortCommit(\"3f9c2a7b1d4e8f06a5c3b2d1e0f9a8b7c6d5e4f3\")",
+					"input": ["3f9c2a7b1d4e8f06a5c3b2d1e0f9a8b7c6d5e4f3"],
+					"output": "3f9c2a7"
 				},
 				{
 					"name": "Preserve commit text shorter than seven characters",
-					"call": "shortCommit(\"abc\")",
-					"input": ["abc"],
-					"output": "abc"
+					"call": "shortCommit(\"9c1e4f\")",
+					"input": ["9c1e4f"],
+					"output": "9c1e4f"
 				}
 			],
 			"consumers": [
