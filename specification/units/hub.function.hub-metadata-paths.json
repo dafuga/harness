@@ -18,17 +18,41 @@
 				"name": "hubMetadataPaths.entries",
 				"type": "SourceEntry[]",
 				"required": true,
-				"description": "Source tree entries with type, mode and path."
+				"description": "An array of source entries, each with a type, mode, and repository path. Only blob entries with mode `100644` or `100755` whose path matches a supported unit or source-metadata pattern are selected.",
+				"examples": [
+					[
+						{
+							"type": "blob",
+							"mode": "100644",
+							"sha": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+							"path": "specification/units/reports.component.evidence-grid.json"
+						},
+						{
+							"type": "blob",
+							"mode": "100755",
+							"sha": "abcdef0123456789abcdef0123456789abcdef01",
+							"path": "src/components/evidence-grid/designs/overview.md"
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubMetadataPaths",
 				"type": "string[]",
-				"description": "Regular/executable blob paths for unit manifests and plan/design JSON or Markdown under the six supported category folders; images, threads and implementation files are excluded."
+				"description": "Returns the repository paths from qualifying entries, preserving input order. Paths are limited to root-level unit JSON files under `specification/units/` and `plan.json` or JSON/Markdown files under `designs/` within one directory below `src/{pages,shells,layouts,components,functions,configs,services}/`; the result contains paths, not file contents.",
+				"examples": [
+					["specification/units/reports.component.evidence-grid.json"],
+					[
+						"src/components/evidence-grid/plan.json",
+						"src/components/evidence-grid/designs/overview.md"
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "hubMetadataPaths",
@@ -37,18 +61,41 @@
 						"name": "hubMetadataPaths.entries",
 						"type": "SourceEntry[]",
 						"required": true,
-						"description": "Source tree entries with type, mode and path."
+						"description": "An array of source entries, each with a type, mode, and repository path. Only blob entries with mode `100644` or `100755` whose path matches a supported unit or source-metadata pattern are selected.",
+						"examples": [
+							[
+								{
+									"type": "blob",
+									"mode": "100644",
+									"sha": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+									"path": "specification/units/reports.component.evidence-grid.json"
+								},
+								{
+									"type": "blob",
+									"mode": "100755",
+									"sha": "abcdef0123456789abcdef0123456789abcdef01",
+									"path": "src/components/evidence-grid/designs/overview.md"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubMetadataPaths",
 						"type": "string[]",
-						"description": "Regular/executable blob paths for unit manifests and plan/design JSON or Markdown under the six supported category folders; images, threads and implementation files are excluded."
+						"description": "Returns the repository paths from qualifying entries, preserving input order. Paths are limited to root-level unit JSON files under `specification/units/` and `plan.json` or JSON/Markdown files under `designs/` within one directory below `src/{pages,shells,layouts,components,functions,configs,services}/`; the result contains paths, not file contents.",
+						"examples": [
+							["specification/units/reports.component.evidence-grid.json"],
+							[
+								"src/components/evidence-grid/plan.json",
+								"src/components/evidence-grid/designs/overview.md"
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
