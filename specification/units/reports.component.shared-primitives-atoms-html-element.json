@@ -24,41 +24,26 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native selected element; native HTML content rules still apply. Defaults to JavaScript undefined (no child snippet)."
+				"description": "An optional Svelte snippet provides child content for the selected element. It is called and rendered inside that element only when children is truthy; otherwise no snippet is rendered."
 			},
 			{
 				"name": "HtmlElement.this",
 				"type": "string",
 				"required": false,
 				"default": "div",
-				"description": "Native element tag selected by the caller; the direct component defaults to div."
+				"description": "This string selects the native element rendered by <svelte:element>; when omitted, the component uses div.",
+				"examples": ["section", "button", "a"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlElement",
 				"type": "markup",
-				"description": "The actual native selected element, with forwarded attributes and content and no additional wrapper. All remaining caller props are optional forwarded native attributes, DOM properties, data/aria values and event handlers. Omitted keys are not set by the atom, leaving browser defaults; supply them directly rather than through a nested attributes prop. States: long: The native element element retains long caller content in its normal semantic context."
+				"description": "The component renders a <svelte:element> selected by this (default div) and spreads every remaining prop onto it. It calls and renders children inside that element only when children is truthy."
 			}
 		],
-		"errors": [
-			{
-				"name": "Caller content or event error",
-				"type": "propagated",
-				"description": "Supplied event handlers and rendered child snippets may throw; the atom does not catch their errors. Void elements ignore the child snippet."
-			},
-			{
-				"name": "Invalid dynamic element",
-				"type": "Svelte render error",
-				"description": "An invalid non-string tag or child content for a selected void element is rejected by Svelte."
-			},
-			{
-				"name": "Native attribute or property error",
-				"type": "propagated",
-				"description": "Errors raised while evaluating supplied props or setting native attributes/properties propagate. Invalid property values may produce a browser TypeError or DOMException."
-			}
-		],
-		"errorStatus": "declared",
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
