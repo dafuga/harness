@@ -22,11 +22,11 @@
 				"examples": [
 					{
 						"args": ["bun", "run", "check"],
-						"cwd": "/Users/dev/projects/acme-site"
+						"cwd": "/workspace/project"
 					},
 					{
 						"args": ["bun", "run", "build"],
-						"cwd": "/Users/dev/projects/acme-site",
+						"cwd": "/workspace/project",
 						"env": {
 							"NODE_ENV": "production"
 						}
@@ -70,11 +70,11 @@
 						"examples": [
 							{
 								"args": ["bun", "run", "check"],
-								"cwd": "/Users/dev/projects/acme-site"
+								"cwd": "/workspace/project"
 							},
 							{
 								"args": ["bun", "run", "build"],
-								"cwd": "/Users/dev/projects/acme-site",
+								"cwd": "/workspace/project",
 								"env": {
 									"NODE_ENV": "production"
 								}

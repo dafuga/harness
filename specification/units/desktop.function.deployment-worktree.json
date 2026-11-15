@@ -20,9 +20,9 @@
 				"required": true,
 				"description": "Repository directory passed to every git call as `git -C <root>`; the commit is resolved there and the temporary worktree is added and removed there. The implementation does not check that it is absolute or that it is a repository, and a path git cannot run in makes the first git call reject.",
 				"examples": [
-					"/Users/dev/projects/harness-app",
-					"/srv/git/billing-service",
-					"/home/ci/workspace/web-console"
+					"/workspace/harness-app",
+					"/workspace/billing-service",
+					"/workspace/web-console"
 				]
 			},
 			{
@@ -98,9 +98,9 @@
 						"required": true,
 						"description": "Repository directory passed to every git call as `git -C <root>`; the commit is resolved there and the temporary worktree is added and removed there. The implementation does not check that it is absolute or that it is a repository, and a path git cannot run in makes the first git call reject.",
 						"examples": [
-							"/Users/dev/projects/harness-app",
-							"/srv/git/billing-service",
-							"/home/ci/workspace/web-console"
+							"/workspace/harness-app",
+							"/workspace/billing-service",
+							"/workspace/web-console"
 						]
 					},
 					{

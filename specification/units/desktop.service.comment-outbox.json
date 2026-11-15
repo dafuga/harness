@@ -29,10 +29,7 @@
 				"required": false,
 				"default": "undefined",
 				"description": "Path of the JSON file that stores unsent drafts; when omitted or empty, drafts are kept only in memory and are lost when the instance is discarded. A set path is written through a temporary file that is renamed over the drafts file, its missing parent directory is created with mode 0700, and the file is created with mode 0600.",
-				"examples": [
-					"/Users/example/Library/Application Support/Harness/comment-outbox.json",
-					"/Users/example/Library/Application Support/Harness/outbox/drafts.json"
-				]
+				"examples": ["/workspace/state/comment-outbox.json", "/workspace/state/outbox/drafts.json"]
 			},
 			{
 				"name": "CommentOutboxService.save.input",
@@ -510,8 +507,8 @@
 						"default": "undefined",
 						"description": "Path of the JSON file that stores unsent drafts; when omitted or empty, drafts are kept only in memory and are lost when the instance is discarded. A set path is written through a temporary file that is renamed over the drafts file, its missing parent directory is created with mode 0700, and the file is created with mode 0600.",
 						"examples": [
-							"/Users/example/Library/Application Support/Harness/comment-outbox.json",
-							"/Users/example/Library/Application Support/Harness/outbox/drafts.json"
+							"/workspace/state/comment-outbox.json",
+							"/workspace/state/outbox/drafts.json"
 						]
 					}
 				],

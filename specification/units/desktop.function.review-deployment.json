@@ -20,9 +20,9 @@
 				"required": true,
 				"description": "Repository directory for the Git reads (`git -C root`), passed to `options.plugin.discover` and returned unchanged as `root`. reviewDeployment does not check that it is a Git repository, so a directory outside one makes the Git reads reject.",
 				"examples": [
-					"/Users/dev/projects/harness-web",
-					"/home/dev/src/harness-docs",
-					"/Users/dev/work/harness-desktop"
+					"/workspace/projects/harness-web",
+					"/workspace/src/harness-docs",
+					"/workspace/work/harness-desktop"
 				]
 			},
 			{
@@ -80,7 +80,7 @@
 							"expiresAt": "2026-11-15T10:03:31.204Z"
 						},
 						"fingerprint": "9b0e4f7a2c6d8e1f3a5b7c9d0e2f4a6b8c1d3e5f7a9b0c2d4e6f8a1b3c5d7e9f",
-						"root": "/Users/dev/projects/harness-web",
+						"root": "/workspace/projects/harness-web",
 						"projectId": "local-6c1f0b7e4a9d2c83f5e1b0a7d4c9e2f6b8a1d3c5e7f9b0a2d4c6e8f1a3b5c7d9",
 						"target": {
 							"environment": "dev",
@@ -139,7 +139,7 @@
 							"expiresAt": "2026-11-15T10:17:07.518Z"
 						},
 						"fingerprint": "1d8f3a6c0b5e9d2f7a4c1e8b6d3f0a9c5e2b7d4f1a8c6e3b0d9f2a7c5e4b1d8f",
-						"root": "/home/dev/src/harness-docs",
+						"root": "/workspace/src/harness-docs",
 						"projectId": "local-2d7a9c4e1f8b3d6a0e5c2b9f7d4a1e8c3b6d0f9a2e5c8b1d4f7a0e3c6b9d2f5a",
 						"target": {
 							"environment": "prod",
@@ -200,9 +200,9 @@
 						"required": true,
 						"description": "Repository directory for the Git reads (`git -C root`), passed to `options.plugin.discover` and returned unchanged as `root`. reviewDeployment does not check that it is a Git repository, so a directory outside one makes the Git reads reject.",
 						"examples": [
-							"/Users/dev/projects/harness-web",
-							"/home/dev/src/harness-docs",
-							"/Users/dev/work/harness-desktop"
+							"/workspace/projects/harness-web",
+							"/workspace/src/harness-docs",
+							"/workspace/work/harness-desktop"
 						]
 					},
 					{
@@ -260,7 +260,7 @@
 									"expiresAt": "2026-11-15T10:03:31.204Z"
 								},
 								"fingerprint": "9b0e4f7a2c6d8e1f3a5b7c9d0e2f4a6b8c1d3e5f7a9b0c2d4e6f8a1b3c5d7e9f",
-								"root": "/Users/dev/projects/harness-web",
+								"root": "/workspace/projects/harness-web",
 								"projectId": "local-6c1f0b7e4a9d2c83f5e1b0a7d4c9e2f6b8a1d3c5e7f9b0a2d4c6e8f1a3b5c7d9",
 								"target": {
 									"environment": "dev",
@@ -319,7 +319,7 @@
 									"expiresAt": "2026-11-15T10:17:07.518Z"
 								},
 								"fingerprint": "1d8f3a6c0b5e9d2f7a4c1e8b6d3f0a9c5e2b7d4f1a8c6e3b0d9f2a7c5e4b1d8f",
-								"root": "/home/dev/src/harness-docs",
+								"root": "/workspace/src/harness-docs",
 								"projectId": "local-2d7a9c4e1f8b3d6a0e5c2b9f7d4a1e8c3b6d0f9a2e5c8b1d4f7a0e3c6b9d2f5a",
 								"target": {
 									"environment": "prod",

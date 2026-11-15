@@ -32,9 +32,7 @@
 				"required": false,
 				"default": {},
 				"description": "Optional collaborators for this session. A registry, outbox or arbiter that is left out gets a new default instance, a cache, remote or auth that is left out stays undefined, and every supplied value is stored as given when the session is constructed.",
-				"examples": [
-					{}
-				]
+				"examples": [{}]
 			},
 			{
 				"name": "ProjectSessionService.assertProject.projectId",
@@ -52,10 +50,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Any directory inside a Git work tree; the session uses that work tree's top-level directory, resolved with realpath, as the project root. A directory outside any work tree makes git fail, and the returned promise rejects with that error.",
-				"examples": [
-					"/Users/dev/projects/harness-app",
-					"/Users/dev/projects/harness-game/packages/desktop"
-				]
+				"examples": ["/workspace/harness-app", "/workspace/harness-game/packages/desktop"]
 			},
 			{
 				"name": "ProjectSessionService.snapshot.query",
@@ -107,7 +102,7 @@
 					{
 						"project": {
 							"name": "harness-app",
-							"root": "/Users/dev/projects/harness-app",
+							"root": "/workspace/harness-app",
 							"id": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63"
 						},
 						"capabilities": {
@@ -174,7 +169,7 @@
 					{
 						"project": {
 							"name": "harness-game",
-							"root": "/Users/dev/projects/harness-game",
+							"root": "/workspace/harness-game",
 							"id": "local-9e2b7d04c1f8a6e35b0d9c72f4a1e8d6b3c5f0a9e7d2b4c6f1a8e3d5b9c0f7a2",
 							"kind": "game",
 							"dimension": "2d"
@@ -239,7 +234,7 @@
 					{
 						"project": {
 							"name": "harness-app",
-							"root": "/Users/dev/projects/harness-app",
+							"root": "/workspace/harness-app",
 							"id": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63"
 						},
 						"capabilities": {
@@ -306,7 +301,7 @@
 					{
 						"project": {
 							"name": "harness-app",
-							"root": "/Users/dev/projects/harness-app",
+							"root": "/workspace/harness-app",
 							"id": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63"
 						},
 						"capabilities": {
@@ -490,10 +485,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Any directory inside a Git work tree; the session uses that work tree's top-level directory, resolved with realpath, as the project root. A directory outside any work tree makes git fail, and the returned promise rejects with that error.",
-						"examples": [
-							"/Users/dev/projects/harness-app",
-							"/Users/dev/projects/harness-game/packages/desktop"
-						]
+						"examples": ["/workspace/harness-app", "/workspace/harness-game/packages/desktop"]
 					}
 				],
 				"outputs": [
@@ -505,7 +497,7 @@
 							{
 								"project": {
 									"name": "harness-app",
-									"root": "/Users/dev/projects/harness-app",
+									"root": "/workspace/harness-app",
 									"id": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63"
 								},
 								"capabilities": {
@@ -572,7 +564,7 @@
 							{
 								"project": {
 									"name": "harness-game",
-									"root": "/Users/dev/projects/harness-game",
+									"root": "/workspace/harness-game",
 									"id": "local-9e2b7d04c1f8a6e35b0d9c72f4a1e8d6b3c5f0a9e7d2b4c6f1a8e3d5b9c0f7a2",
 									"kind": "game",
 									"dimension": "2d"
@@ -684,7 +676,7 @@
 							{
 								"project": {
 									"name": "harness-app",
-									"root": "/Users/dev/projects/harness-app",
+									"root": "/workspace/harness-app",
 									"id": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63"
 								},
 								"capabilities": {
@@ -751,7 +743,7 @@
 							{
 								"project": {
 									"name": "harness-app",
-									"root": "/Users/dev/projects/harness-app",
+									"root": "/workspace/harness-app",
 									"id": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63"
 								},
 								"capabilities": {
@@ -958,9 +950,7 @@
 						"required": false,
 						"default": {},
 						"description": "Optional collaborators for this session. A registry, outbox or arbiter that is left out gets a new default instance, a cache, remote or auth that is left out stays undefined, and every supplied value is stored as given when the session is constructed.",
-						"examples": [
-							{}
-						]
+						"examples": [{}]
 					}
 				],
 				"outputs": [

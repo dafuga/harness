@@ -19,9 +19,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The repository root supplied to each deployment review and forwarded to deployment-plugin discovery. This function passes it through without resolving or defaulting it.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "enqueueChangeDeployments.input",
@@ -121,9 +119,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository root supplied to each deployment review and forwarded to deployment-plugin discovery. This function passes it through without resolving or defaulting it.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "enqueueChangeDeployments.input",

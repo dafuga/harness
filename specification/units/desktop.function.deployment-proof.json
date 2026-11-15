@@ -44,9 +44,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project directory passed to Git and deployment receipt lookups. Uncaught Git or receipt read failures can reject the check; the symbolic branch lookup alone is caught and treated as empty.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "deploymentBlockers.query",
@@ -110,9 +108,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project directory passed to plugin discovery, Git checks, and deployment receipt lookups. Discovery or uncaught repository/state read failures reject the check.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "deploymentCurrent.plan",
@@ -260,9 +256,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project directory passed to Git and deployment receipt lookups. Uncaught Git or receipt read failures can reject the check; the symbolic branch lookup alone is caught and treated as empty.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "deploymentBlockers.query",
@@ -375,9 +369,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project directory passed to plugin discovery, Git checks, and deployment receipt lookups. Discovery or uncaught repository/state read failures reject the check.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "deploymentCurrent.plan",

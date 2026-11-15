@@ -36,9 +36,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Path passed to Git operations as the repository working directory. It determines which repository this adapter instance reads.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "GitSourceAdapter.revision.query",
@@ -624,9 +622,7 @@
 				"name": "GitSourceAdapter.units",
 				"type": "Promise<ComponentManifest[]>",
 				"description": "Returns manifests parsed from specification/units/*.json at the resolved commit after checking each manifest ID against its filename. The resolved commit is used as the per-instance cache key.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "GitSourceAdapter.changed",
@@ -822,9 +818,7 @@
 						"name": "GitSourceAdapter.units",
 						"type": "Promise<ComponentManifest[]>",
 						"description": "Returns manifests parsed from specification/units/*.json at the resolved commit after checking each manifest ID against its filename. The resolved commit is used as the per-instance cache key.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"errors": [
@@ -1481,9 +1475,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Path passed to Git operations as the repository working directory. It determines which repository this adapter instance reads.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [

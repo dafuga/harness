@@ -21,9 +21,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The repository root passed to gitRead for the Git history query. It has no effect when the unit has no owned source paths and no documentation path.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "catalogHistory.revision",
@@ -120,9 +118,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository root passed to gitRead for the Git history query. It has no effect when the unit has no owned source paths and no documentation path.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "catalogHistory.revision",

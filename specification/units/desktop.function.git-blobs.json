@@ -23,9 +23,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The repository directory passed unchanged to 'git -C' for the read. The function relies on Git to reject an invalid or non-repository directory.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "gitBlobs.request",
@@ -64,9 +62,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository directory passed unchanged to 'git -C' for the read. The function relies on Git to reject an invalid or non-repository directory.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "gitBlobs.request",

@@ -19,9 +19,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project directory used to resolve the path; the result must be a nonempty descendant of this root.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "deploymentPath.path",
@@ -35,9 +33,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project root from which deployment settings and Wrangler files are read; its Git branch is used only when harness.deploy.json does not provide sourceBranch.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-				]
+				"examples": ["/workspace/project"]
 			}
 		],
 		"outputs": [
@@ -45,9 +41,7 @@
 				"name": "deploymentPath",
 				"type": "string",
 				"description": "Resolved absolute filesystem path inside the project; paths resolving to the root itself or outside it throw.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/packages/desktop/src/utils/deploymentConfig.ts"
-				]
+				"examples": ["/workspace/project/packages/desktop/src/utils/deploymentConfig.ts"]
 			},
 			{
 				"name": "deploymentConfig",
@@ -92,9 +86,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project directory used to resolve the path; the result must be a nonempty descendant of this root.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "deploymentPath.path",
@@ -109,9 +101,7 @@
 						"name": "deploymentPath",
 						"type": "string",
 						"description": "Resolved absolute filesystem path inside the project; paths resolving to the root itself or outside it throw.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/packages/desktop/src/utils/deploymentConfig.ts"
-						]
+						"examples": ["/workspace/project/packages/desktop/src/utils/deploymentConfig.ts"]
 					}
 				],
 				"errors": [
@@ -131,9 +121,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project root from which deployment settings and Wrangler files are read; its Git branch is used only when harness.deploy.json does not provide sourceBranch.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [

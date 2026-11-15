@@ -26,23 +26,21 @@
 				"required": false,
 				"default": "undefined",
 				"description": "Optional path passed to LocalDocumentAdapter for the project registry document. When omitted, the constructor passes undefined, and the service does not validate or normalize the path itself.",
-				"examples": ["/Users/danielfugere/.config/desktop/projects.json"]
+				"examples": ["/workspace/.config/desktop/projects.json"]
 			},
 			{
 				"name": "ProjectRegistryService.register.directory",
 				"type": "string",
 				"required": true,
 				"description": "Directory sent to git rev-parse --show-toplevel before the repository root is canonicalized with realpath. It must identify a Git work tree and be resolvable by realpath.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7/packages/desktop/src"
-				]
+				"examples": ["/workspace/project/packages/desktop/src"]
 			},
 			{
 				"name": "ProjectRegistryService.get.id",
 				"type": "string",
 				"required": true,
 				"description": "ID compared with each registered project id using string equality. IDs produced by register use local- followed by 64 lowercase hexadecimal SHA-256 characters.",
-				"examples": ["local-cad1e79d046d0509f0363447f510e19f8ee97657502d3c934108208e8bfa6037"]
+				"examples": ["local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad"]
 			}
 		],
 		"outputs": [
@@ -52,10 +50,10 @@
 				"description": "Resolves to the project built from the canonical Git root, using that root’s basename as name and kind local. Its id is local- followed by the lowercase 64-character SHA-256 digest of the root, and repeat registration returns the existing matching record.",
 				"examples": [
 					{
-						"id": "local-cad1e79d046d0509f0363447f510e19f8ee97657502d3c934108208e8bfa6037",
-						"name": "slot-7",
+						"id": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
+						"name": "project",
 						"kind": "local",
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
+						"root": "/workspace/project"
 					}
 				]
 			},
@@ -66,10 +64,10 @@
 				"examples": [
 					[
 						{
-							"id": "local-cad1e79d046d0509f0363447f510e19f8ee97657502d3c934108208e8bfa6037",
-							"name": "slot-7",
+							"id": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
+							"name": "project",
 							"kind": "local",
-							"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
+							"root": "/workspace/project"
 						}
 					]
 				]
@@ -80,10 +78,10 @@
 				"description": "Resolves to the project whose id equals the requested string. It rejects when no matching project exists and propagates failures from list().",
 				"examples": [
 					{
-						"id": "local-cad1e79d046d0509f0363447f510e19f8ee97657502d3c934108208e8bfa6037",
-						"name": "slot-7",
+						"id": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
+						"name": "project",
 						"kind": "local",
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
+						"root": "/workspace/project"
 					}
 				]
 			}
@@ -105,9 +103,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Directory sent to git rev-parse --show-toplevel before the repository root is canonicalized with realpath. It must identify a Git work tree and be resolvable by realpath.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7/packages/desktop/src"
-						]
+						"examples": ["/workspace/project/packages/desktop/src"]
 					}
 				],
 				"outputs": [
@@ -117,10 +113,10 @@
 						"description": "Resolves to the project built from the canonical Git root, using that root’s basename as name and kind local. Its id is local- followed by the lowercase 64-character SHA-256 digest of the root, and repeat registration returns the existing matching record.",
 						"examples": [
 							{
-								"id": "local-cad1e79d046d0509f0363447f510e19f8ee97657502d3c934108208e8bfa6037",
-								"name": "slot-7",
+								"id": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
+								"name": "project",
 								"kind": "local",
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
+								"root": "/workspace/project"
 							}
 						]
 					}
@@ -145,10 +141,10 @@
 						"examples": [
 							[
 								{
-									"id": "local-cad1e79d046d0509f0363447f510e19f8ee97657502d3c934108208e8bfa6037",
-									"name": "slot-7",
+									"id": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
+									"name": "project",
 									"kind": "local",
-									"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
+									"root": "/workspace/project"
 								}
 							]
 						]
@@ -171,7 +167,7 @@
 						"type": "string",
 						"required": true,
 						"description": "ID compared with each registered project id using string equality. IDs produced by register use local- followed by 64 lowercase hexadecimal SHA-256 characters.",
-						"examples": ["local-cad1e79d046d0509f0363447f510e19f8ee97657502d3c934108208e8bfa6037"]
+						"examples": ["local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad"]
 					}
 				],
 				"outputs": [
@@ -181,10 +177,10 @@
 						"description": "Resolves to the project whose id equals the requested string. It rejects when no matching project exists and propagates failures from list().",
 						"examples": [
 							{
-								"id": "local-cad1e79d046d0509f0363447f510e19f8ee97657502d3c934108208e8bfa6037",
-								"name": "slot-7",
+								"id": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
+								"name": "project",
 								"kind": "local",
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
+								"root": "/workspace/project"
 							}
 						]
 					}
@@ -209,7 +205,7 @@
 						"required": false,
 						"default": "undefined",
 						"description": "Optional path passed to LocalDocumentAdapter for the project registry document. When omitted, the constructor passes undefined, and the service does not validate or normalize the path itself.",
-						"examples": ["/Users/danielfugere/.config/desktop/projects.json"]
+						"examples": ["/workspace/.config/desktop/projects.json"]
 					}
 				],
 				"outputs": [
