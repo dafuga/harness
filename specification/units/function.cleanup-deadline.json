@@ -21,17 +21,19 @@
 				"name": "cleanupDeadline.milliseconds",
 				"type": "number",
 				"required": true,
-				"description": "Milliseconds before the deadline aborts. A timer starts immediately and is unreferenced so it does not keep the process alive."
+				"description": "Milliseconds before the deadline aborts, which ends pending within() calls with their fallbacks and cuts pause() short; the timer starts as soon as cleanupDeadline is called and is unreferenced, so it does not keep the process alive. The value is not checked, and Node's timers set any value outside the range 1 to 2147483647, NaN included, to 1, so such a deadline aborts after 1 ms.",
+				"examples": [250, 1500, 5000]
 			}
 		],
 		"outputs": [
 			{
 				"name": "cleanupDeadline",
 				"type": "CleanupDeadline",
-				"description": "Deadline with an AbortSignal, expiry check, promise race with fallback, bounded pause and cancel method. Cancellation aborts immediately; within returns its fallback for failed or late work without stopping work that ignores the signal."
+				"description": "A deadline object whose signal aborts when its time runs out, and cancel() aborts it immediately; expired() returns true once the signal has aborted, within(work, fallback) resolves to the work's answer or to fallback when the work rejects or the signal aborts first, and pause(ms) resolves after ms or when the signal aborts. The deadline only stops waiting, so work that ignores the signal keeps running after within() returns fallback, and once the signal has aborted, within() returns fallback at once."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "cleanupDeadline",
@@ -40,18 +42,19 @@
 						"name": "cleanupDeadline.milliseconds",
 						"type": "number",
 						"required": true,
-						"description": "Milliseconds before the deadline aborts. A timer starts immediately and is unreferenced so it does not keep the process alive."
+						"description": "Milliseconds before the deadline aborts, which ends pending within() calls with their fallbacks and cuts pause() short; the timer starts as soon as cleanupDeadline is called and is unreferenced, so it does not keep the process alive. The value is not checked, and Node's timers set any value outside the range 1 to 2147483647, NaN included, to 1, so such a deadline aborts after 1 ms.",
+						"examples": [250, 1500, 5000]
 					}
 				],
 				"outputs": [
 					{
 						"name": "cleanupDeadline",
 						"type": "CleanupDeadline",
-						"description": "Deadline with an AbortSignal, expiry check, promise race with fallback, bounded pause and cancel method. Cancellation aborts immediately; within returns its fallback for failed or late work without stopping work that ignores the signal."
+						"description": "A deadline object whose signal aborts when its time runs out, and cancel() aborts it immediately; expired() returns true once the signal has aborted, within(work, fallback) resolves to the work's answer or to fallback when the work rejects or the signal aborts first, and pause(ms) resolves after ms or when the signal aborts. The deadline only stops waiting, so work that ignores the signal keeps running after within() returns fallback, and once the signal has aborted, within() returns fallback at once."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
