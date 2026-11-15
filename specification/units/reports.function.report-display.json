@@ -18,30 +18,35 @@
 				"name": "timeAgo.value",
 				"type": "string",
 				"required": true,
-				"description": "Timestamp for elapsed-time wording."
+				"description": "Timestamp string parsed by Date.parse() and subtracted from now in milliseconds. Invalid timestamps return an empty string; future timestamps and elapsed times under 60,000 milliseconds return \"just now\".",
+				"examples": ["2026-11-08T12:00:00.000Z", "2026-11-15T11:59:30.000Z", "not-a-date"]
 			},
 			{
 				"name": "timeAgo.now",
 				"type": "unknown",
 				"required": false,
-				"description": "Optional current epoch milliseconds, defaulting to Date.now()."
+				"description": "Reference epoch time in milliseconds used to compute elapsed time from value. Defaults to Date.now() when omitted; non-finite elapsed calculations return an empty string.",
+				"examples": [1794744000000, 1794747600000]
 			},
 			{
 				"name": "timeAgo.numeric",
 				"type": "Intl.RelativeTimeFormatNumeric",
 				"required": false,
 				"default": "auto",
-				"description": "Optional relative-date wording. Defaults to auto; always uses numeric wording such as 1 week ago."
+				"description": "Intl.RelativeTimeFormat numeric mode applied to valid elapsed ages of at least one minute. Defaults to \"auto\"; the accepted values are \"auto\" and \"always\", and \"always\" requests numeric phrasing.",
+				"examples": ["auto", "always"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "timeAgo",
 				"type": "unknown",
-				"description": "English relative age using the largest supported unit and whole elapsed units. Under one minute, including future dates, reads just now; invalid timestamps return empty."
+				"description": "English relative-age text for a parseable timestamp and finite elapsed time. Elapsed times below 60,000 milliseconds, including future timestamps, return \"just now\"; larger ages use the first matching threshold (365 days per year, 30 days per month, then week, day, hour, or minute) with whole units.",
+				"examples": ["last week", "just now", ""]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "timeAgo",
@@ -50,31 +55,35 @@
 						"name": "timeAgo.value",
 						"type": "string",
 						"required": true,
-						"description": "Timestamp for elapsed-time wording."
+						"description": "Timestamp string parsed by Date.parse() and subtracted from now in milliseconds. Invalid timestamps return an empty string; future timestamps and elapsed times under 60,000 milliseconds return \"just now\".",
+						"examples": ["2026-11-08T12:00:00.000Z", "2026-11-15T11:59:30.000Z", "not-a-date"]
 					},
 					{
 						"name": "timeAgo.now",
 						"type": "unknown",
 						"required": false,
-						"description": "Optional current epoch milliseconds, defaulting to Date.now()."
+						"description": "Reference epoch time in milliseconds used to compute elapsed time from value. Defaults to Date.now() when omitted; non-finite elapsed calculations return an empty string.",
+						"examples": [1794744000000, 1794747600000]
 					},
 					{
 						"name": "timeAgo.numeric",
 						"type": "Intl.RelativeTimeFormatNumeric",
 						"required": false,
 						"default": "auto",
-						"description": "Optional relative-date wording. Defaults to auto; always uses numeric wording such as 1 week ago."
+						"description": "Intl.RelativeTimeFormat numeric mode applied to valid elapsed ages of at least one minute. Defaults to \"auto\"; the accepted values are \"auto\" and \"always\", and \"always\" requests numeric phrasing.",
+						"examples": ["auto", "always"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "timeAgo",
 						"type": "unknown",
-						"description": "English relative age using the largest supported unit and whole elapsed units. Under one minute, including future dates, reads just now; invalid timestamps return empty."
+						"description": "English relative-age text for a parseable timestamp and finite elapsed time. Elapsed times below 60,000 milliseconds, including future timestamps, return \"just now\"; larger ages use the first matching threshold (365 days per year, 30 days per month, then week, day, hour, or minute) with whole units.",
+						"examples": ["last week", "just now", ""]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
