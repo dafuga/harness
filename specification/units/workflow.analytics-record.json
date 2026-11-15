@@ -32,96 +32,150 @@
 				"name": "projectIdentity.root",
 				"type": "string",
 				"required": true,
-				"description": "Checkout or project directory used to resolve the canonical primary worktree path."
+				"description": "Filesystem path used to resolve the primary Git worktree; if canonicalization or Git lookup fails, the resolved input path is returned.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
+				]
 			},
 			{
 				"name": "resolvedContext.context",
 				"type": "AnalyticsContext",
 				"required": true,
-				"description": "Requested loop, step, task, agent model and report analytics context."
+				"description": "Requested analytics context for loop, step, task, agent model, and report selection. Task cannot be combined with loop or step, and step requires loop; missing values may come from HARNESS_ANALYTICS_* or HARNESS_AGENT_MODEL environment variables.",
+				"examples": [
+					{},
+					{
+						"task": "triage-analytics",
+						"agentModel": "model-x"
+					}
+				]
 			},
 			{
 				"name": "resolvedContext.root",
 				"type": "string",
 				"required": true,
-				"description": "Repository root used to read loop state when a loop is selected."
+				"description": "Repository filesystem root used to locate loop state when a loop is selected.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
+				]
 			},
 			{
 				"name": "recordAnalytics.event",
 				"type": "Omit<AnalyticsEvent, 'id' | 'timestamp' | 'project'>",
 				"required": true,
-				"description": "Analytics fields excluding generated ID, timestamp and project identity."
+				"description": "Analytics event fields passed to AnalyticsRepository.record; this function adds the event ID, timestamp, and project identity. Recording is skipped when HARNESS_ANALYTICS_DISABLED is exactly 1, and repository failures are caught and logged.",
+				"examples": [
+					{
+						"kind": "command",
+						"action": "run"
+					},
+					{
+						"kind": "evaluation",
+						"action": "complete",
+						"status": "passed",
+						"durationMs": 1200,
+						"checkType": "response"
+					}
+				]
 			},
 			{
 				"name": "recordAnalytics.root",
 				"type": "string",
 				"required": false,
-				"description": "Project root to identify; defaults to the process working directory."
+				"description": "Filesystem root used to identify the project for the event. Defaults to process.cwd(), the process working directory.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
+				]
 			},
 			{
 				"name": "fingerprint.value",
 				"type": "unknown",
 				"required": true,
-				"description": "JSON-serializable value whose serialized bytes are hashed."
+				"description": "Value serialized with JSON.stringify before SHA-256 hashing. It must serialize to a string; cyclic values and values such as undefined that serialize to no string throw.",
+				"examples": [
+					{
+						"action": "search",
+						"count": 2
+					},
+					["read", "write"],
+					42
+				]
 			},
 			{
 				"name": "validateReport.context",
 				"type": "AnalyticsContext",
 				"required": true,
-				"description": "Analytics context; a present report ID is syntax-checked and must name a readable report manifest."
+				"description": "Analytics context whose report, when present, must contain only letters, digits, or hyphens and identify a readable manifest under PROJECT_REPORTS_HOME or $HOME/.codex/project-reports.",
+				"examples": [
+					{}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "projectIdentity",
 				"type": "Promise<string>",
-				"description": "Canonical primary worktree path, falling back to the resolved input directory when Git identity cannot be read."
+				"description": "Canonical path from the first worktree entry in git worktree list --porcelain. If Git lookup fails or returns no worktree entry, the resolved input directory is returned.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
+				]
 			},
 			{
 				"name": "resolvedContext",
 				"type": "Promise<AnalyticsContext>",
-				"description": "Context with environment defaults applied and, when selected, the loop model and run timestamp filled from loop state."
+				"description": "Context with loop, step, task, and report defaults from HARNESS_ANALYTICS_* variables and agentModel from the context or HARNESS_AGENT_MODEL. When a loop is selected, missing agentModel comes from loop state and loopRun is set to that state’s createdAt value.",
+				"examples": [
+					{
+						"task": "triage-analytics",
+						"agentModel": "model-x"
+					}
+				]
 			},
 			{
 				"name": "recordAnalytics",
 				"type": "Promise<void>",
-				"description": "Resolves after attempting local insertion; storage errors are caught and reported as a console warning, and analytics-disabled mode is a no-op."
+				"description": "Resolves after attempting to record the event, or immediately when analytics is disabled. Repository failures are caught and reported with a console warning."
 			},
 			{
 				"name": "fingerprint",
 				"type": "string",
-				"description": "SHA-256 hex digest of JSON.stringify(value)."
+				"description": "64-character lowercase hexadecimal SHA-256 digest of JSON.stringify(value).",
+				"examples": ["2c73dac14a8bd1da5a6ebb31fe58cdc5549ed0869935393b0f9c9bfc4042f4f7"]
 			},
 			{
 				"name": "validateReport",
 				"type": "Promise<void>",
-				"description": "Resolves when no report is selected or its ID and manifest are valid and readable."
+				"description": "Resolves when no report is selected or when the report ID is valid and its manifest can be read."
 			}
 		],
 		"errors": [
 			{
 				"name": "Invalid analytics context",
 				"type": "thrown",
-				"description": "resolvedContext rejects mutually exclusive task/loop context, step without loop, or a step absent from loop state",
-				"examples": [
-					"Use either --task or --loop/--step.",
-					"--step requires --loop.",
-					"Loop step does not exist."
-				]
+				"description": "resolvedContext throws Error('Use either --task or --loop/--step.') when task is combined with loop or step, Error('--step requires --loop.') when step lacks loop, and Error('Loop step does not exist.') when the selected step is absent from loaded loop state."
+			},
+			{
+				"name": "Loop state access failure",
+				"type": "thrown",
+				"description": "When a loop is selected, failures from resolving its state path or reading its state propagate from resolvedContext."
 			},
 			{
 				"name": "Invalid report reference",
-				"type": "propagated",
-				"description": "validateReport rejects a malformed report ID or a missing/unreadable manifest",
-				"examples": ["Invalid report ID."]
+				"type": "thrown",
+				"description": "validateReport throws Error('Invalid report ID.') when the report contains characters outside letters, digits, and hyphens. A readFile rejection propagates when the manifest is missing or unreadable."
 			},
 			{
 				"name": "JSON serialization failure",
-				"type": "propagated",
-				"description": "fingerprint requires a value JSON.stringify can serialize to a string; cyclic values throw and undefined is not accepted by the hash update"
+				"type": "thrown",
+				"description": "fingerprint throws when JSON.stringify fails, such as for cyclic data, or returns no string, such as for undefined."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "resolvedContext throws Error for incompatible task, loop, and step selections or an absent loop step; validateReport throws Error for a report ID containing characters other than letters, digits, or hyphens. Their exact messages are documented on the corresponding operations."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "projectIdentity",
@@ -130,14 +184,20 @@
 						"name": "projectIdentity.root",
 						"type": "string",
 						"required": true,
-						"description": "Checkout or project directory used to resolve the canonical primary worktree path."
+						"description": "Filesystem path used to resolve the primary Git worktree; if canonicalization or Git lookup fails, the resolved input path is returned.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "projectIdentity",
 						"type": "Promise<string>",
-						"description": "Canonical primary worktree path, falling back to the resolved input directory when Git identity cannot be read."
+						"description": "Canonical path from the first worktree entry in git worktree list --porcelain. If Git lookup fails or returns no worktree entry, the resolved input directory is returned.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
+						]
 					}
 				],
 				"errors": [],
@@ -150,32 +210,53 @@
 						"name": "resolvedContext.context",
 						"type": "AnalyticsContext",
 						"required": true,
-						"description": "Requested loop, step, task, agent model and report analytics context."
+						"description": "Requested analytics context for loop, step, task, agent model, and report selection. Task cannot be combined with loop or step, and step requires loop; missing values may come from HARNESS_ANALYTICS_* or HARNESS_AGENT_MODEL environment variables.",
+						"examples": [
+							{},
+							{
+								"task": "triage-analytics",
+								"agentModel": "model-x"
+							}
+						]
 					},
 					{
 						"name": "resolvedContext.root",
 						"type": "string",
 						"required": true,
-						"description": "Repository root used to read loop state when a loop is selected."
+						"description": "Repository filesystem root used to locate loop state when a loop is selected.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "resolvedContext",
 						"type": "Promise<AnalyticsContext>",
-						"description": "Context with environment defaults applied and, when selected, the loop model and run timestamp filled from loop state."
+						"description": "Context with loop, step, task, and report defaults from HARNESS_ANALYTICS_* variables and agentModel from the context or HARNESS_AGENT_MODEL. When a loop is selected, missing agentModel comes from loop state and loopRun is set to that state’s createdAt value.",
+						"examples": [
+							{
+								"task": "triage-analytics",
+								"agentModel": "model-x"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Invalid analytics context",
 						"type": "thrown",
-						"description": "resolvedContext rejects mutually exclusive task/loop context, step without loop, or a step absent from loop state",
-						"examples": [
-							"Use either --task or --loop/--step.",
-							"--step requires --loop.",
-							"Loop step does not exist."
-						]
+						"description": "resolvedContext throws Error('Use either --task or --loop/--step.') when task is combined with loop or step, Error('--step requires --loop.') when step lacks loop, and Error('Loop step does not exist.') when the selected step is absent from loaded loop state."
+					},
+					{
+						"name": "Loop state access failure",
+						"type": "thrown",
+						"description": "When a loop is selected, failures from resolving its state path or reading its state propagate from resolvedContext."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws Error('Use either --task or --loop/--step.') when task is combined with loop or step, Error('--step requires --loop.') when step lacks loop, and Error('Loop step does not exist.') when the selected step is absent from loaded loop state."
 					}
 				],
 				"errorStatus": "declared"
@@ -187,20 +268,36 @@
 						"name": "recordAnalytics.event",
 						"type": "Omit<AnalyticsEvent, 'id' | 'timestamp' | 'project'>",
 						"required": true,
-						"description": "Analytics fields excluding generated ID, timestamp and project identity."
+						"description": "Analytics event fields passed to AnalyticsRepository.record; this function adds the event ID, timestamp, and project identity. Recording is skipped when HARNESS_ANALYTICS_DISABLED is exactly 1, and repository failures are caught and logged.",
+						"examples": [
+							{
+								"kind": "command",
+								"action": "run"
+							},
+							{
+								"kind": "evaluation",
+								"action": "complete",
+								"status": "passed",
+								"durationMs": 1200,
+								"checkType": "response"
+							}
+						]
 					},
 					{
 						"name": "recordAnalytics.root",
 						"type": "string",
 						"required": false,
-						"description": "Project root to identify; defaults to the process working directory."
+						"description": "Filesystem root used to identify the project for the event. Defaults to process.cwd(), the process working directory.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordAnalytics",
 						"type": "Promise<void>",
-						"description": "Resolves after attempting local insertion; storage errors are caught and reported as a console warning, and analytics-disabled mode is a no-op."
+						"description": "Resolves after attempting to record the event, or immediately when analytics is disabled. Repository failures are caught and reported with a console warning."
 					}
 				],
 				"errors": [],
@@ -213,21 +310,30 @@
 						"name": "fingerprint.value",
 						"type": "unknown",
 						"required": true,
-						"description": "JSON-serializable value whose serialized bytes are hashed."
+						"description": "Value serialized with JSON.stringify before SHA-256 hashing. It must serialize to a string; cyclic values and values such as undefined that serialize to no string throw.",
+						"examples": [
+							{
+								"action": "search",
+								"count": 2
+							},
+							["read", "write"],
+							42
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "fingerprint",
 						"type": "string",
-						"description": "SHA-256 hex digest of JSON.stringify(value)."
+						"description": "64-character lowercase hexadecimal SHA-256 digest of JSON.stringify(value).",
+						"examples": ["2c73dac14a8bd1da5a6ebb31fe58cdc5549ed0869935393b0f9c9bfc4042f4f7"]
 					}
 				],
 				"errors": [
 					{
 						"name": "JSON serialization failure",
-						"type": "propagated",
-						"description": "fingerprint requires a value JSON.stringify can serialize to a string; cyclic values throw and undefined is not accepted by the hash update"
+						"type": "thrown",
+						"description": "fingerprint throws when JSON.stringify fails, such as for cyclic data, or returns no string, such as for undefined."
 					}
 				],
 				"errorStatus": "declared"
@@ -239,22 +345,29 @@
 						"name": "validateReport.context",
 						"type": "AnalyticsContext",
 						"required": true,
-						"description": "Analytics context; a present report ID is syntax-checked and must name a readable report manifest."
+						"description": "Analytics context whose report, when present, must contain only letters, digits, or hyphens and identify a readable manifest under PROJECT_REPORTS_HOME or $HOME/.codex/project-reports.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "validateReport",
 						"type": "Promise<void>",
-						"description": "Resolves when no report is selected or its ID and manifest are valid and readable."
+						"description": "Resolves when no report is selected or when the report ID is valid and its manifest can be read."
 					}
 				],
 				"errors": [
 					{
 						"name": "Invalid report reference",
-						"type": "propagated",
-						"description": "validateReport rejects a malformed report ID or a missing/unreadable manifest",
-						"examples": ["Invalid report ID."]
+						"type": "thrown",
+						"description": "validateReport throws Error('Invalid report ID.') when the report contains characters outside letters, digits, and hyphens. A readFile rejection propagates when the manifest is missing or unreadable."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws Error('Invalid report ID.') when a supplied report ID contains characters other than letters, digits, or hyphens."
 					}
 				],
 				"errorStatus": "declared"
