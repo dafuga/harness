@@ -10,14 +10,11 @@
 	"owns": {
 		"source": [
 			"src/cli/program/hook-install-service/hookScript.ts",
-			"src/services/hook-install-service/hookScript.ts",
 			"src/utils/development-tooling/hookScript.ts",
 			"src/utils/development-tooling/hookScript.types.ts",
 			"src/utils/hookScript.ts"
 		],
 		"symbols": [
-			"hookScript",
-			"managedHook",
 			"hookScript",
 			"managedHook",
 			"hookMarker",

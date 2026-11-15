@@ -117,11 +117,6 @@
 			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
 		},
 		{
-			"from": "src/services/hook-install-service/hookScript.ts",
-			"to": "src/cli/program/hook-install-service/hookScript",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
 			"from": "src/services/hook-run-service/pushedRefs.ts",
 			"to": "src/cli/program/hook-run-service/pushedRefs",
 			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
