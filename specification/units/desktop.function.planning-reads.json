@@ -44,126 +44,338 @@
 				"name": "planningReads.context",
 				"type": "PlanningContext",
 				"required": true,
-				"description": "The repository directory and planning API used to load the plan snapshot."
+				"description": "The repository root and planning API used by this read. The root supplies Git reads for prompt and notes text, while the API supplies planning snapshots and entity data."
 			},
 			{
 				"name": "planningReads.revision",
 				"type": "string",
 				"required": true,
-				"description": "The revision whose complete planning snapshot is requested."
+				"description": "The revision passed to the planning API for the snapshot and to Git reads for prompt and notes text.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "readPlanMessages.context",
 				"type": "PlanningContext",
 				"required": true,
-				"description": "The planning context used to read messages."
+				"description": "The repository root and planning API used by this read. The root supplies Git reads for prompt and notes text, while the API supplies planning snapshots and entity data."
 			},
 			{
 				"name": "readPlanMessages.data",
 				"type": "{ entityId: string; threadId: string; revision: string }",
 				"required": true,
-				"description": "The entity, thread and revision whose messages are requested."
+				"description": "The entity unit ID, thread ID, and revision passed to readPlan; messages are returned only if that thread belongs to the entity.",
+				"examples": [
+					{
+						"entityId": "reports.component.evidence-grid",
+						"threadId": "550e8400-e29b-41d4-a716-446655440000",
+						"revision": "0123456789abcdef0123456789abcdef01234567"
+					}
+				]
 			},
 			{
 				"name": "readPlanImage.context",
 				"type": "PlanningContext",
 				"required": true,
-				"description": "The planning context used to read an image."
+				"description": "The repository root and planning API used by this read. The root supplies Git reads for prompt and notes text, while the API supplies planning snapshots and entity data."
 			},
 			{
 				"name": "readPlanImage.query",
 				"type": "PlanImageQuery",
 				"required": true,
-				"description": "The entity, version, image hash and revision, plus an optional design option. The image must appear in that entity/version."
+				"description": "The entity unit ID, version, image SHA-256, and revision identifying the image; an option, when supplied, is forwarded to the image read. The image must be present in the requested entity and version.",
+				"examples": [
+					{
+						"entityId": "reports.component.evidence-grid",
+						"version": "v001",
+						"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"revision": "0123456789abcdef0123456789abcdef01234567",
+						"option": "o1"
+					}
+				]
 			},
 			{
 				"name": "readPlanHistory.context",
 				"type": "PlanningContext",
 				"required": true,
-				"description": "The planning context used to read history."
+				"description": "The repository root and planning API used by this read. The root supplies Git reads for prompt and notes text, while the API supplies planning snapshots and entity data."
 			},
 			{
 				"name": "readPlanHistory.entityId",
 				"type": "string",
 				"required": true,
-				"description": "The entity whose planning history is requested."
+				"description": "The unit ID whose planning commit history is requested.",
+				"examples": ["reports.component.evidence-grid"]
 			},
 			{
 				"name": "readPlanHistory.revision",
 				"type": "string",
 				"required": true,
-				"description": "The revision limiting that history."
+				"description": "The revision passed to the planning API to limit the entity history.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "planRecord.context",
 				"type": "PlanningContext",
 				"required": true,
-				"description": "The repository and API used while converting one plan."
+				"description": "The planning context whose repository root is used to read each version's prompt and optional notes from Git."
 			},
 			{
 				"name": "planRecord.plan",
 				"type": "PlanDetail",
 				"required": true,
-				"description": "The stored plan to convert, including its versions, contract, threads and lifecycle."
+				"description": "The stored plan detail being converted to a desktop record, including its identity, contract, versions, approvals, and threads.",
+				"examples": [
+					{
+						"unitId": "reports.component.evidence-grid",
+						"category": "component",
+						"slug": "evidence-grid",
+						"title": "Evidence Grid",
+						"goal": "Show review evidence in a compact grid.",
+						"createdAt": "2026-11-15T09:30:00.000Z",
+						"createdBy": {
+							"kind": "person",
+							"name": "Reviewer"
+						},
+						"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+						"path": "packages/reports/src/components/evidence-grid",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"lifecycle": "draft",
+						"registered": false,
+						"verified": false,
+						"latestVersion": null,
+						"contract": {
+							"responsibility": "Display evidence for reports.",
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"states": [],
+							"viewports": []
+						},
+						"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"approval": null,
+						"versionCount": 0,
+						"threadCount": 0,
+						"versions": [],
+						"approvals": [],
+						"threads": []
+					}
+				]
 			},
 			{
 				"name": "planRecord.revision",
 				"type": "string",
 				"required": true,
-				"description": "The revision from which to read that plan’s prompt and notes files."
+				"description": "The Git revision from which each version's prompt and optional notes are read.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "planVersion.context",
 				"type": "PlanningContext",
 				"required": true,
-				"description": "The repository and API used to read one design version’s text."
+				"description": "The planning context whose repository root is used to read the version prompt and optional notes from Git."
 			},
 			{
 				"name": "planVersion.data",
 				"type": "{ version: StoredVersion; plan: PlanDetail; revision: string }",
 				"required": true,
-				"description": "The stored version, containing plan and revision; the plan supplies approvals and the version supplies image and option metadata."
+				"description": "The stored version, its containing plan, and the revision used for Git text reads; the plan supplies matching approvals and the version supplies prompt, image, and option metadata.",
+				"examples": [
+					{
+						"version": {
+							"unitId": "reports.component.evidence-grid",
+							"version": "v001",
+							"createdAt": "2026-11-15T09:30:00.000Z",
+							"generator": {
+								"provider": "codex",
+								"model": "gpt-6-luna"
+							},
+							"prompt": {
+								"file": "prompt.md",
+								"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+							},
+							"notes": null,
+							"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+							"images": [],
+							"contract": {
+								"responsibility": "Display evidence for reports.",
+								"inputs": [],
+								"outputs": [],
+								"errors": [],
+								"states": [],
+								"viewports": []
+							},
+							"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"revises": null,
+							"commit": "abcdef0123456789abcdef0123456789abcdef01"
+						},
+						"plan": {
+							"unitId": "reports.component.evidence-grid",
+							"category": "component",
+							"slug": "evidence-grid",
+							"title": "Evidence Grid",
+							"goal": "Show review evidence in a compact grid.",
+							"createdAt": "2026-11-15T09:30:00.000Z",
+							"createdBy": {
+								"kind": "person",
+								"name": "Reviewer"
+							},
+							"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+							"path": "packages/reports/src/components/evidence-grid",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"lifecycle": "review",
+							"registered": false,
+							"verified": false,
+							"latestVersion": "v001",
+							"contract": {
+								"responsibility": "Display evidence for reports.",
+								"inputs": [],
+								"outputs": [],
+								"errors": [],
+								"states": [],
+								"viewports": []
+							},
+							"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"approval": null,
+							"versionCount": 1,
+							"threadCount": 0,
+							"versions": [
+								{
+									"unitId": "reports.component.evidence-grid",
+									"version": "v001",
+									"createdAt": "2026-11-15T09:30:00.000Z",
+									"generator": {
+										"provider": "codex",
+										"model": "gpt-6-luna"
+									},
+									"prompt": {
+										"file": "prompt.md",
+										"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+									},
+									"notes": null,
+									"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+									"images": [],
+									"contract": {
+										"responsibility": "Display evidence for reports.",
+										"inputs": [],
+										"outputs": [],
+										"errors": [],
+										"states": [],
+										"viewports": []
+									},
+									"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"revises": null,
+									"commit": "abcdef0123456789abcdef0123456789abcdef01"
+								}
+							],
+							"approvals": [],
+							"threads": []
+						},
+						"revision": "0123456789abcdef0123456789abcdef01234567"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "planningReads",
 				"type": "unknown",
-				"description": "A promise for converted plan records. Any rejected plan in the snapshot causes the whole read to reject with its reported path and reason."
+				"description": "Resolves to one converted PlanRecord for each plan in the snapshot at the requested revision. A nonempty rejected list throws an Error containing the rejected paths and messages; API or Git read failures also reject.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "planRecord",
 				"type": "Promise<PlanRecord>",
-				"description": "A promise for a desktop plan record with plural category, contract, converted versions and threads."
+				"description": "Resolves to a desktop PlanRecord with the category pluralized and its contract, versions, and threads converted. Version prompts and optional notes are read from Git at the requested revision.",
+				"examples": [
+					{
+						"id": "reports.component.evidence-grid",
+						"path": "packages/reports/src/components/evidence-grid",
+						"category": "components",
+						"title": "Evidence Grid",
+						"goal": "Show review evidence in a compact grid.",
+						"lifecycle": "draft",
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						},
+						"versions": [],
+						"threads": []
+					}
+				]
 			},
 			{
 				"name": "planVersion",
 				"type": "Promise<DesignVersion>",
-				"description": "A promise for a design version with prompt and optional notes read at the requested revision, image and option metadata, the last approval for that version, and any exact image-revision binding."
+				"description": "Resolves to a desktop DesignVersion with prompt and optional notes read from Git, converted image and option metadata, and the last approval matching this version or null. A revision binding is included only when the stored version revises an earlier image.",
+				"examples": [
+					{
+						"version": "v001",
+						"createdAt": "2026-11-15T09:30:00.000Z",
+						"commit": "abcdef0123456789abcdef0123456789abcdef01",
+						"generator": "codex · gpt-6-luna",
+						"prompt": "Review the evidence grid.",
+						"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+						"images": [],
+						"approval": null
+					}
+				]
 			},
 			{
 				"name": "readPlanMessages",
 				"type": "unknown",
-				"description": "A promise for the selected thread’s messages converted to display records."
+				"description": "Resolves to the selected thread's messages converted to desktop ThreadMessage records. The requested thread must belong to the entity at the requested revision.",
+				"examples": [
+					[
+						{
+							"id": "550e8400-e29b-41d4-a716-446655440001",
+							"at": "2026-11-15T09:30:00.000Z",
+							"author": "user",
+							"text": "Please clarify this evidence row.",
+							"mode": null,
+							"provider": null,
+							"model": null,
+							"version": null,
+							"imageSha256": null
+						}
+					]
+				]
 			},
 			{
 				"name": "readPlanImage",
 				"type": "unknown",
-				"description": "A promise for the stored image bytes after the planning API read; the optional design option is passed through."
+				"description": "Resolves to the image bytes returned by readImage after the image is found in the requested entity and version. The optional design option is forwarded to readImage."
 			},
 			{
 				"name": "readPlanHistory",
 				"type": "unknown",
-				"description": "A promise for commit history entries with event-kind summaries and null design-version fields."
+				"description": "Resolves to history entries mapped from commits, with event kinds joined into detail and version set to null. The returned entry ID and commit are the same commit identifier.",
+				"examples": [
+					[
+						{
+							"id": "abcdef0123456789abcdef0123456789abcdef01",
+							"at": "2026-11-15T09:30:00.000Z",
+							"kind": "commit",
+							"title": "Add evidence grid design",
+							"detail": "design, approval",
+							"commit": "abcdef0123456789abcdef0123456789abcdef01",
+							"version": null
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects corrupt plan snapshots, missing threads, images absent from the requested entity/version, and underlying planning or Git read failures."
+				"description": "An Error is thrown when a snapshot contains rejected plans, a requested thread is missing, or an image is absent from its entity/version. Planning API and Git prompt/notes read failures also reject the corresponding operation."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "planningReads",
@@ -172,29 +384,34 @@
 						"name": "planningReads.context",
 						"type": "PlanningContext",
 						"required": true,
-						"description": "The repository directory and planning API used to load the plan snapshot."
+						"description": "The repository root and planning API used by this read. The root supplies Git reads for prompt and notes text, while the API supplies planning snapshots and entity data."
 					},
 					{
 						"name": "planningReads.revision",
 						"type": "string",
 						"required": true,
-						"description": "The revision whose complete planning snapshot is requested."
+						"description": "The revision passed to the planning API for the snapshot and to Git reads for prompt and notes text.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "planningReads",
 						"type": "unknown",
-						"description": "A promise for converted plan records. Any rejected plan in the snapshot causes the whole read to reject with its reported path and reason."
+						"description": "Resolves to one converted PlanRecord for each plan in the snapshot at the requested revision. A nonempty rejected list throws an Error containing the rejected paths and messages; API or Git read failures also reject.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws an Error containing rejected plan paths and messages when the snapshot reports rejected entries; planning API, conversion, or Git text reads may also reject."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "readPlanMessages",
@@ -203,29 +420,52 @@
 						"name": "readPlanMessages.context",
 						"type": "PlanningContext",
 						"required": true,
-						"description": "The planning context used to read messages."
+						"description": "The repository root and planning API used by this read. The root supplies Git reads for prompt and notes text, while the API supplies planning snapshots and entity data."
 					},
 					{
 						"name": "readPlanMessages.data",
 						"type": "{ entityId: string; threadId: string; revision: string }",
 						"required": true,
-						"description": "The entity, thread and revision whose messages are requested."
+						"description": "The entity unit ID, thread ID, and revision passed to readPlan; messages are returned only if that thread belongs to the entity.",
+						"examples": [
+							{
+								"entityId": "reports.component.evidence-grid",
+								"threadId": "550e8400-e29b-41d4-a716-446655440000",
+								"revision": "0123456789abcdef0123456789abcdef01234567"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "readPlanMessages",
 						"type": "unknown",
-						"description": "A promise for the selected thread’s messages converted to display records."
+						"description": "Resolves to the selected thread's messages converted to desktop ThreadMessage records. The requested thread must belong to the entity at the requested revision.",
+						"examples": [
+							[
+								{
+									"id": "550e8400-e29b-41d4-a716-446655440001",
+									"at": "2026-11-15T09:30:00.000Z",
+									"author": "user",
+									"text": "Please clarify this evidence row.",
+									"mode": null,
+									"provider": null,
+									"model": null,
+									"version": null,
+									"imageSha256": null
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws an Error when the requested thread is not found on the entity; the planning API read may also reject."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "readPlanImage",
@@ -234,29 +474,39 @@
 						"name": "readPlanImage.context",
 						"type": "PlanningContext",
 						"required": true,
-						"description": "The planning context used to read an image."
+						"description": "The repository root and planning API used by this read. The root supplies Git reads for prompt and notes text, while the API supplies planning snapshots and entity data."
 					},
 					{
 						"name": "readPlanImage.query",
 						"type": "PlanImageQuery",
 						"required": true,
-						"description": "The entity, version, image hash and revision, plus an optional design option. The image must appear in that entity/version."
+						"description": "The entity unit ID, version, image SHA-256, and revision identifying the image; an option, when supplied, is forwarded to the image read. The image must be present in the requested entity and version.",
+						"examples": [
+							{
+								"entityId": "reports.component.evidence-grid",
+								"version": "v001",
+								"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"revision": "0123456789abcdef0123456789abcdef01234567",
+								"option": "o1"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "readPlanImage",
 						"type": "unknown",
-						"description": "A promise for the stored image bytes after the planning API read; the optional design option is passed through."
+						"description": "Resolves to the image bytes returned by readImage after the image is found in the requested entity and version. The optional design option is forwarded to readImage."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws an Error when the requested version contains no image with the requested SHA-256; planning API reads may also reject."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "readPlanHistory",
@@ -265,30 +515,51 @@
 						"name": "readPlanHistory.context",
 						"type": "PlanningContext",
 						"required": true,
-						"description": "The planning context used to read history."
+						"description": "The repository root and planning API used by this read. The root supplies Git reads for prompt and notes text, while the API supplies planning snapshots and entity data."
 					},
 					{
 						"name": "readPlanHistory.entityId",
 						"type": "string",
 						"required": true,
-						"description": "The entity whose planning history is requested."
+						"description": "The unit ID whose planning commit history is requested.",
+						"examples": ["reports.component.evidence-grid"]
 					},
 					{
 						"name": "readPlanHistory.revision",
 						"type": "string",
 						"required": true,
-						"description": "The revision limiting that history."
+						"description": "The revision passed to the planning API to limit the entity history.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "readPlanHistory",
 						"type": "unknown",
-						"description": "A promise for commit history entries with event-kind summaries and null design-version fields."
+						"description": "Resolves to history entries mapped from commits, with event kinds joined into detail and version set to null. The returned entry ID and commit are the same commit identifier.",
+						"examples": [
+							[
+								{
+									"id": "abcdef0123456789abcdef0123456789abcdef01",
+									"at": "2026-11-15T09:30:00.000Z",
+									"kind": "commit",
+									"title": "Add evidence grid design",
+									"detail": "design, approval",
+									"commit": "abcdef0123456789abcdef0123456789abcdef01",
+									"version": null
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects if the planning API's entityHistory read fails."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "planRecord",
@@ -297,30 +568,91 @@
 						"name": "planRecord.context",
 						"type": "PlanningContext",
 						"required": true,
-						"description": "The repository and API used while converting one plan."
+						"description": "The planning context whose repository root is used to read each version's prompt and optional notes from Git."
 					},
 					{
 						"name": "planRecord.plan",
 						"type": "PlanDetail",
 						"required": true,
-						"description": "The stored plan to convert, including its versions, contract, threads and lifecycle."
+						"description": "The stored plan detail being converted to a desktop record, including its identity, contract, versions, approvals, and threads.",
+						"examples": [
+							{
+								"unitId": "reports.component.evidence-grid",
+								"category": "component",
+								"slug": "evidence-grid",
+								"title": "Evidence Grid",
+								"goal": "Show review evidence in a compact grid.",
+								"createdAt": "2026-11-15T09:30:00.000Z",
+								"createdBy": {
+									"kind": "person",
+									"name": "Reviewer"
+								},
+								"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+								"path": "packages/reports/src/components/evidence-grid",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"lifecycle": "draft",
+								"registered": false,
+								"verified": false,
+								"latestVersion": null,
+								"contract": {
+									"responsibility": "Display evidence for reports.",
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"states": [],
+									"viewports": []
+								},
+								"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"approval": null,
+								"versionCount": 0,
+								"threadCount": 0,
+								"versions": [],
+								"approvals": [],
+								"threads": []
+							}
+						]
 					},
 					{
 						"name": "planRecord.revision",
 						"type": "string",
 						"required": true,
-						"description": "The revision from which to read that plan’s prompt and notes files."
+						"description": "The Git revision from which each version's prompt and optional notes are read.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "planRecord",
 						"type": "Promise<PlanRecord>",
-						"description": "A promise for a desktop plan record with plural category, contract, converted versions and threads."
+						"description": "Resolves to a desktop PlanRecord with the category pluralized and its contract, versions, and threads converted. Version prompts and optional notes are read from Git at the requested revision.",
+						"examples": [
+							{
+								"id": "reports.component.evidence-grid",
+								"path": "packages/reports/src/components/evidence-grid",
+								"category": "components",
+								"title": "Evidence Grid",
+								"goal": "Show review evidence in a compact grid.",
+								"lifecycle": "draft",
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+								},
+								"versions": [],
+								"threads": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects if a version prompt or optional notes file cannot be read at the requested Git revision."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "planVersion",
@@ -329,24 +661,136 @@
 						"name": "planVersion.context",
 						"type": "PlanningContext",
 						"required": true,
-						"description": "The repository and API used to read one design version’s text."
+						"description": "The planning context whose repository root is used to read the version prompt and optional notes from Git."
 					},
 					{
 						"name": "planVersion.data",
 						"type": "{ version: StoredVersion; plan: PlanDetail; revision: string }",
 						"required": true,
-						"description": "The stored version, containing plan and revision; the plan supplies approvals and the version supplies image and option metadata."
+						"description": "The stored version, its containing plan, and the revision used for Git text reads; the plan supplies matching approvals and the version supplies prompt, image, and option metadata.",
+						"examples": [
+							{
+								"version": {
+									"unitId": "reports.component.evidence-grid",
+									"version": "v001",
+									"createdAt": "2026-11-15T09:30:00.000Z",
+									"generator": {
+										"provider": "codex",
+										"model": "gpt-6-luna"
+									},
+									"prompt": {
+										"file": "prompt.md",
+										"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+									},
+									"notes": null,
+									"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+									"images": [],
+									"contract": {
+										"responsibility": "Display evidence for reports.",
+										"inputs": [],
+										"outputs": [],
+										"errors": [],
+										"states": [],
+										"viewports": []
+									},
+									"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"revises": null,
+									"commit": "abcdef0123456789abcdef0123456789abcdef01"
+								},
+								"plan": {
+									"unitId": "reports.component.evidence-grid",
+									"category": "component",
+									"slug": "evidence-grid",
+									"title": "Evidence Grid",
+									"goal": "Show review evidence in a compact grid.",
+									"createdAt": "2026-11-15T09:30:00.000Z",
+									"createdBy": {
+										"kind": "person",
+										"name": "Reviewer"
+									},
+									"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+									"path": "packages/reports/src/components/evidence-grid",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"lifecycle": "review",
+									"registered": false,
+									"verified": false,
+									"latestVersion": "v001",
+									"contract": {
+										"responsibility": "Display evidence for reports.",
+										"inputs": [],
+										"outputs": [],
+										"errors": [],
+										"states": [],
+										"viewports": []
+									},
+									"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"approval": null,
+									"versionCount": 1,
+									"threadCount": 0,
+									"versions": [
+										{
+											"unitId": "reports.component.evidence-grid",
+											"version": "v001",
+											"createdAt": "2026-11-15T09:30:00.000Z",
+											"generator": {
+												"provider": "codex",
+												"model": "gpt-6-luna"
+											},
+											"prompt": {
+												"file": "prompt.md",
+												"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+											},
+											"notes": null,
+											"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+											"images": [],
+											"contract": {
+												"responsibility": "Display evidence for reports.",
+												"inputs": [],
+												"outputs": [],
+												"errors": [],
+												"states": [],
+												"viewports": []
+											},
+											"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+											"revises": null,
+											"commit": "abcdef0123456789abcdef0123456789abcdef01"
+										}
+									],
+									"approvals": [],
+									"threads": []
+								},
+								"revision": "0123456789abcdef0123456789abcdef01234567"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "planVersion",
 						"type": "Promise<DesignVersion>",
-						"description": "A promise for a design version with prompt and optional notes read at the requested revision, image and option metadata, the last approval for that version, and any exact image-revision binding."
+						"description": "Resolves to a desktop DesignVersion with prompt and optional notes read from Git, converted image and option metadata, and the last approval matching this version or null. A revision binding is included only when the stored version revises an earlier image.",
+						"examples": [
+							{
+								"version": "v001",
+								"createdAt": "2026-11-15T09:30:00.000Z",
+								"commit": "abcdef0123456789abcdef0123456789abcdef01",
+								"generator": "codex · gpt-6-luna",
+								"prompt": "Review the evidence grid.",
+								"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+								"images": [],
+								"approval": null
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects if the prompt or optional notes file cannot be read at the requested Git revision."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
