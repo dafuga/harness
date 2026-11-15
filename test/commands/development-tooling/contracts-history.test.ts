@@ -4,6 +4,11 @@ import { expect, test } from 'vitest';
 import { withTempDir } from '../../support/temporary';
 import { contractUnit, writeContract } from '../../support/contractsProject';
 import {
+	assertHistoryOwnKeys,
+	assertHistoryMetadataArrays,
+	assertLegacyAndMergedHistory
+} from '../../support/contractHistoryMatrix';
+import {
 	commitHistory,
 	assertHistoryRefBoundaries,
 	assertOrderedHistoryExamples,
@@ -63,6 +68,7 @@ test('ContractsCommand diff snapshots return complete semantic JSON and accurate
 		]);
 		expect(await runHistory(root, 'diff')).toContain('outputs[total].type');
 		await assertOrderedHistoryExamples(root, unit);
+		await assertHistoryMetadataArrays(root);
 	}));
 
 test('ContractsCommand diff revisions distinguish commit range since staged and root commit', () =>
@@ -168,6 +174,8 @@ test('ContractsCommand log and last follow unit identity and skip nonmaterial co
 		expect(
 			JSON.parse(await runHistory(root, 'log', '--folder', 'src/models', '--json')).entries
 		).toEqual([]);
+		expect(log.entries[0].changes[0].kind).toBe('moved');
+		await assertLegacyAndMergedHistory(root);
 	}));
 
 test('ContractsCommand history validates revisions snapshots and raw documents without source reads', () =>
@@ -189,4 +197,5 @@ test('ContractsCommand history validates revisions snapshots and raw documents w
 		await rm(join(root, 'specification/units/broken.json'));
 		await writeContract(root, 'untracked.json', unit);
 		expect(JSON.parse(await runHistory(root, 'diff', '--json')).changes[0].kind).toBe('moved');
+		await assertHistoryOwnKeys(root);
 	}));
