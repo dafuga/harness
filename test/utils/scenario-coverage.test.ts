@@ -4,32 +4,14 @@ import { scenarioManifestSchema } from '../../src/core/unitTypes';
 import type { Gathered } from '../../src/utils/verification-evidence/gatherCaptures';
 import { scenarioCoverage } from '../../src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage';
 import { problem } from '../../src/utils/verification-evidence/scenarioCoverage';
-import { captureLineSchema } from '../../src/core/verification-evidence/verifyTypes';
-import { captureSchema } from '../../src/core/verification-evidence/verificationTypes';
 import { assertColdEntries } from '../support/coldEntries';
 import { measureWorkload } from '../support/measureWorkload';
+import { assertVideoCoverage } from '../support/videoCoverageFixture';
+import { captureLineSchema } from '../../src/core/verification-evidence/verifyTypes';
+import { captureSchema } from '../../src/core/verification-evidence/verificationTypes';
 
 const commit = 'a'.repeat(40);
-const video = {
-	schemaVersion: 1,
-	clipId: 'menu-open',
-	unit: 'function.explorer-route',
-	inputHash: 'd'.repeat(64),
-	entry: 'closed',
-	exit: 'pages',
-	profile: 'normal',
-	width: 920,
-	height: 700,
-	frameRate: 30,
-	sourceFrameRate: 25,
-	frameCount: 90,
-	states: [
-		{ id: 'closed', atSeconds: 0.3 },
-		{ id: 'pages', atSeconds: 2 }
-	],
-	edges: [{ id: 'open-menu', atSeconds: 1 }],
-	poster: { file: 'poster.png', sha256: 'e'.repeat(64), bytes: 1200, timeSeconds: 2 }
-};
+
 const scenario = scenarioManifestSchema.parse({
 	schemaVersion: 1,
 	id: 'explorer-flow',
@@ -116,57 +98,8 @@ test('a result that claims no running software is judged as before', () =>
 		);
 	}));
 
-test('video slots require decoded motion media and retain versioned provenance', () => {
-	const declared = scenarioManifestSchema.parse({
-		...scenario,
-		kind: 'ui',
-		viewports: [{ id: 'desktop', width: 920, height: 700 }],
-		evidence: [{ ...scenario.evidence[0], kind: 'video', viewports: ['desktop'] }]
-	});
-	const item = {
-		...gathered({
-			kind: 'video',
-			mediaType: 'video/mp4',
-			viewport: 'desktop',
-			durationSeconds: 3,
-			video,
-			...served('build-1')
-		}),
-		facts: {
-			kind: 'video',
-			width: 920,
-			height: 700,
-			durationSeconds: 3,
-			frameRate: 30,
-			frameCount: 90,
-			codec: 'h264',
-			pixelFormat: 'yuv420p'
-		}
-	};
-	expect(captureLineSchema.parse(item.line)).toHaveProperty('video', video);
-	expect(captureSchema.parse(item.capture)).toHaveProperty('video', video);
-	const judge = (capture: Gathered) =>
-		scenarioCoverage({
-			scenario: declared,
-			commit,
-			gathered: [capture],
-			checkFailed: false,
-			builds: { declared: ['reports'], compiled: new Map([['reports', 'build-1']]) }
-		}).failures;
-	expect(judge(item as Gathered)).toEqual([]);
-	expect(judge({ ...item, facts: { error: 'corrupt video' } } as Gathered).join(' ')).toMatch(
-		/valid.*video|playable.*video/i
-	);
-	expect(
-		judge({ ...item, line: { ...item.line, kind: 'screenshot' } } as Gathered).join(' ')
-	).toMatch(/missing/i);
-	expect(
-		judge({
-			...item,
-			line: { ...item.line, video: { ...video, states: [{ id: 'pages', atSeconds: 30 }] } }
-		} as Gathered).join(' ')
-	).toMatch(/timestamp|interval/i);
-});
+test('video slots require decoded motion media and retain versioned provenance', () =>
+	assertVideoCoverage(scenario, gathered, served));
 
 const region = { x: 12, y: 56, width: 158, height: 50 };
 function picture(mode = 'element', scale = 1) {
