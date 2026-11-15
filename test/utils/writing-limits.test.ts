@@ -5,7 +5,7 @@ import {
 	writingLimits,
 	writingProblems
 } from '../../src/utils/writing-limits/writingLimits';
-import { writingDeclared } from '../../src/services/commit-message-service/writingLimits';
+import { writingDeclared } from '../../src/services/git-source-history/commit-message-service/writingLimits';
 
 const words = (count: number, word = 'word') => Array.from({ length: count }, () => word).join(' ');
 const reason = (extra: object = {}) => ({

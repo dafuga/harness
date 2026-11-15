@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterAll, beforeAll, expect, test } from 'vitest';
-import { CommitMessageService } from '../../src/services/commit-message-service/CommitMessageService';
+import { CommitMessageService } from '../../src/services/git-source-history/commit-message-service/CommitMessageService';
 import { HookInstallService } from '../../src/services/hook-install-service/HookInstallService';
 import { writtenMessage } from '../../src/services/commit-message-service/commitMessage';
 import { ownEnvironment } from '../support/cli';

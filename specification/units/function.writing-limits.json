@@ -9,7 +9,6 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/services/commit-message-service/writingLimits.ts",
 			"src/services/git-source-history/commit-message-service/writingLimits.ts",
 			"src/utils/git-source-history/writing-limits/writingLimits.ts",
 			"src/utils/git-source-history/writing-limits/writingLimits.types.ts",
@@ -17,7 +16,6 @@
 			"src/utils/writingLimits.ts"
 		],
 		"symbols": [
-			"writingDeclared",
 			"writingDeclared",
 			"writingVersions",
 			"writingVersion",
