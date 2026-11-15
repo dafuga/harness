@@ -16,51 +16,66 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DesktopArchiveAdapter.read.source",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem path to the ASAR package from which read extracts entries. The adapter passes it directly to extractFile, so package validity and readability are delegated to the ASAR library.",
+				"examples": ["artifacts/desktop.asar"]
 			},
 			{
 				"name": "DesktopArchiveAdapter.read.paths",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Archive entry names that read passes to extractFile in array order. The returned map uses these names as keys, so duplicate names collapse to one key and invalid or missing entries are delegated to extractFile.",
+				"examples": [
+					["package.json", "resources/app.js"]
+				]
 			},
 			{
 				"name": "DesktopArchiveAdapter.patch.source",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Path to the source ASAR package that patch enumerates and reads while rebuilding it. It must not be string-equal to target; package validation and read errors are delegated to the ASAR library.",
+				"examples": ["artifacts/desktop.asar"]
 			},
 			{
 				"name": "DesktopArchiveAdapter.patch.target",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem path where patch creates the new ASAR package. It must be a separate string value from source, and package creation reports invalid destinations or write failures.",
+				"examples": ["artifacts/desktop-patched.asar"]
 			},
 			{
 				"name": "DesktopArchiveAdapter.patch.changes",
 				"type": "Map<string, string>",
-				"required": true
+				"required": true,
+				"description": "Map of archive entry paths to replacement text. For existing regular files the text becomes UTF-8 file data, and missing paths are added as new files; existing directories and symlinks retain their original structure instead of taking the mapped text."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DesktopArchiveAdapter.read",
-				"type": "Map<string, string>"
+				"type": "Map<string, string>",
+				"description": "Maps each requested archive entry name to the extracted bytes converted with Buffer.toString(). Duplicate path names share one map key, and the adapter does not specify a conversion encoding."
 			},
 			{
 				"name": "DesktopArchiveAdapter.patch",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Resolves to the lowercase hexadecimal SHA-256 digest of the target archive raw header string after writing completes. It is a digest of the header string, not the full archive contents.",
+				"examples": ["aae5a71db7cd42382ef749f87ca847684d9d4a517cc8235f53ea31bd492c3577"]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "An uncaught extractFile error can escape read, and patch explicitly throws Error when source and target are identical strings. Other archive or filesystem failures are allowed to escape without translation."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "DesktopArchiveAdapter.read",
@@ -68,22 +83,35 @@
 					{
 						"name": "DesktopArchiveAdapter.read.source",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem path to the ASAR package from which read extracts entries. The adapter passes it directly to extractFile, so package validity and readability are delegated to the ASAR library.",
+						"examples": ["artifacts/desktop.asar"]
 					},
 					{
 						"name": "DesktopArchiveAdapter.read.paths",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Archive entry names that read passes to extractFile in array order. The returned map uses these names as keys, so duplicate names collapse to one key and invalid or missing entries are delegated to extractFile.",
+						"examples": [
+							["package.json", "resources/app.js"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "DesktopArchiveAdapter.read",
-						"type": "Map<string, string>"
+						"type": "Map<string, string>",
+						"description": "Maps each requested archive entry name to the extracted bytes converted with Buffer.toString(). Duplicate path names share one map key, and the adapter does not specify a conversion encoding."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "An uncaught extractFile error propagates when the source package or a requested entry cannot be extracted. This adapter does not validate or translate that dependency error."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "DesktopArchiveAdapter.patch",
@@ -91,32 +119,40 @@
 					{
 						"name": "DesktopArchiveAdapter.patch.source",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Path to the source ASAR package that patch enumerates and reads while rebuilding it. It must not be string-equal to target; package validation and read errors are delegated to the ASAR library.",
+						"examples": ["artifacts/desktop.asar"]
 					},
 					{
 						"name": "DesktopArchiveAdapter.patch.target",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem path where patch creates the new ASAR package. It must be a separate string value from source, and package creation reports invalid destinations or write failures.",
+						"examples": ["artifacts/desktop-patched.asar"]
 					},
 					{
 						"name": "DesktopArchiveAdapter.patch.changes",
 						"type": "Map<string, string>",
-						"required": true
+						"required": true,
+						"description": "Map of archive entry paths to replacement text. For existing regular files the text becomes UTF-8 file data, and missing paths are added as new files; existing directories and symlinks retain their original structure instead of taking the mapped text."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DesktopArchiveAdapter.patch",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "Resolves to the lowercase hexadecimal SHA-256 digest of the target archive raw header string after writing completes. It is a digest of the header string, not the full archive contents.",
+						"examples": ["aae5a71db7cd42382ef749f87ca847684d9d4a517cc8235f53ea31bd492c3577"]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "This Error is explicitly thrown when source and target are identical strings, before any archive work begins. Failures from ASAR or filesystem calls are not caught or translated, so their concrete details come from those dependencies."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
