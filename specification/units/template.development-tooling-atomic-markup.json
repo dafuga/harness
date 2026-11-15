@@ -12,41 +12,104 @@
 		"symbols": ["atomicProjectFiles", "atomicMarkup"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "atomicProjectFiles.files",
 				"type": "PlannedFile[]",
-				"required": true
+				"required": true,
+				"description": "The planned files to process, each a PlannedFile object with a path and a contents string. Only entries whose path ends with '.svelte' and does not contain '/atoms/' get their contents rewritten; every other entry is copied with its contents unchanged.",
+				"examples": [
+					[
+						{
+							"path": "src/routes/+page.svelte",
+							"contents": "<main>\n\t<button>Save</button>\n</main>\n"
+						},
+						{
+							"path": "src/lib/format.ts",
+							"contents": "export const label = 'Save';\n"
+						}
+					],
+					[
+						{
+							"path": "src/routes/+layout.svelte",
+							"contents": "<nav>\n\t<a href=\"/\">Home</a>\n</nav>\n{@render children()}\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "atomicMarkup.source",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The full text of one Svelte file, parsed in modern mode by svelte/compiler parse(), so markup that does not parse makes the call throw. Only the tag names of native elements are rewritten; attributes, expressions and bindings are kept as written.",
+				"examples": [
+					"<main>\n\t<button>Save</button>\n</main>\n",
+					"<h1>Reports</h1>\n<Chart data={rows} />\n"
+				]
 			},
 			{
 				"name": "atomicMarkup.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The POSIX path of the file that source is for, used only to compute the atoms header as posix.relative(dirname(path), 'src/components/atoms'). It is never read from disk, and its extension is not checked.",
+				"examples": [
+					"src/routes/+page.svelte",
+					"src/routes/reports/+page.svelte",
+					"src/components/Card.svelte"
+				]
 			},
 			{
 				"name": "atomicMarkup.level",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The tier name written into the '<!-- @harness-tier ... -->' line at the top of the output; atomicProjectFiles passes 'layout' for paths ending in '+layout.svelte' and 'page' for every other file it rewrites. atomicMarkup does not validate it, so any string is written verbatim.",
+				"examples": ["page", "layout"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "atomicProjectFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "A new array, in the same order as the input, of new objects that each copy every field of the matching input file; the input array and its objects are not mutated, and only eligible .svelte files get their contents replaced by the atomicMarkup result.",
+				"examples": [
+					[
+						{
+							"path": "src/routes/+page.svelte",
+							"contents": "<!-- @harness-tier page -->\n<!-- @harness-atoms ../components/atoms -->\n<hx-main>\n\t<hx-button>Save</hx-button>\n</hx-main>\n"
+						},
+						{
+							"path": "src/lib/format.ts",
+							"contents": "export const label = 'Save';\n"
+						}
+					],
+					[
+						{
+							"path": "src/routes/+layout.svelte",
+							"contents": "<!-- @harness-tier layout -->\n<!-- @harness-atoms ../components/atoms -->\n<hx-nav>\n\t<hx-a href=\"/\">Home</hx-a>\n</hx-nav>\n{@render children()}\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "atomicMarkup",
-				"type": "string"
+				"type": "string",
+				"description": "The input Svelte source prefixed with a '<!-- @harness-tier LEVEL -->' line and a '<!-- @harness-atoms DIRECTORY -->' line, where DIRECTORY is posix.relative(dirname(path), 'src/components/atoms') with './' prepended unless it already starts with '.'. Existing lines of those two kinds are removed from the source first, and only the start and end tag names of native elements are renamed to their hx- atom tags, so attributes, expressions and bindings stay as written.",
+				"examples": [
+					"<!-- @harness-tier page -->\n<!-- @harness-atoms ../components/atoms -->\n<hx-main>\n\t<hx-button>Save</hx-button>\n</hx-main>\n",
+					"<!-- @harness-tier page -->\n<!-- @harness-atoms ../../components/atoms -->\n<hx-h1>Reports</hx-h1>\n<Chart data={rows} />\n",
+					"<!-- @harness-tier page -->\n<!-- @harness-atoms ./atoms -->\n<hx-article>\n\t<hx-p>Body</hx-p>\n</hx-article>\n"
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by svelte/compiler parse(), which atomicSyntax calls on the source, when the markup cannot be parsed; neither atomicMarkup nor atomicProjectFiles catches it, so it propagates to the caller. atomicProjectFiles hits it for any .svelte file outside /atoms/ whose markup does not parse."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "atomicProjectFiles",
@@ -54,17 +117,61 @@
 					{
 						"name": "atomicProjectFiles.files",
 						"type": "PlannedFile[]",
-						"required": true
+						"required": true,
+						"description": "The planned files to process, each a PlannedFile object with a path and a contents string. Only entries whose path ends with '.svelte' and does not contain '/atoms/' get their contents rewritten; every other entry is copied with its contents unchanged.",
+						"examples": [
+							[
+								{
+									"path": "src/routes/+page.svelte",
+									"contents": "<main>\n\t<button>Save</button>\n</main>\n"
+								},
+								{
+									"path": "src/lib/format.ts",
+									"contents": "export const label = 'Save';\n"
+								}
+							],
+							[
+								{
+									"path": "src/routes/+layout.svelte",
+									"contents": "<nav>\n\t<a href=\"/\">Home</a>\n</nav>\n{@render children()}\n"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "atomicProjectFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "A new array, in the same order as the input, of new objects that each copy every field of the matching input file; the input array and its objects are not mutated, and only eligible .svelte files get their contents replaced by the atomicMarkup result.",
+						"examples": [
+							[
+								{
+									"path": "src/routes/+page.svelte",
+									"contents": "<!-- @harness-tier page -->\n<!-- @harness-atoms ../components/atoms -->\n<hx-main>\n\t<hx-button>Save</hx-button>\n</hx-main>\n"
+								},
+								{
+									"path": "src/lib/format.ts",
+									"contents": "export const label = 'Save';\n"
+								}
+							],
+							[
+								{
+									"path": "src/routes/+layout.svelte",
+									"contents": "<!-- @harness-tier layout -->\n<!-- @harness-atoms ../components/atoms -->\n<hx-nav>\n\t<hx-a href=\"/\">Home</hx-a>\n</hx-nav>\n{@render children()}\n"
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Propagated from svelte/compiler parse() through atomicMarkup for a .svelte file outside /atoms/ whose markup cannot be parsed; the function has no try/catch, so the error reaches the caller."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "atomicMarkup",
@@ -72,27 +179,52 @@
 					{
 						"name": "atomicMarkup.source",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The full text of one Svelte file, parsed in modern mode by svelte/compiler parse(), so markup that does not parse makes the call throw. Only the tag names of native elements are rewritten; attributes, expressions and bindings are kept as written.",
+						"examples": [
+							"<main>\n\t<button>Save</button>\n</main>\n",
+							"<h1>Reports</h1>\n<Chart data={rows} />\n"
+						]
 					},
 					{
 						"name": "atomicMarkup.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The POSIX path of the file that source is for, used only to compute the atoms header as posix.relative(dirname(path), 'src/components/atoms'). It is never read from disk, and its extension is not checked.",
+						"examples": [
+							"src/routes/+page.svelte",
+							"src/routes/reports/+page.svelte",
+							"src/components/Card.svelte"
+						]
 					},
 					{
 						"name": "atomicMarkup.level",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The tier name written into the '<!-- @harness-tier ... -->' line at the top of the output; atomicProjectFiles passes 'layout' for paths ending in '+layout.svelte' and 'page' for every other file it rewrites. atomicMarkup does not validate it, so any string is written verbatim.",
+						"examples": ["page", "layout"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "atomicMarkup",
-						"type": "string"
+						"type": "string",
+						"description": "The input Svelte source prefixed with a '<!-- @harness-tier LEVEL -->' line and a '<!-- @harness-atoms DIRECTORY -->' line, where DIRECTORY is posix.relative(dirname(path), 'src/components/atoms') with './' prepended unless it already starts with '.'. Existing lines of those two kinds are removed from the source first, and only the start and end tag names of native elements are renamed to their hx- atom tags, so attributes, expressions and bindings stay as written.",
+						"examples": [
+							"<!-- @harness-tier page -->\n<!-- @harness-atoms ../components/atoms -->\n<hx-main>\n\t<hx-button>Save</hx-button>\n</hx-main>\n",
+							"<!-- @harness-tier page -->\n<!-- @harness-atoms ../../components/atoms -->\n<hx-h1>Reports</hx-h1>\n<Chart data={rows} />\n",
+							"<!-- @harness-tier page -->\n<!-- @harness-atoms ./atoms -->\n<hx-article>\n\t<hx-p>Body</hx-p>\n</hx-article>\n"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by svelte/compiler parse(), which atomicSyntax calls on the source, when the markup cannot be parsed; the function has no try/catch, so the error reaches the caller."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
