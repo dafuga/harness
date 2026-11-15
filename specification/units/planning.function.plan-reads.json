@@ -11,10 +11,9 @@
 		"source": [
 			"packages/planning/src/lib/planning-collaboration/planning/planning-service/planReads.ts",
 			"packages/planning/src/lib/planning/planning-service/planReads.ts",
-			"packages/planning/src/services/planning-service/planReads.ts",
-			"packages/planning/src/utils/planReads.ts"
+			"packages/planning/src/services/planning-service/planReads.ts"
 		],
-		"symbols": ["planReads", "planReads", "planReads", "planReads"]
+		"symbols": ["planReads", "planReads", "planReads"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -67,11 +66,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/planning/src/utils/planReads.ts",
+		"entry": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planReads.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/planning/src/utils/planReads.ts"
+				"entry": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planReads.ts"
 			}
 		]
 	},

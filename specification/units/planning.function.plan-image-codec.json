@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/planning/src/utils/planImageCodec.ts",
-			"packages/planning/src/utils/planning-collaboration/planImageCodec.ts"
-		],
-		"symbols": ["planImageCodec", "planImageCodec"]
+		"source": ["packages/planning/src/utils/planning-collaboration/planImageCodec.ts"],
+		"symbols": ["planImageCodec"]
 	},
 	"contract": {
 		"origin": "declared",

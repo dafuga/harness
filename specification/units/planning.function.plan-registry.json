@@ -10,16 +10,10 @@
 	"owns": {
 		"source": [
 			"packages/planning/src/lib/planning-collaboration/planning/planning-service/planRegistry.ts",
-			"packages/planning/src/utils/planRegistry.ts",
+			"packages/planning/src/lib/planning/planning-service/planRegistry.ts",
 			"packages/planning/src/utils/planning-collaboration/planRegistry.ts"
 		],
-		"symbols": [
-			"planRegistry",
-			"planRegistry",
-			"planningIgnores",
-			"planningIgnores",
-			"planRegistry"
-		]
+		"symbols": ["planRegistry", "planRegistry", "planningIgnores", "planRegistry"]
 	},
 	"contract": {
 		"origin": "declared",

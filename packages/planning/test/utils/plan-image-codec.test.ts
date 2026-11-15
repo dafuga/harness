@@ -2,7 +2,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { Buffer } from 'node:buffer';
 import { test } from 'vitest';
 import { PNG } from 'pngjs';
-import { planImageCodec } from '../../src/utils/planImageCodec';
+import { planImageCodec } from '../../src/utils/planning-collaboration/planImageCodec';
 test('decodes complete PNG and rejects damaged compressed image content', () => {
 	const bytes = PNG.sync.write(new PNG({ width: 2, height: 2 }));
 	expect(planImageCodec(bytes)).toEqual({ width: 2, height: 2 });
