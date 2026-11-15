@@ -1,5 +1,4 @@
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { test } from 'vitest';
 import {
@@ -11,6 +10,7 @@ import {
 	pathCheckedDocuments
 } from '../../scripts/check-doc-links';
 import { recordExampleCases } from '../support/recordExampleCases';
+import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
 
 /**
@@ -90,8 +90,7 @@ const missingProject = {
 
 /** brokenDocLinks as the script calls it, reading the files of a temporary project folder. */
 function checkProject(name: string, files: Record<string, string>) {
-	const root = mkdtempSync(join(tmpdir(), 'check-doc-links-'));
-	try {
+	return withTempDir('check-doc-links-', (root) => {
 		for (const [path, text] of Object.entries(files)) {
 			mkdirSync(dirname(join(root, path)), { recursive: true });
 			writeFileSync(join(root, path), text);
@@ -103,9 +102,7 @@ function checkProject(name: string, files: Record<string, string>) {
 		const input = { documents: checkedDocuments, pathChecked: pathCheckedDocuments, files };
 		const output = brokenDocLinks(checkedDocuments, project, pathCheckedDocuments);
 		return { name, input, output };
-	} finally {
-		rmSync(root, { recursive: true, force: true });
-	}
+	});
 }
 
 test('markdownLinks returned the target and line of each inline link and skipped links inside code spans and fenced blocks', () => {
@@ -195,13 +192,19 @@ test('headingAnchors slugged each heading as GitHub does, numbered repeats, and 
 	);
 });
 
-test('brokenDocLinks returned no problems when every link resolves, and one sorted line for each broken link, owner path or missing checked document', () => {
-	const resolved = checkProject('every link resolves and the URL is not fetched', resolvingProject);
-	const broken = checkProject(
+test('brokenDocLinks returned no problems when every link resolves, and one sorted line for each broken link, owner path or missing checked document', async () => {
+	const resolved = await checkProject(
+		'every link resolves and the URL is not fetched',
+		resolvingProject
+	);
+	const broken = await checkProject(
 		'a missing file, heading and owner path, and a link out of the repository',
 		brokenProject
 	);
-	const missing = checkProject('the checked architecture document is missing', missingProject);
+	const missing = await checkProject(
+		'the checked architecture document is missing',
+		missingProject
+	);
 	expect(resolved.output).toEqual([]);
 	expect(broken.output).toEqual([
 		'ARCHITECTURE-BOUNDARIES.md:2: `src/missing/owner.ts` does not exist',
