@@ -6,6 +6,8 @@ import { loadCliProgram } from '../../../src/cli/loadCliProgram';
 import { contractsProject, writeContract } from '../../support/contractsProject';
 import { measureWorkload } from '../../support/measureWorkload';
 
+vi.mock('node:fs/promises', { spy: true });
+
 let fixture: Awaited<ReturnType<typeof contractsProject>>;
 beforeEach(async () => {
 	fixture = await contractsProject();
@@ -18,6 +20,11 @@ afterEach(async () => {
 async function run(...args: string[]) {
 	const output: string[] = [];
 	const program = (await loadCliProgram(['contracts', ...args])).exitOverride();
+	const pending = [...program.commands];
+	for (const command of pending) {
+		command.exitOverride();
+		pending.push(...command.commands);
+	}
 	program.configureOutput({ writeOut: (text) => output.push(text), writeErr: () => {} });
 	const logged = vi.spyOn(console, 'log').mockImplementation((text) => output.push(String(text)));
 	try {
@@ -39,6 +46,9 @@ test('ContractsCommand runs', async () => {
 
 test('ContractsCommand show resolves stored identity and owned paths without reading source', async () => {
 	const reads = vi.spyOn(fs, 'readFile');
+	const lists = vi.spyOn(fs, 'readdir');
+	reads.mockClear();
+	lists.mockClear();
 	for (const query of [
 		fixture.price.id,
 		fixture.price.owns.source[0],
@@ -55,6 +65,9 @@ test('ContractsCommand show resolves stored identity and owned paths without rea
 	}
 	expect(await run('show', fixture.price.id)).toContain('Subtotal in EUR.');
 	expect(reads.mock.calls.every(([path]) => String(path).includes('/specification/units/'))).toBe(
+		true
+	);
+	expect(lists.mock.calls.every(([path]) => String(path).includes('/specification/units'))).toBe(
 		true
 	);
 	await expect(run('show', '../outside')).rejects.toThrow(/outside|within/i);
@@ -137,7 +150,7 @@ test('ContractsCommand reloads moved edited deleted and invalid stored manifests
 	});
 	expect(await run('search', 'Fresh contract')).toContain(fixture.price.id);
 	await rm(join(fixture.root, 'specification/units/relocated.json'));
-	expect(JSON.parse(await run('search', fixture.price.id, '--json'))).toEqual([]);
+	expect(JSON.parse(await run('search', 'Fresh contract', '--json'))).toEqual([]);
 	await writeContract(fixture.root, 'broken.json', { id: 'broken' });
 	await expect(run('list')).rejects.toThrow(/broken.json/i);
 });
