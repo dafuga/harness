@@ -24,41 +24,58 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The commits that changed the service, newest first, each against its first parent, with reasons, sizes and reviews. A commit whose change is unknown says so."
+				"description": "The commit history of the service the address names: a table of the commits that changed it through the shown commit, newest first, each with its date, its commit (linked to the service at that commit), its behavior change (its recorded behavior reasons, else its subject), its size and complexity with their changes from the nearest earlier measured commit, a 'Budget increase approved' mark where that commit has an approval review, and its latency under the chosen performance profile. A commit whose change is not yet known is counted in a note and listed only once it is read ('Read the next commits' reads ten at a time), and when no commit read so far changed the service the table is replaced by 'No recorded change'."
 			},
 			{
 				"name": "title",
 				"type": "string",
-				"description": "Service history · Harness"
+				"description": "The document title of the page: the title the page passes to the screen, 'Service history', followed by ' · Harness'. It is the same for every service and commit, because the page passes that one fixed title.",
+				"examples": ["Service history · Harness"]
 			}
 		],
 		"errors": [
 			{
 				"name": "not-in-history",
 				"type": "notice",
-				"description": "A branch or commit the history does not hold, or a commit the branch does not contain, is said. No other revision is shown."
+				"description": "A branch or commit the history does not hold, or a commit its branch does not contain, is reported in an alert such as 'Commit <short hash> is not in this history', and no other revision is shown. An address that names no page of the explorer, or a history with no commit, is reported the same way, with an 'Open the newest commit' link when the history has a home page."
 			},
 			{
 				"name": "no-registry",
 				"type": "notice",
-				"description": "A revision that stores no unit registry says so. The registry of another revision is not shown."
+				"description": "A revision with no registry to read shows the alert 'No registry at this revision' in place of its screen, with the registry's recorded gap or 'No unit registry is stored at <short hash>' as its message and a 'Stay on this revision' link to the collection of its category. Nothing from another revision is shown in its place."
 			},
 			{
 				"name": "not-at-revision",
 				"type": "notice",
-				"description": "A service the shown revision does not hold is said, with the way back to the collection."
+				"description": "A service that the shown revision does not hold, and that this commit did not remove, is shown under the title 'Not at this revision' with a message that names it and the shown commit, and a 'Back to the collection' link to its category. Nothing from another revision is shown in its place."
 			},
 			{
 				"name": "other-category",
 				"type": "redirect",
-				"description": "A unit that is not a service at this revision is led to the address of its own category."
+				"description": "A unit that is not a service at this revision is led to the address under its own category, with the rest of its address kept, and the current entry is replaced."
 			},
 			{
 				"name": "not-admitted",
 				"type": "403",
-				"description": "A request the owner policy does not admit is refused before any history is read."
+				"description": "A request the owner policy does not admit, or whose policy check throws, is answered 403 Forbidden by the guard before the page or any history is read."
+			},
+			{
+				"name": "history-not-loaded",
+				"type": "notice",
+				"description": "If the history index cannot be read, the page shows an alert that the history could not be loaded, with a request to refresh the page, and draws no screen."
+			},
+			{
+				"name": "revision-not-loaded",
+				"type": "notice",
+				"description": "If the shown revision cannot be read, the page shows an alert that this revision could not be loaded, with a request to refresh the page, and draws no screen."
+			},
+			{
+				"name": "address-redirect",
+				"type": "redirect",
+				"description": "An address that stands for another one leads to it and replaces the current entry: the root or an earlier page or query address, a report or analytics address, an explorer address the explorer does not write exactly, or a commit given without its branch, which takes a branch that holds it."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
