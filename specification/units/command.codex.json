@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/CodexCommand.ts", "src/commands/CodexCommand.ts"],
-		"symbols": ["registerCodexCommand", "registerCodexCommand"]
+		"source": ["src/cli/program/CodexCommand.ts"],
+		"symbols": ["registerCodexCommand"]
 	},
 	"contract": {
 		"origin": "derived",

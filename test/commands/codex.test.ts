@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 import { expect, test } from 'vitest';
-import { registerCodexCommand } from '../../src/commands/CodexCommand';
+import { registerCodexCommand } from '../../src/cli/program/CodexCommand';
 test('gateway registration leaves existing defaults alone and requires a token file', () => {
 	const program = new Command();
 	registerCodexCommand(program);

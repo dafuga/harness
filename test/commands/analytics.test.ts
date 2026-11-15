@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { Command } from 'commander';
-import { registerAnalyticsCommand } from '../../src/commands/AnalyticsCommand';
+import { registerAnalyticsCommand } from '../../src/cli/program/AnalyticsCommand';
 test('analytics exposes all query and import/export operations', () => {
 	const program = new Command();
 	registerAnalyticsCommand(program);

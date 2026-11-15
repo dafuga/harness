@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/AnalyticsCommand.ts", "src/commands/AnalyticsCommand.ts"],
-		"symbols": ["registerAnalyticsCommand", "registerAnalyticsCommand"]
+		"source": ["src/cli/program/AnalyticsCommand.ts"],
+		"symbols": ["registerAnalyticsCommand"]
 	},
 	"contract": {
 		"origin": "declared",
