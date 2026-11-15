@@ -3,7 +3,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test, vi } from 'vitest';
-import type { CpuSnapshot } from '../../../../src/utils/cpuMetrics';
+import type { CpuSnapshot } from '../../../../src/utils/development-tooling/cpuMetrics';
 
 const root = mkdtempSync(join(tmpdir(), 'harness-site-processes-'));
 const git = (cwd: string, args: string[]) =>

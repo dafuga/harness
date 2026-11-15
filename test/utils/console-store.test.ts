@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { consoleAccess } from '../../packages/reports/src/utils/explorer-ui/console-server/consoleAccess';
-import { consoleStore, type ConsoleBucket } from '../../src/utils/consoleStore';
+import { consoleStore, type ConsoleBucket } from '../../src/utils/development-tooling/consoleStore';
 
 const commit = 'a'.repeat(40);
 const image = `${'b'.repeat(64)}.png`;

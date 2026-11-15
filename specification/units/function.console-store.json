@@ -9,18 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/utils/consoleStore.ts",
 			"src/utils/development-tooling/consoleStore.ts",
 			"src/utils/development-tooling/consoleStore.types.ts"
 		],
-		"symbols": [
-			"consoleStore",
-			"consoleStore",
-			"ConsoleObject",
-			"ConsoleBucket",
-			"ConsoleObject",
-			"ConsoleBucket"
-		]
+		"symbols": ["consoleStore", "ConsoleObject", "ConsoleBucket", "ConsoleObject", "ConsoleBucket"]
 	},
 	"contract": {
 		"origin": "declared",

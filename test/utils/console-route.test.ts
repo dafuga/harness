@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { consoleRoute } from '../../src/utils/console-canonical/consoleRoute';
 import { consoleRoutePath } from '../../packages/reports/src/components/projects-sessions/project-activity/consoleRoute';
-import { type ConsoleRoute } from '../../src/utils/consoleRoute';
+import { type ConsoleRoute } from '../../src/utils/projects-sessions/consoleRoute';
 
 const commit = 'a'.repeat(40);
 const older = 'b'.repeat(40);

@@ -1,5 +1,5 @@
 // @harness-uid u_ym3ca64mrl
-import type { CpuSnapshot } from '../../../../../src/utils/cpuMetrics';
+import type { CpuSnapshot } from '../../../../../src/utils/development-tooling/cpuMetrics';
 
 export type CpuState = CpuSnapshot | null;
 

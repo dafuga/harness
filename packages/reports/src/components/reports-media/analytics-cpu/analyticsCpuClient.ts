@@ -1,6 +1,6 @@
 // @harness-uid u_ym3ca64mrl
 import type { CpuState } from '../../../utils/reports-media/analyticsCpuClient';
-import type { CpuSnapshot } from '../../../../../../src/utils/cpuMetrics';
+import type { CpuSnapshot } from '../../../../../../src/utils/development-tooling/cpuMetrics';
 
 export function analyticsCpuClient(update: (sample: CpuState) => void) {
 	let active = true,

@@ -1,7 +1,7 @@
 // @harness-uid u_qlooojeoiy
 import { execFileSync } from 'node:child_process';
 import { readlinkSync } from 'node:fs';
-import type { CpuSnapshot } from '../../../../../../src/utils/cpuMetrics';
+import type { CpuSnapshot } from '../../../../../../src/utils/development-tooling/cpuMetrics';
 import { ownedBySite } from '../../../utils/reports-media/reportSite';
 
 /** The working directory of a process, or undefined when it cannot be told. */
