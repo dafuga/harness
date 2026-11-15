@@ -2,7 +2,7 @@
 import type { StoredSide, SourceImpact } from '../../../../../../src/utils/explorer-ui/sideImpact';
 import { impactView } from '../../../../../../src/utils/explorer-ui/sideImpact';
 import { HandlerRuntimeAdapter } from './HandlerRuntimeAdapter';
-import type { ImpactSide } from '../../../../../../src/core/impactTypes';
+import type { ImpactSide } from '../../../../../../src/core/development-tooling/impactTypes';
 import type {
 	SourceGraph,
 	TreeEntry

@@ -12,8 +12,7 @@
 			"src/adapters/development-tooling/planned-files/writePlannedFiles.ts",
 			"src/core/development-tooling/files.ts",
 			"src/core/development-tooling/files.types.ts",
-			"src/core/development-tooling/renderFileList.ts",
-			"src/core/files.ts"
+			"src/core/development-tooling/renderFileList.ts"
 		],
 		"symbols": [
 			"writePlannedFiles",
@@ -29,9 +28,6 @@
 			"FileWriteStatus",
 			"FileWriteResult",
 			"WriteFilesOptions",
-			"renderFileList",
-			"writePlannedFiles",
-			"ensureParents",
 			"renderFileList"
 		]
 	},

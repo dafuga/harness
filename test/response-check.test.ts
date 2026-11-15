@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import type { JevEvaluation, JevRequest } from '../src/core/jevTypes';
+import type { JevEvaluation, JevRequest } from '../src/core/agents-providers/jevTypes';
 import { assessResponse } from '../src/cli/program/responseCheckEvaluate';
 import {
 	responseCheckDefinitions,

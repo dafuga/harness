@@ -1,7 +1,7 @@
 import type { ImpactRepo } from './impactRepo.types';
 import { rm } from 'node:fs/promises';
 import { join } from 'node:path';
-import type { ImpactReport } from '../../src/core/impactTypes';
+import type { ImpactReport } from '../../src/core/development-tooling/impactTypes';
 import { runCommand } from './cli';
 import { slugifySource, titleServiceSource, unitProject } from './unitProject';
 

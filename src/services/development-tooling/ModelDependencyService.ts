@@ -2,7 +2,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import packageInfo from '../../../package.json';
-import type { FileWriteResult } from '../../core/files';
+import type { FileWriteResult } from '../../core/development-tooling/files';
 
 /** SQLite models import the shared runtime as a production dependency. */
 export class ModelDependencyService {

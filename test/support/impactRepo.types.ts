@@ -1,5 +1,5 @@
 import type { UnitProject } from './unitProject';
-import type { ImpactReport } from '../../src/core/impactTypes';
+import type { ImpactReport } from '../../src/core/development-tooling/impactTypes';
 
 export interface ImpactRepo extends UnitProject {
 	commit(message: string): Promise<string>;

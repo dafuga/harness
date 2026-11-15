@@ -32,7 +32,7 @@ const forbiddenImports = [
 	{
 		from: '/src/commands/',
 		rule: 'thin-command-modules',
-		targets: ['/src/templates/', '/src/core/files', '/src/core/fields'],
+		targets: ['/src/templates/', '/src/core/development-tooling/files', '/src/core/fields'],
 		message:
 			'Command modules should delegate instead of importing templates or file-generation helpers.'
 	}

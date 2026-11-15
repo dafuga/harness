@@ -11,18 +11,9 @@
 		"source": [
 			"src/core/development-tooling/fields/fields.ts",
 			"src/core/development-tooling/fields/fields.types.ts",
-			"src/core/fields.ts"
+			"src/core/fields/fields.ts"
 		],
-		"symbols": [
-			"parseFields",
-			"FieldType",
-			"Field",
-			"FieldType",
-			"Field",
-			"FieldType",
-			"Field",
-			"parseFields"
-		]
+		"symbols": ["parseFields", "FieldType", "Field", "FieldType", "Field", "parseFields"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -96,11 +87,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/core/fields.ts",
+		"entry": "src/core/development-tooling/fields/fields.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/core/fields.ts"
+				"entry": "src/core/development-tooling/fields/fields.ts"
 			}
 		]
 	},
