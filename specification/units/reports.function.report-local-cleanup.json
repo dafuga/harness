@@ -20,42 +20,47 @@
 				"name": "reportLocalCleanup.root",
 				"type": "string",
 				"required": true,
-				"description": "Report store root, which must not itself be a symlink."
+				"description": "Existing filesystem path scanned as the report store root. The root itself must not be a symbolic link; filesystem inspection errors propagate.",
+				"examples": ["/var/lib/myapp/reports"]
 			},
 			{
 				"name": "reportLocalCleanup.cutoff",
 				"type": "number",
 				"required": true,
-				"description": "Finite modification-time cutoff in epoch milliseconds; files at or before it are eligible."
+				"description": "Finite epoch-millisecond modification-time threshold for cleanup. Non-directory entries at or before it are eligible, while newer entries are skipped.",
+				"examples": [1763200000000]
 			},
 			{
 				"name": "reportLocalCleanup.dryRun",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional dry-run flag, defaulting to false. True counts eligible files without deleting them."
+				"description": "When true, eligible non-directory entries are counted without deletion. Defaults to false; dry runs also skip removal of empty old directories.",
+				"examples": [false, true]
 			},
 			{
 				"name": "reportLocalCleanup.knownRuns",
 				"type": "unknown",
 				"required": false,
-				"description": "Optional set of known run identifiers, defaulting to empty; known run directories are skipped."
+				"description": "Set of run directory names to preserve under the root runs directory; names are compared with its entries. Defaults to new Set<string>()."
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportLocalCleanup",
 				"type": "unknown",
-				"description": "Promise resolving to the number of eligible files removed or counted. Skips root dot entries and reserved metadata, traverses other directories and orphan runs, skips symlinks and removes empty old directories during a real cleanup."
+				"description": "Promise resolving to the number of eligible non-directory entries removed, or counted during a dry run. Reserved and dot-prefixed root entries are skipped, known run names are preserved, symlinks found during recursive purge contribute zero, and empty old directories are removed only outside dry runs.",
+				"examples": [0, 2]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects a nonfinite cutoff or symlinked root/runs directory. Filesystem inspection and deletion errors propagate."
+				"description": "Throws this Error for a non-finite cutoff, a symlinked root, or a symlinked root runs directory; filesystem inspection and removal errors also reject the promise."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reportLocalCleanup",
@@ -64,42 +69,47 @@
 						"name": "reportLocalCleanup.root",
 						"type": "string",
 						"required": true,
-						"description": "Report store root, which must not itself be a symlink."
+						"description": "Existing filesystem path scanned as the report store root. The root itself must not be a symbolic link; filesystem inspection errors propagate.",
+						"examples": ["/var/lib/myapp/reports"]
 					},
 					{
 						"name": "reportLocalCleanup.cutoff",
 						"type": "number",
 						"required": true,
-						"description": "Finite modification-time cutoff in epoch milliseconds; files at or before it are eligible."
+						"description": "Finite epoch-millisecond modification-time threshold for cleanup. Non-directory entries at or before it are eligible, while newer entries are skipped.",
+						"examples": [1763200000000]
 					},
 					{
 						"name": "reportLocalCleanup.dryRun",
 						"type": "boolean",
 						"required": false,
 						"default": false,
-						"description": "Optional dry-run flag, defaulting to false. True counts eligible files without deleting them."
+						"description": "When true, eligible non-directory entries are counted without deletion. Defaults to false; dry runs also skip removal of empty old directories.",
+						"examples": [false, true]
 					},
 					{
 						"name": "reportLocalCleanup.knownRuns",
 						"type": "unknown",
 						"required": false,
-						"description": "Optional set of known run identifiers, defaulting to empty; known run directories are skipped."
+						"description": "Set of run directory names to preserve under the root runs directory; names are compared with its entries. Defaults to new Set<string>()."
 					}
 				],
 				"outputs": [
 					{
 						"name": "reportLocalCleanup",
 						"type": "unknown",
-						"description": "Promise resolving to the number of eligible files removed or counted. Skips root dot entries and reserved metadata, traverses other directories and orphan runs, skips symlinks and removes empty old directories during a real cleanup."
+						"description": "Promise resolving to the number of eligible non-directory entries removed, or counted during a dry run. Reserved and dot-prefixed root entries are skipped, known run names are preserved, symlinks found during recursive purge contribute zero, and empty old directories are removed only outside dry runs.",
+						"examples": [0, 2]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws this Error for a non-finite cutoff, a symlinked root, or a symlinked root runs directory; filesystem inspection and removal errors also reject the promise."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
