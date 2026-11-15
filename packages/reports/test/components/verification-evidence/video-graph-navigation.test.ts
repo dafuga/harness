@@ -1,6 +1,11 @@
 import { expect, test } from 'vitest';
 import { render } from 'svelte/server';
 import VideoGraphNavigation from '../../../src/components/verification-evidence/VideoGraphNavigation.svelte';
+import EntityStates from '../../../src/components/explorer-ui/EntityStates.svelte';
+import { evidence as entityEvidence } from '../../utils/entityScreenFixture';
+import { record, revision } from '../../entityFixture';
+import { commits, ids, units } from '../../entityUnits';
+import { scope } from '../../entityPlaces';
 
 test('VideoGraphNavigation.svelte is generated', () => {
 	const library = {
@@ -41,4 +46,19 @@ test('VideoGraphNavigation.svelte is generated', () => {
 	const empty = render(VideoGraphNavigation, { props: { library } as never }).body;
 	expect(empty).toContain('No verified graph coverage');
 	expect(empty).not.toContain('100%');
+	const evidence = entityEvidence(
+		units.find((unit) => unit.id === ids.page)!,
+		revision(commits.tip, [record(commits.tip)])
+	);
+	evidence.scenarios[0].video = library as never;
+	const result = evidence.after.record?.scenarios.find(
+		(item) => item.id === evidence.scenarios[0].id
+	);
+	if (result) result.videoCoverage = coverage;
+	const gallery = render(EntityStates, {
+		props: { name: 'OrderList', evidence, scope: scope('current') } as never
+	}).body;
+	expect(gallery, 'state gallery must mount modular video paths and graph coverage').toContain(
+		'Video paths and coverage'
+	);
 });
