@@ -31,23 +31,44 @@
 				"name": "browserBridge.api",
 				"type": "BrowserApi",
 				"required": true,
-				"description": "Authenticated project API port. Credentials remain in the browser session or native account layer."
+				"description": "The BrowserApi port that carries every server request: get for reads, send for comments and agent calls, and bytes for images. The bridge adds no credentials or headers of its own and has no other route to the server."
 			}
 		],
 		"outputs": [
 			{
 				"name": "browserBridge",
 				"type": "DesktopBridge",
-				"description": "A workspace bridge for project reads, comments and agent requests. Fresh server capabilities and the writable branch tip determine which actions are available. Refused reads notify listeners before failing."
+				"description": "The hosted DesktopBridge for project reads, comments and agent calls, all sent through the api port; agent calls are passed the project last shown by a snapshot. Capabilities come from each fresh snapshot, and only an exactly true flag grants access; writable needs the snapshot's writable flag and the agents capability, and createPlan always rejects without a request."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects missing project IDs and denied requests. Project creation stays unavailable through this bridge; other server failures propagate."
+				"description": "Thrown by base() for a falsy projectId with the message 'Name the project this is asked for.'; the guarded reads and addComment reject with it, the agent request callback throws it for an empty project ID, and no listener is notified."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "createPlan rejects with an Error whose message is 'The hosted workspace shows projects and comments. It runs no agent.' and sends no request."
+			},
+			{
+				"name": "BrowserApi rejection",
+				"type": "thrown",
+				"description": "The BrowserApi's rejection is rethrown unchanged by listProjects, by addComment and by the guarded reads (such as snapshot, entity, source, image, messages and history). Before a guarded read rethrows a 401 or 403, onCacheStatus listeners get status 'denied': under projectId '$projects' for a 401 and under the read's projectId for a 403."
+			},
+			{
+				"name": "AgentHttpAdapter rejection",
+				"type": "thrown",
+				"description": "providers, startRun, cancelRun, openThread and approve pass the AgentHttpAdapter's result through without catching, so they fail with whatever the adapter fails with."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when a server response lacks a value the bridge reads from it: a null snapshot, project list or thread list, or a snapshot without revision or project; the bridge does not check for these."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "browserBridge",
@@ -56,18 +77,18 @@
 						"name": "browserBridge.api",
 						"type": "BrowserApi",
 						"required": true,
-						"description": "Authenticated project API port. Credentials remain in the browser session or native account layer."
+						"description": "The BrowserApi port that carries every server request: get for reads, send for comments and agent calls, and bytes for images. The bridge adds no credentials or headers of its own and has no other route to the server."
 					}
 				],
 				"outputs": [
 					{
 						"name": "browserBridge",
 						"type": "DesktopBridge",
-						"description": "A workspace bridge for project reads, comments and agent requests. Fresh server capabilities and the writable branch tip determine which actions are available. Refused reads notify listeners before failing."
+						"description": "The hosted DesktopBridge for project reads, comments and agent calls, all sent through the api port; agent calls are passed the project last shown by a snapshot. Capabilities come from each fresh snapshot, and only an exactly true flag grants access; writable needs the snapshot's writable flag and the agents capability, and createPlan always rejects without a request."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
