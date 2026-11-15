@@ -6,6 +6,8 @@ import { moduleTaskFixture } from '../../support/moduleTaskFixture';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { observedTaskOperation } from '../../support/taskProfiles';
+import { seedTaskFrameFlag, hash } from '../../support/frameFlagFixture';
+import { LfsAdapter } from '../../../src/adapters/git-source-history/LfsAdapter';
 test('module filters and assignment claims select once, then preserve changes for review', async () => {
 	const f = await moduleTaskFixture();
 	try {
@@ -17,10 +19,21 @@ test('module filters and assignment claims select once, then preserve changes fo
 		});
 		const input = JSON.parse(await readFile(await f.input({ assignee: 'owner' }), 'utf8'));
 		await service.add(input);
+		const flag = await seedTaskFrameFlag(f.root, f.source, 'service.orders');
+		const other = await seedTaskFrameFlag(f.root, f.source, 'service.other');
 		const linkedRoot = join(f.root, 'linked-owner');
 		await f.git.run(['worktree', 'add', '--detach', linkedRoot, f.source]);
 		const worker = new ModuleTaskWorkerService(linkedRoot, {
 			run: async (input) => {
+				const images = (input as typeof input & { images?: string[] }).images;
+				expect(images, 'owning task receives the extracted frame image').toHaveLength(1);
+				expect(hash(await readFile(images![0]))).toBe(flag.frame.sha256);
+				expect(await new LfsAdapter(f.root).read(flag.frame.sha256)).toEqual(
+					await readFile(images![0])
+				);
+				expect(input.prompt).toContain(flag.id);
+				expect(input.prompt).toContain('Inspect this edge');
+				expect(input.prompt).not.toContain(other.id);
 				expect(input.cwd.startsWith(join(linkedRoot, '.cache/harness/task-worktrees') + '/')).toBe(
 					true
 				);

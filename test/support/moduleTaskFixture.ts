@@ -65,6 +65,7 @@ else { console.log(JSON.stringify({type:'thread.started',thread_id:'fixture-sess
 }
 
 async function writeOrdersModule(root: string): Promise<void> {
+	await writeFile(join(root, '.gitignore'), '.cache/\n');
 	await mkdir(join(root, 'specification/units'), { recursive: true });
 	await mkdir(join(root, 'src'));
 	await writeFile(join(root, 'src/orders.ts'), 'export const orders = 1;\n');

@@ -117,6 +117,10 @@ test('feedback materializes hash-verified images and notes only for the owning u
 		for (const value of [flag.id, 'play', '0.2', 'Inspect this edge', flag.clip.sha256])
 			expect(feedback.text).toContain(value);
 		expect(hash(await readFile(feedback.images[0]))).toBe(flag.frame.sha256);
+		expect(await service.frame('component.player', flag.id)).toEqual(
+			await readFile(feedback.images[0])
+		);
+		await expect(service.frame('component.other', flag.id)).rejects.toThrow(/owner|found/i);
 		expect(await service.feedback('component.other', join(root, '.cache/other'))).toEqual({
 			text: '',
 			images: [],

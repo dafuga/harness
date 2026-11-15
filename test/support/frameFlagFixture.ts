@@ -2,6 +2,7 @@ import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { FrameFlagService } from '../../src/services/verification-evidence/FrameFlagService';
 import type {
 	FrameClipReader,
 	FrameClipReference
@@ -55,6 +56,29 @@ export async function frameFlagFixture(root: string, git: (...args: string[]) =>
 
 export function hash(bytes: Buffer): string {
 	return createHash('sha256').update(bytes).digest('hex');
+}
+
+/** A durable reviewer flag consumed by the task runner without an injected feedback reader. */
+export async function seedTaskFrameFlag(root: string, revision: string, unit: string) {
+	const bytes = encode('testsrc2=size=160x120:rate=10:duration=1');
+	const reference = { revision, record: 'a'.repeat(64), unit, clipId: 'play', viewport: 'desktop' };
+	const reader: FrameClipReader = async () => ({
+		...reference,
+		bytes,
+		sha256: hash(bytes),
+		inputHash: 'c'.repeat(64),
+		durationSeconds: 1,
+		frameRate: 10,
+		width: 160,
+		height: 120,
+		capturedAt: new Date().toISOString(),
+		addressedFlags: []
+	});
+	return new FrameFlagService(root, reader).flag({
+		clip: reference,
+		frameNumber: 2,
+		note: 'Inspect this edge before replacing the clip'
+	});
 }
 
 function encode(source: string): Buffer {

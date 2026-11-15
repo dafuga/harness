@@ -6,7 +6,8 @@ import {
 	type TaskProcessExecutor
 } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter.types';
 import { observedTaskOperation } from '../../support/taskProfiles';
-test('Claude and Codex launch exact models and intelligence without shell interpolation', () => {
+import { assertFrameArguments } from '../../support/frameTaskAssertions';
+test('Claude and Codex launch exact models and intelligence without shell interpolation', async () => {
 	const runner = new ModuleTaskRunnerAdapter();
 	expect(
 		runner.command({ provider: 'claude', model: 'claude-haiku-5-5', intelligence: 'high' })
@@ -19,6 +20,7 @@ test('Claude and Codex launch exact models and intelligence without shell interp
 			'model_provider="openai"'
 		])
 	);
+	await assertFrameArguments(runner);
 });
 test('successful public Claude CLI events retain requested model and summary', async () => {
 	const runner = new ModuleTaskRunnerAdapter(async () => ({
