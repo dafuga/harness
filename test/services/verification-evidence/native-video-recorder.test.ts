@@ -52,6 +52,7 @@ test('NativeVideoRecorderService runs', () => {
 });
 
 test('NativeVideoRecorderService record validates admission before a context opens', async () => {
+	expect(typeof service.record).toBe('function');
 	const before = browser.contexts().length;
 	for (const viewport of [
 		{ width: 1922, height: 700 },
@@ -64,6 +65,7 @@ test('NativeVideoRecorderService record validates admission before a context ope
 });
 
 test('NativeVideoRecorderService record finalizes mapped native frames and reuses without capture', async () => {
+	expect(typeof service.record).toBe('function');
 	let resets = 0;
 	const start = performance.now();
 	const result = await service.record({
@@ -133,6 +135,7 @@ test('NativeVideoRecorderService record finalizes mapped native frames and reuse
 }, 30_000);
 
 test('NativeVideoRecorderService record preserves failed diagnostics and releases context and lock', async () => {
+	expect(typeof service.record).toBe('function');
 	let resets = 0;
 	await expect(
 		service.record({
@@ -155,6 +158,7 @@ test('NativeVideoRecorderService record preserves failed diagnostics and release
 }, 30_000);
 
 test('NativeVideoRecorderService record refuses overlapping slot ownership', async () => {
+	expect(typeof service.record).toBe('function');
 	let release: () => void = () => {};
 	let entered: () => void = () => {};
 	const waiting = new Promise<void>((resolve) => {
