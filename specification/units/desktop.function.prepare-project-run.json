@@ -21,40 +21,54 @@
 				"name": "prepareProjectRun.preparation",
 				"type": "Preparation",
 				"required": true,
-				"description": "The project session, provider discovery, image generator and event callback."
+				"description": "The preparation data and services carried into the run context. Its session asserts and loads the requested project, and its provider selector chooses the runner."
 			},
 			{
 				"name": "prepareProjectRun.request",
 				"type": "ProjectRunRequest",
 				"required": true,
-				"description": "A creation request with create intent, plan mode, explicit project identity and chosen provider, model and effort."
+				"description": "The requested project run. It must have intent \"create\" and mode \"plan\"; its projectId is used for the project assertion, and its provider, model, and effort are passed to runner selection.",
+				"examples": [
+					{
+						"intent": "create",
+						"projectId": "9f2c7a61-b4e3-4a8d-9f01-2c6b5a7d8e90",
+						"category": "functions",
+						"mode": "plan",
+						"provider": "codex",
+						"model": "gpt-5.1-codex",
+						"effort": "medium",
+						"text": "Create a function that normalizes uploaded project paths.",
+						"designOptions": 3
+					}
+				]
 			},
 			{
 				"name": "prepareProjectRun.controller",
 				"type": "AbortController",
 				"required": true,
-				"description": "The cancellation controller whose signal will govern the run."
+				"description": "The cancellation controller for this preparation. Its signal is checked after project and runner preparation, then included in the returned context."
 			}
 		],
 		"outputs": [
 			{
 				"name": "prepareProjectRun",
 				"type": "Promise<ProjectRunContext>",
-				"description": "A promise for a fresh run identity, selected mutable project and revision, planning access, exact chosen runner and cancellation signal. No entity or design is created by this helper."
+				"description": "Resolves with the preparation fields, writable project, project root, revision and planning values, a fresh randomUUID() id, the request, selected runner, and controller signal. The helper returns only after project assertion, mutable-project lookup, runner selection, and the final abort check, and writes nothing itself."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects a non-Plan creation request, invalid or unselected project, non-writable project, unavailable provider/model/effort or underlying preparation failure."
+				"description": "Thrown with the message \"Something new is asked for as a Plan.\" when intent is not \"create\" or mode is not \"plan\"."
 			},
 			{
 				"name": "RunCancelled",
 				"type": "thrown",
-				"description": "Rejects when the controller is already aborted after project and provider preparation, before returning the context."
+				"description": "Thrown when the controller signal is aborted after project and runner preparation and before the context is returned."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "prepareProjectRun",
@@ -63,39 +77,54 @@
 						"name": "prepareProjectRun.preparation",
 						"type": "Preparation",
 						"required": true,
-						"description": "The project session, provider discovery, image generator and event callback."
+						"description": "The preparation data and services carried into the run context. Its session asserts and loads the requested project, and its provider selector chooses the runner."
 					},
 					{
 						"name": "prepareProjectRun.request",
 						"type": "ProjectRunRequest",
 						"required": true,
-						"description": "A creation request with create intent, plan mode, explicit project identity and chosen provider, model and effort."
+						"description": "The requested project run. It must have intent \"create\" and mode \"plan\"; its projectId is used for the project assertion, and its provider, model, and effort are passed to runner selection.",
+						"examples": [
+							{
+								"intent": "create",
+								"projectId": "9f2c7a61-b4e3-4a8d-9f01-2c6b5a7d8e90",
+								"category": "functions",
+								"mode": "plan",
+								"provider": "codex",
+								"model": "gpt-5.1-codex",
+								"effort": "medium",
+								"text": "Create a function that normalizes uploaded project paths.",
+								"designOptions": 3
+							}
+						]
 					},
 					{
 						"name": "prepareProjectRun.controller",
 						"type": "AbortController",
 						"required": true,
-						"description": "The cancellation controller whose signal will govern the run."
+						"description": "The cancellation controller for this preparation. Its signal is checked after project and runner preparation, then included in the returned context."
 					}
 				],
 				"outputs": [
 					{
 						"name": "prepareProjectRun",
 						"type": "Promise<ProjectRunContext>",
-						"description": "A promise for a fresh run identity, selected mutable project and revision, planning access, exact chosen runner and cancellation signal. No entity or design is created by this helper."
+						"description": "Resolves with the preparation fields, writable project, project root, revision and planning values, a fresh randomUUID() id, the request, selected runner, and controller signal. The helper returns only after project assertion, mutable-project lookup, runner selection, and the final abort check, and writes nothing itself."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with the message \"Something new is asked for as a Plan.\" when intent is not \"create\" or mode is not \"plan\"."
 					},
 					{
 						"name": "RunCancelled",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the controller signal is aborted after project and runner preparation and before the context is returned."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
