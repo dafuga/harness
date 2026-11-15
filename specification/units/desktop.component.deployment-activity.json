@@ -35,17 +35,18 @@
 				"name": "DeploymentActivity.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Current project, revision, bridge capabilities and shared deployment stores shown by the app."
+				"description": "The workspace whose `activity` store supplies the items, activeCount and error that the light, title, list and error message are derived from; the component calls `workspace.activity.watch()` on mount and returns its cleanup, which runs on unmount. It reads no other field of the workspace and starts, stops or repeats no deployment, and watch() fetches the list from the bridge only while the workspace is local and the bridge provides deploymentActivities."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeploymentActivity",
 				"type": "markup",
-				"description": "Shows the host deployment light, concurrent destination list and shared deployment detail views."
+				"description": "The markup of the Deployments control: a ChoiceDialog labelled 'Deployments' with a light whose data-state is active, failed, recent or idle, a title of the summary (or 'No deployments yet; local ones show here' when the light is idle), any activity error appended to that title and shown as an alert above the body, and a body that is either the chosen deployment with a Back button or the summary with one button per item in items order (or an empty-state note when there are none). It re-renders as the activity store changes, and it starts, stops or repeats no deployment."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
