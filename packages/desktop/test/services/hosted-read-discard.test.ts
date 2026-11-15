@@ -5,7 +5,7 @@ import { expect, test } from 'vitest';
 import type { CacheIdentity } from '../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import type { CacheStatus } from '../../src/models/projects-sessions/ProjectContext.types';
 import { HostedReadService } from '../../src/services/development-tooling/HostedReadService';
-import { ProjectionCacheService } from '../../src/services/projection-cache-service/ProjectionCacheService';
+import { ProjectionCacheService } from '../../src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService';
 import { HostedFailureValidator } from '../../src/validators/HostedFailureValidator';
 
 const origin = 'https://hub.example.invalid';

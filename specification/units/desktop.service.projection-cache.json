@@ -9,10 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
-			"packages/desktop/src/services/projection-cache-service/ProjectionCacheService.ts"
+			"packages/desktop/src/lib/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService.ts"
 		],
 		"symbols": [
+			"ProjectionCacheService",
 			"ProjectionCacheService",
 			"ProjectionCacheService.constructor",
 			"ProjectionCacheService.get",
@@ -21,8 +22,7 @@
 			"ProjectionCacheService.lookup",
 			"ProjectionCacheService.discard",
 			"ProjectionCacheService.purge",
-			"ProjectionCacheService.clear",
-			"ProjectionCacheService"
+			"ProjectionCacheService.clear"
 		]
 	},
 	"contract": {

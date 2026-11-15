@@ -3,7 +3,7 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { CommentOutboxService } from '../../src/services/projects-sessions/CommentOutboxService';
-import { ProjectionCacheService } from '../../src/services/projection-cache-service/ProjectionCacheService';
+import { ProjectionCacheService } from '../../src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService';
 import type { HumanCommentDraft } from '../../src/models/projects-sessions/ProjectContext.types';
 test('human comments persist as pending drafts, survive cache deletion and never claim a commit', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-outbox-'));

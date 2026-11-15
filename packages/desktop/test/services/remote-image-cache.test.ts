@@ -4,7 +4,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, relative, resolve } from 'node:path';
 import { createHash } from 'node:crypto';
-import { ProjectionCacheService } from '../../src/services/projection-cache-service/ProjectionCacheService';
+import { ProjectionCacheService } from '../../src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService';
 import { RemoteImageCacheService } from '../../src/services/networking-security/RemoteImageCacheService';
 test('remote projection cache rejects a different verified principal even when source and image hashes match', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-remote-cache-'));

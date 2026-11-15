@@ -6,7 +6,7 @@ import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import type { CacheIdentity } from '../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import type { EvidenceArtifactQuery } from '../../src/models/verification-evidence/DesktopEvidence.types';
 import { HostedReadService } from '../../src/services/development-tooling/HostedReadService';
-import { ProjectionCacheService } from '../../src/services/projection-cache-service/ProjectionCacheService';
+import { ProjectionCacheService } from '../../src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService';
 import { RemoteArtifactCacheService } from '../../src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService';
 import { HostedFailureValidator } from '../../src/validators/HostedFailureValidator';
 
