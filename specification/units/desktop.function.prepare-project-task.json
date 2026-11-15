@@ -21,19 +21,13 @@
 				"name": "prepareProjectTask.preparation",
 				"type": "Preparation",
 				"required": true,
-				"description": "The selected project session and its verified model inventory.",
-				"examples": [
-					{
-						"session": "Selected project session",
-						"providers": "Available model providers"
-					}
-				]
+				"description": "Provides the active project session and provider selector used for project validation, change-environment preparation, and runner selection. The session and provider implementations are supplied by the caller."
 			},
 			{
 				"name": "prepareProjectTask.request",
 				"type": "ProjectTaskRequest",
 				"required": true,
-				"description": "The question or code request, including its exact project, branch, commit and chosen model.",
+				"description": "Identifies the project, branch, and commit to validate, and supplies the provider, model, and effort passed to runner selection. The returned context retains this request, and a branch or commit mismatch rejects preparation.",
 				"examples": [
 					{
 						"intent": "task",
@@ -53,53 +47,29 @@
 				"name": "prepareProjectTask.controller",
 				"type": "AbortController",
 				"required": true,
-				"description": "Cancellation controller for this one request. A cancelled request never starts the model.",
-				"examples": ["new AbortController()"]
+				"description": "Supplies the signal checked after runner selection and before the context is returned. If it is aborted at that check, preparation throws RunCancelled."
 			}
 		],
 		"outputs": [
 			{
 				"name": "prepareProjectTask",
 				"type": "Promise<ProjectTaskContext>",
-				"description": "A checked execution context with the chosen runner, project root, revision and cancellation signal.",
-				"examples": [
-					{
-						"id": "run-1",
-						"root": "/projects/atlas",
-						"revision": {
-							"branch": "main",
-							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-						},
-						"request": {
-							"intent": "task",
-							"category": "components",
-							"mode": "ask",
-							"projectId": "local-demo",
-							"branch": "main",
-							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-							"provider": "claude",
-							"model": "claude-opus-5-5",
-							"effort": "high",
-							"text": "Explain the toolbar"
-						}
-					}
-				]
+				"description": "Resolves to a ProjectTaskContext containing the preparation, validated project, root, revision, planning data, original request, selected runner, generated UUID, and abort signal. It is returned only when the refreshed branch and commit match the request and the controller is not aborted at the final check."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Refuses another project, a historical or changed revision, or a model that is unavailable.",
-				"examples": ["The project revision changed. Refresh before asking the agent."]
+				"description": "Thrown with the message “The project revision changed. Refresh before asking the agent.” when the refreshed project's branch or commit differs from the request."
 			},
 			{
 				"name": "RunCancelled",
 				"type": "thrown",
-				"description": "Stops preparation when the request was cancelled before the model could start.",
-				"examples": ["Request cancelled"]
+				"description": "Thrown when controller.signal.aborted is true after provider selection and before the context is returned. The earlier project checks and runner selection occur before this abort check."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "prepareProjectTask",
@@ -108,19 +78,13 @@
 						"name": "prepareProjectTask.preparation",
 						"type": "Preparation",
 						"required": true,
-						"description": "The selected project session and its verified model inventory.",
-						"examples": [
-							{
-								"session": "Selected project session",
-								"providers": "Available model providers"
-							}
-						]
+						"description": "Provides the active project session and provider selector used for project validation, change-environment preparation, and runner selection. The session and provider implementations are supplied by the caller."
 					},
 					{
 						"name": "prepareProjectTask.request",
 						"type": "ProjectTaskRequest",
 						"required": true,
-						"description": "The question or code request, including its exact project, branch, commit and chosen model.",
+						"description": "Identifies the project, branch, and commit to validate, and supplies the provider, model, and effort passed to runner selection. The returned context retains this request, and a branch or commit mismatch rejects preparation.",
 						"examples": [
 							{
 								"intent": "task",
@@ -140,50 +104,29 @@
 						"name": "prepareProjectTask.controller",
 						"type": "AbortController",
 						"required": true,
-						"description": "Cancellation controller for this one request. A cancelled request never starts the model.",
-						"examples": ["new AbortController()"]
+						"description": "Supplies the signal checked after runner selection and before the context is returned. If it is aborted at that check, preparation throws RunCancelled."
 					}
 				],
 				"outputs": [
 					{
 						"name": "prepareProjectTask",
 						"type": "Promise<ProjectTaskContext>",
-						"description": "A checked execution context with the chosen runner, project root, revision and cancellation signal.",
-						"examples": [
-							{
-								"id": "run-1",
-								"root": "/projects/atlas",
-								"revision": {
-									"branch": "main",
-									"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-								},
-								"request": {
-									"intent": "task",
-									"category": "components",
-									"mode": "ask",
-									"projectId": "local-demo",
-									"branch": "main",
-									"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-									"provider": "claude",
-									"model": "claude-opus-5-5",
-									"effort": "high",
-									"text": "Explain the toolbar"
-								}
-							}
-						]
+						"description": "Resolves to a ProjectTaskContext containing the preparation, validated project, root, revision, planning data, original request, selected runner, generated UUID, and abort signal. It is returned only when the refreshed branch and commit match the request and the controller is not aborted at the final check."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with the message “The project revision changed. Refresh before asking the agent.” when the refreshed project's branch or commit differs from the request."
 					},
 					{
 						"name": "RunCancelled",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when controller.signal.aborted is true after provider selection and before the context is returned. The earlier project checks and runner selection occur before this abort check."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
