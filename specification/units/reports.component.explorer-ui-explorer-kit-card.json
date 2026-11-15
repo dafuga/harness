@@ -27,69 +27,76 @@
 				"type": "'article' | 'section' | 'li'",
 				"required": false,
 				"default": "article",
-				"description": "Semantic container: article by default, section for a region, or li inside a resource list."
+				"description": "Selects the rendered element: 'li' renders hx-li, 'section' renders hx-section, and 'article' (the default) or any other value renders hx-article. The component does not validate the value.",
+				"examples": ["article", "section", "li"]
 			},
 			{
 				"name": "Card.variant",
 				"type": "'card' | 'module'",
 				"required": false,
 				"default": "card",
-				"description": "Visual treatment: card by default, or module to retain specialized catalog styling without an extra card frame."
+				"description": "'card' adds the class ex-card to the rendered element; 'module' and any other value add no class, so the class then comes only from tone.",
+				"examples": ["card", "module"]
 			},
 			{
 				"name": "Card.tone",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Owner styling classes appended to the selected treatment. Defaults to an empty string."
+				"description": "Class names appended unchanged to the rendered element's class, after 'ex-card' when variant is 'card'; an empty string adds nothing. The value is not validated.",
+				"examples": ["ex-card-compact", "ex-card-muted ex-card-wide"]
 			},
 			{
 				"name": "Card.id",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional native id. Defaults to JavaScript undefined, omitting the attribute."
+				"description": "Native id set on the rendered element; undefined omits the attribute. The component does not check the value's format or uniqueness.",
+				"examples": ["kit-summary-card", "kit-metrics-card-2"]
 			},
 			{
 				"name": "Card.label",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional accessible name. Defaults to JavaScript undefined, omitting aria-label."
+				"description": "Sets aria-label on the rendered element, giving it an accessible name; undefined omits the attribute. The component does not validate the value.",
+				"examples": ["Kit summary", "Export settings"]
 			},
 			{
 				"name": "Card.labelledby",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional. Defaults to JavaScript undefined, omitting aria-labelledby. Supply the heading id when the card should be named."
+				"description": "Sets aria-labelledby on the rendered element, and undefined omits it. The value is the id of the heading that names the region, and the component does not check that such an element exists.",
+				"examples": ["kit-summary-heading", "export-settings-heading"]
 			},
 			{
 				"name": "Card.component",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional owning component id suffix for evidence attribution. Defaults to JavaScript undefined, omitting data-harness-component."
+				"description": "Owning component attribution written unchanged to data-harness-component on the rendered element; undefined omits the attribute. The component does not validate the value.",
+				"examples": ["reports.component.evidence-grid"]
 			},
 			{
 				"name": "Card.children",
 				"type": "Snippet",
 				"required": true,
-				"description": "The card content."
+				"description": "Required Svelte snippet rendered with {@render children()} as the content of the rendered element. Errors thrown while rendering it propagate to the caller."
 			}
 		],
 		"outputs": [
 			{
 				"name": "Card",
 				"type": "markup",
-				"description": "An article, section or list item containing the supplied content, with the card or module treatment and owner attributes."
+				"description": "Renders an hx-li element when as is 'li', an hx-section element when as is 'section', and otherwise an hx-article element, each containing the rendered children. Its class attribute is built from variant and tone, and its id, aria-label, aria-labelledby and data-harness-component attributes are set from the inputs and omitted when undefined."
 			}
 		],
 		"errors": [
 			{
 				"name": "Child snippet error",
 				"type": "propagated",
-				"description": "Errors thrown while rendering the required children snippet propagate to the caller."
+				"description": "Errors thrown while rendering the required children snippet propagate to the caller; the component has no try/catch around the render."
 			}
 		],
 		"errorStatus": "declared",
