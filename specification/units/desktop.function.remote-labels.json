@@ -75,152 +75,301 @@
 				"name": "relayName.origin",
 				"type": "string | null",
 				"required": true,
-				"description": "Relay origin to display; invalid URLs produce an empty label."
+				"description": "An absolute relay URL whose authority supplies the displayed host and optional port. Null or an invalid URL produces an empty string.",
+				"examples": ["https://relay.example:8443/relay", null]
 			},
 			{
 				"name": "hostLine.status",
 				"type": "RemoteHostStatus",
 				"required": true,
-				"description": "Host status used for relay and connection-state wording."
+				"description": "The public phone-access status for this computer. The line uses the relay host and adds a suffix only for registering, connecting, or offline states.",
+				"examples": [
+					{
+						"supported": true,
+						"enabled": true,
+						"state": "registering",
+						"reason": null,
+						"host": null,
+						"origin": "https://relay.example:8443/relay",
+						"pairing": null,
+						"requests": [],
+						"devices": [],
+						"projects": []
+					},
+					{
+						"supported": true,
+						"enabled": true,
+						"state": "offline",
+						"reason": "Relay unreachable",
+						"host": null,
+						"origin": "https://relay.example:8443/relay",
+						"pairing": null,
+						"requests": [],
+						"devices": [
+							{
+								"deviceId": "0123456789abcde",
+								"name": "Daniel’s iPhone",
+								"platform": "iOS",
+								"projectIds": [],
+								"agents": false,
+								"approvedAt": "2026-11-14T12:30:00.000Z",
+								"lastSeenAt": null,
+								"online": false
+							}
+						],
+						"projects": []
+					}
+				]
 			},
 			{
 				"name": "hostSummary.status",
 				"type": "RemoteHostStatus",
 				"required": true,
-				"description": "Host status used for enabled state and approved-phone count."
+				"description": "The public phone-access status for this computer. Disabled access is reported directly; otherwise the summary counts its devices, including zero as no phone.",
+				"examples": [
+					{
+						"supported": true,
+						"enabled": false,
+						"state": "disabled",
+						"reason": null,
+						"host": null,
+						"origin": null,
+						"pairing": null,
+						"requests": [],
+						"devices": [],
+						"projects": []
+					},
+					{
+						"supported": true,
+						"enabled": true,
+						"state": "offline",
+						"reason": "Relay unreachable",
+						"host": null,
+						"origin": "https://relay.example:8443/relay",
+						"pairing": null,
+						"requests": [],
+						"devices": [
+							{
+								"deviceId": "0123456789abcde",
+								"name": "Daniel’s iPhone",
+								"platform": "iOS",
+								"projectIds": [],
+								"agents": false,
+								"approvedAt": "2026-11-14T12:30:00.000Z",
+								"lastSeenAt": null,
+								"online": false
+							}
+						],
+						"projects": []
+					}
+				]
 			},
 			{
 				"name": "timeLeft.milliseconds",
 				"type": "number",
 				"required": true,
-				"description": "Remaining milliseconds; rounded up to seconds and clamped at zero."
+				"description": "Milliseconds remaining for an offer. The value is rounded up to whole seconds and clamped at zero, with no upper limit.",
+				"examples": [61001, 0]
 			},
 			{
 				"name": "grantSummary.grant",
 				"type": "{ projects: unknown[]; agents: boolean }",
 				"required": true,
-				"description": "Grant containing project list and agents flag."
+				"description": "A grant with the projects to count and the agents permission flag. Project entries are not inspected, and this input type does not include a comments flag.",
+				"examples": [
+					{
+						"projects": [],
+						"agents": false
+					},
+					{
+						"projects": [],
+						"agents": true
+					}
+				]
 			},
 			{
 				"name": "remoteLabels.status",
 				"type": "RemoteNativeStatus",
 				"required": true,
-				"description": "Mobile connection status used for heading and supporting text."
+				"description": "The phone’s reported status for its computer. Its state selects the wording; a missing or empty host name falls back to your computer, and lock wording is shown only for a boolean locked value.",
+				"examples": [
+					{
+						"state": "unpaired",
+						"origin": null,
+						"host": null,
+						"device": null,
+						"grant": null,
+						"reason": null,
+						"lastOnlineAt": null
+					}
+				]
 			},
 			{
 				"name": "identityLabel.deviceId",
 				"type": "string",
 				"required": true,
-				"description": "Full device ID to group in fours."
+				"description": "A device identity string, documented as the hash of its key. The helper groups it in consecutive groups of up to four characters without truncating it.",
+				"examples": ["0123456789abcde"]
 			},
 			{
 				"name": "plural.count",
 				"type": "number",
 				"required": true,
-				"description": "Quantity displayed before the word and used to choose its singular or plural form."
+				"description": "The number printed before the word. Only the numeric value 1 keeps the word singular; every other number gets an appended s.",
+				"examples": [1, 2, 0]
 			},
 			{
 				"name": "plural.word",
 				"type": "string",
 				"required": true,
-				"description": "Singular label; an s is appended whenever count is not one."
+				"description": "The singular word printed after the count. The helper appends s unless the count is exactly 1.",
+				"examples": ["phone", "project"]
 			},
 			{
 				"name": "keyLabel.deviceId",
 				"type": "string",
 				"required": true,
-				"description": "Device ID whose first 12 characters are grouped in fours."
+				"description": "A device identity string, documented as the hash of its key. Only its first 12 characters are grouped in up to three groups of four; shorter inputs remain shorter.",
+				"examples": ["0123456789abcde"]
 			},
 			{
 				"name": "grantLabel.grant",
 				"type": "{ agents: boolean; comments?: boolean }",
 				"required": true,
-				"description": "Grant whose agents flag determines permission wording."
+				"description": "A grant whose agents flag and optional comments flag select the permission wording. When comments is omitted, agents alone selects the legacy wording.",
+				"examples": [
+					{
+						"agents": false
+					},
+					{
+						"agents": false,
+						"comments": false
+					},
+					{
+						"agents": true,
+						"comments": true
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "lockNote",
 				"type": "unknown",
-				"description": "Explanation that approved phones work while the computer is locked and awake, but not asleep."
+				"description": "Fixed guidance that approved phones work while the computer is locked and awake, and that a sleeping computer is offline.",
+				"examples": [
+					"Approved phones keep working while this Mac is locked and awake. A sleeping Mac is offline."
+				]
 			},
 			{
 				"name": "awakeNote",
 				"type": "unknown",
-				"description": "Wording for an awake computer."
+				"description": "Fixed wording used when the computer’s lock state was not reported.",
+				"examples": ["Computer awake · works while its screen is locked"]
 			},
 			{
 				"name": "lockedNote",
 				"type": "unknown",
-				"description": "Wording for a locked, awake computer."
+				"description": "Fixed wording used when the computer reported that it is locked and awake.",
+				"examples": ["Computer locked · awake"]
 			},
 			{
 				"name": "unlockedNote",
 				"type": "unknown",
-				"description": "Wording for an unlocked, awake computer."
+				"description": "Fixed wording used when the computer reported that it is unlocked and awake.",
+				"examples": ["Computer unlocked · awake"]
 			},
 			{
 				"name": "approveNote",
 				"type": "unknown",
-				"description": "Instruction to approve the phone on the computer."
+				"description": "Fixed instruction shown while a phone awaits approval on the computer.",
+				"examples": ["Approve this phone in Harness on your computer."]
 			},
 			{
 				"name": "awayNote",
 				"type": "unknown",
-				"description": "Explanation that an offline computer is asleep or disconnected and nothing is sent until it returns."
+				"description": "Fixed explanation used when an offline status has no reason text.",
+				"examples": ["It is asleep or has no network. Nothing is sent until it is back."]
 			},
 			{
 				"name": "revokedNote",
 				"type": "unknown",
-				"description": "Instruction to pair again after revocation."
+				"description": "Fixed instruction shown after the computer removes the phone’s access.",
+				"examples": ["Pair again from your computer to continue."]
 			},
 			{
 				"name": "relayName",
 				"type": "string",
-				"description": "Relay host and optional port, or an empty string for an invalid URL."
+				"description": "The URL host and optional port, without scheme, path, or query; invalid or null input yields an empty string.",
+				"examples": ["relay.example:8443", ""]
 			},
 			{
 				"name": "timeLeft",
 				"type": "string",
-				"description": "Minutes and two-digit seconds remaining."
+				"description": "Remaining time formatted as unbounded whole minutes, a colon, and two-digit seconds after rounding milliseconds up and clamping at zero.",
+				"examples": ["1:02", "0:00"]
 			},
 			{
 				"name": "keyLabel",
 				"type": "string",
-				"description": "Short grouped device identifier."
+				"description": "The first 12 characters of a device identity, grouped in fours; characters after the first 12 are omitted.",
+				"examples": ["0123 4567 89ab"]
 			},
 			{
 				"name": "identityLabel",
 				"type": "string",
-				"description": "Full grouped device identifier."
+				"description": "The full device identity grouped in consecutive groups of up to four characters, retaining the final partial group.",
+				"examples": ["0123 4567 89ab cde"]
 			},
 			{
 				"name": "grantLabel",
 				"type": "string",
-				"description": "Plan and Change allowed, or Read and comment only."
+				"description": "Permission wording selected from agents and comments: omitted comments uses the legacy labels; explicit comments distinguishes read-only, commenting, and agent-write access.",
+				"examples": ["Read and comment only", "Read only", "Write · read, comment and ask AI"]
 			},
 			{
 				"name": "grantSummary",
 				"type": "string",
-				"description": "Project count followed by permission wording."
+				"description": "The project count followed by grant permission wording. The count uses the generic plural helper, and the grant input’s agents flag selects the legacy permission label.",
+				"examples": ["0 projects · Read and comment only", "0 projects · Plan and Change allowed"]
 			},
 			{
 				"name": "hostLine",
 				"type": "string",
-				"description": "Phone-access-on line with relay and applicable registering, connecting or offline suffix."
+				"description": "A phone-access-on line containing the relay host and, for registering, connecting, or offline states, the corresponding fixed suffix.",
+				"examples": [
+					"Phone access is on · relay.example:8443 · registering…",
+					"Phone access is on · relay.example:8443 · relay unreachable"
+				]
 			},
 			{
 				"name": "hostSummary",
 				"type": "string",
-				"description": "Phone access off, or the approved-phone count."
+				"description": "Disabled access returns Phone access off. Enabled access reports the device count as phones, or no phone when the list is empty.",
+				"examples": ["Phone access off", "Phone access on · 1 phone"]
 			},
 			{
 				"name": "remoteLabels",
 				"type": "{ title: string; detail: string }",
-				"description": "Heading and supporting text for the mobile state, using host name and lock state where available."
+				"description": "A title and detail selected by the phone status state. Host-specific wording uses the reported host name or your computer, and online lock wording appears only when lock state is known.",
+				"examples": [
+					{
+						"title": "Connect to computer",
+						"detail": ""
+					},
+					{
+						"title": "Computer offline",
+						"detail": "It is asleep or has no network. Nothing is sent until it is back."
+					},
+					{
+						"title": "This phone’s access was removed on the computer.",
+						"detail": "Pair again from your computer to continue."
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "relayName",
@@ -229,18 +378,20 @@
 						"name": "relayName.origin",
 						"type": "string | null",
 						"required": true,
-						"description": "Relay origin to display; invalid URLs produce an empty label."
+						"description": "An absolute relay URL whose authority supplies the displayed host and optional port. Null or an invalid URL produces an empty string.",
+						"examples": ["https://relay.example:8443/relay", null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "relayName",
 						"type": "string",
-						"description": "Relay host and optional port, or an empty string for an invalid URL."
+						"description": "The URL host and optional port, without scheme, path, or query; invalid or null input yields an empty string.",
+						"examples": ["relay.example:8443", ""]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hostLine",
@@ -249,18 +400,59 @@
 						"name": "hostLine.status",
 						"type": "RemoteHostStatus",
 						"required": true,
-						"description": "Host status used for relay and connection-state wording."
+						"description": "The public phone-access status for this computer. The line uses the relay host and adds a suffix only for registering, connecting, or offline states.",
+						"examples": [
+							{
+								"supported": true,
+								"enabled": true,
+								"state": "registering",
+								"reason": null,
+								"host": null,
+								"origin": "https://relay.example:8443/relay",
+								"pairing": null,
+								"requests": [],
+								"devices": [],
+								"projects": []
+							},
+							{
+								"supported": true,
+								"enabled": true,
+								"state": "offline",
+								"reason": "Relay unreachable",
+								"host": null,
+								"origin": "https://relay.example:8443/relay",
+								"pairing": null,
+								"requests": [],
+								"devices": [
+									{
+										"deviceId": "0123456789abcde",
+										"name": "Daniel’s iPhone",
+										"platform": "iOS",
+										"projectIds": [],
+										"agents": false,
+										"approvedAt": "2026-11-14T12:30:00.000Z",
+										"lastSeenAt": null,
+										"online": false
+									}
+								],
+								"projects": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hostLine",
 						"type": "string",
-						"description": "Phone-access-on line with relay and applicable registering, connecting or offline suffix."
+						"description": "A phone-access-on line containing the relay host and, for registering, connecting, or offline states, the corresponding fixed suffix.",
+						"examples": [
+							"Phone access is on · relay.example:8443 · registering…",
+							"Phone access is on · relay.example:8443 · relay unreachable"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hostSummary",
@@ -269,18 +461,56 @@
 						"name": "hostSummary.status",
 						"type": "RemoteHostStatus",
 						"required": true,
-						"description": "Host status used for enabled state and approved-phone count."
+						"description": "The public phone-access status for this computer. Disabled access is reported directly; otherwise the summary counts its devices, including zero as no phone.",
+						"examples": [
+							{
+								"supported": true,
+								"enabled": false,
+								"state": "disabled",
+								"reason": null,
+								"host": null,
+								"origin": null,
+								"pairing": null,
+								"requests": [],
+								"devices": [],
+								"projects": []
+							},
+							{
+								"supported": true,
+								"enabled": true,
+								"state": "offline",
+								"reason": "Relay unreachable",
+								"host": null,
+								"origin": "https://relay.example:8443/relay",
+								"pairing": null,
+								"requests": [],
+								"devices": [
+									{
+										"deviceId": "0123456789abcde",
+										"name": "Daniel’s iPhone",
+										"platform": "iOS",
+										"projectIds": [],
+										"agents": false,
+										"approvedAt": "2026-11-14T12:30:00.000Z",
+										"lastSeenAt": null,
+										"online": false
+									}
+								],
+								"projects": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hostSummary",
 						"type": "string",
-						"description": "Phone access off, or the approved-phone count."
+						"description": "Disabled access returns Phone access off. Enabled access reports the device count as phones, or no phone when the list is empty.",
+						"examples": ["Phone access off", "Phone access on · 1 phone"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "timeLeft",
@@ -289,18 +519,20 @@
 						"name": "timeLeft.milliseconds",
 						"type": "number",
 						"required": true,
-						"description": "Remaining milliseconds; rounded up to seconds and clamped at zero."
+						"description": "Milliseconds remaining for an offer. The value is rounded up to whole seconds and clamped at zero, with no upper limit.",
+						"examples": [61001, 0]
 					}
 				],
 				"outputs": [
 					{
 						"name": "timeLeft",
 						"type": "string",
-						"description": "Minutes and two-digit seconds remaining."
+						"description": "Remaining time formatted as unbounded whole minutes, a colon, and two-digit seconds after rounding milliseconds up and clamping at zero.",
+						"examples": ["1:02", "0:00"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "grantSummary",
@@ -309,18 +541,32 @@
 						"name": "grantSummary.grant",
 						"type": "{ projects: unknown[]; agents: boolean }",
 						"required": true,
-						"description": "Grant containing project list and agents flag."
+						"description": "A grant with the projects to count and the agents permission flag. Project entries are not inspected, and this input type does not include a comments flag.",
+						"examples": [
+							{
+								"projects": [],
+								"agents": false
+							},
+							{
+								"projects": [],
+								"agents": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "grantSummary",
 						"type": "string",
-						"description": "Project count followed by permission wording."
+						"description": "The project count followed by grant permission wording. The count uses the generic plural helper, and the grant input’s agents flag selects the legacy permission label.",
+						"examples": [
+							"0 projects · Read and comment only",
+							"0 projects · Plan and Change allowed"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "remoteLabels",
@@ -329,18 +575,43 @@
 						"name": "remoteLabels.status",
 						"type": "RemoteNativeStatus",
 						"required": true,
-						"description": "Mobile connection status used for heading and supporting text."
+						"description": "The phone’s reported status for its computer. Its state selects the wording; a missing or empty host name falls back to your computer, and lock wording is shown only for a boolean locked value.",
+						"examples": [
+							{
+								"state": "unpaired",
+								"origin": null,
+								"host": null,
+								"device": null,
+								"grant": null,
+								"reason": null,
+								"lastOnlineAt": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "remoteLabels",
 						"type": "{ title: string; detail: string }",
-						"description": "Heading and supporting text for the mobile state, using host name and lock state where available."
+						"description": "A title and detail selected by the phone status state. Host-specific wording uses the reported host name or your computer, and online lock wording appears only when lock state is known.",
+						"examples": [
+							{
+								"title": "Connect to computer",
+								"detail": ""
+							},
+							{
+								"title": "Computer offline",
+								"detail": "It is asleep or has no network. Nothing is sent until it is back."
+							},
+							{
+								"title": "This phone’s access was removed on the computer.",
+								"detail": "Pair again from your computer to continue."
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "identityLabel",
@@ -349,18 +620,20 @@
 						"name": "identityLabel.deviceId",
 						"type": "string",
 						"required": true,
-						"description": "Full device ID to group in fours."
+						"description": "A device identity string, documented as the hash of its key. The helper groups it in consecutive groups of up to four characters without truncating it.",
+						"examples": ["0123456789abcde"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "identityLabel",
 						"type": "string",
-						"description": "Full grouped device identifier."
+						"description": "The full device identity grouped in consecutive groups of up to four characters, retaining the final partial group.",
+						"examples": ["0123 4567 89ab cde"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "plural",
@@ -369,23 +642,27 @@
 						"name": "plural.count",
 						"type": "number",
 						"required": true,
-						"description": "Quantity displayed before the word and used to choose its singular or plural form."
+						"description": "The number printed before the word. Only the numeric value 1 keeps the word singular; every other number gets an appended s.",
+						"examples": [1, 2, 0]
 					},
 					{
 						"name": "plural.word",
 						"type": "string",
 						"required": true,
-						"description": "Singular label; an s is appended whenever count is not one."
+						"description": "The singular word printed after the count. The helper appends s unless the count is exactly 1.",
+						"examples": ["phone", "project"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "plural",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The count followed by the supplied word, with s appended unless count is exactly 1.",
+						"examples": ["1 phone", "2 phones"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "keyLabel",
@@ -394,18 +671,20 @@
 						"name": "keyLabel.deviceId",
 						"type": "string",
 						"required": true,
-						"description": "Device ID whose first 12 characters are grouped in fours."
+						"description": "A device identity string, documented as the hash of its key. Only its first 12 characters are grouped in up to three groups of four; shorter inputs remain shorter.",
+						"examples": ["0123456789abcde"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "keyLabel",
 						"type": "string",
-						"description": "Short grouped device identifier."
+						"description": "The first 12 characters of a device identity, grouped in fours; characters after the first 12 are omitted.",
+						"examples": ["0123 4567 89ab"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "grantLabel",
@@ -414,18 +693,32 @@
 						"name": "grantLabel.grant",
 						"type": "{ agents: boolean; comments?: boolean }",
 						"required": true,
-						"description": "Grant whose agents flag determines permission wording."
+						"description": "A grant whose agents flag and optional comments flag select the permission wording. When comments is omitted, agents alone selects the legacy wording.",
+						"examples": [
+							{
+								"agents": false
+							},
+							{
+								"agents": false,
+								"comments": false
+							},
+							{
+								"agents": true,
+								"comments": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "grantLabel",
 						"type": "string",
-						"description": "Plan and Change allowed, or Read and comment only."
+						"description": "Permission wording selected from agents and comments: omitted comments uses the legacy labels; explicit comments distinguishes read-only, commenting, and agent-write access.",
+						"examples": ["Read and comment only", "Read only", "Write · read, comment and ask AI"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
