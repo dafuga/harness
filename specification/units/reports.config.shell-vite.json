@@ -11,11 +11,8 @@
 		"visibility": "internal"
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/configs/development-tooling/shellViteConfig.ts",
-			"packages/reports/src/configs/shellViteConfig.ts"
-		],
-		"symbols": ["default", "default"]
+		"source": ["packages/reports/src/configs/development-tooling/shellViteConfig.ts"],
+		"symbols": ["default"]
 	},
 	"contract": {
 		"origin": "derived",

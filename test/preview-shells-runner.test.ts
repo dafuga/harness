@@ -117,7 +117,7 @@ test('capture readiness runs under the server-free shell config', async () => {
 					vi.stubEnv('SHELL_FIXTURE_PAGE', page);
 					const loaded = await loadConfigFromFile(
 						{ command: 'build', mode: 'production' },
-						resolve('packages/reports/src/configs/shellViteConfig.ts')
+						resolve('packages/reports/src/configs/development-tooling/shellViteConfig.ts')
 					);
 					expect(loaded, `${page} configuration loads in its normal Vite runner`).not.toBeNull();
 					const rendered = loaded!.config;
@@ -141,6 +141,15 @@ test('capture readiness runs under the server-free shell config', async () => {
 	} finally {
 		vi.unstubAllEnvs();
 	}
+});
+
+test('the shell configuration lives in its own module, with no stub at its old path', () => {
+	const moved = 'packages/reports/src/configs/development-tooling/shellViteConfig.ts';
+	const oldPath = 'packages/reports/src/configs/shellViteConfig.ts';
+	expect(existsSync(moved)).toBe(true);
+	expect(existsSync(oldPath)).toBe(false);
+	const groups = JSON.parse(readFileSync('harness.groups.json', 'utf8')) as { legacy: string[] };
+	expect(groups.legacy).not.toContain(oldPath);
 });
 
 test('an ordinary reports end-to-end spec keeps the default Playwright config', () => {
