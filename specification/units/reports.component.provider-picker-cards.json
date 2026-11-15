@@ -30,53 +30,132 @@
 				"name": "ProviderPickerCards.active",
 				"type": "SessionObservation | null",
 				"required": true,
-				"description": "Required observed session or null. Null shows that the active selection is unknown; an observation supplies selection, client, idle state and time."
+				"description": "The observed session shown on the Active model card; null means no verified observation exists and the card shows Unknown. A non-null value supplies the selection, an Idle or In use label, the clients count and the observedAt time formatted by formatTime, without any freshness check in the component.",
+				"examples": [
+					{
+						"selection": {
+							"provider": "openai",
+							"model": "gpt-6-luna",
+							"effort": "max"
+						},
+						"idle": true,
+						"clients": 0,
+						"observedAt": "2026-11-15T14:05:12.481Z"
+					},
+					{
+						"selection": {
+							"provider": "harness-claude",
+							"model": "claude-opus-5-5",
+							"effort": "xhigh"
+						},
+						"idle": false,
+						"clients": 1,
+						"observedAt": "2026-11-15T14:04:40.017Z"
+					},
+					null
+				]
 			},
 			{
 				"name": "ProviderPickerCards.request",
 				"type": "SwitchRequest | null",
 				"required": true,
-				"description": "Required switch request or null. Shows requested selection, status, queue time and reason when present."
+				"description": "The switch request shown on the Requested switch card; null shows the status None and the text 'Nothing is queued for this session.' A non-null request supplies the target selection, its status with a capitalized first letter, a Queued time from createdAt, and the reason when it is non-empty, and only a 'pending' status adds the Cancel pending switch button.",
+				"examples": [
+					{
+						"id": "5b0e2c94-8f7a-4d1e-9a63-0c7f2e8b1d55",
+						"sessionId": "4c9e1f2a-8b7d-4e3c-9a10-6f2d5b8e7c41",
+						"target": {
+							"provider": "openai",
+							"model": "gpt-6-luna",
+							"effort": "max"
+						},
+						"status": "pending",
+						"createdAt": "2026-11-15T14:03:55.120Z",
+						"reason": "Desktop control connection unavailable. Requests stay pending; no provider settings change."
+					},
+					{
+						"id": "e27a9d1c-35f4-4b8e-b0d6-91c3a7f25e08",
+						"sessionId": "9d3f7b10-2e6a-4c85-8f14-b7e0a2d96c33",
+						"target": {
+							"provider": "harness-claude",
+							"model": "claude-opus-5-5",
+							"effort": "xhigh"
+						},
+						"status": "applying",
+						"createdAt": "2026-11-15T13:58:02.807Z",
+						"reason": "Verifying the selected provider."
+					},
+					null
+				]
 			},
 			{
 				"name": "ProviderPickerCards.models",
 				"type": "PickerModel[]",
 				"required": true,
-				"description": "Required known models used to resolve a friendly model label, falling back to the model identifier."
+				"description": "The known models, matched on provider and model with effort ignored, supply each selection's label; the first match's label is shown. When no model matches, the selection's model identifier is shown instead.",
+				"examples": [
+					[
+						{
+							"provider": "openai",
+							"model": "gpt-6-luna",
+							"label": "GPT-6 Luna",
+							"efforts": ["medium", "high", "max"],
+							"defaultEffort": "medium",
+							"source": "local-catalog"
+						},
+						{
+							"provider": "harness-claude",
+							"model": "claude-opus-5-5",
+							"label": "Claude Opus 5.5 (Harness)",
+							"efforts": ["xhigh"],
+							"defaultEffort": "xhigh",
+							"source": "local-catalog"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "ProviderPickerCards.providers",
 				"type": "Record<string, string>",
 				"required": true,
-				"description": "Required provider-name lookup used in selection labels."
+				"description": "Maps a provider identifier to the display name shown on the second line of each selection; an identifier missing from the record is shown as the identifier itself. The cards use it only for those selection lines.",
+				"examples": [
+					{
+						"openai": "OpenAI",
+						"harness-claude": "Claude"
+					}
+				]
 			},
 			{
 				"name": "ProviderPickerCards.locked",
 				"type": "boolean",
 				"required": true,
-				"description": "Required flag disabling cancellation while another operation locks the controls."
+				"description": "When true, the Cancel pending switch button is disabled, and the flag has no other effect on the cards. The button is rendered only while the request status is 'pending', so the flag matters only then.",
+				"examples": [false, true]
 			},
 			{
 				"name": "ProviderPickerCards.oncancel",
 				"type": "() => void",
 				"required": true,
-				"description": "Required callback invoked by the cancel action for a pending request."
+				"description": "The handler set as the onclick of the Cancel pending switch button, which is rendered only while the request status is 'pending'. The component does not cancel the switch itself, so the outcome depends entirely on this callback."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProviderPickerCards",
 				"type": "markup",
-				"description": "Separate active-session and switch-request cards. A pending request has a cancel action; no request receives an explicit empty state. The cards do not perform the cancellation themselves."
+				"description": "A hx-div with class picker-cards holds two hx-article cards, Active model and Requested switch, and the Requested switch status label reads None when no request is present. A null active value shows Unknown, a null request shows Nothing is queued for this session, and only a pending request adds the Cancel pending switch button; the cards do not perform the cancellation themselves."
 			}
 		],
 		"errors": [
 			{
 				"name": "cancel callback error",
 				"type": "thrown",
-				"description": "Any value thrown by the caller-supplied oncancel callback propagates when a pending switch is cancelled."
+				"description": "The component neither catches nor wraps a value thrown by the caller-supplied oncancel callback, so that value passes through the Cancel pending switch click handler unchanged."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
