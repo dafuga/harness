@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/git-source-history/history-panel/historyPages.ts",
-			"packages/desktop/src/components/history-panel/historyPages.ts"
-		],
-		"symbols": ["historyPages", "historyPages"]
+		"source": ["packages/desktop/src/components/git-source-history/history-panel/historyPages.ts"],
+		"symbols": ["historyPages"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/repositories/reports-media/report-repository/reportIngest.ts"],
-		"symbols": ["reportIngest"]
+		"source": [
+			"packages/reports/src/repositories/report-repository/reportIngest.ts",
+			"packages/reports/src/repositories/reports-media/report-repository/reportIngest.ts"
+		],
+		"symbols": ["reportIngest", "reportIngest"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/relay/src/lib/execution-runtimes/host-runtime/hostRuntime.ts",
-			"packages/relay/src/lib/execution-runtimes/host-runtime/hostRuntime.types.ts",
-			"packages/relay/src/lib/host-runtime/hostRuntime.ts"
+			"packages/relay/src/lib/execution-runtimes/host-runtime/hostRuntime.types.ts"
 		],
-		"symbols": ["hostRuntime", "HostRuntime", "HostRuntime", "hostRuntime"]
+		"symbols": ["hostRuntime", "HostRuntime", "HostRuntime"]
 	},
 	"contract": {
 		"origin": "declared",

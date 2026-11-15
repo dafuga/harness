@@ -9,11 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/services/impact-service/treeChanges.ts",
 			"src/services/reports-media/impact-service/treeChanges.ts",
 			"src/utils/reports-media/treeChanges.ts"
 		],
-		"symbols": ["treeChanges", "treeChanges", "TreeChange", "treeChanges"]
+		"symbols": ["treeChanges", "TreeChange", "treeChanges"]
 	},
 	"contract": {
 		"origin": "declared",

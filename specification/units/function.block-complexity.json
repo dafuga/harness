@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"src/services/development-tooling/source-index-service/blockComplexity.ts",
-			"src/services/source-index-service/blockComplexity.ts",
 			"src/utils/development-tooling/blockComplexity.ts"
 		],
-		"symbols": ["templateComplexity", "templateComplexity", "blockComplexity", "templateComplexity"]
+		"symbols": ["templateComplexity", "blockComplexity", "templateComplexity"]
 	},
 	"contract": {
 		"origin": "declared",

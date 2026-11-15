@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/projects-sessions/project-activity-service/loopUsage.ts"],
-		"symbols": ["loopUsage"]
+		"source": [
+			"src/services/project-activity-service/loopUsage.ts",
+			"src/services/projects-sessions/project-activity-service/loopUsage.ts"
+		],
+		"symbols": ["loopUsage", "loopUsage"]
 	},
 	"contract": {
 		"origin": "declared",

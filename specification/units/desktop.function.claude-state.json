@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/adapters/agents-providers/claude-cli-adapter/claudeState.ts"],
-		"symbols": ["claudeState"]
+		"source": [
+			"packages/desktop/src/adapters/agents-providers/claude-cli-adapter/claudeState.ts",
+			"packages/desktop/src/adapters/claude-cli-adapter/claudeState.ts"
+		],
+		"symbols": ["claudeState", "claudeState"]
 	},
 	"contract": {
 		"origin": "declared",

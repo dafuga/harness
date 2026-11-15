@@ -9,12 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/services/impact-service/impactSeeds.ts",
 			"src/services/reports-media/impact-service/impactSeeds.ts",
 			"src/services/reports-media/impact-service/impactSeeds.types.ts",
 			"src/utils/reports-media/impactSeeds.ts"
 		],
-		"symbols": ["impactSeeds", "impactSeeds", "Sides", "ImpactSeeds", "impactSeeds"]
+		"symbols": ["impactSeeds", "Sides", "ImpactSeeds", "impactSeeds"]
 	},
 	"contract": {
 		"origin": "declared",

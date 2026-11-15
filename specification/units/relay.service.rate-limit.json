@@ -10,16 +10,14 @@
 	"owns": {
 		"source": [
 			"packages/relay/src/lib/execution-runtimes/host-runtime/RateLimitService.ts",
-			"packages/relay/src/lib/execution-runtimes/host-runtime/RateLimitService.types.ts",
-			"packages/relay/src/lib/host-runtime/RateLimitService.ts"
+			"packages/relay/src/lib/execution-runtimes/host-runtime/RateLimitService.types.ts"
 		],
 		"symbols": [
 			"RateLimitService",
 			"RateLimitService.constructor",
 			"RateLimitService.hit",
 			"RateStore",
-			"RateStore",
-			"RateLimitService"
+			"RateStore"
 		]
 	},
 	"contract": {

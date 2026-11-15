@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/collaboration/src/utils/git-source-history/create-git-hub-source/githubRawMany.ts",
-			"packages/collaboration/src/utils/git-source-history/create-git-hub-source/githubRawMany.types.ts",
-			"packages/collaboration/src/utils/githubRawMany.ts"
+			"packages/collaboration/src/utils/git-source-history/create-git-hub-source/githubRawMany.types.ts"
 		],
-		"symbols": ["githubRawMany", "Context", "githubRawMany"]
+		"symbols": ["githubRawMany", "Context"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -82,11 +81,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/githubRawMany.ts",
+		"entry": "packages/collaboration/src/utils/git-source-history/create-git-hub-source/githubRawMany.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/collaboration/src/utils/githubRawMany.ts"
+				"entry": "packages/collaboration/src/utils/git-source-history/create-git-hub-source/githubRawMany.ts"
 			}
 		]
 	},

@@ -9,10 +9,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/adapters/cpu-process-adapter/CpuProcessAdapter.ts",
 			"src/services/development-tooling/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.ts"
 		],
-		"symbols": ["CpuProcessAdapter", "CpuProcessAdapter", "CpuProcessAdapter.sample"]
+		"symbols": ["CpuProcessAdapter", "CpuProcessAdapter.sample"]
 	},
 	"contract": {
 		"origin": "declared",
