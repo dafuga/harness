@@ -1,7 +1,7 @@
 import type { Pins } from './evidenceReaders.types';
 import { HubAttachedService } from '../../src/services/verification-evidence/hub-evidence-service/hub-attached-service/HubAttachedService';
 import { HubRecordStatusService } from '../../src/services/verification-evidence/hub-evidence-service/HubRecordStatusService';
-import { hubNotes } from '../../src/services/hub-evidence-service/hubNotes';
+import { hubNotes } from '../../src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubNotes';
 import type { HubSourceContext } from '../../src/utils/hubSource';
 import { reachesIn, type EvidenceFixture } from './evidenceFixture';
 

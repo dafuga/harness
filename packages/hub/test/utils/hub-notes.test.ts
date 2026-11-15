@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { hubNotes } from '../../src/services/hub-evidence-service/hubNotes';
+import { hubNotes } from '../../src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubNotes';
 import { evidenceFixture, sourceAt } from '../support/evidenceFixture';
 import { verification } from '../support/evidenceRecords';
 
