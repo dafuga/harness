@@ -20,43 +20,90 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ReportPagesRetentionAdapter.constructor.command",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "Defaults to reportProcess: the runner that `execute` calls as `command(process.execPath, args, root, env)` with args that begin `x wrangler@4.93.0 pages deployment`, and reads `code` and `output` from its result. A `code` other than 0 fails the purge, and any rejection from the runner propagates out of purge."
 			},
 			{
 				"name": "ReportPagesRetentionAdapter.constructor.request",
 				"type": "( input: string | URL | Request, init?: RequestInit ) => Promise<Response>",
-				"required": false
+				"required": false,
+				"description": "Defaults to fetch, the global fetch function; `checkListed` calls it as `request(url, { signal })` only when the receipt has a `url` that no matching deployment lists, and a response status other than 404 makes purge throw. Each call gets `AbortSignal.timeout(30000)`, so a call still pending after 30000 ms is aborted and its rejection propagates out of purge."
 			},
 			{
 				"name": "ReportPagesRetentionAdapter.purge.receipt",
 				"type": "{ run: string; url?: string }",
-				"required": true
+				"required": true,
+				"description": "Receipt for one published report: `run` selects the Preview deployments whose branch is `report-` plus `safeId(run)`, and `url`, when present, must be an `https://<label>.<project>.pages.dev` address for the configured Pages project. When `url` is absent, purge uses the configured project (PROJECT_REPORTS_PAGES_PROJECT, or project-report-shares when it is unset or empty) and skips the URL check.",
+				"examples": [
+					{
+						"run": "run-20261114-0930"
+					},
+					{
+						"run": "run-20261115-1842",
+						"url": "https://9c1f0a7e.project-report-shares.pages.dev"
+					}
+				]
 			},
 			{
 				"name": "ReportPagesRetentionAdapter.purge.dryRun",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "When true, purge still lists the Preview deployments and runs the URL check but makes no delete call, and it still returns the match count. Defaults to false, which deletes each matching deployment.",
+				"examples": [false, true]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ReportPagesRetentionAdapter.purge",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolved value of purge: the count of Preview deployments whose branch is `report-` plus `safeId(run)`; when dryRun is false these are the deployments deleted, and the count is 0 when none match.",
+				"examples": [0, 1, 2]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown with the message 'Invalid report publication receipt' when `url` does not match `https://<label>.<project>.pages.dev` (with an optional trailing slash), before any Wrangler call runs."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Publication escaped the Project Reports Pages project' when the project label in `url` is not the configured Pages project, before any Wrangler call runs."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Project Reports Cloudflare account is required for published cleanup' when `r2ScreenshotConfig` returns no `accountId`; the first Wrangler list call raises it, so no deployment is deleted."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Cloudflare Pages cleanup failed; local publication receipt retained for retry' when a Wrangler run returns a `code` other than 0, for the list call or any delete call; deployments deleted by earlier iterations are not restored."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by `JSON.parse` when the Wrangler list output is not valid JSON, before any delete call."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Published report absent from deployment listing; local receipt retained' when no matching deployment lists `url` and a request to `url` returns a status other than 404, before any delete call."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Invalid report deployment ID' when a matching deployment's `Id` is not 36 characters of lowercase hex digits and hyphens; deployments earlier in the match list may already have been deleted when it is thrown."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ReportPagesRetentionAdapter.purge",
@@ -64,28 +111,73 @@
 					{
 						"name": "ReportPagesRetentionAdapter.purge.receipt",
 						"type": "{ run: string; url?: string }",
-						"required": true
+						"required": true,
+						"description": "Receipt for one published report: `run` selects the Preview deployments whose branch is `report-` plus `safeId(run)`, and `url`, when present, must be an `https://<label>.<project>.pages.dev` address for the configured Pages project. When `url` is absent, purge uses the configured project (PROJECT_REPORTS_PAGES_PROJECT, or project-report-shares when it is unset or empty) and skips the URL check.",
+						"examples": [
+							{
+								"run": "run-20261114-0930"
+							},
+							{
+								"run": "run-20261115-1842",
+								"url": "https://9c1f0a7e.project-report-shares.pages.dev"
+							}
+						]
 					},
 					{
 						"name": "ReportPagesRetentionAdapter.purge.dryRun",
 						"type": "boolean",
 						"required": false,
-						"default": false
+						"default": false,
+						"description": "When true, purge still lists the Preview deployments and runs the URL check but makes no delete call, and it still returns the match count. Defaults to false, which deletes each matching deployment.",
+						"examples": [false, true]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportPagesRetentionAdapter.purge",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolved value of purge: the count of Preview deployments whose branch is `report-` plus `safeId(run)`; when dryRun is false these are the deployments deleted, and the count is 0 when none match.",
+						"examples": [0, 1, 2]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid report publication receipt' when `url` does not match `https://<label>.<project>.pages.dev` (with an optional trailing slash), before any Wrangler call runs."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Publication escaped the Project Reports Pages project' when the project label in `url` is not the configured Pages project, before any Wrangler call runs."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Project Reports Cloudflare account is required for published cleanup' when `r2ScreenshotConfig` returns no `accountId`; the first Wrangler list call raises it, so no deployment is deleted."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Cloudflare Pages cleanup failed; local publication receipt retained for retry' when a Wrangler run returns a `code` other than 0, for the list call or any delete call; deployments deleted by earlier iterations are not restored."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by `JSON.parse` when the Wrangler list output is not valid JSON, before any delete call."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Published report absent from deployment listing; local receipt retained' when no matching deployment lists `url` and a request to `url` returns a status other than 404, before any delete call."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid report deployment ID' when a matching deployment's `Id` is not 36 characters of lowercase hex digits and hyphens; deployments earlier in the match list may already have been deleted when it is thrown."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -95,22 +187,25 @@
 					{
 						"name": "ReportPagesRetentionAdapter.constructor.command",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "Defaults to reportProcess: the runner that `execute` calls as `command(process.execPath, args, root, env)` with args that begin `x wrangler@4.93.0 pages deployment`, and reads `code` and `output` from its result. A `code` other than 0 fails the purge, and any rejection from the runner propagates out of purge."
 					},
 					{
 						"name": "ReportPagesRetentionAdapter.constructor.request",
 						"type": "( input: string | URL | Request, init?: RequestInit ) => Promise<Response>",
-						"required": false
+						"required": false,
+						"description": "Defaults to fetch, the global fetch function; `checkListed` calls it as `request(url, { signal })` only when the receipt has a `url` that no matching deployment lists, and a response status other than 404 makes purge throw. Each call gets `AbortSignal.timeout(30000)`, so a call still pending after 30000 ms is aborted and its rejection propagates out of purge."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportPagesRetentionAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Adapter instance created by the constructor, holding the injected `command` and `request` as private readonly fields and exposing `purge`. The constructor neither calls nor validates either function."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
