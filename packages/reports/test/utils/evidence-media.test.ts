@@ -7,6 +7,9 @@ test('legacy image manifests and portable audio keep their media kind', () => {
 	expect(evidenceMedia({ file: 'hash.wav' })).toBe('audio');
 	expect(evidenceMedia({ file: 'data:audio/wav;base64,AAA' })).toBe('audio');
 	expect(mediaMime('hash.m4a')).toBe('audio/mp4');
+	expect(evidenceMedia({ file: 'hash.mp4' })).toBe('video');
+	expect(evidenceMedia({ file: 'data:video/mp4;base64,AAA' })).toBe('video');
+	expect(evidenceMedia({ file: 'clip', mediaType: 'video' } as never)).toBe('video');
 	expect(media, 'duration formatting is named for its operation').toHaveProperty(
 		'formatDuration',
 		expect.any(Function)
