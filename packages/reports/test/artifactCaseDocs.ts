@@ -1,5 +1,5 @@
 import type { HarnessCapture } from '../src/models/explorer-ui/Harness.types';
-import type { BehaviorCell } from '../src/utils/entityBehavior';
+import type { BehaviorCell } from '../src/utils/explorer-ui/entityBehavior';
 import { artifactBehavior } from '../src/utils/explorer-reading/explorerArtifact';
 
 /** Recorded results as a function is shown with them, and the rows each must be drawn as. */

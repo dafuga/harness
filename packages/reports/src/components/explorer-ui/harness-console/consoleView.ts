@@ -3,7 +3,7 @@ import type { ViewInput } from './consoleView.types';
 import type { ExplorerEntity, ExplorerLocation } from '../../../models/explorer-ui/Explorer.types';
 import type { HarnessRevision, HarnessUnit } from '../../../models/explorer-ui/Harness.types';
 import type { EntityLens } from '../../../utils/explorer-ui/entityLens';
-import { correctedLocation } from '../../../utils/correctedLocation';
+import { correctedLocation } from '../../../utils/development-tooling/correctedLocation';
 import { explorerBehavior } from '../../../utils/explorerBehavior';
 import { explorerEvidence } from '../../../utils/explorerEvidence';
 import { explorerHistory } from '../../../utils/explorer-history/explorerHistory';

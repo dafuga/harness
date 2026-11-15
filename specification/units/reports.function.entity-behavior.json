@@ -9,13 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/utils/entityBehavior.ts",
 			"packages/reports/src/utils/explorer-ui/entityBehavior.ts",
 			"packages/reports/src/utils/explorer-ui/entityBehavior.types.ts"
 		],
 		"symbols": [
-			"entityBehavior",
-			"behaviorDuration",
 			"entityBehavior",
 			"behaviorDuration",
 			"BehaviorOutcome",

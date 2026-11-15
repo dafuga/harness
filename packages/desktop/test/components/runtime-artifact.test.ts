@@ -1,5 +1,8 @@
 import { expect, test } from 'vitest';
-import { entityBehavior, type BehaviorCell } from '../../../reports/src/utils/entityBehavior';
+import {
+	entityBehavior,
+	type BehaviorCell
+} from '../../../reports/src/utils/explorer-ui/entityBehavior';
 import { rows, words } from '../../../reports/test/artifactCaseDocs';
 import RuntimeArtifact from '../../src/components/execution-runtimes/RuntimeArtifact.svelte';
 import { commits, drawn, ids, refusal, scopeOf, shownEvidence } from '../evidence-fixture';

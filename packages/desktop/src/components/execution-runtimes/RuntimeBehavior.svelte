@@ -9,7 +9,7 @@
 	import { comparisonPanes } from '$reports/helpers/verification-evidence/comparisonPanes';
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 
-	import { behaviorDuration, entityBehavior } from '$reports/utils/entityBehavior';
+	import { behaviorDuration, entityBehavior } from '$reports/utils/explorer-ui/entityBehavior';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
 	import type { EntityEvidenceResult } from '../../models/verification-evidence/DesktopEvidence.types';
 	import RuntimeRun from './RuntimeRun.svelte';

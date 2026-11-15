@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { measureWorkload } from '../../../test/support/measureWorkload';
 import type { ExplorerEntity, ExplorerLocation } from '../src/models/explorer-ui/Explorer.types';
-import { correctedLocation } from '../src/utils/correctedLocation';
+import { correctedLocation } from '../src/utils/development-tooling/correctedLocation';
 
 /**
  * An entity is addressed under the category it has at the shown revision. An old address of a

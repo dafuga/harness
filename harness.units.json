@@ -627,8 +627,8 @@
 		},
 		{
 			"from": "packages/desktop/src/components/execution-runtimes/RuntimeArtifact.svelte",
-			"specifier": "$reports/utils/entityBehavior",
-			"to": "packages/reports/src/utils/entityBehavior.ts",
+			"specifier": "$reports/utils/explorer-ui/entityBehavior",
+			"to": "packages/reports/src/utils/explorer-ui/entityBehavior.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -645,14 +645,14 @@
 		},
 		{
 			"from": "packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte",
-			"specifier": "$reports/utils/entityBehavior",
-			"to": "packages/reports/src/utils/entityBehavior.ts",
+			"specifier": "$reports/utils/explorer-ui/entityBehavior",
+			"to": "packages/reports/src/utils/explorer-ui/entityBehavior.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
 			"from": "packages/desktop/src/components/execution-runtimes/RuntimeRun.svelte",
-			"specifier": "$reports/utils/entityBehavior",
-			"to": "packages/reports/src/utils/entityBehavior.ts",
+			"specifier": "$reports/utils/explorer-ui/entityBehavior",
+			"to": "packages/reports/src/utils/explorer-ui/entityBehavior.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{

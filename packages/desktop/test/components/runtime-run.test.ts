@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { entityBehavior } from '../../../reports/src/utils/entityBehavior';
+import { entityBehavior } from '../../../reports/src/utils/explorer-ui/entityBehavior';
 import RuntimeRun from '../../src/components/execution-runtimes/RuntimeRun.svelte';
 import { commits, drawn, ids, scopeOf, shownEvidence } from '../evidence-fixture';
 

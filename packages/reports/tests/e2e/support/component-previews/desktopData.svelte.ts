@@ -1,6 +1,6 @@
 import { createWorkspaceStore } from '../../../../../desktop/src/lib/stores/projects-sessions/workspace.svelte';
 import { createEntityEvidenceStore } from '../../../../../desktop/src/lib/stores/explorer-ui/entityEvidence.svelte';
-import { entityBehavior } from '../../../../src/utils/entityBehavior';
+import { entityBehavior } from '../../../../src/utils/explorer-ui/entityBehavior';
 import { galleryItems, screenOptions } from '../../../../src/utils/explorer-ui/entityScreens';
 import type { DesktopBridge } from '../../../../../desktop/src/models/DesktopBridge.types';
 import type { EntityDetail } from '../../../../../desktop/src/models/development-tooling/Desktop.types';

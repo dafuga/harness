@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/correctedLocation.ts",
-			"packages/reports/src/utils/development-tooling/correctedLocation.ts"
-		],
-		"symbols": ["correctedLocation", "correctedLocation", "compactHelperLocation"]
+		"source": ["packages/reports/src/utils/development-tooling/correctedLocation.ts"],
+		"symbols": ["correctedLocation", "compactHelperLocation"]
 	},
 	"contract": {
 		"origin": "declared",

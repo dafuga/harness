@@ -14,7 +14,7 @@ import {
 	unit,
 	words
 } from '../../reports/test/artifactCaseDocs';
-import type { BehaviorCell } from '../../reports/src/utils/entityBehavior';
+import type { BehaviorCell } from '../../reports/src/utils/explorer-ui/entityBehavior';
 import EntityCard from '../src/components/explorer-ui/EntityCard.svelte';
 import RuntimeArtifact from '../src/components/execution-runtimes/RuntimeArtifact.svelte';
 import type { Workspace } from '../src/lib/stores/projects-sessions/workspace.svelte';

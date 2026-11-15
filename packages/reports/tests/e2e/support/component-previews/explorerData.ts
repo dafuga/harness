@@ -6,7 +6,7 @@ import { commits, ids } from '../../../../test/entityUnits';
 import { explorerEntities } from '../../../../src/utils/explorerEntities';
 import { entityContract } from '../../../../src/utils/explorer-ui/entityContract';
 import { desktopData } from './sealedData';
-import { entityBehavior } from '../../../../src/utils/entityBehavior';
+import { entityBehavior } from '../../../../src/utils/explorer-ui/entityBehavior';
 import { entityMeasure } from '../../../../src/utils/explorer-ui/entityMeasure';
 import { entityReasons } from '../../../../src/utils/entityReasons';
 import { entityCatalog } from '../../../../src/utils/entityCatalog';

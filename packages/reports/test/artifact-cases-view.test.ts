@@ -1,7 +1,7 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
 import EntityArtifact from '../src/components/explorer-ui/EntityArtifact.svelte';
-import type { BehaviorCell } from '../src/utils/entityBehavior';
+import type { BehaviorCell } from '../src/utils/explorer-ui/entityBehavior';
 import {
 	callRows,
 	calls,

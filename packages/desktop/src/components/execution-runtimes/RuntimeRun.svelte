@@ -3,7 +3,7 @@
 <!-- @harness-uid u_gykxyfeimq -->
 <script lang="ts">
 	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
-	import type { BehaviorOutcome, EntityBehavior } from '$reports/utils/entityBehavior';
+	import type { BehaviorOutcome, EntityBehavior } from '$reports/utils/explorer-ui/entityBehavior';
 	import RuntimeArtifact from './RuntimeArtifact.svelte';
 	import Status from '$shared/shared-primitives/status/Status.svelte';
 	let {

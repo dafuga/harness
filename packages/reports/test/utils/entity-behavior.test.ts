@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { behaviorDuration, entityBehavior } from '../../src/utils/entityBehavior';
+import { behaviorDuration, entityBehavior } from '../../src/utils/explorer-ui/entityBehavior';
 import { explorerReading } from '../../src/utils/explorer-reading/explorerReading';
 import { servedArtifacts } from '../entityArtifacts';
 import { record, revision } from '../entityFixture';
