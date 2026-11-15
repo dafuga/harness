@@ -8,10 +8,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/relay/src/lib/execution-runtimes/host-runtime/HostStorageAdapter.ts",
-			"packages/relay/src/lib/host-runtime/HostStorageAdapter.ts"
-		],
+		"source": ["packages/relay/src/lib/execution-runtimes/host-runtime/HostStorageAdapter.ts"],
 		"symbols": [
 			"HostStorageAdapter",
 			"HostStorageAdapter.constructor",
@@ -28,8 +25,7 @@
 			"HostStorageAdapter.rate",
 			"HostStorageAdapter.saveRate",
 			"HostStorageAdapter.alarmAt",
-			"HostStorageAdapter.clear",
-			"HostStorageAdapter"
+			"HostStorageAdapter.clear"
 		]
 	},
 	"contract": {

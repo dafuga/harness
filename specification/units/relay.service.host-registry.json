@@ -8,17 +8,13 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/relay/src/lib/execution-runtimes/host-runtime/HostRegistryService.ts",
-			"packages/relay/src/lib/host-runtime/HostRegistryService.ts"
-		],
+		"source": ["packages/relay/src/lib/execution-runtimes/host-runtime/HostRegistryService.ts"],
 		"symbols": [
 			"HostRegistryService",
 			"HostRegistryService.constructor",
 			"HostRegistryService.register",
 			"HostRegistryService.summary",
-			"HostRegistryService.unregister",
-			"HostRegistryService"
+			"HostRegistryService.unregister"
 		]
 	},
 	"contract": {

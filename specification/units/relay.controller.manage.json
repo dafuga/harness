@@ -8,16 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/relay/src/lib/execution-runtimes/host-runtime/ManageController.ts",
-			"packages/relay/src/lib/host-runtime/ManageController.ts"
-		],
-		"symbols": [
-			"ManageController",
-			"ManageController.constructor",
-			"ManageController.handle",
-			"ManageController"
-		]
+		"source": ["packages/relay/src/lib/execution-runtimes/host-runtime/ManageController.ts"],
+		"symbols": ["ManageController", "ManageController.constructor", "ManageController.handle"]
 	},
 	"contract": {
 		"origin": "derived",
