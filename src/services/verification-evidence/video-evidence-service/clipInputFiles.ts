@@ -53,7 +53,7 @@ export function readClipInput(context: ClipInputContext, path: string): ClipInpu
 	let input = context.contents.get(resolved);
 	if (!input) {
 		const bytes = readFileSync(resolved);
-		input = { sha256: clipDigest(bytes), text: bytes.toString('utf8') };
+		input = { sha256: clipDigest(bytes), text: textualInput(path) ? bytes.toString('utf8') : '' };
 		context.contents.set(resolved, input);
 	}
 	return input;
@@ -73,6 +73,26 @@ export function clipWorkspace(context: ClipInputContext, path: string): string {
 }
 
 function inventory(root: string): Set<string> {
+	const repository = spawnSync('git', ['-C', root, 'rev-parse', '--show-toplevel'], {
+		encoding: 'utf8',
+		timeout: 5000,
+		maxBuffer: 32768
+	});
+	if (repository.status === 0 && realpathSync(repository.stdout.trim()) === realpathSync(root)) {
+		const tracked = spawnSync('git', ['-C', root, 'ls-files', '--cached', '-z'], {
+			encoding: 'utf8',
+			timeout: 5000,
+			maxBuffer: 16 * 1024 * 1024
+		});
+		if (tracked.status !== 0)
+			throw new ExpectedCliError('Cannot enumerate tracked video source inputs');
+		return new Set(tracked.stdout.split('\0').filter(Boolean));
+	}
+	return archiveInventory(root);
+}
+
+/** Clean Git archives have no repository; inspect them before setup creates any output. */
+function archiveInventory(root: string): Set<string> {
 	const paths = new Set<string>(),
 		pending = [''];
 	const ignored = new Set([
@@ -81,19 +101,26 @@ function inventory(root: string): Set<string> {
 		'node_modules',
 		'dist',
 		'build',
+		'output',
 		'.svelte-kit',
 		'coverage'
 	]);
 	while (pending.length) {
 		const directory = pending.pop()!;
 		for (const entry of readdirSync(join(root, directory), { withFileTypes: true })) {
-			if (ignored.has(entry.name)) continue;
+			if (ignored.has(entry.name) || /^\.env(?:\.|$)/.test(entry.name)) continue;
 			const path = posix.join(directory, entry.name);
 			if (entry.isDirectory()) pending.push(path);
 			else paths.add(path);
 		}
 	}
 	return paths;
+}
+
+function textualInput(path: string): boolean {
+	return /\.(?:[cm]?[jt]sx?|svelte|css|json|html|svg|md|toml|ya?ml|lock|txt|gql|sql|sh|py|rs|gitignore)$/.test(
+		path
+	);
 }
 
 function assertSafePath(path: string): void {
