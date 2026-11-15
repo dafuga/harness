@@ -9,12 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/lib/desktop-bridge/desktopBridge.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.types.ts",
 			"packages/desktop/src/utils/desktopBridge.ts"
 		],
-		"symbols": ["desktopBridge", "desktopBridge", "BridgeContext", "desktopBridge"]
+		"symbols": ["desktopBridge", "BridgeContext", "desktopBridge"]
 	},
 	"contract": {
 		"origin": "declared",
