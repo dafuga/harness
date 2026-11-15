@@ -20,23 +20,25 @@
 				"name": "trustedSender.event",
 				"type": "Pick<IpcMainInvokeEvent, 'sender' | 'senderFrame'>",
 				"required": true,
-				"description": "IPC event with sender and sender frame."
+				"description": "The IPC invocation's sender and sender frame. Trust requires the sender to be this window's webContents and the frame to be its mainFrame, with the frame URL accepted by NavigationValidator.validate."
 			},
 			{
 				"name": "trustedSender.window",
 				"type": "BrowserWindow",
 				"required": true,
-				"description": "Expected window and its web contents."
+				"description": "The expected Electron window, whose webContents and webContents.mainFrame are compared by object identity with the event's sender fields."
 			}
 		],
 		"outputs": [
 			{
 				"name": "trustedSender",
 				"type": "boolean",
-				"description": "True only when sender and frame are the exact window objects and the frame URL passes navigation validation."
+				"description": "True only when event.sender is window.webContents, event.senderFrame is window.webContents.mainFrame, and NavigationValidator.validate accepts event.senderFrame?.url; otherwise false.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "trustedSender",
@@ -45,24 +47,25 @@
 						"name": "trustedSender.event",
 						"type": "Pick<IpcMainInvokeEvent, 'sender' | 'senderFrame'>",
 						"required": true,
-						"description": "IPC event with sender and sender frame."
+						"description": "The IPC invocation's sender and sender frame. Trust requires the sender to be this window's webContents and the frame to be its mainFrame, with the frame URL accepted by NavigationValidator.validate."
 					},
 					{
 						"name": "trustedSender.window",
 						"type": "BrowserWindow",
 						"required": true,
-						"description": "Expected window and its web contents."
+						"description": "The expected Electron window, whose webContents and webContents.mainFrame are compared by object identity with the event's sender fields."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trustedSender",
 						"type": "boolean",
-						"description": "True only when sender and frame are the exact window objects and the frame URL passes navigation validation."
+						"description": "True only when event.sender is window.webContents, event.senderFrame is window.webContents.mainFrame, and NavigationValidator.validate accepts event.senderFrame?.url; otherwise false.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
