@@ -12,12 +12,13 @@
 		"symbols": ["typeScriptAdapter"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "typeScriptAdapter",
-				"type": "AuditAdapter"
+				"type": "AuditAdapter",
+				"description": "The TypeScript and JavaScript audit adapter with id 'typescript', declaring the app, dapp and lib profiles, the .ts, .tsx, .js and .jsx extensions, and auditHarnessStructure as its auditStructure. Its audit(file) returns the findings of auditFileLength, auditClassCount, auditBlocks, auditArchitecture, auditTypePlacement and auditTypeScriptNaming in that order, then a react-component-name finding for a .tsx or .jsx file whose name without its extension is not PascalCase (empty names and names that still contain a dot are skipped); optionalTools lists eslint, but nothing in this file calls it."
 			}
 		],
 		"errors": [],
