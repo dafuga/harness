@@ -2,7 +2,7 @@ import { performance } from 'node:perf_hooks';
 import { resolve } from 'node:path';
 import { expect, test } from 'vitest';
 import { ModuleRuntimeAdapter } from '../../src/adapters/ModuleRuntimeAdapter';
-import { WasmRuntimeAdapter } from '../../src/adapters/WasmRuntimeAdapter';
+import { WasmRuntimeAdapter } from '../../src/adapters/execution-runtimes/wasm-runtime-adapter/WasmRuntimeAdapter';
 import type { RuntimeResponse } from '../../src/core/runtimeTypes';
 import { UnitRuntimeService } from '../../src/services/execution-runtimes/UnitRuntimeService';
 import { kernelArtifacts } from '../../src/utils/kernelArtifacts';

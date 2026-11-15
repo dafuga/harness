@@ -1,8 +1,14 @@
 import { expect, test } from 'vitest';
+import { existsSync } from 'node:fs';
 import { mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { ProviderCatalogAdapter } from '../../src/adapters/ProviderCatalogAdapter';
+import { ProviderCatalogAdapter } from '../../src/adapters/agents-providers/ProviderCatalogAdapter';
+
+test('the catalog adapter keeps no relocation stub beside its owner module', () => {
+	const stub = join(import.meta.dirname, '../../src/adapters/ProviderCatalogAdapter.ts');
+	expect(existsSync(stub)).toBe(false);
+});
 
 test('discovers each provider independently, omits hidden models and leaves missing catalogs empty', async () => {
 	const home = await mkdtemp(join(tmpdir(), 'picker-catalog-'));

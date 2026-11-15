@@ -3,11 +3,11 @@ import {
 	previewState
 } from '../packages/reports/tests/e2e/support/component-previews/catalogVariants';
 import { catalogVisual } from '../packages/reports/tests/e2e/support/component-previews/visualUnits';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { beforeAll, expect, test } from 'vitest';
 import { HandlerRuntimeAdapter } from '../packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter';
-import { WorkingTreeAdapter } from '../src/adapters/WorkingTreeAdapter';
+import { WorkingTreeAdapter } from '../src/adapters/git-source-history/WorkingTreeAdapter';
 import type { ImpactSide } from '../src/core/impactTypes';
 import { ImpactService } from '../src/services/reports-media/impact-service/ImpactService';
 import { SourceGraphService } from '../src/services/SourceGraphService';
@@ -38,6 +38,8 @@ const shared: Record<string, string> = {
 	'desktop.service.project-sync': sourceOf('desktop.service.project-sync'),
 	'desktop.store.workspace': sourceOf('desktop.store.workspace')
 };
+/** The Web workspace also imports the browser bridge, by relative path; a hub unit owns it. */
+const bridge = sourceOf('hub.function.browser-bridge');
 const indexer = new SourceIndexService();
 let loaded: LoadedUnits;
 beforeAll(async () => {
@@ -84,8 +86,10 @@ test('the source index resolves what the Web workspace imports of the shared wor
 	const owner = (path: string) =>
 		loaded.stored.find((unit) => unit.status === 'active' && unit.owns.source.includes(path))?.id;
 	const through = reached.filter((path) => path.startsWith('packages/desktop/'));
-	expect(through.sort()).toEqual(written().map(built).sort());
-	expect(Object.fromEntries(through.map((path) => [owner(path), path]))).toEqual(shared);
+	const aliased = through.filter((path) => path !== bridge);
+	expect(through.sort()).toEqual([...written().map(built), bridge].sort());
+	expect(owner(bridge)).toBe('hub.function.browser-bridge');
+	expect(Object.fromEntries(aliased.map((path) => [owner(path), path]))).toEqual(shared);
 	// None of them is left as a package from outside, and none is left unresolved.
 	expect(references.filter((item) => item.uncertain ?? item.external?.startsWith('$'))).toEqual([]);
 });
@@ -131,6 +135,11 @@ test('declaring those imports changes them alone: no other reference or uncertai
 	expect(was.filter((item) => item.external === '$desktop')).toHaveLength(written().length);
 	expect(side(loaded.index).graph.uncertain).toEqual(side(undeclared).graph.uncertain);
 }, 60_000);
+
+test('the working tree adapter keeps no relocation stub beside its owner module', () => {
+	const stub = join(import.meta.dirname, '../src/adapters/WorkingTreeAdapter.ts');
+	expect(existsSync(stub)).toBe(false);
+});
 
 test('the relocated consumers of the impact service import the module that owns it', () => {
 	const owner = 'src/services/reports-media/impact-service/ImpactService.ts';

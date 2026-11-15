@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { beforeAll, expect, test } from 'vitest';
 import { HandlerRuntimeAdapter } from '../packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter';
-import { WorkingTreeAdapter } from '../src/adapters/WorkingTreeAdapter';
+import { WorkingTreeAdapter } from '../src/adapters/git-source-history/WorkingTreeAdapter';
 import type { ImpactReport, ImpactSide } from '../src/core/impactTypes';
 import { ImpactService } from '../src/services/reports-media/impact-service/ImpactService';
 import { SourceGraphService } from '../src/services/SourceGraphService';

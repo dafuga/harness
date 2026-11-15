@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/adapters/ProviderCatalogAdapter.ts",
-			"src/adapters/agents-providers/ProviderCatalogAdapter.ts"
-		],
+		"source": ["src/adapters/agents-providers/ProviderCatalogAdapter.ts"],
 		"symbols": [
-			"ProviderCatalogAdapter",
 			"ProviderCatalogAdapter",
 			"ProviderCatalogAdapter.constructor",
 			"ProviderCatalogAdapter.list"

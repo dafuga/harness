@@ -7,7 +7,7 @@ import { HttpRuntimeAdapter } from '../../src/adapters/HttpRuntimeAdapter';
 import { ModuleRuntimeAdapter } from '../../src/adapters/ModuleRuntimeAdapter';
 import { ProcessRuntimeAdapter } from '../../src/adapters/execution-runtimes/process-runtime-adapter/ProcessRuntimeAdapter';
 import { lineProcess } from '../../src/adapters/execution-runtimes/process-runtime-adapter/lineProcess';
-import { WasmRuntimeAdapter } from '../../src/adapters/WasmRuntimeAdapter';
+import { WasmRuntimeAdapter } from '../../src/adapters/execution-runtimes/wasm-runtime-adapter/WasmRuntimeAdapter';
 import type { RuntimeResponse } from '../../src/core/runtimeTypes';
 import { fixtureServer, ok, scripted, scripts } from '../support/runtimeFixtures';
 

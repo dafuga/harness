@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/adapters/WorkingTreeAdapter.ts",
-			"src/adapters/git-source-history/WorkingTreeAdapter.ts"
-		],
+		"source": ["src/adapters/git-source-history/WorkingTreeAdapter.ts"],
 		"symbols": [
-			"WorkingTreeAdapter",
 			"WorkingTreeAdapter",
 			"WorkingTreeAdapter.constructor",
 			"WorkingTreeAdapter.list",

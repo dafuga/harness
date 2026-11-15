@@ -2,7 +2,7 @@ import { afterAll, beforeAll, expect, test } from 'vitest';
 import type { RuntimeRequest, UnitRuntime } from '../../src/core/runtimeTypes';
 import { HttpRuntimeAdapter } from '../../src/adapters/HttpRuntimeAdapter';
 import { ProcessRuntimeAdapter } from '../../src/adapters/execution-runtimes/process-runtime-adapter/ProcessRuntimeAdapter';
-import { WasmRuntimeAdapter } from '../../src/adapters/WasmRuntimeAdapter';
+import { WasmRuntimeAdapter } from '../../src/adapters/execution-runtimes/wasm-runtime-adapter/WasmRuntimeAdapter';
 import {
 	RuntimeServerService,
 	type ServedRuntime

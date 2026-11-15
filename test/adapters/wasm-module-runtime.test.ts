@@ -1,8 +1,10 @@
 import { measureWorkload } from '../support/measureWorkload';
+import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { beforeAll, expect, test } from 'vitest';
 import { WasmModuleRuntimeAdapter } from '../../src/adapters/WasmModuleRuntimeAdapter';
-import { WasmRuntimeAdapter } from '../../src/adapters/WasmRuntimeAdapter';
+import { WasmRuntimeAdapter } from '../../src/adapters/execution-runtimes/wasm-runtime-adapter/WasmRuntimeAdapter';
 import { kernelArtifacts } from '../../src/utils/kernelArtifacts';
 
 let file: string;
@@ -47,6 +49,11 @@ test('a module without the JSON ABI, or bytes that are not Wasm, are unavailable
 			error: { code: 'runtime-failed', message: 'no module here' }
 		});
 	});
+});
+
+test('the file adapter keeps no relocation stub beside its owner module', () => {
+	const stub = join(import.meta.dirname, '../../src/adapters/WasmRuntimeAdapter.ts');
+	expect(existsSync(stub)).toBe(false);
 });
 
 test('the file adapter still reports an unreadable file as unavailable', async () => {
