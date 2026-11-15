@@ -70,9 +70,12 @@ function item(side: ExplorerSide, found: ExplorerCapture, phase: Phase): Evidenc
 	const { capture, scenario, state } = found;
 	const origin = told(side, found);
 	const where = capture.viewport ?? capture.kind;
+	const slot = capture.video ? `${where}-${capture.video.clipId}` : where;
 	return {
-		id: `${phase}-${shortCommit(side.commit)}-${scenario}-${state}-${capture.evidence}-${where}`,
-		title: `${scenario} · ${state}`,
+		id: `${phase}-${shortCommit(side.commit)}-${scenario}-${state}-${capture.evidence}-${slot}`,
+		title: capture.video
+			? `${scenario} · ${state} · ${capture.video.clipId}`
+			: `${scenario} · ${state}`,
 		category: scenario,
 		state,
 		file: mediaFile(capture),
@@ -81,7 +84,7 @@ function item(side: ExplorerSide, found: ExplorerCapture, phase: Phase): Evidenc
 		capturedAt: capture.capturedAt,
 		viewport: capture.viewport,
 		phase,
-		comparison: `${scenario}|${state}|${capture.evidence}|${where}`,
+		comparison: `${scenario}|${state}|${capture.evidence}|${slot}`,
 		standing: origin.label,
 		provenance: origin.facts,
 		note: origin.note,

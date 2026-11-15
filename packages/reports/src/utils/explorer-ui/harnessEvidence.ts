@@ -79,7 +79,9 @@ function galleryEntry(
 	return {
 		// Two captures may share a state and a viewport; the running number keeps each its own.
 		id: `${record.id.slice(0, 8)}-${scenario.id}-${state}-${capture.viewport ?? capture.kind}-${order}`,
-		title: `${scenario.id} · ${state}`,
+		title: capture.video
+			? `${scenario.id} · ${state} · ${capture.video.clipId}`
+			: `${scenario.id} · ${state}`,
 		category: scenario.id,
 		state: state,
 		file: mediaFile(capture),
