@@ -36,29 +36,333 @@
 				"name": "problem.input",
 				"type": "CoverageInput",
 				"required": true,
-				"description": "Scenario requirements, selected revision, declared builds and capture context used to validate evidence."
+				"description": "The scenario whose evidence slots and viewports the capture is matched against, the verified commit that a capture's server stamp must name, and optional declared and compiled builds used when the evidence names a build. `problem` ignores `checkFailed`, and an omitted `builds` makes any build the evidence names undeclared.",
+				"examples": [
+					{
+						"scenario": {
+							"schemaVersion": 1,
+							"id": "runtime-evidence-ui",
+							"title": "Compiled runtime evidence viewer over explicit synthetic history fixtures",
+							"kind": "ui",
+							"units": ["desktop.component.runtime-pane", "desktop.component.runtime-screens"],
+							"states": [
+								{
+									"id": "current",
+									"title": "current",
+									"coverage": "required"
+								}
+							],
+							"viewports": [
+								{
+									"id": "desktop",
+									"width": 1440,
+									"height": 900
+								}
+							],
+							"tests": [
+								{
+									"id": "screens",
+									"kind": "e2e",
+									"runner": "command",
+									"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-evidence-screens.spec.ts",
+									"cwd": "packages/desktop",
+									"timeoutMs": 240000
+								}
+							],
+							"evidence": [
+								{
+									"id": "runtime-screens-desktop",
+									"kind": "screenshot",
+									"states": ["current"],
+									"viewports": ["desktop"],
+									"provenance": "actual-capture",
+									"capture": "full-page",
+									"required": true
+								}
+							]
+						},
+						"commit": "4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20",
+						"gathered": [
+							{
+								"line": {
+									"evidence": "runtime-screens-desktop",
+									"kind": "screenshot",
+									"state": "current",
+									"viewport": "desktop",
+									"file": "current-desktop.png",
+									"mediaType": "image/png",
+									"provenance": "actual-capture",
+									"server": {
+										"buildId": "c3e18a7f2d905b64e1a0c9f3d7b28e54a6f10c2d8b97e3a5f04d61c8b29e7a03",
+										"revision": "4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20"
+									}
+								},
+								"capture": {
+									"evidence": "runtime-screens-desktop",
+									"kind": "screenshot",
+									"state": "current",
+									"viewport": "desktop",
+									"mediaType": "image/png",
+									"provenance": "actual-capture",
+									"status": "passed",
+									"path": "evidence/4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20/runtime-evidence-ui/screens/current-desktop.png",
+									"sha256": "7d4b0e9a2c61f38d5e07b4a1c9f26d3e8b5a0c74f1d92e6b3a8c50d7f4e19a2c",
+									"bytes": 186402,
+									"capturedAt": "2026-11-15T09:42:07.318Z",
+									"server": {
+										"buildId": "c3e18a7f2d905b64e1a0c9f3d7b28e54a6f10c2d8b97e3a5f04d61c8b29e7a03",
+										"revision": "4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20"
+									}
+								},
+								"facts": {
+									"kind": "image",
+									"width": 1440,
+									"height": 2316
+								}
+							}
+						],
+						"checkFailed": false
+					}
+				]
 			},
 			{
 				"name": "problem.item",
 				"type": "Gathered",
 				"required": true,
-				"description": "Gathered capture and its bytes to check against the declared evidence slot."
+				"description": "One gathered capture: its `line` as the check wrote it to `captures.ndjson`, its `capture` record that gathering marks 'passed' before `scenarioCoverage` decides the status, and its decoded `facts` for screenshots and audio or parsed `benchmark` contents for benchmarks. `problem` reads only the line, facts and benchmark, and checks them against the evidence slot the line names.",
+				"examples": [
+					{
+						"line": {
+							"evidence": "runtime-screens-desktop",
+							"kind": "screenshot",
+							"state": "current",
+							"viewport": "desktop",
+							"file": "current-desktop.png",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"server": {
+								"buildId": "c3e18a7f2d905b64e1a0c9f3d7b28e54a6f10c2d8b97e3a5f04d61c8b29e7a03",
+								"revision": "4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20"
+							}
+						},
+						"capture": {
+							"evidence": "runtime-screens-desktop",
+							"kind": "screenshot",
+							"state": "current",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20/runtime-evidence-ui/screens/current-desktop.png",
+							"sha256": "7d4b0e9a2c61f38d5e07b4a1c9f26d3e8b5a0c74f1d92e6b3a8c50d7f4e19a2c",
+							"bytes": 186402,
+							"capturedAt": "2026-11-15T09:42:07.318Z",
+							"server": {
+								"buildId": "c3e18a7f2d905b64e1a0c9f3d7b28e54a6f10c2d8b97e3a5f04d61c8b29e7a03",
+								"revision": "4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20"
+							}
+						},
+						"facts": {
+							"kind": "image",
+							"width": 1440,
+							"height": 2316
+						}
+					},
+					{
+						"line": {
+							"evidence": "runtime-audio-fixture",
+							"kind": "audio",
+							"state": "audio-current",
+							"file": "audio-current.wav",
+							"mediaType": "audio/wav",
+							"provenance": "fixture",
+							"transcript": "Runtime evidence for the current state, replayed from the fixture history.",
+							"durationSeconds": 4.25
+						},
+						"capture": {
+							"evidence": "runtime-audio-fixture",
+							"kind": "audio",
+							"state": "audio-current",
+							"mediaType": "audio/wav",
+							"provenance": "fixture",
+							"transcript": "Runtime evidence for the current state, replayed from the fixture history.",
+							"status": "passed",
+							"path": "evidence/4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20/runtime-evidence-ui/states/audio-current.wav",
+							"sha256": "e02b9c71d4a8f365b0e1c27d9a4f8b63e5d0c1a7f29b4e86d3c0a5f17e92b4d8",
+							"bytes": 374894,
+							"capturedAt": "2026-11-15T09:42:09.104Z",
+							"durationSeconds": 4.25
+						},
+						"facts": {
+							"kind": "audio",
+							"durationSeconds": 4.25
+						}
+					}
+				]
 			},
 			{
 				"name": "scenarioCoverage.input",
 				"type": "CoverageInput",
 				"required": true,
-				"description": "Scenario contract, exact verified commit, gathered captures, whether the producing check failed, and optionally declared/compiled build identities."
+				"description": "The scenario contract, the exact verified commit, the gathered captures, and whether the check that produced them failed or timed out, plus optional declared and compiled builds. When `checkFailed` is true every capture is reported as 'failed', and an omitted `builds` makes any build the evidence names undeclared.",
+				"examples": [
+					{
+						"scenario": {
+							"schemaVersion": 1,
+							"id": "runtime-evidence-ui",
+							"title": "Compiled runtime evidence viewer over explicit synthetic history fixtures",
+							"kind": "ui",
+							"units": ["desktop.component.runtime-pane", "desktop.component.runtime-screens"],
+							"states": [
+								{
+									"id": "current",
+									"title": "current",
+									"coverage": "required"
+								}
+							],
+							"viewports": [
+								{
+									"id": "desktop",
+									"width": 1440,
+									"height": 900
+								}
+							],
+							"tests": [
+								{
+									"id": "screens",
+									"kind": "e2e",
+									"runner": "command",
+									"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-evidence-screens.spec.ts",
+									"cwd": "packages/desktop",
+									"timeoutMs": 240000
+								}
+							],
+							"evidence": [
+								{
+									"id": "runtime-screens-desktop",
+									"kind": "screenshot",
+									"states": ["current"],
+									"viewports": ["desktop"],
+									"provenance": "actual-capture",
+									"capture": "full-page",
+									"required": true
+								}
+							]
+						},
+						"commit": "4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20",
+						"gathered": [
+							{
+								"line": {
+									"evidence": "runtime-screens-desktop",
+									"kind": "screenshot",
+									"state": "current",
+									"viewport": "desktop",
+									"file": "current-desktop.png",
+									"mediaType": "image/png",
+									"provenance": "actual-capture",
+									"server": {
+										"buildId": "c3e18a7f2d905b64e1a0c9f3d7b28e54a6f10c2d8b97e3a5f04d61c8b29e7a03",
+										"revision": "4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20"
+									}
+								},
+								"capture": {
+									"evidence": "runtime-screens-desktop",
+									"kind": "screenshot",
+									"state": "current",
+									"viewport": "desktop",
+									"mediaType": "image/png",
+									"provenance": "actual-capture",
+									"status": "passed",
+									"path": "evidence/4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20/runtime-evidence-ui/screens/current-desktop.png",
+									"sha256": "7d4b0e9a2c61f38d5e07b4a1c9f26d3e8b5a0c74f1d92e6b3a8c50d7f4e19a2c",
+									"bytes": 186402,
+									"capturedAt": "2026-11-15T09:42:07.318Z",
+									"server": {
+										"buildId": "c3e18a7f2d905b64e1a0c9f3d7b28e54a6f10c2d8b97e3a5f04d61c8b29e7a03",
+										"revision": "4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20"
+									}
+								},
+								"facts": {
+									"kind": "image",
+									"width": 1440,
+									"height": 2316
+								}
+							}
+						],
+						"checkFailed": false
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "scenarioCoverage",
 				"type": "CoverageResult",
-				"description": "Scenario states with capture statuses plus prefixed failure messages for missing/unproven requirements or invalid evidence. Screenshots require valid dimensions and revision/build provenance; audio requires valid duration/transcript and stated provenance; benchmarks must match their schema."
+				"description": "The scenario's states in declaration order, each with its coverage, its reason when it has one, and its captures marked 'passed' or 'failed'. Its failures, each prefixed with the scenario id, name the states declared missing, the required captures that were not gathered, and every capture problem.",
+				"examples": [
+					{
+						"states": [
+							{
+								"id": "current",
+								"coverage": "required",
+								"captures": [
+									{
+										"evidence": "runtime-screens-desktop",
+										"kind": "screenshot",
+										"state": "current",
+										"viewport": "desktop",
+										"mediaType": "image/png",
+										"provenance": "actual-capture",
+										"status": "passed",
+										"path": "evidence/4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20/runtime-evidence-ui/screens/current-desktop.png",
+										"sha256": "7d4b0e9a2c61f38d5e07b4a1c9f26d3e8b5a0c74f1d92e6b3a8c50d7f4e19a2c",
+										"bytes": 186402,
+										"capturedAt": "2026-11-15T09:42:07.318Z",
+										"server": {
+											"buildId": "c3e18a7f2d905b64e1a0c9f3d7b28e54a6f10c2d8b97e3a5f04d61c8b29e7a03",
+											"revision": "4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20"
+										}
+									}
+								]
+							}
+						],
+						"failures": []
+					},
+					{
+						"states": [
+							{
+								"id": "current",
+								"coverage": "required",
+								"captures": [
+									{
+										"evidence": "runtime-screens-desktop",
+										"kind": "screenshot",
+										"state": "current",
+										"viewport": "desktop",
+										"mediaType": "image/png",
+										"provenance": "actual-capture",
+										"status": "failed",
+										"path": "evidence/4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20/runtime-evidence-ui/screens/current-desktop.png",
+										"sha256": "7d4b0e9a2c61f38d5e07b4a1c9f26d3e8b5a0c74f1d92e6b3a8c50d7f4e19a2c",
+										"bytes": 186402,
+										"capturedAt": "2026-11-15T09:42:07.318Z",
+										"server": {
+											"buildId": "c3e18a7f2d905b64e1a0c9f3d7b28e54a6f10c2d8b97e3a5f04d61c8b29e7a03",
+											"revision": "9a0d6e3c5b72f18e4d0a9c6b3e7f25d1a8c4e0f7"
+										}
+									}
+								]
+							}
+						],
+						"failures": [
+							"runtime-evidence-ui: capture current-desktop.png was produced by revision 9a0d6e3c5b72f18e4d0a9c6b3e7f25d1a8c4e0f7, not 4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20"
+						]
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "problem",
@@ -67,23 +371,185 @@
 						"name": "problem.input",
 						"type": "CoverageInput",
 						"required": true,
-						"description": "Scenario requirements, selected revision, declared builds and capture context used to validate evidence."
+						"description": "The scenario whose evidence slots and viewports the capture is matched against, the verified commit that a capture's server stamp must name, and optional declared and compiled builds used when the evidence names a build. `problem` ignores `checkFailed`, and an omitted `builds` makes any build the evidence names undeclared.",
+						"examples": [
+							{
+								"scenario": {
+									"schemaVersion": 1,
+									"id": "runtime-evidence-ui",
+									"title": "Compiled runtime evidence viewer over explicit synthetic history fixtures",
+									"kind": "ui",
+									"units": ["desktop.component.runtime-pane", "desktop.component.runtime-screens"],
+									"states": [
+										{
+											"id": "current",
+											"title": "current",
+											"coverage": "required"
+										}
+									],
+									"viewports": [
+										{
+											"id": "desktop",
+											"width": 1440,
+											"height": 900
+										}
+									],
+									"tests": [
+										{
+											"id": "screens",
+											"kind": "e2e",
+											"runner": "command",
+											"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-evidence-screens.spec.ts",
+											"cwd": "packages/desktop",
+											"timeoutMs": 240000
+										}
+									],
+									"evidence": [
+										{
+											"id": "runtime-screens-desktop",
+											"kind": "screenshot",
+											"states": ["current"],
+											"viewports": ["desktop"],
+											"provenance": "actual-capture",
+											"capture": "full-page",
+											"required": true
+										}
+									]
+								},
+								"commit": "4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20",
+								"gathered": [
+									{
+										"line": {
+											"evidence": "runtime-screens-desktop",
+											"kind": "screenshot",
+											"state": "current",
+											"viewport": "desktop",
+											"file": "current-desktop.png",
+											"mediaType": "image/png",
+											"provenance": "actual-capture",
+											"server": {
+												"buildId": "c3e18a7f2d905b64e1a0c9f3d7b28e54a6f10c2d8b97e3a5f04d61c8b29e7a03",
+												"revision": "4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20"
+											}
+										},
+										"capture": {
+											"evidence": "runtime-screens-desktop",
+											"kind": "screenshot",
+											"state": "current",
+											"viewport": "desktop",
+											"mediaType": "image/png",
+											"provenance": "actual-capture",
+											"status": "passed",
+											"path": "evidence/4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20/runtime-evidence-ui/screens/current-desktop.png",
+											"sha256": "7d4b0e9a2c61f38d5e07b4a1c9f26d3e8b5a0c74f1d92e6b3a8c50d7f4e19a2c",
+											"bytes": 186402,
+											"capturedAt": "2026-11-15T09:42:07.318Z",
+											"server": {
+												"buildId": "c3e18a7f2d905b64e1a0c9f3d7b28e54a6f10c2d8b97e3a5f04d61c8b29e7a03",
+												"revision": "4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20"
+											}
+										},
+										"facts": {
+											"kind": "image",
+											"width": 1440,
+											"height": 2316
+										}
+									}
+								],
+								"checkFailed": false
+							}
+						]
 					},
 					{
 						"name": "problem.item",
 						"type": "Gathered",
 						"required": true,
-						"description": "Gathered capture and its bytes to check against the declared evidence slot."
+						"description": "One gathered capture: its `line` as the check wrote it to `captures.ndjson`, its `capture` record that gathering marks 'passed' before `scenarioCoverage` decides the status, and its decoded `facts` for screenshots and audio or parsed `benchmark` contents for benchmarks. `problem` reads only the line, facts and benchmark, and checks them against the evidence slot the line names.",
+						"examples": [
+							{
+								"line": {
+									"evidence": "runtime-screens-desktop",
+									"kind": "screenshot",
+									"state": "current",
+									"viewport": "desktop",
+									"file": "current-desktop.png",
+									"mediaType": "image/png",
+									"provenance": "actual-capture",
+									"server": {
+										"buildId": "c3e18a7f2d905b64e1a0c9f3d7b28e54a6f10c2d8b97e3a5f04d61c8b29e7a03",
+										"revision": "4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20"
+									}
+								},
+								"capture": {
+									"evidence": "runtime-screens-desktop",
+									"kind": "screenshot",
+									"state": "current",
+									"viewport": "desktop",
+									"mediaType": "image/png",
+									"provenance": "actual-capture",
+									"status": "passed",
+									"path": "evidence/4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20/runtime-evidence-ui/screens/current-desktop.png",
+									"sha256": "7d4b0e9a2c61f38d5e07b4a1c9f26d3e8b5a0c74f1d92e6b3a8c50d7f4e19a2c",
+									"bytes": 186402,
+									"capturedAt": "2026-11-15T09:42:07.318Z",
+									"server": {
+										"buildId": "c3e18a7f2d905b64e1a0c9f3d7b28e54a6f10c2d8b97e3a5f04d61c8b29e7a03",
+										"revision": "4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20"
+									}
+								},
+								"facts": {
+									"kind": "image",
+									"width": 1440,
+									"height": 2316
+								}
+							},
+							{
+								"line": {
+									"evidence": "runtime-audio-fixture",
+									"kind": "audio",
+									"state": "audio-current",
+									"file": "audio-current.wav",
+									"mediaType": "audio/wav",
+									"provenance": "fixture",
+									"transcript": "Runtime evidence for the current state, replayed from the fixture history.",
+									"durationSeconds": 4.25
+								},
+								"capture": {
+									"evidence": "runtime-audio-fixture",
+									"kind": "audio",
+									"state": "audio-current",
+									"mediaType": "audio/wav",
+									"provenance": "fixture",
+									"transcript": "Runtime evidence for the current state, replayed from the fixture history.",
+									"status": "passed",
+									"path": "evidence/4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20/runtime-evidence-ui/states/audio-current.wav",
+									"sha256": "e02b9c71d4a8f365b0e1c27d9a4f8b63e5d0c1a7f29b4e86d3c0a5f17e92b4d8",
+									"bytes": 374894,
+									"capturedAt": "2026-11-15T09:42:09.104Z",
+									"durationSeconds": 4.25
+								},
+								"facts": {
+									"kind": "audio",
+									"durationSeconds": 4.25
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "problem",
-						"type": "string | undefined"
+						"type": "string | undefined",
+						"description": "The first problem with one capture, worded with its file name (or, for an audio transcript or provenance problem, its state), or `undefined` when the capture passes every rule for its kind. Screenshots are checked for size and build stamp, audio for duration, transcript and provenance, benchmarks against the benchmark schema, and outputs, assertions and traces for a build stamp only when their provenance is 'actual-capture'.",
+						"examples": [
+							"capture current-desktop.png is 1280x2316 but viewport desktop requires 1440 wide and at least 900 tall",
+							"capture audio-current.wav declares 4.4 s but contains 4.25 s of audio",
+							"audio capture for state audio-current has no transcript"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "scenarioCoverage",
@@ -92,18 +558,165 @@
 						"name": "scenarioCoverage.input",
 						"type": "CoverageInput",
 						"required": true,
-						"description": "Scenario contract, exact verified commit, gathered captures, whether the producing check failed, and optionally declared/compiled build identities."
+						"description": "The scenario contract, the exact verified commit, the gathered captures, and whether the check that produced them failed or timed out, plus optional declared and compiled builds. When `checkFailed` is true every capture is reported as 'failed', and an omitted `builds` makes any build the evidence names undeclared.",
+						"examples": [
+							{
+								"scenario": {
+									"schemaVersion": 1,
+									"id": "runtime-evidence-ui",
+									"title": "Compiled runtime evidence viewer over explicit synthetic history fixtures",
+									"kind": "ui",
+									"units": ["desktop.component.runtime-pane", "desktop.component.runtime-screens"],
+									"states": [
+										{
+											"id": "current",
+											"title": "current",
+											"coverage": "required"
+										}
+									],
+									"viewports": [
+										{
+											"id": "desktop",
+											"width": 1440,
+											"height": 900
+										}
+									],
+									"tests": [
+										{
+											"id": "screens",
+											"kind": "e2e",
+											"runner": "command",
+											"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-evidence-screens.spec.ts",
+											"cwd": "packages/desktop",
+											"timeoutMs": 240000
+										}
+									],
+									"evidence": [
+										{
+											"id": "runtime-screens-desktop",
+											"kind": "screenshot",
+											"states": ["current"],
+											"viewports": ["desktop"],
+											"provenance": "actual-capture",
+											"capture": "full-page",
+											"required": true
+										}
+									]
+								},
+								"commit": "4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20",
+								"gathered": [
+									{
+										"line": {
+											"evidence": "runtime-screens-desktop",
+											"kind": "screenshot",
+											"state": "current",
+											"viewport": "desktop",
+											"file": "current-desktop.png",
+											"mediaType": "image/png",
+											"provenance": "actual-capture",
+											"server": {
+												"buildId": "c3e18a7f2d905b64e1a0c9f3d7b28e54a6f10c2d8b97e3a5f04d61c8b29e7a03",
+												"revision": "4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20"
+											}
+										},
+										"capture": {
+											"evidence": "runtime-screens-desktop",
+											"kind": "screenshot",
+											"state": "current",
+											"viewport": "desktop",
+											"mediaType": "image/png",
+											"provenance": "actual-capture",
+											"status": "passed",
+											"path": "evidence/4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20/runtime-evidence-ui/screens/current-desktop.png",
+											"sha256": "7d4b0e9a2c61f38d5e07b4a1c9f26d3e8b5a0c74f1d92e6b3a8c50d7f4e19a2c",
+											"bytes": 186402,
+											"capturedAt": "2026-11-15T09:42:07.318Z",
+											"server": {
+												"buildId": "c3e18a7f2d905b64e1a0c9f3d7b28e54a6f10c2d8b97e3a5f04d61c8b29e7a03",
+												"revision": "4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20"
+											}
+										},
+										"facts": {
+											"kind": "image",
+											"width": 1440,
+											"height": 2316
+										}
+									}
+								],
+								"checkFailed": false
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scenarioCoverage",
 						"type": "CoverageResult",
-						"description": "Scenario states with capture statuses plus prefixed failure messages for missing/unproven requirements or invalid evidence. Screenshots require valid dimensions and revision/build provenance; audio requires valid duration/transcript and stated provenance; benchmarks must match their schema."
+						"description": "The scenario's states in declaration order, each with its coverage, its reason when it has one, and its captures marked 'passed' or 'failed'. Its failures, each prefixed with the scenario id, name the states declared missing, the required captures that were not gathered, and every capture problem.",
+						"examples": [
+							{
+								"states": [
+									{
+										"id": "current",
+										"coverage": "required",
+										"captures": [
+											{
+												"evidence": "runtime-screens-desktop",
+												"kind": "screenshot",
+												"state": "current",
+												"viewport": "desktop",
+												"mediaType": "image/png",
+												"provenance": "actual-capture",
+												"status": "passed",
+												"path": "evidence/4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20/runtime-evidence-ui/screens/current-desktop.png",
+												"sha256": "7d4b0e9a2c61f38d5e07b4a1c9f26d3e8b5a0c74f1d92e6b3a8c50d7f4e19a2c",
+												"bytes": 186402,
+												"capturedAt": "2026-11-15T09:42:07.318Z",
+												"server": {
+													"buildId": "c3e18a7f2d905b64e1a0c9f3d7b28e54a6f10c2d8b97e3a5f04d61c8b29e7a03",
+													"revision": "4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20"
+												}
+											}
+										]
+									}
+								],
+								"failures": []
+							},
+							{
+								"states": [
+									{
+										"id": "current",
+										"coverage": "required",
+										"captures": [
+											{
+												"evidence": "runtime-screens-desktop",
+												"kind": "screenshot",
+												"state": "current",
+												"viewport": "desktop",
+												"mediaType": "image/png",
+												"provenance": "actual-capture",
+												"status": "failed",
+												"path": "evidence/4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20/runtime-evidence-ui/screens/current-desktop.png",
+												"sha256": "7d4b0e9a2c61f38d5e07b4a1c9f26d3e8b5a0c74f1d92e6b3a8c50d7f4e19a2c",
+												"bytes": 186402,
+												"capturedAt": "2026-11-15T09:42:07.318Z",
+												"server": {
+													"buildId": "c3e18a7f2d905b64e1a0c9f3d7b28e54a6f10c2d8b97e3a5f04d61c8b29e7a03",
+													"revision": "9a0d6e3c5b72f18e4d0a9c6b3e7f25d1a8c4e0f7"
+												}
+											}
+										]
+									}
+								],
+								"failures": [
+									"runtime-evidence-ui: capture current-desktop.png was produced by revision 9a0d6e3c5b72f18e4d0a9c6b3e7f25d1a8c4e0f7, not 4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20"
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
