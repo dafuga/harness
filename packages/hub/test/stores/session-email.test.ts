@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { createSessionStore } from '../../src/lib/stores/session.svelte';
+import { createSessionStore } from '../../src/lib/stores/projects-sessions/session.svelte';
 import type { BrowserAuth } from '../../src/utils/browserAuth';
 
 const ada = {
