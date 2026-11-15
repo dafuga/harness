@@ -64,39 +64,40 @@
 				"name": "ExplorerPlatformDetails.host",
 				"type": "ExplorerScreenProps",
 				"required": true,
-				"description": "Explorer context whose selected revision and route identify the platform; other revisions never supply missing settings."
+				"description": "The Explorer screen props this component reads: route.entity names the platform (web, ios, android or desktop; any other value shows Platform not found), route.branch and route.commit address the Platforms breadcrumb, head.platforms is the platform catalog of the revision the page is bound to (absent when none is indexed there), and scope.commit and index.sourceRepository are read only when an entry is shown. Only that revision's own catalog entry supplies settings, so no other revision fills a platform that is missing here."
 			},
 			{
 				"name": "ExplorerPlatformDetails.nav",
 				"type": "EntityNav",
 				"required": true,
-				"description": "Revision-preserving link generation and client navigation callbacks supplied by the shared frame."
+				"description": "The navigation object this component passes unchanged to EntityLink, which renders the Platforms breadcrumb on every render, sets its href from nav.href and calls nav.go on a plain click, and to EntityMissing, which renders only when no platform view matches route.entity. This component never calls nav.href or nav.go itself and does not catch errors from them."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerPlatformDetails",
 				"type": "markup",
-				"description": "Deployment settings, commands, release requirements and GitHub source links for the selected platform, or an explicit configuration gap."
+				"description": "The platform page for route.entity: a Platforms breadcrumb, then either a Platform not found panel or the platform header with its name, status and summary line (which names a missing catalog or entry instead) and, when this revision declares an entry, its Runtime and Declared at details. An entry adds deployment configuration (with a none-declared message when it is empty) and the commands, release requirements and configuration sources that have items, with source paths linked to GitHub at the shown commit only for a GitHub repository and a full commit hash; without an entry, a catalog gap other than the plain unrecorded message appears as a notice."
 			}
 		],
 		"errors": [
 			{
 				"name": "nav.href callback error",
 				"type": "thrown",
-				"description": "An error supplied by the navigation URL callback propagates while rendering links."
+				"description": "Thrown by nav.href while EntityLink sets the Platforms breadcrumb's href during render, which happens on every render. This component has no try/catch or svelte:boundary, so the error propagates out of its render."
 			},
 			{
 				"name": "nav.go callback error",
 				"type": "thrown",
-				"description": "An error supplied by the navigation callback propagates when a link is activated."
+				"description": "Thrown by nav.go when EntityLink's click handler calls it on a plain click of the Platforms breadcrumb; the error is raised in that event handler, not during render. This component never calls nav.go itself and does not catch the error."
 			},
 			{
 				"name": "URIError",
 				"type": "thrown",
-				"description": "A recorded source path with an unpaired UTF-16 surrogate cannot be encoded as a GitHub URL."
+				"description": "Thrown by sourceLink when the repository and commit pass its checks and a recorded source path contains an unpaired UTF-16 surrogate, because encodeURIComponent throws on it; a path containing a backslash or an empty, '.' or '..' segment returns before encoding and never throws. The error surfaces while the Configuration sources card renders."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
