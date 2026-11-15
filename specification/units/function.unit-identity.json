@@ -34,24 +34,54 @@
 				"name": "unitIdentity.path",
 				"type": "string",
 				"required": true,
-				"description": "Forward-slash path relative to its workspace, using supported src, scripts, db or crates conventions."
+				"description": "Forward-slash path relative to its workspace, split on '/' only; its first segment selects the convention: src, scripts, db or crates. Paths whose last segment ends in .md, .json, .lock or .toml yield undefined, except crate files such as crates/<crate>/Cargo.toml.",
+				"examples": [
+					"src/components/evidence-grid.svelte",
+					"src/utils/development-tooling/classify-path/unitIdentity.ts",
+					"crates/harness-kernel/Cargo.toml"
+				]
 			},
 			{
 				"name": "unitIdentity.workspace",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional workspace prefix, default empty."
+				"description": "Optional prefix for the returned id: a non-empty workspace gives <workspace>.<kind>.<name>, while an empty or omitted one gives <kind>.<name>. It never changes kind or name.",
+				"examples": ["reports", ""]
 			}
 		],
 		"outputs": [
 			{
 				"name": "unitIdentity",
 				"type": "UnitIdentity | undefined",
-				"description": "Kind, kebab-case name and dotted id, or undefined for unrecognized/empty identities. Rust crate files share one kernel id; route files and conventional folder suffixes follow their specific naming rules."
+				"description": "The unit identity with kind, kebab-case name and dotted id (prefixed by the workspace when one is given), or undefined when the path matches no convention, when a .md, .json, .lock or .toml file lies outside crates/, or when the name is empty. Every file under crates/<crate>/ gets kind kernel and its crate's kebab-case name, and inherited Object.prototype names such as constructor are matched by the table lookups, giving a non-string kind instead of undefined.",
+				"examples": [
+					{
+						"id": "reports.component.evidence-grid",
+						"kind": "component",
+						"name": "evidence-grid"
+					},
+					{
+						"id": "function.development-tooling-classify-path-unit-identity",
+						"kind": "function",
+						"name": "development-tooling-classify-path-unit-identity"
+					},
+					{
+						"id": "kernel.harness-kernel",
+						"kind": "kernel",
+						"name": "harness-kernel"
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when the whole path is a single segment that the rootFolders lookup finds, such as scripts. The missing folder segment reaches stem as undefined, so its .replace call fails."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "unitIdentity",
@@ -60,25 +90,54 @@
 						"name": "unitIdentity.path",
 						"type": "string",
 						"required": true,
-						"description": "Forward-slash path relative to its workspace, using supported src, scripts, db or crates conventions."
+						"description": "Forward-slash path relative to its workspace, split on '/' only; its first segment selects the convention: src, scripts, db or crates. Paths whose last segment ends in .md, .json, .lock or .toml yield undefined, except crate files such as crates/<crate>/Cargo.toml.",
+						"examples": [
+							"src/components/evidence-grid.svelte",
+							"src/utils/development-tooling/classify-path/unitIdentity.ts",
+							"crates/harness-kernel/Cargo.toml"
+						]
 					},
 					{
 						"name": "unitIdentity.workspace",
 						"type": "string",
 						"required": false,
 						"default": "",
-						"description": "Optional workspace prefix, default empty."
+						"description": "Optional prefix for the returned id: a non-empty workspace gives <workspace>.<kind>.<name>, while an empty or omitted one gives <kind>.<name>. It never changes kind or name.",
+						"examples": ["reports", ""]
 					}
 				],
 				"outputs": [
 					{
 						"name": "unitIdentity",
 						"type": "UnitIdentity | undefined",
-						"description": "Kind, kebab-case name and dotted id, or undefined for unrecognized/empty identities. Rust crate files share one kernel id; route files and conventional folder suffixes follow their specific naming rules."
+						"description": "The unit identity with kind, kebab-case name and dotted id (prefixed by the workspace when one is given), or undefined when the path matches no convention, when a .md, .json, .lock or .toml file lies outside crates/, or when the name is empty. Every file under crates/<crate>/ gets kind kernel and its crate's kebab-case name, and inherited Object.prototype names such as constructor are matched by the table lookups, giving a non-string kind instead of undefined.",
+						"examples": [
+							{
+								"id": "reports.component.evidence-grid",
+								"kind": "component",
+								"name": "evidence-grid"
+							},
+							{
+								"id": "function.development-tooling-classify-path-unit-identity",
+								"kind": "function",
+								"name": "development-tooling-classify-path-unit-identity"
+							},
+							{
+								"id": "kernel.harness-kernel",
+								"kind": "kernel",
+								"name": "harness-kernel"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when the whole path is a single segment that the rootFolders lookup finds, such as scripts. The missing folder segment reaches stem as undefined, so its .replace call fails."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
