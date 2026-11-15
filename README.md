@@ -124,9 +124,9 @@ the exact capture; the result retains its revision, timestamp and focused or
 inherited provenance. Missing captures require the page's standard capture
 scenario. This command does not start a new browser capture or agent run.
 
-`request METHOD /api/path` and `get /api/path` cover every endpoint the server
+`harness api request METHOD /api/path` and `harness api get /api/path` cover every endpoint the server
 exposes, including future resources. Named resources are conveniences; the server
-can reject unavailable operations. Local-only `activity` and `build` expose the
+can reject unavailable operations. Local-only `harness api get activity` and `harness api get build` expose the
 console's process activity and build identity. Redirects and off-origin request
 paths are refused, and mutations are never retried automatically. Save and reuse
 the printed request id if an agent start's response is lost.
