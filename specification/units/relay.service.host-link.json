@@ -24,78 +24,138 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HostLinkService.constructor.store",
 				"type": "HostStorageAdapter",
-				"required": true
+				"required": true,
+				"description": "The host's storage adapter: the service reads device and pairing records from it and, in seen, writes a device record back through saveDevice."
 			},
 			{
 				"name": "HostLinkService.constructor.sockets",
 				"type": "HostSocketsAdapter",
-				"required": true
+				"required": true,
+				"description": "The host's sockets adapter: the service finds the host and device sockets through it, reads their attachments, sends frames to them and closes them."
 			},
 			{
 				"name": "HostLinkService.toHost.frame",
 				"type": "RelayHostFrame",
-				"required": true
+				"required": true,
+				"description": "The relay-to-host frame to send, which the sockets adapter serializes as JSON; it is not checked here. When no host socket is open the frame is dropped and is not kept for later.",
+				"examples": [
+					{
+						"type": "device-open",
+						"deviceId": "3c9f0e2b7d41a8c65e0f9b2d7a14c8e3f5b06d12",
+						"connectionId": "a4e7c1d9f03b28e6b5d0c7f1a92e4b38"
+					},
+					{
+						"type": "device-close",
+						"deviceId": "b07e4d19a3c6f2855d0e91b7c4a36f0e8d2b1c7a",
+						"connectionId": "6f1d0b8e3a52c94d7e1b06a8f2c3d590"
+					},
+					{
+						"type": "pairing-request",
+						"pairingId": "9d4b1e7a0c3f58e2b6a1d94c7f0e3b25",
+						"ephemeralKey": "BPm4Tz0cReWv8Hk2qLyXa5N_bJ7sDogU3tKiF9Ch1Vx6YqRmEwPz0-s4GjNu2AoBfQe8LdMh5rTwXc3kYa9vEnI",
+						"sealed": "x9Qe2LpV7mT0hKz4RbN8sYdWf3GaJ1uC6oEi5lPkMtBvZ7yH0nSqDr2XcA9wUjFg",
+						"challenge": "uQ3vHk9x1Lz7pRt2cWbYe8NmAaFjKo4sDgI6hVnXlUE"
+					}
+				]
 			},
 			{
 				"name": "HostLinkService.notify.event",
 				"type": "RelayNotice['event']",
-				"required": true
+				"required": true,
+				"description": "The event announced to every device, either 'host-online' or 'host-offline'. It is sent to each open device socket as { type: 'relay', event }, and a failed send is neither retried nor kept.",
+				"examples": ["host-online", "host-offline"]
 			},
 			{
 				"name": "HostLinkService.drop.socket",
 				"type": "WebSocket",
-				"required": true
+				"required": true,
+				"description": "The socket to end, whoever started the close. It is closed in every case, and the other side is notified only when the socket had an attachment that was not already closed."
 			},
 			{
 				"name": "HostLinkService.drop.code",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The close code the socket is ended with, passed unchanged to the sockets adapter, which does not check it. The relay's callers pass relayCloseCodes values such as 4401 (unauthorized) and 4409 (replaced).",
+				"examples": [4401, 4409]
 			},
 			{
 				"name": "HostLinkService.welcome.socket",
 				"type": "WebSocket",
-				"required": true
+				"required": true,
+				"description": "The host socket that just opened. It is sent the ready frame, then one device-open frame per open device connection and one pairing-request frame per waiting request, and only then are the devices told host-online."
 			},
 			{
 				"name": "HostLinkService.welcome.host",
 				"type": "HostRecord",
-				"required": true
+				"required": true,
+				"description": "The record of the host whose socket just opened. Only its hostId is read, for the ready frame, and the record is neither stored nor changed here.",
+				"examples": [
+					{
+						"hostId": "5e1a8c03d7f2b94e6a0c1d8f3b7e2a95c4d06f1b",
+						"ownerId": "google-108234567890123456789",
+						"hostKey": "BKx7Hq3kZ9mWn2LpT8vR4cYdAa6sJg0uE1oIwK5bN_QyPzX-tD3hVlMrSi7GfCjU8eO2aBdq0WkZ4nYpcA1rE8b",
+						"credentialHash": "9f2c4b7a1e8d03c65b2f9a7e4d1c8b03f6a5e2d9c7b1a04e3f8d6c2b9a7e5f10",
+						"name": "Studio Mac mini",
+						"generation": 2,
+						"registeredAt": "2026-11-14T18:32:07.481Z"
+					},
+					{
+						"hostId": "c2f8a61d0b9e34571fa6d2c8e0b95a7d3e41c6f0",
+						"ownerId": "google-104857263910284756193",
+						"hostKey": "BPm4Tz0cReWv8Hk2qLyXa5N_bJ7sDogU3tKiF9Ch1Vx6YqRmEwPz0-s4GjNu2AoBfQe8LdMh5rTwXc3kYa9vEnI",
+						"credentialHash": "4a0d7e2c9b15f3e8a6c0d4b7e1f29c3a5d8e0b6f1c4a7e9d2b5c8f0a3e6d1b74",
+						"name": "Lab workstation",
+						"generation": 1,
+						"registeredAt": "2026-11-10T09:05:44.120Z"
+					}
+				]
 			},
 			{
 				"name": "HostLinkService.seen.deviceId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The id of the device that just connected. A record is written only when a device record with this id already exists, so an unknown id creates nothing.",
+				"examples": [
+					"3c9f0e2b7d41a8c65e0f9b2d7a14c8e3f5b06d12",
+					"b07e4d19a3c6f2855d0e91b7c4a36f0e8d2b1c7a"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HostLinkService.toHost",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when the frame was handed to the open host socket. False when no host socket is open or the send failed, and nothing is kept for later.",
+				"examples": [true, false]
 			},
 			{
 				"name": "HostLinkService.notify",
-				"type": "void"
+				"type": "void",
+				"description": "Nothing is returned: the notice is sent to each device socket, and the result of each send is ignored."
 			},
 			{
 				"name": "HostLinkService.drop",
-				"type": "void"
+				"type": "void",
+				"description": "Nothing is returned: the socket is closed, and the other side is notified only when the socket had an attachment that was not already closed."
 			},
 			{
 				"name": "HostLinkService.welcome",
-				"type": "void"
+				"type": "void",
+				"description": "Nothing is returned: the host receives its ready frame, then its open device connections and waiting pairing requests, and the devices are then told host-online."
 			},
 			{
 				"name": "HostLinkService.seen",
-				"type": "void"
+				"type": "void",
+				"description": "Nothing is returned: the device's lastSeenAt is set to the current time when the device record exists, and nothing is written otherwise."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "HostLinkService.toHost",
@@ -103,17 +163,39 @@
 					{
 						"name": "HostLinkService.toHost.frame",
 						"type": "RelayHostFrame",
-						"required": true
+						"required": true,
+						"description": "The relay-to-host frame to send, which the sockets adapter serializes as JSON; it is not checked here. When no host socket is open the frame is dropped and is not kept for later.",
+						"examples": [
+							{
+								"type": "device-open",
+								"deviceId": "3c9f0e2b7d41a8c65e0f9b2d7a14c8e3f5b06d12",
+								"connectionId": "a4e7c1d9f03b28e6b5d0c7f1a92e4b38"
+							},
+							{
+								"type": "device-close",
+								"deviceId": "b07e4d19a3c6f2855d0e91b7c4a36f0e8d2b1c7a",
+								"connectionId": "6f1d0b8e3a52c94d7e1b06a8f2c3d590"
+							},
+							{
+								"type": "pairing-request",
+								"pairingId": "9d4b1e7a0c3f58e2b6a1d94c7f0e3b25",
+								"ephemeralKey": "BPm4Tz0cReWv8Hk2qLyXa5N_bJ7sDogU3tKiF9Ch1Vx6YqRmEwPz0-s4GjNu2AoBfQe8LdMh5rTwXc3kYa9vEnI",
+								"sealed": "x9Qe2LpV7mT0hKz4RbN8sYdWf3GaJ1uC6oEi5lPkMtBvZ7yH0nSqDr2XcA9wUjFg",
+								"challenge": "uQ3vHk9x1Lz7pRt2cWbYe8NmAaFjKo4sDgI6hVnXlUE"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostLinkService.toHost",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when the frame was handed to the open host socket. False when no host socket is open or the send failed, and nothing is kept for later.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostLinkService.notify",
@@ -121,17 +203,20 @@
 					{
 						"name": "HostLinkService.notify.event",
 						"type": "RelayNotice['event']",
-						"required": true
+						"required": true,
+						"description": "The event announced to every device, either 'host-online' or 'host-offline'. It is sent to each open device socket as { type: 'relay', event }, and a failed send is neither retried nor kept.",
+						"examples": ["host-online", "host-offline"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostLinkService.notify",
-						"type": "void"
+						"type": "void",
+						"description": "Nothing is returned: the notice is sent to each device socket, and the result of each send is ignored."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostLinkService.drop",
@@ -139,22 +224,26 @@
 					{
 						"name": "HostLinkService.drop.socket",
 						"type": "WebSocket",
-						"required": true
+						"required": true,
+						"description": "The socket to end, whoever started the close. It is closed in every case, and the other side is notified only when the socket had an attachment that was not already closed."
 					},
 					{
 						"name": "HostLinkService.drop.code",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "The close code the socket is ended with, passed unchanged to the sockets adapter, which does not check it. The relay's callers pass relayCloseCodes values such as 4401 (unauthorized) and 4409 (replaced).",
+						"examples": [4401, 4409]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostLinkService.drop",
-						"type": "void"
+						"type": "void",
+						"description": "Nothing is returned: the socket is closed, and the other side is notified only when the socket had an attachment that was not already closed."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostLinkService.welcome",
@@ -162,22 +251,45 @@
 					{
 						"name": "HostLinkService.welcome.socket",
 						"type": "WebSocket",
-						"required": true
+						"required": true,
+						"description": "The host socket that just opened. It is sent the ready frame, then one device-open frame per open device connection and one pairing-request frame per waiting request, and only then are the devices told host-online."
 					},
 					{
 						"name": "HostLinkService.welcome.host",
 						"type": "HostRecord",
-						"required": true
+						"required": true,
+						"description": "The record of the host whose socket just opened. Only its hostId is read, for the ready frame, and the record is neither stored nor changed here.",
+						"examples": [
+							{
+								"hostId": "5e1a8c03d7f2b94e6a0c1d8f3b7e2a95c4d06f1b",
+								"ownerId": "google-108234567890123456789",
+								"hostKey": "BKx7Hq3kZ9mWn2LpT8vR4cYdAa6sJg0uE1oIwK5bN_QyPzX-tD3hVlMrSi7GfCjU8eO2aBdq0WkZ4nYpcA1rE8b",
+								"credentialHash": "9f2c4b7a1e8d03c65b2f9a7e4d1c8b03f6a5e2d9c7b1a04e3f8d6c2b9a7e5f10",
+								"name": "Studio Mac mini",
+								"generation": 2,
+								"registeredAt": "2026-11-14T18:32:07.481Z"
+							},
+							{
+								"hostId": "c2f8a61d0b9e34571fa6d2c8e0b95a7d3e41c6f0",
+								"ownerId": "google-104857263910284756193",
+								"hostKey": "BPm4Tz0cReWv8Hk2qLyXa5N_bJ7sDogU3tKiF9Ch1Vx6YqRmEwPz0-s4GjNu2AoBfQe8LdMh5rTwXc3kYa9vEnI",
+								"credentialHash": "4a0d7e2c9b15f3e8a6c0d4b7e1f29c3a5d8e0b6f1c4a7e9d2b5c8f0a3e6d1b74",
+								"name": "Lab workstation",
+								"generation": 1,
+								"registeredAt": "2026-11-10T09:05:44.120Z"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostLinkService.welcome",
-						"type": "void"
+						"type": "void",
+						"description": "Nothing is returned: the host receives its ready frame, then its open device connections and waiting pairing requests, and the devices are then told host-online."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostLinkService.seen",
@@ -185,17 +297,23 @@
 					{
 						"name": "HostLinkService.seen.deviceId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The id of the device that just connected. A record is written only when a device record with this id already exists, so an unknown id creates nothing.",
+						"examples": [
+							"3c9f0e2b7d41a8c65e0f9b2d7a14c8e3f5b06d12",
+							"b07e4d19a3c6f2855d0e91b7c4a36f0e8d2b1c7a"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostLinkService.seen",
-						"type": "void"
+						"type": "void",
+						"description": "Nothing is returned: the device's lastSeenAt is set to the current time when the device record exists, and nothing is written otherwise."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -205,22 +323,25 @@
 					{
 						"name": "HostLinkService.constructor.store",
 						"type": "HostStorageAdapter",
-						"required": true
+						"required": true,
+						"description": "The host's storage adapter: the service reads device and pairing records from it and, in seen, writes a device record back through saveDevice."
 					},
 					{
 						"name": "HostLinkService.constructor.sockets",
 						"type": "HostSocketsAdapter",
-						"required": true
+						"required": true,
+						"description": "The host's sockets adapter: the service finds the host and device sockets through it, reads their attachments, sends frames to them and closes them."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostLinkService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new HostLinkService instance, which keeps only the store and sockets adapters it was given."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
