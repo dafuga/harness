@@ -1,5 +1,5 @@
 import type { HubEnv } from '../../src/configs/hubEnvConfig';
-import type { HubApiRuntime } from '../../src/utils/hubRuntime';
+import type { HubApiRuntime } from '../../src/utils/networking-security/hubRuntime';
 import type { remoteFixture } from './remoteFixture';
 
 export interface HostIdentity {

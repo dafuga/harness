@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/routes/api/[...path]/hubRemote.ts",
-			"packages/hub/src/utils/hubRemote.ts",
 			"packages/hub/src/utils/networking-security/hubRemote.ts"
 		],
-		"symbols": ["hubRemote", "hubRemote", "HubRemoteRuntime", "hubRemote"]
+		"symbols": ["hubRemote", "HubRemoteRuntime", "hubRemote"]
 	},
 	"contract": {
 		"origin": "declared",

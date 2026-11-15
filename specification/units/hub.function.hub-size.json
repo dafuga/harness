@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/routes/api/[...path]/hub-projection-service/hubSize.ts",
-			"packages/hub/src/services/hub-projection-service/hubSize.ts",
-			"packages/hub/src/utils/hubSize.ts"
+			"packages/hub/src/services/hub-projection-service/hubSize.ts"
 		],
-		"symbols": ["hubSize", "hubSize", "hubSize"]
+		"symbols": ["hubSize", "hubSize"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -78,11 +77,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubSize.ts",
+		"entry": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubSize.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/hubSize.ts"
+				"entry": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubSize.ts"
 			}
 		]
 	},

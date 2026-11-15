@@ -1,7 +1,8 @@
+import { existsSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import { hubMetadata } from '../../src/utils/hub-metadata/hubMetadata';
 import { hubSource } from '../../src/utils/hubSource';
-import { hubRecords } from '../../src/utils/hubRecords';
+import { hubRecords } from '../../src/utils/development-tooling/hubRecords';
 import {
 	actor,
 	project,
@@ -41,4 +42,7 @@ test('cached metadata bytes remain bound to the selected Git tree', async () => 
 		ref: commit
 	});
 	await expect(hubRecords(context)).rejects.toThrow();
+});
+test('hubRecords is read from its owning module, with no stub left at the old path', () => {
+	expect(existsSync(new URL('../../src/utils/hubRecords.ts', import.meta.url))).toBe(false);
 });
