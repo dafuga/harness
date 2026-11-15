@@ -28,54 +28,194 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "explainReport.range",
 				"type": "RevisionRange",
-				"required": true
+				"required": true,
+				"description": "Identifies the repository and source revisions for a reason comparison. The root defaults to the current working directory, base defaults to HEAD (none means an empty base), and an omitted head uses the working tree; evidence revisions are rejected.",
+				"examples": [
+					{
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+						"base": "HEAD~1",
+						"head": "HEAD"
+					}
+				]
 			},
 			{
 				"name": "explainedRange.range",
 				"type": "RevisionRange",
-				"required": true
+				"required": true,
+				"description": "Identifies the repository and source revisions for a reason comparison. The root defaults to the current working directory, base defaults to HEAD (none means an empty base), and an omitted head uses the working tree; evidence revisions are rejected.",
+				"examples": [
+					{
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+						"base": "HEAD~1",
+						"head": "HEAD"
+					}
+				]
 			},
 			{
 				"name": "listed.report",
 				"type": "ReasonReport",
-				"required": true
+				"required": true,
+				"description": "Contains required reason statuses, satisfying explanations, overlong requirements, and failure messages from a range report. listed projects its required statuses without their fingerprints.",
+				"examples": [
+					{
+						"required": [
+							{
+								"unit": "workflow.run-explain",
+								"symbol": "explainAdd",
+								"file": "src/workflows/development-tooling/runExplain.ts",
+								"change": "modified",
+								"from": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"to": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"state": "missing"
+							}
+						],
+						"entries": [],
+						"overlong": [],
+						"failures": [
+							"workflow.run-explain: explainAdd in src/workflows/development-tooling/runExplain.ts was modified without a reason"
+						]
+					}
+				]
 			},
 			{
 				"name": "explainAdd.input",
 				"type": "ExplainInput",
-				"required": true
+				"required": true,
+				"description": "Specifies the revision range, selection, and reason text consumed by explainAdd; a reason requires nonblank behavior and simplification and performance attempts with outcomes improved, not-improved, or not-applicable. New reason text is checked against the target writing limits (version 1 if undeclared): behavior allows 30 words/200 characters, and each attempt allows 20 words/140 characters in v1 or 15 words/140 characters in v2; omitted now uses the current ISO timestamp and replace also selects overlong stored reasons.",
+				"examples": [
+					{
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+						"base": "HEAD~1",
+						"head": "HEAD",
+						"all": false,
+						"unit": "workflow.run-explain",
+						"symbol": ["explainAdd"],
+						"behavior": "Records reasons for selected changes.",
+						"simplification": "Kept the selection path direct.",
+						"simplificationOutcome": "improved",
+						"performance": "Measured the invocation boundary.",
+						"performanceOutcome": "not-improved",
+						"replace": false
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "explainReport",
-				"type": "Promise<ReasonReport & { root: string; writing: WritingVersion | null }>"
+				"type": "Promise<ReasonReport & { root: string; writing: WritingVersion | null }>",
+				"description": "Resolves to the range's reason report plus the repository root and the writing-limit version resolved from the head's verification config. Writing is null when no supported version is available.",
+				"examples": [
+					{
+						"required": [
+							{
+								"unit": "workflow.run-explain",
+								"symbol": "explainAdd",
+								"file": "src/workflows/development-tooling/runExplain.ts",
+								"change": "modified",
+								"from": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"to": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"state": "explained"
+							}
+						],
+						"entries": [
+							{
+								"unit": "workflow.run-explain",
+								"symbol": "explainAdd",
+								"file": "src/workflows/development-tooling/runExplain.ts",
+								"change": "modified",
+								"from": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"to": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"behavior": "Records reasons for selected changes.",
+								"simplification": {
+									"attempt": "Kept the selection path direct.",
+									"outcome": "improved"
+								},
+								"performance": {
+									"attempt": "Measured the invocation boundary.",
+									"outcome": "not-improved"
+								},
+								"recordedAt": "2026-11-15T10:00:00.000Z"
+							}
+						],
+						"overlong": [],
+						"failures": [],
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+						"writing": 2
+					}
+				]
 			},
 			{
 				"name": "explainedRange",
-				"type": "Promise<ReasonReport & { root: string }>"
+				"type": "Promise<ReasonReport & { root: string }>",
+				"description": "Resolves to reason statuses for the range, checking reasons along its commit history, plus the repository root. An omitted head uses the working tree, and base none means there is no starting commit.",
+				"examples": [
+					{
+						"required": [],
+						"entries": [],
+						"overlong": [],
+						"failures": [],
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
+					}
+				]
 			},
 			{
 				"name": "listed",
-				"type": "Listed[]"
+				"type": "Listed[]",
+				"description": "Returns required status rows without their from and to fingerprints, preserving the remaining status fields and order.",
+				"examples": [
+					[
+						{
+							"unit": "workflow.run-explain",
+							"symbol": "explainAdd",
+							"file": "src/workflows/development-tooling/runExplain.ts",
+							"change": "modified",
+							"state": "missing"
+						}
+					]
+				]
 			},
 			{
 				"name": "explainAdd",
-				"type": "Promise<Explanation[]>"
+				"type": "Promise<Explanation[]>",
+				"description": "Resolves to the reason records written for selected unexplained changes, plus overlong stored reasons selected when replace is true. It returns only after chosen reasons pass writing-limit checks and are appended.",
+				"examples": [
+					[
+						{
+							"unit": "workflow.run-explain",
+							"symbol": "explainAdd",
+							"file": "src/workflows/development-tooling/runExplain.ts",
+							"change": "modified",
+							"from": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"to": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"behavior": "Records reasons for selected changes.",
+							"simplification": {
+								"attempt": "Kept the selection path direct.",
+								"outcome": "improved"
+							},
+							"performance": {
+								"attempt": "Measured the invocation boundary.",
+								"outcome": "not-improved"
+							},
+							"recordedAt": "2026-11-15T10:00:00.000Z"
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The workflow raises this CLI error for a range outside a Git repository or an evidence revision, and explainAdd raises it for missing reason text, invalid outcomes, no matching open changes, or text that exceeds the applicable writing limits."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "explainReport",
@@ -83,17 +223,71 @@
 					{
 						"name": "explainReport.range",
 						"type": "RevisionRange",
-						"required": true
+						"required": true,
+						"description": "Identifies the repository and source revisions for a reason comparison. The root defaults to the current working directory, base defaults to HEAD (none means an empty base), and an omitted head uses the working tree; evidence revisions are rejected.",
+						"examples": [
+							{
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+								"base": "HEAD~1",
+								"head": "HEAD"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explainReport",
-						"type": "Promise<ReasonReport & { root: string; writing: WritingVersion | null }>"
+						"type": "Promise<ReasonReport & { root: string; writing: WritingVersion | null }>",
+						"description": "Resolves to the range's reason report plus the repository root and the writing-limit version resolved from the head's verification config. Writing is null when no supported version is available.",
+						"examples": [
+							{
+								"required": [
+									{
+										"unit": "workflow.run-explain",
+										"symbol": "explainAdd",
+										"file": "src/workflows/development-tooling/runExplain.ts",
+										"change": "modified",
+										"from": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+										"to": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+										"state": "explained"
+									}
+								],
+								"entries": [
+									{
+										"unit": "workflow.run-explain",
+										"symbol": "explainAdd",
+										"file": "src/workflows/development-tooling/runExplain.ts",
+										"change": "modified",
+										"from": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+										"to": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+										"behavior": "Records reasons for selected changes.",
+										"simplification": {
+											"attempt": "Kept the selection path direct.",
+											"outcome": "improved"
+										},
+										"performance": {
+											"attempt": "Measured the invocation boundary.",
+											"outcome": "not-improved"
+										},
+										"recordedAt": "2026-11-15T10:00:00.000Z"
+									}
+								],
+								"overlong": [],
+								"failures": [],
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+								"writing": 2
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised when the requested range is outside a Git repository or names an evidence revision."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "explainedRange",
@@ -101,17 +295,41 @@
 					{
 						"name": "explainedRange.range",
 						"type": "RevisionRange",
-						"required": true
+						"required": true,
+						"description": "Identifies the repository and source revisions for a reason comparison. The root defaults to the current working directory, base defaults to HEAD (none means an empty base), and an omitted head uses the working tree; evidence revisions are rejected.",
+						"examples": [
+							{
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+								"base": "HEAD~1",
+								"head": "HEAD"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explainedRange",
-						"type": "Promise<ReasonReport & { root: string }>"
+						"type": "Promise<ReasonReport & { root: string }>",
+						"description": "Resolves to reason statuses for the range, checking reasons along its commit history, plus the repository root. An omitted head uses the working tree, and base none means there is no starting commit.",
+						"examples": [
+							{
+								"required": [],
+								"entries": [],
+								"overlong": [],
+								"failures": [],
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised when the requested range is outside a Git repository or names an evidence revision."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "listed",
@@ -119,17 +337,50 @@
 					{
 						"name": "listed.report",
 						"type": "ReasonReport",
-						"required": true
+						"required": true,
+						"description": "Contains required reason statuses, satisfying explanations, overlong requirements, and failure messages from a range report. listed projects its required statuses without their fingerprints.",
+						"examples": [
+							{
+								"required": [
+									{
+										"unit": "workflow.run-explain",
+										"symbol": "explainAdd",
+										"file": "src/workflows/development-tooling/runExplain.ts",
+										"change": "modified",
+										"from": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+										"to": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+										"state": "missing"
+									}
+								],
+								"entries": [],
+								"overlong": [],
+								"failures": [
+									"workflow.run-explain: explainAdd in src/workflows/development-tooling/runExplain.ts was modified without a reason"
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "listed",
-						"type": "Listed[]"
+						"type": "Listed[]",
+						"description": "Returns required status rows without their from and to fingerprints, preserving the remaining status fields and order.",
+						"examples": [
+							[
+								{
+									"unit": "workflow.run-explain",
+									"symbol": "explainAdd",
+									"file": "src/workflows/development-tooling/runExplain.ts",
+									"change": "modified",
+									"state": "missing"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "explainAdd",
@@ -137,22 +388,63 @@
 					{
 						"name": "explainAdd.input",
 						"type": "ExplainInput",
-						"required": true
+						"required": true,
+						"description": "Specifies the revision range, selection, and reason text consumed by explainAdd; a reason requires nonblank behavior and simplification and performance attempts with outcomes improved, not-improved, or not-applicable. New reason text is checked against the target writing limits (version 1 if undeclared): behavior allows 30 words/200 characters, and each attempt allows 20 words/140 characters in v1 or 15 words/140 characters in v2; omitted now uses the current ISO timestamp and replace also selects overlong stored reasons.",
+						"examples": [
+							{
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+								"base": "HEAD~1",
+								"head": "HEAD",
+								"all": false,
+								"unit": "workflow.run-explain",
+								"symbol": ["explainAdd"],
+								"behavior": "Records reasons for selected changes.",
+								"simplification": "Kept the selection path direct.",
+								"simplificationOutcome": "improved",
+								"performance": "Measured the invocation boundary.",
+								"performanceOutcome": "not-improved",
+								"replace": false
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explainAdd",
-						"type": "Promise<Explanation[]>"
+						"type": "Promise<Explanation[]>",
+						"description": "Resolves to the reason records written for selected unexplained changes, plus overlong stored reasons selected when replace is true. It returns only after chosen reasons pass writing-limit checks and are appended.",
+						"examples": [
+							[
+								{
+									"unit": "workflow.run-explain",
+									"symbol": "explainAdd",
+									"file": "src/workflows/development-tooling/runExplain.ts",
+									"change": "modified",
+									"from": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"to": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+									"behavior": "Records reasons for selected changes.",
+									"simplification": {
+										"attempt": "Kept the selection path direct.",
+										"outcome": "improved"
+									},
+									"performance": {
+										"attempt": "Measured the invocation boundary.",
+										"outcome": "not-improved"
+									},
+									"recordedAt": "2026-11-15T10:00:00.000Z"
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised when required reason text is missing, an outcome is invalid, no open change matches the selection, or selected reason text exceeds the applicable writing limits."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
