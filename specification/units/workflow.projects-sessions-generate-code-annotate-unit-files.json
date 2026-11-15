@@ -18,24 +18,39 @@
 				"name": "annotateUnitFiles.files",
 				"type": "PlannedFile[]",
 				"required": true,
-				"description": "The planned files of one scaffold."
+				"description": "The planned files to process in one scaffold. Paths under tests/, test/, or db/, paths containing .test. or .spec., paths ending in .types.ts, and paths beginning src/models/adapters/ are returned unchanged; other paths are annotated with a unit uid.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "annotateUnitFiles.root",
 				"type": "string",
 				"required": true,
-				"description": "The project root, where files that already exist are looked up to keep their uid."
+				"description": "The project root is joined with each eligible file path to check for an existing file. If a target exists on disk, its uid is reused; otherwise a new uid is minted.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "annotateUnitFiles",
 				"type": "PlannedFile[]",
-				"description": "The same files, each unit source file with its uid line; tests and type companions unchanged."
+				"description": "Returns one planned entry for each input file in the original order. Excluded paths are returned unchanged; other paths have contents annotated with the existing on-disk uid when present, or a minted uid otherwise.",
+				"examples": [
+					[]
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A filesystem error from readFileSync propagates if an existing target cannot be read."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "annotateUnitFiles",
@@ -44,23 +59,38 @@
 						"name": "annotateUnitFiles.files",
 						"type": "PlannedFile[]",
 						"required": true,
-						"description": "The planned files of one scaffold."
+						"description": "The planned files to process in one scaffold. Paths under tests/, test/, or db/, paths containing .test. or .spec., paths ending in .types.ts, and paths beginning src/models/adapters/ are returned unchanged; other paths are annotated with a unit uid.",
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "annotateUnitFiles.root",
 						"type": "string",
 						"required": true,
-						"description": "The project root, where files that already exist are looked up to keep their uid."
+						"description": "The project root is joined with each eligible file path to check for an existing file. If a target exists on disk, its uid is reused; otherwise a new uid is minted.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "annotateUnitFiles",
 						"type": "PlannedFile[]",
-						"description": "The same files, each unit source file with its uid line; tests and type companions unchanged."
+						"description": "Returns one planned entry for each input file in the original order. Excluded paths are returned unchanged; other paths have contents annotated with the existing on-disk uid when present, or a minted uid otherwise.",
+						"examples": [
+							[]
+						]
 					}
 				],
-				"errors": [],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A filesystem error from readFileSync propagates if an existing target cannot be read."
+					}
+				],
 				"errorStatus": "declared"
 			}
 		],
