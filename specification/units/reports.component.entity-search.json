@@ -35,46 +35,56 @@
 				"name": "EntitySearch.entries",
 				"type": "SearchEntry[] | null",
 				"required": true,
-				"description": "Required list of entities, or null while the host loads them. Null yields no matches and loading wording; the component does not fetch entries."
+				"description": "Supplies the searchable entries; null produces no matches and the loading placeholder unless a truthy pinned value takes precedence. The component does not fetch entries and passes 12 as the entitySearch result limit.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "EntitySearch.scope",
 				"type": "{ label: string; pinned: string | null }",
 				"required": true,
-				"description": "Required label and optional pinned commit. Label names searched scope; pinned takes precedence in placeholder wording over loading."
+				"description": "Provides the label passed to the results and a nullable pinned revision string. A truthy pinned value appears in the placeholder and takes precedence over the loading placeholder.",
+				"examples": [
+					{
+						"label": "main",
+						"pinned": null
+					}
+				]
 			},
 			{
 				"name": "EntitySearch.href",
 				"type": "(entry: SearchEntry) => string",
 				"required": true,
-				"description": "Required callback providing complete result link targets."
+				"description": "Provides a link target for a SearchEntry and is forwarded to EntitySearchResults as its href callback. It must return a string; this component does not wrap the callback in a catch."
 			},
 			{
 				"name": "EntitySearch.open",
 				"type": "(entry: SearchEntry) => void",
 				"required": true,
-				"description": "Opens the chosen entity in the host after closing the search modal."
+				"description": "Receives the chosen SearchEntry after the component starts hiding the modal and resetting the query and active index. It is invoked for a selected result and is not wrapped in a catch."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntitySearch",
 				"type": "markup",
-				"description": "A labelled search control opens a modal by click or Cmd/Ctrl+K. The focused query offers ranked results with a visible scroll cue when they overflow; arrows and Enter navigate. Escape closes the modal and restores trigger focus."
+				"description": "Renders a Search entities button that opens the Search project modal by click or Meta/Ctrl+K, then focuses the query field; ArrowUp and ArrowDown wrap through available results, and Enter chooses the active result only for a nonblank query. Escape closes the modal, clears the query, resets the active index, stops propagation, and restores focus to the trigger after a tick."
 			}
 		],
 		"errors": [
 			{
 				"name": "href callback error",
 				"type": "thrown",
-				"description": "Any value thrown by the caller-supplied href callback propagates when matching links render."
+				"description": "The supplied href callback is passed to EntitySearchResults without a catch in this component; an exception raised when that child invokes it is not handled here."
 			},
 			{
 				"name": "open callback error",
 				"type": "thrown",
-				"description": "Any value thrown by the caller-supplied open callback propagates when a result is chosen."
+				"description": "An exception thrown by the supplied open callback is not caught by choose when a result is selected; hide has been started before the callback is invoked."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
