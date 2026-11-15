@@ -23,30 +23,96 @@
 				"name": "benchmarkProcess.input",
 				"type": "BenchmarkProcessInput",
 				"required": true,
-				"description": "Command vector, working directory, optional stdin text, cancellation signal and timeout."
+				"description": "The command argv (command[0] is the executable, run directly without a shell, and command.slice(1) are its arguments), the working directory cwd, optional stdin text, an optional AbortSignal whose abort kills the child, and an optional timeoutMs. timeoutMs defaults to commandDeadlines.benchmarkChildMs (24 hours) when omitted; when supplied, it must be a positive integer no greater than 2147483647.",
+				"examples": [
+					{
+						"command": ["node", "bench/trial.mjs", "--trials", "5"],
+						"cwd": "/workspace/harness",
+						"timeoutMs": 1800000
+					},
+					{
+						"command": ["./bin/bench", "--suite", "evidence-grid"],
+						"cwd": "/workspace/harness/benchmarks",
+						"input": "warm-start\n"
+					},
+					{
+						"command": ["npm", "run", "bench"],
+						"cwd": "/workspace/harness",
+						"timeoutMs": 600000
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "benchmarkEnvironment",
 				"type": "Record<string, string | undefined>",
-				"description": "Allowlisted OS environment with HARNESS_ANALYTICS_DISABLED set to 1."
+				"description": "HARNESS_ANALYTICS_DISABLED is always '1', and the object also holds each of PATH, HOME, USER, LOGNAME, SHELL, TMPDIR, TEMP, LANG, TZ and SYSTEMROOT that is non-empty in the parent process. benchmarkProcess passes this object as the adapter's env option, and the adapter merges it over its own wider allowlist, so the child also inherits the parent's values for variables such as CI, NODE_OPTIONS and the proxy settings.",
+				"examples": [
+					{
+						"HARNESS_ANALYTICS_DISABLED": "1",
+						"PATH": "/usr/local/bin:/usr/bin:/bin",
+						"HOME": "/home/ci",
+						"USER": "ci",
+						"SHELL": "/bin/bash",
+						"TMPDIR": "/tmp",
+						"LANG": "en_US.UTF-8",
+						"TZ": "UTC"
+					},
+					{
+						"HARNESS_ANALYTICS_DISABLED": "1",
+						"PATH": "/usr/bin:/bin",
+						"HOME": "/home/builder",
+						"TMPDIR": "/tmp"
+					}
+				]
 			},
 			{
 				"name": "benchmarkProcess",
 				"type": "Promise<BenchmarkProcessResult>",
-				"description": "Exit code and UTF-8 stdout/stderr after bounded execution."
+				"description": "Resolves once the child closes, with exitCode (1 when the child ends without an exit code) and stdout and stderr decoded as UTF-8; a non-zero exit code still resolves, while launch failures, timeouts, cancellations and more than 8,000,000 bytes of combined output reject instead.",
+				"examples": [
+					{
+						"exitCode": 0,
+						"stdout": "trial 5 of 5 complete\n",
+						"stderr": ""
+					},
+					{
+						"exitCode": 1,
+						"stdout": "",
+						"stderr": "fixture not found: evidence-grid\n"
+					},
+					{
+						"exitCode": 0,
+						"stdout": "ops=1280 mean_ms=12.4\n",
+						"stderr": "warning: cold cache\n"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Bounded command failure",
-				"type": "propagated",
-				"description": "the benchmark child can reject on launch failure, timeout, cancellation or output overflow",
-				"examples": ["Command timed out.", "Command output limit exceeded."]
+				"type": "thrown",
+				"description": "Rejects with a BoundedCommandFailure when the child cannot launch (for example, a missing executable), runs past its timeoutMs deadline, is aborted through input.signal after it starts, or writes more than 8,000,000 bytes of combined stdout and stderr. Its message is the cause (the spawn error's message, the timeout message, the signal reason's message or 'Command failed.' when that reason is not an Error, or 'Command output limit exceeded.'), and the captured stdout and stderr prefixes sit on its non-enumerable stdout and stderr properties.",
+				"examples": [
+					"Command timed out after 1800000 ms (30 min): node",
+					"Command output limit exceeded."
+				]
+			},
+			{
+				"name": "Invalid command bounds",
+				"type": "thrown",
+				"description": "Rejects with Error('Command bounds must be positive finite integers.') before any child starts when a supplied timeoutMs is not a positive integer no greater than 2147483647.",
+				"examples": ["Command bounds must be positive finite integers."]
+			},
+			{
+				"name": "Already-aborted signal",
+				"type": "thrown",
+				"description": "Rejects with the reason of the input.signal AbortSignal, without starting a child, when that signal is already aborted at call time."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "benchmarkEnvironment",
@@ -55,7 +121,25 @@
 					{
 						"name": "benchmarkEnvironment",
 						"type": "Record<string, string | undefined>",
-						"description": "Allowlisted OS environment with HARNESS_ANALYTICS_DISABLED set to 1."
+						"description": "HARNESS_ANALYTICS_DISABLED is always '1', and the object also holds each of PATH, HOME, USER, LOGNAME, SHELL, TMPDIR, TEMP, LANG, TZ and SYSTEMROOT that is non-empty in the parent process. benchmarkProcess passes this object as the adapter's env option, and the adapter merges it over its own wider allowlist, so the child also inherits the parent's values for variables such as CI, NODE_OPTIONS and the proxy settings.",
+						"examples": [
+							{
+								"HARNESS_ANALYTICS_DISABLED": "1",
+								"PATH": "/usr/local/bin:/usr/bin:/bin",
+								"HOME": "/home/ci",
+								"USER": "ci",
+								"SHELL": "/bin/bash",
+								"TMPDIR": "/tmp",
+								"LANG": "en_US.UTF-8",
+								"TZ": "UTC"
+							},
+							{
+								"HARNESS_ANALYTICS_DISABLED": "1",
+								"PATH": "/usr/bin:/bin",
+								"HOME": "/home/builder",
+								"TMPDIR": "/tmp"
+							}
+						]
 					}
 				],
 				"errors": [],
@@ -68,22 +152,70 @@
 						"name": "benchmarkProcess.input",
 						"type": "BenchmarkProcessInput",
 						"required": true,
-						"description": "Command vector, working directory, optional stdin text, cancellation signal and timeout."
+						"description": "The command argv (command[0] is the executable, run directly without a shell, and command.slice(1) are its arguments), the working directory cwd, optional stdin text, an optional AbortSignal whose abort kills the child, and an optional timeoutMs. timeoutMs defaults to commandDeadlines.benchmarkChildMs (24 hours) when omitted; when supplied, it must be a positive integer no greater than 2147483647.",
+						"examples": [
+							{
+								"command": ["node", "bench/trial.mjs", "--trials", "5"],
+								"cwd": "/workspace/harness",
+								"timeoutMs": 1800000
+							},
+							{
+								"command": ["./bin/bench", "--suite", "evidence-grid"],
+								"cwd": "/workspace/harness/benchmarks",
+								"input": "warm-start\n"
+							},
+							{
+								"command": ["npm", "run", "bench"],
+								"cwd": "/workspace/harness",
+								"timeoutMs": 600000
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "benchmarkProcess",
 						"type": "Promise<BenchmarkProcessResult>",
-						"description": "Exit code and UTF-8 stdout/stderr after bounded execution."
+						"description": "Resolves once the child closes, with exitCode (1 when the child ends without an exit code) and stdout and stderr decoded as UTF-8; a non-zero exit code still resolves, while launch failures, timeouts, cancellations and more than 8,000,000 bytes of combined output reject instead.",
+						"examples": [
+							{
+								"exitCode": 0,
+								"stdout": "trial 5 of 5 complete\n",
+								"stderr": ""
+							},
+							{
+								"exitCode": 1,
+								"stdout": "",
+								"stderr": "fixture not found: evidence-grid\n"
+							},
+							{
+								"exitCode": 0,
+								"stdout": "ops=1280 mean_ms=12.4\n",
+								"stderr": "warning: cold cache\n"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Bounded command failure",
-						"type": "propagated",
-						"description": "the benchmark child can reject on launch failure, timeout, cancellation or output overflow",
-						"examples": ["Command timed out.", "Command output limit exceeded."]
+						"type": "thrown",
+						"description": "Rejects with a BoundedCommandFailure when the child cannot launch (for example, a missing executable), runs past its timeoutMs deadline, is aborted through input.signal after it starts, or writes more than 8,000,000 bytes of combined stdout and stderr. Its message is the cause (the spawn error's message, the timeout message, the signal reason's message or 'Command failed.' when that reason is not an Error, or 'Command output limit exceeded.'), and the captured stdout and stderr prefixes sit on its non-enumerable stdout and stderr properties.",
+						"examples": [
+							"Command timed out after 1800000 ms (30 min): node",
+							"Command output limit exceeded."
+						]
+					},
+					{
+						"name": "Invalid command bounds",
+						"type": "thrown",
+						"description": "Rejects with Error('Command bounds must be positive finite integers.') before any child starts when a supplied timeoutMs is not a positive integer no greater than 2147483647.",
+						"examples": ["Command bounds must be positive finite integers."]
+					},
+					{
+						"name": "Already-aborted signal",
+						"type": "thrown",
+						"description": "Rejects with the reason of the input.signal AbortSignal, without starting a child, when that signal is already aborted at call time."
 					}
 				],
 				"errorStatus": "declared"
