@@ -18,23 +18,77 @@
 				"name": "claudeState.command",
 				"type": "CliCommand",
 				"required": true,
-				"description": "The executable and initial arguments for Claude CLI. The helper appends version and JSON authentication-status commands, each with a ten-second timeout."
+				"description": "The Claude CLI executable (command) and its initial arguments (args), which claudeState reads and never changes. It matters on every discovery call because claudeState appends '--version' and then 'auth status --json' to args and runs each with a ten-second timeout; a launch failure is returned as the reason rather than thrown.",
+				"examples": [
+					{
+						"command": "claude",
+						"args": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "claudeState",
 				"type": "Promise<ProviderState>",
-				"description": "A promise for Claude availability, version, reason and model choices. A logged-in claude.ai subscription enables the configured Claude Opus 5.5 choice with low through max effort and xhigh as default. Image generation remains false. Discovery failures return unavailable with a reason and no models."
+				"description": "The resolved ProviderState that ClaudeCliAdapter.discover returns unchanged, with id 'claude', imageGeneration always false, and version set to the trimmed --version output whenever that call succeeds, even if sign-in later fails. A logged-in claude.ai subscription gives available true with the fixed Claude Opus 5.5 model (efforts low through max, with xhigh as default); any failure gives available false, an empty models list, and reason set to the error message, or 'Claude CLI unavailable.' for a non-Error value.",
+				"examples": [
+					{
+						"id": "claude",
+						"label": "Claude CLI",
+						"available": true,
+						"reason": null,
+						"version": "2.0.0 (Claude Code)",
+						"imageGeneration": false,
+						"models": [
+							{
+								"id": "claude-opus-5-5",
+								"label": "Claude Opus 5.5",
+								"efforts": ["low", "medium", "high", "xhigh", "max"],
+								"defaultEffort": "xhigh",
+								"isDefault": true
+							}
+						]
+					},
+					{
+						"id": "claude",
+						"label": "Claude CLI",
+						"available": false,
+						"reason": "Sign in to Claude CLI with a subscription.",
+						"version": "2.0.0 (Claude Code)",
+						"imageGeneration": false,
+						"models": []
+					},
+					{
+						"id": "claude",
+						"label": "Claude CLI",
+						"available": false,
+						"reason": "spawn claude ENOENT",
+						"version": null,
+						"imageGeneration": false,
+						"models": []
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "The subscription requirement can produce an Error internally, but this function catches it and reports its message in the returned unavailable state. Normal discovery errors are not rethrown."
+				"description": "Thrown inside claudeState, with the message 'Sign in to Claude CLI with a subscription.', when auth status reports loggedIn false or an authMethod other than 'claude.ai'. The catch block returns that message as reason, so callers never receive this error."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A rejection from either cliProcess call, such as a spawn failure ('spawn claude ENOENT' when the executable is missing), a non-zero exit ('CLI failed (code): stderr'), a ten-second timeout ('CLI request timed out.'), or output over its limit ('CLI output exceeded its limit.'), is caught and returned as reason, so callers never receive it."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "JSON.parse throws a SyntaxError when the auth status output is not valid JSON. The catch block returns its message as reason, so callers never receive it."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "claudeState",
@@ -43,23 +97,77 @@
 						"name": "claudeState.command",
 						"type": "CliCommand",
 						"required": true,
-						"description": "The executable and initial arguments for Claude CLI. The helper appends version and JSON authentication-status commands, each with a ten-second timeout."
+						"description": "The Claude CLI executable (command) and its initial arguments (args), which claudeState reads and never changes. It matters on every discovery call because claudeState appends '--version' and then 'auth status --json' to args and runs each with a ten-second timeout; a launch failure is returned as the reason rather than thrown.",
+						"examples": [
+							{
+								"command": "claude",
+								"args": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "claudeState",
 						"type": "Promise<ProviderState>",
-						"description": "A promise for Claude availability, version, reason and model choices. A logged-in claude.ai subscription enables the configured Claude Opus 5.5 choice with low through max effort and xhigh as default. Image generation remains false. Discovery failures return unavailable with a reason and no models."
+						"description": "The resolved ProviderState that ClaudeCliAdapter.discover returns unchanged, with id 'claude', imageGeneration always false, and version set to the trimmed --version output whenever that call succeeds, even if sign-in later fails. A logged-in claude.ai subscription gives available true with the fixed Claude Opus 5.5 model (efforts low through max, with xhigh as default); any failure gives available false, an empty models list, and reason set to the error message, or 'Claude CLI unavailable.' for a non-Error value.",
+						"examples": [
+							{
+								"id": "claude",
+								"label": "Claude CLI",
+								"available": true,
+								"reason": null,
+								"version": "2.0.0 (Claude Code)",
+								"imageGeneration": false,
+								"models": [
+									{
+										"id": "claude-opus-5-5",
+										"label": "Claude Opus 5.5",
+										"efforts": ["low", "medium", "high", "xhigh", "max"],
+										"defaultEffort": "xhigh",
+										"isDefault": true
+									}
+								]
+							},
+							{
+								"id": "claude",
+								"label": "Claude CLI",
+								"available": false,
+								"reason": "Sign in to Claude CLI with a subscription.",
+								"version": "2.0.0 (Claude Code)",
+								"imageGeneration": false,
+								"models": []
+							},
+							{
+								"id": "claude",
+								"label": "Claude CLI",
+								"available": false,
+								"reason": "spawn claude ENOENT",
+								"version": null,
+								"imageGeneration": false,
+								"models": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown inside claudeState, with the message 'Sign in to Claude CLI with a subscription.', when auth status reports loggedIn false or an authMethod other than 'claude.ai'. The catch block returns that message as reason, so callers never receive this error."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A rejection from either cliProcess call, such as a spawn failure ('spawn claude ENOENT' when the executable is missing), a non-zero exit ('CLI failed (code): stderr'), a ten-second timeout ('CLI request timed out.'), or output over its limit ('CLI output exceeded its limit.'), is caught and returned as reason, so callers never receive it."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "JSON.parse throws a SyntaxError when the auth status output is not valid JSON. The catch block returns its message as reason, so callers never receive it."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
