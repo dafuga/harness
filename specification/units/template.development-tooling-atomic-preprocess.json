@@ -12,28 +12,38 @@
 		"symbols": ["atomicComponents"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "atomicComponents.options",
 				"type": "object",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "This optional object configures resolution of imported native atoms; only its `aliases` property is read, as import-prefix-to-directory mappings. Relative imports resolve from the component filename, while aliases match only specifiers beginning with the configured prefix followed by `/`; a missing or nullish `aliases` value behaves as `{}`.",
+				"examples": [
+					{
+						"aliases": {
+							"$lib": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13/src"
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "atomicComponents",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The factory returns a Svelte markup preprocessor object named `harness-atomic-components`; its callback inlines recognized native atoms before Svelte validation and returns transformed code, a source map, and dependency paths. The callback returns `undefined` when there is no filename or the content contains neither `/atoms/` nor `<hx-`."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Markup processing throws `Error` for unknown native atoms, missing `@harness-atoms` directory declarations, unresolved non-relative native atom imports, or atom sources that fail the element-contract check. Parsing and filesystem errors encountered while examining component or atom files can also propagate."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "atomicComponents",
@@ -42,17 +52,26 @@
 						"name": "atomicComponents.options",
 						"type": "object",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "This optional object configures resolution of imported native atoms; only its `aliases` property is read, as import-prefix-to-directory mappings. Relative imports resolve from the component filename, while aliases match only specifiers beginning with the configured prefix followed by `/`; a missing or nullish `aliases` value behaves as `{}`.",
+						"examples": [
+							{
+								"aliases": {
+									"$lib": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13/src"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "atomicComponents",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The factory returns a Svelte markup preprocessor object named `harness-atomic-components`; its callback inlines recognized native atoms before Svelte validation and returns transformed code, a source map, and dependency paths. The callback returns `undefined` when there is no filename or the content contains neither `/atoms/` nor `<hx-`."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
