@@ -22,17 +22,20 @@
 				"name": "relayFrame.text",
 				"type": "string",
 				"required": true,
-				"description": "JSON text; text longer than the configured frame allowance plus 4096 characters is refused."
+				"description": "Raw JSON text for a frame received by this host relay. Text whose JavaScript length exceeds remoteLimits.frameBytes + 4096 is rejected before parsing.",
+				"examples": ["{\"type\":\"ack\",\"ref\":\"frame-1\",\"ok\":true}"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "relayFrame",
 				"type": "RelayHostFrame | null",
-				"description": "The parsed ready, device-open, device-close, packet, pairing-request, device-revoked or ack frame; null for invalid JSON or failed checks."
+				"description": "The parsed frame is returned when its type is ready, device-open, device-close, packet, pairing-request, device-revoked, or ack and its type-specific check passes. Returns null for over-limit text, invalid JSON, unrecognized types, or failed checks.",
+				"examples": [null]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "relayFrame",
@@ -41,18 +44,20 @@
 						"name": "relayFrame.text",
 						"type": "string",
 						"required": true,
-						"description": "JSON text; text longer than the configured frame allowance plus 4096 characters is refused."
+						"description": "Raw JSON text for a frame received by this host relay. Text whose JavaScript length exceeds remoteLimits.frameBytes + 4096 is rejected before parsing.",
+						"examples": ["{\"type\":\"ack\",\"ref\":\"frame-1\",\"ok\":true}"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "relayFrame",
 						"type": "RelayHostFrame | null",
-						"description": "The parsed ready, device-open, device-close, packet, pairing-request, device-revoked or ack frame; null for invalid JSON or failed checks."
+						"description": "The parsed frame is returned when its type is ready, device-open, device-close, packet, pairing-request, device-revoked, or ack and its type-specific check passes. Returns null for over-limit text, invalid JSON, unrecognized types, or failed checks.",
+						"examples": [null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
