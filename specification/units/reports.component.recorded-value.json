@@ -47,37 +47,41 @@
 				"name": "RecordedValue.value",
 				"type": "unknown",
 				"required": true,
-				"description": "The input, observed output or error exactly as read from verified evidence."
+				"description": "Value passed to recordedValue to derive the content rendered by the component. Its type is unknown, so it can be any value; the visible form depends on the derived node kind.",
+				"examples": [null, "passed", true]
 			},
 			{
 				"name": "RecordedValue.fullValuesLabel",
 				"type": "string",
 				"required": false,
 				"default": "Full recorded values",
-				"description": "Name of the disclosure containing complete values; defaults to Full recorded values."
+				"description": "Label naming where the complete recorded value is available when a preview is shortened or content remains outside the displayed fields, items, or rows. It defaults to Full recorded values.",
+				"examples": ["Full recorded values", "Complete test output"]
 			},
 			{
 				"name": "RecordedValue.rowsLabel",
 				"type": "string",
 				"required": false,
 				"default": "Recorded rows",
-				"description": "Optional accessible name for nested rows. Default: Recorded rows. Distinguishes authored examples from recorded data."
+				"description": "Accessible table label passed to DataTable when the derived view is a result table. It defaults to Recorded rows and does not affect other view kinds.",
+				"examples": ["Recorded rows", "Captured response rows"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RecordedValue",
 				"type": "markup",
-				"description": "A readable, bounded preview. Full original data stays available in its recording."
+				"description": "Markup presenting the derived value as a typed scalar, notice, field list, item list, or data table. It shows shortened-value or remaining-content notices when the derived node provides them."
 			}
 		],
 		"errors": [
 			{
 				"name": "Getter, proxy or conversion error",
 				"type": "thrown",
-				"description": "Propagates errors thrown by supplied property getters, proxy traps or string conversion while presenting a value."
+				"description": "Errors raised by recordedValue(value) while deriving the view or by humanize(name) while formatting a field label propagate because these calls are not caught in the component. The component renders no error fallback markup."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
