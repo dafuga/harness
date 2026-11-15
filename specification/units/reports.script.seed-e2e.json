@@ -12,11 +12,17 @@
 		"symbols": []
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The script never catches a rejection or synchronous throw from its calls, which include e2eFixtures(), rm, mkdir, chromium.launch(), browserErrorCollector(), browser and page calls, writeFile, errors.finish(), and the ReportRepository constructor, begin and record. The try/finally around the browser work only closes the browser and finishes the error collector before the error escapes, so the run stops at the failing statement."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
