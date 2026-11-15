@@ -3,6 +3,7 @@ import { videoClipSchema } from '../../utils/verification-evidence/videoClipSche
 import type { VideoDeclaration } from '../../utils/verification-evidence/videoClipSchema.types';
 import { clipInputSlot } from './video-evidence-service/clipInputs';
 import { createClipInputContext } from './video-evidence-service/clipInputFiles';
+import { selectVideoSlots } from './video-evidence-service/selectVideoSlots';
 import { graphCoverage } from './video-evidence-service/graphCoverage';
 import type {
 	VideoSlot,
@@ -29,21 +30,7 @@ export class VideoEvidenceService {
 		const slots = manifest.clips.flatMap((clip) =>
 			clip.viewports.map((viewport) => clipInputSlot(context, manifest, clip, viewport))
 		);
-		const record: VideoSlot[] = [],
-			reuse: VideoSlot[] = [];
-		for (const slot of slots) {
-			const match = previous.find(
-				(old) =>
-					!slot.reasons?.some((reason) => reason.includes('recording required')) &&
-					old.unit === slot.unit &&
-					old.clipId === slot.clipId &&
-					old.viewport === slot.viewport &&
-					old.inputHash === slot.inputHash
-			);
-			if (match) reuse.push(match);
-			else record.push(slot);
-		}
-		return { record, reuse };
+		return selectVideoSlots(slots, previous);
 	}
 
 	/** Judge timestamped visits from already admitted, fresh clip evidence. */

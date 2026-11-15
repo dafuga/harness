@@ -2,6 +2,7 @@
 import { type CaptureLine } from '../../core/verification-evidence/verifyTypes';
 import type { Capture } from '../../core/verification-evidence/verificationTypes';
 import { type MediaFacts } from './mediaFacts';
+import type { VideoBatchPointer } from './videoClipSchema.types';
 
 export interface Gathered {
 	line: CaptureLine;
@@ -16,6 +17,7 @@ export interface Gathered {
 export interface GatherResult {
 	gathered: Gathered[];
 	failures: string[];
+	videoBatches?: VideoBatchPointer[];
 }
 
 export { gatherCaptures } from '../../workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures';

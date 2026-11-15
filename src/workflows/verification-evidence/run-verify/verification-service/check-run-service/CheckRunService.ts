@@ -16,7 +16,9 @@ import {
 import type { PlannedCheck } from '../../../../../utils/verification-evidence/verifyPlan';
 import { evidenceDirectoryFailure } from './evidenceDirectoryFailure';
 import { RecordBudget } from './captureLimits';
-import { gatherCaptures } from './gatherCaptures';
+import { checkCaptures } from './checkCaptures';
+import { checkVideoEnvironment } from './checkVideoContext';
+import { videoRunReaders } from './videoRunReaders';
 import { readBrowserDiagnostics } from './readBrowserDiagnostics';
 
 const maxLogBytes = 2_000_000;
@@ -26,6 +28,12 @@ export class CheckRunService {
 	private readonly budget: RecordBudget;
 
 	constructor(private readonly context: RunContext) {
+		this.context = {
+			...context,
+			videoCapture: context.videoCapture
+				? { ...context.videoCapture, references: videoRunReaders(context.videoCapture) }
+				: undefined
+		};
 		this.budget = new RecordBudget(context.limits?.maxRecordBytes);
 	}
 
@@ -36,12 +44,10 @@ export class CheckRunService {
 		const evidencePath = `evidence/${commit}/${check.scenario ?? 'checks'}/${leaf}`;
 		const result = await this.execute(check, evidencePath, slug);
 		// Nothing a stopped check wrote is trusted: a timeout yields no captures at all.
-		const captures = result.timedOut
-			? { gathered: [], failures: [] }
-			: gatherCaptures(join(directory, evidencePath), evidencePath, this.context.limits, {
-					budget: this.budget,
-					root: directory
-				});
+		const captures = await checkCaptures(this.context, check, this.budget, {
+			timedOut: result.timedOut,
+			evidencePath
+		});
 		const prefix = check.scenario ? `${check.scenario}: ` : '';
 		const written = captures.failures.map((failure) => `${prefix}check ${check.name} ${failure}`);
 		const diagnostics =
@@ -59,6 +65,7 @@ export class CheckRunService {
 			passed,
 			entry: checkEntry(check, result, { diagnostics, passed }, this.context.directory),
 			gathered: captures.gathered,
+			...(captures.videoBatches?.length ? { videoBatches: captures.videoBatches } : {}),
 			failures
 		};
 	}
@@ -115,6 +122,7 @@ export class CheckRunService {
 	private environment(check: PlannedCheck, evidence: string): Record<string, string | undefined> {
 		return {
 			...this.context.env,
+			...checkVideoEnvironment(this.context, check),
 			HARNESS_VERIFY: '1',
 			TAKE_SCREENSHOT: '1',
 			HARNESS_EVIDENCE_DIR: evidence,

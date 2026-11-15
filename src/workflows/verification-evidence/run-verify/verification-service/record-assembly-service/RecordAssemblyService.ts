@@ -25,6 +25,7 @@ import { PerformanceEvidenceValidator } from '../../../../../validators/verifica
 
 import type { Executed } from '../SnapshotRunService';
 import { recordedBuilds } from './recordedBuilds';
+import { recordVideoBatches } from './recordVideoBatches';
 import { benchmarkMeasurements, recordComponents } from './sealRecord';
 import { unmeasured } from './unmeasured';
 import { ledgerGate, registryGate } from './VerificationGates';
@@ -63,6 +64,7 @@ export class RecordAssemblyService {
 				.filter((item) => !item.check.id.startsWith('setup-'))
 				.map((item) => item.entry),
 			scenarios: judgedScenarios(input),
+			...recordVideoBatches(input.executed.outcomes),
 			// Only a run that skipped a declared build names one; every other record is unchanged.
 			...recordedBuilds(
 				input.executed.builds,

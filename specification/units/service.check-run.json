@@ -14,7 +14,9 @@
 			"src/workflows/run-verify/verification-service/CheckRunService.ts",
 			"src/workflows/run-verify/verification-service/check-run-service/CheckRunService.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.types.ts"
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.types.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/checkCaptures.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/checkVideoContext.ts"
 		],
 		"symbols": [
 			"RunContext",
@@ -33,8 +35,12 @@
 			"CheckRunService.constructor",
 			"CheckRunService.run",
 			"CheckRunService.version",
+			"VideoRunContext",
 			"RunContext",
-			"CheckOutcome"
+			"CheckOutcome",
+			"checkCaptures",
+			"checkVideoContext",
+			"checkVideoEnvironment"
 		]
 	},
 	"contract": {
@@ -92,6 +98,46 @@
 						"command": "node --version"
 					}
 				]
+			},
+			{
+				"name": "checkCaptures.context",
+				"type": "RunContext",
+				"required": true
+			},
+			{
+				"name": "checkCaptures.check",
+				"type": "PlannedCheck",
+				"required": true
+			},
+			{
+				"name": "checkCaptures.budget",
+				"type": "RecordBudget",
+				"required": true
+			},
+			{
+				"name": "checkCaptures.result",
+				"type": "{ timedOut: boolean; evidencePath: string }",
+				"required": true
+			},
+			{
+				"name": "checkVideoContext.context",
+				"type": "RunContext",
+				"required": true
+			},
+			{
+				"name": "checkVideoContext.check",
+				"type": "PlannedCheck",
+				"required": true
+			},
+			{
+				"name": "checkVideoEnvironment.context",
+				"type": "RunContext",
+				"required": true
+			},
+			{
+				"name": "checkVideoEnvironment.check",
+				"type": "PlannedCheck",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -147,6 +193,11 @@
 				"name": "Error",
 				"type": "thrown",
 				"description": "The run rejects with Error when resource admission cannot establish the owner, the queue is full, or an inherited lease is invalid or too small; log-directory or log-file creation failures also propagate."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The scenario-scoped frozen video context exceeds its fixed process-environment metadata cap."
 			}
 		],
 		"errorStatus": "declared",
@@ -256,6 +307,91 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "checkCaptures",
+				"inputs": [
+					{
+						"name": "checkCaptures.context",
+						"type": "RunContext",
+						"required": true
+					},
+					{
+						"name": "checkCaptures.check",
+						"type": "PlannedCheck",
+						"required": true
+					},
+					{
+						"name": "checkCaptures.budget",
+						"type": "RecordBudget",
+						"required": true
+					},
+					{
+						"name": "checkCaptures.result",
+						"type": "{ timedOut: boolean; evidencePath: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkCaptures",
+						"type": "Promise<GatherResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "checkVideoContext",
+				"inputs": [
+					{
+						"name": "checkVideoContext.context",
+						"type": "RunContext",
+						"required": true
+					},
+					{
+						"name": "checkVideoContext.check",
+						"type": "PlannedCheck",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkVideoContext",
+						"type": "VideoGatherContext | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "checkVideoEnvironment",
+				"inputs": [
+					{
+						"name": "checkVideoEnvironment.context",
+						"type": "RunContext",
+						"required": true
+					},
+					{
+						"name": "checkVideoEnvironment.check",
+						"type": "PlannedCheck",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkVideoEnvironment",
+						"type": "Record<string, string | undefined>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The scenario-scoped frozen video context exceeds its fixed process-environment metadata cap."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -300,6 +436,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.gather-captures",
 			"via": "import",
 			"origin": "derived"
@@ -330,12 +471,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.verification-evidence-video-clip-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.verification-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "function.verify-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-reference",
 			"via": "import",
 			"origin": "derived"
 		},

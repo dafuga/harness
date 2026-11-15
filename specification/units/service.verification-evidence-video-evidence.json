@@ -19,7 +19,8 @@
 			"src/services/verification-evidence/video-evidence-service/clipInputReferences.ts",
 			"src/services/verification-evidence/video-evidence-service/clipInputs.ts",
 			"src/services/verification-evidence/video-evidence-service/clipInputs.types.ts",
-			"src/services/verification-evidence/video-evidence-service/graphCoverage.ts"
+			"src/services/verification-evidence/video-evidence-service/graphCoverage.ts",
+			"src/services/verification-evidence/video-evidence-service/selectVideoSlots.ts"
 		],
 		"symbols": [
 			"VideoEvidenceService",
@@ -43,7 +44,8 @@
 			"ClipInputFile",
 			"ClipInputClosure",
 			"ClipInputContext",
-			"graphCoverage"
+			"graphCoverage",
+			"selectVideoSlots"
 		]
 	},
 	"contract": {
@@ -200,6 +202,16 @@
 				"type": "VideoObservation[]",
 				"required": true,
 				"description": "Admitted clip observations; only explicit fresh=true with every required clip state, edge and checkpoint inside its retained interval contributes coverage."
+			},
+			{
+				"name": "selectVideoSlots.slots",
+				"type": "VideoSlot[]",
+				"required": true
+			},
+			{
+				"name": "selectVideoSlots.previous",
+				"type": "VideoSlot[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -678,6 +690,29 @@
 						"name": "graphCoverage",
 						"type": "VideoGraphCoverage[]",
 						"description": "Per-graph state, edge and clip completeness fractions and missing slots; only individually complete fresh clips contribute, and zero viewport coverage is incomplete."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "selectVideoSlots",
+				"inputs": [
+					{
+						"name": "selectVideoSlots.slots",
+						"type": "VideoSlot[]",
+						"required": true
+					},
+					{
+						"name": "selectVideoSlots.previous",
+						"type": "VideoSlot[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "selectVideoSlots",
+						"type": "VideoPlan"
 					}
 				],
 				"errors": [],

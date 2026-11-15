@@ -40,12 +40,19 @@ function addRecorder(
 	closure: ClipInputClosure,
 	pending: string[]
 ): void {
-	const path = 'src/services/verification-evidence/NativeVideoRecorderService.ts';
-	if (!context.paths.has(path)) return;
-	const id = 'service.verification-evidence-native-video-recorder';
-	if (context.owners.get(id)?.uid !== 'u_akqk4uwm6b')
-		throw new ExpectedCliError('Missing registered native video recorder binding');
-	addOwner(context, closure, id, pending);
+	for (const [name, id, uid] of [
+		[
+			'NativeVideoRecorderService',
+			'service.verification-evidence-native-video-recorder',
+			'u_akqk4uwm6b'
+		],
+		['VideoCaptureService', 'service.verification-evidence-video-capture', 'u_2eznkaf4qv']
+	]) {
+		if (!context.paths.has(`src/services/verification-evidence/${name}.ts`)) continue;
+		if (context.owners.get(id)?.uid !== uid)
+			throw new ExpectedCliError(`Missing registered video recording recipe binding: ${id}`);
+		addOwner(context, closure, id, pending);
+	}
 }
 
 function addOwner(

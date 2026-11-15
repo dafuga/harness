@@ -12,7 +12,12 @@
 			"src/utils/verification-evidence/gatherCaptures.ts",
 			"src/workflows/run-verify/verification-service/check-run-service/gatherCaptures.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures.ts",
-			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/videoPoster.ts"
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherVideoReferences.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherVideoReferences.types.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/videoPoster.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/videoRunReaders.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/videoSidecar.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/videoReferenceAdmission.ts"
 		],
 		"symbols": [
 			"Gathered",
@@ -20,8 +25,21 @@
 			"gatherCaptures",
 			"gatherCaptures",
 			"gatherCaptures",
+			"gatherLine",
+			"indexLines",
+			"gatherVerificationCaptures",
+			"gatherVerificationCaptures",
+			"VideoGatherContext",
+			"CaptureGatherScope",
+			"GatherVideoSidecar",
+			"VideoGatherSession",
 			"posterBudget",
-			"inspectVideoPoster"
+			"inspectVideoPoster",
+			"videoRunReaders",
+			"videoSidecar",
+			"sidecarCapture",
+			"admitVideoReference",
+			"trustedVideoReference"
 		]
 	},
 	"contract": {
@@ -79,6 +97,53 @@
 				]
 			},
 			{
+				"name": "gatherLine.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "gatherLine.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "gatherLine.scope",
+				"type": "{ recordPath: string; limits: CaptureLimits; budget: RecordBudget }",
+				"required": true
+			},
+			{
+				"name": "indexLines.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "indexLines.result",
+				"type": "GatherResult",
+				"required": true
+			},
+			{
+				"name": "gatherVerificationCaptures.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "gatherVerificationCaptures.recordPath",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "gatherVerificationCaptures.limits",
+				"type": "CaptureLimits",
+				"required": false,
+				"default": {}
+			},
+			{
+				"name": "gatherVerificationCaptures.scope",
+				"type": "CaptureGatherScope",
+				"required": false,
+				"default": {}
+			},
+			{
 				"name": "posterBudget.line",
 				"type": "CaptureLine",
 				"required": true,
@@ -113,6 +178,56 @@
 				"type": "MediaFacts | undefined",
 				"required": true,
 				"description": "Decoded media facts; undefined or non-video facts are rejected."
+			},
+			{
+				"name": "videoRunReaders.context",
+				"type": "Pick<VideoGatherContext, 'repository' | 'pinned' | 'references'>",
+				"required": true
+			},
+			{
+				"name": "videoSidecar.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "sidecarCapture.sidecar",
+				"type": "GatherVideoSidecar",
+				"required": true
+			},
+			{
+				"name": "sidecarCapture.line",
+				"type": "CaptureLine",
+				"required": true
+			},
+			{
+				"name": "sidecarCapture.recordPath",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "admitVideoReference.item",
+				"type": "Gathered",
+				"required": true
+			},
+			{
+				"name": "admitVideoReference.commit",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "admitVideoReference.inputHash",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trustedVideoReference.input",
+				"type": "CoverageInput",
+				"required": true
+			},
+			{
+				"name": "trustedVideoReference.item",
+				"type": "Gathered",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -205,6 +320,11 @@
 				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "Video inputs, recording tools, poster media or evidence limits cannot satisfy the declared recording contract."
+			},
+			{
+				"name": "Error",
+				"type": "thrown or reported",
+				"description": "Invalid or oversized indexes and child sidecars are either reported as admission failures or thrown by the low-level descriptor helpers."
 			}
 		],
 		"errorStatus": "declared",
@@ -359,6 +479,98 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "gatherLine",
+				"inputs": [
+					{
+						"name": "gatherLine.text",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "gatherLine.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "gatherLine.scope",
+						"type": "{ recordPath: string; limits: CaptureLimits; budget: RecordBudget }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "gatherLine",
+						"type": "Gathered | string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "indexLines",
+				"inputs": [
+					{
+						"name": "indexLines.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "indexLines.result",
+						"type": "GatherResult",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "indexLines",
+						"type": "string[]"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown or reported",
+						"description": "Invalid or oversized indexes and child sidecars are either reported as admission failures or thrown by the low-level descriptor helpers."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "gatherVerificationCaptures",
+				"inputs": [
+					{
+						"name": "gatherVerificationCaptures.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "gatherVerificationCaptures.recordPath",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "gatherVerificationCaptures.limits",
+						"type": "CaptureLimits",
+						"required": false,
+						"default": {}
+					},
+					{
+						"name": "gatherVerificationCaptures.scope",
+						"type": "CaptureGatherScope",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "gatherVerificationCaptures",
+						"type": "Promise<GatherResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
 				"name": "posterBudget",
 				"inputs": [
 					{
@@ -433,11 +645,143 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "videoRunReaders",
+				"inputs": [
+					{
+						"name": "videoRunReaders.context",
+						"type": "Pick<VideoGatherContext, 'repository' | 'pinned' | 'references'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoRunReaders",
+						"type": "NonNullable<VideoGatherContext['references']>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "videoSidecar",
+				"inputs": [
+					{
+						"name": "videoSidecar.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoSidecar",
+						"type": "GatherVideoSidecar"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Bounded sidecar descriptors, line bindings, or duplicate child pointer identities are invalid; filesystem and schema errors propagate."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "sidecarCapture",
+				"inputs": [
+					{
+						"name": "sidecarCapture.sidecar",
+						"type": "GatherVideoSidecar",
+						"required": true
+					},
+					{
+						"name": "sidecarCapture.line",
+						"type": "CaptureLine",
+						"required": true
+					},
+					{
+						"name": "sidecarCapture.recordPath",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sidecarCapture",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Bounded sidecar descriptors, line bindings, or duplicate child pointer identities are invalid; filesystem and schema errors propagate."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "admitVideoReference",
+				"inputs": [
+					{
+						"name": "admitVideoReference.item",
+						"type": "Gathered",
+						"required": true
+					},
+					{
+						"name": "admitVideoReference.commit",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "admitVideoReference.inputHash",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "admitVideoReference",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "trustedVideoReference",
+				"inputs": [
+					{
+						"name": "trustedVideoReference.input",
+						"type": "CoverageInput",
+						"required": true
+					},
+					{
+						"name": "trustedVideoReference.item",
+						"type": "Gathered",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trustedVideoReference",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.errors",
 			"via": "import",
@@ -449,12 +793,32 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.scenario-coverage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-evidence-video-clip-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.verification-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "function.verify-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-reference",
 			"via": "import",
 			"origin": "derived"
 		},

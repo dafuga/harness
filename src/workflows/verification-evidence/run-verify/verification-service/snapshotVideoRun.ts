@@ -6,6 +6,7 @@ import type { CaptureLimits } from './check-run-service/captureLimits.types';
 import { snapshotVideoInputs } from './snapshotVideoInputs';
 import { pendingVideoEnvironment } from './snapshotVideoFlags';
 import { CheckRunService } from './check-run-service/CheckRunService';
+import { snapshotCaptureContext } from './snapshotCaptureContext';
 
 export async function snapshotVideoRun(
 	run: SnapshotRun,
@@ -21,6 +22,7 @@ export async function snapshotVideoRun(
 		...run.context,
 		snapshot,
 		limits,
+		videoCapture: await snapshotCaptureContext(run, videoInputs.videoSlots),
 		env: pendingVideoEnvironment(run.context.env, videoInputs.pendingVideoFlags)
 	});
 	return { runner, failures, videoInputs };

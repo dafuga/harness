@@ -172,7 +172,11 @@
 			"ContractsCommand",
 			"VideoEvidenceService",
 			"videoClipSchema",
-			"FrameFlagService"
+			"FrameFlagService",
+			"NativeVideoRecorderService",
+			"VideoArchiveService",
+			"VideoCaptureService",
+			"VideoReferenceService"
 		]
 	},
 	"contract": {
@@ -771,7 +775,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.verification-evidence-native-video-recorder",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-archive",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-capture",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.verification-evidence-video-evidence",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-reference",
 			"via": "reexport",
 			"origin": "derived"
 		},

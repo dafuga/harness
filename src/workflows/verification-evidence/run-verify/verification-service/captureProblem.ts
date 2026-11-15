@@ -9,6 +9,7 @@ import {
 	verifyConfigFile
 } from '../../../../core/verification-evidence/verifyTypes';
 import type { Gathered } from '../../../../utils/verification-evidence/gatherCaptures';
+import { trustedVideoReference } from './videoReferenceAdmission';
 import type { MediaFacts } from '../../../../utils/verification-evidence/mediaFacts';
 
 const durationTolerance = 0.05;
@@ -177,11 +178,21 @@ function stampProblem(
 ): string | undefined {
 	const { file, server } = item.line;
 	if (!server?.revision) return `capture ${file} has no build stamp`;
+	if (trustedVideoReference(input, item)) {
+		const failure = originalBuildProblem(input, evidence);
+		return failure ? `capture ${file} ${failure}` : undefined;
+	}
 	if (server.revision !== input.commit) {
 		return `capture ${file} was produced by revision ${server.revision}, not ${input.commit}`;
 	}
 	const problem = buildProblem(input.builds, server.buildId, evidence?.build);
 	return problem ? `capture ${file} ${problem}` : undefined;
+}
+function originalBuildProblem(input: CoverageInput, evidence?: Evidence): string | undefined {
+	const declared = input.builds?.declared ?? [];
+	if (evidence?.build && !declared.includes(evidence.build))
+		return `names an undeclared original build ${evidence.build}`;
+	return declared.length && !evidence?.build ? 'does not name its original build' : undefined;
 }
 
 /**
@@ -203,7 +214,15 @@ function buildProblem(
 		return `names build ${named}, which ${verifyConfigFile} does not declare`;
 	}
 	const compiled = builds?.compiled.get(named);
-	if (!compiled && builds?.skipped?.has(named)) {
+	return compiledBuildProblem(compiled, served, named, builds?.skipped?.has(named));
+}
+function compiledBuildProblem(
+	compiled: string | undefined,
+	served: string,
+	named: string,
+	skipped?: boolean
+): string | undefined {
+	if (!compiled && skipped) {
 		return `names build ${named}, which this scoped run skipped`;
 	}
 	if (!compiled) return `names build ${named}, which setup did not produce`;

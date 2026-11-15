@@ -11,7 +11,8 @@
 		"source": [
 			"src/workflows/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.types.ts"
+			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.types.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordVideoBatches.ts"
 		],
 		"symbols": [
 			"RecordAssemblyService",
@@ -21,7 +22,8 @@
 			"RecordAssemblyService.constructor",
 			"RecordAssemblyService.assemble",
 			"AssemblyContext",
-			"AssemblyInput"
+			"AssemblyInput",
+			"recordVideoBatches"
 		]
 	},
 	"contract": {
@@ -54,6 +56,11 @@
 						"referenced": []
 					}
 				]
+			},
+			{
+				"name": "recordVideoBatches.outcomes",
+				"type": "CheckOutcome[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -129,8 +136,14 @@
 				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Different checks name conflicting pointer descriptors for the same video batch identity."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RecordAssemblyService.assemble",
@@ -233,6 +246,30 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "recordVideoBatches",
+				"inputs": [
+					{
+						"name": "recordVideoBatches.outcomes",
+						"type": "CheckOutcome[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordVideoBatches",
+						"type": "{ videoBatches?: VideoBatchPointer[]; }"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Bounded sidecar descriptors, line bindings, or duplicate child pointer identities are invalid; filesystem and schema errors propagate."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -265,6 +302,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.impact-types",
 			"via": "import",
 			"origin": "derived"
@@ -290,6 +332,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.verification-evidence-video-clip-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.verification-types",
 			"via": "import",
 			"origin": "derived"
@@ -306,6 +353,11 @@
 		},
 		{
 			"unit": "service.budget",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.check-run",
 			"via": "import",
 			"origin": "derived"
 		},

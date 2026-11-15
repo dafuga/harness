@@ -12,6 +12,7 @@
 			"src/workflows/run-verify/verification-service/SnapshotRunService.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.types.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/snapshotCaptureContext.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/snapshotVideoFlags.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/snapshotVideoInputs.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/snapshotVideoRun.ts",
@@ -26,6 +27,7 @@
 			"Executed",
 			"SnapshotRun",
 			"Executed",
+			"snapshotCaptureContext",
 			"snapshotVideoFlags",
 			"pendingVideoEnvironment",
 			"snapshotVideoInputs",
@@ -101,6 +103,16 @@
 				"examples": [
 					["dist/server.js"]
 				]
+			},
+			{
+				"name": "snapshotCaptureContext.run",
+				"type": "SnapshotRun",
+				"required": true
+			},
+			{
+				"name": "snapshotCaptureContext.slots",
+				"type": "Record<string, VideoSlot[]>",
+				"required": true
 			},
 			{
 				"name": "snapshotVideoFlags.root",
@@ -265,6 +277,40 @@
 						"name": "Error",
 						"type": "thrown",
 						"description": "An uncaught Error from snapshot creation, linking, drift checks, check/tool execution, build identity work, or snapshot removal rejects the execution promise. Output misdeclarations, setup/check failures, unavailable tool versions, and build failures are reported in Executed when the delegated services return them as results."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "snapshotCaptureContext",
+				"inputs": [
+					{
+						"name": "snapshotCaptureContext.run",
+						"type": "SnapshotRun",
+						"required": true
+					},
+					{
+						"name": "snapshotCaptureContext.slots",
+						"type": "Record<string, VideoSlot[]>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "snapshotCaptureContext",
+						"type": "Promise<VideoRunContext | undefined>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "An uncaught Error from snapshot creation, linking, drift checks, check/tool execution, build identity work, or snapshot removal rejects the execution promise. Output misdeclarations, setup/check failures, unavailable tool versions, and build failures are reported in Executed when the delegated services return them as results."
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Current reviewer evidence is corrupt, exceeds finite capture-environment bounds, or the replacement omits, misowns or predates a required flag."
 					}
 				],
 				"errorStatus": "declared"
@@ -485,12 +531,22 @@
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.snapshot",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.history-types",
 			"via": "import",
 			"origin": "derived"
 		},

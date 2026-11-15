@@ -27,7 +27,7 @@ export async function resolveAttachedVideoFlags(
 				capture.kind === 'video' &&
 				capture.status === 'passed' &&
 				capture.video &&
-				eligibleRecord(record, capture.video.unit)
+				eligibleVideoRecord(record, capture.video.unit)
 		);
 	if (!captures.length) return;
 	let flags = await readFrameFlags(root);
@@ -45,7 +45,7 @@ export async function resolveAttachedVideoFlags(
 	flags = await readFrameFlags(root);
 	for (const capture of captures) assertAttachedVideoFlags(record, capture, flags);
 }
-function eligibleRecord(record: VerificationRecord, unit: string): boolean {
+export function eligibleVideoRecord(record: VerificationRecord, unit: string): boolean {
 	if (
 		!record.components.some((component) => component.unit === unit) ||
 		!record.tests.length ||

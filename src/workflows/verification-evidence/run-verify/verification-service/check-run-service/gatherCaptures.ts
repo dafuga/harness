@@ -45,7 +45,7 @@ export function gatherCaptures(
 	return result;
 }
 
-function gatherLine(
+export function gatherLine(
 	text: string,
 	directory: string,
 	scope: { recordPath: string; limits: CaptureLimits; budget: RecordBudget }
@@ -143,7 +143,7 @@ function actualDuration(facts: MediaFacts | undefined): number | undefined {
  */
 const maxCaptureIndexBytes = 2_000_000;
 
-function indexLines(path: string, result: GatherResult): string[] {
+export function indexLines(path: string, result: GatherResult): string[] {
 	if (!existsSync(path)) return [];
 	try {
 		if (!lstatSync(dirname(path)).isDirectory())
@@ -180,3 +180,5 @@ function checkVideoBytes(line: CaptureLine, bytes: number): void {
 	if (line.kind === 'video' && bytes > 8 * 1024 * 1024)
 		throw new Error('Video exceeds the fixed 8 MiB clip cap.');
 }
+
+export { gatherVerificationCaptures } from './gatherVideoReferences';

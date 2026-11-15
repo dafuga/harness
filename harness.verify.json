@@ -280,6 +280,8 @@
 		}
 	],
 	"tools": [
+		{ "id": "ffmpeg", "command": "ffmpeg -version" },
+		{ "id": "ffprobe", "command": "ffprobe -version" },
 		{
 			"id": "node",
 			"command": "node --version"

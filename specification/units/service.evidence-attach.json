@@ -13,7 +13,8 @@
 			"src/services/verification-evidence/evidence-attach-service/EvidenceAttachService.types.ts",
 			"src/services/verification-evidence/evidence-attach-service/attachedClipDependencies.ts",
 			"src/services/verification-evidence/evidence-attach-service/attachedVideoFlagChecks.ts",
-			"src/services/verification-evidence/evidence-attach-service/attachedVideoFlags.ts"
+			"src/services/verification-evidence/evidence-attach-service/attachedVideoFlags.ts",
+			"src/services/verification-evidence/evidence-attach-service/attachedVideoRaw.ts"
 		],
 		"symbols": [
 			"EvidenceAttachService",
@@ -24,7 +25,9 @@
 			"attachedClipDependency",
 			"attachedVideoFlagFailure",
 			"resolveAttachedVideoFlags",
-			"resolvedVideoAttachment"
+			"eligibleVideoRecord",
+			"resolvedVideoAttachment",
+			"finalizedVideoAttachment"
 		]
 	},
 	"contract": {
@@ -170,6 +173,16 @@
 				"description": "Sealed verification record whose present clip slots are checked against current reviewer standing."
 			},
 			{
+				"name": "eligibleVideoRecord.record",
+				"type": "VerificationRecord",
+				"required": true
+			},
+			{
+				"name": "eligibleVideoRecord.unit",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "resolvedVideoAttachment.root",
 				"type": "string",
 				"required": true,
@@ -186,6 +199,21 @@
 				"type": "Attached",
 				"required": true,
 				"description": "Durable evidence receipt whose record media, source note and archive already exist."
+			},
+			{
+				"name": "finalizedVideoAttachment.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "finalizedVideoAttachment.stored",
+				"type": "StoredRecord",
+				"required": true
+			},
+			{
+				"name": "finalizedVideoAttachment.attached",
+				"type": "Attached",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -366,8 +394,14 @@
 						"type": "Promise<boolean>"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised when record integrity has problems, an inherited record is unavailable, or the source commit cannot be kept reachable at its archive ref. Awaited filesystem and adapter operations may also reject with their own errors. Current reviewer obligations also refuse missing, wrong-owner, late or predating replacements after durable attachment without deleting evidence."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "attachedVideoFlagFailure",
@@ -434,6 +468,29 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "eligibleVideoRecord",
+				"inputs": [
+					{
+						"name": "eligibleVideoRecord.record",
+						"type": "VerificationRecord",
+						"required": true
+					},
+					{
+						"name": "eligibleVideoRecord.unit",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "eligibleVideoRecord",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
 				"name": "resolvedVideoAttachment",
 				"inputs": [
 					{
@@ -467,6 +524,40 @@
 						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Current reviewer evidence is corrupt, exceeds finite capture-environment bounds, or the replacement omits, misowns or predates a required flag."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "finalizedVideoAttachment",
+				"inputs": [
+					{
+						"name": "finalizedVideoAttachment.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "finalizedVideoAttachment.stored",
+						"type": "StoredRecord",
+						"required": true
+					},
+					{
+						"name": "finalizedVideoAttachment.attached",
+						"type": "Attached",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "finalizedVideoAttachment",
+						"type": "Promise<Attached>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised when record integrity has problems, an inherited record is unavailable, or the source commit cannot be kept reachable at its archive ref. Awaited filesystem and adapter operations may also reject with their own errors. Current reviewer obligations also refuse missing, wrong-owner, late or predating replacements after durable attachment without deleting evidence."
 					}
 				],
 				"errorStatus": "declared"
@@ -594,6 +685,11 @@
 		},
 		{
 			"unit": "service.verification-evidence-frame-flag",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-capture",
 			"via": "import",
 			"origin": "derived"
 		},

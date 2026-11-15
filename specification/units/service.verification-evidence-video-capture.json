@@ -8,20 +8,483 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/verification-evidence/VideoCaptureService.ts"],
-		"symbols": ["VideoCaptureService", "VideoCaptureService.run"]
+		"source": [
+			"src/services/verification-evidence/VideoCaptureService.ts",
+			"src/services/verification-evidence/VideoCaptureService.types.ts",
+			"src/services/verification-evidence/video-capture-service/captureBatch.ts",
+			"src/services/verification-evidence/video-capture-service/captureContext.ts",
+			"src/services/verification-evidence/video-capture-service/captureConversion.ts",
+			"src/services/verification-evidence/video-capture-service/captureConversion.types.ts",
+			"src/services/verification-evidence/video-capture-service/captureFiles.ts",
+			"src/services/verification-evidence/video-capture-service/captureProtocol.ts",
+			"src/services/verification-evidence/video-capture-service/captureReceipt.ts",
+			"src/services/verification-evidence/video-capture-service/captureReceiptStore.ts",
+			"src/services/verification-evidence/video-capture-service/captureResult.ts",
+			"src/services/verification-evidence/video-capture-service/captureRun.ts",
+			"src/services/verification-evidence/video-capture-service/captureScript.ts",
+			"src/services/verification-evidence/video-capture-service/captureSelection.ts",
+			"src/services/verification-evidence/video-capture-service/captureVisits.ts"
+		],
+		"symbols": [
+			"VideoCaptureService",
+			"VideoCaptureService.constructor",
+			"VideoCaptureService.run",
+			"VideoCaptureService.plan",
+			"VideoCaptureService.record",
+			"VideoCaptureService.acknowledge",
+			"VideoCaptureService.acknowledgeDirectory",
+			"VideoCaptureInput",
+			"VideoCaptureOptions",
+			"VideoCapturePlan",
+			"VideoCaptureResult",
+			"VideoCaptureScript",
+			"VideoCaptureScriptInput",
+			"VideoCaptureEnvironment",
+			"VideoCaptureSource",
+			"VideoCapturePin",
+			"VideoCaptureEnvironment",
+			"VideoCaptureInput",
+			"VideoCaptureScript",
+			"VideoCaptureScriptInput",
+			"VideoCaptureOptions",
+			"VideoCaptureServices",
+			"VideoCaptureReuse",
+			"VideoCapturePlan",
+			"VideoCaptureRawReceipt",
+			"VideoCaptureResult",
+			"VideoCaptureSidecar",
+			"captureBatch",
+			"captureContext",
+			"convertedCapture",
+			"CaptureConversionContext",
+			"ConvertedCapture",
+			"captureDigest",
+			"captureFile",
+			"captureText",
+			"videoBatchSidecar",
+			"captureProtocol",
+			"captureReceipt",
+			"captureReceiptStore",
+			"captureResult",
+			"captureRun",
+			"recordingAllowed",
+			"captureScriptInput",
+			"admittedScript",
+			"captureCheckpoint",
+			"captureSelection",
+			"sameSlot",
+			"observedVideo",
+			"validateVisits"
+		]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "VideoCaptureService.constructor.root",
+				"type": "string",
+				"required": false,
+				"default": "process.cwd()",
+				"description": "Original Git repository. Omission uses the current working directory, never the exported snapshot."
+			},
+			{
+				"name": "VideoCaptureService.constructor.services",
+				"type": "VideoCaptureServices",
+				"required": false,
+				"default": {},
+				"description": "Optional injected archive/reference/native collaborators. Omission creates the repository-owned production services."
+			},
+			{
+				"name": "VideoCaptureService.plan.input",
+				"type": "VideoCaptureInput",
+				"required": true
+			},
+			{
+				"name": "VideoCaptureService.record.input",
+				"type": "VideoCaptureOptions",
+				"required": true
+			},
+			{
+				"name": "VideoCaptureService.acknowledge.result",
+				"type": "VideoCaptureResult",
+				"required": true
+			},
+			{
+				"name": "VideoCaptureService.acknowledge.record",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "VideoCaptureService.acknowledgeDirectory.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "VideoCaptureService.acknowledgeDirectory.record",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "captureBatch.archive",
+				"type": "NonNullable<VideoCaptureServices['archive']>",
+				"required": true
+			},
+			{
+				"name": "captureBatch.protocol",
+				"type": "ReturnType<typeof captureProtocol>",
+				"required": true
+			},
+			{
+				"name": "captureBatch.result",
+				"type": "VideoCaptureResult",
+				"required": true
+			},
+			{
+				"name": "captureContext.input",
+				"type": "VideoCaptureInput",
+				"required": true
+			},
+			{
+				"name": "captureContext.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "convertedCapture.input",
+				"type": "VideoCaptureInput",
+				"required": true
+			},
+			{
+				"name": "convertedCapture.target",
+				"type": "VideoCaptureScriptInput",
+				"required": true
+			},
+			{
+				"name": "convertedCapture.native",
+				"type": "NativeRecording",
+				"required": true
+			},
+			{
+				"name": "convertedCapture.context",
+				"type": "CaptureConversionContext",
+				"required": true
+			},
+			{
+				"name": "captureDigest.bytes",
+				"type": "string | Buffer",
+				"required": true
+			},
+			{
+				"name": "captureFile.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "captureFile.sha256",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "captureText.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "captureText.maximum",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "captureProtocol.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "captureReceipt.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "captureReceipt.result",
+				"type": "VideoCaptureResult",
+				"required": true
+			},
+			{
+				"name": "captureReceipt.record",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "captureReceipt.services",
+				"type": "VideoCaptureServices",
+				"required": true
+			},
+			{
+				"name": "captureReceiptStore.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "captureResult.source",
+				"type": "VideoCaptureSource",
+				"required": true
+			},
+			{
+				"name": "captureResult.plan",
+				"type": "VideoCapturePlan",
+				"required": true
+			},
+			{
+				"name": "captureResult.protocol",
+				"type": "ReturnType<typeof captureProtocol>",
+				"required": true
+			},
+			{
+				"name": "captureRun.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "captureRun.options",
+				"type": "VideoCaptureOptions",
+				"required": true
+			},
+			{
+				"name": "captureRun.plan",
+				"type": "VideoCapturePlan",
+				"required": true
+			},
+			{
+				"name": "captureRun.context",
+				"type": "{ services: VideoCaptureServices; protocol: ReturnType<typeof captureProtocol>; result: VideoCaptureResult; }",
+				"required": true
+			},
+			{
+				"name": "recordingAllowed.input",
+				"type": "VideoCaptureInput",
+				"required": true
+			},
+			{
+				"name": "captureScriptInput.plan",
+				"type": "VideoCapturePlan",
+				"required": true
+			},
+			{
+				"name": "captureScriptInput.slot",
+				"type": "VideoCaptureScriptInput['slot']",
+				"required": true
+			},
+			{
+				"name": "admittedScript.script",
+				"type": "VideoCaptureScript",
+				"required": true
+			},
+			{
+				"name": "admittedScript.input",
+				"type": "VideoCaptureScriptInput",
+				"required": true
+			},
+			{
+				"name": "admittedScript.plan",
+				"type": "VideoCapturePlan",
+				"required": true
+			},
+			{
+				"name": "captureCheckpoint.script",
+				"type": "VideoCaptureScript",
+				"required": true
+			},
+			{
+				"name": "captureCheckpoint.target",
+				"type": "Pick<VideoCaptureScriptInput, 'clip' | 'viewport'>",
+				"required": true
+			},
+			{
+				"name": "captureCheckpoint.session",
+				"type": "NativeRecordingSession",
+				"required": true
+			},
+			{
+				"name": "captureCheckpoint.boundary",
+				"type": "'entry' | 'exit'",
+				"required": true
+			},
+			{
+				"name": "captureSelection.input",
+				"type": "VideoCaptureInput",
+				"required": true
+			},
+			{
+				"name": "captureSelection.references",
+				"type": "NonNullable<VideoCaptureServices['references']>",
+				"required": true
+			},
+			{
+				"name": "captureSelection.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "sameSlot.left",
+				"type": "Pick<VideoSlot, 'unit' | 'clipId' | 'viewport'>",
+				"required": true
+			},
+			{
+				"name": "sameSlot.right",
+				"type": "Pick<VideoSlot, 'unit' | 'clipId' | 'viewport'>",
+				"required": true
+			},
+			{
+				"name": "observedVideo.target",
+				"type": "VideoCaptureScriptInput",
+				"required": true
+			},
+			{
+				"name": "observedVideo.native",
+				"type": "NativeRecording",
+				"required": true
+			},
+			{
+				"name": "observedVideo.signatures",
+				"type": "{ entry?: string; exit?: string }",
+				"required": true
+			},
+			{
+				"name": "observedVideo.stem",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "validateVisits.target",
+				"type": "VideoCaptureScriptInput",
+				"required": true
+			},
+			{
+				"name": "validateVisits.video",
+				"type": "VideoCapture",
+				"required": true
+			},
+			{
+				"name": "validateVisits.duration",
+				"type": "number",
+				"required": true
+			}
+		],
 		"outputs": [
 			{
 				"name": "VideoCaptureService.run",
 				"type": "string"
+			},
+			{
+				"name": "VideoCaptureService.plan",
+				"type": "Promise<VideoCapturePlan>"
+			},
+			{
+				"name": "VideoCaptureService.record",
+				"type": "Promise<VideoCaptureResult>"
+			},
+			{
+				"name": "VideoCaptureService.acknowledge",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "VideoCaptureService.acknowledgeDirectory",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "captureBatch",
+				"type": "unknown"
+			},
+			{
+				"name": "captureContext",
+				"type": "VideoCaptureEnvironment | undefined"
+			},
+			{
+				"name": "convertedCapture",
+				"type": "ConvertedCapture"
+			},
+			{
+				"name": "captureDigest",
+				"type": "string"
+			},
+			{
+				"name": "captureFile",
+				"type": "Buffer"
+			},
+			{
+				"name": "captureText",
+				"type": "string"
+			},
+			{
+				"name": "videoBatchSidecar",
+				"type": "unknown"
+			},
+			{
+				"name": "captureProtocol",
+				"type": "unknown"
+			},
+			{
+				"name": "captureReceipt",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "captureReceiptStore",
+				"type": "VideoCaptureResult"
+			},
+			{
+				"name": "captureResult",
+				"type": "VideoCaptureResult"
+			},
+			{
+				"name": "captureRun",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "recordingAllowed",
+				"type": "void"
+			},
+			{
+				"name": "captureScriptInput",
+				"type": "VideoCaptureScriptInput"
+			},
+			{
+				"name": "admittedScript",
+				"type": "void"
+			},
+			{
+				"name": "captureCheckpoint",
+				"type": "Promise<string | undefined>"
+			},
+			{
+				"name": "captureSelection",
+				"type": "Promise<VideoCapturePlan>"
+			},
+			{
+				"name": "sameSlot",
+				"type": "boolean"
+			},
+			{
+				"name": "observedVideo",
+				"type": "VideoCapture"
+			},
+			{
+				"name": "validateVisits",
+				"type": "void"
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Source/context binding, recording authorization, explicit reviewer acknowledgements, observed checkpoints, visit admission, bounded media/metadata or attached raw cleanup receipt is invalid."
+			},
+			{
+				"name": "adapter or callback rejection",
+				"type": "thrown",
+				"description": "Git/LFS, bounded filesystem operations, native acquisition/encoding, or caller browser/script/diagnostics callbacks may reject; failed raw attempts remain available."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "VideoCaptureService.run",
@@ -33,12 +496,874 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VideoCaptureService.plan",
+				"inputs": [
+					{
+						"name": "VideoCaptureService.plan.input",
+						"type": "VideoCaptureInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoCaptureService.plan",
+						"type": "Promise<VideoCapturePlan>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Source/context binding, recording authorization, explicit reviewer acknowledgements, observed checkpoints, visit admission, bounded media/metadata or attached raw cleanup receipt is invalid."
+					},
+					{
+						"name": "adapter or callback rejection",
+						"type": "thrown",
+						"description": "Git/LFS, bounded filesystem operations, native acquisition/encoding, or caller browser/script/diagnostics callbacks may reject; failed raw attempts remain available."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VideoCaptureService.record",
+				"inputs": [
+					{
+						"name": "VideoCaptureService.record.input",
+						"type": "VideoCaptureOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoCaptureService.record",
+						"type": "Promise<VideoCaptureResult>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Source/context binding, recording authorization, explicit reviewer acknowledgements, observed checkpoints, visit admission, bounded media/metadata or attached raw cleanup receipt is invalid."
+					},
+					{
+						"name": "adapter or callback rejection",
+						"type": "thrown",
+						"description": "Git/LFS, bounded filesystem operations, native acquisition/encoding, or caller browser/script/diagnostics callbacks may reject; failed raw attempts remain available."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VideoCaptureService.acknowledge",
+				"inputs": [
+					{
+						"name": "VideoCaptureService.acknowledge.result",
+						"type": "VideoCaptureResult",
+						"required": true
+					},
+					{
+						"name": "VideoCaptureService.acknowledge.record",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoCaptureService.acknowledge",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Source/context binding, recording authorization, explicit reviewer acknowledgements, observed checkpoints, visit admission, bounded media/metadata or attached raw cleanup receipt is invalid."
+					},
+					{
+						"name": "adapter or callback rejection",
+						"type": "thrown",
+						"description": "Git/LFS, bounded filesystem operations, native acquisition/encoding, or caller browser/script/diagnostics callbacks may reject; failed raw attempts remain available."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VideoCaptureService.acknowledgeDirectory",
+				"inputs": [
+					{
+						"name": "VideoCaptureService.acknowledgeDirectory.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "VideoCaptureService.acknowledgeDirectory.record",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoCaptureService.acknowledgeDirectory",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Source/context binding, recording authorization, explicit reviewer acknowledgements, observed checkpoints, visit admission, bounded media/metadata or attached raw cleanup receipt is invalid."
+					},
+					{
+						"name": "adapter or callback rejection",
+						"type": "thrown",
+						"description": "Git/LFS, bounded filesystem operations, native acquisition/encoding, or caller browser/script/diagnostics callbacks may reject; failed raw attempts remain available."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "captureBatch",
+				"inputs": [
+					{
+						"name": "captureBatch.archive",
+						"type": "NonNullable<VideoCaptureServices['archive']>",
+						"required": true
+					},
+					{
+						"name": "captureBatch.protocol",
+						"type": "ReturnType<typeof captureProtocol>",
+						"required": true
+					},
+					{
+						"name": "captureBatch.result",
+						"type": "VideoCaptureResult",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "captureBatch",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Source/context binding, recording authorization, explicit reviewer acknowledgements, observed checkpoints, visit admission, bounded media/metadata or attached raw cleanup receipt is invalid."
+					},
+					{
+						"name": "adapter or callback rejection",
+						"type": "thrown",
+						"description": "Git/LFS, bounded filesystem operations, native acquisition/encoding, or caller browser/script/diagnostics callbacks may reject; failed raw attempts remain available."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "captureContext",
+				"inputs": [
+					{
+						"name": "captureContext.input",
+						"type": "VideoCaptureInput",
+						"required": true
+					},
+					{
+						"name": "captureContext.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "captureContext",
+						"type": "VideoCaptureEnvironment | undefined"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Source/context binding, recording authorization, explicit reviewer acknowledgements, observed checkpoints, visit admission, bounded media/metadata or attached raw cleanup receipt is invalid."
+					},
+					{
+						"name": "adapter or callback rejection",
+						"type": "thrown",
+						"description": "Git/LFS, bounded filesystem operations, native acquisition/encoding, or caller browser/script/diagnostics callbacks may reject; failed raw attempts remain available."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "convertedCapture",
+				"inputs": [
+					{
+						"name": "convertedCapture.input",
+						"type": "VideoCaptureInput",
+						"required": true
+					},
+					{
+						"name": "convertedCapture.target",
+						"type": "VideoCaptureScriptInput",
+						"required": true
+					},
+					{
+						"name": "convertedCapture.native",
+						"type": "NativeRecording",
+						"required": true
+					},
+					{
+						"name": "convertedCapture.context",
+						"type": "CaptureConversionContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "convertedCapture",
+						"type": "ConvertedCapture"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Source/context binding, recording authorization, explicit reviewer acknowledgements, observed checkpoints, visit admission, bounded media/metadata or attached raw cleanup receipt is invalid."
+					},
+					{
+						"name": "adapter or callback rejection",
+						"type": "thrown",
+						"description": "Git/LFS, bounded filesystem operations, native acquisition/encoding, or caller browser/script/diagnostics callbacks may reject; failed raw attempts remain available."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "captureDigest",
+				"inputs": [
+					{
+						"name": "captureDigest.bytes",
+						"type": "string | Buffer",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "captureDigest",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "captureFile",
+				"inputs": [
+					{
+						"name": "captureFile.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "captureFile.sha256",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "captureFile",
+						"type": "Buffer"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Source/context binding, recording authorization, explicit reviewer acknowledgements, observed checkpoints, visit admission, bounded media/metadata or attached raw cleanup receipt is invalid."
+					},
+					{
+						"name": "adapter or callback rejection",
+						"type": "thrown",
+						"description": "Git/LFS, bounded filesystem operations, native acquisition/encoding, or caller browser/script/diagnostics callbacks may reject; failed raw attempts remain available."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "captureText",
+				"inputs": [
+					{
+						"name": "captureText.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "captureText.maximum",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "captureText",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Source/context binding, recording authorization, explicit reviewer acknowledgements, observed checkpoints, visit admission, bounded media/metadata or attached raw cleanup receipt is invalid."
+					},
+					{
+						"name": "adapter or callback rejection",
+						"type": "thrown",
+						"description": "Git/LFS, bounded filesystem operations, native acquisition/encoding, or caller browser/script/diagnostics callbacks may reject; failed raw attempts remain available."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "captureProtocol",
+				"inputs": [
+					{
+						"name": "captureProtocol.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "captureProtocol",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Source/context binding, recording authorization, explicit reviewer acknowledgements, observed checkpoints, visit admission, bounded media/metadata or attached raw cleanup receipt is invalid."
+					},
+					{
+						"name": "adapter or callback rejection",
+						"type": "thrown",
+						"description": "Git/LFS, bounded filesystem operations, native acquisition/encoding, or caller browser/script/diagnostics callbacks may reject; failed raw attempts remain available."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "captureReceipt",
+				"inputs": [
+					{
+						"name": "captureReceipt.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "captureReceipt.result",
+						"type": "VideoCaptureResult",
+						"required": true
+					},
+					{
+						"name": "captureReceipt.record",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "captureReceipt.services",
+						"type": "VideoCaptureServices",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "captureReceipt",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Source/context binding, recording authorization, explicit reviewer acknowledgements, observed checkpoints, visit admission, bounded media/metadata or attached raw cleanup receipt is invalid."
+					},
+					{
+						"name": "adapter or callback rejection",
+						"type": "thrown",
+						"description": "Git/LFS, bounded filesystem operations, native acquisition/encoding, or caller browser/script/diagnostics callbacks may reject; failed raw attempts remain available."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "captureReceiptStore",
+				"inputs": [
+					{
+						"name": "captureReceiptStore.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "captureReceiptStore",
+						"type": "VideoCaptureResult"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Source/context binding, recording authorization, explicit reviewer acknowledgements, observed checkpoints, visit admission, bounded media/metadata or attached raw cleanup receipt is invalid."
+					},
+					{
+						"name": "adapter or callback rejection",
+						"type": "thrown",
+						"description": "Git/LFS, bounded filesystem operations, native acquisition/encoding, or caller browser/script/diagnostics callbacks may reject; failed raw attempts remain available."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "captureResult",
+				"inputs": [
+					{
+						"name": "captureResult.source",
+						"type": "VideoCaptureSource",
+						"required": true
+					},
+					{
+						"name": "captureResult.plan",
+						"type": "VideoCapturePlan",
+						"required": true
+					},
+					{
+						"name": "captureResult.protocol",
+						"type": "ReturnType<typeof captureProtocol>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "captureResult",
+						"type": "VideoCaptureResult"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Source/context binding, recording authorization, explicit reviewer acknowledgements, observed checkpoints, visit admission, bounded media/metadata or attached raw cleanup receipt is invalid."
+					},
+					{
+						"name": "adapter or callback rejection",
+						"type": "thrown",
+						"description": "Git/LFS, bounded filesystem operations, native acquisition/encoding, or caller browser/script/diagnostics callbacks may reject; failed raw attempts remain available."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "captureRun",
+				"inputs": [
+					{
+						"name": "captureRun.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "captureRun.options",
+						"type": "VideoCaptureOptions",
+						"required": true
+					},
+					{
+						"name": "captureRun.plan",
+						"type": "VideoCapturePlan",
+						"required": true
+					},
+					{
+						"name": "captureRun.context",
+						"type": "{ services: VideoCaptureServices; protocol: ReturnType<typeof captureProtocol>; result: VideoCaptureResult; }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "captureRun",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Source/context binding, recording authorization, explicit reviewer acknowledgements, observed checkpoints, visit admission, bounded media/metadata or attached raw cleanup receipt is invalid."
+					},
+					{
+						"name": "adapter or callback rejection",
+						"type": "thrown",
+						"description": "Git/LFS, bounded filesystem operations, native acquisition/encoding, or caller browser/script/diagnostics callbacks may reject; failed raw attempts remain available."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "recordingAllowed",
+				"inputs": [
+					{
+						"name": "recordingAllowed.input",
+						"type": "VideoCaptureInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordingAllowed",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Source/context binding, recording authorization, explicit reviewer acknowledgements, observed checkpoints, visit admission, bounded media/metadata or attached raw cleanup receipt is invalid."
+					},
+					{
+						"name": "adapter or callback rejection",
+						"type": "thrown",
+						"description": "Git/LFS, bounded filesystem operations, native acquisition/encoding, or caller browser/script/diagnostics callbacks may reject; failed raw attempts remain available."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "captureScriptInput",
+				"inputs": [
+					{
+						"name": "captureScriptInput.plan",
+						"type": "VideoCapturePlan",
+						"required": true
+					},
+					{
+						"name": "captureScriptInput.slot",
+						"type": "VideoCaptureScriptInput['slot']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "captureScriptInput",
+						"type": "VideoCaptureScriptInput"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "admittedScript",
+				"inputs": [
+					{
+						"name": "admittedScript.script",
+						"type": "VideoCaptureScript",
+						"required": true
+					},
+					{
+						"name": "admittedScript.input",
+						"type": "VideoCaptureScriptInput",
+						"required": true
+					},
+					{
+						"name": "admittedScript.plan",
+						"type": "VideoCapturePlan",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "admittedScript",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Source/context binding, recording authorization, explicit reviewer acknowledgements, observed checkpoints, visit admission, bounded media/metadata or attached raw cleanup receipt is invalid."
+					},
+					{
+						"name": "adapter or callback rejection",
+						"type": "thrown",
+						"description": "Git/LFS, bounded filesystem operations, native acquisition/encoding, or caller browser/script/diagnostics callbacks may reject; failed raw attempts remain available."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "captureCheckpoint",
+				"inputs": [
+					{
+						"name": "captureCheckpoint.script",
+						"type": "VideoCaptureScript",
+						"required": true
+					},
+					{
+						"name": "captureCheckpoint.target",
+						"type": "Pick<VideoCaptureScriptInput, 'clip' | 'viewport'>",
+						"required": true
+					},
+					{
+						"name": "captureCheckpoint.session",
+						"type": "NativeRecordingSession",
+						"required": true
+					},
+					{
+						"name": "captureCheckpoint.boundary",
+						"type": "'entry' | 'exit'",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "captureCheckpoint",
+						"type": "Promise<string | undefined>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Source/context binding, recording authorization, explicit reviewer acknowledgements, observed checkpoints, visit admission, bounded media/metadata or attached raw cleanup receipt is invalid."
+					},
+					{
+						"name": "adapter or callback rejection",
+						"type": "thrown",
+						"description": "Git/LFS, bounded filesystem operations, native acquisition/encoding, or caller browser/script/diagnostics callbacks may reject; failed raw attempts remain available."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "captureSelection",
+				"inputs": [
+					{
+						"name": "captureSelection.input",
+						"type": "VideoCaptureInput",
+						"required": true
+					},
+					{
+						"name": "captureSelection.references",
+						"type": "NonNullable<VideoCaptureServices['references']>",
+						"required": true
+					},
+					{
+						"name": "captureSelection.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "captureSelection",
+						"type": "Promise<VideoCapturePlan>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Source/context binding, recording authorization, explicit reviewer acknowledgements, observed checkpoints, visit admission, bounded media/metadata or attached raw cleanup receipt is invalid."
+					},
+					{
+						"name": "adapter or callback rejection",
+						"type": "thrown",
+						"description": "Git/LFS, bounded filesystem operations, native acquisition/encoding, or caller browser/script/diagnostics callbacks may reject; failed raw attempts remain available."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "sameSlot",
+				"inputs": [
+					{
+						"name": "sameSlot.left",
+						"type": "Pick<VideoSlot, 'unit' | 'clipId' | 'viewport'>",
+						"required": true
+					},
+					{
+						"name": "sameSlot.right",
+						"type": "Pick<VideoSlot, 'unit' | 'clipId' | 'viewport'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sameSlot",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "observedVideo",
+				"inputs": [
+					{
+						"name": "observedVideo.target",
+						"type": "VideoCaptureScriptInput",
+						"required": true
+					},
+					{
+						"name": "observedVideo.native",
+						"type": "NativeRecording",
+						"required": true
+					},
+					{
+						"name": "observedVideo.signatures",
+						"type": "{ entry?: string; exit?: string }",
+						"required": true
+					},
+					{
+						"name": "observedVideo.stem",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "observedVideo",
+						"type": "VideoCapture"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "validateVisits",
+				"inputs": [
+					{
+						"name": "validateVisits.target",
+						"type": "VideoCaptureScriptInput",
+						"required": true
+					},
+					{
+						"name": "validateVisits.video",
+						"type": "VideoCapture",
+						"required": true
+					},
+					{
+						"name": "validateVisits.duration",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateVisits",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Source/context binding, recording authorization, explicit reviewer acknowledgements, observed checkpoints, visit admission, bounded media/metadata or attached raw cleanup receipt is invalid."
+					},
+					{
+						"name": "adapter or callback rejection",
+						"type": "thrown",
+						"description": "Git/LFS, bounded filesystem operations, native acquisition/encoding, or caller browser/script/diagnostics callbacks may reject; failed raw attempts remain available."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
-		"initialization": []
+		"initialization": [
+			{
+				"name": "VideoCaptureService.constructor",
+				"inputs": [
+					{
+						"name": "VideoCaptureService.constructor.root",
+						"type": "string",
+						"required": false,
+						"default": "process.cwd()",
+						"description": "Original Git repository. Omission uses the current working directory, never the exported snapshot."
+					},
+					{
+						"name": "VideoCaptureService.constructor.services",
+						"type": "VideoCaptureServices",
+						"required": false,
+						"default": {},
+						"description": "Optional injected archive/reference/native collaborators. Omission creates the repository-owned production services."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoCaptureService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-evidence-video-clip-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verify-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-frame-flag",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-native-video-recorder",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-archive",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-reference",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/services/verification-evidence/VideoCaptureService.ts",
