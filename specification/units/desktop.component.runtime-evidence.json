@@ -38,26 +38,66 @@
 				"name": "RuntimeEvidence.entity",
 				"type": "EntityDetail",
 				"required": true,
-				"description": "Entity whose kind informs notices and category chooses panels. Pages/shells/components are visual; functions have no screenshot panel and scope behavior rows by identifier."
+				"description": "Entity metadata used by the view: kind is passed to evidenceNotice, category determines visual or headless presentation and link category, and id scopes RegressionProof and headless behavior. The component reads these values without changing the entity.",
+				"examples": [
+					{
+						"id": "desktop.component.runtime-evidence",
+						"category": "components",
+						"kind": "component",
+						"title": "Runtime evidence",
+						"summary": "What verification captured from running software; a planned design is never shown here.",
+						"changed": false,
+						"planned": false,
+						"hasPlan": false,
+						"lifecycle": "active",
+						"verification": "unknown",
+						"verificationNote": "",
+						"latestVersion": null,
+						"approvedVersion": null,
+						"threadCount": 0,
+						"thumbnail": null,
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"hash": null
+						},
+						"relationships": [],
+						"versions": [],
+						"threads": [],
+						"history": [],
+						"sources": [
+							"packages/desktop/src/components/verification-evidence/RuntimeEvidence.svelte"
+						],
+						"size": {
+							"available": false,
+							"text": ""
+						},
+						"performance": {
+							"available": false,
+							"text": ""
+						}
+					}
+				]
 			},
 			{
 				"name": "RuntimeEvidence.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace supplying offline status and cache timestamp for the saved-copy warning."
+				"description": "Workspace used for optional offline cache labeling and commit-scoped proof links. Its link and navigate methods are used by RegressionProof navigation; when offline.cachedAt is present, the panel labels the copy as saved and not server-checked."
 			},
 			{
 				"name": "RuntimeEvidence.evidence",
 				"type": "EntityEvidence",
 				"required": true,
-				"description": "State whose ready result feeds the panels and whose status/error feeds notices. A notice takes precedence over results."
+				"description": "Evidence state whose status selects a result only for ready, while status and error are passed with entity.kind to evidenceNotice. A ready result feeds RegressionProof; the additional runtime panels render only when there is no notice."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RuntimeEvidence",
 				"type": "markup",
-				"description": "Runtime section identifying current tip or commit/parent. Labels offline content as saved and not server-checked. Shows screenshots for non-functions that are visual or declare screen options; behavior for nonvisual entities or existing behavior rows; audio when appropriate. Uses recorded runtime evidence, not proposed designs. A loaded record shows its shared regression proof or its genuine empty result. Planned, pending, failed and unavailable reads show their status notice without a premature empty-proof verdict. States: idle: No evidence read is active and the panel waits for a selected evidence context. loading: The evidence panel shows the in-progress read notice."
+				"description": "The component's markup is a recorded-runtime-evidence section; a ready result shows current/commit scope and RegressionProof, while an offline workspace labels the copy as saved and not server-checked, adding its cache time when available. A notice takes precedence over audio, screens, and behavior; without a notice, audio renders for every ready result, screens render for non-functions that are visual or have screen options, and behavior renders for nonvisual entities or when behavior rows exist."
 			}
 		],
 		"errors": [],
