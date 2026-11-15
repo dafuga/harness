@@ -1,6 +1,6 @@
 // @harness-uid u_ob4stlw5fp
 import type { Query, ApiFailure, BrowserApi } from '../utils/browserApi';
-import { hostedResponse } from '$desktop/utils/hostedResponse';
+import { hostedResponse } from '$desktop/utils/networking-security/hostedResponse';
 import { artifactLimit } from '$desktop/utils/reports-media/artifactMedia';
 import { browserError } from '../utils/browserError';
 

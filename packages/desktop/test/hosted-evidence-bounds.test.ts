@@ -1,6 +1,6 @@
 import { measureWorkload } from '../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
-import { hostedResponse } from '../src/utils/hostedResponse';
+import { hostedResponse } from '../src/utils/networking-security/hostedResponse';
 import { hostedArtifact } from '../src/adapters/explorer-ui/browser-project-adapter/hostedArtifact';
 import { artifactLimit } from '../src/utils/reports-media/artifactMedia';
 import { HostedEvidenceValidator } from '../src/validators/HostedEvidenceValidator';
