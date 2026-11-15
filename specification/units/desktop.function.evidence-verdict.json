@@ -22,29 +22,79 @@
 				"name": "evidenceVerdict.read",
 				"type": "EvidenceRead",
 				"required": true,
-				"description": "The evidence read state, optional result and failure text. Idle and planned states use the catalog judgment; loading, unavailable and failed reads produce an unknown judgment with an explanation."
+				"description": "The evidence read state: its status (idle, planned, unavailable, loading, ready or failed), the entity's evidence result (null when there is none) and the backend's error text, which matters only for a failed read. Idle and planned reads repeat the catalog verification and note, loading, unavailable and failed reads give an unknown verdict that says why, and a ready read is judged only from a result whose after side is at the displayed commit.",
+				"examples": [
+					{
+						"status": "idle",
+						"result": null,
+						"error": ""
+					},
+					{
+						"status": "unavailable",
+						"result": null,
+						"error": ""
+					},
+					{
+						"status": "failed",
+						"result": null,
+						"error": "evidence store responded with status 503"
+					}
+				]
 			},
 			{
 				"name": "evidenceVerdict.entity",
 				"type": "Judged",
 				"required": true,
-				"description": "The entity identity and kind, plus its catalog verification status and note. The identity selects the unit within the evidence; the catalog status is used only before an evidence judgment is available."
+				"description": "The entity's id selects its unit within the evidence, and its catalog verification and verificationNote are the verdict only for an idle or planned read. The kind is passed along but never changes the verdict.",
+				"examples": [
+					{
+						"id": "desktop.function.evidence-verdict",
+						"kind": "function",
+						"verification": "unknown",
+						"verificationNote": "No complete verification for this entity at this commit has been loaded."
+					},
+					{
+						"id": "reports.function.explorer-verdict",
+						"kind": "function",
+						"verification": "unknown",
+						"verificationNote": "No complete verification for this entity at this commit has been loaded."
+					}
+				]
 			},
 			{
 				"name": "evidenceVerdict.commit",
 				"type": "string",
 				"required": true,
-				"description": "The displayed commit to compare with the after side of the evidence. Evidence for another commit produces an unknown judgment."
+				"description": "The displayed commit, which the after side of a ready read's evidence must name exactly. Evidence that names another commit, or has no after side, gives an unknown verdict whose reason is the text Reading recorded evidence…, and the commit is not compared for idle, planned, loading, unavailable or failed reads.",
+				"examples": [
+					"a41d7e9c02b6f35e8d1a4c7b90e2f6d3c5a8b174",
+					"7c2e0f48d91b6a35e0c4f7d2b8a91e6c3f05d4b2"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "evidenceVerdict",
 				"type": "EntityVerdict",
-				"description": "A status and readable reason. Idle or planned reads repeat the catalog status and note. Otherwise missing, unreadable, mismatched or unrecorded evidence is unknown. A matching side with the entity and a verification record uses the reports verdict: verified when it passes, failed otherwise, with its reasons."
+				"description": "The standing of the entity at the displayed commit: a status (verified, failed, unverified or unknown) and a readable reason. Idle and planned reads repeat the catalog status and note; loading, unavailable and failed reads, evidence with no after side or with another commit, a side that does not hold the entity and a side with no verification record give unknown; a side that holds the entity and its record gives the reports verdict, verified when it passes and failed otherwise, with its label and reasons.",
+				"examples": [
+					{
+						"status": "verified",
+						"reason": "Full coverage passed"
+					},
+					{
+						"status": "failed",
+						"reason": "Verification failed: The tests gate of the record failed."
+					},
+					{
+						"status": "unknown",
+						"reason": "Evidence missing: No verification record is attached to this commit."
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "evidenceVerdict",
@@ -53,30 +103,79 @@
 						"name": "evidenceVerdict.read",
 						"type": "EvidenceRead",
 						"required": true,
-						"description": "The evidence read state, optional result and failure text. Idle and planned states use the catalog judgment; loading, unavailable and failed reads produce an unknown judgment with an explanation."
+						"description": "The evidence read state: its status (idle, planned, unavailable, loading, ready or failed), the entity's evidence result (null when there is none) and the backend's error text, which matters only for a failed read. Idle and planned reads repeat the catalog verification and note, loading, unavailable and failed reads give an unknown verdict that says why, and a ready read is judged only from a result whose after side is at the displayed commit.",
+						"examples": [
+							{
+								"status": "idle",
+								"result": null,
+								"error": ""
+							},
+							{
+								"status": "unavailable",
+								"result": null,
+								"error": ""
+							},
+							{
+								"status": "failed",
+								"result": null,
+								"error": "evidence store responded with status 503"
+							}
+						]
 					},
 					{
 						"name": "evidenceVerdict.entity",
 						"type": "Judged",
 						"required": true,
-						"description": "The entity identity and kind, plus its catalog verification status and note. The identity selects the unit within the evidence; the catalog status is used only before an evidence judgment is available."
+						"description": "The entity's id selects its unit within the evidence, and its catalog verification and verificationNote are the verdict only for an idle or planned read. The kind is passed along but never changes the verdict.",
+						"examples": [
+							{
+								"id": "desktop.function.evidence-verdict",
+								"kind": "function",
+								"verification": "unknown",
+								"verificationNote": "No complete verification for this entity at this commit has been loaded."
+							},
+							{
+								"id": "reports.function.explorer-verdict",
+								"kind": "function",
+								"verification": "unknown",
+								"verificationNote": "No complete verification for this entity at this commit has been loaded."
+							}
+						]
 					},
 					{
 						"name": "evidenceVerdict.commit",
 						"type": "string",
 						"required": true,
-						"description": "The displayed commit to compare with the after side of the evidence. Evidence for another commit produces an unknown judgment."
+						"description": "The displayed commit, which the after side of a ready read's evidence must name exactly. Evidence that names another commit, or has no after side, gives an unknown verdict whose reason is the text Reading recorded evidence…, and the commit is not compared for idle, planned, loading, unavailable or failed reads.",
+						"examples": [
+							"a41d7e9c02b6f35e8d1a4c7b90e2f6d3c5a8b174",
+							"7c2e0f48d91b6a35e0c4f7d2b8a91e6c3f05d4b2"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "evidenceVerdict",
 						"type": "EntityVerdict",
-						"description": "A status and readable reason. Idle or planned reads repeat the catalog status and note. Otherwise missing, unreadable, mismatched or unrecorded evidence is unknown. A matching side with the entity and a verification record uses the reports verdict: verified when it passes, failed otherwise, with its reasons."
+						"description": "The standing of the entity at the displayed commit: a status (verified, failed, unverified or unknown) and a readable reason. Idle and planned reads repeat the catalog status and note; loading, unavailable and failed reads, evidence with no after side or with another commit, a side that does not hold the entity and a side with no verification record give unknown; a side that holds the entity and its record gives the reports verdict, verified when it passes and failed otherwise, with its label and reasons.",
+						"examples": [
+							{
+								"status": "verified",
+								"reason": "Full coverage passed"
+							},
+							{
+								"status": "failed",
+								"reason": "Verification failed: The tests gate of the record failed."
+							},
+							{
+								"status": "unknown",
+								"reason": "Evidence missing: No verification record is attached to this commit."
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
