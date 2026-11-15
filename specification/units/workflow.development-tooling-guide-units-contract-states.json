@@ -18,46 +18,243 @@
 				"name": "contractStates.contract",
 				"type": "ComponentManifest['contract']",
 				"required": true,
-				"description": "Validated stored contract containing inputs, outputs, errors, callable operations and snippets."
+				"description": "The stored contract of one unit, which the function only reads: its top-level inputs drive the prop-based guesses, and the names and descriptions of all inputs, outputs and errors, including each operation's, feed the keyword scan. An absent operations list counts as none.",
+				"examples": [
+					{
+						"origin": "declared",
+						"inputs": [
+							{
+								"name": "unitStateName.entity",
+								"type": "string",
+								"required": true
+							},
+							{
+								"name": "unitStateName.state",
+								"type": "string",
+								"required": true
+							}
+						],
+						"outputs": [
+							{
+								"name": "unitStateName",
+								"type": "string"
+							}
+						],
+						"errors": [],
+						"errorStatus": "none-found",
+						"operations": [
+							{
+								"name": "unitStateName",
+								"inputs": [
+									{
+										"name": "unitStateName.entity",
+										"type": "string",
+										"required": true
+									},
+									{
+										"name": "unitStateName.state",
+										"type": "string",
+										"required": true
+									}
+								],
+								"outputs": [
+									{
+										"name": "unitStateName",
+										"type": "string"
+									}
+								],
+								"errors": [],
+								"errorStatus": "declared"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "mergeUnitStates.groups",
 				"type": "UnitState[][]",
 				"required": true,
-				"description": "Ordered state groups to merge; declarations upgrade guesses while preserving first occurrence and distinct reasons."
+				"description": "The ordered UnitState arrays to merge: they are flattened into one sequence and merged by name, so a REQUIRED entry in any group upgrades a GUESS of the same name. Empty groups add nothing, and the input objects are not mutated.",
+				"examples": [
+					[
+						[
+							{
+								"name": "empty-entity",
+								"origin": "GUESS",
+								"reasons": ["Prop unitStateName.entity (string)."]
+							},
+							{
+								"name": "empty-state",
+								"origin": "GUESS",
+								"reasons": ["Prop unitStateName.state (string)."]
+							}
+						],
+						[
+							{
+								"name": "loading",
+								"origin": "REQUIRED",
+								"reasons": ["Prop Panel.status ('loading' | 'ready')."]
+							},
+							{
+								"name": "empty-state",
+								"origin": "GUESS",
+								"reasons": ["Contract mentions empty."]
+							}
+						]
+					],
+					[
+						[
+							{
+								"name": "empty-entity",
+								"origin": "GUESS",
+								"reasons": ["Prop unitStateName.entity (string)."]
+							},
+							{
+								"name": "empty-state",
+								"origin": "GUESS",
+								"reasons": ["Prop unitStateName.state (string)."]
+							}
+						],
+						[
+							{
+								"name": "groups-none",
+								"origin": "GUESS",
+								"reasons": ["Prop mergeUnitStates.groups (UnitState[][])."]
+							},
+							{
+								"name": "groups-one",
+								"origin": "GUESS",
+								"reasons": ["Prop mergeUnitStates.groups (UnitState[][])."]
+							},
+							{
+								"name": "groups-many",
+								"origin": "GUESS",
+								"reasons": ["Prop mergeUnitStates.groups (UnitState[][])."]
+							}
+						]
+					]
+				]
 			},
 			{
 				"name": "unitStateName.entity",
 				"type": "string",
 				"required": true,
-				"description": "Exact registered entity identity; a catalog slot prefix for this identity alone can be removed."
+				"description": "The entity identity whose every dot becomes a dash to form its catalog slot prefix, so workflow.development-tooling-guide-units-contract-states gives workflow-development-tooling-guide-units-contract-states. Only that exact prefix is removed from a state, so another entity's catalog slot is returned unchanged.",
+				"examples": [
+					"workflow.development-tooling-guide-units-contract-states",
+					"function.unit-types",
+					"workflow.development-tooling-guide-units"
+				]
 			},
 			{
 				"name": "unitStateName.state",
 				"type": "string",
 				"required": true,
-				"description": "Exact state or catalog slot to attribute; comparisons remain scoped to the selected entity."
+				"description": "The state name or full catalog slot to attribute: the bare prefix or an empty string means 'default', a slot starting with the entity prefix and a dash has that prefix and dash removed, and any other value is returned as given. Matching is exact and case-sensitive, and it only ever uses the selected entity's prefix.",
+				"examples": [
+					"loading",
+					"workflow-development-tooling-guide-units-contract-states-empty",
+					"workflow-development-tooling-guide-units-contract-states"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "contractStates",
 				"type": "UnitState[]",
-				"description": "Named literal-union declarations and guessed optional-presence, empty, loading, error, disabled and collection boundaries, with reasons."
+				"description": "One UnitState per distinct name, in discovery order: quoted literal members of input types are REQUIRED, while optional-presence states for inputs with required false, empty-string states for string-typed inputs, collection sizes, disabled and show-flag states, and keyword or collection states from item names and descriptions are GUESS. Each name is kept once, with the origin and single reason of its first match, so later duplicates are dropped rather than merged.",
+				"examples": [
+					[
+						{
+							"name": "empty-entity",
+							"origin": "GUESS",
+							"reasons": ["Prop unitStateName.entity (string)."]
+						},
+						{
+							"name": "empty-state",
+							"origin": "GUESS",
+							"reasons": ["Prop unitStateName.state (string)."]
+						}
+					],
+					[
+						{
+							"name": "groups-none",
+							"origin": "GUESS",
+							"reasons": ["Prop mergeUnitStates.groups (UnitState[][])."]
+						},
+						{
+							"name": "groups-one",
+							"origin": "GUESS",
+							"reasons": ["Prop mergeUnitStates.groups (UnitState[][])."]
+						},
+						{
+							"name": "groups-many",
+							"origin": "GUESS",
+							"reasons": ["Prop mergeUnitStates.groups (UnitState[][])."]
+						}
+					]
+				]
 			},
 			{
 				"name": "mergeUnitStates",
 				"type": "UnitState[]",
-				"description": "Stable first-seen states, with REQUIRED taking precedence and all distinct reasons preserved."
+				"description": "The merged UnitState list in first-seen name order, where a name is REQUIRED if any occurrence is REQUIRED and GUESS otherwise. Its reasons are every distinct reason from all occurrences, in encounter order.",
+				"examples": [
+					[
+						{
+							"name": "empty-entity",
+							"origin": "GUESS",
+							"reasons": ["Prop unitStateName.entity (string)."]
+						},
+						{
+							"name": "empty-state",
+							"origin": "GUESS",
+							"reasons": ["Prop unitStateName.state (string).", "Contract mentions empty."]
+						},
+						{
+							"name": "loading",
+							"origin": "REQUIRED",
+							"reasons": ["Prop Panel.status ('loading' | 'ready')."]
+						}
+					],
+					[
+						{
+							"name": "empty-entity",
+							"origin": "GUESS",
+							"reasons": ["Prop unitStateName.entity (string)."]
+						},
+						{
+							"name": "empty-state",
+							"origin": "GUESS",
+							"reasons": ["Prop unitStateName.state (string)."]
+						},
+						{
+							"name": "groups-none",
+							"origin": "GUESS",
+							"reasons": ["Prop mergeUnitStates.groups (UnitState[][])."]
+						},
+						{
+							"name": "groups-one",
+							"origin": "GUESS",
+							"reasons": ["Prop mergeUnitStates.groups (UnitState[][])."]
+						},
+						{
+							"name": "groups-many",
+							"origin": "GUESS",
+							"reasons": ["Prop mergeUnitStates.groups (UnitState[][])."]
+						}
+					]
+				]
 			},
 			{
 				"name": "unitStateName",
 				"type": "string",
-				"description": "State name with only this entity exact catalog prefix removed; its bare prefix or empty string denotes default."
+				"description": "The state name with this entity's exact catalog prefix and the following dash removed, or 'default' when the state is the bare prefix or an empty string. A state without that exact prefix is returned unchanged, and the prefix followed by only a dash yields an empty string.",
+				"examples": ["loading", "default", "function-unit-types-error"]
 			}
 		],
 		"errors": [],
-		"errorStatus": "declared",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "contractStates",
@@ -66,14 +263,95 @@
 						"name": "contractStates.contract",
 						"type": "ComponentManifest['contract']",
 						"required": true,
-						"description": "Validated stored contract containing inputs, outputs, errors, callable operations and snippets."
+						"description": "The stored contract of one unit, which the function only reads: its top-level inputs drive the prop-based guesses, and the names and descriptions of all inputs, outputs and errors, including each operation's, feed the keyword scan. An absent operations list counts as none.",
+						"examples": [
+							{
+								"origin": "declared",
+								"inputs": [
+									{
+										"name": "unitStateName.entity",
+										"type": "string",
+										"required": true
+									},
+									{
+										"name": "unitStateName.state",
+										"type": "string",
+										"required": true
+									}
+								],
+								"outputs": [
+									{
+										"name": "unitStateName",
+										"type": "string"
+									}
+								],
+								"errors": [],
+								"errorStatus": "none-found",
+								"operations": [
+									{
+										"name": "unitStateName",
+										"inputs": [
+											{
+												"name": "unitStateName.entity",
+												"type": "string",
+												"required": true
+											},
+											{
+												"name": "unitStateName.state",
+												"type": "string",
+												"required": true
+											}
+										],
+										"outputs": [
+											{
+												"name": "unitStateName",
+												"type": "string"
+											}
+										],
+										"errors": [],
+										"errorStatus": "declared"
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "contractStates",
 						"type": "UnitState[]",
-						"description": "Named literal-union declarations and guessed optional-presence, empty, loading, error, disabled and collection boundaries, with reasons."
+						"description": "One UnitState per distinct name, in discovery order: quoted literal members of input types are REQUIRED, while optional-presence states for inputs with required false, empty-string states for string-typed inputs, collection sizes, disabled and show-flag states, and keyword or collection states from item names and descriptions are GUESS. Each name is kept once, with the origin and single reason of its first match, so later duplicates are dropped rather than merged.",
+						"examples": [
+							[
+								{
+									"name": "empty-entity",
+									"origin": "GUESS",
+									"reasons": ["Prop unitStateName.entity (string)."]
+								},
+								{
+									"name": "empty-state",
+									"origin": "GUESS",
+									"reasons": ["Prop unitStateName.state (string)."]
+								}
+							],
+							[
+								{
+									"name": "groups-none",
+									"origin": "GUESS",
+									"reasons": ["Prop mergeUnitStates.groups (UnitState[][])."]
+								},
+								{
+									"name": "groups-one",
+									"origin": "GUESS",
+									"reasons": ["Prop mergeUnitStates.groups (UnitState[][])."]
+								},
+								{
+									"name": "groups-many",
+									"origin": "GUESS",
+									"reasons": ["Prop mergeUnitStates.groups (UnitState[][])."]
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
@@ -86,14 +364,119 @@
 						"name": "mergeUnitStates.groups",
 						"type": "UnitState[][]",
 						"required": true,
-						"description": "Ordered state groups to merge; declarations upgrade guesses while preserving first occurrence and distinct reasons."
+						"description": "The ordered UnitState arrays to merge: they are flattened into one sequence and merged by name, so a REQUIRED entry in any group upgrades a GUESS of the same name. Empty groups add nothing, and the input objects are not mutated.",
+						"examples": [
+							[
+								[
+									{
+										"name": "empty-entity",
+										"origin": "GUESS",
+										"reasons": ["Prop unitStateName.entity (string)."]
+									},
+									{
+										"name": "empty-state",
+										"origin": "GUESS",
+										"reasons": ["Prop unitStateName.state (string)."]
+									}
+								],
+								[
+									{
+										"name": "loading",
+										"origin": "REQUIRED",
+										"reasons": ["Prop Panel.status ('loading' | 'ready')."]
+									},
+									{
+										"name": "empty-state",
+										"origin": "GUESS",
+										"reasons": ["Contract mentions empty."]
+									}
+								]
+							],
+							[
+								[
+									{
+										"name": "empty-entity",
+										"origin": "GUESS",
+										"reasons": ["Prop unitStateName.entity (string)."]
+									},
+									{
+										"name": "empty-state",
+										"origin": "GUESS",
+										"reasons": ["Prop unitStateName.state (string)."]
+									}
+								],
+								[
+									{
+										"name": "groups-none",
+										"origin": "GUESS",
+										"reasons": ["Prop mergeUnitStates.groups (UnitState[][])."]
+									},
+									{
+										"name": "groups-one",
+										"origin": "GUESS",
+										"reasons": ["Prop mergeUnitStates.groups (UnitState[][])."]
+									},
+									{
+										"name": "groups-many",
+										"origin": "GUESS",
+										"reasons": ["Prop mergeUnitStates.groups (UnitState[][])."]
+									}
+								]
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "mergeUnitStates",
 						"type": "UnitState[]",
-						"description": "Stable first-seen states, with REQUIRED taking precedence and all distinct reasons preserved."
+						"description": "The merged UnitState list in first-seen name order, where a name is REQUIRED if any occurrence is REQUIRED and GUESS otherwise. Its reasons are every distinct reason from all occurrences, in encounter order.",
+						"examples": [
+							[
+								{
+									"name": "empty-entity",
+									"origin": "GUESS",
+									"reasons": ["Prop unitStateName.entity (string)."]
+								},
+								{
+									"name": "empty-state",
+									"origin": "GUESS",
+									"reasons": ["Prop unitStateName.state (string).", "Contract mentions empty."]
+								},
+								{
+									"name": "loading",
+									"origin": "REQUIRED",
+									"reasons": ["Prop Panel.status ('loading' | 'ready')."]
+								}
+							],
+							[
+								{
+									"name": "empty-entity",
+									"origin": "GUESS",
+									"reasons": ["Prop unitStateName.entity (string)."]
+								},
+								{
+									"name": "empty-state",
+									"origin": "GUESS",
+									"reasons": ["Prop unitStateName.state (string)."]
+								},
+								{
+									"name": "groups-none",
+									"origin": "GUESS",
+									"reasons": ["Prop mergeUnitStates.groups (UnitState[][])."]
+								},
+								{
+									"name": "groups-one",
+									"origin": "GUESS",
+									"reasons": ["Prop mergeUnitStates.groups (UnitState[][])."]
+								},
+								{
+									"name": "groups-many",
+									"origin": "GUESS",
+									"reasons": ["Prop mergeUnitStates.groups (UnitState[][])."]
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
@@ -106,20 +489,31 @@
 						"name": "unitStateName.entity",
 						"type": "string",
 						"required": true,
-						"description": "Exact registered entity identity; a catalog slot prefix for this identity alone can be removed."
+						"description": "The entity identity whose every dot becomes a dash to form its catalog slot prefix, so workflow.development-tooling-guide-units-contract-states gives workflow-development-tooling-guide-units-contract-states. Only that exact prefix is removed from a state, so another entity's catalog slot is returned unchanged.",
+						"examples": [
+							"workflow.development-tooling-guide-units-contract-states",
+							"function.unit-types",
+							"workflow.development-tooling-guide-units"
+						]
 					},
 					{
 						"name": "unitStateName.state",
 						"type": "string",
 						"required": true,
-						"description": "Exact state or catalog slot to attribute; comparisons remain scoped to the selected entity."
+						"description": "The state name or full catalog slot to attribute: the bare prefix or an empty string means 'default', a slot starting with the entity prefix and a dash has that prefix and dash removed, and any other value is returned as given. Matching is exact and case-sensitive, and it only ever uses the selected entity's prefix.",
+						"examples": [
+							"loading",
+							"workflow-development-tooling-guide-units-contract-states-empty",
+							"workflow-development-tooling-guide-units-contract-states"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "unitStateName",
 						"type": "string",
-						"description": "State name with only this entity exact catalog prefix removed; its bare prefix or empty string denotes default."
+						"description": "The state name with this entity's exact catalog prefix and the following dash removed, or 'default' when the state is the bare prefix or an empty string. A state without that exact prefix is returned unchanged, and the prefix followed by only a dash yields an empty string.",
+						"examples": ["loading", "default", "function-unit-types-error"]
 					}
 				],
 				"errors": [],
