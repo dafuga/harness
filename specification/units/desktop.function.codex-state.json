@@ -20,29 +20,53 @@
 				"name": "codexState.command",
 				"type": "CliCommand",
 				"required": true,
-				"description": "The Codex executable and initial arguments used for a version check with a ten-second timeout."
+				"description": "The executable name or path and initial arguments used for Codex's version probe. codexState appends --version to args and invokes cliProcess with a 10,000 ms timeout.",
+				"examples": [
+					{
+						"command": "codex",
+						"args": []
+					}
+				]
 			},
 			{
 				"name": "codexState.server",
 				"type": "CliCommand",
 				"required": true,
-				"description": "The app-server executable and arguments used to query the account, first model-list page and provider capabilities."
+				"description": "The executable name or path and arguments used to start the Codex app-server. This command is passed to codexRpc for the account, model-list and capability requests.",
+				"examples": [
+					{
+						"command": "codex",
+						"args": ["app-server", "--stdio", "-c", "model_provider=\"openai\""]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "codexState",
 				"type": "Promise<ProviderState>",
-				"description": "A promise for Codex availability, version, model choices and image-generation support. Requires a ChatGPT account; account reading does not request token refresh. Successful discovery reports the server’s model list and image-generation capability. Failure returns unavailable with a reason and no models; the connection is disposed."
+				"description": "The promise resolves to Codex's ProviderState, including availability, a nullable trimmed CLI version, model choices and image-generation capability; the model request asks for up to 100 records. If discovery fails or the account is not ChatGPT, it resolves unavailable with a reason, empty models and imageGeneration false rather than rejecting.",
+				"examples": [
+					{
+						"id": "codex",
+						"label": "Codex CLI",
+						"available": false,
+						"reason": "Codex CLI unavailable.",
+						"version": null,
+						"imageGeneration": false,
+						"models": []
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "The ChatGPT sign-in requirement can produce an Error internally, but discovery errors are caught and their message is returned as the unavailable reason."
+				"description": "codexState throws Error('Sign in to Codex CLI with a ChatGPT subscription.') when account/read does not report type chatgpt. The enclosing catch returns the error message as the unavailable state's reason instead of rejecting."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "codexState",
@@ -51,29 +75,53 @@
 						"name": "codexState.command",
 						"type": "CliCommand",
 						"required": true,
-						"description": "The Codex executable and initial arguments used for a version check with a ten-second timeout."
+						"description": "The executable name or path and initial arguments used for Codex's version probe. codexState appends --version to args and invokes cliProcess with a 10,000 ms timeout.",
+						"examples": [
+							{
+								"command": "codex",
+								"args": []
+							}
+						]
 					},
 					{
 						"name": "codexState.server",
 						"type": "CliCommand",
 						"required": true,
-						"description": "The app-server executable and arguments used to query the account, first model-list page and provider capabilities."
+						"description": "The executable name or path and arguments used to start the Codex app-server. This command is passed to codexRpc for the account, model-list and capability requests.",
+						"examples": [
+							{
+								"command": "codex",
+								"args": ["app-server", "--stdio", "-c", "model_provider=\"openai\""]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "codexState",
 						"type": "Promise<ProviderState>",
-						"description": "A promise for Codex availability, version, model choices and image-generation support. Requires a ChatGPT account; account reading does not request token refresh. Successful discovery reports the server’s model list and image-generation capability. Failure returns unavailable with a reason and no models; the connection is disposed."
+						"description": "The promise resolves to Codex's ProviderState, including availability, a nullable trimmed CLI version, model choices and image-generation capability; the model request asks for up to 100 records. If discovery fails or the account is not ChatGPT, it resolves unavailable with a reason, empty models and imageGeneration false rather than rejecting.",
+						"examples": [
+							{
+								"id": "codex",
+								"label": "Codex CLI",
+								"available": false,
+								"reason": "Codex CLI unavailable.",
+								"version": null,
+								"imageGeneration": false,
+								"models": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "codexState throws Error('Sign in to Codex CLI with a ChatGPT subscription.') when account/read does not report type chatgpt. The enclosing catch returns the error message as the unavailable state's reason instead of rejecting."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
