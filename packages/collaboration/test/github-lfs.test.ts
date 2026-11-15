@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import { githubLfs } from '../src/utils/create-git-hub-source/githubLfs';
 import { digest } from '../src/utils/parseCollaborationInput';
 import { sourceRepository } from './githubFixture';
-import type { GitHubOptions } from '../src/models/Collaboration.types';
+import type { GitHubOptions } from '../src/models/planning-collaboration/Collaboration.types';
 test('LFS batch download checks SHA and size, never forwards installation secret to signed storage', async () => {
 	const bytes = new TextEncoder().encode('synthetic binary fixture');
 	const oid = await digest(bytes),

@@ -10,7 +10,7 @@ import type {
 	AddCommentInput,
 	CacheIdentity,
 	CommittedThread
-} from '../../../../collaboration/src/models/Collaboration.types';
+} from '../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import type {
 	EntityQuery,
 	ImageQuery,

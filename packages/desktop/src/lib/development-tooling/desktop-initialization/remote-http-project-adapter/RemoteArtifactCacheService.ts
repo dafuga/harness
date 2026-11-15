@@ -1,6 +1,6 @@
 // @harness-uid u_pusbp2fy7z
 import type { Query, Media } from './RemoteArtifactCacheService.types';
-import type { CacheIdentity } from '../../../../../../collaboration/src/models/Collaboration.types';
+import type { CacheIdentity } from '../../../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import { HostedArtifactValidator } from '../../../../validators/development-tooling/HostedArtifactValidator';
 import { artifactLimit } from '../../../../utils/reports-media/artifactMedia';
 import type { HostedReadService } from '../../../../services/development-tooling/HostedReadService';

@@ -2,7 +2,7 @@ import { mkdtemp, readdir, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import type { CacheIdentity } from '../../../collaboration/src/models/Collaboration.types';
+import type { CacheIdentity } from '../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import type { CacheStatus } from '../../src/models/ProjectContext.types';
 import { HostedReadService } from '../../src/services/HostedReadService';
 import { ProjectionCacheService } from '../../src/services/projection-cache-service/ProjectionCacheService';

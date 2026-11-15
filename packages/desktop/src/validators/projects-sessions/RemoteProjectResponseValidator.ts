@@ -2,7 +2,7 @@
 import type {
 	AddCommentInput,
 	CommittedThread
-} from '../../../../collaboration/src/models/Collaboration.types';
+} from '../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import type { DesktopProject } from '../../models/projects-sessions/ProjectContext.types';
 import type {
 	EntityDetail,

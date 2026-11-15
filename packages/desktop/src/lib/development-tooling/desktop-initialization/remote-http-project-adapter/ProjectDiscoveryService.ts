@@ -1,7 +1,7 @@
 // @harness-uid u_gegtad6hae
 import type { SnapshotPort, HeldDiscovery } from './ProjectDiscoveryService.types';
 import { createHash } from 'node:crypto';
-import type { CacheIdentity } from '../../../../../../collaboration/src/models/Collaboration.types';
+import type { CacheIdentity } from '../../../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import type { DesktopProject } from '../../../../models/projects-sessions/ProjectContext.types';
 import type {
 	HostedHttpAdapter,

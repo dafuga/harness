@@ -3,7 +3,7 @@ import { createGitHubSource } from '../src/utils/create-git-hub-source/createGit
 import { digest } from '../src/utils/parseCollaborationInput';
 import { base64 } from '../src/utils/githubTransport';
 import { anchor, sourceRepository } from './githubFixture';
-import type { GitHubOptions } from '../src/models/Collaboration.types';
+import type { GitHubOptions } from '../src/models/planning-collaboration/Collaboration.types';
 const canonical = {
 	schemaVersion: 1,
 	id: anchor.entityId,

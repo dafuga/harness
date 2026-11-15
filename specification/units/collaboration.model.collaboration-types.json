@@ -8,10 +8,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/collaboration/src/models/Collaboration.types.ts",
-			"packages/collaboration/src/models/planning-collaboration/Collaboration.types.ts"
-		],
+		"source": ["packages/collaboration/src/models/planning-collaboration/Collaboration.types.ts"],
 		"symbols": [
 			"Role",
 			"Actor",

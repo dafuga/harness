@@ -1,6 +1,6 @@
 // @harness-uid u_sjbkerzshs
 import type { ProjectRead, Shown } from './RecordedEvidenceService.types';
-import type { CacheIdentity } from '../../../../../collaboration/src/models/Collaboration.types';
+import type { CacheIdentity } from '../../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import { explorerEvidence } from '$reports/utils/explorerEvidence';
 import {
 	EvidenceRefsAdapter,

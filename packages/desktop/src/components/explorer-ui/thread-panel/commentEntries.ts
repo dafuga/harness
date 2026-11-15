@@ -1,6 +1,6 @@
 // @harness-uid u_4rhacyzgf2
 import type { PendingComment, ThreadEntry } from '../../../utils/explorer-ui/commentEntries';
-import type { CommittedThread } from '../../../../../collaboration/src/models/Collaboration.types';
+import type { CommittedThread } from '../../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import type { DesignVersion, ThreadInfo } from '../../../models/development-tooling/Desktop.types';
 import type { HumanCommentResult } from '../../../models/projects-sessions/ProjectContext.types';
 import type { RunDraft } from '../../../utils/explorer-ui/composeModes';

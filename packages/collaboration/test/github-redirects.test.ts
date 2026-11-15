@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import { githubTransport } from '../src/utils/githubTransport';
 import { githubLfs } from '../src/utils/create-git-hub-source/githubLfs';
 import { sourceRepository } from './githubFixture';
-import type { GitHubOptions } from '../src/models/Collaboration.types';
+import type { GitHubOptions } from '../src/models/planning-collaboration/Collaboration.types';
 
 test.each(['api', 'batch', 'download'] as const)(
 	'%s uses Workers-compatible manual redirects and refuses credential forwarding',

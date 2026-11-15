@@ -1,7 +1,10 @@
 import { expect, test } from 'vitest';
 import { collaborationFixture, owner, sourceRepository, anchor } from './githubFixture';
 import { cacheKey, readCache, writeCache } from '../src/utils/cacheKey';
-import type { CacheEntry, CacheIdentity } from '../src/models/Collaboration.types';
+import type {
+	CacheEntry,
+	CacheIdentity
+} from '../src/models/planning-collaboration/Collaboration.types';
 const identity: CacheIdentity = {
 	principalId: 'google:owner',
 	projectId: '550e8400-e29b-41d4-a716-446655440000',

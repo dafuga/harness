@@ -1,6 +1,6 @@
 // @harness-uid u_4rhacyzgf2
 import type { ThreadEntry } from '../../../utils/explorer-ui/commentEntries';
-import type { CommittedThread } from '../../../../../collaboration/src/models/Collaboration.types';
+import type { CommittedThread } from '../../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 
 export function commentEntries(thread: CommittedThread): ThreadEntry[] {
 	return thread.comments.map((comment) => ({

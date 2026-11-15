@@ -3,7 +3,7 @@ import { mkdtemp, readdir, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
-import type { CacheIdentity } from '../../../collaboration/src/models/Collaboration.types';
+import type { CacheIdentity } from '../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import type { EvidenceArtifactQuery } from '../../src/models/DesktopEvidence.types';
 import { HostedReadService } from '../../src/services/HostedReadService';
 import { ProjectionCacheService } from '../../src/services/projection-cache-service/ProjectionCacheService';

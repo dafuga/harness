@@ -8,7 +8,7 @@ import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
 } from '../../../../models/verification-evidence/DesktopEvidence.types';
-import type { AddCommentInput } from '../../../../../../collaboration/src/models/Collaboration.types';
+import type { AddCommentInput } from '../../../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import type {
 	RemoteProjectPort,
 	ProjectCapabilities

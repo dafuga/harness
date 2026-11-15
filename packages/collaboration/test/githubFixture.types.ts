@@ -1,4 +1,4 @@
-import type { GitHubOptions } from '../src/models/Collaboration.types';
+import type { GitHubOptions } from '../src/models/planning-collaboration/Collaboration.types';
 
 export type Call = { path: string; method: string; body: Record<string, unknown> };
 

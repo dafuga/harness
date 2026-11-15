@@ -1,6 +1,6 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
-import type { CacheIdentity } from '../../../collaboration/src/models/Collaboration.types';
+import type { CacheIdentity } from '../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import { explorerBehavior } from '../../../reports/src/utils/explorerBehavior';
 import { explorerEvidence } from '../../../reports/src/utils/explorerEvidence';
 import { recordedAnswer } from '../../src/utils/recorded-answer/recordedAnswer';

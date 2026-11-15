@@ -5,7 +5,7 @@ import type {
 	CollaborationRecords,
 	GitHubOptions,
 	SourceAdapter
-} from '../src/models/Collaboration.types';
+} from '../src/models/planning-collaboration/Collaboration.types';
 export const owner: Actor = {
 	id: 'google:owner',
 	email: 'owner@example.test',

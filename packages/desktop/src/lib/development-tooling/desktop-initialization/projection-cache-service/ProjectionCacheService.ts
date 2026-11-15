@@ -4,7 +4,7 @@ import { projectionCachePurge } from './projectionCachePurge';
 import { mkdir, readFile, readdir, unlink, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
-import type { CacheIdentity } from '../../../../../../collaboration/src/models/Collaboration.types';
+import type { CacheIdentity } from '../../../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 
 const digest = (bytes: Uint8Array | string) => createHash('sha256').update(bytes).digest('hex');
 

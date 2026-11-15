@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { createGitHubSource } from '../src/utils/create-git-hub-source/createGitHubSource';
 import { sourceRepository } from './githubFixture';
-import type { GitHubOptions } from '../src/models/Collaboration.types';
+import type { GitHubOptions } from '../src/models/planning-collaboration/Collaboration.types';
 const tip = 'a'.repeat(40),
 	parent = 'b'.repeat(40),
 	tree = 'c'.repeat(40),

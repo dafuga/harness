@@ -1,6 +1,6 @@
 // @harness-uid u_gegtad6hae
 import type { DesktopProject } from '../../../../models/projects-sessions/ProjectContext.types';
-import type { CacheIdentity } from '../../../../../../collaboration/src/models/Collaboration.types';
+import type { CacheIdentity } from '../../../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import type { ProjectSnapshot } from '../../../../models/development-tooling/Desktop.types';
 
 /** What this device kept of a principal's last current list, and the identity it is bound to. */
