@@ -18,17 +18,32 @@
 				"name": "isRecord.value",
 				"type": "unknown",
 				"required": true,
-				"description": "Unknown value to inspect."
+				"description": "Value to classify before treating it as a record. Any JavaScript value is accepted; only non-null objects that are not arrays return true.",
+				"examples": [
+					{
+						"enabled": true
+					},
+					["item"],
+					null
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "isRecord",
 				"type": "value is Record<string, unknown>",
-				"description": "True for a non-null object that is not an array, narrowing its static type to a string-keyed record."
+				"description": "Boolean result used to decide whether to treat the input as a record. It is true exactly for non-null values whose JavaScript type is object and that are not arrays; the predicate does not inspect properties or require a plain-object prototype.",
+				"examples": [true, false]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown if value is a revoked Proxy, because Array.isArray(value) throws while testing it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "isRecord",
@@ -37,18 +52,32 @@
 						"name": "isRecord.value",
 						"type": "unknown",
 						"required": true,
-						"description": "Unknown value to inspect."
+						"description": "Value to classify before treating it as a record. Any JavaScript value is accepted; only non-null objects that are not arrays return true.",
+						"examples": [
+							{
+								"enabled": true
+							},
+							["item"],
+							null
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "isRecord",
 						"type": "value is Record<string, unknown>",
-						"description": "True for a non-null object that is not an array, narrowing its static type to a string-keyed record."
+						"description": "Boolean result used to decide whether to treat the input as a record. It is true exactly for non-null values whose JavaScript type is object and that are not arrays; the predicate does not inspect properties or require a plain-object prototype.",
+						"examples": [true, false]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown if value is a revoked Proxy, because Array.isArray(value) throws while testing it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
