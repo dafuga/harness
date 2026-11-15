@@ -42,9 +42,7 @@
 				"required": false,
 				"default": "undefined",
 				"description": "Root path used to locate the Git working tree for hook management. It is resolved to an absolute path and defaults to `process.cwd()` when omitted.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "runHook.stage",
@@ -68,18 +66,14 @@
 				"required": false,
 				"default": "undefined",
 				"description": "Root path used to locate the Git working tree for the hook run. It is resolved to an absolute path and defaults to `process.cwd()` when omitted.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "checkMessage.file",
 				"type": "string | undefined",
 				"required": true,
 				"description": "Path to the commit-message file Git supplied to the commit-msg hook. A missing or empty path causes an expected CLI error.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/.git/COMMIT_EDITMSG"
-				]
+				"examples": ["/workspace/project/.git/COMMIT_EDITMSG"]
 			},
 			{
 				"name": "checkMessage.root",
@@ -87,9 +81,7 @@
 				"required": false,
 				"default": "undefined",
 				"description": "Root path used to locate the Git working tree for the message check. It is resolved to an absolute path and defaults to `process.cwd()` when omitted.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "renderHooks.status",
@@ -101,7 +93,7 @@
 						"installed": true,
 						"enabled": true,
 						"stage": "pre-push",
-						"hooksDirectory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/.git/hooks",
+						"hooksDirectory": "/workspace/project/.git/hooks",
 						"chained": false,
 						"stages": [
 							{
@@ -161,7 +153,7 @@
 						"installed": true,
 						"enabled": true,
 						"stage": "pre-push",
-						"hooksDirectory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/.git/hooks",
+						"hooksDirectory": "/workspace/project/.git/hooks",
 						"chained": false,
 						"stages": [
 							{
@@ -213,25 +205,21 @@
 				"name": "checkMessage",
 				"type": "Promise<string[]>",
 				"description": "Resolves to the commit-message service's list of findings for the file Git supplied. The list can be empty.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "renderHooks",
 				"type": "string",
 				"description": "Formatted hook status text, including installation and worktree enablement state, commit-msg guidance, and local-hook limitations.",
 				"examples": [
-					"The pre-push hook is not installed in /Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/.git/hooks and not enabled for this worktree.\nThe commit-msg hook is not installed and not enabled for this worktree. It measures a commit message where the repository declares the writing limits.\nLimits of a local hook:"
+					"The pre-push hook is not installed in /workspace/project/.git/hooks and not enabled for this worktree.\nThe commit-msg hook is not installed and not enabled for this worktree. It measures a commit message where the repository declares the writing limits.\nLimits of a local hook:"
 				]
 			},
 			{
 				"name": "renderHookOutcome",
 				"type": "string[]",
 				"description": "Formatted lines for verified and blocked commits. Verified lines include shortened commit and record identifiers; blocked commits include shortened commit identifiers and their failure messages.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			}
 		],
 		"errors": [
@@ -267,9 +255,7 @@
 						"required": false,
 						"default": "undefined",
 						"description": "Root path used to locate the Git working tree for hook management. It is resolved to an absolute path and defaults to `process.cwd()` when omitted.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -282,7 +268,7 @@
 								"installed": true,
 								"enabled": true,
 								"stage": "pre-push",
-								"hooksDirectory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/.git/hooks",
+								"hooksDirectory": "/workspace/project/.git/hooks",
 								"chained": false,
 								"stages": [
 									{
@@ -344,9 +330,7 @@
 						"required": false,
 						"default": "undefined",
 						"description": "Root path used to locate the Git working tree for the hook run. It is resolved to an absolute path and defaults to `process.cwd()` when omitted.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -389,9 +373,7 @@
 						"type": "string | undefined",
 						"required": true,
 						"description": "Path to the commit-message file Git supplied to the commit-msg hook. A missing or empty path causes an expected CLI error.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/.git/COMMIT_EDITMSG"
-						]
+						"examples": ["/workspace/project/.git/COMMIT_EDITMSG"]
 					},
 					{
 						"name": "checkMessage.root",
@@ -399,9 +381,7 @@
 						"required": false,
 						"default": "undefined",
 						"description": "Root path used to locate the Git working tree for the message check. It is resolved to an absolute path and defaults to `process.cwd()` when omitted.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -409,9 +389,7 @@
 						"name": "checkMessage",
 						"type": "Promise<string[]>",
 						"description": "Resolves to the commit-message service's list of findings for the file Git supplied. The list can be empty.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"errors": [
@@ -436,7 +414,7 @@
 								"installed": true,
 								"enabled": true,
 								"stage": "pre-push",
-								"hooksDirectory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/.git/hooks",
+								"hooksDirectory": "/workspace/project/.git/hooks",
 								"chained": false,
 								"stages": [
 									{
@@ -470,7 +448,7 @@
 						"type": "string",
 						"description": "Formatted hook status text, including installation and worktree enablement state, commit-msg guidance, and local-hook limitations.",
 						"examples": [
-							"The pre-push hook is not installed in /Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/.git/hooks and not enabled for this worktree.\nThe commit-msg hook is not installed and not enabled for this worktree. It measures a commit message where the repository declares the writing limits.\nLimits of a local hook:"
+							"The pre-push hook is not installed in /workspace/project/.git/hooks and not enabled for this worktree.\nThe commit-msg hook is not installed and not enabled for this worktree. It measures a commit message where the repository declares the writing limits.\nLimits of a local hook:"
 						]
 					}
 				],
@@ -508,9 +486,7 @@
 						"name": "renderHookOutcome",
 						"type": "string[]",
 						"description": "Formatted lines for verified and blocked commits. Verified lines include shortened commit and record identifiers; blocked commits include shortened commit identifiers and their failure messages.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"errors": [],

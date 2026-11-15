@@ -24,7 +24,7 @@
 				"description": "The required options object supplies the CLI command prefix and can select a repository root, sample plan, and optional write. The root defaults to process.cwd(); omitted quick remains undefined and selects 3 workloads with 9 cold samples and 200 warm iterations, while true selects the first 2 workloads with 3 and 30; omitted write remains undefined and skips saving, while a truthy value writes through MeasurementRepository.",
 				"examples": [
 					{
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14",
+						"root": "/workspace/project",
 						"quick": true,
 						"write": false,
 						"cli": ["harness"]
@@ -429,7 +429,7 @@
 						"description": "The required options object supplies the CLI command prefix and can select a repository root, sample plan, and optional write. The root defaults to process.cwd(); omitted quick remains undefined and selects 3 workloads with 9 cold samples and 200 warm iterations, while true selects the first 2 workloads with 3 and 30; omitted write remains undefined and skips saving, while a truthy value writes through MeasurementRepository.",
 						"examples": [
 							{
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14",
+								"root": "/workspace/project",
 								"quick": true,
 								"write": false,
 								"cli": ["harness"]

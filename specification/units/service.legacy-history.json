@@ -22,26 +22,22 @@
 				"name": "LegacyHistoryService.constructor.root",
 				"type": "string",
 				"required": true,
-				"description": "The filesystem root passed to both EvidenceTreeAdapter and LfsAdapter during construction. It selects the repository data those adapters read; this implementation does not validate the path.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
-				]
+				"description": "The repository root passed to EvidenceTreeAdapter and LfsAdapter. Those adapters use it to read evidence history and stored media; this service does not validate the path.",
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "LegacyHistoryService.entries.media",
 				"type": "HistoryMediaService",
 				"required": true,
-				"description": "The history media service used to place bytes and metadata for a legacy media item that has a sha256. Items without a sha256 are returned with media set to null and do not call this service."
+				"description": "The history media service used to place bytes and metadata for legacy media items with a sha256. Items without a sha256 return media set to null without calling this service."
 			}
 		],
 		"outputs": [
 			{
 				"name": "LegacyHistoryService.entries",
 				"type": "Promise<LegacyEntry[]>",
-				"description": "The resolved entries contain the latest schema-valid report for each record id, sorted by startedAt and then id, with linked commit information, a gap when unlinked, and media results. The result is empty when there is no evidence tip, and malformed reports are skipped.",
-				"examples": [
-					[]
-				]
+				"description": "The latest schema-valid report for each record id from the current evidence tip, sorted by startedAt and then id. Each entry includes linked commit information when its revision resolves to a commit, a gap when it does not, and resolved media. The result is empty when there is no tip, and malformed reports are skipped.",
+				"examples": [[]]
 			}
 		],
 		"errors": [],
@@ -54,17 +50,15 @@
 						"name": "LegacyHistoryService.entries.media",
 						"type": "HistoryMediaService",
 						"required": true,
-						"description": "The history media service used to place bytes and metadata for a legacy media item that has a sha256. Items without a sha256 are returned with media set to null and do not call this service."
+						"description": "The history media service used to place bytes and metadata for legacy media items with a sha256. Items without a sha256 return media set to null without calling this service."
 					}
 				],
 				"outputs": [
 					{
 						"name": "LegacyHistoryService.entries",
 						"type": "Promise<LegacyEntry[]>",
-						"description": "The resolved entries contain the latest schema-valid report for each record id, sorted by startedAt and then id, with linked commit information, a gap when unlinked, and media results. The result is empty when there is no evidence tip, and malformed reports are skipped.",
-						"examples": [
-							[]
-						]
+						"description": "The latest schema-valid report for each record id from the current evidence tip, sorted by startedAt and then id. Each entry includes linked commit information when its revision resolves to a commit, a gap when it does not, and resolved media. The result is empty when there is no tip, and malformed reports are skipped.",
+						"examples": [[]]
 					}
 				],
 				"errors": [],
@@ -79,17 +73,15 @@
 						"name": "LegacyHistoryService.constructor.root",
 						"type": "string",
 						"required": true,
-						"description": "The filesystem root passed to both EvidenceTreeAdapter and LfsAdapter during construction. It selects the repository data those adapters read; this implementation does not validate the path.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
-						]
+						"description": "The repository root passed to EvidenceTreeAdapter and LfsAdapter. Those adapters use it to read evidence history and stored media; this service does not validate the path.",
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LegacyHistoryService.constructor",
 						"type": "unknown",
-						"description": "The constructed LegacyHistoryService instance, which retains EvidenceTreeAdapter and LfsAdapter instances created with root. The instance exposes entries(media) to read the current evidence tip and resolve legacy report media."
+						"description": "The LegacyHistoryService instance retaining EvidenceTreeAdapter and LfsAdapter created with root. Its entries(media) method reads the current evidence tip and resolves legacy report media."
 					}
 				],
 				"errors": [],

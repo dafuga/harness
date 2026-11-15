@@ -21,10 +21,10 @@
 				"description": "An object whose `home` is HARNESS_PICKER_HOME when that variable is set (even if empty), otherwise `join(root, 'harness', 'picker')`, and whose `catalogs.openai` and `catalogs.claude` are `join(root, 'models_cache.json')` and `join(root, 'harness-gateway', 'claude-models.json')`. The root is CODEX_HOME when that variable is set (even if empty, which makes the paths relative to the working directory), otherwise `join(homedir(), '.codex')`; the function only builds these strings, so it creates no directories, does not check that the paths exist, and reads none of these files.",
 				"examples": [
 					{
-						"home": "/Users/example/.codex/harness/picker",
+						"home": "/workspace/codex-root/harness/picker",
 						"catalogs": {
-							"openai": "/Users/example/.codex/models_cache.json",
-							"claude": "/Users/example/.codex/harness-gateway/claude-models.json"
+							"openai": "/workspace/codex-root/models_cache.json",
+							"claude": "/workspace/codex-root/harness-gateway/claude-models.json"
 						}
 					},
 					{
@@ -37,8 +37,8 @@
 					{
 						"home": "/var/lib/harness/picker",
 						"catalogs": {
-							"openai": "/Users/example/.codex/models_cache.json",
-							"claude": "/Users/example/.codex/harness-gateway/claude-models.json"
+							"openai": "/workspace/codex-root/models_cache.json",
+							"claude": "/workspace/codex-root/harness-gateway/claude-models.json"
 						}
 					}
 				]
@@ -57,10 +57,10 @@
 						"description": "An object whose `home` is HARNESS_PICKER_HOME when that variable is set (even if empty), otherwise `join(root, 'harness', 'picker')`, and whose `catalogs.openai` and `catalogs.claude` are `join(root, 'models_cache.json')` and `join(root, 'harness-gateway', 'claude-models.json')`. The root is CODEX_HOME when that variable is set (even if empty, which makes the paths relative to the working directory), otherwise `join(homedir(), '.codex')`; the function only builds these strings, so it creates no directories, does not check that the paths exist, and reads none of these files.",
 						"examples": [
 							{
-								"home": "/Users/example/.codex/harness/picker",
+								"home": "/workspace/codex-root/harness/picker",
 								"catalogs": {
-									"openai": "/Users/example/.codex/models_cache.json",
-									"claude": "/Users/example/.codex/harness-gateway/claude-models.json"
+									"openai": "/workspace/codex-root/models_cache.json",
+									"claude": "/workspace/codex-root/harness-gateway/claude-models.json"
 								}
 							},
 							{
@@ -73,8 +73,8 @@
 							{
 								"home": "/var/lib/harness/picker",
 								"catalogs": {
-									"openai": "/Users/example/.codex/models_cache.json",
-									"claude": "/Users/example/.codex/harness-gateway/claude-models.json"
+									"openai": "/workspace/codex-root/models_cache.json",
+									"claude": "/workspace/codex-root/harness-gateway/claude-models.json"
 								}
 							}
 						]

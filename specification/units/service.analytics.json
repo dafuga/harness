@@ -34,17 +34,17 @@
 				"description": "The flags for this run: root is required for 'import' and output for 'export' (a missing or empty value throws), json drops the upper-cased header line from the printed result of every other operation, and site limits everything to events recorded in checkouts of the repository at that path. For every operation except 'import', the filter fields go through normalizeFilter and ModuleTaskAnalyticsService.sync is called with site, else project, else the current directory, before the snapshot is built.",
 				"examples": [
 					{
-						"site": "/home/dev/src/harness",
+						"site": "/workspace/project/src/harness",
 						"since": "2026-11-01",
 						"until": "2026-11-15",
 						"json": true
 					},
 					{
-						"root": "/home/dev/analytics-inbox"
+						"root": "/workspace/project/analytics-inbox"
 					},
 					{
-						"output": "/home/dev/reports/analytics-2026-11.html",
-						"site": "/home/dev/src/harness"
+						"output": "/workspace/project/reports/analytics-2026-11.html",
+						"site": "/workspace/project/src/harness"
 					}
 				]
 			},
@@ -59,7 +59,7 @@
 						"until": "2026-11-15"
 					},
 					{
-						"project": "/home/dev/src/harness",
+						"project": "/workspace/project/src/harness",
 						"since": "2026-11-01T09:00:00Z"
 					}
 				]
@@ -110,17 +110,17 @@
 						"description": "The flags for this run: root is required for 'import' and output for 'export' (a missing or empty value throws), json drops the upper-cased header line from the printed result of every other operation, and site limits everything to events recorded in checkouts of the repository at that path. For every operation except 'import', the filter fields go through normalizeFilter and ModuleTaskAnalyticsService.sync is called with site, else project, else the current directory, before the snapshot is built.",
 						"examples": [
 							{
-								"site": "/home/dev/src/harness",
+								"site": "/workspace/project/src/harness",
 								"since": "2026-11-01",
 								"until": "2026-11-15",
 								"json": true
 							},
 							{
-								"root": "/home/dev/analytics-inbox"
+								"root": "/workspace/project/analytics-inbox"
 							},
 							{
-								"output": "/home/dev/reports/analytics-2026-11.html",
-								"site": "/home/dev/src/harness"
+								"output": "/workspace/project/reports/analytics-2026-11.html",
+								"site": "/workspace/project/src/harness"
 							}
 						]
 					}
@@ -155,7 +155,7 @@
 								"until": "2026-11-15"
 							},
 							{
-								"project": "/home/dev/src/harness",
+								"project": "/workspace/project/src/harness",
 								"since": "2026-11-01T09:00:00Z"
 							}
 						]

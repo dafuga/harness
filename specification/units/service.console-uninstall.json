@@ -36,17 +36,17 @@
 				"description": "Options identify the host project directory and control how generated files edited since installation are handled. The optional update and keep fields default to undefined; keep leaves edited files in place even when update is also true, while neither flag causes edited files to be refused.",
 				"examples": [
 					{
-						"host": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+						"host": "/workspace/project",
 						"update": false,
 						"keep": false
 					},
 					{
-						"host": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+						"host": "/workspace/project",
 						"update": true,
 						"keep": false
 					},
 					{
-						"host": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+						"host": "/workspace/project",
 						"update": false,
 						"keep": true
 					}
@@ -60,7 +60,7 @@
 				"description": "The resolved result identifies the host and lists generated file paths removed, restored to their pre-install content, or left in place as host-owned; changes lists the changes recorded during this uninstall. clean is true when no host-owned file entries or changes remain, in which case the manifest is removed.",
 				"examples": [
 					{
-						"host": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+						"host": "/workspace/project",
 						"removed": ["src/cli/program/ConsoleUninstallService.ts"],
 						"restored": [],
 						"kept": [],
@@ -89,17 +89,17 @@
 						"description": "Options identify the host project directory and control how generated files edited since installation are handled. The optional update and keep fields default to undefined; keep leaves edited files in place even when update is also true, while neither flag causes edited files to be refused.",
 						"examples": [
 							{
-								"host": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+								"host": "/workspace/project",
 								"update": false,
 								"keep": false
 							},
 							{
-								"host": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+								"host": "/workspace/project",
 								"update": true,
 								"keep": false
 							},
 							{
-								"host": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+								"host": "/workspace/project",
 								"update": false,
 								"keep": true
 							}
@@ -113,7 +113,7 @@
 						"description": "The resolved result identifies the host and lists generated file paths removed, restored to their pre-install content, or left in place as host-owned; changes lists the changes recorded during this uninstall. clean is true when no host-owned file entries or changes remain, in which case the manifest is removed.",
 						"examples": [
 							{
-								"host": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+								"host": "/workspace/project",
 								"removed": ["src/cli/program/ConsoleUninstallService.ts"],
 								"restored": [],
 								"kept": [],

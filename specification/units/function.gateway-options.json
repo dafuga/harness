@@ -25,11 +25,11 @@
 			{
 				"name": "gatewayOptions",
 				"type": "Options",
-				"description": "Isolated SDK options for a local Claude gateway session: tools and settingSources are empty arrays, persistSession is false, includePartialMessages is true, model is claude-opus-5-5, effort is xhigh, permissionMode is dontAsk, cwd is /tmp, extraArgs sets strict-mcp-config and no-chrome to null, and abortController is session.controller. The env is a shallow copy of process.env without variables whose names start with ANTHROPIC_ or CLAUDE_CODE_USE_ and without CLAUDE_CODE_OAUTH_TOKEN; pathToClaudeCodeExecutable is HARNESS_CLAUDE_EXECUTABLE when that is not null or undefined, otherwise $HOME/.local/bin/claude, and neither HOME nor the executable path is validated; abortController is omitted from the examples because JSON cannot carry an AbortController.",
+				"description": "SDK options with empty tools and settingSources, no persisted session, partial messages enabled, model claude-opus-5-5, effort xhigh, permissionMode dontAsk, cwd /tmp, strict-mcp-config and no-chrome flags, and the session controller. Copies process.env except ANTHROPIC_*, CLAUDE_CODE_USE_* and CLAUDE_CODE_OAUTH_TOKEN. The executable is HARNESS_CLAUDE_EXECUTABLE when defined, otherwise HOME followed by /.local/bin/claude; neither value is validated. AbortController is omitted from the JSON examples.",
 				"examples": [
 					{
 						"env": {
-							"HOME": "/Users/example",
+							"HOME": "/workspace/user",
 							"PATH": "/usr/local/bin:/usr/bin:/bin",
 							"SHELL": "/bin/zsh"
 						},
@@ -41,7 +41,7 @@
 						"effort": "xhigh",
 						"permissionMode": "dontAsk",
 						"cwd": "/tmp",
-						"pathToClaudeCodeExecutable": "/Users/example/.local/bin/claude",
+						"pathToClaudeCodeExecutable": "/workspace/user/.local/bin/claude",
 						"extraArgs": {
 							"strict-mcp-config": null,
 							"no-chrome": null
@@ -49,9 +49,9 @@
 					},
 					{
 						"env": {
-							"HOME": "/home/builder",
+							"HOME": "/workspace/user",
 							"PATH": "/usr/bin:/bin",
-							"HARNESS_CLAUDE_EXECUTABLE": "/opt/claude/bin/claude"
+							"HARNESS_CLAUDE_EXECUTABLE": "/workspace/tools/claude/bin/claude"
 						},
 						"tools": [],
 						"settingSources": [],
@@ -61,7 +61,7 @@
 						"effort": "xhigh",
 						"permissionMode": "dontAsk",
 						"cwd": "/tmp",
-						"pathToClaudeCodeExecutable": "/opt/claude/bin/claude",
+						"pathToClaudeCodeExecutable": "/workspace/tools/claude/bin/claude",
 						"extraArgs": {
 							"strict-mcp-config": null,
 							"no-chrome": null
@@ -87,11 +87,11 @@
 					{
 						"name": "gatewayOptions",
 						"type": "Options",
-						"description": "Isolated SDK options for a local Claude gateway session: tools and settingSources are empty arrays, persistSession is false, includePartialMessages is true, model is claude-opus-5-5, effort is xhigh, permissionMode is dontAsk, cwd is /tmp, extraArgs sets strict-mcp-config and no-chrome to null, and abortController is session.controller. The env is a shallow copy of process.env without variables whose names start with ANTHROPIC_ or CLAUDE_CODE_USE_ and without CLAUDE_CODE_OAUTH_TOKEN; pathToClaudeCodeExecutable is HARNESS_CLAUDE_EXECUTABLE when that is not null or undefined, otherwise $HOME/.local/bin/claude, and neither HOME nor the executable path is validated; abortController is omitted from the examples because JSON cannot carry an AbortController.",
+						"description": "SDK options with empty tools and settingSources, no persisted session, partial messages enabled, model claude-opus-5-5, effort xhigh, permissionMode dontAsk, cwd /tmp, strict-mcp-config and no-chrome flags, and the session controller. Copies process.env except ANTHROPIC_*, CLAUDE_CODE_USE_* and CLAUDE_CODE_OAUTH_TOKEN. The executable is HARNESS_CLAUDE_EXECUTABLE when defined, otherwise HOME followed by /.local/bin/claude; neither value is validated. AbortController is omitted from the JSON examples.",
 						"examples": [
 							{
 								"env": {
-									"HOME": "/Users/example",
+									"HOME": "/workspace/user",
 									"PATH": "/usr/local/bin:/usr/bin:/bin",
 									"SHELL": "/bin/zsh"
 								},
@@ -103,7 +103,7 @@
 								"effort": "xhigh",
 								"permissionMode": "dontAsk",
 								"cwd": "/tmp",
-								"pathToClaudeCodeExecutable": "/Users/example/.local/bin/claude",
+								"pathToClaudeCodeExecutable": "/workspace/user/.local/bin/claude",
 								"extraArgs": {
 									"strict-mcp-config": null,
 									"no-chrome": null
@@ -111,9 +111,9 @@
 							},
 							{
 								"env": {
-									"HOME": "/home/builder",
+									"HOME": "/workspace/user",
 									"PATH": "/usr/bin:/bin",
-									"HARNESS_CLAUDE_EXECUTABLE": "/opt/claude/bin/claude"
+									"HARNESS_CLAUDE_EXECUTABLE": "/workspace/tools/claude/bin/claude"
 								},
 								"tools": [],
 								"settingSources": [],
@@ -123,7 +123,7 @@
 								"effort": "xhigh",
 								"permissionMode": "dontAsk",
 								"cwd": "/tmp",
-								"pathToClaudeCodeExecutable": "/opt/claude/bin/claude",
+								"pathToClaudeCodeExecutable": "/workspace/tools/claude/bin/claude",
 								"extraArgs": {
 									"strict-mcp-config": null,
 									"no-chrome": null

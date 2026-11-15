@@ -27,27 +27,21 @@
 				"type": "string",
 				"required": true,
 				"description": "Directory passed as the subprocess working directory for the Git command. It determines which repository Git uses; an unavailable directory can make the command fail.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "benchmarkGit.args",
 				"type": "string[]",
 				"required": true,
 				"description": "Git arguments appended after the command disables repository hooks. They select the Git action and options; a nonzero Git exit code causes an Error.",
-				"examples": [
-					["status", "--short"]
-				]
+				"examples": [["status", "--short"]]
 			},
 			{
 				"name": "benchmarkFiles.project",
 				"type": "string",
 				"required": true,
 				"description": "Repository directory used as the Git working directory while listing the selected tree. It must contain the repository and revision being read.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "benchmarkFiles.revision",
@@ -61,9 +55,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository directory used for listing and archiving the selected tree. It must contain the repository and revision being read.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "snapshotBenchmark.revision",
@@ -98,9 +90,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Directory prefix used to resolve the file path one slash-separated segment at a time. The joined segments are checked for missing entries and symlinks.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "regularBenchmarkFile.file",
@@ -114,9 +104,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Directory prefix used to resolve the file before its mode and contents are read. The value is returned only when the path passes the regular nonsymlink-file check.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "benchmarkFileValue.file",
@@ -144,9 +132,7 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Paths processed in order against the source and target roots. Each regular source file is copied; a missing, symlinked, or otherwise nonregular source path triggers removal of the matching target entry.",
-				"examples": [
-					["src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
-				]
+				"examples": [["src/cli/program/benchmark-service/benchmarkWorkspace.ts"]]
 			}
 		],
 		"outputs": [
@@ -160,17 +146,13 @@
 				"name": "benchmarkFiles",
 				"type": "Promise<string[]>",
 				"description": "Relative paths parsed from the selected tree after all entries pass the regular-blob mode check. Symlinks and submodules are rejected.",
-				"examples": [
-					["README.md", "src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
-				]
+				"examples": [["README.md", "src/cli/program/benchmark-service/benchmarkWorkspace.ts"]]
 			},
 			{
 				"name": "snapshotBenchmark",
 				"type": "Promise<string[]>",
 				"description": "Relative paths retained from the selected tree after extraction and regular-file checks. Export-ignore archives that omit a listed path are rejected.",
-				"examples": [
-					["README.md", "src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
-				]
+				"examples": [["README.md", "src/cli/program/benchmark-service/benchmarkWorkspace.ts"]]
 			},
 			{
 				"name": "createBenchmarkWorkspace",
@@ -212,18 +194,14 @@
 						"type": "string",
 						"required": true,
 						"description": "Directory passed as the subprocess working directory for the Git command. It determines which repository Git uses; an unavailable directory can make the command fail.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "benchmarkGit.args",
 						"type": "string[]",
 						"required": true,
 						"description": "Git arguments appended after the command disables repository hooks. They select the Git action and options; a nonzero Git exit code causes an Error.",
-						"examples": [
-							["status", "--short"]
-						]
+						"examples": [["status", "--short"]]
 					}
 				],
 				"outputs": [
@@ -251,9 +229,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository directory used as the Git working directory while listing the selected tree. It must contain the repository and revision being read.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "benchmarkFiles.revision",
@@ -268,9 +244,7 @@
 						"name": "benchmarkFiles",
 						"type": "Promise<string[]>",
 						"description": "Relative paths parsed from the selected tree after all entries pass the regular-blob mode check. Symlinks and submodules are rejected.",
-						"examples": [
-							["README.md", "src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
-						]
+						"examples": [["README.md", "src/cli/program/benchmark-service/benchmarkWorkspace.ts"]]
 					}
 				],
 				"errors": [
@@ -290,9 +264,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository directory used for listing and archiving the selected tree. It must contain the repository and revision being read.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "snapshotBenchmark.revision",
@@ -314,9 +286,7 @@
 						"name": "snapshotBenchmark",
 						"type": "Promise<string[]>",
 						"description": "Relative paths retained from the selected tree after extraction and regular-file checks. Export-ignore archives that omit a listed path are rejected.",
-						"examples": [
-							["README.md", "src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
-						]
+						"examples": [["README.md", "src/cli/program/benchmark-service/benchmarkWorkspace.ts"]]
 					}
 				],
 				"errors": [
@@ -370,9 +340,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Directory prefix used to resolve the file path one slash-separated segment at a time. The joined segments are checked for missing entries and symlinks.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "regularBenchmarkFile.file",
@@ -407,9 +375,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Directory prefix used to resolve the file before its mode and contents are read. The value is returned only when the path passes the regular nonsymlink-file check.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "benchmarkFileValue.file",
@@ -458,9 +424,7 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Paths processed in order against the source and target roots. Each regular source file is copied; a missing, symlinked, or otherwise nonregular source path triggers removal of the matching target entry.",
-						"examples": [
-							["src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
-						]
+						"examples": [["src/cli/program/benchmark-service/benchmarkWorkspace.ts"]]
 					}
 				],
 				"outputs": [

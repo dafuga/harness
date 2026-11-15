@@ -25,18 +25,18 @@
 				"examples": [
 					{
 						"PATH": "/usr/local/bin:/usr/bin:/bin",
-						"HOME": "/Users/example",
+						"HOME": "/workspace/user",
 						"PROJECT_REPORTS_CONFIG_FILE": "reports/report.config.json",
-						"PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME": "/Users/example/.config/cloudflare"
+						"PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME": "/workspace/user/.config/cloudflare"
 					},
 					{
 						"PATH": "/usr/bin:/bin",
-						"PROJECT_REPORTS_CONFIG_FILE": "/ci/workspace/reports/report.config.json",
-						"PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME": "/home/ci/.config/cloudflare"
+						"PROJECT_REPORTS_CONFIG_FILE": "/workspace/project/reports/report.config.json",
+						"PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME": "/workspace/ci-user/.config/cloudflare"
 					},
 					{
 						"PATH": "/usr/bin:/bin",
-						"HOME": "/home/ci"
+						"HOME": "/workspace/ci-user"
 					}
 				]
 			}
@@ -66,18 +66,18 @@
 						"examples": [
 							{
 								"PATH": "/usr/local/bin:/usr/bin:/bin",
-								"HOME": "/Users/example",
+								"HOME": "/workspace/user",
 								"PROJECT_REPORTS_CONFIG_FILE": "reports/report.config.json",
-								"PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME": "/Users/example/.config/cloudflare"
+								"PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME": "/workspace/user/.config/cloudflare"
 							},
 							{
 								"PATH": "/usr/bin:/bin",
-								"PROJECT_REPORTS_CONFIG_FILE": "/ci/workspace/reports/report.config.json",
-								"PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME": "/home/ci/.config/cloudflare"
+								"PROJECT_REPORTS_CONFIG_FILE": "/workspace/project/reports/report.config.json",
+								"PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME": "/workspace/ci-user/.config/cloudflare"
 							},
 							{
 								"PATH": "/usr/bin:/bin",
-								"HOME": "/home/ci"
+								"HOME": "/workspace/ci-user"
 							}
 						]
 					}
