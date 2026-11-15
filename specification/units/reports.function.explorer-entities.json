@@ -18,64 +18,228 @@
 				"name": "explorerChange.head",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Revision whose first-parent source impact is inspected."
+				"description": "The revision whose optional source-impact mark lists are searched for the unit ID. No matching mark, including when source impact is absent, produces null.",
+				"examples": [
+					{
+						"commit": "89abcdef0123456789abcdef0123456789abcdef",
+						"registry": {
+							"available": true,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"sourceImpact": {
+							"base": null,
+							"expanded": false,
+							"units": {
+								"direct": [],
+								"indirect": [],
+								"added": [],
+								"removed": []
+							},
+							"scenarios": [],
+							"uncertain": [],
+							"changed": []
+						},
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "explorerChange.unit",
 				"type": "string",
 				"required": true,
-				"description": "Unit identifier to classify as changed."
+				"description": "The unit ID checked against the revision's added, direct, indirect, then removed lists. The first matching mark wins; an absent source-impact record or no match produces null.",
+				"examples": ["reports.function.explorer-entities"]
 			},
 			{
 				"name": "explorerEntity.head",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Revision providing verdict and change context."
+				"description": "When the unit qualifies for a category, this revision supplies the verdict and change mark. It does not determine the unit's category.",
+				"examples": [
+					{
+						"commit": "89abcdef0123456789abcdef0123456789abcdef",
+						"registry": {
+							"available": true,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"sourceImpact": {
+							"base": null,
+							"expanded": false,
+							"units": {
+								"direct": [],
+								"indirect": [],
+								"added": [],
+								"removed": []
+							},
+							"scenarios": [],
+							"uncertain": [],
+							"changed": []
+						},
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "explorerEntity.unit",
 				"type": "HarnessUnit",
 				"required": true,
-				"description": "Unit to convert to an explorer entity."
+				"description": "The candidate unit passed to the category, role, name, verdict, and route helpers; its ID and responsibility are copied to the result. The result is null if no category applies and private-function inclusion is not enabled.",
+				"examples": [
+					{
+						"id": "reports.function.explorer-entities",
+						"kind": "function",
+						"status": "active",
+						"title": "Explorer entity registry",
+						"responsibility": "Builds categorized active entities and selected-commit removal entries from revision data.",
+						"dependencies": [
+							{
+								"unit": "function.explorer-route",
+								"via": "import"
+							},
+							{
+								"unit": "reports.function.entity-lens",
+								"via": "import"
+							},
+							{
+								"unit": "reports.function.explorer-category",
+								"via": "import"
+							},
+							{
+								"unit": "reports.function.explorer-name",
+								"via": "import"
+							},
+							{
+								"unit": "reports.function.explorer-verdict",
+								"via": "import"
+							},
+							{
+								"unit": "reports.model.explorer-types",
+								"via": "import"
+							},
+							{
+								"unit": "reports.model.harness-types",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": [
+								"packages/reports/src/utils/explorer-ui/explorerEntities.ts",
+								"packages/reports/src/utils/explorerEntities.ts"
+							],
+							"symbols": ["explorerChange", "explorerEntity", "explorerEntities"]
+						},
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/utils/explorer-ui/explorerEntities.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "1.0.0"
+					}
+				]
 			},
 			{
 				"name": "explorerEntity.includePrivate",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Explicitly resolve a private callable for an owner or retained detail address; defaults to false for collections."
+				"description": "When true, an otherwise uncategorized unit whose kind resolves to functions can be returned as a functions entity. This flag applies to the single-entity lookup; collections do not enable it.",
+				"examples": [false, true]
 			},
 			{
 				"name": "explorerEntities.head",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Shown revision with registry and source impact."
+				"description": "The revision whose registry supplies active units and whose removed mark list identifies possible removals. Active units without a category are omitted.",
+				"examples": [
+					{
+						"commit": "89abcdef0123456789abcdef0123456789abcdef",
+						"registry": {
+							"available": true,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"sourceImpact": {
+							"base": null,
+							"expanded": false,
+							"units": {
+								"direct": [],
+								"indirect": [],
+								"added": [],
+								"removed": []
+							},
+							"scenarios": [],
+							"uncertain": [],
+							"changed": []
+						},
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "explorerEntities.parent",
 				"type": "HarnessRevision | null",
 				"required": false,
-				"description": "Optional first-parent revision, used to show removed units in their last active form."
+				"default": "undefined",
+				"description": "The optional first-parent revision used to recover the last active form of units removed by head. If omitted or null, no removal entries are added.",
+				"examples": [null]
 			}
 		],
 		"outputs": [
 			{
 				"name": "explorerChange",
 				"type": "HarnessMark | null",
-				"description": "First matching impact mark in added, direct, indirect, removed order, or null without a match."
+				"description": "The first matching mark in added, direct, indirect, removed order. It is null when source impact is absent or none of those lists contains the unit ID.",
+				"examples": ["direct", "removed", null]
 			},
 			{
 				"name": "explorerEntity",
 				"type": "ExplorerEntity | null",
-				"description": "Named entity with category, role, purpose, source unit, verdict, change and app route; null for an uncategorized unit."
+				"description": "A categorized unit projected to id, category, role, name, purpose, unit, verdict, change, and appRoute. It is null when no category applies, including an unrequested private function.",
+				"examples": [null]
 			},
 			{
 				"name": "explorerEntities",
 				"type": "ExplorerEntity[]",
-				"description": "Active head entities grouped in category order, plus units explicitly removed by head and active in the supplied parent but no longer active in head. Removed entries retain their parent contract and receive a removed/not-proven verdict."
+				"description": "Active head units and eligible removals, grouped in explorer-category order while preserving registry order within those groups. A removal must be named by head's removed marks, be active in parent, and no longer be active in head; it uses the parent's unit data, change removed, lastAt parent.commit, and an unpassed Removed at this commit verdict.",
+				"examples": [
+					[]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "explorerChange",
@@ -84,24 +248,55 @@
 						"name": "explorerChange.head",
 						"type": "HarnessRevision",
 						"required": true,
-						"description": "Revision whose first-parent source impact is inspected."
+						"description": "The revision whose optional source-impact mark lists are searched for the unit ID. No matching mark, including when source impact is absent, produces null.",
+						"examples": [
+							{
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"registry": {
+									"available": true,
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"sourceImpact": {
+									"base": null,
+									"expanded": false,
+									"units": {
+										"direct": [],
+										"indirect": [],
+										"added": [],
+										"removed": []
+									},
+									"scenarios": [],
+									"uncertain": [],
+									"changed": []
+								},
+								"records": [],
+								"explanations": []
+							}
+						]
 					},
 					{
 						"name": "explorerChange.unit",
 						"type": "string",
 						"required": true,
-						"description": "Unit identifier to classify as changed."
+						"description": "The unit ID checked against the revision's added, direct, indirect, then removed lists. The first matching mark wins; an absent source-impact record or no match produces null.",
+						"examples": ["reports.function.explorer-entities"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerChange",
 						"type": "HarnessMark | null",
-						"description": "First matching impact mark in added, direct, indirect, removed order, or null without a match."
+						"description": "The first matching mark in added, direct, indirect, removed order. It is null when source impact is absent or none of those lists contains the unit ID.",
+						"examples": ["direct", "removed", null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "explorerEntity",
@@ -110,31 +305,129 @@
 						"name": "explorerEntity.head",
 						"type": "HarnessRevision",
 						"required": true,
-						"description": "Revision providing verdict and change context."
+						"description": "When the unit qualifies for a category, this revision supplies the verdict and change mark. It does not determine the unit's category.",
+						"examples": [
+							{
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"registry": {
+									"available": true,
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"sourceImpact": {
+									"base": null,
+									"expanded": false,
+									"units": {
+										"direct": [],
+										"indirect": [],
+										"added": [],
+										"removed": []
+									},
+									"scenarios": [],
+									"uncertain": [],
+									"changed": []
+								},
+								"records": [],
+								"explanations": []
+							}
+						]
 					},
 					{
 						"name": "explorerEntity.unit",
 						"type": "HarnessUnit",
 						"required": true,
-						"description": "Unit to convert to an explorer entity."
+						"description": "The candidate unit passed to the category, role, name, verdict, and route helpers; its ID and responsibility are copied to the result. The result is null if no category applies and private-function inclusion is not enabled.",
+						"examples": [
+							{
+								"id": "reports.function.explorer-entities",
+								"kind": "function",
+								"status": "active",
+								"title": "Explorer entity registry",
+								"responsibility": "Builds categorized active entities and selected-commit removal entries from revision data.",
+								"dependencies": [
+									{
+										"unit": "function.explorer-route",
+										"via": "import"
+									},
+									{
+										"unit": "reports.function.entity-lens",
+										"via": "import"
+									},
+									{
+										"unit": "reports.function.explorer-category",
+										"via": "import"
+									},
+									{
+										"unit": "reports.function.explorer-name",
+										"via": "import"
+									},
+									{
+										"unit": "reports.function.explorer-verdict",
+										"via": "import"
+									},
+									{
+										"unit": "reports.model.explorer-types",
+										"via": "import"
+									},
+									{
+										"unit": "reports.model.harness-types",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": [
+										"packages/reports/src/utils/explorer-ui/explorerEntities.ts",
+										"packages/reports/src/utils/explorerEntities.ts"
+									],
+									"symbols": ["explorerChange", "explorerEntity", "explorerEntities"]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/utils/explorer-ui/explorerEntities.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "1.0.0"
+							}
+						]
 					},
 					{
 						"name": "explorerEntity.includePrivate",
 						"type": "boolean",
 						"required": false,
 						"default": false,
-						"description": "Explicitly resolve a private callable for an owner or retained detail address; defaults to false for collections."
+						"description": "When true, an otherwise uncategorized unit whose kind resolves to functions can be returned as a functions entity. This flag applies to the single-entity lookup; collections do not enable it.",
+						"examples": [false, true]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerEntity",
 						"type": "ExplorerEntity | null",
-						"description": "Named entity with category, role, purpose, source unit, verdict, change and app route; null for an uncategorized unit."
+						"description": "A categorized unit projected to id, category, role, name, purpose, unit, verdict, change, and appRoute. It is null when no category applies, including an unrequested private function.",
+						"examples": [null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "explorerEntities",
@@ -143,24 +436,58 @@
 						"name": "explorerEntities.head",
 						"type": "HarnessRevision",
 						"required": true,
-						"description": "Shown revision with registry and source impact."
+						"description": "The revision whose registry supplies active units and whose removed mark list identifies possible removals. Active units without a category are omitted.",
+						"examples": [
+							{
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"registry": {
+									"available": true,
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"sourceImpact": {
+									"base": null,
+									"expanded": false,
+									"units": {
+										"direct": [],
+										"indirect": [],
+										"added": [],
+										"removed": []
+									},
+									"scenarios": [],
+									"uncertain": [],
+									"changed": []
+								},
+								"records": [],
+								"explanations": []
+							}
+						]
 					},
 					{
 						"name": "explorerEntities.parent",
 						"type": "HarnessRevision | null",
 						"required": false,
-						"description": "Optional first-parent revision, used to show removed units in their last active form."
+						"default": "undefined",
+						"description": "The optional first-parent revision used to recover the last active form of units removed by head. If omitted or null, no removal entries are added.",
+						"examples": [null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerEntities",
 						"type": "ExplorerEntity[]",
-						"description": "Active head entities grouped in category order, plus units explicitly removed by head and active in the supplied parent but no longer active in head. Removed entries retain their parent contract and receive a removed/not-proven verdict."
+						"description": "Active head units and eligible removals, grouped in explorer-category order while preserving registry order within those groups. A removal must be named by head's removed marks, be active in parent, and no longer be active in head; it uses the parent's unit data, change removed, lastAt parent.commit, and an unpassed Removed at this commit verdict.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
