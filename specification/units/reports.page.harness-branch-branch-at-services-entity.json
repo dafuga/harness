@@ -24,41 +24,17 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The service with its verdict and its end-to-end run: one at a branch tip, before and after at a commit. Relationships and tests by tab."
+				"description": "The rendered page markup when this route loads: HarnessScreen titled Service with EntityBehaviorScreen as its content. Service details come from that imported component and are not defined in this file."
 			},
 			{
 				"name": "title",
 				"type": "string",
-				"description": "Service · Harness"
+				"description": "The title supplied to HarnessScreen when this route renders. It is the literal Service.",
+				"examples": ["Service"]
 			}
 		],
-		"errors": [
-			{
-				"name": "not-in-history",
-				"type": "notice",
-				"description": "A branch or commit the history does not hold, or a commit the branch does not contain, is said. No other revision is shown."
-			},
-			{
-				"name": "no-registry",
-				"type": "notice",
-				"description": "A revision that stores no unit registry says so. The registry of another revision is not shown."
-			},
-			{
-				"name": "not-at-revision",
-				"type": "notice",
-				"description": "A service the shown revision does not hold is said, with the way back to the collection."
-			},
-			{
-				"name": "other-category",
-				"type": "redirect",
-				"description": "A unit that is not a service at this revision is led to the address of its own category."
-			},
-			{
-				"name": "not-admitted",
-				"type": "403",
-				"description": "A request the owner policy does not admit is refused before any history is read."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
