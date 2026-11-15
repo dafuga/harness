@@ -34,46 +34,111 @@
 				"name": "AudioComparisonViewer.before",
 				"type": "Evidence",
 				"required": true,
-				"description": "Required before recording, used in before and comparison views."
+				"description": "The Evidence record for the before recording: its title is the modal title in the Before view, and its pane is shown in the Before and Compare views, keyed by its id, with its source shown as the heading commit (first seven characters). A null or undefined value throws TypeError, and an id equal to the after record's id throws each_key_duplicate in Compare view.",
+				"examples": [
+					{
+						"id": "6b2f0c9e-41a7-4d3b-8e15-2a9c7fd0e1b2",
+						"title": "Login narration",
+						"category": "Uploaded audio",
+						"file": "9c1e4f7a2b8d03e65f1a4c7b9d2e8f30a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1.wav",
+						"status": "not-proven",
+						"source": "Manual audio upload · recording date not supplied",
+						"phase": "before",
+						"comparison": "c3d9e7a1-5b28-4f64-9a03-7e1d4c2b8f56",
+						"note": "Recorded on the staging build.",
+						"mediaType": "audio",
+						"mimeType": "audio/wav",
+						"durationSeconds": 18.36
+					},
+					{
+						"id": "a3f9c1e8-2d74-4b0a-9e5c-6f1b8d3a7c20",
+						"title": "Checkout narration",
+						"category": "Uploaded audio",
+						"file": "e13b7f0c9a6d2e84b5f1c7a0d9e3b6f2a8c4d1e7f0b9a3c6d5e2f8b1a4c7d9e0.mp3",
+						"status": "not-proven",
+						"source": "Field interview, recorded 2026-11-12",
+						"phase": "before",
+						"comparison": "5d8e2b71-0c4f-4a93-b6e1-3f7a9c25d0e8",
+						"note": "First take, room noise audible.",
+						"mediaType": "audio",
+						"mimeType": "audio/mpeg"
+					}
+				]
 			},
 			{
 				"name": "AudioComparisonViewer.after",
 				"type": "Evidence",
 				"required": true,
-				"description": "Required after recording, used in after/comparison views and as the comparison title."
+				"description": "The Evidence record for the after recording: its title is the modal title in the After and Compare views and appears in the region's aria-label in every view, and its pane is shown in the After and Compare views, keyed by its id, with its source shown as the heading commit (first seven characters). A null or undefined value throws TypeError, and an id equal to the before record's id throws each_key_duplicate in Compare view.",
+				"examples": [
+					{
+						"id": "0e4a7c15-93f2-4b68-b0d1-5c8e2a6f7d90",
+						"title": "Login narration",
+						"category": "Uploaded audio",
+						"file": "41d0a9e37c52b6f80e9a1d47b3c68f25d9e0a71c6f4b2e83a15c9d0e7b3f6a92.wav",
+						"status": "not-proven",
+						"source": "Manual audio upload · recording date not supplied",
+						"phase": "after",
+						"comparison": "c3d9e7a1-5b28-4f64-9a03-7e1d4c2b8f56",
+						"note": "Recorded on the staging build.",
+						"mediaType": "audio",
+						"mimeType": "audio/wav",
+						"durationSeconds": 19.08
+					},
+					{
+						"id": "d20c6e4f-8a13-4f97-a5b2-9e4d1c7f3a68",
+						"title": "Checkout narration",
+						"category": "Uploaded audio",
+						"file": "7f2c9a0e5d1b48f6a3c7e2d9b0f5a1c8e4d7b3a6f9c0e2d5b8a1f4c7e3d6b9a2.mp3",
+						"status": "not-proven",
+						"source": "Field interview, recorded 2026-11-12",
+						"phase": "after",
+						"comparison": "5d8e2b71-0c4f-4a93-b6e1-3f7a9c25d0e8",
+						"note": "First take, room noise audible.",
+						"mediaType": "audio",
+						"mimeType": "audio/mpeg"
+					}
+				]
 			},
 			{
 				"name": "AudioComparisonViewer.assetBase",
 				"type": "string",
 				"required": true,
-				"description": "Required URL prefix passed to each audio card for its file."
+				"description": "The prefix that AudioEvidence joins directly to each shown recording's file name (its src is assetBase + file, with no separator added), so it must end with the separator the path needs, such as '/media/'. The viewer passes it unchanged to every shown card and does not validate it.",
+				"examples": ["/media/", "/assets/"]
 			},
 			{
 				"name": "AudioComparisonViewer.onclose",
 				"type": "() => void",
 				"required": true,
-				"description": "Required callback called after the attached dialog is closed natively, allowing focus to return to its opener."
+				"description": "close() calls this callback once per call, after it has closed the enclosing dialog natively (only if that dialog is open) so the browser can return focus to the opener. Its return value is ignored, and an error it throws propagates out of close()."
 			}
 		],
 		"outputs": [
 			{
 				"name": "AudioComparisonViewer",
 				"type": "markup",
-				"description": "Open audio modal initially in compare mode with Before/After/Compare controls. Mount pauses all document audio. Keyed audio cards are destroyed when leaving view, so their cleanup pauses playback. Each retains its own transcript, availability and status."
+				"description": "The lightbox Modal, open on mount and starting in the Compare view, with Before, After and Compare toggle buttons and one AudioEvidence card per shown recording. Mounting pauses every <audio> element in the document, and a card that leaves the view is destroyed, which pauses its playback."
 			}
 		],
 		"errors": [
 			{
 				"name": "onclose callback error",
 				"type": "thrown",
-				"description": "An error thrown by onclose propagates when the viewer closes."
+				"description": "An error thrown by onclose is not caught in close(), so it propagates out of close() after the enclosing dialog has been closed (if it was open)."
 			},
 			{
 				"name": "each_key_duplicate",
 				"type": "thrown",
-				"description": "Compare mode throws if the before and after recordings have the same ID."
+				"description": "ComparePanes keys each shown pane by its key, which is the recording id here, and shows both panes only in the Compare view (the initial view), so an id shared by before and after makes Svelte's keyed each raise each_key_duplicate."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "A null or undefined before or after throws TypeError during render, because the viewer reads each recording's id and source to build the panes and after.title for the region label."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
