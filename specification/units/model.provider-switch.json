@@ -34,53 +34,216 @@
 				"name": "ProviderSwitch.session",
 				"type": "string",
 				"required": true,
-				"description": "Session key identifying the provider-switch record."
+				"description": "Session key stored in the switches session column, which is the table's primary key and identifies one provider-switch record. The model neither generates nor validates it; the services call validateSessionId, which accepts 1 to 128 characters that start with a letter or digit and continue with letters, digits, _ or -.",
+				"examples": [
+					"7f3a9c21-0b4e-4d2a-8c61-e9f5a3b72d10",
+					"0d4c8a6e-2f7b-4a19-9e3d-5b8f1c7a2e60",
+					"c41e7b02-93a8-4f6d-a5e1-7d2b9c0f4a68"
+				]
 			},
 			{
 				"name": "ProviderSwitch.id",
 				"type": "string",
 				"required": true,
-				"description": "Recorded switch ID, separate from the session primary key."
+				"description": "Switch revision stored in the switches id column; ProviderSwitchRepository writes it as the request UUID, a colon and the status. It is not the primary key, and the model passes it to the adapter exactly as given without generating or checking it.",
+				"examples": [
+					"8f14e45f-ceea-4e67-9d1a-2b7c5e9f0a31:pending",
+					"5b2c7e90-41d3-4a8f-b6e2-0c9d7f3a1e54:applied",
+					"e3a9d216-7c0f-4b58-8e13-f6d2a4b9c705:cancelled"
+				]
 			},
 			{
 				"name": "ProviderSwitch.data",
 				"type": "json",
 				"required": true,
-				"description": "Structured payload retained by the adapter; no model code is executed to describe it."
+				"description": "SwitchRequest payload with id, sessionId, target, status, createdAt and reason, which the SQLite adapter stores as JSON text and parses on read. The model passes it by reference inside a shallow copy of the input and never reads or validates its fields.",
+				"examples": [
+					{
+						"id": "8f14e45f-ceea-4e67-9d1a-2b7c5e9f0a31",
+						"sessionId": "7f3a9c21-0b4e-4d2a-8c61-e9f5a3b72d10",
+						"target": {
+							"provider": "harness-claude",
+							"model": "claude-opus-5-5",
+							"effort": "xhigh"
+						},
+						"status": "pending",
+						"createdAt": "2026-11-15T09:30:12.418Z",
+						"reason": "Desktop control connection unavailable. Requests stay pending; no provider settings change."
+					},
+					{
+						"id": "5b2c7e90-41d3-4a8f-b6e2-0c9d7f3a1e54",
+						"sessionId": "0d4c8a6e-2f7b-4a19-9e3d-5b8f1c7a2e60",
+						"target": {
+							"provider": "openai",
+							"model": "gpt-6-luna",
+							"effort": "medium"
+						},
+						"status": "applied",
+						"createdAt": "2026-11-14T17:05:48.190Z",
+						"reason": "Provider, model and effort verified after resume."
+					},
+					{
+						"id": "e3a9d216-7c0f-4b58-8e13-f6d2a4b9c705",
+						"sessionId": "c41e7b02-93a8-4f6d-a5e1-7d2b9c0f4a68",
+						"target": {
+							"provider": "openai",
+							"model": "gpt-6.1-sol",
+							"effort": "high"
+						},
+						"status": "cancelled",
+						"createdAt": "2026-11-15T08:12:03.771Z",
+						"reason": "Cancelled by the user."
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProviderSwitch.find",
 				"type": "Promise<ProviderSwitchAttributes | null>",
-				"description": "Promise of the matching switches row, or null according to the adapter lookup result."
+				"description": "Resolves with the switches row the adapter returns for the id, an object with session, id and data, or null when the adapter returns none. The model returns the adapter's promise itself, so the resolved value is unchanged.",
+				"examples": [
+					{
+						"session": "7f3a9c21-0b4e-4d2a-8c61-e9f5a3b72d10",
+						"id": "8f14e45f-ceea-4e67-9d1a-2b7c5e9f0a31:pending",
+						"data": {
+							"id": "8f14e45f-ceea-4e67-9d1a-2b7c5e9f0a31",
+							"sessionId": "7f3a9c21-0b4e-4d2a-8c61-e9f5a3b72d10",
+							"target": {
+								"provider": "harness-claude",
+								"model": "claude-opus-5-5",
+								"effort": "xhigh"
+							},
+							"status": "pending",
+							"createdAt": "2026-11-15T09:30:12.418Z",
+							"reason": "Desktop control connection unavailable. Requests stay pending; no provider settings change."
+						}
+					},
+					null
+				]
 			},
 			{
 				"name": "ProviderSwitch.findBy",
 				"type": "Promise<ProviderSwitchAttributes[]>",
-				"description": "Promise of switches rows matching the supplied attribute filters."
+				"description": "Resolves with the array of switches rows the adapter returns for the filters, which is empty when none match. The model returns the adapter's promise itself, so the array is unchanged.",
+				"examples": [
+					[],
+					[
+						{
+							"session": "7f3a9c21-0b4e-4d2a-8c61-e9f5a3b72d10",
+							"id": "8f14e45f-ceea-4e67-9d1a-2b7c5e9f0a31:pending",
+							"data": {
+								"id": "8f14e45f-ceea-4e67-9d1a-2b7c5e9f0a31",
+								"sessionId": "7f3a9c21-0b4e-4d2a-8c61-e9f5a3b72d10",
+								"target": {
+									"provider": "harness-claude",
+									"model": "claude-opus-5-5",
+									"effort": "xhigh"
+								},
+								"status": "pending",
+								"createdAt": "2026-11-15T09:30:12.418Z",
+								"reason": "Desktop control connection unavailable. Requests stay pending; no provider settings change."
+							}
+						},
+						{
+							"session": "0d4c8a6e-2f7b-4a19-9e3d-5b8f1c7a2e60",
+							"id": "5b2c7e90-41d3-4a8f-b6e2-0c9d7f3a1e54:applied",
+							"data": {
+								"id": "5b2c7e90-41d3-4a8f-b6e2-0c9d7f3a1e54",
+								"sessionId": "0d4c8a6e-2f7b-4a19-9e3d-5b8f1c7a2e60",
+								"target": {
+									"provider": "openai",
+									"model": "gpt-6-luna",
+									"effort": "medium"
+								},
+								"status": "applied",
+								"createdAt": "2026-11-14T17:05:48.190Z",
+								"reason": "Provider, model and effort verified after resume."
+							}
+						},
+						{
+							"session": "c41e7b02-93a8-4f6d-a5e1-7d2b9c0f4a68",
+							"id": "e3a9d216-7c0f-4b58-8e13-f6d2a4b9c705:cancelled",
+							"data": {
+								"id": "e3a9d216-7c0f-4b58-8e13-f6d2a4b9c705",
+								"sessionId": "c41e7b02-93a8-4f6d-a5e1-7d2b9c0f4a68",
+								"target": {
+									"provider": "openai",
+									"model": "gpt-6.1-sol",
+									"effort": "high"
+								},
+								"status": "cancelled",
+								"createdAt": "2026-11-15T08:12:03.771Z",
+								"reason": "Cancelled by the user."
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "ProviderSwitch.create",
 				"type": "Promise<ProviderSwitchAttributes>",
-				"description": "Promise of the switches row returned by the adapter after creation."
+				"description": "Resolves with the row the adapter returns after inserting the input, an object with session, id and data. The model returns the adapter's promise itself, so the row is unchanged.",
+				"examples": [
+					{
+						"session": "7f3a9c21-0b4e-4d2a-8c61-e9f5a3b72d10",
+						"id": "8f14e45f-ceea-4e67-9d1a-2b7c5e9f0a31:pending",
+						"data": {
+							"id": "8f14e45f-ceea-4e67-9d1a-2b7c5e9f0a31",
+							"sessionId": "7f3a9c21-0b4e-4d2a-8c61-e9f5a3b72d10",
+							"target": {
+								"provider": "harness-claude",
+								"model": "claude-opus-5-5",
+								"effort": "xhigh"
+							},
+							"status": "pending",
+							"createdAt": "2026-11-15T09:30:12.418Z",
+							"reason": "Desktop control connection unavailable. Requests stay pending; no provider settings change."
+						}
+					}
+				]
 			},
 			{
 				"name": "ProviderSwitch.update",
 				"type": "Promise<ProviderSwitchAttributes | null>",
-				"description": "Promise of the updated switches row, or null according to the adapter update result."
+				"description": "Resolves with the updated switches row the adapter returns, or null when the adapter returns none for the id. The model returns the adapter's promise itself, so the result is unchanged.",
+				"examples": [
+					{
+						"session": "0d4c8a6e-2f7b-4a19-9e3d-5b8f1c7a2e60",
+						"id": "5b2c7e90-41d3-4a8f-b6e2-0c9d7f3a1e54:applied",
+						"data": {
+							"id": "5b2c7e90-41d3-4a8f-b6e2-0c9d7f3a1e54",
+							"sessionId": "0d4c8a6e-2f7b-4a19-9e3d-5b8f1c7a2e60",
+							"target": {
+								"provider": "openai",
+								"model": "gpt-6-luna",
+								"effort": "medium"
+							},
+							"status": "applied",
+							"createdAt": "2026-11-14T17:05:48.190Z",
+							"reason": "Provider, model and effort verified after resume."
+						}
+					},
+					null
+				]
 			},
 			{
 				"name": "ProviderSwitch.delete",
 				"type": "Promise<boolean>",
-				"description": "Promise of the adapter deletion result for the requested switches row."
+				"description": "Resolves with the boolean the adapter returns for the deletion; the SQLite adapter returns true only when a row was deleted. The model returns the adapter's promise itself, so the value is unchanged.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [
 			{
 				"name": "Persistence operation failure",
 				"type": "propagated",
-				"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+				"description": "Synchronous exceptions and promise rejections from the adapter reach the caller unchanged, because the model has no try/catch. For findBy, create and update, a throwing getter on the fields or input object also propagates, because that object is spread before the adapter is called."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown synchronously when a static method is called without ProviderSwitch as its receiver or with a null or undefined adapter, because reading this.definition.table or an adapter method fails on a missing value. The class contains no throw statement."
 			}
 		],
 		"errorStatus": "declared",
@@ -92,27 +255,56 @@
 						"name": "ProviderSwitch.find.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the switches table; the model owns no connection lifecycle."
+						"description": "Persistence adapter whose find method the model calls with the switches table name; the model creates no adapter and owns no connection lifecycle."
 					},
 					{
 						"name": "ProviderSwitch.find.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "Primary-key value of the switches row to look up; with the SQLite adapter it is matched against the session column, so it is a session key rather than a switch id. The model passes it unchanged and does not generate or validate it.",
+						"examples": [
+							"7f3a9c21-0b4e-4d2a-8c61-e9f5a3b72d10",
+							"0d4c8a6e-2f7b-4a19-9e3d-5b8f1c7a2e60",
+							"c41e7b02-93a8-4f6d-a5e1-7d2b9c0f4a68"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderSwitch.find",
 						"type": "Promise<ProviderSwitchAttributes | null>",
-						"description": "Promise of the matching switches row, or null according to the adapter lookup result."
+						"description": "Resolves with the switches row the adapter returns for the id, an object with session, id and data, or null when the adapter returns none. The model returns the adapter's promise itself, so the resolved value is unchanged.",
+						"examples": [
+							{
+								"session": "7f3a9c21-0b4e-4d2a-8c61-e9f5a3b72d10",
+								"id": "8f14e45f-ceea-4e67-9d1a-2b7c5e9f0a31:pending",
+								"data": {
+									"id": "8f14e45f-ceea-4e67-9d1a-2b7c5e9f0a31",
+									"sessionId": "7f3a9c21-0b4e-4d2a-8c61-e9f5a3b72d10",
+									"target": {
+										"provider": "harness-claude",
+										"model": "claude-opus-5-5",
+										"effort": "xhigh"
+									},
+									"status": "pending",
+									"createdAt": "2026-11-15T09:30:12.418Z",
+									"reason": "Desktop control connection unavailable. Requests stay pending; no provider settings change."
+								}
+							},
+							null
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
 						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"description": "Synchronous exceptions and promise rejections from adapter.find reach the caller unchanged, because the model has no try/catch. The method spreads no caller object, so no caller getter runs."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown synchronously when find is called without ProviderSwitch as its receiver or with a null or undefined adapter, because reading this.definition.table or adapter.find fails on a missing value."
 					}
 				],
 				"errorStatus": "declared"
@@ -124,27 +316,97 @@
 						"name": "ProviderSwitch.findBy.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the switches table; the model owns no connection lifecycle."
+						"description": "Persistence adapter whose findBy method the model calls with the switches table name; the model creates no adapter and owns no connection lifecycle."
 					},
 					{
 						"name": "ProviderSwitch.findBy.fields",
 						"type": "Partial<ProviderSwitchAttributes>",
 						"required": true,
-						"description": "Partial stored attributes used as equality filters for switches."
+						"description": "Partial switches attributes (session, id and data) that the model shallow-copies and passes to adapter.findBy as equality filters; with the SQLite adapter an empty object matches every row.",
+						"examples": [
+							{
+								"session": "7f3a9c21-0b4e-4d2a-8c61-e9f5a3b72d10"
+							},
+							{
+								"id": "5b2c7e90-41d3-4a8f-b6e2-0c9d7f3a1e54:applied"
+							},
+							{
+								"session": "c41e7b02-93a8-4f6d-a5e1-7d2b9c0f4a68",
+								"id": "e3a9d216-7c0f-4b58-8e13-f6d2a4b9c705:cancelled"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderSwitch.findBy",
 						"type": "Promise<ProviderSwitchAttributes[]>",
-						"description": "Promise of switches rows matching the supplied attribute filters."
+						"description": "Resolves with the array of switches rows the adapter returns for the filters, which is empty when none match. The model returns the adapter's promise itself, so the array is unchanged.",
+						"examples": [
+							[],
+							[
+								{
+									"session": "7f3a9c21-0b4e-4d2a-8c61-e9f5a3b72d10",
+									"id": "8f14e45f-ceea-4e67-9d1a-2b7c5e9f0a31:pending",
+									"data": {
+										"id": "8f14e45f-ceea-4e67-9d1a-2b7c5e9f0a31",
+										"sessionId": "7f3a9c21-0b4e-4d2a-8c61-e9f5a3b72d10",
+										"target": {
+											"provider": "harness-claude",
+											"model": "claude-opus-5-5",
+											"effort": "xhigh"
+										},
+										"status": "pending",
+										"createdAt": "2026-11-15T09:30:12.418Z",
+										"reason": "Desktop control connection unavailable. Requests stay pending; no provider settings change."
+									}
+								},
+								{
+									"session": "0d4c8a6e-2f7b-4a19-9e3d-5b8f1c7a2e60",
+									"id": "5b2c7e90-41d3-4a8f-b6e2-0c9d7f3a1e54:applied",
+									"data": {
+										"id": "5b2c7e90-41d3-4a8f-b6e2-0c9d7f3a1e54",
+										"sessionId": "0d4c8a6e-2f7b-4a19-9e3d-5b8f1c7a2e60",
+										"target": {
+											"provider": "openai",
+											"model": "gpt-6-luna",
+											"effort": "medium"
+										},
+										"status": "applied",
+										"createdAt": "2026-11-14T17:05:48.190Z",
+										"reason": "Provider, model and effort verified after resume."
+									}
+								},
+								{
+									"session": "c41e7b02-93a8-4f6d-a5e1-7d2b9c0f4a68",
+									"id": "e3a9d216-7c0f-4b58-8e13-f6d2a4b9c705:cancelled",
+									"data": {
+										"id": "e3a9d216-7c0f-4b58-8e13-f6d2a4b9c705",
+										"sessionId": "c41e7b02-93a8-4f6d-a5e1-7d2b9c0f4a68",
+										"target": {
+											"provider": "openai",
+											"model": "gpt-6.1-sol",
+											"effort": "high"
+										},
+										"status": "cancelled",
+										"createdAt": "2026-11-15T08:12:03.771Z",
+										"reason": "Cancelled by the user."
+									}
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
 						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"description": "Synchronous exceptions and promise rejections from adapter.findBy reach the caller unchanged, because the model has no try/catch. A throwing getter on fields also propagates, because fields is spread into a new object before the call."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown synchronously when findBy is called without ProviderSwitch as its receiver or with a null or undefined adapter, because reading this.definition.table or adapter.findBy fails on a missing value."
 					}
 				],
 				"errorStatus": "declared"
@@ -156,27 +418,68 @@
 						"name": "ProviderSwitch.create.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the switches table; the model owns no connection lifecycle."
+						"description": "Persistence adapter whose create method the model calls with the switches table name; the model creates no adapter and owns no connection lifecycle."
 					},
 					{
 						"name": "ProviderSwitch.create.input",
 						"type": "ProviderSwitchCreateInput",
 						"required": true,
-						"description": "Create attributes or update patch forwarded to switches; omitted update fields remain the adapter's responsibility."
+						"description": "Complete switches row with session, id and data, all required; the model shallow-copies it and passes it to adapter.create without adding, removing or checking any field.",
+						"examples": [
+							{
+								"session": "7f3a9c21-0b4e-4d2a-8c61-e9f5a3b72d10",
+								"id": "8f14e45f-ceea-4e67-9d1a-2b7c5e9f0a31:pending",
+								"data": {
+									"id": "8f14e45f-ceea-4e67-9d1a-2b7c5e9f0a31",
+									"sessionId": "7f3a9c21-0b4e-4d2a-8c61-e9f5a3b72d10",
+									"target": {
+										"provider": "harness-claude",
+										"model": "claude-opus-5-5",
+										"effort": "xhigh"
+									},
+									"status": "pending",
+									"createdAt": "2026-11-15T09:30:12.418Z",
+									"reason": "Desktop control connection unavailable. Requests stay pending; no provider settings change."
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderSwitch.create",
 						"type": "Promise<ProviderSwitchAttributes>",
-						"description": "Promise of the switches row returned by the adapter after creation."
+						"description": "Resolves with the row the adapter returns after inserting the input, an object with session, id and data. The model returns the adapter's promise itself, so the row is unchanged.",
+						"examples": [
+							{
+								"session": "7f3a9c21-0b4e-4d2a-8c61-e9f5a3b72d10",
+								"id": "8f14e45f-ceea-4e67-9d1a-2b7c5e9f0a31:pending",
+								"data": {
+									"id": "8f14e45f-ceea-4e67-9d1a-2b7c5e9f0a31",
+									"sessionId": "7f3a9c21-0b4e-4d2a-8c61-e9f5a3b72d10",
+									"target": {
+										"provider": "harness-claude",
+										"model": "claude-opus-5-5",
+										"effort": "xhigh"
+									},
+									"status": "pending",
+									"createdAt": "2026-11-15T09:30:12.418Z",
+									"reason": "Desktop control connection unavailable. Requests stay pending; no provider settings change."
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
 						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"description": "Synchronous exceptions and promise rejections from adapter.create reach the caller unchanged, because the model has no try/catch. A throwing getter on input also propagates, because input is spread into a new object before the call."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown synchronously when create is called without ProviderSwitch as its receiver or with a null or undefined adapter, because reading this.definition.table or adapter.create fails on a missing value."
 					}
 				],
 				"errorStatus": "declared"
@@ -188,33 +491,94 @@
 						"name": "ProviderSwitch.update.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the switches table; the model owns no connection lifecycle."
+						"description": "Persistence adapter whose update method the model calls with the switches table name; the model creates no adapter and owns no connection lifecycle."
 					},
 					{
 						"name": "ProviderSwitch.update.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "Primary-key value of the switches row to change; with the SQLite adapter it is matched against the session column, so it is a session key rather than a switch id. The model passes it unchanged and does not generate or validate it.",
+						"examples": [
+							"7f3a9c21-0b4e-4d2a-8c61-e9f5a3b72d10",
+							"0d4c8a6e-2f7b-4a19-9e3d-5b8f1c7a2e60",
+							"c41e7b02-93a8-4f6d-a5e1-7d2b9c0f4a68"
+						]
 					},
 					{
 						"name": "ProviderSwitch.update.input",
 						"type": "ProviderSwitchUpdateInput",
 						"required": true,
-						"description": "Create attributes or update patch forwarded to switches; omitted update fields remain the adapter's responsibility."
+						"description": "Partial patch with optional id and data keys and no session key; the model shallow-copies it and passes it to adapter.update. With the SQLite adapter, an input containing session is rejected and omitted columns keep their stored values.",
+						"examples": [
+							{
+								"id": "5b2c7e90-41d3-4a8f-b6e2-0c9d7f3a1e54:applied",
+								"data": {
+									"id": "5b2c7e90-41d3-4a8f-b6e2-0c9d7f3a1e54",
+									"sessionId": "0d4c8a6e-2f7b-4a19-9e3d-5b8f1c7a2e60",
+									"target": {
+										"provider": "openai",
+										"model": "gpt-6-luna",
+										"effort": "medium"
+									},
+									"status": "applied",
+									"createdAt": "2026-11-14T17:05:48.190Z",
+									"reason": "Provider, model and effort verified after resume."
+								}
+							},
+							{
+								"id": "e3a9d216-7c0f-4b58-8e13-f6d2a4b9c705:cancelled",
+								"data": {
+									"id": "e3a9d216-7c0f-4b58-8e13-f6d2a4b9c705",
+									"sessionId": "c41e7b02-93a8-4f6d-a5e1-7d2b9c0f4a68",
+									"target": {
+										"provider": "openai",
+										"model": "gpt-6.1-sol",
+										"effort": "high"
+									},
+									"status": "cancelled",
+									"createdAt": "2026-11-15T08:12:03.771Z",
+									"reason": "Cancelled by the user."
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderSwitch.update",
 						"type": "Promise<ProviderSwitchAttributes | null>",
-						"description": "Promise of the updated switches row, or null according to the adapter update result."
+						"description": "Resolves with the updated switches row the adapter returns, or null when the adapter returns none for the id. The model returns the adapter's promise itself, so the result is unchanged.",
+						"examples": [
+							{
+								"session": "0d4c8a6e-2f7b-4a19-9e3d-5b8f1c7a2e60",
+								"id": "5b2c7e90-41d3-4a8f-b6e2-0c9d7f3a1e54:applied",
+								"data": {
+									"id": "5b2c7e90-41d3-4a8f-b6e2-0c9d7f3a1e54",
+									"sessionId": "0d4c8a6e-2f7b-4a19-9e3d-5b8f1c7a2e60",
+									"target": {
+										"provider": "openai",
+										"model": "gpt-6-luna",
+										"effort": "medium"
+									},
+									"status": "applied",
+									"createdAt": "2026-11-14T17:05:48.190Z",
+									"reason": "Provider, model and effort verified after resume."
+								}
+							},
+							null
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
 						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"description": "Synchronous exceptions and promise rejections from adapter.update reach the caller unchanged, and a throwing getter on input also propagates because input is spread before the call. With the SQLite adapter, an input that contains session rejects with 'A SQLite primary key cannot be updated'."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown synchronously when update is called without ProviderSwitch as its receiver or with a null or undefined adapter, because reading this.definition.table or adapter.update fails on a missing value."
 					}
 				],
 				"errorStatus": "declared"
@@ -226,27 +590,38 @@
 						"name": "ProviderSwitch.delete.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the switches table; the model owns no connection lifecycle."
+						"description": "Persistence adapter whose delete method the model calls with the switches table name; the model creates no adapter and owns no connection lifecycle."
 					},
 					{
 						"name": "ProviderSwitch.delete.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "Primary-key value of the switches row to delete; with the SQLite adapter it is matched against the session column, so it is a session key rather than a switch id. The model passes it unchanged and does not generate or validate it.",
+						"examples": [
+							"7f3a9c21-0b4e-4d2a-8c61-e9f5a3b72d10",
+							"0d4c8a6e-2f7b-4a19-9e3d-5b8f1c7a2e60",
+							"c41e7b02-93a8-4f6d-a5e1-7d2b9c0f4a68"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderSwitch.delete",
 						"type": "Promise<boolean>",
-						"description": "Promise of the adapter deletion result for the requested switches row."
+						"description": "Resolves with the boolean the adapter returns for the deletion; the SQLite adapter returns true only when a row was deleted. The model returns the adapter's promise itself, so the value is unchanged.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
 						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"description": "Synchronous exceptions and promise rejections from adapter.delete reach the caller unchanged, because the model has no try/catch. The method spreads no caller object, so no caller getter runs."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown synchronously when delete is called without ProviderSwitch as its receiver or with a null or undefined adapter, because reading this.definition.table or adapter.delete fails on a missing value."
 					}
 				],
 				"errorStatus": "declared"
