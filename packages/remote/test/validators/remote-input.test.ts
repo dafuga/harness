@@ -1,7 +1,7 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { RemoteFailure } from '../../src/models/Remote.types';
-import { RemoteInputValidator } from '../../src/validators/RemoteInputValidator';
+import { RemoteInputValidator } from '../../src/validators/networking-security/RemoteInputValidator';
 
 const validator = new RemoteInputValidator(),
 	client = { kind: 'ios', name: 'Fixture phone' },

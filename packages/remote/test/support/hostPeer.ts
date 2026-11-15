@@ -5,7 +5,7 @@ import type { WireLink } from '../../src/services/wire-session-service/WireSessi
 import { toBase64Url } from '../../src/utils/remoteBytes';
 import { randomCredential, remoteIdentity } from '../../src/utils/remoteIdentity';
 import { exportRemoteKeys, remoteKeys } from '../../src/utils/remoteKeys';
-import { SecurePacketValidator } from '../../src/validators/SecurePacketValidator';
+import { SecurePacketValidator } from '../../src/validators/networking-security/SecurePacketValidator';
 import { memorySocket } from './memorySocket';
 import { wireSession } from './wireHarness';
 

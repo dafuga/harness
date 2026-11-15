@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/remote/src/validators/RemoteInputValidator.ts",
 			"packages/remote/src/validators/networking-security/RemoteInputValidator.ts",
 			"packages/remote/src/validators/networking-security/RemoteInputValidator.types.ts"
 		],
 		"symbols": [
-			"RemoteInputValidator",
 			"RemoteInputValidator",
 			"RemoteInputValidator.attach",
 			"RemoteInputValidator.projectId",

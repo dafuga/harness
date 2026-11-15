@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { RemoteFailure, remoteLimits } from '../../src/models/Remote.types';
-import { WireMessageValidator } from '../../src/validators/WireMessageValidator';
+import { WireMessageValidator } from '../../src/validators/networking-security/WireMessageValidator';
 
 const id = '8775318f-d765-4e78-9d40-6cb92e1f6b11',
 	validator = new WireMessageValidator(),
