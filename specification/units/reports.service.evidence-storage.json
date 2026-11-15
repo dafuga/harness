@@ -12,32 +12,153 @@
 		"symbols": ["EvidenceStorageService", "EvidenceStorageService.store"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EvidenceStorageService.store.report",
 				"type": "Report",
-				"required": true
+				"required": true,
+				"description": "The report run that store reads and changes in place: only items with no storage and not marked missing are handled, and each handled item gets storage 'r2-evidence' when R2 evidence storage is configured. When such items exist, the run's startedAt must parse as a date less than 30 days old, and with R2 configured its id must be 1 to 100 letters, digits, underscores or hyphens.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "5b1e0c7a-3d2f-4a8e-9c61-0f7b2d4e8a13",
+						"project": {
+							"id": "9a3f0c2d5e7b1a48",
+							"name": "storefront",
+							"path": "/Users/dev/projects/storefront"
+						},
+						"title": "Guest checkout",
+						"mode": "feature",
+						"environment": "local",
+						"historical": false,
+						"startedAt": "2026-11-12T09:14:05.318Z",
+						"updatedAt": "2026-11-12T09:31:47.902Z",
+						"summary": "Guest checkout verified on desktop and mobile.",
+						"status": "running",
+						"state": "active",
+						"checks": [],
+						"evidence": [
+							{
+								"id": "2f7c9e1a-6b3d-4c85-9e02-7a1d5f8b3c64",
+								"title": "Checkout confirmation narration",
+								"category": "Uploaded audio",
+								"file": "c0a1f3e8b92d47a6e5f1c8d3b0a94e72d61f58c3b7e04a9d2c16f8e5a3b7d09c.mp3",
+								"status": "not-proven",
+								"source": "Manual audio upload · recording date not supplied",
+								"mediaType": "audio",
+								"mimeType": "audio/mpeg"
+							}
+						],
+						"findings": [],
+						"coverage": [],
+						"acceptance": []
+					},
+					{
+						"schemaVersion": 1,
+						"id": "0c4d8e21-7a9b-4f36-8d52-e1b6a3c9f047",
+						"project": {
+							"id": "e41b7c09a2d6f385",
+							"name": "storefront",
+							"path": "/Users/dev/projects/storefront"
+						},
+						"title": "Payment retry",
+						"mode": "feature",
+						"environment": "local",
+						"historical": false,
+						"startedAt": "2026-11-10T16:02:44.615Z",
+						"updatedAt": "2026-11-14T11:20:09.037Z",
+						"summary": "Payment retry path re-checked after the fix.",
+						"status": "running",
+						"state": "active",
+						"checks": [],
+						"evidence": [
+							{
+								"id": "3e8b1d6f-52a0-4c9e-b7d4-9f1a6c03e5b8-before",
+								"title": "Cart summary before",
+								"category": "Uploaded comparison",
+								"file": "4f1e8a2c9d7b3e60a51f8c2d9b4e7a13f6c0d85b2e9a4f7c1d3b6e8a0c5f2d91.png",
+								"status": "not-proven",
+								"source": "Manual upload · Cloudflare R2",
+								"capturedAt": "2026-11-10T16:05:12.440Z",
+								"comparison": "3e8b1d6f-52a0-4c9e-b7d4-9f1a6c03e5b8",
+								"storage": "r2",
+								"viewport": "1440px desktop",
+								"phase": "before"
+							},
+							{
+								"id": "9c27a4e0-1d8f-4b63-a5e9-3f0c7b2d84a1",
+								"title": "Payment retry narration",
+								"category": "Uploaded audio",
+								"file": "2b7e9d4a1f6c83e0b5d2a7f9c4e1b6d8a3f0c7e2b9d5a1f4c6e8b3d0a7f2c951.wav",
+								"status": "not-proven",
+								"source": "Manual audio upload · recording date not supplied",
+								"mediaType": "audio",
+								"mimeType": "audio/wav"
+							}
+						],
+						"findings": [],
+						"coverage": [],
+						"acceptance": []
+					}
+				]
 			},
 			{
 				"name": "EvidenceStorageService.store.directory",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The report's run directory, which ReportRepository.directory builds as <reports root>/runs/<report id>; store reads each pending file from its assets subdirectory. When R2 evidence storage is configured, each pending file name must contain no slash or backslash, must be a regular file rather than a symbolic link, and must resolve inside that assets directory.",
+				"examples": [
+					"/Users/dev/.codex/project-reports/runs/5b1e0c7a-3d2f-4a8e-9c61-0f7b2d4e8a13",
+					"/Users/dev/.codex/project-reports/runs/0c4d8e21-7a9b-4f36-8d52-e1b6a3c9f047"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EvidenceStorageService.store",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "On success store resolves to undefined: it returns early when no evidence is pending or no R2 evidence store is configured, and otherwise returns only after setting storage on every pending item of the report it was given."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by store before any upload when a pending item exists and reportRetention reports the report as 30 days old or more, with the message 'Report expired after 30 days; create a new report'."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by reportRetention, which store calls only when a pending item exists, with 'Invalid report retention timestamp' when report.startedAt does not parse as a date."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by evidenceObjectKey, which R2EvidenceStoreAdapter.put calls for each distinct pending file only when R2 evidence storage is configured, with 'Invalid R2 evidence name' when the file is not a 64-character lowercase hex SHA-256 name ending in .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by safeId inside evidenceObjectKey, once a file name is valid and R2 evidence storage is configured, with 'Invalid report or asset ID' when report.id is not 1 to 100 letters, digits, underscores or hyphens."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by registeredAsset, which store calls before uploading each distinct pending file when R2 evidence storage is configured: 'Unregistered asset' when the name is not in the pending list or contains a slash or backslash, 'Invalid asset' when the file is a symbolic link or not a regular file, and 'Invalid asset path' when its real path is outside the assets directory."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by R2EvidenceStoreAdapter.fromEnvironment through r2EvidenceConfig, which store calls once a pending item exists: 'Local-only storage is restricted to temporary test stores; real report media requires Cloudflare R2' when PROJECT_REPORTS_ASSET_STORAGE is 'local' outside a temporary test store, 'Cloudflare R2 evidence storage is partially configured; real reports require all four R2 settings' when any R2 setting is missing (unless none are set in a temporary test store), and 'R2 endpoint override must be a local test server' when an endpoint is set that is not an http://127.0.0.1 URL with a port."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Filesystem errors from realpath, lstat and readFile (such as ENOENT for a missing asset file), non-ENOENT errors reading the local R2 config file, and failures from the R2 S3 client on upload are not caught, so store rejects with the underlying error unchanged."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "EvidenceStorageService.store",
@@ -45,27 +166,148 @@
 					{
 						"name": "EvidenceStorageService.store.report",
 						"type": "Report",
-						"required": true
+						"required": true,
+						"description": "The report run that store reads and changes in place: only items with no storage and not marked missing are handled, and each handled item gets storage 'r2-evidence' when R2 evidence storage is configured. When such items exist, the run's startedAt must parse as a date less than 30 days old, and with R2 configured its id must be 1 to 100 letters, digits, underscores or hyphens.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "5b1e0c7a-3d2f-4a8e-9c61-0f7b2d4e8a13",
+								"project": {
+									"id": "9a3f0c2d5e7b1a48",
+									"name": "storefront",
+									"path": "/Users/dev/projects/storefront"
+								},
+								"title": "Guest checkout",
+								"mode": "feature",
+								"environment": "local",
+								"historical": false,
+								"startedAt": "2026-11-12T09:14:05.318Z",
+								"updatedAt": "2026-11-12T09:31:47.902Z",
+								"summary": "Guest checkout verified on desktop and mobile.",
+								"status": "running",
+								"state": "active",
+								"checks": [],
+								"evidence": [
+									{
+										"id": "2f7c9e1a-6b3d-4c85-9e02-7a1d5f8b3c64",
+										"title": "Checkout confirmation narration",
+										"category": "Uploaded audio",
+										"file": "c0a1f3e8b92d47a6e5f1c8d3b0a94e72d61f58c3b7e04a9d2c16f8e5a3b7d09c.mp3",
+										"status": "not-proven",
+										"source": "Manual audio upload · recording date not supplied",
+										"mediaType": "audio",
+										"mimeType": "audio/mpeg"
+									}
+								],
+								"findings": [],
+								"coverage": [],
+								"acceptance": []
+							},
+							{
+								"schemaVersion": 1,
+								"id": "0c4d8e21-7a9b-4f36-8d52-e1b6a3c9f047",
+								"project": {
+									"id": "e41b7c09a2d6f385",
+									"name": "storefront",
+									"path": "/Users/dev/projects/storefront"
+								},
+								"title": "Payment retry",
+								"mode": "feature",
+								"environment": "local",
+								"historical": false,
+								"startedAt": "2026-11-10T16:02:44.615Z",
+								"updatedAt": "2026-11-14T11:20:09.037Z",
+								"summary": "Payment retry path re-checked after the fix.",
+								"status": "running",
+								"state": "active",
+								"checks": [],
+								"evidence": [
+									{
+										"id": "3e8b1d6f-52a0-4c9e-b7d4-9f1a6c03e5b8-before",
+										"title": "Cart summary before",
+										"category": "Uploaded comparison",
+										"file": "4f1e8a2c9d7b3e60a51f8c2d9b4e7a13f6c0d85b2e9a4f7c1d3b6e8a0c5f2d91.png",
+										"status": "not-proven",
+										"source": "Manual upload · Cloudflare R2",
+										"capturedAt": "2026-11-10T16:05:12.440Z",
+										"comparison": "3e8b1d6f-52a0-4c9e-b7d4-9f1a6c03e5b8",
+										"storage": "r2",
+										"viewport": "1440px desktop",
+										"phase": "before"
+									},
+									{
+										"id": "9c27a4e0-1d8f-4b63-a5e9-3f0c7b2d84a1",
+										"title": "Payment retry narration",
+										"category": "Uploaded audio",
+										"file": "2b7e9d4a1f6c83e0b5d2a7f9c4e1b6d8a3f0c7e2b9d5a1f4c6e8b3d0a7f2c951.wav",
+										"status": "not-proven",
+										"source": "Manual audio upload · recording date not supplied",
+										"mediaType": "audio",
+										"mimeType": "audio/wav"
+									}
+								],
+								"findings": [],
+								"coverage": [],
+								"acceptance": []
+							}
+						]
 					},
 					{
 						"name": "EvidenceStorageService.store.directory",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The report's run directory, which ReportRepository.directory builds as <reports root>/runs/<report id>; store reads each pending file from its assets subdirectory. When R2 evidence storage is configured, each pending file name must contain no slash or backslash, must be a regular file rather than a symbolic link, and must resolve inside that assets directory.",
+						"examples": [
+							"/Users/dev/.codex/project-reports/runs/5b1e0c7a-3d2f-4a8e-9c61-0f7b2d4e8a13",
+							"/Users/dev/.codex/project-reports/runs/0c4d8e21-7a9b-4f36-8d52-e1b6a3c9f047"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EvidenceStorageService.store",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "On success store resolves to undefined: it returns early when no evidence is pending or no R2 evidence store is configured, and otherwise returns only after setting storage on every pending item of the report it was given."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by store before any upload when a pending item exists and reportRetention reports the report as 30 days old or more, with the message 'Report expired after 30 days; create a new report'."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by reportRetention, which store calls only when a pending item exists, with 'Invalid report retention timestamp' when report.startedAt does not parse as a date."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by evidenceObjectKey, which R2EvidenceStoreAdapter.put calls for each distinct pending file only when R2 evidence storage is configured, with 'Invalid R2 evidence name' when the file is not a 64-character lowercase hex SHA-256 name ending in .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by safeId inside evidenceObjectKey, once a file name is valid and R2 evidence storage is configured, with 'Invalid report or asset ID' when report.id is not 1 to 100 letters, digits, underscores or hyphens."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by registeredAsset, which store calls before uploading each distinct pending file when R2 evidence storage is configured: 'Unregistered asset' when the name is not in the pending list or contains a slash or backslash, 'Invalid asset' when the file is a symbolic link or not a regular file, and 'Invalid asset path' when its real path is outside the assets directory."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by R2EvidenceStoreAdapter.fromEnvironment through r2EvidenceConfig, which store calls once a pending item exists: 'Local-only storage is restricted to temporary test stores; real report media requires Cloudflare R2' when PROJECT_REPORTS_ASSET_STORAGE is 'local' outside a temporary test store, 'Cloudflare R2 evidence storage is partially configured; real reports require all four R2 settings' when any R2 setting is missing (unless none are set in a temporary test store), and 'R2 endpoint override must be a local test server' when an endpoint is set that is not an http://127.0.0.1 URL with a port."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Filesystem errors from realpath, lstat and readFile (such as ENOENT for a missing asset file), non-ENOENT errors reading the local R2 config file, and failures from the R2 S3 client on upload are not caught, so store rejects with the underlying error unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
