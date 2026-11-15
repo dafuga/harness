@@ -27,17 +27,190 @@
 				"name": "chooseRuntime.input",
 				"type": "RuntimeChoiceInput",
 				"required": true,
-				"description": "Available measurements plus the exact workload and machine profile to consider. Only latency-cold-ms entries for those labels participate."
+				"description": "Measurements plus the exact workload and profile labels to choose for; only entries with metric latency-cold-ms, equal workload and profile labels, and a target that names a runtime count. Unit is not checked and only the first matching entry per target counts, so pass only one unit's measurements, and testedRevision is not part of this input.",
+				"examples": [
+					{
+						"measurements": [
+							{
+								"unit": "reports.component.evidence-grid",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 14.2,
+								"method": "median cold end-to-end latency",
+								"workload": "evidence-grid-render",
+								"profile": "darwin-arm64",
+								"target": "module",
+								"artifacts": []
+							},
+							{
+								"unit": "reports.component.evidence-grid",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 12.4,
+								"method": "median cold end-to-end latency",
+								"workload": "evidence-grid-render",
+								"profile": "darwin-arm64",
+								"target": "wasm",
+								"artifacts": []
+							},
+							{
+								"unit": "reports.component.evidence-grid",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 41.7,
+								"method": "median cold end-to-end latency",
+								"workload": "evidence-grid-render",
+								"profile": "darwin-arm64",
+								"target": "process",
+								"artifacts": []
+							},
+							{
+								"unit": "reports.component.evidence-grid",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 9.8,
+								"method": "median cold end-to-end latency",
+								"workload": "evidence-grid-render",
+								"profile": "darwin-arm64",
+								"target": "http",
+								"artifacts": []
+							}
+						],
+						"workload": "evidence-grid-render",
+						"profile": "darwin-arm64"
+					},
+					{
+						"measurements": [
+							{
+								"unit": "reports.component.evidence-grid",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 10.3,
+								"method": "median cold end-to-end latency",
+								"workload": "evidence-grid-render",
+								"profile": "linux-x64",
+								"target": "module",
+								"artifacts": []
+							},
+							{
+								"unit": "reports.component.evidence-grid",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 9.9,
+								"method": "median cold end-to-end latency",
+								"workload": "evidence-grid-render",
+								"profile": "linux-x64",
+								"target": "wasm",
+								"artifacts": []
+							}
+						],
+						"workload": "evidence-grid-render",
+						"profile": "linux-x64"
+					},
+					{
+						"measurements": [
+							{
+								"unit": "reports.component.evidence-grid",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": null,
+								"unavailable": "Module build failed for this profile.",
+								"method": "median cold end-to-end latency",
+								"workload": "evidence-grid-render",
+								"profile": "linux-x64",
+								"target": "module",
+								"artifacts": []
+							}
+						],
+						"workload": "evidence-grid-render",
+						"profile": "linux-x64"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "chooseRuntime",
 				"type": "RuntimeChoice",
-				"description": "Chosen runtime, measured or unmeasured basis, workload and profile, selection rule, candidates and exclusions. Module, Wasm and process are considered in that order within five percent of the fastest; no winner falls back to unmeasured module. HTTP is never selected automatically."
+				"description": "The chosen runtime with its basis (measured or unmeasured), workload, profile, rule text, candidates (each of module, wasm and process with a numeric coldMs, in that order) and excluded (each of those without a numeric coldMs, with its reason, plus HTTP when a matching measurement exists). The first candidate within 5% of the fastest wins; with no candidate the result is module with basis unmeasured, and HTTP is never selected automatically.",
+				"examples": [
+					{
+						"runtime": "wasm",
+						"basis": "measured",
+						"workload": "evidence-grid-render",
+						"profile": "darwin-arm64",
+						"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+						"candidates": [
+							{
+								"runtime": "module",
+								"coldMs": 14.2
+							},
+							{
+								"runtime": "wasm",
+								"coldMs": 12.4
+							},
+							{
+								"runtime": "process",
+								"coldMs": 41.7
+							}
+						],
+						"excluded": [
+							{
+								"runtime": "http",
+								"reason": "Needs an independently served unit; never chosen automatically."
+							}
+						]
+					},
+					{
+						"runtime": "module",
+						"basis": "measured",
+						"workload": "evidence-grid-render",
+						"profile": "linux-x64",
+						"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+						"candidates": [
+							{
+								"runtime": "module",
+								"coldMs": 10.3
+							},
+							{
+								"runtime": "wasm",
+								"coldMs": 9.9
+							}
+						],
+						"excluded": [
+							{
+								"runtime": "process",
+								"reason": "No measurement for this workload and profile."
+							}
+						]
+					},
+					{
+						"runtime": "module",
+						"basis": "unmeasured",
+						"workload": "evidence-grid-render",
+						"profile": "linux-x64",
+						"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+						"candidates": [],
+						"excluded": [
+							{
+								"runtime": "module",
+								"reason": "Module build failed for this profile."
+							},
+							{
+								"runtime": "wasm",
+								"reason": "No measurement for this workload and profile."
+							},
+							{
+								"runtime": "process",
+								"reason": "No measurement for this workload and profile."
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "chooseRuntime",
@@ -46,18 +219,190 @@
 						"name": "chooseRuntime.input",
 						"type": "RuntimeChoiceInput",
 						"required": true,
-						"description": "Available measurements plus the exact workload and machine profile to consider. Only latency-cold-ms entries for those labels participate."
+						"description": "Measurements plus the exact workload and profile labels to choose for; only entries with metric latency-cold-ms, equal workload and profile labels, and a target that names a runtime count. Unit is not checked and only the first matching entry per target counts, so pass only one unit's measurements, and testedRevision is not part of this input.",
+						"examples": [
+							{
+								"measurements": [
+									{
+										"unit": "reports.component.evidence-grid",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 14.2,
+										"method": "median cold end-to-end latency",
+										"workload": "evidence-grid-render",
+										"profile": "darwin-arm64",
+										"target": "module",
+										"artifacts": []
+									},
+									{
+										"unit": "reports.component.evidence-grid",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 12.4,
+										"method": "median cold end-to-end latency",
+										"workload": "evidence-grid-render",
+										"profile": "darwin-arm64",
+										"target": "wasm",
+										"artifacts": []
+									},
+									{
+										"unit": "reports.component.evidence-grid",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 41.7,
+										"method": "median cold end-to-end latency",
+										"workload": "evidence-grid-render",
+										"profile": "darwin-arm64",
+										"target": "process",
+										"artifacts": []
+									},
+									{
+										"unit": "reports.component.evidence-grid",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 9.8,
+										"method": "median cold end-to-end latency",
+										"workload": "evidence-grid-render",
+										"profile": "darwin-arm64",
+										"target": "http",
+										"artifacts": []
+									}
+								],
+								"workload": "evidence-grid-render",
+								"profile": "darwin-arm64"
+							},
+							{
+								"measurements": [
+									{
+										"unit": "reports.component.evidence-grid",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 10.3,
+										"method": "median cold end-to-end latency",
+										"workload": "evidence-grid-render",
+										"profile": "linux-x64",
+										"target": "module",
+										"artifacts": []
+									},
+									{
+										"unit": "reports.component.evidence-grid",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 9.9,
+										"method": "median cold end-to-end latency",
+										"workload": "evidence-grid-render",
+										"profile": "linux-x64",
+										"target": "wasm",
+										"artifacts": []
+									}
+								],
+								"workload": "evidence-grid-render",
+								"profile": "linux-x64"
+							},
+							{
+								"measurements": [
+									{
+										"unit": "reports.component.evidence-grid",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": null,
+										"unavailable": "Module build failed for this profile.",
+										"method": "median cold end-to-end latency",
+										"workload": "evidence-grid-render",
+										"profile": "linux-x64",
+										"target": "module",
+										"artifacts": []
+									}
+								],
+								"workload": "evidence-grid-render",
+								"profile": "linux-x64"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "chooseRuntime",
 						"type": "RuntimeChoice",
-						"description": "Chosen runtime, measured or unmeasured basis, workload and profile, selection rule, candidates and exclusions. Module, Wasm and process are considered in that order within five percent of the fastest; no winner falls back to unmeasured module. HTTP is never selected automatically."
+						"description": "The chosen runtime with its basis (measured or unmeasured), workload, profile, rule text, candidates (each of module, wasm and process with a numeric coldMs, in that order) and excluded (each of those without a numeric coldMs, with its reason, plus HTTP when a matching measurement exists). The first candidate within 5% of the fastest wins; with no candidate the result is module with basis unmeasured, and HTTP is never selected automatically.",
+						"examples": [
+							{
+								"runtime": "wasm",
+								"basis": "measured",
+								"workload": "evidence-grid-render",
+								"profile": "darwin-arm64",
+								"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+								"candidates": [
+									{
+										"runtime": "module",
+										"coldMs": 14.2
+									},
+									{
+										"runtime": "wasm",
+										"coldMs": 12.4
+									},
+									{
+										"runtime": "process",
+										"coldMs": 41.7
+									}
+								],
+								"excluded": [
+									{
+										"runtime": "http",
+										"reason": "Needs an independently served unit; never chosen automatically."
+									}
+								]
+							},
+							{
+								"runtime": "module",
+								"basis": "measured",
+								"workload": "evidence-grid-render",
+								"profile": "linux-x64",
+								"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+								"candidates": [
+									{
+										"runtime": "module",
+										"coldMs": 10.3
+									},
+									{
+										"runtime": "wasm",
+										"coldMs": 9.9
+									}
+								],
+								"excluded": [
+									{
+										"runtime": "process",
+										"reason": "No measurement for this workload and profile."
+									}
+								]
+							},
+							{
+								"runtime": "module",
+								"basis": "unmeasured",
+								"workload": "evidence-grid-render",
+								"profile": "linux-x64",
+								"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+								"candidates": [],
+								"excluded": [
+									{
+										"runtime": "module",
+										"reason": "Module build failed for this profile."
+									},
+									{
+										"runtime": "wasm",
+										"reason": "No measurement for this workload and profile."
+									},
+									{
+										"runtime": "process",
+										"reason": "No measurement for this workload and profile."
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
