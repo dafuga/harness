@@ -1,5 +1,5 @@
 import type { Written } from './shared-select-impact.test.types';
-import * as sourceIndex from '../src/services/source-index-service/SourceIndexService';
+import * as sourceIndex from '../src/services/development-tooling/source-index-service/SourceIndexService';
 import { readdirSync } from 'node:fs';
 import { beforeAll, expect, test } from 'vitest';
 import { HandlerRuntimeAdapter } from '../packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter';

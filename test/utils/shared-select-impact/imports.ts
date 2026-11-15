@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { scanImports } from '../../../src/services/source-index-service/scanImports';
-import type { SourceIndex } from '../../../src/services/source-index-service/SourceIndexService';
+import type { SourceIndex } from '../../../src/services/development-tooling/source-index-service/SourceIndexService';
 import type { Written } from '../../shared-select-impact.test.types';
 
 export function readBuildAliases(name: string): Record<string, string> {

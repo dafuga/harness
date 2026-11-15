@@ -14,7 +14,7 @@ import { SourceGraphService } from '../src/services/SourceGraphService';
 import {
 	SourceIndexService,
 	type SourceIndex
-} from '../src/services/source-index-service/SourceIndexService';
+} from '../src/services/development-tooling/source-index-service/SourceIndexService';
 import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
 import { scanImports } from '../src/services/source-index-service/scanImports';
 import { showUnit } from '../src/workflows/inspectUnits';

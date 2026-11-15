@@ -7,7 +7,7 @@ import { createHash } from 'node:crypto';
 import type { SourceTree } from '../../src/core/development-tooling/sourceTypes';
 import type { ComponentManifest } from '../../src/core/unitTypes';
 import { defaultUnitsConfig } from '../../src/core/unitsConfig';
-import { SourceIndexService } from '../../src/services/source-index-service/SourceIndexService';
+import { SourceIndexService } from '../../src/services/development-tooling/source-index-service/SourceIndexService';
 import { UnitIndexService } from '../../src/services/unit-index-service/UnitIndexService';
 
 export function memoryTree(files: Record<string, string>): SourceTree {

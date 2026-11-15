@@ -4,9 +4,9 @@ import type { SourceTree } from '../../src/core/development-tooling/sourceTypes'
 import type { ComponentManifest } from '../../src/core/unitTypes';
 import { defaultUnitsConfig } from '../../src/core/unitsConfig';
 import { BudgetService } from '../../src/services/budget-service/BudgetService';
-import { SourceIndexService } from '../../src/services/source-index-service/SourceIndexService';
+import { SourceIndexService } from '../../src/services/development-tooling/source-index-service/SourceIndexService';
 import { budgetFindings } from '../../src/services/budget-service/budgetFindings';
-import { complexityCoverage } from '../../src/services/source-index-service/complexityCoverage';
+import { complexityCoverage } from '../../src/services/development-tooling/source-index-service/complexityCoverage';
 import { unitMeasurements } from '../../src/utils/unitMeasurements';
 
 const commit = 'a'.repeat(40);
