@@ -12,11 +12,17 @@
 		"symbols": []
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "unknown",
+				"type": "thrown",
+				"description": "A rejection from fixture startup or the initial pairing request reaches the top-level catch. Error values are logged by message, other values use a fixed fallback, and the process exits with status 1."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
