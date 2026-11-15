@@ -9,6 +9,7 @@ import { VideoCaptureService } from '../../src/services/verification-evidence/Vi
 import { HistoryNoteRepository } from '../../src/repositories/git-source-history/history-note-repository/HistoryNoteRepository';
 import type { TemporaryRepo } from './temporary.types';
 import type { VerificationRecord } from '../../src/core/verification-evidence/verificationTypes';
+import { captureReceiptStore } from '../../src/services/verification-evidence/video-capture-service/captureReceiptStore';
 
 export async function assertDurableVideoReceipt(repo: TemporaryRepo) {
 	const f = await videoCaptureFixture(repo),
@@ -49,6 +50,9 @@ export async function assertDurableVideoReceipt(repo: TemporaryRepo) {
 		})
 	});
 	expect(replacement.raw[0].addressedFlags).toEqual([flag.id]);
+	expect(captureReceiptStore(replacementOptions.directory).raw[0].addressedFlags).toEqual([
+		flag.id
+	]);
 	const next = await attachCaptureParent(repo, replacement);
 	await assertResolvedReceiptFlag(repo.root, next, flag.id);
 	await expect(
@@ -60,6 +64,9 @@ export async function assertDurableVideoReceipt(repo: TemporaryRepo) {
 	).toBe(true);
 	f.publish(replacement);
 	await assertCaptureIndexOwnership(f);
+	return {
+		addressedFlags: captureReceiptStore(replacementOptions.directory).raw[0].addressedFlags
+	};
 }
 async function assertResolvedReceiptFlag(root: string, record: VerificationRecord, flag: string) {
 	expect(await new HistoryNoteRepository(root).text(record.source.commit)).toContain(record.id);

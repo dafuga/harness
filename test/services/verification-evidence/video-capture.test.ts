@@ -127,7 +127,9 @@ test('capture orchestration observes configured boundary signatures and preserve
 
 test('capture orchestration cleans owned raw only after an attached matching receipt', async () => {
 	expect(typeof new VideoCaptureService().record).toBe('function');
-	await expect(withTempRepo(assertDurableVideoReceipt)).resolves.toBeUndefined();
+	await expect(withTempRepo(assertDurableVideoReceipt)).resolves.toEqual({
+		addressedFlags: [expect.stringMatching(/^[a-f0-9-]{36}$/)]
+	});
 }, 30_000);
 
 test('capture orchestration re-records a corrupt sibling and bypasses old native cache for uncertain inputs', async () => {
