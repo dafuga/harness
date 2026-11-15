@@ -21,33 +21,82 @@
 				"name": "emittedKey.target",
 				"type": "string",
 				"required": true,
-				"description": "Target name to append to the artifact-bytes ledger key."
+				"description": "The execution target name appended after the colon of the artifact-bytes ledger key, so each target's frozen emitted size has its own key. The function accepts any string and does not validate or trim it, so the key uses the value exactly as given.",
+				"examples": ["module", "wasm", "process"]
 			},
 			{
 				"name": "emittedSizes.measurements",
 				"type": "Item[]",
 				"required": true,
-				"description": "Measurements with metric and optional target, profile and workload fields; the helper filters without changing entries."
+				"description": "The measurements to filter, each with a required metric and optional target, profile and workload fields. The helper reads those fields without validating the list or changing any entry, and keeps only artifact-bytes entries that have a target and no profile or workload.",
+				"examples": [
+					[
+						{
+							"metric": "artifact-bytes",
+							"target": "module",
+							"profile": null,
+							"workload": null
+						},
+						{
+							"metric": "artifact-bytes",
+							"target": "wasm"
+						}
+					],
+					[
+						{
+							"metric": "artifact-bytes",
+							"target": "http",
+							"profile": "ci-runner",
+							"workload": "cold-start"
+						},
+						{
+							"metric": "artifact-bytes"
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "emittedMetric",
 				"type": "unknown",
-				"description": "The metric name artifact-bytes used for emitted output sizes."
+				"description": "The constant 'artifact-bytes', the metric name that every emitted size is measured under. emittedSizes keeps only entries whose metric equals this constant, so entries with any other metric are never selected.",
+				"examples": ["artifact-bytes"]
 			},
 			{
 				"name": "emittedKey",
 				"type": "string",
-				"description": "Ledger key artifact-bytes: followed by the supplied target."
+				"description": "The ledger key an emitted size is frozen under, made of the metric name artifact-bytes, a colon, and the supplied target. The target is appended exactly as given, with no validation in this function.",
+				"examples": ["artifact-bytes:module", "artifact-bytes:wasm", "artifact-bytes:process"]
 			},
 			{
 				"name": "emittedSizes",
 				"type": "Array<Item & { target: RuntimeKind }>",
-				"description": "Entries whose metric is artifact-bytes, target is defined, and profile and workload are both absent or empty. Benchmark sizes with a profile or workload are excluded; original order and objects are preserved."
+				"description": "The measurements that qualify as frozen per-target emitted sizes: metric is artifact-bytes, target is defined, and profile and workload are each absent or empty. Benchmark sizes that carry a profile or workload are excluded, and the returned entries are the same objects as the input, in their original order.",
+				"examples": [
+					[
+						{
+							"metric": "artifact-bytes",
+							"target": "module",
+							"profile": null,
+							"workload": null
+						},
+						{
+							"metric": "artifact-bytes",
+							"target": "wasm"
+						}
+					],
+					[
+						{
+							"metric": "artifact-bytes",
+							"target": "process"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "emittedKey",
@@ -56,18 +105,20 @@
 						"name": "emittedKey.target",
 						"type": "string",
 						"required": true,
-						"description": "Target name to append to the artifact-bytes ledger key."
+						"description": "The execution target name appended after the colon of the artifact-bytes ledger key, so each target's frozen emitted size has its own key. The function accepts any string and does not validate or trim it, so the key uses the value exactly as given.",
+						"examples": ["module", "wasm", "process"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "emittedKey",
 						"type": "string",
-						"description": "Ledger key artifact-bytes: followed by the supplied target."
+						"description": "The ledger key an emitted size is frozen under, made of the metric name artifact-bytes, a colon, and the supplied target. The target is appended exactly as given, with no validation in this function.",
+						"examples": ["artifact-bytes:module", "artifact-bytes:wasm", "artifact-bytes:process"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "emittedSizes",
@@ -76,18 +127,63 @@
 						"name": "emittedSizes.measurements",
 						"type": "Item[]",
 						"required": true,
-						"description": "Measurements with metric and optional target, profile and workload fields; the helper filters without changing entries."
+						"description": "The measurements to filter, each with a required metric and optional target, profile and workload fields. The helper reads those fields without validating the list or changing any entry, and keeps only artifact-bytes entries that have a target and no profile or workload.",
+						"examples": [
+							[
+								{
+									"metric": "artifact-bytes",
+									"target": "module",
+									"profile": null,
+									"workload": null
+								},
+								{
+									"metric": "artifact-bytes",
+									"target": "wasm"
+								}
+							],
+							[
+								{
+									"metric": "artifact-bytes",
+									"target": "http",
+									"profile": "ci-runner",
+									"workload": "cold-start"
+								},
+								{
+									"metric": "artifact-bytes"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "emittedSizes",
 						"type": "Array<Item & { target: RuntimeKind }>",
-						"description": "Entries whose metric is artifact-bytes, target is defined, and profile and workload are both absent or empty. Benchmark sizes with a profile or workload are excluded; original order and objects are preserved."
+						"description": "The measurements that qualify as frozen per-target emitted sizes: metric is artifact-bytes, target is defined, and profile and workload are each absent or empty. Benchmark sizes that carry a profile or workload are excluded, and the returned entries are the same objects as the input, in their original order.",
+						"examples": [
+							[
+								{
+									"metric": "artifact-bytes",
+									"target": "module",
+									"profile": null,
+									"workload": null
+								},
+								{
+									"metric": "artifact-bytes",
+									"target": "wasm"
+								}
+							],
+							[
+								{
+									"metric": "artifact-bytes",
+									"target": "process"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
