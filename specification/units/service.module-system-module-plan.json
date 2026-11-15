@@ -21,46 +21,182 @@
 				"name": "modulePackagePlan.root",
 				"type": "string",
 				"required": true,
-				"description": "Absolute project directory containing the package manifest and module metadata."
+				"description": "Project directory: modulePackagePlan reads join(root, 'package.json') without checking the path and never writes it. A missing package.json rejects the call with the read error, and one that is not valid JSON rejects it with a SyntaxError.",
+				"examples": [
+					"/Users/example/projects/harness-app",
+					"/home/dev/workspace/billing-portal",
+					"/srv/apps/reports-dashboard"
+				]
 			},
 			{
 				"name": "modulePackagePlan.definition",
 				"type": "ModuleDefinition",
 				"required": true,
-				"description": "Validated capability definition containing setup files, dependencies and resource templates."
+				"description": "Only appOnly, dependencies, devDependencies and packageScripts are read: appOnly is checked against harness.kind and the other three are merged into package.json, while other fields are ignored and the object is not re-validated. A different non-empty existing value under the same name rejects the call instead of being overwritten.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "evidence-grid",
+						"version": "1.2.0",
+						"title": "Evidence grid",
+						"description": "Sortable evidence table for report screens.",
+						"appOnly": true,
+						"instructions": ["Render the grid from the report's evidence list."],
+						"setup": [],
+						"dependencies": {
+							"@tanstack/react-table": "^8.20.0"
+						},
+						"resources": [
+							{
+								"id": "grid-component",
+								"title": "Grid component",
+								"singular": "grid component",
+								"kind": "component",
+								"instructions": ["Add the grid to the report layout."],
+								"files": [
+									{
+										"path": "src/components/evidence-grid/EvidenceGrid.tsx",
+										"contents": "export function EvidenceGrid() {\n\treturn null;\n}\n"
+									}
+								]
+							}
+						]
+					},
+					{
+						"schemaVersion": 1,
+						"id": "audit-log",
+						"version": "0.3.1",
+						"title": "Audit log",
+						"description": "Records user actions for later review.",
+						"instructions": ["Call recordAuditEvent from the service layer."],
+						"setup": [
+							{
+								"path": "docs/audit-log.md",
+								"contents": "# Audit log\n\nEvents are recorded through recordAuditEvent.\n"
+							}
+						],
+						"dependencies": {},
+						"devDependencies": {
+							"vitest": "^3.1.0"
+						},
+						"packageScripts": {
+							"test:audit": "vitest run src/services/audit"
+						},
+						"resources": [
+							{
+								"id": "audit-service",
+								"title": "Audit service",
+								"singular": "audit service",
+								"kind": "service",
+								"instructions": ["Keep audit writes inside the service."],
+								"files": [
+									{
+										"path": "src/services/audit/auditLog.ts",
+										"contents": "export function recordAuditEvent(action: string): string {\n\treturn action;\n}\n"
+									}
+								]
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "moduleGroupPlan.root",
 				"type": "string",
 				"required": true,
-				"description": "Absolute project directory containing the package manifest and module metadata."
+				"description": "Project directory: moduleGroupPlan reads join(root, 'harness.groups.json') without checking the path and never writes it. A missing file starts from an empty taxonomy, while other read errors and invalid JSON reject the call.",
+				"examples": [
+					"/Users/example/projects/harness-app",
+					"/home/dev/workspace/billing-portal",
+					"/srv/apps/reports-dashboard"
+				]
 			},
 			{
 				"name": "moduleGroupPlan.definition",
 				"type": "Pick<ModuleDefinition, 'id' | 'title'>",
 				"required": true,
-				"description": "Validated capability definition containing setup files, dependencies and resource templates."
+				"description": "Only id and title are read: when no group in harness.groups.json has the same id, a group {id, title, terms: [id]} is appended. An existing group with the same id is left unchanged.",
+				"examples": [
+					{
+						"id": "evidence-grid",
+						"title": "Evidence grid"
+					},
+					{
+						"id": "audit-log",
+						"title": "Audit log"
+					},
+					{
+						"id": "data-export",
+						"title": "Data export"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "modulePackagePlan",
 				"type": "Promise<PlannedFile>",
-				"description": "A file plan preserving unrelated package and taxonomy settings."
+				"description": "Resolves to the PlannedFile for package.json: the parsed manifest with its unrelated fields kept, the module's dependencies and devDependencies merged into their fields, and its packageScripts merged into scripts. The contents are serialized with tab indentation and end with a newline.",
+				"examples": [
+					{
+						"path": "package.json",
+						"contents": "{\n\t\"name\": \"harness-app\",\n\t\"version\": \"0.1.0\",\n\t\"harness\": {\n\t\t\"kind\": \"app\"\n\t},\n\t\"dependencies\": {\n\t\t\"@tanstack/react-table\": \"^8.20.0\"\n\t}\n}\n"
+					},
+					{
+						"path": "package.json",
+						"contents": "{\n\t\"name\": \"billing-portal\",\n\t\"version\": \"2.4.0\",\n\t\"scripts\": {\n\t\t\"test\": \"vitest run\",\n\t\t\"test:audit\": \"vitest run src/services/audit\"\n\t},\n\t\"devDependencies\": {\n\t\t\"vitest\": \"^3.1.0\"\n\t}\n}\n"
+					}
+				]
 			},
 			{
 				"name": "moduleGroupPlan",
 				"type": "Promise<PlannedFile>",
-				"description": "A file plan preserving unrelated package and taxonomy settings."
+				"description": "Resolves to the PlannedFile for harness.groups.json: the parsed taxonomy, or an empty schemaVersion 1 taxonomy when the file is missing, with the module's group appended only when its id is not already present. The contents are serialized with tab indentation and end with a newline.",
+				"examples": [
+					{
+						"path": "harness.groups.json",
+						"contents": "{\n\t\"schemaVersion\": 1,\n\t\"groups\": [\n\t\t{\n\t\t\t\"id\": \"evidence-grid\",\n\t\t\t\"title\": \"Evidence grid\",\n\t\t\t\"terms\": [\n\t\t\t\t\"evidence-grid\"\n\t\t\t]\n\t\t}\n\t],\n\t\"legacy\": []\n}\n"
+					},
+					{
+						"path": "harness.groups.json",
+						"contents": "{\n\t\"schemaVersion\": 1,\n\t\"groups\": [\n\t\t{\n\t\t\t\"id\": \"reports\",\n\t\t\t\"title\": \"Reports\",\n\t\t\t\"terms\": [\n\t\t\t\t\"reports\"\n\t\t\t]\n\t\t},\n\t\t{\n\t\t\t\"id\": \"audit-log\",\n\t\t\t\"title\": \"Audit log\",\n\t\t\t\"terms\": [\n\t\t\t\t\"audit-log\"\n\t\t\t]\n\t\t}\n\t],\n\t\"legacy\": []\n}\n"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Invalid definitions, incompatible project settings, unsafe paths or conflicting source files prevent the operation."
+				"description": "Rejects modulePackagePlan with 'This module requires a Harness app project.' when definition.appOnly is true and package.json's harness.kind is neither 'app' nor 'game'."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects modulePackagePlan when a dependency, devDependency or package script already has a different non-empty value under the same name; the message names the conflicting entry."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with the readFile error when package.json cannot be read, or when harness.groups.json fails with a code other than ENOENT."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Rejects when package.json or an existing harness.groups.json is not valid JSON, because its text is passed straight to JSON.parse."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Can reject when package.json parses to null or another primitive, because the code then reads or assigns properties on that value."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Rejects moduleGroupPlan when a parsed harness.groups.json has no groups array, or when a null entry in groups is reached while searching for the module's id."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "modulePackagePlan",
@@ -69,29 +205,131 @@
 						"name": "modulePackagePlan.root",
 						"type": "string",
 						"required": true,
-						"description": "Absolute project directory containing the package manifest and module metadata."
+						"description": "Project directory: modulePackagePlan reads join(root, 'package.json') without checking the path and never writes it. A missing package.json rejects the call with the read error, and one that is not valid JSON rejects it with a SyntaxError.",
+						"examples": [
+							"/Users/example/projects/harness-app",
+							"/home/dev/workspace/billing-portal",
+							"/srv/apps/reports-dashboard"
+						]
 					},
 					{
 						"name": "modulePackagePlan.definition",
 						"type": "ModuleDefinition",
 						"required": true,
-						"description": "Validated capability definition containing setup files, dependencies and resource templates."
+						"description": "Only appOnly, dependencies, devDependencies and packageScripts are read: appOnly is checked against harness.kind and the other three are merged into package.json, while other fields are ignored and the object is not re-validated. A different non-empty existing value under the same name rejects the call instead of being overwritten.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "evidence-grid",
+								"version": "1.2.0",
+								"title": "Evidence grid",
+								"description": "Sortable evidence table for report screens.",
+								"appOnly": true,
+								"instructions": ["Render the grid from the report's evidence list."],
+								"setup": [],
+								"dependencies": {
+									"@tanstack/react-table": "^8.20.0"
+								},
+								"resources": [
+									{
+										"id": "grid-component",
+										"title": "Grid component",
+										"singular": "grid component",
+										"kind": "component",
+										"instructions": ["Add the grid to the report layout."],
+										"files": [
+											{
+												"path": "src/components/evidence-grid/EvidenceGrid.tsx",
+												"contents": "export function EvidenceGrid() {\n\treturn null;\n}\n"
+											}
+										]
+									}
+								]
+							},
+							{
+								"schemaVersion": 1,
+								"id": "audit-log",
+								"version": "0.3.1",
+								"title": "Audit log",
+								"description": "Records user actions for later review.",
+								"instructions": ["Call recordAuditEvent from the service layer."],
+								"setup": [
+									{
+										"path": "docs/audit-log.md",
+										"contents": "# Audit log\n\nEvents are recorded through recordAuditEvent.\n"
+									}
+								],
+								"dependencies": {},
+								"devDependencies": {
+									"vitest": "^3.1.0"
+								},
+								"packageScripts": {
+									"test:audit": "vitest run src/services/audit"
+								},
+								"resources": [
+									{
+										"id": "audit-service",
+										"title": "Audit service",
+										"singular": "audit service",
+										"kind": "service",
+										"instructions": ["Keep audit writes inside the service."],
+										"files": [
+											{
+												"path": "src/services/audit/auditLog.ts",
+												"contents": "export function recordAuditEvent(action: string): string {\n\treturn action;\n}\n"
+											}
+										]
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "modulePackagePlan",
 						"type": "Promise<PlannedFile>",
-						"description": "A file plan preserving unrelated package and taxonomy settings."
+						"description": "Resolves to the PlannedFile for package.json: the parsed manifest with its unrelated fields kept, the module's dependencies and devDependencies merged into their fields, and its packageScripts merged into scripts. The contents are serialized with tab indentation and end with a newline.",
+						"examples": [
+							{
+								"path": "package.json",
+								"contents": "{\n\t\"name\": \"harness-app\",\n\t\"version\": \"0.1.0\",\n\t\"harness\": {\n\t\t\"kind\": \"app\"\n\t},\n\t\"dependencies\": {\n\t\t\"@tanstack/react-table\": \"^8.20.0\"\n\t}\n}\n"
+							},
+							{
+								"path": "package.json",
+								"contents": "{\n\t\"name\": \"billing-portal\",\n\t\"version\": \"2.4.0\",\n\t\"scripts\": {\n\t\t\"test\": \"vitest run\",\n\t\t\"test:audit\": \"vitest run src/services/audit\"\n\t},\n\t\"devDependencies\": {\n\t\t\"vitest\": \"^3.1.0\"\n\t}\n}\n"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects modulePackagePlan with 'This module requires a Harness app project.' when definition.appOnly is true and package.json's harness.kind is neither 'app' nor 'game'."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects modulePackagePlan when a dependency, devDependency or package script already has a different non-empty value under the same name; the message names the conflicting entry."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the readFile error when package.json cannot be read, such as ENOENT when the file is missing."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Rejects when package.json is not valid JSON, because its text is passed straight to JSON.parse."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Can reject when package.json parses to null or another primitive, because the code then reads or assigns properties on that value."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "moduleGroupPlan",
@@ -100,24 +338,69 @@
 						"name": "moduleGroupPlan.root",
 						"type": "string",
 						"required": true,
-						"description": "Absolute project directory containing the package manifest and module metadata."
+						"description": "Project directory: moduleGroupPlan reads join(root, 'harness.groups.json') without checking the path and never writes it. A missing file starts from an empty taxonomy, while other read errors and invalid JSON reject the call.",
+						"examples": [
+							"/Users/example/projects/harness-app",
+							"/home/dev/workspace/billing-portal",
+							"/srv/apps/reports-dashboard"
+						]
 					},
 					{
 						"name": "moduleGroupPlan.definition",
 						"type": "Pick<ModuleDefinition, 'id' | 'title'>",
 						"required": true,
-						"description": "Validated capability definition containing setup files, dependencies and resource templates."
+						"description": "Only id and title are read: when no group in harness.groups.json has the same id, a group {id, title, terms: [id]} is appended. An existing group with the same id is left unchanged.",
+						"examples": [
+							{
+								"id": "evidence-grid",
+								"title": "Evidence grid"
+							},
+							{
+								"id": "audit-log",
+								"title": "Audit log"
+							},
+							{
+								"id": "data-export",
+								"title": "Data export"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "moduleGroupPlan",
 						"type": "Promise<PlannedFile>",
-						"description": "A file plan preserving unrelated package and taxonomy settings."
+						"description": "Resolves to the PlannedFile for harness.groups.json: the parsed taxonomy, or an empty schemaVersion 1 taxonomy when the file is missing, with the module's group appended only when its id is not already present. The contents are serialized with tab indentation and end with a newline.",
+						"examples": [
+							{
+								"path": "harness.groups.json",
+								"contents": "{\n\t\"schemaVersion\": 1,\n\t\"groups\": [\n\t\t{\n\t\t\t\"id\": \"evidence-grid\",\n\t\t\t\"title\": \"Evidence grid\",\n\t\t\t\"terms\": [\n\t\t\t\t\"evidence-grid\"\n\t\t\t]\n\t\t}\n\t],\n\t\"legacy\": []\n}\n"
+							},
+							{
+								"path": "harness.groups.json",
+								"contents": "{\n\t\"schemaVersion\": 1,\n\t\"groups\": [\n\t\t{\n\t\t\t\"id\": \"reports\",\n\t\t\t\"title\": \"Reports\",\n\t\t\t\"terms\": [\n\t\t\t\t\"reports\"\n\t\t\t]\n\t\t},\n\t\t{\n\t\t\t\"id\": \"audit-log\",\n\t\t\t\"title\": \"Audit log\",\n\t\t\t\"terms\": [\n\t\t\t\t\"audit-log\"\n\t\t\t]\n\t\t}\n\t],\n\t\"legacy\": []\n}\n"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Rejects when harness.groups.json exists but is not valid JSON, because its text is passed straight to JSON.parse."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the readFile error when harness.groups.json fails with a code other than ENOENT; ENOENT is caught and the taxonomy starts empty instead."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Rejects when the parsed harness.groups.json has no groups array, or when a null entry in groups is reached while searching for the module's id."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
