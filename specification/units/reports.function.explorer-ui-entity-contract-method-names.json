@@ -18,60 +18,78 @@
 				"name": "within.name",
 				"type": "string",
 				"required": true,
-				"description": "A declared name such as Class.method.input."
+				"description": "The dotted declaration name being checked against owner. It matches only when it starts with the literal `${owner}.` prefix, or exactly equals owner when whole is true; the value is not normalized.",
+				"examples": ["Class.method.input", "Class.method"]
 			},
 			{
 				"name": "within.owner",
 				"type": "string",
 				"required": true,
-				"description": "The class or member the name may be declared under."
+				"description": "The literal string whose `${owner}.` prefix is checked against name. It is compared as provided, without normalization.",
+				"examples": ["Class", "Class.method"]
 			},
 			{
 				"name": "within.whole",
 				"type": "boolean",
 				"required": true,
-				"description": "Whether the owner name itself also counts as within it."
+				"description": "Whether an exact name-equals-owner match also counts. It does not change the `${owner}.` prefix match.",
+				"examples": [false, true]
 			},
 			{
 				"name": "methodsNamed.names",
 				"type": "string[]",
 				"required": true,
-				"description": "The declared names of a contract."
+				"description": "The dotted declarations to inspect for methods of owner. Only names starting with the literal `${owner}.` and containing a nonempty method segment are considered; a declaration ending at owner.method is included only when whole is true, and repeated declarations can repeat results.",
+				"examples": [
+					["Class.create.input", "Class.read", "Class.create.value"]
+				]
 			},
 			{
 				"name": "methodsNamed.owner",
 				"type": "string",
 				"required": true,
-				"description": "The class whose methods are wanted."
+				"description": "The class-name prefix used to identify declaration members. Matching uses the literal `${owner}.` prefix, without normalization.",
+				"examples": ["Class"]
 			},
 			{
 				"name": "methodsNamed.whole",
 				"type": "boolean",
 				"required": true,
-				"description": "Whether a bare Class.method name counts, or only names under a method."
+				"description": "Whether a declaration shaped as owner.method is included with no suffix after its method segment. When false, only declarations with a nonempty remaining suffix are included.",
+				"examples": [true, false]
 			},
 			{
 				"name": "orderedMethods.methods",
 				"type": "string[]",
 				"required": true,
-				"description": "Method names, possibly repeated."
+				"description": "The method names to deduplicate and sort. The first occurrence of each name is kept; priorities are create, then read/find/findBy, update, delete, constructor, and then unlisted names, with equal-priority items retaining first-occurrence order.",
+				"examples": [
+					["delete", "read", "create", "constructor", "findBy", "custom", "create"]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "within",
 				"type": "boolean",
-				"description": "True when the name is under the owner, or is the owner when whole is set."
+				"description": "Whether name.startsWith(`${owner}.`) is true, or whole is true and name exactly equals owner.",
+				"examples": [true, false]
 			},
 			{
 				"name": "methodsNamed",
 				"type": "string[]",
-				"description": "The method names the declared names place on the class, in the order given."
+				"description": "Method segments extracted from declarations starting with the literal `${owner}.` prefix and containing a nonempty method segment, in declaration order. Declarations ending at owner.method are included only when whole is true; duplicates remain.",
+				"examples": [
+					["create", "read", "create"]
+				]
 			},
 			{
 				"name": "orderedMethods",
 				"type": "string[]",
-				"description": "Each method once, create first, then read, find, update, delete, constructor, and the rest in their order."
+				"description": "Unique input method names sorted by priority: create; read, find, and findBy; update; delete; constructor; then unlisted methods. Names within a priority retain their first-occurrence order.",
+				"examples": [
+					["create", "read", "findBy", "delete", "constructor", "custom"]
+				]
 			}
 		],
 		"errors": [],
@@ -84,26 +102,30 @@
 						"name": "within.name",
 						"type": "string",
 						"required": true,
-						"description": "A declared name such as Class.method.input."
+						"description": "The dotted declaration name being checked against owner. It matches only when it starts with the literal `${owner}.` prefix, or exactly equals owner when whole is true; the value is not normalized.",
+						"examples": ["Class.method.input", "Class.method"]
 					},
 					{
 						"name": "within.owner",
 						"type": "string",
 						"required": true,
-						"description": "The class or member the name may be declared under."
+						"description": "The literal string whose `${owner}.` prefix is checked against name. It is compared as provided, without normalization.",
+						"examples": ["Class", "Class.method"]
 					},
 					{
 						"name": "within.whole",
 						"type": "boolean",
 						"required": true,
-						"description": "Whether the owner name itself also counts as within it."
+						"description": "Whether an exact name-equals-owner match also counts. It does not change the `${owner}.` prefix match.",
+						"examples": [false, true]
 					}
 				],
 				"outputs": [
 					{
 						"name": "within",
 						"type": "boolean",
-						"description": "True when the name is under the owner, or is the owner when whole is set."
+						"description": "Whether name.startsWith(`${owner}.`) is true, or whole is true and name exactly equals owner.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
@@ -116,26 +138,34 @@
 						"name": "methodsNamed.names",
 						"type": "string[]",
 						"required": true,
-						"description": "The declared names of a contract."
+						"description": "The dotted declarations to inspect for methods of owner. Only names starting with the literal `${owner}.` and containing a nonempty method segment are considered; a declaration ending at owner.method is included only when whole is true, and repeated declarations can repeat results.",
+						"examples": [
+							["Class.create.input", "Class.read", "Class.create.value"]
+						]
 					},
 					{
 						"name": "methodsNamed.owner",
 						"type": "string",
 						"required": true,
-						"description": "The class whose methods are wanted."
+						"description": "The class-name prefix used to identify declaration members. Matching uses the literal `${owner}.` prefix, without normalization.",
+						"examples": ["Class"]
 					},
 					{
 						"name": "methodsNamed.whole",
 						"type": "boolean",
 						"required": true,
-						"description": "Whether a bare Class.method name counts, or only names under a method."
+						"description": "Whether a declaration shaped as owner.method is included with no suffix after its method segment. When false, only declarations with a nonempty remaining suffix are included.",
+						"examples": [true, false]
 					}
 				],
 				"outputs": [
 					{
 						"name": "methodsNamed",
 						"type": "string[]",
-						"description": "The method names the declared names place on the class, in the order given."
+						"description": "Method segments extracted from declarations starting with the literal `${owner}.` prefix and containing a nonempty method segment, in declaration order. Declarations ending at owner.method are included only when whole is true; duplicates remain.",
+						"examples": [
+							["create", "read", "create"]
+						]
 					}
 				],
 				"errors": [],
@@ -148,14 +178,20 @@
 						"name": "orderedMethods.methods",
 						"type": "string[]",
 						"required": true,
-						"description": "Method names, possibly repeated."
+						"description": "The method names to deduplicate and sort. The first occurrence of each name is kept; priorities are create, then read/find/findBy, update, delete, constructor, and then unlisted names, with equal-priority items retaining first-occurrence order.",
+						"examples": [
+							["delete", "read", "create", "constructor", "findBy", "custom", "create"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "orderedMethods",
 						"type": "string[]",
-						"description": "Each method once, create first, then read, find, update, delete, constructor, and the rest in their order."
+						"description": "Unique input method names sorted by priority: create; read, find, and findBy; update; delete; constructor; then unlisted methods. Names within a priority retain their first-occurrence order.",
+						"examples": [
+							["create", "read", "findBy", "delete", "constructor", "custom"]
+						]
 					}
 				],
 				"errors": [],
