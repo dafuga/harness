@@ -1,6 +1,7 @@
 // @harness-uid u_7b5ruejirf
 import type { ComponentManifest, ContractItem } from '../../../core/development-tooling/unitTypes';
 import type { UnitState } from './guideUnits.types';
+import { toKebabCase } from '../../../helpers/strings/case';
 
 /** @pure Infer reviewable boundaries without treating guesses as declared catalog states. */
 export function contractStates(contract: ComponentManifest['contract']): UnitState[] {
@@ -43,14 +44,15 @@ function propStates(
 	add: (name: string, reason: string, origin?: UnitState['origin']) => void
 ) {
 	const name = input.name.split('.').at(-1)!;
+	const captureName = toKebabCase(name);
 	const why = `Prop ${input.name} (${input.type}).`;
 	if (input.required === false) {
-		add(`without-${name}`, why);
-		add(`with-${name}`, why);
+		add(`without-${captureName}`, why);
+		add(`with-${captureName}`, why);
 	}
-	if (/\bstring\b/.test(input.type)) add(`empty-${name}`, why);
+	if (/\bstring\b/.test(input.type)) add(`empty-${captureName}`, why);
 	if (/\[\]|\b(?:ReadonlyArray|Array|Set|Map)</.test(input.type))
-		for (const size of ['none', 'one', 'many']) add(`${name}-${size}`, why);
+		for (const size of ['none', 'one', 'many']) add(`${captureName}-${size}`, why);
 	if (/disabled/i.test(name)) add('disabled', why);
 	if (/^show[A-Z]/.test(name) && input.type === 'boolean')
 		add(`no-${name.slice(4).toLowerCase()}`, why);
