@@ -71,6 +71,34 @@ test('recordFiles lists the captures this run produced and its logs, not inherit
 	]);
 });
 
+test('video posters remain durable with their exact video record', () => {
+	const clip = {
+		...capture('evidence/page/menu.mp4', '5', 'video/mp4'),
+		kind: 'video',
+		video: { poster: { file: 'menu-poster.png', sha256: digest('6'), bytes: 1200, timeSeconds: 1 } }
+	};
+	const withVideo = {
+		...record,
+		scenarios: [
+			{
+				...record.scenarios[0],
+				states: [
+					{
+						...record.scenarios[0].states[0],
+						captures: [clip]
+					}
+				]
+			}
+		]
+	} as unknown as VerificationRecord;
+	expect(recordFiles(withVideo)).toContainEqual({
+		path: 'evidence/page/menu-poster.png',
+		sha256: digest('6'),
+		bytes: 1200,
+		mediaType: 'image/png'
+	});
+});
+
 test('evidenceManifest states the original hash, size and storage of every file', () => {
 	const bytes = Buffer.from('{"record":true}\n');
 	const manifest = evidenceManifest(record, bytes);

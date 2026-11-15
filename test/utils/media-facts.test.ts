@@ -1,6 +1,7 @@
 import { deflateSync } from 'node:zlib';
 import { expect, test } from 'vitest';
 import { mediaFacts, pngChecksum } from '../../src/services/check-run-service/mediaFacts';
+import { spawnSync } from 'node:child_process';
 
 function chunk(type: string, data: Buffer): Buffer {
 	const body = Buffer.concat([Buffer.from(type), data]);
@@ -80,4 +81,45 @@ test('playable WAV audio reports its real duration, and broken audio is refused'
 	const unsupported = wav(100);
 	unsupported.writeUInt16LE(85, 20);
 	expect(error(unsupported)).toEqual({ error: 'unsupported WAV encoding 85' });
+});
+
+test('silent H264 video is decoded within fixed media bounds', () => {
+	const encoded = spawnSync(
+		'ffmpeg',
+		[
+			'-v',
+			'error',
+			'-f',
+			'lavfi',
+			'-i',
+			'testsrc2=size=160x120:rate=10:duration=1',
+			'-an',
+			'-c:v',
+			'libx264',
+			'-threads',
+			'1',
+			'-pix_fmt',
+			'yuv420p',
+			'-movflags',
+			'frag_keyframe+empty_moov',
+			'-f',
+			'mp4',
+			'pipe:1'
+		],
+		{ maxBuffer: 1_000_000, timeout: 10_000 }
+	);
+	expect(encoded.status, encoded.stderr.toString()).toBe(0);
+	expect(mediaFacts(encoded.stdout, 'video/mp4')).toMatchObject({
+		kind: 'video',
+		width: 160,
+		height: 120,
+		durationSeconds: 1,
+		codec: 'h264',
+		pixelFormat: 'yuv420p',
+		frameCount: 10,
+		frameRate: 10
+	});
+	expect(mediaFacts(Buffer.from('not video'), 'video/mp4')).toHaveProperty('error');
+	expect(mediaFacts(encoded.stdout.subarray(0, 90), 'video/mp4')).toHaveProperty('error');
+	expect(mediaFacts(Buffer.alloc(8 * 1024 * 1024 + 1), 'video/mp4')).toHaveProperty('error');
 });
