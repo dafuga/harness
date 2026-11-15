@@ -18,54 +18,408 @@
 				"name": "replaceCheckpoint.checkpoints",
 				"type": "Checkpoint[]",
 				"required": true,
-				"description": "The checkpoints of the view, in order."
+				"description": "The view's checkpoints in their stored order; replaceCheckpoint maps over this array without mutating it, so the result keeps the same length and order. An empty array yields an empty array.",
+				"examples": [
+					[
+						{
+							"id": "key",
+							"title": "Collect the key",
+							"description": "When the player reaches the key, add it to inventory.",
+							"x": 0,
+							"y": 80,
+							"requires": [],
+							"conditions": [
+								{
+									"field": "x",
+									"op": "gte",
+									"value": 2
+								}
+							],
+							"actions": [
+								{
+									"type": "set",
+									"target": "hasKey",
+									"value": true
+								},
+								{
+									"type": "emit",
+									"target": "key-collected",
+									"value": true
+								}
+							]
+						},
+						{
+							"id": "door",
+							"title": "Unlock the door",
+							"description": "The key unlocks the door. Reveal two possible destinations.",
+							"x": 270,
+							"y": 80,
+							"requires": ["key"],
+							"conditions": [
+								{
+									"field": "x",
+									"op": "gte",
+									"value": 4
+								},
+								{
+									"field": "hasKey",
+									"op": "eq",
+									"value": true
+								}
+							],
+							"actions": [
+								{
+									"type": "set",
+									"target": "doorOpen",
+									"value": true
+								}
+							]
+						},
+						{
+							"id": "garden",
+							"title": "Enter the garden",
+							"description": "Choosing the garden ends the journey in the sunlight.",
+							"x": 540,
+							"y": 0,
+							"requires": ["door"],
+							"conditions": [
+								{
+									"field": "choice",
+									"op": "eq",
+									"value": "garden"
+								},
+								{
+									"field": "outcome",
+									"op": "eq",
+									"value": ""
+								}
+							],
+							"actions": [
+								{
+									"type": "set",
+									"target": "outcome",
+									"value": "garden"
+								}
+							]
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "replaceCheckpoint.id",
 				"type": "string | null",
 				"required": true,
-				"description": "The id of the checkpoint to replace; null replaces none."
+				"description": "The id of the checkpoint to replace: every element whose id === this value is replaced, so duplicate ids are all replaced. A null id matches no checkpoint because Checkpoint.id is a string, so nothing is replaced.",
+				"examples": ["door", null]
 			},
 			{
 				"name": "replaceCheckpoint.node",
 				"type": "Checkpoint",
 				"required": true,
-				"description": "The edited checkpoint that takes the place of the one with that id."
+				"description": "The edited checkpoint, placed by reference wherever an element's id === the id argument; the function does not check that node.id equals that id, so a node with a different id takes the position under its own id.",
+				"examples": [
+					{
+						"id": "door",
+						"title": "Unlock the north door",
+						"description": "The key unlocks the north door. Reveal two possible destinations.",
+						"x": 270,
+						"y": 80,
+						"requires": ["key"],
+						"conditions": [
+							{
+								"field": "x",
+								"op": "gte",
+								"value": 4
+							},
+							{
+								"field": "hasKey",
+								"op": "eq",
+								"value": true
+							}
+						],
+						"actions": [
+							{
+								"type": "set",
+								"target": "doorOpen",
+								"value": true
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "withoutCheckpoint.checkpoints",
 				"type": "Checkpoint[]",
 				"required": true,
-				"description": "The checkpoints of the view, in order."
+				"description": "The view's checkpoints in their stored order; withoutCheckpoint filters and then maps over this array without mutating it, so the remaining checkpoints keep their order. An empty array yields an empty array.",
+				"examples": [
+					[
+						{
+							"id": "key",
+							"title": "Collect the key",
+							"description": "When the player reaches the key, add it to inventory.",
+							"x": 0,
+							"y": 80,
+							"requires": [],
+							"conditions": [
+								{
+									"field": "x",
+									"op": "gte",
+									"value": 2
+								}
+							],
+							"actions": [
+								{
+									"type": "set",
+									"target": "hasKey",
+									"value": true
+								},
+								{
+									"type": "emit",
+									"target": "key-collected",
+									"value": true
+								}
+							]
+						},
+						{
+							"id": "door",
+							"title": "Unlock the door",
+							"description": "The key unlocks the door. Reveal two possible destinations.",
+							"x": 270,
+							"y": 80,
+							"requires": ["key"],
+							"conditions": [
+								{
+									"field": "x",
+									"op": "gte",
+									"value": 4
+								},
+								{
+									"field": "hasKey",
+									"op": "eq",
+									"value": true
+								}
+							],
+							"actions": [
+								{
+									"type": "set",
+									"target": "doorOpen",
+									"value": true
+								}
+							]
+						},
+						{
+							"id": "garden",
+							"title": "Enter the garden",
+							"description": "Choosing the garden ends the journey in the sunlight.",
+							"x": 540,
+							"y": 0,
+							"requires": ["door"],
+							"conditions": [
+								{
+									"field": "choice",
+									"op": "eq",
+									"value": "garden"
+								},
+								{
+									"field": "outcome",
+									"op": "eq",
+									"value": ""
+								}
+							],
+							"actions": [
+								{
+									"type": "set",
+									"target": "outcome",
+									"value": "garden"
+								}
+							]
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "withoutCheckpoint.id",
 				"type": "string",
 				"required": true,
-				"description": "The id of the checkpoint to remove."
+				"description": "The id of the checkpoint to remove: every element whose id === this value is dropped, and the same value is removed from every remaining checkpoint's requires array. If no checkpoint has this id, nothing is dropped, but any requires entry equal to it is still removed.",
+				"examples": ["door", "garden"]
 			},
 			{
 				"name": "isRevisionConflict.message",
 				"type": "string",
 				"required": true,
-				"description": "The text of a failed save."
+				"description": "The text of a failed save, matched case-insensitively for the substrings 'revision', 'conflict', 'stale' or 'changed' anywhere in it. Words such as 'change' or 'changes' do not match, because the test looks for 'changed' and not for a bare 'change'.",
+				"examples": [
+					"The game changed. Reload before saving.",
+					"Game document exceeds 1MB.",
+					"game.json must be a regular file."
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "replaceCheckpoint",
 				"type": "Checkpoint[]",
-				"description": "The checkpoints in the same order with only the matching one replaced."
+				"description": "A new array with the same length and order as the input checkpoints, where each element whose id === the id argument is replaced by the node argument and every other element is the same object as in the input. The input array is not changed.",
+				"examples": [
+					[
+						{
+							"id": "key",
+							"title": "Collect the key",
+							"description": "When the player reaches the key, add it to inventory.",
+							"x": 0,
+							"y": 80,
+							"requires": [],
+							"conditions": [
+								{
+									"field": "x",
+									"op": "gte",
+									"value": 2
+								}
+							],
+							"actions": [
+								{
+									"type": "set",
+									"target": "hasKey",
+									"value": true
+								},
+								{
+									"type": "emit",
+									"target": "key-collected",
+									"value": true
+								}
+							]
+						},
+						{
+							"id": "door",
+							"title": "Unlock the north door",
+							"description": "The key unlocks the north door. Reveal two possible destinations.",
+							"x": 270,
+							"y": 80,
+							"requires": ["key"],
+							"conditions": [
+								{
+									"field": "x",
+									"op": "gte",
+									"value": 4
+								},
+								{
+									"field": "hasKey",
+									"op": "eq",
+									"value": true
+								}
+							],
+							"actions": [
+								{
+									"type": "set",
+									"target": "doorOpen",
+									"value": true
+								}
+							]
+						},
+						{
+							"id": "garden",
+							"title": "Enter the garden",
+							"description": "Choosing the garden ends the journey in the sunlight.",
+							"x": 540,
+							"y": 0,
+							"requires": ["door"],
+							"conditions": [
+								{
+									"field": "choice",
+									"op": "eq",
+									"value": "garden"
+								},
+								{
+									"field": "outcome",
+									"op": "eq",
+									"value": ""
+								}
+							],
+							"actions": [
+								{
+									"type": "set",
+									"target": "outcome",
+									"value": "garden"
+								}
+							]
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "withoutCheckpoint",
 				"type": "Checkpoint[]",
-				"description": "The checkpoints without the removed one, and with its id removed from every requirement."
+				"description": "A new array of the checkpoints whose id differs from the removed id, in their original order, where each is a shallow copy with a new requires array that lacks the removed id. The input array and its checkpoints are not changed.",
+				"examples": [
+					[
+						{
+							"id": "key",
+							"title": "Collect the key",
+							"description": "When the player reaches the key, add it to inventory.",
+							"x": 0,
+							"y": 80,
+							"requires": [],
+							"conditions": [
+								{
+									"field": "x",
+									"op": "gte",
+									"value": 2
+								}
+							],
+							"actions": [
+								{
+									"type": "set",
+									"target": "hasKey",
+									"value": true
+								},
+								{
+									"type": "emit",
+									"target": "key-collected",
+									"value": true
+								}
+							]
+						},
+						{
+							"id": "garden",
+							"title": "Enter the garden",
+							"description": "Choosing the garden ends the journey in the sunlight.",
+							"x": 540,
+							"y": 0,
+							"requires": [],
+							"conditions": [
+								{
+									"field": "choice",
+									"op": "eq",
+									"value": "garden"
+								},
+								{
+									"field": "outcome",
+									"op": "eq",
+									"value": ""
+								}
+							],
+							"actions": [
+								{
+									"type": "set",
+									"target": "outcome",
+									"value": "garden"
+								}
+							]
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "isRevisionConflict",
 				"type": "boolean",
-				"description": "True when the message says the revision, a conflict, a stale state or a change."
+				"description": "True when the message contains 'revision', 'conflict', 'stale' or 'changed' in any letter case, and false otherwise. The check is a substring match, so words such as 'unchanged' or 'revisions' also return true.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [],
@@ -78,26 +432,228 @@
 						"name": "replaceCheckpoint.checkpoints",
 						"type": "Checkpoint[]",
 						"required": true,
-						"description": "The checkpoints of the view, in order."
+						"description": "The view's checkpoints in their stored order; replaceCheckpoint maps over this array without mutating it, so the result keeps the same length and order. An empty array yields an empty array.",
+						"examples": [
+							[
+								{
+									"id": "key",
+									"title": "Collect the key",
+									"description": "When the player reaches the key, add it to inventory.",
+									"x": 0,
+									"y": 80,
+									"requires": [],
+									"conditions": [
+										{
+											"field": "x",
+											"op": "gte",
+											"value": 2
+										}
+									],
+									"actions": [
+										{
+											"type": "set",
+											"target": "hasKey",
+											"value": true
+										},
+										{
+											"type": "emit",
+											"target": "key-collected",
+											"value": true
+										}
+									]
+								},
+								{
+									"id": "door",
+									"title": "Unlock the door",
+									"description": "The key unlocks the door. Reveal two possible destinations.",
+									"x": 270,
+									"y": 80,
+									"requires": ["key"],
+									"conditions": [
+										{
+											"field": "x",
+											"op": "gte",
+											"value": 4
+										},
+										{
+											"field": "hasKey",
+											"op": "eq",
+											"value": true
+										}
+									],
+									"actions": [
+										{
+											"type": "set",
+											"target": "doorOpen",
+											"value": true
+										}
+									]
+								},
+								{
+									"id": "garden",
+									"title": "Enter the garden",
+									"description": "Choosing the garden ends the journey in the sunlight.",
+									"x": 540,
+									"y": 0,
+									"requires": ["door"],
+									"conditions": [
+										{
+											"field": "choice",
+											"op": "eq",
+											"value": "garden"
+										},
+										{
+											"field": "outcome",
+											"op": "eq",
+											"value": ""
+										}
+									],
+									"actions": [
+										{
+											"type": "set",
+											"target": "outcome",
+											"value": "garden"
+										}
+									]
+								}
+							],
+							[]
+						]
 					},
 					{
 						"name": "replaceCheckpoint.id",
 						"type": "string | null",
 						"required": true,
-						"description": "The id of the checkpoint to replace; null replaces none."
+						"description": "The id of the checkpoint to replace: every element whose id === this value is replaced, so duplicate ids are all replaced. A null id matches no checkpoint because Checkpoint.id is a string, so nothing is replaced.",
+						"examples": ["door", null]
 					},
 					{
 						"name": "replaceCheckpoint.node",
 						"type": "Checkpoint",
 						"required": true,
-						"description": "The edited checkpoint that takes the place of the one with that id."
+						"description": "The edited checkpoint, placed by reference wherever an element's id === the id argument; the function does not check that node.id equals that id, so a node with a different id takes the position under its own id.",
+						"examples": [
+							{
+								"id": "door",
+								"title": "Unlock the north door",
+								"description": "The key unlocks the north door. Reveal two possible destinations.",
+								"x": 270,
+								"y": 80,
+								"requires": ["key"],
+								"conditions": [
+									{
+										"field": "x",
+										"op": "gte",
+										"value": 4
+									},
+									{
+										"field": "hasKey",
+										"op": "eq",
+										"value": true
+									}
+								],
+								"actions": [
+									{
+										"type": "set",
+										"target": "doorOpen",
+										"value": true
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "replaceCheckpoint",
 						"type": "Checkpoint[]",
-						"description": "The checkpoints in the same order with only the matching one replaced."
+						"description": "A new array with the same length and order as the input checkpoints, where each element whose id === the id argument is replaced by the node argument and every other element is the same object as in the input. The input array is not changed.",
+						"examples": [
+							[
+								{
+									"id": "key",
+									"title": "Collect the key",
+									"description": "When the player reaches the key, add it to inventory.",
+									"x": 0,
+									"y": 80,
+									"requires": [],
+									"conditions": [
+										{
+											"field": "x",
+											"op": "gte",
+											"value": 2
+										}
+									],
+									"actions": [
+										{
+											"type": "set",
+											"target": "hasKey",
+											"value": true
+										},
+										{
+											"type": "emit",
+											"target": "key-collected",
+											"value": true
+										}
+									]
+								},
+								{
+									"id": "door",
+									"title": "Unlock the north door",
+									"description": "The key unlocks the north door. Reveal two possible destinations.",
+									"x": 270,
+									"y": 80,
+									"requires": ["key"],
+									"conditions": [
+										{
+											"field": "x",
+											"op": "gte",
+											"value": 4
+										},
+										{
+											"field": "hasKey",
+											"op": "eq",
+											"value": true
+										}
+									],
+									"actions": [
+										{
+											"type": "set",
+											"target": "doorOpen",
+											"value": true
+										}
+									]
+								},
+								{
+									"id": "garden",
+									"title": "Enter the garden",
+									"description": "Choosing the garden ends the journey in the sunlight.",
+									"x": 540,
+									"y": 0,
+									"requires": ["door"],
+									"conditions": [
+										{
+											"field": "choice",
+											"op": "eq",
+											"value": "garden"
+										},
+										{
+											"field": "outcome",
+											"op": "eq",
+											"value": ""
+										}
+									],
+									"actions": [
+										{
+											"type": "set",
+											"target": "outcome",
+											"value": "garden"
+										}
+									]
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
@@ -110,20 +666,166 @@
 						"name": "withoutCheckpoint.checkpoints",
 						"type": "Checkpoint[]",
 						"required": true,
-						"description": "The checkpoints of the view, in order."
+						"description": "The view's checkpoints in their stored order; withoutCheckpoint filters and then maps over this array without mutating it, so the remaining checkpoints keep their order. An empty array yields an empty array.",
+						"examples": [
+							[
+								{
+									"id": "key",
+									"title": "Collect the key",
+									"description": "When the player reaches the key, add it to inventory.",
+									"x": 0,
+									"y": 80,
+									"requires": [],
+									"conditions": [
+										{
+											"field": "x",
+											"op": "gte",
+											"value": 2
+										}
+									],
+									"actions": [
+										{
+											"type": "set",
+											"target": "hasKey",
+											"value": true
+										},
+										{
+											"type": "emit",
+											"target": "key-collected",
+											"value": true
+										}
+									]
+								},
+								{
+									"id": "door",
+									"title": "Unlock the door",
+									"description": "The key unlocks the door. Reveal two possible destinations.",
+									"x": 270,
+									"y": 80,
+									"requires": ["key"],
+									"conditions": [
+										{
+											"field": "x",
+											"op": "gte",
+											"value": 4
+										},
+										{
+											"field": "hasKey",
+											"op": "eq",
+											"value": true
+										}
+									],
+									"actions": [
+										{
+											"type": "set",
+											"target": "doorOpen",
+											"value": true
+										}
+									]
+								},
+								{
+									"id": "garden",
+									"title": "Enter the garden",
+									"description": "Choosing the garden ends the journey in the sunlight.",
+									"x": 540,
+									"y": 0,
+									"requires": ["door"],
+									"conditions": [
+										{
+											"field": "choice",
+											"op": "eq",
+											"value": "garden"
+										},
+										{
+											"field": "outcome",
+											"op": "eq",
+											"value": ""
+										}
+									],
+									"actions": [
+										{
+											"type": "set",
+											"target": "outcome",
+											"value": "garden"
+										}
+									]
+								}
+							],
+							[]
+						]
 					},
 					{
 						"name": "withoutCheckpoint.id",
 						"type": "string",
 						"required": true,
-						"description": "The id of the checkpoint to remove."
+						"description": "The id of the checkpoint to remove: every element whose id === this value is dropped, and the same value is removed from every remaining checkpoint's requires array. If no checkpoint has this id, nothing is dropped, but any requires entry equal to it is still removed.",
+						"examples": ["door", "garden"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "withoutCheckpoint",
 						"type": "Checkpoint[]",
-						"description": "The checkpoints without the removed one, and with its id removed from every requirement."
+						"description": "A new array of the checkpoints whose id differs from the removed id, in their original order, where each is a shallow copy with a new requires array that lacks the removed id. The input array and its checkpoints are not changed.",
+						"examples": [
+							[
+								{
+									"id": "key",
+									"title": "Collect the key",
+									"description": "When the player reaches the key, add it to inventory.",
+									"x": 0,
+									"y": 80,
+									"requires": [],
+									"conditions": [
+										{
+											"field": "x",
+											"op": "gte",
+											"value": 2
+										}
+									],
+									"actions": [
+										{
+											"type": "set",
+											"target": "hasKey",
+											"value": true
+										},
+										{
+											"type": "emit",
+											"target": "key-collected",
+											"value": true
+										}
+									]
+								},
+								{
+									"id": "garden",
+									"title": "Enter the garden",
+									"description": "Choosing the garden ends the journey in the sunlight.",
+									"x": 540,
+									"y": 0,
+									"requires": [],
+									"conditions": [
+										{
+											"field": "choice",
+											"op": "eq",
+											"value": "garden"
+										},
+										{
+											"field": "outcome",
+											"op": "eq",
+											"value": ""
+										}
+									],
+									"actions": [
+										{
+											"type": "set",
+											"target": "outcome",
+											"value": "garden"
+										}
+									]
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
@@ -136,14 +838,20 @@
 						"name": "isRevisionConflict.message",
 						"type": "string",
 						"required": true,
-						"description": "The text of a failed save."
+						"description": "The text of a failed save, matched case-insensitively for the substrings 'revision', 'conflict', 'stale' or 'changed' anywhere in it. Words such as 'change' or 'changes' do not match, because the test looks for 'changed' and not for a bare 'change'.",
+						"examples": [
+							"The game changed. Reload before saving.",
+							"Game document exceeds 1MB.",
+							"game.json must be a regular file."
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "isRevisionConflict",
 						"type": "boolean",
-						"description": "True when the message says the revision, a conflict, a stale state or a change."
+						"description": "True when the message contains 'revision', 'conflict', 'stale' or 'changed' in any letter case, and false otherwise. The check is a substring match, so words such as 'unchanged' or 'revisions' also return true.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
