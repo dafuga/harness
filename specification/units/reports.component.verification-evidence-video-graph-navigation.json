@@ -55,7 +55,7 @@
 			{
 				"name": "VideoGraphNavigation",
 				"type": "markup",
-				"description": "Video path selector, attached state/transition/clip ratios, missing proof and explicit discovery gaps. Declarations alone never claim verified completeness."
+				"description": "Video path selector, attached state/transition/clip ratios, missing proof and explicit discovery gaps. Declarations alone never claim verified completeness. Catalog input and outcome checks cover empty-library, library-none, library-one, library-many, graphs, playlists, without-coverage, with-coverage, coverage-none, coverage-one, coverage-many, without-selected, with-selected, empty-selected, empty, none, one, many."
 			}
 		],
 		"errors": [],

@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { catalogFixtureMedia } from './catalogFixtureMedia';
 import { shellMedia } from './shellArtworkImages';
 import { serveVideoPlayerFixture } from './videoPlayerFixture';
+import { serveVideoFeedback } from './videoFeedbackFixture';
 import { shellActivity } from './shellCatalogRoutes';
 import { index, revision, record } from '../../../../test/entityFixture';
 import { commits } from '../../../../test/entityUnits';
@@ -44,12 +45,12 @@ export async function servePreview(route: Route, home: string, markup = '') {
 	if (/^\/(?:harness\/)?media\//.test(url.pathname)) return media(route, url.pathname, home);
 	if (url.pathname === '/api/project-activity') return activityFixture(route);
 	if (url.pathname === '/api/agent') return consoleAgentFixture(route);
+	if (url.pathname === '/api/video-flags') return serveVideoFeedback(route);
 	if (url.pathname === '/api/replay-video')
 		return route.fulfill({ contentType: 'video/mp4', body: 'Synthetic export response.' });
 	if (url.pathname === '/tools') return pickerFixture(route);
 	const shown = historyOf(route, url);
 	const given: Record<string, unknown> = {
-		'/api/video-flags': { flags: [] },
 		'/harness/data/index.json': shown.index,
 		'/harness/data/activity.json': shellActivity(route)
 	};
@@ -132,7 +133,6 @@ async function consoleAgentFixture(route: Route) {
 	if (!(method in answers)) throw new Error(`Unexpected preview agent request: ${method}`);
 	return route.fulfill({ json: answers[method] });
 }
-
 function activityFixture(route: Route) {
 	const query = new URL(route.request().frame().page().url()).searchParams;
 	const variant = query.get('variant') ?? '';

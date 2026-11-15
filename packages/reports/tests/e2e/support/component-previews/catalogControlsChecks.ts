@@ -1,6 +1,7 @@
 import type { CatalogCheckContext } from './catalogChecks.types';
 import { expect } from '../../../../../../test/support/browserTest';
 import * as caseAssertions from './catalogCaseAssertions';
+import { assertVideoCatalogState } from './videoCatalogChecks';
 
 export async function assertCatalogControls({
 	component,
@@ -22,16 +23,7 @@ export async function assertCatalogControls({
 	}
 	await caseAssertions.assertCatalogLayout(component, unit, viewport);
 	await caseAssertions.assertCatalogDetails(component, unit.id, variant);
-	if (unit.id === 'reports.component.verification-evidence-video-graph-navigation') {
-		await expect(component.getByText(/States 100% · Transitions 50% · Clips 50%/)).toBeVisible();
-		await expect(component.getByText('Missing required proof: mobile/search-empty')).toBeVisible();
-		const paths = component.getByRole('combobox', { name: 'Video path' });
-		await paths.selectOption('search-empty');
-		await expect(paths).toHaveValue('search-empty');
-		await paths.selectOption('');
-		await expect(paths).toHaveValue('');
-		await expect(component.getByText('Status filtering awaits inventory.')).toBeVisible();
-	}
+	await assertVideoCatalogState({ component, unit, variant });
 	if (
 		['remote-connection', 'remote-host-panel', 'remote-offer-code'].some(
 			(name) => unit.id === `desktop.component.${name}`

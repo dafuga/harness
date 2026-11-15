@@ -72,7 +72,7 @@
 			{
 				"name": "VideoEvidence",
 				"type": "markup",
-				"description": "User-controlled video, frame timeline, active, stale and resolved feedback markers, note submission and original provenance; no autoplay."
+				"description": "User-controlled video, frame timeline, active, stale and resolved feedback markers, note submission and original provenance; no autoplay. Catalog input and outcome checks cover empty-asset-base, without-initial-flags, with-initial-flags, initial-flags-none, initial-flags-one, initial-flags-many, failed, error, empty, none, one, many."
 			}
 		],
 		"errors": [
