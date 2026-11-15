@@ -28,18 +28,27 @@
 				"name": "PluginSteps.lines",
 				"type": "string[]",
 				"required": true,
-				"description": "Required setup or resource-generation instructions in display order. An empty array shows No steps provided."
+				"description": "The ordered setup or resource-generation instructions, one plain-text string per step, shown in array order without trimming, validation, or a count limit. The component checks only lines.length to choose the branch: a non-empty array renders one list item per string, an empty array renders the empty state with the text 'No steps provided.', and a null or undefined value throws a TypeError at that check.",
+				"examples": [
+					[
+						"Install the plugin package.",
+						"Add the plugin to the reports configuration.",
+						"Generate the plugin's resource files."
+					],
+					["Copy the template file into the plugin folder."],
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "PluginSteps",
 				"type": "markup",
-				"description": "A list of supplied steps, or the shared empty-state message No steps provided. when lines is empty."
+				"description": "The rendered markup for the step list: a non-empty lines array renders an hx-ul with class 'ex-reasons mod-steps' and one hx-li per string in array order, while an empty array renders an hx-div with class 'mod-steps' wrapping the EmptyState component with the text 'No steps provided.' Exactly one of the two branches renders for a given array, and the component emits no other output."
 			}
 		],
 		"errors": [],
-		"errorStatus": "declared",
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
