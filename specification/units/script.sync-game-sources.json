@@ -12,36 +12,61 @@
 		"symbols": ["gameSourceLayout", "embeddedSource"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "embeddedSource.destination",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The generated src/lib/game destination path used to select the corresponding engine source before import rewriting. It should be a key in gameSourceLayout; the function does not explicitly validate unknown destinations.",
+				"examples": ["validators/LevelValidator.ts"]
 			},
 			{
 				"name": "embeddedSource.text",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The engine TypeScript source text passed for embedding and Prettier formatting. Relative imports are rewritten only when their resolved .ts target is represented in gameSourceLayout; otherwise the function throws Error.",
+				"examples": ["export const level = 1;\n"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "gameSourceLayout",
-				"type": "Readonly<Record<string, string>>"
+				"type": "Readonly<Record<string, string>>",
+				"description": "Readonly mapping from generated game source destination paths to engine source paths. It contains the 13 pairs used by the script to embed files into src/templates/game-authoring/gameSources.ts.",
+				"examples": [
+					{
+						"models/Game.types.ts": "models/game-authoring/Game.types.ts",
+						"validators/LevelValidator.ts": "validators/game-authoring/LevelValidator.ts",
+						"validators/gameDocument.ts": "validators/game-authoring/gameDocument.ts",
+						"validators/gameDocument.types.ts": "validators/game-authoring/gameDocument.types.ts",
+						"utils/gameStep.ts": "utils/game-authoring/gameStep.ts",
+						"utils/keyDoor.ts": "utils/game-authoring/keyDoor.ts",
+						"utils/checkpointGraph.ts": "utils/game-authoring/checkpointGraph.ts",
+						"adapters/Canvas2dAdapter.ts": "adapters/game-authoring/Canvas2dAdapter.ts",
+						"adapters/ThreeSceneAdapter.ts": "adapters/game-authoring/ThreeSceneAdapter.ts",
+						"adapters/Software3dAdapter.ts": "adapters/game-authoring/Software3dAdapter.ts",
+						"adapters/Software3dAdapter.types.ts": "adapters/game-authoring/Software3dAdapter.types.ts",
+						"adapters/DecartStreamAdapter.ts": "adapters/agents-providers/DecartStreamAdapter.ts",
+						"adapters/DecartStreamAdapter.types.ts": "adapters/agents-providers/DecartStreamAdapter.types.ts"
+					}
+				]
 			},
 			{
 				"name": "embeddedSource",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "A Promise resolving to formatted TypeScript text with mapped relative imports rewritten for the generated destination. It rejects with Error when a relative import resolves to a .ts source path that is not represented in gameSourceLayout.",
+				"examples": ["export const level = 1;\n"]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when a relative module specifier resolves to a .ts path that is not represented in gameSourceLayout. In that case embeddedSource rejects instead of returning formatted source."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "embeddedSource",
@@ -49,22 +74,34 @@
 					{
 						"name": "embeddedSource.destination",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The generated src/lib/game destination path used to select the corresponding engine source before import rewriting. It should be a key in gameSourceLayout; the function does not explicitly validate unknown destinations.",
+						"examples": ["validators/LevelValidator.ts"]
 					},
 					{
 						"name": "embeddedSource.text",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The engine TypeScript source text passed for embedding and Prettier formatting. Relative imports are rewritten only when their resolved .ts target is represented in gameSourceLayout; otherwise the function throws Error.",
+						"examples": ["export const level = 1;\n"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "embeddedSource",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "A Promise resolving to formatted TypeScript text with mapped relative imports rewritten for the generated destination. It rejects with Error when a relative import resolves to a .ts source path that is not represented in gameSourceLayout.",
+						"examples": ["export const level = 1;\n"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when a relative module specifier resolves to a .ts path that is not represented in gameSourceLayout. In that case embeddedSource rejects instead of returning formatted source."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
