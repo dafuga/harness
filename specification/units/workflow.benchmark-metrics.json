@@ -18,17 +18,136 @@
 				"name": "benchmarkMetrics.run",
 				"type": "BenchmarkRun",
 				"required": true,
-				"description": "Pinned benchmark definition, candidate configurations and recorded trial outcomes."
+				"description": "A benchmark run with its definition and recorded trials. Each configured candidate is summarized against trials whose candidate value equals that candidate's id; the function reads the run directly and does not validate or normalize it.",
+				"examples": [
+					{
+						"version": 1,
+						"id": "run-001",
+						"project": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+						"revision": "0123456789abcdef0123456789abcdef01234567",
+						"fingerprint": "abcdef0123456789abcdef0123456789abcdef01",
+						"seed": "seed-1",
+						"definition": {
+							"version": 1,
+							"name": "unit-benchmark",
+							"project": ".",
+							"revision": "HEAD",
+							"task": "Summarize a completed benchmark trial.",
+							"contract": "Count passed trials and sum available usage.",
+							"allowedFiles": ["src/cli/program/benchmark-service/benchmarkMetrics.ts"],
+							"checks": [
+								{
+									"id": "typecheck",
+									"command": "bun run typecheck"
+								}
+							],
+							"setup": [],
+							"candidates": [
+								{
+									"id": "codex-gpt-6-luna",
+									"runner": "codex",
+									"model": "gpt-6-luna",
+									"effort": "high",
+									"instructions": "",
+									"tools": "default"
+								}
+							],
+							"budget": {
+								"repetitions": 1,
+								"timeoutMs": 900000,
+								"repairs": 0
+							}
+						},
+						"runnerVersions": {
+							"codex": "1.0.0"
+						},
+						"startedAt": "2026-11-15T09:00:00.000Z",
+						"trials": [
+							{
+								"id": "trial-001",
+								"candidate": "codex-gpt-6-luna",
+								"repetition": 1,
+								"status": "passed",
+								"firstSubmissionPassed": true,
+								"submissions": [
+									{
+										"passed": true,
+										"invalidFiles": [],
+										"checks": [
+											{
+												"id": "typecheck",
+												"exitCode": 0,
+												"durationMs": 850,
+												"stdout": "",
+												"stderr": ""
+											}
+										],
+										"patch": ""
+									}
+								],
+								"turns": [
+									{
+										"session": "session-001",
+										"reportedModel": "gpt-6-luna",
+										"usage": {
+											"inputTokens": 400,
+											"outputTokens": 100,
+											"cacheReadTokens": 20,
+											"reportedCostUsd": 0.005
+										}
+									}
+								],
+								"agentDurationMs": 1000,
+								"evaluationDurationMs": 100,
+								"durationMs": 1100,
+								"repairs": 0
+							}
+						]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "benchmarkMetrics",
 				"type": "unknown",
-				"description": "Per-candidate correctness, repair, duration and usage summaries with unknown values retained."
+				"description": "An array of one summary per configured candidate for benchmark reporting, preserving the candidate object as configuration. A rate is null with no trials, successful duration is null without passed trials, and each usage total or reported cost is null when required data is missing or a trial has status error, timeout, interrupted, or running.",
+				"examples": [
+					[
+						{
+							"candidate": "codex-gpt-6-luna",
+							"configuration": {
+								"id": "codex-gpt-6-luna",
+								"runner": "codex",
+								"model": "gpt-6-luna",
+								"effort": "high",
+								"instructions": "",
+								"tools": "default"
+							},
+							"trials": 1,
+							"firstSubmissionSuccesses": 1,
+							"firstSubmissionSuccessRate": 1,
+							"successes": 1,
+							"successRate": 1,
+							"medianSuccessfulDurationMs": 1100,
+							"totalDurationMs": 1100,
+							"totalRepairs": 0,
+							"outcomes": {
+								"passed": 1
+							},
+							"usage": {
+								"inputTokens": 400,
+								"outputTokens": 100,
+								"cacheReadTokens": 20
+							},
+							"reportedCostUsd": 0.005
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "benchmarkMetrics",
@@ -37,18 +156,136 @@
 						"name": "benchmarkMetrics.run",
 						"type": "BenchmarkRun",
 						"required": true,
-						"description": "Pinned benchmark definition, candidate configurations and recorded trial outcomes."
+						"description": "A benchmark run with its definition and recorded trials. Each configured candidate is summarized against trials whose candidate value equals that candidate's id; the function reads the run directly and does not validate or normalize it.",
+						"examples": [
+							{
+								"version": 1,
+								"id": "run-001",
+								"project": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+								"revision": "0123456789abcdef0123456789abcdef01234567",
+								"fingerprint": "abcdef0123456789abcdef0123456789abcdef01",
+								"seed": "seed-1",
+								"definition": {
+									"version": 1,
+									"name": "unit-benchmark",
+									"project": ".",
+									"revision": "HEAD",
+									"task": "Summarize a completed benchmark trial.",
+									"contract": "Count passed trials and sum available usage.",
+									"allowedFiles": ["src/cli/program/benchmark-service/benchmarkMetrics.ts"],
+									"checks": [
+										{
+											"id": "typecheck",
+											"command": "bun run typecheck"
+										}
+									],
+									"setup": [],
+									"candidates": [
+										{
+											"id": "codex-gpt-6-luna",
+											"runner": "codex",
+											"model": "gpt-6-luna",
+											"effort": "high",
+											"instructions": "",
+											"tools": "default"
+										}
+									],
+									"budget": {
+										"repetitions": 1,
+										"timeoutMs": 900000,
+										"repairs": 0
+									}
+								},
+								"runnerVersions": {
+									"codex": "1.0.0"
+								},
+								"startedAt": "2026-11-15T09:00:00.000Z",
+								"trials": [
+									{
+										"id": "trial-001",
+										"candidate": "codex-gpt-6-luna",
+										"repetition": 1,
+										"status": "passed",
+										"firstSubmissionPassed": true,
+										"submissions": [
+											{
+												"passed": true,
+												"invalidFiles": [],
+												"checks": [
+													{
+														"id": "typecheck",
+														"exitCode": 0,
+														"durationMs": 850,
+														"stdout": "",
+														"stderr": ""
+													}
+												],
+												"patch": ""
+											}
+										],
+										"turns": [
+											{
+												"session": "session-001",
+												"reportedModel": "gpt-6-luna",
+												"usage": {
+													"inputTokens": 400,
+													"outputTokens": 100,
+													"cacheReadTokens": 20,
+													"reportedCostUsd": 0.005
+												}
+											}
+										],
+										"agentDurationMs": 1000,
+										"evaluationDurationMs": 100,
+										"durationMs": 1100,
+										"repairs": 0
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "benchmarkMetrics",
 						"type": "unknown",
-						"description": "Per-candidate correctness, repair, duration and usage summaries with unknown values retained."
+						"description": "An array of one summary per configured candidate for benchmark reporting, preserving the candidate object as configuration. A rate is null with no trials, successful duration is null without passed trials, and each usage total or reported cost is null when required data is missing or a trial has status error, timeout, interrupted, or running.",
+						"examples": [
+							[
+								{
+									"candidate": "codex-gpt-6-luna",
+									"configuration": {
+										"id": "codex-gpt-6-luna",
+										"runner": "codex",
+										"model": "gpt-6-luna",
+										"effort": "high",
+										"instructions": "",
+										"tools": "default"
+									},
+									"trials": 1,
+									"firstSubmissionSuccesses": 1,
+									"firstSubmissionSuccessRate": 1,
+									"successes": 1,
+									"successRate": 1,
+									"medianSuccessfulDurationMs": 1100,
+									"totalDurationMs": 1100,
+									"totalRepairs": 0,
+									"outcomes": {
+										"passed": 1
+									},
+									"usage": {
+										"inputTokens": 400,
+										"outputTokens": 100,
+										"cacheReadTokens": 20
+									},
+									"reportedCostUsd": 0.005
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
