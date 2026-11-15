@@ -18,17 +18,18 @@
 				"name": "analyticsOptions.command",
 				"type": "Command",
 				"required": true,
-				"description": "Commander command to extend in place with --loop, --step, --task, --agent-model and --report value options."
+				"description": "The Commander command whose option chain receives the five analytics attribution options. It must be a Commander Command; this function does not parse arguments or assign option defaults."
 			}
 		],
 		"outputs": [
 			{
 				"name": "analyticsOptions",
 				"type": "Command",
-				"description": "The same command after the five attribution options have been registered, allowing further command configuration."
+				"description": "The Command returned by the final .option() call after --loop <name>, --step <id>, --task <id>, --agent-model <name>, and --report <id> are registered. These options are declared with .option() and no defaults, and this function does not parse their values."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "analyticsOptions",
@@ -37,18 +38,18 @@
 						"name": "analyticsOptions.command",
 						"type": "Command",
 						"required": true,
-						"description": "Commander command to extend in place with --loop, --step, --task, --agent-model and --report value options."
+						"description": "The Commander command whose option chain receives the five analytics attribution options. It must be a Commander Command; this function does not parse arguments or assign option defaults."
 					}
 				],
 				"outputs": [
 					{
 						"name": "analyticsOptions",
 						"type": "Command",
-						"description": "The same command after the five attribution options have been registered, allowing further command configuration."
+						"description": "The Command returned by the final .option() call after --loop <name>, --step <id>, --task <id>, --agent-model <name>, and --report <id> are registered. These options are declared with .option() and no defaults, and this function does not parse their values."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
