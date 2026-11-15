@@ -26,34 +26,51 @@
 			{
 				"name": "ProjectDiscoveryService.constructor.projection",
 				"type": "SnapshotPort",
-				"required": true
+				"required": true,
+				"description": "The port whose snapshot() reads each listed project that the kept list does not name yet; the first usable cache identity from those reads becomes the base the kept list is bound to. It matters only when a cache is set and the list came from the hub, and a rejected read or an offline cache status contributes no identity."
 			},
 			{
 				"name": "ProjectDiscoveryService.constructor.http",
 				"type": "HostedHttpAdapter",
-				"required": true
+				"required": true,
+				"description": "The adapter whose json('/api/projects') call is the live list read, and whose result is checked by the response validator before use. Its authorize() runs only in a settled discovery whose authority version changed while the snapshots were primed."
 			},
 			{
 				"name": "ProjectDiscoveryService.constructor.reads",
 				"type": "HostedReadService",
-				"required": true
+				"required": true,
+				"description": "The service that runs the discovery read and reports whether the list came from the kept copy (offline). keep() writes back only a changed, non-empty list through the same read, under the base identity with projectId '$projects' and a SHA-256 profile of the list and base."
 			},
 			{
 				"name": "ProjectDiscoveryService.constructor.options",
 				"type": "HostedReadOptions",
-				"required": true
+				"required": true,
+				"description": "The session and cache hooks: credentials() supplies the signed-in credential, which is checked after the list read and again before the list is returned, and the optional cache (lookup and purge), authorityVersion() and onCacheStatus() are used only when supplied. With no credential, discovery still reads the list before it throws."
 			}
 		],
 		"outputs": [
 			{
 				"name": "projects",
 				"type": "Promise<DesktopProject[]>",
-				"description": "Projects authorized for this account. Offline discovery uses only a valid saved list for the same account.",
+				"description": "The account's hosted projects, owned and joined, validated from /api/projects into { id, name, kind: 'shared' } entries in the hub's order. While the hub is away it is the copy kept under this discovery's read, which changes nothing in the cache, and an authority change rejects the call instead of returning it.",
 				"examples": [
+					[],
 					[
 						{
 							"id": "project-1",
 							"name": "My project",
+							"kind": "shared"
+						}
+					],
+					[
+						{
+							"id": "project-1",
+							"name": "My project",
+							"kind": "shared"
+						},
+						{
+							"id": "project-2",
+							"name": "Team roadmap",
 							"kind": "shared"
 						}
 					]
@@ -64,9 +81,10 @@
 			{
 				"name": "access changed",
 				"type": "Error",
-				"description": "An account change during discovery discards the answer."
+				"description": "Thrown as Error('Hosted authority changed during project discovery.') when there was no credential at the start, or when the credential differs after the list is read or before the list is returned. The discovery result is discarded."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ProjectDiscoveryService.projects",
@@ -74,11 +92,40 @@
 				"outputs": [
 					{
 						"name": "ProjectDiscoveryService.projects",
-						"type": "Promise<DesktopProject[]>"
+						"type": "Promise<DesktopProject[]>",
+						"description": "Resolves to the list discovery returns, either the hub's current list or the kept copy while the hub is away. Calls run one at a time, so each discovery sees the list the previous one kept.",
+						"examples": [
+							[],
+							[
+								{
+									"id": "project-1",
+									"name": "My project",
+									"kind": "shared"
+								}
+							],
+							[
+								{
+									"id": "project-1",
+									"name": "My project",
+									"kind": "shared"
+								},
+								{
+									"id": "project-2",
+									"name": "Team roadmap",
+									"kind": "shared"
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "access changed",
+						"type": "thrown",
+						"description": "Rejects with Error('Hosted authority changed during project discovery.') when there was no credential at the start, or when the credential differs after the list is read or before the list is returned. The discovery result is discarded."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -88,32 +135,37 @@
 					{
 						"name": "ProjectDiscoveryService.constructor.projection",
 						"type": "SnapshotPort",
-						"required": true
+						"required": true,
+						"description": "The port whose snapshot() reads each listed project that the kept list does not name yet; the first usable cache identity from those reads becomes the base the kept list is bound to. It matters only when a cache is set and the list came from the hub, and a rejected read or an offline cache status contributes no identity."
 					},
 					{
 						"name": "ProjectDiscoveryService.constructor.http",
 						"type": "HostedHttpAdapter",
-						"required": true
+						"required": true,
+						"description": "The adapter whose json('/api/projects') call is the live list read, and whose result is checked by the response validator before use. Its authorize() runs only in a settled discovery whose authority version changed while the snapshots were primed."
 					},
 					{
 						"name": "ProjectDiscoveryService.constructor.reads",
 						"type": "HostedReadService",
-						"required": true
+						"required": true,
+						"description": "The service that runs the discovery read and reports whether the list came from the kept copy (offline). keep() writes back only a changed, non-empty list through the same read, under the base identity with projectId '$projects' and a SHA-256 profile of the list and base."
 					},
 					{
 						"name": "ProjectDiscoveryService.constructor.options",
 						"type": "HostedReadOptions",
-						"required": true
+						"required": true,
+						"description": "The session and cache hooks: credentials() supplies the signed-in credential, which is checked after the list read and again before the list is returned, and the optional cache (lookup and purge), authorityVersion() and onCacheStatus() are used only when supplied. With no credential, discovery still reads the list before it throws."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectDiscoveryService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The ProjectDiscoveryService instance built from the four inputs, with a new RemoteProjectResponseValidator and a queue that is already resolved. The constructor only stores its inputs and creates those two members, so it reads nothing and cannot fail."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
