@@ -40,36 +40,76 @@
 				"name": "ContractPanel.contract",
 				"type": "EntityContract",
 				"required": true,
-				"description": "Required contract with distinct input/output/error names, public types and optional descriptions. Input required flags and own literal defaults remain visible; absent metadata and descriptions are stated explicitly."
+				"description": "The EntityContract that EntityView passes as entity.contract: inputs, outputs and errors arrays of fields, plus a hash that is a SHA-256 hex digest of the contract, or null when the entity has no contract yet. The panel reads all three arrays on every render without validating them, so a missing contract or group array throws, while absent input flags and defaults show as Requiredness not recorded or No default and absent descriptions show as No description recorded.",
+				"examples": [
+					{
+						"inputs": [
+							{
+								"name": "requiredStates.unit",
+								"type": "HarnessUnit",
+								"required": true
+							},
+							{
+								"name": "requiredStates.scenarios",
+								"type": "HarnessScenario[]",
+								"required": true
+							},
+							{
+								"name": "requiredStates.units",
+								"type": "HarnessUnit[]",
+								"required": true
+							}
+						],
+						"outputs": [
+							{
+								"name": "requiredStates",
+								"type": "string[]"
+							}
+						],
+						"errors": [],
+						"hash": "5e0b9f3c2a7d18e46b9c0f2d7a31e8b4c5d9f6a0e2b7c1d3f8a4e6b9c0d2f1a7"
+					},
+					{
+						"inputs": [],
+						"outputs": [],
+						"errors": [],
+						"hash": null
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ContractPanel",
 				"type": "markup",
-				"description": "Accepts, Returns and Can fail with sections show field descriptions and types. Inputs show Required/Optional or missing metadata, plus exact literal defaults or No default. Empty groups say Nothing declared. Technical contract expands full names and types."
+				"description": "The Contract section markup that EntityView shows for an entity's contract, with Accepts (inputs), Returns (outputs) and Can fail with (errors) groups whose rows show the field's humanized last name segment, its type and its description or No description recorded, and whose input rows also show Required, Optional or Requiredness not recorded and either Default: followed by the default's JSON or No default. Empty groups show Nothing declared, and a Technical contract details element, closed by default, lists each full name and type."
 			}
 		],
 		"errors": [
 			{
 				"name": "Duplicate row key",
 				"type": "Svelte keyed-each error",
-				"description": "Repeated field names within a group are rejected by Svelte keyed-list updates."
+				"description": "Two fields in one group with the same name give the keyed each blocks in DetailList.svelte and ContractPanel.svelte a repeated key, so Svelte throws an each_key_duplicate error. The same name in two different groups is not a duplicate, because each group renders its own list."
 			},
 			{
 				"name": "TypeError",
 				"type": "thrown",
-				"description": "A literal default contains BigInt or circular data that JSON cannot serialize."
+				"description": "An input default that contains a BigInt or a circular reference makes JSON.stringify throw a TypeError while the panel renders that input's Default line."
 			},
 			{
 				"name": "RangeError",
 				"type": "thrown",
-				"description": "Deeply nested literal defaults exceed the JSON serializer stack."
+				"description": "An input default nested too deeply for JSON.stringify overflows its serializer stack, so the panel throws a RangeError while rendering that Default line."
 			},
 			{
 				"name": "Getter, proxy or conversion error",
 				"type": "propagated",
-				"description": "Errors from supplied field/default/example getters, proxy traps or JSON conversion methods propagate."
+				"description": "Errors thrown by getters, proxy traps or toJSON methods on the supplied fields or defaults propagate unchanged, because the panel reads each field's properties and passes each input default to JSON.stringify."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown during render when contract is null or undefined, when an inputs, outputs or errors array is missing, or when a field's name is not a string, because the panel reads each of these without a guard."
 			}
 		],
 		"errorStatus": "declared",
