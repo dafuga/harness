@@ -8,10 +8,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/models/HarnessBudget.types.ts",
-			"packages/reports/src/models/explorer-ui/HarnessBudget.types.ts"
-		],
+		"source": ["packages/reports/src/models/explorer-ui/HarnessBudget.types.ts"],
 		"symbols": ["HarnessReview", "HarnessFrozenLimits", "HarnessEmittedLimits", "HarnessUnitLimits"]
 	},
 	"contract": {

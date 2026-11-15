@@ -8,10 +8,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/models/HarnessLegacy.types.ts",
-			"packages/reports/src/models/explorer-ui/HarnessLegacy.types.ts"
-		],
+		"source": ["packages/reports/src/models/explorer-ui/HarnessLegacy.types.ts"],
 		"symbols": ["HarnessLegacyMedia", "HarnessLegacyReport"]
 	},
 	"contract": {
