@@ -83,7 +83,7 @@
 				"outputs": [
 					{
 						"name": "HubAuthController.constructor",
-						"type": "unknown",
+						"type": "HubAuthController",
 						"description": "The initialized HubAuthController instance, with an AuthRequestValidator and a route map containing the built-in routes plus options.routes. The constructor does not produce a JSON response."
 					}
 				],

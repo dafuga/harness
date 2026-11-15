@@ -30,41 +30,39 @@
 		"outputs": [
 			{
 				"name": "resourcePriorities",
-				"type": "unknown",
+				"type": "readonly [\"agent-test\", \"coding\", \"environment\"]",
 				"description": "The ordered priority list used by the `resourcePriority` schema. Its three entries are the only accepted priority values.",
-				"examples": [
-					["agent-test", "coding", "environment"]
-				]
+				"examples": [["agent-test", "coding", "environment"]]
 			},
 			{
 				"name": "resourcePriority",
-				"type": "unknown",
+				"type": "typeof resourcePriority",
 				"description": "The Zod enum schema built from `resourcePriorities`, used to validate a request priority. It accepts only `agent-test`, `coding`, or `environment`."
 			},
 			{
 				"name": "resourceConfigSchema",
-				"type": "unknown",
+				"type": "typeof resourceConfigSchema",
 				"description": "The strict Zod schema for host resource configuration; it defaults `schemaVersion` to 1, CPU and memory reserves to 10%, minimum memory reserve to 2048 MiB, `pollMs` to 1000, and `staleSampleMs` to 5000. It requires schemaVersion 1, integer MiB and millisecond fields, CPU reserve 10–95%, memory reserve 10–90%, polling 250–10000 ms, stale samples 1000–30000 ms, and rejects unknown fields."
 			},
 			{
 				"name": "resourceRequestSchema",
-				"type": "unknown",
+				"type": "typeof resourceRequestSchema",
 				"description": "The strict Zod schema for resource requests; it defaults priority to `coding`, CPUs to 1, memory to 512 MiB, and label to `Managed work`. CPU and memory must be finite positive numbers, priority must be one of `agent-test`, `coding`, or `environment`, label must contain 1–100 characters, and unknown fields are rejected."
 			},
 			{
 				"name": "resourceJobSchema",
-				"type": "unknown",
+				"type": "typeof resourceJobSchema",
 				"description": "The strict job schema extends `resourceRequestSchema`, so its priority, CPU, memory, and label defaults also apply; it requires a UUID `id`, positive integer `sequence` and `ownerPid`, nonempty `ownerStarted`, `queued` or `running` state, finite numeric timestamps, and a nullable string `notice`. Optional `parentId` must be a UUID, `workerPid` a positive integer, and `workerStarted` a nonempty string."
 			},
 			{
 				"name": "mib",
-				"type": "unknown",
+				"type": "number",
 				"description": "The exported constant for the number of bytes in one mebibyte, computed as 1024 × 1024. Its fixed value is 1048576.",
 				"examples": [1048576]
 			},
 			{
 				"name": "scopedVerificationLabel",
-				"type": "unknown",
+				"type": "\"Scoped verification\"",
 				"description": "The exact label of a scoped verification (`verify run --entity`) check. Such a check is small enough to be admitted under system memory pressure while every other reserve still applies; keeping it as a label instead of a new job field lets older shared-queue readers continue to parse it.",
 				"examples": ["Scoped verification"]
 			}

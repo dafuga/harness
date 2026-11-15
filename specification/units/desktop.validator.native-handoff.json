@@ -117,7 +117,7 @@
 		"outputs": [
 			{
 				"name": "NativeHandoffValidator.start",
-				"type": "unknown",
+				"type": "{ handoffId: string; userCode: string; verificationUrl: string; expiresAt: string; interval: number; }",
 				"description": "The handoff that start() returns: handoffId, userCode, verificationUrl, expiresAt (the input string, unchanged) and interval, which NativeAuthService treats as seconds between polls and which must be from 1 to 30. NativeAuthService removes handoffId and keeps the other fields as the pending handoff status.",
 				"examples": [
 					{
@@ -253,7 +253,7 @@
 				"outputs": [
 					{
 						"name": "NativeHandoffValidator.start",
-						"type": "unknown",
+						"type": "{ handoffId: string; userCode: string; verificationUrl: string; expiresAt: string; interval: number; }",
 						"description": "The handoff that start() returns: handoffId, userCode, verificationUrl, expiresAt (the input string, unchanged) and interval, which NativeAuthService treats as seconds between polls and which must be from 1 to 30. NativeAuthService removes handoffId and keeps the other fields as the pending handoff status.",
 						"examples": [
 							{

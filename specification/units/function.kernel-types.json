@@ -30,7 +30,7 @@
 		"outputs": [
 			{
 				"name": "kernelContract",
-				"type": "unknown",
+				"type": "\"impact-kernel/1\"",
 				"description": "The string constant 'impact-kernel/1' that identifies the version of the impact kernel contract; it is exported as kernelContract from src/core/execution-runtimes/kernelTypes.ts alongside the KernelGraph, ImpactInput, AffectedNode and ImpactOutput types, and src/core/kernelTypes.ts re-exports it. It is a fixed string literal: none of the three source files computes, parses or validates it, and the contract declares no operation that returns it.",
 				"examples": ["impact-kernel/1"]
 			}

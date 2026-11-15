@@ -48,31 +48,31 @@
 		"outputs": [
 			{
 				"name": "verifyConfigFile",
-				"type": "unknown",
+				"type": "\"harness.verify.json\"",
 				"description": "File name `harness.verify.json` for the verify configuration. This module only declares the name; it never reads or writes the file.",
 				"examples": ["harness.verify.json"]
 			},
 			{
 				"name": "verificationsDirectory",
-				"type": "unknown",
+				"type": "\".cache/harness/verifications\"",
 				"description": "Scratch directory `.cache/harness/verifications` that holds verification drafts until they are persisted as Git evidence. This module only declares the path; it never creates or reads the directory.",
 				"examples": [".cache/harness/verifications"]
 			},
 			{
 				"name": "snapshotsDirectory",
-				"type": "unknown",
+				"type": "\".cache/harness/snapshots\"",
 				"description": "Scratch directory `.cache/harness/snapshots` under the same root as the verifications directory, for verification snapshots. This module only declares the path; it never creates or reads the directory.",
 				"examples": [".cache/harness/snapshots"]
 			},
 			{
 				"name": "captureIndex",
-				"type": "unknown",
+				"type": "\"captures.ndjson\"",
 				"description": "File name `captures.ndjson` of the capture index, to which each check writes one line in `HARNESS_EVIDENCE_DIR`; each such line has the shape captureLineSchema defines. This module only declares the name.",
 				"examples": ["captures.ndjson"]
 			},
 			{
 				"name": "verifyConfigSchema",
-				"type": "unknown",
+				"type": "typeof verifyConfigSchema",
 				"description": "Strict version 1 Zod schema for the verify configuration (unknown keys are rejected), covering the writing-limit version, the optional performance-required flag, setup, shared links, declared outputs, builds and tools, runner templates, profiles, checks, a positive test timeout and optional capture and record byte caps. Parsing fills defaults for outputs, builds, tools, profiles and checks, expands each check's profile into the check, and rejects an unknown profile, a check with neither its own command nor a profile command, a profile command without {target} that more than one check inherits, or a literal test file in a command that does not match the check's path."
 			},
 			{
@@ -101,22 +101,22 @@
 			},
 			{
 				"name": "captureLineSchema",
-				"type": "unknown",
+				"type": "typeof captureLineSchema",
 				"description": "Strict Zod schema for one captures.ndjson line: it requires `evidence` and `state` ids matching the unit id pattern, a `kind` of screenshot, audio, output, assertions, trace or benchmark, a `file` that is a plain file name inside the evidence directory (letters, digits, underscores, dots and hyphens only), and a non-empty `mediaType`. It also accepts optional `viewport` (an id), `clip` (a capture region), `provenance` (fixture or actual-capture), `transcript`, `durationSeconds` (positive), `server` (with `buildId` and `revision`) and `note`, and rejects any other key."
 			},
 			{
 				"name": "reportedMeasurementSchema",
-				"type": "unknown",
+				"type": "typeof reportedMeasurementSchema",
 				"description": "Zod schema for one benchmark measurement before the run adds its profile and revision: `unit`, `metric`, `unitOfMeasure` and `method` are required non-empty strings, `value` is a required number or null, and `workload` is a required string or null. Optional `callable`, `unavailable`, `target` (a runtime kind), `samples` (a positive integer) and `comparison` are accepted, and unknown keys are stripped rather than rejected."
 			},
 			{
 				"name": "benchmarkCaptureSchema",
-				"type": "unknown",
+				"type": "typeof benchmarkCaptureSchema",
 				"description": "Zod schema for a benchmark capture payload: `measurements` is a required array of reported measurements. Other top-level fields the check adds are stripped by normal Zod parsing rather than kept."
 			},
 			{
 				"name": "workloadSchema",
-				"type": "unknown",
+				"type": "typeof workloadSchema",
 				"description": "Strict version 1 Zod schema for a workload, a request sent repeatedly through a unit's declared execution target: `id` must match the unit id pattern, `request` has a non-empty `operation` and an optional `input`, `rounds` is 1 to 50 and `iterations` is 1 to 100000."
 			}
 		],
