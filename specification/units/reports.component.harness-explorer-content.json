@@ -41,75 +41,353 @@
 				"name": "ExplorerContent.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Prepared history index for the selected repository and its recorded revisions."
+				"description": "The prepared history index of the repository: its branches, revisions, per-unit growth, benchmarks, profiles, legacy reports, truncated flag and problems. ExplorerContent does not inspect it, so the truncated flag and problems are not checked there; it passes the index unchanged to the shown screen.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "4f2a9c7e1b8d03f56a2e9c4b7d1f8a0e3c6b5d92"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "4f2a9c7e1b8d03f56a2e9c4b7d1f8a0e3c6b5d92",
+								"parents": ["a81d0e3b5f7c24d9e6b0a3f1c8d52e7b4a9f6c01"],
+								"subject": "Route every explorer address through one content component",
+								"author": "Sam Okafor",
+								"committedAt": "2026-11-12T09:41:07Z",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [
+									{
+										"id": "b7e41d0c9a2f58e36d1b4c7a0f9e2d8c5b3a6f14e7d0c9b2a8f5e3d1c6b4a907",
+										"status": "passed",
+										"profile": "3b9f0e62c1d84a7e",
+										"finishedAt": "2026-11-12T09:58:30Z",
+										"base": null,
+										"valid": true,
+										"problems": []
+									}
+								],
+								"legacy": []
+							}
+						],
+						"units": [
+							{
+								"id": "reports.component.harness-explorer-content",
+								"growth": [
+									{
+										"commit": "4f2a9c7e1b8d03f56a2e9c4b7d1f8a0e3c6b5d92",
+										"record": "b7e41d0c9a2f58e36d1b4c7a0f9e2d8c5b3a6f14e7d0c9b2a8f5e3d1c6b4a907",
+										"source-bytes": 6912,
+										"complexity": 14,
+										"dependencies": 17
+									}
+								]
+							}
+						],
+						"benchmarks": [],
+						"profiles": [
+							{
+								"id": "3b9f0e62c1d84a7e",
+								"platform": "darwin",
+								"arch": "arm64",
+								"cpu": "Apple M3",
+								"runtime": "node 22"
+							}
+						],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "ExplorerContent.head",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Exact selected source revision supplying every displayed contract, measurement and capture."
+				"description": "The exact selected source revision, identified by its commit; every contract, measurement and capture on the page is bound to it. ExplorerContent does not inspect it and passes it unchanged to the shown screen.",
+				"examples": [
+					{
+						"commit": "4f2a9c7e1b8d03f56a2e9c4b7d1f8a0e3c6b5d92",
+						"registry": {
+							"available": true,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "ExplorerContent.parent",
 				"type": "HarnessRevision | null",
 				"required": true,
-				"description": "First parent of the selected commit, or null at a branch tip or first commit."
+				"description": "The first parent of the selected commit, which the props type documents as null at the branch tip and for a first commit. ExplorerContent does not inspect it and passes it unchanged to the shown screen.",
+				"examples": [
+					null,
+					{
+						"commit": "a81d0e3b5f7c24d9e6b0a3f1c8d52e7b4a9f6c01",
+						"registry": {
+							"available": true,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "ExplorerContent.scope",
 				"type": "ExplorerScope",
 				"required": true,
-				"description": "Selected branch, commit and comparison scope shared by the explorer host."
+				"description": "The selected branch, commit and history position: location, mode ('current' follows the branch tip, 'commit' stays on the commit the address names), branch (null for a commit no branch reaches), tip, commit, atTip, parent and the summary of the shown commit. ExplorerContent does not inspect it and passes it unchanged to the shown screen.",
+				"examples": [
+					{
+						"location": {
+							"branch": "main",
+							"commit": null,
+							"category": "components",
+							"entity": "reports.component.harness-explorer-content",
+							"section": "history"
+						},
+						"mode": "current",
+						"branch": "main",
+						"tip": "4f2a9c7e1b8d03f56a2e9c4b7d1f8a0e3c6b5d92",
+						"commit": "4f2a9c7e1b8d03f56a2e9c4b7d1f8a0e3c6b5d92",
+						"atTip": true,
+						"parent": "a81d0e3b5f7c24d9e6b0a3f1c8d52e7b4a9f6c01",
+						"summary": {
+							"commit": "4f2a9c7e1b8d03f56a2e9c4b7d1f8a0e3c6b5d92",
+							"parents": ["a81d0e3b5f7c24d9e6b0a3f1c8d52e7b4a9f6c01"],
+							"subject": "Route every explorer address through one content component",
+							"author": "Sam Okafor",
+							"committedAt": "2026-11-12T09:41:07Z",
+							"branches": ["main"],
+							"retained": true,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [
+								{
+									"id": "b7e41d0c9a2f58e36d1b4c7a0f9e2d8c5b3a6f14e7d0c9b2a8f5e3d1c6b4a907",
+									"status": "passed",
+									"profile": "3b9f0e62c1d84a7e",
+									"finishedAt": "2026-11-12T09:58:30Z",
+									"base": null,
+									"valid": true,
+									"problems": []
+								}
+							],
+							"legacy": []
+						}
+					}
+				]
 			},
 			{
 				"name": "ExplorerContent.route",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Current explorer location, including category, entity, section and tab."
+				"description": "The address shown: branch, commit (null shows the branch at its tip), category, and the optional screen, entity, helper, section and tab. ExplorerContent reads screen, category, entity, helper and section to choose the screen, and passes the whole route to it.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": null,
+						"category": "components",
+						"entity": "reports.component.harness-explorer-content",
+						"section": "history"
+					},
+					{
+						"branch": "main",
+						"commit": "4f2a9c7e1b8d03f56a2e9c4b7d1f8a0e3c6b5d92",
+						"category": "pages"
+					}
+				]
 			},
 			{
 				"name": "ExplorerContent.entities",
 				"type": "ExplorerEntity[]",
 				"required": true,
-				"description": "Units projected from the selected revision, including entities removed by the shown commit."
+				"description": "The units of the selected revision as the explorer lists them, including entities the shown commit removed. ExplorerContent finds the item whose id is route.entity and takes its category as the kind; when no item matches, it uses route.category.",
+				"examples": [
+					[
+						{
+							"id": "reports.component.harness-explorer-content",
+							"category": "components",
+							"role": "Component",
+							"name": "ExplorerContent",
+							"purpose": "Shows any address of the explorer for a host without a page for each screen.",
+							"unit": {
+								"id": "reports.component.harness-explorer-content",
+								"kind": "component",
+								"status": "active",
+								"title": "ExplorerContent",
+								"responsibility": "Shows any address of the explorer for a host without a page for each screen: picks the one screen entry the address is and draws nothing of its own.",
+								"dependencies": [
+									{
+										"unit": "reports.component.explorer-dependencies-screen",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.explorer-ui-explorer-platforms",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.explorer-ui-explorer-translations-screen",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.explorer-ui-harness-explorer-styles-screen",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.harness-entity-behavior-screen",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.harness-entity-config-screen",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.harness-entity-details-screen",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.harness-entity-history-screen",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.harness-entity-visual-screen",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.harness-explorer-catalog-screen",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.harness-explorer-pages-screen",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.module-system-explorer-module-resources-screen",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.module-system-explorer-modules-screen",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.networking-security-explorer-permissions-screen",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.shared-primitives-atoms-html-div",
+										"via": "import"
+									},
+									{
+										"unit": "reports.model.explorer-screen-types",
+										"via": "import"
+									},
+									{
+										"unit": "reports.model.explorer-types",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": [
+										"packages/reports/src/components/explorer-ui/ExplorerContent.svelte",
+										"packages/reports/src/components/explorer-ui/ExplorerContent.types.ts"
+									],
+									"symbols": ["ExplorerContent", "Screen"]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/components/explorer-ui/ExplorerContent.svelte"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "7c2e9f0a4b1d8e35"
+							},
+							"verdict": {
+								"passed": true,
+								"label": "Proven",
+								"reasons": []
+							},
+							"change": null,
+							"appRoute": null
+						}
+					]
+				]
 			},
 			{
 				"name": "ExplorerContent.lens",
 				"type": "EntityLens",
 				"required": true,
-				"description": "Host-provided readers for entity relationships, history and selected-revision details."
+				"description": "The host's answers about entities: href (the full address of a location), relations, evidence, behavior and history. ExplorerContent calls none of them and passes the object unchanged to the shown screen; the props type says a screen works none of it out."
 			},
 			{
 				"name": "ExplorerContent.client",
 				"type": "Pick<HarnessClient, 'revision'>",
 				"required": true,
-				"description": "Revision reader used only for commits the displayed history requests."
+				"description": "The revision reader, revision(commit), which resolves the HarnessRevision of a commit. ExplorerContent never calls it and passes it unchanged to the shown screen; the props type says it is read only for the commits a history lists."
 			},
 			{
 				"name": "ExplorerContent.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "Base URL for retained recorded evidence media."
+				"description": "The base URL that the paths of retained recorded evidence media are appended to; the console passes its base plus '/media/', for example '/harness/media/'. ExplorerContent does not inspect it and passes it unchanged to the shown screen.",
+				"examples": ["/harness/media/"]
 			},
 			{
 				"name": "ExplorerContent.onroute",
 				"type": "(to: ExplorerLocation) => void",
 				"required": true,
-				"description": "Receives the requested explorer destination for host-controlled navigation."
+				"description": "The callback that receives the ExplorerLocation requested for host-controlled navigation. ExplorerContent never calls it and passes it unchanged to the shown screen."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerContent.anyExplorerScreen",
 				"type": "markup",
-				"description": "The one screen the address is, for a host without a page for each screen. States: catalog: The content area displays the component collection. pages: The content area displays the Pages collection. missing: The requested entity is absent and its recovery notice is shown. configs: The content area displays source-based configuration tables. functions: The content area displays the callable collection. styles: The content area displays the shared style inventory. dependencies: The content area displays the dependency inventory. translations: The content area displays the translation inventory. modules: The content area displays the module inventory. permissions: The content area displays declared permissions. platforms: The content area displays supported platforms."
+				"description": "The one screen component the address selects, rendered with the whole host object spread onto it inside an hx-div with display: contents. The choice runs in order: route.screen (styles, translations, dependencies, permissions, modules or module-resources) first; then category 'platforms' gives the platforms screen; then, with no entity and no helper, category 'pages' gives the pages screen and any other category the catalog screen; then section 'details' gives the details screen, section 'history' the history screen, and any other section gets the overview for the kind, which is the matching entity's category or route.category when no entity matches."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExplorerContent.callerError",
 				"type": "unknown",
-				"description": "Caller-provided snippets, navigation and synchronous reader callbacks may throw; those errors propagate. This component defines no additional error type."
+				"description": "An error thrown by a caller-provided callback or reader (lens, client or onroute) while the shown screen renders propagates out of ExplorerContent unchanged, because ExplorerContent has no try/catch. ExplorerContent defines no error type of its own."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when route is null or undefined, or when entities is null or undefined and the overview is chosen, because ExplorerContent reads these required props without a guard."
 			}
 		],
 		"errorStatus": "declared",
