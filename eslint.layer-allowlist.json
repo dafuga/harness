@@ -92,11 +92,6 @@
 			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
 		},
 		{
-			"from": "src/services/development-tooling/regression-proof-service/focusedScreens.ts",
-			"to": "src/workflows/verification-evidence/record-regression/focusedScreens",
-			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
-		},
-		{
 			"from": "src/services/explorer-ui/revision-detail-service/source-impact-service/SourceImpactService.ts",
 			"to": "src/workflows/development-tooling/loadRevisions",
 			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
