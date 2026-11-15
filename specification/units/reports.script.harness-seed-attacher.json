@@ -22,46 +22,93 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "SeedAttacher.open.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The repository path that the seed's attacher is bound to; open resolves it with realpath, so symlinks are followed and the real path becomes the attacher's root. A path that does not exist rejects from realpath, and a real path that already has a seed attacher in this process is refused with ExpectedCliError.",
+				"examples": ["/srv/harness/seeds/seed-03/repo", "/srv/harness/seeds/seed-07/repo"]
 			},
 			{
 				"name": "SeedAttacher.attach.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The repository path to attach into; its realpath must equal this attacher's root, and any other repository is refused with ExpectedCliError. A path that does not exist rejects from realpath before that comparison.",
+				"examples": ["/srv/harness/seeds/seed-03/repo"]
 			},
 			{
 				"name": "SeedAttacher.attach.options",
 				"type": "SeedAttach",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "The commit and record to attach, both optional and defaulting to {}: an omitted commit resolves to HEAD, and an omitted record selects the latest stored record of that commit. A given record must be the id of a stored record whose source commit is that commit; a path to a record file is refused with ExpectedCliError.",
+				"examples": [
+					{},
+					{
+						"commit": "3f9c2a7d1e4b8650c9a2f1d7e3b4a5c6d7e8f901"
+					},
+					{
+						"commit": "3f9c2a7d1e4b8650c9a2f1d7e3b4a5c6d7e8f901",
+						"record": "9c1e4f0a7b2d83e56f1a0c9b4d7e2f83a6c5b1d0e9f8a7c6b5d4e3f2a1b0c9d8"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "SeedAttacher.open",
-				"type": "Promise<SeedAttacher>"
+				"type": "Promise<SeedAttacher>",
+				"description": "Resolves to the attacher bound to the real path of the repository, which it exposes as its readonly root. That real path is never given a second attacher in this process, even after the attacher is closed."
 			},
 			{
 				"name": "SeedAttacher.attach",
-				"type": "Promise<Attached>"
+				"type": "Promise<Attached>",
+				"description": "The result of attaching one stored record: its record id and outcome (passed or failed), its source commit, the evidence pointer (evidence commit, record path and manifest hash), the notes ref and the archive ref. created is false when that exact record was already attached.",
+				"examples": [
+					{
+						"record": "9c1e4f0a7b2d83e56f1a0c9b4d7e2f83a6c5b1d0e9f8a7c6b5d4e3f2a1b0c9d8",
+						"status": "passed",
+						"source": "3f9c2a7d1e4b8650c9a2f1d7e3b4a5c6d7e8f901",
+						"evidence": {
+							"commit": "0b7e5c2d9a4f1e83c6b2d0a7f5e9c1b4d8a3f620",
+							"path": "records/3f9c2a7d1e4b8650c9a2f1d7e3b4a5c6d7e8f901/9c1e4f0a7b2d83e56f1a0c9b4d7e2f83a6c5b1d0e9f8a7c6b5d4e3f2a1b0c9d8",
+							"manifest": "5f2a8c1e9d4b7f036e2c8a15b9d7f4e03c6a1d82f5e9b7c40a3d6e91c2b8f7a5"
+						},
+						"note": "refs/notes/harness",
+						"archive": "refs/harness/source/3f9c2a7d1e4b8650c9a2f1d7e3b4a5c6d7e8f901",
+						"created": true
+					},
+					{
+						"record": "e0d4c3b2a1f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1e0d9c8b7a6f5e4d3",
+						"status": "failed",
+						"source": "a71d03e56c9b2f48d10e7c3a9b5f6d2e84c1b907",
+						"evidence": {
+							"commit": "5d2b8e41f07c93a6e18d4b2c7f09a3e5d6c8b147",
+							"path": "records/a71d03e56c9b2f48d10e7c3a9b5f6d2e84c1b907/e0d4c3b2a1f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1e0d9c8b7a6f5e4d3",
+							"manifest": "d4e1b7a92c5f8e03a6d9b1c47e2f5a8d09c3e6b2f1d8a4c75b0e9d3ae8c6f2b1"
+						},
+						"note": "refs/notes/harness",
+						"archive": "refs/harness/source/a71d03e56c9b2f48d10e7c3a9b5f6d2e84c1b907",
+						"created": false
+					}
+				]
 			},
 			{
 				"name": "SeedAttacher.close",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value once every record the attacher saw at its last attach is found unchanged, and only then does the attacher become closed. If one changed or went away, the promise rejects and the attacher stays open."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by fail() for each refusal this unit makes on purpose: a second attacher for one repository, a root that is not this attacher's repository, an attach after close, a repository that is not Git, a commit or record that does not resolve or match, a stored record that changed or went away, and a record the attach service refuses. Errors from file-system calls and from called services pass through unwrapped."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "SeedAttacher.open",
@@ -69,22 +116,26 @@
 					{
 						"name": "SeedAttacher.open.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The repository path that the seed's attacher is bound to; open resolves it with realpath, so symlinks are followed and the real path becomes the attacher's root. A path that does not exist rejects from realpath, and a real path that already has a seed attacher in this process is refused with ExpectedCliError.",
+						"examples": ["/srv/harness/seeds/seed-03/repo", "/srv/harness/seeds/seed-07/repo"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SeedAttacher.open",
-						"type": "Promise<SeedAttacher>"
+						"type": "Promise<SeedAttacher>",
+						"description": "Resolves to the attacher bound to the real path of the repository, which it exposes as its readonly root. That real path is never given a second attacher in this process, even after the attacher is closed."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by fail() when the real path of root already has a seed attacher in this process; that real path never gets a second attacher."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SeedAttacher.attach",
@@ -92,28 +143,71 @@
 					{
 						"name": "SeedAttacher.attach.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The repository path to attach into; its realpath must equal this attacher's root, and any other repository is refused with ExpectedCliError. A path that does not exist rejects from realpath before that comparison.",
+						"examples": ["/srv/harness/seeds/seed-03/repo"]
 					},
 					{
 						"name": "SeedAttacher.attach.options",
 						"type": "SeedAttach",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "The commit and record to attach, both optional and defaulting to {}: an omitted commit resolves to HEAD, and an omitted record selects the latest stored record of that commit. A given record must be the id of a stored record whose source commit is that commit; a path to a record file is refused with ExpectedCliError.",
+						"examples": [
+							{},
+							{
+								"commit": "3f9c2a7d1e4b8650c9a2f1d7e3b4a5c6d7e8f901"
+							},
+							{
+								"commit": "3f9c2a7d1e4b8650c9a2f1d7e3b4a5c6d7e8f901",
+								"record": "9c1e4f0a7b2d83e56f1a0c9b4d7e2f83a6c5b1d0e9f8a7c6b5d4e3f2a1b0c9d8"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SeedAttacher.attach",
-						"type": "Promise<Attached>"
+						"type": "Promise<Attached>",
+						"description": "The result of attaching one stored record: its record id and outcome (passed or failed), its source commit, the evidence pointer (evidence commit, record path and manifest hash), the notes ref and the archive ref. created is false when that exact record was already attached.",
+						"examples": [
+							{
+								"record": "9c1e4f0a7b2d83e56f1a0c9b4d7e2f83a6c5b1d0e9f8a7c6b5d4e3f2a1b0c9d8",
+								"status": "passed",
+								"source": "3f9c2a7d1e4b8650c9a2f1d7e3b4a5c6d7e8f901",
+								"evidence": {
+									"commit": "0b7e5c2d9a4f1e83c6b2d0a7f5e9c1b4d8a3f620",
+									"path": "records/3f9c2a7d1e4b8650c9a2f1d7e3b4a5c6d7e8f901/9c1e4f0a7b2d83e56f1a0c9b4d7e2f83a6c5b1d0e9f8a7c6b5d4e3f2a1b0c9d8",
+									"manifest": "5f2a8c1e9d4b7f036e2c8a15b9d7f4e03c6a1d82f5e9b7c40a3d6e91c2b8f7a5"
+								},
+								"note": "refs/notes/harness",
+								"archive": "refs/harness/source/3f9c2a7d1e4b8650c9a2f1d7e3b4a5c6d7e8f901",
+								"created": true
+							},
+							{
+								"record": "e0d4c3b2a1f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1e0d9c8b7a6f5e4d3",
+								"status": "failed",
+								"source": "a71d03e56c9b2f48d10e7c3a9b5f6d2e84c1b907",
+								"evidence": {
+									"commit": "5d2b8e41f07c93a6e18d4b2c7f09a3e5d6c8b147",
+									"path": "records/a71d03e56c9b2f48d10e7c3a9b5f6d2e84c1b907/e0d4c3b2a1f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1e0d9c8b7a6f5e4d3",
+									"manifest": "d4e1b7a92c5f8e03a6d9b1c47e2f5a8d09c3e6b2f1d8a4c75b0e9d3ae8c6f2b1"
+								},
+								"note": "refs/notes/harness",
+								"archive": "refs/harness/source/a71d03e56c9b2f48d10e7c3a9b5f6d2e84c1b907",
+								"created": false
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by fail() when the attacher is closed, when root is not its repository, when a record it saw changed or went away, when the repository is not Git or the commit does not resolve, when no record matches or the record is of another commit, or when the attach service refuses the record."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SeedAttacher.close",
@@ -121,11 +215,18 @@
 				"outputs": [
 					{
 						"name": "SeedAttacher.close",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value once every record the attacher saw at its last attach is found unchanged, and only then does the attacher become closed. If one changed or went away, the promise rejects and the attacher stays open."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown by fail() when a record the attacher saw at its last attach changed or went away, and the attacher then stays open."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
