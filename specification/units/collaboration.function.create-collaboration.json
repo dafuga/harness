@@ -20,17 +20,64 @@
 				"name": "createCollaboration.deps",
 				"type": "CollaborationDependencies",
 				"required": true,
-				"description": "Repository, source and cache adapters, repository authorization callback and optional clock."
+				"description": "The adapter bundle: deps.repository (read for record access, and compareAndSwap only when a transaction changes records), deps.source (only validateAnchor, called by addComment), deps.authorizeRepository (called only by createProject, where any failure becomes 'Collaboration forbidden'), and optional deps.now (new Date() is used when it is absent). deps.cache and the source resolve, tree and read methods are never called by this unit, and createCollaboration does not validate deps, so a missing repository or source adapter surfaces as a TypeError when a method that calls it runs."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createCollaboration",
 				"type": "CollaborationApi",
-				"description": "API whose methods check membership, read committed records and perform project, member, invitation and comment transactions. Construction itself performs no network access."
+				"description": "The CollaborationApi object with nine methods (listProjects, createProject, getProject, listMembers, removeMember, createInvitation, acceptInvitation, addComment, listThreads) that each return a promise; a rejection is one of the errors listed for this unit or an error propagated from deps. Construction calls no adapter, and the object keeps no state beyond deps, so nothing is cached between calls."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Collaboration invalid-input",
+				"type": "thrown",
+				"description": "Thrown with code 'invalid-input' when an actor (a strict object with id, email, name and emailVerified: true), an input, or a projectId (a UUID) fails its schema, and when stored records fail recordsSchema (for example in getProject or listThreads)."
+			},
+			{
+				"name": "Collaboration forbidden",
+				"type": "thrown",
+				"description": "Thrown with code 'forbidden' when the project is missing, the actor has no membership in it, or the member's role is not allowed for the method (owner only for listMembers, removeMember and createInvitation; owner, writer or commenter for addComment); createProject throws it for any failure of deps.authorizeRepository, for a repository that fails repositorySchema, and for a repository whose id differs from repositoryId."
+			},
+			{
+				"name": "Collaboration conflict",
+				"type": "thrown",
+				"description": "Thrown with code 'conflict' by transaction after five attempts in which compareAndSwap returned null, so the call's record changes are not committed."
+			},
+			{
+				"name": "Collaboration not-found",
+				"type": "thrown",
+				"description": "Thrown with code 'not-found' by removeMember when no member whose actorId equals memberId exists in the project, and by addComment when threadId is given but no thread with that id exists in the project."
+			},
+			{
+				"name": "Collaboration sole-owner",
+				"type": "thrown",
+				"description": "Thrown with code 'sole-owner' by removeMember when the target member is an owner and no other owner remains in the project, so the removal is not committed."
+			},
+			{
+				"name": "Collaboration invalid-invitation",
+				"type": "thrown",
+				"description": "Thrown with code 'invalid-invitation' by acceptInvitation when no invitation matches invitationId and projectId, when that invitation was already accepted, when the SHA-256 hash of the code does not match, when its email differs from the actor's verified email, when the current time is at or after its expiresAt (createInvitation sets it 24 hours ahead), or when the project is missing from the records."
+			},
+			{
+				"name": "Collaboration anchor-conflict",
+				"type": "thrown",
+				"description": "Thrown with code 'anchor-conflict' by addComment when threadId names an existing thread in the project whose anchor serializes differently (JSON.stringify comparison) from the input anchor."
+			},
+			{
+				"name": "Collaboration request-conflict",
+				"type": "thrown",
+				"description": "Thrown with code 'request-conflict' by addComment when a comment with the same requestId already exists in the project and its actor id or text differs, when that thread's anchor differs from the input anchor, or when threadId is given and differs from the id of the thread holding that requestId."
+			},
+			{
+				"name": "dependency rejection",
+				"type": "thrown",
+				"description": "Rejections from deps.repository.read, deps.repository.compareAndSwap, deps.source.validateAnchor and deps.now reach the caller unchanged because this module does not catch them, while deps.authorizeRepository failures are converted to 'Collaboration forbidden' by createProject."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "createCollaboration",
@@ -39,18 +86,18 @@
 						"name": "createCollaboration.deps",
 						"type": "CollaborationDependencies",
 						"required": true,
-						"description": "Repository, source and cache adapters, repository authorization callback and optional clock."
+						"description": "The adapter bundle: deps.repository (read for record access, and compareAndSwap only when a transaction changes records), deps.source (only validateAnchor, called by addComment), deps.authorizeRepository (called only by createProject, where any failure becomes 'Collaboration forbidden'), and optional deps.now (new Date() is used when it is absent). deps.cache and the source resolve, tree and read methods are never called by this unit, and createCollaboration does not validate deps, so a missing repository or source adapter surfaces as a TypeError when a method that calls it runs."
 					}
 				],
 				"outputs": [
 					{
 						"name": "createCollaboration",
 						"type": "CollaborationApi",
-						"description": "API whose methods check membership, read committed records and perform project, member, invitation and comment transactions. Construction itself performs no network access."
+						"description": "The CollaborationApi object with nine methods (listProjects, createProject, getProject, listMembers, removeMember, createInvitation, acceptInvitation, addComment, listThreads) that each return a promise; a rejection is one of the errors listed for this unit or an error propagated from deps. Construction calls no adapter, and the object keeps no state beyond deps, so nothing is cached between calls."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
