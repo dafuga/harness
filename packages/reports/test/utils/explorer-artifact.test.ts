@@ -4,7 +4,7 @@ import {
 	artifactBehavior,
 	explorerArtifact
 } from '../../src/utils/explorer-reading/explorerArtifact';
-import { artifactText } from '../../src/utils/explorerArtifact';
+import { artifactText } from '../../src/utils/explorer-ui/explorerArtifact';
 import { capture } from '../explorerFixture';
 
 const body = JSON.stringify({

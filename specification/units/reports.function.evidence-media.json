@@ -10,18 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/helpers/strings/formatDuration.ts",
-			"packages/reports/src/utils/evidenceMedia.ts",
 			"packages/reports/src/utils/verification-evidence/evidenceMedia.ts"
 		],
-		"symbols": [
-			"formatDuration",
-			"mediaMime",
-			"evidenceMedia",
-			"formatDuration",
-			"mediaMime",
-			"evidenceMedia",
-			"formatDuration"
-		]
+		"symbols": ["formatDuration", "mediaMime", "evidenceMedia", "formatDuration"]
 	},
 	"contract": {
 		"origin": "declared",

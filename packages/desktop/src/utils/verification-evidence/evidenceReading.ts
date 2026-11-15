@@ -1,7 +1,7 @@
 // @harness-uid u_6vsxioocte
 import { errorMessage } from '$reports/helpers/strings/errorMessage';
 import type { EvidenceRead } from './evidenceReading.types';
-import type { ArtifactFetcher } from '$reports/utils/explorerArtifact';
+import type { ArtifactFetcher } from '$reports/utils/explorer-ui/explorerArtifact';
 import { explorerReading } from '$reports/utils/explorer-reading/explorerReading';
 import type { DesktopBridge } from '../../models/development-tooling/DesktopBridge.types';
 import type {

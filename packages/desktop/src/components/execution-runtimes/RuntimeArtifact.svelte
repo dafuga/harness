@@ -7,7 +7,7 @@
 	import EntityCases from '$shared/explorer-ui/entity-cases/EntityCases.svelte';
 	import type { ExplorerArtifactBehavior } from '$reports/models/explorer-ui/ExplorerEvidence.types';
 	import type { BehaviorCell } from '$reports/utils/explorer-ui/entityBehavior';
-	import { artifactText } from '$reports/utils/explorerArtifact';
+	import { artifactText } from '$reports/utils/explorer-ui/explorerArtifact';
 	import Status from '$shared/shared-primitives/status/Status.svelte';
 	let {
 		cell,

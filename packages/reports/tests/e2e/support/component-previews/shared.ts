@@ -1,6 +1,6 @@
 import type { CatalogRow } from '../../../../src/utils/entityCatalog';
 import { createRawSnippet } from 'svelte';
-import { formatDuration } from '../../../../src/utils/evidenceMedia';
+import { formatDuration } from '../../../../src/utils/verification-evidence/evidenceMedia';
 export const noop = () => {};
 export const done = async () => true;
 export const text = (html = '<p>Recent activity is ready to review.</p>') =>

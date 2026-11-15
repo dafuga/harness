@@ -621,8 +621,8 @@
 		},
 		{
 			"from": "packages/desktop/src/components/execution-runtimes/RuntimeArtifact.svelte",
-			"specifier": "$reports/utils/explorerArtifact",
-			"to": "packages/reports/src/utils/explorerArtifact.ts",
+			"specifier": "$reports/utils/explorer-ui/explorerArtifact",
+			"to": "packages/reports/src/utils/explorer-ui/explorerArtifact.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -837,8 +837,8 @@
 		},
 		{
 			"from": "packages/desktop/src/utils/verification-evidence/evidenceReading.ts",
-			"specifier": "$reports/utils/explorerArtifact",
-			"to": "packages/reports/src/utils/explorerArtifact.ts",
+			"specifier": "$reports/utils/explorer-ui/explorerArtifact",
+			"to": "packages/reports/src/utils/explorer-ui/explorerArtifact.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{

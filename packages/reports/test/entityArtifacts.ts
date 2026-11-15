@@ -1,7 +1,7 @@
 import type { Altered } from './entityArtifacts.types';
 import { createHash } from 'node:crypto';
 import type { HarnessRevision } from '../src/models/explorer-ui/Harness.types';
-import type { ArtifactFetcher } from '../src/utils/explorerArtifact';
+import type { ArtifactFetcher } from '../src/utils/explorer-ui/explorerArtifact';
 import { artifactRun } from '../src/utils/explorer-reading/explorerReading';
 import { mediaFile } from '../src/utils/harnessEvidence';
 

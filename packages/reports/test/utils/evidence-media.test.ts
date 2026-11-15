@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import * as media from '../../src/utils/evidenceMedia';
+import * as media from '../../src/utils/verification-evidence/evidenceMedia';
 const { evidenceMedia, mediaMime } = media;
 import { reportFilter } from '../../src/components/verification-evidence/evidence-grid/reportFilter';
 test('legacy image manifests and portable audio keep their media kind', () => {

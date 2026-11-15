@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { commits } from '../../../../test/entityUnits';
 import type { Data } from './illustratedData.types';
-import { explorerArtifact } from '../../../../src/utils/explorerArtifact';
+import { explorerArtifact } from '../../../../src/utils/explorer-ui/explorerArtifact';
 
 /** Desktop-only examples retain their own bytes and hashes; shared integrity fixtures are unchanged. */
 export async function desktopArtifactFixtures(original: Data) {

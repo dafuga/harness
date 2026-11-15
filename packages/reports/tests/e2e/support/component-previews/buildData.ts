@@ -1,5 +1,5 @@
 import { evidenceData } from '../../../../../desktop/tests/e2e/ui-evidence-data';
-import { explorerArtifact } from '../../../../src/utils/explorerArtifact';
+import { explorerArtifact } from '../../../../src/utils/explorer-ui/explorerArtifact';
 import { illustratedData, desktopScreenFixtures } from './illustratedData';
 import { desktopArtifactFixtures } from './desktopArtifactFixtures';
 import { entitySectionsEvidenceFixtures } from './entitySectionsEvidenceFixtures';
