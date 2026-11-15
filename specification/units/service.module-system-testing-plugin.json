@@ -21,42 +21,52 @@
 				"name": "TestingPluginService.run.root",
 				"type": "string",
 				"required": true,
-				"description": "Absolute project directory whose declared test script will run."
+				"description": "Project root passed to ModuleCatalogService.load and ModuleInstallService.add, and used as the runner process working directory. The service does not normalize or validate this path itself.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+				]
 			},
 			{
 				"name": "TestingPluginService.run.id",
 				"type": "string",
 				"required": true,
-				"description": "Installed testing plugin identity; capability and internal modules are rejected."
+				"description": "String matched against a catalog entry's definition.id to select the plugin. The matching entry must have testing metadata and be installed or the call throws.",
+				"examples": ["example.testing-plugin"]
 			},
 			{
 				"name": "TestingPluginService.run.args",
 				"type": "string[]",
 				"required": false,
 				"default": [],
-				"description": "Additional runner arguments; headed, debug, UI and alternate config switches are rejected."
+				"description": "Additional strings appended after the configured testing script in the bun run invocation. Arguments beginning with --headed, --debug, --ui, or --config followed by = or end of argument, and arguments beginning with -c, are rejected; no other argument validation is performed here.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "TestingPluginService.run.signal",
 				"type": "AbortSignal",
 				"required": false,
-				"description": "Optional cancellation signal for queued admission and the owned runner process tree."
+				"default": "undefined",
+				"description": "Optional AbortSignal forwarded to resourceWork and runIsolated. Defaults to undefined when omitted."
 			}
 		],
 		"outputs": [
 			{
 				"name": "TestingPluginService.run",
 				"type": "Promise<number>",
-				"description": "Zero for a passing runner; a nonzero runner status or cleanup failure otherwise."
+				"description": "Resolves to 0 when runIsolated reports passed; otherwise it returns the exit code, with a missing or zero exit code mapped to 1. The result is only a numeric status and does not include the runner logs.",
+				"examples": [0, 1, 2]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Invalid catalog, missing testing installation, headed options, unsafe setup conflicts or process admission prevent execution."
+				"description": "Throws Error with joined catalog-gap text when the catalog reports gaps, when no matching installed entry has testing metadata, or when an argument matches the rejected option patterns. Rejections from catalog loading, plugin installation, resource admission, and isolated execution propagate to the caller."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "TestingPluginService.run",
@@ -65,42 +75,52 @@
 						"name": "TestingPluginService.run.root",
 						"type": "string",
 						"required": true,
-						"description": "Absolute project directory whose declared test script will run."
+						"description": "Project root passed to ModuleCatalogService.load and ModuleInstallService.add, and used as the runner process working directory. The service does not normalize or validate this path itself.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+						]
 					},
 					{
 						"name": "TestingPluginService.run.id",
 						"type": "string",
 						"required": true,
-						"description": "Installed testing plugin identity; capability and internal modules are rejected."
+						"description": "String matched against a catalog entry's definition.id to select the plugin. The matching entry must have testing metadata and be installed or the call throws.",
+						"examples": ["example.testing-plugin"]
 					},
 					{
 						"name": "TestingPluginService.run.args",
 						"type": "string[]",
 						"required": false,
 						"default": [],
-						"description": "Additional runner arguments; headed, debug, UI and alternate config switches are rejected."
+						"description": "Additional strings appended after the configured testing script in the bun run invocation. Arguments beginning with --headed, --debug, --ui, or --config followed by = or end of argument, and arguments beginning with -c, are rejected; no other argument validation is performed here.",
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "TestingPluginService.run.signal",
 						"type": "AbortSignal",
 						"required": false,
-						"description": "Optional cancellation signal for queued admission and the owned runner process tree."
+						"default": "undefined",
+						"description": "Optional AbortSignal forwarded to resourceWork and runIsolated. Defaults to undefined when omitted."
 					}
 				],
 				"outputs": [
 					{
 						"name": "TestingPluginService.run",
 						"type": "Promise<number>",
-						"description": "Zero for a passing runner; a nonzero runner status or cleanup failure otherwise."
+						"description": "Resolves to 0 when runIsolated reports passed; otherwise it returns the exit code, with a missing or zero exit code mapped to 1. The result is only a numeric status and does not include the runner logs.",
+						"examples": [0, 1, 2]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error with joined catalog-gap text when the catalog reports gaps, when no matching installed entry has testing metadata, or when an argument matches the rejected option patterns. Rejections from catalog loading, plugin installation, resource admission, and isolated execution propagate to the caller."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
