@@ -119,10 +119,11 @@ test('enrolled snapshots expose only pending owning slots from original reposito
 					context,
 					videos: [scenario]
 				});
-				const command = `node -e 'console.log(process.env.HARNESS_PENDING_VIDEO_FLAGS || "missing")'`;
+				const command = `node -e 'console.log(JSON.stringify({pending:process.env.HARNESS_PENDING_VIDEO_FLAGS,capture:process.env.HARNESS_VIDEO_CAPTURE_CONTEXT}))'`;
 				const result = await run.execute([
 					{
 						id: 'pending-env',
+						scenario: scenario.id,
 						name: 'pending-env',
 						kind: 'unit',
 						runner: 'command',
@@ -138,6 +139,17 @@ test('enrolled snapshots expose only pending owning slots from original reposito
 				expect(printed).toContain(flag.id);
 				expect(printed).toContain('Inspect this edge');
 				expect(printed).not.toContain('component.other');
+				const capture = JSON.parse(JSON.parse(printed.trim()).capture);
+				expect(capture).toMatchObject({
+					schemaVersion: 1,
+					repository: root,
+					source: { commit: context.commit, tree: context.tree },
+					slots: [
+						{ unit: video.unit, clipId: 'play', viewport: 'desktop', inputHash: video.inputHash }
+					]
+				});
+				expect(capture.snapshot).not.toBe(root);
+				expect(capture.pinned.evidence).toMatch(/^[a-f0-9]{40}$/);
 				expect(result).toHaveProperty('pendingVideoFlags.pending-motion.pending');
 			})
 	);
