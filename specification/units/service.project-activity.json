@@ -22,41 +22,364 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProjectActivityService.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The path of the checkout this service is built for, as given: `show` picks the Git worktree at this path (or the first one Git lists when none matches), and reads the history, notes, loops and unit registry of that checkout. The value is not checked here; outside Git, the path itself is the only checkout.",
+				"examples": [
+					"/home/dev/projects/harness-app",
+					"/home/dev/projects/harness-app-login",
+					"/srv/checkouts/harness-web"
+				]
 			},
 			{
 				"name": "ProjectActivityService.show.limit",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "How many of the newest commits the live view covers: `show` uses it as the most revisions `SourceHistoryRepository.read` returns and as the work limit of `projectActivity`, with no check or clamping. It has no effect when the checkout has no head, because then no history is read.",
+				"examples": [10, 25, 50]
 			},
 			{
 				"name": "ProjectActivityService.recorded.history",
 				"type": "SourceHistory",
-				"required": true
+				"required": true,
+				"description": "The source history the index was built from: its first revision is the newest and sets the head, the branch whose head is that commit gives the repository's branch, and only its first 30 revisions become work items. Its changed files come from all of its revisions, up to 40 distinct paths.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d",
+								"tree": "2f8a6c0e91b4d7305ac6e8f2d19b74a0c5e3f861",
+								"parents": ["b04f8e2d6a17c93e5f0b8d41a6e27c9f3d05b2a6"],
+								"subject": "Show the agent roster in project activity",
+								"author": "Mira Halvorsen",
+								"authoredAt": "2026-11-13T16:20:41+01:00",
+								"committedAt": "2026-11-13T16:24:02+01:00",
+								"branches": ["main"],
+								"retained": false
+							},
+							{
+								"commit": "b04f8e2d6a17c93e5f0b8d41a6e27c9f3d05b2a6",
+								"tree": "a51c9e3f07d28b64e1f9a0c5d37b82e6f14d9c02",
+								"parents": ["5d0e7fa2c9b3418e6d2a0f75b8c4e91a3f6d0b27"],
+								"subject": "Count unreadable agent registrations apart from the roster",
+								"author": "Tomas Ruiz",
+								"authoredAt": "2026-11-12T09:02:18+00:00",
+								"committedAt": "2026-11-12T09:02:18+00:00",
+								"branches": ["main"],
+								"retained": false
+							}
+						],
+						"truncated": true
+					},
+					{
+						"branches": [],
+						"revisions": [],
+						"truncated": false
+					}
+				]
 			},
 			{
 				"name": "ProjectActivityService.recorded.details",
 				"type": "Map<string, RevisionDetail>",
-				"required": true
+				"required": true,
+				"description": "The RevisionDetail of each commit, keyed by commit hash: `recorded` reads the registry units (their `id` and `owns.source`) of the newest commit, and, for the commits it lists, their `explanations` and `sourceImpact.changed` paths. A commit without an entry adds no units, reasons or changed paths."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectActivityService.show",
-				"type": "Promise<{ activity: ProjectActivity; live: LiveActivity }>"
+				"type": "Promise<{ activity: ProjectActivity; live: LiveActivity }>",
+				"description": "The resolved value: `activity` is the committed work of the repository's history, with the loops the checkout has now, and `live` is the state of the checkouts and agents when it was read: up to 12 worktrees, each with up to 40 uncommitted changes, the agent roster, and the `sampledAt` time.",
+				"examples": [
+					{
+						"activity": {
+							"schemaVersion": 1,
+							"kind": "live",
+							"repository": {
+								"name": "harness-app",
+								"branch": "main",
+								"head": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d"
+							},
+							"asOf": {
+								"commit": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d",
+								"committedAt": "2026-11-13T16:24:02+01:00"
+							},
+							"loops": {
+								"total": 3,
+								"types": [
+									{
+										"template": "feature",
+										"loops": 2,
+										"complete": 1,
+										"open": 1,
+										"lastUsedAt": "2026-11-13T15:58:10.442Z",
+										"names": ["login-form", "session-expiry"]
+									},
+									{
+										"template": "custom",
+										"loops": 1,
+										"complete": 0,
+										"open": 1,
+										"lastUsedAt": "2026-11-10T08:41:27.903Z",
+										"names": ["spike-cache"]
+									}
+								]
+							},
+							"work": [
+								{
+									"commit": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d",
+									"subject": "Show the agent roster in project activity",
+									"author": "Mira Halvorsen",
+									"committedAt": "2026-11-13T16:24:02+01:00",
+									"branches": ["main"],
+									"units": ["service.project-activity"],
+									"unitCount": 1,
+									"reasons": [
+										{
+											"unit": "service.project-activity",
+											"behavior": "Shows the registered agents of the repository in the live activity."
+										}
+									],
+									"reasonCount": 1,
+									"files": 2
+								},
+								{
+									"commit": "b04f8e2d6a17c93e5f0b8d41a6e27c9f3d05b2a6",
+									"subject": "Count unreadable agent registrations apart from the roster",
+									"author": "Tomas Ruiz",
+									"committedAt": "2026-11-12T09:02:18+00:00",
+									"branches": ["main"],
+									"units": ["service.project-activity"],
+									"unitCount": 1,
+									"reasons": [],
+									"reasonCount": 0,
+									"files": 2
+								}
+							],
+							"files": [
+								{
+									"path": "src/services/projects-sessions/project-activity-service/ProjectActivityService.ts",
+									"status": "modified",
+									"units": ["service.project-activity"],
+									"commit": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d",
+									"committedAt": "2026-11-13T16:24:02+01:00"
+								},
+								{
+									"path": "src/services/projects-sessions/project-activity-service/ProjectActivityService.types.ts",
+									"status": "modified",
+									"units": ["service.project-activity"],
+									"commit": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d",
+									"committedAt": "2026-11-13T16:24:02+01:00"
+								}
+							]
+						},
+						"live": {
+							"sampledAt": "2026-11-14T10:15:00.000Z",
+							"worktrees": [
+								{
+									"name": "harness-app",
+									"branch": "main",
+									"head": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d",
+									"primary": true,
+									"changes": [
+										{
+											"path": "src/services/projects-sessions/project-activity-service/ProjectActivityService.types.ts",
+											"status": "modified",
+											"units": ["service.project-activity"]
+										}
+									],
+									"truncated": false
+								},
+								{
+									"name": "harness-app-login",
+									"branch": "feature/login-form",
+									"head": "e91d3a58c0f7b26d4a9e15c8730b6f2d9a4e7c13",
+									"primary": false,
+									"changes": [
+										{
+											"path": "src/components/login-form/LoginForm.tsx",
+											"status": "untracked",
+											"units": []
+										}
+									],
+									"truncated": false
+								}
+							],
+							"agents": {
+								"tracking": "available",
+								"working": 1,
+								"unreadable": 0,
+								"roster": [
+									{
+										"id": "4f0c9a7e-2b1d-4e8a-9c3f-6d5b2a1e7f40",
+										"label": "Login form agent",
+										"provider": "claude-code",
+										"model": "claude-sonnet-5-5",
+										"worktree": "harness-app-login",
+										"branch": "feature/login-form",
+										"task": "Wire the sign-in form to the session API",
+										"loop": "login-form",
+										"units": ["service.agent-activity"],
+										"unknownUnits": [],
+										"registeredAt": "2026-11-14T09:40:12.118Z",
+										"heartbeatAt": "2026-11-14T10:13:55.402Z",
+										"expiresAt": "2026-11-14T10:23:55.402Z",
+										"state": "working",
+										"detail": "Last heartbeat at 2026-11-14T10:13:55.402Z"
+									}
+								]
+							}
+						}
+					},
+					{
+						"activity": {
+							"schemaVersion": 1,
+							"kind": "live",
+							"repository": {
+								"name": "harness-app",
+								"branch": null,
+								"head": null
+							},
+							"asOf": null,
+							"loops": {
+								"total": 0,
+								"types": []
+							},
+							"work": [],
+							"files": []
+						},
+						"live": {
+							"sampledAt": "2026-11-14T10:15:00.000Z",
+							"worktrees": [
+								{
+									"name": "harness-app",
+									"branch": null,
+									"head": null,
+									"primary": true,
+									"changes": [],
+									"truncated": false
+								}
+							],
+							"agents": {
+								"tracking": "never-used",
+								"working": null,
+								"unreadable": 0,
+								"roster": []
+							}
+						}
+					}
+				]
 			},
 			{
 				"name": "ProjectActivityService.recorded",
-				"type": "Promise<ProjectActivity>"
+				"type": "Promise<ProjectActivity>",
+				"description": "The resolved ProjectActivity of kind `recorded`, built from the history and details it is given: at most 30 work items, each with at most 3 reasons and 12 units, and at most 40 files. It also reads Git for the repository name, from the primary worktree, and for the loops at the newest commit.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"kind": "recorded",
+						"repository": {
+							"name": "harness-app",
+							"branch": "main",
+							"head": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d"
+						},
+						"asOf": {
+							"commit": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d",
+							"committedAt": "2026-11-13T16:24:02+01:00"
+						},
+						"loops": {
+							"total": 0,
+							"types": []
+						},
+						"work": [
+							{
+								"commit": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d",
+								"subject": "Show the agent roster in project activity",
+								"author": "Mira Halvorsen",
+								"committedAt": "2026-11-13T16:24:02+01:00",
+								"branches": ["main"],
+								"units": ["service.project-activity"],
+								"unitCount": 1,
+								"reasons": [
+									{
+										"unit": "service.project-activity",
+										"behavior": "Shows the registered agents of the repository in the live activity."
+									}
+								],
+								"reasonCount": 1,
+								"files": 2
+							},
+							{
+								"commit": "b04f8e2d6a17c93e5f0b8d41a6e27c9f3d05b2a6",
+								"subject": "Count unreadable agent registrations apart from the roster",
+								"author": "Tomas Ruiz",
+								"committedAt": "2026-11-12T09:02:18+00:00",
+								"branches": ["main"],
+								"units": ["service.project-activity"],
+								"unitCount": 1,
+								"reasons": [],
+								"reasonCount": 0,
+								"files": 2
+							}
+						],
+						"files": [
+							{
+								"path": "src/services/projects-sessions/project-activity-service/ProjectActivityService.ts",
+								"status": "modified",
+								"units": ["service.project-activity"],
+								"commit": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d",
+								"committedAt": "2026-11-13T16:24:02+01:00"
+							},
+							{
+								"path": "src/services/projects-sessions/project-activity-service/ProjectActivityService.types.ts",
+								"status": "modified",
+								"units": ["service.project-activity"],
+								"commit": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d",
+								"committedAt": "2026-11-13T16:24:02+01:00"
+							}
+						]
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by `show` and `recorded` when every worktree Git lists is bare or prunable, so that no checkout is left: `show` then reads `head` of undefined, and `recorded` reads `path` of undefined."
+			},
+			{
+				"name": "BoundedCommandFailure",
+				"type": "thrown",
+				"description": "Rejected by the Git commands of `show` and `recorded` that run through `GitAdapter.exec`, when git cannot be started, runs past its deadline, or writes more output than its bound. Its message gives the cause, such as the deadline that was exceeded."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by `show` when one of its Git reads exits non-zero: the ref listing, the commit walk, the history log, the changed-files log, or the note blob read. Its message is `git <arguments> failed:` followed by git's stderr."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejected by `show` when a directory it lists cannot be read, with a system error such as EACCES or ENOTDIR: the unit registry (`specification/units`), the loops (`specification/loops`), or a checkout's agent registry (`.cache/harness/agents`)."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Thrown by `show` when the latest heartbeat of an agent has an `at` that is not a valid date, because the roster calls `toISOString()` on the expiry computed from it; the registry accepts any non-empty string as `at`."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ProjectActivityService.show",
@@ -64,17 +387,225 @@
 					{
 						"name": "ProjectActivityService.show.limit",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "How many of the newest commits the live view covers: `show` uses it as the most revisions `SourceHistoryRepository.read` returns and as the work limit of `projectActivity`, with no check or clamping. It has no effect when the checkout has no head, because then no history is read.",
+						"examples": [10, 25, 50]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectActivityService.show",
-						"type": "Promise<{ activity: ProjectActivity; live: LiveActivity }>"
+						"type": "Promise<{ activity: ProjectActivity; live: LiveActivity }>",
+						"description": "The resolved value: `activity` is the committed work of the repository's history, with the loops the checkout has now, and `live` is the state of the checkouts and agents when it was read: up to 12 worktrees, each with up to 40 uncommitted changes, the agent roster, and the `sampledAt` time.",
+						"examples": [
+							{
+								"activity": {
+									"schemaVersion": 1,
+									"kind": "live",
+									"repository": {
+										"name": "harness-app",
+										"branch": "main",
+										"head": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d"
+									},
+									"asOf": {
+										"commit": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d",
+										"committedAt": "2026-11-13T16:24:02+01:00"
+									},
+									"loops": {
+										"total": 3,
+										"types": [
+											{
+												"template": "feature",
+												"loops": 2,
+												"complete": 1,
+												"open": 1,
+												"lastUsedAt": "2026-11-13T15:58:10.442Z",
+												"names": ["login-form", "session-expiry"]
+											},
+											{
+												"template": "custom",
+												"loops": 1,
+												"complete": 0,
+												"open": 1,
+												"lastUsedAt": "2026-11-10T08:41:27.903Z",
+												"names": ["spike-cache"]
+											}
+										]
+									},
+									"work": [
+										{
+											"commit": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d",
+											"subject": "Show the agent roster in project activity",
+											"author": "Mira Halvorsen",
+											"committedAt": "2026-11-13T16:24:02+01:00",
+											"branches": ["main"],
+											"units": ["service.project-activity"],
+											"unitCount": 1,
+											"reasons": [
+												{
+													"unit": "service.project-activity",
+													"behavior": "Shows the registered agents of the repository in the live activity."
+												}
+											],
+											"reasonCount": 1,
+											"files": 2
+										},
+										{
+											"commit": "b04f8e2d6a17c93e5f0b8d41a6e27c9f3d05b2a6",
+											"subject": "Count unreadable agent registrations apart from the roster",
+											"author": "Tomas Ruiz",
+											"committedAt": "2026-11-12T09:02:18+00:00",
+											"branches": ["main"],
+											"units": ["service.project-activity"],
+											"unitCount": 1,
+											"reasons": [],
+											"reasonCount": 0,
+											"files": 2
+										}
+									],
+									"files": [
+										{
+											"path": "src/services/projects-sessions/project-activity-service/ProjectActivityService.ts",
+											"status": "modified",
+											"units": ["service.project-activity"],
+											"commit": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d",
+											"committedAt": "2026-11-13T16:24:02+01:00"
+										},
+										{
+											"path": "src/services/projects-sessions/project-activity-service/ProjectActivityService.types.ts",
+											"status": "modified",
+											"units": ["service.project-activity"],
+											"commit": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d",
+											"committedAt": "2026-11-13T16:24:02+01:00"
+										}
+									]
+								},
+								"live": {
+									"sampledAt": "2026-11-14T10:15:00.000Z",
+									"worktrees": [
+										{
+											"name": "harness-app",
+											"branch": "main",
+											"head": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d",
+											"primary": true,
+											"changes": [
+												{
+													"path": "src/services/projects-sessions/project-activity-service/ProjectActivityService.types.ts",
+													"status": "modified",
+													"units": ["service.project-activity"]
+												}
+											],
+											"truncated": false
+										},
+										{
+											"name": "harness-app-login",
+											"branch": "feature/login-form",
+											"head": "e91d3a58c0f7b26d4a9e15c8730b6f2d9a4e7c13",
+											"primary": false,
+											"changes": [
+												{
+													"path": "src/components/login-form/LoginForm.tsx",
+													"status": "untracked",
+													"units": []
+												}
+											],
+											"truncated": false
+										}
+									],
+									"agents": {
+										"tracking": "available",
+										"working": 1,
+										"unreadable": 0,
+										"roster": [
+											{
+												"id": "4f0c9a7e-2b1d-4e8a-9c3f-6d5b2a1e7f40",
+												"label": "Login form agent",
+												"provider": "claude-code",
+												"model": "claude-sonnet-5-5",
+												"worktree": "harness-app-login",
+												"branch": "feature/login-form",
+												"task": "Wire the sign-in form to the session API",
+												"loop": "login-form",
+												"units": ["service.agent-activity"],
+												"unknownUnits": [],
+												"registeredAt": "2026-11-14T09:40:12.118Z",
+												"heartbeatAt": "2026-11-14T10:13:55.402Z",
+												"expiresAt": "2026-11-14T10:23:55.402Z",
+												"state": "working",
+												"detail": "Last heartbeat at 2026-11-14T10:13:55.402Z"
+											}
+										]
+									}
+								}
+							},
+							{
+								"activity": {
+									"schemaVersion": 1,
+									"kind": "live",
+									"repository": {
+										"name": "harness-app",
+										"branch": null,
+										"head": null
+									},
+									"asOf": null,
+									"loops": {
+										"total": 0,
+										"types": []
+									},
+									"work": [],
+									"files": []
+								},
+								"live": {
+									"sampledAt": "2026-11-14T10:15:00.000Z",
+									"worktrees": [
+										{
+											"name": "harness-app",
+											"branch": null,
+											"head": null,
+											"primary": true,
+											"changes": [],
+											"truncated": false
+										}
+									],
+									"agents": {
+										"tracking": "never-used",
+										"working": null,
+										"unreadable": 0,
+										"roster": []
+									}
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by `show` and `recorded` when every worktree Git lists is bare or prunable, so that no checkout is left: `show` then reads `head` of undefined, and `recorded` reads `path` of undefined."
+					},
+					{
+						"name": "BoundedCommandFailure",
+						"type": "thrown",
+						"description": "Rejected by the Git commands of `show` and `recorded` that run through `GitAdapter.exec`, when git cannot be started, runs past its deadline, or writes more output than its bound. Its message gives the cause, such as the deadline that was exceeded."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by `show` when one of its Git reads exits non-zero: the ref listing, the commit walk, the history log, the changed-files log, or the note blob read. Its message is `git <arguments> failed:` followed by git's stderr."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejected by `show` when a directory it lists cannot be read, with a system error such as EACCES or ENOTDIR: the unit registry (`specification/units`), the loops (`specification/loops`), or a checkout's agent registry (`.cache/harness/agents`)."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Thrown by `show` when the latest heartbeat of an agent has an `at` that is not a valid date, because the roster calls `toISOString()` on the expiry computed from it; the registry accepts any non-empty string as `at`."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectActivityService.recorded",
@@ -82,22 +613,142 @@
 					{
 						"name": "ProjectActivityService.recorded.history",
 						"type": "SourceHistory",
-						"required": true
+						"required": true,
+						"description": "The source history the index was built from: its first revision is the newest and sets the head, the branch whose head is that commit gives the repository's branch, and only its first 30 revisions become work items. Its changed files come from all of its revisions, up to 40 distinct paths.",
+						"examples": [
+							{
+								"branches": [
+									{
+										"name": "main",
+										"head": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d",
+										"tree": "2f8a6c0e91b4d7305ac6e8f2d19b74a0c5e3f861",
+										"parents": ["b04f8e2d6a17c93e5f0b8d41a6e27c9f3d05b2a6"],
+										"subject": "Show the agent roster in project activity",
+										"author": "Mira Halvorsen",
+										"authoredAt": "2026-11-13T16:20:41+01:00",
+										"committedAt": "2026-11-13T16:24:02+01:00",
+										"branches": ["main"],
+										"retained": false
+									},
+									{
+										"commit": "b04f8e2d6a17c93e5f0b8d41a6e27c9f3d05b2a6",
+										"tree": "a51c9e3f07d28b64e1f9a0c5d37b82e6f14d9c02",
+										"parents": ["5d0e7fa2c9b3418e6d2a0f75b8c4e91a3f6d0b27"],
+										"subject": "Count unreadable agent registrations apart from the roster",
+										"author": "Tomas Ruiz",
+										"authoredAt": "2026-11-12T09:02:18+00:00",
+										"committedAt": "2026-11-12T09:02:18+00:00",
+										"branches": ["main"],
+										"retained": false
+									}
+								],
+								"truncated": true
+							},
+							{
+								"branches": [],
+								"revisions": [],
+								"truncated": false
+							}
+						]
 					},
 					{
 						"name": "ProjectActivityService.recorded.details",
 						"type": "Map<string, RevisionDetail>",
-						"required": true
+						"required": true,
+						"description": "The RevisionDetail of each commit, keyed by commit hash: `recorded` reads the registry units (their `id` and `owns.source`) of the newest commit, and, for the commits it lists, their `explanations` and `sourceImpact.changed` paths. A commit without an entry adds no units, reasons or changed paths."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectActivityService.recorded",
-						"type": "Promise<ProjectActivity>"
+						"type": "Promise<ProjectActivity>",
+						"description": "The resolved ProjectActivity of kind `recorded`, built from the history and details it is given: at most 30 work items, each with at most 3 reasons and 12 units, and at most 40 files. It also reads Git for the repository name, from the primary worktree, and for the loops at the newest commit.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"kind": "recorded",
+								"repository": {
+									"name": "harness-app",
+									"branch": "main",
+									"head": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d"
+								},
+								"asOf": {
+									"commit": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d",
+									"committedAt": "2026-11-13T16:24:02+01:00"
+								},
+								"loops": {
+									"total": 0,
+									"types": []
+								},
+								"work": [
+									{
+										"commit": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d",
+										"subject": "Show the agent roster in project activity",
+										"author": "Mira Halvorsen",
+										"committedAt": "2026-11-13T16:24:02+01:00",
+										"branches": ["main"],
+										"units": ["service.project-activity"],
+										"unitCount": 1,
+										"reasons": [
+											{
+												"unit": "service.project-activity",
+												"behavior": "Shows the registered agents of the repository in the live activity."
+											}
+										],
+										"reasonCount": 1,
+										"files": 2
+									},
+									{
+										"commit": "b04f8e2d6a17c93e5f0b8d41a6e27c9f3d05b2a6",
+										"subject": "Count unreadable agent registrations apart from the roster",
+										"author": "Tomas Ruiz",
+										"committedAt": "2026-11-12T09:02:18+00:00",
+										"branches": ["main"],
+										"units": ["service.project-activity"],
+										"unitCount": 1,
+										"reasons": [],
+										"reasonCount": 0,
+										"files": 2
+									}
+								],
+								"files": [
+									{
+										"path": "src/services/projects-sessions/project-activity-service/ProjectActivityService.ts",
+										"status": "modified",
+										"units": ["service.project-activity"],
+										"commit": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d",
+										"committedAt": "2026-11-13T16:24:02+01:00"
+									},
+									{
+										"path": "src/services/projects-sessions/project-activity-service/ProjectActivityService.types.ts",
+										"status": "modified",
+										"units": ["service.project-activity"],
+										"commit": "7c3e91a0d5b84f26e8c1a7930f4d2b6e95a0c18d",
+										"committedAt": "2026-11-13T16:24:02+01:00"
+									}
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by `show` and `recorded` when every worktree Git lists is bare or prunable, so that no checkout is left: `show` then reads `head` of undefined, and `recorded` reads `path` of undefined."
+					},
+					{
+						"name": "BoundedCommandFailure",
+						"type": "thrown",
+						"description": "Rejected by the Git commands of `show` and `recorded` that run through `GitAdapter.exec`, when git cannot be started, runs past its deadline, or writes more output than its bound. Its message gives the cause, such as the deadline that was exceeded."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -107,17 +758,24 @@
 					{
 						"name": "ProjectActivityService.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The path of the checkout this service is built for, as given: `show` picks the Git worktree at this path (or the first one Git lists when none matches), and reads the history, notes, loops and unit registry of that checkout. The value is not checked here; outside Git, the path itself is the only checkout.",
+						"examples": [
+							"/home/dev/projects/harness-app",
+							"/home/dev/projects/harness-app-login",
+							"/srv/checkouts/harness-web"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectActivityService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new ProjectActivityService, which holds a ProjectWorkRepository for the root; building it reads nothing from Git or the disk."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
