@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native polyline element; native HTML content rules still apply."
+				"description": "An optional Svelte Snippet rendered inside the native SVG <polyline> when truthy; if omitted or falsy, no child content is rendered. The component invokes it without arguments and does not transform its output."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgPolyline",
 				"type": "markup",
-				"description": "The actual native polyline element, with forwarded attributes and content and no additional wrapper."
+				"description": "Renders one native SVG <polyline> with all non-children props spread onto it and no added wrapper. The optional children snippet is rendered inside the element only when truthy."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
