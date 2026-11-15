@@ -28,40 +28,159 @@
 				"name": "Software3dAdapter.constructor.canvas",
 				"type": "HTMLCanvasElement",
 				"required": true,
-				"description": "Browser canvas owned by this renderer or canvas-only stream transport."
+				"description": "The canvas whose 2D context the constructor takes; render and dispose read its width and height on every call, and render writes dataset.ready and dataset.renderer onto it. The constructor throws when canvas.getContext('2d') returns no context."
 			},
 			{
 				"name": "Software3dAdapter.render.run",
 				"type": "GameRun",
 				"required": true,
-				"description": "Current deterministic game state, tick and checkpoint execution results."
+				"description": "The game run whose state is drawn: state.x and state.y are read with Number() and used as x and z for the player, and only when _view.world is absent do state.hasKey, state.doorOpen and the 'visible:<id>' flags decide which key, door and player boxes are drawn (a flag hides its box only when it is exactly false). Only run.state is read; tick, seed, viewId, progress, completed, events and trace are ignored.",
+				"examples": [
+					{
+						"viewId": "courtyard",
+						"tick": 42,
+						"seed": 2846521197,
+						"state": {
+							"x": 2,
+							"y": 0,
+							"hasKey": true,
+							"doorOpen": false,
+							"outcome": "",
+							"choice": "",
+							"view": "courtyard",
+							"event:key-collected": true
+						},
+						"completed": ["key"],
+						"events": ["key-collected"],
+						"trace": [
+							{
+								"viewId": "courtyard",
+								"tick": 42,
+								"checkpointId": "key",
+								"reason": "x gte 2"
+							}
+						]
+					},
+					{
+						"viewId": "gallery",
+						"tick": 0,
+						"seed": 1,
+						"state": {
+							"x": 1.5,
+							"y": 4.5,
+							"hasKey": false,
+							"doorOpen": false,
+							"outcome": "",
+							"choice": "",
+							"view": "gallery"
+						},
+						"completed": [],
+						"events": [],
+						"trace": []
+					}
+				]
 			},
 			{
 				"name": "Software3dAdapter.render._view",
 				"type": "GameView",
 				"required": true,
-				"description": "Input to the renderer or transport operation named by this contract."
+				"description": "The scene for this frame: when _view.world is set its LevelLayout is drawn, scaled by min(10 / width, 6 / depth), and when it is absent the built-in fallback scene is drawn. Only _view.world is read, and it is not validated, so id, title, dimension, style, checkpoints, planning and world.spawn do not change the picture.",
+				"examples": [
+					{
+						"id": "courtyard",
+						"title": "The courtyard",
+						"dimension": "2d",
+						"style": "Lush illustrated garden, warm stone, soft sunlight. Preserve the player, key and door positions.",
+						"checkpoints": [
+							{
+								"id": "key",
+								"title": "Collect the key",
+								"description": "When the player reaches the key, add it to inventory.",
+								"x": 0,
+								"y": 80,
+								"requires": [],
+								"conditions": [
+									{
+										"field": "x",
+										"op": "gte",
+										"value": 2
+									}
+								],
+								"actions": [
+									{
+										"type": "set",
+										"target": "hasKey",
+										"value": true
+									},
+									{
+										"type": "emit",
+										"target": "key-collected",
+										"value": true
+									}
+								]
+							}
+						]
+					},
+					{
+						"id": "gallery",
+						"title": "Stone gallery",
+						"dimension": "3d",
+						"style": "Quiet stone gallery with cool daylight from high windows.",
+						"checkpoints": [],
+						"world": {
+							"width": 12,
+							"depth": 9,
+							"spawn": {
+								"x": 1.5,
+								"z": 4.5
+							},
+							"objects": [
+								{
+									"id": "north-wall",
+									"kind": "wall",
+									"label": "North wall",
+									"x": 6,
+									"z": 0.5,
+									"width": 12,
+									"depth": 1,
+									"height": 3
+								},
+								{
+									"id": "exit-gate",
+									"kind": "goal",
+									"label": "Exit gate",
+									"x": 10.5,
+									"z": 4.5,
+									"width": 1,
+									"depth": 2,
+									"height": 1.2
+								}
+							]
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "Software3dAdapter.render",
 				"type": "void",
-				"description": "Paint the current game frame."
+				"description": "Paints one frame: the whole canvas is filled with #152c29, then the floor and boxes are drawn, and dataset.ready is set to 'true' and dataset.renderer to 'software3d'. When _view.world is set, dataset.dimension is also set to '3d'."
 			},
 			{
 				"name": "Software3dAdapter.dispose",
 				"type": "void",
-				"description": "Release the renderer resources."
+				"description": "Clears the whole canvas to transparent pixels; the adapter keeps its canvas and 2D context, so render can draw again, and dataset.ready and dataset.renderer are not reset."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Unavailable transport, cancellation or connection failure; native rendering remains independent."
+				"description": "Thrown by the constructor with the message 'This browser cannot create a game canvas.' when canvas.getContext('2d') returns no 2D context, so no adapter is created."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "Software3dAdapter.render",
@@ -70,24 +189,142 @@
 						"name": "Software3dAdapter.render.run",
 						"type": "GameRun",
 						"required": true,
-						"description": "Current deterministic game state, tick and checkpoint execution results."
+						"description": "The game run whose state is drawn: state.x and state.y are read with Number() and used as x and z for the player, and only when _view.world is absent do state.hasKey, state.doorOpen and the 'visible:<id>' flags decide which key, door and player boxes are drawn (a flag hides its box only when it is exactly false). Only run.state is read; tick, seed, viewId, progress, completed, events and trace are ignored.",
+						"examples": [
+							{
+								"viewId": "courtyard",
+								"tick": 42,
+								"seed": 2846521197,
+								"state": {
+									"x": 2,
+									"y": 0,
+									"hasKey": true,
+									"doorOpen": false,
+									"outcome": "",
+									"choice": "",
+									"view": "courtyard",
+									"event:key-collected": true
+								},
+								"completed": ["key"],
+								"events": ["key-collected"],
+								"trace": [
+									{
+										"viewId": "courtyard",
+										"tick": 42,
+										"checkpointId": "key",
+										"reason": "x gte 2"
+									}
+								]
+							},
+							{
+								"viewId": "gallery",
+								"tick": 0,
+								"seed": 1,
+								"state": {
+									"x": 1.5,
+									"y": 4.5,
+									"hasKey": false,
+									"doorOpen": false,
+									"outcome": "",
+									"choice": "",
+									"view": "gallery"
+								},
+								"completed": [],
+								"events": [],
+								"trace": []
+							}
+						]
 					},
 					{
 						"name": "Software3dAdapter.render._view",
 						"type": "GameView",
 						"required": true,
-						"description": "Input to the renderer or transport operation named by this contract."
+						"description": "The scene for this frame: when _view.world is set its LevelLayout is drawn, scaled by min(10 / width, 6 / depth), and when it is absent the built-in fallback scene is drawn. Only _view.world is read, and it is not validated, so id, title, dimension, style, checkpoints, planning and world.spawn do not change the picture.",
+						"examples": [
+							{
+								"id": "courtyard",
+								"title": "The courtyard",
+								"dimension": "2d",
+								"style": "Lush illustrated garden, warm stone, soft sunlight. Preserve the player, key and door positions.",
+								"checkpoints": [
+									{
+										"id": "key",
+										"title": "Collect the key",
+										"description": "When the player reaches the key, add it to inventory.",
+										"x": 0,
+										"y": 80,
+										"requires": [],
+										"conditions": [
+											{
+												"field": "x",
+												"op": "gte",
+												"value": 2
+											}
+										],
+										"actions": [
+											{
+												"type": "set",
+												"target": "hasKey",
+												"value": true
+											},
+											{
+												"type": "emit",
+												"target": "key-collected",
+												"value": true
+											}
+										]
+									}
+								]
+							},
+							{
+								"id": "gallery",
+								"title": "Stone gallery",
+								"dimension": "3d",
+								"style": "Quiet stone gallery with cool daylight from high windows.",
+								"checkpoints": [],
+								"world": {
+									"width": 12,
+									"depth": 9,
+									"spawn": {
+										"x": 1.5,
+										"z": 4.5
+									},
+									"objects": [
+										{
+											"id": "north-wall",
+											"kind": "wall",
+											"label": "North wall",
+											"x": 6,
+											"z": 0.5,
+											"width": 12,
+											"depth": 1,
+											"height": 3
+										},
+										{
+											"id": "exit-gate",
+											"kind": "goal",
+											"label": "Exit gate",
+											"x": 10.5,
+											"z": 4.5,
+											"width": 1,
+											"depth": 2,
+											"height": 1.2
+										}
+									]
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "Software3dAdapter.render",
 						"type": "void",
-						"description": "Paint the current game frame."
+						"description": "Paints one frame: the whole canvas is filled with #152c29, then the floor and boxes are drawn, and dataset.ready is set to 'true' and dataset.renderer to 'software3d'. When _view.world is set, dataset.dimension is also set to '3d'."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "Software3dAdapter.dispose",
@@ -96,11 +333,11 @@
 					{
 						"name": "Software3dAdapter.dispose",
 						"type": "void",
-						"description": "Release the renderer resources."
+						"description": "Clears the whole canvas to transparent pixels; the adapter keeps its canvas and 2D context, so render can draw again, and dataset.ready and dataset.renderer are not reset."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -111,22 +348,24 @@
 						"name": "Software3dAdapter.constructor.canvas",
 						"type": "HTMLCanvasElement",
 						"required": true,
-						"description": "Browser canvas owned by this renderer or canvas-only stream transport."
+						"description": "The canvas whose 2D context the constructor takes; render and dispose read its width and height on every call, and render writes dataset.ready and dataset.renderer onto it. The constructor throws when canvas.getContext('2d') returns no context."
 					}
 				],
 				"outputs": [
 					{
 						"name": "Software3dAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new Software3dAdapter, which keeps the canvas and its 2D context for later render and dispose calls."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by the constructor with the message 'This browser cannot create a game canvas.' when canvas.getContext('2d') returns no 2D context, so no adapter is created."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
