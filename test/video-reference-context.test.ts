@@ -1,12 +1,12 @@
 import { expect, test, vi } from 'vitest';
 import { withTempRepo } from './support/temporary';
-import { videoSharedParent } from './support/videoSharedParent';
+import { videoSharedParent, verifySelectedSibling } from './support/videoSharedParent';
 import { VideoReferenceService } from '../src/services/verification-evidence/VideoReferenceService';
 import { VideoArchiveService } from '../src/services/verification-evidence/VideoArchiveService';
 import { AttachedRecordService } from '../src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService';
 import { EvidenceBranchRepository } from '../src/repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository';
-import { LfsAdapter } from '../src/adapters/git-source-history/LfsAdapter';
-import { rm } from 'node:fs/promises';
+import type { Capture } from '../src/core/verification-evidence/verificationTypes';
+import type { VideoReferenceSelection } from '../src/services/verification-evidence/VideoReferenceService.types';
 
 test('video-reference-context', async () => {
 	await withTempRepo(async ({ root, git }) => {
@@ -22,16 +22,12 @@ test('video-reference-context', async () => {
 		try {
 			for (const capture of f.captures)
 				expect((await service.resolve(input(capture))).origin.record).toBe(f.parent.id);
-			expect(read.mock.calls.length, 'shared-parent proof reads grow linearly').toBeLessThanOrEqual(
-				4
-			);
+			expect
+				.soft(read.mock.calls.length, 'only selected clip media is read')
+				.toBeLessThanOrEqual(2);
+			expect.soft(describe.mock.calls.length, 'shared-parent descriptor proof is reused').toBe(1);
 			describe.mockClear();
-			const selection = (clipId: string) => ({
-				unit: f.capture.video!.unit,
-				clipId,
-				viewport: f.capture.viewport!,
-				inputHash: f.input.video.inputHash
-			});
+			const selection = (clipId: string) => selectionFor(f.capture, clipId);
 			const first = await service.candidates(selection('play'));
 			await service.candidates(selection('sibling'));
 			first[0].capture.video!.inputHash = 'd'.repeat(64);
@@ -43,30 +39,34 @@ test('video-reference-context', async () => {
 				'candidate descriptor discovery is shared per pin'
 			).toBeLessThanOrEqual(1);
 			const before = read.mock.calls.length;
-			await new EvidenceBranchRepository(root).add(
-				'context-test',
-				[{ path: 'marker.txt', content: { bytes: 'new pin' } }],
-				'feat: change disposable evidence pin',
-				'marker.txt'
-			);
+			await changeEvidencePin(root);
 			await service.resolve(input());
 			expect(
 				read.mock.calls.length - before,
 				'an unpinned service rechecks a changed evidence scope'
-			).toBeGreaterThanOrEqual(3);
-			await rm(await new LfsAdapter(root).path(f.capture.sha256));
-			const retry = new VideoReferenceService(root);
-			expect(
-				await retry.resolve(input(f.captures[1])).then(
-					() => false,
-					() => true
-				)
-			).toBe(true);
-			await new LfsAdapter(root).store(f.input.videoBytes);
-			expect((await retry.resolve(input(f.captures[1]))).origin.record).toBe(f.parent.id);
+			).toBeGreaterThanOrEqual(1);
+			await verifySelectedSibling(root, f);
 		} finally {
 			read.mockRestore();
 			describe.mockRestore();
 		}
 	});
 }, 30_000);
+
+async function changeEvidencePin(root: string): Promise<void> {
+	await new EvidenceBranchRepository(root).add(
+		'context-test',
+		[{ path: 'marker.txt', content: { bytes: 'new pin' } }],
+		'feat: change disposable evidence pin',
+		'marker.txt'
+	);
+}
+
+function selectionFor(capture: Capture, clipId: string): VideoReferenceSelection {
+	return {
+		unit: capture.video!.unit,
+		clipId,
+		viewport: capture.viewport!,
+		inputHash: capture.video!.inputHash
+	};
+}
