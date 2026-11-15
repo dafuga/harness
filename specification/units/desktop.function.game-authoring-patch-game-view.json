@@ -18,36 +18,123 @@
 				"name": "patchGameView.doc",
 				"type": "GameDocument | undefined",
 				"required": true,
-				"description": "Current document; undefined returns undefined without accessing views."
+				"description": "The document to copy. If it is undefined, the function returns undefined before accessing views; otherwise it maps doc.views.",
+				"examples": [
+					{
+						"version": 1,
+						"views": [
+							{
+								"id": "view.intro",
+								"title": "Introduction",
+								"dimension": "2d",
+								"style": "platformer",
+								"checkpoints": [
+									{
+										"id": "checkpoint.start",
+										"title": "Start",
+										"description": "Begin here.",
+										"x": 0,
+										"y": 0,
+										"requires": [],
+										"conditions": [],
+										"actions": []
+									}
+								]
+							}
+						],
+						"mechanics": [
+							{
+								"id": "mechanic.open-door",
+								"title": "Open door",
+								"description": "Opens the marked door.",
+								"inputs": ["interact"],
+								"events": ["door.opened"]
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "patchGameView.current",
 				"type": "GameView | undefined",
 				"required": true,
-				"description": "Selected view; undefined returns undefined without mapping."
+				"description": "The selected view, whose id is compared with each item.id using strict equality. If undefined, the function returns undefined without mapping.",
+				"examples": [
+					{
+						"id": "view.intro",
+						"title": "Introduction",
+						"dimension": "2d",
+						"style": "platformer",
+						"checkpoints": [
+							{
+								"id": "checkpoint.start",
+								"title": "Start",
+								"description": "Begin here.",
+								"x": 0,
+								"y": 0,
+								"requires": [],
+								"conditions": [],
+								"actions": []
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "patchGameView.patch",
 				"type": "Partial<GameView>",
 				"required": true,
-				"description": "Fields spread into matching views. No default is supplied."
+				"description": "Fields spread into every view whose id strictly equals current.id; provided fields replace existing top-level fields. The merge is shallow, with no recursive merge.",
+				"examples": [
+					{
+						"title": "Welcome"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "patchGameView",
 				"type": "GameDocument | undefined",
-				"description": "A document copy with mapped views, preserving nonmatching view references and native map/species/spread behavior; undefined when doc or current is absent."
+				"description": "When doc and current are defined, returns a shallow copy of doc with a new views array; matching items are shallow-merged with patch, while nonmatching items pass through unchanged. Returns undefined if doc or current is undefined, and still returns a copied document when no view matches.",
+				"examples": [
+					{
+						"version": 1,
+						"views": [
+							{
+								"id": "view.intro",
+								"title": "Welcome",
+								"dimension": "2d",
+								"style": "platformer",
+								"checkpoints": [
+									{
+										"id": "checkpoint.start",
+										"title": "Start",
+										"description": "Begin here.",
+										"x": 0,
+										"y": 0,
+										"requires": [],
+										"conditions": [],
+										"actions": []
+									}
+								]
+							}
+						],
+						"mechanics": [
+							{
+								"id": "mechanic.open-door",
+								"title": "Open door",
+								"description": "Opens the marked door.",
+								"inputs": ["interact"],
+								"events": ["door.opened"]
+							}
+						]
+					}
+				]
 			}
 		],
-		"errors": [
-			{
-				"name": "Input access failure",
-				"type": "propagated",
-				"description": "Errors from supplied map methods, species constructors, getters or spread access propagate unchanged."
-			}
-		],
-		"errorStatus": "declared",
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "patchGameView",
@@ -56,35 +143,122 @@
 						"name": "patchGameView.doc",
 						"type": "GameDocument | undefined",
 						"required": true,
-						"description": "Current document; undefined returns undefined without accessing views."
+						"description": "The document to copy. If it is undefined, the function returns undefined before accessing views; otherwise it maps doc.views.",
+						"examples": [
+							{
+								"version": 1,
+								"views": [
+									{
+										"id": "view.intro",
+										"title": "Introduction",
+										"dimension": "2d",
+										"style": "platformer",
+										"checkpoints": [
+											{
+												"id": "checkpoint.start",
+												"title": "Start",
+												"description": "Begin here.",
+												"x": 0,
+												"y": 0,
+												"requires": [],
+												"conditions": [],
+												"actions": []
+											}
+										]
+									}
+								],
+								"mechanics": [
+									{
+										"id": "mechanic.open-door",
+										"title": "Open door",
+										"description": "Opens the marked door.",
+										"inputs": ["interact"],
+										"events": ["door.opened"]
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "patchGameView.current",
 						"type": "GameView | undefined",
 						"required": true,
-						"description": "Selected view; undefined returns undefined without mapping."
+						"description": "The selected view, whose id is compared with each item.id using strict equality. If undefined, the function returns undefined without mapping.",
+						"examples": [
+							{
+								"id": "view.intro",
+								"title": "Introduction",
+								"dimension": "2d",
+								"style": "platformer",
+								"checkpoints": [
+									{
+										"id": "checkpoint.start",
+										"title": "Start",
+										"description": "Begin here.",
+										"x": 0,
+										"y": 0,
+										"requires": [],
+										"conditions": [],
+										"actions": []
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "patchGameView.patch",
 						"type": "Partial<GameView>",
 						"required": true,
-						"description": "Fields spread into matching views. No default is supplied."
+						"description": "Fields spread into every view whose id strictly equals current.id; provided fields replace existing top-level fields. The merge is shallow, with no recursive merge.",
+						"examples": [
+							{
+								"title": "Welcome"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "patchGameView",
 						"type": "GameDocument | undefined",
-						"description": "A document copy with mapped views, preserving nonmatching view references and native map/species/spread behavior; undefined when doc or current is absent."
+						"description": "When doc and current are defined, returns a shallow copy of doc with a new views array; matching items are shallow-merged with patch, while nonmatching items pass through unchanged. Returns undefined if doc or current is undefined, and still returns a copied document when no view matches.",
+						"examples": [
+							{
+								"version": 1,
+								"views": [
+									{
+										"id": "view.intro",
+										"title": "Welcome",
+										"dimension": "2d",
+										"style": "platformer",
+										"checkpoints": [
+											{
+												"id": "checkpoint.start",
+												"title": "Start",
+												"description": "Begin here.",
+												"x": 0,
+												"y": 0,
+												"requires": [],
+												"conditions": [],
+												"actions": []
+											}
+										]
+									}
+								],
+								"mechanics": [
+									{
+										"id": "mechanic.open-door",
+										"title": "Open door",
+										"description": "Opens the marked door.",
+										"inputs": ["interact"],
+										"events": ["door.opened"]
+									}
+								]
+							}
+						]
 					}
 				],
-				"errors": [
-					{
-						"name": "Input access failure",
-						"type": "propagated",
-						"description": "Errors from supplied map methods, species constructors, getters or spread access propagate unchanged."
-					}
-				],
+				"errors": [],
 				"errorStatus": "declared"
 			}
 		],
