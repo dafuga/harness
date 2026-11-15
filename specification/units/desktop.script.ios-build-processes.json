@@ -15,22 +15,52 @@
 		"symbols": ["followed", "FollowedResult", "Row", "Settling", "Standing", "FollowedResult"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "followed.command",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "The program and arguments to run: element 0 is the executable and the rest are its arguments, run directly without a shell, with `desktopRoot` as its working directory and stdin ignored. An empty array, or a first element that is an empty string, makes `spawn` throw, so `followed` rejects before any child starts.",
+				"examples": [
+					["xcodebuild", "-version"],
+					["xcrun", "actool", "--version"],
+					["xcrun", "--sdk", "iphoneos", "--show-sdk-path"]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "followed",
-				"type": "Promise<FollowedResult>"
+				"type": "Promise<FollowedResult>",
+				"description": "The run's result, resolved once the child has closed or reported an error and the observation of what it started has finished: `code` is its exit code, `output` is its stdout and stderr in arrival order, and `left` is why the build could not wait for its processes, or null. A child killed by a signal or one that fails to start, such as a program that cannot be found, resolves with code 1 rather than rejecting, and `code` is never 0 while `left` is set.",
+				"examples": [
+					{
+						"code": 0,
+						"output": "** BUILD SUCCEEDED **\n",
+						"left": null
+					},
+					{
+						"code": 65,
+						"output": "** BUILD FAILED **\n",
+						"left": null
+					},
+					{
+						"code": 1,
+						"output": "",
+						"left": "The build was stopped while processes it started still ran; none was signalled."
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown before any child starts when `command` is missing, or when its first element is missing or empty and `spawn` refuses it. Because `followed` is async, the caller receives it as a rejection of the returned promise."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "followed",
@@ -38,17 +68,47 @@
 					{
 						"name": "followed.command",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "The program and arguments to run: element 0 is the executable and the rest are its arguments, run directly without a shell, with `desktopRoot` as its working directory and stdin ignored. An empty array, or a first element that is an empty string, makes `spawn` throw, so `followed` rejects before any child starts.",
+						"examples": [
+							["xcodebuild", "-version"],
+							["xcrun", "actool", "--version"],
+							["xcrun", "--sdk", "iphoneos", "--show-sdk-path"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "followed",
-						"type": "Promise<FollowedResult>"
+						"type": "Promise<FollowedResult>",
+						"description": "The run's result, resolved once the child has closed or reported an error and the observation of what it started has finished: `code` is its exit code, `output` is its stdout and stderr in arrival order, and `left` is why the build could not wait for its processes, or null. A child killed by a signal or one that fails to start, such as a program that cannot be found, resolves with code 1 rather than rejecting, and `code` is never 0 while `left` is set.",
+						"examples": [
+							{
+								"code": 0,
+								"output": "** BUILD SUCCEEDED **\n",
+								"left": null
+							},
+							{
+								"code": 65,
+								"output": "** BUILD FAILED **\n",
+								"left": null
+							},
+							{
+								"code": 1,
+								"output": "",
+								"left": "The build was stopped while processes it started still ran; none was signalled."
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown before any child starts when `command` is missing, or when its first element is missing or empty and `spawn` refuses it. Because `followed` is async, the caller receives it as a rejection of the returned promise."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
