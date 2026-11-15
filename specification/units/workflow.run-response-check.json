@@ -21,49 +21,719 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "checkResponse.options",
 				"type": "ResponseCheckOptions",
-				"required": true
+				"required": true,
+				"description": "Options for one response check: request and response are required file paths, context and criteria are optional file paths (criteria must be JSON that ResponseCheckInputValidator accepts), and each file must be a regular UTF-8 file of at most 24000 bytes. The serialized request, response, context and criteria must fit in 24000 UTF-8 bytes, and model, minConfidence and apiKeyEnv default to jev-1.13.0, 0.85 and HARNESS_JEV_API_KEY when unset.",
+				"examples": [
+					{
+						"request": "evidence/response-check/request.md",
+						"response": "evidence/response-check/response.md"
+					},
+					{
+						"request": "evidence/response-check/request.md",
+						"response": "evidence/response-check/response.md",
+						"context": "evidence/response-check/context.md",
+						"criteria": "evidence/response-check/criteria.json",
+						"model": "jev-1.13.0",
+						"minConfidence": "0.9",
+						"apiKeyEnv": "HARNESS_JEV_API_KEY",
+						"gate": true,
+						"json": true
+					},
+					{
+						"request": "evidence/response-check/request.md",
+						"response": "evidence/response-check/response.md",
+						"dryRun": true
+					}
+				]
 			},
 			{
 				"name": "responseCheckExitCode.report",
 				"type": "ResponseCheckReport",
-				"required": true
+				"required": true,
+				"description": "The ResponseCheckReport whose status and mode are the only fields read to choose the exit code, so error and the other fields do not affect it.",
+				"examples": [
+					{
+						"status": "satisfied",
+						"mode": "advisory",
+						"rubricVersion": "response-check-v1",
+						"requestedModel": "jev-1.13.0",
+						"model": "jev-1.13.0",
+						"minConfidence": 0.85,
+						"inputHashes": {
+							"request": "4b8d1f0c7e2a93d56f1b8c4e0a27d93f5c6b1e8a2d4f7c90b3e6a1d5f8c2e704",
+							"response": "a71c5e09d3b2f648e0c1a7d59b3f2e86c4a90d1b7e5f3c28d6a0b9e4f1c7d253",
+							"context": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+							"criteria": "7d0e3b9a1c6f5028e4d7b3a9c1f6e082d5b4a7c3e9f1d06b8a2c5e7f4d9b1a36"
+						},
+						"checks": [
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.94,
+								"probabilities": {
+									"meets": 0.94,
+									"violates": 0.03,
+									"insufficient_context": 0.03
+								},
+								"id": "fulfillment",
+								"title": "Task fulfillment",
+								"status": "meets",
+								"guidance": "Answer the actual user request rather than a different task or a promise to do it later."
+							},
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.91,
+								"probabilities": {
+									"meets": 0.91,
+									"violates": 0.05,
+									"insufficient_context": 0.04
+								},
+								"id": "completeness",
+								"title": "Completeness",
+								"status": "meets",
+								"guidance": "Include each requested deliverable and address every requested part."
+							},
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.88,
+								"probabilities": {
+									"meets": 0.88,
+									"violates": 0.07,
+									"insufficient_context": 0.05
+								},
+								"id": "constraints",
+								"title": "Explicit constraints",
+								"status": "meets",
+								"guidance": "Follow the user’s explicit constraints and requested output format."
+							},
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.95,
+								"probabilities": {
+									"meets": 0.95,
+									"violates": 0.02,
+									"insufficient_context": 0.03
+								},
+								"id": "relevance",
+								"title": "Relevance",
+								"status": "meets",
+								"guidance": "Keep the answer focused on material that helps fulfill the request."
+							}
+						],
+						"coverage": ["fulfillment", "completeness", "constraints", "relevance"],
+						"usage": {
+							"input_tokens": 1512,
+							"output_tokens": 296
+						}
+					},
+					{
+						"status": "violations",
+						"mode": "gate",
+						"rubricVersion": "response-check-v1",
+						"requestedModel": "jev-1.13.0",
+						"model": "jev-1.13.0",
+						"minConfidence": 0.9,
+						"inputHashes": {
+							"request": "0c9e4a7b2d18f36e5a0b9c7d4e21f8a3b6c5d0e9f2a7b4c1d8e3f6a9b0c2d517",
+							"response": "e5f1a8c3d7b92e046a4c1d8f3b5e7a29c0d6b4f1e8a3c7d5b2e9f0a6c1d8b374",
+							"context": "3f6a1c9e0b84d27f5e1a9c3b6d0f8e2a4c7b5d9e1f3a6c8b0d2e4f7a9c1b3d58",
+							"criteria": "a94d2e7c1f0b3e86d5a2c9f47b1e0d38c6a5f2b9e4d7c0a1f3b8e6d2c5a7b904"
+						},
+						"checks": [
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.96,
+								"probabilities": {
+									"meets": 0.96,
+									"violates": 0.02,
+									"insufficient_context": 0.02
+								},
+								"id": "fulfillment",
+								"title": "Task fulfillment",
+								"status": "meets",
+								"guidance": "Answer the actual user request rather than a different task or a promise to do it later."
+							},
+							{
+								"type": "choice",
+								"choice": "violates",
+								"confidence": 0.94,
+								"probabilities": {
+									"meets": 0.03,
+									"violates": 0.94,
+									"insufficient_context": 0.03
+								},
+								"id": "completeness",
+								"title": "Completeness",
+								"status": "violates",
+								"guidance": "Include each requested deliverable and address every requested part."
+							},
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.92,
+								"probabilities": {
+									"meets": 0.92,
+									"violates": 0.05,
+									"insufficient_context": 0.03
+								},
+								"id": "constraints",
+								"title": "Explicit constraints",
+								"status": "meets",
+								"guidance": "Follow the user’s explicit constraints and requested output format."
+							},
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.97,
+								"probabilities": {
+									"meets": 0.97,
+									"violates": 0.01,
+									"insufficient_context": 0.02
+								},
+								"id": "relevance",
+								"title": "Relevance",
+								"status": "meets",
+								"guidance": "Keep the answer focused on material that helps fulfill the request."
+							},
+							{
+								"type": "choice",
+								"choice": "insufficient_context",
+								"confidence": 0.62,
+								"probabilities": {
+									"meets": 0.3,
+									"violates": 0.08,
+									"insufficient_context": 0.62
+								},
+								"id": "custom:cite-sources",
+								"title": "Acceptance criterion: cite-sources",
+								"status": "needs-review",
+								"guidance": "Revise the answer to satisfy acceptance criterion cite-sources."
+							}
+						],
+						"coverage": [
+							"fulfillment",
+							"completeness",
+							"constraints",
+							"relevance",
+							"custom:cite-sources"
+						],
+						"usage": {
+							"input_tokens": 2047,
+							"output_tokens": 531
+						}
+					},
+					{
+						"status": "incomplete",
+						"mode": "advisory",
+						"rubricVersion": "response-check-v1",
+						"requestedModel": "jev-1.13.0",
+						"minConfidence": 0.85,
+						"inputHashes": {},
+						"checks": [],
+						"coverage": [],
+						"usage": {
+							"input_tokens": 0,
+							"output_tokens": 0
+						},
+						"error": "--request and --response files are required."
+					}
+				]
 			},
 			{
 				"name": "renderResponseCheck.report",
 				"type": "ResponseCheckReport",
-				"required": true
+				"required": true,
+				"description": "The ResponseCheckReport to render as text: the text reads status, mode, model (or requestedModel when model is absent), rubricVersion, minConfidence, coverage, checks and error.",
+				"examples": [
+					{
+						"status": "satisfied",
+						"mode": "advisory",
+						"rubricVersion": "response-check-v1",
+						"requestedModel": "jev-1.13.0",
+						"model": "jev-1.13.0",
+						"minConfidence": 0.85,
+						"inputHashes": {
+							"request": "4b8d1f0c7e2a93d56f1b8c4e0a27d93f5c6b1e8a2d4f7c90b3e6a1d5f8c2e704",
+							"response": "a71c5e09d3b2f648e0c1a7d59b3f2e86c4a90d1b7e5f3c28d6a0b9e4f1c7d253",
+							"context": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+							"criteria": "7d0e3b9a1c6f5028e4d7b3a9c1f6e082d5b4a7c3e9f1d06b8a2c5e7f4d9b1a36"
+						},
+						"checks": [
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.94,
+								"probabilities": {
+									"meets": 0.94,
+									"violates": 0.03,
+									"insufficient_context": 0.03
+								},
+								"id": "fulfillment",
+								"title": "Task fulfillment",
+								"status": "meets",
+								"guidance": "Answer the actual user request rather than a different task or a promise to do it later."
+							},
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.91,
+								"probabilities": {
+									"meets": 0.91,
+									"violates": 0.05,
+									"insufficient_context": 0.04
+								},
+								"id": "completeness",
+								"title": "Completeness",
+								"status": "meets",
+								"guidance": "Include each requested deliverable and address every requested part."
+							},
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.88,
+								"probabilities": {
+									"meets": 0.88,
+									"violates": 0.07,
+									"insufficient_context": 0.05
+								},
+								"id": "constraints",
+								"title": "Explicit constraints",
+								"status": "meets",
+								"guidance": "Follow the user’s explicit constraints and requested output format."
+							},
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.95,
+								"probabilities": {
+									"meets": 0.95,
+									"violates": 0.02,
+									"insufficient_context": 0.03
+								},
+								"id": "relevance",
+								"title": "Relevance",
+								"status": "meets",
+								"guidance": "Keep the answer focused on material that helps fulfill the request."
+							}
+						],
+						"coverage": ["fulfillment", "completeness", "constraints", "relevance"],
+						"usage": {
+							"input_tokens": 1512,
+							"output_tokens": 296
+						}
+					},
+					{
+						"status": "violations",
+						"mode": "gate",
+						"rubricVersion": "response-check-v1",
+						"requestedModel": "jev-1.13.0",
+						"model": "jev-1.13.0",
+						"minConfidence": 0.9,
+						"inputHashes": {
+							"request": "0c9e4a7b2d18f36e5a0b9c7d4e21f8a3b6c5d0e9f2a7b4c1d8e3f6a9b0c2d517",
+							"response": "e5f1a8c3d7b92e046a4c1d8f3b5e7a29c0d6b4f1e8a3c7d5b2e9f0a6c1d8b374",
+							"context": "3f6a1c9e0b84d27f5e1a9c3b6d0f8e2a4c7b5d9e1f3a6c8b0d2e4f7a9c1b3d58",
+							"criteria": "a94d2e7c1f0b3e86d5a2c9f47b1e0d38c6a5f2b9e4d7c0a1f3b8e6d2c5a7b904"
+						},
+						"checks": [
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.96,
+								"probabilities": {
+									"meets": 0.96,
+									"violates": 0.02,
+									"insufficient_context": 0.02
+								},
+								"id": "fulfillment",
+								"title": "Task fulfillment",
+								"status": "meets",
+								"guidance": "Answer the actual user request rather than a different task or a promise to do it later."
+							},
+							{
+								"type": "choice",
+								"choice": "violates",
+								"confidence": 0.94,
+								"probabilities": {
+									"meets": 0.03,
+									"violates": 0.94,
+									"insufficient_context": 0.03
+								},
+								"id": "completeness",
+								"title": "Completeness",
+								"status": "violates",
+								"guidance": "Include each requested deliverable and address every requested part."
+							},
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.92,
+								"probabilities": {
+									"meets": 0.92,
+									"violates": 0.05,
+									"insufficient_context": 0.03
+								},
+								"id": "constraints",
+								"title": "Explicit constraints",
+								"status": "meets",
+								"guidance": "Follow the user’s explicit constraints and requested output format."
+							},
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.97,
+								"probabilities": {
+									"meets": 0.97,
+									"violates": 0.01,
+									"insufficient_context": 0.02
+								},
+								"id": "relevance",
+								"title": "Relevance",
+								"status": "meets",
+								"guidance": "Keep the answer focused on material that helps fulfill the request."
+							},
+							{
+								"type": "choice",
+								"choice": "insufficient_context",
+								"confidence": 0.62,
+								"probabilities": {
+									"meets": 0.3,
+									"violates": 0.08,
+									"insufficient_context": 0.62
+								},
+								"id": "custom:cite-sources",
+								"title": "Acceptance criterion: cite-sources",
+								"status": "needs-review",
+								"guidance": "Revise the answer to satisfy acceptance criterion cite-sources."
+							}
+						],
+						"coverage": [
+							"fulfillment",
+							"completeness",
+							"constraints",
+							"relevance",
+							"custom:cite-sources"
+						],
+						"usage": {
+							"input_tokens": 2047,
+							"output_tokens": 531
+						}
+					},
+					{
+						"status": "incomplete",
+						"mode": "advisory",
+						"rubricVersion": "response-check-v1",
+						"requestedModel": "jev-1.13.0",
+						"minConfidence": 0.85,
+						"inputHashes": {},
+						"checks": [],
+						"coverage": [],
+						"usage": {
+							"input_tokens": 0,
+							"output_tokens": 0
+						},
+						"error": "--request and --response files are required."
+					}
+				]
 			},
 			{
 				"name": "runResponseCheck.options",
 				"type": "ResponseCheckOptions",
-				"required": true
+				"required": true,
+				"description": "Options for the runResponseCheck command: the same fields as checkResponse.options, and the analytics fields are validated so that task cannot be combined with loop or step, step requires loop, and report must match ^[a-zA-Z0-9-]+$ and have a readable runs/<report>/manifest.json under the project reports home. Unset loop, step, task and report fall back to the HARNESS_ANALYTICS_LOOP, HARNESS_ANALYTICS_STEP, HARNESS_ANALYTICS_TASK and HARNESS_ANALYTICS_REPORT environment variables.",
+				"examples": [
+					{
+						"request": "evidence/response-check/request.md",
+						"response": "evidence/response-check/response.md",
+						"report": "release-2026-11",
+						"json": true
+					},
+					{
+						"request": "evidence/response-check/request.md",
+						"response": "evidence/response-check/response.md",
+						"loop": "response-check-rollout",
+						"step": "verify-answer",
+						"gate": true
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "checkResponse",
-				"type": "Promise<ResponseCheckReport>"
+				"type": "Promise<ResponseCheckReport>",
+				"description": "The report for one check, returned rather than rejected: a dry run returns status dry-run without assessed checks, and a failure in settings, input reading or assessment returns the report with status incomplete and the message in error.",
+				"examples": [
+					{
+						"status": "satisfied",
+						"mode": "advisory",
+						"rubricVersion": "response-check-v1",
+						"requestedModel": "jev-1.13.0",
+						"model": "jev-1.13.0",
+						"minConfidence": 0.85,
+						"inputHashes": {
+							"request": "4b8d1f0c7e2a93d56f1b8c4e0a27d93f5c6b1e8a2d4f7c90b3e6a1d5f8c2e704",
+							"response": "a71c5e09d3b2f648e0c1a7d59b3f2e86c4a90d1b7e5f3c28d6a0b9e4f1c7d253",
+							"context": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+							"criteria": "7d0e3b9a1c6f5028e4d7b3a9c1f6e082d5b4a7c3e9f1d06b8a2c5e7f4d9b1a36"
+						},
+						"checks": [
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.94,
+								"probabilities": {
+									"meets": 0.94,
+									"violates": 0.03,
+									"insufficient_context": 0.03
+								},
+								"id": "fulfillment",
+								"title": "Task fulfillment",
+								"status": "meets",
+								"guidance": "Answer the actual user request rather than a different task or a promise to do it later."
+							},
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.91,
+								"probabilities": {
+									"meets": 0.91,
+									"violates": 0.05,
+									"insufficient_context": 0.04
+								},
+								"id": "completeness",
+								"title": "Completeness",
+								"status": "meets",
+								"guidance": "Include each requested deliverable and address every requested part."
+							},
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.88,
+								"probabilities": {
+									"meets": 0.88,
+									"violates": 0.07,
+									"insufficient_context": 0.05
+								},
+								"id": "constraints",
+								"title": "Explicit constraints",
+								"status": "meets",
+								"guidance": "Follow the user’s explicit constraints and requested output format."
+							},
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.95,
+								"probabilities": {
+									"meets": 0.95,
+									"violates": 0.02,
+									"insufficient_context": 0.03
+								},
+								"id": "relevance",
+								"title": "Relevance",
+								"status": "meets",
+								"guidance": "Keep the answer focused on material that helps fulfill the request."
+							}
+						],
+						"coverage": ["fulfillment", "completeness", "constraints", "relevance"],
+						"usage": {
+							"input_tokens": 1512,
+							"output_tokens": 296
+						}
+					},
+					{
+						"status": "violations",
+						"mode": "gate",
+						"rubricVersion": "response-check-v1",
+						"requestedModel": "jev-1.13.0",
+						"model": "jev-1.13.0",
+						"minConfidence": 0.9,
+						"inputHashes": {
+							"request": "0c9e4a7b2d18f36e5a0b9c7d4e21f8a3b6c5d0e9f2a7b4c1d8e3f6a9b0c2d517",
+							"response": "e5f1a8c3d7b92e046a4c1d8f3b5e7a29c0d6b4f1e8a3c7d5b2e9f0a6c1d8b374",
+							"context": "3f6a1c9e0b84d27f5e1a9c3b6d0f8e2a4c7b5d9e1f3a6c8b0d2e4f7a9c1b3d58",
+							"criteria": "a94d2e7c1f0b3e86d5a2c9f47b1e0d38c6a5f2b9e4d7c0a1f3b8e6d2c5a7b904"
+						},
+						"checks": [
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.96,
+								"probabilities": {
+									"meets": 0.96,
+									"violates": 0.02,
+									"insufficient_context": 0.02
+								},
+								"id": "fulfillment",
+								"title": "Task fulfillment",
+								"status": "meets",
+								"guidance": "Answer the actual user request rather than a different task or a promise to do it later."
+							},
+							{
+								"type": "choice",
+								"choice": "violates",
+								"confidence": 0.94,
+								"probabilities": {
+									"meets": 0.03,
+									"violates": 0.94,
+									"insufficient_context": 0.03
+								},
+								"id": "completeness",
+								"title": "Completeness",
+								"status": "violates",
+								"guidance": "Include each requested deliverable and address every requested part."
+							},
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.92,
+								"probabilities": {
+									"meets": 0.92,
+									"violates": 0.05,
+									"insufficient_context": 0.03
+								},
+								"id": "constraints",
+								"title": "Explicit constraints",
+								"status": "meets",
+								"guidance": "Follow the user’s explicit constraints and requested output format."
+							},
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.97,
+								"probabilities": {
+									"meets": 0.97,
+									"violates": 0.01,
+									"insufficient_context": 0.02
+								},
+								"id": "relevance",
+								"title": "Relevance",
+								"status": "meets",
+								"guidance": "Keep the answer focused on material that helps fulfill the request."
+							},
+							{
+								"type": "choice",
+								"choice": "insufficient_context",
+								"confidence": 0.62,
+								"probabilities": {
+									"meets": 0.3,
+									"violates": 0.08,
+									"insufficient_context": 0.62
+								},
+								"id": "custom:cite-sources",
+								"title": "Acceptance criterion: cite-sources",
+								"status": "needs-review",
+								"guidance": "Revise the answer to satisfy acceptance criterion cite-sources."
+							}
+						],
+						"coverage": [
+							"fulfillment",
+							"completeness",
+							"constraints",
+							"relevance",
+							"custom:cite-sources"
+						],
+						"usage": {
+							"input_tokens": 2047,
+							"output_tokens": 531
+						}
+					},
+					{
+						"status": "incomplete",
+						"mode": "advisory",
+						"rubricVersion": "response-check-v1",
+						"requestedModel": "jev-1.13.0",
+						"minConfidence": 0.85,
+						"inputHashes": {},
+						"checks": [],
+						"coverage": [],
+						"usage": {
+							"input_tokens": 0,
+							"output_tokens": 0
+						},
+						"error": "--request and --response files are required."
+					}
+				]
 			},
 			{
 				"name": "responseCheckExitCode",
-				"type": "number"
+				"type": "number",
+				"description": "The process exit code for the report: 2 when status is incomplete, 0 when status is dry-run, 1 when mode is gate and status is violations or needs-review, and 0 otherwise.",
+				"examples": [0, 1, 2]
 			},
 			{
 				"name": "renderResponseCheck",
-				"type": "string"
+				"type": "string",
+				"description": "The plain-text summary that runResponseCheck prints when json is not set, with a header of status, mode, model, rubric, confidence threshold and coverage, a status, title and confidence line plus a guidance line for each check, and an Error line only when error is set. It always ends with the fixed line 'This assessment covers supplied text only; model confidence is not calibrated correctness.'",
+				"examples": [
+					"Response check: satisfied (advisory)\nModel: jev-1.13.0; rubric: response-check-v1\nConfidence threshold: 0.85\nCoverage: fulfillment, completeness, constraints, relevance\n[meets] Task fulfillment (0.94)\n  Answer the actual user request rather than a different task or a promise to do it later.\n[meets] Completeness (0.91)\n  Include each requested deliverable and address every requested part.\n[meets] Explicit constraints (0.88)\n  Follow the user’s explicit constraints and requested output format.\n[meets] Relevance (0.95)\n  Keep the answer focused on material that helps fulfill the request.\nThis assessment covers supplied text only; model confidence is not calibrated correctness.",
+					"Response check: violations (gate)\nModel: jev-1.13.0; rubric: response-check-v1\nConfidence threshold: 0.9\nCoverage: fulfillment, completeness, constraints, relevance, custom:cite-sources\n[meets] Task fulfillment (0.96)\n  Answer the actual user request rather than a different task or a promise to do it later.\n[violates] Completeness (0.94)\n  Include each requested deliverable and address every requested part.\n[meets] Explicit constraints (0.92)\n  Follow the user’s explicit constraints and requested output format.\n[meets] Relevance (0.97)\n  Keep the answer focused on material that helps fulfill the request.\n[needs-review] Acceptance criterion: cite-sources (0.62)\n  Revise the answer to satisfy acceptance criterion cite-sources.\nThis assessment covers supplied text only; model confidence is not calibrated correctness.",
+					"Response check: incomplete (advisory)\nModel: jev-1.13.0; rubric: response-check-v1\nConfidence threshold: 0.85\nCoverage: none\nError: --request and --response files are required.\nThis assessment covers supplied text only; model confidence is not calibrated correctness."
+				]
 			},
 			{
 				"name": "runResponseCheck",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves to undefined after recording analytics (skipped when HARNESS_ANALYTICS_DISABLED is 1), printing the JSON report when json is set or the rendered text otherwise, and setting process.exitCode from the report. It rejects before any check runs when the context, loop state, or report ID and its manifest are invalid or unreadable."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "resolvedContext throws Error 'Use either --task or --loop/--step.' when a task is set together with a loop or a step, after the HARNESS_ANALYTICS_* environment defaults are applied."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "resolvedContext throws Error '--step requires --loop.' when a step is set without a loop, after the HARNESS_ANALYTICS_* environment defaults are applied."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "readLoop, called by resolvedContext for a loop, throws ExpectedCliError 'Loop does not exist.' when specification/loops/<loop>/loop.json is missing under the current directory."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "readLoop throws ExpectedCliError beginning 'Invalid loop state:' when loop.json fails schema validation, naming the file and up to five failing fields."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "readLoop rethrows the JSON SyntaxError from parsing loop.json when the file is not valid JSON."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "readLoop rethrows unchanged any filesystem error other than a missing file, such as a permission error, while reading loop.json."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "resolvedContext throws Error 'Loop step does not exist.' when a step is set with a loop and loop.json has no step with that id."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "validateReport throws Error 'Invalid report ID.' when a report ID is set and contains anything other than ASCII letters, digits or hyphens."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "validateReport rejects with the filesystem error from reading runs/<report>/manifest.json under PROJECT_REPORTS_HOME (or $HOME/.codex/project-reports when it is unset), such as ENOENT when the manifest is missing."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "checkResponse",
@@ -71,17 +741,232 @@
 					{
 						"name": "checkResponse.options",
 						"type": "ResponseCheckOptions",
-						"required": true
+						"required": true,
+						"description": "Options for one response check: request and response are required file paths, context and criteria are optional file paths (criteria must be JSON that ResponseCheckInputValidator accepts), and each file must be a regular UTF-8 file of at most 24000 bytes. The serialized request, response, context and criteria must fit in 24000 UTF-8 bytes, and model, minConfidence and apiKeyEnv default to jev-1.13.0, 0.85 and HARNESS_JEV_API_KEY when unset.",
+						"examples": [
+							{
+								"request": "evidence/response-check/request.md",
+								"response": "evidence/response-check/response.md"
+							},
+							{
+								"request": "evidence/response-check/request.md",
+								"response": "evidence/response-check/response.md",
+								"context": "evidence/response-check/context.md",
+								"criteria": "evidence/response-check/criteria.json",
+								"model": "jev-1.13.0",
+								"minConfidence": "0.9",
+								"apiKeyEnv": "HARNESS_JEV_API_KEY",
+								"gate": true,
+								"json": true
+							},
+							{
+								"request": "evidence/response-check/request.md",
+								"response": "evidence/response-check/response.md",
+								"dryRun": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "checkResponse",
-						"type": "Promise<ResponseCheckReport>"
+						"type": "Promise<ResponseCheckReport>",
+						"description": "The report for one check, returned rather than rejected: a dry run returns status dry-run without assessed checks, and a failure in settings, input reading or assessment returns the report with status incomplete and the message in error.",
+						"examples": [
+							{
+								"status": "satisfied",
+								"mode": "advisory",
+								"rubricVersion": "response-check-v1",
+								"requestedModel": "jev-1.13.0",
+								"model": "jev-1.13.0",
+								"minConfidence": 0.85,
+								"inputHashes": {
+									"request": "4b8d1f0c7e2a93d56f1b8c4e0a27d93f5c6b1e8a2d4f7c90b3e6a1d5f8c2e704",
+									"response": "a71c5e09d3b2f648e0c1a7d59b3f2e86c4a90d1b7e5f3c28d6a0b9e4f1c7d253",
+									"context": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+									"criteria": "7d0e3b9a1c6f5028e4d7b3a9c1f6e082d5b4a7c3e9f1d06b8a2c5e7f4d9b1a36"
+								},
+								"checks": [
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.94,
+										"probabilities": {
+											"meets": 0.94,
+											"violates": 0.03,
+											"insufficient_context": 0.03
+										},
+										"id": "fulfillment",
+										"title": "Task fulfillment",
+										"status": "meets",
+										"guidance": "Answer the actual user request rather than a different task or a promise to do it later."
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.91,
+										"probabilities": {
+											"meets": 0.91,
+											"violates": 0.05,
+											"insufficient_context": 0.04
+										},
+										"id": "completeness",
+										"title": "Completeness",
+										"status": "meets",
+										"guidance": "Include each requested deliverable and address every requested part."
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.88,
+										"probabilities": {
+											"meets": 0.88,
+											"violates": 0.07,
+											"insufficient_context": 0.05
+										},
+										"id": "constraints",
+										"title": "Explicit constraints",
+										"status": "meets",
+										"guidance": "Follow the user’s explicit constraints and requested output format."
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.95,
+										"probabilities": {
+											"meets": 0.95,
+											"violates": 0.02,
+											"insufficient_context": 0.03
+										},
+										"id": "relevance",
+										"title": "Relevance",
+										"status": "meets",
+										"guidance": "Keep the answer focused on material that helps fulfill the request."
+									}
+								],
+								"coverage": ["fulfillment", "completeness", "constraints", "relevance"],
+								"usage": {
+									"input_tokens": 1512,
+									"output_tokens": 296
+								}
+							},
+							{
+								"status": "violations",
+								"mode": "gate",
+								"rubricVersion": "response-check-v1",
+								"requestedModel": "jev-1.13.0",
+								"model": "jev-1.13.0",
+								"minConfidence": 0.9,
+								"inputHashes": {
+									"request": "0c9e4a7b2d18f36e5a0b9c7d4e21f8a3b6c5d0e9f2a7b4c1d8e3f6a9b0c2d517",
+									"response": "e5f1a8c3d7b92e046a4c1d8f3b5e7a29c0d6b4f1e8a3c7d5b2e9f0a6c1d8b374",
+									"context": "3f6a1c9e0b84d27f5e1a9c3b6d0f8e2a4c7b5d9e1f3a6c8b0d2e4f7a9c1b3d58",
+									"criteria": "a94d2e7c1f0b3e86d5a2c9f47b1e0d38c6a5f2b9e4d7c0a1f3b8e6d2c5a7b904"
+								},
+								"checks": [
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.96,
+										"probabilities": {
+											"meets": 0.96,
+											"violates": 0.02,
+											"insufficient_context": 0.02
+										},
+										"id": "fulfillment",
+										"title": "Task fulfillment",
+										"status": "meets",
+										"guidance": "Answer the actual user request rather than a different task or a promise to do it later."
+									},
+									{
+										"type": "choice",
+										"choice": "violates",
+										"confidence": 0.94,
+										"probabilities": {
+											"meets": 0.03,
+											"violates": 0.94,
+											"insufficient_context": 0.03
+										},
+										"id": "completeness",
+										"title": "Completeness",
+										"status": "violates",
+										"guidance": "Include each requested deliverable and address every requested part."
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.92,
+										"probabilities": {
+											"meets": 0.92,
+											"violates": 0.05,
+											"insufficient_context": 0.03
+										},
+										"id": "constraints",
+										"title": "Explicit constraints",
+										"status": "meets",
+										"guidance": "Follow the user’s explicit constraints and requested output format."
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.97,
+										"probabilities": {
+											"meets": 0.97,
+											"violates": 0.01,
+											"insufficient_context": 0.02
+										},
+										"id": "relevance",
+										"title": "Relevance",
+										"status": "meets",
+										"guidance": "Keep the answer focused on material that helps fulfill the request."
+									},
+									{
+										"type": "choice",
+										"choice": "insufficient_context",
+										"confidence": 0.62,
+										"probabilities": {
+											"meets": 0.3,
+											"violates": 0.08,
+											"insufficient_context": 0.62
+										},
+										"id": "custom:cite-sources",
+										"title": "Acceptance criterion: cite-sources",
+										"status": "needs-review",
+										"guidance": "Revise the answer to satisfy acceptance criterion cite-sources."
+									}
+								],
+								"coverage": [
+									"fulfillment",
+									"completeness",
+									"constraints",
+									"relevance",
+									"custom:cite-sources"
+								],
+								"usage": {
+									"input_tokens": 2047,
+									"output_tokens": 531
+								}
+							},
+							{
+								"status": "incomplete",
+								"mode": "advisory",
+								"rubricVersion": "response-check-v1",
+								"requestedModel": "jev-1.13.0",
+								"minConfidence": 0.85,
+								"inputHashes": {},
+								"checks": [],
+								"coverage": [],
+								"usage": {
+									"input_tokens": 0,
+									"output_tokens": 0
+								},
+								"error": "--request and --response files are required."
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "responseCheckExitCode",
@@ -89,17 +974,211 @@
 					{
 						"name": "responseCheckExitCode.report",
 						"type": "ResponseCheckReport",
-						"required": true
+						"required": true,
+						"description": "The ResponseCheckReport whose status and mode are the only fields read to choose the exit code, so error and the other fields do not affect it.",
+						"examples": [
+							{
+								"status": "satisfied",
+								"mode": "advisory",
+								"rubricVersion": "response-check-v1",
+								"requestedModel": "jev-1.13.0",
+								"model": "jev-1.13.0",
+								"minConfidence": 0.85,
+								"inputHashes": {
+									"request": "4b8d1f0c7e2a93d56f1b8c4e0a27d93f5c6b1e8a2d4f7c90b3e6a1d5f8c2e704",
+									"response": "a71c5e09d3b2f648e0c1a7d59b3f2e86c4a90d1b7e5f3c28d6a0b9e4f1c7d253",
+									"context": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+									"criteria": "7d0e3b9a1c6f5028e4d7b3a9c1f6e082d5b4a7c3e9f1d06b8a2c5e7f4d9b1a36"
+								},
+								"checks": [
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.94,
+										"probabilities": {
+											"meets": 0.94,
+											"violates": 0.03,
+											"insufficient_context": 0.03
+										},
+										"id": "fulfillment",
+										"title": "Task fulfillment",
+										"status": "meets",
+										"guidance": "Answer the actual user request rather than a different task or a promise to do it later."
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.91,
+										"probabilities": {
+											"meets": 0.91,
+											"violates": 0.05,
+											"insufficient_context": 0.04
+										},
+										"id": "completeness",
+										"title": "Completeness",
+										"status": "meets",
+										"guidance": "Include each requested deliverable and address every requested part."
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.88,
+										"probabilities": {
+											"meets": 0.88,
+											"violates": 0.07,
+											"insufficient_context": 0.05
+										},
+										"id": "constraints",
+										"title": "Explicit constraints",
+										"status": "meets",
+										"guidance": "Follow the user’s explicit constraints and requested output format."
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.95,
+										"probabilities": {
+											"meets": 0.95,
+											"violates": 0.02,
+											"insufficient_context": 0.03
+										},
+										"id": "relevance",
+										"title": "Relevance",
+										"status": "meets",
+										"guidance": "Keep the answer focused on material that helps fulfill the request."
+									}
+								],
+								"coverage": ["fulfillment", "completeness", "constraints", "relevance"],
+								"usage": {
+									"input_tokens": 1512,
+									"output_tokens": 296
+								}
+							},
+							{
+								"status": "violations",
+								"mode": "gate",
+								"rubricVersion": "response-check-v1",
+								"requestedModel": "jev-1.13.0",
+								"model": "jev-1.13.0",
+								"minConfidence": 0.9,
+								"inputHashes": {
+									"request": "0c9e4a7b2d18f36e5a0b9c7d4e21f8a3b6c5d0e9f2a7b4c1d8e3f6a9b0c2d517",
+									"response": "e5f1a8c3d7b92e046a4c1d8f3b5e7a29c0d6b4f1e8a3c7d5b2e9f0a6c1d8b374",
+									"context": "3f6a1c9e0b84d27f5e1a9c3b6d0f8e2a4c7b5d9e1f3a6c8b0d2e4f7a9c1b3d58",
+									"criteria": "a94d2e7c1f0b3e86d5a2c9f47b1e0d38c6a5f2b9e4d7c0a1f3b8e6d2c5a7b904"
+								},
+								"checks": [
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.96,
+										"probabilities": {
+											"meets": 0.96,
+											"violates": 0.02,
+											"insufficient_context": 0.02
+										},
+										"id": "fulfillment",
+										"title": "Task fulfillment",
+										"status": "meets",
+										"guidance": "Answer the actual user request rather than a different task or a promise to do it later."
+									},
+									{
+										"type": "choice",
+										"choice": "violates",
+										"confidence": 0.94,
+										"probabilities": {
+											"meets": 0.03,
+											"violates": 0.94,
+											"insufficient_context": 0.03
+										},
+										"id": "completeness",
+										"title": "Completeness",
+										"status": "violates",
+										"guidance": "Include each requested deliverable and address every requested part."
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.92,
+										"probabilities": {
+											"meets": 0.92,
+											"violates": 0.05,
+											"insufficient_context": 0.03
+										},
+										"id": "constraints",
+										"title": "Explicit constraints",
+										"status": "meets",
+										"guidance": "Follow the user’s explicit constraints and requested output format."
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.97,
+										"probabilities": {
+											"meets": 0.97,
+											"violates": 0.01,
+											"insufficient_context": 0.02
+										},
+										"id": "relevance",
+										"title": "Relevance",
+										"status": "meets",
+										"guidance": "Keep the answer focused on material that helps fulfill the request."
+									},
+									{
+										"type": "choice",
+										"choice": "insufficient_context",
+										"confidence": 0.62,
+										"probabilities": {
+											"meets": 0.3,
+											"violates": 0.08,
+											"insufficient_context": 0.62
+										},
+										"id": "custom:cite-sources",
+										"title": "Acceptance criterion: cite-sources",
+										"status": "needs-review",
+										"guidance": "Revise the answer to satisfy acceptance criterion cite-sources."
+									}
+								],
+								"coverage": [
+									"fulfillment",
+									"completeness",
+									"constraints",
+									"relevance",
+									"custom:cite-sources"
+								],
+								"usage": {
+									"input_tokens": 2047,
+									"output_tokens": 531
+								}
+							},
+							{
+								"status": "incomplete",
+								"mode": "advisory",
+								"rubricVersion": "response-check-v1",
+								"requestedModel": "jev-1.13.0",
+								"minConfidence": 0.85,
+								"inputHashes": {},
+								"checks": [],
+								"coverage": [],
+								"usage": {
+									"input_tokens": 0,
+									"output_tokens": 0
+								},
+								"error": "--request and --response files are required."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "responseCheckExitCode",
-						"type": "number"
+						"type": "number",
+						"description": "The process exit code for the report: 2 when status is incomplete, 0 when status is dry-run, 1 when mode is gate and status is violations or needs-review, and 0 otherwise.",
+						"examples": [0, 1, 2]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderResponseCheck",
@@ -107,17 +1186,215 @@
 					{
 						"name": "renderResponseCheck.report",
 						"type": "ResponseCheckReport",
-						"required": true
+						"required": true,
+						"description": "The ResponseCheckReport to render as text: the text reads status, mode, model (or requestedModel when model is absent), rubricVersion, minConfidence, coverage, checks and error.",
+						"examples": [
+							{
+								"status": "satisfied",
+								"mode": "advisory",
+								"rubricVersion": "response-check-v1",
+								"requestedModel": "jev-1.13.0",
+								"model": "jev-1.13.0",
+								"minConfidence": 0.85,
+								"inputHashes": {
+									"request": "4b8d1f0c7e2a93d56f1b8c4e0a27d93f5c6b1e8a2d4f7c90b3e6a1d5f8c2e704",
+									"response": "a71c5e09d3b2f648e0c1a7d59b3f2e86c4a90d1b7e5f3c28d6a0b9e4f1c7d253",
+									"context": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+									"criteria": "7d0e3b9a1c6f5028e4d7b3a9c1f6e082d5b4a7c3e9f1d06b8a2c5e7f4d9b1a36"
+								},
+								"checks": [
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.94,
+										"probabilities": {
+											"meets": 0.94,
+											"violates": 0.03,
+											"insufficient_context": 0.03
+										},
+										"id": "fulfillment",
+										"title": "Task fulfillment",
+										"status": "meets",
+										"guidance": "Answer the actual user request rather than a different task or a promise to do it later."
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.91,
+										"probabilities": {
+											"meets": 0.91,
+											"violates": 0.05,
+											"insufficient_context": 0.04
+										},
+										"id": "completeness",
+										"title": "Completeness",
+										"status": "meets",
+										"guidance": "Include each requested deliverable and address every requested part."
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.88,
+										"probabilities": {
+											"meets": 0.88,
+											"violates": 0.07,
+											"insufficient_context": 0.05
+										},
+										"id": "constraints",
+										"title": "Explicit constraints",
+										"status": "meets",
+										"guidance": "Follow the user’s explicit constraints and requested output format."
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.95,
+										"probabilities": {
+											"meets": 0.95,
+											"violates": 0.02,
+											"insufficient_context": 0.03
+										},
+										"id": "relevance",
+										"title": "Relevance",
+										"status": "meets",
+										"guidance": "Keep the answer focused on material that helps fulfill the request."
+									}
+								],
+								"coverage": ["fulfillment", "completeness", "constraints", "relevance"],
+								"usage": {
+									"input_tokens": 1512,
+									"output_tokens": 296
+								}
+							},
+							{
+								"status": "violations",
+								"mode": "gate",
+								"rubricVersion": "response-check-v1",
+								"requestedModel": "jev-1.13.0",
+								"model": "jev-1.13.0",
+								"minConfidence": 0.9,
+								"inputHashes": {
+									"request": "0c9e4a7b2d18f36e5a0b9c7d4e21f8a3b6c5d0e9f2a7b4c1d8e3f6a9b0c2d517",
+									"response": "e5f1a8c3d7b92e046a4c1d8f3b5e7a29c0d6b4f1e8a3c7d5b2e9f0a6c1d8b374",
+									"context": "3f6a1c9e0b84d27f5e1a9c3b6d0f8e2a4c7b5d9e1f3a6c8b0d2e4f7a9c1b3d58",
+									"criteria": "a94d2e7c1f0b3e86d5a2c9f47b1e0d38c6a5f2b9e4d7c0a1f3b8e6d2c5a7b904"
+								},
+								"checks": [
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.96,
+										"probabilities": {
+											"meets": 0.96,
+											"violates": 0.02,
+											"insufficient_context": 0.02
+										},
+										"id": "fulfillment",
+										"title": "Task fulfillment",
+										"status": "meets",
+										"guidance": "Answer the actual user request rather than a different task or a promise to do it later."
+									},
+									{
+										"type": "choice",
+										"choice": "violates",
+										"confidence": 0.94,
+										"probabilities": {
+											"meets": 0.03,
+											"violates": 0.94,
+											"insufficient_context": 0.03
+										},
+										"id": "completeness",
+										"title": "Completeness",
+										"status": "violates",
+										"guidance": "Include each requested deliverable and address every requested part."
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.92,
+										"probabilities": {
+											"meets": 0.92,
+											"violates": 0.05,
+											"insufficient_context": 0.03
+										},
+										"id": "constraints",
+										"title": "Explicit constraints",
+										"status": "meets",
+										"guidance": "Follow the user’s explicit constraints and requested output format."
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.97,
+										"probabilities": {
+											"meets": 0.97,
+											"violates": 0.01,
+											"insufficient_context": 0.02
+										},
+										"id": "relevance",
+										"title": "Relevance",
+										"status": "meets",
+										"guidance": "Keep the answer focused on material that helps fulfill the request."
+									},
+									{
+										"type": "choice",
+										"choice": "insufficient_context",
+										"confidence": 0.62,
+										"probabilities": {
+											"meets": 0.3,
+											"violates": 0.08,
+											"insufficient_context": 0.62
+										},
+										"id": "custom:cite-sources",
+										"title": "Acceptance criterion: cite-sources",
+										"status": "needs-review",
+										"guidance": "Revise the answer to satisfy acceptance criterion cite-sources."
+									}
+								],
+								"coverage": [
+									"fulfillment",
+									"completeness",
+									"constraints",
+									"relevance",
+									"custom:cite-sources"
+								],
+								"usage": {
+									"input_tokens": 2047,
+									"output_tokens": 531
+								}
+							},
+							{
+								"status": "incomplete",
+								"mode": "advisory",
+								"rubricVersion": "response-check-v1",
+								"requestedModel": "jev-1.13.0",
+								"minConfidence": 0.85,
+								"inputHashes": {},
+								"checks": [],
+								"coverage": [],
+								"usage": {
+									"input_tokens": 0,
+									"output_tokens": 0
+								},
+								"error": "--request and --response files are required."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderResponseCheck",
-						"type": "string"
+						"type": "string",
+						"description": "The plain-text summary that runResponseCheck prints when json is not set, with a header of status, mode, model, rubric, confidence threshold and coverage, a status, title and confidence line plus a guidance line for each check, and an Error line only when error is set. It always ends with the fixed line 'This assessment covers supplied text only; model confidence is not calibrated correctness.'",
+						"examples": [
+							"Response check: satisfied (advisory)\nModel: jev-1.13.0; rubric: response-check-v1\nConfidence threshold: 0.85\nCoverage: fulfillment, completeness, constraints, relevance\n[meets] Task fulfillment (0.94)\n  Answer the actual user request rather than a different task or a promise to do it later.\n[meets] Completeness (0.91)\n  Include each requested deliverable and address every requested part.\n[meets] Explicit constraints (0.88)\n  Follow the user’s explicit constraints and requested output format.\n[meets] Relevance (0.95)\n  Keep the answer focused on material that helps fulfill the request.\nThis assessment covers supplied text only; model confidence is not calibrated correctness.",
+							"Response check: violations (gate)\nModel: jev-1.13.0; rubric: response-check-v1\nConfidence threshold: 0.9\nCoverage: fulfillment, completeness, constraints, relevance, custom:cite-sources\n[meets] Task fulfillment (0.96)\n  Answer the actual user request rather than a different task or a promise to do it later.\n[violates] Completeness (0.94)\n  Include each requested deliverable and address every requested part.\n[meets] Explicit constraints (0.92)\n  Follow the user’s explicit constraints and requested output format.\n[meets] Relevance (0.97)\n  Keep the answer focused on material that helps fulfill the request.\n[needs-review] Acceptance criterion: cite-sources (0.62)\n  Revise the answer to satisfy acceptance criterion cite-sources.\nThis assessment covers supplied text only; model confidence is not calibrated correctness.",
+							"Response check: incomplete (advisory)\nModel: jev-1.13.0; rubric: response-check-v1\nConfidence threshold: 0.85\nCoverage: none\nError: --request and --response files are required.\nThis assessment covers supplied text only; model confidence is not calibrated correctness."
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "runResponseCheck",
@@ -125,17 +1402,80 @@
 					{
 						"name": "runResponseCheck.options",
 						"type": "ResponseCheckOptions",
-						"required": true
+						"required": true,
+						"description": "Options for the runResponseCheck command: the same fields as checkResponse.options, and the analytics fields are validated so that task cannot be combined with loop or step, step requires loop, and report must match ^[a-zA-Z0-9-]+$ and have a readable runs/<report>/manifest.json under the project reports home. Unset loop, step, task and report fall back to the HARNESS_ANALYTICS_LOOP, HARNESS_ANALYTICS_STEP, HARNESS_ANALYTICS_TASK and HARNESS_ANALYTICS_REPORT environment variables.",
+						"examples": [
+							{
+								"request": "evidence/response-check/request.md",
+								"response": "evidence/response-check/response.md",
+								"report": "release-2026-11",
+								"json": true
+							},
+							{
+								"request": "evidence/response-check/request.md",
+								"response": "evidence/response-check/response.md",
+								"loop": "response-check-rollout",
+								"step": "verify-answer",
+								"gate": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "runResponseCheck",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves to undefined after recording analytics (skipped when HARNESS_ANALYTICS_DISABLED is 1), printing the JSON report when json is set or the rendered text otherwise, and setting process.exitCode from the report. It rejects before any check runs when the context, loop state, or report ID and its manifest are invalid or unreadable."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "resolvedContext throws Error 'Use either --task or --loop/--step.' when a task is set together with a loop or a step, after the HARNESS_ANALYTICS_* environment defaults are applied."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "resolvedContext throws Error '--step requires --loop.' when a step is set without a loop, after the HARNESS_ANALYTICS_* environment defaults are applied."
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "readLoop, called by resolvedContext for a loop, throws ExpectedCliError 'Loop does not exist.' when specification/loops/<loop>/loop.json is missing under the current directory."
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "readLoop throws ExpectedCliError beginning 'Invalid loop state:' when loop.json fails schema validation, naming the file and up to five failing fields."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "readLoop rethrows the JSON SyntaxError from parsing loop.json when the file is not valid JSON."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "readLoop rethrows unchanged any filesystem error other than a missing file, such as a permission error, while reading loop.json."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "resolvedContext throws Error 'Loop step does not exist.' when a step is set with a loop and loop.json has no step with that id."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "validateReport throws Error 'Invalid report ID.' when a report ID is set and contains anything other than ASCII letters, digits or hyphens."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "validateReport rejects with the filesystem error from reading runs/<report>/manifest.json under PROJECT_REPORTS_HOME (or $HOME/.codex/project-reports when it is unset), such as ENOENT when the manifest is missing."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
