@@ -27,7 +27,7 @@ test.each([
 	['src/utils/planOptions.ts', 'checkOptions'],
 	['src/utils/planning-collaboration/plan-read/checkOptions.ts', 'checkOptions'],
 	['src/utils/planOptions.ts', 'heldBy'],
-	['src/utils/plan-design/heldBy.ts', 'heldBy']
+	['src/utils/planning-collaboration/plan-design/heldBy.ts', 'heldBy']
 ])('design option runtime cold-imports %s and calls %s', (entry, symbol) => {
 	const code = `
 import {pathToFileURL} from 'node:url';
