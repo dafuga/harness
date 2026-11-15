@@ -10,15 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/lib/development-tooling/server-hooks/HubResponsesMiddleware.ts",
-			"packages/hub/src/lib/server-hooks/HubResponsesMiddleware.ts",
-			"packages/hub/src/middleware/HubResponsesMiddleware.ts"
+			"packages/hub/src/lib/server-hooks/HubResponsesMiddleware.ts"
 		],
-		"symbols": [
-			"HubResponsesMiddleware",
-			"HubResponsesMiddleware.handle",
-			"HubResponsesMiddleware",
-			"HubResponsesMiddleware"
-		]
+		"symbols": ["HubResponsesMiddleware", "HubResponsesMiddleware.handle", "HubResponsesMiddleware"]
 	},
 	"contract": {
 		"origin": "derived",

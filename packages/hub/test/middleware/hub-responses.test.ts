@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { HubResponsesMiddleware } from '../../src/middleware/HubResponsesMiddleware';
+import { HubResponsesMiddleware } from '../../src/lib/development-tooling/server-hooks/HubResponsesMiddleware';
 
 test('native approval and project responses deny frames without disabling Google sign-in', () => {
 	const response = new HubResponsesMiddleware().handle(new Response('<h1>Approve</h1>'));
