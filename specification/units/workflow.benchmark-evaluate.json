@@ -22,46 +22,115 @@
 				"name": "evaluateBenchmarkSubmission.input",
 				"type": "BenchmarkEvaluationInput",
 				"required": true,
-				"description": "Pinned baseline, trial changes, protected files and shared abort signal."
+				"description": "A benchmark definition, baseline snapshot path, submitted workspace path, evaluation path, repository-relative file list and cancellation signal. Evaluation compares the workspace with the baseline, rebuilds the evaluation path, applies submitted changes and runs checks."
 			},
 			{
 				"name": "setupBenchmarkWorkspace.cwd",
 				"type": "string",
 				"required": true,
-				"description": "Working directory in which the trusted command runs."
+				"description": "Directory used as the current working directory for each configured setup command. Commands run sequentially and stop at the first nonzero exit code.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna"
+				]
 			},
 			{
 				"name": "setupBenchmarkWorkspace.definition",
 				"type": "BenchmarkDefinition",
 				"required": true,
-				"description": "Validated benchmark contract, setup commands and acceptance checks."
+				"description": "A parsed benchmark definition used to select allowed files, setup commands and acceptance checks. It requires at least one allowed relative file, check and candidate; allowed paths cannot contain dot, parent, backslash or .git segments, and budgets bound repetitions to 1–100, timeout to 100–86400000 ms and repairs to 0–10.",
+				"examples": [
+					{
+						"version": 1,
+						"name": "unit-smoke-check",
+						"project": "/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna",
+						"revision": "0123456789abcdef0123456789abcdef01234567",
+						"task": "Update the example module.",
+						"contract": "Change only src/example.ts and leave the checks passing.",
+						"allowedFiles": ["src/example.ts"],
+						"checks": [
+							{
+								"id": "unit-tests",
+								"command": "bun test"
+							}
+						],
+						"setup": [],
+						"candidates": [
+							{
+								"id": "codex-luna",
+								"runner": "codex",
+								"model": "gpt-6-luna",
+								"effort": "high",
+								"instructions": "",
+								"tools": "default"
+							}
+						],
+						"budget": {
+							"repetitions": 3,
+							"timeoutMs": 900000,
+							"repairs": 2
+						}
+					}
+				]
 			},
 			{
 				"name": "setupBenchmarkWorkspace.signal",
 				"type": "AbortSignal",
 				"required": true,
-				"description": "Abort signal sharing the trial deadline and user cancellation."
+				"description": "Signal observed by each setup process so cancellation or the trial deadline can stop it. If already aborted before a process starts, its configured reason is propagated."
 			}
 		],
 		"outputs": [
 			{
 				"name": "evaluateBenchmarkSubmission",
 				"type": "Promise<BenchmarkSubmission>",
-				"description": "Protected-file violations, acceptance outcomes and the evaluated implementation patch."
+				"description": "Resolves to whether all acceptance checks exited successfully, repository-relative invalid file paths, each check's exit code and captured output, and the staged binary diff from the evaluation HEAD. Invalid files short-circuit to passed=false with no checks and an empty patch.",
+				"examples": [
+					{
+						"passed": false,
+						"invalidFiles": ["src/private-config.ts"],
+						"checks": [],
+						"patch": ""
+					},
+					{
+						"passed": true,
+						"invalidFiles": [],
+						"checks": [
+							{
+								"id": "unit-tests",
+								"exitCode": 0,
+								"durationMs": 84,
+								"stdout": "1 test file passed\n",
+								"stderr": ""
+							}
+						],
+						"patch": ""
+					}
+				]
 			},
 			{
 				"name": "setupBenchmarkWorkspace",
 				"type": "Promise<void>",
-				"description": "Completes trusted setup commands or rejects the failed setup."
+				"description": "Resolves with no value after all setup commands exit with code 0; the first nonzero exit rejects. Commands run sequentially in cwd and receive the supplied abort signal."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects cancelled evaluation or failed setup commands."
+				"description": "Thrown when a benchmark Git helper receives a nonzero exit status or a setup command exits nonzero; awaited filesystem helpers may also reject with I/O errors."
+			},
+			{
+				"name": "BoundedCommandFailure",
+				"type": "thrown",
+				"description": "Rejected when a benchmark child cannot start, exceeds commandDeadlines.benchmarkChildMs or the 8000000-byte output limit, or is aborted while running."
+			},
+			{
+				"name": "AbortSignal.reason",
+				"type": "thrown",
+				"description": "If the supplied signal is already aborted before a child starts, throwIfAborted propagates its caller-supplied reason unchanged; its runtime name and shape are not constrained."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "evaluateBenchmarkSubmission",
@@ -70,18 +139,56 @@
 						"name": "evaluateBenchmarkSubmission.input",
 						"type": "BenchmarkEvaluationInput",
 						"required": true,
-						"description": "Pinned baseline, trial changes, protected files and shared abort signal."
+						"description": "A benchmark definition, baseline snapshot path, submitted workspace path, evaluation path, repository-relative file list and cancellation signal. Evaluation compares the workspace with the baseline, rebuilds the evaluation path, applies submitted changes and runs checks."
 					}
 				],
 				"outputs": [
 					{
 						"name": "evaluateBenchmarkSubmission",
 						"type": "Promise<BenchmarkSubmission>",
-						"description": "Protected-file violations, acceptance outcomes and the evaluated implementation patch."
+						"description": "Resolves to whether all acceptance checks exited successfully, repository-relative invalid file paths, each check's exit code and captured output, and the staged binary diff from the evaluation HEAD. Invalid files short-circuit to passed=false with no checks and an empty patch.",
+						"examples": [
+							{
+								"passed": false,
+								"invalidFiles": ["src/private-config.ts"],
+								"checks": [],
+								"patch": ""
+							},
+							{
+								"passed": true,
+								"invalidFiles": [],
+								"checks": [
+									{
+										"id": "unit-tests",
+										"exitCode": 0,
+										"durationMs": 84,
+										"stdout": "1 test file passed\n",
+										"stderr": ""
+									}
+								],
+								"patch": ""
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when a benchmark Git helper receives a nonzero exit status or a setup command exits nonzero; awaited filesystem helpers may also reject with I/O errors."
+					},
+					{
+						"name": "BoundedCommandFailure",
+						"type": "thrown",
+						"description": "Rejected when a benchmark child cannot start, exceeds commandDeadlines.benchmarkChildMs or the 8000000-byte output limit, or is aborted while running."
+					},
+					{
+						"name": "AbortSignal.reason",
+						"type": "thrown",
+						"description": "If the supplied signal is already aborted before a child starts, throwIfAborted propagates its caller-supplied reason unchanged; its runtime name and shape are not constrained."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "setupBenchmarkWorkspace",
@@ -90,35 +197,82 @@
 						"name": "setupBenchmarkWorkspace.cwd",
 						"type": "string",
 						"required": true,
-						"description": "Working directory in which the trusted command runs."
+						"description": "Directory used as the current working directory for each configured setup command. Commands run sequentially and stop at the first nonzero exit code.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna"
+						]
 					},
 					{
 						"name": "setupBenchmarkWorkspace.definition",
 						"type": "BenchmarkDefinition",
 						"required": true,
-						"description": "Validated benchmark contract, setup commands and acceptance checks."
+						"description": "A parsed benchmark definition used to select allowed files, setup commands and acceptance checks. It requires at least one allowed relative file, check and candidate; allowed paths cannot contain dot, parent, backslash or .git segments, and budgets bound repetitions to 1–100, timeout to 100–86400000 ms and repairs to 0–10.",
+						"examples": [
+							{
+								"version": 1,
+								"name": "unit-smoke-check",
+								"project": "/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna",
+								"revision": "0123456789abcdef0123456789abcdef01234567",
+								"task": "Update the example module.",
+								"contract": "Change only src/example.ts and leave the checks passing.",
+								"allowedFiles": ["src/example.ts"],
+								"checks": [
+									{
+										"id": "unit-tests",
+										"command": "bun test"
+									}
+								],
+								"setup": [],
+								"candidates": [
+									{
+										"id": "codex-luna",
+										"runner": "codex",
+										"model": "gpt-6-luna",
+										"effort": "high",
+										"instructions": "",
+										"tools": "default"
+									}
+								],
+								"budget": {
+									"repetitions": 3,
+									"timeoutMs": 900000,
+									"repairs": 2
+								}
+							}
+						]
 					},
 					{
 						"name": "setupBenchmarkWorkspace.signal",
 						"type": "AbortSignal",
 						"required": true,
-						"description": "Abort signal sharing the trial deadline and user cancellation."
+						"description": "Signal observed by each setup process so cancellation or the trial deadline can stop it. If already aborted before a process starts, its configured reason is propagated."
 					}
 				],
 				"outputs": [
 					{
 						"name": "setupBenchmarkWorkspace",
 						"type": "Promise<void>",
-						"description": "Completes trusted setup commands or rejects the failed setup."
+						"description": "Resolves with no value after all setup commands exit with code 0; the first nonzero exit rejects. Commands run sequentially in cwd and receive the supplied abort signal."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when a benchmark Git helper receives a nonzero exit status or a setup command exits nonzero; awaited filesystem helpers may also reject with I/O errors."
+					},
+					{
+						"name": "BoundedCommandFailure",
+						"type": "thrown",
+						"description": "Rejected when a benchmark child cannot start, exceeds commandDeadlines.benchmarkChildMs or the 8000000-byte output limit, or is aborted while running."
+					},
+					{
+						"name": "AbortSignal.reason",
+						"type": "thrown",
+						"description": "If the supplied signal is already aborted before a child starts, throwIfAborted propagates its caller-supplied reason unchanged; its runtime name and shape are not constrained."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
