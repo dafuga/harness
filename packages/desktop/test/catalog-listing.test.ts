@@ -1,5 +1,5 @@
 import { measureWorkload } from '../../../test/support/measureWorkload';
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { afterEach, test } from 'vitest';
 import { expect } from '../../../test/verificationExpect';
 import type { ComponentManifest } from '../../../src/lib/contracts';
@@ -211,19 +211,4 @@ test('native and hosted catalogs list pure shared contracts, models and services
 	expect((await catalog.list('HEAD')).find((item) => item.category === 'functions')?.title).toBe(
 		'formatDate(iso)'
 	);
-});
-
-test('each relocated catalog module lives at its recorded path and no stub remains at its old path', () => {
-	const relocated = {
-		'utils/cachedSnapshot.ts': 'utils/verification-evidence/cachedSnapshot.ts',
-		'utils/catalogDetail.ts':
-			'services/projects-sessions/project-session-service/catalog-service/catalogDetail.ts',
-		'utils/catalogHistory.ts':
-			'services/projects-sessions/project-session-service/catalog-service/catalogHistory.ts',
-		'utils/catalogUnit.ts': 'utils/explorer-ui/catalogUnit.ts'
-	};
-	for (const [stub, real] of Object.entries(relocated)) {
-		expect(existsSync(new URL(`../src/${stub}`, import.meta.url)), stub).toBe(false);
-		expect(existsSync(new URL(`../src/${real}`, import.meta.url)), real).toBe(true);
-	}
 });

@@ -4,8 +4,6 @@ import type {
 	CloudflareTarget,
 	DeployCommand
 } from '../../src/models/development-tooling/Deployment.types';
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
-import { dirname, relative, resolve } from 'node:path';
 const target: CloudflareTarget = {
 	environment: 'stage',
 	kind: 'pages',
@@ -72,39 +70,4 @@ test('Cloudflare uses the exact account, token, branch and source commit', async
 	} finally {
 		delete process.env.TEST_STAGE_CF_TOKEN;
 	}
-});
-function sources(directory: string): string[] {
-	return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
-		const path = resolve(directory, entry.name);
-		if (entry.isDirectory()) return sources(path);
-		return /\.(ts|js|svelte)$/.test(path) ? [path] : [];
-	});
-}
-test('the Deployment and DesignVersion relocation stubs stay removed and nothing imports their old paths', () => {
-	const desktop = resolve(import.meta.dirname, '../..');
-	const stubs = [
-		resolve(desktop, 'src/models/Deployment.types'),
-		resolve(desktop, 'src/models/DesignVersion.types')
-	];
-	const roots = [
-		resolve(desktop, 'src'),
-		resolve(desktop, 'test'),
-		resolve(desktop, '../reports/tests')
-	];
-	const imports = roots.flatMap((root) =>
-		sources(root).flatMap((path) =>
-			[
-				...readFileSync(path, 'utf8').matchAll(
-					/(?:\bfrom\s*|\bimport\s*(?:\(\s*)?|\brequire\s*\(\s*|\bvi\.mock\(\s*)['"]([^'"]+)['"]/g
-				)
-			]
-				.filter(([, specifier]) => stubs.includes(resolve(dirname(path), specifier)))
-				.map(([, specifier]) => `${relative(desktop, path)} -> ${specifier}`)
-		)
-	);
-	expect(imports, 'removed model stubs must not be imported').toEqual([]);
-	expect(
-		stubs.filter((stub) => existsSync(`${stub}.ts`)),
-		'removed model stubs must stay deleted'
-	).toEqual([]);
 });

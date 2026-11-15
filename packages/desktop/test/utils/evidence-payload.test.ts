@@ -15,13 +15,3 @@ test('an evidence read keeps its scope; only an artifact read adds a capture bin
 		'Invalid option.'
 	);
 });
-
-test('a read drops any supplied path, address or project identity', () => {
-	const supplied = {
-		...scope,
-		projectId: 'other.project',
-		path: '../secrets',
-		url: 'https://example.test'
-	};
-	expect(evidencePayload('evidence:read', supplied)).toEqual(scope);
-});

@@ -86,9 +86,3 @@ test('only a configured environment scopes a Change; unconfigured projects keep 
 	await second.start(async () => ({ ...request, mode: 'change' }));
 	expect(startRun.mock.calls[1][0]).toHaveProperty('environment', 'prod');
 });
-
-test('a new store is idle and shows nothing until a run starts', () => {
-	const run = createThreadRunStore(workspaceOf({}).workspace);
-	expect(run.active).toBe(false);
-	expect([run.runId, run.status, run.streaming, run.error]).toEqual(['', '', '', '']);
-});

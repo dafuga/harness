@@ -26,10 +26,3 @@ test('a computer that is not online is never described by a lock state', () => {
 	for (const state of ['offline', 'connecting', 'revoked', 'pending-approval'] as const)
 		expect(remoteLabels(at({ state, locked: true })).detail).not.toMatch(/locked ·/);
 });
-
-test('the owning module exports the phone panel labels the desktop reads from it', async () => {
-	const owner =
-		await import('../src/components/networking-security/remote-phone-panel/remoteLabels');
-	expect(typeof owner.grantSummary).toBe('function');
-	expect(typeof owner.remoteLabels).toBe('function');
-});

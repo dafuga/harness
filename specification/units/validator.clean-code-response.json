@@ -7,6 +7,10 @@
 	"responsibility": "Owns the CleanCodeResponseValidator input validation.",
 	"responsibilityOrigin": "derived",
 	"status": "retired",
+	"retired": {
+		"reason": "Every file it owned was removed in p2-stubs-a: re-export-only relocation stubs whose importers now use the module that defines the code.",
+		"at": "2026-11-15T06:41:11.240Z"
+	},
 	"owns": {
 		"source": ["src/validators/CleanCodeResponseValidator.ts"],
 		"symbols": ["CleanCodeResponseValidator"]
@@ -42,9 +46,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"retired": {
-		"reason": "Every file it owned was removed in p2-stubs-a: re-export-only relocation stubs whose importers now use the module that defines the code.",
-		"at": "2026-11-15T06:41:11.240Z"
 	}
 }
