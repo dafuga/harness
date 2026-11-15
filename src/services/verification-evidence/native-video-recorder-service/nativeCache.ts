@@ -14,17 +14,27 @@ import {
 } from 'node:fs';
 import { join } from 'node:path';
 import { mediaFacts } from '../../../utils/verification-evidence/mediaFacts';
-import { recordingFailure, recordingFile, recordingHash } from './nativeFiles';
+import { recordingFailure, recordingFile, recordingFlags, recordingHash } from './nativeFiles';
 import type {
 	NativeRecording,
 	NativeRecordingLease,
 	NativeRecordingReceipt
 } from '../NativeVideoRecorderService.types';
 
-export function recordingDirectory(root: string, slotKey: string, inputHash: string): string {
+export function recordingDirectory(
+	root: string,
+	slotKey: string,
+	inputHash: string,
+	addressedFlags: string[] = []
+): string {
 	if (!slotKey.trim() || slotKey.length > 500 || !/^[a-f0-9]{64}$/.test(inputHash))
 		recordingFailure('native recording requires a slot identity and SHA-256 input hash');
-	return join(root, recordingHash(slotKey), inputHash);
+	const flags = recordingFlags(addressedFlags);
+	return join(
+		root,
+		recordingHash(slotKey),
+		flags.length ? `${inputHash}-${recordingHash(JSON.stringify(flags))}` : inputHash
+	);
 }
 export function cachedRecording(directory: string): NativeRecording | undefined {
 	if (!existsSync(join(directory, 'result.json'))) return undefined;
@@ -49,9 +59,10 @@ export function cachedRecording(directory: string): NativeRecording | undefined 
 export function leaseRecording(
 	root: string,
 	slotKey: string,
-	inputHash: string
+	inputHash: string,
+	addressedFlags: string[] = []
 ): NativeRecordingLease {
-	const finalDirectory = recordingDirectory(root, slotKey, inputHash);
+	const finalDirectory = recordingDirectory(root, slotKey, inputHash, addressedFlags);
 	mkdirSync(root, { recursive: true });
 	const disk = statfsSync(root);
 	if (disk.bavail * disk.bsize < 20 * 1024 ** 3)

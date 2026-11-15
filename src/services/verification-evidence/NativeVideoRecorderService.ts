@@ -10,7 +10,11 @@ import {
 } from './native-video-recorder-service/nativeCache';
 import { captureNativeFrames } from './native-video-recorder-service/nativeCapture';
 import { encodeNativeRecording } from './native-video-recorder-service/nativeEncode';
-import { recordingFailure, recordingViewport } from './native-video-recorder-service/nativeFiles';
+import {
+	recordingFailure,
+	recordingFlags,
+	recordingViewport
+} from './native-video-recorder-service/nativeFiles';
 import type {
 	NativeRecording,
 	NativeRecordingOptions,
@@ -26,24 +30,36 @@ export class NativeVideoRecorderService {
 	}
 
 	/** Call during warm selection, before constructing contexts or script fixtures. */
-	async lookup(slotKey: string, inputHash: string): Promise<NativeRecording | undefined> {
-		const cached = cachedRecording(recordingDirectory(this.root, slotKey, inputHash));
-		if (cached && (cached.metadata.slotKey !== slotKey || cached.metadata.inputHash !== inputHash))
+	async lookup(
+		slotKey: string,
+		inputHash: string,
+		addressedFlags: string[] = []
+	): Promise<NativeRecording | undefined> {
+		const cached = cachedRecording(
+			recordingDirectory(this.root, slotKey, inputHash, addressedFlags)
+		);
+		if (
+			cached &&
+			(cached.metadata.slotKey !== slotKey ||
+				cached.metadata.inputHash !== inputHash ||
+				JSON.stringify(cached.metadata.addressedFlags) !==
+					JSON.stringify(recordingFlags(addressedFlags)))
+		)
 			recordingFailure('native recording cache identity does not match its slot');
 		return cached;
 	}
 
 	async record(options: NativeRecordingOptions): Promise<NativeRecording> {
 		recordingViewport(options.viewport);
-		if (
-			!options.testedRevision.trim() ||
-			(options.addressedFlags ?? []).some((id) => !id.trim() || id.length > 200) ||
-			(options.addressedFlags?.length ?? 0) > 256
-		)
-			recordingFailure('invalid native recording provenance or addressed flags');
-		const cached = await this.lookup(options.slotKey, options.inputHash);
+		if (!options.testedRevision.trim()) recordingFailure('invalid native recording provenance');
+		const cached = await this.lookup(options.slotKey, options.inputHash, options.addressedFlags);
 		if (cached) return cached;
-		const lease = leaseRecording(this.root, options.slotKey, options.inputHash),
+		const lease = leaseRecording(
+				this.root,
+				options.slotKey,
+				options.inputHash,
+				options.addressedFlags
+			),
 			started = performance.now();
 		try {
 			const capture = await captureNativeFrames(options, lease.directory);
@@ -70,7 +86,8 @@ export class NativeVideoRecorderService {
 		const expected = recordingDirectory(
 			this.root,
 			result.metadata.slotKey,
-			result.metadata.inputHash
+			result.metadata.inputHash,
+			result.metadata.addressedFlags
 		);
 		if (resolve(result.directory) !== resolve(expected))
 			recordingFailure('receipt targets another recording owner');

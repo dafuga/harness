@@ -54,6 +54,7 @@
 			"recordingFile",
 			"recordingChild",
 			"recordingViewport",
+			"recordingFlags",
 			"nativeFrameWriter",
 			"showRecordingMarker",
 			"removeRecordingMarker",
@@ -82,6 +83,13 @@
 				"type": "string",
 				"required": true,
 				"description": "Lowercase SHA-256 of all source, contract, script, fixture, toolchain and recording inputs supplied by the planner."
+			},
+			{
+				"name": "NativeVideoRecorderService.lookup.addressedFlags",
+				"type": "string[]",
+				"required": false,
+				"default": [],
+				"description": "Reviewer flag IDs included in the recording cache identity as a sorted unique set; defaults to the unflagged variant."
 			},
 			{
 				"name": "NativeVideoRecorderService.record.options",
@@ -120,6 +128,13 @@
 				"description": "Lowercase SHA-256 of all source, contract, script, fixture, toolchain and recording inputs supplied by the planner."
 			},
 			{
+				"name": "recordingDirectory.addressedFlags",
+				"type": "string[]",
+				"required": false,
+				"default": [],
+				"description": "Reviewer flag IDs included in the recording cache identity as a sorted unique set; defaults to the unflagged variant."
+			},
+			{
 				"name": "cachedRecording.directory",
 				"type": "string",
 				"required": true,
@@ -142,6 +157,13 @@
 				"type": "string",
 				"required": true,
 				"description": "Lowercase SHA-256 of all source, contract, script, fixture, toolchain and recording inputs supplied by the planner."
+			},
+			{
+				"name": "leaseRecording.addressedFlags",
+				"type": "string[]",
+				"required": false,
+				"default": [],
+				"description": "Reviewer flag IDs included in the recording cache identity as a sorted unique set; defaults to the unflagged variant."
 			},
 			{
 				"name": "finalizeRecording.lease",
@@ -264,6 +286,13 @@
 				"description": "Fixed even CSS pixel dimensions at DPR 1, at most 1920 per axis and 2073600 total pixels."
 			},
 			{
+				"name": "recordingFlags.flags",
+				"type": "string[]",
+				"required": false,
+				"default": [],
+				"description": "Reviewer flag IDs included in the recording cache identity as a sorted unique set; defaults to the unflagged variant."
+			},
+			{
 				"name": "nativeFrameWriter.directory",
 				"type": "string",
 				"required": true,
@@ -342,7 +371,7 @@
 			{
 				"name": "recordingDirectory",
 				"type": "string",
-				"description": "Hashed slot directory and input-hash final address without creating browser state."
+				"description": "Hashed slot directory and source input hash, with a separate canonical addressed-flag-set discriminator."
 			},
 			{
 				"name": "cachedRecording",
@@ -476,6 +505,13 @@
 						"type": "string",
 						"required": true,
 						"description": "Lowercase SHA-256 of all source, contract, script, fixture, toolchain and recording inputs supplied by the planner."
+					},
+					{
+						"name": "NativeVideoRecorderService.lookup.addressedFlags",
+						"type": "string[]",
+						"required": false,
+						"default": [],
+						"description": "Reviewer flag IDs included in the recording cache identity as a sorted unique set; defaults to the unflagged variant."
 					}
 				],
 				"outputs": [
@@ -592,13 +628,20 @@
 						"type": "string",
 						"required": true,
 						"description": "Lowercase SHA-256 of all source, contract, script, fixture, toolchain and recording inputs supplied by the planner."
+					},
+					{
+						"name": "recordingDirectory.addressedFlags",
+						"type": "string[]",
+						"required": false,
+						"default": [],
+						"description": "Reviewer flag IDs included in the recording cache identity as a sorted unique set; defaults to the unflagged variant."
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordingDirectory",
 						"type": "string",
-						"description": "Hashed slot directory and input-hash final address without creating browser state."
+						"description": "Hashed slot directory and source input hash, with a separate canonical addressed-flag-set discriminator."
 					}
 				],
 				"errors": [
@@ -666,6 +709,13 @@
 						"type": "string",
 						"required": true,
 						"description": "Lowercase SHA-256 of all source, contract, script, fixture, toolchain and recording inputs supplied by the planner."
+					},
+					{
+						"name": "leaseRecording.addressedFlags",
+						"type": "string[]",
+						"required": false,
+						"default": [],
+						"description": "Reviewer flag IDs included in the recording cache identity as a sorted unique set; defaults to the unflagged variant."
 					}
 				],
 				"outputs": [
@@ -1054,6 +1104,33 @@
 						"name": "NodeJS.ErrnoException",
 						"type": "thrown",
 						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "recordingFlags",
+				"inputs": [
+					{
+						"name": "recordingFlags.flags",
+						"type": "string[]",
+						"required": false,
+						"default": [],
+						"description": "Reviewer flag IDs included in the recording cache identity as a sorted unique set; defaults to the unflagged variant."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordingFlags",
+						"type": "string[]",
+						"description": "Sorted unique admitted reviewer flag IDs used for the exact recording variant."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "More than 256 flags, empty flag IDs or IDs longer than 200 characters are refused before recording or cache lookup."
 					}
 				],
 				"errorStatus": "declared"

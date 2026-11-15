@@ -39,3 +39,9 @@ export function recordingViewport(viewport: { width: number; height: number }): 
 			'native recording viewport must have even dimensions within 1920 and 2 megapixels'
 		);
 }
+
+export function recordingFlags(flags: string[] = []): string[] {
+	if (flags.length > 256 || flags.some((id) => !id.trim() || id.length > 200))
+		recordingFailure('invalid native recording addressed flags');
+	return [...new Set(flags)].sort();
+}

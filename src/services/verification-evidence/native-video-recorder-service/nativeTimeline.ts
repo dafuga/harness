@@ -1,5 +1,5 @@
 // @harness-uid u_akqk4uwm6b
-import { recordingFailure } from './nativeFiles';
+import { recordingFailure, recordingFlags } from './nativeFiles';
 import type {
 	NativeCapture,
 	NativeRecordingMetadata,
@@ -27,7 +27,7 @@ export function recordingTimeline(
 		inputHash: options.inputHash,
 		testedRevision: options.testedRevision,
 		capturedAt: new Date().toISOString(),
-		addressedFlags: [...new Set(options.addressedFlags ?? [])],
+		addressedFlags: recordingFlags(options.addressedFlags),
 		viewport: options.viewport,
 		recipe: 'native-jpeg-sample-previous-h264-yuv420p-30fps-v1',
 		marker: capture.marker,
