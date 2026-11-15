@@ -16,6 +16,12 @@ export function unitVideoShots(
 	scenarios: ScenarioManifest[],
 	entity: string
 ): UnitShots {
+	const discovery = scenarios.flatMap(
+		(scenario) =>
+			scenario.video?.discoveryGaps
+				?.filter((gap) => gap.unit === entity)
+				.map((gap) => gap.reason) ?? []
+	);
 	const missing = new Set<string>(),
 		slots: string[] = [];
 	for (const scenario of scenarios) {
@@ -27,10 +33,16 @@ export function unitVideoShots(
 			}
 	}
 	return {
-		captures: captures.filter((item) => !blocked(item, entity, missing)),
-		gap: slots.length
-			? `Missing required video evidence: ${slots.join(', ')}. Page graph completeness remains a verification obligation.`
-			: null
+		captures: discovery.length ? [] : captures.filter((item) => !blocked(item, entity, missing)),
+		gap:
+			[
+				slots.length
+					? `Missing required video evidence: ${slots.join(', ')}. Page graph completeness remains a verification obligation.`
+					: '',
+				discovery.length ? `Page inventory pending: ${discovery.join(' ')}` : ''
+			]
+				.filter(Boolean)
+				.join(' ') || null
 	};
 }
 
@@ -49,6 +61,7 @@ function admittedVideo(
 		size = scenario.video!.viewports.find((item) => item.id === viewport)!;
 	return (
 		videoIdentity(video, clip) &&
+		checkpointProved(video, clip, viewport) &&
 		videoSize(video, size) &&
 		visitsComplete(clip.states, video.states, duration!) &&
 		visitsComplete(clip.edges, video.edges, duration!)
@@ -78,6 +91,16 @@ function videoIdentity(video: VideoCapture, clip: VideoClip): boolean {
 		video.unit === clip.unit &&
 		video.entry === clip.entry &&
 		video.exit === clip.exit
+	);
+}
+
+function checkpointProved(video: VideoCapture, clip: VideoClip, viewport: string): boolean {
+	if (!clip.checkpoints) return true;
+	const point = clip.checkpoints.find((point) => point.viewport === viewport);
+	return Boolean(
+		point &&
+		point.entrySignature === video.entrySignature &&
+		point.exitSignature === video.exitSignature
 	);
 }
 

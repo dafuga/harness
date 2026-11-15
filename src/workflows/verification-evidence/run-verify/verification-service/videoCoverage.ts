@@ -84,12 +84,23 @@ function clipBinding(clip: VideoClip, item: Gathered): boolean {
 		item.line.state !== clip.state ||
 		video.entry !== clip.entry ||
 		video.exit !== clip.exit ||
+		!checkpointProved(clip, item) ||
 		duration > clip.durationSeconds
 	)
 		return false;
 	return (
 		visitsProved(clip.states, video.states, duration) &&
 		visitsProved(clip.edges, video.edges, duration)
+	);
+}
+
+function checkpointProved(clip: VideoClip, item: Gathered): boolean {
+	if (!clip.checkpoints) return true;
+	const point = clip.checkpoints.find((point) => point.viewport === item.line.viewport);
+	return Boolean(
+		point &&
+		point.entrySignature === item.line.video?.entrySignature &&
+		point.exitSignature === item.line.video?.exitSignature
 	);
 }
 
