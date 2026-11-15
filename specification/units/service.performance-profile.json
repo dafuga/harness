@@ -40,105 +40,371 @@
 				"name": "PerformanceProfileService.beginScope.input",
 				"type": "ObservationInput",
 				"required": true,
-				"description": "Registered unit and workload, optional callable, and bounded replay settings for the named profiling operation."
+				"description": "Unit and workload, which must match unitIdPattern, plus an optional non-empty callable that label the scope; they are validated by the strict observationInput schema before the timer starts. Any other key, including replay settings such as rounds, iterations or warmups, is rejected.",
+				"examples": [
+					{
+						"unit": "function.record-capture",
+						"workload": "function.record-capture",
+						"callable": "recordCapture"
+					},
+					{
+						"unit": "service.performance-profile",
+						"workload": "service.performance-profile"
+					},
+					{
+						"unit": "function.bench-samples",
+						"workload": "function.bench-samples",
+						"callable": "median"
+					}
+				]
 			},
 			{
 				"name": "PerformanceProfileService.observe.input",
 				"type": "ObservationInput",
 				"required": true,
-				"description": "Registered unit and workload, optional callable, and bounded replay settings for the named profiling operation."
+				"description": "Unit and workload, which must match unitIdPattern, plus an optional non-empty callable that label the observation; they are validated by the strict observationInput schema before the operation runs. Any other key, including replay settings such as rounds, iterations or warmups, is rejected.",
+				"examples": [
+					{
+						"unit": "service.performance-profile",
+						"workload": "service.performance-profile",
+						"callable": "PerformanceProfileService.observe"
+					},
+					{
+						"unit": "function.bench-samples",
+						"workload": "function.bench-samples",
+						"callable": "median"
+					},
+					{
+						"unit": "reports.component.evidence-grid",
+						"workload": "reports.component.evidence-grid"
+					}
+				]
 			},
 			{
 				"name": "PerformanceProfileService.observe.operation",
 				"type": "() => T",
 				"required": true,
-				"description": "Actual operation supplied by the caller; one-pass observers preserve its result, receiver, effects and rejection behavior."
+				"description": "Synchronous callback that observe calls exactly once with no arguments; its return value is passed back unchanged, and an error it throws propagates without recording an observation. A returned Promise is passed back as is but not recorded, so use observeAsync to time asynchronous work."
 			},
 			{
 				"name": "PerformanceProfileService.observeAsync.input",
 				"type": "ObservationInput",
 				"required": true,
-				"description": "Registered unit and workload, optional callable, and bounded replay settings for the named profiling operation."
+				"description": "Unit and workload, which must match unitIdPattern, plus an optional non-empty callable that label the observation; they are validated by the strict observationInput schema before the operation starts, and invalid input rejects the returned promise. Any other key, including replay settings such as rounds, iterations or warmups, is rejected.",
+				"examples": [
+					{
+						"unit": "service.performance-profile",
+						"workload": "service.performance-profile",
+						"callable": "PerformanceProfileService.observeAsync"
+					},
+					{
+						"unit": "reports.component.evidence-grid",
+						"workload": "reports.component.evidence-grid"
+					},
+					{
+						"unit": "function.record-capture",
+						"workload": "function.record-capture",
+						"callable": "recordCapture"
+					}
+				]
 			},
 			{
 				"name": "PerformanceProfileService.observeAsync.operation",
 				"type": "() => T",
 				"required": true,
-				"description": "Actual operation supplied by the caller; one-pass observers preserve its result, receiver, effects and rejection behavior."
+				"description": "Callback that observeAsync calls exactly once with no arguments and awaits; its resolved value is returned, while a rejection propagates and records no observation."
 			},
 			{
 				"name": "PerformanceProfileService.measure.input",
 				"type": "ProfileInput",
 				"required": true,
-				"description": "Registered unit and workload, optional callable, and bounded replay settings for the named profiling operation."
+				"description": "Unit and workload, which must match unitIdPattern, plus an optional non-empty callable and optional replay counts validated by the strict profileInput schema: rounds defaults to 5 (integer 1 to 50), iterations to 1000 (integer 1 to 100000) and warmups to 3 (integer 0 to 100000). Invalid input rejects before any operation call, and any key other than unit, workload, callable, rounds, iterations or warmups is rejected.",
+				"examples": [
+					{
+						"unit": "function.bench-samples",
+						"workload": "function.bench-samples",
+						"callable": "median",
+						"rounds": 5,
+						"iterations": 1000,
+						"warmups": 3
+					},
+					{
+						"unit": "reports.component.evidence-grid",
+						"workload": "reports.component.evidence-grid"
+					},
+					{
+						"unit": "service.performance-profile",
+						"workload": "service.performance-profile",
+						"callable": "PerformanceProfileService.measure",
+						"rounds": 10,
+						"iterations": 500,
+						"warmups": 0
+					}
+				]
 			},
 			{
 				"name": "PerformanceProfileService.measure.operation",
 				"type": "() => unknown",
 				"required": true,
-				"description": "Representative replay-safe operation executed for the declared warmup, round and iteration counts; errors propagate."
+				"description": "Representative callback that must be safe to repeat: measure awaits it once per warmup and once per iteration of every round, so it runs warmups + rounds * iterations times, its return values are discarded, and any error or rejection propagates out of measure."
 			},
 			{
 				"name": "PerformanceProfileService.capture.input",
 				"type": "ProfileInput",
 				"required": true,
-				"description": "Registered unit and workload, optional callable, and bounded replay settings for the named profiling operation."
+				"description": "Unit and workload, which must match unitIdPattern, plus an optional non-empty callable and optional replay counts validated by the strict profileInput schema: rounds defaults to 5 (integer 1 to 50), iterations to 1000 (integer 1 to 100000) and warmups to 3 (integer 0 to 100000). Invalid input rejects before any operation call, and any key other than unit, workload, callable, rounds, iterations or warmups is rejected.",
+				"examples": [
+					{
+						"unit": "function.bench-samples",
+						"workload": "function.bench-samples",
+						"callable": "median",
+						"rounds": 5,
+						"iterations": 1000,
+						"warmups": 3
+					},
+					{
+						"unit": "reports.component.evidence-grid",
+						"workload": "reports.component.evidence-grid"
+					},
+					{
+						"unit": "service.performance-profile",
+						"workload": "service.performance-profile",
+						"callable": "PerformanceProfileService.measure",
+						"rounds": 10,
+						"iterations": 500,
+						"warmups": 0
+					}
+				]
 			},
 			{
 				"name": "PerformanceProfileService.capture.operation",
 				"type": "() => unknown",
 				"required": true,
-				"description": "Representative replay-safe operation executed for the declared warmup, round and iteration counts; errors propagate."
+				"description": "Representative callback that must be safe to repeat: capture runs it through measure, so it is awaited once per warmup and once per iteration of every round (warmups + rounds * iterations times), its return values are discarded, and any error or rejection propagates out of capture."
 			}
 		],
 		"outputs": [
 			{
 				"name": "profileInput",
 				"type": "unknown",
-				"description": "Strict schema for registered unit/workload identities and bounded rounds, iterations and warmups."
+				"description": "The zod strictObject schema, a schema object rather than parsed data, that validates ProfileInput for measure and capture: unit and workload must match unitIdPattern, callable is an optional non-empty string, rounds is an integer from 1 to 50 (default 5), iterations an integer from 1 to 100000 (default 1000) and warmups an integer from 0 to 100000 (default 3)."
 			},
 			{
 				"name": "observationInput",
 				"type": "unknown",
-				"description": "Strict metadata schema for one actual unit, workload and optional callable observation."
+				"description": "The zod schema made by picking unit, workload and callable from profileInput, so it stays strict: beginScope, observe and observeAsync reject rounds, iterations, warmups and any other key."
 			},
 			{
 				"name": "PerformanceProfileService.peakProcessRssBytes",
 				"type": "number",
-				"description": "OS process high-water resident set normalized to bytes for Bun on Darwin and supported Node hosts."
+				"description": "Peak resident set size of the whole process in bytes: on Bun on Darwin the native maxRSS is returned unchanged, while on every other host the maxRSS from process.resourceUsage(), reported in KiB, is multiplied by 1024. It covers the runner and earlier work in the process, so it is not memory attributable to one callable.",
+				"examples": [201326592, 52428800, 1073741824]
 			},
 			{
 				"name": "PerformanceProfileService.beginScope",
 				"type": "()",
-				"description": "Idempotent callback completing one measured source scope; incomplete scopes do not count as success."
+				"description": "Function that ends the scope begun by beginScope and records the time since that call as a completed source scope; only its first call records, later calls do nothing, and a scope whose function is never called does not count."
 			},
 			{
 				"name": "PerformanceProfileService.observe",
 				"type": "T",
-				"description": "Exact synchronous operation result; promise identity is preserved without treating an unsettled promise as a completed sample."
+				"description": "The exact value returned by the supplied synchronous operation, passed back unchanged; a returned Promise is not recorded, so only non-promise returns are timed and counted.",
+				"examples": [
+					42,
+					"ready",
+					{
+						"count": 12,
+						"status": "ready"
+					}
+				]
 			},
 			{
 				"name": "PerformanceProfileService.observeAsync",
 				"type": "Promise<Awaited<T>>",
-				"description": "Awaited actual result, recording only successfully completed asynchronous work."
+				"description": "A promise that resolves to the awaited value of the supplied operation; the observation is recorded only after the operation resolves, so a rejection propagates unchanged and records nothing.",
+				"examples": [
+					42,
+					"ready",
+					{
+						"count": 12,
+						"status": "ready"
+					}
+				]
 			},
 			{
 				"name": "PerformanceProfileService.flush",
 				"type": "Measured[]",
-				"description": "Current aggregate observations, written through the capture protocol and then removed from the in-memory collector."
+				"description": "Two measurements per aggregate observation key: latency-observed-ms, the arithmetic mean of its successful completions, and process-peak-rss-bytes, the highest peak RSS seen at those completions; each key is written through recordCapture as one capture, and the in-memory collector is cleared afterwards.",
+				"examples": [
+					[
+						{
+							"unit": "service.performance-profile",
+							"workload": "service.performance-profile",
+							"callable": "PerformanceProfileService.observe",
+							"target": "module",
+							"samples": 3,
+							"metric": "latency-observed-ms",
+							"unitOfMeasure": "ms",
+							"value": 0.0093,
+							"method": "Arithmetic mean of 3 successful synchronous returns; includes clock and observer overhead, with no replay or warmup."
+						},
+						{
+							"unit": "service.performance-profile",
+							"workload": "service.performance-profile",
+							"callable": "PerformanceProfileService.observe",
+							"target": "module",
+							"samples": 3,
+							"metric": "process-peak-rss-bytes",
+							"unitOfMeasure": "bytes",
+							"value": 201326592,
+							"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable."
+						}
+					],
+					[
+						{
+							"unit": "function.bench-samples",
+							"workload": "function.bench-samples",
+							"callable": "median",
+							"target": "module",
+							"samples": 12,
+							"metric": "latency-observed-ms",
+							"unitOfMeasure": "ms",
+							"value": 0.0019,
+							"method": "Arithmetic mean of 12 successful synchronous returns; includes clock and observer overhead, with no replay or warmup."
+						},
+						{
+							"unit": "function.bench-samples",
+							"workload": "function.bench-samples",
+							"callable": "median",
+							"target": "module",
+							"samples": 12,
+							"metric": "process-peak-rss-bytes",
+							"unitOfMeasure": "bytes",
+							"value": 187432960,
+							"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable."
+						}
+					]
+				]
 			},
 			{
 				"name": "PerformanceProfileService.measure",
 				"type": "Promise<Measured[]>",
-				"description": "Real latency and process-peak RSS observations after the explicit caller-selected replay and warmup counts."
+				"description": "Two measurements from one replay: latency-warm-ms, the median across rounds of each round's mean awaited call time in milliseconds, and process-peak-rss-bytes, the whole process's peak RSS in bytes read after the replay; nothing is written to a capture.",
+				"examples": [
+					[
+						{
+							"unit": "function.bench-samples",
+							"workload": "function.bench-samples",
+							"callable": "median",
+							"target": "module",
+							"samples": 5000,
+							"metric": "latency-warm-ms",
+							"unitOfMeasure": "ms",
+							"value": 0.0021,
+							"method": "Median of 5 batches of 1000 awaited representative calls after 3 warmups; includes await overhead."
+						},
+						{
+							"unit": "function.bench-samples",
+							"workload": "function.bench-samples",
+							"callable": "median",
+							"target": "module",
+							"samples": 5000,
+							"metric": "process-peak-rss-bytes",
+							"unitOfMeasure": "bytes",
+							"value": 187432960,
+							"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including its runner and earlier work; not memory attributable to one callable."
+						}
+					],
+					[
+						{
+							"unit": "service.performance-profile",
+							"workload": "service.performance-profile",
+							"callable": "PerformanceProfileService.measure",
+							"target": "module",
+							"samples": 5000,
+							"metric": "latency-warm-ms",
+							"unitOfMeasure": "ms",
+							"value": 0.0148,
+							"method": "Median of 10 batches of 500 awaited representative calls after 0 warmups; includes await overhead."
+						},
+						{
+							"unit": "service.performance-profile",
+							"workload": "service.performance-profile",
+							"callable": "PerformanceProfileService.measure",
+							"target": "module",
+							"samples": 5000,
+							"metric": "process-peak-rss-bytes",
+							"unitOfMeasure": "bytes",
+							"value": 201326592,
+							"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including its runner and earlier work; not memory attributable to one callable."
+						}
+					]
+				]
 			},
 			{
 				"name": "PerformanceProfileService.capture",
 				"type": "Promise<Measured[]>",
-				"description": "Measured observations persisted through Harness captures with a unique immutable chunk name."
+				"description": "The same two measurements as measure, also written as one representative benchmark capture whose evidence name is unique on every call (a SHA-256 prefix of the unit, callable and workload plus a random UUID).",
+				"examples": [
+					[
+						{
+							"unit": "function.bench-samples",
+							"workload": "function.bench-samples",
+							"callable": "median",
+							"target": "module",
+							"samples": 5000,
+							"metric": "latency-warm-ms",
+							"unitOfMeasure": "ms",
+							"value": 0.0021,
+							"method": "Median of 5 batches of 1000 awaited representative calls after 3 warmups; includes await overhead."
+						},
+						{
+							"unit": "function.bench-samples",
+							"workload": "function.bench-samples",
+							"callable": "median",
+							"target": "module",
+							"samples": 5000,
+							"metric": "process-peak-rss-bytes",
+							"unitOfMeasure": "bytes",
+							"value": 187432960,
+							"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including its runner and earlier work; not memory attributable to one callable."
+						}
+					],
+					[
+						{
+							"unit": "service.performance-profile",
+							"workload": "service.performance-profile",
+							"callable": "PerformanceProfileService.measure",
+							"target": "module",
+							"samples": 5000,
+							"metric": "latency-warm-ms",
+							"unitOfMeasure": "ms",
+							"value": 0.0148,
+							"method": "Median of 10 batches of 500 awaited representative calls after 0 warmups; includes await overhead."
+						},
+						{
+							"unit": "service.performance-profile",
+							"workload": "service.performance-profile",
+							"callable": "PerformanceProfileService.measure",
+							"target": "module",
+							"samples": 5000,
+							"metric": "process-peak-rss-bytes",
+							"unitOfMeasure": "bytes",
+							"value": 201326592,
+							"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including its runner and earlier work; not memory attributable to one callable."
+						}
+					]
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "A ZodError from zod's parse of the input: beginScope and observe throw it synchronously, while observeAsync, measure and capture reject with it when the input has an unknown key, a missing or invalid unit or workload, an empty callable, or (measure and capture only) rounds, iterations or warmups outside their integer ranges."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "PerformanceProfileService.peakProcessRssBytes",
@@ -147,11 +413,12 @@
 					{
 						"name": "PerformanceProfileService.peakProcessRssBytes",
 						"type": "number",
-						"description": "OS process high-water resident set normalized to bytes for Bun on Darwin and supported Node hosts."
+						"description": "Peak resident set size of the whole process in bytes: on Bun on Darwin the native maxRSS is returned unchanged, while on every other host the maxRSS from process.resourceUsage(), reported in KiB, is multiplied by 1024. It covers the runner and earlier work in the process, so it is not memory attributable to one callable.",
+						"examples": [201326592, 52428800, 1073741824]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PerformanceProfileService.beginScope",
@@ -160,18 +427,40 @@
 						"name": "PerformanceProfileService.beginScope.input",
 						"type": "ObservationInput",
 						"required": true,
-						"description": "Registered unit and workload, optional callable, and bounded replay settings for the named profiling operation."
+						"description": "Unit and workload, which must match unitIdPattern, plus an optional non-empty callable that label the scope; they are validated by the strict observationInput schema before the timer starts. Any other key, including replay settings such as rounds, iterations or warmups, is rejected.",
+						"examples": [
+							{
+								"unit": "function.record-capture",
+								"workload": "function.record-capture",
+								"callable": "recordCapture"
+							},
+							{
+								"unit": "service.performance-profile",
+								"workload": "service.performance-profile"
+							},
+							{
+								"unit": "function.bench-samples",
+								"workload": "function.bench-samples",
+								"callable": "median"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PerformanceProfileService.beginScope",
 						"type": "()",
-						"description": "Idempotent callback completing one measured source scope; incomplete scopes do not count as success."
+						"description": "Function that ends the scope begun by beginScope and records the time since that call as a completed source scope; only its first call records, later calls do nothing, and a scope whose function is never called does not count."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown synchronously when the input fails the strict observationInput schema (an unknown key, a missing or invalid unit or workload, or an empty callable), before the timer starts."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PerformanceProfileService.observe",
@@ -180,24 +469,54 @@
 						"name": "PerformanceProfileService.observe.input",
 						"type": "ObservationInput",
 						"required": true,
-						"description": "Registered unit and workload, optional callable, and bounded replay settings for the named profiling operation."
+						"description": "Unit and workload, which must match unitIdPattern, plus an optional non-empty callable that label the observation; they are validated by the strict observationInput schema before the operation runs. Any other key, including replay settings such as rounds, iterations or warmups, is rejected.",
+						"examples": [
+							{
+								"unit": "service.performance-profile",
+								"workload": "service.performance-profile",
+								"callable": "PerformanceProfileService.observe"
+							},
+							{
+								"unit": "function.bench-samples",
+								"workload": "function.bench-samples",
+								"callable": "median"
+							},
+							{
+								"unit": "reports.component.evidence-grid",
+								"workload": "reports.component.evidence-grid"
+							}
+						]
 					},
 					{
 						"name": "PerformanceProfileService.observe.operation",
 						"type": "() => T",
 						"required": true,
-						"description": "Actual operation supplied by the caller; one-pass observers preserve its result, receiver, effects and rejection behavior."
+						"description": "Synchronous callback that observe calls exactly once with no arguments; its return value is passed back unchanged, and an error it throws propagates without recording an observation. A returned Promise is passed back as is but not recorded, so use observeAsync to time asynchronous work."
 					}
 				],
 				"outputs": [
 					{
 						"name": "PerformanceProfileService.observe",
 						"type": "T",
-						"description": "Exact synchronous operation result; promise identity is preserved without treating an unsettled promise as a completed sample."
+						"description": "The exact value returned by the supplied synchronous operation, passed back unchanged; a returned Promise is not recorded, so only non-promise returns are timed and counted.",
+						"examples": [
+							42,
+							"ready",
+							{
+								"count": 12,
+								"status": "ready"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown synchronously when the input fails the strict observationInput schema, before the operation is called; an error thrown by the operation itself propagates unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PerformanceProfileService.observeAsync",
@@ -206,24 +525,54 @@
 						"name": "PerformanceProfileService.observeAsync.input",
 						"type": "ObservationInput",
 						"required": true,
-						"description": "Registered unit and workload, optional callable, and bounded replay settings for the named profiling operation."
+						"description": "Unit and workload, which must match unitIdPattern, plus an optional non-empty callable that label the observation; they are validated by the strict observationInput schema before the operation starts, and invalid input rejects the returned promise. Any other key, including replay settings such as rounds, iterations or warmups, is rejected.",
+						"examples": [
+							{
+								"unit": "service.performance-profile",
+								"workload": "service.performance-profile",
+								"callable": "PerformanceProfileService.observeAsync"
+							},
+							{
+								"unit": "reports.component.evidence-grid",
+								"workload": "reports.component.evidence-grid"
+							},
+							{
+								"unit": "function.record-capture",
+								"workload": "function.record-capture",
+								"callable": "recordCapture"
+							}
+						]
 					},
 					{
 						"name": "PerformanceProfileService.observeAsync.operation",
 						"type": "() => T",
 						"required": true,
-						"description": "Actual operation supplied by the caller; one-pass observers preserve its result, receiver, effects and rejection behavior."
+						"description": "Callback that observeAsync calls exactly once with no arguments and awaits; its resolved value is returned, while a rejection propagates and records no observation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "PerformanceProfileService.observeAsync",
 						"type": "Promise<Awaited<T>>",
-						"description": "Awaited actual result, recording only successfully completed asynchronous work."
+						"description": "A promise that resolves to the awaited value of the supplied operation; the observation is recorded only after the operation resolves, so a rejection propagates unchanged and records nothing.",
+						"examples": [
+							42,
+							"ready",
+							{
+								"count": 12,
+								"status": "ready"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Returned as a rejection when the input fails the strict observationInput schema, before the operation is called; a rejection from the operation itself propagates unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PerformanceProfileService.flush",
@@ -232,11 +581,61 @@
 					{
 						"name": "PerformanceProfileService.flush",
 						"type": "Measured[]",
-						"description": "Current aggregate observations, written through the capture protocol and then removed from the in-memory collector."
+						"description": "Two measurements per aggregate observation key: latency-observed-ms, the arithmetic mean of its successful completions, and process-peak-rss-bytes, the highest peak RSS seen at those completions; each key is written through recordCapture as one capture, and the in-memory collector is cleared afterwards.",
+						"examples": [
+							[
+								{
+									"unit": "service.performance-profile",
+									"workload": "service.performance-profile",
+									"callable": "PerformanceProfileService.observe",
+									"target": "module",
+									"samples": 3,
+									"metric": "latency-observed-ms",
+									"unitOfMeasure": "ms",
+									"value": 0.0093,
+									"method": "Arithmetic mean of 3 successful synchronous returns; includes clock and observer overhead, with no replay or warmup."
+								},
+								{
+									"unit": "service.performance-profile",
+									"workload": "service.performance-profile",
+									"callable": "PerformanceProfileService.observe",
+									"target": "module",
+									"samples": 3,
+									"metric": "process-peak-rss-bytes",
+									"unitOfMeasure": "bytes",
+									"value": 201326592,
+									"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable."
+								}
+							],
+							[
+								{
+									"unit": "function.bench-samples",
+									"workload": "function.bench-samples",
+									"callable": "median",
+									"target": "module",
+									"samples": 12,
+									"metric": "latency-observed-ms",
+									"unitOfMeasure": "ms",
+									"value": 0.0019,
+									"method": "Arithmetic mean of 12 successful synchronous returns; includes clock and observer overhead, with no replay or warmup."
+								},
+								{
+									"unit": "function.bench-samples",
+									"workload": "function.bench-samples",
+									"callable": "median",
+									"target": "module",
+									"samples": 12,
+									"metric": "process-peak-rss-bytes",
+									"unitOfMeasure": "bytes",
+									"value": 187432960,
+									"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable."
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PerformanceProfileService.measure",
@@ -245,24 +644,102 @@
 						"name": "PerformanceProfileService.measure.input",
 						"type": "ProfileInput",
 						"required": true,
-						"description": "Registered unit and workload, optional callable, and bounded replay settings for the named profiling operation."
+						"description": "Unit and workload, which must match unitIdPattern, plus an optional non-empty callable and optional replay counts validated by the strict profileInput schema: rounds defaults to 5 (integer 1 to 50), iterations to 1000 (integer 1 to 100000) and warmups to 3 (integer 0 to 100000). Invalid input rejects before any operation call, and any key other than unit, workload, callable, rounds, iterations or warmups is rejected.",
+						"examples": [
+							{
+								"unit": "function.bench-samples",
+								"workload": "function.bench-samples",
+								"callable": "median",
+								"rounds": 5,
+								"iterations": 1000,
+								"warmups": 3
+							},
+							{
+								"unit": "reports.component.evidence-grid",
+								"workload": "reports.component.evidence-grid"
+							},
+							{
+								"unit": "service.performance-profile",
+								"workload": "service.performance-profile",
+								"callable": "PerformanceProfileService.measure",
+								"rounds": 10,
+								"iterations": 500,
+								"warmups": 0
+							}
+						]
 					},
 					{
 						"name": "PerformanceProfileService.measure.operation",
 						"type": "() => unknown",
 						"required": true,
-						"description": "Representative replay-safe operation executed for the declared warmup, round and iteration counts; errors propagate."
+						"description": "Representative callback that must be safe to repeat: measure awaits it once per warmup and once per iteration of every round, so it runs warmups + rounds * iterations times, its return values are discarded, and any error or rejection propagates out of measure."
 					}
 				],
 				"outputs": [
 					{
 						"name": "PerformanceProfileService.measure",
 						"type": "Promise<Measured[]>",
-						"description": "Real latency and process-peak RSS observations after the explicit caller-selected replay and warmup counts."
+						"description": "Two measurements from one replay: latency-warm-ms, the median across rounds of each round's mean awaited call time in milliseconds, and process-peak-rss-bytes, the whole process's peak RSS in bytes read after the replay; nothing is written to a capture.",
+						"examples": [
+							[
+								{
+									"unit": "function.bench-samples",
+									"workload": "function.bench-samples",
+									"callable": "median",
+									"target": "module",
+									"samples": 5000,
+									"metric": "latency-warm-ms",
+									"unitOfMeasure": "ms",
+									"value": 0.0021,
+									"method": "Median of 5 batches of 1000 awaited representative calls after 3 warmups; includes await overhead."
+								},
+								{
+									"unit": "function.bench-samples",
+									"workload": "function.bench-samples",
+									"callable": "median",
+									"target": "module",
+									"samples": 5000,
+									"metric": "process-peak-rss-bytes",
+									"unitOfMeasure": "bytes",
+									"value": 187432960,
+									"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including its runner and earlier work; not memory attributable to one callable."
+								}
+							],
+							[
+								{
+									"unit": "service.performance-profile",
+									"workload": "service.performance-profile",
+									"callable": "PerformanceProfileService.measure",
+									"target": "module",
+									"samples": 5000,
+									"metric": "latency-warm-ms",
+									"unitOfMeasure": "ms",
+									"value": 0.0148,
+									"method": "Median of 10 batches of 500 awaited representative calls after 0 warmups; includes await overhead."
+								},
+								{
+									"unit": "service.performance-profile",
+									"workload": "service.performance-profile",
+									"callable": "PerformanceProfileService.measure",
+									"target": "module",
+									"samples": 5000,
+									"metric": "process-peak-rss-bytes",
+									"unitOfMeasure": "bytes",
+									"value": 201326592,
+									"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including its runner and earlier work; not memory attributable to one callable."
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Returned as a rejection when the input fails the strict profileInput schema (an unknown key, a missing or invalid unit or workload, an empty callable, or rounds, iterations or warmups outside their integer ranges), before any operation call."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PerformanceProfileService.capture",
@@ -271,24 +748,102 @@
 						"name": "PerformanceProfileService.capture.input",
 						"type": "ProfileInput",
 						"required": true,
-						"description": "Registered unit and workload, optional callable, and bounded replay settings for the named profiling operation."
+						"description": "Unit and workload, which must match unitIdPattern, plus an optional non-empty callable and optional replay counts validated by the strict profileInput schema: rounds defaults to 5 (integer 1 to 50), iterations to 1000 (integer 1 to 100000) and warmups to 3 (integer 0 to 100000). Invalid input rejects before any operation call, and any key other than unit, workload, callable, rounds, iterations or warmups is rejected.",
+						"examples": [
+							{
+								"unit": "function.bench-samples",
+								"workload": "function.bench-samples",
+								"callable": "median",
+								"rounds": 5,
+								"iterations": 1000,
+								"warmups": 3
+							},
+							{
+								"unit": "reports.component.evidence-grid",
+								"workload": "reports.component.evidence-grid"
+							},
+							{
+								"unit": "service.performance-profile",
+								"workload": "service.performance-profile",
+								"callable": "PerformanceProfileService.measure",
+								"rounds": 10,
+								"iterations": 500,
+								"warmups": 0
+							}
+						]
 					},
 					{
 						"name": "PerformanceProfileService.capture.operation",
 						"type": "() => unknown",
 						"required": true,
-						"description": "Representative replay-safe operation executed for the declared warmup, round and iteration counts; errors propagate."
+						"description": "Representative callback that must be safe to repeat: capture runs it through measure, so it is awaited once per warmup and once per iteration of every round (warmups + rounds * iterations times), its return values are discarded, and any error or rejection propagates out of capture."
 					}
 				],
 				"outputs": [
 					{
 						"name": "PerformanceProfileService.capture",
 						"type": "Promise<Measured[]>",
-						"description": "Measured observations persisted through Harness captures with a unique immutable chunk name."
+						"description": "The same two measurements as measure, also written as one representative benchmark capture whose evidence name is unique on every call (a SHA-256 prefix of the unit, callable and workload plus a random UUID).",
+						"examples": [
+							[
+								{
+									"unit": "function.bench-samples",
+									"workload": "function.bench-samples",
+									"callable": "median",
+									"target": "module",
+									"samples": 5000,
+									"metric": "latency-warm-ms",
+									"unitOfMeasure": "ms",
+									"value": 0.0021,
+									"method": "Median of 5 batches of 1000 awaited representative calls after 3 warmups; includes await overhead."
+								},
+								{
+									"unit": "function.bench-samples",
+									"workload": "function.bench-samples",
+									"callable": "median",
+									"target": "module",
+									"samples": 5000,
+									"metric": "process-peak-rss-bytes",
+									"unitOfMeasure": "bytes",
+									"value": 187432960,
+									"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including its runner and earlier work; not memory attributable to one callable."
+								}
+							],
+							[
+								{
+									"unit": "service.performance-profile",
+									"workload": "service.performance-profile",
+									"callable": "PerformanceProfileService.measure",
+									"target": "module",
+									"samples": 5000,
+									"metric": "latency-warm-ms",
+									"unitOfMeasure": "ms",
+									"value": 0.0148,
+									"method": "Median of 10 batches of 500 awaited representative calls after 0 warmups; includes await overhead."
+								},
+								{
+									"unit": "service.performance-profile",
+									"workload": "service.performance-profile",
+									"callable": "PerformanceProfileService.measure",
+									"target": "module",
+									"samples": 5000,
+									"metric": "process-peak-rss-bytes",
+									"unitOfMeasure": "bytes",
+									"value": 201326592,
+									"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including its runner and earlier work; not memory attributable to one callable."
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Returned as a rejection when the input fails the strict profileInput schema inside the measure call that capture awaits first, so no operation call or capture write happens."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
