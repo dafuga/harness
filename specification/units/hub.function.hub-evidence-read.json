@@ -21,23 +21,86 @@
 				"name": "hubEvidenceRead.context",
 				"type": "EvidenceRead",
 				"required": true,
-				"description": "Actor, route project ID, request and projection service."
+				"description": "The request context HubApiController builds for a project route: the authenticated actor, the project ID from the route (already checked to be 36 lowercase hex or dash characters), the incoming Request and the HubProjectionService that performs the read. A request that is not GET gets a 405 and is not read, and the query string supplies the read fields, with any projectId in it dropped in favor of the route's project ID."
 			},
 			{
 				"name": "hubEvidenceRead.operation",
 				"type": "string",
 				"required": true,
-				"description": "evidence selects the JSON evidence read; every other value selects the artifact path."
+				"description": "The path segment after the project ID, which HubApiController passes only as 'evidence' or 'artifact'. Only the exact value 'evidence' selects the JSON evidence read, and every other value, including an empty string, selects the artifact read.",
+				"examples": ["evidence", "artifact"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubEvidenceRead",
 				"type": "Promise<Response>",
-				"description": "405 method-denied JSON for non-GET requests, otherwise evidence JSON or artifact bytes with no-store and no-sniff headers and the attested media type."
+				"description": "The resolved Response: a 405 JSON body with error set to method-denied for any non-GET request, otherwise a 200 response whose body is the JSON evidence result for operation 'evidence' or the artifact bytes for any other operation. JSON responses carry Cache-Control no-store, Referrer-Policy no-referrer and X-Content-Type-Options nosniff, while artifact bytes carry Cache-Control no-store and X-Content-Type-Options nosniff, no Referrer-Policy, and a Content-Type equal to the attested media type: image/png, image/jpeg, audio/wav, audio/mpeg, audio/mp4, audio/ogg, application/json or text/plain; charset=utf-8."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "invalid-input",
+				"type": "thrown",
+				"description": "A hubFail error (message 'Harness artifact unavailable') with code 'invalid-input', thrown by hubEvidenceQuery or hubArtifactQuery before any project read when the query string fails the evidence field checks: a missing, blank or over-long required field, a commit or hash outside its lowercase hex pattern, an identifier outside its pattern, or a mode or side outside its allowed values."
+			},
+			{
+				"name": "forbidden",
+				"type": "thrown",
+				"description": "A hubFail error with code 'forbidden', thrown when projectId is empty, or, once the answer is built, when the sourceRepository the collaboration API returns for the project no longer matches the one read at the start of the request."
+			},
+			{
+				"name": "evidence-stale",
+				"type": "thrown",
+				"description": "A hubFail error with code 'evidence-stale', thrown when mode is 'current' and the branch tip is not the requested commit, and on the artifact path when a pinned notesRevision or evidenceRevision differs from the current one and the requested revision cannot be shown reachable from it."
+			},
+			{
+				"name": "evidence-unreadable",
+				"type": "thrown",
+				"description": "A hubFail error with code 'evidence-unreadable', thrown when the branch is not found in the source repository, when the commit is not reachable from the branch tip, or when no unit with that entityId is in the registry of the requested commit. On the focused-regression artifact path it is also thrown when the regression note's evidence commit is not reachable from the pinned evidence revision, or when the tree of the note's commit differs from the loaded record's source tree."
+			},
+			{
+				"name": "invalid-notes",
+				"type": "thrown",
+				"description": "A hubFail error with code 'invalid-notes', thrown while the pinned notes are read (only when a notes revision is pinned) if a notes blob whose path, without slashes, is a 40-character commit is not a regular file with mode 100644 or 100755, or if the same note commit appears twice."
+			},
+			{
+				"name": "artifact-refused",
+				"type": "thrown",
+				"description": "A hubFail error with code 'artifact-refused', thrown on the artifact path when explorerEvidence or recordedCapture throws for the requested capture, when the record's origin is missing or has problems, or when no regression note matches a focused capture's record. On the non-focused path, any failure while the bytes are read or checked by artifactAnswer (not stored, larger than artifactLimit, wrong SHA-256, or a refused media type) is reported as this code."
+			},
+			{
+				"name": "artifact-too-large",
+				"type": "thrown",
+				"description": "A hubFail error with code 'artifact-too-large', thrown on the non-focused artifact path when the origin's fact for the capture's path reports more bytes than artifactLimit, which is 11 MiB (11,534,336 bytes)."
+			},
+			{
+				"name": "evidence-file-too-large",
+				"type": "thrown",
+				"description": "A hubFail error with code 'evidence-file-too-large', thrown on the artifact path while the origin record's files are loaded, when a declared file or a stored file's entry size or raw length is larger than evidenceFileLimit."
+			},
+			{
+				"name": "cache-hash-mismatch",
+				"type": "thrown",
+				"description": "A hubFail error with code 'cache-hash-mismatch', thrown on the artifact path while the origin record's files are loaded, when a stored LFS object read from the source adapter does not match the length and SHA-256 that its record declares."
+			},
+			{
+				"name": "artifact-corrupt",
+				"type": "thrown",
+				"description": "A hubFail error with code 'artifact-corrupt', the default code of hubFail, thrown on the artifact path while the origin record's files are loaded, when a stored evidence file's git blob SHA-1 differs from its tree entry's sha."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A plain Error with no code, thrown on the focused-regression artifact path, where artifactAnswer is not wrapped in a catch: its message says the bytes are not stored, exceed artifactLimit, fail the recorded SHA-256, or are refused by artifactMedia for the capture's kind or bytes."
+			},
+			{
+				"name": "dependency-rejection",
+				"type": "thrown",
+				"description": "Any other rejection from the collaboration API, the source history adapter or the evidence helpers, for example from getProject, branches or resolve, is not caught here and rejects this promise unchanged, except inside the two artifact-path try blocks, which report any failure there as artifact-refused."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubEvidenceRead",
@@ -46,24 +109,86 @@
 						"name": "hubEvidenceRead.context",
 						"type": "EvidenceRead",
 						"required": true,
-						"description": "Actor, route project ID, request and projection service."
+						"description": "The request context HubApiController builds for a project route: the authenticated actor, the project ID from the route (already checked to be 36 lowercase hex or dash characters), the incoming Request and the HubProjectionService that performs the read. A request that is not GET gets a 405 and is not read, and the query string supplies the read fields, with any projectId in it dropped in favor of the route's project ID."
 					},
 					{
 						"name": "hubEvidenceRead.operation",
 						"type": "string",
 						"required": true,
-						"description": "evidence selects the JSON evidence read; every other value selects the artifact path."
+						"description": "The path segment after the project ID, which HubApiController passes only as 'evidence' or 'artifact'. Only the exact value 'evidence' selects the JSON evidence read, and every other value, including an empty string, selects the artifact read.",
+						"examples": ["evidence", "artifact"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubEvidenceRead",
 						"type": "Promise<Response>",
-						"description": "405 method-denied JSON for non-GET requests, otherwise evidence JSON or artifact bytes with no-store and no-sniff headers and the attested media type."
+						"description": "The resolved Response: a 405 JSON body with error set to method-denied for any non-GET request, otherwise a 200 response whose body is the JSON evidence result for operation 'evidence' or the artifact bytes for any other operation. JSON responses carry Cache-Control no-store, Referrer-Policy no-referrer and X-Content-Type-Options nosniff, while artifact bytes carry Cache-Control no-store and X-Content-Type-Options nosniff, no Referrer-Policy, and a Content-Type equal to the attested media type: image/png, image/jpeg, audio/wav, audio/mpeg, audio/mp4, audio/ogg, application/json or text/plain; charset=utf-8."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "invalid-input",
+						"type": "thrown",
+						"description": "A hubFail error (message 'Harness artifact unavailable') with code 'invalid-input', thrown by hubEvidenceQuery or hubArtifactQuery before any project read when the query string fails the evidence field checks: a missing, blank or over-long required field, a commit or hash outside its lowercase hex pattern, an identifier outside its pattern, or a mode or side outside its allowed values."
+					},
+					{
+						"name": "forbidden",
+						"type": "thrown",
+						"description": "A hubFail error with code 'forbidden', thrown when projectId is empty, or, once the answer is built, when the sourceRepository the collaboration API returns for the project no longer matches the one read at the start of the request."
+					},
+					{
+						"name": "evidence-stale",
+						"type": "thrown",
+						"description": "A hubFail error with code 'evidence-stale', thrown when mode is 'current' and the branch tip is not the requested commit, and on the artifact path when a pinned notesRevision or evidenceRevision differs from the current one and the requested revision cannot be shown reachable from it."
+					},
+					{
+						"name": "evidence-unreadable",
+						"type": "thrown",
+						"description": "A hubFail error with code 'evidence-unreadable', thrown when the branch is not found in the source repository, when the commit is not reachable from the branch tip, or when no unit with that entityId is in the registry of the requested commit. On the focused-regression artifact path it is also thrown when the regression note's evidence commit is not reachable from the pinned evidence revision, or when the tree of the note's commit differs from the loaded record's source tree."
+					},
+					{
+						"name": "invalid-notes",
+						"type": "thrown",
+						"description": "A hubFail error with code 'invalid-notes', thrown while the pinned notes are read (only when a notes revision is pinned) if a notes blob whose path, without slashes, is a 40-character commit is not a regular file with mode 100644 or 100755, or if the same note commit appears twice."
+					},
+					{
+						"name": "artifact-refused",
+						"type": "thrown",
+						"description": "A hubFail error with code 'artifact-refused', thrown on the artifact path when explorerEvidence or recordedCapture throws for the requested capture, when the record's origin is missing or has problems, or when no regression note matches a focused capture's record. On the non-focused path, any failure while the bytes are read or checked by artifactAnswer (not stored, larger than artifactLimit, wrong SHA-256, or a refused media type) is reported as this code."
+					},
+					{
+						"name": "artifact-too-large",
+						"type": "thrown",
+						"description": "A hubFail error with code 'artifact-too-large', thrown on the non-focused artifact path when the origin's fact for the capture's path reports more bytes than artifactLimit, which is 11 MiB (11,534,336 bytes)."
+					},
+					{
+						"name": "evidence-file-too-large",
+						"type": "thrown",
+						"description": "A hubFail error with code 'evidence-file-too-large', thrown on the artifact path while the origin record's files are loaded, when a declared file or a stored file's entry size or raw length is larger than evidenceFileLimit."
+					},
+					{
+						"name": "cache-hash-mismatch",
+						"type": "thrown",
+						"description": "A hubFail error with code 'cache-hash-mismatch', thrown on the artifact path while the origin record's files are loaded, when a stored LFS object read from the source adapter does not match the length and SHA-256 that its record declares."
+					},
+					{
+						"name": "artifact-corrupt",
+						"type": "thrown",
+						"description": "A hubFail error with code 'artifact-corrupt', the default code of hubFail, thrown on the artifact path while the origin record's files are loaded, when a stored evidence file's git blob SHA-1 differs from its tree entry's sha."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A plain Error with no code, thrown on the focused-regression artifact path, where artifactAnswer is not wrapped in a catch: its message says the bytes are not stored, exceed artifactLimit, fail the recorded SHA-256, or are refused by artifactMedia for the capture's kind or bytes."
+					},
+					{
+						"name": "dependency-rejection",
+						"type": "thrown",
+						"description": "Any other rejection from the collaboration API, the source history adapter or the evidence helpers, for example from getProject, branches or resolve, is not caught here and rejects this promise unchanged, except inside the two artifact-path try blocks, which report any failure there as artifact-refused."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
