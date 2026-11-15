@@ -42,112 +42,186 @@
 				"name": "ipcFields.value",
 				"type": "unknown",
 				"required": true,
-				"description": "The value expected to be a non-null object other than an array."
+				"description": "The request object to check, which must be non-null and not an array; null, undefined, other primitives, functions and arrays fail with 'Expected an object.' and any other object, including a class instance, is returned unchanged.",
+				"examples": [
+					{
+						"provider": "codex",
+						"mode": "ask",
+						"text": "Summarize the failing checks."
+					},
+					{
+						"branch": "main",
+						"commit": "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"
+					},
+					{
+						"entityId": "reports.component.evidence-grid",
+						"version": "v001"
+					}
+				]
 			},
 			{
 				"name": "textField.value",
 				"type": "unknown",
 				"required": true,
-				"description": "The value expected to be a nonblank string."
+				"description": "The candidate text, which must be a string that is not blank after trimming and no longer than max; any value that fails these checks throws 'Invalid text field.'",
+				"examples": ["Evidence grid review", "main", "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"]
 			},
 			{
 				"name": "textField.max",
 				"type": "number",
 				"required": false,
 				"default": 300,
-				"description": "The maximum text length; defaults to 300 characters."
+				"description": "The largest allowed string length, compared with the string's length property (UTF-16 code units); a longer string throws 'Invalid text field.' Defaults to 300 when omitted.",
+				"examples": [40, 64, 160]
 			},
 			{
 				"name": "textField.pattern",
 				"type": "RegExp",
 				"required": false,
-				"description": "An optional regular expression the text must match."
+				"default": "undefined",
+				"description": "An optional RegExp that the text must match, checked with pattern.test(value); a non-matching text throws 'Invalid identifier.' When omitted, no pattern check runs."
 			},
 			{
 				"name": "nullableText.value",
 				"type": "unknown",
 				"required": true,
-				"description": "Either null or a nonblank string of at most 300 characters. Undefined is not accepted as null."
+				"description": "Either null, which is returned as null, or a string that is not blank after trimming and is at most 300 characters long. Undefined is not null, so it throws 'Invalid text field.' like any other non-string value.",
+				"examples": [null, "main", "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"]
 			},
 			{
 				"name": "nullableText.pattern",
 				"type": "RegExp",
 				"required": false,
-				"description": "An optional pattern for non-null text."
+				"default": "undefined",
+				"description": "An optional RegExp that a non-null text must match, checked with pattern.test(value) inside textField; a non-matching text throws 'Invalid identifier.' Null is returned as null without any pattern check."
 			},
 			{
 				"name": "enumField.value",
 				"type": "unknown",
 				"required": true,
-				"description": "The value to select from an allowed list."
+				"description": "The candidate choice, which is accepted only when it equals one entry of allowed as checked by Array.prototype.includes; any other value throws 'Invalid option.'",
+				"examples": ["codex", "claude"]
 			},
 			{
 				"name": "enumField.allowed",
 				"type": "readonly T[]",
 				"required": true,
-				"description": "The exact values permitted for the selection."
+				"description": "The complete list of permitted values, searched with Array.prototype.includes, so the order of entries does not matter and an empty list rejects every value. Entries are compared as given, with no trimming or case folding.",
+				"examples": [
+					["codex", "claude"],
+					["ask", "change"]
+				]
 			},
 			{
 				"name": "regionField.value",
 				"type": "unknown",
 				"required": true,
-				"description": "Either null or an image rectangle with finite x, y, width and height fractions from 0 to 1. Width and height must be positive and the rectangle must stay inside the image, allowing a 0.000001 edge tolerance."
+				"description": "Either null, which returns null, or an object whose x, y, width and height are finite numbers from 0 to 1 with positive width and height, and whose x + width and y + height do not exceed 1.000001 (a 0.000001 edge tolerance). A value that is neither null nor a non-array object throws 'Expected an object.', coordinates that are not finite numbers from 0 to 1 throw 'Invalid image region.', and rectangles with zero width or height or that extend past the image throw 'Image region is outside the image.'",
+				"examples": [
+					null,
+					{
+						"x": 0,
+						"y": 0,
+						"width": 1,
+						"height": 1
+					},
+					{
+						"x": 0.1,
+						"y": 0.2,
+						"width": 0.5,
+						"height": 0.25
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ipcFields",
 				"type": "Record<string, unknown>",
-				"description": "The original object, without filtering its keys or copying it."
+				"description": "The same object reference that was passed in, with its keys and values left unchanged rather than filtered or copied.",
+				"examples": [
+					{
+						"provider": "codex",
+						"mode": "ask",
+						"text": "Summarize the failing checks."
+					},
+					{
+						"branch": "main",
+						"commit": "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"
+					},
+					{
+						"entityId": "reports.component.evidence-grid",
+						"version": "v001"
+					}
+				]
 			},
 			{
 				"name": "textField",
 				"type": "string",
-				"description": "The original accepted string, without trimming it."
+				"description": "The exact accepted string, returned without trimming, so any leading or trailing whitespace is kept.",
+				"examples": ["Evidence grid review", "main", "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"]
 			},
 			{
 				"name": "nullableText",
 				"type": "string | null",
-				"description": "Null for null input, otherwise the accepted string."
+				"description": "Null when the input is null, otherwise the same accepted string that textField returns without trimming.",
+				"examples": [null, "main", "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"]
 			},
 			{
 				"name": "hashPattern",
 				"type": "unknown",
-				"description": "A pattern for exactly 64 lowercase hexadecimal characters."
+				"description": "A RegExp, /^[a-f0-9]{64}$/, that accepts exactly 64 lowercase hexadecimal characters and nothing else."
 			},
 			{
 				"name": "commitPattern",
 				"type": "unknown",
-				"description": "A pattern for exactly 40 lowercase hexadecimal characters."
+				"description": "A RegExp, /^[a-f0-9]{40}$/, that accepts exactly 40 lowercase hexadecimal characters and nothing else."
 			},
 			{
 				"name": "idPattern",
 				"type": "unknown",
-				"description": "A pattern for lowercase letter-or-digit segments separated by dots or hyphens."
+				"description": "A RegExp, /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/, that accepts lowercase letter-or-digit segments separated by single dots or hyphens, such as reports.component.evidence-grid. It rejects uppercase letters, leading or trailing separators and doubled separators."
 			},
 			{
 				"name": "versionPattern",
 				"type": "unknown",
-				"description": "A pattern for v followed by at least three decimal digits."
+				"description": "A RegExp that accepts a lowercase v followed by three or more decimal digits and nothing else, such as v001."
 			},
 			{
 				"name": "enumField",
 				"type": "T",
-				"description": "The supplied value when it exactly matches an allowed entry."
+				"description": "The supplied value, returned unchanged and only after it equals one of the allowed entries.",
+				"examples": ["codex", "claude"]
 			},
 			{
 				"name": "regionField",
 				"type": "Region | null",
-				"description": "Null or a new rectangle containing only x, y, width and height."
+				"description": "Null for null input, otherwise a new object that contains only x, y, width and height copied from the checked rectangle.",
+				"examples": [
+					null,
+					{
+						"x": 0,
+						"y": 0,
+						"width": 1,
+						"height": 1
+					},
+					{
+						"x": 0.1,
+						"y": 0.2,
+						"width": 0.5,
+						"height": 0.25
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Throws when an object, text field, identifier, allowed choice or image region fails its check."
+				"description": "Thrown as a plain Error whose message identifies the failed check: 'Expected an object.' (ipcFields and regionField), 'Invalid text field.' or 'Invalid identifier.' (textField and nullableText), 'Invalid option.' (enumField), or 'Invalid image region.' and 'Image region is outside the image.' (regionField)."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ipcFields",
@@ -156,23 +230,54 @@
 						"name": "ipcFields.value",
 						"type": "unknown",
 						"required": true,
-						"description": "The value expected to be a non-null object other than an array."
+						"description": "The request object to check, which must be non-null and not an array; null, undefined, other primitives, functions and arrays fail with 'Expected an object.' and any other object, including a class instance, is returned unchanged.",
+						"examples": [
+							{
+								"provider": "codex",
+								"mode": "ask",
+								"text": "Summarize the failing checks."
+							},
+							{
+								"branch": "main",
+								"commit": "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"
+							},
+							{
+								"entityId": "reports.component.evidence-grid",
+								"version": "v001"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ipcFields",
 						"type": "Record<string, unknown>",
-						"description": "The original object, without filtering its keys or copying it."
+						"description": "The same object reference that was passed in, with its keys and values left unchanged rather than filtered or copied.",
+						"examples": [
+							{
+								"provider": "codex",
+								"mode": "ask",
+								"text": "Summarize the failing checks."
+							},
+							{
+								"branch": "main",
+								"commit": "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"
+							},
+							{
+								"entityId": "reports.component.evidence-grid",
+								"version": "v001"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as a plain Error with the message 'Expected an object.' when the value is null, undefined, a primitive, a function or an array."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "textField",
@@ -181,36 +286,41 @@
 						"name": "textField.value",
 						"type": "unknown",
 						"required": true,
-						"description": "The value expected to be a nonblank string."
+						"description": "The candidate text, which must be a string that is not blank after trimming and no longer than max; any value that fails these checks throws 'Invalid text field.'",
+						"examples": ["Evidence grid review", "main", "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"]
 					},
 					{
 						"name": "textField.max",
 						"type": "number",
 						"required": false,
 						"default": 300,
-						"description": "The maximum text length; defaults to 300 characters."
+						"description": "The largest allowed string length, compared with the string's length property (UTF-16 code units); a longer string throws 'Invalid text field.' Defaults to 300 when omitted.",
+						"examples": [40, 64, 160]
 					},
 					{
 						"name": "textField.pattern",
 						"type": "RegExp",
 						"required": false,
-						"description": "An optional regular expression the text must match."
+						"default": "undefined",
+						"description": "An optional RegExp that the text must match, checked with pattern.test(value); a non-matching text throws 'Invalid identifier.' When omitted, no pattern check runs."
 					}
 				],
 				"outputs": [
 					{
 						"name": "textField",
 						"type": "string",
-						"description": "The original accepted string, without trimming it."
+						"description": "The exact accepted string, returned without trimming, so any leading or trailing whitespace is kept.",
+						"examples": ["Evidence grid review", "main", "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as a plain Error with 'Invalid text field.' when the value is not a string, is blank after trimming or is longer than max, and with 'Invalid identifier.' when a supplied pattern does not match."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "nullableText",
@@ -219,24 +329,33 @@
 						"name": "nullableText.value",
 						"type": "unknown",
 						"required": true,
-						"description": "Either null or a nonblank string of at most 300 characters. Undefined is not accepted as null."
+						"description": "Either null, which is returned as null, or a string that is not blank after trimming and is at most 300 characters long. Undefined is not null, so it throws 'Invalid text field.' like any other non-string value.",
+						"examples": [null, "main", "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"]
 					},
 					{
 						"name": "nullableText.pattern",
 						"type": "RegExp",
 						"required": false,
-						"description": "An optional pattern for non-null text."
+						"default": "undefined",
+						"description": "An optional RegExp that a non-null text must match, checked with pattern.test(value) inside textField; a non-matching text throws 'Invalid identifier.' Null is returned as null without any pattern check."
 					}
 				],
 				"outputs": [
 					{
 						"name": "nullableText",
 						"type": "string | null",
-						"description": "Null for null input, otherwise the accepted string."
+						"description": "Null when the input is null, otherwise the same accepted string that textField returns without trimming.",
+						"examples": [null, "main", "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown as a plain Error with 'Invalid text field.' or 'Invalid identifier.' for any non-null value that fails the textField checks; null never throws."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "enumField",
@@ -245,29 +364,36 @@
 						"name": "enumField.value",
 						"type": "unknown",
 						"required": true,
-						"description": "The value to select from an allowed list."
+						"description": "The candidate choice, which is accepted only when it equals one entry of allowed as checked by Array.prototype.includes; any other value throws 'Invalid option.'",
+						"examples": ["codex", "claude"]
 					},
 					{
 						"name": "enumField.allowed",
 						"type": "readonly T[]",
 						"required": true,
-						"description": "The exact values permitted for the selection."
+						"description": "The complete list of permitted values, searched with Array.prototype.includes, so the order of entries does not matter and an empty list rejects every value. Entries are compared as given, with no trimming or case folding.",
+						"examples": [
+							["codex", "claude"],
+							["ask", "change"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "enumField",
 						"type": "T",
-						"description": "The supplied value when it exactly matches an allowed entry."
+						"description": "The supplied value, returned unchanged and only after it equals one of the allowed entries.",
+						"examples": ["codex", "claude"]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as a plain Error with 'Invalid option.' when the value is not included in the allowed list."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "regionField",
@@ -276,23 +402,54 @@
 						"name": "regionField.value",
 						"type": "unknown",
 						"required": true,
-						"description": "Either null or an image rectangle with finite x, y, width and height fractions from 0 to 1. Width and height must be positive and the rectangle must stay inside the image, allowing a 0.000001 edge tolerance."
+						"description": "Either null, which returns null, or an object whose x, y, width and height are finite numbers from 0 to 1 with positive width and height, and whose x + width and y + height do not exceed 1.000001 (a 0.000001 edge tolerance). A value that is neither null nor a non-array object throws 'Expected an object.', coordinates that are not finite numbers from 0 to 1 throw 'Invalid image region.', and rectangles with zero width or height or that extend past the image throw 'Image region is outside the image.'",
+						"examples": [
+							null,
+							{
+								"x": 0,
+								"y": 0,
+								"width": 1,
+								"height": 1
+							},
+							{
+								"x": 0.1,
+								"y": 0.2,
+								"width": 0.5,
+								"height": 0.25
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "regionField",
 						"type": "Region | null",
-						"description": "Null or a new rectangle containing only x, y, width and height."
+						"description": "Null for null input, otherwise a new object that contains only x, y, width and height copied from the checked rectangle.",
+						"examples": [
+							null,
+							{
+								"x": 0,
+								"y": 0,
+								"width": 1,
+								"height": 1
+							},
+							{
+								"x": 0.1,
+								"y": 0.2,
+								"width": 0.5,
+								"height": 0.25
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as a plain Error with 'Expected an object.' for a value that is neither null nor a non-array object, with 'Invalid image region.' for coordinates that are not finite numbers from 0 to 1, and with 'Image region is outside the image.' for zero width or height or a rectangle that extends past the image."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
