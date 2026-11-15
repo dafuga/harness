@@ -21,22 +21,39 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EvidenceRestoreService.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem root passed unchanged to the verification store, history status, and history note repositories. It determines where restore reads history and writes the local cache; the constructor does not validate it.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EvidenceRestoreService.restore",
-				"type": "Promise<Restored>"
+				"type": "Promise<Restored>",
+				"description": "The resolved summary lists record IDs restored to the local store and attached record IDs skipped during validation. Existing local IDs and empty history add nothing; a record is restored only when it loads without problems and its ID matches the history note.",
+				"examples": [
+					{
+						"restored": [],
+						"skipped": []
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "restore() can reject with an underlying repository or filesystem error while reading attached evidence or writing the local cache. The service does not catch or translate these failures."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "EvidenceRestoreService.restore",
@@ -44,11 +61,24 @@
 				"outputs": [
 					{
 						"name": "EvidenceRestoreService.restore",
-						"type": "Promise<Restored>"
+						"type": "Promise<Restored>",
+						"description": "The resolved summary lists record IDs restored to the local store and attached record IDs skipped during validation. Existing local IDs and empty history add nothing; a record is restored only when it loads without problems and its ID matches the history note.",
+						"examples": [
+							{
+								"restored": [],
+								"skipped": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "restore() can reject with an underlying repository or filesystem error while reading attached evidence or writing the local cache. The service does not catch or translate these failures."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -58,17 +88,22 @@
 					{
 						"name": "EvidenceRestoreService.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem root passed unchanged to the verification store, history status, and history note repositories. It determines where restore reads history and writes the local cache; the constructor does not validate it.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EvidenceRestoreService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "An EvidenceRestoreService instance holding the verification store, history status, and history note repositories rooted at the supplied path. Restore work begins only when restore() is called."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
