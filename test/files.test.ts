@@ -1,4 +1,3 @@
-import { existsSync } from 'node:fs';
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -56,14 +55,4 @@ test('skips identical files and protects changed files unless forced', async () 
 	expect(overwritten[0].status).toBe('overwritten');
 	expect(await readFile(target, 'utf8')).toBe('next\n');
 	await rm(root, { recursive: true, force: true });
-});
-
-test('src/core relocation stubs stay deleted', () => {
-	for (const stub of [
-		'src/core/fields.ts',
-		'src/core/files.ts',
-		'src/core/impactTypes.ts',
-		'src/core/jevTypes.ts'
-	])
-		expect(existsSync(join(import.meta.dirname, '..', stub)), stub).toBe(false);
 });

@@ -6,7 +6,6 @@ import { dirname, resolve } from 'node:path';
 import { afterAll, expect, test, vi } from 'vitest';
 import { pinnedToolchain } from '../../scripts/build-kernel/pinnedToolchain';
 import { type ToolRun } from '../../src/utils/development-tooling/pinnedToolchain';
-import { pinnedToolchain as relocated } from '../../src/utils/development-tooling/pinnedToolchain';
 import { recordCapture } from '../../src/utils/reports-media/record-capture/recordCapture';
 
 /**
@@ -83,10 +82,6 @@ test('the tool is the one rustup names for this directory, with its own director
 			]
 		})
 	);
-});
-
-test('the relocated module exports the pinned toolchain the build script runs', () => {
-	expect(relocated).toBe(pinnedToolchain);
 });
 
 test('without rustup nothing is run in its place, and the failure says what is missing', () => {

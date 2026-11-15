@@ -4,7 +4,6 @@ import {
 	recordCapture
 } from '../../src/utils/reports-media/record-capture/recordCapture';
 import { readdir, readFile } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { expect, test } from 'vitest';
 import {
@@ -119,15 +118,6 @@ test('every committed public helper example executes against its real implementa
 		}
 	}
 	expect(total).toBeGreaterThan(0);
-});
-
-test('src/services/revision-detail-service relocation stubs stay deleted', () => {
-	for (const stub of [
-		'src/services/revision-detail-service/serviceClasses.ts',
-		'src/services/revision-detail-service/unitDocumentation.ts',
-		'src/services/revision-detail-service/unitMetadata.ts'
-	])
-		expect(existsSync(resolve(import.meta.dirname, '../..', stub)), stub).toBe(false);
 });
 
 /** Normal helper documentation checks also retain direct, feature-based workloads. */

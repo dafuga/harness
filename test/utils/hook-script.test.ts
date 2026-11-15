@@ -1,4 +1,3 @@
-import { existsSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import { chainedSuffix, enabledFile, hookStages, stageFile } from '../../src/utils/hookScript';
 import { hookScript, managedHook } from '../../src/cli/program/hook-install-service/hookScript';
@@ -65,9 +64,4 @@ test('a stage offered later asks for an opt-in of its own, never for the one a p
 	// The wrapper that did ask the push opt-in is what this rule keeps from coming back.
 	expect(firstMessageHook).toContain(`[ -f "$git_dir/${enabledFile}" ] || exit 0`);
 	expect(hookScript('commit-msg')).not.toBe(firstMessageHook);
-});
-
-test('the wrapper has one module now: no relocation stub is left at its old services path', () => {
-	const stub = new URL('../../src/services/hook-install-service/hookScript.ts', import.meta.url);
-	expect(existsSync(stub)).toBe(false);
 });

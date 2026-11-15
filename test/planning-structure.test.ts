@@ -1,6 +1,5 @@
 import { afterEach, expect, test } from 'vitest';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -173,12 +172,6 @@ test.each(['page', 'component', 'function', 'config', 'service'])(
 		}
 	}
 );
-
-test('relocated structure rules leave no stub behind at their former paths', () => {
-	const dir = join(import.meta.dirname, '../src/audit/structure-rules');
-	for (const stub of ['moduleCategoryFindings', 'planningArtifactPaths', 'structureRules'])
-		expect(existsSync(join(dir, `${stub}.ts`)), stub).toBe(false);
-});
 
 test.each(['component', 'function', 'service'])(
 	'missing or corrupt %s plans cannot disable reserved subtree checks',

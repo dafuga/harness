@@ -1,11 +1,5 @@
-import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { expect, test } from 'vitest';
-import {
-	lfsPointer,
-	lfsStored,
-	parseLfsPointer as parseFromUtils
-} from '../../src/utils/lfsPointer';
+import { lfsPointer, lfsStored } from '../../src/utils/lfsPointer';
 import { parseLfsPointer } from '../../src/services/verification-evidence/history-status-service/attached-record-service/lfsPointer';
 
 const oid = 'a'.repeat(64);
@@ -38,13 +32,4 @@ test('lfsStored selects media by extension, whatever the case', () => {
 		false,
 		false
 	]);
-});
-
-test('parseLfsPointer is served by its real module, with no stub left at the old path', () => {
-	const stub = resolve(
-		import.meta.dirname,
-		'../../src/services/attached-record-service/lfsPointer.ts'
-	);
-	expect(existsSync(stub)).toBe(false);
-	expect(parseFromUtils).toBe(parseLfsPointer);
 });

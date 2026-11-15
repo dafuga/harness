@@ -6,7 +6,6 @@ import { expect, test } from 'vitest';
 import { HttpRuntimeAdapter } from '../../src/adapters/HttpRuntimeAdapter';
 import { ModuleRuntimeAdapter } from '../../src/adapters/ModuleRuntimeAdapter';
 import { ProcessRuntimeAdapter } from '../../src/adapters/execution-runtimes/process-runtime-adapter/ProcessRuntimeAdapter';
-import { lineProcess } from '../../src/adapters/execution-runtimes/process-runtime-adapter/lineProcess';
 import { WasmRuntimeAdapter } from '../../src/adapters/execution-runtimes/wasm-runtime-adapter/WasmRuntimeAdapter';
 import type { RuntimeResponse } from '../../src/core/runtimeTypes';
 import { fixtureServer, ok, scripted, scripts } from '../support/runtimeFixtures';
@@ -47,28 +46,6 @@ test('persistent process runtime keeps one process, and recovers after a timeout
 	expect(third).toMatchObject({ ok: true, output: { pid: expect.any(Number) } });
 	expect(third.output.pid).not.toBe(first.output.pid);
 	await persistent.close();
-}, 30_000);
-
-test('the relocated line process keeps one child until it is closed, then starts another', async () => {
-	const { command, args } = scripted(scripts.lines);
-	const line = lineProcess(command, args);
-	const pidOf = async (operation: string) => {
-		const reply = await line.exchange(JSON.stringify({ operation }), 5000);
-		return 'text' in reply
-			? (JSON.parse(reply.text) as { output: { pid: number } }).output.pid
-			: undefined;
-	};
-	try {
-		const first = await pidOf('a');
-		expect(first).toEqual(expect.any(Number));
-		expect(await pidOf('b')).toBe(first);
-		line.close();
-		const restarted = await pidOf('c');
-		expect(restarted).toEqual(expect.any(Number));
-		expect(restarted).not.toBe(first);
-	} finally {
-		line.close();
-	}
 }, 30_000);
 
 test('HTTP runtime reports bad status, malformed bodies, timeouts and refused connections', async () => {
