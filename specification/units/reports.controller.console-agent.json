@@ -9,16 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/controllers/ConsoleAgentController.ts",
 			"packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentController.ts",
 			"packages/reports/src/lib/server-hooks/ConsoleAgentController.ts"
 		],
-		"symbols": [
-			"ConsoleAgentController",
-			"ConsoleAgentController",
-			"ConsoleAgentController.handle",
-			"ConsoleAgentController"
-		]
+		"symbols": ["ConsoleAgentController", "ConsoleAgentController.handle", "ConsoleAgentController"]
 	},
 	"contract": {
 		"origin": "derived",
