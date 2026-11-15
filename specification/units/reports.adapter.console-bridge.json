@@ -21,29 +21,156 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "ConsoleBridgeAdapter.connect",
-				"type": "Promise<ProjectSnapshot>"
+				"type": "Promise<ProjectSnapshot>",
+				"description": "The ProjectSnapshot from the owner backend's connect response, cast without validation; the token in that response stays inside the adapter. Repeated calls return this same memoized snapshot until close() runs or a failed connect clears it.",
+				"examples": [
+					{
+						"project": {
+							"name": "harness-app",
+							"root": "/srv/projects/harness-app"
+						},
+						"capabilities": {
+							"comments": true,
+							"agents": true,
+							"planning": true,
+							"approval": true,
+							"source": "local"
+						},
+						"revision": {
+							"branch": "main",
+							"commit": "3f9c2a7e5b1d8046c9e2f1a7b4d3c8e5f0a61b27",
+							"tip": "3f9c2a7e5b1d8046c9e2f1a7b4d3c8e5f0a61b27",
+							"atTip": true
+						},
+						"branches": [
+							{
+								"name": "main",
+								"tip": "3f9c2a7e5b1d8046c9e2f1a7b4d3c8e5f0a61b27",
+								"current": true
+							}
+						],
+						"commits": [
+							{
+								"hash": "3f9c2a7e5b1d8046c9e2f1a7b4d3c8e5f0a61b27",
+								"subject": "Add evidence grid component",
+								"authoredAt": "2026-11-14T16:42:10Z"
+							}
+						],
+						"entities": [
+							{
+								"id": "reports.component.evidence-grid",
+								"category": "components",
+								"kind": "component",
+								"title": "Evidence grid",
+								"summary": "Shows the recorded verification captures for one unit in a grid.",
+								"changed": false,
+								"planned": false,
+								"hasPlan": false,
+								"lifecycle": null,
+								"verification": "verified",
+								"verificationNote": "The verification record matches the viewed commit.",
+								"latestVersion": null,
+								"approvedVersion": null,
+								"threadCount": 2,
+								"thumbnail": null
+							}
+						],
+						"writable": true
+					},
+					{
+						"project": {
+							"name": "harness-app",
+							"root": "/srv/projects/harness-app"
+						},
+						"revision": {
+							"branch": "main",
+							"commit": "a81d4e0c6f27b93d5a10e8c4f6b2d7917e3c05a9",
+							"tip": "3f9c2a7e5b1d8046c9e2f1a7b4d3c8e5f0a61b27",
+							"atTip": false
+						},
+						"branches": [
+							{
+								"name": "main",
+								"tip": "3f9c2a7e5b1d8046c9e2f1a7b4d3c8e5f0a61b27",
+								"current": true
+							}
+						],
+						"commits": [
+							{
+								"hash": "3f9c2a7e5b1d8046c9e2f1a7b4d3c8e5f0a61b27",
+								"subject": "Add evidence grid component",
+								"authoredAt": "2026-11-14T16:42:10Z"
+							},
+							{
+								"hash": "a81d4e0c6f27b93d5a10e8c4f6b2d7917e3c05a9",
+								"subject": "Start the evidence grid",
+								"authoredAt": "2026-11-10T09:15:00Z"
+							}
+						],
+						"entities": [],
+						"writable": false
+					}
+				]
 			},
 			{
 				"name": "ConsoleBridgeAdapter.bridge",
-				"type": "DesktopBridge"
+				"type": "DesktopBridge",
+				"description": "A Proxy typed as DesktopBridge: openProject calls connect, listProjects resolves to [], selectProject always rejects, onRunEvent registers a local listener, onCacheStatus, hostedStatus, history, artifact and evidence are undefined, and every other method awaits connect before calling the owner backend. Its methods can reject with the errors listed for this unit, and all bridges from one adapter share its connection, listeners and run state."
 			},
 			{
 				"name": "ConsoleBridgeAdapter.close",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Always undefined, because close() has no return statement. close() advances the generation counter so an in-flight connect rejects, stops run polling, sends a disconnect for the current token without awaiting it, and then clears the token and the memoized connection."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects connect with 'Chat closed while connecting.' when close() runs while the connect request is in flight; the adapter then sends a disconnect for that response's token and drops its snapshot."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by the adapter's /api/agent request helper for any non-OK response, with the server's error text or 'Chat unavailable.' as the message and the HTTP status as a numeric status property."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Rejected by fetch when the request to /api/agent fails at the network level; the adapter does not catch it, so connect and every bridge call that reaches the owner backend reject with it."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Rejected by response.json() when the /api/agent body is not valid JSON; parsing runs before the status check, so a non-JSON error response rejects with this instead of an Error carrying a status."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by the bridge's startRun with 'Retry the previous request before sending another.' while an earlier startRun with different input (ignoring conversation, branch and commit) is still pending, which lasts until that call succeeds or fails with a 4xx status other than 408 or 429."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by agentRequestKey when a startRun input is null or contains a value JSON cannot encode, such as a BigInt or a circular reference."
+			},
+			{
+				"name": "DataCloneError",
+				"type": "thrown",
+				"description": "Thrown by structuredClone when no startRun is pending and the new input contains a value that cannot be cloned, such as a function."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by the bridge's selectProject on every call, with 'This web preview has one project.' as the message."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ConsoleBridgeAdapter.connect",
@@ -51,11 +178,121 @@
 				"outputs": [
 					{
 						"name": "ConsoleBridgeAdapter.connect",
-						"type": "Promise<ProjectSnapshot>"
+						"type": "Promise<ProjectSnapshot>",
+						"description": "The ProjectSnapshot from the owner backend's connect response, cast without validation; the token in that response stays inside the adapter. Repeated calls return this same memoized snapshot until close() runs or a failed connect clears it.",
+						"examples": [
+							{
+								"project": {
+									"name": "harness-app",
+									"root": "/srv/projects/harness-app"
+								},
+								"capabilities": {
+									"comments": true,
+									"agents": true,
+									"planning": true,
+									"approval": true,
+									"source": "local"
+								},
+								"revision": {
+									"branch": "main",
+									"commit": "3f9c2a7e5b1d8046c9e2f1a7b4d3c8e5f0a61b27",
+									"tip": "3f9c2a7e5b1d8046c9e2f1a7b4d3c8e5f0a61b27",
+									"atTip": true
+								},
+								"branches": [
+									{
+										"name": "main",
+										"tip": "3f9c2a7e5b1d8046c9e2f1a7b4d3c8e5f0a61b27",
+										"current": true
+									}
+								],
+								"commits": [
+									{
+										"hash": "3f9c2a7e5b1d8046c9e2f1a7b4d3c8e5f0a61b27",
+										"subject": "Add evidence grid component",
+										"authoredAt": "2026-11-14T16:42:10Z"
+									}
+								],
+								"entities": [
+									{
+										"id": "reports.component.evidence-grid",
+										"category": "components",
+										"kind": "component",
+										"title": "Evidence grid",
+										"summary": "Shows the recorded verification captures for one unit in a grid.",
+										"changed": false,
+										"planned": false,
+										"hasPlan": false,
+										"lifecycle": null,
+										"verification": "verified",
+										"verificationNote": "The verification record matches the viewed commit.",
+										"latestVersion": null,
+										"approvedVersion": null,
+										"threadCount": 2,
+										"thumbnail": null
+									}
+								],
+								"writable": true
+							},
+							{
+								"project": {
+									"name": "harness-app",
+									"root": "/srv/projects/harness-app"
+								},
+								"revision": {
+									"branch": "main",
+									"commit": "a81d4e0c6f27b93d5a10e8c4f6b2d7917e3c05a9",
+									"tip": "3f9c2a7e5b1d8046c9e2f1a7b4d3c8e5f0a61b27",
+									"atTip": false
+								},
+								"branches": [
+									{
+										"name": "main",
+										"tip": "3f9c2a7e5b1d8046c9e2f1a7b4d3c8e5f0a61b27",
+										"current": true
+									}
+								],
+								"commits": [
+									{
+										"hash": "3f9c2a7e5b1d8046c9e2f1a7b4d3c8e5f0a61b27",
+										"subject": "Add evidence grid component",
+										"authoredAt": "2026-11-14T16:42:10Z"
+									},
+									{
+										"hash": "a81d4e0c6f27b93d5a10e8c4f6b2d7917e3c05a9",
+										"subject": "Start the evidence grid",
+										"authoredAt": "2026-11-10T09:15:00Z"
+									}
+								],
+								"entities": [],
+								"writable": false
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects connect with 'Chat closed while connecting.' when close() runs while the connect request is in flight; the adapter then sends a disconnect for that response's token and drops its snapshot."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by the adapter's /api/agent request helper for any non-OK response, with the server's error text or 'Chat unavailable.' as the message and the HTTP status as a numeric status property."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Rejected by fetch when the request to /api/agent fails at the network level; the adapter does not catch it, so connect and every bridge call that reaches the owner backend reject with it."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Rejected by response.json() when the /api/agent body is not valid JSON; parsing runs before the status check, so a non-JSON error response rejects with this instead of an Error carrying a status."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ConsoleBridgeAdapter.bridge",
@@ -63,11 +300,12 @@
 				"outputs": [
 					{
 						"name": "ConsoleBridgeAdapter.bridge",
-						"type": "DesktopBridge"
+						"type": "DesktopBridge",
+						"description": "A Proxy typed as DesktopBridge: openProject calls connect, listProjects resolves to [], selectProject always rejects, onRunEvent registers a local listener, onCacheStatus, hostedStatus, history, artifact and evidence are undefined, and every other method awaits connect before calling the owner backend. Its methods can reject with the errors listed for this unit, and all bridges from one adapter share its connection, listeners and run state."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ConsoleBridgeAdapter.close",
@@ -75,11 +313,12 @@
 				"outputs": [
 					{
 						"name": "ConsoleBridgeAdapter.close",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Always undefined, because close() has no return statement. close() advances the generation counter so an in-flight connect rejects, stops run polling, sends a disconnect for the current token without awaiting it, and then clears the token and the memoized connection."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
