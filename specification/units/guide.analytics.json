@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/guides/analytics.ts", "src/guides/reports-media/analytics.ts"],
-		"symbols": ["analyticsGuide", "reportGuide", "analyticsGuide", "reportGuide"]
+		"source": ["src/guides/reports-media/analytics.ts"],
+		"symbols": ["analyticsGuide", "reportGuide"]
 	},
 	"contract": {
 		"origin": "derived",
