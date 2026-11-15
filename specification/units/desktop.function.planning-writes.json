@@ -46,102 +46,524 @@
 				"name": "planningWrites.context",
 				"type": "PlanningContext",
 				"required": true,
-				"description": "The repository and planning API used to create a plan."
+				"description": "The planning context: api.createPlan writes the new plan, and root is the repository that a plan record's design prompts and notes are read from."
 			},
 			{
 				"name": "planningWrites.draft",
 				"type": "PlanDraft",
 				"required": true,
-				"description": "The category, title, goal and optional proposed contract. The title must yield a nonempty lowercase letters-and-digits slug, limited to 64 characters."
+				"description": "The plan's category (a desktop category such as functions or components), title, goal and optional proposed contract, whose error names must be unique. The title must give a nonempty slug of at most 64 characters; the planning package also refuses a slug that does not start with a letter, and the apis and models categories, which have no plan category.",
+				"examples": [
+					{
+						"category": "functions",
+						"title": "Planning writes",
+						"goal": "Adapts desktop planning requests into stored plans."
+					},
+					{
+						"category": "components",
+						"title": "Evidence grid",
+						"goal": "Shows the recorded captures of a unit side by side.",
+						"contract": {
+							"inputs": [
+								{
+									"name": "captures",
+									"type": "Capture[]",
+									"required": true
+								}
+							],
+							"outputs": [
+								{
+									"name": "grid",
+									"type": "Element"
+								}
+							],
+							"errors": ["EmptyCaptures"]
+						}
+					}
+				]
 			},
 			{
 				"name": "ensurePlan.context",
 				"type": "PlanningContext",
 				"required": true,
-				"description": "The repository and planning API used to find or create a unit’s plan."
+				"description": "The planning context: api lists the plans and reads or creates the unit's plan, and root is the repository that a plan record's design prompts and notes are read from."
 			},
 			{
 				"name": "ensurePlan.unit",
 				"type": "ComponentManifest",
 				"required": true,
-				"description": "The existing unit definition whose identity, kind, title, responsibility and contract seed a plan when none exists. shared-function maps to function."
+				"description": "The unit definition: when no plan exists for its id, the new plan takes the unit's id, title, responsibility, inputs and outputs, and only the names of its errors. Its kind is the plan category, with shared-function mapped to function; any other kind must be one of page, shell, layout, component, function, config or service, or the planning package refuses it.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "desktop.function.planning-writes",
+						"uid": "u_4baio2xnxm",
+						"kind": "function",
+						"title": "Write plans, designs and approvals",
+						"responsibility": "Adapts desktop planning requests into stored plans, design versions, image threads and approvals.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": ["packages/desktop/src/utils/projects-sessions/planningWrites.ts"],
+							"symbols": [
+								"planningWrites",
+								"ensurePlan",
+								"addPlanDesign",
+								"openPlanThread",
+								"approvePlanDesign"
+							]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [
+								{
+									"name": "planningWrites.draft",
+									"type": "PlanDraft",
+									"required": true
+								}
+							],
+							"outputs": [
+								{
+									"name": "planningWrites",
+									"type": "unknown"
+								}
+							],
+							"errors": [
+								{
+									"name": "Error",
+									"type": "thrown"
+								}
+							],
+							"errorStatus": "declared"
+						},
+						"dependencies": [
+							{
+								"unit": "desktop.function.planning-reads",
+								"via": "import",
+								"origin": "derived"
+							}
+						],
+						"runtime": {
+							"kind": "module",
+							"entry": "packages/desktop/src/utils/projects-sessions/planningWrites.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/desktop/src/utils/projects-sessions/planningWrites.ts"
+								}
+							]
+						},
+						"scenarios": ["desktop-native"],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "addPlanDesign.context",
 				"type": "PlanningContext",
 				"required": true,
-				"description": "The repository and planning API used to add a design."
+				"description": "The planning context: api reads the plan and adds the design, and root is the repository that the added design's prompt and notes are read back from."
 			},
 			{
 				"name": "addPlanDesign.draft",
 				"type": "DesignDraft",
 				"required": true,
-				"description": "The design proposal, generator, base revision, expected latest version, optional image or separate options, notes and optional revised-image binding. Missing expectedLatest defaults to the current plan’s latest version."
+				"description": "The design to add: its prompt, generator, baseRevision and either one complete PNG as bytes or, for a visual plan, separately generated options, with notes for a headless design (a function plan takes notes with bytes null, never an image). expectedLatest defaults to the plan's latest version and is refused when it differs, and a revises image binds only when it is found in the stored version, otherwise the design is stored without a revision.",
+				"examples": [
+					{
+						"entityId": "desktop.function.planning-writes",
+						"prompt": "Plan how a planning write is validated and committed.",
+						"generator": {
+							"provider": "claude",
+							"model": "claude-opus-5-5"
+						},
+						"baseRevision": "e94b0a6d2f7c13e5b8d09a4f6c2e7b1d5a83f0c9",
+						"expectedLatest": null,
+						"state": "default",
+						"viewport": "diagram",
+						"bytes": null,
+						"notes": "Each request is checked, then written as one commit on the checked-out branch."
+					},
+					{
+						"entityId": "desktop.function.planning-reads",
+						"prompt": "Describe the read-only planning queries and what each returns.",
+						"generator": {
+							"provider": "claude",
+							"model": "claude-sonnet-5-5"
+						},
+						"baseRevision": "7c1e4a9b0d3f58e2a61c9b7d4e0f2a8c35b6d1e7",
+						"expectedLatest": "v001",
+						"state": "default",
+						"viewport": "diagram",
+						"bytes": null,
+						"notes": "Each read takes a revision and returns the plans and designs that revision holds."
+					}
+				]
 			},
 			{
 				"name": "openPlanThread.context",
 				"type": "PlanningContext",
 				"required": true,
-				"description": "The planning context used to open a thread."
+				"description": "The planning context whose api reads the plan and opens the thread; root is not used."
 			},
 			{
 				"name": "openPlanThread.draft",
 				"type": "ThreadDraft",
 				"required": true,
-				"description": "The entity and optional image anchor, including version, hash, state, viewport, region and option. An anchored image must belong to that entity/version and have the supplied state and viewport."
+				"description": "The entity and its image anchor, where version, imageSha256, state, viewport and region are all null for an unanchored thread and option names the option holding the image. An anchored image must belong to that version, its state and viewport must match the draft's (they are checked, not stored), and a region must lie within the image with positive width and height.",
+				"examples": [
+					{
+						"entityId": "desktop.function.planning-writes",
+						"version": null,
+						"imageSha256": null,
+						"state": null,
+						"viewport": null,
+						"region": null
+					},
+					{
+						"entityId": "reports.component.evidence-grid",
+						"version": "v001",
+						"imageSha256": "a9d41f7c02e8b35d6f19ac4e7b2d08f3c5a16e9b4d7f20c8e3a5b1d6f94c27e0",
+						"state": "default",
+						"viewport": "desktop",
+						"region": {
+							"x": 0.25,
+							"y": 0.4,
+							"width": 0.3,
+							"height": 0.2
+						}
+					},
+					{
+						"entityId": "reports.component.evidence-grid",
+						"version": "v003",
+						"imageSha256": "f0b6d3a91e4c7285b0d9e6f3a1c8b5d2e7f4a09c6b3d8e1f5a2c7b9d4e0f6a38",
+						"state": "default",
+						"viewport": "desktop",
+						"region": null,
+						"option": "o2"
+					}
+				]
 			},
 			{
 				"name": "approvePlanDesign.context",
 				"type": "PlanningContext",
 				"required": true,
-				"description": "The planning context used to approve a design."
+				"description": "The planning context whose api reads the plan and records the approval; root is not used."
 			},
 			{
 				"name": "approvePlanDesign.draft",
 				"type": "ApprovalDraft",
 				"required": true,
-				"description": "The entity, design version, selected image hashes, contract hash and optional design option. Images must match the requested version or selected option."
+				"description": "The entity, the design version (which must be the latest), the selected image hashes, the contract hash and, for a version with options, the option. Each hash must name one image of that version or of the chosen option, the contract hash must equal the latest contract hash, and the notes hash comes from the version rather than the draft.",
+				"examples": [
+					{
+						"entityId": "reports.component.evidence-grid",
+						"version": "v002",
+						"imageHashes": ["c08b5e2f9a1d47c6e30b8f5a2d9c71e4b6f03a8d5c2e9b17f4a6d30c8e5b2f19"],
+						"contractHash": "3f7a0e9c6b18d2f54a7e0c3b9d61f8a2e5c7b40d9f1a6e83c2b5d07f4a9e1c63"
+					},
+					{
+						"entityId": "desktop.function.planning-writes",
+						"version": "v001",
+						"imageHashes": [],
+						"contractHash": "5e3f9c1a7b2d4e60f8a1c3b5d7e9f0a2b4c6d8e0f1a3b5c7d9e1f2a4b6c8d0e2"
+					},
+					{
+						"entityId": "reports.component.evidence-grid",
+						"version": "v003",
+						"imageHashes": ["f0b6d3a91e4c7285b0d9e6f3a1c8b5d2e7f4a09c6b3d8e1f5a2c7b9d4e0f6a38"],
+						"contractHash": "3f7a0e9c6b18d2f54a7e0c3b9d61f8a2e5c7b40d9f1a6e83c2b5d07f4a9e1c63",
+						"option": "o2"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "reviewer",
 				"type": "unknown",
-				"description": "The local author identity: a person named Local reviewer."
+				"description": "The local author identity, a person named Local reviewer, that plans and threads are authored under and whose name approvals record.",
+				"examples": [
+					{
+						"kind": "person",
+						"name": "Local reviewer"
+					}
+				]
 			},
 			{
 				"name": "planningWrites",
 				"type": "unknown",
-				"description": "A promise for the created plan record. New contracts use default state and desktop viewport for visual categories, diagram for others; missing proposed input/output/error lists become empty."
+				"description": "A promise for the new plan's record, read back after the commit: its id is the singular category and slug joined by a dot, its path is src/ followed by the plural category and the slug, its lifecycle is draft, and it has no versions or threads. Its contract holds the proposed inputs, outputs and errors, with empty lists where none were proposed.",
+				"examples": [
+					{
+						"id": "function.planning-writes",
+						"path": "src/functions/planning-writes",
+						"category": "functions",
+						"title": "Planning writes",
+						"goal": "Adapts desktop planning requests into stored plans.",
+						"lifecycle": "draft",
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"hash": "9e4a1c7b03d5f8e26a1c9b4d7f0e3a58c6b2d9f14e7a0c3b8d5f2e6a9c1b4d70"
+						},
+						"versions": [],
+						"threads": []
+					},
+					{
+						"id": "component.evidence-grid",
+						"path": "src/components/evidence-grid",
+						"category": "components",
+						"title": "Evidence grid",
+						"goal": "Shows the recorded captures of a unit side by side.",
+						"lifecycle": "draft",
+						"contract": {
+							"inputs": [
+								{
+									"name": "captures",
+									"type": "Capture[]",
+									"required": true
+								}
+							],
+							"outputs": [
+								{
+									"name": "grid",
+									"type": "Element"
+								}
+							],
+							"errors": [
+								{
+									"name": "EmptyCaptures",
+									"type": "error"
+								}
+							],
+							"hash": "b1d7e04c9a2f36e85c1d0b7a4f9e2c63d8a5b1e07f4c9d2a6e3b8f10c5d7a2e4"
+						},
+						"versions": [],
+						"threads": []
+					}
+				]
 			},
 			{
 				"name": "ensurePlan",
 				"type": "unknown",
-				"description": "A promise for the existing plan, or a new plan seeded from the unit. New plans preserve input/output fields but take only error names."
+				"description": "A promise for the unit's plan record: the existing plan read at HEAD with its designs and threads, or a new draft seeded from the unit with no versions or threads. A new draft's contract keeps the unit's inputs and outputs as written, and its errors are shown as {name, type: 'error'} entries.",
+				"examples": [
+					{
+						"id": "desktop.function.planning-writes",
+						"path": "src/functions/desktop-function-planning-writes",
+						"category": "functions",
+						"title": "Write plans, designs and approvals",
+						"goal": "Adapts desktop planning requests into stored plans, design versions, image threads and approvals.",
+						"lifecycle": "draft",
+						"contract": {
+							"inputs": [
+								{
+									"name": "planningWrites.draft",
+									"type": "PlanDraft",
+									"required": true
+								}
+							],
+							"outputs": [
+								{
+									"name": "planningWrites",
+									"type": "unknown"
+								}
+							],
+							"errors": [
+								{
+									"name": "Error",
+									"type": "error"
+								}
+							],
+							"hash": "2c9e5a7d1b40f8c63e2a9d5b7f1c0e84a6d3b9f27c5e1a0d8b4f63e9c2a7d150"
+						},
+						"versions": [],
+						"threads": []
+					},
+					{
+						"id": "reports.component.evidence-grid",
+						"path": "src/components/reports-component-evidence-grid",
+						"category": "components",
+						"title": "Evidence grid",
+						"goal": "Shows the recorded captures of a unit side by side.",
+						"lifecycle": "review",
+						"contract": {
+							"inputs": [
+								{
+									"name": "captures",
+									"type": "Capture[]",
+									"required": true
+								}
+							],
+							"outputs": [
+								{
+									"name": "grid",
+									"type": "Element"
+								}
+							],
+							"errors": [
+								{
+									"name": "EmptyCaptures",
+									"type": "error"
+								}
+							],
+							"hash": "3f7a0e9c6b18d2f54a7e0c3b9d61f8a2e5c7b40d9f1a6e83c2b5d07f4a9e1c63"
+						},
+						"versions": [
+							{
+								"version": "v001",
+								"createdAt": "2026-11-15T09:45:00.000Z",
+								"commit": "2d8f61a9c4e07b3f5a2d918c6e4b0f7a13d5c8e2",
+								"generator": "claude · claude-sonnet-5-5",
+								"prompt": "Show the recorded captures as a three-column grid.",
+								"baseRevision": "e94b0a6d2f7c13e5b8d09a4f6c2e7b1d5a83f0c9",
+								"images": [
+									{
+										"state": "default",
+										"viewport": "desktop",
+										"sha256": "a9d41f7c02e8b35d6f19ac4e7b2d08f3c5a16e9b4d7f20c8e3a5b1d6f94c27e0",
+										"bytes": 184322
+									}
+								],
+								"approval": null
+							}
+						],
+						"threads": [
+							{
+								"id": "b7e2c9d4-3f1a-4e8b-9c25-7d0a6f13e8b1",
+								"pin": 1,
+								"version": "v001",
+								"imageSha256": "a9d41f7c02e8b35d6f19ac4e7b2d08f3c5a16e9b4d7f20c8e3a5b1d6f94c27e0",
+								"state": "default",
+								"viewport": "desktop",
+								"region": {
+									"x": 0.25,
+									"y": 0.4,
+									"width": 0.3,
+									"height": 0.2
+								},
+								"messageCount": 0
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "addPlanDesign",
 				"type": "unknown",
-				"description": "A promise for the added design version. Images are packaged as one image per option or a single image; the stored revised image is used to determine its option when found."
+				"description": "A promise for the design version just added, read back with its plan: its version is the next in sequence (such as v002), its commit is the commit that added it, and its images are one PNG, one per option, or none for a notes-only design. Its approval is null for a new version, and options and revises appear only when the design has them.",
+				"examples": [
+					{
+						"version": "v001",
+						"createdAt": "2026-11-15T09:30:00.000Z",
+						"commit": "7c1e4a9b0d3f58e2a61c9b7d4e0f2a8c35b6d1e7",
+						"generator": "claude · claude-opus-5-5",
+						"prompt": "Plan how a planning write is validated and committed.",
+						"notes": "Each request is checked, then written as one commit on the checked-out branch.",
+						"baseRevision": "e94b0a6d2f7c13e5b8d09a4f6c2e7b1d5a83f0c9",
+						"images": [],
+						"approval": null
+					},
+					{
+						"version": "v002",
+						"createdAt": "2026-11-15T11:05:12.447Z",
+						"commit": "a14f9d2e7c60b38e5d1a47f0c92e6b8d3f5a1c74",
+						"generator": "claude · claude-sonnet-5-5",
+						"prompt": "Make the evidence grid show the recorded captures in three columns.",
+						"baseRevision": "e94b0a6d2f7c13e5b8d09a4f6c2e7b1d5a83f0c9",
+						"images": [
+							{
+								"state": "default",
+								"viewport": "desktop",
+								"sha256": "c08b5e2f9a1d47c6e30b8f5a2d9c71e4b6f03a8d5c2e9b17f4a6d30c8e5b2f19",
+								"bytes": 201558
+							}
+						],
+						"approval": null,
+						"revises": {
+							"version": "v001",
+							"imageSha256": "a9d41f7c02e8b35d6f19ac4e7b2d08f3c5a16e9b4d7f20c8e3a5b1d6f94c27e0",
+							"region": {
+								"x": 0.25,
+								"y": 0.4,
+								"width": 0.3,
+								"height": 0.2
+							},
+							"threadId": "b7e2c9d4-3f1a-4e8b-9c25-7d0a6f13e8b1"
+						}
+					}
+				]
 			},
 			{
 				"name": "openPlanThread",
 				"type": "unknown",
-				"description": "A promise for the newly opened thread converted to its desktop summary."
+				"description": "A promise for the new thread's summary: its id, its pin (the next number on the unit), its anchor's version, image hash, state, viewport and region (all null when unanchored), and its option when the image has one. messageCount is 0 because this operation writes no first message.",
+				"examples": [
+					{
+						"id": "b7e2c9d4-3f1a-4e8b-9c25-7d0a6f13e8b1",
+						"pin": 1,
+						"version": "v001",
+						"imageSha256": "a9d41f7c02e8b35d6f19ac4e7b2d08f3c5a16e9b4d7f20c8e3a5b1d6f94c27e0",
+						"state": "default",
+						"viewport": "desktop",
+						"region": {
+							"x": 0.25,
+							"y": 0.4,
+							"width": 0.3,
+							"height": 0.2
+						},
+						"messageCount": 0
+					},
+					{
+						"id": "3f1c2b9e-8a4d-4c7e-9b21-6d0f5e7a1c44",
+						"pin": 1,
+						"version": null,
+						"imageSha256": null,
+						"state": null,
+						"viewport": null,
+						"region": null,
+						"messageCount": 0
+					}
+				]
 			},
 			{
 				"name": "approvePlanDesign",
 				"type": "unknown",
-				"description": "A promise for the saved approval summary, binding the selected images, contract hash and any design notes hash."
+				"description": "A promise for the saved approval summary: its id, the approved version, the image hashes it binds, its contract hash and approval time, with option for a version with options. current is true when it is returned, because the approval binds the latest version.",
+				"examples": [
+					{
+						"id": "d2a5f8e1-6c3b-4a97-8e02-b4f1c7d93a60",
+						"version": "v002",
+						"imageHashes": ["c08b5e2f9a1d47c6e30b8f5a2d9c71e4b6f03a8d5c2e9b17f4a6d30c8e5b2f19"],
+						"contractHash": "3f7a0e9c6b18d2f54a7e0c3b9d61f8a2e5c7b40d9f1a6e83c2b5d07f4a9e1c63",
+						"approvedAt": "2026-11-15T12:02:37.205Z",
+						"current": true
+					},
+					{
+						"id": "5a0e7c39-b2d1-4f86-a3e5-1c9d7b04f2e8",
+						"version": "v001",
+						"imageHashes": [],
+						"contractHash": "5e3f9c1a7b2d4e60f8a1c3b5d7e9f0a2b4c6d8e0f1a3b5c7d9e1f2a4b6c8d0e2",
+						"approvedAt": "2026-11-15T12:20:03.906Z",
+						"current": true
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects titles that produce no slug, invalid image anchors or state/viewport mismatches, unknown design versions, mismatched approval images and failures from the planning API or follow-up reads."
+				"description": "Thrown by planningWrites for a title with no letters or numbers, by openPlanThread for an image anchor missing from the given version or a state or viewport that differs from the image, and by approvePlanDesign for an unknown version or images that do not match it. Every operation also rejects with the planning package's Error when a planning API call or a follow-up read fails."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "planningWrites",
@@ -150,29 +572,108 @@
 						"name": "planningWrites.context",
 						"type": "PlanningContext",
 						"required": true,
-						"description": "The repository and planning API used to create a plan."
+						"description": "The planning context: api.createPlan writes the new plan, and root is the repository that a plan record's design prompts and notes are read from."
 					},
 					{
 						"name": "planningWrites.draft",
 						"type": "PlanDraft",
 						"required": true,
-						"description": "The category, title, goal and optional proposed contract. The title must yield a nonempty lowercase letters-and-digits slug, limited to 64 characters."
+						"description": "The plan's category (a desktop category such as functions or components), title, goal and optional proposed contract, whose error names must be unique. The title must give a nonempty slug of at most 64 characters; the planning package also refuses a slug that does not start with a letter, and the apis and models categories, which have no plan category.",
+						"examples": [
+							{
+								"category": "functions",
+								"title": "Planning writes",
+								"goal": "Adapts desktop planning requests into stored plans."
+							},
+							{
+								"category": "components",
+								"title": "Evidence grid",
+								"goal": "Shows the recorded captures of a unit side by side.",
+								"contract": {
+									"inputs": [
+										{
+											"name": "captures",
+											"type": "Capture[]",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "grid",
+											"type": "Element"
+										}
+									],
+									"errors": ["EmptyCaptures"]
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "planningWrites",
 						"type": "unknown",
-						"description": "A promise for the created plan record. New contracts use default state and desktop viewport for visual categories, diagram for others; missing proposed input/output/error lists become empty."
+						"description": "A promise for the new plan's record, read back after the commit: its id is the singular category and slug joined by a dot, its path is src/ followed by the plural category and the slug, its lifecycle is draft, and it has no versions or threads. Its contract holds the proposed inputs, outputs and errors, with empty lists where none were proposed.",
+						"examples": [
+							{
+								"id": "function.planning-writes",
+								"path": "src/functions/planning-writes",
+								"category": "functions",
+								"title": "Planning writes",
+								"goal": "Adapts desktop planning requests into stored plans.",
+								"lifecycle": "draft",
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"hash": "9e4a1c7b03d5f8e26a1c9b4d7f0e3a58c6b2d9f14e7a0c3b8d5f2e6a9c1b4d70"
+								},
+								"versions": [],
+								"threads": []
+							},
+							{
+								"id": "component.evidence-grid",
+								"path": "src/components/evidence-grid",
+								"category": "components",
+								"title": "Evidence grid",
+								"goal": "Shows the recorded captures of a unit side by side.",
+								"lifecycle": "draft",
+								"contract": {
+									"inputs": [
+										{
+											"name": "captures",
+											"type": "Capture[]",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "grid",
+											"type": "Element"
+										}
+									],
+									"errors": [
+										{
+											"name": "EmptyCaptures",
+											"type": "error"
+										}
+									],
+									"hash": "b1d7e04c9a2f36e85c1d0b7a4f9e2c63d8a5b1e07f4c9d2a6e3b8f10c5d7a2e4"
+								},
+								"versions": [],
+								"threads": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the title yields no slug ('Use a title containing letters or numbers.'). A createPlan call that fails, including one refused for its slug or category, also rejects with the planning package's Error."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ensurePlan",
@@ -181,24 +682,198 @@
 						"name": "ensurePlan.context",
 						"type": "PlanningContext",
 						"required": true,
-						"description": "The repository and planning API used to find or create a unit’s plan."
+						"description": "The planning context: api lists the plans and reads or creates the unit's plan, and root is the repository that a plan record's design prompts and notes are read from."
 					},
 					{
 						"name": "ensurePlan.unit",
 						"type": "ComponentManifest",
 						"required": true,
-						"description": "The existing unit definition whose identity, kind, title, responsibility and contract seed a plan when none exists. shared-function maps to function."
+						"description": "The unit definition: when no plan exists for its id, the new plan takes the unit's id, title, responsibility, inputs and outputs, and only the names of its errors. Its kind is the plan category, with shared-function mapped to function; any other kind must be one of page, shell, layout, component, function, config or service, or the planning package refuses it.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "desktop.function.planning-writes",
+								"uid": "u_4baio2xnxm",
+								"kind": "function",
+								"title": "Write plans, designs and approvals",
+								"responsibility": "Adapts desktop planning requests into stored plans, design versions, image threads and approvals.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": ["packages/desktop/src/utils/projects-sessions/planningWrites.ts"],
+									"symbols": [
+										"planningWrites",
+										"ensurePlan",
+										"addPlanDesign",
+										"openPlanThread",
+										"approvePlanDesign"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [
+										{
+											"name": "planningWrites.draft",
+											"type": "PlanDraft",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "planningWrites",
+											"type": "unknown"
+										}
+									],
+									"errors": [
+										{
+											"name": "Error",
+											"type": "thrown"
+										}
+									],
+									"errorStatus": "declared"
+								},
+								"dependencies": [
+									{
+										"unit": "desktop.function.planning-reads",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "packages/desktop/src/utils/projects-sessions/planningWrites.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/desktop/src/utils/projects-sessions/planningWrites.ts"
+										}
+									]
+								},
+								"scenarios": ["desktop-native"],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ensurePlan",
 						"type": "unknown",
-						"description": "A promise for the existing plan, or a new plan seeded from the unit. New plans preserve input/output fields but take only error names."
+						"description": "A promise for the unit's plan record: the existing plan read at HEAD with its designs and threads, or a new draft seeded from the unit with no versions or threads. A new draft's contract keeps the unit's inputs and outputs as written, and its errors are shown as {name, type: 'error'} entries.",
+						"examples": [
+							{
+								"id": "desktop.function.planning-writes",
+								"path": "src/functions/desktop-function-planning-writes",
+								"category": "functions",
+								"title": "Write plans, designs and approvals",
+								"goal": "Adapts desktop planning requests into stored plans, design versions, image threads and approvals.",
+								"lifecycle": "draft",
+								"contract": {
+									"inputs": [
+										{
+											"name": "planningWrites.draft",
+											"type": "PlanDraft",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "planningWrites",
+											"type": "unknown"
+										}
+									],
+									"errors": [
+										{
+											"name": "Error",
+											"type": "error"
+										}
+									],
+									"hash": "2c9e5a7d1b40f8c63e2a9d5b7f1c0e84a6d3b9f27c5e1a0d8b4f63e9c2a7d150"
+								},
+								"versions": [],
+								"threads": []
+							},
+							{
+								"id": "reports.component.evidence-grid",
+								"path": "src/components/reports-component-evidence-grid",
+								"category": "components",
+								"title": "Evidence grid",
+								"goal": "Shows the recorded captures of a unit side by side.",
+								"lifecycle": "review",
+								"contract": {
+									"inputs": [
+										{
+											"name": "captures",
+											"type": "Capture[]",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "grid",
+											"type": "Element"
+										}
+									],
+									"errors": [
+										{
+											"name": "EmptyCaptures",
+											"type": "error"
+										}
+									],
+									"hash": "3f7a0e9c6b18d2f54a7e0c3b9d61f8a2e5c7b40d9f1a6e83c2b5d07f4a9e1c63"
+								},
+								"versions": [
+									{
+										"version": "v001",
+										"createdAt": "2026-11-15T09:45:00.000Z",
+										"commit": "2d8f61a9c4e07b3f5a2d918c6e4b0f7a13d5c8e2",
+										"generator": "claude · claude-sonnet-5-5",
+										"prompt": "Show the recorded captures as a three-column grid.",
+										"baseRevision": "e94b0a6d2f7c13e5b8d09a4f6c2e7b1d5a83f0c9",
+										"images": [
+											{
+												"state": "default",
+												"viewport": "desktop",
+												"sha256": "a9d41f7c02e8b35d6f19ac4e7b2d08f3c5a16e9b4d7f20c8e3a5b1d6f94c27e0",
+												"bytes": 184322
+											}
+										],
+										"approval": null
+									}
+								],
+								"threads": [
+									{
+										"id": "b7e2c9d4-3f1a-4e8b-9c25-7d0a6f13e8b1",
+										"pin": 1,
+										"version": "v001",
+										"imageSha256": "a9d41f7c02e8b35d6f19ac4e7b2d08f3c5a16e9b4d7f20c8e3a5b1d6f94c27e0",
+										"state": "default",
+										"viewport": "desktop",
+										"region": {
+											"x": 0.25,
+											"y": 0.4,
+											"width": 0.3,
+											"height": 0.2
+										},
+										"messageCount": 0
+									}
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "It has no throw of its own; it rejects when listPlans, readPlan or createPlan fails, or when the plan record cannot be read."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "addPlanDesign",
@@ -207,24 +882,101 @@
 						"name": "addPlanDesign.context",
 						"type": "PlanningContext",
 						"required": true,
-						"description": "The repository and planning API used to add a design."
+						"description": "The planning context: api reads the plan and adds the design, and root is the repository that the added design's prompt and notes are read back from."
 					},
 					{
 						"name": "addPlanDesign.draft",
 						"type": "DesignDraft",
 						"required": true,
-						"description": "The design proposal, generator, base revision, expected latest version, optional image or separate options, notes and optional revised-image binding. Missing expectedLatest defaults to the current plan’s latest version."
+						"description": "The design to add: its prompt, generator, baseRevision and either one complete PNG as bytes or, for a visual plan, separately generated options, with notes for a headless design (a function plan takes notes with bytes null, never an image). expectedLatest defaults to the plan's latest version and is refused when it differs, and a revises image binds only when it is found in the stored version, otherwise the design is stored without a revision.",
+						"examples": [
+							{
+								"entityId": "desktop.function.planning-writes",
+								"prompt": "Plan how a planning write is validated and committed.",
+								"generator": {
+									"provider": "claude",
+									"model": "claude-opus-5-5"
+								},
+								"baseRevision": "e94b0a6d2f7c13e5b8d09a4f6c2e7b1d5a83f0c9",
+								"expectedLatest": null,
+								"state": "default",
+								"viewport": "diagram",
+								"bytes": null,
+								"notes": "Each request is checked, then written as one commit on the checked-out branch."
+							},
+							{
+								"entityId": "desktop.function.planning-reads",
+								"prompt": "Describe the read-only planning queries and what each returns.",
+								"generator": {
+									"provider": "claude",
+									"model": "claude-sonnet-5-5"
+								},
+								"baseRevision": "7c1e4a9b0d3f58e2a61c9b7d4e0f2a8c35b6d1e7",
+								"expectedLatest": "v001",
+								"state": "default",
+								"viewport": "diagram",
+								"bytes": null,
+								"notes": "Each read takes a revision and returns the plans and designs that revision holds."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "addPlanDesign",
 						"type": "unknown",
-						"description": "A promise for the added design version. Images are packaged as one image per option or a single image; the stored revised image is used to determine its option when found."
+						"description": "A promise for the design version just added, read back with its plan: its version is the next in sequence (such as v002), its commit is the commit that added it, and its images are one PNG, one per option, or none for a notes-only design. Its approval is null for a new version, and options and revises appear only when the design has them.",
+						"examples": [
+							{
+								"version": "v001",
+								"createdAt": "2026-11-15T09:30:00.000Z",
+								"commit": "7c1e4a9b0d3f58e2a61c9b7d4e0f2a8c35b6d1e7",
+								"generator": "claude · claude-opus-5-5",
+								"prompt": "Plan how a planning write is validated and committed.",
+								"notes": "Each request is checked, then written as one commit on the checked-out branch.",
+								"baseRevision": "e94b0a6d2f7c13e5b8d09a4f6c2e7b1d5a83f0c9",
+								"images": [],
+								"approval": null
+							},
+							{
+								"version": "v002",
+								"createdAt": "2026-11-15T11:05:12.447Z",
+								"commit": "a14f9d2e7c60b38e5d1a47f0c92e6b8d3f5a1c74",
+								"generator": "claude · claude-sonnet-5-5",
+								"prompt": "Make the evidence grid show the recorded captures in three columns.",
+								"baseRevision": "e94b0a6d2f7c13e5b8d09a4f6c2e7b1d5a83f0c9",
+								"images": [
+									{
+										"state": "default",
+										"viewport": "desktop",
+										"sha256": "c08b5e2f9a1d47c6e30b8f5a2d9c71e4b6f03a8d5c2e9b17f4a6d30c8e5b2f19",
+										"bytes": 201558
+									}
+								],
+								"approval": null,
+								"revises": {
+									"version": "v001",
+									"imageSha256": "a9d41f7c02e8b35d6f19ac4e7b2d08f3c5a16e9b4d7f20c8e3a5b1d6f94c27e0",
+									"region": {
+										"x": 0.25,
+										"y": 0.4,
+										"width": 0.3,
+										"height": 0.2
+									},
+									"threadId": "b7e2c9d4-3f1a-4e8b-9c25-7d0a6f13e8b1"
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "It has no throw of its own; it rejects when readPlan or addDesign fails, including a refused stale expectedLatest, or when the version record cannot be read."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "openPlanThread",
@@ -233,29 +985,89 @@
 						"name": "openPlanThread.context",
 						"type": "PlanningContext",
 						"required": true,
-						"description": "The planning context used to open a thread."
+						"description": "The planning context whose api reads the plan and opens the thread; root is not used."
 					},
 					{
 						"name": "openPlanThread.draft",
 						"type": "ThreadDraft",
 						"required": true,
-						"description": "The entity and optional image anchor, including version, hash, state, viewport, region and option. An anchored image must belong to that entity/version and have the supplied state and viewport."
+						"description": "The entity and its image anchor, where version, imageSha256, state, viewport and region are all null for an unanchored thread and option names the option holding the image. An anchored image must belong to that version, its state and viewport must match the draft's (they are checked, not stored), and a region must lie within the image with positive width and height.",
+						"examples": [
+							{
+								"entityId": "desktop.function.planning-writes",
+								"version": null,
+								"imageSha256": null,
+								"state": null,
+								"viewport": null,
+								"region": null
+							},
+							{
+								"entityId": "reports.component.evidence-grid",
+								"version": "v001",
+								"imageSha256": "a9d41f7c02e8b35d6f19ac4e7b2d08f3c5a16e9b4d7f20c8e3a5b1d6f94c27e0",
+								"state": "default",
+								"viewport": "desktop",
+								"region": {
+									"x": 0.25,
+									"y": 0.4,
+									"width": 0.3,
+									"height": 0.2
+								}
+							},
+							{
+								"entityId": "reports.component.evidence-grid",
+								"version": "v003",
+								"imageSha256": "f0b6d3a91e4c7285b0d9e6f3a1c8b5d2e7f4a09c6b3d8e1f5a2c7b9d4e0f6a38",
+								"state": "default",
+								"viewport": "desktop",
+								"region": null,
+								"option": "o2"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "openPlanThread",
 						"type": "unknown",
-						"description": "A promise for the newly opened thread converted to its desktop summary."
+						"description": "A promise for the new thread's summary: its id, its pin (the next number on the unit), its anchor's version, image hash, state, viewport and region (all null when unanchored), and its option when the image has one. messageCount is 0 because this operation writes no first message.",
+						"examples": [
+							{
+								"id": "b7e2c9d4-3f1a-4e8b-9c25-7d0a6f13e8b1",
+								"pin": 1,
+								"version": "v001",
+								"imageSha256": "a9d41f7c02e8b35d6f19ac4e7b2d08f3c5a16e9b4d7f20c8e3a5b1d6f94c27e0",
+								"state": "default",
+								"viewport": "desktop",
+								"region": {
+									"x": 0.25,
+									"y": 0.4,
+									"width": 0.3,
+									"height": 0.2
+								},
+								"messageCount": 0
+							},
+							{
+								"id": "3f1c2b9e-8a4d-4c7e-9b21-6d0f5e7a1c44",
+								"pin": 1,
+								"version": null,
+								"imageSha256": null,
+								"state": null,
+								"viewport": null,
+								"region": null,
+								"messageCount": 0
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown for an image anchor missing from the given version ('The image anchor does not belong to this entity.') or a state or viewport that differs from the image ('The image state/viewport anchor does not match.'). A failed readPlan or openThread call also rejects with the planning package's Error."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "approvePlanDesign",
@@ -264,29 +1076,69 @@
 						"name": "approvePlanDesign.context",
 						"type": "PlanningContext",
 						"required": true,
-						"description": "The planning context used to approve a design."
+						"description": "The planning context whose api reads the plan and records the approval; root is not used."
 					},
 					{
 						"name": "approvePlanDesign.draft",
 						"type": "ApprovalDraft",
 						"required": true,
-						"description": "The entity, design version, selected image hashes, contract hash and optional design option. Images must match the requested version or selected option."
+						"description": "The entity, the design version (which must be the latest), the selected image hashes, the contract hash and, for a version with options, the option. Each hash must name one image of that version or of the chosen option, the contract hash must equal the latest contract hash, and the notes hash comes from the version rather than the draft.",
+						"examples": [
+							{
+								"entityId": "reports.component.evidence-grid",
+								"version": "v002",
+								"imageHashes": ["c08b5e2f9a1d47c6e30b8f5a2d9c71e4b6f03a8d5c2e9b17f4a6d30c8e5b2f19"],
+								"contractHash": "3f7a0e9c6b18d2f54a7e0c3b9d61f8a2e5c7b40d9f1a6e83c2b5d07f4a9e1c63"
+							},
+							{
+								"entityId": "desktop.function.planning-writes",
+								"version": "v001",
+								"imageHashes": [],
+								"contractHash": "5e3f9c1a7b2d4e60f8a1c3b5d7e9f0a2b4c6d8e0f1a3b5c7d9e1f2a4b6c8d0e2"
+							},
+							{
+								"entityId": "reports.component.evidence-grid",
+								"version": "v003",
+								"imageHashes": ["f0b6d3a91e4c7285b0d9e6f3a1c8b5d2e7f4a09c6b3d8e1f5a2c7b9d4e0f6a38"],
+								"contractHash": "3f7a0e9c6b18d2f54a7e0c3b9d61f8a2e5c7b40d9f1a6e83c2b5d07f4a9e1c63",
+								"option": "o2"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "approvePlanDesign",
 						"type": "unknown",
-						"description": "A promise for the saved approval summary, binding the selected images, contract hash and any design notes hash."
+						"description": "A promise for the saved approval summary: its id, the approved version, the image hashes it binds, its contract hash and approval time, with option for a version with options. current is true when it is returned, because the approval binds the latest version.",
+						"examples": [
+							{
+								"id": "d2a5f8e1-6c3b-4a97-8e02-b4f1c7d93a60",
+								"version": "v002",
+								"imageHashes": ["c08b5e2f9a1d47c6e30b8f5a2d9c71e4b6f03a8d5c2e9b17f4a6d30c8e5b2f19"],
+								"contractHash": "3f7a0e9c6b18d2f54a7e0c3b9d61f8a2e5c7b40d9f1a6e83c2b5d07f4a9e1c63",
+								"approvedAt": "2026-11-15T12:02:37.205Z",
+								"current": true
+							},
+							{
+								"id": "5a0e7c39-b2d1-4f86-a3e5-1c9d7b04f2e8",
+								"version": "v001",
+								"imageHashes": [],
+								"contractHash": "5e3f9c1a7b2d4e60f8a1c3b5d7e9f0a2b4c6d8e0f1a3b5c7d9e1f2a4b6c8d0e2",
+								"approvedAt": "2026-11-15T12:20:03.906Z",
+								"current": true
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown for an unknown design version ('Unknown design version.') or for images that do not match the version or option ('Approval images do not match the version.'). A failed readPlan or approveDesign call, such as one for a version that is not the latest, also rejects with the planning package's Error."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
