@@ -18,17 +18,18 @@
 				"name": "openProject.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "The workspace to update, including its desktop connection, selected-project record, navigation and project-list operations. Without a connection this does nothing. With one, it marks the workspace busy and clears the previous error before opening."
+				"description": "The workspace the function updates: it reads `bridge`, writes `selection.id`, `busy` and `error`, and calls `navigate` and `loadProjects`. If `bridge` is falsy, the function returns at once without changing `busy` or `error`; otherwise it sets `busy` to `true` and clears `error` to an empty string before calling `bridge.openProject()`."
 			}
 		],
 		"outputs": [
 			{
 				"name": "openProject",
 				"type": "Promise<void>",
-				"description": "A promise that finishes without a return value. A chosen project updates the selection, navigates to its pages at the returned branch, then refreshes the project list. Cancelling the picker skips those steps. Caught failures are stored as text in workspace.error, and the busy flag is cleared when the attempt finishes."
+				"description": "Resolves with no value once the function finishes, after `busy` is set back to `false` if an attempt started. A truthy bridge result sets `selection.id` to its `project.id` (or `null` when missing), navigates to the pages path for that id and its `revision.branch`, then calls `loadProjects`; a falsy result skips those steps, and any failure in the attempt is stored as `String(cause)` in `error` rather than rejecting."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "openProject",
@@ -37,18 +38,18 @@
 						"name": "openProject.workspace",
 						"type": "Workspace",
 						"required": true,
-						"description": "The workspace to update, including its desktop connection, selected-project record, navigation and project-list operations. Without a connection this does nothing. With one, it marks the workspace busy and clears the previous error before opening."
+						"description": "The workspace the function updates: it reads `bridge`, writes `selection.id`, `busy` and `error`, and calls `navigate` and `loadProjects`. If `bridge` is falsy, the function returns at once without changing `busy` or `error`; otherwise it sets `busy` to `true` and clears `error` to an empty string before calling `bridge.openProject()`."
 					}
 				],
 				"outputs": [
 					{
 						"name": "openProject",
 						"type": "Promise<void>",
-						"description": "A promise that finishes without a return value. A chosen project updates the selection, navigates to its pages at the returned branch, then refreshes the project list. Cancelling the picker skips those steps. Caught failures are stored as text in workspace.error, and the busy flag is cleared when the attempt finishes."
+						"description": "Resolves with no value once the function finishes, after `busy` is set back to `false` if an attempt started. A truthy bridge result sets `selection.id` to its `project.id` (or `null` when missing), navigates to the pages path for that id and its `revision.branch`, then calls `loadProjects`; a falsy result skips those steps, and any failure in the attempt is stored as `String(cause)` in `error` rather than rejecting."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
