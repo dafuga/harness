@@ -20,23 +20,46 @@
 				"name": "commitRecords.client",
 				"type": "GitHubTransport",
 				"required": true,
-				"description": "Repository-scoped GitHub transport with permission to write Git objects."
+				"description": "GitHubTransport used to read a parent commit and create the blob, tree, and commit through GitHub's Git API. A parent read occurs only for a truthy parent; this function neither constructs the transport nor verifies its access."
 			},
 			{
 				"name": "commitRecords.input",
 				"type": "{ parent: string | null; path: string; records: unknown }",
 				"required": true,
-				"description": "Optional parent commit, destination file path and JSON-serializable records."
+				"description": "Contains the parent commit identifier or null, the tree path, and the records value passed to JSON.stringify. A truthy parent supplies the base tree and sole commit parent; fields are not validated locally, and cyclic data or BigInt can fail during serialization.",
+				"examples": [
+					{
+						"parent": null,
+						"path": "packages/collaboration/collaboration-records.json",
+						"records": []
+					},
+					{
+						"parent": "0123456789abcdef0123456789abcdef01234567",
+						"path": "packages/collaboration/collaboration-records.json",
+						"records": {
+							"entries": [],
+							"version": 1
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "commitRecords",
 				"type": "Promise<string>",
-				"description": "New commit SHA after creating its blob and tree; the parent tree is reused when a parent is supplied."
+				"description": "Resolves to the SHA parsed from GitHub's created commit response after the blob, tree, and commit requests succeed. This function does not update a branch or ref, and a response without a valid SHA fails parsing.",
+				"examples": ["89abcdef0123456789abcdef0123456789abcdef"]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The promise rejects when a GitHub request rejects, JSON.stringify fails (for example on cyclic data or a BigInt), or a response fails the expected SHA or tree SHA parse. commitRecords does not catch or normalize these failures, so the concrete rejection class and message come from the transport, parser, or runtime."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "commitRecords",
@@ -45,24 +68,46 @@
 						"name": "commitRecords.client",
 						"type": "GitHubTransport",
 						"required": true,
-						"description": "Repository-scoped GitHub transport with permission to write Git objects."
+						"description": "GitHubTransport used to read a parent commit and create the blob, tree, and commit through GitHub's Git API. A parent read occurs only for a truthy parent; this function neither constructs the transport nor verifies its access."
 					},
 					{
 						"name": "commitRecords.input",
 						"type": "{ parent: string | null; path: string; records: unknown }",
 						"required": true,
-						"description": "Optional parent commit, destination file path and JSON-serializable records."
+						"description": "Contains the parent commit identifier or null, the tree path, and the records value passed to JSON.stringify. A truthy parent supplies the base tree and sole commit parent; fields are not validated locally, and cyclic data or BigInt can fail during serialization.",
+						"examples": [
+							{
+								"parent": null,
+								"path": "packages/collaboration/collaboration-records.json",
+								"records": []
+							},
+							{
+								"parent": "0123456789abcdef0123456789abcdef01234567",
+								"path": "packages/collaboration/collaboration-records.json",
+								"records": {
+									"entries": [],
+									"version": 1
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "commitRecords",
 						"type": "Promise<string>",
-						"description": "New commit SHA after creating its blob and tree; the parent tree is reused when a parent is supplied."
+						"description": "Resolves to the SHA parsed from GitHub's created commit response after the blob, tree, and commit requests succeed. This function does not update a branch or ref, and a response without a valid SHA fails parsing.",
+						"examples": ["89abcdef0123456789abcdef0123456789abcdef"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The promise rejects when a GitHub request rejects, JSON.stringify fails (for example on cyclic data or a BigInt), or a response fails the expected SHA or tree SHA parse. commitRecords does not catch or normalize these failures, so the concrete rejection class and message come from the transport, parser, or runtime."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
