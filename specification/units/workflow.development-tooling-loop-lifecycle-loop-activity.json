@@ -28,76 +28,248 @@
 				"name": "openStepCount.state",
 				"type": "LoopState",
 				"required": true,
-				"description": "Loop state whose pending steps are counted."
+				"description": "A LoopState with a steps array. Only entries whose status is exactly \"pending\" are counted.",
+				"examples": [
+					{
+						"name": "release-readiness",
+						"goal": "Verify the release checklist",
+						"createdAt": "2026-11-10T09:00:00.000Z",
+						"updatedAt": "2026-11-12T12:00:00.000Z",
+						"steps": [
+							{
+								"id": "prepare",
+								"title": "Confirm release criteria",
+								"status": "complete",
+								"completedAt": "2026-11-11T15:00:00.000Z"
+							},
+							{
+								"id": "verify",
+								"title": "Run release checks",
+								"status": "pending"
+							}
+						]
+					},
+					{
+						"name": "empty-loop",
+						"goal": "Track a future task",
+						"createdAt": "2026-11-14T09:00:00.000Z",
+						"updatedAt": "2026-11-14T09:00:00.000Z",
+						"steps": []
+					}
+				]
 			},
 			{
 				"name": "isOpenLoop.state",
 				"type": "LoopState",
 				"required": true,
-				"description": "Loop state to classify."
+				"description": "A LoopState to classify. Any truthy closed value makes it closed; otherwise, openness depends on whether at least one step is pending.",
+				"examples": [
+					{
+						"name": "release-readiness",
+						"goal": "Verify the release checklist",
+						"createdAt": "2026-11-10T09:00:00.000Z",
+						"updatedAt": "2026-11-12T12:00:00.000Z",
+						"steps": [
+							{
+								"id": "prepare",
+								"title": "Confirm release criteria",
+								"status": "complete",
+								"completedAt": "2026-11-11T15:00:00.000Z"
+							},
+							{
+								"id": "verify",
+								"title": "Run release checks",
+								"status": "pending"
+							}
+						]
+					},
+					{
+						"name": "superseded-loop",
+						"goal": "Verify the old release checklist",
+						"createdAt": "2026-11-10T09:00:00.000Z",
+						"updatedAt": "2026-11-12T12:00:00.000Z",
+						"steps": [
+							{
+								"id": "verify",
+								"title": "Run release checks",
+								"status": "pending"
+							}
+						],
+						"closed": {
+							"status": "abandoned",
+							"reason": "Replaced by a newer loop",
+							"closedAt": "2026-11-14T10:00:00.000Z"
+						}
+					}
+				]
 			},
 			{
 				"name": "loopActivity.state",
 				"type": "LoopState",
 				"required": true,
-				"description": "Loop state whose step counts and activity timestamps are summarized."
+				"description": "A LoopState supplying step counts and candidate activity timestamps. The latest parseable truthy updatedAt, createdAt, or step.completedAt is used; absent or invalid timestamps can leave activity fields out.",
+				"examples": [
+					{
+						"name": "release-readiness",
+						"goal": "Verify the release checklist",
+						"createdAt": "2026-11-10T09:00:00.000Z",
+						"updatedAt": "2026-11-12T12:00:00.000Z",
+						"steps": [
+							{
+								"id": "prepare",
+								"title": "Confirm release criteria",
+								"status": "complete",
+								"completedAt": "2026-11-11T15:00:00.000Z"
+							},
+							{
+								"id": "verify",
+								"title": "Run release checks",
+								"status": "pending"
+							}
+						]
+					},
+					{
+						"name": "empty-loop",
+						"goal": "Track a future task",
+						"createdAt": "2026-11-14T09:00:00.000Z",
+						"updatedAt": "2026-11-14T09:00:00.000Z",
+						"steps": []
+					}
+				]
 			},
 			{
 				"name": "loopActivity.now",
 				"type": "string",
 				"required": true,
-				"description": "Current timestamp in ISO-compatible text used to calculate nonnegative age in whole days."
+				"description": "Timestamp text parsed with Date.parse to calculate nonnegative whole-day age. If it does not parse, the result contains step counts only.",
+				"examples": ["2026-11-15T12:00:00.000Z"]
 			},
 			{
 				"name": "isStale.activity",
 				"type": "LoopActivity",
 				"required": true,
-				"description": "Derived loop activity; unknown age is considered stale."
+				"description": "Derived loop activity to compare with staleDays. Missing ageDays is stale; otherwise its value is compared directly, including for fractional or negative thresholds.",
+				"examples": [
+					{
+						"openSteps": 1,
+						"totalSteps": 2,
+						"lastActivityAt": "2026-11-12T12:00:00.000Z",
+						"ageDays": 3
+					},
+					{
+						"openSteps": 0,
+						"totalSteps": 0
+					}
+				]
 			},
 			{
 				"name": "isStale.staleDays",
 				"type": "number",
 				"required": true,
-				"description": "Nonnegative idle-day threshold; the activity is stale when age is unknown or at least this many days."
+				"description": "Numeric threshold compared directly with ageDays in whole days. The function does not clamp or validate it.",
+				"examples": [7]
 			},
 			{
 				"name": "loopSummaryLines.state",
 				"type": "LoopState",
 				"required": true,
-				"description": "Loop whose activity and closure details are rendered."
+				"description": "A LoopState whose counts and activity are summarized in text. A truthy closed object adds its status, closedAt, and reason as a line.",
+				"examples": [
+					{
+						"name": "release-readiness",
+						"goal": "Verify the release checklist",
+						"createdAt": "2026-11-10T09:00:00.000Z",
+						"updatedAt": "2026-11-12T12:00:00.000Z",
+						"steps": [
+							{
+								"id": "prepare",
+								"title": "Confirm release criteria",
+								"status": "complete",
+								"completedAt": "2026-11-11T15:00:00.000Z"
+							},
+							{
+								"id": "verify",
+								"title": "Run release checks",
+								"status": "pending"
+							}
+						]
+					},
+					{
+						"name": "superseded-loop",
+						"goal": "Verify the old release checklist",
+						"createdAt": "2026-11-10T09:00:00.000Z",
+						"updatedAt": "2026-11-12T12:00:00.000Z",
+						"steps": [
+							{
+								"id": "verify",
+								"title": "Run release checks",
+								"status": "pending"
+							}
+						],
+						"closed": {
+							"status": "abandoned",
+							"reason": "Replaced by a newer loop",
+							"closedAt": "2026-11-14T10:00:00.000Z"
+						}
+					}
+				]
 			},
 			{
 				"name": "loopSummaryLines.now",
 				"type": "string",
 				"required": true,
-				"description": "Current timestamp used to calculate displayed age."
+				"description": "Timestamp text parsed with Date.parse to calculate displayed age. If it does not parse, the summary reports age as unknown.",
+				"examples": ["2026-11-15T12:00:00.000Z"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "openStepCount",
 				"type": "number",
-				"description": "Number of steps whose status is pending."
+				"description": "Count of steps whose status is exactly \"pending\"; steps with any other status are excluded.",
+				"examples": [1, 0]
 			},
 			{
 				"name": "isOpenLoop",
 				"type": "boolean",
-				"description": "True only when the loop is not closed and has at least one pending step."
+				"description": "Whether the state is not closed and has at least one pending step. Any truthy state.closed value makes the result false.",
+				"examples": [true, false]
 			},
 			{
 				"name": "loopActivity",
 				"type": "LoopActivity",
-				"description": "Pending and total step counts plus last activity and age when valid timestamps are available."
+				"description": "Contains pending-step and total-step counts, adding lastActivityAt and ageDays only when at least one activity timestamp and now parse successfully. Activity uses the latest updatedAt, createdAt, or step.completedAt; age is elapsed whole days, floored and clamped at zero.",
+				"examples": [
+					{
+						"openSteps": 1,
+						"totalSteps": 2,
+						"lastActivityAt": "2026-11-12T12:00:00.000Z",
+						"ageDays": 3
+					},
+					{
+						"openSteps": 0,
+						"totalSteps": 0
+					}
+				]
 			},
 			{
 				"name": "isStale",
 				"type": "boolean",
-				"description": "Whether activity is unknown or its whole-day age meets the threshold."
+				"description": "True when ageDays is undefined or is greater than or equal to staleDays. The supplied threshold is compared directly.",
+				"examples": [true, false]
 			},
 			{
 				"name": "loopSummaryLines",
 				"type": "string[]",
-				"description": "Human-readable age, open-step counts, and closure reason lines."
+				"description": "Includes lines for age since last activity and pending steps of total steps, with a closure line when state.closed is truthy. Age is unknown if no activity timestamp or now parses.",
+				"examples": [
+					[
+						"Age: 3 days since last activity (2026-11-12T12:00:00.000Z)",
+						"Open steps: 1 of 1",
+						"Closed: abandoned at 2026-11-14T10:00:00.000Z - Replaced by a newer loop"
+					],
+					["Age: 3 days since last activity (2026-11-12T12:00:00.000Z)", "Open steps: 1 of 2"]
+				]
 			}
 		],
 		"errors": [],
@@ -110,14 +282,43 @@
 						"name": "openStepCount.state",
 						"type": "LoopState",
 						"required": true,
-						"description": "Loop state whose pending steps are counted."
+						"description": "A LoopState with a steps array. Only entries whose status is exactly \"pending\" are counted.",
+						"examples": [
+							{
+								"name": "release-readiness",
+								"goal": "Verify the release checklist",
+								"createdAt": "2026-11-10T09:00:00.000Z",
+								"updatedAt": "2026-11-12T12:00:00.000Z",
+								"steps": [
+									{
+										"id": "prepare",
+										"title": "Confirm release criteria",
+										"status": "complete",
+										"completedAt": "2026-11-11T15:00:00.000Z"
+									},
+									{
+										"id": "verify",
+										"title": "Run release checks",
+										"status": "pending"
+									}
+								]
+							},
+							{
+								"name": "empty-loop",
+								"goal": "Track a future task",
+								"createdAt": "2026-11-14T09:00:00.000Z",
+								"updatedAt": "2026-11-14T09:00:00.000Z",
+								"steps": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "openStepCount",
 						"type": "number",
-						"description": "Number of steps whose status is pending."
+						"description": "Count of steps whose status is exactly \"pending\"; steps with any other status are excluded.",
+						"examples": [1, 0]
 					}
 				],
 				"errors": [],
@@ -130,14 +331,54 @@
 						"name": "isOpenLoop.state",
 						"type": "LoopState",
 						"required": true,
-						"description": "Loop state to classify."
+						"description": "A LoopState to classify. Any truthy closed value makes it closed; otherwise, openness depends on whether at least one step is pending.",
+						"examples": [
+							{
+								"name": "release-readiness",
+								"goal": "Verify the release checklist",
+								"createdAt": "2026-11-10T09:00:00.000Z",
+								"updatedAt": "2026-11-12T12:00:00.000Z",
+								"steps": [
+									{
+										"id": "prepare",
+										"title": "Confirm release criteria",
+										"status": "complete",
+										"completedAt": "2026-11-11T15:00:00.000Z"
+									},
+									{
+										"id": "verify",
+										"title": "Run release checks",
+										"status": "pending"
+									}
+								]
+							},
+							{
+								"name": "superseded-loop",
+								"goal": "Verify the old release checklist",
+								"createdAt": "2026-11-10T09:00:00.000Z",
+								"updatedAt": "2026-11-12T12:00:00.000Z",
+								"steps": [
+									{
+										"id": "verify",
+										"title": "Run release checks",
+										"status": "pending"
+									}
+								],
+								"closed": {
+									"status": "abandoned",
+									"reason": "Replaced by a newer loop",
+									"closedAt": "2026-11-14T10:00:00.000Z"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "isOpenLoop",
 						"type": "boolean",
-						"description": "True only when the loop is not closed and has at least one pending step."
+						"description": "Whether the state is not closed and has at least one pending step. Any truthy state.closed value makes the result false.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
@@ -150,20 +391,61 @@
 						"name": "loopActivity.state",
 						"type": "LoopState",
 						"required": true,
-						"description": "Loop state whose step counts and activity timestamps are summarized."
+						"description": "A LoopState supplying step counts and candidate activity timestamps. The latest parseable truthy updatedAt, createdAt, or step.completedAt is used; absent or invalid timestamps can leave activity fields out.",
+						"examples": [
+							{
+								"name": "release-readiness",
+								"goal": "Verify the release checklist",
+								"createdAt": "2026-11-10T09:00:00.000Z",
+								"updatedAt": "2026-11-12T12:00:00.000Z",
+								"steps": [
+									{
+										"id": "prepare",
+										"title": "Confirm release criteria",
+										"status": "complete",
+										"completedAt": "2026-11-11T15:00:00.000Z"
+									},
+									{
+										"id": "verify",
+										"title": "Run release checks",
+										"status": "pending"
+									}
+								]
+							},
+							{
+								"name": "empty-loop",
+								"goal": "Track a future task",
+								"createdAt": "2026-11-14T09:00:00.000Z",
+								"updatedAt": "2026-11-14T09:00:00.000Z",
+								"steps": []
+							}
+						]
 					},
 					{
 						"name": "loopActivity.now",
 						"type": "string",
 						"required": true,
-						"description": "Current timestamp in ISO-compatible text used to calculate nonnegative age in whole days."
+						"description": "Timestamp text parsed with Date.parse to calculate nonnegative whole-day age. If it does not parse, the result contains step counts only.",
+						"examples": ["2026-11-15T12:00:00.000Z"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "loopActivity",
 						"type": "LoopActivity",
-						"description": "Pending and total step counts plus last activity and age when valid timestamps are available."
+						"description": "Contains pending-step and total-step counts, adding lastActivityAt and ageDays only when at least one activity timestamp and now parse successfully. Activity uses the latest updatedAt, createdAt, or step.completedAt; age is elapsed whole days, floored and clamped at zero.",
+						"examples": [
+							{
+								"openSteps": 1,
+								"totalSteps": 2,
+								"lastActivityAt": "2026-11-12T12:00:00.000Z",
+								"ageDays": 3
+							},
+							{
+								"openSteps": 0,
+								"totalSteps": 0
+							}
+						]
 					}
 				],
 				"errors": [],
@@ -176,20 +458,34 @@
 						"name": "isStale.activity",
 						"type": "LoopActivity",
 						"required": true,
-						"description": "Derived loop activity; unknown age is considered stale."
+						"description": "Derived loop activity to compare with staleDays. Missing ageDays is stale; otherwise its value is compared directly, including for fractional or negative thresholds.",
+						"examples": [
+							{
+								"openSteps": 1,
+								"totalSteps": 2,
+								"lastActivityAt": "2026-11-12T12:00:00.000Z",
+								"ageDays": 3
+							},
+							{
+								"openSteps": 0,
+								"totalSteps": 0
+							}
+						]
 					},
 					{
 						"name": "isStale.staleDays",
 						"type": "number",
 						"required": true,
-						"description": "Nonnegative idle-day threshold; the activity is stale when age is unknown or at least this many days."
+						"description": "Numeric threshold compared directly with ageDays in whole days. The function does not clamp or validate it.",
+						"examples": [7]
 					}
 				],
 				"outputs": [
 					{
 						"name": "isStale",
 						"type": "boolean",
-						"description": "Whether activity is unknown or its whole-day age meets the threshold."
+						"description": "True when ageDays is undefined or is greater than or equal to staleDays. The supplied threshold is compared directly.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
@@ -202,20 +498,68 @@
 						"name": "loopSummaryLines.state",
 						"type": "LoopState",
 						"required": true,
-						"description": "Loop whose activity and closure details are rendered."
+						"description": "A LoopState whose counts and activity are summarized in text. A truthy closed object adds its status, closedAt, and reason as a line.",
+						"examples": [
+							{
+								"name": "release-readiness",
+								"goal": "Verify the release checklist",
+								"createdAt": "2026-11-10T09:00:00.000Z",
+								"updatedAt": "2026-11-12T12:00:00.000Z",
+								"steps": [
+									{
+										"id": "prepare",
+										"title": "Confirm release criteria",
+										"status": "complete",
+										"completedAt": "2026-11-11T15:00:00.000Z"
+									},
+									{
+										"id": "verify",
+										"title": "Run release checks",
+										"status": "pending"
+									}
+								]
+							},
+							{
+								"name": "superseded-loop",
+								"goal": "Verify the old release checklist",
+								"createdAt": "2026-11-10T09:00:00.000Z",
+								"updatedAt": "2026-11-12T12:00:00.000Z",
+								"steps": [
+									{
+										"id": "verify",
+										"title": "Run release checks",
+										"status": "pending"
+									}
+								],
+								"closed": {
+									"status": "abandoned",
+									"reason": "Replaced by a newer loop",
+									"closedAt": "2026-11-14T10:00:00.000Z"
+								}
+							}
+						]
 					},
 					{
 						"name": "loopSummaryLines.now",
 						"type": "string",
 						"required": true,
-						"description": "Current timestamp used to calculate displayed age."
+						"description": "Timestamp text parsed with Date.parse to calculate displayed age. If it does not parse, the summary reports age as unknown.",
+						"examples": ["2026-11-15T12:00:00.000Z"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "loopSummaryLines",
 						"type": "string[]",
-						"description": "Human-readable age, open-step counts, and closure reason lines."
+						"description": "Includes lines for age since last activity and pending steps of total steps, with a closure line when state.closed is truthy. Age is unknown if no activity timestamp or now parses.",
+						"examples": [
+							[
+								"Age: 3 days since last activity (2026-11-12T12:00:00.000Z)",
+								"Open steps: 1 of 1",
+								"Closed: abandoned at 2026-11-14T10:00:00.000Z - Replaced by a newer loop"
+							],
+							["Age: 3 days since last activity (2026-11-12T12:00:00.000Z)", "Open steps: 1 of 2"]
+						]
 					}
 				],
 				"errors": [],
