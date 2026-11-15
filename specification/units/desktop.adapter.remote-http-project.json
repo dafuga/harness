@@ -358,7 +358,7 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.snapshot",
-				"type": "Promise<import('../../../../models/development-tooling/Desktop.types').ProjectSnapshot>",
+				"type": "Promise<ProjectSnapshot>",
 				"description": "Returns the hosted snapshot with capabilities read for the project and writable set only when the request is not commit-pinned, the revision is at its tip, and agents are available. An offline cached snapshot is returned read-only without that additional capability read.",
 				"examples": [
 					{
@@ -391,7 +391,7 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.entity",
-				"type": "Promise<import('../../../../models/development-tooling/DesktopEntity.types').EntityDetail>",
+				"type": "Promise<EntityDetail>",
 				"description": "Returns the hosted entity detail for the requested entity id. Validation checks the id and that versions, sources, and threads are arrays; other entity fields pass through.",
 				"examples": [
 					{
@@ -452,7 +452,7 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.messages",
-				"type": "Promise<import('../../../../models/development-tooling/Desktop.types').ThreadMessage[]>",
+				"type": "Promise<ThreadMessage[]>",
 				"description": "Returns the hosted thread's message array after checking that each item has a string id and text. Other message fields are passed through by the response validator.",
 				"examples": [
 					[
@@ -472,7 +472,7 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.history",
-				"type": "Promise<{ entries: import('../../../../models/development-tooling/DesktopEntity.types').HistoryEvent[]; complete: boolean; nextPage: number | null; }>",
+				"type": "Promise<{ entries: HistoryEvent[]; complete: boolean; nextPage: number | null; }>",
 				"description": "Returns a validated history page with entries, a boolean completion state, and nextPage set to null or an integer of at least one. Each entry is checked for string id and title; its other fields pass through.",
 				"examples": [
 					{
@@ -499,7 +499,7 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.addComment",
-				"type": "Promise<import('../../../../../../collaboration/src/models/planning-collaboration/Collaboration.types').CommittedThread>",
+				"type": "Promise<CommittedThread>",
 				"description": "Returns the acknowledged committed thread after checking its project, optional requested thread id, anchor, comment request id and text, and verified actor identity.",
 				"examples": [
 					{

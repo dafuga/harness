@@ -58,7 +58,7 @@
 		"outputs": [
 			{
 				"name": "hostCpuCounters",
-				"type": "{ at: number; limits: import('./hostResourceLimits.types').HostLimits; cores: number; affinity: number; idle: number; total: number; }",
+				"type": "{ at: number; limits: HostLimits; cores: number; affinity: number; idle: number; total: number; }",
 				"description": "A host sample containing monotonic performance.now() time, the logical CPU count from os.cpus(), affinity from availableParallelism(), aggregate idle and total CPU times, and the current hostResourceLimits() value. Call it for interval endpoints passed to resourceCpu; its elapsed and idle deltas are validated there.",
 				"examples": [
 					{

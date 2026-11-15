@@ -158,7 +158,7 @@
 			},
 			{
 				"name": "threadPayload",
-				"type": "{ option?: undefined; entityId: string; version: string | null; imageSha256: string | null; state: string | null; viewport: string | null; region: import('../../models/development-tooling/Desktop.types').Region | null; } | { option: string; entityId: string; version: string | null; imageSha256: string | null; state: string | null; viewport: string | null; region: import('../../models/development-tooling/Desktop.types').Region | null; }",
+				"type": "{ option?: undefined; entityId: string; version: string | null; imageSha256: string | null; state: string | null; viewport: string | null; region: Region | null; } | { option: string; entityId: string; version: string | null; imageSha256: string | null; state: string | null; viewport: string | null; region: Region | null; }",
 				"description": "Returns entityId, version, imageSha256, state, viewport, and region, adding option only when supplied. Image-anchor fields are either all non-null or all null, and a null version requires a null region.",
 				"examples": [
 					{

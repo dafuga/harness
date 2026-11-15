@@ -39,7 +39,7 @@
 		"outputs": [
 			{
 				"name": "atomicSyntax",
-				"type": "{ tree: import('svelte/compiler').AST.Root; directory?: string; tier?: string; element?: string; atoms: Array<{ node: import('svelte/compiler').AST.RegularElement; definition?: { name: string; tag: string; type?: string } }> }",
+				"type": "{ tree: AST.Root; directory?: string; tier?: string; element?: string; atoms: Array<{ node: AST.RegularElement; definition?: { name: string; tag: string; type?: string } }> }",
 				"description": "An object containing the Svelte parse tree, the first matching top-level @harness-atoms, valid @harness-tier, and @harness-element values, and atoms entries for hx- regular elements. Header values are undefined when no matching top-level comment exists, and an atom entry's definition is undefined when no native definition matches."
 			},
 			{
