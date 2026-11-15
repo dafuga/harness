@@ -11,19 +11,9 @@
 		"source": [
 			"packages/reports/src/routes/api/health/reportHttp.ts",
 			"packages/reports/src/routes/api/reports/[id]/[type]/[file]/reportHttp.ts",
-			"packages/reports/src/utils/reportHttp.ts",
 			"packages/reports/src/utils/reports-media/reportHttp.ts"
 		],
-		"symbols": [
-			"reportHttp",
-			"reportFile",
-			"reportHttp",
-			"reportFile",
-			"repository",
-			"repository",
-			"reportHttp",
-			"reportFile"
-		]
+		"symbols": ["reportHttp", "reportFile", "repository", "reportHttp", "reportFile"]
 	},
 	"contract": {
 		"origin": "declared",
