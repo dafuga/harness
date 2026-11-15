@@ -12,22 +12,24 @@
 		"symbols": ["registerActivityCommand", "Flags"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerActivityCommand.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "The commander Command that receives the new 'activity' subcommand; it matters on every call because registerActivityCommand immediately runs program.command('activity') on it. The function does not validate the value, so it must already be a commander Command."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerActivityCommand",
-				"type": "Command"
+				"type": "Command",
+				"description": "The 'activity' Command that registerActivityCommand adds to program and returns, so that callers can reach the show, register, heartbeat <id>, finish <id> and agents subcommands attached to it. Their action handlers run only when commander dispatches to them, not during this call."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "registerActivityCommand",
@@ -35,17 +37,19 @@
 					{
 						"name": "registerActivityCommand.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "The commander Command that receives the new 'activity' subcommand; it matters on every call because registerActivityCommand immediately runs program.command('activity') on it. The function does not validate the value, so it must already be a commander Command."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerActivityCommand",
-						"type": "Command"
+						"type": "Command",
+						"description": "The 'activity' Command that registerActivityCommand adds to program and returns, so that callers can reach the show, register, heartbeat <id>, finish <id> and agents subcommands attached to it. Their action handlers run only when commander dispatches to them, not during this call."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
