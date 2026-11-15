@@ -18,51 +18,106 @@
 				"name": "sqliteIdentifier.identifier",
 				"type": "string",
 				"required": true,
-				"description": "An unquoted SQLite identifier that must begin with a letter or underscore and contain only letters, digits or underscores."
+				"description": "The candidate SQLite identifier, which must match /^[A-Za-z_][A-Za-z0-9_]*$/: it starts with an ASCII letter or underscore and holds only ASCII letters, digits or underscores. Any other value makes sqliteIdentifier throw before it is wrapped in double quotes.",
+				"examples": ["unit_records", "created_at", "_sync_token"]
 			},
 			{
 				"name": "sqliteColumn.property",
 				"type": "string",
 				"required": true,
-				"description": "An application property name whose declared column override or snake-case name is requested."
+				"description": "The application property name, such as createdAt, that is converted to snake case only when field.column is null or undefined. The name is not validated: the conversion breaks before each uppercase letter that follows a lowercase letter or digit, treats runs of characters other than ASCII letters and digits as separators, lowercases each word and joins the words with underscores.",
+				"examples": ["createdAt", "unitId", "title"]
 			},
 			{
 				"name": "sqliteColumn.field",
 				"type": "SqliteField",
 				"required": true,
-				"description": "The field metadata, including an optional explicit database column name."
+				"description": "The field declaration, of which only the optional column is read. An explicit column, including an empty string, is returned unchanged and unvalidated, while a null or undefined column makes sqliteColumn use the converted property name.",
+				"examples": [
+					{
+						"type": "string",
+						"default": "timestamp"
+					},
+					{
+						"type": "string",
+						"column": "report_id"
+					},
+					{
+						"type": "json",
+						"nullable": true
+					}
+				]
 			},
 			{
 				"name": "sqliteTableSql.model",
 				"type": "SqliteModel",
 				"required": true,
-				"description": "The table, primary-key and field declarations used to form the CREATE TABLE statement."
+				"description": "The table declaration: table is the table name, primaryKey is the property used as the primary key (it defaults to 'id' when absent), and fields maps each property name to its field declaration. The primary-key property must be a key of fields, the column names must be unique, and the table and column names must pass the identifier check, otherwise sqliteTableSql throws.",
+				"examples": [
+					{
+						"table": "units",
+						"primaryKey": "id",
+						"fields": {
+							"id": {
+								"type": "number"
+							},
+							"title": {
+								"type": "string"
+							},
+							"createdAt": {
+								"type": "string",
+								"default": "timestamp"
+							}
+						}
+					},
+					{
+						"table": "reports",
+						"primaryKey": "reportId",
+						"fields": {
+							"reportId": {
+								"type": "string",
+								"column": "report_id"
+							},
+							"body": {
+								"type": "json",
+								"nullable": true
+							}
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "sqliteIdentifier",
 				"type": "string",
-				"description": "The validated identifier wrapped in SQLite double quotes."
+				"description": "The validated identifier, unchanged, wrapped in SQLite double quotes. Because the pattern admits only ASCII letters, digits and underscores, the result never contains a quote or whitespace that would need escaping.",
+				"examples": ["\"unit_records\"", "\"created_at\""]
 			},
 			{
 				"name": "sqliteColumn",
 				"type": "string",
-				"description": "The explicit database column name or the property name converted to snake case."
+				"description": "The explicit column value, returned unvalidated when field.column is not null or undefined, otherwise the property converted by toSnakeCase. The conversion lowercases each word and joins the words with underscores, so leading, trailing and repeated separator characters in the property are dropped or collapsed to single underscores.",
+				"examples": ["created_at", "report_id", "unit_id"]
 			},
 			{
 				"name": "sqliteTableSql",
 				"type": "string",
-				"description": "A CREATE TABLE IF NOT EXISTS statement with mapped column types, nullability, primary-key and timestamp-default clauses."
+				"description": "A CREATE TABLE IF NOT EXISTS statement for the model table, with one double-quoted column per field in the order of model.fields. Column types are TEXT for string and json, INTEGER for number and boolean, and BLOB for blob; the primary-key field gets PRIMARY KEY (with NOT NULL unless it is a number), other fields get NOT NULL unless nullable is true, and fields with default 'timestamp' get DEFAULT CURRENT_TIMESTAMP.",
+				"examples": [
+					"CREATE TABLE IF NOT EXISTS \"units\" (\"id\" INTEGER PRIMARY KEY, \"title\" TEXT NOT NULL, \"created_at\" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)",
+					"CREATE TABLE IF NOT EXISTS \"reports\" (\"report_id\" TEXT PRIMARY KEY NOT NULL, \"body\" TEXT)"
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Raised for an invalid identifier, a missing primary-key field, duplicate column names or an unsupported SQLite field type."
+				"description": "Thrown with 'Invalid SQLite identifier: <name>' when sqliteIdentifier gets a name outside the identifier pattern, 'Missing primary key: <property>' when the primary-key property is not a key of fields, 'Duplicate SQLite column in <table>' when two fields map to identical column names, or 'Invalid SQLite field type: <type>' when a field type has no entry in the type map. sqliteTableSql also throws the identifier message for an invalid table or column name, and inherited Object.prototype names such as 'constructor' pass the type-map check without throwing."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "sqliteIdentifier",
@@ -71,23 +126,26 @@
 						"name": "sqliteIdentifier.identifier",
 						"type": "string",
 						"required": true,
-						"description": "An unquoted SQLite identifier that must begin with a letter or underscore and contain only letters, digits or underscores."
+						"description": "The candidate SQLite identifier, which must match /^[A-Za-z_][A-Za-z0-9_]*$/: it starts with an ASCII letter or underscore and holds only ASCII letters, digits or underscores. Any other value makes sqliteIdentifier throw before it is wrapped in double quotes.",
+						"examples": ["unit_records", "created_at", "_sync_token"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sqliteIdentifier",
 						"type": "string",
-						"description": "The validated identifier wrapped in SQLite double quotes."
+						"description": "The validated identifier, unchanged, wrapped in SQLite double quotes. Because the pattern admits only ASCII letters, digits and underscores, the result never contains a quote or whitespace that would need escaping.",
+						"examples": ["\"unit_records\"", "\"created_at\""]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with 'Invalid SQLite identifier: <identifier>' when the identifier does not match /^[A-Za-z_][A-Za-z0-9_]*$/."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "sqliteColumn",
@@ -96,24 +154,40 @@
 						"name": "sqliteColumn.property",
 						"type": "string",
 						"required": true,
-						"description": "An application property name whose declared column override or snake-case name is requested."
+						"description": "The application property name, such as createdAt, that is converted to snake case only when field.column is null or undefined. The name is not validated: the conversion breaks before each uppercase letter that follows a lowercase letter or digit, treats runs of characters other than ASCII letters and digits as separators, lowercases each word and joins the words with underscores.",
+						"examples": ["createdAt", "unitId", "title"]
 					},
 					{
 						"name": "sqliteColumn.field",
 						"type": "SqliteField",
 						"required": true,
-						"description": "The field metadata, including an optional explicit database column name."
+						"description": "The field declaration, of which only the optional column is read. An explicit column, including an empty string, is returned unchanged and unvalidated, while a null or undefined column makes sqliteColumn use the converted property name.",
+						"examples": [
+							{
+								"type": "string",
+								"default": "timestamp"
+							},
+							{
+								"type": "string",
+								"column": "report_id"
+							},
+							{
+								"type": "json",
+								"nullable": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sqliteColumn",
 						"type": "string",
-						"description": "The explicit database column name or the property name converted to snake case."
+						"description": "The explicit column value, returned unvalidated when field.column is not null or undefined, otherwise the property converted by toSnakeCase. The conversion lowercases each word and joins the words with underscores, so leading, trailing and repeated separator characters in the property are dropped or collapsed to single underscores.",
+						"examples": ["created_at", "report_id", "unit_id"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "sqliteTableSql",
@@ -122,23 +196,60 @@
 						"name": "sqliteTableSql.model",
 						"type": "SqliteModel",
 						"required": true,
-						"description": "The table, primary-key and field declarations used to form the CREATE TABLE statement."
+						"description": "The table declaration: table is the table name, primaryKey is the property used as the primary key (it defaults to 'id' when absent), and fields maps each property name to its field declaration. The primary-key property must be a key of fields, the column names must be unique, and the table and column names must pass the identifier check, otherwise sqliteTableSql throws.",
+						"examples": [
+							{
+								"table": "units",
+								"primaryKey": "id",
+								"fields": {
+									"id": {
+										"type": "number"
+									},
+									"title": {
+										"type": "string"
+									},
+									"createdAt": {
+										"type": "string",
+										"default": "timestamp"
+									}
+								}
+							},
+							{
+								"table": "reports",
+								"primaryKey": "reportId",
+								"fields": {
+									"reportId": {
+										"type": "string",
+										"column": "report_id"
+									},
+									"body": {
+										"type": "json",
+										"nullable": true
+									}
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sqliteTableSql",
 						"type": "string",
-						"description": "A CREATE TABLE IF NOT EXISTS statement with mapped column types, nullability, primary-key and timestamp-default clauses."
+						"description": "A CREATE TABLE IF NOT EXISTS statement for the model table, with one double-quoted column per field in the order of model.fields. Column types are TEXT for string and json, INTEGER for number and boolean, and BLOB for blob; the primary-key field gets PRIMARY KEY (with NOT NULL unless it is a number), other fields get NOT NULL unless nullable is true, and fields with default 'timestamp' get DEFAULT CURRENT_TIMESTAMP.",
+						"examples": [
+							"CREATE TABLE IF NOT EXISTS \"units\" (\"id\" INTEGER PRIMARY KEY, \"title\" TEXT NOT NULL, \"created_at\" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)",
+							"CREATE TABLE IF NOT EXISTS \"reports\" (\"report_id\" TEXT PRIMARY KEY NOT NULL, \"body\" TEXT)"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with 'Missing primary key: <property>', 'Duplicate SQLite column in <table>' or 'Invalid SQLite field type: <type>' while the statement is built, and through sqliteIdentifier with 'Invalid SQLite identifier: <name>' for an invalid column or table name. Inherited Object.prototype names such as 'constructor' pass the type-map check without throwing."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
