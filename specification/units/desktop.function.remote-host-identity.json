@@ -33,40 +33,72 @@
 				"name": "registerRemoteHost.state",
 				"type": "RemoteHostState",
 				"required": true,
-				"description": "Existing host state; successful registration updates enabled, origin and generation in this object."
+				"description": "Existing host state whose stored keys and credential are used to build the registration request. On success, the same object is updated with enabled true, the accepted relay origin, and the response generation; the response host ID must match hostId.",
+				"examples": [
+					{
+						"enabled": false,
+						"origin": null,
+						"hostId": "8e5162e8ef4d066b7065aa98e7e4241f0c3d76d5",
+						"keys": {
+							"d": "YKL7bN5KAd92kp32g71u5Ekag031srMlFREjqFMSQGk",
+							"publicKey": "BKA8f1CYkape6hrmTivYR45WMiAKgvk52JyRyG63kXyw9lzle9JRqBNwDoIVwCJAS6Xxy9Z0_SVeLKiN3YIyKak"
+						},
+						"credential": "8I0sNdPT4cMn2e7ZnVFY2_aBT7mGQVYI23RK7Qhl0F8",
+						"generation": 0,
+						"devices": [],
+						"revoked": []
+					}
+				]
 			},
 			{
 				"name": "registerRemoteHost.name",
 				"type": "string",
 				"required": true,
-				"description": "Computer name sent with the registration."
+				"description": "Computer name copied into the registration input. This function does not normalize or otherwise constrain it.",
+				"examples": ["Studio Mac"]
 			},
 			{
 				"name": "registerRemoteHost.register",
 				"type": "RegisterRemoteHost",
 				"required": true,
-				"description": "Callback receiving host ID, public key, credential hash and name and returning registration details."
+				"description": "Called with hostId, the stored public key, a host-bound credential hash, and name after the stored keys are imported. It must resolve to RemoteHostRegistration; callback rejections propagate."
 			}
 		],
 		"outputs": [
 			{
 				"name": "remoteHostIdentity",
 				"type": "Promise<RemoteHostState>",
-				"description": "New disabled state with generated keys, host ID and credential, no origin, generation zero and empty device/revocation lists."
+				"description": "A fresh disabled remote host state with generated P-256 keys, a host ID derived from the public key, a random credential, no relay origin, generation zero, and empty device and revocation lists. It is ready to register but does not call the hub or enable the host.",
+				"examples": [
+					{
+						"enabled": false,
+						"origin": null,
+						"hostId": "8e5162e8ef4d066b7065aa98e7e4241f0c3d76d5",
+						"keys": {
+							"d": "YKL7bN5KAd92kp32g71u5Ekag031srMlFREjqFMSQGk",
+							"publicKey": "BKA8f1CYkape6hrmTivYR45WMiAKgvk52JyRyG63kXyw9lzle9JRqBNwDoIVwCJAS6Xxy9Z0_SVeLKiN3YIyKak"
+						},
+						"credential": "8I0sNdPT4cMn2e7ZnVFY2_aBT7mGQVYI23RK7Qhl0F8",
+						"generation": 0,
+						"devices": [],
+						"revoked": []
+					}
+				]
 			},
 			{
 				"name": "registerRemoteHost",
 				"type": "Promise<RemoteKeyPair>",
-				"description": "Imported key pair after accepting a matching host ID and valid relay origin."
+				"description": "The imported host key pair, returned after the registration response has an accepted relay origin and the same host ID. The accepted origin must be HTTPS or HTTP on loopback; the response generation is written to state."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects invalid relay registration; key generation/import and registration failures also propagate."
+				"description": "Rejects when key generation, key export or import, credential hashing, or the registration callback fails. A response with an invalid relay origin or a mismatched host ID throws Error('The hub named no relay.'); dependency and callback rejections propagate."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "remoteHostIdentity",
@@ -75,11 +107,32 @@
 					{
 						"name": "remoteHostIdentity",
 						"type": "Promise<RemoteHostState>",
-						"description": "New disabled state with generated keys, host ID and credential, no origin, generation zero and empty device/revocation lists."
+						"description": "A fresh disabled remote host state with generated P-256 keys, a host ID derived from the public key, a random credential, no relay origin, generation zero, and empty device and revocation lists. It is ready to register but does not call the hub or enable the host.",
+						"examples": [
+							{
+								"enabled": false,
+								"origin": null,
+								"hostId": "8e5162e8ef4d066b7065aa98e7e4241f0c3d76d5",
+								"keys": {
+									"d": "YKL7bN5KAd92kp32g71u5Ekag031srMlFREjqFMSQGk",
+									"publicKey": "BKA8f1CYkape6hrmTivYR45WMiAKgvk52JyRyG63kXyw9lzle9JRqBNwDoIVwCJAS6Xxy9Z0_SVeLKiN3YIyKak"
+								},
+								"credential": "8I0sNdPT4cMn2e7ZnVFY2_aBT7mGQVYI23RK7Qhl0F8",
+								"generation": 0,
+								"devices": [],
+								"revoked": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects if key generation, stored-key export, host ID derivation, or credential generation fails; failures from those dependencies propagate."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "registerRemoteHost",
@@ -88,35 +141,52 @@
 						"name": "registerRemoteHost.state",
 						"type": "RemoteHostState",
 						"required": true,
-						"description": "Existing host state; successful registration updates enabled, origin and generation in this object."
+						"description": "Existing host state whose stored keys and credential are used to build the registration request. On success, the same object is updated with enabled true, the accepted relay origin, and the response generation; the response host ID must match hostId.",
+						"examples": [
+							{
+								"enabled": false,
+								"origin": null,
+								"hostId": "8e5162e8ef4d066b7065aa98e7e4241f0c3d76d5",
+								"keys": {
+									"d": "YKL7bN5KAd92kp32g71u5Ekag031srMlFREjqFMSQGk",
+									"publicKey": "BKA8f1CYkape6hrmTivYR45WMiAKgvk52JyRyG63kXyw9lzle9JRqBNwDoIVwCJAS6Xxy9Z0_SVeLKiN3YIyKak"
+								},
+								"credential": "8I0sNdPT4cMn2e7ZnVFY2_aBT7mGQVYI23RK7Qhl0F8",
+								"generation": 0,
+								"devices": [],
+								"revoked": []
+							}
+						]
 					},
 					{
 						"name": "registerRemoteHost.name",
 						"type": "string",
 						"required": true,
-						"description": "Computer name sent with the registration."
+						"description": "Computer name copied into the registration input. This function does not normalize or otherwise constrain it.",
+						"examples": ["Studio Mac"]
 					},
 					{
 						"name": "registerRemoteHost.register",
 						"type": "RegisterRemoteHost",
 						"required": true,
-						"description": "Callback receiving host ID, public key, credential hash and name and returning registration details."
+						"description": "Called with hostId, the stored public key, a host-bound credential hash, and name after the stored keys are imported. It must resolve to RemoteHostRegistration; callback rejections propagate."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerRemoteHost",
 						"type": "Promise<RemoteKeyPair>",
-						"description": "Imported key pair after accepting a matching host ID and valid relay origin."
+						"description": "The imported host key pair, returned after the registration response has an accepted relay origin and the same host ID. The accepted origin must be HTTPS or HTTP on loopback; the response generation is written to state."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects if stored keys cannot be imported, the registration callback rejects, or the hub response has an invalid relay origin or mismatched host ID. The explicit validation failure is Error('The hub named no relay.'); dependency and callback rejections propagate."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
