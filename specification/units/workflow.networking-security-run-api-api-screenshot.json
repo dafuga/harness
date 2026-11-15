@@ -18,43 +18,136 @@
 				"name": "apiScreenshot.client",
 				"type": "HarnessApiService",
 				"required": true,
-				"description": "Required connected Harness API client supplying the selected snapshot, evidence and bound artifact bytes."
+				"description": "The HarnessApiService used for three client calls: snapshot(), read('evidence') and read('artifact'). The function never calls connect itself, and a rejection from any of these calls propagates unchanged."
 			},
 			{
 				"name": "apiScreenshot.entityId",
 				"type": "string",
 				"required": true,
-				"description": "Required registered entity identifier whose recorded screenshot is selected."
+				"description": "The registered entity identifier whose evidence is read; it is passed unchanged as the entityId of the evidence query and echoed in the result. An entity with no matching screenshot on the chosen side fails with ExpectedCliError.",
+				"examples": [
+					"reports.component.regression-proof",
+					"desktop.component.runtime-pane",
+					"desktop.component.entity-view"
+				]
 			},
 			{
 				"name": "apiScreenshot.options",
 				"type": "HarnessApiOptions",
 				"required": true,
-				"description": "Required selection options. output must name a new file. Optional viewport, state and scenario default to omitted selectors; side defaults to after. Explicit scenario focused admits only passed usable focused captures. An omitted commit selects current evidence; supplied commit selects that historical revision."
+				"description": "Required selection options: output is required, must name a new file, and an empty value or '-' is refused; side must be before or after and defaults to after. Optional viewport, state and scenario filters are unset by default, scenario focused admits only passed usable focused captures, and a supplied commit selects commit mode (the snapshot revision compared with its first parent) while an omitted commit selects current evidence.",
+				"examples": [
+					{
+						"output": "/tmp/evidence/regression-proof-current.png"
+					},
+					{
+						"output": "/tmp/evidence/runtime-pane-before.png",
+						"commit": "3a7f19c0d8e42b5f6a9c01e7d3b8f2a4c6e05d18",
+						"side": "before",
+						"viewport": "desktop",
+						"state": "commit",
+						"scenario": "runtime-evidence-ui"
+					},
+					{
+						"output": "/tmp/evidence/regression-proof-focused.png",
+						"viewport": "desktop",
+						"scenario": "focused"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "apiScreenshot",
 				"type": "Promise<{path: string; entityId: string; commit: string; scenario: string; state: string; viewport: string | null; sha256: string; mediaType: string; capturedAt: string; inheritedFrom: string | null; focused: ExplorerCapture[\"focused\"] | null; verification: {record: string | null; status: string | null; standing: string; usable: boolean; note: string}}>",
-				"description": "Writes the original hash-verified image bytes to a new output file and returns its absolute path, entity, revision, state, viewport, capture time and provenance. Focused captures retain their focused record identity and have null full-verification status."
+				"description": "Writes the artifact bytes, checked against the capture's sha256, to the new output file and resolves to its absolute path with the entityId, the side's commit, scenario, state, viewport, sha256, mediaType, capturedAt, inheritedFrom, focused and verification. Focused captures keep their focused record identity and have a null verification status, and a capture the record does not prove is reported with its status and standing in verification.note, never as passed.",
+				"examples": [
+					{
+						"path": "/tmp/evidence/regression-proof-current.png",
+						"entityId": "reports.component.regression-proof",
+						"commit": "7c2e1d9f04a6b83e5d1c7f29a0e4b6d8c3f19a57",
+						"scenario": "runtime-evidence-ui",
+						"state": "current",
+						"viewport": "desktop",
+						"sha256": "2f9d6c1a84e07b53d6a2c19f8e4b0a7d5c3e9f16b8a2d4c70e1f93b6a5d8c24e",
+						"mediaType": "image/png",
+						"capturedAt": "2026-11-12T14:03:27.511Z",
+						"inheritedFrom": null,
+						"focused": null,
+						"verification": {
+							"record": "a41f0c8e6b2d9375f1e4a08c7d2b6e91f3a5c40d8b7e2f16a9c3d5e0b8f74a12",
+							"status": "passed",
+							"standing": "fresh",
+							"usable": true,
+							"note": "This capture stands as proof for its record."
+						}
+					},
+					{
+						"path": "/tmp/evidence/regression-proof-inherited.png",
+						"entityId": "reports.component.regression-proof",
+						"commit": "c03a9e7d1b5f24864e0a3d9c7b2f61e85d4a0c93",
+						"scenario": "runtime-evidence-ui",
+						"state": "inherited",
+						"viewport": "tablet",
+						"sha256": "8a40f7c2d19e6b3a5c0d8e27f41b9c6a3d0e5f82b74c1a96e0d3f58b2c7a1e04",
+						"mediaType": "image/png",
+						"capturedAt": "2026-11-09T18:41:05.082Z",
+						"inheritedFrom": "5e8b2d0f7a41c96e3b0d8f25a7c14e69d2b8f0a3",
+						"focused": null,
+						"verification": {
+							"record": "6e0b93d4a7c18f25b0e6d9c3a7f14e82b5d0c96f3a1e8b47d2c05f9a6e3b1c78",
+							"status": "passed",
+							"standing": "inherited",
+							"usable": true,
+							"note": "This capture stands as proof for its record."
+						}
+					},
+					{
+						"path": "/tmp/evidence/runtime-pane-focused.png",
+						"entityId": "desktop.component.runtime-pane",
+						"commit": "3a7f19c0d8e42b5f6a9c01e7d3b8f2a4c6e05d18",
+						"scenario": "focused",
+						"state": "current",
+						"viewport": "desktop",
+						"sha256": "d17b5e0a3c9f2846e1b7d05c8a4f3e29b6c0d71a5e8f2c4b3960d1e7a8c5f209",
+						"mediaType": "image/png",
+						"capturedAt": "2026-11-13T07:22:48.904Z",
+						"inheritedFrom": null,
+						"focused": {
+							"loop": "shells-section",
+							"status": "passed",
+							"record": "f4c82a1e7d3b90c56a2e8f1d4b7c03e9a5d6f2b18c4e7a0d93b5f6c12e8a4d07",
+							"viewport": {
+								"width": 1440,
+								"height": 900
+							}
+						},
+						"verification": {
+							"record": "f4c82a1e7d3b90c56a2e8f1d4b7c03e9a5d6f2b18c4e7a0d93b5f6c12e8a4d07",
+							"status": null,
+							"standing": "unvalidated",
+							"usable": true,
+							"note": "This capture stands as proof for its record."
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Missing output, invalid side, absent or ambiguous capture, missing record binding, SHA-256 mismatch, or a non-image artifact."
+				"description": "Thrown through fail when output is missing or '-', side is not before or after, zero or several captures remain after selection, the record binding is missing, the artifact SHA-256 differs from the capture's, or the artifact mediaType does not start with 'image/'."
 			},
 			{
 				"name": "Transport error",
 				"type": "propagated",
-				"description": "Snapshot, evidence and bound artifact requests may reject; client errors propagate."
+				"description": "The snapshot, evidence and artifact client calls are not caught, so a rejection from any of them propagates unchanged."
 			},
 			{
 				"name": "Filesystem error",
 				"type": "propagated",
-				"description": "Writing the new file may reject, including an existing output path or insufficient permissions; original bytes are never overwritten."
+				"description": "The output is written with flag 'wx', so the write rejects when the output path already exists or cannot be written, and that rejection propagates; an existing file is never overwritten."
 			}
 		],
 		"errorStatus": "declared",
@@ -66,43 +159,136 @@
 						"name": "apiScreenshot.client",
 						"type": "HarnessApiService",
 						"required": true,
-						"description": "Required connected Harness API client supplying the selected snapshot, evidence and bound artifact bytes."
+						"description": "The HarnessApiService used for three client calls: snapshot(), read('evidence') and read('artifact'). The function never calls connect itself, and a rejection from any of these calls propagates unchanged."
 					},
 					{
 						"name": "apiScreenshot.entityId",
 						"type": "string",
 						"required": true,
-						"description": "Required registered entity identifier whose recorded screenshot is selected."
+						"description": "The registered entity identifier whose evidence is read; it is passed unchanged as the entityId of the evidence query and echoed in the result. An entity with no matching screenshot on the chosen side fails with ExpectedCliError.",
+						"examples": [
+							"reports.component.regression-proof",
+							"desktop.component.runtime-pane",
+							"desktop.component.entity-view"
+						]
 					},
 					{
 						"name": "apiScreenshot.options",
 						"type": "HarnessApiOptions",
 						"required": true,
-						"description": "Required selection options. output must name a new file. Optional viewport, state and scenario default to omitted selectors; side defaults to after. Explicit scenario focused admits only passed usable focused captures. An omitted commit selects current evidence; supplied commit selects that historical revision."
+						"description": "Required selection options: output is required, must name a new file, and an empty value or '-' is refused; side must be before or after and defaults to after. Optional viewport, state and scenario filters are unset by default, scenario focused admits only passed usable focused captures, and a supplied commit selects commit mode (the snapshot revision compared with its first parent) while an omitted commit selects current evidence.",
+						"examples": [
+							{
+								"output": "/tmp/evidence/regression-proof-current.png"
+							},
+							{
+								"output": "/tmp/evidence/runtime-pane-before.png",
+								"commit": "3a7f19c0d8e42b5f6a9c01e7d3b8f2a4c6e05d18",
+								"side": "before",
+								"viewport": "desktop",
+								"state": "commit",
+								"scenario": "runtime-evidence-ui"
+							},
+							{
+								"output": "/tmp/evidence/regression-proof-focused.png",
+								"viewport": "desktop",
+								"scenario": "focused"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "apiScreenshot",
 						"type": "Promise<{path: string; entityId: string; commit: string; scenario: string; state: string; viewport: string | null; sha256: string; mediaType: string; capturedAt: string; inheritedFrom: string | null; focused: ExplorerCapture[\"focused\"] | null; verification: {record: string | null; status: string | null; standing: string; usable: boolean; note: string}}>",
-						"description": "Writes the original hash-verified image bytes to a new output file and returns its absolute path, entity, revision, state, viewport, capture time and provenance. Focused captures retain their focused record identity and have null full-verification status."
+						"description": "Writes the artifact bytes, checked against the capture's sha256, to the new output file and resolves to its absolute path with the entityId, the side's commit, scenario, state, viewport, sha256, mediaType, capturedAt, inheritedFrom, focused and verification. Focused captures keep their focused record identity and have a null verification status, and a capture the record does not prove is reported with its status and standing in verification.note, never as passed.",
+						"examples": [
+							{
+								"path": "/tmp/evidence/regression-proof-current.png",
+								"entityId": "reports.component.regression-proof",
+								"commit": "7c2e1d9f04a6b83e5d1c7f29a0e4b6d8c3f19a57",
+								"scenario": "runtime-evidence-ui",
+								"state": "current",
+								"viewport": "desktop",
+								"sha256": "2f9d6c1a84e07b53d6a2c19f8e4b0a7d5c3e9f16b8a2d4c70e1f93b6a5d8c24e",
+								"mediaType": "image/png",
+								"capturedAt": "2026-11-12T14:03:27.511Z",
+								"inheritedFrom": null,
+								"focused": null,
+								"verification": {
+									"record": "a41f0c8e6b2d9375f1e4a08c7d2b6e91f3a5c40d8b7e2f16a9c3d5e0b8f74a12",
+									"status": "passed",
+									"standing": "fresh",
+									"usable": true,
+									"note": "This capture stands as proof for its record."
+								}
+							},
+							{
+								"path": "/tmp/evidence/regression-proof-inherited.png",
+								"entityId": "reports.component.regression-proof",
+								"commit": "c03a9e7d1b5f24864e0a3d9c7b2f61e85d4a0c93",
+								"scenario": "runtime-evidence-ui",
+								"state": "inherited",
+								"viewport": "tablet",
+								"sha256": "8a40f7c2d19e6b3a5c0d8e27f41b9c6a3d0e5f82b74c1a96e0d3f58b2c7a1e04",
+								"mediaType": "image/png",
+								"capturedAt": "2026-11-09T18:41:05.082Z",
+								"inheritedFrom": "5e8b2d0f7a41c96e3b0d8f25a7c14e69d2b8f0a3",
+								"focused": null,
+								"verification": {
+									"record": "6e0b93d4a7c18f25b0e6d9c3a7f14e82b5d0c96f3a1e8b47d2c05f9a6e3b1c78",
+									"status": "passed",
+									"standing": "inherited",
+									"usable": true,
+									"note": "This capture stands as proof for its record."
+								}
+							},
+							{
+								"path": "/tmp/evidence/runtime-pane-focused.png",
+								"entityId": "desktop.component.runtime-pane",
+								"commit": "3a7f19c0d8e42b5f6a9c01e7d3b8f2a4c6e05d18",
+								"scenario": "focused",
+								"state": "current",
+								"viewport": "desktop",
+								"sha256": "d17b5e0a3c9f2846e1b7d05c8a4f3e29b6c0d71a5e8f2c4b3960d1e7a8c5f209",
+								"mediaType": "image/png",
+								"capturedAt": "2026-11-13T07:22:48.904Z",
+								"inheritedFrom": null,
+								"focused": {
+									"loop": "shells-section",
+									"status": "passed",
+									"record": "f4c82a1e7d3b90c56a2e8f1d4b7c03e9a5d6f2b18c4e7a0d93b5f6c12e8a4d07",
+									"viewport": {
+										"width": 1440,
+										"height": 900
+									}
+								},
+								"verification": {
+									"record": "f4c82a1e7d3b90c56a2e8f1d4b7c03e9a5d6f2b18c4e7a0d93b5f6c12e8a4d07",
+									"status": null,
+									"standing": "unvalidated",
+									"usable": true,
+									"note": "This capture stands as proof for its record."
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Missing output, invalid side, absent or ambiguous capture, missing record binding, SHA-256 mismatch, or a non-image artifact."
+						"description": "Thrown through fail when output is missing or '-', side is not before or after, zero or several captures remain after selection, the record binding is missing, the artifact SHA-256 differs from the capture's, or the artifact mediaType does not start with 'image/'."
 					},
 					{
 						"name": "Transport error",
 						"type": "propagated",
-						"description": "Snapshot, evidence and bound artifact requests may reject; client errors propagate."
+						"description": "The snapshot, evidence and artifact client calls are not caught, so a rejection from any of them propagates unchanged."
 					},
 					{
 						"name": "Filesystem error",
 						"type": "propagated",
-						"description": "Writing the new file may reject, including an existing output path or insufficient permissions; original bytes are never overwritten."
+						"description": "The output is written with flag 'wx', so the write rejects when the output path already exists or cannot be written, and that rejection propagates; an existing file is never overwritten."
 					}
 				],
 				"errorStatus": "declared"
