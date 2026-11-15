@@ -1,6 +1,6 @@
 import type { Call } from './request-session.test.types';
 import { expect, test } from 'vitest';
-import { RequestSessionService } from '../../src/services/request-session-service/RequestSessionService';
+import { RequestSessionService } from '../../src/lib/verification-evidence/server/auth/request-session-service/RequestSessionService';
 import { SESSION_COOKIE } from '../../src/utils/authCookies';
 import { ORIGIN, ada, authFixture, browserGrant } from '../support/authFixture';
 
