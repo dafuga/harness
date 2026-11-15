@@ -4,7 +4,7 @@ import type {
 	DeploymentReceipt
 } from '../../models/development-tooling/Deployment.types';
 import { deploymentState } from './deploymentState';
-import { gitRead, gitRevision } from '../gitRead';
+import { gitRead, gitRevision } from './gitRead';
 
 /** Production follows verified preprod, never the currently inspected checkout. */
 export async function productionPromotion(

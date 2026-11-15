@@ -12,7 +12,7 @@ import type {
 	DeploymentConfig,
 	DeploymentEnvironment
 } from '../../models/development-tooling/Deployment.types';
-import { gitRead } from '../gitRead';
+import { gitRead } from './gitRead';
 const text = z.string().min(1);
 const targetSchema = z.object({
 	wranglerEnvironment: z.string().default(''),

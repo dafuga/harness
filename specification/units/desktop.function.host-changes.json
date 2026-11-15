@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/git-source-history/hostChanges.ts",
-			"packages/desktop/src/utils/hostChanges.ts"
-		],
-		"symbols": ["hostChanges", "hostChanges"]
+		"source": ["packages/desktop/src/utils/git-source-history/hostChanges.ts"],
+		"symbols": ["hostChanges"]
 	},
 	"contract": {
 		"origin": "declared",

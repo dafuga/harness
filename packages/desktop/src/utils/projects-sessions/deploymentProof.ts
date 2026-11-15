@@ -9,7 +9,7 @@ import type {
 	DeploymentConfig,
 	DeploymentEnvironment
 } from '../../models/development-tooling/Deployment.types';
-import { gitRead } from '../gitRead';
+import { gitRead } from './gitRead';
 import { deploymentState } from './deploymentState';
 export function deploymentProof(config: DeploymentConfig): string {
 	return createHash('sha256').update(JSON.stringify(config)).digest('hex');

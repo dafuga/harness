@@ -6,7 +6,7 @@ import { DeploymentService } from '../../services/development-tooling/Deployment
 import { changeEnvironment } from './changeEnvironment';
 import { deploymentConfig } from './deploymentConfig';
 import { deploymentCommand } from './deploymentCommand';
-import { gitRead } from '../gitRead';
+import { gitRead } from './gitRead';
 import { sourceSnapshot, type SourceSnapshot } from '../sourceSnapshot';
 import { sourceChanges } from '../sourceChanges';
 /** A scoped change cannot quietly become a local-only change or deploy an unverified mapping. */

@@ -11,10 +11,9 @@
 		"source": [
 			"packages/desktop/src/services/project-session-service/git-source-adapter/gitBlobs.ts",
 			"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/gitBlobs.ts",
-			"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/gitBlobs.types.ts",
-			"packages/desktop/src/utils/gitBlobs.ts"
+			"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/gitBlobs.types.ts"
 		],
-		"symbols": ["gitBlobs", "gitBlobs", "BlobRequest", "gitBlobs"]
+		"symbols": ["gitBlobs", "gitBlobs", "BlobRequest"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -84,11 +83,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/gitBlobs.ts",
+		"entry": "packages/desktop/src/services/project-session-service/git-source-adapter/gitBlobs.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/gitBlobs.ts"
+				"entry": "packages/desktop/src/services/project-session-service/git-source-adapter/gitBlobs.ts"
 			}
 		]
 	},

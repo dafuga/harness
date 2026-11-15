@@ -2,7 +2,7 @@
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { gitRead, gitRevision } from '../gitRead';
+import { gitRead, gitRevision } from './gitRead';
 
 /** A task-owned detached checkout keeps builds off the user's branch and dirty files. */
 export async function deploymentWorktree<T>(

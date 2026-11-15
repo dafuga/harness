@@ -58,7 +58,7 @@ vi.mock('../../src/adapters/PinnedHistoryAdapter', () => ({
 		}
 	}
 }));
-vi.mock('../../src/utils/gitRead', () => ({
+vi.mock('../../src/utils/projects-sessions/gitRead', () => ({
 	gitRead: async (root: string) => {
 		io.reads.push(`${root}:tree`);
 		return '2'.repeat(40);
@@ -146,6 +146,7 @@ for (const operation of ['evidence', 'artifact'] as const) {
 					if (operation === 'evidence') {
 						expect((result.value as EntityEvidenceResult).identity.projectId).toBe('A');
 						expect((result.value as EntityEvidenceResult).scope.summary.subject).toBe('A');
+						expect(io.reads).toContain('A:tree');
 					} else {
 						expect((result.value as EvidenceArtifactResult).sha256).toBe(sha256);
 						expect((result.value as EvidenceArtifactResult).bytes).toEqual(bytes);

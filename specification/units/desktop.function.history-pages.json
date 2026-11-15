@@ -10,7 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/git-source-history/history-panel/historyPages.ts",
-			"packages/desktop/src/utils/historyPages.ts"
+			"packages/desktop/src/components/history-panel/historyPages.ts"
 		],
 		"symbols": ["historyPages", "historyPages"]
 	},
@@ -65,11 +65,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/historyPages.ts",
+		"entry": "packages/desktop/src/components/git-source-history/history-panel/historyPages.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/historyPages.ts"
+				"entry": "packages/desktop/src/components/git-source-history/history-panel/historyPages.ts"
 			}
 		]
 	},

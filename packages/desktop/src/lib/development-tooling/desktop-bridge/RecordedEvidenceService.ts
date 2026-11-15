@@ -17,7 +17,7 @@ import type {
 	EvidenceArtifactResult
 } from '../../../models/verification-evidence/DesktopEvidence.types';
 import { artifactAnswer } from '../../../utils/artifact-answer/artifactAnswer';
-import { gitRead } from '../../../utils/gitRead';
+import { gitRead } from '../../../utils/projects-sessions/gitRead';
 import { recordedAnswer } from '../../../utils/recorded-answer/recordedAnswer';
 import { recordedCapture } from '../../../utils/reports-media/recordedCapture';
 import { recordedScope, recordedTip } from '../../../utils/reports-media/recordedScope';

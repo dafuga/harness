@@ -10,7 +10,7 @@ import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import { deploymentEnvironments } from '../../models/development-tooling/Deployment.types';
 import type { DeploymentReceipt } from '../../models/development-tooling/Deployment.types';
-import { gitRead } from '../gitRead';
+import { gitRead } from './gitRead';
 const receiptWrites = new RepositoryArbiterService();
 const receipts = z.array(
 	z.object({
