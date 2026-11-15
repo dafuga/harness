@@ -12,13 +12,7 @@
 			"packages/remote/src/services/networking-security/secure-channel-service/sealPacket.ts",
 			"packages/remote/src/utils/networking-security/sealPacket.ts"
 		],
-		"symbols": [
-			"sealPacket",
-			"openPacket",
-			"SealContext",
-			"sealPacket",
-			"openPacket"
-		]
+		"symbols": ["sealPacket", "openPacket", "SealContext", "sealPacket", "openPacket"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -67,6 +61,7 @@
 				"description": "Any decoding, parameter or authentication failure while opening becomes SecureFailure with reason tag."
 			}
 		],
+		"errorStatus": "unknown",
 		"operations": [
 			{
 				"name": "sealPacket",
@@ -127,8 +122,7 @@
 				"errorStatus": "declared"
 			}
 		],
-		"initialization": [],
-		"errorStatus": "unknown"
+		"initialization": []
 	},
 	"dependencies": [
 		{
@@ -152,9 +146,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"remote-desktop-boundaries"
-	],
+	"scenarios": ["remote-desktop-boundaries"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

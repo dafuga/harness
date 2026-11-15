@@ -29,7 +29,10 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Lists the argument strings appended after the executable and platform-specific time flag. Each array element is passed as one command argument.",
-				"examples": [["--version"], ["-e", "process.stdout.write('ok')"]]
+				"examples": [
+					["--version"],
+					["-e", "process.stdout.write('ok')"]
+				]
 			},
 			{
 				"name": "peakMemory.input",
@@ -89,7 +92,10 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Lists the argument strings appended after the executable and platform-specific time flag. Each array element is passed as one command argument.",
-						"examples": [["--version"], ["-e", "process.stdout.write('ok')"]]
+						"examples": [
+							["--version"],
+							["-e", "process.stdout.write('ok')"]
+						]
 					},
 					{
 						"name": "peakMemory.input",
