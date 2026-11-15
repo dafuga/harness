@@ -31,35 +31,260 @@
 				"name": "loadWorkspace.bridge",
 				"type": "DesktopBridge",
 				"required": true,
-				"description": "The desktop connection used to select a project, read its snapshot and optional entity, and obtain its allowed actions. Project selection is skipped when the connection does not offer it."
+				"description": "The desktop connection the load reads through: `snapshot` is read unless a project switch already returned one that the route shows, `entity` only when the route names one, and `capabilities` is asked only when the snapshot carries none. Without `selectProject` no project switch happens, and without `capabilities` such a snapshot gets a fixed legacy set: agents, planning and approval on, comments off."
 			},
 			{
 				"name": "loadWorkspace.route",
 				"type": "WorkspaceRoute",
 				"required": true,
-				"description": "The parsed address naming the optional project, branch, commit and entity. A newly selected snapshot is reused only when no commit is pinned and its branch matches any requested branch; otherwise a separate snapshot is requested."
+				"description": "The parsed address: its `projectId`, `branch`, `commit` and `entityId` decide what is read, and `category` and `suffix` are not read here. A snapshot opened by a project switch is reused only when the route pins no commit and any requested branch matches that snapshot's branch; otherwise a snapshot is requested for the route's branch and commit.",
+				"examples": [
+					{
+						"projectId": "local-3f9a0c6e2b1d4a7f8e5c9b0d3a6f1e2c4b7d8a9f0e1c2b3a4d5e6f7a8b9c0d1e",
+						"branch": null,
+						"commit": null,
+						"category": "functions",
+						"entityId": "desktop.function.load-workspace",
+						"suffix": null
+					},
+					{
+						"projectId": "local-3f9a0c6e2b1d4a7f8e5c9b0d3a6f1e2c4b7d8a9f0e1c2b3a4d5e6f7a8b9c0d1e",
+						"branch": "main",
+						"commit": "c08d3e5a71f29b4d6e0c8a3f5b7d1e9c2a4f6b80",
+						"category": "functions",
+						"entityId": "desktop.function.load-workspace",
+						"suffix": "source"
+					},
+					{
+						"projectId": null,
+						"branch": "main",
+						"commit": null,
+						"category": "pages",
+						"entityId": null,
+						"suffix": null
+					}
+				]
 			},
 			{
 				"name": "loadWorkspace.selection",
 				"type": "ProjectSelection",
 				"required": true,
-				"description": "A mutable record of the last selected project identity, or null when unknown. Switching clears it before selection, so a failed selection leaves it null. Successful selection and a returned snapshot identity update it."
+				"description": "A mutable record of the last selected project id, or `null` while that is not known. It is cleared before a project switch, so a failed switch leaves it `null`; a successful switch and a returned snapshot's `project.id` set it.",
+				"examples": [
+					{
+						"id": "local-3f9a0c6e2b1d4a7f8e5c9b0d3a6f1e2c4b7d8a9f0e1c2b3a4d5e6f7a8b9c0d1e"
+					},
+					{
+						"id": null
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "loadWorkspace",
 				"type": "Promise<LoadedWorkspace>",
-				"description": "A promise containing the snapshot, entity or null, allowed actions, and cached-view information or null. Entity reads use the returned snapshot commit and project identity. A cached snapshot is returned with writing disabled and all change actions disabled, even if its saved capabilities allowed them."
+				"description": "The resolved workspace: the snapshot, the entity read at that snapshot's commit (or `null` when the route names none), the allowed actions, and the cached-view information (or `null` for a current snapshot). A cached view comes back with `writable` false and every change action disabled even when its saved capabilities allowed them, and a failed capabilities read leaves every action disabled with a reason.",
+				"examples": [
+					{
+						"snapshot": {
+							"project": {
+								"name": "sample-app",
+								"root": "/Users/example/projects/sample-app",
+								"id": "local-3f9a0c6e2b1d4a7f8e5c9b0d3a6f1e2c4b7d8a9f0e1c2b3a4d5e6f7a8b9c0d1e"
+							},
+							"capabilities": {
+								"comments": true,
+								"agents": true,
+								"planning": true,
+								"approval": true,
+								"source": "local",
+								"reason": "Comments are saved as local pending drafts until connected."
+							},
+							"revision": {
+								"branch": "main",
+								"commit": "4f2c9a1d7b8e0c35a6f9d2e17b4c8a0f3e5d6b71",
+								"tip": "4f2c9a1d7b8e0c35a6f9d2e17b4c8a0f3e5d6b71",
+								"atTip": true
+							},
+							"branches": [
+								{
+									"name": "main",
+									"tip": "4f2c9a1d7b8e0c35a6f9d2e17b4c8a0f3e5d6b71",
+									"current": true
+								},
+								{
+									"name": "feature/evidence-grid",
+									"tip": "9d1b7f3e0a6c4e2b8d5f1a9c3e7b0d4f6a2c8e51",
+									"current": false
+								}
+							],
+							"commits": [
+								{
+									"hash": "4f2c9a1d7b8e0c35a6f9d2e17b4c8a0f3e5d6b71",
+									"subject": "Record the workspace load contract",
+									"authoredAt": "2026-11-13T16:04:27+01:00",
+									"committedAt": "2026-11-13T16:06:02+01:00"
+								},
+								{
+									"hash": "c08d3e5a71f29b4d6e0c8a3f5b7d1e9c2a4f6b80",
+									"subject": "Split workspace route parsing",
+									"authoredAt": "2026-11-12T10:21:55+01:00",
+									"committedAt": "2026-11-12T10:24:10+01:00"
+								}
+							],
+							"entities": [],
+							"writable": true
+						},
+						"entity": {
+							"id": "desktop.function.load-workspace",
+							"category": "functions",
+							"kind": "function",
+							"title": "loadWorkspace",
+							"summary": "Loads the project snapshot and optional entity named by a workspace address, determines available actions, and makes cached views read-only.",
+							"changed": false,
+							"planned": false,
+							"hasPlan": false,
+							"lifecycle": null,
+							"verification": "unknown",
+							"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+							"latestVersion": null,
+							"approvedVersion": null,
+							"threadCount": 0,
+							"thumbnail": null,
+							"contract": {
+								"inputs": [
+									{
+										"name": "loadWorkspace.bridge",
+										"type": "DesktopBridge",
+										"required": true
+									},
+									{
+										"name": "loadWorkspace.route",
+										"type": "WorkspaceRoute",
+										"required": true
+									},
+									{
+										"name": "loadWorkspace.selection",
+										"type": "ProjectSelection",
+										"required": true
+									}
+								],
+								"outputs": [
+									{
+										"name": "loadWorkspace",
+										"type": "Promise<LoadedWorkspace>"
+									}
+								],
+								"errors": [
+									{
+										"name": "Error",
+										"type": "thrown"
+									}
+								],
+								"hash": "a7c3e91f5d2b8046c1e9f3a7b5d20c8e4f6a1b9d3c7e0f2a5b8d4c6e1f9a3b07"
+							},
+							"relationships": [],
+							"versions": [],
+							"threads": [],
+							"history": [],
+							"sources": [
+								"packages/desktop/src/utils/load-workspace/loadWorkspace.ts",
+								"packages/desktop/src/utils/loadWorkspace.ts",
+								"packages/desktop/src/utils/projects-sessions/load-workspace/loadWorkspace.ts",
+								"packages/desktop/src/utils/projects-sessions/load-workspace/loadWorkspace.types.ts"
+							],
+							"size": {
+								"available": true,
+								"text": "4.7 KB"
+							},
+							"performance": {
+								"available": false,
+								"text": "Not measured"
+							}
+						},
+						"capabilities": {
+							"comments": true,
+							"agents": true,
+							"planning": true,
+							"approval": true,
+							"source": "local",
+							"reason": "Comments are saved as local pending drafts until connected."
+						},
+						"offline": null
+					},
+					{
+						"snapshot": {
+							"project": {
+								"name": "sample-app",
+								"root": "/Users/example/projects/sample-app",
+								"id": "local-3f9a0c6e2b1d4a7f8e5c9b0d3a6f1e2c4b7d8a9f0e1c2b3a4d5e6f7a8b9c0d1e"
+							},
+							"capabilities": {
+								"comments": true,
+								"agents": true,
+								"planning": true,
+								"approval": true,
+								"source": "local",
+								"reason": "Comments are saved as local pending drafts until connected."
+							},
+							"revision": {
+								"branch": "main",
+								"commit": "4f2c9a1d7b8e0c35a6f9d2e17b4c8a0f3e5d6b71",
+								"tip": "4f2c9a1d7b8e0c35a6f9d2e17b4c8a0f3e5d6b71",
+								"atTip": true
+							},
+							"branches": [
+								{
+									"name": "main",
+									"tip": "4f2c9a1d7b8e0c35a6f9d2e17b4c8a0f3e5d6b71",
+									"current": true
+								},
+								{
+									"name": "feature/evidence-grid",
+									"tip": "9d1b7f3e0a6c4e2b8d5f1a9c3e7b0d4f6a2c8e51",
+									"current": false
+								}
+							],
+							"commits": [
+								{
+									"hash": "4f2c9a1d7b8e0c35a6f9d2e17b4c8a0f3e5d6b71",
+									"subject": "Record the workspace load contract",
+									"authoredAt": "2026-11-13T16:04:27+01:00",
+									"committedAt": "2026-11-13T16:06:02+01:00"
+								},
+								{
+									"hash": "c08d3e5a71f29b4d6e0c8a3f5b7d1e9c2a4f6b80",
+									"subject": "Split workspace route parsing",
+									"authoredAt": "2026-11-12T10:21:55+01:00",
+									"committedAt": "2026-11-12T10:24:10+01:00"
+								}
+							],
+							"entities": [],
+							"writable": true
+						},
+						"entity": null,
+						"capabilities": {
+							"comments": true,
+							"agents": true,
+							"planning": true,
+							"approval": true,
+							"source": "local",
+							"reason": "Comments are saved as local pending drafts until connected."
+						},
+						"offline": null
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "The promise rejects if the snapshot names a different project from the one requested. Project-selection, snapshot and entity-read failures also propagate. Failure to read capabilities instead yields disabled actions and a reason."
+				"description": "The promise rejects with `Error('The bridge answered for another project.')` when the route names a project and the snapshot's `project.id` is a different, non-empty id. Rejections from the project-selection, snapshot and entity reads pass through unchanged."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "loadWorkspace",
@@ -68,30 +293,260 @@
 						"name": "loadWorkspace.bridge",
 						"type": "DesktopBridge",
 						"required": true,
-						"description": "The desktop connection used to select a project, read its snapshot and optional entity, and obtain its allowed actions. Project selection is skipped when the connection does not offer it."
+						"description": "The desktop connection the load reads through: `snapshot` is read unless a project switch already returned one that the route shows, `entity` only when the route names one, and `capabilities` is asked only when the snapshot carries none. Without `selectProject` no project switch happens, and without `capabilities` such a snapshot gets a fixed legacy set: agents, planning and approval on, comments off."
 					},
 					{
 						"name": "loadWorkspace.route",
 						"type": "WorkspaceRoute",
 						"required": true,
-						"description": "The parsed address naming the optional project, branch, commit and entity. A newly selected snapshot is reused only when no commit is pinned and its branch matches any requested branch; otherwise a separate snapshot is requested."
+						"description": "The parsed address: its `projectId`, `branch`, `commit` and `entityId` decide what is read, and `category` and `suffix` are not read here. A snapshot opened by a project switch is reused only when the route pins no commit and any requested branch matches that snapshot's branch; otherwise a snapshot is requested for the route's branch and commit.",
+						"examples": [
+							{
+								"projectId": "local-3f9a0c6e2b1d4a7f8e5c9b0d3a6f1e2c4b7d8a9f0e1c2b3a4d5e6f7a8b9c0d1e",
+								"branch": null,
+								"commit": null,
+								"category": "functions",
+								"entityId": "desktop.function.load-workspace",
+								"suffix": null
+							},
+							{
+								"projectId": "local-3f9a0c6e2b1d4a7f8e5c9b0d3a6f1e2c4b7d8a9f0e1c2b3a4d5e6f7a8b9c0d1e",
+								"branch": "main",
+								"commit": "c08d3e5a71f29b4d6e0c8a3f5b7d1e9c2a4f6b80",
+								"category": "functions",
+								"entityId": "desktop.function.load-workspace",
+								"suffix": "source"
+							},
+							{
+								"projectId": null,
+								"branch": "main",
+								"commit": null,
+								"category": "pages",
+								"entityId": null,
+								"suffix": null
+							}
+						]
 					},
 					{
 						"name": "loadWorkspace.selection",
 						"type": "ProjectSelection",
 						"required": true,
-						"description": "A mutable record of the last selected project identity, or null when unknown. Switching clears it before selection, so a failed selection leaves it null. Successful selection and a returned snapshot identity update it."
+						"description": "A mutable record of the last selected project id, or `null` while that is not known. It is cleared before a project switch, so a failed switch leaves it `null`; a successful switch and a returned snapshot's `project.id` set it.",
+						"examples": [
+							{
+								"id": "local-3f9a0c6e2b1d4a7f8e5c9b0d3a6f1e2c4b7d8a9f0e1c2b3a4d5e6f7a8b9c0d1e"
+							},
+							{
+								"id": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "loadWorkspace",
 						"type": "Promise<LoadedWorkspace>",
-						"description": "A promise containing the snapshot, entity or null, allowed actions, and cached-view information or null. Entity reads use the returned snapshot commit and project identity. A cached snapshot is returned with writing disabled and all change actions disabled, even if its saved capabilities allowed them."
+						"description": "The resolved workspace: the snapshot, the entity read at that snapshot's commit (or `null` when the route names none), the allowed actions, and the cached-view information (or `null` for a current snapshot). A cached view comes back with `writable` false and every change action disabled even when its saved capabilities allowed them, and a failed capabilities read leaves every action disabled with a reason.",
+						"examples": [
+							{
+								"snapshot": {
+									"project": {
+										"name": "sample-app",
+										"root": "/Users/example/projects/sample-app",
+										"id": "local-3f9a0c6e2b1d4a7f8e5c9b0d3a6f1e2c4b7d8a9f0e1c2b3a4d5e6f7a8b9c0d1e"
+									},
+									"capabilities": {
+										"comments": true,
+										"agents": true,
+										"planning": true,
+										"approval": true,
+										"source": "local",
+										"reason": "Comments are saved as local pending drafts until connected."
+									},
+									"revision": {
+										"branch": "main",
+										"commit": "4f2c9a1d7b8e0c35a6f9d2e17b4c8a0f3e5d6b71",
+										"tip": "4f2c9a1d7b8e0c35a6f9d2e17b4c8a0f3e5d6b71",
+										"atTip": true
+									},
+									"branches": [
+										{
+											"name": "main",
+											"tip": "4f2c9a1d7b8e0c35a6f9d2e17b4c8a0f3e5d6b71",
+											"current": true
+										},
+										{
+											"name": "feature/evidence-grid",
+											"tip": "9d1b7f3e0a6c4e2b8d5f1a9c3e7b0d4f6a2c8e51",
+											"current": false
+										}
+									],
+									"commits": [
+										{
+											"hash": "4f2c9a1d7b8e0c35a6f9d2e17b4c8a0f3e5d6b71",
+											"subject": "Record the workspace load contract",
+											"authoredAt": "2026-11-13T16:04:27+01:00",
+											"committedAt": "2026-11-13T16:06:02+01:00"
+										},
+										{
+											"hash": "c08d3e5a71f29b4d6e0c8a3f5b7d1e9c2a4f6b80",
+											"subject": "Split workspace route parsing",
+											"authoredAt": "2026-11-12T10:21:55+01:00",
+											"committedAt": "2026-11-12T10:24:10+01:00"
+										}
+									],
+									"entities": [],
+									"writable": true
+								},
+								"entity": {
+									"id": "desktop.function.load-workspace",
+									"category": "functions",
+									"kind": "function",
+									"title": "loadWorkspace",
+									"summary": "Loads the project snapshot and optional entity named by a workspace address, determines available actions, and makes cached views read-only.",
+									"changed": false,
+									"planned": false,
+									"hasPlan": false,
+									"lifecycle": null,
+									"verification": "unknown",
+									"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+									"latestVersion": null,
+									"approvedVersion": null,
+									"threadCount": 0,
+									"thumbnail": null,
+									"contract": {
+										"inputs": [
+											{
+												"name": "loadWorkspace.bridge",
+												"type": "DesktopBridge",
+												"required": true
+											},
+											{
+												"name": "loadWorkspace.route",
+												"type": "WorkspaceRoute",
+												"required": true
+											},
+											{
+												"name": "loadWorkspace.selection",
+												"type": "ProjectSelection",
+												"required": true
+											}
+										],
+										"outputs": [
+											{
+												"name": "loadWorkspace",
+												"type": "Promise<LoadedWorkspace>"
+											}
+										],
+										"errors": [
+											{
+												"name": "Error",
+												"type": "thrown"
+											}
+										],
+										"hash": "a7c3e91f5d2b8046c1e9f3a7b5d20c8e4f6a1b9d3c7e0f2a5b8d4c6e1f9a3b07"
+									},
+									"relationships": [],
+									"versions": [],
+									"threads": [],
+									"history": [],
+									"sources": [
+										"packages/desktop/src/utils/load-workspace/loadWorkspace.ts",
+										"packages/desktop/src/utils/loadWorkspace.ts",
+										"packages/desktop/src/utils/projects-sessions/load-workspace/loadWorkspace.ts",
+										"packages/desktop/src/utils/projects-sessions/load-workspace/loadWorkspace.types.ts"
+									],
+									"size": {
+										"available": true,
+										"text": "4.7 KB"
+									},
+									"performance": {
+										"available": false,
+										"text": "Not measured"
+									}
+								},
+								"capabilities": {
+									"comments": true,
+									"agents": true,
+									"planning": true,
+									"approval": true,
+									"source": "local",
+									"reason": "Comments are saved as local pending drafts until connected."
+								},
+								"offline": null
+							},
+							{
+								"snapshot": {
+									"project": {
+										"name": "sample-app",
+										"root": "/Users/example/projects/sample-app",
+										"id": "local-3f9a0c6e2b1d4a7f8e5c9b0d3a6f1e2c4b7d8a9f0e1c2b3a4d5e6f7a8b9c0d1e"
+									},
+									"capabilities": {
+										"comments": true,
+										"agents": true,
+										"planning": true,
+										"approval": true,
+										"source": "local",
+										"reason": "Comments are saved as local pending drafts until connected."
+									},
+									"revision": {
+										"branch": "main",
+										"commit": "4f2c9a1d7b8e0c35a6f9d2e17b4c8a0f3e5d6b71",
+										"tip": "4f2c9a1d7b8e0c35a6f9d2e17b4c8a0f3e5d6b71",
+										"atTip": true
+									},
+									"branches": [
+										{
+											"name": "main",
+											"tip": "4f2c9a1d7b8e0c35a6f9d2e17b4c8a0f3e5d6b71",
+											"current": true
+										},
+										{
+											"name": "feature/evidence-grid",
+											"tip": "9d1b7f3e0a6c4e2b8d5f1a9c3e7b0d4f6a2c8e51",
+											"current": false
+										}
+									],
+									"commits": [
+										{
+											"hash": "4f2c9a1d7b8e0c35a6f9d2e17b4c8a0f3e5d6b71",
+											"subject": "Record the workspace load contract",
+											"authoredAt": "2026-11-13T16:04:27+01:00",
+											"committedAt": "2026-11-13T16:06:02+01:00"
+										},
+										{
+											"hash": "c08d3e5a71f29b4d6e0c8a3f5b7d1e9c2a4f6b80",
+											"subject": "Split workspace route parsing",
+											"authoredAt": "2026-11-12T10:21:55+01:00",
+											"committedAt": "2026-11-12T10:24:10+01:00"
+										}
+									],
+									"entities": [],
+									"writable": true
+								},
+								"entity": null,
+								"capabilities": {
+									"comments": true,
+									"agents": true,
+									"planning": true,
+									"approval": true,
+									"source": "local",
+									"reason": "Comments are saved as local pending drafts until connected."
+								},
+								"offline": null
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The promise rejects with `Error('The bridge answered for another project.')` when the route names a project and the snapshot's `project.id` is a different, non-empty id. Rejections from the project-selection, snapshot and entity reads pass through unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
