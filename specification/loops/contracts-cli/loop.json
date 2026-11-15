@@ -2,7 +2,7 @@
 	"name": "contracts-cli",
 	"goal": "Read stored contracts by identity or path; list search and map them without opening source",
 	"createdAt": "2026-11-15T18:14:57.246Z",
-	"updatedAt": "2026-11-15T18:35:47.148Z",
+	"updatedAt": "2026-11-15T19:03:00.371927Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -19,19 +19,20 @@
 			"title": "Implement the smallest complete feature slice.",
 			"status": "complete",
 			"completedAt": "2026-11-15T18:35:46.380Z",
-			"evidence": "Source3993cdd923; no contract file edits. Registry ownership reconciliation requested from contract owner and remains a landing gate."
+			"evidence": "Source 2cc217eb98: contract-only lookup, search and map with bounded traversal. No contract file edits; no merge or push."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
 			"status": "complete",
 			"completedAt": "2026-11-15T18:35:47.148Z",
-			"evidence": "Matched red2849a5fa03 and green3993cdd923 retained in immutable Harness evidence; 18 focused cases pass with stable existing test names."
+			"evidence": "18 focused cases pass; matched feature and map-work red-green retained. Same map case proves 263 dependency reads before and 8 after."
 		},
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Pending: 3 new registry-freshness failures and 13 ownership changes; contract edits forbidden here. Safe suite 1616 pass,26 skip,5 fail including 2 inherited. Full E2E gate prohibited; owner request unacknowledged."
 		}
 	],
 	"evaluators": [
