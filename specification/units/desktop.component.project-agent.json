@@ -36,169 +36,22 @@
 				"name": "ProjectAgent.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "The selected project, revision, permissions, bridge and navigation. Conversation state stays with this project as its screens change."
+				"description": "The required project Workspace passed to the project-agent store, Composer, ReferenceText and ChatAgents. This component reads its category, saved-draft path, busy state, projectId and navigate method; other workspace behavior is handled by the store or child components."
 			},
 			{
 				"name": "ProjectAgent.open",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional bindable visibility of the project conversation panel; defaults to false."
+				"description": "The bindable visibility flag for FloatingChat; when true, provider loading is attempted only if the agent is allowed, and Agents content is mounted only in the Agents view. Defaults to false.",
+				"examples": [false, true]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectAgent",
 				"type": "markup",
-				"description": "A persistent round chat bubble and conversation panel. Read users browse; Comment users leave comments; Write users can choose a model and ask, plan or change at a writable branch tip. Registered unit references open their history. States: closed: The conversation launcher is visible while the project-agent panel is closed. read-only: The conversation is readable while unavailable authoring actions are disabled. local-comment: The composer saves a comment to the local project revision. hosted-comment: The composer saves a comment through the hosted project capability. comment-retry: An unsaved comment remains in the composer with retry feedback. historical: The panel keeps the selected historical revision visible as conversation context. visual-plan: Plan mode offers visual design options for the selected visual entity. no-provider: An agent request has no provider and shows why it cannot start. running: The active run and its progress are shown with cancellation where available. saved-plan: The saved plan and its approval/change actions are visible. failure: A failed agent run shows its failure message and retained conversation. agents-empty: The activity section shows no working agents. agents-active: The activity section lists working agents. agents-unknown: The activity section explains that the current agent count is unavailable. agents-stale: The activity section marks expired activity rather than counting it as current work. agents-many: The activity section summarizes a larger roster with an overflow control.",
-				"examples": [
-					{
-						"state": "rest",
-						"expected": "Existing open-panel catalog identity and screenshot remain unchanged.",
-						"capture": "panel",
-						"viewports": ["desktop", "tablet", "mobile"]
-					},
-					{
-						"state": "closed",
-						"title": "Closed launcher",
-						"expected": "Panel hidden; one accessible launcher remains. Open, close and Escape preserve the conversation and draft; focus returns safely.",
-						"capture": "launcher",
-						"viewports": ["desktop", "tablet", "mobile"]
-					},
-					{
-						"state": "read-only",
-						"title": "Read-only conversation",
-						"expected": "Read permission can browse messages and references; no comment or agent submission is available.",
-						"capture": "panel",
-						"viewports": ["desktop", "tablet", "mobile"]
-					},
-					{
-						"state": "local-comment",
-						"title": "Pending local comment",
-						"expected": "Disconnected comment-capable context explains local pending drafts. Blank text cannot submit; typed comment is human-only.",
-						"capture": "panel",
-						"viewports": ["desktop", "tablet", "mobile"]
-					},
-					{
-						"state": "hosted-comment",
-						"title": "Connected human comment",
-						"expected": "Connected comment-only context saves a trimmed human comment without launching an agent and clears it on success.",
-						"capture": "panel",
-						"viewports": ["desktop", "tablet", "mobile"]
-					},
-					{
-						"state": "comment-retry",
-						"title": "Failed comment preserves draft",
-						"expected": "A synthetic comment-save refusal is visible and preserves entered text for retry; no agent launches.",
-						"capture": "panel",
-						"viewports": ["desktop", "tablet", "mobile"]
-					},
-					{
-						"state": "conversation",
-						"title": "Conversation and references",
-						"expected": "Human and assistant messages, long wrapped text, known unit history links and unknown/plain references render safely.",
-						"capture": "panel",
-						"viewports": ["desktop", "tablet", "mobile"]
-					},
-					{
-						"state": "historical",
-						"title": "Historical revision",
-						"expected": "Pinned or historical selection keeps its revision on links and blocks write-mode agent requests.",
-						"capture": "panel",
-						"viewports": ["desktop", "tablet", "mobile"]
-					},
-					{
-						"state": "ask",
-						"title": "Ask request",
-						"expected": "Writable agent-capable context selects Ask with discovered model and effort; trimmed request has the exact chosen identity.",
-						"capture": "panel",
-						"viewports": ["desktop", "tablet", "mobile"]
-					},
-					{
-						"state": "plan",
-						"title": "Plan request",
-						"expected": "Writable nonvisual context selects Plan; requires a provider/model and sends a plan request.",
-						"capture": "panel",
-						"viewports": ["desktop", "tablet", "mobile"]
-					},
-					{
-						"state": "visual-plan",
-						"title": "Visual Plan request",
-						"expected": "Visual context uses the saved valid design-option count for Plan; mode controls remain compact and usable.",
-						"capture": "panel",
-						"viewports": ["desktop", "tablet", "mobile"]
-					},
-					{
-						"state": "change",
-						"title": "Change request",
-						"expected": "Writable authorized context selects Change and submits only with its prerequisites; no real agent/provider is contacted.",
-						"capture": "panel",
-						"viewports": ["desktop", "tablet", "mobile"]
-					},
-					{
-						"state": "no-provider",
-						"title": "No available agent model",
-						"expected": "Agent-capable context without a usable provider/model cannot submit an agent request; comments remain usable if allowed.",
-						"capture": "panel",
-						"viewports": ["desktop", "tablet", "mobile"]
-					},
-					{
-						"state": "running",
-						"title": "Agent running",
-						"expected": "Matching synthetic public progress is visible while message entry and duplicate submission are disabled; terminal completion unlocks it.",
-						"capture": "panel",
-						"viewports": ["desktop", "tablet", "mobile"]
-					},
-					{
-						"state": "saved-plan",
-						"title": "Saved plan retained",
-						"expected": "A completed plan retains its public saved-plan response and associated registered-unit references in the conversation.",
-						"capture": "panel",
-						"viewports": ["desktop", "tablet", "mobile"]
-					},
-					{
-						"state": "failure",
-						"title": "Agent failure",
-						"expected": "Synthetic terminal failure is visible in the owning conversation and leaves the composer usable for a deliberate retry.",
-						"capture": "panel",
-						"viewports": ["desktop", "tablet", "mobile"]
-					},
-					{
-						"state": "agents-empty",
-						"title": "Agents tracked and empty",
-						"expected": "Agents tab distinguishes a successful empty roster from unknown tracking and preserves the Chat draft on return.",
-						"capture": "panel",
-						"viewports": ["desktop", "tablet", "mobile"]
-					},
-					{
-						"state": "agents-active",
-						"title": "Active agents and ownership",
-						"expected": "Agents tab shows current sessions, tasks and module assignments with resolved module detail links.",
-						"capture": "panel",
-						"viewports": ["desktop", "tablet", "mobile"]
-					},
-					{
-						"state": "agents-unknown",
-						"title": "Unknown agent tracking",
-						"expected": "Unavailable or unsupported activity tracking is explicitly unknown; it does not claim an empty or current roster.",
-						"capture": "panel",
-						"viewports": ["desktop", "tablet", "mobile"]
-					},
-					{
-						"state": "agents-stale",
-						"title": "Stale agent tracking",
-						"expected": "Stale activity data is visibly stale and carries no current module ownership claim.",
-						"capture": "panel",
-						"viewports": ["desktop", "tablet", "mobile"]
-					},
-					{
-						"state": "agents-many",
-						"title": "Long agents roster",
-						"expected": "A deterministic long roster scrolls within the component while task and module labels remain readable and navigation stays usable.",
-						"capture": "panel",
-						"viewports": ["desktop", "tablet", "mobile"]
-					}
-				]
+				"description": "Markup for a FloatingChat project panel with Chat and Agents views, chat history, status, error and draft elements, and a Composer; the launcher label depends on whether the agent is allowed. Message state, permissions, provider discovery and agent actions are supplied by the project-agent store or child components."
 			}
 		],
 		"errors": [],
