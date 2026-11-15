@@ -37,92 +37,525 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "installConsole.flags",
 				"type": "ConsoleInstallFlags",
-				"required": true
+				"required": true,
+				"description": "Options for installing into the SvelteKit project at host, which is resolved to an absolute path: policy and policyExport name the host's own module under $lib and the export it must provide, and base is one route segment such as /harness. data is the output directory of harness history build, which is bundled into the server unless bucket is set; bucket names a private bucket binding that holds the history instead, and prefix (which needs bucket) is the folder inside it. update and keep choose what happens to files holding other content, but may not both be set.",
+				"examples": [
+					{
+						"host": "./site",
+						"policy": "$lib/server/harnessPolicy",
+						"policyExport": "harnessPolicy",
+						"base": "/harness",
+						"data": "./history-index"
+					},
+					{
+						"host": "./site",
+						"policy": "$lib/server/harnessPolicy",
+						"policyExport": "harnessPolicy",
+						"base": "/harness",
+						"data": "./history-index",
+						"bucket": "HARNESS_HISTORY",
+						"prefix": "history"
+					},
+					{
+						"host": "../site",
+						"policy": "$lib/server/policy",
+						"policyExport": "policy",
+						"base": "/console",
+						"keep": true
+					}
+				]
 			},
 			{
 				"name": "consoleObjects.data",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The output directory of harness history build that holds the index, resolved against the current directory; it must contain index.json or the call rejects. Only the index's own files are listed from it, and the directory is read but never changed.",
+				"examples": ["./history-index", "/srv/exports/history-index", "build/history"]
 			},
 			{
 				"name": "consoleObjects.prefix",
 				"type": "string",
 				"required": false,
-				"default": ""
+				"default": "",
+				"description": "The folder inside the bucket that the object keys are placed under; an empty value puts them at the bucket root. A non-empty value must start with a letter or digit and use only letters, digits, '.', '_', '/' and '-', and a trailing slash is dropped.",
+				"examples": ["", "history", "console/history/"]
 			},
 			{
 				"name": "uninstallConsole.flags",
 				"type": "Pick<ConsoleInstallFlags, 'host' | 'update' | 'keep'>",
-				"required": true
+				"required": true,
+				"description": "host is the SvelteKit project directory to remove the console from, resolved to an absolute path. update removes generated files the host edited and keep leaves them in place as the host's own, and setting both throws before anything is removed.",
+				"examples": [
+					{
+						"host": "./site"
+					},
+					{
+						"host": "./site",
+						"update": true
+					},
+					{
+						"host": "../site",
+						"keep": true
+					}
+				]
 			},
 			{
 				"name": "renderConsoleUninstall.result",
 				"type": "ConsoleUninstallResult",
-				"required": true
+				"required": true,
+				"description": "The uninstall result to render: the host, the files removed, put back and kept as the host's own, the changes this run recorded, and clean, which is true only when no record is left because nothing of the host was ever changed. The paths are relative to the host.",
+				"examples": [
+					{
+						"host": "/srv/site",
+						"removed": [
+							"src/routes/harness/+server.ts",
+							"src/routes/harness/[...view]/+server.ts",
+							"src/routes/harness/data/[...path]/+server.ts",
+							"src/routes/harness/media/[file]/+server.ts"
+						],
+						"restored": [],
+						"kept": [],
+						"changes": [],
+						"clean": true
+					},
+					{
+						"host": "/srv/site",
+						"removed": ["src/routes/harness/[...view]/+server.ts"],
+						"restored": [],
+						"kept": [],
+						"changes": [
+							{
+								"path": "src/routes/harness/[...view]/+server.ts",
+								"action": "removed",
+								"reason": "edited since it was installed",
+								"at": "2026-11-15T11:08:26.950Z",
+								"before": {
+									"sha256": "3b8d1a6f0c4e9725d1b7a3f8e6c0d4a2b9f5e1c7d3a8b6f2e0c4d9a7b5f1e3c8",
+									"bytes": 903,
+									"saved": ".harness/console/replaced/3b8d1a6f0c4e9725d1b7a3f8e6c0d4a2b9f5e1c7d3a8b6f2e0c4d9a7b5f1e3c8"
+								},
+								"after": null
+							}
+						],
+						"clean": false
+					},
+					{
+						"host": "/srv/site",
+						"removed": [
+							"src/routes/harness/+server.ts",
+							"src/routes/harness/media/[file]/+server.ts"
+						],
+						"restored": ["src/routes/harness/+server.ts"],
+						"kept": ["src/routes/harness/data/[...path]/+server.ts"],
+						"changes": [
+							{
+								"path": "src/routes/harness/+server.ts",
+								"action": "restored",
+								"reason": "restores what was replaced at 2026-11-15T10:42:17.318Z",
+								"at": "2026-11-15T11:21:03.640Z",
+								"before": {
+									"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+									"bytes": 0,
+									"saved": ".harness/console/replaced/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+								},
+								"after": {
+									"sha256": "5c1e0f7a9d2b4e68f3a1c0d7b9e2f4a6c8d0e1b3f5a7c9e2d4b6f8a0c1e3d5b7",
+									"bytes": 412
+								}
+							}
+						],
+						"clean": false
+					}
+				]
 			},
 			{
 				"name": "restoreConsoleFile.host",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The project directory that holds the file and its harness.console.json record, resolved to an absolute path before it is read. The call rejects when the record has no change with a saved copy for the path.",
+				"examples": ["./site", "/srv/site", "../site"]
 			},
 			{
 				"name": "restoreConsoleFile.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The path, relative to the host, of a file an install replaced; the bytes saved before its most recent recorded change are written back. After the restore the file counts as the host's own again, so later installs leave it in place unless update is given.",
+				"examples": [
+					"src/routes/harness/+server.ts",
+					"src/routes/harness/data/[...path]/+server.ts"
+				]
 			},
 			{
 				"name": "renderConsoleChange.change",
 				"type": "ConsoleChange",
-				"required": true
+				"required": true,
+				"description": "One recorded change to render: the file, its action (replaced, removed or restored), its reason, the time it was made, and the identities of the content before and after it, with the saved copy it can be restored from. The after identity is null when the file was removed.",
+				"examples": [
+					{
+						"path": "src/routes/harness/+server.ts",
+						"action": "replaced",
+						"reason": "host-owned",
+						"at": "2026-11-15T10:42:17.318Z",
+						"before": {
+							"sha256": "5c1e0f7a9d2b4e68f3a1c0d7b9e2f4a6c8d0e1b3f5a7c9e2d4b6f8a0c1e3d5b7",
+							"bytes": 412,
+							"saved": ".harness/console/replaced/5c1e0f7a9d2b4e68f3a1c0d7b9e2f4a6c8d0e1b3f5a7c9e2d4b6f8a0c1e3d5b7"
+						},
+						"after": {
+							"sha256": "a4f7c2e9d0b6814f3e5a7c2d9b0f4e6a1c8d3b5f7e9a2c4d6b8f0e1a3c5d7b9f",
+							"bytes": 1388
+						}
+					},
+					{
+						"path": "src/routes/harness/+server.ts",
+						"action": "restored",
+						"reason": "restores what was replaced at 2026-11-15T10:42:17.318Z",
+						"at": "2026-11-15T10:57:40.112Z",
+						"before": {
+							"sha256": "a4f7c2e9d0b6814f3e5a7c2d9b0f4e6a1c8d3b5f7e9a2c4d6b8f0e1a3c5d7b9f",
+							"bytes": 1388,
+							"saved": ".harness/console/replaced/a4f7c2e9d0b6814f3e5a7c2d9b0f4e6a1c8d3b5f7e9a2c4d6b8f0e1a3c5d7b9f"
+						},
+						"after": {
+							"sha256": "5c1e0f7a9d2b4e68f3a1c0d7b9e2f4a6c8d0e1b3f5a7c9e2d4b6f8a0c1e3d5b7",
+							"bytes": 412
+						}
+					},
+					{
+						"path": "src/routes/harness/[...view]/+server.ts",
+						"action": "removed",
+						"reason": "edited since it was installed",
+						"at": "2026-11-15T11:08:26.950Z",
+						"before": {
+							"sha256": "3b8d1a6f0c4e9725d1b7a3f8e6c0d4a2b9f5e1c7d3a8b6f2e0c4d9a7b5f1e3c8",
+							"bytes": 903,
+							"saved": ".harness/console/replaced/3b8d1a6f0c4e9725d1b7a3f8e6c0d4a2b9f5e1c7d3a8b6f2e0c4d9a7b5f1e3c8"
+						},
+						"after": null
+					}
+				]
 			},
 			{
 				"name": "renderConsoleInstall.result",
 				"type": "ConsoleInstallResult",
-				"required": true
+				"required": true,
+				"description": "The install result to render: the absolute host, the base, the policy as module#export, the files written, removed, kept as the host's own and replaced, the history measured or bundled, where the history is read from, and any warnings. The paths are relative to the host.",
+				"examples": [
+					{
+						"host": "/srv/site",
+						"base": "/harness",
+						"policy": "$lib/server/harnessPolicy#harnessPolicy",
+						"written": [
+							"src/lib/server/harness/console.ts",
+							"src/routes/harness/+server.ts",
+							"src/routes/harness/[...view]/+server.ts",
+							"src/routes/harness/data/[...path]/+server.ts",
+							"src/routes/harness/media/[file]/+server.ts",
+							"src/lib/server/harness/data/activity.json.ts",
+							"src/lib/server/harness/data/index.json.ts",
+							"src/lib/server/harness/data/media/d9e1b7c3a5f08246e1d7c9b3a5f2e0d8c6b4a2f9e7d5c3b1a0f8e6d4c2b9a7f5.png.ts",
+							"src/lib/server/harness/data/revisions/3f2a9c1e7b04d6582e9af1c03b7d4e6a8f15c092.json.ts"
+						],
+						"removed": [],
+						"kept": [],
+						"changes": [],
+						"data": {
+							"revisions": 1,
+							"media": 1,
+							"bytes": 2690146
+						},
+						"storage": {
+							"kind": "bundle"
+						},
+						"bundle": {
+							"files": 4,
+							"bytes": 3101812,
+							"compressedBytes": 571209
+						},
+						"warnings": []
+					},
+					{
+						"host": "/srv/site",
+						"base": "/harness",
+						"policy": "$lib/server/harnessPolicy#harnessPolicy",
+						"written": [
+							"src/lib/server/harness/console.ts",
+							"src/routes/harness/+server.ts",
+							"src/routes/harness/[...view]/+server.ts",
+							"src/routes/harness/data/[...path]/+server.ts",
+							"src/routes/harness/media/[file]/+server.ts"
+						],
+						"removed": [
+							"src/lib/server/harness/data/activity.json.ts",
+							"src/lib/server/harness/data/index.json.ts",
+							"src/lib/server/harness/data/media/d9e1b7c3a5f08246e1d7c9b3a5f2e0d8c6b4a2f9e7d5c3b1a0f8e6d4c2b9a7f5.png.ts",
+							"src/lib/server/harness/data/revisions/3f2a9c1e7b04d6582e9af1c03b7d4e6a8f15c092.json.ts"
+						],
+						"kept": [],
+						"changes": [],
+						"data": {
+							"revisions": 1,
+							"media": 1,
+							"bytes": 2690146
+						},
+						"storage": {
+							"kind": "bucket",
+							"binding": "HARNESS_HISTORY",
+							"prefix": "history"
+						},
+						"bundle": null,
+						"warnings": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "installConsole",
-				"type": "Promise<ConsoleInstallResult>"
+				"type": "Promise<ConsoleInstallResult>",
+				"description": "Resolves once the console files are written and the record is updated, with the absolute host, the base and policy installed, the files written, removed, kept and replaced, the history measured from data (null without data), its storage, the bundled size (null when nothing is bundled) and any warnings about the host. A failed check, such as an invalid policy or files that would be overwritten without update or keep, rejects before any file is written.",
+				"examples": [
+					{
+						"host": "/srv/site",
+						"base": "/harness",
+						"policy": "$lib/server/harnessPolicy#harnessPolicy",
+						"written": [
+							"src/lib/server/harness/console.ts",
+							"src/routes/harness/+server.ts",
+							"src/routes/harness/[...view]/+server.ts",
+							"src/routes/harness/data/[...path]/+server.ts",
+							"src/routes/harness/media/[file]/+server.ts",
+							"src/lib/server/harness/data/activity.json.ts",
+							"src/lib/server/harness/data/index.json.ts",
+							"src/lib/server/harness/data/media/d9e1b7c3a5f08246e1d7c9b3a5f2e0d8c6b4a2f9e7d5c3b1a0f8e6d4c2b9a7f5.png.ts",
+							"src/lib/server/harness/data/revisions/3f2a9c1e7b04d6582e9af1c03b7d4e6a8f15c092.json.ts"
+						],
+						"removed": [],
+						"kept": [],
+						"changes": [],
+						"data": {
+							"revisions": 1,
+							"media": 1,
+							"bytes": 2690146
+						},
+						"storage": {
+							"kind": "bundle"
+						},
+						"bundle": {
+							"files": 4,
+							"bytes": 3101812,
+							"compressedBytes": 571209
+						},
+						"warnings": []
+					},
+					{
+						"host": "/srv/site",
+						"base": "/harness",
+						"policy": "$lib/server/harnessPolicy#harnessPolicy",
+						"written": [
+							"src/lib/server/harness/console.ts",
+							"src/routes/harness/+server.ts",
+							"src/routes/harness/[...view]/+server.ts",
+							"src/routes/harness/data/[...path]/+server.ts",
+							"src/routes/harness/media/[file]/+server.ts"
+						],
+						"removed": [
+							"src/lib/server/harness/data/activity.json.ts",
+							"src/lib/server/harness/data/index.json.ts",
+							"src/lib/server/harness/data/media/d9e1b7c3a5f08246e1d7c9b3a5f2e0d8c6b4a2f9e7d5c3b1a0f8e6d4c2b9a7f5.png.ts",
+							"src/lib/server/harness/data/revisions/3f2a9c1e7b04d6582e9af1c03b7d4e6a8f15c092.json.ts"
+						],
+						"kept": [],
+						"changes": [],
+						"data": {
+							"revisions": 1,
+							"media": 1,
+							"bytes": 2690146
+						},
+						"storage": {
+							"kind": "bucket",
+							"binding": "HARNESS_HISTORY",
+							"prefix": "history"
+						},
+						"bundle": null,
+						"warnings": []
+					}
+				]
 			},
 			{
 				"name": "consoleObjects",
-				"type": "Promise<ConsoleObjectEntry[]>"
+				"type": "Promise<ConsoleObjectEntry[]>",
+				"description": "Resolves with one entry per object a private bucket must hold for the index, in path order: key is the object name, with the prefix and the file's index path unchanged, and file is the absolute path it is uploaded from. Only index.json, activity.json, revisions/ and sides/ files named by 40 hex characters and media/ files named by 64 hex characters with an extension are listed.",
+				"examples": [
+					[
+						{
+							"key": "activity.json",
+							"file": "/srv/exports/history-index/activity.json"
+						},
+						{
+							"key": "index.json",
+							"file": "/srv/exports/history-index/index.json"
+						},
+						{
+							"key": "media/d9e1b7c3a5f08246e1d7c9b3a5f2e0d8c6b4a2f9e7d5c3b1a0f8e6d4c2b9a7f5.png",
+							"file": "/srv/exports/history-index/media/d9e1b7c3a5f08246e1d7c9b3a5f2e0d8c6b4a2f9e7d5c3b1a0f8e6d4c2b9a7f5.png"
+						},
+						{
+							"key": "revisions/3f2a9c1e7b04d6582e9af1c03b7d4e6a8f15c092.json",
+							"file": "/srv/exports/history-index/revisions/3f2a9c1e7b04d6582e9af1c03b7d4e6a8f15c092.json"
+						}
+					],
+					[
+						{
+							"key": "history/activity.json",
+							"file": "/srv/exports/history-index/activity.json"
+						},
+						{
+							"key": "history/index.json",
+							"file": "/srv/exports/history-index/index.json"
+						},
+						{
+							"key": "history/media/d9e1b7c3a5f08246e1d7c9b3a5f2e0d8c6b4a2f9e7d5c3b1a0f8e6d4c2b9a7f5.png",
+							"file": "/srv/exports/history-index/media/d9e1b7c3a5f08246e1d7c9b3a5f2e0d8c6b4a2f9e7d5c3b1a0f8e6d4c2b9a7f5.png"
+						},
+						{
+							"key": "history/revisions/3f2a9c1e7b04d6582e9af1c03b7d4e6a8f15c092.json",
+							"file": "/srv/exports/history-index/revisions/3f2a9c1e7b04d6582e9af1c03b7d4e6a8f15c092.json"
+						}
+					]
+				]
 			},
 			{
 				"name": "uninstallConsole",
-				"type": "Promise<ConsoleUninstallResult>"
+				"type": "Promise<ConsoleUninstallResult>",
+				"description": "Resolves once the console is removed and the record is updated or deleted, with the host, the files removed, put back and kept as the host's own, the changes made in this run, and clean, which is true when the record was deleted because nothing of the host was ever changed.",
+				"examples": [
+					{
+						"host": "/srv/site",
+						"removed": [
+							"src/routes/harness/+server.ts",
+							"src/routes/harness/[...view]/+server.ts",
+							"src/routes/harness/data/[...path]/+server.ts",
+							"src/routes/harness/media/[file]/+server.ts"
+						],
+						"restored": [],
+						"kept": [],
+						"changes": [],
+						"clean": true
+					},
+					{
+						"host": "/srv/site",
+						"removed": ["src/routes/harness/[...view]/+server.ts"],
+						"restored": [],
+						"kept": [],
+						"changes": [
+							{
+								"path": "src/routes/harness/[...view]/+server.ts",
+								"action": "removed",
+								"reason": "edited since it was installed",
+								"at": "2026-11-15T11:08:26.950Z",
+								"before": {
+									"sha256": "3b8d1a6f0c4e9725d1b7a3f8e6c0d4a2b9f5e1c7d3a8b6f2e0c4d9a7b5f1e3c8",
+									"bytes": 903,
+									"saved": ".harness/console/replaced/3b8d1a6f0c4e9725d1b7a3f8e6c0d4a2b9f5e1c7d3a8b6f2e0c4d9a7b5f1e3c8"
+								},
+								"after": null
+							}
+						],
+						"clean": false
+					},
+					{
+						"host": "/srv/site",
+						"removed": [
+							"src/routes/harness/+server.ts",
+							"src/routes/harness/media/[file]/+server.ts"
+						],
+						"restored": ["src/routes/harness/+server.ts"],
+						"kept": ["src/routes/harness/data/[...path]/+server.ts"],
+						"changes": [
+							{
+								"path": "src/routes/harness/+server.ts",
+								"action": "restored",
+								"reason": "restores what was replaced at 2026-11-15T10:42:17.318Z",
+								"at": "2026-11-15T11:21:03.640Z",
+								"before": {
+									"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+									"bytes": 0,
+									"saved": ".harness/console/replaced/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+								},
+								"after": {
+									"sha256": "5c1e0f7a9d2b4e68f3a1c0d7b9e2f4a6c8d0e1b3f5a7c9e2d4b6f8a0c1e3d5b7",
+									"bytes": 412
+								}
+							}
+						],
+						"clean": false
+					}
+				]
 			},
 			{
 				"name": "renderConsoleUninstall",
-				"type": "string"
+				"type": "string",
+				"description": "The text printed after an uninstall: a line naming the host and the number of files removed, a line for each file put back or kept, a line for each removed change, and a last line saying whether the record was deleted or still keeps the changes.",
+				"examples": [
+					"Removed the console from /srv/site: 4 files.\nNothing of the host was ever changed, so harness.console.json was removed as well.",
+					"Removed the console from /srv/site: 1 files.\n  removed src/routes/harness/[...view]/+server.ts (edited since it was installed): 3b8d1a6f0c4e -> nothing, previous contents in .harness/console/replaced/3b8d1a6f0c4e9725d1b7a3f8e6c0d4a2b9f5e1c7d3a8b6f2e0c4d9a7b5f1e3c8\nharness.console.json keeps the record of what was changed."
+				]
 			},
 			{
 				"name": "restoreConsoleFile",
-				"type": "Promise<ConsoleChange>"
+				"type": "Promise<ConsoleChange>",
+				"description": "Resolves with the restored change for the path, which is also appended to harness.console.json: before is the content in place when the restore ran, after is the restored content, and the saved copy of the before content stays under .harness/console/replaced.",
+				"examples": [
+					{
+						"path": "src/routes/harness/+server.ts",
+						"action": "restored",
+						"reason": "restores what was replaced at 2026-11-15T10:42:17.318Z",
+						"at": "2026-11-15T10:57:40.112Z",
+						"before": {
+							"sha256": "a4f7c2e9d0b6814f3e5a7c2d9b0f4e6a1c8d3b5f7e9a2c4d6b8f0e1a3c5d7b9f",
+							"bytes": 1388,
+							"saved": ".harness/console/replaced/a4f7c2e9d0b6814f3e5a7c2d9b0f4e6a1c8d3b5f7e9a2c4d6b8f0e1a3c5d7b9f"
+						},
+						"after": {
+							"sha256": "5c1e0f7a9d2b4e68f3a1c0d7b9e2f4a6c8d0e1b3f5a7c9e2d4b6f8a0c1e3d5b7",
+							"bytes": 412
+						}
+					}
+				]
 			},
 			{
 				"name": "renderConsoleChange",
-				"type": "string"
+				"type": "string",
+				"description": "The two lines printed for one change: the record file it was added to, then the action, path, reason, the first 12 hex characters of the content before and after (nothing when the file was removed), and the saved copy of the content before.",
+				"examples": [
+					"Recorded in harness.console.json:\n  replaced src/routes/harness/+server.ts (host-owned): 5c1e0f7a9d2b -> a4f7c2e9d0b6, previous contents in .harness/console/replaced/5c1e0f7a9d2b4e68f3a1c0d7b9e2f4a6c8d0e1b3f5a7c9e2d4b6f8a0c1e3d5b7",
+					"Recorded in harness.console.json:\n  restored src/routes/harness/+server.ts (restores what was replaced at 2026-11-15T10:42:17.318Z): a4f7c2e9d0b6 -> 5c1e0f7a9d2b, previous contents in .harness/console/replaced/a4f7c2e9d0b6814f3e5a7c2d9b0f4e6a1c8d3b5f7e9a2c4d6b8f0e1a3c5d7b9f"
+				]
 			},
 			{
 				"name": "renderConsoleInstall",
-				"type": "string"
+				"type": "string",
+				"description": "The text printed after an install: the base and host, the policy that decides every request, the history line (the bucket it is read from, the size bundled, or that nothing was bundled), the counts of files written and removed, a line for each kept file, the changed files under a review note, and a line for each warning.",
+				"examples": [
+					"Installed the console at /harness in /srv/site.\nEvery page, data and media request is decided by $lib/server/harnessPolicy#harnessPolicy.\nBundled 1 revisions and 1 media files as server-only modules, 0.54 MiB compressed.\nWrote 9 files, removed 0; they are listed in harness.console.json.",
+					"Installed the console at /harness in /srv/site.\nEvery page, data and media request is decided by $lib/server/harnessPolicy#harnessPolicy.\nHistory is read from the private bucket bound as HARNESS_HISTORY under history/; nothing is bundled. Upload the index directory there with its paths unchanged (1 revisions, 1 media files).\nWrote 5 files, removed 4; they are listed in harness.console.json."
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised by the deliberate checks of installing, listing objects, uninstalling and restoring, with a message that says what to change. The promise-returning functions reject with it, and the update-with-keep check in uninstallConsole throws it synchronously."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "installConsole",
@@ -130,17 +563,117 @@
 					{
 						"name": "installConsole.flags",
 						"type": "ConsoleInstallFlags",
-						"required": true
+						"required": true,
+						"description": "Options for installing into the SvelteKit project at host, which is resolved to an absolute path: policy and policyExport name the host's own module under $lib and the export it must provide, and base is one route segment such as /harness. data is the output directory of harness history build, which is bundled into the server unless bucket is set; bucket names a private bucket binding that holds the history instead, and prefix (which needs bucket) is the folder inside it. update and keep choose what happens to files holding other content, but may not both be set.",
+						"examples": [
+							{
+								"host": "./site",
+								"policy": "$lib/server/harnessPolicy",
+								"policyExport": "harnessPolicy",
+								"base": "/harness",
+								"data": "./history-index"
+							},
+							{
+								"host": "./site",
+								"policy": "$lib/server/harnessPolicy",
+								"policyExport": "harnessPolicy",
+								"base": "/harness",
+								"data": "./history-index",
+								"bucket": "HARNESS_HISTORY",
+								"prefix": "history"
+							},
+							{
+								"host": "../site",
+								"policy": "$lib/server/policy",
+								"policyExport": "policy",
+								"base": "/console",
+								"keep": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "installConsole",
-						"type": "Promise<ConsoleInstallResult>"
+						"type": "Promise<ConsoleInstallResult>",
+						"description": "Resolves once the console files are written and the record is updated, with the absolute host, the base and policy installed, the files written, removed, kept and replaced, the history measured from data (null without data), its storage, the bundled size (null when nothing is bundled) and any warnings about the host. A failed check, such as an invalid policy or files that would be overwritten without update or keep, rejects before any file is written.",
+						"examples": [
+							{
+								"host": "/srv/site",
+								"base": "/harness",
+								"policy": "$lib/server/harnessPolicy#harnessPolicy",
+								"written": [
+									"src/lib/server/harness/console.ts",
+									"src/routes/harness/+server.ts",
+									"src/routes/harness/[...view]/+server.ts",
+									"src/routes/harness/data/[...path]/+server.ts",
+									"src/routes/harness/media/[file]/+server.ts",
+									"src/lib/server/harness/data/activity.json.ts",
+									"src/lib/server/harness/data/index.json.ts",
+									"src/lib/server/harness/data/media/d9e1b7c3a5f08246e1d7c9b3a5f2e0d8c6b4a2f9e7d5c3b1a0f8e6d4c2b9a7f5.png.ts",
+									"src/lib/server/harness/data/revisions/3f2a9c1e7b04d6582e9af1c03b7d4e6a8f15c092.json.ts"
+								],
+								"removed": [],
+								"kept": [],
+								"changes": [],
+								"data": {
+									"revisions": 1,
+									"media": 1,
+									"bytes": 2690146
+								},
+								"storage": {
+									"kind": "bundle"
+								},
+								"bundle": {
+									"files": 4,
+									"bytes": 3101812,
+									"compressedBytes": 571209
+								},
+								"warnings": []
+							},
+							{
+								"host": "/srv/site",
+								"base": "/harness",
+								"policy": "$lib/server/harnessPolicy#harnessPolicy",
+								"written": [
+									"src/lib/server/harness/console.ts",
+									"src/routes/harness/+server.ts",
+									"src/routes/harness/[...view]/+server.ts",
+									"src/routes/harness/data/[...path]/+server.ts",
+									"src/routes/harness/media/[file]/+server.ts"
+								],
+								"removed": [
+									"src/lib/server/harness/data/activity.json.ts",
+									"src/lib/server/harness/data/index.json.ts",
+									"src/lib/server/harness/data/media/d9e1b7c3a5f08246e1d7c9b3a5f2e0d8c6b4a2f9e7d5c3b1a0f8e6d4c2b9a7f5.png.ts",
+									"src/lib/server/harness/data/revisions/3f2a9c1e7b04d6582e9af1c03b7d4e6a8f15c092.json.ts"
+								],
+								"kept": [],
+								"changes": [],
+								"data": {
+									"revisions": 1,
+									"media": 1,
+									"bytes": 2690146
+								},
+								"storage": {
+									"kind": "bucket",
+									"binding": "HARNESS_HISTORY",
+									"prefix": "history"
+								},
+								"bundle": null,
+								"warnings": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Rejects when the host is not a SvelteKit project, when base, bucket, prefix or policy fails its check, when update and keep are both set, when data has no index.json, or when files holding other content would be overwritten without update or keep."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "consoleObjects",
@@ -148,28 +681,72 @@
 					{
 						"name": "consoleObjects.data",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The output directory of harness history build that holds the index, resolved against the current directory; it must contain index.json or the call rejects. Only the index's own files are listed from it, and the directory is read but never changed.",
+						"examples": ["./history-index", "/srv/exports/history-index", "build/history"]
 					},
 					{
 						"name": "consoleObjects.prefix",
 						"type": "string",
 						"required": false,
-						"default": ""
+						"default": "",
+						"description": "The folder inside the bucket that the object keys are placed under; an empty value puts them at the bucket root. A non-empty value must start with a letter or digit and use only letters, digits, '.', '_', '/' and '-', and a trailing slash is dropped.",
+						"examples": ["", "history", "console/history/"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "consoleObjects",
-						"type": "Promise<ConsoleObjectEntry[]>"
+						"type": "Promise<ConsoleObjectEntry[]>",
+						"description": "Resolves with one entry per object a private bucket must hold for the index, in path order: key is the object name, with the prefix and the file's index path unchanged, and file is the absolute path it is uploaded from. Only index.json, activity.json, revisions/ and sides/ files named by 40 hex characters and media/ files named by 64 hex characters with an extension are listed.",
+						"examples": [
+							[
+								{
+									"key": "activity.json",
+									"file": "/srv/exports/history-index/activity.json"
+								},
+								{
+									"key": "index.json",
+									"file": "/srv/exports/history-index/index.json"
+								},
+								{
+									"key": "media/d9e1b7c3a5f08246e1d7c9b3a5f2e0d8c6b4a2f9e7d5c3b1a0f8e6d4c2b9a7f5.png",
+									"file": "/srv/exports/history-index/media/d9e1b7c3a5f08246e1d7c9b3a5f2e0d8c6b4a2f9e7d5c3b1a0f8e6d4c2b9a7f5.png"
+								},
+								{
+									"key": "revisions/3f2a9c1e7b04d6582e9af1c03b7d4e6a8f15c092.json",
+									"file": "/srv/exports/history-index/revisions/3f2a9c1e7b04d6582e9af1c03b7d4e6a8f15c092.json"
+								}
+							],
+							[
+								{
+									"key": "history/activity.json",
+									"file": "/srv/exports/history-index/activity.json"
+								},
+								{
+									"key": "history/index.json",
+									"file": "/srv/exports/history-index/index.json"
+								},
+								{
+									"key": "history/media/d9e1b7c3a5f08246e1d7c9b3a5f2e0d8c6b4a2f9e7d5c3b1a0f8e6d4c2b9a7f5.png",
+									"file": "/srv/exports/history-index/media/d9e1b7c3a5f08246e1d7c9b3a5f2e0d8c6b4a2f9e7d5c3b1a0f8e6d4c2b9a7f5.png"
+								},
+								{
+									"key": "history/revisions/3f2a9c1e7b04d6582e9af1c03b7d4e6a8f15c092.json",
+									"file": "/srv/exports/history-index/revisions/3f2a9c1e7b04d6582e9af1c03b7d4e6a8f15c092.json"
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects when prefix is not a plain path inside the bucket, or when data has no index.json."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "uninstallConsole",
@@ -177,22 +754,101 @@
 					{
 						"name": "uninstallConsole.flags",
 						"type": "Pick<ConsoleInstallFlags, 'host' | 'update' | 'keep'>",
-						"required": true
+						"required": true,
+						"description": "host is the SvelteKit project directory to remove the console from, resolved to an absolute path. update removes generated files the host edited and keep leaves them in place as the host's own, and setting both throws before anything is removed.",
+						"examples": [
+							{
+								"host": "./site"
+							},
+							{
+								"host": "./site",
+								"update": true
+							},
+							{
+								"host": "../site",
+								"keep": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "uninstallConsole",
-						"type": "Promise<ConsoleUninstallResult>"
+						"type": "Promise<ConsoleUninstallResult>",
+						"description": "Resolves once the console is removed and the record is updated or deleted, with the host, the files removed, put back and kept as the host's own, the changes made in this run, and clean, which is true when the record was deleted because nothing of the host was ever changed.",
+						"examples": [
+							{
+								"host": "/srv/site",
+								"removed": [
+									"src/routes/harness/+server.ts",
+									"src/routes/harness/[...view]/+server.ts",
+									"src/routes/harness/data/[...path]/+server.ts",
+									"src/routes/harness/media/[file]/+server.ts"
+								],
+								"restored": [],
+								"kept": [],
+								"changes": [],
+								"clean": true
+							},
+							{
+								"host": "/srv/site",
+								"removed": ["src/routes/harness/[...view]/+server.ts"],
+								"restored": [],
+								"kept": [],
+								"changes": [
+									{
+										"path": "src/routes/harness/[...view]/+server.ts",
+										"action": "removed",
+										"reason": "edited since it was installed",
+										"at": "2026-11-15T11:08:26.950Z",
+										"before": {
+											"sha256": "3b8d1a6f0c4e9725d1b7a3f8e6c0d4a2b9f5e1c7d3a8b6f2e0c4d9a7b5f1e3c8",
+											"bytes": 903,
+											"saved": ".harness/console/replaced/3b8d1a6f0c4e9725d1b7a3f8e6c0d4a2b9f5e1c7d3a8b6f2e0c4d9a7b5f1e3c8"
+										},
+										"after": null
+									}
+								],
+								"clean": false
+							},
+							{
+								"host": "/srv/site",
+								"removed": [
+									"src/routes/harness/+server.ts",
+									"src/routes/harness/media/[file]/+server.ts"
+								],
+								"restored": ["src/routes/harness/+server.ts"],
+								"kept": ["src/routes/harness/data/[...path]/+server.ts"],
+								"changes": [
+									{
+										"path": "src/routes/harness/+server.ts",
+										"action": "restored",
+										"reason": "restores what was replaced at 2026-11-15T10:42:17.318Z",
+										"at": "2026-11-15T11:21:03.640Z",
+										"before": {
+											"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+											"bytes": 0,
+											"saved": ".harness/console/replaced/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+										},
+										"after": {
+											"sha256": "5c1e0f7a9d2b4e68f3a1c0d7b9e2f4a6c8d0e1b3f5a7c9e2d4b6f8a0c1e3d5b7",
+											"bytes": 412
+										}
+									}
+								],
+								"clean": false
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws synchronously when update and keep are both set; otherwise it rejects when no console is installed in host, or when edited generated files need update or keep."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderConsoleUninstall",
@@ -200,17 +856,86 @@
 					{
 						"name": "renderConsoleUninstall.result",
 						"type": "ConsoleUninstallResult",
-						"required": true
+						"required": true,
+						"description": "The uninstall result to render: the host, the files removed, put back and kept as the host's own, the changes this run recorded, and clean, which is true only when no record is left because nothing of the host was ever changed. The paths are relative to the host.",
+						"examples": [
+							{
+								"host": "/srv/site",
+								"removed": [
+									"src/routes/harness/+server.ts",
+									"src/routes/harness/[...view]/+server.ts",
+									"src/routes/harness/data/[...path]/+server.ts",
+									"src/routes/harness/media/[file]/+server.ts"
+								],
+								"restored": [],
+								"kept": [],
+								"changes": [],
+								"clean": true
+							},
+							{
+								"host": "/srv/site",
+								"removed": ["src/routes/harness/[...view]/+server.ts"],
+								"restored": [],
+								"kept": [],
+								"changes": [
+									{
+										"path": "src/routes/harness/[...view]/+server.ts",
+										"action": "removed",
+										"reason": "edited since it was installed",
+										"at": "2026-11-15T11:08:26.950Z",
+										"before": {
+											"sha256": "3b8d1a6f0c4e9725d1b7a3f8e6c0d4a2b9f5e1c7d3a8b6f2e0c4d9a7b5f1e3c8",
+											"bytes": 903,
+											"saved": ".harness/console/replaced/3b8d1a6f0c4e9725d1b7a3f8e6c0d4a2b9f5e1c7d3a8b6f2e0c4d9a7b5f1e3c8"
+										},
+										"after": null
+									}
+								],
+								"clean": false
+							},
+							{
+								"host": "/srv/site",
+								"removed": [
+									"src/routes/harness/+server.ts",
+									"src/routes/harness/media/[file]/+server.ts"
+								],
+								"restored": ["src/routes/harness/+server.ts"],
+								"kept": ["src/routes/harness/data/[...path]/+server.ts"],
+								"changes": [
+									{
+										"path": "src/routes/harness/+server.ts",
+										"action": "restored",
+										"reason": "restores what was replaced at 2026-11-15T10:42:17.318Z",
+										"at": "2026-11-15T11:21:03.640Z",
+										"before": {
+											"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+											"bytes": 0,
+											"saved": ".harness/console/replaced/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+										},
+										"after": {
+											"sha256": "5c1e0f7a9d2b4e68f3a1c0d7b9e2f4a6c8d0e1b3f5a7c9e2d4b6f8a0c1e3d5b7",
+											"bytes": 412
+										}
+									}
+								],
+								"clean": false
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderConsoleUninstall",
-						"type": "string"
+						"type": "string",
+						"description": "The text printed after an uninstall: a line naming the host and the number of files removed, a line for each file put back or kept, a line for each removed change, and a last line saying whether the record was deleted or still keeps the changes.",
+						"examples": [
+							"Removed the console from /srv/site: 4 files.\nNothing of the host was ever changed, so harness.console.json was removed as well.",
+							"Removed the console from /srv/site: 1 files.\n  removed src/routes/harness/[...view]/+server.ts (edited since it was installed): 3b8d1a6f0c4e -> nothing, previous contents in .harness/console/replaced/3b8d1a6f0c4e9725d1b7a3f8e6c0d4a2b9f5e1c7d3a8b6f2e0c4d9a7b5f1e3c8\nharness.console.json keeps the record of what was changed."
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "restoreConsoleFile",
@@ -218,22 +943,53 @@
 					{
 						"name": "restoreConsoleFile.host",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The project directory that holds the file and its harness.console.json record, resolved to an absolute path before it is read. The call rejects when the record has no change with a saved copy for the path.",
+						"examples": ["./site", "/srv/site", "../site"]
 					},
 					{
 						"name": "restoreConsoleFile.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The path, relative to the host, of a file an install replaced; the bytes saved before its most recent recorded change are written back. After the restore the file counts as the host's own again, so later installs leave it in place unless update is given.",
+						"examples": [
+							"src/routes/harness/+server.ts",
+							"src/routes/harness/data/[...path]/+server.ts"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "restoreConsoleFile",
-						"type": "Promise<ConsoleChange>"
+						"type": "Promise<ConsoleChange>",
+						"description": "Resolves with the restored change for the path, which is also appended to harness.console.json: before is the content in place when the restore ran, after is the restored content, and the saved copy of the before content stays under .harness/console/replaced.",
+						"examples": [
+							{
+								"path": "src/routes/harness/+server.ts",
+								"action": "restored",
+								"reason": "restores what was replaced at 2026-11-15T10:42:17.318Z",
+								"at": "2026-11-15T10:57:40.112Z",
+								"before": {
+									"sha256": "a4f7c2e9d0b6814f3e5a7c2d9b0f4e6a1c8d3b5f7e9a2c4d6b8f0e1a3c5d7b9f",
+									"bytes": 1388,
+									"saved": ".harness/console/replaced/a4f7c2e9d0b6814f3e5a7c2d9b0f4e6a1c8d3b5f7e9a2c4d6b8f0e1a3c5d7b9f"
+								},
+								"after": {
+									"sha256": "5c1e0f7a9d2b4e68f3a1c0d7b9e2f4a6c8d0e1b3f5a7c9e2d4b6f8a0c1e3d5b7",
+									"bytes": 412
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Rejects when the record has no change with a saved copy for path."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderConsoleChange",
@@ -241,17 +997,67 @@
 					{
 						"name": "renderConsoleChange.change",
 						"type": "ConsoleChange",
-						"required": true
+						"required": true,
+						"description": "One recorded change to render: the file, its action (replaced, removed or restored), its reason, the time it was made, and the identities of the content before and after it, with the saved copy it can be restored from. The after identity is null when the file was removed.",
+						"examples": [
+							{
+								"path": "src/routes/harness/+server.ts",
+								"action": "replaced",
+								"reason": "host-owned",
+								"at": "2026-11-15T10:42:17.318Z",
+								"before": {
+									"sha256": "5c1e0f7a9d2b4e68f3a1c0d7b9e2f4a6c8d0e1b3f5a7c9e2d4b6f8a0c1e3d5b7",
+									"bytes": 412,
+									"saved": ".harness/console/replaced/5c1e0f7a9d2b4e68f3a1c0d7b9e2f4a6c8d0e1b3f5a7c9e2d4b6f8a0c1e3d5b7"
+								},
+								"after": {
+									"sha256": "a4f7c2e9d0b6814f3e5a7c2d9b0f4e6a1c8d3b5f7e9a2c4d6b8f0e1a3c5d7b9f",
+									"bytes": 1388
+								}
+							},
+							{
+								"path": "src/routes/harness/+server.ts",
+								"action": "restored",
+								"reason": "restores what was replaced at 2026-11-15T10:42:17.318Z",
+								"at": "2026-11-15T10:57:40.112Z",
+								"before": {
+									"sha256": "a4f7c2e9d0b6814f3e5a7c2d9b0f4e6a1c8d3b5f7e9a2c4d6b8f0e1a3c5d7b9f",
+									"bytes": 1388,
+									"saved": ".harness/console/replaced/a4f7c2e9d0b6814f3e5a7c2d9b0f4e6a1c8d3b5f7e9a2c4d6b8f0e1a3c5d7b9f"
+								},
+								"after": {
+									"sha256": "5c1e0f7a9d2b4e68f3a1c0d7b9e2f4a6c8d0e1b3f5a7c9e2d4b6f8a0c1e3d5b7",
+									"bytes": 412
+								}
+							},
+							{
+								"path": "src/routes/harness/[...view]/+server.ts",
+								"action": "removed",
+								"reason": "edited since it was installed",
+								"at": "2026-11-15T11:08:26.950Z",
+								"before": {
+									"sha256": "3b8d1a6f0c4e9725d1b7a3f8e6c0d4a2b9f5e1c7d3a8b6f2e0c4d9a7b5f1e3c8",
+									"bytes": 903,
+									"saved": ".harness/console/replaced/3b8d1a6f0c4e9725d1b7a3f8e6c0d4a2b9f5e1c7d3a8b6f2e0c4d9a7b5f1e3c8"
+								},
+								"after": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderConsoleChange",
-						"type": "string"
+						"type": "string",
+						"description": "The two lines printed for one change: the record file it was added to, then the action, path, reason, the first 12 hex characters of the content before and after (nothing when the file was removed), and the saved copy of the content before.",
+						"examples": [
+							"Recorded in harness.console.json:\n  replaced src/routes/harness/+server.ts (host-owned): 5c1e0f7a9d2b -> a4f7c2e9d0b6, previous contents in .harness/console/replaced/5c1e0f7a9d2b4e68f3a1c0d7b9e2f4a6c8d0e1b3f5a7c9e2d4b6f8a0c1e3d5b7",
+							"Recorded in harness.console.json:\n  restored src/routes/harness/+server.ts (restores what was replaced at 2026-11-15T10:42:17.318Z): a4f7c2e9d0b6 -> 5c1e0f7a9d2b, previous contents in .harness/console/replaced/a4f7c2e9d0b6814f3e5a7c2d9b0f4e6a1c8d3b5f7e9a2c4d6b8f0e1a3c5d7b9f"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderConsoleInstall",
@@ -259,17 +1065,90 @@
 					{
 						"name": "renderConsoleInstall.result",
 						"type": "ConsoleInstallResult",
-						"required": true
+						"required": true,
+						"description": "The install result to render: the absolute host, the base, the policy as module#export, the files written, removed, kept as the host's own and replaced, the history measured or bundled, where the history is read from, and any warnings. The paths are relative to the host.",
+						"examples": [
+							{
+								"host": "/srv/site",
+								"base": "/harness",
+								"policy": "$lib/server/harnessPolicy#harnessPolicy",
+								"written": [
+									"src/lib/server/harness/console.ts",
+									"src/routes/harness/+server.ts",
+									"src/routes/harness/[...view]/+server.ts",
+									"src/routes/harness/data/[...path]/+server.ts",
+									"src/routes/harness/media/[file]/+server.ts",
+									"src/lib/server/harness/data/activity.json.ts",
+									"src/lib/server/harness/data/index.json.ts",
+									"src/lib/server/harness/data/media/d9e1b7c3a5f08246e1d7c9b3a5f2e0d8c6b4a2f9e7d5c3b1a0f8e6d4c2b9a7f5.png.ts",
+									"src/lib/server/harness/data/revisions/3f2a9c1e7b04d6582e9af1c03b7d4e6a8f15c092.json.ts"
+								],
+								"removed": [],
+								"kept": [],
+								"changes": [],
+								"data": {
+									"revisions": 1,
+									"media": 1,
+									"bytes": 2690146
+								},
+								"storage": {
+									"kind": "bundle"
+								},
+								"bundle": {
+									"files": 4,
+									"bytes": 3101812,
+									"compressedBytes": 571209
+								},
+								"warnings": []
+							},
+							{
+								"host": "/srv/site",
+								"base": "/harness",
+								"policy": "$lib/server/harnessPolicy#harnessPolicy",
+								"written": [
+									"src/lib/server/harness/console.ts",
+									"src/routes/harness/+server.ts",
+									"src/routes/harness/[...view]/+server.ts",
+									"src/routes/harness/data/[...path]/+server.ts",
+									"src/routes/harness/media/[file]/+server.ts"
+								],
+								"removed": [
+									"src/lib/server/harness/data/activity.json.ts",
+									"src/lib/server/harness/data/index.json.ts",
+									"src/lib/server/harness/data/media/d9e1b7c3a5f08246e1d7c9b3a5f2e0d8c6b4a2f9e7d5c3b1a0f8e6d4c2b9a7f5.png.ts",
+									"src/lib/server/harness/data/revisions/3f2a9c1e7b04d6582e9af1c03b7d4e6a8f15c092.json.ts"
+								],
+								"kept": [],
+								"changes": [],
+								"data": {
+									"revisions": 1,
+									"media": 1,
+									"bytes": 2690146
+								},
+								"storage": {
+									"kind": "bucket",
+									"binding": "HARNESS_HISTORY",
+									"prefix": "history"
+								},
+								"bundle": null,
+								"warnings": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderConsoleInstall",
-						"type": "string"
+						"type": "string",
+						"description": "The text printed after an install: the base and host, the policy that decides every request, the history line (the bucket it is read from, the size bundled, or that nothing was bundled), the counts of files written and removed, a line for each kept file, the changed files under a review note, and a line for each warning.",
+						"examples": [
+							"Installed the console at /harness in /srv/site.\nEvery page, data and media request is decided by $lib/server/harnessPolicy#harnessPolicy.\nBundled 1 revisions and 1 media files as server-only modules, 0.54 MiB compressed.\nWrote 9 files, removed 0; they are listed in harness.console.json.",
+							"Installed the console at /harness in /srv/site.\nEvery page, data and media request is decided by $lib/server/harnessPolicy#harnessPolicy.\nHistory is read from the private bucket bound as HARNESS_HISTORY under history/; nothing is bundled. Upload the index directory there with its paths unchanged (1 revisions, 1 media files).\nWrote 5 files, removed 4; they are listed in harness.console.json."
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
