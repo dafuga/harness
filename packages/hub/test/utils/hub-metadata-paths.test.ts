@@ -1,6 +1,6 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
-import { hubMetadataPaths } from '../../src/utils/hub-metadata/hubMetadataPaths';
+import { hubMetadataPaths } from '../../src/utils/development-tooling/hub-metadata/hubMetadataPaths';
 
 test('batch metadata excludes source, images and symlink targets', () =>
 	measureWorkload('hub.function.hub-metadata-paths', 'layout-catalog-behavior', () => {

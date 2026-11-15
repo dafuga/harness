@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs';
 import { expect, test } from 'vitest';
-import { hubMetadata } from '../../src/utils/hub-metadata/hubMetadata';
+import { hubMetadata } from '../../src/utils/development-tooling/hub-metadata/hubMetadata';
 import { hubSource } from '../../src/utils/development-tooling/hubSource';
 import { hubRecords } from '../../src/utils/development-tooling/hubRecords';
 import {
