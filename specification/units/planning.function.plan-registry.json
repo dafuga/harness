@@ -21,34 +21,68 @@
 				"name": "planRegistry.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "Repository Git handle used by the path-safety and clean-worktree checks and to read paths and blobs at the selected revision. Returned bytes are proposed changes; this function does not write them."
 			},
 			{
 				"name": "planRegistry.revision",
 				"type": "string",
 				"required": true,
-				"description": "Revision containing the existing configuration files."
+				"description": "Git revision whose tree supplies the existing .prettierignore and harness.units.json contents. Files absent at that revision are not created.",
+				"examples": ["1f2e3d4c5b6a79880123456789abcdef01234567"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "planningIgnores",
 				"type": "unknown",
-				"description": "Planning artifact glob patterns for all six supported categories."
+				"description": "Array of ignore globs for planning artifact folders under the seven supported categories. Each category excludes plan.json, .gitattributes, and files under designs/ and threads/.",
+				"examples": [
+					[
+						"**/src/pages/*/plan.json",
+						"**/src/pages/*/.gitattributes",
+						"**/src/pages/*/designs/**/*",
+						"**/src/pages/*/threads/**/*",
+						"**/src/shells/*/plan.json",
+						"**/src/shells/*/.gitattributes",
+						"**/src/shells/*/designs/**/*",
+						"**/src/shells/*/threads/**/*",
+						"**/src/layouts/*/plan.json",
+						"**/src/layouts/*/.gitattributes",
+						"**/src/layouts/*/designs/**/*",
+						"**/src/layouts/*/threads/**/*",
+						"**/src/components/*/plan.json",
+						"**/src/components/*/.gitattributes",
+						"**/src/components/*/designs/**/*",
+						"**/src/components/*/threads/**/*",
+						"**/src/functions/*/plan.json",
+						"**/src/functions/*/.gitattributes",
+						"**/src/functions/*/designs/**/*",
+						"**/src/functions/*/threads/**/*",
+						"**/src/services/*/plan.json",
+						"**/src/services/*/.gitattributes",
+						"**/src/services/*/designs/**/*",
+						"**/src/services/*/threads/**/*",
+						"**/src/configs/*/plan.json",
+						"**/src/configs/*/.gitattributes",
+						"**/src/configs/*/designs/**/*",
+						"**/src/configs/*/threads/**/*"
+					]
+				]
 			},
 			{
 				"name": "planRegistry",
 				"type": "Promise<Files>",
-				"description": "Map of only the configuration files needing additions; absent configurations are not created. This helper returns proposed bytes without writing them."
+				"description": "Promise resolving to a map from changed repository paths to replacement bytes. It may contain .prettierignore and/or harness.units.json when those files exist, pass path and cleanliness checks, and need missing patterns; it never writes files."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects unsafe or dirty configuration paths and invalid existing registry JSON/schema; read failures propagate."
+				"description": "Thrown when path-safety or clean-worktree checks reject .prettierignore or harness.units.json, or when an existing harness.units.json is invalid JSON or fails unitsConfigSchema.safeParse. Errors from awaited Git reads also propagate."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "planRegistry",
@@ -57,29 +91,31 @@
 						"name": "planRegistry.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "Repository Git handle used by the path-safety and clean-worktree checks and to read paths and blobs at the selected revision. Returned bytes are proposed changes; this function does not write them."
 					},
 					{
 						"name": "planRegistry.revision",
 						"type": "string",
 						"required": true,
-						"description": "Revision containing the existing configuration files."
+						"description": "Git revision whose tree supplies the existing .prettierignore and harness.units.json contents. Files absent at that revision are not created.",
+						"examples": ["1f2e3d4c5b6a79880123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "planRegistry",
 						"type": "Promise<Files>",
-						"description": "Map of only the configuration files needing additions; absent configurations are not created. This helper returns proposed bytes without writing them."
+						"description": "Promise resolving to a map from changed repository paths to replacement bytes. It may contain .prettierignore and/or harness.units.json when those files exist, pass path and cleanliness checks, and need missing patterns; it never writes files."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when path-safety or clean-worktree checks reject .prettierignore or harness.units.json, or when an existing harness.units.json is invalid JSON or fails unitsConfigSchema.safeParse. Errors from awaited Git reads also propagate."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
