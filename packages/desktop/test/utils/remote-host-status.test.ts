@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs';
 import { expect, test } from 'vitest';
-import type { RemoteHostState } from '../../src/adapters/RemoteHostStoreAdapter';
+import type { RemoteHostState } from '../../src/adapters/networking-security/RemoteHostStoreAdapter';
 import type { RemoteHostRuntimeService } from '../../src/services/RemoteHostRuntimeService';
 import { remoteHostStatus } from '../../src/services/networking-security/remote-host-service/remoteHostStatus';
 import type { RemoteHostStatusInput } from '../../src/utils/remoteHostStatus';

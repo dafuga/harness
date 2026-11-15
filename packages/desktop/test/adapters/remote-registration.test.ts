@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { RemoteRegistrationAdapter } from '../../src/adapters/RemoteRegistrationAdapter';
+import { RemoteRegistrationAdapter } from '../../src/lib/development-tooling/desktop-initialization/RemoteRegistrationAdapter';
 
 const origin = 'https://hub.example',
 	credential = { origin, principalId: 'google:fixture-one', token: 'n'.repeat(43) },

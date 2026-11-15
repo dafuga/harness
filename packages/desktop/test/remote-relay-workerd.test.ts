@@ -10,7 +10,7 @@ import type {
 	RelayRegistered,
 	RemoteHostRegisterInput
 } from '../../remote/src/index';
-import { RelaySocketAdapter } from '../src/adapters/RelaySocketAdapter';
+import { RelaySocketAdapter } from '../src/adapters/networking-security/RelaySocketAdapter';
 import type { ProjectSnapshot } from '../src/models/Desktop.types';
 import type { RunEvent } from '../src/models/DesktopBridge.types';
 import { RemoteHostService } from '../src/services/remote-host-service/RemoteHostService';

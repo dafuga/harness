@@ -2,7 +2,7 @@ import { afterEach, expect, test } from 'vitest';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { RemoteHostStoreAdapter } from '../../src/adapters/RemoteHostStoreAdapter';
+import { RemoteHostStoreAdapter } from '../../src/adapters/networking-security/RemoteHostStoreAdapter';
 import { RemoteHostRecordService } from '../../src/services/networking-security/remote-host-service/RemoteHostRecordService';
 import { RemoteHostSwitchService } from '../../src/services/networking-security/remote-host-service/remote-host-switch-service/RemoteHostSwitchService';
 import { remoteHostIdentity } from '../../src/services/remote-host-switch-service/remoteHostIdentity';

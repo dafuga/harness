@@ -2,8 +2,8 @@ import { afterEach, expect, test } from 'vitest';
 import { mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { RemoteHostStoreAdapter } from '../../src/adapters/RemoteHostStoreAdapter';
-import type { RemoteHostState } from '../../src/adapters/RemoteHostStoreAdapter';
+import { RemoteHostStoreAdapter } from '../../src/adapters/networking-security/RemoteHostStoreAdapter';
+import type { RemoteHostState } from '../../src/adapters/networking-security/RemoteHostStoreAdapter';
 
 const roots: string[] = [];
 afterEach(async () => {

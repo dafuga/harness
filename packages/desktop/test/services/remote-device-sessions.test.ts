@@ -9,7 +9,7 @@ import {
 	toBase64Url
 } from '../../../remote/src/index';
 import type { RemoteKeyPair, SecurePacket } from '../../../remote/src/index';
-import type { RemoteHostDevice } from '../../src/adapters/RemoteHostStoreAdapter';
+import type { RemoteHostDevice } from '../../src/adapters/networking-security/RemoteHostStoreAdapter';
 import { CommentOutboxService } from '../../src/services/projects-sessions/CommentOutboxService';
 import { RemoteDeviceSessionsService } from '../../src/services/RemoteDeviceSessionsService';
 import type { DeviceAddress } from '../../src/services/RemoteDeviceSessionsService';

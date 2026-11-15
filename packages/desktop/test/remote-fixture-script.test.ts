@@ -14,7 +14,7 @@ import type {
 	RemotePairingOffer
 } from '../../remote/src/index';
 import { startRemoteFixture } from '../scripts/remote-fixture-host';
-import { RelaySocketAdapter } from '../src/adapters/RelaySocketAdapter';
+import { RelaySocketAdapter } from '../src/adapters/networking-security/RelaySocketAdapter';
 import type { EntityDetail, ProjectSnapshot } from '../src/models/Desktop.types';
 import type { RunEvent } from '../src/models/DesktopBridge.types';
 import { remoteBinary } from '../src/utils/remoteBinary';

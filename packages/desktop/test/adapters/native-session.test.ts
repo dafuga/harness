@@ -2,7 +2,7 @@ import { test, expect } from 'vitest';
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { NativeSessionAdapter } from '../../src/adapters/NativeSessionAdapter';
+import { NativeSessionAdapter } from '../../src/adapters/networking-security/NativeSessionAdapter';
 test('native session secrets require OS encryption and deleting credentials preserves pending drafts', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-native-secret-'));
 	const secret = {

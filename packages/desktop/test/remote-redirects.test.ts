@@ -5,8 +5,8 @@ import { createServer } from 'node:http';
 import type { IncomingMessage, Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { DevicePairingService } from '../../remote/src/index';
-import { RelaySocketAdapter } from '../src/adapters/RelaySocketAdapter';
-import { RemoteRegistrationAdapter } from '../src/adapters/RemoteRegistrationAdapter';
+import { RelaySocketAdapter } from '../src/adapters/networking-security/RelaySocketAdapter';
+import { RemoteRegistrationAdapter } from '../src/lib/development-tooling/desktop-initialization/RemoteRegistrationAdapter';
 const servers: Server[] = [];
 afterEach(async () => {
 	await Promise.all(

@@ -2,7 +2,7 @@ import { test, expect, vi } from 'vitest';
 import { createHash } from 'node:crypto';
 import { NativeAuthService } from '../../src/services/NativeAuthService';
 import { HostedHttpAdapter } from '../../src/adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
-import type { NativeSessionAdapter } from '../../src/adapters/NativeSessionAdapter';
+import type { NativeSessionAdapter } from '../../src/adapters/networking-security/NativeSessionAdapter';
 const origin = 'https://harness.example.invalid';
 function setup(wrongNonce = false) {
 	let challenge = '',

@@ -1,6 +1,6 @@
 import type { Listener } from './relay-socket.test.types';
 import { expect, test } from 'vitest';
-import { RelaySocketAdapter } from '../../src/adapters/RelaySocketAdapter';
+import { RelaySocketAdapter } from '../../src/adapters/networking-security/RelaySocketAdapter';
 class FakeSocket {
 	static last: FakeSocket;
 	readyState = 0;
