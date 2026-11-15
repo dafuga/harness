@@ -29,41 +29,77 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ResendEmailAdapter.constructor.config",
 				"type": "ResendEmailAdapterConfig",
-				"required": true
+				"required": true,
+				"description": "The settings the instance keeps: apiKey, sent as the Bearer token; from, sent as the sender; and fetch, the function that performs the POST. The constructor stores this object as given without validating it, and createResendDelivery is the path that checks apiKey and from."
 			},
 			{
 				"name": "ResendEmailAdapter.send.message",
 				"type": "EmailProofMessage",
-				"required": true
+				"required": true,
+				"description": "The proof to deliver: email is the only recipient, and code, the eight-digit code that emailCode generates, is written into the plain-text body. The adapter never reads expiresAt; the body always says the code expires in 10 minutes.",
+				"examples": [
+					{
+						"email": "reviewer@example.com",
+						"code": "04829173",
+						"expiresAt": "2026-11-15T14:10:00.000Z"
+					},
+					{
+						"email": "member@example.org",
+						"code": "58201937",
+						"expiresAt": "2026-11-15T09:42:00.000Z"
+					}
+				]
 			},
 			{
 				"name": "createResendDelivery.env",
 				"type": "AuthEnv",
-				"required": true
+				"required": true,
+				"description": "The environment object whose HARNESS_EMAIL_API_KEY and HARNESS_EMAIL_FROM are read; every AuthEnv value is optional, and a missing or malformed email setting makes createResendDelivery return null. The API key must be 8 to 200 characters of letters, digits, underscores or hyphens, and the sender must be a bare address or 'Name <address>'.",
+				"examples": [
+					{
+						"HARNESS_EMAIL_API_KEY": "ExampleKey_0123456789abcdef",
+						"HARNESS_EMAIL_FROM": "Harness <auth@example.com>"
+					},
+					{
+						"HARNESS_EMAIL_API_KEY": "ExampleKey_0123456789abcdef",
+						"HARNESS_EMAIL_FROM": "auth@example.com"
+					},
+					{}
+				]
 			},
 			{
 				"name": "createResendDelivery.fetcher",
 				"type": "typeof fetch",
-				"required": false
+				"required": false,
+				"description": "The fetch function that ResendEmailAdapter calls for its POST to https://api.resend.com/emails, with redirect set to 'manual' and a 10-second timeout signal. Defaults to (input, init) => fetch(input, init), which calls the global fetch with the same arguments."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ResendEmailAdapter.send",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value once Resend answers with a 2xx status and a JSON body, read up to MAX_RESPONSE (4096), whose id is a string. Any other outcome rejects with an AuthFailure whose code is 'email-delivery-failed'."
 			},
 			{
 				"name": "createResendDelivery",
-				"type": "EmailProofDelivery | null"
+				"type": "EmailProofDelivery | null",
+				"description": "Returns a ResendEmailAdapter, typed as EmailProofDelivery, when HARNESS_EMAIL_API_KEY and HARNESS_EMAIL_FROM are both present and well formed, and null otherwise. There is no fallback sender, so an invalid value in either setting disables delivery.",
+				"examples": [null]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "Thrown with code 'email-delivery-failed' (status 502) when fetch throws, including the 10-second timeout, when Resend answers with a status outside 2xx (a redirect is never followed), or when a 2xx body cannot be read as JSON with a string id. Provider text is never included."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ResendEmailAdapter.send",
@@ -71,17 +107,37 @@
 					{
 						"name": "ResendEmailAdapter.send.message",
 						"type": "EmailProofMessage",
-						"required": true
+						"required": true,
+						"description": "The proof to deliver: email is the only recipient, and code, the eight-digit code that emailCode generates, is written into the plain-text body. The adapter never reads expiresAt; the body always says the code expires in 10 minutes.",
+						"examples": [
+							{
+								"email": "reviewer@example.com",
+								"code": "04829173",
+								"expiresAt": "2026-11-15T14:10:00.000Z"
+							},
+							{
+								"email": "member@example.org",
+								"code": "58201937",
+								"expiresAt": "2026-11-15T09:42:00.000Z"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ResendEmailAdapter.send",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value once Resend answers with a 2xx status and a JSON body, read up to MAX_RESPONSE (4096), whose id is a string. Any other outcome rejects with an AuthFailure whose code is 'email-delivery-failed'."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "Thrown with code 'email-delivery-failed' (status 502) when fetch throws, including the 10-second timeout, when Resend answers with a status outside 2xx (a redirect is never followed), or when a 2xx body cannot be read as JSON with a string id. Provider text is never included."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "createResendDelivery",
@@ -89,22 +145,37 @@
 					{
 						"name": "createResendDelivery.env",
 						"type": "AuthEnv",
-						"required": true
+						"required": true,
+						"description": "The environment object whose HARNESS_EMAIL_API_KEY and HARNESS_EMAIL_FROM are read; every AuthEnv value is optional, and a missing or malformed email setting makes createResendDelivery return null. The API key must be 8 to 200 characters of letters, digits, underscores or hyphens, and the sender must be a bare address or 'Name <address>'.",
+						"examples": [
+							{
+								"HARNESS_EMAIL_API_KEY": "ExampleKey_0123456789abcdef",
+								"HARNESS_EMAIL_FROM": "Harness <auth@example.com>"
+							},
+							{
+								"HARNESS_EMAIL_API_KEY": "ExampleKey_0123456789abcdef",
+								"HARNESS_EMAIL_FROM": "auth@example.com"
+							},
+							{}
+						]
 					},
 					{
 						"name": "createResendDelivery.fetcher",
 						"type": "typeof fetch",
-						"required": false
+						"required": false,
+						"description": "The fetch function that ResendEmailAdapter calls for its POST to https://api.resend.com/emails, with redirect set to 'manual' and a 10-second timeout signal. Defaults to (input, init) => fetch(input, init), which calls the global fetch with the same arguments."
 					}
 				],
 				"outputs": [
 					{
 						"name": "createResendDelivery",
-						"type": "EmailProofDelivery | null"
+						"type": "EmailProofDelivery | null",
+						"description": "Returns a ResendEmailAdapter, typed as EmailProofDelivery, when HARNESS_EMAIL_API_KEY and HARNESS_EMAIL_FROM are both present and well formed, and null otherwise. There is no fallback sender, so an invalid value in either setting disables delivery.",
+						"examples": [null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -114,17 +185,19 @@
 					{
 						"name": "ResendEmailAdapter.constructor.config",
 						"type": "ResendEmailAdapterConfig",
-						"required": true
+						"required": true,
+						"description": "The settings the instance keeps: apiKey, sent as the Bearer token; from, sent as the sender; and fetch, the function that performs the POST. The constructor stores this object as given without validating it, and createResendDelivery is the path that checks apiKey and from."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ResendEmailAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new ResendEmailAdapter instance, which keeps the config and makes no network request until send is called."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
