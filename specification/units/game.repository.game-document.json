@@ -24,7 +24,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root used as the git working directory for commit reads and as the parent directory of game.json for working-tree reads and saves. The implementation does not validate its format.",
-				"examples": ["/Users/danielfugere/projects/sample-game"]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "GameDocumentRepository.read.commit",
@@ -226,7 +226,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root used as the git working directory for commit reads and as the parent directory of game.json for working-tree reads and saves. The implementation does not validate its format.",
-						"examples": ["/Users/danielfugere/projects/sample-game"]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [

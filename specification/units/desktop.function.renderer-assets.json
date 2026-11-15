@@ -48,9 +48,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Filesystem root used to resolve the requested asset and the index.html fallback. The resolved file must remain inside this root, and failure to resolve the root rejects the request.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/packages/desktop"
-				]
+				"examples": ["/workspace/project/packages/desktop"]
 			},
 			{
 				"name": "rendererAssets.url",
@@ -142,9 +140,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem root used to resolve the requested asset and the index.html fallback. The resolved file must remain inside this root, and failure to resolve the root rejects the request.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/packages/desktop"
-						]
+						"examples": ["/workspace/project/packages/desktop"]
 					},
 					{
 						"name": "rendererAssets.url",

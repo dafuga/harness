@@ -30,9 +30,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Filesystem path for the repository used by GitAdapter and CommitTreeAdapter to resolve commits and read source trees. It matters for every service method and must identify the repository containing the requested commits.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "SourceImpactService.of.commit",
@@ -95,9 +93,7 @@
 				"name": "SourceImpactService.reasons",
 				"type": "Promise<RequiredReason[] | undefined>",
 				"description": "RequiredReason entries for changes against the first parent, with fingerprints bound to each changed symbol or unit. The result is undefined if either source side cannot be read.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "SourceImpactService.parent",
@@ -143,9 +139,7 @@
 				"name": "SourceImpactService.measurements",
 				"type": "unknown",
 				"description": "Static measurements produced for each manifest in the loaded source side and tagged with the requested commit. It returns an empty list when side loading fails.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			}
 		],
 		"errors": [],
@@ -203,9 +197,7 @@
 						"name": "SourceImpactService.reasons",
 						"type": "Promise<RequiredReason[] | undefined>",
 						"description": "RequiredReason entries for changes against the first parent, with fingerprints bound to each changed symbol or unit. The result is undefined if either source side cannot be read.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"errors": [],
@@ -299,9 +291,7 @@
 						"name": "SourceImpactService.measurements",
 						"type": "unknown",
 						"description": "Static measurements produced for each manifest in the loaded source side and tagged with the requested commit. It returns an empty list when side loading fails.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"errors": [],
@@ -317,9 +307,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem path for the repository used by GitAdapter and CommitTreeAdapter to resolve commits and read source trees. It matters for every service method and must identify the repository containing the requested commits.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [

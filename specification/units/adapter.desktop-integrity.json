@@ -21,7 +21,7 @@
 				"description": "The path to the experimental app bundle directory, whose Contents/Info.plist is copied and whose Contents/Frameworks/Codex Framework.framework/Codex Framework is symlinked into a temporary alias bundle. It must end with '/Codex Harness Experimental.app' (a slash before the name, no trailing slash), otherwise update rejects before creating any temporary directory.",
 				"examples": [
 					"/Applications/Codex Harness Experimental.app",
-					"/Users/build/Applications/Codex Harness Experimental.app"
+					"/workspace/apps/Codex Harness Experimental.app"
 				]
 			}
 		],
@@ -51,7 +51,7 @@
 						"description": "The path to the experimental app bundle directory, whose Contents/Info.plist is copied and whose Contents/Frameworks/Codex Framework.framework/Codex Framework is symlinked into a temporary alias bundle. It must end with '/Codex Harness Experimental.app' (a slash before the name, no trailing slash), otherwise update rejects before creating any temporary directory.",
 						"examples": [
 							"/Applications/Codex Harness Experimental.app",
-							"/Users/build/Applications/Codex Harness Experimental.app"
+							"/workspace/apps/Codex Harness Experimental.app"
 						]
 					}
 				],

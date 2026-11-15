@@ -30,8 +30,8 @@
 				"description": "Project roots to hide from an ordinary error message. Each non-empty root, then the home directory, is replaced with '…' in the message before the checks, so a message containing one of them gets the generic wording; the default [] hides only the home directory.",
 				"examples": [
 					[],
-					["/Users/example/projects/harness-app"],
-					["/Users/example/projects/harness-app", "/Users/example/projects/design-system"]
+					["/workspace/user/projects/harness-app"],
+					["/workspace/user/projects/harness-app", "/workspace/user/projects/design-system"]
 				]
 			}
 		],
@@ -72,8 +72,8 @@
 						"description": "Project roots to hide from an ordinary error message. Each non-empty root, then the home directory, is replaced with '…' in the message before the checks, so a message containing one of them gets the generic wording; the default [] hides only the home directory.",
 						"examples": [
 							[],
-							["/Users/example/projects/harness-app"],
-							["/Users/example/projects/harness-app", "/Users/example/projects/design-system"]
+							["/workspace/user/projects/harness-app"],
+							["/workspace/user/projects/harness-app", "/workspace/user/projects/design-system"]
 						]
 					}
 				],

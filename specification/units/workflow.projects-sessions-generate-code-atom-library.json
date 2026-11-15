@@ -19,9 +19,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root used to locate src and compute the selected library path. If src is absent, the workflow returns src/components/atoms; it recognizes only Svelte files with a parseable @harness-atoms declaration whose target contains HtmlButton.svelte.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "useAtomLibrary.files",
@@ -29,7 +27,12 @@
 				"required": true,
 				"description": "Planned files to transform. When the directory is not src/components/atoms, each entry is shallow-copied and .svelte entries use path and contents for import and declaration rewriting; an empty array is accepted.",
 				"examples": [
-					[]
+					[
+						{
+							"path": "src/components/forms/SubmitForm.svelte",
+							"contents": "<script>import HtmlButton from '../atoms/HtmlButton.svelte';</script>\n<HtmlButton type=\"submit\">Submit</HtmlButton>"
+						}
+					]
 				]
 			},
 			{
@@ -52,7 +55,12 @@
 				"type": "PlannedFile[]",
 				"description": "Files returned for generation. If directory is src/components/atoms, the original array is returned; otherwise each file object is shallow-copied and only .svelte contents are rewritten for atom imports and the @harness-atoms marker.",
 				"examples": [
-					[]
+					[
+						{
+							"path": "src/components/forms/SubmitForm.svelte",
+							"contents": "<script>import HtmlButton from '../atoms/HtmlButton.svelte';</script>\n<HtmlButton type=\"submit\">Submit</HtmlButton>"
+						}
+					]
 				]
 			}
 		],
@@ -73,9 +81,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root used to locate src and compute the selected library path. If src is absent, the workflow returns src/components/atoms; it recognizes only Svelte files with a parseable @harness-atoms declaration whose target contains HtmlButton.svelte.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -104,7 +110,12 @@
 						"required": true,
 						"description": "Planned files to transform. When the directory is not src/components/atoms, each entry is shallow-copied and .svelte entries use path and contents for import and declaration rewriting; an empty array is accepted.",
 						"examples": [
-							[]
+							[
+								{
+									"path": "src/components/forms/SubmitForm.svelte",
+									"contents": "<script>import HtmlButton from '../atoms/HtmlButton.svelte';</script>\n<HtmlButton type=\"submit\">Submit</HtmlButton>"
+								}
+							]
 						]
 					},
 					{
@@ -121,7 +132,12 @@
 						"type": "PlannedFile[]",
 						"description": "Files returned for generation. If directory is src/components/atoms, the original array is returned; otherwise each file object is shallow-copied and only .svelte contents are rewritten for atom imports and the @harness-atoms marker.",
 						"examples": [
-							[]
+							[
+								{
+									"path": "src/components/forms/SubmitForm.svelte",
+									"contents": "<script>import HtmlButton from '../atoms/HtmlButton.svelte';</script>\n<HtmlButton type=\"submit\">Submit</HtmlButton>"
+								}
+							]
 						]
 					}
 				],

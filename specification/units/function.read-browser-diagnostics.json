@@ -23,9 +23,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Directory used for this check attempt; the function reads only its browser-errors.ndjson child and returns no diagnostics when that file is absent.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-16"
-				]
+				"examples": ["/workspace/project"]
 			}
 		],
 		"outputs": [
@@ -70,9 +68,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Directory used for this check attempt; the function reads only its browser-errors.ndjson child and returns no diagnostics when that file is absent.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-16"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [

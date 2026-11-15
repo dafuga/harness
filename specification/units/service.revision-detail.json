@@ -42,14 +42,14 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root passed directly to the source-impact service created for the shared context. This function does not normalize or validate the path.",
-				"examples": ["/Users/danielfugere/projects/example"]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "RevisionDetailService.constructor.root",
 				"type": "string",
 				"required": true,
 				"description": "Repository root used to construct the Git adapter and, when no shared context is supplied, the default source context. The constructor does not normalize or validate the path.",
-				"examples": ["/Users/danielfugere/projects/example"]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "RevisionDetailService.constructor.history",
@@ -183,7 +183,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root passed directly to the source-impact service created for the shared context. This function does not normalize or validate the path.",
-						"examples": ["/Users/danielfugere/projects/example"]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -322,7 +322,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root used to construct the Git adapter and, when no shared context is supplied, the default source context. The constructor does not normalize or validate the path.",
-						"examples": ["/Users/danielfugere/projects/example"]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "RevisionDetailService.constructor.history",

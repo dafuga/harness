@@ -26,7 +26,7 @@
 						"project": {
 							"id": "9a3f0c2d5e7b1a48",
 							"name": "storefront",
-							"path": "/Users/dev/projects/storefront"
+							"path": "/workspace/project"
 						},
 						"title": "Guest checkout",
 						"mode": "feature",
@@ -60,7 +60,7 @@
 						"project": {
 							"id": "e41b7c09a2d6f385",
 							"name": "storefront",
-							"path": "/Users/dev/projects/storefront"
+							"path": "/workspace/project"
 						},
 						"title": "Payment retry",
 						"mode": "feature",
@@ -109,8 +109,8 @@
 				"required": true,
 				"description": "The report's run directory, which ReportRepository.directory builds as <reports root>/runs/<report id>; store reads each pending file from its assets subdirectory. When R2 evidence storage is configured, each pending file name must contain no slash or backslash, must be a regular file rather than a symbolic link, and must resolve inside that assets directory.",
 				"examples": [
-					"/Users/dev/.codex/project-reports/runs/5b1e0c7a-3d2f-4a8e-9c61-0f7b2d4e8a13",
-					"/Users/dev/.codex/project-reports/runs/0c4d8e21-7a9b-4f36-8d52-e1b6a3c9f047"
+					"/workspace/project/.harness/project-reports/runs/5b1e0c7a-3d2f-4a8e-9c61-0f7b2d4e8a13",
+					"/workspace/project/.harness/project-reports/runs/0c4d8e21-7a9b-4f36-8d52-e1b6a3c9f047"
 				]
 			}
 		],
@@ -175,7 +175,7 @@
 								"project": {
 									"id": "9a3f0c2d5e7b1a48",
 									"name": "storefront",
-									"path": "/Users/dev/projects/storefront"
+									"path": "/workspace/project"
 								},
 								"title": "Guest checkout",
 								"mode": "feature",
@@ -209,7 +209,7 @@
 								"project": {
 									"id": "e41b7c09a2d6f385",
 									"name": "storefront",
-									"path": "/Users/dev/projects/storefront"
+									"path": "/workspace/project"
 								},
 								"title": "Payment retry",
 								"mode": "feature",
@@ -258,8 +258,8 @@
 						"required": true,
 						"description": "The report's run directory, which ReportRepository.directory builds as <reports root>/runs/<report id>; store reads each pending file from its assets subdirectory. When R2 evidence storage is configured, each pending file name must contain no slash or backslash, must be a regular file rather than a symbolic link, and must resolve inside that assets directory.",
 						"examples": [
-							"/Users/dev/.codex/project-reports/runs/5b1e0c7a-3d2f-4a8e-9c61-0f7b2d4e8a13",
-							"/Users/dev/.codex/project-reports/runs/0c4d8e21-7a9b-4f36-8d52-e1b6a3c9f047"
+							"/workspace/project/.harness/project-reports/runs/5b1e0c7a-3d2f-4a8e-9c61-0f7b2d4e8a13",
+							"/workspace/project/.harness/project-reports/runs/0c4d8e21-7a9b-4f36-8d52-e1b6a3c9f047"
 						]
 					}
 				],

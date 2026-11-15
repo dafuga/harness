@@ -45,9 +45,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root used to locate loop state, Git history notes, and recorded regression proof.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "requireRegressionProof.loop",
@@ -68,9 +66,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root used to locate the loop's retained regression evidence.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "enforceRegressionStep.state",
@@ -156,9 +152,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root used to locate loop state, Git history notes, and recorded regression proof.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "requireRegressionProof.loop",
@@ -199,9 +193,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root used to locate the loop's retained regression evidence.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "enforceRegressionStep.state",

@@ -51,10 +51,7 @@
 				"name": "ClientProjectsService.roots",
 				"type": "string[]",
 				"description": "roots lists the root path of each project in this client's ready map, in map iteration order. Projects still opening are absent, and a missing session root is stored as an empty string.",
-				"examples": [
-					["/Users/daniel/projects/client-app"],
-					["/workspace/projects/client-app", ""]
-				]
+				"examples": [["/workspace/projects/client-app"], ["/workspace/projects/client-app", ""]]
 			},
 			{
 				"name": "ClientProjectsService.use",
@@ -90,10 +87,7 @@
 						"name": "ClientProjectsService.roots",
 						"type": "string[]",
 						"description": "roots lists the root path of each project in this client's ready map, in map iteration order. Projects still opening are absent, and a missing session root is stored as an empty string.",
-						"examples": [
-							["/Users/daniel/projects/client-app"],
-							["/workspace/projects/client-app", ""]
-						]
+						"examples": [["/workspace/projects/client-app"], ["/workspace/projects/client-app", ""]]
 					}
 				],
 				"errors": [],

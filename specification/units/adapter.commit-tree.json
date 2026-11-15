@@ -24,9 +24,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root passed to GitAdapter for revision lookup and object reads. It selects which repository this adapter uses.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "CommitTreeAdapter.open.reference",
@@ -91,9 +89,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root passed to GitAdapter for revision lookup and object reads. It selects which repository this adapter uses.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "CommitTreeAdapter.open.reference",

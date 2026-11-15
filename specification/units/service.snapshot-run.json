@@ -34,7 +34,7 @@
 				"description": "Repository root, parsed verification config, and run context for exporting one commit and running checks in isolation. The context excludes the snapshot directory, which this service creates; the config supplies setup, links, declared outputs, builds, tools, runners, checks, and test timeout.",
 				"examples": [
 					{
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8",
+						"root": "/workspace/project",
 						"config": {
 							"schemaVersion": 1,
 							"setup": [],
@@ -88,9 +88,7 @@
 				"required": false,
 				"default": [],
 				"description": "Snapshot-relative file paths to hash and size after setup and checks. Only files readable inside the snapshot are included; missing paths and paths resolving outside the snapshot are omitted, and the default is [].",
-				"examples": [
-					["dist/server.js"]
-				]
+				"examples": [["dist/server.js"]]
 			}
 		],
 		"outputs": [
@@ -149,9 +147,7 @@
 						"required": false,
 						"default": [],
 						"description": "Snapshot-relative file paths to hash and size after setup and checks. Only files readable inside the snapshot are included; missing paths and paths resolving outside the snapshot are omitted, and the default is [].",
-						"examples": [
-							["dist/server.js"]
-						]
+						"examples": [["dist/server.js"]]
 					}
 				],
 				"outputs": [
@@ -193,7 +189,7 @@
 						"description": "Repository root, parsed verification config, and run context for exporting one commit and running checks in isolation. The context excludes the snapshot directory, which this service creates; the config supplies setup, links, declared outputs, builds, tools, runners, checks, and test timeout.",
 						"examples": [
 							{
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8",
+								"root": "/workspace/project",
 								"config": {
 									"schemaVersion": 1,
 									"setup": [],

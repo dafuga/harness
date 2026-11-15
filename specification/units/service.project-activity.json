@@ -30,9 +30,9 @@
 				"required": true,
 				"description": "The path of the checkout this service is built for, as given: `show` picks the Git worktree at this path (or the first one Git lists when none matches), and reads the history, notes, loops and unit registry of that checkout. The value is not checked here; outside Git, the path itself is the only checkout.",
 				"examples": [
-					"/home/dev/projects/harness-app",
-					"/home/dev/projects/harness-app-login",
-					"/srv/checkouts/harness-web"
+					"/workspace/project",
+					"/workspace/project-login",
+					"/workspace/checkouts/harness-web"
 				]
 			},
 			{
@@ -761,9 +761,9 @@
 						"required": true,
 						"description": "The path of the checkout this service is built for, as given: `show` picks the Git worktree at this path (or the first one Git lists when none matches), and reads the history, notes, loops and unit registry of that checkout. The value is not checked here; outside Git, the path itself is the only checkout.",
 						"examples": [
-							"/home/dev/projects/harness-app",
-							"/home/dev/projects/harness-app-login",
-							"/srv/checkouts/harness-web"
+							"/workspace/project",
+							"/workspace/project-login",
+							"/workspace/checkouts/harness-web"
 						]
 					}
 				],

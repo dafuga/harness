@@ -31,8 +31,8 @@
 				"required": true,
 				"description": "Repository root that the history walk passes to a new GitAdapter. The constructor stores it unchanged, and the walk uses it only when the direct check has failures.",
 				"examples": [
-					"/Users/dev/code/shop-app",
-					"/home/runner/work/shop-app/shop-app",
+					"/workspace/project",
+					"/workspace/shop-app/shop-app",
 					"/srv/checkouts/ledger-service"
 				]
 			},
@@ -53,9 +53,7 @@
 				"type": "Explanation[]",
 				"required": true,
 				"description": "Explanations the caller already holds; the direct check and every step check are each made against this same list, which the service passes on unchanged.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			}
 		],
 		"outputs": [
@@ -101,9 +99,7 @@
 						"type": "Explanation[]",
 						"required": true,
 						"description": "Explanations the caller already holds; the direct check and every step check are each made against this same list, which the service passes on unchanged.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"outputs": [
@@ -146,8 +142,8 @@
 						"required": true,
 						"description": "Repository root that the history walk passes to a new GitAdapter. The constructor stores it unchanged, and the walk uses it only when the direct check has failures.",
 						"examples": [
-							"/Users/dev/code/shop-app",
-							"/home/runner/work/shop-app/shop-app",
+							"/workspace/project",
+							"/workspace/shop-app/shop-app",
 							"/srv/checkouts/ledger-service"
 						]
 					},

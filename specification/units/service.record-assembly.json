@@ -31,13 +31,13 @@
 				"name": "RecordAssemblyService.constructor.context",
 				"type": "AssemblyContext",
 				"required": true,
-				"description": "Carries the repository root, tested commit and tree, base and head revisions, impact report, profile, store, and a callback for the reason report; requirePerformance, baseRecord, requestedBase, and sourceHashes are optional. The performance gate runs only when requirePerformance is truthy, and supplied sourceHashes replace the revision indexes used to record component files; the store, callback, and source-hash maps cannot be represented in JSON."
+				"description": "Carries the repository root, tested commit and tree, required nullable baseCommit and requestedBase, base and head revisions, impact report, profile, store, and the reason-report callback. requirePerformance, baseRecord and sourceHashes are optional. The performance gate runs only when requirePerformance is true; supplied sourceHashes provide recorded component-side hashes. The store and callback are runtime dependencies, so a JSON example cannot represent a complete context."
 			},
 			{
 				"name": "RecordAssemblyService.assemble.input",
 				"type": "AssemblyInput",
 				"required": true,
-				"description": "Carries the run start time, executed check and build observations, scenario results with their failures, and referenced scenario results. Assembly derives measurements and gates from these values, filters setup checks out of the recorded tests, and combines run and referenced scenarios.",
+				"description": "Carries the run start time, executed check and build observations, scenario results with their failures, and referenced scenario results. Assembly derives measurements and gate results, excludes setup checks from recorded tests, and sorts run and referenced scenarios together by id.",
 				"examples": [
 					{
 						"startedAt": "2026-11-15T10:00:00.000Z",
@@ -60,13 +60,13 @@
 			{
 				"name": "RecordAssemblyService.assemble",
 				"type": "Promise<VerificationRecord>",
-				"description": "Resolves to a sealed verification record containing source identity, profile and tools, component versions, measurements, impact, filtered tests, judged scenarios, optional builds, budget and reason results, gates, and failures. Assembly generates finishedAt, omits setup checks from tests, and sets id to the SHA-256 hash of the other record fields.",
+				"description": "Resolves to a sealed verification record for the tested repository revision, containing source identity, profile and tools, component versions, measurements, impact, non-setup tests, sorted scenario results, budget and reason results, gate statuses, and failures. Build details are included when applicable. Assembly generates finishedAt and sets id to the SHA-256 hash of the other record fields.",
 				"examples": [
 					{
 						"id": "4727c5bd8473ce5bc3e7b376318425909810beaaf87b8f12f6fd046a1c61c1e0",
 						"schemaVersion": 1,
 						"componentSchemaVersion": 2,
-						"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+						"repository": "/workspace/project",
 						"source": {
 							"commit": "1111111111111111111111111111111111111111",
 							"tree": "2222222222222222222222222222222222222222",
@@ -139,7 +139,7 @@
 						"name": "RecordAssemblyService.assemble.input",
 						"type": "AssemblyInput",
 						"required": true,
-						"description": "Carries the run start time, executed check and build observations, scenario results with their failures, and referenced scenario results. Assembly derives measurements and gates from these values, filters setup checks out of the recorded tests, and combines run and referenced scenarios.",
+						"description": "Carries the run start time, executed check and build observations, scenario results with their failures, and referenced scenario results. Assembly derives measurements and gate results, excludes setup checks from recorded tests, and sorts run and referenced scenarios together by id.",
 						"examples": [
 							{
 								"startedAt": "2026-11-15T10:00:00.000Z",
@@ -162,13 +162,13 @@
 					{
 						"name": "RecordAssemblyService.assemble",
 						"type": "Promise<VerificationRecord>",
-						"description": "Resolves to a sealed verification record containing source identity, profile and tools, component versions, measurements, impact, filtered tests, judged scenarios, optional builds, budget and reason results, gates, and failures. Assembly generates finishedAt, omits setup checks from tests, and sets id to the SHA-256 hash of the other record fields.",
+						"description": "Resolves to a sealed verification record for the tested repository revision, containing source identity, profile and tools, component versions, measurements, impact, non-setup tests, sorted scenario results, budget and reason results, gate statuses, and failures. Build details are included when applicable. Assembly generates finishedAt and sets id to the SHA-256 hash of the other record fields.",
 						"examples": [
 							{
 								"id": "4727c5bd8473ce5bc3e7b376318425909810beaaf87b8f12f6fd046a1c61c1e0",
 								"schemaVersion": 1,
 								"componentSchemaVersion": 2,
-								"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+								"repository": "/workspace/project",
 								"source": {
 									"commit": "1111111111111111111111111111111111111111",
 									"tree": "2222222222222222222222222222222222222222",

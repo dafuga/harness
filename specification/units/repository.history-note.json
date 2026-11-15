@@ -30,9 +30,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Root passed to GitAdapter as the working directory for every Git command. The constructor stores it without checking whether it is a repository.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "HistoryNoteRepository.text.commit",
@@ -480,9 +478,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Root passed to GitAdapter as the working directory for every Git command. The constructor stores it without checking whether it is a repository.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [

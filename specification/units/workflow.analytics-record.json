@@ -33,9 +33,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Filesystem path used to resolve the primary Git worktree; if canonicalization or Git lookup fails, the resolved input path is returned.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "resolvedContext.context",
@@ -55,9 +53,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository filesystem root used to locate loop state when a loop is selected.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "recordAnalytics.event",
@@ -83,9 +79,7 @@
 				"type": "string",
 				"required": false,
 				"description": "Filesystem root used to identify the project for the event. Defaults to process.cwd(), the process working directory.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "fingerprint.value",
@@ -106,9 +100,7 @@
 				"type": "AnalyticsContext",
 				"required": true,
 				"description": "Analytics context whose report, when present, must contain only letters, digits, or hyphens and identify a readable manifest under PROJECT_REPORTS_HOME or $HOME/.codex/project-reports.",
-				"examples": [
-					{}
-				]
+				"examples": [{}]
 			}
 		],
 		"outputs": [
@@ -116,9 +108,7 @@
 				"name": "projectIdentity",
 				"type": "Promise<string>",
 				"description": "Canonical path from the first worktree entry in git worktree list --porcelain. If Git lookup fails or returns no worktree entry, the resolved input directory is returned.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "resolvedContext",
@@ -185,9 +175,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem path used to resolve the primary Git worktree; if canonicalization or Git lookup fails, the resolved input path is returned.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -195,9 +183,7 @@
 						"name": "projectIdentity",
 						"type": "Promise<string>",
 						"description": "Canonical path from the first worktree entry in git worktree list --porcelain. If Git lookup fails or returns no worktree entry, the resolved input directory is returned.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"errors": [],
@@ -224,9 +210,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository filesystem root used to locate loop state when a loop is selected.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -288,9 +272,7 @@
 						"type": "string",
 						"required": false,
 						"description": "Filesystem root used to identify the project for the event. Defaults to process.cwd(), the process working directory.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -346,9 +328,7 @@
 						"type": "AnalyticsContext",
 						"required": true,
 						"description": "Analytics context whose report, when present, must contain only letters, digits, or hyphens and identify a readable manifest under PROJECT_REPORTS_HOME or $HOME/.codex/project-reports.",
-						"examples": [
-							{}
-						]
+						"examples": [{}]
 					}
 				],
 				"outputs": [

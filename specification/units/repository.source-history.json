@@ -33,7 +33,7 @@
 				"description": "The repository root path that the constructor passes to the GitAdapter it creates, and through which every git command of this repository runs. The constructor does not check the path; it only stores the adapter.",
 				"examples": [
 					"/workspace/harness-app",
-					"/home/dev/src/billing-service",
+					"/workspace/billing-service",
 					"/srv/repos/inventory-api"
 				]
 			},
@@ -60,11 +60,7 @@
 				"type": "string[]",
 				"required": true,
 				"description": "The branch names the caller already knows reach the commit; revision returns this list unchanged as the commit's branches and does not check it against the repository. An empty list makes the returned revision retained.",
-				"examples": [
-					["main"],
-					["main", "release/2.4"],
-					[]
-				]
+				"examples": [["main"], ["main", "release/2.4"], []]
 			}
 		],
 		"outputs": [
@@ -324,11 +320,7 @@
 						"type": "string[]",
 						"required": true,
 						"description": "The branch names the caller already knows reach the commit; revision returns this list unchanged as the commit's branches and does not check it against the repository. An empty list makes the returned revision retained.",
-						"examples": [
-							["main"],
-							["main", "release/2.4"],
-							[]
-						]
+						"examples": [["main"], ["main", "release/2.4"], []]
 					}
 				],
 				"outputs": [
@@ -377,7 +369,7 @@
 						"description": "The repository root path that the constructor passes to the GitAdapter it creates, and through which every git command of this repository runs. The constructor does not check the path; it only stores the adapter.",
 						"examples": [
 							"/workspace/harness-app",
-							"/home/dev/src/billing-service",
+							"/workspace/billing-service",
 							"/srv/repos/inventory-api"
 						]
 					}
