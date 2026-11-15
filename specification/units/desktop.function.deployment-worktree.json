@@ -18,29 +18,76 @@
 				"name": "deploymentWorktree.root",
 				"type": "string",
 				"required": true,
-				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+				"description": "Repository directory passed to every git call as `git -C <root>`; the commit is resolved there and the temporary worktree is added and removed there. The implementation does not check that it is absolute or that it is a repository, and a path git cannot run in makes the first git call reject.",
+				"examples": [
+					"/Users/dev/projects/harness-app",
+					"/srv/git/billing-service",
+					"/home/ci/workspace/web-console"
+				]
 			},
 			{
 				"name": "deploymentWorktree.commit",
 				"type": "string",
 				"required": true,
-				"description": "Full immutable source commit to check out for deployment."
+				"description": "Revision that git resolves to a full commit SHA with `git rev-parse --verify --end-of-options <commit>^{commit}` before the checkout, so a branch or tag is pinned to the commit it names when the call starts. An empty value, a value longer than 300 characters, or a value containing a NUL character is rejected with 'Invalid revision.' before any git command runs.",
+				"examples": [
+					"3f9c2e7a1b4d8e0f5a6c9b2d7e1f4a8c0b3d6e9f",
+					"a81d4f0c93e27b6d5f1a0e8c4b9d2f7a6e3c1b05",
+					"d0c7b5e2f94a1638e7d2c0b9a4f15e8d3b6c7a21"
+				]
 			},
 			{
 				"name": "deploymentWorktree.work",
 				"type": "(directory: string) => Promise<T>",
 				"required": true,
-				"description": "Async deployment operation invoked with the isolated source checkout directory."
+				"description": "Async callback that the implementation calls once, after `git worktree add` succeeds, with the path of a `source` directory inside a new `harness-deployment-` directory under `os.tmpdir()`. Its resolved value is returned and its rejection is re-thrown, and the checkout is force-removed when its promise settles."
 			}
 		],
 		"outputs": [
 			{
 				"name": "deploymentWorktree",
 				"type": "Promise<T>",
-				"description": "Result of the async operation after its temporary checkout is cleaned up."
+				"description": "Resolved value of `work`, returned only after the checkout is force-removed and its temporary directory is deleted; if `work` rejects or any git or file-system step fails, the call rejects with that error instead."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by gitRevision with the message 'Invalid revision.' when the commit is empty, longer than 300 characters, or contains a NUL character; no git command runs and no temporary directory is created."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with the error from gitRead when `git -C <root> rev-parse --verify --end-of-options <commit>^{commit}` fails (cannot start, non-zero exit such as an unresolvable commit, killed by a signal, or stdout over gitRead's 64000000-byte maxBuffer); no temporary directory is created."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with the error from gitRead when `git -C <root> worktree add --detach <directory> <resolved SHA>` fails (cannot start, non-zero exit, killed by a signal, or stdout over gitRead's 64000000-byte maxBuffer); the callback is not called and the temporary directory is still deleted."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with the error from gitRead when `git -C <root> worktree remove --force <directory>` fails during cleanup after the callback settles (cannot start, non-zero exit, killed by a signal, or stdout over gitRead's 64000000-byte maxBuffer); it replaces the callback's result or error, and the temporary directory is not deleted because the following rm is skipped."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with the file-system error from mkdtemp when no harness-deployment- directory can be created under os.tmpdir(); no worktree is added."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with the file-system error from rm, called with recursive and force set, when the temporary directory cannot be deleted during cleanup; it replaces the callback's result or error."
+			},
+			{
+				"name": "callback error",
+				"type": "thrown",
+				"description": "Whatever value work throws or rejects with is re-thrown unchanged once the cleanup succeeds, so its type depends on the callback."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "deploymentWorktree",
@@ -49,30 +96,76 @@
 						"name": "deploymentWorktree.root",
 						"type": "string",
 						"required": true,
-						"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+						"description": "Repository directory passed to every git call as `git -C <root>`; the commit is resolved there and the temporary worktree is added and removed there. The implementation does not check that it is absolute or that it is a repository, and a path git cannot run in makes the first git call reject.",
+						"examples": [
+							"/Users/dev/projects/harness-app",
+							"/srv/git/billing-service",
+							"/home/ci/workspace/web-console"
+						]
 					},
 					{
 						"name": "deploymentWorktree.commit",
 						"type": "string",
 						"required": true,
-						"description": "Full immutable source commit to check out for deployment."
+						"description": "Revision that git resolves to a full commit SHA with `git rev-parse --verify --end-of-options <commit>^{commit}` before the checkout, so a branch or tag is pinned to the commit it names when the call starts. An empty value, a value longer than 300 characters, or a value containing a NUL character is rejected with 'Invalid revision.' before any git command runs.",
+						"examples": [
+							"3f9c2e7a1b4d8e0f5a6c9b2d7e1f4a8c0b3d6e9f",
+							"a81d4f0c93e27b6d5f1a0e8c4b9d2f7a6e3c1b05",
+							"d0c7b5e2f94a1638e7d2c0b9a4f15e8d3b6c7a21"
+						]
 					},
 					{
 						"name": "deploymentWorktree.work",
 						"type": "(directory: string) => Promise<T>",
 						"required": true,
-						"description": "Async deployment operation invoked with the isolated source checkout directory."
+						"description": "Async callback that the implementation calls once, after `git worktree add` succeeds, with the path of a `source` directory inside a new `harness-deployment-` directory under `os.tmpdir()`. Its resolved value is returned and its rejection is re-thrown, and the checkout is force-removed when its promise settles."
 					}
 				],
 				"outputs": [
 					{
 						"name": "deploymentWorktree",
 						"type": "Promise<T>",
-						"description": "Result of the async operation after its temporary checkout is cleaned up."
+						"description": "Resolved value of `work`, returned only after the checkout is force-removed and its temporary directory is deleted; if `work` rejects or any git or file-system step fails, the call rejects with that error instead."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by gitRevision with the message 'Invalid revision.' when the commit is empty, longer than 300 characters, or contains a NUL character; no git command runs and no temporary directory is created."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the error from gitRead when `git -C <root> rev-parse --verify --end-of-options <commit>^{commit}` fails (cannot start, non-zero exit such as an unresolvable commit, killed by a signal, or stdout over gitRead's 64000000-byte maxBuffer); no temporary directory is created."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the error from gitRead when `git -C <root> worktree add --detach <directory> <resolved SHA>` fails (cannot start, non-zero exit, killed by a signal, or stdout over gitRead's 64000000-byte maxBuffer); the callback is not called and the temporary directory is still deleted."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the error from gitRead when `git -C <root> worktree remove --force <directory>` fails during cleanup after the callback settles (cannot start, non-zero exit, killed by a signal, or stdout over gitRead's 64000000-byte maxBuffer); it replaces the callback's result or error, and the temporary directory is not deleted because the following rm is skipped."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the file-system error from mkdtemp when no harness-deployment- directory can be created under os.tmpdir(); no worktree is added."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the file-system error from rm, called with recursive and force set, when the temporary directory cannot be deleted during cleanup; it replaces the callback's result or error."
+					},
+					{
+						"name": "callback error",
+						"type": "thrown",
+						"description": "Whatever value work throws or rejects with is re-thrown unchanged once the cleanup succeeds, so its type depends on the callback."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
