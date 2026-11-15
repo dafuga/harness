@@ -6,7 +6,11 @@ import type {
 	ExplorerLocation,
 	ExplorerScreen
 } from './explorerRoute.types';
-import { tabOf, explorerCategories, type ExplorerCategory } from '../explorer-route/explorerTabs';
+import {
+	tabOf,
+	explorerCategories,
+	type ExplorerCategory
+} from '../development-tooling/explorer-route/explorerTabs';
 export {
 	explorerTabs,
 	explorerKindCategory,
@@ -14,7 +18,7 @@ export {
 	explorerCategories,
 	type ExplorerCategory,
 	type ExplorerTab
-} from '../explorer-route/explorerTabs';
+} from '../development-tooling/explorer-route/explorerTabs';
 
 export const explorerSections = ['details', 'history'] as const;
 

@@ -4,8 +4,10 @@ import {
 	explorerRoutePath,
 	type ExplorerLocation
 } from '../../../src/utils/explorerRoute';
-import { tabOf as declaredTabOf } from '../../../src/utils/development-tooling/explorer-route/explorerTabs';
-import { tabOf as forwardedTabOf } from '../../../src/utils/explorer-route/explorerTabs';
+import {
+	tabOf as declaredTabOf,
+	tabOf as forwardedTabOf
+} from '../../../src/utils/development-tooling/explorer-route/explorerTabs';
 
 export function assertApiRoutes(): void {
 	const prefix = `/branch/feature%2Forders/commit/${'a'.repeat(40)}`;
