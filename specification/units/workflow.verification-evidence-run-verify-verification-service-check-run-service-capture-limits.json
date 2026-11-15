@@ -31,106 +31,140 @@
 				"name": "digestFile.path",
 				"type": "string",
 				"required": true,
-				"description": "File path opened without following a final-component symlink and checked to be a regular file."
+				"description": "Path opened read-only with O_NOFOLLOW when available and checked to be a regular file. Open, stat, read, or close failures are thrown.",
+				"examples": ["src/workflows/verification-evidence/run-verify/check.log"]
 			},
 			{
 				"name": "digestFile.maxBytes",
 				"type": "number",
 				"required": false,
-				"description": "Optional byte ceiling enforced during streaming; exceeding it throws before the extra chunk is retained."
+				"default": "undefined",
+				"description": "Optional maximum number of bytes the stream may read. Defaults to undefined, meaning no byte ceiling; reading a chunk that takes the total above this value throws before that chunk is hashed or retained.",
+				"examples": [1048576]
 			},
 			{
 				"name": "digestFile.retain",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "When true, also return the bytes read in contents; defaults to false."
+				"description": "Whether to copy read chunks into the returned contents buffer, which retains the entire file in memory. Defaults to false.",
+				"examples": [true]
 			},
 			{
 				"name": "oversizeCapture.file",
 				"type": "string",
 				"required": true,
-				"description": "Capture filename used in the refusal message."
+				"description": "Capture path inserted into the per-file refusal message when maxCaptureBytes is exceeded.",
+				"examples": ["checks/unit.log"]
 			},
 			{
 				"name": "oversizeCapture.bytes",
 				"type": "number",
 				"required": true,
-				"description": "Observed capture byte size."
+				"description": "Observed capture byte count compared with limits.maxCaptureBytes. A count at or below the cap is not refused.",
+				"examples": [2097152]
 			},
 			{
 				"name": "oversizeCapture.limits",
 				"type": "CaptureLimits",
 				"required": true,
-				"description": "Optional per-capture and per-record limits used to form the refusal."
+				"description": "Optional byte caps; this function checks maxCaptureBytes and returns no refusal when that cap is absent. maxRecordBytes is not checked here.",
+				"examples": [
+					{},
+					{
+						"maxCaptureBytes": 1048576,
+						"maxRecordBytes": 4194304
+					}
+				]
 			},
 			{
 				"name": "RecordBudget.constructor.max",
 				"type": "number",
 				"required": false,
-				"description": "Optional total bytes this record may retain."
+				"default": "undefined",
+				"description": "Optional maximum total bytes for retained captures in this record. Defaults to undefined, meaning no record byte ceiling.",
+				"examples": [8388608]
 			},
 			{
 				"name": "RecordBudget.refusal.path",
 				"type": "string",
 				"required": true,
-				"description": "Record-relative capture path used in the refusal message."
+				"description": "Record-relative capture path inserted into the refusal message if adding the bytes would exceed the record cap.",
+				"examples": ["checks/typecheck.log"]
 			},
 			{
 				"name": "RecordBudget.refusal.bytes",
 				"type": "number",
 				"required": true,
-				"description": "Observed capture byte size to add to the bytes already retained."
+				"description": "Capture byte count proposed for addition to the bytes already retained. The method compares their sum with the configured maximum.",
+				"examples": [4096]
 			},
 			{
 				"name": "RecordBudget.retain.bytes",
 				"type": "number",
 				"required": true,
-				"description": "Bytes successfully inspected and admitted to the record."
+				"description": "Byte count to add to the record's used total after the caller admits a capture. The method increments the total without checking the cap.",
+				"examples": [4096]
 			}
 		],
 		"outputs": [
 			{
 				"name": "digestFile",
 				"type": "CaptureRead",
-				"description": "SHA-256 and byte count, with optional contents when retain is true."
+				"description": "Result containing the lowercase SHA-256 hex digest and number of bytes read; contents is present as a Buffer only when retain is true.",
+				"examples": [
+					{
+						"sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+						"bytes": 3
+					}
+				]
 			},
 			{
 				"name": "oversizeCapture",
 				"type": "string | undefined",
-				"description": "Refusal text when a capture exceeds maxCaptureBytes, otherwise undefined."
+				"description": "Per-file refusal message when bytes exceed maxCaptureBytes, or undefined when no cap is set or the bytes fit.",
+				"examples": [
+					"left capture checks/unit.log of 2097152 bytes, over maxCaptureBytes 1048576 in harness.verify.json; it was not recorded"
+				]
 			},
 			{
 				"name": "RecordBudget.remaining",
 				"type": "number | undefined",
-				"description": "Remaining record bytes, or undefined when no record cap exists."
+				"description": "Configured maximum minus bytes already retained, or undefined when the budget has no maximum. It can be negative if the retained total exceeds the maximum.",
+				"examples": [4194304]
 			},
 			{
 				"name": "RecordBudget.refusal",
 				"type": "string | undefined",
-				"description": "Refusal text when the capture would exceed the record cap, otherwise undefined."
+				"description": "Refusal message when adding the proposed bytes would take the record above its maximum, or undefined when there is no maximum or the sum fits.",
+				"examples": [
+					"left capture checks/typecheck.log of 4096 bytes, which takes the record to 12288 bytes, over maxRecordBytes 8192 in harness.verify.json; it was not recorded"
+				]
 			},
 			{
 				"name": "RecordBudget.retain",
 				"type": "void",
-				"description": "Adds the admitted capture byte count to the record budget."
+				"description": "Void result; the method adds the supplied byte count to the record's used total."
 			}
 		],
 		"errors": [
 			{
 				"name": "Capture read failure",
-				"type": "propagated",
-				"description": "digestFile rejects when the path cannot be opened/read, is not a regular file, or resolves to a final-component symlink",
-				"examples": ["Capture must be a regular file."]
+				"type": "thrown",
+				"description": "digestFile throws file-system errors from opening, checking, reading, or closing the path. It throws Error with message \"Capture must be a regular file.\" when the opened descriptor is not a regular file; O_NOFOLLOW prevents following a final-component symlink when the platform provides that flag."
 			},
 			{
 				"name": "Capture byte limit exceeded",
 				"type": "thrown",
-				"description": "digestFile rejects when streamed bytes exceed maxBytes",
-				"examples": ["Capture exceeded maxCaptureBytes or remaining maxRecordBytes while reading."]
+				"description": "digestFile throws Error with message \"Capture exceeded maxCaptureBytes or remaining maxRecordBytes while reading.\" when the bytes read so far exceed maxBytes; the chunk that crosses the ceiling is not hashed or retained."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "digestFile throws Error when the opened descriptor is not a regular file or when bytes read exceed maxBytes. File-system errors from opening, statting, reading, and closing also propagate."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "digestFile",
@@ -139,43 +173,54 @@
 						"name": "digestFile.path",
 						"type": "string",
 						"required": true,
-						"description": "File path opened without following a final-component symlink and checked to be a regular file."
+						"description": "Path opened read-only with O_NOFOLLOW when available and checked to be a regular file. Open, stat, read, or close failures are thrown.",
+						"examples": ["src/workflows/verification-evidence/run-verify/check.log"]
 					},
 					{
 						"name": "digestFile.maxBytes",
 						"type": "number",
 						"required": false,
-						"description": "Optional byte ceiling enforced during streaming; exceeding it throws before the extra chunk is retained."
+						"default": "undefined",
+						"description": "Optional maximum number of bytes the stream may read. Defaults to undefined, meaning no byte ceiling; reading a chunk that takes the total above this value throws before that chunk is hashed or retained.",
+						"examples": [1048576]
 					},
 					{
 						"name": "digestFile.retain",
 						"type": "boolean",
 						"required": false,
 						"default": false,
-						"description": "When true, also return the bytes read in contents; defaults to false."
+						"description": "Whether to copy read chunks into the returned contents buffer, which retains the entire file in memory. Defaults to false.",
+						"examples": [true]
 					}
 				],
 				"outputs": [
 					{
 						"name": "digestFile",
 						"type": "CaptureRead",
-						"description": "SHA-256 and byte count, with optional contents when retain is true."
+						"description": "Result containing the lowercase SHA-256 hex digest and number of bytes read; contents is present as a Buffer only when retain is true.",
+						"examples": [
+							{
+								"sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+								"bytes": 3
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Capture read failure",
-						"type": "propagated",
-						"description": "digestFile rejects when the path cannot be opened/read, is not a regular file, or resolves to a final-component symlink",
-						"examples": ["Capture must be a regular file."]
+						"type": "thrown",
+						"description": "digestFile throws file-system errors from opening, checking, reading, or closing the path. It throws Error with message \"Capture must be a regular file.\" when the opened descriptor is not a regular file; O_NOFOLLOW prevents following a final-component symlink when the platform provides that flag."
 					},
 					{
 						"name": "Capture byte limit exceeded",
 						"type": "thrown",
-						"description": "digestFile rejects when streamed bytes exceed maxBytes",
-						"examples": [
-							"Capture exceeded maxCaptureBytes or remaining maxRecordBytes while reading."
-						]
+						"description": "digestFile throws Error with message \"Capture exceeded maxCaptureBytes or remaining maxRecordBytes while reading.\" when the bytes read so far exceed maxBytes; the chunk that crosses the ceiling is not hashed or retained."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "digestFile throws Error when the opened descriptor is not a regular file or when bytes read exceed maxBytes. File-system errors from opening, statting, reading, and closing also propagate."
 					}
 				],
 				"errorStatus": "declared"
@@ -187,26 +232,38 @@
 						"name": "oversizeCapture.file",
 						"type": "string",
 						"required": true,
-						"description": "Capture filename used in the refusal message."
+						"description": "Capture path inserted into the per-file refusal message when maxCaptureBytes is exceeded.",
+						"examples": ["checks/unit.log"]
 					},
 					{
 						"name": "oversizeCapture.bytes",
 						"type": "number",
 						"required": true,
-						"description": "Observed capture byte size."
+						"description": "Observed capture byte count compared with limits.maxCaptureBytes. A count at or below the cap is not refused.",
+						"examples": [2097152]
 					},
 					{
 						"name": "oversizeCapture.limits",
 						"type": "CaptureLimits",
 						"required": true,
-						"description": "Optional per-capture and per-record limits used to form the refusal."
+						"description": "Optional byte caps; this function checks maxCaptureBytes and returns no refusal when that cap is absent. maxRecordBytes is not checked here.",
+						"examples": [
+							{},
+							{
+								"maxCaptureBytes": 1048576,
+								"maxRecordBytes": 4194304
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "oversizeCapture",
 						"type": "string | undefined",
-						"description": "Refusal text when a capture exceeds maxCaptureBytes, otherwise undefined."
+						"description": "Per-file refusal message when bytes exceed maxCaptureBytes, or undefined when no cap is set or the bytes fit.",
+						"examples": [
+							"left capture checks/unit.log of 2097152 bytes, over maxCaptureBytes 1048576 in harness.verify.json; it was not recorded"
+						]
 					}
 				],
 				"errors": [],
@@ -219,7 +276,8 @@
 					{
 						"name": "RecordBudget.remaining",
 						"type": "number | undefined",
-						"description": "Remaining record bytes, or undefined when no record cap exists."
+						"description": "Configured maximum minus bytes already retained, or undefined when the budget has no maximum. It can be negative if the retained total exceeds the maximum.",
+						"examples": [4194304]
 					}
 				],
 				"errors": [],
@@ -232,20 +290,25 @@
 						"name": "RecordBudget.refusal.path",
 						"type": "string",
 						"required": true,
-						"description": "Record-relative capture path used in the refusal message."
+						"description": "Record-relative capture path inserted into the refusal message if adding the bytes would exceed the record cap.",
+						"examples": ["checks/typecheck.log"]
 					},
 					{
 						"name": "RecordBudget.refusal.bytes",
 						"type": "number",
 						"required": true,
-						"description": "Observed capture byte size to add to the bytes already retained."
+						"description": "Capture byte count proposed for addition to the bytes already retained. The method compares their sum with the configured maximum.",
+						"examples": [4096]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RecordBudget.refusal",
 						"type": "string | undefined",
-						"description": "Refusal text when the capture would exceed the record cap, otherwise undefined."
+						"description": "Refusal message when adding the proposed bytes would take the record above its maximum, or undefined when there is no maximum or the sum fits.",
+						"examples": [
+							"left capture checks/typecheck.log of 4096 bytes, which takes the record to 12288 bytes, over maxRecordBytes 8192 in harness.verify.json; it was not recorded"
+						]
 					}
 				],
 				"errors": [],
@@ -258,14 +321,15 @@
 						"name": "RecordBudget.retain.bytes",
 						"type": "number",
 						"required": true,
-						"description": "Bytes successfully inspected and admitted to the record."
+						"description": "Byte count to add to the record's used total after the caller admits a capture. The method increments the total without checking the cap.",
+						"examples": [4096]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RecordBudget.retain",
 						"type": "void",
-						"description": "Adds the admitted capture byte count to the record budget."
+						"description": "Void result; the method adds the supplied byte count to the record's used total."
 					}
 				],
 				"errors": [],
@@ -280,7 +344,9 @@
 						"name": "RecordBudget.constructor.max",
 						"type": "number",
 						"required": false,
-						"description": "Optional total bytes this record may retain."
+						"default": "undefined",
+						"description": "Optional maximum total bytes for retained captures in this record. Defaults to undefined, meaning no record byte ceiling.",
+						"examples": [8388608]
 					}
 				],
 				"outputs": [
