@@ -1,7 +1,11 @@
 import { expect, test } from 'vitest';
 import { VideoArchiveService } from '../../../src/services/verification-evidence/VideoArchiveService';
 import { withTempRepo } from '../../support/temporary';
-import { videoArchiveFixture } from '../../support/videoArchiveFixture';
+import {
+	videoArchiveFixture,
+	videoArchiveBudgetExamples,
+	invalidVideoArchiveInputs
+} from '../../support/videoArchiveFixture';
 import { EvidenceBranchRepository } from '../../../src/repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository';
 import { LfsAdapter } from '../../../src/adapters/git-source-history/LfsAdapter';
 import { GitAdapter } from '../../../src/adapters/git-source-history/GitAdapter';
@@ -77,16 +81,7 @@ test('archive partitions at 64 clips and 512 MiB of unique media without relabel
 		const { splitVideoBatches } =
 			await import('../../../src/services/verification-evidence/video-archive-service/batch');
 		const clip = (await service.read(pointers[0])).batch.clips[0];
-		const clips = Array.from({ length: 33 }, (_, i) => ({
-			...clip,
-			slot: { ...clip.slot, viewport: `view-${i}` },
-			media: { path: `media/${String(i * 2).padStart(64, '0')}.mp4`, sha256: String(i * 2).padStart(64, '0'), bytes: 8 * 1024 * 1024 },
-			poster: {
-				path: `media/${String(i * 2 + 1).padStart(64, '0')}.png`,
-				sha256: String(i * 2 + 1).padStart(64, '0'),
-				bytes: 8 * 1024 * 1024
-			}
-		}));
+		const clips = videoArchiveBudgetExamples(clip);
 		expect(splitVideoBatches(clips).map((batch) => batch.length)).toEqual([32, 1]);
 		expect(splitVideoBatches(Array.from({ length: 64 }, () => clip))).toHaveLength(1);
 	});
@@ -96,20 +91,18 @@ test('archive rejects malformed, oversized or unbound pairs before evidence publ
 	await withTempRepo(async ({ root, git }) => {
 		const input = await videoArchiveFixture(root, git),
 			service = new VideoArchiveService(root);
-		for (const invalid of [
-			{ ...input, sha256: '0'.repeat(64) },
-			{ ...input, videoBytes: Buffer.alloc(8 * 1024 * 1024 + 1) },
-			{ ...input, posterBytes: Buffer.from('bad PNG') },
-			{ ...input, posterBytes: input.alternatePoster, video: { ...input.video, poster: { ...input.video.poster, sha256: hash(input.alternatePoster), bytes: input.alternatePoster.length } } },
-			{ ...input, posterBytes: Buffer.alloc(8 * 1024 * 1024 + 1) },
-			{ ...input, slot: { ...input.slot, unit: '../escape' } },
-			{ ...input, slot: { ...input.slot, unitUid: 'u_aaaaaaaaaa' } },
-			{ ...input, original: { ...input.original, tree: '0'.repeat(40) } },
-			{ ...input, video: { ...input.video, width: 162 } },
-			{ ...input, video: { ...input.video, states: [{ id: 'playing', atSeconds: 2 }] } }
-		])
+		for (const invalid of invalidVideoArchiveInputs(input, input.alternatePoster))
 			await expect(service.write([invalid])).rejects.toThrow();
-		await expect(service.write([input, { ...input, slot: { ...input.slot, viewport: 'other' }, original: { ...input.original, tree: '0'.repeat(40) } }])).rejects.toThrow();
+		await expect(
+			service.write([
+				input,
+				{
+					...input,
+					slot: { ...input.slot, viewport: 'other' },
+					original: { ...input.original, tree: '0'.repeat(40) }
+				}
+			])
+		).rejects.toThrow();
 		expect(await new EvidenceBranchRepository(root).tip()).toBeUndefined();
 	});
 });
@@ -192,14 +185,16 @@ test('archive reads never fetch and explicit fetch verifies the received evidenc
 		git('update-ref', 'refs/remotes/archive-fixture/evidence', pointer.evidence.commit);
 		run.mockRestore();
 		const actualRun = GitAdapter.prototype.run;
-		const explicit = vi
-			.spyOn(GitAdapter.prototype, 'run')
-			.mockImplementation(function (this: GitAdapter, args, options) {
-				if (args[0] === 'fetch') return Promise.resolve('');
-				if (args[0] === 'rev-parse' && args[1] === 'FETCH_HEAD^{commit}')
-					return Promise.resolve(pointer.evidence.commit);
-				return actualRun.call(this, args, options);
-			});
+		const explicit = vi.spyOn(GitAdapter.prototype, 'run').mockImplementation(function (
+			this: GitAdapter,
+			args,
+			options
+		) {
+			if (args[0] === 'fetch') return Promise.resolve('');
+			if (args[0] === 'rev-parse' && args[1] === 'FETCH_HEAD^{commit}')
+				return Promise.resolve(pointer.evidence.commit);
+			return actualRun.call(this, args, options);
+		});
 		expect((await service.fetch(pointer, 'archive-fixture')).pointer).toEqual(pointer);
 		expect(fetch).toHaveBeenCalledWith('archive-fixture', pointer.evidence.commit);
 		expect(explicit).toHaveBeenCalledWith([

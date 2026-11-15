@@ -2,7 +2,10 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { frameFlagFixture, hash } from './frameFlagFixture';
-import type { VideoArchiveInput } from '../../src/services/verification-evidence/VideoArchiveService.types';
+import type {
+	VideoArchiveInput,
+	VideoArchiveClip
+} from '../../src/services/verification-evidence/VideoArchiveService.types';
 
 export async function videoArchiveFixture(root: string, git: (...args: string[]) => string) {
 	const f = await frameFlagFixture(root, git);
@@ -20,7 +23,10 @@ export async function videoArchiveFixture(root: string, git: (...args: string[])
 	);
 	git('add', '.');
 	git('commit', '-qm', 'feat: register disposable archive owner');
-	return { ...archiveInput(git, f.original, archivePoster(f.original)), alternatePoster: archivePoster(f.replacement) };
+	return {
+		...archiveInput(git, f.original, archivePoster(f.original)),
+		alternatePoster: archivePoster(f.replacement)
+	};
 }
 
 function archivePoster(bytes: Buffer): Buffer {
@@ -96,4 +102,47 @@ function archiveInput(
 		videoBytes: bytes,
 		posterBytes: poster
 	};
+}
+
+/** Metadata-only examples exercise the 512 MiB boundary without allocating media. */
+export function videoArchiveBudgetExamples(clip: VideoArchiveClip): VideoArchiveClip[] {
+	return Array.from({ length: 33 }, (_, i) => ({
+		...clip,
+		slot: { ...clip.slot, viewport: `view-${i}` },
+		media: {
+			path: `media/${String(i * 2).padStart(64, '0')}.mp4`,
+			sha256: String(i * 2).padStart(64, '0'),
+			bytes: 8 * 1024 * 1024
+		},
+		poster: {
+			path: `media/${String(i * 2 + 1).padStart(64, '0')}.png`,
+			sha256: String(i * 2 + 1).padStart(64, '0'),
+			bytes: 8 * 1024 * 1024
+		}
+	}));
+}
+
+export function invalidVideoArchiveInputs(
+	input: VideoArchiveInput,
+	alternate: Buffer
+): VideoArchiveInput[] {
+	return [
+		{ ...input, sha256: '0'.repeat(64) },
+		{ ...input, videoBytes: Buffer.alloc(8 * 1024 * 1024 + 1) },
+		{ ...input, posterBytes: Buffer.from('bad PNG') },
+		{
+			...input,
+			posterBytes: alternate,
+			video: {
+				...input.video,
+				poster: { ...input.video.poster, sha256: hash(alternate), bytes: alternate.length }
+			}
+		},
+		{ ...input, posterBytes: Buffer.alloc(8 * 1024 * 1024 + 1) },
+		{ ...input, slot: { ...input.slot, unit: '../escape' } },
+		{ ...input, slot: { ...input.slot, unitUid: 'u_aaaaaaaaaa' } },
+		{ ...input, original: { ...input.original, tree: '0'.repeat(40) } },
+		{ ...input, video: { ...input.video, width: 162 } },
+		{ ...input, video: { ...input.video, states: [{ id: 'playing', atSeconds: 2 }] } }
+	];
 }
