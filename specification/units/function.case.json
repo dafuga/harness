@@ -8,19 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/core/case.ts",
-			"src/core/development-tooling/case.ts",
-			"src/helpers/strings/case.ts"
-		],
+		"source": ["src/core/case.ts", "src/helpers/strings/case.ts"],
 		"symbols": [
 			"toKebabCase",
 			"toPascalCase",
 			"toCamelCase",
-			"toSnakeCase",
-			"toKebabCase",
-			"toCamelCase",
-			"toPascalCase",
 			"toSnakeCase",
 			"toKebabCase",
 			"toPascalCase",
@@ -634,11 +626,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/core/development-tooling/case.ts",
+		"entry": "src/core/case.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/core/development-tooling/case.ts"
+				"entry": "src/core/case.ts"
 			}
 		]
 	},
