@@ -1,5 +1,8 @@
 import { expect, test } from 'vitest';
-import { compact, usageExamples } from '../../src/components/usage-examples/usageExamples';
+import {
+	compact,
+	usageExamples
+} from '../../src/components/shared-primitives/usage-examples/usageExamples';
 
 test('snippets retain setup and distinguish falsy outputs from expected errors', () => {
 	const snippets = usageExamples(
