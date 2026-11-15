@@ -76,7 +76,7 @@ export function assertVideoCoverage(
 			line: { ...item.line, video: { ...video, states: [{ id: 'pages', atSeconds: 30 }] } }
 		} as Gathered).join(' ')
 	).toMatch(/timestamp|interval/i);
-	assertVideoGraphGate(declared, item);
+	return assertVideoGraphGate(declared, item);
 }
 
 export function videoLibraryFixture() {
@@ -155,6 +155,14 @@ function assertVideoGraphGate(scenario: ScenarioManifest, item: Gathered) {
 			'unproved clip graph cannot pass'
 		).toBeGreaterThan(0);
 	}
+	return scenarioCoverage({
+		scenario: enrolled,
+		commit,
+		gathered: [item],
+		checkFailed: false,
+		builds: { declared: ['reports'], compiled: new Map([['reports', 'build-1']]) },
+		videoSlots: [slot]
+	});
 }
 
 function videoScenario(scenario: ScenarioManifest): ScenarioManifest {

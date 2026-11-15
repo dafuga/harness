@@ -99,9 +99,12 @@ test('a result that claims no running software is judged as before', () =>
 	}));
 
 test('video slots require decoded motion media and retain versioned provenance', () =>
-	measureWorkload('function.scenario-coverage', 'pending-video-flags-and-graph-coverage', () =>
-		assertVideoCoverage(scenario, gathered, served)
-	));
+	measureWorkload('function.scenario-coverage', 'pending-video-flags-and-graph-coverage', () => {
+		const result = assertVideoCoverage(scenario, gathered, served);
+		expect(result.videoCoverage, 'verified graph coverage must reach the parent record').toEqual([
+			{ graph: 'navigation', states: 1, edges: 1, clips: 1, complete: true, missing: [] }
+		]);
+	}));
 
 const region = { x: 12, y: 56, width: 158, height: 50 };
 function picture(mode = 'element', scale = 1) {
