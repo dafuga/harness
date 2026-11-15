@@ -27,29 +27,341 @@
 				"name": "recordedCapture.evidence",
 				"type": "ExplorerEvidence",
 				"required": true,
-				"description": "The entity’s before/after evidence, already read at the intended revisions."
+				"description": "The entity’s before/after evidence, already read at the intended revisions. Only the side the binding names is searched, through its captures, commit, record and detail.records; the other side, `scenarios` and `mode` are never read.",
+				"examples": [
+					{
+						"mode": "current",
+						"scenarios": [
+							{
+								"id": "desktop-recorded-evidence",
+								"title": "Local Git reader of recorded evidence over synthetic fixture repositories",
+								"kind": "headless",
+								"units": [
+									"desktop.function.artifact-media",
+									"desktop.function.binary-answer",
+									"desktop.function.recorded-capture"
+								],
+								"states": [
+									{
+										"id": "current-tip",
+										"title": "Branch tip shown alone at its pinned notes and evidence revisions",
+										"coverage": "required"
+									},
+									{
+										"id": "first-parent",
+										"title": "Commit compared with its exact first parent, or its stated gap",
+										"coverage": "required"
+									},
+									{
+										"id": "inherited-result",
+										"title": "Inherited result kept apart from a run at this commit",
+										"coverage": "required"
+									},
+									{
+										"id": "refused-scope",
+										"title": "Stale tip, foreign commit and unknown entity refused",
+										"coverage": "required"
+									},
+									{
+										"id": "entity-projection",
+										"title": "Answer reduced to the one entity",
+										"coverage": "required"
+									},
+									{
+										"id": "artifact-binding",
+										"title": "Capture read only by its exact record, side, state and hash",
+										"coverage": "required"
+									},
+									{
+										"id": "project-authority",
+										"title": "Evidence and bytes read only in the granted project",
+										"coverage": "required"
+									},
+									{
+										"id": "pinned-revisions",
+										"title": "Shown artifact stays readable after notes move; no newer record stands in",
+										"coverage": "required"
+									},
+									{
+										"id": "transport",
+										"title": "Window reads evidence and checked bytes over the loopback socket",
+										"coverage": "required"
+									}
+								],
+								"viewports": [],
+								"tests": [
+									{
+										"id": "reader",
+										"kind": "integration",
+										"runner": "command"
+									},
+									{
+										"id": "artifact",
+										"kind": "integration",
+										"runner": "command"
+									},
+									{
+										"id": "transport",
+										"kind": "integration",
+										"runner": "command"
+									}
+								]
+							}
+						],
+						"after": {
+							"commit": "b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41",
+							"detail": {
+								"commit": "b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41",
+								"registry": {
+									"available": true,
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"records": [
+									{
+										"id": "5d0e83c17a94b26fe1c0d5783b9f2a4e60d8c1f79e2b5a34cf7106d9ab48e2c5",
+										"status": "passed",
+										"valid": true,
+										"problems": [],
+										"source": {
+											"commit": "b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41",
+											"base": "3a91f6c04e8d27b5a0f3196ec8d4b27e05a1f9d3"
+										},
+										"profile": "4c1b07e93fa2d58c",
+										"startedAt": "2026-11-14T18:01:52.406Z",
+										"finishedAt": "2026-11-14T18:03:27.915Z",
+										"failures": [],
+										"tests": [],
+										"scenarios": [
+											{
+												"id": "desktop-recorded-evidence",
+												"status": "passed",
+												"testedRevision": "b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41",
+												"inherited": false,
+												"origin": {
+													"record": "5d0e83c17a94b26fe1c0d5783b9f2a4e60d8c1f79e2b5a34cf7106d9ab48e2c5",
+													"commit": "b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41"
+												},
+												"states": [
+													{
+														"id": "artifact-binding",
+														"coverage": "required",
+														"captures": [
+															{
+																"evidence": "desktop-recorded-evidence-output",
+																"kind": "output",
+																"state": "artifact-binding",
+																"status": "passed",
+																"path": "evidence/b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41/desktop-recorded-evidence/artifact/test-recorded-artifact.test.ts-artifact-binding.txt",
+																"sha256": "2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c",
+																"mediaType": "text/plain",
+																"capturedAt": "2026-11-14T18:03:19.472Z",
+																"media": "media/2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c.txt"
+															}
+														]
+													}
+												]
+											}
+										],
+										"measurements": [],
+										"budgets": {
+											"findings": []
+										}
+									}
+								],
+								"explanations": []
+							},
+							"record": {
+								"id": "5d0e83c17a94b26fe1c0d5783b9f2a4e60d8c1f79e2b5a34cf7106d9ab48e2c5",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41",
+									"base": "3a91f6c04e8d27b5a0f3196ec8d4b27e05a1f9d3"
+								},
+								"profile": "4c1b07e93fa2d58c",
+								"startedAt": "2026-11-14T18:01:52.406Z",
+								"finishedAt": "2026-11-14T18:03:27.915Z",
+								"failures": [],
+								"tests": [],
+								"scenarios": [
+									{
+										"id": "desktop-recorded-evidence",
+										"status": "passed",
+										"testedRevision": "b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41",
+										"inherited": false,
+										"origin": {
+											"record": "5d0e83c17a94b26fe1c0d5783b9f2a4e60d8c1f79e2b5a34cf7106d9ab48e2c5",
+											"commit": "b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41"
+										},
+										"states": [
+											{
+												"id": "artifact-binding",
+												"coverage": "required",
+												"captures": [
+													{
+														"evidence": "desktop-recorded-evidence-output",
+														"kind": "output",
+														"state": "artifact-binding",
+														"status": "passed",
+														"path": "evidence/b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41/desktop-recorded-evidence/artifact/test-recorded-artifact.test.ts-artifact-binding.txt",
+														"sha256": "2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c",
+														"mediaType": "text/plain",
+														"capturedAt": "2026-11-14T18:03:19.472Z",
+														"media": "media/2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c.txt"
+													}
+												]
+											}
+										]
+									}
+								],
+								"measurements": [],
+								"budgets": {
+									"findings": []
+								}
+							},
+							"captures": [
+								{
+									"scenario": "desktop-recorded-evidence",
+									"state": "artifact-binding",
+									"capture": {
+										"evidence": "desktop-recorded-evidence-output",
+										"kind": "output",
+										"state": "artifact-binding",
+										"status": "passed",
+										"path": "evidence/b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41/desktop-recorded-evidence/artifact/test-recorded-artifact.test.ts-artifact-binding.txt",
+										"sha256": "2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c",
+										"mediaType": "text/plain",
+										"capturedAt": "2026-11-14T18:03:19.472Z",
+										"media": "media/2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c.txt"
+									},
+									"recordId": "5d0e83c17a94b26fe1c0d5783b9f2a4e60d8c1f79e2b5a34cf7106d9ab48e2c5",
+									"standing": "fresh",
+									"usable": true,
+									"current": true,
+									"inheritedFrom": null
+								}
+							],
+							"coverage": [
+								{
+									"scenario": "desktop-recorded-evidence",
+									"title": "Local Git reader of recorded evidence over synthetic fixture repositories",
+									"kind": "headless",
+									"standing": "passed",
+									"reasons": [],
+									"tests": [],
+									"inheritedFrom": null,
+									"states": [
+										{
+											"state": "artifact-binding",
+											"declared": "required",
+											"standing": "passed",
+											"reasons": [],
+											"slots": [
+												{
+													"evidence": "desktop-recorded-evidence-output",
+													"kind": "output",
+													"viewport": null,
+													"capture": {
+														"evidence": "desktop-recorded-evidence-output",
+														"kind": "output",
+														"state": "artifact-binding",
+														"status": "passed",
+														"path": "evidence/b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41/desktop-recorded-evidence/artifact/test-recorded-artifact.test.ts-artifact-binding.txt",
+														"sha256": "2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c",
+														"mediaType": "text/plain",
+														"capturedAt": "2026-11-14T18:03:19.472Z",
+														"media": "media/2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c.txt"
+													},
+													"standing": "passed",
+													"reason": null
+												}
+											]
+										}
+									]
+								}
+							],
+							"gap": null
+						},
+						"before": null,
+						"initial": null,
+						"incomparable": []
+					}
+				]
 			},
 			{
 				"name": "recordedCapture.binding",
 				"type": "CaptureBinding",
 				"required": true,
-				"description": "The requested side, judging-record identity, scenario, state, evidence identifier, nullable viewport and SHA-256 hash. Every field must match the selected evidence."
+				"description": "The requested capture: its side, record id, scenario, state, evidence id, viewport and SHA-256 hash, each of which must match what the evidence lists. A capture with no viewport matches only a viewport of null, and nothing else in the request, such as a path or address, is read.",
+				"examples": [
+					{
+						"side": "after",
+						"recordId": "5d0e83c17a94b26fe1c0d5783b9f2a4e60d8c1f79e2b5a34cf7106d9ab48e2c5",
+						"scenarioId": "desktop-recorded-evidence",
+						"state": "artifact-binding",
+						"evidenceId": "desktop-recorded-evidence-output",
+						"viewport": null,
+						"sha256": "2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordedCapture",
 				"type": "ListedCapture",
-				"description": "The listed capture and its scenario’s origin-record identity. Inherited captures therefore point to the record that originally stored them. The helper selects a record; it does not read or hash bytes."
+				"description": "The listed capture and the record whose sealed files hold its bytes: the binding’s record when `focused` is true, otherwise the scenario’s origin record, which is the judging record for a fresh scenario and the record that originally stored the capture for an inherited one. The helper selects a record; it does not read or hash bytes.",
+				"examples": [
+					{
+						"capture": {
+							"evidence": "desktop-recorded-evidence-output",
+							"kind": "output",
+							"state": "artifact-binding",
+							"status": "passed",
+							"path": "evidence/b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41/desktop-recorded-evidence/artifact/test-recorded-artifact.test.ts-artifact-binding.txt",
+							"sha256": "2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c",
+							"mediaType": "text/plain",
+							"capturedAt": "2026-11-14T18:03:19.472Z",
+							"media": "media/2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c.txt"
+						},
+						"record": "5d0e83c17a94b26fe1c0d5783b9f2a4e60d8c1f79e2b5a34cf7106d9ab48e2c5"
+					},
+					{
+						"capture": {
+							"evidence": "desktop-recorded-evidence-assertions",
+							"kind": "assertions",
+							"state": "artifact-binding",
+							"status": "passed",
+							"path": "evidence/0e5c9a27d4f1b83e6a02c95d7f48b1e0a6d3c29f/desktop-recorded-evidence/artifact/test-recorded-artifact.test.ts-artifact-binding.json",
+							"sha256": "9b04e7c2a18d5f36c0b7e94d21a8f5c6e3d09b724f16a8e0bc2d75f90a6e13d8",
+							"mediaType": "application/json",
+							"capturedAt": "2026-11-12T10:44:07.093Z",
+							"media": "media/9b04e7c2a18d5f36c0b7e94d21a8f5c6e3d09b724f16a8e0bc2d75f90a6e13d8.json"
+						},
+						"record": "e08b4f2d6a17c9305ed2b8a147f0c6e93d1a85bc2b96e0f4c7d31a589ea46f02"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "capture-unlisted",
 				"type": "refused",
-				"description": "Throws when the chosen side or judging record is absent, no capture matches the entire binding, or that record has no matching scenario."
+				"description": "Thrown when the chosen side is absent or no capture matches the whole binding. Also thrown when the listed record is not the binding’s record, when the judging record is missing, invalid or of another commit, or when it has no scenario with the binding’s scenarioId."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Every refusal is thrown as a plain Error with the message 'This capture is not listed by the evidence of this entity at these revisions.'; nothing else is thrown."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "recordedCapture",
@@ -58,29 +370,336 @@
 						"name": "recordedCapture.evidence",
 						"type": "ExplorerEvidence",
 						"required": true,
-						"description": "The entity’s before/after evidence, already read at the intended revisions."
+						"description": "The entity’s before/after evidence, already read at the intended revisions. Only the side the binding names is searched, through its captures, commit, record and detail.records; the other side, `scenarios` and `mode` are never read.",
+						"examples": [
+							{
+								"mode": "current",
+								"scenarios": [
+									{
+										"id": "desktop-recorded-evidence",
+										"title": "Local Git reader of recorded evidence over synthetic fixture repositories",
+										"kind": "headless",
+										"units": [
+											"desktop.function.artifact-media",
+											"desktop.function.binary-answer",
+											"desktop.function.recorded-capture"
+										],
+										"states": [
+											{
+												"id": "current-tip",
+												"title": "Branch tip shown alone at its pinned notes and evidence revisions",
+												"coverage": "required"
+											},
+											{
+												"id": "first-parent",
+												"title": "Commit compared with its exact first parent, or its stated gap",
+												"coverage": "required"
+											},
+											{
+												"id": "inherited-result",
+												"title": "Inherited result kept apart from a run at this commit",
+												"coverage": "required"
+											},
+											{
+												"id": "refused-scope",
+												"title": "Stale tip, foreign commit and unknown entity refused",
+												"coverage": "required"
+											},
+											{
+												"id": "entity-projection",
+												"title": "Answer reduced to the one entity",
+												"coverage": "required"
+											},
+											{
+												"id": "artifact-binding",
+												"title": "Capture read only by its exact record, side, state and hash",
+												"coverage": "required"
+											},
+											{
+												"id": "project-authority",
+												"title": "Evidence and bytes read only in the granted project",
+												"coverage": "required"
+											},
+											{
+												"id": "pinned-revisions",
+												"title": "Shown artifact stays readable after notes move; no newer record stands in",
+												"coverage": "required"
+											},
+											{
+												"id": "transport",
+												"title": "Window reads evidence and checked bytes over the loopback socket",
+												"coverage": "required"
+											}
+										],
+										"viewports": [],
+										"tests": [
+											{
+												"id": "reader",
+												"kind": "integration",
+												"runner": "command"
+											},
+											{
+												"id": "artifact",
+												"kind": "integration",
+												"runner": "command"
+											},
+											{
+												"id": "transport",
+												"kind": "integration",
+												"runner": "command"
+											}
+										]
+									}
+								],
+								"after": {
+									"commit": "b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41",
+									"detail": {
+										"commit": "b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41",
+										"registry": {
+											"available": true,
+											"units": [],
+											"scenarios": [],
+											"graph": {
+												"edges": []
+											}
+										},
+										"comparison": null,
+										"records": [
+											{
+												"id": "5d0e83c17a94b26fe1c0d5783b9f2a4e60d8c1f79e2b5a34cf7106d9ab48e2c5",
+												"status": "passed",
+												"valid": true,
+												"problems": [],
+												"source": {
+													"commit": "b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41",
+													"base": "3a91f6c04e8d27b5a0f3196ec8d4b27e05a1f9d3"
+												},
+												"profile": "4c1b07e93fa2d58c",
+												"startedAt": "2026-11-14T18:01:52.406Z",
+												"finishedAt": "2026-11-14T18:03:27.915Z",
+												"failures": [],
+												"tests": [],
+												"scenarios": [
+													{
+														"id": "desktop-recorded-evidence",
+														"status": "passed",
+														"testedRevision": "b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41",
+														"inherited": false,
+														"origin": {
+															"record": "5d0e83c17a94b26fe1c0d5783b9f2a4e60d8c1f79e2b5a34cf7106d9ab48e2c5",
+															"commit": "b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41"
+														},
+														"states": [
+															{
+																"id": "artifact-binding",
+																"coverage": "required",
+																"captures": [
+																	{
+																		"evidence": "desktop-recorded-evidence-output",
+																		"kind": "output",
+																		"state": "artifact-binding",
+																		"status": "passed",
+																		"path": "evidence/b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41/desktop-recorded-evidence/artifact/test-recorded-artifact.test.ts-artifact-binding.txt",
+																		"sha256": "2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c",
+																		"mediaType": "text/plain",
+																		"capturedAt": "2026-11-14T18:03:19.472Z",
+																		"media": "media/2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c.txt"
+																	}
+																]
+															}
+														]
+													}
+												],
+												"measurements": [],
+												"budgets": {
+													"findings": []
+												}
+											}
+										],
+										"explanations": []
+									},
+									"record": {
+										"id": "5d0e83c17a94b26fe1c0d5783b9f2a4e60d8c1f79e2b5a34cf7106d9ab48e2c5",
+										"status": "passed",
+										"valid": true,
+										"problems": [],
+										"source": {
+											"commit": "b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41",
+											"base": "3a91f6c04e8d27b5a0f3196ec8d4b27e05a1f9d3"
+										},
+										"profile": "4c1b07e93fa2d58c",
+										"startedAt": "2026-11-14T18:01:52.406Z",
+										"finishedAt": "2026-11-14T18:03:27.915Z",
+										"failures": [],
+										"tests": [],
+										"scenarios": [
+											{
+												"id": "desktop-recorded-evidence",
+												"status": "passed",
+												"testedRevision": "b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41",
+												"inherited": false,
+												"origin": {
+													"record": "5d0e83c17a94b26fe1c0d5783b9f2a4e60d8c1f79e2b5a34cf7106d9ab48e2c5",
+													"commit": "b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41"
+												},
+												"states": [
+													{
+														"id": "artifact-binding",
+														"coverage": "required",
+														"captures": [
+															{
+																"evidence": "desktop-recorded-evidence-output",
+																"kind": "output",
+																"state": "artifact-binding",
+																"status": "passed",
+																"path": "evidence/b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41/desktop-recorded-evidence/artifact/test-recorded-artifact.test.ts-artifact-binding.txt",
+																"sha256": "2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c",
+																"mediaType": "text/plain",
+																"capturedAt": "2026-11-14T18:03:19.472Z",
+																"media": "media/2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c.txt"
+															}
+														]
+													}
+												]
+											}
+										],
+										"measurements": [],
+										"budgets": {
+											"findings": []
+										}
+									},
+									"captures": [
+										{
+											"scenario": "desktop-recorded-evidence",
+											"state": "artifact-binding",
+											"capture": {
+												"evidence": "desktop-recorded-evidence-output",
+												"kind": "output",
+												"state": "artifact-binding",
+												"status": "passed",
+												"path": "evidence/b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41/desktop-recorded-evidence/artifact/test-recorded-artifact.test.ts-artifact-binding.txt",
+												"sha256": "2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c",
+												"mediaType": "text/plain",
+												"capturedAt": "2026-11-14T18:03:19.472Z",
+												"media": "media/2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c.txt"
+											},
+											"recordId": "5d0e83c17a94b26fe1c0d5783b9f2a4e60d8c1f79e2b5a34cf7106d9ab48e2c5",
+											"standing": "fresh",
+											"usable": true,
+											"current": true,
+											"inheritedFrom": null
+										}
+									],
+									"coverage": [
+										{
+											"scenario": "desktop-recorded-evidence",
+											"title": "Local Git reader of recorded evidence over synthetic fixture repositories",
+											"kind": "headless",
+											"standing": "passed",
+											"reasons": [],
+											"tests": [],
+											"inheritedFrom": null,
+											"states": [
+												{
+													"state": "artifact-binding",
+													"declared": "required",
+													"standing": "passed",
+													"reasons": [],
+													"slots": [
+														{
+															"evidence": "desktop-recorded-evidence-output",
+															"kind": "output",
+															"viewport": null,
+															"capture": {
+																"evidence": "desktop-recorded-evidence-output",
+																"kind": "output",
+																"state": "artifact-binding",
+																"status": "passed",
+																"path": "evidence/b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41/desktop-recorded-evidence/artifact/test-recorded-artifact.test.ts-artifact-binding.txt",
+																"sha256": "2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c",
+																"mediaType": "text/plain",
+																"capturedAt": "2026-11-14T18:03:19.472Z",
+																"media": "media/2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c.txt"
+															},
+															"standing": "passed",
+															"reason": null
+														}
+													]
+												}
+											]
+										}
+									],
+									"gap": null
+								},
+								"before": null,
+								"initial": null,
+								"incomparable": []
+							}
+						]
 					},
 					{
 						"name": "recordedCapture.binding",
 						"type": "CaptureBinding",
 						"required": true,
-						"description": "The requested side, judging-record identity, scenario, state, evidence identifier, nullable viewport and SHA-256 hash. Every field must match the selected evidence."
+						"description": "The requested capture: its side, record id, scenario, state, evidence id, viewport and SHA-256 hash, each of which must match what the evidence lists. A capture with no viewport matches only a viewport of null, and nothing else in the request, such as a path or address, is read.",
+						"examples": [
+							{
+								"side": "after",
+								"recordId": "5d0e83c17a94b26fe1c0d5783b9f2a4e60d8c1f79e2b5a34cf7106d9ab48e2c5",
+								"scenarioId": "desktop-recorded-evidence",
+								"state": "artifact-binding",
+								"evidenceId": "desktop-recorded-evidence-output",
+								"viewport": null,
+								"sha256": "2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordedCapture",
 						"type": "ListedCapture",
-						"description": "The listed capture and its scenario’s origin-record identity. Inherited captures therefore point to the record that originally stored them. The helper selects a record; it does not read or hash bytes."
+						"description": "The listed capture and the record whose sealed files hold its bytes: the binding’s record when `focused` is true, otherwise the scenario’s origin record, which is the judging record for a fresh scenario and the record that originally stored the capture for an inherited one. The helper selects a record; it does not read or hash bytes.",
+						"examples": [
+							{
+								"capture": {
+									"evidence": "desktop-recorded-evidence-output",
+									"kind": "output",
+									"state": "artifact-binding",
+									"status": "passed",
+									"path": "evidence/b7e4d1a09c3f58e2164d7ab9c0e15f3d8a2c6e41/desktop-recorded-evidence/artifact/test-recorded-artifact.test.ts-artifact-binding.txt",
+									"sha256": "2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c",
+									"mediaType": "text/plain",
+									"capturedAt": "2026-11-14T18:03:19.472Z",
+									"media": "media/2f6a0be9d13c7e5408b9a2f6c4e17d035ab8e9c2f0746d1b93ce52a8e6d1f40c.txt"
+								},
+								"record": "5d0e83c17a94b26fe1c0d5783b9f2a4e60d8c1f79e2b5a34cf7106d9ab48e2c5"
+							},
+							{
+								"capture": {
+									"evidence": "desktop-recorded-evidence-assertions",
+									"kind": "assertions",
+									"state": "artifact-binding",
+									"status": "passed",
+									"path": "evidence/0e5c9a27d4f1b83e6a02c95d7f48b1e0a6d3c29f/desktop-recorded-evidence/artifact/test-recorded-artifact.test.ts-artifact-binding.json",
+									"sha256": "9b04e7c2a18d5f36c0b7e94d21a8f5c6e3d09b724f16a8e0bc2d75f90a6e13d8",
+									"mediaType": "application/json",
+									"capturedAt": "2026-11-12T10:44:07.093Z",
+									"media": "media/9b04e7c2a18d5f36c0b7e94d21a8f5c6e3d09b724f16a8e0bc2d75f90a6e13d8.json"
+								},
+								"record": "e08b4f2d6a17c9305ed2b8a147f0c6e93d1a85bc2b96e0f4c7d31a589ea46f02"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Every refusal is thrown as a plain Error with the message 'This capture is not listed by the evidence of this entity at these revisions.'; nothing else is thrown."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
