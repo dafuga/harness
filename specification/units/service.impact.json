@@ -8,16 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/impact-service/ImpactService.ts",
-			"src/services/reports-media/impact-service/ImpactService.ts"
-		],
-		"symbols": [
-			"ImpactService",
-			"ImpactService",
-			"ImpactService.constructor",
-			"ImpactService.compute"
-		]
+		"source": ["src/services/reports-media/impact-service/ImpactService.ts"],
+		"symbols": ["ImpactService", "ImpactService.constructor", "ImpactService.compute"]
 	},
 	"contract": {
 		"origin": "derived",

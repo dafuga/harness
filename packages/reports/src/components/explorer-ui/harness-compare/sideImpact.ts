@@ -9,7 +9,7 @@ import type {
 } from '../../../../../../src/core/development-tooling/sourceTypes';
 import type { ComponentManifest } from '../../../../../../src/core/unitTypes';
 import { defaultUnitsConfig } from '../../../../../../src/core/unitsConfig';
-import { ImpactService } from '../../../../../../src/services/impact-service/ImpactService';
+import { ImpactService } from '../../../../../../src/services/reports-media/impact-service/ImpactService';
 import { impactKernel } from '../../../../../../src/utils/impact-kernel/impactKernel';
 
 function graphOf(stored: StoredSide): SourceGraph {

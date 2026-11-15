@@ -9,7 +9,7 @@ import { beforeAll, expect, test } from 'vitest';
 import { HandlerRuntimeAdapter } from '../packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter';
 import { WorkingTreeAdapter } from '../src/adapters/WorkingTreeAdapter';
 import type { ImpactSide } from '../src/core/impactTypes';
-import { ImpactService } from '../src/services/impact-service/ImpactService';
+import { ImpactService } from '../src/services/reports-media/impact-service/ImpactService';
 import { SourceGraphService } from '../src/services/SourceGraphService';
 import {
 	SourceIndexService,
@@ -130,6 +130,31 @@ test('declaring those imports changes them alone: no other reference or uncertai
 	const was = undeclared.files.get(hosted)?.references ?? [];
 	expect(was.filter((item) => item.external === '$desktop')).toHaveLength(written().length);
 	expect(side(loaded.index).graph.uncertain).toEqual(side(undeclared).graph.uncertain);
+}, 60_000);
+
+test('the relocated consumers of the impact service import the module that owns it', () => {
+	const owner = 'src/services/reports-media/impact-service/ImpactService.ts';
+	const importers = [...loaded.index.files.values()]
+		.filter((file) => file.references.some((item) => item.path === owner))
+		.map((file) => file.path);
+	expect(importers).toEqual(
+		expect.arrayContaining([
+			'packages/reports/src/components/explorer-ui/harness-compare/sideImpact.ts',
+			'test/shared-alias-index.test.ts',
+			'test/shared-case-impact.test.ts',
+			'test/shared-search-impact.test.ts',
+			'test/shared-select-impact.test.ts',
+			'test/shared-workspace-registry.test.ts'
+		])
+	);
+});
+
+test('no indexed source reaches the impact service through a removed relocation stub', () => {
+	const names = 'ImpactService|impactReport|impactSeeds|treeChanges';
+	const stub = new RegExp(`['"][^'"]*(?<!reports-media/)impact-service/(?:${names})['".]`);
+	const files = [...loaded.index.files.keys()].filter((path) => /\.(?:ts|js|svelte)$/.test(path));
+	const reached = files.filter((path) => stub.test(readFileSync(join(loaded.root, path), 'utf8')));
+	expect(reached).toEqual([]);
 }, 60_000);
 
 function assertNoNestedHarnessSources() {

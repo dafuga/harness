@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { beforeAll, expect, test } from 'vitest';
 import { HandlerRuntimeAdapter } from '../packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter';
 import type { ImpactSide } from '../src/core/impactTypes';
-import { ImpactService } from '../src/services/impact-service/ImpactService';
+import { ImpactService } from '../src/services/reports-media/impact-service/ImpactService';
 import { SourceGraphService } from '../src/services/SourceGraphService';
 import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
