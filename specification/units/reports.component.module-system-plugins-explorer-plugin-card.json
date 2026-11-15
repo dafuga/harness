@@ -35,24 +35,103 @@
 				"name": "ExplorerPluginCard.entry",
 				"type": "ModuleEntry",
 				"required": true,
-				"description": "The plugin as read at this revision: its definition, source and whether it is installed."
+				"description": "The ModuleEntry for one plugin. The card reads entry.definition for the title, description, id and resource list, shows the Install command only when entry.installed is false, and passes the same entry to PluginStatePills; it reads definition fields without a guard, so a missing definition throws during render.",
+				"examples": [
+					{
+						"definition": {
+							"schemaVersion": 1,
+							"id": "invoice-export",
+							"version": "1.0.0",
+							"title": "InvoiceExport",
+							"description": "Describe this capability.",
+							"instructions": ["Review generated code and define its contract."],
+							"setup": [],
+							"dependencies": {},
+							"resources": [
+								{
+									"id": "service",
+									"title": "InvoiceExport services",
+									"singular": "InvoiceExport service",
+									"kind": "service",
+									"instructions": ["Implement this resource."],
+									"files": [
+										{
+											"path": "src/services/{{group}}/{{PascalName}}Service.ts",
+											"contents": "export class {{PascalName}}Service {}\n"
+										}
+									]
+								}
+							]
+						},
+						"source": "project",
+						"installed": false,
+						"instances": []
+					},
+					{
+						"definition": {
+							"schemaVersion": 1,
+							"id": "permissions",
+							"version": "1.0.0",
+							"title": "Users & Permissions",
+							"description": "Users & Permissions used by this project's code.",
+							"includedByDefault": true,
+							"visibility": "internal",
+							"order": 10,
+							"instructions": [
+								"Included from the start. Browse Users & Permissions through Code; existing addresses and source identities are preserved.",
+								"Generate a user profile through this module and use --group for its responsibility category."
+							],
+							"setup": [],
+							"dependencies": {},
+							"resources": [
+								{
+									"id": "profile",
+									"title": "Users & Permissions",
+									"singular": "User profile",
+									"kind": "profile",
+									"catalog": "permissions",
+									"primary": false,
+									"instructions": [
+										"Declare each API method, page grant and data action, field and row scope explicitly. Empty grants never establish public access. Query with harness permissions list or harness permissions show <profile>."
+									],
+									"files": [
+										{
+											"path": "specification/permissions/{{kebabName}}.json",
+											"contents": "{\n\t\"schemaVersion\": 1,\n\t\"id\": \"{{kebabName}}\",\n\t\"title\": \"{{PascalName}}\",\n\t\"description\": \"Describe this user profile.\",\n\t\"grants\": []\n}\n"
+										}
+									]
+								}
+							]
+						},
+						"source": "builtin",
+						"installed": true,
+						"instances": [
+							{
+								"module": "permissions",
+								"type": "profile",
+								"name": "Member",
+								"files": ["specification/permissions/member.json"]
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "ExplorerPluginCard.title",
 				"type": "Snippet",
 				"required": true,
-				"description": "The plugin title, rendered as a link to its page."
+				"description": "The snippet rendered with no arguments inside the card heading (an hx-h2 with class mod-title). The card adds no link around it, so any link to the plugin page must come from the snippet's own markup."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerPluginCard",
 				"type": "markup",
-				"description": "A card for the plugin grid."
+				"description": "The rendered card for one plugin in the library: a Card (tone mod-card) with a header holding the title snippet and PluginStatePills, the definition description, and a list with one Pill per definition resource showing its title. It also renders an Install CommandBlock running `harness plugin add <definition id>`, but only when entry.installed is false."
 			}
 		],
 		"errors": [],
-		"errorStatus": "declared",
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
