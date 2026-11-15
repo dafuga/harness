@@ -18,17 +18,30 @@
 				"name": "hubRateLimit.input",
 				"type": "{ request: Request; db?: D1Database; secret?: string; ip?: string; now?: number; }",
 				"required": true,
-				"description": "Request plus optional database, secret, client IP and epoch-millisecond clock. Missing database/secret bypasses limiting; absent IP uses local and absent time uses Date.now()."
+				"description": "The request, whose method must be POST and whose URL pathname must be one of the nine listed routes before any counting happens, plus optional db (the D1 database holding hub_rate_limits), secret (the HMAC key for the stored row id), ip (the client address, default 'local') and now (epoch milliseconds, default Date.now()). Counting is skipped and null is returned when db or secret is missing."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubRateLimit",
 				"type": "Promise<Response | null>",
-				"description": "Null for unlisted/non-POST routes or requests within the cap; otherwise 429 rate-limited with Retry-After 60. Counts are updated using a keyed hash of IP and path, never the raw IP. Caps are 5 for email sends, 20 for Google sign-in, 60 for native polling and 10 for other listed auth/host-registration routes."
+				"description": "Resolves to null for a non-POST request, an unlisted path, a missing db or secret, or a count at or below the route cap within the current 60-second window; otherwise, including when no count row is returned, it resolves to a 429 Response from hubHttp({ error: 'rate-limited' }, 429) with a Retry-After header of 60. Caps are 5 for /api/auth/email/start, 20 for /api/auth/google, 60 for /api/auth/native/poll and 10 for the other six listed routes; counts are stored in hub_rate_limits under a hex HMAC-SHA256 digest of the IP (or 'local') and path, keyed by the secret, so no raw IP is stored.",
+				"examples": [null]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "DOMException",
+				"type": "thrown",
+				"description": "Rejects when crypto.subtle.importKey (input.secret as the HMAC key) or crypto.subtle.sign (the IP or 'local', a colon and the path) rejects; the function does not catch it, so the caller receives that rejection."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with whatever the D1 binding rejects with when the upsert into hub_rate_limits (prepare, bind and first) fails for input.db; the function does not catch it, so the caller receives that rejection instead of a Response or null."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubRateLimit",
@@ -37,18 +50,30 @@
 						"name": "hubRateLimit.input",
 						"type": "{ request: Request; db?: D1Database; secret?: string; ip?: string; now?: number; }",
 						"required": true,
-						"description": "Request plus optional database, secret, client IP and epoch-millisecond clock. Missing database/secret bypasses limiting; absent IP uses local and absent time uses Date.now()."
+						"description": "The request, whose method must be POST and whose URL pathname must be one of the nine listed routes before any counting happens, plus optional db (the D1 database holding hub_rate_limits), secret (the HMAC key for the stored row id), ip (the client address, default 'local') and now (epoch milliseconds, default Date.now()). Counting is skipped and null is returned when db or secret is missing."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubRateLimit",
 						"type": "Promise<Response | null>",
-						"description": "Null for unlisted/non-POST routes or requests within the cap; otherwise 429 rate-limited with Retry-After 60. Counts are updated using a keyed hash of IP and path, never the raw IP. Caps are 5 for email sends, 20 for Google sign-in, 60 for native polling and 10 for other listed auth/host-registration routes."
+						"description": "Resolves to null for a non-POST request, an unlisted path, a missing db or secret, or a count at or below the route cap within the current 60-second window; otherwise, including when no count row is returned, it resolves to a 429 Response from hubHttp({ error: 'rate-limited' }, 429) with a Retry-After header of 60. Caps are 5 for /api/auth/email/start, 20 for /api/auth/google, 60 for /api/auth/native/poll and 10 for the other six listed routes; counts are stored in hub_rate_limits under a hex HMAC-SHA256 digest of the IP (or 'local') and path, keyed by the secret, so no raw IP is stored.",
+						"examples": [null]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "DOMException",
+						"type": "thrown",
+						"description": "Rejects when crypto.subtle.importKey (input.secret as the HMAC key) or crypto.subtle.sign (the IP or 'local', a colon and the path) rejects; the function does not catch it, so the caller receives that rejection."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with whatever the D1 binding rejects with when the upsert into hub_rate_limits (prepare, bind and first) fails for input.db; the function does not catch it, so the caller receives that rejection instead of a Response or null."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
