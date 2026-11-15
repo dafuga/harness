@@ -8,6 +8,7 @@ import { assertCaptureLifecycle } from '../../support/videoCaptureLifecycle';
 import { VideoEvidenceService } from '../../../src/services/verification-evidence/VideoEvidenceService';
 import { captureReviewFlag } from '../../support/videoCaptureFlags';
 import { assertRealVideoCapture } from '../../support/videoCaptureReal';
+import { measureWorkload } from '../../support/measureWorkload';
 
 afterEach(() => vi.restoreAllMocks());
 
@@ -17,12 +18,20 @@ test('VideoCaptureService runs', () => {
 
 test('capture orchestration archives actual native assertion events and observed checkpoints', async () => {
 	expect(typeof new VideoCaptureService().record).toBe('function');
-	await withTempRepo(assertRealVideoCapture);
+	await measureWorkload(
+		'service.verification-evidence-video-capture',
+		'native-archive-capture',
+		() => withTempRepo(assertRealVideoCapture)
+	);
 }, 30_000);
 
 test('capture orchestration retains original clips without creating warm browser work', async () => {
 	expect(typeof new VideoCaptureService().record).toBe('function');
-	await withTempRepo(assertCaptureLifecycle);
+	await measureWorkload(
+		'service.verification-evidence-video-capture',
+		'cold-warm-input-lifecycle',
+		() => withTempRepo(assertCaptureLifecycle)
+	);
 }, 30_000);
 
 test('capture orchestration refuses unbound recording before scripts or browser creation', async () => {
