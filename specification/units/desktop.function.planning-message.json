@@ -9,11 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/services/project-session-service/planning-facade-adapter/planningMessage.ts",
 			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts",
 			"packages/desktop/src/utils/planningMessage.ts"
 		],
-		"symbols": ["planningMessage", "planningMessage", "planningMessage"]
+		"symbols": ["planningMessage", "planningMessage"]
 	},
 	"contract": {
 		"origin": "declared",
