@@ -38,54 +38,95 @@
 				"name": "scanFailure.cause",
 				"type": "unknown",
 				"required": true,
-				"description": "Unknown value to inspect for a recognized scan failure code."
+				"description": "Value rejected by the pairing scan; an object's code is checked against the known scan-failure codes. Non-objects and unrecognized codes produce null.",
+				"examples": [
+					{
+						"code": "camera-denied"
+					},
+					{
+						"code": "offer-expired"
+					},
+					"unrecognized rejection"
+				]
 			},
 			{
 				"name": "scanNotice.cause",
 				"type": "unknown",
 				"required": true,
-				"description": "Failure to describe; unknown failures fall back to String(cause)."
+				"description": "Value rejected by the pairing scan; a recognized object code maps to its notice, while any other cause is converted with String(cause).",
+				"examples": [
+					{
+						"code": "camera-denied"
+					},
+					{
+						"code": "offer-expired"
+					},
+					"unrecognized rejection"
+				]
 			},
 			{
 				"name": "phoneName.value",
 				"type": "string",
 				"required": true,
-				"description": "Phone name to trim and validate."
+				"description": "Phone label supplied for the device; surrounding whitespace is trimmed before validation. An empty result or a trimmed string longer than 80 JavaScript string code units returns null.",
+				"examples": ["  Pixel 9  ", "", "Kitchen tablet"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "scanFailures",
 				"type": "readonly ScanFailure[]",
-				"description": "Recognized camera, cancellation and pairing-offer failure codes."
+				"description": "Readonly list of remote scan-failure codes used by scanFailure to recognize rejected causes; it is assigned from remoteScanFailures.",
+				"examples": [
+					["camera-denied", "camera-unavailable", "scan-cancelled"]
+				]
 			},
 			{
 				"name": "nameNotice",
 				"type": "unknown",
-				"description": "Instruction to provide a phone name."
+				"description": "Fixed instruction for naming this phone; it tells the person to use a name of at most 80 characters.",
+				"examples": ["Give this phone a name of up to 80 characters."]
 			},
 			{
 				"name": "scanNotices",
 				"type": "Record<RemoteScanFailure, string>",
-				"description": "Readable notice for each recognized scan failure."
+				"description": "Maps every RemoteScanFailure code to the text shown for that way a scan ends without an offer.",
+				"examples": [
+					{
+						"camera-denied": "Camera access is off for Harness. Turn it on in Settings, then scan again.",
+						"camera-unavailable": "This device has no camera that can scan a code.",
+						"scan-cancelled": "Scanning was cancelled. Nothing was sent.",
+						"offer-invalid": "That is not a Harness pairing code. Scan the code under Pair a phone on your computer.",
+						"offer-unsupported": "That code is for another version of Harness. Update Harness on both, then scan again.",
+						"offer-environment": "That code is for a relay this build of Harness does not accept.",
+						"offer-expired": "That code has expired. Choose New code on your computer and scan again."
+					}
+				]
 			},
 			{
 				"name": "scanFailure",
 				"type": "RemoteScanFailure | null",
-				"description": "Recognized failure code or null."
+				"description": "Returns the cause's code when it exactly matches an entry in scanFailures; returns null for other causes.",
+				"examples": ["camera-denied", null]
 			},
 			{
 				"name": "scanNotice",
 				"type": "string",
-				"description": "Known failure notice or string conversion of the unknown cause."
+				"description": "Returns the mapped notice for a recognized scan failure; otherwise returns String(cause).",
+				"examples": [
+					"Camera access is off for Harness. Turn it on in Settings, then scan again.",
+					"unrecognized rejection"
+				]
 			},
 			{
 				"name": "phoneName",
 				"type": "string | null",
-				"description": "Trimmed name when nonempty and at most 80 characters; otherwise null."
+				"description": "Returns the trimmed name when it is nonempty and its JavaScript string length is at most 80; otherwise returns null.",
+				"examples": ["Pixel 9", null]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "scanFailure",
@@ -94,18 +135,28 @@
 						"name": "scanFailure.cause",
 						"type": "unknown",
 						"required": true,
-						"description": "Unknown value to inspect for a recognized scan failure code."
+						"description": "Value rejected by the pairing scan; an object's code is checked against the known scan-failure codes. Non-objects and unrecognized codes produce null.",
+						"examples": [
+							{
+								"code": "camera-denied"
+							},
+							{
+								"code": "offer-expired"
+							},
+							"unrecognized rejection"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scanFailure",
 						"type": "RemoteScanFailure | null",
-						"description": "Recognized failure code or null."
+						"description": "Returns the cause's code when it exactly matches an entry in scanFailures; returns null for other causes.",
+						"examples": ["camera-denied", null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "scanNotice",
@@ -114,18 +165,31 @@
 						"name": "scanNotice.cause",
 						"type": "unknown",
 						"required": true,
-						"description": "Failure to describe; unknown failures fall back to String(cause)."
+						"description": "Value rejected by the pairing scan; a recognized object code maps to its notice, while any other cause is converted with String(cause).",
+						"examples": [
+							{
+								"code": "camera-denied"
+							},
+							{
+								"code": "offer-expired"
+							},
+							"unrecognized rejection"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scanNotice",
 						"type": "string",
-						"description": "Known failure notice or string conversion of the unknown cause."
+						"description": "Returns the mapped notice for a recognized scan failure; otherwise returns String(cause).",
+						"examples": [
+							"Camera access is off for Harness. Turn it on in Settings, then scan again.",
+							"unrecognized rejection"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "phoneName",
@@ -134,18 +198,20 @@
 						"name": "phoneName.value",
 						"type": "string",
 						"required": true,
-						"description": "Phone name to trim and validate."
+						"description": "Phone label supplied for the device; surrounding whitespace is trimmed before validation. An empty result or a trimmed string longer than 80 JavaScript string code units returns null.",
+						"examples": ["  Pixel 9  ", "", "Kitchen tablet"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "phoneName",
 						"type": "string | null",
-						"description": "Trimmed name when nonempty and at most 80 characters; otherwise null."
+						"description": "Returns the trimmed name when it is nonempty and its JavaScript string length is at most 80; otherwise returns null.",
+						"examples": ["Pixel 9", null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
