@@ -44,11 +44,58 @@
 						"unitId": "planning.function.plan-design",
 						"prompt": "Review the current planning workflow.",
 						"generator": {
-							"provider": "openai",
-							"model": "gpt-6-luna"
+							"provider": "codex",
+							"model": "gpt-6.1-sol"
 						},
 						"images": [],
-						"notes": "Keep the current approval flow."
+						"notes": "Keep the current approval flow.",
+						"contract": {
+							"responsibility": "Read verified design images, append a design version, or approve the exact current design content.",
+							"inputs": [
+								{
+									"name": "planDesign.git",
+									"type": "Git"
+								},
+								{
+									"name": "planDesign.input",
+									"type": "AddDesignInput"
+								},
+								{
+									"name": "approve.git",
+									"type": "Git"
+								},
+								{
+									"name": "approve.input",
+									"type": "ApproveDesignInput"
+								},
+								{
+									"name": "readImage.git",
+									"type": "Git"
+								},
+								{
+									"name": "readImage.input",
+									"type": "ReadImageInput"
+								}
+							],
+							"outputs": [
+								{
+									"name": "readImage",
+									"type": "Promise<import('../../../models/planning-collaboration/PlanningView.types').ImageContent & Pick<import('../../../models/planning-collaboration/Planning.types').DesignImage, 'content'>>"
+								},
+								{
+									"name": "planDesign",
+									"type": "Promise<import('../../../../models/planning-collaboration/PlanningView.types').Committed<DesignVersion>>"
+								},
+								{
+									"name": "approve",
+									"type": "Promise<import('../../../../models/planning-collaboration/PlanningView.types').Committed<ApprovalRecord>>"
+								}
+							],
+							"errors": ["ExpectedCliError"],
+							"states": ["default"],
+							"viewports": ["diagram"]
+						},
+						"baseRevision": "4444444444444444444444444444444444444444"
 					}
 				]
 			},
@@ -65,16 +112,11 @@
 				"description": "Binds an approval to a unit and version with reviewer, contract hash, and image list, plus optional notes hash and option. Only the latest design can be approved, and its supplied binding must match the current design content.",
 				"examples": [
 					{
-						"unitId": "reports.component.evidence-grid",
+						"unitId": "planning.function.plan-design",
 						"version": "v001",
-						"images": [
-							{
-								"file": "overview-desktop.png",
-								"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
-							}
-						],
-						"notesSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-						"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"images": [],
+						"notesSha256": "8c880524faf423d6bd1b9f6ec926c379870b527201a936ab0a9969e754116a9e",
+						"contractHash": "f984572988e7c998f08a3956abfb3f258b1b2e8c6e62aaf823d678f6c6942974",
 						"reviewer": "design-reviewer@example.com"
 					}
 				]
@@ -112,27 +154,81 @@
 				"examples": [
 					{
 						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"parent": "4444444444444444444444444444444444444444",
+						"branch": "main",
+						"paths": [
+							"src/functions/plan-design/designs/v001/prompt.md",
+							"src/functions/plan-design/designs/v001/notes.md",
+							"src/functions/plan-design/designs/v001/design.json",
+							"src/functions/plan-design/.gitattributes"
+						],
 						"value": {
 							"unitId": "planning.function.plan-design",
 							"version": "v001",
 							"createdAt": "2026-11-15T09:30:00.000Z",
 							"generator": {
-								"provider": "openai",
-								"model": "gpt-6-luna"
+								"provider": "codex",
+								"model": "gpt-6.1-sol"
 							},
 							"prompt": {
 								"file": "prompt.md",
-								"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+								"sha256": "aad33b067d0dfe0e17a16079edfb1eb3fb5b11c611a2db174dbefc109264de25"
 							},
 							"notes": {
 								"file": "notes.md",
-								"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+								"sha256": "8c880524faf423d6bd1b9f6ec926c379870b527201a936ab0a9969e754116a9e"
 							},
-							"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+							"baseRevision": "4444444444444444444444444444444444444444",
 							"images": [],
-							"contract": {},
-							"contractHash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
-							"revises": null
+							"contract": {
+								"responsibility": "Read verified design images, append a design version, or approve the exact current design content.",
+								"inputs": [
+									{
+										"name": "planDesign.git",
+										"type": "Git"
+									},
+									{
+										"name": "planDesign.input",
+										"type": "AddDesignInput"
+									},
+									{
+										"name": "approve.git",
+										"type": "Git"
+									},
+									{
+										"name": "approve.input",
+										"type": "ApproveDesignInput"
+									},
+									{
+										"name": "readImage.git",
+										"type": "Git"
+									},
+									{
+										"name": "readImage.input",
+										"type": "ReadImageInput"
+									}
+								],
+								"outputs": [
+									{
+										"name": "readImage",
+										"type": "Promise<import('../../../models/planning-collaboration/PlanningView.types').ImageContent & Pick<import('../../../models/planning-collaboration/Planning.types').DesignImage, 'content'>>"
+									},
+									{
+										"name": "planDesign",
+										"type": "Promise<import('../../../../models/planning-collaboration/PlanningView.types').Committed<DesignVersion>>"
+									},
+									{
+										"name": "approve",
+										"type": "Promise<import('../../../../models/planning-collaboration/PlanningView.types').Committed<ApprovalRecord>>"
+									}
+								],
+								"errors": ["ExpectedCliError"],
+								"states": ["default"],
+								"viewports": ["diagram"]
+							},
+							"contractHash": "f984572988e7c998f08a3956abfb3f258b1b2e8c6e62aaf823d678f6c6942974",
+							"revises": null,
+							"commit": "0123456789abcdef0123456789abcdef01234567"
 						}
 					}
 				]
@@ -144,18 +240,18 @@
 				"examples": [
 					{
 						"commit": "fedcba9876543210fedcba9876543210fedcba98",
+						"parent": "0123456789abcdef0123456789abcdef01234567",
+						"branch": "main",
+						"paths": [
+							"src/functions/plan-design/designs/approvals/550e8400-e29b-41d4-a716-446655440000.json"
+						],
 						"value": {
 							"id": "550e8400-e29b-41d4-a716-446655440000",
-							"unitId": "reports.component.evidence-grid",
+							"unitId": "planning.function.plan-design",
 							"version": "v001",
-							"images": [
-								{
-									"file": "overview-desktop.png",
-									"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
-								}
-							],
-							"notesSha256": null,
-							"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"images": [],
+							"notesSha256": "8c880524faf423d6bd1b9f6ec926c379870b527201a936ab0a9969e754116a9e",
+							"contractHash": "f984572988e7c998f08a3956abfb3f258b1b2e8c6e62aaf823d678f6c6942974",
 							"reviewer": "design-reviewer@example.com",
 							"approvedAt": "2026-11-15T09:35:00.000Z",
 							"commit": "fedcba9876543210fedcba9876543210fedcba98",
@@ -193,11 +289,58 @@
 								"unitId": "planning.function.plan-design",
 								"prompt": "Review the current planning workflow.",
 								"generator": {
-									"provider": "openai",
-									"model": "gpt-6-luna"
+									"provider": "codex",
+									"model": "gpt-6.1-sol"
 								},
 								"images": [],
-								"notes": "Keep the current approval flow."
+								"notes": "Keep the current approval flow.",
+								"contract": {
+									"responsibility": "Read verified design images, append a design version, or approve the exact current design content.",
+									"inputs": [
+										{
+											"name": "planDesign.git",
+											"type": "Git"
+										},
+										{
+											"name": "planDesign.input",
+											"type": "AddDesignInput"
+										},
+										{
+											"name": "approve.git",
+											"type": "Git"
+										},
+										{
+											"name": "approve.input",
+											"type": "ApproveDesignInput"
+										},
+										{
+											"name": "readImage.git",
+											"type": "Git"
+										},
+										{
+											"name": "readImage.input",
+											"type": "ReadImageInput"
+										}
+									],
+									"outputs": [
+										{
+											"name": "readImage",
+											"type": "Promise<import('../../../models/planning-collaboration/PlanningView.types').ImageContent & Pick<import('../../../models/planning-collaboration/Planning.types').DesignImage, 'content'>>"
+										},
+										{
+											"name": "planDesign",
+											"type": "Promise<import('../../../../models/planning-collaboration/PlanningView.types').Committed<DesignVersion>>"
+										},
+										{
+											"name": "approve",
+											"type": "Promise<import('../../../../models/planning-collaboration/PlanningView.types').Committed<ApprovalRecord>>"
+										}
+									],
+									"errors": ["ExpectedCliError"],
+									"states": ["default"],
+									"viewports": ["diagram"]
+								},
+								"baseRevision": "4444444444444444444444444444444444444444"
 							}
 						]
 					}
@@ -210,27 +353,81 @@
 						"examples": [
 							{
 								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"parent": "4444444444444444444444444444444444444444",
+								"branch": "main",
+								"paths": [
+									"src/functions/plan-design/designs/v001/prompt.md",
+									"src/functions/plan-design/designs/v001/notes.md",
+									"src/functions/plan-design/designs/v001/design.json",
+									"src/functions/plan-design/.gitattributes"
+								],
 								"value": {
 									"unitId": "planning.function.plan-design",
 									"version": "v001",
 									"createdAt": "2026-11-15T09:30:00.000Z",
 									"generator": {
-										"provider": "openai",
-										"model": "gpt-6-luna"
+										"provider": "codex",
+										"model": "gpt-6.1-sol"
 									},
 									"prompt": {
 										"file": "prompt.md",
-										"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+										"sha256": "aad33b067d0dfe0e17a16079edfb1eb3fb5b11c611a2db174dbefc109264de25"
 									},
 									"notes": {
 										"file": "notes.md",
-										"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+										"sha256": "8c880524faf423d6bd1b9f6ec926c379870b527201a936ab0a9969e754116a9e"
 									},
-									"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+									"baseRevision": "4444444444444444444444444444444444444444",
 									"images": [],
-									"contract": {},
-									"contractHash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
-									"revises": null
+									"contract": {
+										"responsibility": "Read verified design images, append a design version, or approve the exact current design content.",
+										"inputs": [
+											{
+												"name": "planDesign.git",
+												"type": "Git"
+											},
+											{
+												"name": "planDesign.input",
+												"type": "AddDesignInput"
+											},
+											{
+												"name": "approve.git",
+												"type": "Git"
+											},
+											{
+												"name": "approve.input",
+												"type": "ApproveDesignInput"
+											},
+											{
+												"name": "readImage.git",
+												"type": "Git"
+											},
+											{
+												"name": "readImage.input",
+												"type": "ReadImageInput"
+											}
+										],
+										"outputs": [
+											{
+												"name": "readImage",
+												"type": "Promise<import('../../../models/planning-collaboration/PlanningView.types').ImageContent & Pick<import('../../../models/planning-collaboration/Planning.types').DesignImage, 'content'>>"
+											},
+											{
+												"name": "planDesign",
+												"type": "Promise<import('../../../../models/planning-collaboration/PlanningView.types').Committed<DesignVersion>>"
+											},
+											{
+												"name": "approve",
+												"type": "Promise<import('../../../../models/planning-collaboration/PlanningView.types').Committed<ApprovalRecord>>"
+											}
+										],
+										"errors": ["ExpectedCliError"],
+										"states": ["default"],
+										"viewports": ["diagram"]
+									},
+									"contractHash": "f984572988e7c998f08a3956abfb3f258b1b2e8c6e62aaf823d678f6c6942974",
+									"revises": null,
+									"commit": "0123456789abcdef0123456789abcdef01234567"
 								}
 							}
 						]
@@ -261,16 +458,11 @@
 						"description": "Binds an approval to a unit and version with reviewer, contract hash, and image list, plus optional notes hash and option. Only the latest design can be approved, and its supplied binding must match the current design content.",
 						"examples": [
 							{
-								"unitId": "reports.component.evidence-grid",
+								"unitId": "planning.function.plan-design",
 								"version": "v001",
-								"images": [
-									{
-										"file": "overview-desktop.png",
-										"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
-									}
-								],
-								"notesSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-								"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"images": [],
+								"notesSha256": "8c880524faf423d6bd1b9f6ec926c379870b527201a936ab0a9969e754116a9e",
+								"contractHash": "f984572988e7c998f08a3956abfb3f258b1b2e8c6e62aaf823d678f6c6942974",
 								"reviewer": "design-reviewer@example.com"
 							}
 						]
@@ -284,18 +476,18 @@
 						"examples": [
 							{
 								"commit": "fedcba9876543210fedcba9876543210fedcba98",
+								"parent": "0123456789abcdef0123456789abcdef01234567",
+								"branch": "main",
+								"paths": [
+									"src/functions/plan-design/designs/approvals/550e8400-e29b-41d4-a716-446655440000.json"
+								],
 								"value": {
 									"id": "550e8400-e29b-41d4-a716-446655440000",
-									"unitId": "reports.component.evidence-grid",
+									"unitId": "planning.function.plan-design",
 									"version": "v001",
-									"images": [
-										{
-											"file": "overview-desktop.png",
-											"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
-										}
-									],
-									"notesSha256": null,
-									"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"images": [],
+									"notesSha256": "8c880524faf423d6bd1b9f6ec926c379870b527201a936ab0a9969e754116a9e",
+									"contractHash": "f984572988e7c998f08a3956abfb3f258b1b2e8c6e62aaf823d678f6c6942974",
 									"reviewer": "design-reviewer@example.com",
 									"approvedAt": "2026-11-15T09:35:00.000Z",
 									"commit": "fedcba9876543210fedcba9876543210fedcba98",
