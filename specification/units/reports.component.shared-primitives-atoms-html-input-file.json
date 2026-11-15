@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional child snippet accepted for native-element API compatibility; this void element renders no child content."
+				"description": "Optional Svelte Snippet that is destructured out of the props, so it is never spread onto the input and never rendered. It never changes the output, because the template does not reference it and the input element renders no child content."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlInputFile",
 				"type": "markup",
-				"description": "The actual native input element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native input element is rendered directly, with no wrapper element and no child content, and carries every prop except children spread onto it. Its type is always file, because the explicit type after the spread overrides any type passed in."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
