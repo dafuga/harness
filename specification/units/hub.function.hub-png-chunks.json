@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/routes/api/[...path]/hub-projection-service/hubPngChunks.ts",
-			"packages/hub/src/utils/hubPngChunks.ts",
 			"packages/hub/src/utils/networking-security/hubPngChunks.ts"
 		],
-		"symbols": ["hubPngChunks", "hubPngChunks", "Header", "State", "hubPngChunks"]
+		"symbols": ["hubPngChunks", "Header", "State", "hubPngChunks"]
 	},
 	"contract": {
 		"origin": "declared",

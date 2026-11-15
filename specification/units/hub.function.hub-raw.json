@@ -8,18 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/utils/development-tooling/hubRaw.ts",
-			"packages/hub/src/utils/hubRaw.ts"
-		],
-		"symbols": [
-			"hubRaw",
-			"hubMaterializedHash",
-			"hubBlobProfile",
-			"hubRaw",
-			"hubMaterializedHash",
-			"hubBlobProfile"
-		]
+		"source": ["packages/hub/src/utils/development-tooling/hubRaw.ts"],
+		"symbols": ["hubRaw", "hubMaterializedHash", "hubBlobProfile"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/utils/development-tooling/hubProjectionCache.ts",
-			"packages/hub/src/utils/hubProjectionCache.ts"
-		],
-		"symbols": ["hubProjectionCache", "hubProjectionCache"]
+		"source": ["packages/hub/src/utils/development-tooling/hubProjectionCache.ts"],
+		"symbols": ["hubProjectionCache"]
 	},
 	"contract": {
 		"origin": "declared",

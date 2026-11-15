@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { hubMaterializedHash, hubBlobProfile } from '../../src/utils/hubRaw';
+import { hubMaterializedHash, hubBlobProfile } from '../../src/utils/development-tooling/hubRaw';
 test('LFS cache binding requires exact pointer hash and length', async () => {
 	const encode = (v: string) => new TextEncoder().encode(v),
 		hash = 'a'.repeat(64);
