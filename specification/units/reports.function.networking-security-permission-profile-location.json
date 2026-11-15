@@ -20,27 +20,78 @@
 				"name": "permissionProfileLocation.route",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Shown branch and revision; all other route fields are omitted."
+				"description": "The Explorer location the link is built from; only its branch and commit are read, and a null branch or commit is copied as null. Its other fields, such as helper, section and tab, are not carried over.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "5e0d7a2c9b41f8e36d02a7c5b9e14f6d3a8c1b27",
+						"category": "apis",
+						"entity": "reports.endpoint.api-project-activity",
+						"tab": "permissions"
+					},
+					{
+						"branch": "planning/evidence-grid",
+						"commit": "b74c1e09a2d5f63b8e0c17a4d92f5e8b1c60d3a7",
+						"category": "pages",
+						"screen": "permissions"
+					},
+					{
+						"branch": null,
+						"commit": "d19f3a6e0c84b27f5a1d9e63c0b78f2a4e15d9c6",
+						"category": "pages",
+						"screen": "permissions",
+						"entity": "guest"
+					}
+				]
 			},
 			{
 				"name": "permissionProfileLocation.entity",
 				"type": "string",
 				"required": false,
-				"description": "Optional declared profile ID. Omitted or empty selects the profile index."
+				"default": "undefined",
+				"description": "The permission profile ID to put in the result's entity field; the function does not check it. Omitted or an empty string leaves the result without an entity field.",
+				"examples": ["billing-admin", "guest", "support-agent-2"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "permissionProfileLocation",
 				"type": "ExplorerLocation",
-				"description": "A Pages permission route scoped to the same branch and commit, with a truthy profile ID when provided."
+				"description": "The route to the Pages permissions screen: category 'pages' and screen 'permissions', with the branch and commit of the input route. It has an entity field only when the entity input is a non-empty string, and that field holds the string unchanged.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "5e0d7a2c9b41f8e36d02a7c5b9e14f6d3a8c1b27",
+						"category": "pages",
+						"screen": "permissions",
+						"entity": "billing-admin"
+					},
+					{
+						"branch": "planning/evidence-grid",
+						"commit": "b74c1e09a2d5f63b8e0c17a4d92f5e8b1c60d3a7",
+						"category": "pages",
+						"screen": "permissions"
+					},
+					{
+						"branch": null,
+						"commit": "d19f3a6e0c84b27f5a1d9e63c0b78f2a4e15d9c6",
+						"category": "pages",
+						"screen": "permissions",
+						"entity": "guest"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Input access failure",
 				"type": "propagated",
-				"description": "Errors from supplied getters, collection methods or species constructors propagate unchanged."
+				"description": "An error raised while reading route.branch or route.commit, such as by a getter, propagates unchanged to the caller."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when route is null or undefined, because reading branch and commit from it fails."
 			}
 		],
 		"errorStatus": "declared",
@@ -52,27 +103,78 @@
 						"name": "permissionProfileLocation.route",
 						"type": "ExplorerLocation",
 						"required": true,
-						"description": "Shown branch and revision; all other route fields are omitted."
+						"description": "The Explorer location the link is built from; only its branch and commit are read, and a null branch or commit is copied as null. Its other fields, such as helper, section and tab, are not carried over.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": "5e0d7a2c9b41f8e36d02a7c5b9e14f6d3a8c1b27",
+								"category": "apis",
+								"entity": "reports.endpoint.api-project-activity",
+								"tab": "permissions"
+							},
+							{
+								"branch": "planning/evidence-grid",
+								"commit": "b74c1e09a2d5f63b8e0c17a4d92f5e8b1c60d3a7",
+								"category": "pages",
+								"screen": "permissions"
+							},
+							{
+								"branch": null,
+								"commit": "d19f3a6e0c84b27f5a1d9e63c0b78f2a4e15d9c6",
+								"category": "pages",
+								"screen": "permissions",
+								"entity": "guest"
+							}
+						]
 					},
 					{
 						"name": "permissionProfileLocation.entity",
 						"type": "string",
 						"required": false,
-						"description": "Optional declared profile ID. Omitted or empty selects the profile index."
+						"default": "undefined",
+						"description": "The permission profile ID to put in the result's entity field; the function does not check it. Omitted or an empty string leaves the result without an entity field.",
+						"examples": ["billing-admin", "guest", "support-agent-2"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "permissionProfileLocation",
 						"type": "ExplorerLocation",
-						"description": "A Pages permission route scoped to the same branch and commit, with a truthy profile ID when provided."
+						"description": "The route to the Pages permissions screen: category 'pages' and screen 'permissions', with the branch and commit of the input route. It has an entity field only when the entity input is a non-empty string, and that field holds the string unchanged.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": "5e0d7a2c9b41f8e36d02a7c5b9e14f6d3a8c1b27",
+								"category": "pages",
+								"screen": "permissions",
+								"entity": "billing-admin"
+							},
+							{
+								"branch": "planning/evidence-grid",
+								"commit": "b74c1e09a2d5f63b8e0c17a4d92f5e8b1c60d3a7",
+								"category": "pages",
+								"screen": "permissions"
+							},
+							{
+								"branch": null,
+								"commit": "d19f3a6e0c84b27f5a1d9e63c0b78f2a4e15d9c6",
+								"category": "pages",
+								"screen": "permissions",
+								"entity": "guest"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Input access failure",
 						"type": "propagated",
-						"description": "Errors from supplied getters, collection methods or species constructors propagate unchanged."
+						"description": "An error raised while reading route.branch or route.commit, such as by a getter, propagates unchanged to the caller."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when route is null or undefined, because reading branch and commit from it fails."
 					}
 				],
 				"errorStatus": "declared"
