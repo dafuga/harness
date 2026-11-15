@@ -32,40 +32,170 @@
 				"name": "settlementReport.asked",
 				"type": "Judged[]",
 				"required": true,
-				"description": "Judged processes asked to end during the final settling step."
+				"description": "Judged processes the command asked to end; one missing from last counts as stopped, and one still present is not stopped and is counted by its entry in last. Matching is by pid and started, and duplicates are not merged, so each duplicate counts again.",
+				"examples": [
+					[
+						{
+							"pid": 48213,
+							"started": "Sat Nov 14 21:47:09 2026",
+							"parent": 47110,
+							"group": 47110,
+							"origin": {
+								"pid": 47110,
+								"started": "Sat Nov 14 21:46:58 2026"
+							},
+							"proven": true,
+							"verdict": {
+								"standing": "private",
+								"reason": "the command's own",
+								"executable": "/usr/local/bin/node"
+							}
+						},
+						{
+							"pid": 48377,
+							"started": "Sat Nov 14 21:47:12 2026",
+							"parent": 48213,
+							"group": 47110,
+							"origin": {
+								"pid": 48213,
+								"started": "Sat Nov 14 21:47:09 2026"
+							},
+							"proven": true,
+							"verdict": {
+								"standing": "private",
+								"reason": "the command's own",
+								"executable": "/bin/sleep"
+							}
+						}
+					],
+					[
+						{
+							"pid": 51036,
+							"started": "Fri Nov 13 16:05:27 2026",
+							"parent": 50912,
+							"group": 50912,
+							"origin": {
+								"pid": 50912,
+								"started": "Fri Nov 13 16:05:01 2026"
+							},
+							"proven": true,
+							"verdict": {
+								"standing": "private",
+								"reason": "the command's own",
+								"executable": "/opt/homebrew/bin/node"
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "settlementReport.last",
 				"type": "Judged[]",
 				"required": true,
-				"description": "Judged processes present at the final observation."
+				"description": "Judged processes present at the last look, each with its verdict; an entry whose verdict standing is 'delegated' is reported as handed over and does not count against the check, while every other entry, including 'protected' and 'gone', counts as running and as a survivor. Duplicate entries are not merged, so each one counts again.",
+				"examples": [
+					[
+						{
+							"pid": 48902,
+							"started": "Sat Nov 14 21:47:31 2026",
+							"parent": 1,
+							"group": 48902,
+							"origin": {
+								"pid": 47110,
+								"started": "Sat Nov 14 21:46:58 2026"
+							},
+							"proven": true,
+							"verdict": {
+								"standing": "delegated",
+								"reason": "vetted service, vouched for, left the command, adopted by the system",
+								"executable": "/Applications/Xcode.app/Contents/Developer/usr/bin/ibtoold"
+							}
+						},
+						{
+							"pid": 48377,
+							"started": "Sat Nov 14 21:47:12 2026",
+							"parent": 1,
+							"group": 47110,
+							"origin": {
+								"pid": 48213,
+								"started": "Sat Nov 14 21:47:09 2026"
+							},
+							"proven": true,
+							"verdict": {
+								"standing": "private",
+								"reason": "the command's own",
+								"executable": "/bin/sleep"
+							}
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "settlementReport.signalled",
 				"type": "(item: TrackedProcess) => boolean",
 				"required": false,
-				"description": "Optional predicate identifying every process signalled during cleanup; defaults to membership in asked."
+				"description": "Optional predicate saying whether a process was sent a signal at any time; it is called only for entries of last whose standing is not 'delegated', and twice for each of them (once for its report line and once to count resisted). Defaults to (item) => asked.some(same(item)), which tests membership in asked by pid and started; an exception it throws is not caught."
 			},
 			{
 				"name": "unknownSettlement.why",
 				"type": "string",
 				"required": true,
-				"description": "Reason cleanup could not establish what remains."
+				"description": "Reason why what the command left could not be established, copied unchanged into the report line that starts with '[harness] '. It is not checked, so any string is accepted, including an empty one.",
+				"examples": [
+					"the process table could not be read in time",
+					"the process table did not include the check itself"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "unknownSettlement",
 				"type": "Settlement",
-				"description": "Unknown settlement with no asserted survivors, zero stopped/resisted, unknown true and a report explaining that the check fails."
+				"description": "The Settlement returned when what the command left cannot be established: survivors is empty, stopped and resisted are 0, unknown is true, and report says nothing more was signalled and the check fails. Because the report states that the check fails, an empty survivors list here does not mean a clean result.",
+				"examples": [
+					{
+						"survivors": [],
+						"stopped": 0,
+						"resisted": 0,
+						"unknown": true,
+						"report": "\n[harness] the process table could not be read in time: nothing more was signalled, what the command left is unknown, and the check fails\n"
+					}
+				]
 			},
 			{
 				"name": "settlementReport",
 				"type": "Settlement",
-				"description": "Settlement counting asked-but-absent processes as stopped and final nondelegated processes as running; survivors includes both because either counts against the command. Reports delegated, signalled-running, untouched-running and stopped outcomes."
+				"description": "Settlement of the command: survivors lists {pid, started} for each stopped process (asked and missing from last) followed by each running process (last with a standing other than 'delegated'); stopped is the number of stopped processes, resisted is the number of running ones for which signalled returns true, and unknown is always false. report has one line per delegated, running and stopped entry, and is an empty string when there are none.",
+				"examples": [
+					{
+						"survivors": [
+							{
+								"pid": 48213,
+								"started": "Sat Nov 14 21:47:09 2026"
+							},
+							{
+								"pid": 48377,
+								"started": "Sat Nov 14 21:47:12 2026"
+							}
+						],
+						"stopped": 1,
+						"resisted": 1,
+						"unknown": false,
+						"report": "\n[harness] process 48902 (started Sat Nov 14 21:47:31 2026) /Applications/Xcode.app/Contents/Developer/usr/bin/ibtoold: handed over to the system: vetted service, vouched for, left the command, adopted by the system\n[harness] process 48377 (started Sat Nov 14 21:47:12 2026) /bin/sleep: signalled but still running; the check fails: the command's own\n[harness] process 48213 (started Sat Nov 14 21:47:09 2026) /usr/local/bin/node: stopped: left behind by the command\n"
+					},
+					{
+						"survivors": [],
+						"stopped": 0,
+						"resisted": 0,
+						"unknown": false,
+						"report": ""
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "settlementReport",
@@ -74,30 +204,146 @@
 						"name": "settlementReport.asked",
 						"type": "Judged[]",
 						"required": true,
-						"description": "Judged processes asked to end during the final settling step."
+						"description": "Judged processes the command asked to end; one missing from last counts as stopped, and one still present is not stopped and is counted by its entry in last. Matching is by pid and started, and duplicates are not merged, so each duplicate counts again.",
+						"examples": [
+							[
+								{
+									"pid": 48213,
+									"started": "Sat Nov 14 21:47:09 2026",
+									"parent": 47110,
+									"group": 47110,
+									"origin": {
+										"pid": 47110,
+										"started": "Sat Nov 14 21:46:58 2026"
+									},
+									"proven": true,
+									"verdict": {
+										"standing": "private",
+										"reason": "the command's own",
+										"executable": "/usr/local/bin/node"
+									}
+								},
+								{
+									"pid": 48377,
+									"started": "Sat Nov 14 21:47:12 2026",
+									"parent": 48213,
+									"group": 47110,
+									"origin": {
+										"pid": 48213,
+										"started": "Sat Nov 14 21:47:09 2026"
+									},
+									"proven": true,
+									"verdict": {
+										"standing": "private",
+										"reason": "the command's own",
+										"executable": "/bin/sleep"
+									}
+								}
+							],
+							[
+								{
+									"pid": 51036,
+									"started": "Fri Nov 13 16:05:27 2026",
+									"parent": 50912,
+									"group": 50912,
+									"origin": {
+										"pid": 50912,
+										"started": "Fri Nov 13 16:05:01 2026"
+									},
+									"proven": true,
+									"verdict": {
+										"standing": "private",
+										"reason": "the command's own",
+										"executable": "/opt/homebrew/bin/node"
+									}
+								}
+							]
+						]
 					},
 					{
 						"name": "settlementReport.last",
 						"type": "Judged[]",
 						"required": true,
-						"description": "Judged processes present at the final observation."
+						"description": "Judged processes present at the last look, each with its verdict; an entry whose verdict standing is 'delegated' is reported as handed over and does not count against the check, while every other entry, including 'protected' and 'gone', counts as running and as a survivor. Duplicate entries are not merged, so each one counts again.",
+						"examples": [
+							[
+								{
+									"pid": 48902,
+									"started": "Sat Nov 14 21:47:31 2026",
+									"parent": 1,
+									"group": 48902,
+									"origin": {
+										"pid": 47110,
+										"started": "Sat Nov 14 21:46:58 2026"
+									},
+									"proven": true,
+									"verdict": {
+										"standing": "delegated",
+										"reason": "vetted service, vouched for, left the command, adopted by the system",
+										"executable": "/Applications/Xcode.app/Contents/Developer/usr/bin/ibtoold"
+									}
+								},
+								{
+									"pid": 48377,
+									"started": "Sat Nov 14 21:47:12 2026",
+									"parent": 1,
+									"group": 47110,
+									"origin": {
+										"pid": 48213,
+										"started": "Sat Nov 14 21:47:09 2026"
+									},
+									"proven": true,
+									"verdict": {
+										"standing": "private",
+										"reason": "the command's own",
+										"executable": "/bin/sleep"
+									}
+								}
+							],
+							[]
+						]
 					},
 					{
 						"name": "settlementReport.signalled",
 						"type": "(item: TrackedProcess) => boolean",
 						"required": false,
-						"description": "Optional predicate identifying every process signalled during cleanup; defaults to membership in asked."
+						"description": "Optional predicate saying whether a process was sent a signal at any time; it is called only for entries of last whose standing is not 'delegated', and twice for each of them (once for its report line and once to count resisted). Defaults to (item) => asked.some(same(item)), which tests membership in asked by pid and started; an exception it throws is not caught."
 					}
 				],
 				"outputs": [
 					{
 						"name": "settlementReport",
 						"type": "Settlement",
-						"description": "Settlement counting asked-but-absent processes as stopped and final nondelegated processes as running; survivors includes both because either counts against the command. Reports delegated, signalled-running, untouched-running and stopped outcomes."
+						"description": "Settlement of the command: survivors lists {pid, started} for each stopped process (asked and missing from last) followed by each running process (last with a standing other than 'delegated'); stopped is the number of stopped processes, resisted is the number of running ones for which signalled returns true, and unknown is always false. report has one line per delegated, running and stopped entry, and is an empty string when there are none.",
+						"examples": [
+							{
+								"survivors": [
+									{
+										"pid": 48213,
+										"started": "Sat Nov 14 21:47:09 2026"
+									},
+									{
+										"pid": 48377,
+										"started": "Sat Nov 14 21:47:12 2026"
+									}
+								],
+								"stopped": 1,
+								"resisted": 1,
+								"unknown": false,
+								"report": "\n[harness] process 48902 (started Sat Nov 14 21:47:31 2026) /Applications/Xcode.app/Contents/Developer/usr/bin/ibtoold: handed over to the system: vetted service, vouched for, left the command, adopted by the system\n[harness] process 48377 (started Sat Nov 14 21:47:12 2026) /bin/sleep: signalled but still running; the check fails: the command's own\n[harness] process 48213 (started Sat Nov 14 21:47:09 2026) /usr/local/bin/node: stopped: left behind by the command\n"
+							},
+							{
+								"survivors": [],
+								"stopped": 0,
+								"resisted": 0,
+								"unknown": false,
+								"report": ""
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "unknownSettlement",
@@ -106,18 +352,31 @@
 						"name": "unknownSettlement.why",
 						"type": "string",
 						"required": true,
-						"description": "Reason cleanup could not establish what remains."
+						"description": "Reason why what the command left could not be established, copied unchanged into the report line that starts with '[harness] '. It is not checked, so any string is accepted, including an empty one.",
+						"examples": [
+							"the process table could not be read in time",
+							"the process table did not include the check itself"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "unknownSettlement",
 						"type": "Settlement",
-						"description": "Unknown settlement with no asserted survivors, zero stopped/resisted, unknown true and a report explaining that the check fails."
+						"description": "The Settlement returned when what the command left cannot be established: survivors is empty, stopped and resisted are 0, unknown is true, and report says nothing more was signalled and the check fails. Because the report states that the check fails, an empty survivors list here does not mean a clean result.",
+						"examples": [
+							{
+								"survivors": [],
+								"stopped": 0,
+								"resisted": 0,
+								"unknown": true,
+								"report": "\n[harness] the process table could not be read in time: nothing more was signalled, what the command left is unknown, and the check fails\n"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
