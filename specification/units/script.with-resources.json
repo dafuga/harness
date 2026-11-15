@@ -18,30 +18,88 @@
 				"name": "resourceArguments.args",
 				"type": "string[]",
 				"required": true,
-				"description": "Arguments in the form <priority> -- <command and arguments>, where priority is coding, agent-test, or environment."
+				"description": "The wrapper arguments in the form `<priority> -- <command...>`: the first argument must be exactly `coding`, `agent-test`, or `environment`, the second must be exactly `--`, and at least one argument must follow it. Arguments after `--` are copied into the output unchanged and are not otherwise checked.",
+				"examples": [
+					["coding", "--", "bun", "test"],
+					["agent-test", "--", "bun", "run", "build"],
+					["environment", "--", "node", "--version"]
+				]
 			},
 			{
 				"name": "resourceArguments.env",
 				"type": "Record<string, string | undefined>",
 				"required": true,
-				"description": "Environment values used to override the selected priority, CPU count, and memory MiB."
+				"description": "The environment map is consulted only for `HARNESS_RESOURCE_PRIORITY`, `HARNESS_RESOURCE_CPUS`, and `HARNESS_RESOURCE_MEMORY_MIB`: an unset or empty `HARNESS_RESOURCE_PRIORITY` falls back to the positional priority, an unset or empty `HARNESS_RESOURCE_CPUS` falls back to `1`, and an unset or empty `HARNESS_RESOURCE_MEMORY_MIB` falls back to `2048`. Non-empty values are passed through unchecked, so a `HARNESS_RESOURCE_PRIORITY` outside `coding`, `agent-test`, and `environment` is not rejected.",
+				"examples": [
+					{
+						"HARNESS_RESOURCE_PRIORITY": "agent-test",
+						"HARNESS_RESOURCE_CPUS": "4",
+						"HARNESS_RESOURCE_MEMORY_MIB": "8192"
+					},
+					{
+						"HARNESS_RESOURCE_CPUS": "2"
+					},
+					{}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "resourceArguments",
 				"type": "string[]",
-				"description": "Argument vector for `resources run`, with priority and resource limits followed by the requested command; no shell string is constructed."
+				"description": "The argument vector for the `resources run` CLI: `resources`, `run`, `--priority`, the priority, `--cpus`, the CPU count, `--memory-mib`, the memory MiB, `--`, then the command arguments unchanged. The priority is `HARNESS_RESOURCE_PRIORITY` when non-empty and the positional priority otherwise, the CPU count is `HARNESS_RESOURCE_CPUS` when non-empty and `1` otherwise, and the memory MiB is `HARNESS_RESOURCE_MEMORY_MIB` when non-empty and `2048` otherwise; no shell string is constructed.",
+				"examples": [
+					[
+						"resources",
+						"run",
+						"--priority",
+						"coding",
+						"--cpus",
+						"1",
+						"--memory-mib",
+						"2048",
+						"--",
+						"bun",
+						"test"
+					],
+					[
+						"resources",
+						"run",
+						"--priority",
+						"agent-test",
+						"--cpus",
+						"4",
+						"--memory-mib",
+						"8192",
+						"--",
+						"bun",
+						"run",
+						"build"
+					],
+					[
+						"resources",
+						"run",
+						"--priority",
+						"environment",
+						"--cpus",
+						"2",
+						"--memory-mib",
+						"2048",
+						"--",
+						"node",
+						"--version"
+					]
+				]
 			}
 		],
 		"errors": [
 			{
-				"name": "Invalid resource wrapper arguments",
+				"name": "Error",
 				"type": "thrown",
-				"description": "Throws a Usage error unless a supported priority, `--` separator, and nonempty command are supplied."
+				"description": "Thrown as an `Error` with the message `Usage: with-resources <coding|agent-test|environment> -- <command...>` when the first argument is not `coding`, `agent-test`, or `environment`, the second is not `--`, or no argument follows `--`."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "resourceArguments",
@@ -50,27 +108,85 @@
 						"name": "resourceArguments.args",
 						"type": "string[]",
 						"required": true,
-						"description": "Arguments in the form <priority> -- <command and arguments>, where priority is coding, agent-test, or environment."
+						"description": "The wrapper arguments in the form `<priority> -- <command...>`: the first argument must be exactly `coding`, `agent-test`, or `environment`, the second must be exactly `--`, and at least one argument must follow it. Arguments after `--` are copied into the output unchanged and are not otherwise checked.",
+						"examples": [
+							["coding", "--", "bun", "test"],
+							["agent-test", "--", "bun", "run", "build"],
+							["environment", "--", "node", "--version"]
+						]
 					},
 					{
 						"name": "resourceArguments.env",
 						"type": "Record<string, string | undefined>",
 						"required": true,
-						"description": "Environment values used to override the selected priority, CPU count, and memory MiB."
+						"description": "The environment map is consulted only for `HARNESS_RESOURCE_PRIORITY`, `HARNESS_RESOURCE_CPUS`, and `HARNESS_RESOURCE_MEMORY_MIB`: an unset or empty `HARNESS_RESOURCE_PRIORITY` falls back to the positional priority, an unset or empty `HARNESS_RESOURCE_CPUS` falls back to `1`, and an unset or empty `HARNESS_RESOURCE_MEMORY_MIB` falls back to `2048`. Non-empty values are passed through unchecked, so a `HARNESS_RESOURCE_PRIORITY` outside `coding`, `agent-test`, and `environment` is not rejected.",
+						"examples": [
+							{
+								"HARNESS_RESOURCE_PRIORITY": "agent-test",
+								"HARNESS_RESOURCE_CPUS": "4",
+								"HARNESS_RESOURCE_MEMORY_MIB": "8192"
+							},
+							{
+								"HARNESS_RESOURCE_CPUS": "2"
+							},
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "resourceArguments",
 						"type": "string[]",
-						"description": "Argument vector for `resources run`, with priority and resource limits followed by the requested command; no shell string is constructed."
+						"description": "The argument vector for the `resources run` CLI: `resources`, `run`, `--priority`, the priority, `--cpus`, the CPU count, `--memory-mib`, the memory MiB, `--`, then the command arguments unchanged. The priority is `HARNESS_RESOURCE_PRIORITY` when non-empty and the positional priority otherwise, the CPU count is `HARNESS_RESOURCE_CPUS` when non-empty and `1` otherwise, and the memory MiB is `HARNESS_RESOURCE_MEMORY_MIB` when non-empty and `2048` otherwise; no shell string is constructed.",
+						"examples": [
+							[
+								"resources",
+								"run",
+								"--priority",
+								"coding",
+								"--cpus",
+								"1",
+								"--memory-mib",
+								"2048",
+								"--",
+								"bun",
+								"test"
+							],
+							[
+								"resources",
+								"run",
+								"--priority",
+								"agent-test",
+								"--cpus",
+								"4",
+								"--memory-mib",
+								"8192",
+								"--",
+								"bun",
+								"run",
+								"build"
+							],
+							[
+								"resources",
+								"run",
+								"--priority",
+								"environment",
+								"--cpus",
+								"2",
+								"--memory-mib",
+								"2048",
+								"--",
+								"node",
+								"--version"
+							]
+						]
 					}
 				],
 				"errors": [
 					{
-						"name": "Invalid resource wrapper arguments",
+						"name": "Error",
 						"type": "thrown",
-						"description": "Throws a Usage error unless a supported priority, `--` separator, and nonempty command are supplied."
+						"description": "Thrown as an `Error` with the message `Usage: with-resources <coding|agent-test|environment> -- <command...>` when the first argument is not `coding`, `agent-test`, or `environment`, the second is not `--`, or no argument follows `--`."
 					}
 				],
 				"errorStatus": "declared"
