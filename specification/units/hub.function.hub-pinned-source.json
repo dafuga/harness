@@ -9,13 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/services/hub-evidence-service/hub-attached-service/hubPinnedSource.ts",
 			"packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/hubPinnedSource.ts",
 			"packages/hub/src/utils/hubPinnedSource.ts",
 			"packages/hub/src/utils/verification-evidence/hubPinnedSource.ts"
 		],
 		"symbols": [
-			"hubEvidencePath",
 			"hubEvidencePath",
 			"hubEvidencePath",
 			"hubPinnedSource",

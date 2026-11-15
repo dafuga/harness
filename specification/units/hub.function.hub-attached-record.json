@@ -9,7 +9,6 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/services/hub-evidence-service/hub-attached-service/hubAttachedRecord.ts",
 			"packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/hubAttachedRecord.ts",
 			"packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/hubAttachedRecord.types.ts",
 			"packages/hub/src/utils/hubAttachedRecord.ts",
@@ -17,7 +16,6 @@
 			"packages/hub/src/utils/verification-evidence/hubAttachedRecord.types.ts"
 		],
 		"symbols": [
-			"hubAttachedRecord",
 			"hubAttachedRecord",
 			"Manifest",
 			"Sealed",
