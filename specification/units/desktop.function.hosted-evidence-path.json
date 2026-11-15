@@ -20,29 +20,44 @@
 				"name": "hostedEvidencePath.input",
 				"type": "EntityEvidenceQuery & { projectId: string }",
 				"required": true,
-				"description": "The project and evidence scope; artifact operations also need the capture-binding fields at runtime. Project IDs are 1–128 characters, beginning with a letter or digit and continuing with letters, digits, dots, underscores or hyphens."
+				"description": "The required object provides projectId plus EntityEvidenceQuery fields entityId, commit, branch, and mode: projectId must be 1–128 ASCII letters, digits, dots, underscores, or hyphens and start with a letter or digit; entityId must be 1–120 lowercase alphanumeric segments separated by single dots or hyphens; commit must be 40 lowercase hexadecimal characters; branch must contain non-whitespace text and be at most 255 characters; mode is current or commit. When operation is artifact, runtime also validates side as before or after, recordId and sha256 as 64 lowercase hexadecimal characters, scenarioId, state, and evidenceId as 1–120-character IDs, viewport as null or a 1–300-character ID, and notesRevision and evidenceRevision as null or 40 lowercase hexadecimal characters, although those fields are absent from the declared input type.",
+				"examples": [
+					{
+						"projectId": "reports-web",
+						"entityId": "reports.component.evidence-grid",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"branch": "main",
+						"mode": "current"
+					}
+				]
 			},
 			{
 				"name": "hostedEvidencePath.operation",
 				"type": "'evidence' | 'artifact'",
 				"required": true,
-				"description": "Choose evidence for metadata or artifact for capture bytes."
+				"description": "Selects whether the URL addresses evidence metadata or artifact bytes. Only evidence and artifact are in the declared union; artifact selection activates validation of the additional capture-binding fields.",
+				"examples": ["evidence", "artifact"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hostedEvidencePath",
 				"type": "unknown",
-				"description": "A relative API URL for the encoded project and operation, with validated fields in a fixed query order. Null values are omitted and extra input fields are discarded. No network call is made."
+				"description": "The function returns a relative URL at /api/projects/{encoded projectId}/{operation} with validated fields in a fixed query order. Null artifact fields are omitted, unrecognized fields are discarded by evidencePayload, and no network request is made.",
+				"examples": [
+					"/api/projects/reports-web/evidence?entityId=reports.component.evidence-grid&commit=0123456789abcdef0123456789abcdef01234567&branch=main&mode=current",
+					"/api/projects/reports-web/artifact?entityId=reports.component.evidence-grid&commit=0123456789abcdef0123456789abcdef01234567&branch=main&mode=current&side=after&recordId=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef&scenarioId=checkout-flow&state=signed-in&evidenceId=signup-page&sha256=abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789&viewport=desktop-1440x900&notesRevision=abcdef0123456789abcdef0123456789abcdef01&evidenceRevision=fedcba9876543210fedcba9876543210fedcba98"
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Throws for an invalid project identity or missing or invalid evidence/artifact fields."
+				"description": "Throws Error with message Invalid hosted project. when projectId fails its pattern. The payload validators also throw Error with messages Invalid text field., Invalid identifier., or Invalid option. when selected evidence fields fail their checks."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hostedEvidencePath",
@@ -51,29 +66,44 @@
 						"name": "hostedEvidencePath.input",
 						"type": "EntityEvidenceQuery & { projectId: string }",
 						"required": true,
-						"description": "The project and evidence scope; artifact operations also need the capture-binding fields at runtime. Project IDs are 1–128 characters, beginning with a letter or digit and continuing with letters, digits, dots, underscores or hyphens."
+						"description": "The required object provides projectId plus EntityEvidenceQuery fields entityId, commit, branch, and mode: projectId must be 1–128 ASCII letters, digits, dots, underscores, or hyphens and start with a letter or digit; entityId must be 1–120 lowercase alphanumeric segments separated by single dots or hyphens; commit must be 40 lowercase hexadecimal characters; branch must contain non-whitespace text and be at most 255 characters; mode is current or commit. When operation is artifact, runtime also validates side as before or after, recordId and sha256 as 64 lowercase hexadecimal characters, scenarioId, state, and evidenceId as 1–120-character IDs, viewport as null or a 1–300-character ID, and notesRevision and evidenceRevision as null or 40 lowercase hexadecimal characters, although those fields are absent from the declared input type.",
+						"examples": [
+							{
+								"projectId": "reports-web",
+								"entityId": "reports.component.evidence-grid",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"branch": "main",
+								"mode": "current"
+							}
+						]
 					},
 					{
 						"name": "hostedEvidencePath.operation",
 						"type": "'evidence' | 'artifact'",
 						"required": true,
-						"description": "Choose evidence for metadata or artifact for capture bytes."
+						"description": "Selects whether the URL addresses evidence metadata or artifact bytes. Only evidence and artifact are in the declared union; artifact selection activates validation of the additional capture-binding fields.",
+						"examples": ["evidence", "artifact"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hostedEvidencePath",
 						"type": "unknown",
-						"description": "A relative API URL for the encoded project and operation, with validated fields in a fixed query order. Null values are omitted and extra input fields are discarded. No network call is made."
+						"description": "The function returns a relative URL at /api/projects/{encoded projectId}/{operation} with validated fields in a fixed query order. Null artifact fields are omitted, unrecognized fields are discarded by evidencePayload, and no network request is made.",
+						"examples": [
+							"/api/projects/reports-web/evidence?entityId=reports.component.evidence-grid&commit=0123456789abcdef0123456789abcdef01234567&branch=main&mode=current",
+							"/api/projects/reports-web/artifact?entityId=reports.component.evidence-grid&commit=0123456789abcdef0123456789abcdef01234567&branch=main&mode=current&side=after&recordId=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef&scenarioId=checkout-flow&state=signed-in&evidenceId=signup-page&sha256=abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789&viewport=desktop-1440x900&notesRevision=abcdef0123456789abcdef0123456789abcdef01&evidenceRevision=fedcba9876543210fedcba9876543210fedcba98"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error with message Invalid hosted project. when projectId fails its pattern. The payload validators also throw Error with messages Invalid text field., Invalid identifier., or Invalid option. when selected evidence fields fail their checks."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
