@@ -22,40 +22,54 @@
 				"name": "EntityLink.to",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Required explorer destination."
+				"description": "Explorer destination passed unchanged to nav.href(to) for the anchor address and to nav.go(to) after a plain click. This component does not validate or transform the location.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": null,
+						"category": "components"
+					},
+					{
+						"branch": null,
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"category": "components",
+						"entity": "reports.component.harness-entity-link"
+					}
+				]
 			},
 			{
 				"name": "EntityLink.nav",
 				"type": "EntityNav",
 				"required": true,
-				"description": "Required functions for constructing the link and navigating within the host."
+				"description": "Host-supplied navigation object with required route, href, and go members and an optional source callback. This component calls href(to) while rendering and go(to) after a plain click; it does not read route or source."
 			},
 			{
 				"name": "EntityLink.label",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional accessible name when visible content is insufficient. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "Optional accessible name forwarded to aria-label when the visible text alone does not say where the link leads. When omitted, its value is undefined and this component adds no fallback label.",
+				"examples": ["Open the Entity link contract", "View the Entity link source"]
 			},
 			{
 				"name": "EntityLink.children",
 				"type": "Snippet",
 				"required": true,
-				"description": "Required visible link content."
+				"description": "Required Svelte snippet that provides the visible anchor content and is invoked when the link renders. This component supplies no fallback content."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityLink",
 				"type": "markup",
-				"description": "Anchor with a real href. A plain click prevents document navigation and calls nav.go; modified/nonprimary clicks keep native behavior. Does not catch navigation errors. States: labelled: Short visible link content has a fuller accessible destination label. long: The complete long entity-link text wraps within the available width. focused: Keyboard focus visibly identifies the navigable entity link."
+				"description": "Renders an hx-a anchor with href from nav.href(to), the optional aria-label, remaining anchor attributes, data-harness-component=\"harness-entity-link\", and the children snippet. A plain click prevents default and calls nav.go(to), while modified or non-primary clicks retain browser behavior; callback and content errors are not caught."
 			}
 		],
 		"errors": [
 			{
 				"name": "Caller callback or content error",
-				"type": "propagated",
-				"description": "Errors from supplied children callbacks or snippets propagate when invoked; this component does not provide an error boundary."
+				"type": "thrown",
+				"description": "Errors thrown by nav.href(to), nav.go(to), or the children snippet propagate because this component catches none of them."
 			}
 		],
 		"errorStatus": "declared",
