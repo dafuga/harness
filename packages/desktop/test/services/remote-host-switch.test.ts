@@ -6,7 +6,7 @@ import { RemoteHostStoreAdapter } from '../../src/adapters/networking-security/R
 import { RemoteHostRecordService } from '../../src/services/networking-security/remote-host-service/RemoteHostRecordService';
 import { RemoteHostSwitchService } from '../../src/services/networking-security/remote-host-service/remote-host-switch-service/RemoteHostSwitchService';
 import { remoteHostIdentity } from '../../src/services/remote-host-switch-service/remoteHostIdentity';
-import type { RegisterRemoteHost } from '../../src/utils/remoteHostIdentity';
+import type { RegisterRemoteHost } from '../../src/utils/networking-security/remoteHostIdentity';
 import { deferred } from '../remote-fixture';
 import { fakeEncryption } from '../remote-host-fixture';
 
