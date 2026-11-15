@@ -18,33 +18,52 @@
 				"name": "remoteBinary.value",
 				"type": "RemoteBinary",
 				"required": true,
-				"description": "Base64 data with encoding, declared byte length and SHA-256 hash."
+				"description": "The media a computer sent: encoding must be exactly 'base64', data is its base64 text, byteLength must equal the number of bytes that text decodes to, and sha256 must equal the lowercase hex SHA-256 digest of those bytes. Any other encoding, non-string data, undecodable base64, or a length or hash mismatch makes remoteBinary reject instead of returning bytes.",
+				"examples": [
+					{
+						"encoding": "base64",
+						"mediaType": "text/plain",
+						"data": "aGVsbG8=",
+						"byteLength": 5,
+						"sha256": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+					},
+					{
+						"encoding": "base64",
+						"mediaType": "text/plain",
+						"data": "YWJj",
+						"byteLength": 3,
+						"sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "unreadableMedia",
 				"type": "unknown",
-				"description": "Message for unsupported encoding or unreadable base64."
+				"description": "The exported message that remoteBinary uses as the message of the Error it throws for an encoding other than 'base64', non-string data, or undecodable base64. It is never returned as a value, so it reaches a caller only as that Error's message.",
+				"examples": ["The computer sent media this app cannot read."]
 			},
 			{
 				"name": "damagedMedia",
 				"type": "unknown",
-				"description": "Message for content that does not match its declared length or hash."
+				"description": "The exported message that remoteBinary uses as the message of the Error it throws when the decoded byte count differs from byteLength or the SHA-256 hex differs from sha256. It is never returned as a value, so it reaches a caller only as that Error's message.",
+				"examples": ["The media arrived damaged and is not shown."]
 			},
 			{
 				"name": "remoteBinary",
 				"type": "Promise<Uint8Array>",
-				"description": "Decoded bytes after length and hash verification."
+				"description": "Resolves to a new Uint8Array holding one byte per character that atob returns for data. It resolves only after the decoded length equals byteLength and the SHA-256 digest equals sha256; otherwise the promise rejects."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects unreadable content or a length/hash mismatch; underlying digest failures can also propagate."
+				"description": "Thrown inside the async remoteBinary, so callers receive a rejected promise: with the unreadableMedia message for an encoding other than 'base64', non-string data, or undecodable base64, and with the damagedMedia message for a decoded length or SHA-256 mismatch. Failures from crypto.subtle.digest are not caught, so they also reject the promise."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "remoteBinary",
@@ -53,23 +72,40 @@
 						"name": "remoteBinary.value",
 						"type": "RemoteBinary",
 						"required": true,
-						"description": "Base64 data with encoding, declared byte length and SHA-256 hash."
+						"description": "The media a computer sent: encoding must be exactly 'base64', data is its base64 text, byteLength must equal the number of bytes that text decodes to, and sha256 must equal the lowercase hex SHA-256 digest of those bytes. Any other encoding, non-string data, undecodable base64, or a length or hash mismatch makes remoteBinary reject instead of returning bytes.",
+						"examples": [
+							{
+								"encoding": "base64",
+								"mediaType": "text/plain",
+								"data": "aGVsbG8=",
+								"byteLength": 5,
+								"sha256": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+							},
+							{
+								"encoding": "base64",
+								"mediaType": "text/plain",
+								"data": "YWJj",
+								"byteLength": 3,
+								"sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "remoteBinary",
 						"type": "Promise<Uint8Array>",
-						"description": "Decoded bytes after length and hash verification."
+						"description": "Resolves to a new Uint8Array holding one byte per character that atob returns for data. It resolves only after the decoded length equals byteLength and the SHA-256 digest equals sha256; otherwise the promise rejects."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown inside the async remoteBinary, so callers receive a rejected promise: with the unreadableMedia message for an encoding other than 'base64', non-string data, or undecodable base64, and with the damagedMedia message for a decoded length or SHA-256 mismatch. Failures from crypto.subtle.digest are not caught, so they also reject the promise."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
