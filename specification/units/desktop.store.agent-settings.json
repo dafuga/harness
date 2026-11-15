@@ -28,20 +28,24 @@
 			{
 				"name": "createAgentSettingsStore.adapter",
 				"type": "Pick<AgentSettingsAdapter, 'read' | 'write'>",
-				"required": false
+				"required": false,
+				"description": "Provides the read() and write(value) methods used by load() and valid setDesignOptions() calls; the store uses only those adapter methods. When omitted, it defaults to new AgentSettingsAdapter()."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createAgentSettingsStore",
-				"type": "ReturnType<typeof createAgentSettingsStore>"
+				"type": "ReturnType<typeof createAgentSettingsStore>",
+				"description": "Reactive store returned by the factory, with designOptions and saved getters plus load() and setDesignOptions(value) methods. It starts with designOptions set to defaultDesignCount, saved set to true, and an unloaded state; load() reads once, and setDesignOptions() writes only values included in designCounts, returning false without writing for other numbers."
 			},
 			{
 				"name": "agentSettings",
-				"type": "ReturnType<typeof createAgentSettingsStore>"
+				"type": "ReturnType<typeof createAgentSettingsStore>",
+				"description": "Module-level store instance created by calling createAgentSettingsStore() once. It has the factory store’s initial state and behavior, and reads the preference only when load() is first called."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "createAgentSettingsStore",
@@ -49,17 +53,19 @@
 					{
 						"name": "createAgentSettingsStore.adapter",
 						"type": "Pick<AgentSettingsAdapter, 'read' | 'write'>",
-						"required": false
+						"required": false,
+						"description": "Provides the read() and write(value) methods used by load() and valid setDesignOptions() calls; the store uses only those adapter methods. When omitted, it defaults to new AgentSettingsAdapter()."
 					}
 				],
 				"outputs": [
 					{
 						"name": "createAgentSettingsStore",
-						"type": "ReturnType<typeof createAgentSettingsStore>"
+						"type": "ReturnType<typeof createAgentSettingsStore>",
+						"description": "Reactive store returned by the factory, with designOptions and saved getters plus load() and setDesignOptions(value) methods. It starts with designOptions set to defaultDesignCount, saved set to true, and an unloaded state; load() reads once, and setDesignOptions() writes only values included in designCounts, returning false without writing for other numbers."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
