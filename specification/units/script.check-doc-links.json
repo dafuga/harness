@@ -21,68 +21,136 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "markdownLinks.source",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The full text of one Markdown document, split on newlines and scanned for inline `[text](target)` links outside fenced code blocks and inline code spans. Reference-style links are not recognized, while an image such as `![alt](src)` is matched like any other link.",
+				"examples": [
+					"# Setup\n\nRead [the boundaries](ARCHITECTURE-BOUNDARIES.md#layers) first.\n\n[Upstream](https://example.com/docs)\n",
+					"See [the README](README.md) and `[not a link](README.md)` for details.\n"
+				]
 			},
 			{
 				"name": "codePaths.source",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The full text of one Markdown document, scanned line by line for backticked repository paths outside fenced code blocks. A match needs a `src/`, `test/`, `scripts/`, `packages/` or `crates/` prefix and a file extension, so a bare name such as `README.md` is never listed.",
+				"examples": [
+					"# Owners\n\n| Owner | File |\n| --- | --- |\n| Core | `src/core/files.ts` |\n| Scripts | `scripts/check-doc-links.ts` |\n",
+					"Keep `README.md` short and link to `scripts/check-doc-links.ts`.\n"
+				]
 			},
 			{
 				"name": "headingAnchors.source",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The full text of one Markdown document; only its ATX headings, meaning lines that start with one to six `#` characters followed by whitespace, produce anchors, and headings inside fenced code blocks are ignored. Setext (underlined) headings are not recognized.",
+				"examples": ["# Architecture\n\n## Layers\n\n## Layers\n", "# Setup\n\n## Install & run\n"]
 			},
 			{
 				"name": "brokenDocLinks.documents",
 				"type": "readonly string[]",
-				"required": true
+				"required": true,
+				"description": "The repository-relative paths where the run starts, each checked once in list order, and a listed path that does not exist is reported as a problem. Each link target that exists, ends in `.md` and is not the linking document itself is queued and checked the same way, so linked Markdown files are followed through their own links too.",
+				"examples": [
+					["ARCHITECTURE-BOUNDARIES.md", "README.md"],
+					["README.md"]
+				]
 			},
 			{
 				"name": "brokenDocLinks.files",
 				"type": "DocFiles",
-				"required": true
+				"required": true,
+				"description": "The adapter for every lookup: `exists(path)` reports whether a repository-relative path exists and `read(path)` returns its text, and `read` is only called for a path that `exists` has already confirmed. `main` passes Node's `existsSync` and a `readFileSync` wrapper that decodes UTF-8."
 			},
 			{
 				"name": "brokenDocLinks.pathChecked",
 				"type": "readonly string[]",
 				"required": false,
-				"default": []
+				"default": [],
+				"description": "The documents whose backticked repository paths must also exist; for each listed document that is checked, every `codePaths` target is tested with `exists` and a missing one is reported. It defaults to `[]`, which checks no code paths, and `main` passes `pathCheckedDocuments`.",
+				"examples": [
+					["ARCHITECTURE-BOUNDARIES.md"],
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "checkedDocuments",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The documents every run checks first, in this order: `ARCHITECTURE-BOUNDARIES.md`, then `README.md`. Markdown files that they link to are checked after them, so this list is only the starting set and not every file the run checks.",
+				"examples": [
+					["ARCHITECTURE-BOUNDARIES.md", "README.md"]
+				]
 			},
 			{
 				"name": "pathCheckedDocuments",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The documents whose backticked repository paths must also exist, because they map owners to files; `main` passes this list as the `pathChecked` argument of `brokenDocLinks`. In this module it holds only `ARCHITECTURE-BOUNDARIES.md`.",
+				"examples": [
+					["ARCHITECTURE-BOUNDARIES.md"]
+				]
 			},
 			{
 				"name": "markdownLinks",
-				"type": "DocLink[]"
+				"type": "DocLink[]",
+				"description": "The inline links found in one document, in document order, each with its 1-based line number and its target (the text up to the first whitespace, `>` or closing parenthesis), such as `README.md` or `#layers`. External URLs are included, and `brokenDocLinks` skips them without fetching anything.",
+				"examples": [
+					[
+						{
+							"line": 3,
+							"target": "ARCHITECTURE-BOUNDARIES.md#layers"
+						},
+						{
+							"line": 5,
+							"target": "https://example.com/docs"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "codePaths",
-				"type": "DocLink[]"
+				"type": "DocLink[]",
+				"description": "The backticked repository paths in one document outside fenced code blocks, in document order, each with its 1-based line number and its path without the backticks. Only paths that begin with `src/`, `test/`, `scripts/`, `packages/` or `crates/` and end in a file extension are included.",
+				"examples": [
+					[
+						{
+							"line": 5,
+							"target": "src/core/files.ts"
+						},
+						{
+							"line": 6,
+							"target": "scripts/check-doc-links.ts"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "headingAnchors",
-				"type": "Set<string>"
+				"type": "Set<string>",
+				"description": "The GitHub-style anchor slugs for the ATX headings of one document: the text is lowercased, characters other than letters, digits, whitespace, `_` and `-` are dropped, each whitespace character becomes a hyphen, and a repeated slug gets a `-1`, `-2` suffix. `brokenDocLinks` checks each decoded, lowercased `#fragment` of a link to a `.md` file against the set computed for that file."
 			},
 			{
 				"name": "brokenDocLinks",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "One line per problem, starting with the document and, except for a missing checked document, its line number; the problems are a missing checked document, a missing backticked path, a link that leaves the repository, a missing link target and a missing heading. The list is sorted with JavaScript's default string sort, and an empty array means that every checked link and checked backticked path resolves.",
+				"examples": [
+					[
+						"ARCHITECTURE-BOUNDARIES.md:14: `src/core/files.ts` does not exist",
+						"README.md:7: ARCHITECTURE-BOUNDARIES.md#layers has no such heading"
+					],
+					[]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "markdownLinks",
@@ -90,17 +158,36 @@
 					{
 						"name": "markdownLinks.source",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The full text of one Markdown document, split on newlines and scanned for inline `[text](target)` links outside fenced code blocks and inline code spans. Reference-style links are not recognized, while an image such as `![alt](src)` is matched like any other link.",
+						"examples": [
+							"# Setup\n\nRead [the boundaries](ARCHITECTURE-BOUNDARIES.md#layers) first.\n\n[Upstream](https://example.com/docs)\n",
+							"See [the README](README.md) and `[not a link](README.md)` for details.\n"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "markdownLinks",
-						"type": "DocLink[]"
+						"type": "DocLink[]",
+						"description": "The inline links found in one document, in document order, each with its 1-based line number and its target (the text up to the first whitespace, `>` or closing parenthesis), such as `README.md` or `#layers`. External URLs are included, and `brokenDocLinks` skips them without fetching anything.",
+						"examples": [
+							[
+								{
+									"line": 3,
+									"target": "ARCHITECTURE-BOUNDARIES.md#layers"
+								},
+								{
+									"line": 5,
+									"target": "https://example.com/docs"
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "codePaths",
@@ -108,17 +195,36 @@
 					{
 						"name": "codePaths.source",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The full text of one Markdown document, scanned line by line for backticked repository paths outside fenced code blocks. A match needs a `src/`, `test/`, `scripts/`, `packages/` or `crates/` prefix and a file extension, so a bare name such as `README.md` is never listed.",
+						"examples": [
+							"# Owners\n\n| Owner | File |\n| --- | --- |\n| Core | `src/core/files.ts` |\n| Scripts | `scripts/check-doc-links.ts` |\n",
+							"Keep `README.md` short and link to `scripts/check-doc-links.ts`.\n"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "codePaths",
-						"type": "DocLink[]"
+						"type": "DocLink[]",
+						"description": "The backticked repository paths in one document outside fenced code blocks, in document order, each with its 1-based line number and its path without the backticks. Only paths that begin with `src/`, `test/`, `scripts/`, `packages/` or `crates/` and end in a file extension are included.",
+						"examples": [
+							[
+								{
+									"line": 5,
+									"target": "src/core/files.ts"
+								},
+								{
+									"line": 6,
+									"target": "scripts/check-doc-links.ts"
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "headingAnchors",
@@ -126,17 +232,23 @@
 					{
 						"name": "headingAnchors.source",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The full text of one Markdown document; only its ATX headings, meaning lines that start with one to six `#` characters followed by whitespace, produce anchors, and headings inside fenced code blocks are ignored. Setext (underlined) headings are not recognized.",
+						"examples": [
+							"# Architecture\n\n## Layers\n\n## Layers\n",
+							"# Setup\n\n## Install & run\n"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "headingAnchors",
-						"type": "Set<string>"
+						"type": "Set<string>",
+						"description": "The GitHub-style anchor slugs for the ATX headings of one document: the text is lowercased, characters other than letters, digits, whitespace, `_` and `-` are dropped, each whitespace character becomes a hyphen, and a repeated slug gets a `-1`, `-2` suffix. `brokenDocLinks` checks each decoded, lowercased `#fragment` of a link to a `.md` file against the set computed for that file."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "brokenDocLinks",
@@ -144,28 +256,47 @@
 					{
 						"name": "brokenDocLinks.documents",
 						"type": "readonly string[]",
-						"required": true
+						"required": true,
+						"description": "The repository-relative paths where the run starts, each checked once in list order, and a listed path that does not exist is reported as a problem. Each link target that exists, ends in `.md` and is not the linking document itself is queued and checked the same way, so linked Markdown files are followed through their own links too.",
+						"examples": [
+							["ARCHITECTURE-BOUNDARIES.md", "README.md"],
+							["README.md"]
+						]
 					},
 					{
 						"name": "brokenDocLinks.files",
 						"type": "DocFiles",
-						"required": true
+						"required": true,
+						"description": "The adapter for every lookup: `exists(path)` reports whether a repository-relative path exists and `read(path)` returns its text, and `read` is only called for a path that `exists` has already confirmed. `main` passes Node's `existsSync` and a `readFileSync` wrapper that decodes UTF-8."
 					},
 					{
 						"name": "brokenDocLinks.pathChecked",
 						"type": "readonly string[]",
 						"required": false,
-						"default": []
+						"default": [],
+						"description": "The documents whose backticked repository paths must also exist; for each listed document that is checked, every `codePaths` target is tested with `exists` and a missing one is reported. It defaults to `[]`, which checks no code paths, and `main` passes `pathCheckedDocuments`.",
+						"examples": [
+							["ARCHITECTURE-BOUNDARIES.md"],
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "brokenDocLinks",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "One line per problem, starting with the document and, except for a missing checked document, its line number; the problems are a missing checked document, a missing backticked path, a link that leaves the repository, a missing link target and a missing heading. The list is sorted with JavaScript's default string sort, and an empty array means that every checked link and checked backticked path resolves.",
+						"examples": [
+							[
+								"ARCHITECTURE-BOUNDARIES.md:14: `src/core/files.ts` does not exist",
+								"README.md:7: ARCHITECTURE-BOUNDARIES.md#layers has no such heading"
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
