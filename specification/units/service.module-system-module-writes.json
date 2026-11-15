@@ -21,54 +21,95 @@
 				"name": "writeModuleFiles.root",
 				"type": "string",
 				"required": true,
-				"description": "Absolute project directory containing the package manifest and module metadata."
+				"description": "Project directory that realpath() resolves before any planning, so it must exist; a relative value is resolved from the process working directory. Symlinks in the root are followed, and each planned file is then checked for symlinks beneath the resolved directory.",
+				"examples": ["/workspace/luna-pyramid", "/home/builder/luna-pyramid"]
 			},
 			{
 				"name": "writeModuleFiles.files",
 				"type": "PlannedFile[]",
 				"required": true,
-				"description": "Complete relative-path file plan, checked before any write."
+				"description": "Complete plan of files to create or update; each path must pass moduleOutputPath, and the whole list is checked before any write. Each contents string is written as UTF-8, a repeated path is rejected as a duplicate, and an existing file whose UTF-8 text differs from contents is refused unless its path is listed in replace.",
+				"examples": [
+					[
+						{
+							"path": "src/services/reports/evidence-grid.ts",
+							"contents": "export {};\n"
+						}
+					],
+					[
+						{
+							"path": "src/services/reports/evidence-grid.ts",
+							"contents": "export {};\n"
+						},
+						{
+							"path": "tests/services/reports/evidence-grid.test.ts",
+							"contents": "export {};\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "writeModuleFiles.replace",
 				"type": "string[]",
 				"required": false,
 				"default": [],
-				"description": "Explicit metadata paths this transaction is permitted to update."
+				"description": "Planned output paths, matched exactly, that may be overwritten when the file already exists with different contents. Entries are not validated, and an entry that matches no planned path has no effect.",
+				"examples": [
+					[],
+					["harness.modules.json"],
+					["package.json", "harness.groups.json"]
+				]
 			},
 			{
 				"name": "writeModuleFiles.allowIdentical",
 				"type": "boolean",
 				"required": false,
 				"default": true,
-				"description": "Whether an existing byte-identical file is an idempotent setup output."
+				"description": "When true, a planned file whose existing UTF-8 text equals its contents is skipped without error and left out of the result. When false, such a file is refused with an overwrite error unless its path is listed in replace, and then it is skipped.",
+				"examples": [true, false]
 			},
 			{
 				"name": "moduleOutputPath.path",
 				"type": "string",
 				"required": true,
-				"description": "Relative module output path that must stay within supported project code areas."
+				"description": "Project-relative output path to validate; it must begin with src/, test/, tests/, specification/, or db/ and use only letters, digits, and the characters _ . + @ / { } - for the rest of the path, or it must be exactly package.json, harness.groups.json, or harness.modules.json. A segment that is empty, '.', '..', or 'node_modules' is rejected, and so is any path containing '{{'.",
+				"examples": [
+					"src/services/module-system/moduleWrites.ts",
+					"tests/services/module-system/moduleWrites.test.ts",
+					"harness.modules.json"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "writeModuleFiles",
 				"type": "Promise<string[]>",
-				"description": "Relative paths actually created or updated by this operation."
+				"description": "Project-relative paths of the files this call created or overwrote, in the order of files; files whose existing contents already match are omitted. The result is returned only after every write succeeds, and a failed mkdir or writeFile rolls back this call's earlier writes before the call rejects.",
+				"examples": [
+					["src/services/reports/evidence-grid.ts", "tests/services/reports/evidence-grid.test.ts"],
+					["package.json", "harness.modules.json"],
+					[]
+				]
 			},
 			{
 				"name": "moduleOutputPath",
 				"type": "string",
-				"description": "Validated project-relative module output path."
+				"description": "The input path is returned unchanged after it passes validation, so it is not normalized, resolved, or joined to the project root.",
+				"examples": [
+					"src/services/module-system/moduleWrites.ts",
+					"specification/module-system/module-writes.md",
+					"harness.groups.json"
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Invalid definitions, incompatible project settings, unsafe paths or conflicting source files prevent the operation."
+				"description": "moduleOutputPath throws an Error for an unsafe path, and writeModuleFiles rejects with an Error for an unsafe path, a duplicate planned path, an output path that crosses a symlink or escapes the project root, or an existing file that may not be overwritten. Filesystem errors also make writeModuleFiles reject, such as a missing root from realpath, and a failed mkdir or writeFile rolls back this call's earlier writes before the original error is rethrown unless the rollback itself fails."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "writeModuleFiles",
@@ -77,43 +118,77 @@
 						"name": "writeModuleFiles.root",
 						"type": "string",
 						"required": true,
-						"description": "Absolute project directory containing the package manifest and module metadata."
+						"description": "Project directory that realpath() resolves before any planning, so it must exist; a relative value is resolved from the process working directory. Symlinks in the root are followed, and each planned file is then checked for symlinks beneath the resolved directory.",
+						"examples": ["/workspace/luna-pyramid", "/home/builder/luna-pyramid"]
 					},
 					{
 						"name": "writeModuleFiles.files",
 						"type": "PlannedFile[]",
 						"required": true,
-						"description": "Complete relative-path file plan, checked before any write."
+						"description": "Complete plan of files to create or update; each path must pass moduleOutputPath, and the whole list is checked before any write. Each contents string is written as UTF-8, a repeated path is rejected as a duplicate, and an existing file whose UTF-8 text differs from contents is refused unless its path is listed in replace.",
+						"examples": [
+							[
+								{
+									"path": "src/services/reports/evidence-grid.ts",
+									"contents": "export {};\n"
+								}
+							],
+							[
+								{
+									"path": "src/services/reports/evidence-grid.ts",
+									"contents": "export {};\n"
+								},
+								{
+									"path": "tests/services/reports/evidence-grid.test.ts",
+									"contents": "export {};\n"
+								}
+							]
+						]
 					},
 					{
 						"name": "writeModuleFiles.replace",
 						"type": "string[]",
 						"required": false,
 						"default": [],
-						"description": "Explicit metadata paths this transaction is permitted to update."
+						"description": "Planned output paths, matched exactly, that may be overwritten when the file already exists with different contents. Entries are not validated, and an entry that matches no planned path has no effect.",
+						"examples": [
+							[],
+							["harness.modules.json"],
+							["package.json", "harness.groups.json"]
+						]
 					},
 					{
 						"name": "writeModuleFiles.allowIdentical",
 						"type": "boolean",
 						"required": false,
 						"default": true,
-						"description": "Whether an existing byte-identical file is an idempotent setup output."
+						"description": "When true, a planned file whose existing UTF-8 text equals its contents is skipped without error and left out of the result. When false, such a file is refused with an overwrite error unless its path is listed in replace, and then it is skipped.",
+						"examples": [true, false]
 					}
 				],
 				"outputs": [
 					{
 						"name": "writeModuleFiles",
 						"type": "Promise<string[]>",
-						"description": "Relative paths actually created or updated by this operation."
+						"description": "Project-relative paths of the files this call created or overwrote, in the order of files; files whose existing contents already match are omitted. The result is returned only after every write succeeds, and a failed mkdir or writeFile rolls back this call's earlier writes before the call rejects.",
+						"examples": [
+							[
+								"src/services/reports/evidence-grid.ts",
+								"tests/services/reports/evidence-grid.test.ts"
+							],
+							["package.json", "harness.modules.json"],
+							[]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "writeModuleFiles rejects with an Error for an unsafe path, a duplicate planned path, an output path that crosses a symlink or escapes the project root, or an existing file that may not be overwritten. Filesystem errors also reject the call, such as a missing root from realpath, and a failed mkdir or writeFile rolls back this call's earlier writes before the original error is rethrown unless the rollback itself fails."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "moduleOutputPath",
@@ -122,23 +197,34 @@
 						"name": "moduleOutputPath.path",
 						"type": "string",
 						"required": true,
-						"description": "Relative module output path that must stay within supported project code areas."
+						"description": "Project-relative output path to validate; it must begin with src/, test/, tests/, specification/, or db/ and use only letters, digits, and the characters _ . + @ / { } - for the rest of the path, or it must be exactly package.json, harness.groups.json, or harness.modules.json. A segment that is empty, '.', '..', or 'node_modules' is rejected, and so is any path containing '{{'.",
+						"examples": [
+							"src/services/module-system/moduleWrites.ts",
+							"tests/services/module-system/moduleWrites.test.ts",
+							"harness.modules.json"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "moduleOutputPath",
 						"type": "string",
-						"description": "Validated project-relative module output path."
+						"description": "The input path is returned unchanged after it passes validation, so it is not normalized, resolved, or joined to the project root.",
+						"examples": [
+							"src/services/module-system/moduleWrites.ts",
+							"specification/module-system/module-writes.md",
+							"harness.groups.json"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "moduleOutputPath throws an Error with the message 'Unsafe module output path: <path>' when the path fails the prefix, character, segment, or '{{' checks."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
