@@ -58,11 +58,8 @@
 		}
 	],
 	"owns": {
-		"source": [
-			"packages/relay/src/configs/networking-security/relayConfig.ts",
-			"packages/relay/src/configs/relayConfig.ts"
-		],
-		"symbols": ["relayConfig", "relayConfig"]
+		"source": ["packages/relay/src/configs/networking-security/relayConfig.ts"],
+		"symbols": ["relayConfig"]
 	},
 	"contract": {
 		"origin": "derived",

@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { randomId, remoteLimits } from '../../../remote/src/index';
-import { relayConfig } from '../../src/configs/relayConfig';
+import { relayConfig } from '../../src/configs/networking-security/relayConfig';
 import {
 	command,
 	connectHost,

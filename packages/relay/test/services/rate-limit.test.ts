@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
-import { relayConfig } from '../../src/configs/relayConfig';
+import { relayConfig } from '../../src/configs/networking-security/relayConfig';
 import type { RateBucket, RateRecord } from '../../src/models/RelayHost.types';
 import { RateLimitService, type RateStore } from '../../src/services/RateLimitService';
 
