@@ -12,42 +12,67 @@
 		"symbols": ["fixtureImage", "remoteFixtureProject", "fixtureProviders"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "fixtureImage.size",
 				"type": "number",
 				"required": false,
-				"default": 96
+				"default": 96,
+				"description": "The side length in pixels of the square picture that fixtureImage draws, which matters when a caller needs a size other than the default 96 (the generator in fixtureProviders asks for 128). The code does not validate it, so a non-whole or non-positive value is passed to the PNG encoder as given.",
+				"examples": [96, 128]
 			},
 			{
 				"name": "fixtureImage.variant",
 				"type": "number",
 				"required": false,
-				"default": 0
+				"default": 0,
+				"description": "The tint of the picture, which matters when a copy must differ from the original: its blue value is 160 + 9 * variant, so 0 is the original picture. The code does not range-check it, and a blue value outside 0 to 255 wraps around, which happens for whole variants above 10 or below -17.",
+				"examples": [0, 1, 2]
 			}
 		],
 		"outputs": [
 			{
 				"name": "fixtureImage",
-				"type": "Uint8Array"
+				"type": "Uint8Array",
+				"description": "The PNG file bytes of the gradient picture for the given size and variant; remoteFixtureProject stores the default-size picture as its design image. Each call encodes a new picture, and nothing is cached."
 			},
 			{
 				"name": "remoteFixtureProject",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "An object giving the absolute path of a new temporary Git repository (root), the id of its one planned page (entityId) and the id of a thread opened on that page (threadId). Each call creates a new repository under the OS temp directory, with a design image for the page, and the code never removes it.",
+				"examples": [
+					{
+						"root": "/private/var/folders/6z/q1x7n0kd2jv8f4b5w9mrt3sc0000gn/T/harness-remote-fixture-Yc5Qe2",
+						"entityId": "page.fixture-page",
+						"threadId": "b7e4c2a1-9d3f-4e6b-8a52-1f0c7d9e3b48"
+					},
+					{
+						"root": "/tmp/harness-remote-fixture-8fTz3K",
+						"entityId": "page.fixture-page",
+						"threadId": "3f9a0d6e-27c1-4b8e-9d54-6a2e1c8f7b03"
+					}
+				]
 			},
 			{
 				"name": "fixtureProviders",
-				"type": "Record<ProviderId, AgentRunner> & { generator: ImageGenerator; }"
+				"type": "Record<ProviderId, AgentRunner> & { generator: ImageGenerator; }",
+				"description": "The synthetic runners for codex and claude plus an image generator; they start no process and change no file. Each runner's discover reports one available model and its run returns a canned answer after about 1.2 seconds, while the generator's generateImage returns a 128-pixel fixture picture whose variant starts at 0 and rises by one with each call."
 			}
 		],
 		"errors": [
 			{
 				"name": "RunCancelled",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by the run method of each runner from fixtureProviders when the turn's signal is aborted once its 1.2-second wait ends; it is the RunCancelled class, an Error with the message 'The run was cancelled.'"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Passed through from remoteFixtureProject, which has no try/catch, so a failing git command (execFileSync throws on a non-zero exit), a file-system call, or a project-session or planning call rejects with that call's own Error."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "fixtureImage",
@@ -56,23 +81,28 @@
 						"name": "fixtureImage.size",
 						"type": "number",
 						"required": false,
-						"default": 96
+						"default": 96,
+						"description": "The side length in pixels of the square picture that fixtureImage draws, which matters when a caller needs a size other than the default 96 (the generator in fixtureProviders asks for 128). The code does not validate it, so a non-whole or non-positive value is passed to the PNG encoder as given.",
+						"examples": [96, 128]
 					},
 					{
 						"name": "fixtureImage.variant",
 						"type": "number",
 						"required": false,
-						"default": 0
+						"default": 0,
+						"description": "The tint of the picture, which matters when a copy must differ from the original: its blue value is 160 + 9 * variant, so 0 is the original picture. The code does not range-check it, and a blue value outside 0 to 255 wraps around, which happens for whole variants above 10 or below -17.",
+						"examples": [0, 1, 2]
 					}
 				],
 				"outputs": [
 					{
 						"name": "fixtureImage",
-						"type": "Uint8Array"
+						"type": "Uint8Array",
+						"description": "The PNG file bytes of the gradient picture for the given size and variant; remoteFixtureProject stores the default-size picture as its design image. Each call encodes a new picture, and nothing is cached."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "remoteFixtureProject",
@@ -80,11 +110,30 @@
 				"outputs": [
 					{
 						"name": "remoteFixtureProject",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "An object giving the absolute path of a new temporary Git repository (root), the id of its one planned page (entityId) and the id of a thread opened on that page (threadId). Each call creates a new repository under the OS temp directory, with a design image for the page, and the code never removes it.",
+						"examples": [
+							{
+								"root": "/private/var/folders/6z/q1x7n0kd2jv8f4b5w9mrt3sc0000gn/T/harness-remote-fixture-Yc5Qe2",
+								"entityId": "page.fixture-page",
+								"threadId": "b7e4c2a1-9d3f-4e6b-8a52-1f0c7d9e3b48"
+							},
+							{
+								"root": "/tmp/harness-remote-fixture-8fTz3K",
+								"entityId": "page.fixture-page",
+								"threadId": "3f9a0d6e-27c1-4b8e-9d54-6a2e1c8f7b03"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Passed through from remoteFixtureProject, which has no try/catch, so a failing git command (execFileSync throws on a non-zero exit), a file-system call, or a project-session or planning call rejects with that call's own Error."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "fixtureProviders",
@@ -92,11 +141,18 @@
 				"outputs": [
 					{
 						"name": "fixtureProviders",
-						"type": "Record<ProviderId, AgentRunner> & { generator: ImageGenerator; }"
+						"type": "Record<ProviderId, AgentRunner> & { generator: ImageGenerator; }",
+						"description": "The synthetic runners for codex and claude plus an image generator; they start no process and change no file. Each runner's discover reports one available model and its run returns a canned answer after about 1.2 seconds, while the generator's generateImage returns a 128-pixel fixture picture whose variant starts at 0 and rises by one with each call."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RunCancelled",
+						"type": "thrown",
+						"description": "Not thrown by fixtureProviders itself; the run method of each runner it returns rejects with RunCancelled when the turn's signal is aborted once the 1.2-second wait ends."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
