@@ -28,54 +28,184 @@
 				"name": "ExplorerUsageLink.entity",
 				"type": "ExplorerEntity",
 				"required": true,
-				"description": "Referenced entity at the shown revision; its own capture is used."
+				"description": "The consumer entity this link opens: `name` is the link text, `id` and `category` address its target, and `caller.sourceOnly` turns the link into a source button. Its screenshot is looked up from `unit`, and only for pages, layouts and components while the preview is open.",
+				"examples": [
+					{
+						"id": "reports.component.explorer-usage-link",
+						"category": "components",
+						"role": "Component",
+						"name": "ExplorerUsageLink",
+						"purpose": "Opens a consumer entity and previews its own revision-bound screenshot on hover or keyboard focus.",
+						"unit": {
+							"id": "reports.component.explorer-usage-link",
+							"kind": "component",
+							"status": "active",
+							"title": "ExplorerUsageLink",
+							"responsibility": "Opens a consumer entity and previews its own revision-bound screenshot on hover or keyboard focus.",
+							"dependencies": [
+								{
+									"unit": "reports.component.harness-entity-link",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-button",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-code",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-img",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-span",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.entity-lens",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.entity-screens",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.explorer-ui-usage-preview-style",
+									"via": "import"
+								},
+								{
+									"unit": "reports.model.explorer-types",
+									"via": "import"
+								}
+							],
+							"scenarios": [],
+							"owns": {
+								"source": ["packages/reports/src/components/explorer-ui/ExplorerUsageLink.svelte"],
+								"symbols": ["ExplorerUsageLink"]
+							},
+							"contract": {
+								"inputs": [
+									{
+										"name": "ExplorerUsageLink.entity",
+										"type": "ExplorerEntity",
+										"required": true
+									},
+									{
+										"name": "ExplorerUsageLink.nav",
+										"type": "EntityNav",
+										"required": true
+									},
+									{
+										"name": "ExplorerUsageLink.lens",
+										"type": "EntityLens",
+										"required": true
+									},
+									{
+										"name": "ExplorerUsageLink.mediaBase",
+										"type": "string",
+										"required": true
+									}
+								],
+								"outputs": [
+									{
+										"name": "ExplorerUsageLink",
+										"type": "markup"
+									}
+								],
+								"errors": [
+									{
+										"name": "nav.href callback error",
+										"type": "thrown"
+									},
+									{
+										"name": "nav.go callback error",
+										"type": "thrown"
+									},
+									{
+										"name": "nav.source callback error",
+										"type": "thrown"
+									},
+									{
+										"name": "lens.evidence callback error",
+										"type": "thrown"
+									}
+								]
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/reports/src/components/explorer-ui/ExplorerUsageLink.svelte"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "5d0b8e3f1a9c4e72"
+						},
+						"verdict": {
+							"passed": false,
+							"label": "Coverage incomplete",
+							"reasons": ["No scenario covers this unit; tests alone do not show how it behaves."]
+						},
+						"change": null,
+						"appRoute": null
+					}
+				]
 			},
 			{
 				"name": "ExplorerUsageLink.nav",
 				"type": "EntityNav",
 				"required": true,
-				"description": "Navigation preserving the selected branch and commit."
+				"description": "How the link reaches other places: `route` is the location every link target is derived from, so each target keeps its branch and commit. `href` and `go` give each entity link its address and click action, and the optional `source` enables the source button, which is disabled when it is absent."
 			},
 			{
 				"name": "ExplorerUsageLink.lens",
 				"type": "EntityLens",
 				"required": true,
-				"description": "The selected revision evidence resolver; no screenshot is borrowed from another entity."
+				"description": "The host's evidence resolver: this component calls only `evidence`, with the entity's own `unit`, and only while the preview of a visual entity (pages, layouts or components) is open. Non-visual entities and closed previews never call it."
 			},
 			{
 				"name": "ExplorerUsageLink.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "URL prefix resolving the referenced screenshot file."
+				"description": "The URL prefix of the media folder: the preview image's `src` is this prefix followed directly by the capture's file name, which is its media path with the leading `media/` removed, and no separator is added. It is read only while a visual entity's preview shows its image.",
+				"examples": ["/harness/media/", "/media/"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerUsageLink",
 				"type": "markup",
-				"description": "A consumer link or source button with a hover or keyboard preview. Visual-card previews stay inside all four card edges, in the larger clear area above or below the title; other previews stay within their owner width and viewport. Catalog states: default (a consumer link), visual-open (visual card preview), hover-open, inherited-open, missing-open, image-error-open, function-open, source-enabled and source-disabled (the source button)."
+				"description": "The link markup: an `hx-span` with class `ex-usage-link` holding either an `hx-button` source button, for an entity whose `caller.sourceOnly` is true, or an `EntityLink` labelled with `entity.name`. While hover or keyboard focus opens it (a touch pointer never does), a `role=\"tooltip\"` `hx-span` holds the preview: the screenshot with its origin line for visual categories, or else the code label (`caller.symbol`, falling back to `unit.title`) and `role`, with a text fallback when no screenshot is recorded or it fails to load."
 			}
 		],
 		"errors": [
 			{
 				"name": "nav.href callback error",
 				"type": "thrown",
-				"description": "An error from the address callback propagates while rendering an entity link."
+				"description": "The error that `nav.href` throws while an entity link renders; it propagates out of this component for every entity not shown as a source button."
 			},
 			{
 				"name": "nav.go callback error",
 				"type": "thrown",
-				"description": "An error from the navigation callback propagates when a link is activated."
+				"description": "The error that `nav.go` throws when a click the link handles calls it; a modified click or any other mouse button stays with the browser and never calls it."
 			},
 			{
 				"name": "nav.source callback error",
 				"type": "thrown",
-				"description": "An error from the source-opening callback propagates when its button is activated."
+				"description": "The error that `nav.source` throws when the source button is activated; the button's click handler does not catch it."
 			},
 			{
 				"name": "lens.evidence callback error",
 				"type": "thrown",
-				"description": "An error from the evidence callback propagates when a visual consumer preview opens."
+				"description": "The error that `lens.evidence` throws when a visual entity's preview opens on hover or focus; the component does not catch it."
 			}
 		],
 		"errorStatus": "declared",
