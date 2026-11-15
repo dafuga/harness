@@ -29,34 +29,35 @@
 				"name": "ExplorerFrame.host",
 				"type": "ExplorerScreenProps",
 				"required": true,
-				"description": "Everything the host gives a screen: the shown revision, address, entities and its answers."
+				"description": "The ExplorerScreenProps the host gives the screen once the revisions of the shown scope are read. The frame reads only route, scope.commit, scope.mode, head.registry, lens.href, onroute and mediaBase from it, never index, parent, entities or client, and it validates none of them, so reading through a missing route, scope, head or lens throws a TypeError."
 			},
 			{
 				"name": "ExplorerFrame.registryRequired",
 				"type": "boolean",
 				"required": false,
 				"default": true,
-				"description": "Defaults to true. Platform configuration can be read without a unit registry."
+				"description": "Defaults to true. When true and host.head.registry.available is falsy, the frame draws an EntityMissing notice titled 'No registry at this revision' instead of children, whose message is registry.gap (or, when that is null or undefined, 'No unit registry is stored at' and the first seven characters of host.scope.commit) followed by a period; when false, children is always drawn and head.registry is not read, so platform declarations are readable without a source-unit registry.",
+				"examples": [true, false]
 			},
 			{
 				"name": "ExplorerFrame.children",
 				"type": "Snippet<[EntityNav]>",
 				"required": true,
-				"description": "The screen to draw inside."
+				"description": "The screen the frame draws inside its ex-content element, rendered with the nav object (route, href, go and source) built from host, and only when the registry notice is not drawn. The frame has no try or catch around it, so an error it throws propagates out of the frame."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerFrame.screenRoot",
 				"type": "markup",
-				"description": "The root of a screen with the styles of the explorer. States: unindexed: A required missing registry displays the selected-revision registry notice. registry-optional: The frame renders its content even when the optional registry is unavailable. source-open: The source viewer dialog is open for the selected entity."
+				"description": "The root of the explorer screen is an hx-div with class ex-frame and data-harness-component harness-explorer-frame, styled display: contents so it draws no box, which holds an hx-div with class ex-content whose data-mode is host.scope.mode. Inside the content it renders children, or the registry notice when registryRequired is true and host.head.registry.available is falsy, and while a source is open for the shown commit and route it also renders the SourceDialog after them."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExplorerFrame.callerError",
 				"type": "unknown",
-				"description": "Caller-provided snippets, navigation and synchronous reader callbacks may throw; those errors propagate. This component defines no additional error type."
+				"description": "The frame defines no error type and catches nothing, so an error thrown while it renders, such as one from the children snippet or from reading through a missing host.route, host.scope, host.head or host.lens, propagates to the caller, and an error thrown by host.onroute reaches whoever called nav.go. Rejections from the archived source's files and read functions are caught by the source reader and never leave the frame."
 			}
 		],
 		"errorStatus": "declared",
