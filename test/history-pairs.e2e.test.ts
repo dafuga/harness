@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { sideImpact } from '../packages/reports/src/components/explorer-ui/harness-compare/sideImpact';
-import { type StoredSide } from '../src/utils/sideImpact';
+import { type StoredSide } from '../src/utils/explorer-ui/sideImpact';
 import { baselineRepo, type VerifyRepo } from './support/verifyRepo';
 
 let repo: VerifyRepo;

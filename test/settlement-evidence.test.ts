@@ -9,7 +9,7 @@ import {
 import { runIsolated } from '../src/utils/run-isolated/runIsolated';
 import { settleProcesses } from '../src/utils/run-isolated/settleProcesses';
 import { settlementReport } from '../src/utils/run-isolated/settlementReport';
-import { type Judged } from '../src/utils/settlementReport';
+import { type Judged } from '../src/utils/reports-media/settlementReport';
 import { realProbes } from './support/realProbes';
 import {
 	adopted,

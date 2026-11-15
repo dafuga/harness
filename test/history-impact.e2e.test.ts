@@ -12,12 +12,12 @@ const commits: Record<string, { commit: string; parent: string }> = {};
 const title = 'src/services/TitleService.ts';
 
 test.each([
-	['src/utils/sideImpact.ts', 'storedSide'],
+	['src/utils/explorer-ui/sideImpact.ts', 'storedSide'],
 	[
 		'src/services/explorer-ui/revision-detail-service/source-impact-service/sideImpact.ts',
 		'storedSide'
 	],
-	['src/utils/sideImpact.ts', 'sideImpact'],
+	['src/utils/explorer-ui/sideImpact.ts', 'sideImpact'],
 	['packages/reports/src/components/explorer-ui/harness-compare/sideImpact.ts', 'sideImpact']
 ])('stored history runtime cold-imports %s and calls %s', (entry, symbol) => {
 	const code = `

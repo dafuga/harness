@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { expect, test } from 'vitest';
 import { scenarioManifestSchema } from '../src/core/unitTypes';
-import { scenarioRequirements } from '../src/utils/scenarioRequirements';
+import { scenarioRequirements } from '../src/utils/verification-evidence/scenarioRequirements';
 import { verifyPlan } from '../src/services/verification-service/verifyPlan';
 import { defaultVerifyConfig } from '../src/core/verifyTypes';
 import { defaultUnitsConfig } from '../src/core/unitsConfig';

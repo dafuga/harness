@@ -9,7 +9,7 @@ import type { RecordView } from '../../../utils/recordView';
 import type { Explanation } from '../../../core/explanationTypes';
 import type { RegressionView } from '../../../core/regressionTypes';
 import type { BudgetEvent } from '../../../core/budgetTypes';
-import type { StoredSide } from '../../../utils/sideImpact';
+import type { StoredSide } from '../../../utils/explorer-ui/sideImpact';
 import type { CommitStatus } from '../../history-status-service/HistoryStatusService';
 import type { ProjectDependencies } from './projectDependencies.types';
 import type { ModuleCatalog } from '../../module-system/moduleDefinition.types';

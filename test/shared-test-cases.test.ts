@@ -4,7 +4,7 @@ import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { expect, test } from 'vitest';
 import { scenarioManifestSchema } from '../src/core/unitTypes';
-import { scenarioRequirements } from '../src/utils/scenarioRequirements';
+import { scenarioRequirements } from '../src/utils/verification-evidence/scenarioRequirements';
 import manifest from '../specification/scenarios/shared-test-cases.json';
 import unit from '../specification/units/desktop.component.workspace-shell.json';
 import { verificationTarget } from './verification-targets';
