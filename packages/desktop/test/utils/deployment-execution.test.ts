@@ -1,6 +1,6 @@
 import { expect, test, vi } from 'vitest';
 import { deploymentFixture } from '../deployment-fixture';
-import { saveDeployment } from '../../src/utils/deploymentState';
+import { saveDeployment } from '../../src/utils/projects-sessions/deploymentState';
 
 test('stale confirmation is refused, but captured lower receipts can advance during upload', async () => {
 	const f = await deploymentFixture();

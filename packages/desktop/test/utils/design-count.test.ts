@@ -1,7 +1,7 @@
 import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
 import type { RunRequest } from '../../src/models/DesktopBridge.types';
-import { designCount } from '../../src/utils/designCount';
+import { designCount } from '../../src/utils/planning-collaboration/designCount';
 
 /** How many design options a request asks for, and which requests are refused before any work. */
 const plan = { mode: 'plan' } as RunRequest;

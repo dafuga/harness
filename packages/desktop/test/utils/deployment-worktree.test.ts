@@ -3,7 +3,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { deploymentFixture } from '../deployment-fixture';
-import { deploymentWorktree } from '../../src/utils/deploymentWorktree';
+import { deploymentWorktree } from '../../src/utils/projects-sessions/deploymentWorktree';
 
 test('isolated builds preserve dirty source and remove only their own checkout on failure', async () => {
 	const f = await deploymentFixture();

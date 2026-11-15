@@ -1,6 +1,6 @@
 import { expect, test, vi } from 'vitest';
 import { deploymentFixture } from '../deployment-fixture';
-import { deploymentState } from '../../src/utils/deploymentState';
+import { deploymentState } from '../../src/utils/projects-sessions/deploymentState';
 test('background admission releases its caller and retains its project after navigation', async () => {
 	const f = await deploymentFixture();
 	let release!: () => void;

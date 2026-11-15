@@ -1,8 +1,8 @@
 import { expect, test } from 'vitest';
 import { deploymentFixture } from '../deployment-fixture';
 import { productionPromotion } from '../../src/utils/productionPromotion';
-import { deploymentProof } from '../../src/utils/deploymentProof';
-import { saveDeployment } from '../../src/utils/deploymentState';
+import { deploymentProof } from '../../src/utils/projects-sessions/deploymentProof';
+import { saveDeployment } from '../../src/utils/projects-sessions/deploymentState';
 
 test('production comparison counts a forward Git range, including initial deployment', async () => {
 	const f = await deploymentFixture();

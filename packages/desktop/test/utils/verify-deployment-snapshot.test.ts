@@ -1,6 +1,6 @@
 import { expect, test, vi } from 'vitest';
 import { deploymentFixture } from '../deployment-fixture';
-import { saveDeployment } from '../../src/utils/deploymentState';
+import { saveDeployment } from '../../src/utils/projects-sessions/deploymentState';
 test('an external destination change during upload cannot be overwritten with a verified receipt', async () => {
 	const f = await deploymentFixture();
 	const dev = await f.service.automatic({ environment: 'dev', commit: f.commit });
