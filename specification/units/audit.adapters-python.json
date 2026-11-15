@@ -12,12 +12,13 @@
 		"symbols": ["pythonAdapter"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "pythonAdapter",
-				"type": "AuditAdapter"
+				"type": "AuditAdapter",
+				"description": "pythonAdapter is the AuditAdapter for Python: it declares id 'python', label 'Python', profiles ['lib'], extensions ['.py'] and optionalTools ['ruff'], and its audit(file) returns the findings for the file passed to it. Its own rules are regular expressions and indentation counts, not a Python parser: they flag 'except:' or 'except Exception:' lines, def lines with a [], {} or set() default argument, classes longer than the maxClassLines limit, and files under scripts/ without a __main__ guard; audit also includes the imported auditFileLength and auditIndentedPythonBlocks checks, and this module never runs ruff."
 			}
 		],
 		"errors": [],
