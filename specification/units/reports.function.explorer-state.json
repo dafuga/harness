@@ -12,7 +12,7 @@
 			"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerState.ts",
 			"packages/reports/src/utils/explorer-ui/explorerState.ts",
 			"packages/reports/src/utils/explorer-ui/explorerState.types.ts",
-			"packages/reports/src/utils/explorerState.ts"
+			"packages/reports/src/utils/explorer-verdict/explorerState.ts"
 		],
 		"symbols": [
 			"captureUnbound",
@@ -29,10 +29,7 @@
 			"Judged",
 			"Users",
 			"captureUnbound",
-			"explorerState",
-			"reasonText",
-			"scenarioFor",
-			"coverageWorst"
+			"explorerState"
 		]
 	},
 	"contract": {

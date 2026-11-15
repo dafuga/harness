@@ -6,7 +6,7 @@ import { focusedScreens } from '../../../../src/workflows/verification-evidence/
 import { scenarioCoverage } from '../../../../src/services/verification-service/scenarioCoverage';
 import type { Gathered } from '../../../../src/utils/verification-evidence/gatherCaptures';
 import type { HarnessScenario, HarnessUnit } from '../../src/models/explorer-ui/Harness.types';
-import { scenarioFor } from '../../src/utils/explorerState';
+import { scenarioFor } from '../../src/utils/explorer-ui/explorerState';
 import { reportBuildIdentity } from '../../src/utils/reports-media/reportBuildIdentity';
 import { captureFlow } from './support/explorerFlow';
 import { askedFor, explorerFlows, explorerStates as states } from './support/explorerStates';

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { harnessBudget } from '../../src/utils/harnessBudget';
+import { harnessBudget } from '../../src/utils/explorer-ui/harnessBudget';
 
 const base = { unit: 'kernel.counter', workload: null, profile: null };
 const measured = (value: number | null, extra: object = {}) => ({

@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import type { HarnessScenario, HarnessUnit } from '../../src/models/explorer-ui/Harness.types';
 import { explorerRelations } from '../../src/utils/explorer-ui/explorerRelations';
-import { scenarioFor } from '../../src/utils/explorerState';
+import { scenarioFor } from '../../src/utils/explorer-ui/explorerState';
 import { revision } from '../explorerFixture';
 
 // The registry and the scenario of this repository as they are stored: what `harness units

@@ -10,7 +10,7 @@ import {
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
-import { frozenBuild } from '../../src/utils/frozenBuild';
+import { frozenBuild } from '../../src/utils/development-tooling/frozenBuild';
 
 const made: string[] = [];
 /** A small stand-in for a compiled build: an entry and a file it would load later. */

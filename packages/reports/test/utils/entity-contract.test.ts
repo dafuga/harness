@@ -5,7 +5,7 @@ import {
 	humanize,
 	requiredStates
 } from '../../src/utils/explorer-ui/entityContract';
-import { scenarioFor } from '../../src/utils/explorerState';
+import { scenarioFor } from '../../src/utils/explorer-ui/explorerState';
 import { ids, scenarios, units } from '../entityUnits';
 
 const find = (id: string) => units.find((unit) => unit.id === id)!;
