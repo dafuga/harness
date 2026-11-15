@@ -84,7 +84,7 @@ export function assertVideoCoverage(
 
 export function videoLibraryFixture() {
 	return {
-		schemaVersion: 1,
+		schemaVersion: 1 as const,
 		viewports: [{ id: 'desktop', width: 920, height: 700 }],
 		clips: [
 			{

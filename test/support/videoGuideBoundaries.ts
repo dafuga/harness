@@ -57,6 +57,7 @@ export function assertVideoGuideBoundaries() {
 		viewport: 'desktop',
 		status: 'passed',
 		path: 'evidence/clip.mp4',
+		media: 'media/clip.mp4',
 		sha256: 'c'.repeat(64),
 		bytes: 1,
 		capturedAt: 'now',
