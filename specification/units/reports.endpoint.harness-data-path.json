@@ -12,22 +12,30 @@
 		"symbols": ["GET"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GET.event",
 				"type": "RequestEvent",
-				"required": true
+				"required": true,
+				"description": "The SvelteKit RequestEvent of the `/harness/data/[...path]` request; the handler reads only `event.params.path` (`''` when absent) and the policy reads only `event.getClientAddress`. The request is admitted only when `HARNESS_OWNER_MODE` is exactly `loopback`, the bind address (`HARNESS_BIND`, else `HOST`) is a loopback address, `ADDRESS_HEADER` is unset or blank, and `event.getClientAddress()` returns a loopback address; any other request gets 403 Forbidden."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GET",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The `Response` that `consoleServer().json` resolves to: a 403 `text/plain` `Forbidden` when the guard refuses, a 200 `application/json` body for `build.json` or for a stored `index.json`, `activity.json`, `revisions/<commit>.json` or `sides/<commit>.json`, and otherwise a 404 `text/plain` `Not found` (any other path, or a file that is missing or unreadable). Stored JSON is returned as the file's text, except that with `HARNESS_SITE_ROOT` set a `revisions/<commit>.json` body may be re-serialized with recomputed `sourceMeasurements` when a unit lacks its source-bytes or complexity figure for that commit."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by `JSON.parse` in `selectedRevision` when `HARNESS_SITE_ROOT` is set and the `revisions/<commit>.json` file read from `HARNESS_CONSOLE_DATA` is not valid JSON; nothing on the call path catches it, so GET rejects."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "GET",
@@ -35,17 +43,25 @@
 					{
 						"name": "GET.event",
 						"type": "RequestEvent",
-						"required": true
+						"required": true,
+						"description": "The SvelteKit RequestEvent of the `/harness/data/[...path]` request; the handler reads only `event.params.path` (`''` when absent) and the policy reads only `event.getClientAddress`. The request is admitted only when `HARNESS_OWNER_MODE` is exactly `loopback`, the bind address (`HARNESS_BIND`, else `HOST`) is a loopback address, `ADDRESS_HEADER` is unset or blank, and `event.getClientAddress()` returns a loopback address; any other request gets 403 Forbidden."
 					}
 				],
 				"outputs": [
 					{
 						"name": "GET",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The `Response` that `consoleServer().json` resolves to: a 403 `text/plain` `Forbidden` when the guard refuses, a 200 `application/json` body for `build.json` or for a stored `index.json`, `activity.json`, `revisions/<commit>.json` or `sides/<commit>.json`, and otherwise a 404 `text/plain` `Not found` (any other path, or a file that is missing or unreadable). Stored JSON is returned as the file's text, except that with `HARNESS_SITE_ROOT` set a `revisions/<commit>.json` body may be re-serialized with recomputed `sourceMeasurements` when a unit lacks its source-bytes or complexity figure for that commit."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by `JSON.parse` in `selectedRevision` when `HARNESS_SITE_ROOT` is set and the `revisions/<commit>.json` file read from `HARNESS_CONSOLE_DATA` is not valid JSON; nothing on the call path catches it, so GET rejects."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
