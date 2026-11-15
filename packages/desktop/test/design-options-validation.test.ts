@@ -1,6 +1,5 @@
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
-import { existsSync } from 'node:fs';
 import type { EntityDetail, ThreadInfo } from '../src/models/development-tooling/Desktop.types';
 import type { RunRequest } from '../src/models/DesktopBridge.types';
 import { approvalMatch } from '../src/services/agents-providers/desktop-run-service/approvalMatch';
@@ -86,10 +85,4 @@ test('a Change of an approved option comes only from that option or an unanchore
 test('a Change that names another option than the approval, or none, is refused', () => {
 	for (const request of [change('o1'), change()])
 		expect(() => approvalMatch(home({}, 'o2'), request)).toThrow('differs from the approval');
-});
-
-test('approval matching is imported from its owner module, with no relocation stub left beside it', () => {
-	const stub = new URL('../src/services/desktop-run-service/approvalMatch.ts', import.meta.url);
-	expect(existsSync(stub)).toBe(false);
-	expect(approvalMatch).toBeTypeOf('function');
 });

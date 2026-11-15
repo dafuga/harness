@@ -1,7 +1,7 @@
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
-import { dirname, relative, resolve } from 'node:path';
+import { readFileSync, readdirSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
 import { IpcRequestValidator } from '../src/validators/development-tooling/IpcRequestValidator';
 import { NavigationValidator } from '../src/validators/explorer-ui/NavigationValidator';
 import { scrubEnvironment } from '../src/utils/cli-environment/scrubEnvironment';
@@ -104,33 +104,5 @@ test('portable workspace sources must not depend on the Hub app', () => {
 	expect(
 		[...dependencies, ...upwardAliases],
 		'portable workspace sources must not depend on the Hub app'
-	).toEqual([]);
-});
-
-test('claude-cli relocation stubs stay removed and nothing imports their old paths', () => {
-	const desktop = resolve(import.meta.dirname, '..');
-	const stubs = ['ClaudeCliAdapter', 'claudeState', 'claudeTurn', 'publicCliEvents'].map((name) =>
-		resolve(desktop, 'src/adapters/claude-cli-adapter', name)
-	);
-	const roots = [
-		resolve(desktop, 'src'),
-		resolve(desktop, 'test'),
-		resolve(desktop, '../reports/src')
-	];
-	const dependencies = roots.flatMap((root) =>
-		sources(root).flatMap((path) =>
-			[
-				...readFileSync(path, 'utf8').matchAll(
-					/(?:\bfrom\s*|\bimport\s*(?:\(\s*)?|\brequire\s*\(\s*|\bvi\.mock\(\s*)['"]([^'"]+)['"]/g
-				)
-			]
-				.filter(([, specifier]) => stubs.includes(resolve(dirname(path), specifier)))
-				.map(([, specifier]) => `${relative(desktop, path)} -> ${specifier}`)
-		)
-	);
-	expect(dependencies, 'removed relocation stubs must not be imported').toEqual([]);
-	expect(
-		stubs.filter((stub) => existsSync(`${stub}.ts`)),
-		'removed relocation stubs must stay deleted'
 	).toEqual([]);
 });

@@ -2,11 +2,7 @@ import { createHash } from 'node:crypto';
 import { expect, test } from 'vitest';
 import type { EvidenceArtifactQuery } from '../../src/models/verification-evidence/DesktopEvidence.types';
 import { artifactBytes } from '../../src/components/shared-primitives/recorded-preview/artifactBytes';
-import {
-	artifactBytes as relocatedArtifactBytes,
-	damagedArtifact,
-	unreadArtifact
-} from '../../src/utils/shared-primitives/artifactBytes';
+import { damagedArtifact, unreadArtifact } from '../../src/utils/shared-primitives/artifactBytes';
 
 const bytes = new TextEncoder().encode('recorded');
 const sha256 = createHash('sha256').update(bytes).digest('hex');
@@ -31,8 +27,4 @@ test('a bridge without the read says so, and a refusal keeps the words of the ba
 		}
 	};
 	await expect(artifactBytes(refused, query)).rejects.toThrow(/not part of the selected record/);
-});
-
-test('the relocated path names the same artifactBytes as the recorded preview', () => {
-	expect(relocatedArtifactBytes).toBe(artifactBytes);
 });

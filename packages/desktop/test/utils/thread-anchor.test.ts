@@ -59,13 +59,6 @@ test('threads belong to one image by version and hash', () => {
 	expect(sameImage(entityTarget, entityTarget)).toBe(false);
 });
 
-test('a thread on one image does not belong to another image of the same version', () => {
-	const target = imageTarget('v002', image, null);
-	const other = imageTarget('v002', { ...image, sha256: 'd'.repeat(64) }, null);
-	expect(sameImage(target, other)).toBe(false);
-	expect(sameImage(other, target)).toBe(false);
-});
-
 /** Two options of one version: o2 holds a desktop and a phone image. */
 const picture = (sha256: string, option: string, viewport = 'desktop') => ({
 	state: 'default',

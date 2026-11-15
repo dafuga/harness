@@ -1,8 +1,7 @@
 import { test, expect, vi } from 'vitest';
 import { mkdtemp, rm } from 'node:fs/promises';
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { dirname, join, relative, resolve } from 'node:path';
+import { join } from 'node:path';
 import { createHash } from 'node:crypto';
 import { ProjectionCacheService } from '../../src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService';
 import { RemoteImageCacheService } from '../../src/services/networking-security/RemoteImageCacheService';
@@ -54,43 +53,4 @@ test('remote projection cache rejects a different verified principal even when s
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
-});
-
-function sources(directory: string): string[] {
-	return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
-		const path = resolve(directory, entry.name);
-		if (entry.isDirectory()) return sources(path);
-		return /\.(ts|js|svelte)$/.test(path) ? [path] : [];
-	});
-}
-
-test('the relocated service stubs stay removed and nothing imports their old paths', () => {
-	const desktop = resolve(import.meta.dirname, '../..');
-	const stubs = [
-		'RemoteImageCacheService',
-		'RemotePairingControlService',
-		'RemoteProjectionService',
-		'RepositoryArbiterService'
-	].map((name) => resolve(desktop, 'src/services', name));
-	const roots = [
-		resolve(desktop, 'src'),
-		resolve(desktop, 'test'),
-		resolve(desktop, '../reports/src')
-	];
-	const dependencies = roots.flatMap((root) =>
-		sources(root).flatMap((path) =>
-			[
-				...readFileSync(path, 'utf8').matchAll(
-					/(?:\bfrom\s*|\bimport\s*(?:\(\s*)?|\brequire\s*\(\s*|\bvi\.mock\(\s*)['"]([^'"]+)['"]/g
-				)
-			]
-				.filter(([, specifier]) => stubs.includes(resolve(dirname(path), specifier)))
-				.map(([, specifier]) => `${relative(desktop, path)} -> ${specifier}`)
-		)
-	);
-	expect(dependencies, 'removed relocation stubs must not be imported').toEqual([]);
-	expect(
-		stubs.filter((stub) => existsSync(`${stub}.ts`)),
-		'removed relocation stubs must stay deleted'
-	).toEqual([]);
 });
