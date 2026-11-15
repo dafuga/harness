@@ -33,34 +33,57 @@
 				"name": "pngChecksum.bytes",
 				"type": "Buffer",
 				"required": true,
-				"description": "Bytes over which to compute the PNG-style CRC-32."
+				"description": "Bytes the CRC-32 is computed over, read from first to last with no length limit. Inside this module, pngFacts passes each chunk's type and data here, never its length or CRC field, and an empty Buffer returns 0."
 			},
 			{
 				"name": "mediaFacts.bytes",
 				"type": "Buffer",
 				"required": true,
-				"description": "Original image or audio bytes to inspect."
+				"description": "Complete image or audio file to inspect, starting at the 8-byte PNG signature or the RIFF tag. PNG input must pass the checksum of every chunk through IEND and inflate to the size its IHDR implies unless it is interlaced, and WAV input must have a RIFF/WAVE header, a fmt chunk of at least 16 bytes with format tag 1 (PCM) or 3 (IEEE float), a non-empty data chunk and a RIFF size no larger than the bytes after its first 8."
 			},
 			{
 				"name": "mediaFacts.mediaType",
 				"type": "string",
 				"required": true,
-				"description": "Declared MIME type: image/png, audio/wav or audio/x-wav are supported."
+				"description": "Declared MIME type that selects the parser: image/png selects pngFacts, and audio/wav or audio/x-wav select wavFacts. Matching is exact and case-sensitive, and any other value returns an error reading unsupported media type followed by the value.",
+				"examples": ["image/png", "audio/wav", "audio/x-wav"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "pngChecksum",
 				"type": "number",
-				"description": "Unsigned CRC-32 checksum of the supplied bytes."
+				"description": "Unsigned CRC-32 of the supplied bytes, computed with the reflected 0xEDB88320 polynomial and initial and final XOR 0xFFFFFFFF, so it can be compared with the CRC that PNG chunks store. The value is an integer from 0 to 4294967295, and empty input gives 0.",
+				"examples": [2923585666, 3421780262]
 			},
 			{
 				"name": "mediaFacts",
 				"type": "MediaFacts",
-				"description": "Image width/height or audio duration in seconds rounded to six decimals; otherwise an error description for unsupported type, damaged container, checksum, compressed pixels or audio format."
+				"description": "Inspection result: { kind: 'image', width, height } with the IHDR width and height in pixels, { kind: 'audio', durationSeconds } with the data chunk length divided by sample rate times block align and rounded to six decimal places, or { error: string } with the message of the first failed check. Damaged or unsupported files return { error } instead of throwing, except a PNG with a short IHDR chunk (see errors).",
+				"examples": [
+					{
+						"kind": "image",
+						"width": 1280,
+						"height": 720
+					},
+					{
+						"kind": "audio",
+						"durationSeconds": 2.5
+					},
+					{
+						"error": "truncated before the IEND chunk"
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Thrown out of mediaFacts when a PNG reaches its IEND chunk with an IHDR chunk of fewer than 8 data bytes whose CRC is valid, because pixelFacts reads the width and height before it checks the header length. No other input of the declared types throws, since malformed PNG and WAV data comes back as an error object."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "pngChecksum",
@@ -69,18 +92,19 @@
 						"name": "pngChecksum.bytes",
 						"type": "Buffer",
 						"required": true,
-						"description": "Bytes over which to compute the PNG-style CRC-32."
+						"description": "Bytes the CRC-32 is computed over, read from first to last with no length limit. Inside this module, pngFacts passes each chunk's type and data here, never its length or CRC field, and an empty Buffer returns 0."
 					}
 				],
 				"outputs": [
 					{
 						"name": "pngChecksum",
 						"type": "number",
-						"description": "Unsigned CRC-32 checksum of the supplied bytes."
+						"description": "Unsigned CRC-32 of the supplied bytes, computed with the reflected 0xEDB88320 polynomial and initial and final XOR 0xFFFFFFFF, so it can be compared with the CRC that PNG chunks store. The value is an integer from 0 to 4294967295, and empty input gives 0.",
+						"examples": [2923585666, 3421780262]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "mediaFacts",
@@ -89,24 +113,45 @@
 						"name": "mediaFacts.bytes",
 						"type": "Buffer",
 						"required": true,
-						"description": "Original image or audio bytes to inspect."
+						"description": "Complete image or audio file to inspect, starting at the 8-byte PNG signature or the RIFF tag. PNG input must pass the checksum of every chunk through IEND and inflate to the size its IHDR implies unless it is interlaced, and WAV input must have a RIFF/WAVE header, a fmt chunk of at least 16 bytes with format tag 1 (PCM) or 3 (IEEE float), a non-empty data chunk and a RIFF size no larger than the bytes after its first 8."
 					},
 					{
 						"name": "mediaFacts.mediaType",
 						"type": "string",
 						"required": true,
-						"description": "Declared MIME type: image/png, audio/wav or audio/x-wav are supported."
+						"description": "Declared MIME type that selects the parser: image/png selects pngFacts, and audio/wav or audio/x-wav select wavFacts. Matching is exact and case-sensitive, and any other value returns an error reading unsupported media type followed by the value.",
+						"examples": ["image/png", "audio/wav", "audio/x-wav"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "mediaFacts",
 						"type": "MediaFacts",
-						"description": "Image width/height or audio duration in seconds rounded to six decimals; otherwise an error description for unsupported type, damaged container, checksum, compressed pixels or audio format."
+						"description": "Inspection result: { kind: 'image', width, height } with the IHDR width and height in pixels, { kind: 'audio', durationSeconds } with the data chunk length divided by sample rate times block align and rounded to six decimal places, or { error: string } with the message of the first failed check. Damaged or unsupported files return { error } instead of throwing, except a PNG with a short IHDR chunk (see errors).",
+						"examples": [
+							{
+								"kind": "image",
+								"width": 1280,
+								"height": 720
+							},
+							{
+								"kind": "audio",
+								"durationSeconds": 2.5
+							},
+							{
+								"error": "truncated before the IEND chunk"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Thrown out of mediaFacts when a PNG reaches its IEND chunk with an IHDR chunk of fewer than 8 data bytes whose CRC is valid, because pixelFacts reads the width and height before it checks the header length. No other input of the declared types throws, since malformed PNG and WAV data comes back as an error object."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
