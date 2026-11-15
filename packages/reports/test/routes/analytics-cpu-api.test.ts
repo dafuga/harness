@@ -1,6 +1,6 @@
 import { expect, test, vi } from 'vitest';
 const snapshot = vi.hoisted(() => vi.fn());
-vi.mock('../../../../src/services/cpu-usage-service/CpuUsageService', () => ({
+vi.mock('../../../../src/services/development-tooling/cpu-usage-service/CpuUsageService', () => ({
 	CpuUsageService: class {
 		snapshot = snapshot;
 	}

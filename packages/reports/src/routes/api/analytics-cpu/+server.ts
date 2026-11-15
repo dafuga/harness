@@ -1,6 +1,6 @@
 // @harness-uid u_zdndfobdao
 import { json } from '@sveltejs/kit';
-import { CpuUsageService } from '../../../../../../src/services/cpu-usage-service/CpuUsageService';
+import { CpuUsageService } from '../../../../../../src/services/development-tooling/cpu-usage-service/CpuUsageService';
 import { siteProcesses } from './siteProcesses';
 
 const service = new CpuUsageService();
