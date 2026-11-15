@@ -11,17 +11,9 @@
 		"source": [
 			"src/workflows/development-tooling/load-units/loadUnits.ts",
 			"src/workflows/development-tooling/load-units/loadUnits.types.ts",
-			"src/workflows/loadUnits.ts"
+			"src/workflows/load-units/loadUnits.ts"
 		],
-		"symbols": [
-			"loadUnits",
-			"graphOf",
-			"LoadedUnits",
-			"LoadedUnits",
-			"loadUnits",
-			"graphOf",
-			"LoadedUnits"
-		]
+		"symbols": ["loadUnits", "graphOf", "LoadedUnits", "LoadedUnits", "loadUnits", "graphOf"]
 	},
 	"contract": {
 		"origin": "derived",

@@ -12,7 +12,10 @@ import {
 } from '../src/services/development-tooling/source-index-service/SourceIndexService';
 import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
 import { scanImports } from '../src/services/source-index-service/scanImports';
-import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
+import {
+	loadUnits,
+	type LoadedUnits
+} from '../src/workflows/development-tooling/load-units/loadUnits';
 
 /**
  * THE HUB IMPORTS DESKTOP SOURCE THROUGH ITS BUILD ALIAS. Each such import has to be an edge of

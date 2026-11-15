@@ -5,7 +5,10 @@ import type { ImpactSide } from '../src/core/development-tooling/impactTypes';
 import { ImpactService } from '../src/services/reports-media/impact-service/ImpactService';
 import { SourceGraphService } from '../src/services/SourceGraphService';
 import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
-import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
+import {
+	loadUnits,
+	type LoadedUnits
+} from '../src/workflows/development-tooling/load-units/loadUnits';
 
 let loaded: LoadedUnits;
 beforeAll(async () => {

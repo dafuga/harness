@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/workflows/importAnalytics.ts",
-			"src/workflows/reports-media/importAnalytics.ts"
-		],
-		"symbols": ["importAnalytics", "importAnalytics"]
+		"source": ["src/workflows/reports-media/importAnalytics.ts"],
+		"symbols": ["importAnalytics"]
 	},
 	"contract": {
 		"origin": "derived",

@@ -38,7 +38,7 @@ Each link opens the unit's History section on main. Documentation-only contract 
 | [Commit labels](http://127.0.0.1:5688/harness/branch/main/functions/reports.function.entity-lens/history?helper=shortCommit)            | Document full, short and empty commit identifiers.                             |
 | [Name casing](http://127.0.0.1:5688/harness/branch/main/functions/function.case/history)                                                | Document each of four casing transformations independently.                    |
 
-These registered backend units have no explorer category: [workflow.load-units](../../../src/workflows/loadUnits.ts) preserves examples during indexing; [validator.unit-registry](../../../src/validators/UnitRegistryValidator.ts) rejects missing examples; [template.project-guidance](../../../src/templates/projects-sessions/projectGuidance.ts) emits the tenant rule. Their source links identify that presentation gap rather than inventing explorer routes.
+These registered backend units have no explorer category: [workflow.load-units](../../../src/workflows/development-tooling/load-units/loadUnits.ts) preserves examples during indexing; [validator.unit-registry](../../../src/validators/UnitRegistryValidator.ts) rejects missing examples; [template.project-guidance](../../../src/templates/projects-sessions/projectGuidance.ts) emits the tenant rule. Their source links identify that presentation gap rather than inventing explorer routes.
 
 This branch also contains the previously requested GitHub-only Source tab and compact History presentation. Their independent regression commits remain preserved for landing.
 

@@ -11,7 +11,10 @@ import {
 	type SourceIndex
 } from '../src/services/development-tooling/source-index-service/SourceIndexService';
 import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
-import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
+import {
+	loadUnits,
+	type LoadedUnits
+} from '../src/workflows/development-tooling/load-units/loadUnits';
 
 /**
  * THE SHARED SEARCH OF THE TOP BAR. The desktop's top bar renders the entity search of the reports

@@ -18,7 +18,10 @@ import {
 import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
 import { scanImports } from '../src/services/source-index-service/scanImports';
 import { showUnit } from '../src/workflows/inspectUnits';
-import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
+import {
+	loadUnits,
+	type LoadedUnits
+} from '../src/workflows/development-tooling/load-units/loadUnits';
 
 /**
  * ONE WORKSPACE, SEVERAL APPS. The hosted Web workspace and the Electron and iOS workspace show

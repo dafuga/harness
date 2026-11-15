@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { test } from 'vitest';
 import { expect } from './verificationExpect';
-import { analyticsSnapshot } from '../src/workflows/analyticsMetrics';
+import { analyticsSnapshot } from '../src/cli/program/analyticsMetrics';
 import type { AnalyticsEvent } from '../src/core/reports-media/analyticsTypes';
 import {
 	browserDiagnosticSchema,

@@ -1,5 +1,5 @@
 import type { Observation, RuntimeInput } from './game-measurements-fixture.types';
-import { loadUnits } from '../../../../src/workflows/loadUnits';
+import { loadUnits } from '../../../../src/workflows/development-tooling/load-units/loadUnits';
 import { CommitTreeAdapter } from '../../../../src/adapters/git-source-history/CommitTreeAdapter';
 import { WorkingTreeAdapter } from '../../../../src/adapters/git-source-history/WorkingTreeAdapter';
 import { unitMeasurements } from '../../../../src/utils/development-tooling/unitMeasurements';

@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/analyticsMetrics.ts", "src/workflows/analyticsMetrics.ts"],
-		"symbols": ["analyticsSnapshot", "counts", "analyticsSnapshot", "counts"]
+		"source": ["src/cli/program/analyticsMetrics.ts"],
+		"symbols": ["analyticsSnapshot", "counts"]
 	},
 	"contract": {
 		"origin": "derived",

@@ -10,8 +10,7 @@
 	"owns": {
 		"source": [
 			"src/workflows/development-tooling/loadRevisions.ts",
-			"src/workflows/development-tooling/loadRevisions.types.ts",
-			"src/workflows/loadRevisions.ts"
+			"src/workflows/development-tooling/loadRevisions.types.ts"
 		],
 		"symbols": [
 			"loadSide",
@@ -21,11 +20,7 @@
 			"RevisionSide",
 			"RevisionRange",
 			"RevisionSide",
-			"RevisionRange",
-			"loadSide",
-			"emptySide",
-			"openRange",
-			"commitLoader"
+			"RevisionRange"
 		]
 	},
 	"contract": {
