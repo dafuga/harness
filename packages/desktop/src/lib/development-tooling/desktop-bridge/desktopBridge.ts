@@ -13,7 +13,7 @@ import { ProjectOperationsService } from './ProjectOperationsService';
 import { RecordedEvidenceService } from './RecordedEvidenceService';
 import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
 import type { ProjectSessionService } from '../../../services/projects-sessions/project-session-service/ProjectSessionService';
-import type { DeploymentBridge } from '../../../models/Deployment.types';
+import type { DeploymentBridge } from '../../../models/development-tooling/Deployment.types';
 import type { GameDesktopBridge } from '../../../models/game-authoring/GameDesktopBridge.types';
 const projectIndependentMethods: Array<keyof DesktopBridge> = [
 	'openProject',

@@ -1,5 +1,5 @@
 // @harness-uid u_sgoclx37n5
-import { deploymentEnvironments } from '../../models/Deployment.types';
+import { deploymentEnvironments } from '../../models/development-tooling/Deployment.types';
 import { evidencePayload } from '../verification-evidence/evidencePayload';
 import { categories } from '../../models/development-tooling/Desktop.types';
 import {

@@ -4,7 +4,7 @@ export type {
 	DesignOptionInfo,
 	DesignRevision,
 	DesignVersion
-} from '../DesignVersion.types';
+} from '../planning-collaboration/DesignVersion.types';
 /**
  * What the Electron main process tells the renderer about a project. Every value here is
  * serializable: it crosses the preload bridge by structured clone.

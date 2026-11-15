@@ -4,7 +4,7 @@ import {
 	type DeploymentActivity,
 	type DeploymentBridge,
 	type DeploymentReceipt
-} from '../../../../../desktop/src/models/Deployment.types';
+} from '../../../../../desktop/src/models/development-tooling/Deployment.types';
 import type { DesktopCase } from './desktopData.svelte';
 import { commits } from './explorerData';
 import { desktopData } from './sealedData';

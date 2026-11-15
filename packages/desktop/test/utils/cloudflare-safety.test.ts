@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { cloudflareSafety } from '../../src/utils/networking-security/cloudflareSafety';
-import type { CloudflareTarget } from '../../src/models/Deployment.types';
+import type { CloudflareTarget } from '../../src/models/development-tooling/Deployment.types';
 const target = {
 	kind: 'workers',
 	environment: 'stage',

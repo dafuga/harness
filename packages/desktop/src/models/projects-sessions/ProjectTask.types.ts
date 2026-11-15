@@ -1,5 +1,5 @@
 // @harness-uid u_3mcwb2xyks
-import type { DeploymentEnvironment } from '../Deployment.types';
+import type { DeploymentEnvironment } from '../development-tooling/Deployment.types';
 import type { ProjectRunRequest } from '../development-tooling/DesktopBridge.types';
 /** A project conversation tied to the exact revision the person is viewing. */
 export interface ProjectTaskRequest extends Omit<ProjectRunRequest, 'intent' | 'mode'> {

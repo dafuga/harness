@@ -10,7 +10,7 @@ import type {
 	CloudflareTarget,
 	DeploymentPlugin,
 	DeployExecutor
-} from '../src/models/Deployment.types';
+} from '../src/models/development-tooling/Deployment.types';
 const roots: string[] = [];
 const registries: DeploymentActivityService[] = [];
 afterEach(async () => {

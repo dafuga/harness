@@ -1,5 +1,5 @@
-import { deploymentSteps } from '../src/models/Deployment.types';
-import type { DeploymentActivity } from '../src/models/Deployment.types';
+import { deploymentSteps } from '../src/models/development-tooling/Deployment.types';
+import type { DeploymentActivity } from '../src/models/development-tooling/Deployment.types';
 export function deploymentActivityFixture(
 	values: Partial<DeploymentActivity> = {}
 ): DeploymentActivity {
