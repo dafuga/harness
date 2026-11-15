@@ -12,51 +12,206 @@
 		"symbols": ["taskWorkspace", "snapshotTaskWork"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "taskWorkspace.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository path passed to GitAdapter and used to resolve the shared task-worktree cache; Git must be able to resolve --git-common-dir there.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+				]
 			},
 			{
 				"name": "taskWorkspace.task",
 				"type": "ModuleTask",
-				"required": true
+				"required": true,
+				"description": "Stored module task whose claim token identifies the task worktree and whose repairCommit, when present, takes precedence over sourceCommit; a claim is required at runtime although the schema permits it to be absent.",
+				"examples": [
+					{
+						"id": "task.task-workspace",
+						"title": "Prepare task workspace",
+						"feature": {
+							"id": "feature.task-workspaces",
+							"goal": "Prepare isolated workspaces for module tasks",
+							"tldr": "Create and snapshot a task workspace"
+						},
+						"module": {
+							"id": "service.agents-providers-module-task-worker-service-task-workspace",
+							"goal": "Create and snapshot task workspaces",
+							"files": ["src/services/agents-providers/module-task-worker-service/taskWorkspace.ts"]
+						},
+						"instructions": "Prepare the task worktree and preserve its source commit.",
+						"wantedContract": {
+							"responsibility": "Prepare and snapshot task workspaces",
+							"inputs": [],
+							"outputs": [
+								{
+									"name": "workspace",
+									"type": "unknown"
+								}
+							],
+							"errors": []
+						},
+						"model": "auto",
+						"sourceCommit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"contractHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"status": "running",
+						"repairCommit": "cccccccccccccccccccccccccccccccccccccccc",
+						"reviews": [],
+						"createdAt": "2026-11-15T09:00:00.000Z",
+						"claim": {
+							"worker": "service.task-worker-1",
+							"token": "123e4567-e89b-42d3-a456-426614174000",
+							"startedAt": "2026-11-15T09:01:00.000Z",
+							"owner": {
+								"workspace": "0af76519-7c20-4a4d-9f5c-d7c4e9c3e11a",
+								"pid": 27381,
+								"startedAt": "2026-11-15T08:59:00.000Z"
+							}
+						},
+						"claimHistory": [],
+						"attempts": []
+					}
+				]
 			},
 			{
 				"name": "taskWorkspace.selection",
 				"type": "TaskSelection",
-				"required": true
+				"required": true,
+				"description": "Provider, model and intelligence values copied into the pending task result.",
+				"examples": [
+					{
+						"provider": "codex",
+						"model": "auto",
+						"intelligence": "high"
+					}
+				]
 			},
 			{
 				"name": "snapshotTaskWork.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository path used to validate the worktree repository and create its checkpoint.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+				]
 			},
 			{
 				"name": "snapshotTaskWork.task",
 				"type": "ModuleTask",
-				"required": true
+				"required": true,
+				"description": "Stored module task used to select the source commit and restrict changed paths to module.files.",
+				"examples": [
+					{
+						"id": "task.task-workspace",
+						"title": "Prepare task workspace",
+						"feature": {
+							"id": "feature.task-workspaces",
+							"goal": "Prepare isolated workspaces for module tasks",
+							"tldr": "Create and snapshot a task workspace"
+						},
+						"module": {
+							"id": "service.agents-providers-module-task-worker-service-task-workspace",
+							"goal": "Create and snapshot task workspaces",
+							"files": ["src/services/agents-providers/module-task-worker-service/taskWorkspace.ts"]
+						},
+						"instructions": "Prepare the task worktree and preserve its source commit.",
+						"wantedContract": {
+							"responsibility": "Prepare and snapshot task workspaces",
+							"inputs": [],
+							"outputs": [
+								{
+									"name": "workspace",
+									"type": "unknown"
+								}
+							],
+							"errors": []
+						},
+						"model": "auto",
+						"sourceCommit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"contractHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"status": "running",
+						"repairCommit": "cccccccccccccccccccccccccccccccccccccccc",
+						"reviews": [],
+						"createdAt": "2026-11-15T09:00:00.000Z",
+						"claim": {
+							"worker": "service.task-worker-1",
+							"token": "123e4567-e89b-42d3-a456-426614174000",
+							"startedAt": "2026-11-15T09:01:00.000Z",
+							"owner": {
+								"workspace": "0af76519-7c20-4a4d-9f5c-d7c4e9c3e11a",
+								"pid": 27381,
+								"startedAt": "2026-11-15T08:59:00.000Z"
+							}
+						},
+						"claimHistory": [],
+						"attempts": []
+					}
+				]
 			},
 			{
 				"name": "snapshotTaskWork.result",
 				"type": "NonNullable<ModuleTask['result']>",
-				"required": true
+				"required": true,
+				"description": "Existing task result whose worktree is inspected; its sourceCommit overrides the task source when present, and changedFiles and checkpointCommit are overwritten.",
+				"examples": [
+					{
+						"provider": "codex",
+						"model": "auto",
+						"intelligence": "high",
+						"reportedModel": null,
+						"text": "",
+						"worktree": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/.cache/harness/task-worktrees/123e4567-e89b-42d3-a456-426614174000",
+						"changedFiles": [
+							"src/services/agents-providers/module-task-worker-service/taskWorkspace.ts"
+						],
+						"fallback": false,
+						"finishedAt": "2026-11-15T09:02:00.000Z",
+						"attempt": "123e4567-e89b-42d3-a456-426614174000",
+						"sourceCommit": "cccccccccccccccccccccccccccccccccccccccc",
+						"executions": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "taskWorkspace",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Pending task result populated from selection and the resolved worktree, with the claim token as attempt and repairCommit ?? sourceCommit as sourceCommit.",
+				"examples": [
+					{
+						"provider": "codex",
+						"model": "auto",
+						"intelligence": "high",
+						"reportedModel": null,
+						"text": "",
+						"worktree": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/.cache/harness/task-worktrees/123e4567-e89b-42d3-a456-426614174000",
+						"changedFiles": [],
+						"fallback": false,
+						"executions": [],
+						"finishedAt": "2026-11-15T09:02:00.000Z",
+						"attempt": "123e4567-e89b-42d3-a456-426614174000",
+						"sourceCommit": "cccccccccccccccccccccccccccccccccccccccc"
+					}
+				]
 			},
 			{
 				"name": "snapshotTaskWork",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves with undefined after replacing result.changedFiles and result.checkpointCommit in place."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Git command failures and task source, changed-path or worktree repository mismatches reject with Error while preparing or snapshotting a workspace."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "taskWorkspace",
@@ -64,27 +219,112 @@
 					{
 						"name": "taskWorkspace.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository path passed to GitAdapter and used to resolve the shared task-worktree cache; Git must be able to resolve --git-common-dir there.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+						]
 					},
 					{
 						"name": "taskWorkspace.task",
 						"type": "ModuleTask",
-						"required": true
+						"required": true,
+						"description": "Stored module task whose claim token identifies the task worktree and whose repairCommit, when present, takes precedence over sourceCommit; a claim is required at runtime although the schema permits it to be absent.",
+						"examples": [
+							{
+								"id": "task.task-workspace",
+								"title": "Prepare task workspace",
+								"feature": {
+									"id": "feature.task-workspaces",
+									"goal": "Prepare isolated workspaces for module tasks",
+									"tldr": "Create and snapshot a task workspace"
+								},
+								"module": {
+									"id": "service.agents-providers-module-task-worker-service-task-workspace",
+									"goal": "Create and snapshot task workspaces",
+									"files": [
+										"src/services/agents-providers/module-task-worker-service/taskWorkspace.ts"
+									]
+								},
+								"instructions": "Prepare the task worktree and preserve its source commit.",
+								"wantedContract": {
+									"responsibility": "Prepare and snapshot task workspaces",
+									"inputs": [],
+									"outputs": [
+										{
+											"name": "workspace",
+											"type": "unknown"
+										}
+									],
+									"errors": []
+								},
+								"model": "auto",
+								"sourceCommit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"contractHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"status": "running",
+								"repairCommit": "cccccccccccccccccccccccccccccccccccccccc",
+								"reviews": [],
+								"createdAt": "2026-11-15T09:00:00.000Z",
+								"claim": {
+									"worker": "service.task-worker-1",
+									"token": "123e4567-e89b-42d3-a456-426614174000",
+									"startedAt": "2026-11-15T09:01:00.000Z",
+									"owner": {
+										"workspace": "0af76519-7c20-4a4d-9f5c-d7c4e9c3e11a",
+										"pid": 27381,
+										"startedAt": "2026-11-15T08:59:00.000Z"
+									}
+								},
+								"claimHistory": [],
+								"attempts": []
+							}
+						]
 					},
 					{
 						"name": "taskWorkspace.selection",
 						"type": "TaskSelection",
-						"required": true
+						"required": true,
+						"description": "Provider, model and intelligence values copied into the pending task result.",
+						"examples": [
+							{
+								"provider": "codex",
+								"model": "auto",
+								"intelligence": "high"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "taskWorkspace",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Pending task result populated from selection and the resolved worktree, with the claim token as attempt and repairCommit ?? sourceCommit as sourceCommit.",
+						"examples": [
+							{
+								"provider": "codex",
+								"model": "auto",
+								"intelligence": "high",
+								"reportedModel": null,
+								"text": "",
+								"worktree": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/.cache/harness/task-worktrees/123e4567-e89b-42d3-a456-426614174000",
+								"changedFiles": [],
+								"fallback": false,
+								"executions": [],
+								"finishedAt": "2026-11-15T09:02:00.000Z",
+								"attempt": "123e4567-e89b-42d3-a456-426614174000",
+								"sourceCommit": "cccccccccccccccccccccccccccccccccccccccc"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "GitAdapter.run rejects with Error when rev-parse --git-common-dir fails."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "snapshotTaskWork",
@@ -92,27 +332,107 @@
 					{
 						"name": "snapshotTaskWork.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository path used to validate the worktree repository and create its checkpoint.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+						]
 					},
 					{
 						"name": "snapshotTaskWork.task",
 						"type": "ModuleTask",
-						"required": true
+						"required": true,
+						"description": "Stored module task used to select the source commit and restrict changed paths to module.files.",
+						"examples": [
+							{
+								"id": "task.task-workspace",
+								"title": "Prepare task workspace",
+								"feature": {
+									"id": "feature.task-workspaces",
+									"goal": "Prepare isolated workspaces for module tasks",
+									"tldr": "Create and snapshot a task workspace"
+								},
+								"module": {
+									"id": "service.agents-providers-module-task-worker-service-task-workspace",
+									"goal": "Create and snapshot task workspaces",
+									"files": [
+										"src/services/agents-providers/module-task-worker-service/taskWorkspace.ts"
+									]
+								},
+								"instructions": "Prepare the task worktree and preserve its source commit.",
+								"wantedContract": {
+									"responsibility": "Prepare and snapshot task workspaces",
+									"inputs": [],
+									"outputs": [
+										{
+											"name": "workspace",
+											"type": "unknown"
+										}
+									],
+									"errors": []
+								},
+								"model": "auto",
+								"sourceCommit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"contractHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"status": "running",
+								"repairCommit": "cccccccccccccccccccccccccccccccccccccccc",
+								"reviews": [],
+								"createdAt": "2026-11-15T09:00:00.000Z",
+								"claim": {
+									"worker": "service.task-worker-1",
+									"token": "123e4567-e89b-42d3-a456-426614174000",
+									"startedAt": "2026-11-15T09:01:00.000Z",
+									"owner": {
+										"workspace": "0af76519-7c20-4a4d-9f5c-d7c4e9c3e11a",
+										"pid": 27381,
+										"startedAt": "2026-11-15T08:59:00.000Z"
+									}
+								},
+								"claimHistory": [],
+								"attempts": []
+							}
+						]
 					},
 					{
 						"name": "snapshotTaskWork.result",
 						"type": "NonNullable<ModuleTask['result']>",
-						"required": true
+						"required": true,
+						"description": "Existing task result whose worktree is inspected; its sourceCommit overrides the task source when present, and changedFiles and checkpointCommit are overwritten.",
+						"examples": [
+							{
+								"provider": "codex",
+								"model": "auto",
+								"intelligence": "high",
+								"reportedModel": null,
+								"text": "",
+								"worktree": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/.cache/harness/task-worktrees/123e4567-e89b-42d3-a456-426614174000",
+								"changedFiles": [
+									"src/services/agents-providers/module-task-worker-service/taskWorkspace.ts"
+								],
+								"fallback": false,
+								"finishedAt": "2026-11-15T09:02:00.000Z",
+								"attempt": "123e4567-e89b-42d3-a456-426614174000",
+								"sourceCommit": "cccccccccccccccccccccccccccccccccccccccc",
+								"executions": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "snapshotTaskWork",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves with undefined after replacing result.changedFiles and result.checkpointCommit in place."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with Error when Git commands fail, when taskWrites finds a changed source commit or a changed path outside task.module.files, or when checkpoint detects a changed repository or source."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
