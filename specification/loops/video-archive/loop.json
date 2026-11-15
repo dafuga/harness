@@ -2,7 +2,7 @@
 	"name": "video-archive",
 	"goal": "Retain sealed video batches without granting a full verification verdict",
 	"createdAt": "2026-11-15T19:48:36.070Z",
-	"updatedAt": "2026-11-15T19:48:36.070Z",
+	"updatedAt": "2026-11-15T20:20:12.709Z",
 	"template": "feature",
 	"templateLineage": [
 		"feature"
@@ -12,17 +12,23 @@
 		{
 			"id": "spec",
 			"title": "Confirm scope, success criteria, constraints, and proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-15T20:20:10.928Z",
+			"evidence": "Standalone pointer/API accepted by root; no parent wire or verdict changes."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-15T20:20:11.824Z",
+			"evidence": "Source facdc5db9c; sealed bounded Git/LFS archive, exact source refs and scoped explicit fetch."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-15T20:20:12.709Z",
+			"evidence": "Eight finite service cases; retained red and green for archive and fresh-source restoration."
 		},
 		{
 			"id": "verify",
