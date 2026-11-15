@@ -1,6 +1,7 @@
 import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { ModuleTaskRunnerAdapter } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter';
+import { ModuleTaskRunError } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter.types';
 import { observedTaskOperation } from '../../support/taskProfiles';
 test('Claude and Codex launch exact models and intelligence without shell interpolation', () => {
 	const runner = new ModuleTaskRunnerAdapter();
@@ -166,4 +167,38 @@ test('failed turns preserve available usage for cost attribution', async () => {
 			signal: new AbortController().signal
 		})
 	).rejects.toMatchObject({ usage: { inputTokens: 7, outputTokens: 2, reportedCostUsd: 0.01 } });
+});
+test.each<[string, 'claude' | 'codex', number, object[]]>([
+	['Claude task failed', 'claude', 1, [{ type: 'result', is_error: true }]],
+	['Claude quota exhausted.', 'claude', 1, [{ type: 'assistant', error: 'rate_limit' }]],
+	[
+		'Claude was denied a required tool',
+		'claude',
+		0,
+		[{ type: 'result', permission_denials: [{}] }]
+	],
+	[
+		'Claude ran a different model.',
+		'claude',
+		0,
+		[{ type: 'system', subtype: 'init', model: 'claude-sonnet-5-5' }, { type: 'result' }]
+	],
+	['Codex task failed', 'codex', 1, [{ type: 'turn.failed' }]],
+	['Codex ran a different model.', 'codex', 0, [{ type: 'turn.completed', model: 'gpt-other' }]]
+])('"%s" is a named ModuleTaskRunError', async (message, provider, code, events) => {
+	const runner = new ModuleTaskRunnerAdapter(async () => ({
+		code,
+		stdout: events.map((event) => JSON.stringify(event)).join('\n')
+	}));
+	const failure = runner.run({
+		provider,
+		model: provider === 'claude' ? 'claude-haiku-5-5' : 'gpt-6-luna',
+		intelligence: 'medium',
+		cwd: '.',
+		prompt: 'Goal',
+		signal: new AbortController().signal
+	});
+	await expect(failure).rejects.toBeInstanceOf(ModuleTaskRunError);
+	await expect(failure).rejects.toMatchObject({ name: 'ModuleTaskRunError' });
+	await expect(failure).rejects.toThrow(message);
 });

@@ -6,6 +6,7 @@ import type {
 	TaskSelection
 } from '../../repositories/agents-providers/ModuleTaskRepository.types';
 import type { TaskPublicEvent } from './ModuleTaskRunnerAdapter.types';
+import { ModuleTaskRunError } from './ModuleTaskRunnerAdapter.types';
 import { taskProcess } from './module-task-runner-adapter/taskProcess';
 import { taskUsage } from './module-task-runner-adapter/taskUsage';
 /** Run the installed CLIs with saved login, exact model/effort and public output only. */
@@ -48,10 +49,10 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 		} catch (error) {
 			const reportedModel =
 				events.find((e) => e.type === 'system' && e.subtype === 'init')?.model ?? null;
-			throw Object.assign(error instanceof Error ? error : new Error('Task execution failed.'), {
-				usage,
-				reportedModel
-			});
+			throw Object.assign(
+				error instanceof Error ? error : new ModuleTaskRunError('Task execution failed.'),
+				{ usage, reportedModel }
+			);
 		}
 	}
 	private claude(events: TaskPublicEvent[], code: number, input: TaskRunInput): TaskRunResult {
@@ -59,7 +60,7 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 		if (code !== 0 || !result || result.is_error) {
 			const quotaRejected = events.some(rejectedQuotaEvent);
 			throw Object.assign(
-				new Error(
+				new ModuleTaskRunError(
 					quotaRejected
 						? 'Claude quota exhausted.'
 						: 'Claude task failed; inspect CLI authentication, permissions or model access.'
@@ -72,11 +73,11 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 	private codex(events: TaskPublicEvent[], code: number, input: TaskRunInput): TaskRunResult {
 		const result = [...events].reverse().find((e) => e.type === 'turn.completed');
 		if (code !== 0 || !result || events.some((e) => ['turn.failed', 'error'].includes(e.type)))
-			throw new Error(
+			throw new ModuleTaskRunError(
 				'Codex task failed; inspect CLI authentication, permissions or model access.'
 			);
 		if (result.model && result.model !== input.model)
-			throw new Error('Codex ran a different model.');
+			throw new ModuleTaskRunError('Codex ran a different model.');
 		return {
 			provider: input.provider,
 			model: input.model,
@@ -123,12 +124,14 @@ function completedClaudeTask(
 ): TaskRunResult {
 	const reported = events.find((e) => e.type === 'system' && e.subtype === 'init')?.model ?? null;
 	if (result.permission_denials?.length)
-		throw new Error('Claude was denied a required tool; review the preserved worktree.');
+		throw new ModuleTaskRunError(
+			'Claude was denied a required tool; review the preserved worktree.'
+		);
 	if (
 		reported !== input.model ||
 		Object.keys(result.modelUsage ?? {}).some((model) => model !== input.model)
 	)
-		throw new Error('Claude ran a different model.');
+		throw new ModuleTaskRunError('Claude ran a different model.');
 	return {
 		provider: input.provider,
 		model: input.model,

@@ -2,6 +2,7 @@
 import { spawn } from 'node:child_process';
 import type { TaskRunInput } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import type { TaskProcessResult } from '../ModuleTaskRunnerAdapter.types';
+import { TaskOutputOverflowError } from './taskProcess.types';
 import { resourceWork } from '../../../utils/execution-runtimes/resourceWork';
 import type { ResourceContext } from '../../../core/execution-runtimes/resourceTypes';
 /** Keep subscription auth on this host; never forward inherited provider keys or raw event logs. */
@@ -55,7 +56,7 @@ function runTaskProcess(
 			clearTimeout(timer);
 			input.signal.removeEventListener('abort', abort);
 			if (input.signal.aborted) reject(input.signal.reason);
-			else if (overflow) reject(new Error('Task CLI output exceeded its bound.'));
+			else if (overflow) reject(new TaskOutputOverflowError('Task CLI output exceeded its bound.'));
 			else resolve({ code: code ?? 1, stdout });
 		});
 		child.stdin.end(input.prompt);
