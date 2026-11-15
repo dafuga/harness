@@ -20,54 +20,236 @@
 				"name": "adoptUids.registry",
 				"type": "Registry",
 				"required": true,
-				"description": "The registry being reconciled, with the owner of each path from the stored units."
+				"description": "The registry to reconcile: byId holds the stored units and owners maps each source path of an active unit to its unit id. adoptUids updates owners and appends to result.moved on this same object, and it matches only active units that have a uid."
 			},
 			{
 				"name": "adoptUids.index",
 				"type": "SourceIndex",
 				"required": true,
-				"description": "The indexed source files, some announcing a uid."
+				"description": "The source index of one revision, keyed by repository-relative path with ignored files absent. Only files classified as source whose announced uid matches an active registered unit are adopted, and a unit's vanished paths are the ones absent from this index."
 			},
 			{
 				"name": "mergedByUid.all",
 				"type": "Group[]",
 				"required": true,
-				"description": "The path-derived groups of source files."
+				"description": "The groups of source files derived from their paths, each with its files. mergedByUid sorts this array in place by id and sets each group's uid from the first of its files that announces one, so the caller's array and group objects change.",
+				"examples": [
+					[
+						{
+							"id": "workflow.development-tooling-load-units-unit-index-service-unit-uid-adoption",
+							"kind": "workflow",
+							"files": [
+								{
+									"path": "src/workflows/development-tooling/load-units/unit-index-service/unitUidAdoption.ts",
+									"hash": "3f8a1c9e0b7d24a6e5f1c8b2d9047e3a6b5c1f0d",
+									"bytes": 2215,
+									"lines": 57,
+									"language": "ts",
+									"classification": "source",
+									"workspace": "",
+									"uid": "u_ivdxmstz3m",
+									"identity": {
+										"id": "workflow.development-tooling-load-units-unit-index-service-unit-uid-adoption",
+										"kind": "workflow",
+										"name": "development-tooling-load-units-unit-index-service-unit-uid-adoption"
+									},
+									"read": true,
+									"decisions": "counted",
+									"references": [],
+									"blocks": [],
+									"exports": [],
+									"errors": []
+								}
+							]
+						}
+					]
+				]
 			},
 			{
 				"name": "unitUid.previous",
 				"type": "ComponentManifest | undefined",
 				"required": true,
-				"description": "The stored unit, if there is one."
+				"description": "The stored unit with this id, or undefined when the registry has none. Its uid is returned first whenever it is set, before any group or file uid, and its status is not checked.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "workflow.development-tooling-load-units-unit-index-service-unit-uid-adoption",
+						"uid": "u_ivdxmstz3m",
+						"kind": "workflow",
+						"title": "unitUidAdoption",
+						"responsibility": "Joins source files to registered units by the uid they announce, so a moved or renamed file keeps its unit.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": [
+								"src/workflows/development-tooling/load-units/unit-index-service/unitUidAdoption.ts"
+							],
+							"symbols": ["adoptUids", "mergedByUid", "unitUid"]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"errorStatus": "none-found"
+						},
+						"dependencies": [
+							{
+								"unit": "function.source-types",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "function.unit-types",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "service.source-index",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "service.unit-index",
+								"via": "import",
+								"origin": "derived"
+							}
+						],
+						"runtime": {
+							"kind": "module",
+							"entry": "src/workflows/development-tooling/load-units/unit-index-service/unitUidAdoption.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/workflows/development-tooling/load-units/unit-index-service/unitUidAdoption.ts"
+								}
+							]
+						},
+						"scenarios": [],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "unitUid.group",
 				"type": "Group | undefined",
 				"required": true,
-				"description": "The group of files the unit is derived from, if any."
+				"description": "The group this run created for the unit, or undefined when it created none for it. Its uid is used only when the stored unit has none, and a group without a uid leaves the choice to the files.",
+				"examples": [
+					{
+						"id": "workflow.development-tooling-load-units-unit-index-service-unit-uid-adoption",
+						"uid": "u_ivdxmstz3m",
+						"kind": "workflow",
+						"files": [
+							{
+								"path": "src/workflows/development-tooling/load-units/unit-index-service/unitUidAdoption.ts",
+								"hash": "3f8a1c9e0b7d24a6e5f1c8b2d9047e3a6b5c1f0d",
+								"bytes": 2215,
+								"lines": 57,
+								"language": "ts",
+								"classification": "source",
+								"workspace": "",
+								"uid": "u_ivdxmstz3m",
+								"identity": {
+									"id": "workflow.development-tooling-load-units-unit-index-service-unit-uid-adoption",
+									"kind": "workflow",
+									"name": "development-tooling-load-units-unit-index-service-unit-uid-adoption"
+								},
+								"read": true,
+								"decisions": "counted",
+								"references": [],
+								"blocks": [],
+								"exports": [],
+								"errors": []
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "unitUid.files",
 				"type": "SourceFile[]",
 				"required": true,
-				"description": "The files the unit owns."
+				"description": "The source files the unit owns, each with the uid it announces, if any. The unit's uid is the single uid all announcing files agree on, so undefined is returned when no file announces one or when they disagree.",
+				"examples": [
+					[
+						{
+							"path": "src/workflows/development-tooling/load-units/unit-index-service/unitUidAdoption.ts",
+							"hash": "3f8a1c9e0b7d24a6e5f1c8b2d9047e3a6b5c1f0d",
+							"bytes": 2215,
+							"lines": 57,
+							"language": "ts",
+							"classification": "source",
+							"workspace": "",
+							"uid": "u_ivdxmstz3m",
+							"identity": {
+								"id": "workflow.development-tooling-load-units-unit-index-service-unit-uid-adoption",
+								"kind": "workflow",
+								"name": "development-tooling-load-units-unit-index-service-unit-uid-adoption"
+							},
+							"read": true,
+							"decisions": "counted",
+							"references": [],
+							"blocks": [],
+							"exports": [],
+							"errors": []
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "adoptUids",
 				"type": "Registry",
-				"description": "The same registry, with each uid-announcing file owned by the unit of that uid and the vanished files of moved units reported as moves."
+				"description": "The same registry object passed in, updated in place rather than copied. Each source file that announces an active unit's uid is owned by that unit, and a unit that gained files in this call while one of its owned source paths is absent from the index gets a result.moved entry from that path to its first arrived path in sorted order."
 			},
 			{
 				"name": "mergedByUid",
 				"type": "Group[]",
-				"description": "The groups in id order, with the groups that announce one uid joined into the first."
+				"description": "The groups in id order, where a group whose uid an earlier group already holds is dropped and its files appended to that earlier group; groups without a uid are all kept. Each returned group's uid is taken from the first of its files that announces one, and is undefined when none does.",
+				"examples": [
+					[
+						{
+							"id": "workflow.development-tooling-load-units-unit-index-service-unit-uid-adoption",
+							"uid": "u_ivdxmstz3m",
+							"kind": "workflow",
+							"files": [
+								{
+									"path": "src/workflows/development-tooling/load-units/unit-index-service/unitUidAdoption.ts",
+									"hash": "3f8a1c9e0b7d24a6e5f1c8b2d9047e3a6b5c1f0d",
+									"bytes": 2215,
+									"lines": 57,
+									"language": "ts",
+									"classification": "source",
+									"workspace": "",
+									"uid": "u_ivdxmstz3m",
+									"identity": {
+										"id": "workflow.development-tooling-load-units-unit-index-service-unit-uid-adoption",
+										"kind": "workflow",
+										"name": "development-tooling-load-units-unit-index-service-unit-uid-adoption"
+									},
+									"read": true,
+									"decisions": "counted",
+									"references": [],
+									"blocks": [],
+									"exports": [],
+									"errors": []
+								}
+							]
+						}
+					]
+				]
 			},
 			{
 				"name": "unitUid",
 				"type": "string | undefined",
-				"description": "The registered uid, else the uid of the group, else the one uid all files agree on; undefined when none."
+				"description": "The uid the unit keeps: its stored uid if it has one, else the uid of its group, else the single uid all its files agree on. It is undefined when none of these gives a uid, including when the files announce conflicting uids.",
+				"examples": ["u_ivdxmstz3m", "u_bine3tddnk"]
 			}
 		],
 		"errors": [],
@@ -80,20 +262,20 @@
 						"name": "adoptUids.registry",
 						"type": "Registry",
 						"required": true,
-						"description": "The registry being reconciled, with the owner of each path from the stored units."
+						"description": "The registry to reconcile: byId holds the stored units and owners maps each source path of an active unit to its unit id. adoptUids updates owners and appends to result.moved on this same object, and it matches only active units that have a uid."
 					},
 					{
 						"name": "adoptUids.index",
 						"type": "SourceIndex",
 						"required": true,
-						"description": "The indexed source files, some announcing a uid."
+						"description": "The source index of one revision, keyed by repository-relative path with ignored files absent. Only files classified as source whose announced uid matches an active registered unit are adopted, and a unit's vanished paths are the ones absent from this index."
 					}
 				],
 				"outputs": [
 					{
 						"name": "adoptUids",
 						"type": "Registry",
-						"description": "The same registry, with each uid-announcing file owned by the unit of that uid and the vanished files of moved units reported as moves."
+						"description": "The same registry object passed in, updated in place rather than copied. Each source file that announces an active unit's uid is owned by that unit, and a unit that gained files in this call while one of its owned source paths is absent from the index gets a result.moved entry from that path to its first arrived path in sorted order."
 					}
 				],
 				"errors": [],
@@ -106,14 +288,77 @@
 						"name": "mergedByUid.all",
 						"type": "Group[]",
 						"required": true,
-						"description": "The path-derived groups of source files."
+						"description": "The groups of source files derived from their paths, each with its files. mergedByUid sorts this array in place by id and sets each group's uid from the first of its files that announces one, so the caller's array and group objects change.",
+						"examples": [
+							[
+								{
+									"id": "workflow.development-tooling-load-units-unit-index-service-unit-uid-adoption",
+									"kind": "workflow",
+									"files": [
+										{
+											"path": "src/workflows/development-tooling/load-units/unit-index-service/unitUidAdoption.ts",
+											"hash": "3f8a1c9e0b7d24a6e5f1c8b2d9047e3a6b5c1f0d",
+											"bytes": 2215,
+											"lines": 57,
+											"language": "ts",
+											"classification": "source",
+											"workspace": "",
+											"uid": "u_ivdxmstz3m",
+											"identity": {
+												"id": "workflow.development-tooling-load-units-unit-index-service-unit-uid-adoption",
+												"kind": "workflow",
+												"name": "development-tooling-load-units-unit-index-service-unit-uid-adoption"
+											},
+											"read": true,
+											"decisions": "counted",
+											"references": [],
+											"blocks": [],
+											"exports": [],
+											"errors": []
+										}
+									]
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "mergedByUid",
 						"type": "Group[]",
-						"description": "The groups in id order, with the groups that announce one uid joined into the first."
+						"description": "The groups in id order, where a group whose uid an earlier group already holds is dropped and its files appended to that earlier group; groups without a uid are all kept. Each returned group's uid is taken from the first of its files that announces one, and is undefined when none does.",
+						"examples": [
+							[
+								{
+									"id": "workflow.development-tooling-load-units-unit-index-service-unit-uid-adoption",
+									"uid": "u_ivdxmstz3m",
+									"kind": "workflow",
+									"files": [
+										{
+											"path": "src/workflows/development-tooling/load-units/unit-index-service/unitUidAdoption.ts",
+											"hash": "3f8a1c9e0b7d24a6e5f1c8b2d9047e3a6b5c1f0d",
+											"bytes": 2215,
+											"lines": 57,
+											"language": "ts",
+											"classification": "source",
+											"workspace": "",
+											"uid": "u_ivdxmstz3m",
+											"identity": {
+												"id": "workflow.development-tooling-load-units-unit-index-service-unit-uid-adoption",
+												"kind": "workflow",
+												"name": "development-tooling-load-units-unit-index-service-unit-uid-adoption"
+											},
+											"read": true,
+											"decisions": "counted",
+											"references": [],
+											"blocks": [],
+											"exports": [],
+											"errors": []
+										}
+									]
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
@@ -126,26 +371,145 @@
 						"name": "unitUid.previous",
 						"type": "ComponentManifest | undefined",
 						"required": true,
-						"description": "The stored unit, if there is one."
+						"description": "The stored unit with this id, or undefined when the registry has none. Its uid is returned first whenever it is set, before any group or file uid, and its status is not checked.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "workflow.development-tooling-load-units-unit-index-service-unit-uid-adoption",
+								"uid": "u_ivdxmstz3m",
+								"kind": "workflow",
+								"title": "unitUidAdoption",
+								"responsibility": "Joins source files to registered units by the uid they announce, so a moved or renamed file keeps its unit.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": [
+										"src/workflows/development-tooling/load-units/unit-index-service/unitUidAdoption.ts"
+									],
+									"symbols": ["adoptUids", "mergedByUid", "unitUid"]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"errorStatus": "none-found"
+								},
+								"dependencies": [
+									{
+										"unit": "function.source-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.unit-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "service.source-index",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "service.unit-index",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/workflows/development-tooling/load-units/unit-index-service/unitUidAdoption.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/workflows/development-tooling/load-units/unit-index-service/unitUidAdoption.ts"
+										}
+									]
+								},
+								"scenarios": [],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					},
 					{
 						"name": "unitUid.group",
 						"type": "Group | undefined",
 						"required": true,
-						"description": "The group of files the unit is derived from, if any."
+						"description": "The group this run created for the unit, or undefined when it created none for it. Its uid is used only when the stored unit has none, and a group without a uid leaves the choice to the files.",
+						"examples": [
+							{
+								"id": "workflow.development-tooling-load-units-unit-index-service-unit-uid-adoption",
+								"uid": "u_ivdxmstz3m",
+								"kind": "workflow",
+								"files": [
+									{
+										"path": "src/workflows/development-tooling/load-units/unit-index-service/unitUidAdoption.ts",
+										"hash": "3f8a1c9e0b7d24a6e5f1c8b2d9047e3a6b5c1f0d",
+										"bytes": 2215,
+										"lines": 57,
+										"language": "ts",
+										"classification": "source",
+										"workspace": "",
+										"uid": "u_ivdxmstz3m",
+										"identity": {
+											"id": "workflow.development-tooling-load-units-unit-index-service-unit-uid-adoption",
+											"kind": "workflow",
+											"name": "development-tooling-load-units-unit-index-service-unit-uid-adoption"
+										},
+										"read": true,
+										"decisions": "counted",
+										"references": [],
+										"blocks": [],
+										"exports": [],
+										"errors": []
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "unitUid.files",
 						"type": "SourceFile[]",
 						"required": true,
-						"description": "The files the unit owns."
+						"description": "The source files the unit owns, each with the uid it announces, if any. The unit's uid is the single uid all announcing files agree on, so undefined is returned when no file announces one or when they disagree.",
+						"examples": [
+							[
+								{
+									"path": "src/workflows/development-tooling/load-units/unit-index-service/unitUidAdoption.ts",
+									"hash": "3f8a1c9e0b7d24a6e5f1c8b2d9047e3a6b5c1f0d",
+									"bytes": 2215,
+									"lines": 57,
+									"language": "ts",
+									"classification": "source",
+									"workspace": "",
+									"uid": "u_ivdxmstz3m",
+									"identity": {
+										"id": "workflow.development-tooling-load-units-unit-index-service-unit-uid-adoption",
+										"kind": "workflow",
+										"name": "development-tooling-load-units-unit-index-service-unit-uid-adoption"
+									},
+									"read": true,
+									"decisions": "counted",
+									"references": [],
+									"blocks": [],
+									"exports": [],
+									"errors": []
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "unitUid",
 						"type": "string | undefined",
-						"description": "The registered uid, else the uid of the group, else the one uid all files agree on; undefined when none."
+						"description": "The uid the unit keeps: its stored uid if it has one, else the uid of its group, else the single uid all its files agree on. It is undefined when none of these gives a uid, including when the files announce conflicting uids.",
+						"examples": ["u_ivdxmstz3m", "u_bine3tddnk"]
 					}
 				],
 				"errors": [],
