@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { test } from 'vitest';
 import type { KernelGraph } from '../src/core/execution-runtimes/kernelTypes';
-import { kernelClosure } from '../src/utils/impact-kernel/kernelClosure';
+import { kernelClosure } from '../src/utils/execution-runtimes/impact-kernel/kernelClosure';
 import { recordCapture } from '../src/utils/reports-media/record-capture/recordCapture';
 import { expect } from './verificationExpect';
 

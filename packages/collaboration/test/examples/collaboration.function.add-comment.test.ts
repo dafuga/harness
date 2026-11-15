@@ -1,5 +1,5 @@
 import { test } from 'vitest';
-import { addComment } from '../../src/utils/addComment';
+import { addComment } from '../../src/utils/projects-sessions/create-collaboration/addComment';
 import type {
 	Actor,
 	AddCommentInput,
@@ -9,7 +9,7 @@ import type {
 	CollaborationRepository,
 	CommittedThread,
 	SourceAdapter
-} from '../../src/models/Collaboration.types';
+} from '../../src/models/planning-collaboration/Collaboration.types';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
 

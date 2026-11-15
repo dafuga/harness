@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import { artifactCases } from '../../src/components/explorer-ui/entity-cases/artifactCases';
 import { caseForm } from '../../src/utils/explorer-ui/artifactCases';

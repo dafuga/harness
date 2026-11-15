@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { explorerLegacy } from '../../src/utils/projects-sessions/console-canonical/explorerLegacy';
-import { explorerLegacy as forwarded } from '../../src/utils/explorerLegacy';
+import { explorerLegacy as forwarded } from '../../src/utils/projects-sessions/console-canonical/explorerLegacy';
 import {
 	explorerKindCategory,
 	explorerRoutePath,

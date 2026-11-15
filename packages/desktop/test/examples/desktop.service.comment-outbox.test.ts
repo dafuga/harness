@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import { CommentOutboxService } from '../../src/services/CommentOutboxService';
+import { CommentOutboxService } from '../../src/services/projects-sessions/CommentOutboxService';
 import type { HumanCommentDraft } from '../../src/models/projects-sessions/ProjectContext.types';
 
 const temporaryDirectories = new Set<string>();
