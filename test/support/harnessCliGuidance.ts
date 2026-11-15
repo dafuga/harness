@@ -28,7 +28,11 @@ export function assertHarnessCliGuidance(files: PlannedFile[]): void {
 				)
 			)
 				gaps.push(`${path}:${index + 1}: alternate Harness entry`);
-			if (/`(?:contracts|units|info|activity|loop|verify|hooks|report)\s[^`]+`/.test(line))
+			if (
+				/`(?:contracts|units|info|activity|loop|verify|hooks|report|generate|benchmark|analytics|task|check-contract)\s[^`]+`/.test(
+					line
+				)
+			)
 				gaps.push(`${path}:${index + 1}: bare Harness command`);
 		}
 	expect(gaps, `Harness usage must start with harness:\n${gaps.slice(0, 20).join('\n')}`).toEqual(
