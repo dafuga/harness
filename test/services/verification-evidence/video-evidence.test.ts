@@ -7,6 +7,7 @@ import { mkdir, symlink, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { withTempDir } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
+import { assertTrackedVideoInputs } from '../../support/videoTrackedInputs';
 const videoUnit = 'service.verification-evidence-video-evidence';
 afterEach(() => vi.restoreAllMocks());
 vi.mock('node:fs', { spy: true });
@@ -106,6 +107,7 @@ test('clip planning reuses unchanged inputs and invalidates only actual consumer
 				'first',
 				'first'
 			]);
+			await assertTrackedVideoInputs(root, manifest);
 		})
 	);
 });
