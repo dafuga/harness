@@ -15,45 +15,64 @@
 		"symbols": ["generatedUnits", "generatedFailures", "writeScaleData", "Unit", "Detail"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "writeScaleData.from",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Source directory for the synthetic history copied into `to`; its root must contain the revision files named by `commits`. It is passed to recursive `cp` without path or content validation.",
+				"examples": ["/workspace/repository/fixtures/history"]
 			},
 			{
 				"name": "writeScaleData.to",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Destination directory that is recursively removed before the source is copied into it, then receives the rewritten revision files. It must be writable and must not overlap the source tree because existing destination contents are deleted first.",
+				"examples": ["/workspace/repository/.tmp/harness-scale-data"]
 			},
 			{
 				"name": "writeScaleData.commits",
 				"type": "{ map: string; failed: string }",
-				"required": true
+				"required": true,
+				"description": "Object whose `map` and `failed` strings name the two revision JSON files under `to/revisions`. The implementation appends `.json` and does not validate either string's commit format.",
+				"examples": [
+					{
+						"map": "0123456789abcdef0123456789abcdef01234567",
+						"failed": "89abcdef0123456789abcdef0123456789abcdef"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "generatedUnits",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The fixed number of generated units exported by the script: 480, with generated IDs indexed from 000 through 479. The generator uses a 120-unit offset when assigning dependencies.",
+				"examples": [480]
 			},
 			{
 				"name": "generatedFailures",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "An exported array of 480 synthetic failure strings, one for each generated unit, stating that no baseline is established and a reviewer must establish one. Its generated IDs run from `function.generated-000` through `function.generated-479`; these are fixture data, not descriptions of real source.",
+				"examples": [
+					["function.generated-000: no baseline is established; a reviewer must establish one"]
+				]
 			},
 			{
 				"name": "writeScaleData",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "The asynchronous operation resolves after replacing the destination tree with a recursive copy, adding generated failures to the first failed record, and appending 480 generated units and their dependency edges to the map record. Its resolved value is `undefined` (`void`)."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown if the selected failed revision has no record with status `failed`, or the map registry has no unit with ID `function.slugify`; filesystem errors also propagate as Node errors. These failures can occur after the destination has been removed and copied."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "writeScaleData",
@@ -61,32 +80,45 @@
 					{
 						"name": "writeScaleData.from",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Source directory for the synthetic history copied into `to`; its root must contain the revision files named by `commits`. It is passed to recursive `cp` without path or content validation.",
+						"examples": ["/workspace/repository/fixtures/history"]
 					},
 					{
 						"name": "writeScaleData.to",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Destination directory that is recursively removed before the source is copied into it, then receives the rewritten revision files. It must be writable and must not overlap the source tree because existing destination contents are deleted first.",
+						"examples": ["/workspace/repository/.tmp/harness-scale-data"]
 					},
 					{
 						"name": "writeScaleData.commits",
 						"type": "{ map: string; failed: string }",
-						"required": true
+						"required": true,
+						"description": "Object whose `map` and `failed` strings name the two revision JSON files under `to/revisions`. The implementation appends `.json` and does not validate either string's commit format.",
+						"examples": [
+							{
+								"map": "0123456789abcdef0123456789abcdef01234567",
+								"failed": "89abcdef0123456789abcdef0123456789abcdef"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "writeScaleData",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "The asynchronous operation resolves after replacing the destination tree with a recursive copy, adding generated failures to the first failed record, and appending 480 generated units and their dependency edges to the map record. Its resolved value is `undefined` (`void`)."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown if the selected failed revision has no record with status `failed`, or the map registry has no unit with ID `function.slugify`; filesystem errors also propagate as Node errors. These failures can occur after the destination has been removed and copied."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
