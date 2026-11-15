@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { GithubResponseValidator } from '../../src/validators/GithubResponseValidator';
+import { GithubResponseValidator } from '../../src/validators/development-tooling/GithubResponseValidator';
 
 const github = new GithubResponseValidator();
 const repo = {

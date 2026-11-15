@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { RelayReplyValidator } from '../../src/validators/RelayReplyValidator';
+import { RelayReplyValidator } from '../../src/validators/networking-security/RelayReplyValidator';
 import { CREDENTIAL_HASH, DEVICE_ID } from '../support/remoteFixture';
 import { REGISTERED_AT } from '../support/remoteHostsFake';
 

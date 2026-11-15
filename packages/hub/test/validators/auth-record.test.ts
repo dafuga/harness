@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { AuthRecordValidator } from '../../src/validators/AuthRecordValidator';
+import { AuthRecordValidator } from '../../src/validators/accounts-access/AuthRecordValidator';
 
 const records = new AuthRecordValidator();
 const session = {

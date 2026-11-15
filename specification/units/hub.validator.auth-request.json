@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/validators/AuthRequestValidator.ts",
 			"packages/hub/src/validators/accounts-access/AuthRequestValidator.ts",
 			"packages/hub/src/validators/accounts-access/AuthRequestValidator.types.ts"
 		],
 		"symbols": [
-			"AuthRequestValidator",
 			"AuthRequestValidator",
 			"AuthRequestValidator.google",
 			"AuthRequestValidator.nativeStart",

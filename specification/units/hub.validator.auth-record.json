@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/validators/AuthRecordValidator.ts",
 			"packages/hub/src/validators/accounts-access/AuthRecordValidator.ts",
 			"packages/hub/src/validators/accounts-access/AuthRecordValidator.types.ts"
 		],
 		"symbols": [
-			"AuthRecordValidator",
 			"AuthRecordValidator",
 			"AuthRecordValidator.challenge",
 			"AuthRecordValidator.session",

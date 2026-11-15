@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/validators/GithubResponseValidator.ts",
 			"packages/hub/src/validators/development-tooling/GithubResponseValidator.ts",
 			"packages/hub/src/validators/development-tooling/GithubResponseValidator.types.ts"
 		],
 		"symbols": [
-			"GithubResponseValidator",
 			"GithubResponseValidator",
 			"GithubResponseValidator.userToken",
 			"GithubResponseValidator.user",

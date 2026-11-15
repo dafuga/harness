@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { AuthFailure } from '../../src/utils/authFail';
-import { AuthRequestValidator } from '../../src/validators/AuthRequestValidator';
+import { AuthRequestValidator } from '../../src/validators/accounts-access/AuthRequestValidator';
 
 const input = new AuthRequestValidator();
 const opaque = 'a'.repeat(43);
