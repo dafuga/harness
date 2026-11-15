@@ -45,27 +45,388 @@
 				"name": "EntityStates.name",
 				"type": "string",
 				"required": true,
-				"description": "The readable entity name used to label the gallery.",
+				"description": "The readable entity name, used only in the gallery section's aria-label, which reads `<name> supported states`. It is used as given, with no trimming or validation.",
 				"examples": ["Activity list"]
 			},
 			{
 				"name": "EntityStates.evidence",
 				"type": "ExplorerEvidence",
 				"required": true,
-				"description": "Declared states and verified captures for this entity on both revision sides."
+				"description": "The explorer's evidence for the entity: `scenarios` supplies the scenario picker and the state rows (scenarios without viewports are dropped), `mode` picks the Before and After or Current labels, and `incomparable` notes are shown as gaps. The `after` and `before` sides supply each state's captures through entityScreens, so a side with no capture shows its own gap.",
+				"examples": [
+					{
+						"mode": "current",
+						"scenarios": [
+							{
+								"id": "entity-states",
+								"title": "Entity states",
+								"kind": "ui",
+								"units": ["reports.component.entity-states"],
+								"states": [
+									{
+										"id": "empty",
+										"title": "Empty",
+										"coverage": "required"
+									}
+								],
+								"viewports": [
+									{
+										"id": "desktop",
+										"width": 1280,
+										"height": 800
+									}
+								],
+								"tests": [
+									{
+										"id": "gallery",
+										"kind": "e2e",
+										"runner": "playwright"
+									}
+								],
+								"evidence": [
+									{
+										"id": "screens",
+										"kind": "screenshot",
+										"states": ["empty"],
+										"viewports": ["desktop"]
+									}
+								]
+							}
+						],
+						"after": {
+							"commit": "7c3e9a1f0b2d4e6a8c9f1b3d5e7a9c1e3f5b7d90",
+							"detail": {
+								"commit": "7c3e9a1f0b2d4e6a8c9f1b3d5e7a9c1e3f5b7d90",
+								"registry": {
+									"available": true,
+									"units": [],
+									"scenarios": [
+										{
+											"id": "entity-states",
+											"title": "Entity states",
+											"kind": "ui",
+											"units": ["reports.component.entity-states"],
+											"states": [
+												{
+													"id": "empty",
+													"title": "Empty",
+													"coverage": "required"
+												}
+											],
+											"viewports": [
+												{
+													"id": "desktop",
+													"width": 1280,
+													"height": 800
+												}
+											],
+											"tests": [
+												{
+													"id": "gallery",
+													"kind": "e2e",
+													"runner": "playwright"
+												}
+											],
+											"evidence": [
+												{
+													"id": "screens",
+													"kind": "screenshot",
+													"states": ["empty"],
+													"viewports": ["desktop"]
+												}
+											]
+										}
+									],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"records": [
+									{
+										"id": "5b1f0c8e3a9d7426f1e0b5c2a8d93f6e4c7a1b0d9e2f8634a5c7d1e0b9f3a261",
+										"status": "passed",
+										"valid": true,
+										"problems": [],
+										"source": {
+											"commit": "7c3e9a1f0b2d4e6a8c9f1b3d5e7a9c1e3f5b7d90",
+											"base": "a41d9e07c52b8f3e6d1a4c9b7e0f2d5a8c3b6e11"
+										},
+										"profile": "9e41c07a5f2d83b6",
+										"startedAt": "2026-11-14T16:40:51.902Z",
+										"finishedAt": "2026-11-14T16:42:09.214Z",
+										"failures": [],
+										"tests": [
+											{
+												"id": "entity-states:gallery",
+												"kind": "e2e",
+												"target": "test/entity-states.spec.ts",
+												"status": "passed",
+												"durationMs": 77312
+											}
+										],
+										"scenarios": [
+											{
+												"id": "entity-states",
+												"status": "passed",
+												"testedRevision": "7c3e9a1f0b2d4e6a8c9f1b3d5e7a9c1e3f5b7d90",
+												"inherited": false,
+												"origin": {
+													"record": "5b1f0c8e3a9d7426f1e0b5c2a8d93f6e4c7a1b0d9e2f8634a5c7d1e0b9f3a261",
+													"commit": "7c3e9a1f0b2d4e6a8c9f1b3d5e7a9c1e3f5b7d90"
+												},
+												"states": [
+													{
+														"id": "empty",
+														"coverage": "required",
+														"captures": [
+															{
+																"evidence": "screens",
+																"kind": "screenshot",
+																"state": "empty",
+																"viewport": "desktop",
+																"status": "passed",
+																"path": "evidence/7c3e9a1f0b2d4e6a8c9f1b3d5e7a9c1e3f5b7d90/entity-states/gallery/empty-desktop.png",
+																"sha256": "d8f2a91c4e7b06351a9d2f8c7e4b0a63c5e1d9f72b8a4c06e3d5f1a9b7c2e048",
+																"mediaType": "image/png",
+																"capturedAt": "2026-11-14T16:42:08.317Z",
+																"media": "media/d8f2a91c4e7b06351a9d2f8c7e4b0a63c5e1d9f72b8a4c06e3d5f1a9b7c2e048.png"
+															}
+														]
+													}
+												]
+											}
+										],
+										"measurements": [],
+										"budgets": {
+											"findings": []
+										}
+									}
+								],
+								"explanations": []
+							},
+							"record": {
+								"id": "5b1f0c8e3a9d7426f1e0b5c2a8d93f6e4c7a1b0d9e2f8634a5c7d1e0b9f3a261",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "7c3e9a1f0b2d4e6a8c9f1b3d5e7a9c1e3f5b7d90",
+									"base": "a41d9e07c52b8f3e6d1a4c9b7e0f2d5a8c3b6e11"
+								},
+								"profile": "9e41c07a5f2d83b6",
+								"startedAt": "2026-11-14T16:40:51.902Z",
+								"finishedAt": "2026-11-14T16:42:09.214Z",
+								"failures": [],
+								"tests": [
+									{
+										"id": "entity-states:gallery",
+										"kind": "e2e",
+										"target": "test/entity-states.spec.ts",
+										"status": "passed",
+										"durationMs": 77312
+									}
+								],
+								"scenarios": [
+									{
+										"id": "entity-states",
+										"status": "passed",
+										"testedRevision": "7c3e9a1f0b2d4e6a8c9f1b3d5e7a9c1e3f5b7d90",
+										"inherited": false,
+										"origin": {
+											"record": "5b1f0c8e3a9d7426f1e0b5c2a8d93f6e4c7a1b0d9e2f8634a5c7d1e0b9f3a261",
+											"commit": "7c3e9a1f0b2d4e6a8c9f1b3d5e7a9c1e3f5b7d90"
+										},
+										"states": [
+											{
+												"id": "empty",
+												"coverage": "required",
+												"captures": [
+													{
+														"evidence": "screens",
+														"kind": "screenshot",
+														"state": "empty",
+														"viewport": "desktop",
+														"status": "passed",
+														"path": "evidence/7c3e9a1f0b2d4e6a8c9f1b3d5e7a9c1e3f5b7d90/entity-states/gallery/empty-desktop.png",
+														"sha256": "d8f2a91c4e7b06351a9d2f8c7e4b0a63c5e1d9f72b8a4c06e3d5f1a9b7c2e048",
+														"mediaType": "image/png",
+														"capturedAt": "2026-11-14T16:42:08.317Z",
+														"media": "media/d8f2a91c4e7b06351a9d2f8c7e4b0a63c5e1d9f72b8a4c06e3d5f1a9b7c2e048.png"
+													}
+												]
+											}
+										]
+									}
+								],
+								"measurements": [],
+								"budgets": {
+									"findings": []
+								}
+							},
+							"captures": [
+								{
+									"scenario": "entity-states",
+									"state": "empty",
+									"capture": {
+										"evidence": "screens",
+										"kind": "screenshot",
+										"state": "empty",
+										"viewport": "desktop",
+										"status": "passed",
+										"path": "evidence/7c3e9a1f0b2d4e6a8c9f1b3d5e7a9c1e3f5b7d90/entity-states/gallery/empty-desktop.png",
+										"sha256": "d8f2a91c4e7b06351a9d2f8c7e4b0a63c5e1d9f72b8a4c06e3d5f1a9b7c2e048",
+										"mediaType": "image/png",
+										"capturedAt": "2026-11-14T16:42:08.317Z",
+										"media": "media/d8f2a91c4e7b06351a9d2f8c7e4b0a63c5e1d9f72b8a4c06e3d5f1a9b7c2e048.png"
+									},
+									"standing": "fresh",
+									"usable": true,
+									"current": true,
+									"inheritedFrom": null
+								}
+							],
+							"coverage": [
+								{
+									"scenario": "entity-states",
+									"title": "Entity states",
+									"kind": "ui",
+									"standing": "passed",
+									"reasons": [],
+									"tests": [
+										{
+											"id": "gallery",
+											"status": "passed"
+										}
+									],
+									"inheritedFrom": null,
+									"states": [
+										{
+											"state": "empty",
+											"declared": "required",
+											"standing": "passed",
+											"reasons": [],
+											"slots": [
+												{
+													"evidence": "screens",
+													"kind": "screenshot",
+													"viewport": "desktop",
+													"capture": {
+														"evidence": "screens",
+														"kind": "screenshot",
+														"state": "empty",
+														"viewport": "desktop",
+														"status": "passed",
+														"path": "evidence/7c3e9a1f0b2d4e6a8c9f1b3d5e7a9c1e3f5b7d90/entity-states/gallery/empty-desktop.png",
+														"sha256": "d8f2a91c4e7b06351a9d2f8c7e4b0a63c5e1d9f72b8a4c06e3d5f1a9b7c2e048",
+														"mediaType": "image/png",
+														"capturedAt": "2026-11-14T16:42:08.317Z",
+														"media": "media/d8f2a91c4e7b06351a9d2f8c7e4b0a63c5e1d9f72b8a4c06e3d5f1a9b7c2e048.png"
+													},
+													"standing": "passed",
+													"reason": null
+												}
+											]
+										}
+									]
+								}
+							],
+							"gap": null
+						},
+						"before": null,
+						"initial": null,
+						"incomparable": []
+					}
+				]
 			},
 			{
 				"name": "EntityStates.scope",
 				"type": "ExplorerScope",
 				"required": true,
-				"description": "The viewed branch tip or commit and its parent, without changing their identity."
+				"description": "The viewed commit and its first parent, shown in the pane headings: `commit` labels the After pane (the Current pane in current mode), and `parent` labels the Before pane, which appears only in commit mode. A null `parent`, as for a root commit, leaves the Before heading without a commit.",
+				"examples": [
+					{
+						"location": {
+							"branch": "main",
+							"commit": null,
+							"category": "components",
+							"entity": "reports.component.entity-states"
+						},
+						"mode": "current",
+						"branch": "main",
+						"tip": "7c3e9a1f0b2d4e6a8c9f1b3d5e7a9c1e3f5b7d90",
+						"commit": "7c3e9a1f0b2d4e6a8c9f1b3d5e7a9c1e3f5b7d90",
+						"atTip": true,
+						"parent": "a41d9e07c52b8f3e6d1a4c9b7e0f2d5a8c3b6e11",
+						"summary": {
+							"commit": "7c3e9a1f0b2d4e6a8c9f1b3d5e7a9c1e3f5b7d90",
+							"parents": ["a41d9e07c52b8f3e6d1a4c9b7e0f2d5a8c3b6e11"],
+							"subject": "Show recorded states per viewport",
+							"author": "Sam Rivera",
+							"committedAt": "2026-11-13T18:05:27+00:00",
+							"branches": ["main"],
+							"retained": true,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [
+								{
+									"id": "5b1f0c8e3a9d7426f1e0b5c2a8d93f6e4c7a1b0d9e2f8634a5c7d1e0b9f3a261",
+									"status": "passed",
+									"profile": "9e41c07a5f2d83b6",
+									"finishedAt": "2026-11-14T16:42:09.214Z",
+									"base": "a41d9e07c52b8f3e6d1a4c9b7e0f2d5a8c3b6e11",
+									"valid": true,
+									"problems": []
+								}
+							],
+							"legacy": []
+						}
+					},
+					{
+						"location": {
+							"branch": "main",
+							"commit": "e0b5c7d19a3f6e28b4d0c6a1f9e3b7d5a2c8f406",
+							"category": "components",
+							"entity": "reports.component.entity-states"
+						},
+						"mode": "commit",
+						"branch": "main",
+						"tip": "7c3e9a1f0b2d4e6a8c9f1b3d5e7a9c1e3f5b7d90",
+						"commit": "e0b5c7d19a3f6e28b4d0c6a1f9e3b7d5a2c8f406",
+						"atTip": false,
+						"parent": "d4f1a2e7b9c05e38a6d1f4b2c7e9a0d3b5f8c162",
+						"summary": {
+							"commit": "e0b5c7d19a3f6e28b4d0c6a1f9e3b7d5a2c8f406",
+							"parents": ["d4f1a2e7b9c05e38a6d1f4b2c7e9a0d3b5f8c162"],
+							"subject": "Add viewport picker to entity states",
+							"author": "Sam Rivera",
+							"committedAt": "2026-11-10T14:22:46+00:00",
+							"branches": ["main"],
+							"retained": true,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [
+								{
+									"id": "c28a7e4d1f0b9635e2a7c4d8f1b0e9a36d5c2f8b1e7a4d09c3f6b2e8a1d5c704",
+									"status": "passed",
+									"profile": "9e41c07a5f2d83b6",
+									"finishedAt": "2026-11-10T14:24:31.660Z",
+									"base": "d4f1a2e7b9c05e38a6d1f4b2c7e9a0d3b5f8c162",
+									"valid": true,
+									"problems": []
+								}
+							],
+							"legacy": []
+						}
+					}
+				]
 			},
 			{
 				"name": "EntityStates.mediaBase",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional prefix for prebuilt media assets; empty when a bridge resolves images.",
+				"description": "Optional prefix for prebuilt media assets, defaulting to an empty string. It is passed to EvidenceCard and EvidenceViewer as their asset base only when resolveImage is omitted; when resolveImage is given, the asset base is empty and mediaBase is ignored.",
 				"examples": ["/harness/media/"]
 			},
 			{
@@ -73,23 +434,24 @@
 				"type": "(item: Evidence) => Promise<string>",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional bridge callback, defaulting to JavaScript undefined. When omitted, mediaBase resolves image paths. Rejected callback promises become visible missing-capture notes."
+				"description": "Optional bridge callback, undefined by default, that receives each recorded capture and resolves to the file to show in its place; when it is omitted, mediaBase resolves image paths. A rejected promise becomes a missing-capture note showing the error message, or 'Capture could not be loaded.' when the rejection is not an Error."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityStates",
 				"type": "markup",
-				"description": "Screenshot gallery with named states, viewport selection, revision labels, explicit gaps and full-size previews."
+				"description": "The States gallery for the selected scenario: one card per state of that scenario with its Before and After or Current captures, a Viewport select when a viewport is available, a Scenario select only when there is more than one scenario, a Notice that joins the incomparable notes, a Notice for each state whose coverage is not required and a Notice for each missing capture. Opening a capture shows it at full size in an EvidenceViewer."
 			}
 		],
 		"errors": [
 			{
 				"name": "each_key_duplicate",
 				"type": "thrown",
-				"description": "Rendering rejects duplicate scenario, viewport, state or screenshot IDs within their keyed lists."
+				"description": "Svelte throws this runtime error when two items of one keyed list share a key: scenario IDs among the scenarios with viewports, viewport IDs of the selected scenario, or the state rows' scenario, state and viewport key, which repeats when one state ID is declared twice in a scenario."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
