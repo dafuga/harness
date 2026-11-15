@@ -100,6 +100,8 @@ test('archive rejects malformed, oversized or unbound pairs before evidence publ
 			{ ...input, sha256: '0'.repeat(64) },
 			{ ...input, videoBytes: Buffer.alloc(8 * 1024 * 1024 + 1) },
 			{ ...input, posterBytes: Buffer.from('bad PNG') },
+			{ ...input, posterBytes: input.alternatePoster, video: { ...input.video, poster: { ...input.video.poster, sha256: hash(input.alternatePoster), bytes: input.alternatePoster.length } } },
+			{ ...input, posterBytes: Buffer.alloc(8 * 1024 * 1024 + 1) },
 			{ ...input, slot: { ...input.slot, unit: '../escape' } },
 			{ ...input, slot: { ...input.slot, unitUid: 'u_aaaaaaaaaa' } },
 			{ ...input, original: { ...input.original, tree: '0'.repeat(40) } },
@@ -107,6 +109,7 @@ test('archive rejects malformed, oversized or unbound pairs before evidence publ
 			{ ...input, video: { ...input.video, states: [{ id: 'playing', atSeconds: 2 }] } }
 		])
 			await expect(service.write([invalid])).rejects.toThrow();
+		await expect(service.write([input, { ...input, slot: { ...input.slot, viewport: 'other' }, original: { ...input.original, tree: '0'.repeat(40) } }])).rejects.toThrow();
 		expect(await new EvidenceBranchRepository(root).tip()).toBeUndefined();
 	});
 });
@@ -164,6 +167,7 @@ test('restore verifies bytes and refuses existing conflicts and symlink destinat
 		const [pointer] = await service.write([input]),
 			target = join(root, '.cache/restored');
 		const read = await service.restore(pointer, target);
+		await expect(service.restore(pointer, join(root, '..', 'escape'))).rejects.toThrow(/inside/i);
 		for (const [path, bytes] of read.files)
 			expect(hash(await readFile(join(target, path)))).toBe(hash(bytes));
 		await service.restore(pointer, target);

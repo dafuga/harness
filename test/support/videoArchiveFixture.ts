@@ -20,6 +20,10 @@ export async function videoArchiveFixture(root: string, git: (...args: string[])
 	);
 	git('add', '.');
 	git('commit', '-qm', 'feat: register disposable archive owner');
+	return { ...archiveInput(git, f.original, archivePoster(f.original)), alternatePoster: archivePoster(f.replacement) };
+}
+
+function archivePoster(bytes: Buffer): Buffer {
 	const poster = spawnSync(
 		'ffmpeg',
 		[
@@ -39,10 +43,18 @@ export async function videoArchiveFixture(root: string, git: (...args: string[])
 			'png',
 			'pipe:1'
 		],
-		{ input: f.original, timeout: 10_000, maxBuffer: 1_000_000 }
+		{ input: bytes, timeout: 10_000, maxBuffer: 1_000_000 }
 	);
 	if (poster.status !== 0) throw new Error('Archive poster fixture failed.');
-	const input: VideoArchiveInput = {
+	return poster.stdout;
+}
+
+function archiveInput(
+	git: (...args: string[]) => string,
+	bytes: Buffer,
+	poster: Buffer
+): VideoArchiveInput {
+	return {
 		slot: {
 			unit: 'component.player',
 			unitUid: 'u_abcdefghij',
@@ -74,15 +86,14 @@ export async function videoArchiveFixture(root: string, git: (...args: string[])
 			frameCount: 10,
 			poster: {
 				file: 'poster.png',
-				sha256: hash(poster.stdout),
-				bytes: poster.stdout.length,
+				sha256: hash(poster),
+				bytes: poster.length,
 				timeSeconds: 0
 			}
 		},
 		durationSeconds: 1,
-		sha256: hash(f.original),
-		videoBytes: f.original,
-		posterBytes: poster.stdout
+		sha256: hash(bytes),
+		videoBytes: bytes,
+		posterBytes: poster
 	};
-	return input;
 }
