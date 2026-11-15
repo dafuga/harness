@@ -18,17 +18,30 @@
 				"name": "commandAction.args",
 				"type": "string[]",
 				"required": true,
-				"description": "CLI arguments beginning with the command and optional subcommand; executable and script names should already be removed."
+				"description": "CLI arguments after the executable and script names have been removed, where args[0] is the top-level command and args[1] is the optional subcommand. args[1] matters only when args[0] names a command with listed subcommands, later entries are ignored, and an empty array is treated as the command 'help'.",
+				"examples": [
+					["benchmark", "run"],
+					["units"],
+					["deploy"]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "commandAction",
 				"type": "string",
-				"description": "Known top-level action, known command plus subcommand, command plus help for an unknown subcommand, or help-or-unknown for an unrecognized top-level command."
+				"description": "The action label for the arguments: one of the top-level actions (new, generate, info, audit, response-check, impact) is returned unchanged, a command with listed subcommands returns 'command subcommand' when args[1] is listed and 'command help' otherwise, and any other command name returns 'help-or-unknown', except inherited Object.prototype names, which throw. The label never names a subcommand outside the implementation's lists.",
+				"examples": ["benchmark run", "units help", "help-or-unknown"]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when args[0] is an inherited Object.prototype property name, such as 'constructor', 'toString', or '__proto__', because subcommands[command] is then a truthy value without an includes method. Every other string, including the empty string, returns a label normally."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "commandAction",
@@ -37,18 +50,30 @@
 						"name": "commandAction.args",
 						"type": "string[]",
 						"required": true,
-						"description": "CLI arguments beginning with the command and optional subcommand; executable and script names should already be removed."
+						"description": "CLI arguments after the executable and script names have been removed, where args[0] is the top-level command and args[1] is the optional subcommand. args[1] matters only when args[0] names a command with listed subcommands, later entries are ignored, and an empty array is treated as the command 'help'.",
+						"examples": [
+							["benchmark", "run"],
+							["units"],
+							["deploy"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "commandAction",
 						"type": "string",
-						"description": "Known top-level action, known command plus subcommand, command plus help for an unknown subcommand, or help-or-unknown for an unrecognized top-level command."
+						"description": "The action label for the arguments: one of the top-level actions (new, generate, info, audit, response-check, impact) is returned unchanged, a command with listed subcommands returns 'command subcommand' when args[1] is listed and 'command help' otherwise, and any other command name returns 'help-or-unknown', except inherited Object.prototype names, which throw. The label never names a subcommand outside the implementation's lists.",
+						"examples": ["benchmark run", "units help", "help-or-unknown"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when args[0] is an inherited Object.prototype property name, such as 'constructor', 'toString', or '__proto__', because subcommands[command] is then a truthy value without an includes method. Every other string, including the empty string, returns a label normally."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
