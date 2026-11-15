@@ -18,23 +18,43 @@
 				"name": "sourceChanges.before",
 				"type": "SourceSnapshot",
 				"required": true,
-				"description": "Earlier map of paths to content hashes or link markers."
+				"description": "Earlier snapshot keyed by source path and used as the baseline; a path it lacks is classified as added. Its values are compared with === against the same path in after, so only values that are === equal count as unchanged."
 			},
 			{
 				"name": "sourceChanges.after",
 				"type": "SourceSnapshot",
 				"required": true,
-				"description": "Later map of paths to content hashes or link markers."
+				"description": "Later snapshot keyed by source path and compared against before; a path it lacks is classified as deleted. Its values are compared with === against the same path in before, so only values that are === equal count as unchanged."
 			}
 		],
 		"outputs": [
 			{
 				"name": "sourceChanges",
 				"type": "SourceChange[]",
-				"description": "Changes sorted by path across both maps; equal values are omitted."
+				"description": "One entry per path present in either snapshot, sorted by path with the default JavaScript string sort: 'added' when before lacks the path, 'deleted' when after lacks it, and 'modified' when both have it. Paths whose values are === equal are omitted, so a path whose stored value is undefined does not appear when the other snapshot lacks it.",
+				"examples": [
+					[
+						{
+							"path": "packages/desktop/src/utils/git-source-history/sourceChanges.ts",
+							"change": "modified"
+						}
+					],
+					[
+						{
+							"path": "packages/desktop/src/utils/git-source-history/sourceChanges.ts",
+							"change": "deleted"
+						},
+						{
+							"path": "packages/desktop/src/utils/sourceChanges.ts",
+							"change": "added"
+						}
+					],
+					[]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "sourceChanges",
@@ -43,24 +63,43 @@
 						"name": "sourceChanges.before",
 						"type": "SourceSnapshot",
 						"required": true,
-						"description": "Earlier map of paths to content hashes or link markers."
+						"description": "Earlier snapshot keyed by source path and used as the baseline; a path it lacks is classified as added. Its values are compared with === against the same path in after, so only values that are === equal count as unchanged."
 					},
 					{
 						"name": "sourceChanges.after",
 						"type": "SourceSnapshot",
 						"required": true,
-						"description": "Later map of paths to content hashes or link markers."
+						"description": "Later snapshot keyed by source path and compared against before; a path it lacks is classified as deleted. Its values are compared with === against the same path in before, so only values that are === equal count as unchanged."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sourceChanges",
 						"type": "SourceChange[]",
-						"description": "Changes sorted by path across both maps; equal values are omitted."
+						"description": "One entry per path present in either snapshot, sorted by path with the default JavaScript string sort: 'added' when before lacks the path, 'deleted' when after lacks it, and 'modified' when both have it. Paths whose values are === equal are omitted, so a path whose stored value is undefined does not appear when the other snapshot lacks it.",
+						"examples": [
+							[
+								{
+									"path": "packages/desktop/src/utils/git-source-history/sourceChanges.ts",
+									"change": "modified"
+								}
+							],
+							[
+								{
+									"path": "packages/desktop/src/utils/git-source-history/sourceChanges.ts",
+									"change": "deleted"
+								},
+								{
+									"path": "packages/desktop/src/utils/sourceChanges.ts",
+									"change": "added"
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
