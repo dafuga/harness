@@ -30,80 +30,102 @@
 				"name": "statementEnd.masked",
 				"type": "string",
 				"required": true,
-				"description": "Masked source containing the statement."
+				"description": "Masked source text that statementEnd scans forward from statementEnd.start, testing characters at start's brace and group depth for `;`, a newline or `}`; the newline test reads up to 40 characters after that newline, and an empty string makes the result -1.",
+				"examples": [
+					"const total = items.length;\nreturn total;\n",
+					"const a = 1\nconst b = 2\n",
+					"export function add(a, b) {\n\treturn a + b;\n}\n"
+				]
 			},
 			{
 				"name": "statementEnd.nesting",
 				"type": "SourceNesting",
 				"required": true,
-				"description": "Matching depth arrays for the source."
+				"description": "Depth arrays from sourceNesting for the same masked source; statementEnd reads both its brace and group arrays and considers only offsets whose depths equal those at statementEnd.start."
 			},
 			{
 				"name": "statementEnd.start",
 				"type": "number",
 				"required": true,
-				"description": "Offset at which statement scanning begins."
+				"description": "Offset into the masked source where the scan begins, inclusive; its brace and group depths set the level that later characters must match, and a newline at this offset never ends the statement.",
+				"examples": [0, 28]
 			},
 			{
 				"name": "sourceNesting.masked",
 				"type": "string",
 				"required": true,
-				"description": "Masked source whose literal/comment contents no longer contribute brackets."
+				"description": "Masked source text, expected to have literal and comment contents already masked out, whose `{`, `}`, `(`, `)`, `[` and `]` characters are each counted as they appear; sourceNesting does not parse strings or comments itself.",
+				"examples": [
+					"export function add(a, b) {\n\treturn a + b;\n}\n",
+					"if (ready) {\n\tstart();\n}\n",
+					"const items = [1, 2, 3];\n"
+				]
 			},
 			{
 				"name": "matchingBrace.nesting",
 				"type": "SourceNesting",
 				"required": true,
-				"description": "Depth arrays previously computed from the same masked source."
+				"description": "Depth arrays from sourceNesting for the same masked source; matchingBrace reads only the brace array, and that array's length sets the fallback result when no closing brace is found."
 			},
 			{
 				"name": "matchingBrace.open",
 				"type": "number",
 				"required": true,
-				"description": "Offset of an opening curly brace."
+				"description": "Offset of the opening `{` whose closing brace is wanted; matchingBrace takes the brace depth at this offset as its target and searches from open + 1, without checking that the character there is `{`.",
+				"examples": [26, 11, 17]
 			},
 			{
 				"name": "bodyEnd.masked",
 				"type": "string",
 				"required": true,
-				"description": "Masked source containing a signature and possible body."
+				"description": "Masked source text that bodyEnd scans from bodyEnd.from for a `;` or a `{` at from's group depth; after each such `{` it reads up to 39 characters past the matching `}` to decide whether to skip that block as a return type.",
+				"examples": [
+					"export function add(a, b) {\n\treturn a + b;\n}\n",
+					"declare function parse(text: string): Result;\n",
+					"function load(): { ok: boolean } {\n\treturn { ok: true };\n}\n"
+				]
 			},
 			{
 				"name": "bodyEnd.nesting",
 				"type": "SourceNesting",
 				"required": true,
-				"description": "Matching depth arrays for the source."
+				"description": "Depth arrays from sourceNesting for the same masked source; bodyEnd reads the group array for its level checks and passes the whole object to matchingBrace, which reads the brace array."
 			},
 			{
 				"name": "bodyEnd.from",
 				"type": "number",
 				"required": true,
-				"description": "Offset after which to look for a function body."
+				"description": "Offset where the body search starts; the scan includes this offset, and its group depth sets the parenthesis and square-bracket level that a body `{` or `;` must share.",
+				"examples": [0, 15]
 			}
 		],
 		"outputs": [
 			{
 				"name": "sourceNesting",
 				"type": "SourceNesting",
-				"description": "Curly and parenthesis/square-bracket depths before every character, with one trailing position."
+				"description": "Two Int32Arrays of length masked.length + 1: `brace` holds the curly-brace depth before each character and `group` holds a shared count of `(` and `[` minus `)` and `]` before each character, with the last entry giving the depth after the final character. Depths are not clamped, so unmatched closing characters can make them negative."
 			},
 			{
 				"name": "matchingBrace",
 				"type": "number",
-				"description": "Inclusive closing-brace offset when depth returns to its opening level; last source offset if no close is found."
+				"description": "Offset of the `}` at which the brace depth first returns to the value it had at `open`; when that never happens the result is nesting.brace.length - 2, which is the last source offset for arrays from sourceNesting.",
+				"examples": [43, 23, 31]
 			},
 			{
 				"name": "statementEnd",
 				"type": "number",
-				"description": "Inclusive statement end at a same-depth semicolon, recognized next statement or closing brace, otherwise the final source offset."
+				"description": "Scanning forward at start's brace and group depth, the inclusive end is a `;` itself, or the character before a `}` or before a newline after start that begins a recognized statement, and masked.length - 1 when none of these occurs. A newline begins a recognized statement when the next non-blank text within 40 characters starts with one of the whole words export, const, let, var, function, class, import, interface, type, if, for, return, async, declare or enum, or with `}` or `)`, or when only blank text remains within those 40 characters.",
+				"examples": [26, 40, 10]
 			},
 			{
 				"name": "bodyEnd",
 				"type": "number",
-				"description": "Inclusive function-body end, skipping recognized return-type braces, or -1 for a bodiless/unrecognized signature."
+				"description": "Inclusive offset of the `}` closing the first `{` at from's group depth that is not skipped as a return type, or -1 when a `;` at that depth is reached first or no such brace exists. A `{` block whose closing brace is followed, after only spaces or tabs, by `{`, `|`, `&`, `[`, `>`, `,`, `)` or `=>` is skipped as a return type, and an unclosed body yields masked.length - 1.",
+				"examples": [43, -1, 57]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "statementEnd",
@@ -112,30 +134,37 @@
 						"name": "statementEnd.masked",
 						"type": "string",
 						"required": true,
-						"description": "Masked source containing the statement."
+						"description": "Masked source text that statementEnd scans forward from statementEnd.start, testing characters at start's brace and group depth for `;`, a newline or `}`; the newline test reads up to 40 characters after that newline, and an empty string makes the result -1.",
+						"examples": [
+							"const total = items.length;\nreturn total;\n",
+							"const a = 1\nconst b = 2\n",
+							"export function add(a, b) {\n\treturn a + b;\n}\n"
+						]
 					},
 					{
 						"name": "statementEnd.nesting",
 						"type": "SourceNesting",
 						"required": true,
-						"description": "Matching depth arrays for the source."
+						"description": "Depth arrays from sourceNesting for the same masked source; statementEnd reads both its brace and group arrays and considers only offsets whose depths equal those at statementEnd.start."
 					},
 					{
 						"name": "statementEnd.start",
 						"type": "number",
 						"required": true,
-						"description": "Offset at which statement scanning begins."
+						"description": "Offset into the masked source where the scan begins, inclusive; its brace and group depths set the level that later characters must match, and a newline at this offset never ends the statement.",
+						"examples": [0, 28]
 					}
 				],
 				"outputs": [
 					{
 						"name": "statementEnd",
 						"type": "number",
-						"description": "Inclusive statement end at a same-depth semicolon, recognized next statement or closing brace, otherwise the final source offset."
+						"description": "Scanning forward at start's brace and group depth, the inclusive end is a `;` itself, or the character before a `}` or before a newline after start that begins a recognized statement, and masked.length - 1 when none of these occurs. A newline begins a recognized statement when the next non-blank text within 40 characters starts with one of the whole words export, const, let, var, function, class, import, interface, type, if, for, return, async, declare or enum, or with `}` or `)`, or when only blank text remains within those 40 characters.",
+						"examples": [26, 40, 10]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "sourceNesting",
@@ -144,18 +173,23 @@
 						"name": "sourceNesting.masked",
 						"type": "string",
 						"required": true,
-						"description": "Masked source whose literal/comment contents no longer contribute brackets."
+						"description": "Masked source text, expected to have literal and comment contents already masked out, whose `{`, `}`, `(`, `)`, `[` and `]` characters are each counted as they appear; sourceNesting does not parse strings or comments itself.",
+						"examples": [
+							"export function add(a, b) {\n\treturn a + b;\n}\n",
+							"if (ready) {\n\tstart();\n}\n",
+							"const items = [1, 2, 3];\n"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sourceNesting",
 						"type": "SourceNesting",
-						"description": "Curly and parenthesis/square-bracket depths before every character, with one trailing position."
+						"description": "Two Int32Arrays of length masked.length + 1: `brace` holds the curly-brace depth before each character and `group` holds a shared count of `(` and `[` minus `)` and `]` before each character, with the last entry giving the depth after the final character. Depths are not clamped, so unmatched closing characters can make them negative."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "matchingBrace",
@@ -164,24 +198,26 @@
 						"name": "matchingBrace.nesting",
 						"type": "SourceNesting",
 						"required": true,
-						"description": "Depth arrays previously computed from the same masked source."
+						"description": "Depth arrays from sourceNesting for the same masked source; matchingBrace reads only the brace array, and that array's length sets the fallback result when no closing brace is found."
 					},
 					{
 						"name": "matchingBrace.open",
 						"type": "number",
 						"required": true,
-						"description": "Offset of an opening curly brace."
+						"description": "Offset of the opening `{` whose closing brace is wanted; matchingBrace takes the brace depth at this offset as its target and searches from open + 1, without checking that the character there is `{`.",
+						"examples": [26, 11, 17]
 					}
 				],
 				"outputs": [
 					{
 						"name": "matchingBrace",
 						"type": "number",
-						"description": "Inclusive closing-brace offset when depth returns to its opening level; last source offset if no close is found."
+						"description": "Offset of the `}` at which the brace depth first returns to the value it had at `open`; when that never happens the result is nesting.brace.length - 2, which is the last source offset for arrays from sourceNesting.",
+						"examples": [43, 23, 31]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "bodyEnd",
@@ -190,30 +226,37 @@
 						"name": "bodyEnd.masked",
 						"type": "string",
 						"required": true,
-						"description": "Masked source containing a signature and possible body."
+						"description": "Masked source text that bodyEnd scans from bodyEnd.from for a `;` or a `{` at from's group depth; after each such `{` it reads up to 39 characters past the matching `}` to decide whether to skip that block as a return type.",
+						"examples": [
+							"export function add(a, b) {\n\treturn a + b;\n}\n",
+							"declare function parse(text: string): Result;\n",
+							"function load(): { ok: boolean } {\n\treturn { ok: true };\n}\n"
+						]
 					},
 					{
 						"name": "bodyEnd.nesting",
 						"type": "SourceNesting",
 						"required": true,
-						"description": "Matching depth arrays for the source."
+						"description": "Depth arrays from sourceNesting for the same masked source; bodyEnd reads the group array for its level checks and passes the whole object to matchingBrace, which reads the brace array."
 					},
 					{
 						"name": "bodyEnd.from",
 						"type": "number",
 						"required": true,
-						"description": "Offset after which to look for a function body."
+						"description": "Offset where the body search starts; the scan includes this offset, and its group depth sets the parenthesis and square-bracket level that a body `{` or `;` must share.",
+						"examples": [0, 15]
 					}
 				],
 				"outputs": [
 					{
 						"name": "bodyEnd",
 						"type": "number",
-						"description": "Inclusive function-body end, skipping recognized return-type braces, or -1 for a bodiless/unrecognized signature."
+						"description": "Inclusive offset of the `}` closing the first `{` at from's group depth that is not skipped as a return type, or -1 when a `;` at that depth is reached first or no such brace exists. A `{` block whose closing brace is followed, after only spaces or tabs, by `{`, `|`, `&`, `[`, `>`, `,`, `)` or `=>` is skipped as a return type, and an unclosed body yields masked.length - 1.",
+						"examples": [43, -1, 57]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
