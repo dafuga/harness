@@ -34,81 +34,133 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RemoteDeviceSessionsService.constructor.options",
 				"type": "RemoteDeviceSessionsOptions",
-				"required": true
+				"required": true,
+				"description": "Options provide shared device-session settings, the current host and approved-device lookup, and packet send/drop callbacks. The callback members cannot be represented in JSON, so this input has no JSON example."
 			},
 			{
 				"name": "RemoteDeviceSessionsService.connected.deviceId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Remote host device ID used to find the session entry whose live link determines connectivity. An unknown or detached entry produces false.",
+				"examples": ["4e8f3c2a-71b6-4d9c-a520-68fc81bd02a7"]
 			},
 			{
 				"name": "RemoteDeviceSessionsService.packet.address",
 				"type": "DeviceAddress",
-				"required": true
+				"required": true,
+				"description": "Address containing the remote device ID and connection ID used to select the current session connection. A nonmatching connection is not treated as the current connection for sealed packets.",
+				"examples": [
+					{
+						"deviceId": "4e8f3c2a-71b6-4d9c-a520-68fc81bd02a7",
+						"connectionId": "c9a164ef-5b73-44d7-8c2a-f41d9e06b835"
+					}
+				]
 			},
 			{
 				"name": "RemoteDeviceSessionsService.packet.packet",
 				"type": "SecurePacket",
-				"required": true
+				"required": true,
+				"description": "Secure packet received for the device connection: hello packets begin or replace a connection, and sealed packets are opened on the matching current connection. Other packet types are dropped as protocol violations.",
+				"examples": [
+					{
+						"type": "hello",
+						"version": 1,
+						"deviceId": "4e8f3c2a-71b6-4d9c-a520-68fc81bd02a7",
+						"ephemeralKey": "BCEf5k5L3Qw3nN8mQf3fG2oG8m2mGm4pN1k7R8c9V2w6Y1x3J5q7L9s0A2b4C6d8E0f2G4h6J8k0M2n4P6r8T0v2X4z6",
+						"nonce": "AAECAwQFBgcICQoLDA0ODw"
+					},
+					{
+						"type": "sealed",
+						"counter": 1,
+						"more": false,
+						"data": "AQIDBAUGBwgJCgsMDQ4PEA"
+					}
+				]
 			},
 			{
 				"name": "RemoteDeviceSessionsService.close.address",
 				"type": "DeviceAddress",
-				"required": true
+				"required": true,
+				"description": "Address used to find the session entry to detach. The entry is detached only when both its device ID and current connection ID match.",
+				"examples": [
+					{
+						"deviceId": "4e8f3c2a-71b6-4d9c-a520-68fc81bd02a7",
+						"connectionId": "c9a164ef-5b73-44d7-8c2a-f41d9e06b835"
+					}
+				]
 			},
 			{
 				"name": "RemoteDeviceSessionsService.revoke.deviceId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Remote host device ID whose session should end. If no entry exists, revocation is a no-op; otherwise the entry is removed, detached, and ended.",
+				"examples": ["4e8f3c2a-71b6-4d9c-a520-68fc81bd02a7"]
 			},
 			{
 				"name": "RemoteDeviceSessionsService.announce.channel",
 				"type": "WireChannel",
-				"required": true
+				"required": true,
+				"description": "Wire event channel that selects the event category emitted to connected device sessions. The service emits only to entries with a live link and does not retain events for detached sessions.",
+				"examples": ["run", "cache", "connection"]
 			},
 			{
 				"name": "RemoteDeviceSessionsService.announce.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Opaque event payload passed to each connected session wire emitter with the selected channel. The service does not retain it for entries without a live link.",
+				"examples": [
+					{
+						"state": "ready",
+						"online": true
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteDeviceSessionsService.connected",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Whether the requested device entry currently has a live wire link. It is false when the entry is absent or detached.",
+				"examples": [true, false]
 			},
 			{
 				"name": "RemoteDeviceSessionsService.packet",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Promise that completes asynchronous packet handling with no fulfillment value. Hello packets perform the secure handshake; sealed packets are opened and delivered when their plaintext is non-null, while invalid or noncurrent packets are dropped."
 			},
 			{
 				"name": "RemoteDeviceSessionsService.close",
-				"type": "void"
+				"type": "void",
+				"description": "No value is returned. A matching current connection is detached; an absent entry or stale connection address has no effect."
 			},
 			{
 				"name": "RemoteDeviceSessionsService.revoke",
-				"type": "void"
+				"type": "void",
+				"description": "No value is returned. The selected device entry is removed and its session is ended; an unknown device ID has no effect."
 			},
 			{
 				"name": "RemoteDeviceSessionsService.detachAll",
-				"type": "void"
+				"type": "void",
+				"description": "No value is returned. Every current connection is detached while its device session entry remains available for a later connection."
 			},
 			{
 				"name": "RemoteDeviceSessionsService.announce",
-				"type": "void"
+				"type": "void",
+				"description": "No value is returned. The value is emitted on the requested channel to each entry with a live link and is not queued for other entries."
 			},
 			{
 				"name": "RemoteDeviceSessionsService.end",
-				"type": "void"
+				"type": "void",
+				"description": "No value is returned. Every device currently in the entry map is revoked, detached, and ended."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "RemoteDeviceSessionsService.connected",
@@ -116,17 +168,21 @@
 					{
 						"name": "RemoteDeviceSessionsService.connected.deviceId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Remote host device ID used to find the session entry whose live link determines connectivity. An unknown or detached entry produces false.",
+						"examples": ["4e8f3c2a-71b6-4d9c-a520-68fc81bd02a7"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteDeviceSessionsService.connected",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Whether the requested device entry currently has a live wire link. It is false when the entry is absent or detached.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteDeviceSessionsService.packet",
@@ -134,22 +190,46 @@
 					{
 						"name": "RemoteDeviceSessionsService.packet.address",
 						"type": "DeviceAddress",
-						"required": true
+						"required": true,
+						"description": "Address containing the remote device ID and connection ID used to select the current session connection. A nonmatching connection is not treated as the current connection for sealed packets.",
+						"examples": [
+							{
+								"deviceId": "4e8f3c2a-71b6-4d9c-a520-68fc81bd02a7",
+								"connectionId": "c9a164ef-5b73-44d7-8c2a-f41d9e06b835"
+							}
+						]
 					},
 					{
 						"name": "RemoteDeviceSessionsService.packet.packet",
 						"type": "SecurePacket",
-						"required": true
+						"required": true,
+						"description": "Secure packet received for the device connection: hello packets begin or replace a connection, and sealed packets are opened on the matching current connection. Other packet types are dropped as protocol violations.",
+						"examples": [
+							{
+								"type": "hello",
+								"version": 1,
+								"deviceId": "4e8f3c2a-71b6-4d9c-a520-68fc81bd02a7",
+								"ephemeralKey": "BCEf5k5L3Qw3nN8mQf3fG2oG8m2mGm4pN1k7R8c9V2w6Y1x3J5q7L9s0A2b4C6d8E0f2G4h6J8k0M2n4P6r8T0v2X4z6",
+								"nonce": "AAECAwQFBgcICQoLDA0ODw"
+							},
+							{
+								"type": "sealed",
+								"counter": 1,
+								"more": false,
+								"data": "AQIDBAUGBwgJCgsMDQ4PEA"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteDeviceSessionsService.packet",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Promise that completes asynchronous packet handling with no fulfillment value. Hello packets perform the secure handshake; sealed packets are opened and delivered when their plaintext is non-null, while invalid or noncurrent packets are dropped."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteDeviceSessionsService.close",
@@ -157,17 +237,25 @@
 					{
 						"name": "RemoteDeviceSessionsService.close.address",
 						"type": "DeviceAddress",
-						"required": true
+						"required": true,
+						"description": "Address used to find the session entry to detach. The entry is detached only when both its device ID and current connection ID match.",
+						"examples": [
+							{
+								"deviceId": "4e8f3c2a-71b6-4d9c-a520-68fc81bd02a7",
+								"connectionId": "c9a164ef-5b73-44d7-8c2a-f41d9e06b835"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteDeviceSessionsService.close",
-						"type": "void"
+						"type": "void",
+						"description": "No value is returned. A matching current connection is detached; an absent entry or stale connection address has no effect."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteDeviceSessionsService.revoke",
@@ -175,17 +263,20 @@
 					{
 						"name": "RemoteDeviceSessionsService.revoke.deviceId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Remote host device ID whose session should end. If no entry exists, revocation is a no-op; otherwise the entry is removed, detached, and ended.",
+						"examples": ["4e8f3c2a-71b6-4d9c-a520-68fc81bd02a7"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteDeviceSessionsService.revoke",
-						"type": "void"
+						"type": "void",
+						"description": "No value is returned. The selected device entry is removed and its session is ended; an unknown device ID has no effect."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteDeviceSessionsService.detachAll",
@@ -193,11 +284,12 @@
 				"outputs": [
 					{
 						"name": "RemoteDeviceSessionsService.detachAll",
-						"type": "void"
+						"type": "void",
+						"description": "No value is returned. Every current connection is detached while its device session entry remains available for a later connection."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteDeviceSessionsService.announce",
@@ -205,22 +297,32 @@
 					{
 						"name": "RemoteDeviceSessionsService.announce.channel",
 						"type": "WireChannel",
-						"required": true
+						"required": true,
+						"description": "Wire event channel that selects the event category emitted to connected device sessions. The service emits only to entries with a live link and does not retain events for detached sessions.",
+						"examples": ["run", "cache", "connection"]
 					},
 					{
 						"name": "RemoteDeviceSessionsService.announce.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Opaque event payload passed to each connected session wire emitter with the selected channel. The service does not retain it for entries without a live link.",
+						"examples": [
+							{
+								"state": "ready",
+								"online": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteDeviceSessionsService.announce",
-						"type": "void"
+						"type": "void",
+						"description": "No value is returned. The value is emitted on the requested channel to each entry with a live link and is not queued for other entries."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteDeviceSessionsService.end",
@@ -228,11 +330,12 @@
 				"outputs": [
 					{
 						"name": "RemoteDeviceSessionsService.end",
-						"type": "void"
+						"type": "void",
+						"description": "No value is returned. Every device currently in the entry map is revoked, detached, and ended."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -242,17 +345,19 @@
 					{
 						"name": "RemoteDeviceSessionsService.constructor.options",
 						"type": "RemoteDeviceSessionsOptions",
-						"required": true
+						"required": true,
+						"description": "Options provide shared device-session settings, the current host and approved-device lookup, and packet send/drop callbacks. The callback members cannot be represented in JSON, so this input has no JSON example."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteDeviceSessionsService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed RemoteDeviceSessionsService instance, initialized with an empty device-entry map and the supplied options."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
