@@ -21,28 +21,101 @@
 				"name": "projectCapabilities.bridge",
 				"type": "DesktopBridge",
 				"required": true,
-				"description": "The desktop connection. Its optional capabilities reader is used when the snapshot does not state capabilities, and its addComment operation must exist before comments can be enabled."
+				"description": "The desktop bridge supplies the optional capabilities reader and comment operation. Its reader is used only when the snapshot has no truthy capabilities, and comments require addComment to be a function."
 			},
 			{
 				"name": "projectCapabilities.snapshot",
 				"type": "ProjectSnapshot",
 				"required": true,
-				"description": "The shown project snapshot, including optional capabilities and project identity. Capabilities stated in the snapshot take precedence over a separate read."
+				"description": "The shown project snapshot may state capabilities and carries the project object. A truthy capabilities value takes precedence; otherwise its id is read only if the bridge reader exists and is passed as projectId only when truthy.",
+				"examples": [
+					{
+						"project": {
+							"name": "luna-pyramid-p1-contracts-a-luna",
+							"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+							"kind": "local"
+						},
+						"capabilities": {
+							"comments": false,
+							"agents": false,
+							"planning": false,
+							"approval": false,
+							"source": "local"
+						},
+						"revision": {
+							"branch": "main",
+							"commit": "2f4c92b7a1d8e6035c9b71f0a4e2d6c8b3f5a901",
+							"tip": "2f4c92b7a1d8e6035c9b71f0a4e2d6c8b3f5a901",
+							"atTip": true
+						},
+						"branches": [
+							{
+								"name": "main",
+								"tip": "2f4c92b7a1d8e6035c9b71f0a4e2d6c8b3f5a901",
+								"current": true
+							}
+						],
+						"commits": [
+							{
+								"hash": "2f4c92b7a1d8e6035c9b71f0a4e2d6c8b3f5a901",
+								"subject": "Update project capabilities contract",
+								"authoredAt": "2026-11-15T09:00:00.000Z",
+								"committedAt": "2026-11-15T09:00:00.000Z"
+							}
+						],
+						"entities": [],
+						"writable": true
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "closedCapabilities",
 				"type": "ProjectCapabilities",
-				"description": "The default read-only capabilities: comments, agents, planning and approval all disabled, with local as the source."
+				"description": "The baseline capability set used when nothing proves more or as the base for fallbacks. It disables comments, agents, planning, and approval, and sets source to local.",
+				"examples": [
+					{
+						"comments": false,
+						"agents": false,
+						"planning": false,
+						"approval": false,
+						"source": "local"
+					}
+				]
 			},
 			{
 				"name": "projectCapabilities",
 				"type": "Promise<ProjectCapabilities>",
-				"description": "A promise for the available actions and their source, with an optional reason. Uses snapshot capabilities first, otherwise asks the connection for this project. If that read fails, disables all actions and explains that the project did not report its permissions. For an older connection without a capabilities reader, agents, planning and approval stay enabled and comments stay disabled. Reported comments are enabled only when addComment is a function."
+				"description": "Resolves the shown project's capabilities, preferring a truthy snapshot value and otherwise using the bridge reader with a truthy project id when available. A reader rejection yields closed capabilities with a reason; a missing reader enables agents, planning, and approval, while comments are enabled only when the selected value is true and addComment is a function.",
+				"examples": [
+					{
+						"comments": false,
+						"agents": false,
+						"planning": false,
+						"approval": false,
+						"source": "local"
+					},
+					{
+						"comments": false,
+						"agents": true,
+						"planning": true,
+						"approval": true,
+						"source": "local"
+					},
+					{
+						"comments": false,
+						"agents": false,
+						"planning": false,
+						"approval": false,
+						"source": "local",
+						"reason": "This project did not report what it allows."
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "projectCapabilities",
@@ -51,24 +124,87 @@
 						"name": "projectCapabilities.bridge",
 						"type": "DesktopBridge",
 						"required": true,
-						"description": "The desktop connection. Its optional capabilities reader is used when the snapshot does not state capabilities, and its addComment operation must exist before comments can be enabled."
+						"description": "The desktop bridge supplies the optional capabilities reader and comment operation. Its reader is used only when the snapshot has no truthy capabilities, and comments require addComment to be a function."
 					},
 					{
 						"name": "projectCapabilities.snapshot",
 						"type": "ProjectSnapshot",
 						"required": true,
-						"description": "The shown project snapshot, including optional capabilities and project identity. Capabilities stated in the snapshot take precedence over a separate read."
+						"description": "The shown project snapshot may state capabilities and carries the project object. A truthy capabilities value takes precedence; otherwise its id is read only if the bridge reader exists and is passed as projectId only when truthy.",
+						"examples": [
+							{
+								"project": {
+									"name": "luna-pyramid-p1-contracts-a-luna",
+									"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+									"kind": "local"
+								},
+								"capabilities": {
+									"comments": false,
+									"agents": false,
+									"planning": false,
+									"approval": false,
+									"source": "local"
+								},
+								"revision": {
+									"branch": "main",
+									"commit": "2f4c92b7a1d8e6035c9b71f0a4e2d6c8b3f5a901",
+									"tip": "2f4c92b7a1d8e6035c9b71f0a4e2d6c8b3f5a901",
+									"atTip": true
+								},
+								"branches": [
+									{
+										"name": "main",
+										"tip": "2f4c92b7a1d8e6035c9b71f0a4e2d6c8b3f5a901",
+										"current": true
+									}
+								],
+								"commits": [
+									{
+										"hash": "2f4c92b7a1d8e6035c9b71f0a4e2d6c8b3f5a901",
+										"subject": "Update project capabilities contract",
+										"authoredAt": "2026-11-15T09:00:00.000Z",
+										"committedAt": "2026-11-15T09:00:00.000Z"
+									}
+								],
+								"entities": [],
+								"writable": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "projectCapabilities",
 						"type": "Promise<ProjectCapabilities>",
-						"description": "A promise for the available actions and their source, with an optional reason. Uses snapshot capabilities first, otherwise asks the connection for this project. If that read fails, disables all actions and explains that the project did not report its permissions. For an older connection without a capabilities reader, agents, planning and approval stay enabled and comments stay disabled. Reported comments are enabled only when addComment is a function."
+						"description": "Resolves the shown project's capabilities, preferring a truthy snapshot value and otherwise using the bridge reader with a truthy project id when available. A reader rejection yields closed capabilities with a reason; a missing reader enables agents, planning, and approval, while comments are enabled only when the selected value is true and addComment is a function.",
+						"examples": [
+							{
+								"comments": false,
+								"agents": false,
+								"planning": false,
+								"approval": false,
+								"source": "local"
+							},
+							{
+								"comments": false,
+								"agents": true,
+								"planning": true,
+								"approval": true,
+								"source": "local"
+							},
+							{
+								"comments": false,
+								"agents": false,
+								"planning": false,
+								"approval": false,
+								"source": "local",
+								"reason": "This project did not report what it allows."
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
