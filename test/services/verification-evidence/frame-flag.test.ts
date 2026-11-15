@@ -1,3 +1,7 @@
+import {
+	assertForgedFrameResolution,
+	assertRetainedFrameReadBounds
+} from '../../support/frameFlagReplayChecks';
 import { assertAttachedFrameFlagResolution } from '../../support/attachedFrameFlagResolution';
 import { expect, test } from 'vitest';
 import { FrameFlagService } from '../../../src/services/verification-evidence/FrameFlagService';
@@ -100,6 +104,7 @@ test('list survives a new service and distinguishes stale flags without deleting
 				])
 			)[0]
 		).toMatchObject({ id: flag.id, status: 'stale' });
+		await assertForgedFrameResolution(root, flag);
 	});
 });
 
@@ -136,6 +141,7 @@ test('corrupt retained frame objects are refused before model feedback is assemb
 		const f = await frameFlagFixture(root, git),
 			service = new FrameFlagService(root, f.reader);
 		const flag = await service.flag({ clip: f.reference, atSeconds: 0.2 });
+		await assertRetainedFrameReadBounds(root, flag, service);
 		await writeFile(await new LfsAdapter(root).path(flag.frame.sha256), 'corrupt');
 		await expect(service.feedback('component.player', join(root, '.cache/inputs'))).rejects.toThrow(
 			/hash|integrity|corrupt/i
@@ -150,6 +156,14 @@ test('replacement recordings must address pending flags and resolve them append-
 		const flag = await service.flag({ clip: f.reference, atSeconds: 0.2 });
 		await expect(service.address(f.replacementRef)).rejects.toThrow(/address|pending/i);
 		f.address([flag.id]);
+		const older = new FrameFlagService(root, async (reference) => ({
+			...(await f.reader(reference)),
+			capturedAt: '2000-01-01T00:00:00.000Z'
+		}));
+		await expect(
+			older.address(f.replacementRef),
+			'a replacement predating its flag cannot resolve feedback'
+		).rejects.toThrow(/older|before|predat/i);
 		await service.address(f.replacementRef);
 		expect((await service.list('component.player'))[0]).toMatchObject({
 			id: flag.id,
