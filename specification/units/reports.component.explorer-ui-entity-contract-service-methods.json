@@ -21,59 +21,513 @@
 				"name": "serviceContract.unit",
 				"type": "HarnessUnit",
 				"required": true,
-				"description": "The viewed service unit, including recorded classes and methods, owned symbols, and declared parameter, return and error fields."
+				"description": "The viewed service unit: its recorded classes and methods in `serviceClasses`, its owned symbols, and the parameter, return and error fields declared under each `Class.method`. Without `serviceClasses`, classes and methods come only from qualified owned symbols and from contract names under `Class.method`, so an unqualified name never yields a method.",
+				"examples": [
+					{
+						"id": "reports.component.report-store",
+						"kind": "function",
+						"status": "active",
+						"title": "ReportStore",
+						"responsibility": "Creates and reads report records through the ReportStore class.",
+						"dependencies": [
+							{
+								"unit": "reports.model.report-record",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": ["packages/reports/src/components/report-store/ReportStore.ts"],
+							"symbols": ["ReportStore.create", "ReportStore.read"]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "ReportStore.create.record",
+									"type": "ReportRecordInput",
+									"required": true
+								}
+							],
+							"outputs": [
+								{
+									"name": "ReportStore.create.returnValue",
+									"type": "Promise<ReportRecord>"
+								},
+								{
+									"name": "ReportStore.read.returnValue",
+									"type": "Promise<ReportRecord | null>"
+								}
+							],
+							"errors": [
+								{
+									"name": "ReportStore.create",
+									"type": "DuplicateRecordError"
+								},
+								{
+									"name": "ReportStore.close",
+									"type": "StoreClosedError"
+								}
+							]
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/components/report-store/ReportStore.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "a41f0c9e7d2b5863",
+						"serviceClasses": [
+							{
+								"source": "packages/reports/src/components/report-store/ReportStore.ts",
+								"name": "ReportStore",
+								"methods": ["create", "read"],
+								"constructedBy": [],
+								"consumers": []
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "modelContract.unit",
 				"type": "HarnessUnit",
 				"required": true,
-				"description": "The selected model declarations, including static public methods and existing qualified error contracts."
+				"description": "The model unit whose `modelDefinitions` supply the public model declarations and their methods with parameter and output types, plus any authored `Model.method.param` inputs and `Model.method` errors. Declarations named like the unit's `title` are used alone when one matches, otherwise all are used; without `modelDefinitions` the unit is projected as a service unit with no recorded classes.",
+				"examples": [
+					{
+						"id": "reports.model.report-record",
+						"kind": "function",
+						"status": "active",
+						"title": "ReportRecord",
+						"responsibility": "Declares the report record model and its persistence methods.",
+						"dependencies": [],
+						"scenarios": [],
+						"owns": {
+							"source": ["packages/reports/src/models/reports/ReportRecord.ts"],
+							"symbols": [
+								"ReportRecord",
+								"ReportRecord.create",
+								"ReportRecord.find",
+								"ReportRecord.delete"
+							]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "ReportRecord.create.input",
+									"type": "ReportRecordInput",
+									"required": true,
+									"description": "The fields of the record to store."
+								},
+								{
+									"name": "ReportRecord.find.id",
+									"type": "string",
+									"required": true
+								}
+							],
+							"outputs": [],
+							"errors": [
+								{
+									"name": "ReportRecord.find",
+									"type": "RecordMissingError",
+									"description": "Thrown when no record has the given id."
+								}
+							]
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/models/reports/ReportRecord.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "5e2b9d4f0c81a7e3",
+						"modelDefinitions": [
+							{
+								"name": "ReportRecord",
+								"kind": "class",
+								"source": "packages/reports/src/models/reports/ReportRecord.ts",
+								"fields": [
+									{
+										"name": "id",
+										"type": "string",
+										"optional": false
+									},
+									{
+										"name": "title",
+										"type": "string",
+										"optional": false
+									},
+									{
+										"name": "createdAt",
+										"type": "string",
+										"optional": true
+									}
+								],
+								"methods": [
+									{
+										"name": "constructor",
+										"inputs": [
+											{
+												"name": "input",
+												"type": "ReportRecordInput"
+											}
+										],
+										"output": "ReportRecord"
+									},
+									{
+										"name": "create",
+										"inputs": [
+											{
+												"name": "input",
+												"type": "ReportRecordInput"
+											}
+										],
+										"output": "Promise<ReportRecord>"
+									},
+									{
+										"name": "find",
+										"inputs": [
+											{
+												"name": "id",
+												"type": "string"
+											}
+										],
+										"output": "Promise<ReportRecord | null>"
+									},
+									{
+										"name": "delete",
+										"inputs": [
+											{
+												"name": "id",
+												"type": "string"
+											}
+										],
+										"output": "Promise<boolean>"
+									}
+								]
+							}
+						]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "serviceContract",
 				"type": "{ methods: CallableContract[]; facts: ContractRow[]; }",
-				"description": "CRUD-first callable signatures with parameter, return and error groups, plus facts outside discovered methods. Multiple classes keep qualified method names; no discovered methods returns empty arrays."
+				"description": "Callable contracts for the discovered methods, CRUD first (create; read, find or findBy; update; delete), then the constructor and other methods, each with Parameters and Returns groups and a Throws group only when it has errors; names are `Class.method` when more than one class name is recorded. Facts give the errors and fields not tied to any method, labeled 'Errors not tied to a method' and 'Fields not tied to a method', and both arrays are empty when no method is discovered.",
+				"examples": [
+					{
+						"methods": [
+							{
+								"name": "create",
+								"signature": "create(record: ReportRecordInput): Promise<ReportRecord>",
+								"groups": [
+									{
+										"id": "inputs",
+										"title": "Parameters",
+										"none": "No parameters.",
+										"keepEmpty": true,
+										"fields": [
+											{
+												"name": "record",
+												"type": "ReportRecordInput",
+												"required": true,
+												"source": "missing",
+												"examples": []
+											}
+										]
+									},
+									{
+										"id": "outputs",
+										"title": "Returns",
+										"none": "No return value declared.",
+										"fields": [
+											{
+												"name": "returnValue",
+												"type": "Promise<ReportRecord>",
+												"source": "missing",
+												"examples": []
+											}
+										]
+									},
+									{
+										"id": "errors",
+										"title": "Throws",
+										"none": "No errors declared for this method.",
+										"hideNames": true,
+										"fields": [
+											{
+												"name": "Create",
+												"type": "DuplicateRecordError",
+												"source": "missing",
+												"examples": []
+											}
+										]
+									}
+								]
+							},
+							{
+								"name": "read",
+								"signature": "read(): Promise<ReportRecord | null>",
+								"groups": [
+									{
+										"id": "inputs",
+										"title": "Parameters",
+										"none": "No parameters.",
+										"keepEmpty": true,
+										"fields": []
+									},
+									{
+										"id": "outputs",
+										"title": "Returns",
+										"none": "No return value declared.",
+										"fields": [
+											{
+												"name": "returnValue",
+												"type": "Promise<ReportRecord | null>",
+												"source": "missing",
+												"examples": []
+											}
+										]
+									}
+								]
+							}
+						],
+						"facts": [
+							{
+								"label": "Errors not tied to a method",
+								"value": "ReportStore.close"
+							}
+						]
+					},
+					{
+						"methods": [],
+						"facts": []
+					}
+				]
 			},
 			{
 				"name": "modelContract",
 				"type": "{ methods: CallableContract[]; facts: ContractRow[]; }",
-				"description": "Source-declared model methods projected through the service renderer, retaining authored qualified parameter metadata without inventing methods, defaults or requiredness."
+				"description": "The model's declared methods, projected through the service renderer: each parameter takes its authored `Model.method.param` metadata when one is declared, and each non-constructor method's `returnValue` is its declared output type. No method, default or requiredness is invented, and a constructor has no return value; its Returns group reads 'Creates the model.'",
+				"examples": [
+					{
+						"methods": [
+							{
+								"name": "create",
+								"signature": "create(input: ReportRecordInput): Promise<ReportRecord>",
+								"groups": [
+									{
+										"id": "inputs",
+										"title": "Parameters",
+										"none": "No parameters.",
+										"keepEmpty": true,
+										"fields": [
+											{
+												"name": "input",
+												"type": "ReportRecordInput",
+												"required": true,
+												"description": "The fields of the record to store.",
+												"source": "missing",
+												"examples": []
+											}
+										]
+									},
+									{
+										"id": "outputs",
+										"title": "Returns",
+										"none": "No return value declared.",
+										"fields": [
+											{
+												"name": "returnValue",
+												"type": "Promise<ReportRecord>",
+												"source": "missing",
+												"examples": []
+											}
+										]
+									}
+								]
+							},
+							{
+								"name": "find",
+								"signature": "find(id: string): Promise<ReportRecord | null>",
+								"groups": [
+									{
+										"id": "inputs",
+										"title": "Parameters",
+										"none": "No parameters.",
+										"keepEmpty": true,
+										"fields": [
+											{
+												"name": "id",
+												"type": "string",
+												"required": true,
+												"source": "illustrative",
+												"examples": [
+													{
+														"form": "literal",
+														"value": "example",
+														"text": "\"example\""
+													}
+												]
+											}
+										]
+									},
+									{
+										"id": "outputs",
+										"title": "Returns",
+										"none": "No return value declared.",
+										"fields": [
+											{
+												"name": "returnValue",
+												"type": "Promise<ReportRecord | null>",
+												"source": "missing",
+												"examples": []
+											}
+										]
+									},
+									{
+										"id": "errors",
+										"title": "Throws",
+										"none": "No errors declared for this method.",
+										"hideNames": true,
+										"fields": [
+											{
+												"name": "Find",
+												"type": "RecordMissingError",
+												"description": "Thrown when no record has the given id.",
+												"source": "missing",
+												"examples": []
+											}
+										]
+									}
+								]
+							},
+							{
+								"name": "delete",
+								"signature": "delete(id: string): Promise<boolean>",
+								"groups": [
+									{
+										"id": "inputs",
+										"title": "Parameters",
+										"none": "No parameters.",
+										"keepEmpty": true,
+										"fields": [
+											{
+												"name": "id",
+												"type": "string",
+												"source": "illustrative",
+												"examples": [
+													{
+														"form": "literal",
+														"value": "example",
+														"text": "\"example\""
+													}
+												]
+											}
+										]
+									},
+									{
+										"id": "outputs",
+										"title": "Returns",
+										"none": "No return value declared.",
+										"fields": [
+											{
+												"name": "returnValue",
+												"type": "Promise<boolean>",
+												"source": "missing",
+												"examples": []
+											}
+										]
+									}
+								]
+							},
+							{
+								"name": "constructor",
+								"signature": "constructor(input: ReportRecordInput)",
+								"groups": [
+									{
+										"id": "inputs",
+										"title": "Parameters",
+										"none": "No parameters.",
+										"keepEmpty": true,
+										"fields": [
+											{
+												"name": "input",
+												"type": "ReportRecordInput",
+												"source": "missing",
+												"examples": []
+											}
+										]
+									},
+									{
+										"id": "outputs",
+										"title": "Returns",
+										"none": "Creates the model.",
+										"fields": []
+									}
+								]
+							}
+						],
+						"facts": []
+					},
+					{
+						"methods": [],
+						"facts": []
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "serviceContract.TypeError",
 				"type": "thrown",
-				"description": "BigInt or circular examples cannot be serialized as JSON."
+				"description": "Thrown by JSON serialization of a declared example of a discovered method's parameter, return or error when that example holds a BigInt or a circular reference. Nothing in the chain catches it, so it propagates out of `serviceContract`."
 			},
 			{
 				"name": "serviceContract.RangeError",
 				"type": "thrown",
-				"description": "A deeply nested example can exceed the JSON serializer stack."
+				"description": "Thrown by JSON serialization of a declared example of a discovered method's parameter, return or error that is nested too deeply for the serializer's call stack. Nothing in the chain catches it, so it propagates out of `serviceContract`."
 			},
 			{
 				"name": "serviceContract.Example serialization callback error",
 				"type": "thrown",
-				"description": "A supplied example getter, proxy trap or toJSON method can throw during serialization."
+				"description": "Propagates unchanged whatever a getter, Proxy trap or toJSON method of a declared example throws during serialization for a discovered method. Nothing in the chain catches or wraps it."
 			},
 			{
 				"name": "modelContract.TypeError",
 				"type": "thrown",
-				"description": "BigInt or circular examples cannot be serialized as JSON."
+				"description": "Thrown by JSON serialization of a declared example of a model method's parameter, or of an error that names a model method, when that example holds a BigInt or a circular reference. Nothing in the chain catches it, so it propagates out of `modelContract`."
 			},
 			{
 				"name": "modelContract.RangeError",
 				"type": "thrown",
-				"description": "A deeply nested example can exceed the JSON serializer stack."
+				"description": "Thrown by JSON serialization of a declared example of a model method's parameter, or of an error that names a model method, that is nested too deeply for the serializer's call stack. Nothing in the chain catches it, so it propagates out of `modelContract`."
 			},
 			{
 				"name": "modelContract.Example serialization callback error",
 				"type": "thrown",
-				"description": "A supplied example getter, proxy trap or toJSON method can throw during serialization."
+				"description": "Propagates unchanged whatever a getter, Proxy trap or toJSON method of a declared example throws during serialization for a model method. Nothing in the chain catches or wraps it."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "serviceContract",
@@ -82,31 +536,194 @@
 						"name": "serviceContract.unit",
 						"type": "HarnessUnit",
 						"required": true,
-						"description": "The viewed service unit, including recorded classes and methods, owned symbols, and declared parameter, return and error fields."
+						"description": "The viewed service unit: its recorded classes and methods in `serviceClasses`, its owned symbols, and the parameter, return and error fields declared under each `Class.method`. Without `serviceClasses`, classes and methods come only from qualified owned symbols and from contract names under `Class.method`, so an unqualified name never yields a method.",
+						"examples": [
+							{
+								"id": "reports.component.report-store",
+								"kind": "function",
+								"status": "active",
+								"title": "ReportStore",
+								"responsibility": "Creates and reads report records through the ReportStore class.",
+								"dependencies": [
+									{
+										"unit": "reports.model.report-record",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": ["packages/reports/src/components/report-store/ReportStore.ts"],
+									"symbols": ["ReportStore.create", "ReportStore.read"]
+								},
+								"contract": {
+									"inputs": [
+										{
+											"name": "ReportStore.create.record",
+											"type": "ReportRecordInput",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "ReportStore.create.returnValue",
+											"type": "Promise<ReportRecord>"
+										},
+										{
+											"name": "ReportStore.read.returnValue",
+											"type": "Promise<ReportRecord | null>"
+										}
+									],
+									"errors": [
+										{
+											"name": "ReportStore.create",
+											"type": "DuplicateRecordError"
+										},
+										{
+											"name": "ReportStore.close",
+											"type": "StoreClosedError"
+										}
+									]
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/components/report-store/ReportStore.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "a41f0c9e7d2b5863",
+								"serviceClasses": [
+									{
+										"source": "packages/reports/src/components/report-store/ReportStore.ts",
+										"name": "ReportStore",
+										"methods": ["create", "read"],
+										"constructedBy": [],
+										"consumers": []
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "serviceContract",
 						"type": "{ methods: CallableContract[]; facts: ContractRow[]; }",
-						"description": "CRUD-first callable signatures with parameter, return and error groups, plus facts outside discovered methods. Multiple classes keep qualified method names; no discovered methods returns empty arrays."
+						"description": "Callable contracts for the discovered methods, CRUD first (create; read, find or findBy; update; delete), then the constructor and other methods, each with Parameters and Returns groups and a Throws group only when it has errors; names are `Class.method` when more than one class name is recorded. Facts give the errors and fields not tied to any method, labeled 'Errors not tied to a method' and 'Fields not tied to a method', and both arrays are empty when no method is discovered.",
+						"examples": [
+							{
+								"methods": [
+									{
+										"name": "create",
+										"signature": "create(record: ReportRecordInput): Promise<ReportRecord>",
+										"groups": [
+											{
+												"id": "inputs",
+												"title": "Parameters",
+												"none": "No parameters.",
+												"keepEmpty": true,
+												"fields": [
+													{
+														"name": "record",
+														"type": "ReportRecordInput",
+														"required": true,
+														"source": "missing",
+														"examples": []
+													}
+												]
+											},
+											{
+												"id": "outputs",
+												"title": "Returns",
+												"none": "No return value declared.",
+												"fields": [
+													{
+														"name": "returnValue",
+														"type": "Promise<ReportRecord>",
+														"source": "missing",
+														"examples": []
+													}
+												]
+											},
+											{
+												"id": "errors",
+												"title": "Throws",
+												"none": "No errors declared for this method.",
+												"hideNames": true,
+												"fields": [
+													{
+														"name": "Create",
+														"type": "DuplicateRecordError",
+														"source": "missing",
+														"examples": []
+													}
+												]
+											}
+										]
+									},
+									{
+										"name": "read",
+										"signature": "read(): Promise<ReportRecord | null>",
+										"groups": [
+											{
+												"id": "inputs",
+												"title": "Parameters",
+												"none": "No parameters.",
+												"keepEmpty": true,
+												"fields": []
+											},
+											{
+												"id": "outputs",
+												"title": "Returns",
+												"none": "No return value declared.",
+												"fields": [
+													{
+														"name": "returnValue",
+														"type": "Promise<ReportRecord | null>",
+														"source": "missing",
+														"examples": []
+													}
+												]
+											}
+										]
+									}
+								],
+								"facts": [
+									{
+										"label": "Errors not tied to a method",
+										"value": "ReportStore.close"
+									}
+								]
+							},
+							{
+								"methods": [],
+								"facts": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "TypeError",
 						"type": "thrown",
-						"description": "BigInt or circular examples cannot be serialized as JSON."
+						"description": "Thrown by JSON serialization of a declared example of a discovered method's parameter, return or error when that example holds a BigInt or a circular reference. Nothing in the chain catches it, so it propagates out of `serviceContract`."
 					},
 					{
 						"name": "RangeError",
 						"type": "thrown",
-						"description": "A deeply nested example can exceed the JSON serializer stack."
+						"description": "Thrown by JSON serialization of a declared example of a discovered method's parameter, return or error that is nested too deeply for the serializer's call stack. Nothing in the chain catches it, so it propagates out of `serviceContract`."
 					},
 					{
 						"name": "Example serialization callback error",
 						"type": "thrown",
-						"description": "A supplied example getter, proxy trap or toJSON method can throw during serialization."
+						"description": "Propagates unchanged whatever a getter, Proxy trap or toJSON method of a declared example throws during serialization for a discovered method. Nothing in the chain catches or wraps it."
 					}
 				],
 				"errorStatus": "declared"
@@ -118,31 +735,321 @@
 						"name": "modelContract.unit",
 						"type": "HarnessUnit",
 						"required": true,
-						"description": "The selected model declarations, including static public methods and existing qualified error contracts."
+						"description": "The model unit whose `modelDefinitions` supply the public model declarations and their methods with parameter and output types, plus any authored `Model.method.param` inputs and `Model.method` errors. Declarations named like the unit's `title` are used alone when one matches, otherwise all are used; without `modelDefinitions` the unit is projected as a service unit with no recorded classes.",
+						"examples": [
+							{
+								"id": "reports.model.report-record",
+								"kind": "function",
+								"status": "active",
+								"title": "ReportRecord",
+								"responsibility": "Declares the report record model and its persistence methods.",
+								"dependencies": [],
+								"scenarios": [],
+								"owns": {
+									"source": ["packages/reports/src/models/reports/ReportRecord.ts"],
+									"symbols": [
+										"ReportRecord",
+										"ReportRecord.create",
+										"ReportRecord.find",
+										"ReportRecord.delete"
+									]
+								},
+								"contract": {
+									"inputs": [
+										{
+											"name": "ReportRecord.create.input",
+											"type": "ReportRecordInput",
+											"required": true,
+											"description": "The fields of the record to store."
+										},
+										{
+											"name": "ReportRecord.find.id",
+											"type": "string",
+											"required": true
+										}
+									],
+									"outputs": [],
+									"errors": [
+										{
+											"name": "ReportRecord.find",
+											"type": "RecordMissingError",
+											"description": "Thrown when no record has the given id."
+										}
+									]
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/models/reports/ReportRecord.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "5e2b9d4f0c81a7e3",
+								"modelDefinitions": [
+									{
+										"name": "ReportRecord",
+										"kind": "class",
+										"source": "packages/reports/src/models/reports/ReportRecord.ts",
+										"fields": [
+											{
+												"name": "id",
+												"type": "string",
+												"optional": false
+											},
+											{
+												"name": "title",
+												"type": "string",
+												"optional": false
+											},
+											{
+												"name": "createdAt",
+												"type": "string",
+												"optional": true
+											}
+										],
+										"methods": [
+											{
+												"name": "constructor",
+												"inputs": [
+													{
+														"name": "input",
+														"type": "ReportRecordInput"
+													}
+												],
+												"output": "ReportRecord"
+											},
+											{
+												"name": "create",
+												"inputs": [
+													{
+														"name": "input",
+														"type": "ReportRecordInput"
+													}
+												],
+												"output": "Promise<ReportRecord>"
+											},
+											{
+												"name": "find",
+												"inputs": [
+													{
+														"name": "id",
+														"type": "string"
+													}
+												],
+												"output": "Promise<ReportRecord | null>"
+											},
+											{
+												"name": "delete",
+												"inputs": [
+													{
+														"name": "id",
+														"type": "string"
+													}
+												],
+												"output": "Promise<boolean>"
+											}
+										]
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "modelContract",
 						"type": "ReturnType<typeof serviceContract>",
-						"description": "Method contracts projected through the same service renderer, without inventing persistence methods or treating constants as returns."
+						"description": "The method contracts of a model's declared methods, rendered by the same service renderer as `serviceContract`, with no method invented and no return value for a constructor. Facts only ever give errors not tied to any method, and both arrays are empty when the model declares no method.",
+						"examples": [
+							{
+								"methods": [
+									{
+										"name": "create",
+										"signature": "create(input: ReportRecordInput): Promise<ReportRecord>",
+										"groups": [
+											{
+												"id": "inputs",
+												"title": "Parameters",
+												"none": "No parameters.",
+												"keepEmpty": true,
+												"fields": [
+													{
+														"name": "input",
+														"type": "ReportRecordInput",
+														"required": true,
+														"description": "The fields of the record to store.",
+														"source": "missing",
+														"examples": []
+													}
+												]
+											},
+											{
+												"id": "outputs",
+												"title": "Returns",
+												"none": "No return value declared.",
+												"fields": [
+													{
+														"name": "returnValue",
+														"type": "Promise<ReportRecord>",
+														"source": "missing",
+														"examples": []
+													}
+												]
+											}
+										]
+									},
+									{
+										"name": "find",
+										"signature": "find(id: string): Promise<ReportRecord | null>",
+										"groups": [
+											{
+												"id": "inputs",
+												"title": "Parameters",
+												"none": "No parameters.",
+												"keepEmpty": true,
+												"fields": [
+													{
+														"name": "id",
+														"type": "string",
+														"required": true,
+														"source": "illustrative",
+														"examples": [
+															{
+																"form": "literal",
+																"value": "example",
+																"text": "\"example\""
+															}
+														]
+													}
+												]
+											},
+											{
+												"id": "outputs",
+												"title": "Returns",
+												"none": "No return value declared.",
+												"fields": [
+													{
+														"name": "returnValue",
+														"type": "Promise<ReportRecord | null>",
+														"source": "missing",
+														"examples": []
+													}
+												]
+											},
+											{
+												"id": "errors",
+												"title": "Throws",
+												"none": "No errors declared for this method.",
+												"hideNames": true,
+												"fields": [
+													{
+														"name": "Find",
+														"type": "RecordMissingError",
+														"description": "Thrown when no record has the given id.",
+														"source": "missing",
+														"examples": []
+													}
+												]
+											}
+										]
+									},
+									{
+										"name": "delete",
+										"signature": "delete(id: string): Promise<boolean>",
+										"groups": [
+											{
+												"id": "inputs",
+												"title": "Parameters",
+												"none": "No parameters.",
+												"keepEmpty": true,
+												"fields": [
+													{
+														"name": "id",
+														"type": "string",
+														"source": "illustrative",
+														"examples": [
+															{
+																"form": "literal",
+																"value": "example",
+																"text": "\"example\""
+															}
+														]
+													}
+												]
+											},
+											{
+												"id": "outputs",
+												"title": "Returns",
+												"none": "No return value declared.",
+												"fields": [
+													{
+														"name": "returnValue",
+														"type": "Promise<boolean>",
+														"source": "missing",
+														"examples": []
+													}
+												]
+											}
+										]
+									},
+									{
+										"name": "constructor",
+										"signature": "constructor(input: ReportRecordInput)",
+										"groups": [
+											{
+												"id": "inputs",
+												"title": "Parameters",
+												"none": "No parameters.",
+												"keepEmpty": true,
+												"fields": [
+													{
+														"name": "input",
+														"type": "ReportRecordInput",
+														"source": "missing",
+														"examples": []
+													}
+												]
+											},
+											{
+												"id": "outputs",
+												"title": "Returns",
+												"none": "Creates the model.",
+												"fields": []
+											}
+										]
+									}
+								],
+								"facts": []
+							},
+							{
+								"methods": [],
+								"facts": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "TypeError",
 						"type": "thrown",
-						"description": "BigInt or circular examples cannot be serialized as JSON."
+						"description": "Thrown by JSON serialization of a declared example of a model method's parameter, or of an error that names a model method, when that example holds a BigInt or a circular reference. Nothing in the chain catches it, so it propagates out of `modelContract`."
 					},
 					{
 						"name": "RangeError",
 						"type": "thrown",
-						"description": "A deeply nested example can exceed the JSON serializer stack."
+						"description": "Thrown by JSON serialization of a declared example of a model method's parameter, or of an error that names a model method, that is nested too deeply for the serializer's call stack. Nothing in the chain catches it, so it propagates out of `modelContract`."
 					},
 					{
 						"name": "Example serialization callback error",
 						"type": "thrown",
-						"description": "A supplied example getter, proxy trap or toJSON method can throw during serialization."
+						"description": "Propagates unchanged whatever a getter, Proxy trap or toJSON method of a declared example throws during serialization for a model method. Nothing in the chain catches or wraps it."
 					}
 				],
 				"errorStatus": "declared"
