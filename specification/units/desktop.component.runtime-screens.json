@@ -44,26 +44,104 @@
 				"name": "RuntimeScreens.result",
 				"type": "EntityEvidenceResult",
 				"required": true,
-				"description": "Required comparison mode, scope, captures and incomparability reasons. Shared explorer helpers determine selected captures and provenance."
+				"description": "The evidence result supplies the evidence passed to `entityScreens` and the scope commits used to build pane labels. `evidence.mode === \"commit\"` enables the paired heading, and nonempty `evidence.incomparable` lists reasons the two sides are not compared.",
+				"examples": [
+					{
+						"scope": {
+							"location": {
+								"branch": "main",
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"category": "components",
+								"entity": "desktop.component.runtime-screens"
+							},
+							"mode": "commit",
+							"branch": "main",
+							"tip": "89abcdef0123456789abcdef0123456789abcdef",
+							"commit": "89abcdef0123456789abcdef0123456789abcdef",
+							"atTip": true,
+							"parent": "0123456789abcdef0123456789abcdef01234567",
+							"summary": {
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"parents": ["0123456789abcdef0123456789abcdef01234567"],
+								"subject": "Record runtime screens",
+								"author": "Repository contributor",
+								"committedAt": "2026-11-10T10:30:00Z",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "unverified",
+								"gaps": ["No verification record is available."],
+								"records": [],
+								"legacy": []
+							}
+						},
+						"identity": {
+							"principalId": "actor:github:123456789",
+							"projectId": "550e8400-e29b-41d4-a716-446655440000",
+							"repositoryId": 123456789,
+							"requestedRef": "main",
+							"sourceCommit": "89abcdef0123456789abcdef0123456789abcdef",
+							"sourceTree": "fedcba0987654321fedcba0987654321fedcba09",
+							"notesRef": null,
+							"notesRevision": null,
+							"evidenceRef": null,
+							"evidenceRevision": null,
+							"historyIndexRevision": null,
+							"artifactHash": null,
+							"profile": null
+						},
+						"evidence": {
+							"mode": "commit",
+							"scenarios": [],
+							"after": {
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"detail": null,
+								"record": null,
+								"captures": [],
+								"coverage": [],
+								"gap": "No captures are recorded for this revision."
+							},
+							"before": {
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"detail": null,
+								"record": null,
+								"captures": [],
+								"coverage": [],
+								"gap": "No captures are recorded for this revision."
+							},
+							"initial": null,
+							"incomparable": []
+						},
+						"behavior": {
+							"mode": "commit",
+							"rows": [],
+							"summary": "not-compared",
+							"reason": "No behavior rows were recorded.",
+							"scenarios": []
+						}
+					}
+				]
 			},
 			{
 				"name": "RuntimeScreens.options",
 				"type": "ScreenOption[]",
 				"required": true,
-				"description": "Required scenarios with states and viewports. Selection is reconciled through the picker helper; viewport size is displayed."
+				"description": "Each option supplies a scenario key and title, state IDs, and viewport IDs with display sizes. `screenPick` reconciles the selection; controls render only when a valid pick and matching option exist, and the scenario selector is disabled when fewer than two options are supplied.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "RuntimeScreens.evidence",
 				"type": "EntityEvidence",
 				"required": true,
-				"description": "Evidence state forwarded to panes for reading recorded bytes."
+				"description": "The evidence state is forwarded to each `RuntimePane` with the selected pane item. It matters when the child pane reads the capture bytes."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RuntimeScreens",
 				"type": "markup",
-				"description": "Current or before/after screenshots with controls when a valid option exists. Scenario picker is disabled with fewer than two options. Lists incomparability reasons. Current views distinguish fresh, inherited with origin commit, and absent capture. Child panes handle image loading and errors. States: empty: No captures are available for the selected state and device. paired: Parent and selected-commit captures are presented together. incomparable: The panel explains why the two captures cannot be compared."
+				"description": "The markup renders a heading and explanation for current or paired captures, optional incomparability reasons, and scenario, state, and viewport controls when a valid option exists. It passes pane data to `ComparePanes`, which renders each pane through `RuntimePane`."
 			}
 		],
 		"errors": [],
