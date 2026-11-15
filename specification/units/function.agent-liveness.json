@@ -21,29 +21,74 @@
 				"name": "agentLiveness.agent",
 				"type": "AgentFacts",
 				"required": true,
-				"description": "Registration and latest heartbeat facts, heartbeat allowance in seconds, optional process identity, and any final completed or failed record. Dates are expected to be parseable strings."
+				"description": "Supplies the registration and heartbeat facts used to classify an agent. A final status takes precedence; otherwise the heartbeat time, TTL, PID and process start time determine liveness, while registeredAt is part of the type but is not read here.",
+				"examples": [
+					{
+						"registeredAt": "2026-11-15T10:00:00.000Z",
+						"heartbeatAt": "2026-11-15T10:05:00.000Z",
+						"ttlSeconds": 30,
+						"pid": 4182,
+						"processStartedAt": "2026-11-15T09:58:00.000Z",
+						"finished": null
+					},
+					{
+						"registeredAt": "2026-11-15T10:00:00.000Z",
+						"heartbeatAt": "2026-11-15T10:05:00.000Z",
+						"ttlSeconds": 60,
+						"pid": null,
+						"processStartedAt": null,
+						"finished": null
+					},
+					{
+						"registeredAt": "2026-11-15T10:00:00.000Z",
+						"heartbeatAt": "2026-11-15T10:05:00.000Z",
+						"ttlSeconds": 30,
+						"pid": 4182,
+						"processStartedAt": "2026-11-15T09:58:00.000Z",
+						"finished": {
+							"status": "failed",
+							"at": "2026-11-15T10:06:00.000Z"
+						}
+					}
+				]
 			},
 			{
 				"name": "agentLiveness.now",
 				"type": "number",
 				"required": true,
-				"description": "Time of the assessment in milliseconds since the Unix epoch; a heartbeat is stale only when its age is greater than the allowance."
+				"description": "The assessment time in milliseconds since the Unix epoch. Staleness is true only when now minus Date.parse(heartbeatAt) is greater than ttlSeconds multiplied by 1000; the timestamp is used without validation.",
+				"examples": [1794737100000, 1794737160000]
 			},
 			{
 				"name": "agentLiveness.processOf",
 				"type": "(pid: number) => ProcessFacts",
 				"required": true,
-				"description": "Lookup for the named process, returning existence and start time. Called only for an unfinished agent with a non-null pid; undefined existence means the process could not be checked."
+				"description": "Looks up the process ID named by an unfinished agent with a non-null PID. An absent process marks the agent gone; PID reuse is detected only when both start-time strings are non-null and unequal, and an undefined exists value alone does neither."
 			}
 		],
 		"outputs": [
 			{
 				"name": "agentLiveness",
 				"type": "{ state: AgentState; detail: string }",
-				"description": "State and explanation: a final status wins, an absent or reused process is gone, an overdue heartbeat is stale, and otherwise the agent is working."
+				"description": "Returns completed or failed from a final record, gone for a detected ended or reused process, stale only when heartbeat age exceeds the TTL, or working otherwise. The detail is generated for the selected branch; an unparsable heartbeat does not satisfy the stale comparison.",
+				"examples": [
+					{
+						"state": "failed",
+						"detail": "Failed at 2026-11-15T10:06:00.000Z"
+					},
+					{
+						"state": "gone",
+						"detail": "Its process 4182 ended without saying it finished"
+					},
+					{
+						"state": "stale",
+						"detail": "No heartbeat since 2026-11-15T10:00:00.000Z; it allowed 30 seconds between heartbeats"
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "agentLiveness",
@@ -52,30 +97,74 @@
 						"name": "agentLiveness.agent",
 						"type": "AgentFacts",
 						"required": true,
-						"description": "Registration and latest heartbeat facts, heartbeat allowance in seconds, optional process identity, and any final completed or failed record. Dates are expected to be parseable strings."
+						"description": "Supplies the registration and heartbeat facts used to classify an agent. A final status takes precedence; otherwise the heartbeat time, TTL, PID and process start time determine liveness, while registeredAt is part of the type but is not read here.",
+						"examples": [
+							{
+								"registeredAt": "2026-11-15T10:00:00.000Z",
+								"heartbeatAt": "2026-11-15T10:05:00.000Z",
+								"ttlSeconds": 30,
+								"pid": 4182,
+								"processStartedAt": "2026-11-15T09:58:00.000Z",
+								"finished": null
+							},
+							{
+								"registeredAt": "2026-11-15T10:00:00.000Z",
+								"heartbeatAt": "2026-11-15T10:05:00.000Z",
+								"ttlSeconds": 60,
+								"pid": null,
+								"processStartedAt": null,
+								"finished": null
+							},
+							{
+								"registeredAt": "2026-11-15T10:00:00.000Z",
+								"heartbeatAt": "2026-11-15T10:05:00.000Z",
+								"ttlSeconds": 30,
+								"pid": 4182,
+								"processStartedAt": "2026-11-15T09:58:00.000Z",
+								"finished": {
+									"status": "failed",
+									"at": "2026-11-15T10:06:00.000Z"
+								}
+							}
+						]
 					},
 					{
 						"name": "agentLiveness.now",
 						"type": "number",
 						"required": true,
-						"description": "Time of the assessment in milliseconds since the Unix epoch; a heartbeat is stale only when its age is greater than the allowance."
+						"description": "The assessment time in milliseconds since the Unix epoch. Staleness is true only when now minus Date.parse(heartbeatAt) is greater than ttlSeconds multiplied by 1000; the timestamp is used without validation.",
+						"examples": [1794737100000, 1794737160000]
 					},
 					{
 						"name": "agentLiveness.processOf",
 						"type": "(pid: number) => ProcessFacts",
 						"required": true,
-						"description": "Lookup for the named process, returning existence and start time. Called only for an unfinished agent with a non-null pid; undefined existence means the process could not be checked."
+						"description": "Looks up the process ID named by an unfinished agent with a non-null PID. An absent process marks the agent gone; PID reuse is detected only when both start-time strings are non-null and unequal, and an undefined exists value alone does neither."
 					}
 				],
 				"outputs": [
 					{
 						"name": "agentLiveness",
 						"type": "{ state: AgentState; detail: string }",
-						"description": "State and explanation: a final status wins, an absent or reused process is gone, an overdue heartbeat is stale, and otherwise the agent is working."
+						"description": "Returns completed or failed from a final record, gone for a detected ended or reused process, stale only when heartbeat age exceeds the TTL, or working otherwise. The detail is generated for the selected branch; an unparsable heartbeat does not satisfy the stale comparison.",
+						"examples": [
+							{
+								"state": "failed",
+								"detail": "Failed at 2026-11-15T10:06:00.000Z"
+							},
+							{
+								"state": "gone",
+								"detail": "Its process 4182 ended without saying it finished"
+							},
+							{
+								"state": "stale",
+								"detail": "No heartbeat since 2026-11-15T10:00:00.000Z; it allowed 30 seconds between heartbeats"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
