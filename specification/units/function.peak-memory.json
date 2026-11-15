@@ -21,44 +21,61 @@
 				"name": "peakMemory.command",
 				"type": "string",
 				"required": true,
-				"description": "Executable to run under /usr/bin/time."
+				"description": "Names the executable that `/usr/bin/time` runs after its platform flag. This input matters only after the `/usr/bin/time` existence check passes.",
+				"examples": ["node", "/bin/echo"]
 			},
 			{
 				"name": "peakMemory.args",
 				"type": "string[]",
 				"required": true,
-				"description": "Arguments passed directly to the executable."
+				"description": "Lists the argument strings appended after the executable and platform-specific time flag. Each array element is passed as one command argument.",
+				"examples": [
+					["--version"],
+					["-e", "process.stdout.write('ok')"]
+				]
 			},
 			{
 				"name": "peakMemory.input",
 				"type": "string",
 				"required": true,
-				"description": "Text written to the child standard input."
+				"description": "Provides the text supplied to the timed command's standard input. It may be empty; the wrapper does not otherwise inspect it.",
+				"examples": ["", "payload\n"]
 			},
 			{
 				"name": "peakMemory.timeoutMs",
 				"type": "number",
 				"required": false,
 				"default": 60000,
-				"description": "Maximum child execution time in milliseconds; defaults to 60000."
+				"description": "Sets the bounded runner's timeout in milliseconds for the timed command. Defaults to 60000; this wrapper passes the value through without validating its range.",
+				"examples": [5000, 60000]
 			}
 		],
 		"outputs": [
 			{
 				"name": "peakMemory",
 				"type": "PeakMemory",
-				"description": "Peak resident bytes from a successful BSD/GNU time report, converting GNU kB to bytes; otherwise returns an unavailable reason. The command is run asynchronously with a timeout and output limit."
+				"description": "Resolves to `{bytes}` when `/usr/bin/time` exits successfully and stderr contains the BSD or GNU peak-resident-set report; GNU kilobytes are multiplied by 1024. Resolves to `{unavailable}` when `/usr/bin/time` is absent, the command exits nonzero, or neither report matches.",
+				"examples": [
+					{
+						"bytes": 1048576
+					},
+					{
+						"unavailable": "/usr/bin/time is not installed on this machine."
+					},
+					{
+						"unavailable": "/usr/bin/time -l did not report a peak resident set size."
+					}
+				]
 			}
 		],
 		"errors": [
 			{
-				"name": "Bounded command failure",
-				"type": "propagated",
-				"description": "the time-wrapped child can reject on launch failure, timeout, cancellation or output overflow",
-				"examples": ["Command timed out.", "Command output limit exceeded."]
+				"name": "BoundedCommandAdapter.run rejection",
+				"type": "thrown",
+				"description": "`peakMemory` rejects with the same reason if `BoundedCommandAdapter.run` rejects; this wrapper does not catch or translate that rejection."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "peakMemory",
@@ -67,41 +84,58 @@
 						"name": "peakMemory.command",
 						"type": "string",
 						"required": true,
-						"description": "Executable to run under /usr/bin/time."
+						"description": "Names the executable that `/usr/bin/time` runs after its platform flag. This input matters only after the `/usr/bin/time` existence check passes.",
+						"examples": ["node", "/bin/echo"]
 					},
 					{
 						"name": "peakMemory.args",
 						"type": "string[]",
 						"required": true,
-						"description": "Arguments passed directly to the executable."
+						"description": "Lists the argument strings appended after the executable and platform-specific time flag. Each array element is passed as one command argument.",
+						"examples": [
+							["--version"],
+							["-e", "process.stdout.write('ok')"]
+						]
 					},
 					{
 						"name": "peakMemory.input",
 						"type": "string",
 						"required": true,
-						"description": "Text written to the child standard input."
+						"description": "Provides the text supplied to the timed command's standard input. It may be empty; the wrapper does not otherwise inspect it.",
+						"examples": ["", "payload\n"]
 					},
 					{
 						"name": "peakMemory.timeoutMs",
 						"type": "number",
 						"required": false,
 						"default": 60000,
-						"description": "Maximum child execution time in milliseconds; defaults to 60000."
+						"description": "Sets the bounded runner's timeout in milliseconds for the timed command. Defaults to 60000; this wrapper passes the value through without validating its range.",
+						"examples": [5000, 60000]
 					}
 				],
 				"outputs": [
 					{
 						"name": "peakMemory",
 						"type": "Promise<PeakMemory>",
-						"description": "Peak resident bytes from a successful BSD/GNU time report, converting GNU kB to bytes; otherwise returns an unavailable reason. The command is run asynchronously with a timeout and output limit."
+						"description": "Resolves to `{bytes}` when `/usr/bin/time` exits successfully and stderr contains the BSD or GNU peak-resident-set report; GNU kilobytes are multiplied by 1024. Resolves to `{unavailable}` when `/usr/bin/time` is absent, the command exits nonzero, or neither report matches.",
+						"examples": [
+							{
+								"bytes": 1048576
+							},
+							{
+								"unavailable": "/usr/bin/time is not installed on this machine."
+							},
+							{
+								"unavailable": "/usr/bin/time -l did not report a peak resident set size."
+							}
+						]
 					}
 				],
 				"errors": [
 					{
-						"name": "Bounded command failure",
-						"type": "propagated",
-						"description": "the time-wrapped child can reject on launch failure, timeout, cancellation or output overflow",
-						"examples": ["Command timed out.", "Command output limit exceeded."]
+						"name": "BoundedCommandAdapter.run rejection",
+						"type": "thrown",
+						"description": "`peakMemory` rejects with the same reason if `BoundedCommandAdapter.run` rejects; this wrapper does not catch or translate that rejection."
 					}
 				],
 				"errorStatus": "declared"
