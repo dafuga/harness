@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/adapters/sql.ts", "src/audit/development-tooling/adapters/sql.ts"],
-		"symbols": ["sqlAdapter", "sqlAdapter"]
+		"source": ["src/audit/development-tooling/adapters/sql.ts"],
+		"symbols": ["sqlAdapter"]
 	},
 	"contract": {
 		"origin": "derived",

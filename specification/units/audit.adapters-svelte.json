@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/adapters/svelte.ts", "src/audit/development-tooling/adapters/svelte.ts"],
-		"symbols": ["svelteAdapter", "svelteAdapter"]
+		"source": ["src/audit/development-tooling/adapters/svelte.ts"],
+		"symbols": ["svelteAdapter"]
 	},
 	"contract": {
 		"origin": "derived",

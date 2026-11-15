@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/adapters/shell.ts", "src/audit/development-tooling/adapters/shell.ts"],
-		"symbols": ["shellAdapter", "shellAdapter"]
+		"source": ["src/audit/development-tooling/adapters/shell.ts"],
+		"symbols": ["shellAdapter"]
 	},
 	"contract": {
 		"origin": "derived",
