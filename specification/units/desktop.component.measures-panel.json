@@ -27,20 +27,40 @@
 				"name": "MeasuresPanel.size",
 				"type": "Measure",
 				"required": true,
-				"description": "Required measure whose nonempty text is displayed, otherwise Not measured. Its available flag controls measured styling."
+				"description": "The size Measure that EntityView passes from entity.size for the Size row on the Overview tab. The row shows its text, or Not measured when the text is empty, and the value gets the measured class only when available is true; the panel never estimates a size or checks that available agrees with the text.",
+				"examples": [
+					{
+						"available": true,
+						"text": "12.4 KB"
+					},
+					{
+						"available": false,
+						"text": "Not measured"
+					},
+					{
+						"available": false,
+						"text": "Not measured: design only"
+					}
+				]
 			},
 			{
 				"name": "MeasuresPanel.performance",
 				"type": "Measure",
 				"required": true,
-				"description": "Required performance measure with the same text fallback; available controls measured styling."
+				"description": "The performance Measure that EntityView passes from entity.performance for the Performance row on the Overview tab. The row shows its text, or Not measured when the text is empty, and the value gets the measured class only when available is true; the panel never estimates a performance figure or checks that available agrees with the text.",
+				"examples": [
+					{
+						"available": false,
+						"text": "Not measured"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "MeasuresPanel",
 				"type": "markup",
-				"description": "Size & performance panel with the two supplied values. Does not calculate measurements or infer availability from displayed text. Throws nothing: a measure without text is shown as Not measured. Catalog states: default (both measured), not-measured (both not taken) and mixed (size measured, performance not taken)."
+				"description": "The Size & performance panel that EntityView renders on the Overview tab: a heading and a detail list whose Size and Performance rows each show the measure's text, or Not measured when that text is empty. It calculates no measurements, infers no availability from the text, and has no throw or reject path of its own."
 			}
 		],
 		"errors": [],
