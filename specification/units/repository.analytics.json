@@ -28,121 +28,222 @@
 				"name": "AnalyticsRepository.constructor.home",
 				"type": "string",
 				"required": false,
-				"description": "Optional directory for analytics.sqlite; defaults to HARNESS_ANALYTICS_HOME or ~/.codex/harness."
+				"description": "Directory that holds analytics.sqlite, created recursively (mode 0700) if missing. Defaults to process.env.HARNESS_ANALYTICS_HOME ?? join(homedir(), '.codex', 'harness'): the variable's value when it is set (even if empty), otherwise the .codex/harness directory under the home directory.",
+				"examples": ["/Users/dev/.codex/harness", "/Users/dev/analytics/sandbox"]
 			},
 			{
 				"name": "AnalyticsRepository.constructor.options",
 				"type": "{ initialization?: 'synchronous' | 'deferred' }",
 				"required": false,
 				"default": {},
-				"description": "Initialization mode; deferred is used internally by open to await schema admission without blocking retry sleeps."
+				"description": "Only 'deferred' skips schema setup in the constructor; any other value, including the default {}, creates the schema synchronously and retries the WAL switch up to 100 times with 25 ms sleeps. open passes 'deferred' so that setup runs asynchronously under its bounded retry loop instead.",
+				"examples": [
+					{},
+					{
+						"initialization": "synchronous"
+					},
+					{
+						"initialization": "deferred"
+					}
+				]
 			},
 			{
 				"name": "AnalyticsRepository.open.home",
 				"type": "string",
 				"required": false,
-				"description": "Directory for analytics.sqlite; defaults to HARNESS_ANALYTICS_HOME or ~/.codex/harness."
+				"description": "Directory that holds analytics.sqlite, created recursively (mode 0700) if missing. Defaults to process.env.HARNESS_ANALYTICS_HOME ?? join(homedir(), '.codex', 'harness'): the variable's value when it is set (even if empty), otherwise the .codex/harness directory under the home directory.",
+				"examples": ["/Users/dev/.codex/harness", "/Users/dev/analytics/sandbox"]
 			},
 			{
 				"name": "AnalyticsRepository.reconcileHistorical.root",
 				"type": "string",
 				"required": true,
-				"description": "Directory whose canonical project identity should be reconciled."
+				"description": "Directory whose canonical path is computed with realpath(), so a missing directory rejects with that filesystem error. The canonical path is compared with project; when they differ, historical rows whose stored project equals the canonical path are deleted.",
+				"examples": ["/Users/dev/projects/harness-app-feature", "/Users/dev/projects/harness-app"]
 			},
 			{
 				"name": "AnalyticsRepository.reconcileHistorical.project",
 				"type": "string",
 				"required": true,
-				"description": "Previously recorded project identity; historical rows for it are removed when it differs from the resolved root."
+				"description": "Project identity compared with the canonical path of root; when they are equal, the call leaves the database untouched. When they differ, the deletion targets rows stored under the canonical path, so historical rows stored under this value are not removed by this call.",
+				"examples": ["/Users/dev/projects/harness-app", "/Users/dev/projects/inventory-service"]
 			},
 			{
 				"name": "AnalyticsRepository.record.event",
 				"type": "AnalyticsEvent",
 				"required": true,
-				"description": "Analytics event to insert if its ID is not already present."
+				"description": "Event to store: its id is the primary key, its timestamp is written to the timestamp column, and the whole event is saved as JSON in data. An id that is already stored, or any row that violates a NOT NULL or primary-key constraint, is skipped without raising an error.",
+				"examples": [
+					{
+						"id": "3b9f6c2a-1d4e-4f8a-9b27-5c0e7d1a6f43",
+						"timestamp": "2026-11-14T09:30:12.345Z",
+						"project": "/Users/dev/projects/harness-app",
+						"kind": "loop",
+						"action": "created"
+					},
+					{
+						"id": "d41e8b07-6c3a-4a92-8f15-0b7e2d9c4a61",
+						"timestamp": "2026-11-14T10:05:47.910Z",
+						"project": "/Users/dev/projects/harness-app",
+						"kind": "step",
+						"action": "completed",
+						"durationMs": 2214
+					}
+				]
 			},
 			{
 				"name": "AnalyticsRepository.recordImported.event",
 				"type": "AnalyticsEvent",
 				"required": true,
-				"description": "Imported analytics event; an existing live event with the same ID remains non-historical."
+				"description": "Event upserted by id: its JSON replaces the stored data for that id, and when a stored row with that id has a historical flag that is not true, the passed object's historical is set to false before saving. The upsert updates only data, so the stored timestamp column keeps its original value.",
+				"examples": [
+					{
+						"id": "5e0a7c31b9d24f68a1c3e7f0d5b2964a8c1e3f7d0b5a92c64e8f1d3a7b0c295e",
+						"timestamp": "2026-11-12T18:04:55.602Z",
+						"project": "/Users/dev/projects/harness-app",
+						"kind": "loop",
+						"action": "created",
+						"historical": true
+					},
+					{
+						"id": "c04f9e2b71a6d385e0f4b92c7a1d6e53f8b20c9a4d7e1f6b3a52c08d9e4f7b16",
+						"timestamp": "2026-11-13T16:42:03.118Z",
+						"project": "/Users/dev/projects/harness-app",
+						"kind": "evaluation",
+						"action": "evaluated",
+						"checkType": "response",
+						"historical": true
+					}
+				]
 			},
 			{
 				"name": "AnalyticsRepository.prune.before",
 				"type": "string",
 				"required": true,
-				"description": "ISO UTC timestamp in the past; rows with an earlier parseable timestamp match retention."
+				"description": "Cutoff string that must parse as a Date, end in 'Z', have its first 19 characters equal to its normalized UTC form (YYYY-MM-DDTHH:mm:ss), and be strictly earlier than the current time. Stored rows whose timestamp parses to an earlier time match; rows with unparseable timestamps are never matched or deleted.",
+				"examples": ["2026-10-15T00:00:00.000Z", "2026-09-01T12:00:00Z"]
 			},
 			{
 				"name": "AnalyticsRepository.prune.apply",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "When true, delete matching rows; false previews the count without deletion."
+				"description": "When true, matching rows are deleted in the same transaction that counts them; when false (the default), nothing is deleted, deleted is 0, and dryRun is true.",
+				"examples": [false, true]
 			}
 		],
 		"outputs": [
 			{
 				"name": "AnalyticsRepository.open",
 				"type": "Promise<AnalyticsRepository>",
-				"description": "Resolves to an initialized repository after bounded asynchronous busy/locked retries; ordinary writes retain the five-second SQLite busy timeout."
+				"description": "Resolves to a repository with the schema in place, the database in WAL journal mode, and busy_timeout set to 5000 ms; busy or locked setup errors are retried with jittered backoff for up to five seconds before it resolves."
 			},
 			{
 				"name": "AnalyticsRepository.reconcileHistorical",
 				"type": "Promise<void>",
-				"description": "Resolves after stale historical rows for the prior project are removed when root resolves to another project."
+				"description": "Resolves with no value after the historical-row DELETE runs, which happens only when realpath(root) differs from project; when they match, it resolves without touching the database."
 			},
 			{
 				"name": "AnalyticsRepository.record",
 				"type": "void",
-				"description": "Inserts the event once by ID; duplicates are ignored."
+				"description": "Returns nothing; the event is inserted with INSERT OR IGNORE, so an id that is already stored keeps its original row."
 			},
 			{
 				"name": "AnalyticsRepository.recordImported",
 				"type": "void",
-				"description": "Upserts the imported event, preserving live status if a live event with that ID exists."
+				"description": "Returns nothing; the event is upserted by id, and when a stored row with that id is not historical, the saved event has historical set to false."
 			},
 			{
 				"name": "AnalyticsRepository.events",
 				"type": "AnalyticsEvent[]",
-				"description": "All stored event payloads ordered by timestamp and row order."
+				"description": "Returns every stored event parsed from its data JSON, ordered by the stored timestamp column and then by rowid.",
+				"examples": [
+					[
+						{
+							"id": "3b9f6c2a-1d4e-4f8a-9b27-5c0e7d1a6f43",
+							"timestamp": "2026-11-14T09:30:12.345Z",
+							"project": "/Users/dev/projects/harness-app",
+							"kind": "loop",
+							"action": "created"
+						}
+					],
+					[
+						{
+							"id": "c04f9e2b71a6d385e0f4b92c7a1d6e53f8b20c9a4d7e1f6b3a52c08d9e4f7b16",
+							"timestamp": "2026-11-13T16:42:03.118Z",
+							"project": "/Users/dev/projects/harness-app",
+							"kind": "evaluation",
+							"action": "evaluated",
+							"checkType": "response",
+							"historical": true
+						},
+						{
+							"id": "d41e8b07-6c3a-4a92-8f15-0b7e2d9c4a61",
+							"timestamp": "2026-11-14T10:05:47.910Z",
+							"project": "/Users/dev/projects/harness-app",
+							"kind": "step",
+							"action": "completed",
+							"durationMs": 2214
+						}
+					]
+				]
 			},
 			{
 				"name": "AnalyticsRepository.prune",
 				"type": "{ before: string; matching: number; deleted: number; dryRun: boolean }",
-				"description": "Cutoff, number of matching rows, number deleted, and whether the call was a dry run."
+				"description": "Reports before as the normalized toISOString() cutoff, matching as the count of rows with an earlier parseable timestamp, deleted as the rows removed (0 unless apply is true), and dryRun as true unless apply is true.",
+				"examples": [
+					{
+						"before": "2026-10-15T00:00:00.000Z",
+						"matching": 4,
+						"deleted": 0,
+						"dryRun": true
+					},
+					{
+						"before": "2026-09-01T12:00:00.000Z",
+						"matching": 12,
+						"deleted": 12,
+						"dryRun": false
+					}
+				]
 			},
 			{
 				"name": "AnalyticsRepository.close",
 				"type": "void",
-				"description": "Closes the SQLite connection."
+				"description": "Returns nothing; it closes the underlying SQLite database handle."
 			}
 		],
 		"errors": [
 			{
 				"name": "Unsupported analytics schema version",
 				"type": "thrown",
-				"description": "construction rejects a database whose user_version is newer than the supported schema",
+				"description": "Thrown by the synchronous constructor, or rejected by open, when PRAGMA user_version is greater than 1; the connection is closed before the error propagates.",
 				"examples": ["Unsupported analytics schema version."]
 			},
 			{
 				"name": "Analytics storage failure",
 				"type": "propagated",
-				"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
+				"description": "Filesystem failures from mkdir, chmod, and realpath, plus SQLite open, PRAGMA, query, and close failures, are rethrown unchanged to the caller."
 			},
 			{
 				"name": "Invalid retention cutoff",
 				"type": "thrown",
-				"description": "prune requires a canonical ISO UTC timestamp strictly in the past",
+				"description": "Thrown by prune before any query runs unless before parses as a Date, ends in 'Z', has its first 19 characters equal to its normalized UTC form, and is strictly earlier than now.",
 				"examples": ["Retention cutoff must be an ISO UTC timestamp in the past."]
 			},
 			{
 				"name": "Analytics initialization timeout",
 				"type": "thrown",
-				"description": "open rejects after its five-second retry budget if SQLite remains busy or locked."
+				"description": "open rejects with this error after about five seconds of busy or locked SQLite errors during setup, attaches the last SQLite error as cause, and closes the connection first.",
+				"examples": ["Timed out waiting to initialize the analytics database."]
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Plain Error instances (no custom subclass) are thrown from three places in the module: the schema-version check run by the synchronous constructor and by open, the retention-cutoff check in prune, and the initialization timeout in open. They carry the messages 'Unsupported analytics schema version.', 'Retention cutoff must be an ISO UTC timestamp in the past.', and 'Timed out waiting to initialize the analytics database.' respectively."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "AnalyticsRepository.open",
@@ -151,32 +252,34 @@
 						"name": "AnalyticsRepository.open.home",
 						"type": "string",
 						"required": false,
-						"description": "Directory for analytics.sqlite; defaults to HARNESS_ANALYTICS_HOME or ~/.codex/harness."
+						"description": "Directory that holds analytics.sqlite, created recursively (mode 0700) if missing. Defaults to process.env.HARNESS_ANALYTICS_HOME ?? join(homedir(), '.codex', 'harness'): the variable's value when it is set (even if empty), otherwise the .codex/harness directory under the home directory.",
+						"examples": ["/Users/dev/.codex/harness", "/Users/dev/analytics/sandbox"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsRepository.open",
 						"type": "Promise<AnalyticsRepository>",
-						"description": "Resolves to an initialized repository after bounded asynchronous busy/locked retries; ordinary writes retain the five-second SQLite busy timeout."
+						"description": "Resolves to a repository with the schema in place, the database in WAL journal mode, and busy_timeout set to 5000 ms; busy or locked setup errors are retried with jittered backoff for up to five seconds before it resolves."
 					}
 				],
 				"errors": [
 					{
 						"name": "Unsupported analytics schema version",
 						"type": "thrown",
-						"description": "construction rejects a database whose user_version is newer than the supported schema",
+						"description": "Rejected by open when PRAGMA user_version is greater than 1; the connection is closed before the rejection.",
 						"examples": ["Unsupported analytics schema version."]
 					},
 					{
 						"name": "Analytics storage failure",
 						"type": "propagated",
-						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
+						"description": "Non-busy SQLite errors during setup and any constructor failure, such as mkdir or chmod, are rethrown unchanged, and an opened connection is closed first."
 					},
 					{
 						"name": "Analytics initialization timeout",
 						"type": "thrown",
-						"description": "open rejects after its five-second retry budget if SQLite remains busy or locked."
+						"description": "open rejects with this error after about five seconds of busy or locked SQLite errors during setup, attaches the last SQLite error as cause, and closes the connection first.",
+						"examples": ["Timed out waiting to initialize the analytics database."]
 					}
 				],
 				"errorStatus": "declared"
@@ -188,27 +291,32 @@
 						"name": "AnalyticsRepository.reconcileHistorical.root",
 						"type": "string",
 						"required": true,
-						"description": "Directory whose canonical project identity should be reconciled."
+						"description": "Directory whose canonical path is computed with realpath(), so a missing directory rejects with that filesystem error. The canonical path is compared with project; when they differ, historical rows whose stored project equals the canonical path are deleted.",
+						"examples": [
+							"/Users/dev/projects/harness-app-feature",
+							"/Users/dev/projects/harness-app"
+						]
 					},
 					{
 						"name": "AnalyticsRepository.reconcileHistorical.project",
 						"type": "string",
 						"required": true,
-						"description": "Previously recorded project identity; historical rows for it are removed when it differs from the resolved root."
+						"description": "Project identity compared with the canonical path of root; when they are equal, the call leaves the database untouched. When they differ, the deletion targets rows stored under the canonical path, so historical rows stored under this value are not removed by this call.",
+						"examples": ["/Users/dev/projects/harness-app", "/Users/dev/projects/inventory-service"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsRepository.reconcileHistorical",
 						"type": "Promise<void>",
-						"description": "Resolves after stale historical rows for the prior project are removed when root resolves to another project."
+						"description": "Resolves with no value after the historical-row DELETE runs, which happens only when realpath(root) differs from project; when they match, it resolves without touching the database."
 					}
 				],
 				"errors": [
 					{
 						"name": "Analytics storage failure",
 						"type": "propagated",
-						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
+						"description": "A missing root makes realpath reject with its filesystem error, and SQLite DELETE failures are rethrown unchanged."
 					}
 				],
 				"errorStatus": "declared"
@@ -220,21 +328,38 @@
 						"name": "AnalyticsRepository.record.event",
 						"type": "AnalyticsEvent",
 						"required": true,
-						"description": "Analytics event to insert if its ID is not already present."
+						"description": "Event to store: its id is the primary key, its timestamp is written to the timestamp column, and the whole event is saved as JSON in data. An id that is already stored, or any row that violates a NOT NULL or primary-key constraint, is skipped without raising an error.",
+						"examples": [
+							{
+								"id": "3b9f6c2a-1d4e-4f8a-9b27-5c0e7d1a6f43",
+								"timestamp": "2026-11-14T09:30:12.345Z",
+								"project": "/Users/dev/projects/harness-app",
+								"kind": "loop",
+								"action": "created"
+							},
+							{
+								"id": "d41e8b07-6c3a-4a92-8f15-0b7e2d9c4a61",
+								"timestamp": "2026-11-14T10:05:47.910Z",
+								"project": "/Users/dev/projects/harness-app",
+								"kind": "step",
+								"action": "completed",
+								"durationMs": 2214
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsRepository.record",
 						"type": "void",
-						"description": "Inserts the event once by ID; duplicates are ignored."
+						"description": "Returns nothing; the event is inserted with INSERT OR IGNORE, so an id that is already stored keeps its original row."
 					}
 				],
 				"errors": [
 					{
 						"name": "Analytics storage failure",
 						"type": "propagated",
-						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
+						"description": "SQLite INSERT failures other than the constraint violations that INSERT OR IGNORE skips are rethrown unchanged."
 					}
 				],
 				"errorStatus": "declared"
@@ -246,21 +371,40 @@
 						"name": "AnalyticsRepository.recordImported.event",
 						"type": "AnalyticsEvent",
 						"required": true,
-						"description": "Imported analytics event; an existing live event with the same ID remains non-historical."
+						"description": "Event upserted by id: its JSON replaces the stored data for that id, and when a stored row with that id has a historical flag that is not true, the passed object's historical is set to false before saving. The upsert updates only data, so the stored timestamp column keeps its original value.",
+						"examples": [
+							{
+								"id": "5e0a7c31b9d24f68a1c3e7f0d5b2964a8c1e3f7d0b5a92c64e8f1d3a7b0c295e",
+								"timestamp": "2026-11-12T18:04:55.602Z",
+								"project": "/Users/dev/projects/harness-app",
+								"kind": "loop",
+								"action": "created",
+								"historical": true
+							},
+							{
+								"id": "c04f9e2b71a6d385e0f4b92c7a1d6e53f8b20c9a4d7e1f6b3a52c08d9e4f7b16",
+								"timestamp": "2026-11-13T16:42:03.118Z",
+								"project": "/Users/dev/projects/harness-app",
+								"kind": "evaluation",
+								"action": "evaluated",
+								"checkType": "response",
+								"historical": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsRepository.recordImported",
 						"type": "void",
-						"description": "Upserts the imported event, preserving live status if a live event with that ID exists."
+						"description": "Returns nothing; the event is upserted by id, and when a stored row with that id is not historical, the saved event has historical set to false."
 					}
 				],
 				"errors": [
 					{
 						"name": "Analytics storage failure",
 						"type": "propagated",
-						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
+						"description": "SQLite SELECT and upsert failures are rethrown unchanged."
 					}
 				],
 				"errorStatus": "declared"
@@ -272,14 +416,44 @@
 					{
 						"name": "AnalyticsRepository.events",
 						"type": "AnalyticsEvent[]",
-						"description": "All stored event payloads ordered by timestamp and row order."
+						"description": "Returns every stored event parsed from its data JSON, ordered by the stored timestamp column and then by rowid.",
+						"examples": [
+							[
+								{
+									"id": "3b9f6c2a-1d4e-4f8a-9b27-5c0e7d1a6f43",
+									"timestamp": "2026-11-14T09:30:12.345Z",
+									"project": "/Users/dev/projects/harness-app",
+									"kind": "loop",
+									"action": "created"
+								}
+							],
+							[
+								{
+									"id": "c04f9e2b71a6d385e0f4b92c7a1d6e53f8b20c9a4d7e1f6b3a52c08d9e4f7b16",
+									"timestamp": "2026-11-13T16:42:03.118Z",
+									"project": "/Users/dev/projects/harness-app",
+									"kind": "evaluation",
+									"action": "evaluated",
+									"checkType": "response",
+									"historical": true
+								},
+								{
+									"id": "d41e8b07-6c3a-4a92-8f15-0b7e2d9c4a61",
+									"timestamp": "2026-11-14T10:05:47.910Z",
+									"project": "/Users/dev/projects/harness-app",
+									"kind": "step",
+									"action": "completed",
+									"durationMs": 2214
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Analytics storage failure",
 						"type": "propagated",
-						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
+						"description": "SQLite SELECT failures are rethrown unchanged."
 					}
 				],
 				"errorStatus": "declared"
@@ -291,34 +465,55 @@
 						"name": "AnalyticsRepository.prune.before",
 						"type": "string",
 						"required": true,
-						"description": "ISO UTC timestamp in the past; rows with an earlier parseable timestamp match retention."
+						"description": "Cutoff string that must parse as a Date, end in 'Z', have its first 19 characters equal to its normalized UTC form (YYYY-MM-DDTHH:mm:ss), and be strictly earlier than the current time. Stored rows whose timestamp parses to an earlier time match; rows with unparseable timestamps are never matched or deleted.",
+						"examples": ["2026-10-15T00:00:00.000Z", "2026-09-01T12:00:00Z"]
 					},
 					{
 						"name": "AnalyticsRepository.prune.apply",
 						"type": "boolean",
 						"required": false,
 						"default": false,
-						"description": "When true, delete matching rows; false previews the count without deletion."
+						"description": "When true, matching rows are deleted in the same transaction that counts them; when false (the default), nothing is deleted, deleted is 0, and dryRun is true.",
+						"examples": [false, true]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsRepository.prune",
 						"type": "{ before: string; matching: number; deleted: number; dryRun: boolean }",
-						"description": "Cutoff, number of matching rows, number deleted, and whether the call was a dry run."
+						"description": "Reports before as the normalized toISOString() cutoff, matching as the count of rows with an earlier parseable timestamp, deleted as the rows removed (0 unless apply is true), and dryRun as true unless apply is true.",
+						"examples": [
+							{
+								"before": "2026-10-15T00:00:00.000Z",
+								"matching": 4,
+								"deleted": 0,
+								"dryRun": true
+							},
+							{
+								"before": "2026-09-01T12:00:00.000Z",
+								"matching": 12,
+								"deleted": 12,
+								"dryRun": false
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Analytics storage failure",
 						"type": "propagated",
-						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
+						"description": "SQLite COUNT and DELETE failures inside the prune transaction are rethrown unchanged."
 					},
 					{
 						"name": "Invalid retention cutoff",
 						"type": "thrown",
-						"description": "prune requires a canonical ISO UTC timestamp strictly in the past",
+						"description": "Thrown by prune before any query runs unless before parses as a Date, ends in 'Z', has its first 19 characters equal to its normalized UTC form, and is strictly earlier than now.",
 						"examples": ["Retention cutoff must be an ISO UTC timestamp in the past."]
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A plain Error (no custom subclass) created with new Error(...) and thrown by prune before any query runs when before does not parse as a Date, does not end in 'Z', has a first 19 characters that differ from its normalized UTC form, or is not strictly earlier than now. Its message is 'Retention cutoff must be an ISO UTC timestamp in the past.'"
 					}
 				],
 				"errorStatus": "declared"
@@ -330,14 +525,14 @@
 					{
 						"name": "AnalyticsRepository.close",
 						"type": "void",
-						"description": "Closes the SQLite connection."
+						"description": "Returns nothing; it closes the underlying SQLite database handle."
 					}
 				],
 				"errors": [
 					{
 						"name": "Analytics storage failure",
 						"type": "propagated",
-						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
+						"description": "Errors from closing the SQLite database are rethrown unchanged."
 					}
 				],
 				"errorStatus": "declared"
@@ -351,34 +546,44 @@
 						"name": "AnalyticsRepository.constructor.home",
 						"type": "string",
 						"required": false,
-						"description": "Optional directory for analytics.sqlite; defaults to HARNESS_ANALYTICS_HOME or ~/.codex/harness."
+						"description": "Directory that holds analytics.sqlite, created recursively (mode 0700) if missing. Defaults to process.env.HARNESS_ANALYTICS_HOME ?? join(homedir(), '.codex', 'harness'): the variable's value when it is set (even if empty), otherwise the .codex/harness directory under the home directory.",
+						"examples": ["/Users/dev/.codex/harness", "/Users/dev/analytics/sandbox"]
 					},
 					{
 						"name": "AnalyticsRepository.constructor.options",
 						"type": "{ initialization?: 'synchronous' | 'deferred' }",
 						"required": false,
 						"default": {},
-						"description": "Initialization mode; deferred is used internally by open to await schema admission without blocking retry sleeps."
+						"description": "Only 'deferred' skips schema setup in the constructor; any other value, including the default {}, creates the schema synchronously and retries the WAL switch up to 100 times with 25 ms sleeps. open passes 'deferred' so that setup runs asynchronously under its bounded retry loop instead.",
+						"examples": [
+							{},
+							{
+								"initialization": "synchronous"
+							},
+							{
+								"initialization": "deferred"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsRepository.constructor",
 						"type": "AnalyticsRepository",
-						"description": "SQLite repository; normal construction initializes synchronously, while deferred initialization is reserved for open."
+						"description": "Repository wrapping the SQLite connection to analytics.sqlite with busy_timeout set to 5000 ms; unless options.initialization is 'deferred', it has also switched to WAL and ensured the schema before returning."
 					}
 				],
 				"errors": [
 					{
 						"name": "Unsupported analytics schema version",
 						"type": "thrown",
-						"description": "construction rejects a database whose user_version is newer than the supported schema",
+						"description": "Thrown synchronously by the constructor when PRAGMA user_version is greater than 1 and setup is not deferred; the connection is closed before the error propagates.",
 						"examples": ["Unsupported analytics schema version."]
 					},
 					{
 						"name": "Analytics storage failure",
 						"type": "propagated",
-						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
+						"description": "Filesystem errors from mkdir or chmod and SQLite errors from opening, setting busy_timeout, or schema setup are rethrown unchanged, and an opened connection is closed first."
 					}
 				],
 				"errorStatus": "declared"
