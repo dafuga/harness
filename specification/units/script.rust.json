@@ -12,11 +12,57 @@
 		"symbols": []
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by pinnedToolchain when the tool argument is missing or does not match /^[a-z][a-z0-9-]*$/; its message is \"<tool>\" is not a Rust tool name. rust.ts catches it, prints the message to stderr and exits with 1."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by pinnedToolchain when the working directory is missing or is not a directory; its message is Rust toolchain directory does not exist: <absolute path>. rust.ts catches it, prints the message to stderr and exits with 1."
+			},
+			{
+				"name": "unknown",
+				"type": "thrown",
+				"description": "Passed through unchanged by pinnedToolchain when statSync on the working directory, or readFileSync on a rust-toolchain.toml in the working directory or one of its parents, fails with an error whose code is not ENOENT (the code does not name the error class). rust.ts catches it, prints the message to stderr and exits with 1."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by pinnedToolchain when no rust-toolchain.toml exists in the working directory or in any of its parents; its message is No rust-toolchain.toml found from <working directory>. rust.ts catches it, prints the message to stderr and exits with 1."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by pinnedToolchain when the nearest rust-toolchain.toml cannot be parsed as TOML, or when its toolchain.channel is missing or is not a nonempty string without leading or trailing whitespace; its message is Invalid <pin file path>: followed by the parse error or by toolchain.channel must be a nonempty string. rust.ts catches it, prints the message to stderr and exits with 1."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by pinnedToolchain when spawnSync reports an error for rustup which --toolchain <channel> <tool>; its message starts with rustup was not found, so the toolchain pinned in rust-toolchain.toml cannot be selected. rust.ts catches it, prints the message to stderr and exits with 1."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by pinnedToolchain when rustup which --toolchain <channel> <tool> exits with a status other than 0; its message is rustup could not select <tool> of the toolchain pinned in rust-toolchain.toml: followed by rustup's trimmed stderr, a new line and an install hint. rust.ts catches it, prints the message to stderr and exits with 1."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by pinnedToolchain when rustup which --toolchain <channel> <tool> exits with status 0 but its stdout is empty or only whitespace; its message is rustup named no <tool> for the toolchain pinned in rust-toolchain.toml. rust.ts catches it, prints the message to stderr and exits with 1."
+			},
+			{
+				"name": "unknown",
+				"type": "thrown",
+				"description": "Any value thrown by Bun.spawnSync while it runs pinned.command with the remaining arguments (the code does not name its class). rust.ts catches it, prints error.message, or the value itself when it is not an Error, to stderr and exits with 1."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
