@@ -48,83 +48,201 @@
 				"name": "offlineCapabilities.source",
 				"type": "ProjectCapabilities['source']",
 				"required": true,
-				"description": "The original source, local or github, to retain while disabling all change actions for an offline view."
+				"description": "The capability source, local or github, that offlineCapabilities keeps unchanged in its result. markOffline passes the shown project's current source when the view first enters offline mode, and nothing checks the value against those two options.",
+				"examples": ["github", "local"]
 			},
 			{
 				"name": "forgetShared.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "The workspace whose shared content and pending navigation may need to be invalidated. A displayed GitHub-backed project is cleared only when the event names it or the whole session."
+				"description": "The live workspace store, changed in place: its project list, pending navigation and shown-project state may be altered. A shown project whose capabilities source is github is cleared only when the event names it or names $projects."
 			},
 			{
 				"name": "forgetShared.projectId",
 				"type": "string",
 				"required": true,
-				"description": "The denied project identity, or the special value $projects for the entire session. Pending navigation is preserved only when its target is listed as a local project."
+				"description": "The identity of the denied project, or the reserved value $projects for the whole session. $projects removes every shared project from the list, a named project leaves the list as it is, and either form can invalidate a pending target not listed as local and clear the shown GitHub-backed project when it matches the event.",
+				"examples": ["$projects", "7b2e4c18-5d9f-4a3e-8c10-6f1d9b2a7e45"]
 			},
 			{
 				"name": "forgetShared.notice",
 				"type": "string",
 				"required": true,
-				"description": "The message to store as the workspace error when the shown shared project is removed."
+				"description": "The message stored as workspace.error when the shown GitHub-backed project is cleared. cacheStatus passes deniedNotice for every denied event, but the message is stored only when that project is cleared.",
+				"examples": ["Access to this shared project ended. Connect again or ask its owner."]
 			},
 			{
 				"name": "cacheStatus.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "The workspace to update in place when a cache event arrives, including its shown project, pending target, project list and allowed actions."
+				"description": "The live workspace store that cacheStatus updates in place. It can change for a denied event, which applies the forgetShared rules, and for an offline event that names the shown project while a snapshot is shown; fresh events and offline events for other projects leave it unchanged."
 			},
 			{
 				"name": "cacheStatus.event",
 				"type": "CacheStatus",
 				"required": true,
-				"description": "A project identity and fresh, offline or denied status, with an optional cached time. An offline event applies only to the shown project. A denied event removes affected shared content. A fresh event does not restore a cached view; that requires a newly loaded snapshot."
+				"description": "A cache event with a projectId, a status of fresh, offline or denied, and an optional cachedAt time that only offline events use. An offline event acts only when it names the shown project, a denied event removes affected shared content, and a fresh event changes nothing.",
+				"examples": [
+					{
+						"projectId": "7b2e4c18-5d9f-4a3e-8c10-6f1d9b2a7e45",
+						"status": "offline",
+						"cachedAt": "2026-11-14T09:30:00.000Z"
+					},
+					{
+						"projectId": "7b2e4c18-5d9f-4a3e-8c10-6f1d9b2a7e45",
+						"status": "denied"
+					},
+					{
+						"projectId": "$projects",
+						"status": "denied"
+					}
+				]
 			},
 			{
 				"name": "offlineView.snapshot",
 				"type": "ProjectSnapshot",
 				"required": true,
-				"description": "The snapshot whose cache information should be inspected. It counts as cached when its cache status is offline or its cache explicitly says read-only."
+				"description": "The project snapshot to inspect, of which only the optional cache field matters: a snapshot without cache is not cached. It counts as cached when cache.status is 'offline' or cache.readOnly is true.",
+				"examples": [
+					{
+						"project": {
+							"name": "atlas",
+							"root": "/Users/dev/projects/atlas",
+							"id": "local-9f2c4b7e1d8a306c5f1e2b9d4a7c8e03b6f5d2a1c9e8b7f6d5a4c3b2e1f0a9d8"
+						},
+						"revision": {
+							"branch": "main",
+							"commit": "4e1b7d0c92a6f385e4b1d7c0a9f2e6b3d8c5a174",
+							"tip": "4e1b7d0c92a6f385e4b1d7c0a9f2e6b3d8c5a174",
+							"atTip": true
+						},
+						"branches": [
+							{
+								"name": "main",
+								"tip": "4e1b7d0c92a6f385e4b1d7c0a9f2e6b3d8c5a174",
+								"current": true
+							}
+						],
+						"commits": [],
+						"entities": [],
+						"writable": true
+					},
+					{
+						"project": {
+							"name": "atlas",
+							"root": "/Users/dev/projects/atlas",
+							"id": "local-9f2c4b7e1d8a306c5f1e2b9d4a7c8e03b6f5d2a1c9e8b7f6d5a4c3b2e1f0a9d8"
+						},
+						"revision": {
+							"branch": "main",
+							"commit": "4e1b7d0c92a6f385e4b1d7c0a9f2e6b3d8c5a174",
+							"tip": "4e1b7d0c92a6f385e4b1d7c0a9f2e6b3d8c5a174",
+							"atTip": true
+						},
+						"branches": [
+							{
+								"name": "main",
+								"tip": "4e1b7d0c92a6f385e4b1d7c0a9f2e6b3d8c5a174",
+								"current": true
+							}
+						],
+						"commits": [],
+						"entities": [],
+						"writable": false,
+						"cache": {
+							"status": "offline",
+							"readOnly": true,
+							"cachedAt": "2026-11-14T09:30:00.000Z",
+							"publication": "unknown",
+							"identity": {
+								"principalId": "local-filesystem:501",
+								"projectId": "local-9f2c4b7e1d8a306c5f1e2b9d4a7c8e03b6f5d2a1c9e8b7f6d5a4c3b2e1f0a9d8",
+								"repositoryId": 0,
+								"requestedRef": "main",
+								"sourceCommit": "4e1b7d0c92a6f385e4b1d7c0a9f2e6b3d8c5a174",
+								"sourceTree": "0b9d3e6f1a7c24e85d0b3f9a6c1e7d2b8f4a5c03",
+								"notesRef": null,
+								"notesRevision": null,
+								"evidenceRef": null,
+								"evidenceRevision": null,
+								"historyIndexRevision": null,
+								"artifactHash": null,
+								"profile": null
+							}
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "everyProject",
 				"type": "unknown",
-				"description": "The special project identity $projects, used for events about the complete session or project discovery."
+				"description": "The reserved project id $projects, used for events about the whole session or project discovery rather than one project. forgetShared treats it as the whole session, so it removes every shared project from the list.",
+				"examples": ["$projects"]
 			},
 			{
 				"name": "deniedNotice",
 				"type": "unknown",
-				"description": "The message: Access to this shared project ended. Connect again or ask its owner."
+				"description": "The exact text stored as the workspace error when a denied event clears the shown GitHub-backed project. cacheStatus passes it for every denied event, but it is stored only when that project is cleared.",
+				"examples": ["Access to this shared project ended. Connect again or ask its owner."]
 			},
 			{
 				"name": "offlineNotice",
 				"type": "unknown",
-				"description": "The message: Offline cached view. Comments and changes need a connection."
+				"description": "The exact reason text that offlineCapabilities sets on an offline view's capabilities. It is a fixed string, so every offline view carries the same reason.",
+				"examples": ["Offline cached view. Comments and changes need a connection."]
 			},
 			{
 				"name": "offlineCapabilities",
 				"type": "ProjectCapabilities",
-				"description": "Capabilities with comments, agents, planning and approval disabled, the supplied source retained, and the offline notice as the reason."
+				"description": "The capabilities of an offline view: comments, agents, planning and approval are false, the supplied source is kept, and reason is the offline notice. markOffline assigns them only when the view first enters offline mode, whereas forgetShared assigns closedCapabilities, which has no reason.",
+				"examples": [
+					{
+						"comments": false,
+						"agents": false,
+						"planning": false,
+						"approval": false,
+						"source": "github",
+						"reason": "Offline cached view. Comments and changes need a connection."
+					},
+					{
+						"comments": false,
+						"agents": false,
+						"planning": false,
+						"approval": false,
+						"source": "local",
+						"reason": "Offline cached view. Comments and changes need a connection."
+					}
+				]
 			},
 			{
 				"name": "offlineView",
 				"type": "OfflineView | null",
-				"description": "The cached timestamp, or null when it was not recorded, wrapped as cached-view information. Returns null when the snapshot is not marked offline or read-only."
+				"description": "The cached-view information for a snapshot: an object whose cachedAt is the time the cached copy was saved, or null when the cache records none. The whole value is null when the snapshot is neither offline nor read-only.",
+				"examples": [
+					{
+						"cachedAt": "2026-11-14T09:30:00.000Z"
+					},
+					{
+						"cachedAt": null
+					},
+					null
+				]
 			},
 			{
 				"name": "forgetShared",
 				"type": "void",
-				"description": "No return value. A session-wide denial removes shared projects from the list. Matching pending navigation is invalidated unless its target is listed as local. A matching displayed GitHub-backed project loses its snapshot, entity and cached view, receives closed capabilities and the notice, and triggers a project-list refresh for a single-project denial."
+				"description": "No value is returned; the workspace is changed in place. A whole-session denial removes shared projects from the list; a pending target is invalidated when the denial names it or the whole session, unless it is listed as local; and a shown GitHub-backed project is cleared (no snapshot, entity or offline state, closed capabilities, notice as error) when the denial names it or the whole session, with a project-list refresh only for a single named project."
 			},
 			{
 				"name": "cacheStatus",
 				"type": "void",
-				"description": "No return value. A matching offline event marks the shown snapshot unwritable, records the cached time and disables change actions when first entering offline mode; existing cache metadata is updated. Denied events apply the shared-content removal rules. Other events leave the workspace unchanged."
+				"description": "No value is returned; the workspace is changed in place. A denied event applies the forgetShared rules, and an offline event for the shown project, while a snapshot is shown, marks that snapshot unwritable and records the cached time, setting offline capabilities only on first entry and updating existing cache metadata; fresh events and offline events for other projects change nothing."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "offlineCapabilities",
@@ -133,18 +251,37 @@
 						"name": "offlineCapabilities.source",
 						"type": "ProjectCapabilities['source']",
 						"required": true,
-						"description": "The original source, local or github, to retain while disabling all change actions for an offline view."
+						"description": "The capability source, local or github, that offlineCapabilities keeps unchanged in its result. markOffline passes the shown project's current source when the view first enters offline mode, and nothing checks the value against those two options.",
+						"examples": ["github", "local"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "offlineCapabilities",
 						"type": "ProjectCapabilities",
-						"description": "Capabilities with comments, agents, planning and approval disabled, the supplied source retained, and the offline notice as the reason."
+						"description": "The capabilities of an offline view: comments, agents, planning and approval are false, the supplied source is kept, and reason is the offline notice. markOffline assigns them only when the view first enters offline mode, whereas forgetShared assigns closedCapabilities, which has no reason.",
+						"examples": [
+							{
+								"comments": false,
+								"agents": false,
+								"planning": false,
+								"approval": false,
+								"source": "github",
+								"reason": "Offline cached view. Comments and changes need a connection."
+							},
+							{
+								"comments": false,
+								"agents": false,
+								"planning": false,
+								"approval": false,
+								"source": "local",
+								"reason": "Offline cached view. Comments and changes need a connection."
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "forgetShared",
@@ -153,30 +290,32 @@
 						"name": "forgetShared.workspace",
 						"type": "Workspace",
 						"required": true,
-						"description": "The workspace whose shared content and pending navigation may need to be invalidated. A displayed GitHub-backed project is cleared only when the event names it or the whole session."
+						"description": "The live workspace store, changed in place: its project list, pending navigation and shown-project state may be altered. A shown project whose capabilities source is github is cleared only when the event names it or names $projects."
 					},
 					{
 						"name": "forgetShared.projectId",
 						"type": "string",
 						"required": true,
-						"description": "The denied project identity, or the special value $projects for the entire session. Pending navigation is preserved only when its target is listed as a local project."
+						"description": "The identity of the denied project, or the reserved value $projects for the whole session. $projects removes every shared project from the list, a named project leaves the list as it is, and either form can invalidate a pending target not listed as local and clear the shown GitHub-backed project when it matches the event.",
+						"examples": ["$projects", "7b2e4c18-5d9f-4a3e-8c10-6f1d9b2a7e45"]
 					},
 					{
 						"name": "forgetShared.notice",
 						"type": "string",
 						"required": true,
-						"description": "The message to store as the workspace error when the shown shared project is removed."
+						"description": "The message stored as workspace.error when the shown GitHub-backed project is cleared. cacheStatus passes deniedNotice for every denied event, but the message is stored only when that project is cleared.",
+						"examples": ["Access to this shared project ended. Connect again or ask its owner."]
 					}
 				],
 				"outputs": [
 					{
 						"name": "forgetShared",
 						"type": "void",
-						"description": "No return value. A session-wide denial removes shared projects from the list. Matching pending navigation is invalidated unless its target is listed as local. A matching displayed GitHub-backed project loses its snapshot, entity and cached view, receives closed capabilities and the notice, and triggers a project-list refresh for a single-project denial."
+						"description": "No value is returned; the workspace is changed in place. A whole-session denial removes shared projects from the list; a pending target is invalidated when the denial names it or the whole session, unless it is listed as local; and a shown GitHub-backed project is cleared (no snapshot, entity or offline state, closed capabilities, notice as error) when the denial names it or the whole session, with a project-list refresh only for a single named project."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "cacheStatus",
@@ -185,24 +324,39 @@
 						"name": "cacheStatus.workspace",
 						"type": "Workspace",
 						"required": true,
-						"description": "The workspace to update in place when a cache event arrives, including its shown project, pending target, project list and allowed actions."
+						"description": "The live workspace store that cacheStatus updates in place. It can change for a denied event, which applies the forgetShared rules, and for an offline event that names the shown project while a snapshot is shown; fresh events and offline events for other projects leave it unchanged."
 					},
 					{
 						"name": "cacheStatus.event",
 						"type": "CacheStatus",
 						"required": true,
-						"description": "A project identity and fresh, offline or denied status, with an optional cached time. An offline event applies only to the shown project. A denied event removes affected shared content. A fresh event does not restore a cached view; that requires a newly loaded snapshot."
+						"description": "A cache event with a projectId, a status of fresh, offline or denied, and an optional cachedAt time that only offline events use. An offline event acts only when it names the shown project, a denied event removes affected shared content, and a fresh event changes nothing.",
+						"examples": [
+							{
+								"projectId": "7b2e4c18-5d9f-4a3e-8c10-6f1d9b2a7e45",
+								"status": "offline",
+								"cachedAt": "2026-11-14T09:30:00.000Z"
+							},
+							{
+								"projectId": "7b2e4c18-5d9f-4a3e-8c10-6f1d9b2a7e45",
+								"status": "denied"
+							},
+							{
+								"projectId": "$projects",
+								"status": "denied"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "cacheStatus",
 						"type": "void",
-						"description": "No return value. A matching offline event marks the shown snapshot unwritable, records the cached time and disables change actions when first entering offline mode; existing cache metadata is updated. Denied events apply the shared-content removal rules. Other events leave the workspace unchanged."
+						"description": "No value is returned; the workspace is changed in place. A denied event applies the forgetShared rules, and an offline event for the shown project, while a snapshot is shown, marks that snapshot unwritable and records the cached time, setting offline capabilities only on first entry and updating existing cache metadata; fresh events and offline events for other projects change nothing."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "offlineView",
@@ -211,18 +365,96 @@
 						"name": "offlineView.snapshot",
 						"type": "ProjectSnapshot",
 						"required": true,
-						"description": "The snapshot whose cache information should be inspected. It counts as cached when its cache status is offline or its cache explicitly says read-only."
+						"description": "The project snapshot to inspect, of which only the optional cache field matters: a snapshot without cache is not cached. It counts as cached when cache.status is 'offline' or cache.readOnly is true.",
+						"examples": [
+							{
+								"project": {
+									"name": "atlas",
+									"root": "/Users/dev/projects/atlas",
+									"id": "local-9f2c4b7e1d8a306c5f1e2b9d4a7c8e03b6f5d2a1c9e8b7f6d5a4c3b2e1f0a9d8"
+								},
+								"revision": {
+									"branch": "main",
+									"commit": "4e1b7d0c92a6f385e4b1d7c0a9f2e6b3d8c5a174",
+									"tip": "4e1b7d0c92a6f385e4b1d7c0a9f2e6b3d8c5a174",
+									"atTip": true
+								},
+								"branches": [
+									{
+										"name": "main",
+										"tip": "4e1b7d0c92a6f385e4b1d7c0a9f2e6b3d8c5a174",
+										"current": true
+									}
+								],
+								"commits": [],
+								"entities": [],
+								"writable": true
+							},
+							{
+								"project": {
+									"name": "atlas",
+									"root": "/Users/dev/projects/atlas",
+									"id": "local-9f2c4b7e1d8a306c5f1e2b9d4a7c8e03b6f5d2a1c9e8b7f6d5a4c3b2e1f0a9d8"
+								},
+								"revision": {
+									"branch": "main",
+									"commit": "4e1b7d0c92a6f385e4b1d7c0a9f2e6b3d8c5a174",
+									"tip": "4e1b7d0c92a6f385e4b1d7c0a9f2e6b3d8c5a174",
+									"atTip": true
+								},
+								"branches": [
+									{
+										"name": "main",
+										"tip": "4e1b7d0c92a6f385e4b1d7c0a9f2e6b3d8c5a174",
+										"current": true
+									}
+								],
+								"commits": [],
+								"entities": [],
+								"writable": false,
+								"cache": {
+									"status": "offline",
+									"readOnly": true,
+									"cachedAt": "2026-11-14T09:30:00.000Z",
+									"publication": "unknown",
+									"identity": {
+										"principalId": "local-filesystem:501",
+										"projectId": "local-9f2c4b7e1d8a306c5f1e2b9d4a7c8e03b6f5d2a1c9e8b7f6d5a4c3b2e1f0a9d8",
+										"repositoryId": 0,
+										"requestedRef": "main",
+										"sourceCommit": "4e1b7d0c92a6f385e4b1d7c0a9f2e6b3d8c5a174",
+										"sourceTree": "0b9d3e6f1a7c24e85d0b3f9a6c1e7d2b8f4a5c03",
+										"notesRef": null,
+										"notesRevision": null,
+										"evidenceRef": null,
+										"evidenceRevision": null,
+										"historyIndexRevision": null,
+										"artifactHash": null,
+										"profile": null
+									}
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "offlineView",
 						"type": "OfflineView | null",
-						"description": "The cached timestamp, or null when it was not recorded, wrapped as cached-view information. Returns null when the snapshot is not marked offline or read-only."
+						"description": "The cached-view information for a snapshot: an object whose cachedAt is the time the cached copy was saved, or null when the cache records none. The whole value is null when the snapshot is neither offline nor read-only.",
+						"examples": [
+							{
+								"cachedAt": "2026-11-14T09:30:00.000Z"
+							},
+							{
+								"cachedAt": null
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
