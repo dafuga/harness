@@ -18,17 +18,18 @@
 				"name": "streamLines.options",
 				"type": "{ onLine: (line: string) => void; maxBytes: number; onOverflow: () => void; }",
 				"required": true,
-				"description": "Line and overflow callbacks plus maximum buffered byte count."
+				"description": "A required options object with line and overflow callbacks and a byte threshold. Each write checks the UTF-8 byte length of accumulated decoded text against maxBytes before splitting on `\\n`; if it exceeds the threshold, the buffer is cleared and onOverflow runs, while incomplete UTF-8 bytes remain with the decoder across chunks."
 			}
 		],
 		"outputs": [
 			{
 				"name": "streamLines",
 				"type": "unknown",
-				"description": "write accepts byte chunks and emits newline-delimited strings; end flushes any remaining text. Oversized buffered text invokes the overflow callback and clears the buffer."
+				"description": "Returns write(chunk) and end() functions: write expects a Buffer, decodes it as UTF-8, emits each complete `\\n`-terminated segment (including empty segments), and retains the trailing segment; end flushes the decoder and emits the trailing segment only when non-empty. The byte limit is checked against the entire accumulated decoded buffer after each write and before splitting, so an overflow invokes onOverflow and discards that buffer."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "streamLines",
@@ -37,18 +38,18 @@
 						"name": "streamLines.options",
 						"type": "{ onLine: (line: string) => void; maxBytes: number; onOverflow: () => void; }",
 						"required": true,
-						"description": "Line and overflow callbacks plus maximum buffered byte count."
+						"description": "A required options object with line and overflow callbacks and a byte threshold. Each write checks the UTF-8 byte length of accumulated decoded text against maxBytes before splitting on `\\n`; if it exceeds the threshold, the buffer is cleared and onOverflow runs, while incomplete UTF-8 bytes remain with the decoder across chunks."
 					}
 				],
 				"outputs": [
 					{
 						"name": "streamLines",
 						"type": "unknown",
-						"description": "write accepts byte chunks and emits newline-delimited strings; end flushes any remaining text. Oversized buffered text invokes the overflow callback and clears the buffer."
+						"description": "Returns write(chunk) and end() functions: write expects a Buffer, decodes it as UTF-8, emits each complete `\\n`-terminated segment (including empty segments), and retains the trailing segment; end flushes the decoder and emits the trailing segment only when non-empty. The byte limit is checked against the entire accumulated decoded buffer after each write and before splitting, so an overflow invokes onOverflow and discards that buffer."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
