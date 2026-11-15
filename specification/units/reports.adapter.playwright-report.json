@@ -26,32 +26,67 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "PlaywrightReportAdapter.ingest.store",
 				"type": "ReportRepository",
-				"required": true
+				"required": true,
+				"description": "Repository instance used to write a check for each qualifying spec and evidence for each eligible image attachment. Its record implementation supplies the persistence behavior."
 			},
 			{
 				"name": "PlaywrightReportAdapter.ingest.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Identifier forwarded as the first argument to store.record for every generated check and evidence record. The adapter does not validate or transform it.",
+				"examples": ["report-2026-11-15-001"]
 			},
 			{
 				"name": "PlaywrightReportAdapter.ingest.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Path read as UTF-8 and parsed as the Playwright report; its directory is used to resolve relative attachment paths. Missing top-level suites default to an empty list, while nested report shapes are not validated.",
+				"examples": ["test-results/playwright-report.json"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "PlaywrightReportAdapter.ingest",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to an object containing the number of specs with a nonempty tests array that the adapter records. It counts qualifying specs, not individual tests or evidence attachments.",
+				"examples": [
+					{
+						"checks": 0
+					},
+					{
+						"checks": 2
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse when the readable report contents are not valid JSON."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when malformed suite, spec, or attachment values have incompatible shapes for traversal or path handling; the adapter does not validate the report schema."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A file read failure from readFile rejects ingestion with the filesystem error."
+			},
+			{
+				"name": "ReportRepository.record rejection",
+				"type": "thrown",
+				"description": "A rejection from an awaited store.record call propagates unchanged; this adapter does not determine the rejection value or its name."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "PlaywrightReportAdapter.ingest",
@@ -59,27 +94,62 @@
 					{
 						"name": "PlaywrightReportAdapter.ingest.store",
 						"type": "ReportRepository",
-						"required": true
+						"required": true,
+						"description": "Repository instance used to write a check for each qualifying spec and evidence for each eligible image attachment. Its record implementation supplies the persistence behavior."
 					},
 					{
 						"name": "PlaywrightReportAdapter.ingest.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Identifier forwarded as the first argument to store.record for every generated check and evidence record. The adapter does not validate or transform it.",
+						"examples": ["report-2026-11-15-001"]
 					},
 					{
 						"name": "PlaywrightReportAdapter.ingest.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Path read as UTF-8 and parsed as the Playwright report; its directory is used to resolve relative attachment paths. Missing top-level suites default to an empty list, while nested report shapes are not validated.",
+						"examples": ["test-results/playwright-report.json"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PlaywrightReportAdapter.ingest",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to an object containing the number of specs with a nonempty tests array that the adapter records. It counts qualifying specs, not individual tests or evidence attachments.",
+						"examples": [
+							{
+								"checks": 0
+							},
+							{
+								"checks": 2
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when the readable report contents are not valid JSON."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when malformed suite, spec, or attachment values have incompatible shapes for traversal or path handling; the adapter does not validate the report schema."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A file read failure from readFile rejects ingestion with the filesystem error."
+					},
+					{
+						"name": "ReportRepository.record rejection",
+						"type": "thrown",
+						"description": "A rejection from an awaited store.record call propagates unchanged; this adapter does not determine the rejection value or its name."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
