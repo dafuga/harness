@@ -1,6 +1,10 @@
 // @harness-uid u_2eznkaf4qv
 import {
 	appendFileSync,
+	constants,
+	closeSync,
+	fstatSync,
+	openSync,
 	existsSync,
 	lstatSync,
 	mkdirSync,
@@ -61,14 +65,36 @@ export function captureProtocol(directory: string) {
 			)
 				throw new ExpectedCliError('Video capture sidecar exceeds bounded metadata limits.');
 			const written = JSON.stringify(line) + '\n';
-			if ((existsSync(index) ? lstatSync(index).size : 0) + Buffer.byteLength(written) > 2_000_000)
+			if (captureIndexSize(index) + Buffer.byteLength(written) > 2_000_000)
 				throw new ExpectedCliError('Video capture index exceeds its 2 MB metadata cap.');
 			const temporary = join(directory, `.video-batches-${randomUUID()}.json`);
 			writeFileSync(temporary, text);
 			renameSync(temporary, path);
-			appendFileSync(index, written);
+			appendCaptureIndex(index, written);
 		}
 	};
+}
+function appendCaptureIndex(path: string, text: string): void {
+	const fd = openSync(
+		path,
+		constants.O_WRONLY | constants.O_APPEND | constants.O_CREAT | constants.O_NOFOLLOW,
+		0o600
+	);
+	try {
+		const stat = fstatSync(fd);
+		if (!stat.isFile() || stat.size + Buffer.byteLength(text) > 2_000_000)
+			throw new ExpectedCliError('Capture index is not a bounded regular file.');
+		appendFileSync(fd, text);
+	} finally {
+		closeSync(fd);
+	}
+}
+function captureIndexSize(path: string): number {
+	if (!existsSync(path)) return 0;
+	const stat = lstatSync(path);
+	if (!stat.isFile())
+		throw new ExpectedCliError('Capture index must be a regular owned file, never a symlink.');
+	return stat.size;
 }
 function boundedText(path: string, maximum: number): string {
 	const stat = lstatSync(path);
