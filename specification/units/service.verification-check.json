@@ -22,51 +22,188 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "VerificationCheckService.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository root used to resolve commit and verification-store data for the service. It matters to every check because Git history, stored record lookup, and evidence paths are read relative to it.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
+				]
 			},
 			{
 				"name": "VerificationCheckService.constructor.indexer",
 				"type": "SourceIndexService",
-				"required": false
+				"required": false,
+				"description": "SourceIndexService passed to loadSide while rebuilding the committed source. Defaults to new SourceIndexService(): an instance may be shared and reuses parsing only for files with identical content, while each commit is still indexed and compared in full."
 			},
 			{
 				"name": "VerificationCheckService.check.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git commit reference against which the stored record is checked. When record.source.commit matches it, the service resolves the commit tree and indexes its files; an unresolved revision can reject the operation.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "VerificationCheckService.check.stored",
 				"type": "StoredRecord",
-				"required": true
+				"required": true,
+				"description": "Stored record envelope consumed by the check, including its record and storage directory. The record supplies outcome, components, lineage, and evidence metadata; evidence paths are resolved under the stored directory.",
+				"examples": [
+					{
+						"record": {
+							"id": "66121b631169356fc8c32135156ebc982dfb28d5b9c75285ce69a231576d62e5",
+							"schemaVersion": 1,
+							"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+							"source": {
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"tree": "89abcdef0123456789abcdef0123456789abcdef",
+								"base": null
+							},
+							"profile": {
+								"id": "local-run",
+								"platform": "linux",
+								"arch": "x64",
+								"cpu": "4-core virtual CPU",
+								"cores": 4,
+								"memoryBytes": 8589934592,
+								"runtime": "Node.js"
+							},
+							"startedAt": "2026-11-15T12:00:00.000Z",
+							"finishedAt": "2026-11-15T12:00:01.000Z",
+							"status": "passed",
+							"components": [],
+							"measurements": [],
+							"impact": {
+								"runtime": "module",
+								"expanded": false,
+								"changed": [],
+								"units": {
+									"direct": [],
+									"indirect": [],
+									"added": [],
+									"removed": []
+								},
+								"uncertain": []
+							},
+							"tests": [],
+							"scenarios": [],
+							"budgets": {
+								"status": "passed",
+								"findings": []
+							},
+							"reasons": {
+								"status": "passed",
+								"missing": []
+							},
+							"failures": []
+						},
+						"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
+					}
+				]
 			},
 			{
 				"name": "VerificationCheckService.integrity.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git commit reference against which the stored record is checked. When record.source.commit matches it, the service resolves the commit tree and indexes its files; an unresolved revision can reject the operation.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "VerificationCheckService.integrity.stored",
 				"type": "StoredRecord",
-				"required": true
+				"required": true,
+				"description": "Stored record envelope consumed by the check, including its record and storage directory. The record supplies outcome, components, lineage, and evidence metadata; evidence paths are resolved under the stored directory.",
+				"examples": [
+					{
+						"record": {
+							"id": "66121b631169356fc8c32135156ebc982dfb28d5b9c75285ce69a231576d62e5",
+							"schemaVersion": 1,
+							"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+							"source": {
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"tree": "89abcdef0123456789abcdef0123456789abcdef",
+								"base": null
+							},
+							"profile": {
+								"id": "local-run",
+								"platform": "linux",
+								"arch": "x64",
+								"cpu": "4-core virtual CPU",
+								"cores": 4,
+								"memoryBytes": 8589934592,
+								"runtime": "Node.js"
+							},
+							"startedAt": "2026-11-15T12:00:00.000Z",
+							"finishedAt": "2026-11-15T12:00:01.000Z",
+							"status": "passed",
+							"components": [],
+							"measurements": [],
+							"impact": {
+								"runtime": "module",
+								"expanded": false,
+								"changed": [],
+								"units": {
+									"direct": [],
+									"indirect": [],
+									"added": [],
+									"removed": []
+								},
+								"uncertain": []
+							},
+							"tests": [],
+							"scenarios": [],
+							"budgets": {
+								"status": "passed",
+								"findings": []
+							},
+							"reasons": {
+								"status": "passed",
+								"missing": []
+							},
+							"failures": []
+						},
+						"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "VerificationCheckService.check",
-				"type": "Promise<CheckReport>"
+				"type": "Promise<CheckReport>",
+				"description": "Promise resolves to a CheckReport with passed or failed status, the commit and record IDs, and problem strings. Integrity problems are included first; lineage problems are checked only when integrity is clean, while recorded failure messages are included whenever the record status is not passed.",
+				"examples": [
+					{
+						"status": "passed",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"record": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "VerificationCheckService.integrity",
-				"type": "Promise<string[]>"
+				"type": "Promise<string[]>",
+				"description": "Promise resolves to problem strings for the record's source identity and tree, seal, component versions, and evidence files, regardless of outcome. It does not inspect lineage or apply the record's outcome failures; an empty list means these identity and integrity checks found no problems.",
+				"examples": [
+					[],
+					[
+						"record is for commit fedcba9876543210fedcba9876543210fedcba98, not 0123456789abcdef0123456789abcdef01234567"
+					]
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The promise may reject with an Error propagated from Git revision or tree access, source loading, record-store reads, or evidence file access; these failures are not converted into CheckReport problems."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "VerificationCheckService.check",
@@ -74,22 +211,92 @@
 					{
 						"name": "VerificationCheckService.check.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Git commit reference against which the stored record is checked. When record.source.commit matches it, the service resolves the commit tree and indexes its files; an unresolved revision can reject the operation.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					},
 					{
 						"name": "VerificationCheckService.check.stored",
 						"type": "StoredRecord",
-						"required": true
+						"required": true,
+						"description": "Stored record envelope consumed by the check, including its record and storage directory. The record supplies outcome, components, lineage, and evidence metadata; evidence paths are resolved under the stored directory.",
+						"examples": [
+							{
+								"record": {
+									"id": "66121b631169356fc8c32135156ebc982dfb28d5b9c75285ce69a231576d62e5",
+									"schemaVersion": 1,
+									"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+									"source": {
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"tree": "89abcdef0123456789abcdef0123456789abcdef",
+										"base": null
+									},
+									"profile": {
+										"id": "local-run",
+										"platform": "linux",
+										"arch": "x64",
+										"cpu": "4-core virtual CPU",
+										"cores": 4,
+										"memoryBytes": 8589934592,
+										"runtime": "Node.js"
+									},
+									"startedAt": "2026-11-15T12:00:00.000Z",
+									"finishedAt": "2026-11-15T12:00:01.000Z",
+									"status": "passed",
+									"components": [],
+									"measurements": [],
+									"impact": {
+										"runtime": "module",
+										"expanded": false,
+										"changed": [],
+										"units": {
+											"direct": [],
+											"indirect": [],
+											"added": [],
+											"removed": []
+										},
+										"uncertain": []
+									},
+									"tests": [],
+									"scenarios": [],
+									"budgets": {
+										"status": "passed",
+										"findings": []
+									},
+									"reasons": {
+										"status": "passed",
+										"missing": []
+									},
+									"failures": []
+								},
+								"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "VerificationCheckService.check",
-						"type": "Promise<CheckReport>"
+						"type": "Promise<CheckReport>",
+						"description": "Promise resolves to a CheckReport with passed or failed status, the commit and record IDs, and problem strings. Integrity problems are included first; lineage problems are checked only when integrity is clean, while recorded failure messages are included whenever the record status is not passed.",
+						"examples": [
+							{
+								"status": "passed",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"record": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"problems": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The promise may reject with an Error propagated from Git revision or tree access, source loading, record-store reads, or evidence file access; these failures are not converted into CheckReport problems."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "VerificationCheckService.integrity",
@@ -97,22 +304,90 @@
 					{
 						"name": "VerificationCheckService.integrity.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Git commit reference against which the stored record is checked. When record.source.commit matches it, the service resolves the commit tree and indexes its files; an unresolved revision can reject the operation.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					},
 					{
 						"name": "VerificationCheckService.integrity.stored",
 						"type": "StoredRecord",
-						"required": true
+						"required": true,
+						"description": "Stored record envelope consumed by the check, including its record and storage directory. The record supplies outcome, components, lineage, and evidence metadata; evidence paths are resolved under the stored directory.",
+						"examples": [
+							{
+								"record": {
+									"id": "66121b631169356fc8c32135156ebc982dfb28d5b9c75285ce69a231576d62e5",
+									"schemaVersion": 1,
+									"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+									"source": {
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"tree": "89abcdef0123456789abcdef0123456789abcdef",
+										"base": null
+									},
+									"profile": {
+										"id": "local-run",
+										"platform": "linux",
+										"arch": "x64",
+										"cpu": "4-core virtual CPU",
+										"cores": 4,
+										"memoryBytes": 8589934592,
+										"runtime": "Node.js"
+									},
+									"startedAt": "2026-11-15T12:00:00.000Z",
+									"finishedAt": "2026-11-15T12:00:01.000Z",
+									"status": "passed",
+									"components": [],
+									"measurements": [],
+									"impact": {
+										"runtime": "module",
+										"expanded": false,
+										"changed": [],
+										"units": {
+											"direct": [],
+											"indirect": [],
+											"added": [],
+											"removed": []
+										},
+										"uncertain": []
+									},
+									"tests": [],
+									"scenarios": [],
+									"budgets": {
+										"status": "passed",
+										"findings": []
+									},
+									"reasons": {
+										"status": "passed",
+										"missing": []
+									},
+									"failures": []
+								},
+								"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "VerificationCheckService.integrity",
-						"type": "Promise<string[]>"
+						"type": "Promise<string[]>",
+						"description": "Promise resolves to problem strings for the record's source identity and tree, seal, component versions, and evidence files, regardless of outcome. It does not inspect lineage or apply the record's outcome failures; an empty list means these identity and integrity checks found no problems.",
+						"examples": [
+							[],
+							[
+								"record is for commit fedcba9876543210fedcba9876543210fedcba98, not 0123456789abcdef0123456789abcdef01234567"
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The promise may reject with an Error if Git tree resolution, committed-source loading, or evidence file access fails; those failures are not converted into problem strings."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -122,22 +397,28 @@
 					{
 						"name": "VerificationCheckService.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository root used to resolve commit and verification-store data for the service. It matters to every check because Git history, stored record lookup, and evidence paths are read relative to it.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
+						]
 					},
 					{
 						"name": "VerificationCheckService.constructor.indexer",
 						"type": "SourceIndexService",
-						"required": false
+						"required": false,
+						"description": "SourceIndexService passed to loadSide while rebuilding the committed source. Defaults to new SourceIndexService(): an instance may be shared and reuses parsing only for files with identical content, while each commit is still indexed and compared in full."
 					}
 				],
 				"outputs": [
 					{
 						"name": "VerificationCheckService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Constructed service instance holding the repository root and indexer for later check and integrity calls. If no indexer is provided, the constructor creates a new SourceIndexService."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
