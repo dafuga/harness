@@ -21,32 +21,79 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RemoteRegistrationAdapter.constructor.config",
 				"type": "RemoteRegistrationAdapterConfig",
-				"required": true
+				"required": true,
+				"description": "Holds the exact hub origin of this computer, the credentials callback for the hosted session kept in the OS key store (it never leaves the main process) and the optional fetch; register reads all three from this.config on every call. The constructor stores the config unchanged and checks nothing, so a missing or empty origin fails only when register throws the signed-out Error."
 			},
 			{
 				"name": "RemoteRegistrationAdapter.register.input",
 				"type": "RemoteHostRegisterInput",
-				"required": true
+				"required": true,
+				"description": "The host to register: hostId is the id that remoteIdentity derives from the public key, hostKey is that public key in base64url, credentialHash is the hash the relay stores in place of the host credential, and name is the host's name. register sends only these four fields as the JSON body, because the hub takes the owner from the session; it does not validate them, and the hub's answer must echo the same hostId or register throws.",
+				"examples": [
+					{
+						"hostId": "7d2f9b04c1e8a365f0b7d9e2c4a18f63b05e9d17",
+						"hostKey": "BAf3kQ9x2LmV7pT0wZ4sYc8hNbR1uJdG6eKiX5oWqFa-CvE3yUlS9tPgMhD2rBnA0jZxQk7VyLb4cTmRwHsOiN8",
+						"credentialHash": "c4e1a09b5f23d7b8e6019a4c2dbf8e7391a0c5d6f7e42b183a9d0c6eb5f20a71",
+						"name": "Studio Mac"
+					},
+					{
+						"hostId": "2a6e0c58f47b193d6e2a85c0f9b41d7e3a96c5f2",
+						"hostKey": "BEk2sQf7LpWx0Ea9hVbK3nYcR6uTjZ8gMqB1oFwCl_yHd4SrtXeNi5vAaUo7PkG0bWzCfJx3rL9mEhTdQvSyI2A",
+						"credentialHash": "8f03b6d2e91c47a5d0b3e8f16c29a4d7053eb9c1f6a82d4e7b0c53f9a1e6d280",
+						"name": "Work Laptop"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteRegistrationAdapter.register",
-				"type": "Promise<RemoteHostRegistration>"
+				"type": "Promise<RemoteHostRegistration>",
+				"description": "The hub's registration for this host, rebuilt from its JSON as { hostId, origin, generation, registeredAt }: the promise resolves only if the hub's hostId equals the input's, origin and registeredAt are strings and generation is a safe integer. Other fields the hub sends are dropped, and origin is not compared with config.origin.",
+				"examples": [
+					{
+						"hostId": "7d2f9b04c1e8a365f0b7d9e2c4a18f63b05e9d17",
+						"origin": "https://relay.example.com",
+						"generation": 1,
+						"registeredAt": "2026-11-15T09:30:00.000Z"
+					},
+					{
+						"hostId": "2a6e0c58f47b193d6e2a85c0f9b41d7e3a96c5f2",
+						"origin": "https://relay.example.com",
+						"generation": 3,
+						"registeredAt": "2026-11-10T18:02:44.512Z"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by register as an Error with signedOut: true and the message 'Connect to Harness Hub on this computer first.' when config.origin is missing or empty, when authorizing the hosted session fails, or when the hub answers 401; the HostedHttpAdapter constructor throws an Error with the message 'Use an exact HTTPS hosted origin.' when config.origin is not an exact hosted origin (anything but https is refused, except plain http to localhost, 127.0.0.1 or [::1]; user info, a path other than '/', a query or a hash is refused too). It is also thrown with the message 'The hub answered with an invalid registration.' when the hub's JSON has a hostId that differs from the input's, a non-string origin or registeredAt, or a generation that is not a safe integer."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by the URL constructor that hostedOrigin runs on config.origin inside the HostedHttpAdapter constructor when a non-empty origin is not an absolute URL; register does not catch it, so the TypeError reaches the caller unchanged."
+			},
+			{
+				"name": "HostedFailureValidator",
+				"type": "thrown",
+				"description": "Any other rejection of the request to /api/remote/hosts is rethrown unchanged; the adapter types it as HostedFailureValidator and reads only its status, so a 401 becomes the signed-out Error instead."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Rejected by response.json() when the hub's response body is not valid JSON; register does not catch it, so the parser's SyntaxError reaches the caller unchanged."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RemoteRegistrationAdapter.register",
@@ -54,17 +101,68 @@
 					{
 						"name": "RemoteRegistrationAdapter.register.input",
 						"type": "RemoteHostRegisterInput",
-						"required": true
+						"required": true,
+						"description": "The host to register: hostId is the id that remoteIdentity derives from the public key, hostKey is that public key in base64url, credentialHash is the hash the relay stores in place of the host credential, and name is the host's name. register sends only these four fields as the JSON body, because the hub takes the owner from the session; it does not validate them, and the hub's answer must echo the same hostId or register throws.",
+						"examples": [
+							{
+								"hostId": "7d2f9b04c1e8a365f0b7d9e2c4a18f63b05e9d17",
+								"hostKey": "BAf3kQ9x2LmV7pT0wZ4sYc8hNbR1uJdG6eKiX5oWqFa-CvE3yUlS9tPgMhD2rBnA0jZxQk7VyLb4cTmRwHsOiN8",
+								"credentialHash": "c4e1a09b5f23d7b8e6019a4c2dbf8e7391a0c5d6f7e42b183a9d0c6eb5f20a71",
+								"name": "Studio Mac"
+							},
+							{
+								"hostId": "2a6e0c58f47b193d6e2a85c0f9b41d7e3a96c5f2",
+								"hostKey": "BEk2sQf7LpWx0Ea9hVbK3nYcR6uTjZ8gMqB1oFwCl_yHd4SrtXeNi5vAaUo7PkG0bWzCfJx3rL9mEhTdQvSyI2A",
+								"credentialHash": "8f03b6d2e91c47a5d0b3e8f16c29a4d7053eb9c1f6a82d4e7b0c53f9a1e6d280",
+								"name": "Work Laptop"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteRegistrationAdapter.register",
-						"type": "Promise<RemoteHostRegistration>"
+						"type": "Promise<RemoteHostRegistration>",
+						"description": "The hub's registration for this host, rebuilt from its JSON as { hostId, origin, generation, registeredAt }: the promise resolves only if the hub's hostId equals the input's, origin and registeredAt are strings and generation is a safe integer. Other fields the hub sends are dropped, and origin is not compared with config.origin.",
+						"examples": [
+							{
+								"hostId": "7d2f9b04c1e8a365f0b7d9e2c4a18f63b05e9d17",
+								"origin": "https://relay.example.com",
+								"generation": 1,
+								"registeredAt": "2026-11-15T09:30:00.000Z"
+							},
+							{
+								"hostId": "2a6e0c58f47b193d6e2a85c0f9b41d7e3a96c5f2",
+								"origin": "https://relay.example.com",
+								"generation": 3,
+								"registeredAt": "2026-11-10T18:02:44.512Z"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by register as an Error with signedOut: true and the message 'Connect to Harness Hub on this computer first.' when config.origin is missing or empty, when authorizing the hosted session fails, or when the hub answers 401; the HostedHttpAdapter constructor throws an Error with the message 'Use an exact HTTPS hosted origin.' when config.origin is not an exact hosted origin (anything but https is refused, except plain http to localhost, 127.0.0.1 or [::1]; user info, a path other than '/', a query or a hash is refused too). It is also thrown with the message 'The hub answered with an invalid registration.' when the hub's JSON has a hostId that differs from the input's, a non-string origin or registeredAt, or a generation that is not a safe integer."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by the URL constructor that hostedOrigin runs on config.origin inside the HostedHttpAdapter constructor when a non-empty origin is not an absolute URL; register does not catch it, so the TypeError reaches the caller unchanged."
+					},
+					{
+						"name": "HostedFailureValidator",
+						"type": "thrown",
+						"description": "Any other rejection of the request to /api/remote/hosts is rethrown unchanged; the adapter types it as HostedFailureValidator and reads only its status, so a 401 becomes the signed-out Error instead."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Rejected by response.json() when the hub's response body is not valid JSON; register does not catch it, so the parser's SyntaxError reaches the caller unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -74,17 +172,19 @@
 					{
 						"name": "RemoteRegistrationAdapter.constructor.config",
 						"type": "RemoteRegistrationAdapterConfig",
-						"required": true
+						"required": true,
+						"description": "Holds the exact hub origin of this computer, the credentials callback for the hosted session kept in the OS key store (it never leaves the main process) and the optional fetch; register reads all three from this.config on every call. The constructor stores the config unchanged and checks nothing, so a missing or empty origin fails only when register throws the signed-out Error."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteRegistrationAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new RemoteRegistrationAdapter instance; it holds the config as its only field and makes no request until register is called."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
