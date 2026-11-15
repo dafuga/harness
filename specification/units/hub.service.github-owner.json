@@ -22,41 +22,98 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GithubOwnerService.constructor.options",
 				"type": "GithubOwnerOptions",
-				"required": true
+				"required": true,
+				"description": "The options object supplies the grant service, installation-token service, GitHub API adapter, and numeric GitHub App id used by the instance. The three service values are injected instances and are not constructed or validated here."
 			},
 			{
 				"name": "GithubOwnerService.authorizeRepository.actor",
 				"type": "Actor",
-				"required": true
+				"required": true,
+				"description": "The authenticated collaboration actor passed to the GitHub grant service to retrieve that actor's user token. The service does not inspect or modify the actor fields.",
+				"examples": [
+					{
+						"id": "google-109876543210123456789",
+						"email": "alex@example.com",
+						"name": "Alex Rivera",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "GithubOwnerService.authorizeRepository.repositoryId",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The GitHub numeric repository id to authorize; it must be a positive safe integer or the service rejects with repository-denied.",
+				"examples": [123456789, 987654321]
 			},
 			{
 				"name": "GithubOwnerService.repositories.actor",
 				"type": "Actor",
-				"required": true
+				"required": true,
+				"description": "The authenticated collaboration actor whose user token scopes repository discovery and admin checks. The service passes it to the grant service without inspecting its fields.",
+				"examples": [
+					{
+						"id": "google-109876543210123456789",
+						"email": "alex@example.com",
+						"name": "Alex Rivera",
+						"emailVerified": true
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GithubOwnerService.authorizeRepository",
-				"type": "Promise<RepositoryIdentity>"
+				"type": "Promise<RepositoryIdentity>",
+				"description": "The GitHub identity for the requested repository, including the installation that proved app access. It resolves only after the actor's token reaches that repository and GitHub reports admin true for the same repository id.",
+				"examples": [
+					{
+						"id": 123456789,
+						"owner": "octo-org",
+						"name": "sample-app",
+						"private": true,
+						"installationId": 7654321
+					}
+				]
 			},
 			{
 				"name": "GithubOwnerService.repositories",
-				"type": "Promise<GithubRepositories>"
+				"type": "Promise<GithubRepositories>",
+				"description": "The repositories this actor administers in installations reachable by the app, with a flag for collection truncation. It examines at most 10 installations and 3 pages of 100 repositories per installation, and marks truncation when the observed list counts exceed those bounds.",
+				"examples": [
+					{
+						"repositories": [
+							{
+								"id": 123456789,
+								"owner": "octo-org",
+								"name": "sample-app",
+								"private": true
+							},
+							{
+								"id": 987654321,
+								"owner": "octo-user",
+								"name": "public-tool",
+								"private": false
+							}
+						],
+						"truncated": false
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "The service throws repository-denied for invalid repository ids, when no installation resolves the id, or when the actor lacks admin access. The grant service or GitHub API can also reject with github-not-connected or github-unavailable."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "GithubOwnerService.authorizeRepository",
@@ -64,22 +121,49 @@
 					{
 						"name": "GithubOwnerService.authorizeRepository.actor",
 						"type": "Actor",
-						"required": true
+						"required": true,
+						"description": "The authenticated collaboration actor passed to the GitHub grant service to retrieve that actor's user token. The service does not inspect or modify the actor fields.",
+						"examples": [
+							{
+								"id": "google-109876543210123456789",
+								"email": "alex@example.com",
+								"name": "Alex Rivera",
+								"emailVerified": true
+							}
+						]
 					},
 					{
 						"name": "GithubOwnerService.authorizeRepository.repositoryId",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "The GitHub numeric repository id to authorize; it must be a positive safe integer or the service rejects with repository-denied.",
+						"examples": [123456789, 987654321]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubOwnerService.authorizeRepository",
-						"type": "Promise<RepositoryIdentity>"
+						"type": "Promise<RepositoryIdentity>",
+						"description": "The GitHub identity for the requested repository, including the installation that proved app access. It resolves only after the actor's token reaches that repository and GitHub reports admin true for the same repository id.",
+						"examples": [
+							{
+								"id": 123456789,
+								"owner": "octo-org",
+								"name": "sample-app",
+								"private": true,
+								"installationId": 7654321
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "The method throws repository-denied for a non-positive, non-safe-integer id, when no visible installation resolves it, or when the actor lacks admin access. Calls through the grant service and GitHub API can also reject with github-not-connected or github-unavailable."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GithubOwnerService.repositories",
@@ -87,17 +171,52 @@
 					{
 						"name": "GithubOwnerService.repositories.actor",
 						"type": "Actor",
-						"required": true
+						"required": true,
+						"description": "The authenticated collaboration actor whose user token scopes repository discovery and admin checks. The service passes it to the grant service without inspecting its fields.",
+						"examples": [
+							{
+								"id": "google-109876543210123456789",
+								"email": "alex@example.com",
+								"name": "Alex Rivera",
+								"emailVerified": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubOwnerService.repositories",
-						"type": "Promise<GithubRepositories>"
+						"type": "Promise<GithubRepositories>",
+						"description": "The repositories this actor administers in installations reachable by the app, with a flag for collection truncation. It examines at most 10 installations and 3 pages of 100 repositories per installation, and marks truncation when the observed list counts exceed those bounds.",
+						"examples": [
+							{
+								"repositories": [
+									{
+										"id": 123456789,
+										"owner": "octo-org",
+										"name": "sample-app",
+										"private": true
+									},
+									{
+										"id": 987654321,
+										"owner": "octo-user",
+										"name": "public-tool",
+										"private": false
+									}
+								],
+								"truncated": false
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "Calls through the grant service reject with github-not-connected when the actor has no usable GitHub grant; the grant service or GitHub API can also reject with github-unavailable."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -107,17 +226,19 @@
 					{
 						"name": "GithubOwnerService.constructor.options",
 						"type": "GithubOwnerOptions",
-						"required": true
+						"required": true,
+						"description": "The options object supplies the grant service, installation-token service, GitHub API adapter, and numeric GitHub App id used by the instance. The three service values are injected instances and are not constructed or validated here."
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubOwnerService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed GithubOwnerService instance holding the supplied options. Construction only stores the options; it performs no validation or asynchronous work."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
