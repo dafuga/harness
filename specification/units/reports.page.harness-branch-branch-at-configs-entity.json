@@ -24,41 +24,17 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The config with its verdict, what it provides and what uses it. Relationships and tests by tab."
+				"description": "Rendered page markup: HarnessScreen with EntityConfigScreen passed as its content. This route uses that shell, while this file supplies no route data inputs."
 			},
 			{
 				"name": "title",
 				"type": "string",
-				"description": "Config · Harness"
+				"description": "The literal Config string passed to HarnessScreen as its title prop. It labels the shared page shell and does not vary in this implementation.",
+				"examples": ["Config"]
 			}
 		],
-		"errors": [
-			{
-				"name": "not-in-history",
-				"type": "notice",
-				"description": "A branch or commit the history does not hold, or a commit the branch does not contain, is said. No other revision is shown."
-			},
-			{
-				"name": "no-registry",
-				"type": "notice",
-				"description": "A revision that stores no unit registry says so. The registry of another revision is not shown."
-			},
-			{
-				"name": "not-at-revision",
-				"type": "notice",
-				"description": "A config the shown revision does not hold is said, with the way back to the collection."
-			},
-			{
-				"name": "other-category",
-				"type": "redirect",
-				"description": "A unit that is not a config at this revision is led to the address of its own category."
-			},
-			{
-				"name": "not-admitted",
-				"type": "403",
-				"description": "A request the owner policy does not admit is refused before any history is read."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
