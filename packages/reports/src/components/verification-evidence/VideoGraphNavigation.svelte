@@ -5,6 +5,7 @@
 	import Select from '../shared-primitives/Select.svelte';
 	import type { VideoGraphNavigationProps } from './VideoGraphNavigation.types';
 	let { library, coverage = [], selected = $bindable('') }: VideoGraphNavigationProps = $props();
+	$effect(() => { if (selected && !library.playlists.some((path) => path.id === selected)) selected = ''; });
 	const words = (id: string) => id.replaceAll('-', ' ').replace(/^./, (letter) => letter.toUpperCase());
 	const percent = (value: number | undefined) =>
 		typeof value === 'number' && Number.isFinite(value) ? `${Math.round(value * 100)}%` : 'Not reported';

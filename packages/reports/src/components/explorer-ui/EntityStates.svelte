@@ -10,6 +10,7 @@
 	import type { Evidence } from '../../models/reports-media/Report.types';
 	import { entityScreens, galleryItems } from '../../utils/explorer-ui/entityScreens';
 	import VideoEvidence from '../verification-evidence/VideoEvidence.svelte';
+	import VideoGraphNavigation from '../verification-evidence/VideoGraphNavigation.svelte';
 	import EvidenceCard from '../verification-evidence/EvidenceCard.svelte';
 	import EvidenceViewer from '../verification-evidence/EvidenceViewer.svelte';
 	import Select from '../shared-primitives/Select.svelte';
@@ -30,12 +31,15 @@
 	} = $props();
 	let wanted = $state('');
 	let viewport = $state('');
+	let path = $state('');
 	let viewing = $state<Evidence | null>(null);
 	let resolved = $state<Record<string, { file: string; note?: string }>>({});
 	const words = (id: string) =>
 		id.replace(/[-_]/g, ' ').replace(/^./, (letter) => letter.toUpperCase());
 	let scenarios = $derived(evidence.scenarios.filter((scenario) => scenario.viewports.length > 0));
 	let scenario = $derived(scenarios.find((item) => item.id === wanted) ?? scenarios[0]);
+	let playlist = $derived(scenario?.video?.playlists.find((item) => item.id === path));
+	let graphCoverage = $derived(evidence.after.record?.scenarios.find((item) => item.id === scenario?.id)?.videoCoverage ?? []);
 	let screen = $derived(
 		scenario?.viewports.find((item) => item.id === viewport) ?? scenario?.viewports[0]
 	);
@@ -114,7 +118,7 @@
 	<hx-header>
 		<hx-div>
 			<hx-h2>States</hx-h2>
-			<hx-p>Recorded screenshots of each supported state.</hx-p>
+			<hx-p>Recorded screenshots and videos of each supported state.</hx-p>
 		</hx-div>
 		<hx-div class="state-controls">
 			{#if scenarios.length > 1}
@@ -143,6 +147,7 @@
 			{/if}
 		</hx-div>
 	</hx-header>
+	{#if scenario?.video}<VideoGraphNavigation library={scenario.video} coverage={graphCoverage} bind:selected={path} />{/if}
 	{#if evidence.incomparable.length}<Notice as="p" className={'state-gap entity-states-state-gap'}
 			>{evidence.incomparable.join(' ')}</Notice
 		>{/if}
@@ -187,7 +192,7 @@
 							{/if}
 						{/snippet}
 					</ComparePanes>{/if}
-				{#each videos.filter((clip) => clip.category === scenario.id && clip.state === row.state.id && clip.viewport === screen?.id) as clip (clip.id)}
+				{#each videos.filter((clip) => clip.category === scenario.id && clip.state === row.state.id && clip.viewport === screen?.id && (!playlist || playlist.clips.includes(clip.video?.clipId ?? ''))) as clip (clip.id)}
 					<VideoEvidence item={clip} assetBase={mediaBase} />
 				{/each}
 			</hx-article>
