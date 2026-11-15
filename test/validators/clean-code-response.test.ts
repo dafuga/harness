@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { CleanCodeResponseValidator } from '../../src/validators/CleanCodeResponseValidator';
+import { JevResponseValidator as CleanCodeResponseValidator } from '../../src/validators/agents-providers/JevResponseValidator';
 import { cleanCodeQuestions } from '../../src/audit/cleanCodeRubric';
 import { fixtureEvaluation } from '../support/cleanCodeFixture';
 

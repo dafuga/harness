@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { CodexRequestValidator } from '../../src/validators/CodexRequestValidator';
+import { CodexRequestValidator } from '../../src/validators/agents-providers/CodexRequestValidator';
 
 test('gateway validates actual Responses requests without accepting incompatible transports', () => {
 	const validator = new CodexRequestValidator();

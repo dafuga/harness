@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { GatewayImageValidator } from '../../src/validators/GatewayImageValidator';
+import { GatewayImageValidator } from '../../src/validators/development-tooling/GatewayImageValidator';
 const png =
 	'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l9sAAAAASUVORK5CYII=';
 const validator = new GatewayImageValidator();

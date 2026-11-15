@@ -1,6 +1,6 @@
 // @harness-uid u_6z4fnqlmbz
 import type { EvaluationInput } from './cleanCodeEvaluate.types';
-import { CleanCodeResponseValidator } from '../../validators/CleanCodeResponseValidator';
+import { JevResponseValidator as CleanCodeResponseValidator } from '../../validators/agents-providers/JevResponseValidator';
 import { recordValue } from '../../validators/development-tooling/cleanCodeValue';
 import { assessCleanCode, fileReviewStatus } from './cleanCodeAssessment';
 import {
