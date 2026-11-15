@@ -31,31 +31,94 @@
 				"name": "SnapshotRunService.constructor.run",
 				"type": "SnapshotRun",
 				"required": true,
-				"description": "Repository root, verification config and run context for the exact commit."
+				"description": "Repository root, parsed verification config, and run context for exporting one commit and running checks in isolation. The context excludes the snapshot directory, which this service creates; the config supplies setup, links, declared outputs, builds, tools, runners, checks, and test timeout.",
+				"examples": [
+					{
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8",
+						"config": {
+							"schemaVersion": 1,
+							"setup": [],
+							"link": [],
+							"outputs": ["dist/"],
+							"builds": [],
+							"tools": [],
+							"runners": {
+								"vitest": "bun x vitest run {target}"
+							},
+							"checks": [],
+							"timeouts": {
+								"test": 600000
+							}
+						},
+						"context": {
+							"directory": "/tmp/harness-runs/1842",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"tree": "89abcdef0123456789abcdef0123456789abcdef",
+							"profile": "ci",
+							"env": {
+								"PATH": "/usr/local/bin:/usr/bin:/bin"
+							}
+						}
+					}
+				]
 			},
 			{
 				"name": "SnapshotRunService.execute.plan",
 				"type": "PlannedCheck[]",
 				"required": true,
-				"description": "Checks to execute sequentially after setup and tool-version collection."
+				"description": "Ordered checks to run after setup and declared-tool version collection succeed. Each check runs in sequence inside the commit snapshot with its planned command and timeout; no checks run if outputs cover tracked files or setup/tool collection fails.",
+				"examples": [
+					[
+						{
+							"id": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.test.ts",
+							"name": "SnapshotRunService",
+							"kind": "unit",
+							"runner": "vitest",
+							"target": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.test.ts",
+							"cwd": ".",
+							"command": "bun x vitest run src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.test.ts",
+							"timeoutMs": 30000
+						}
+					]
+				]
 			},
 			{
 				"name": "SnapshotRunService.execute.artifactPaths",
 				"type": "string[]",
 				"required": false,
 				"default": [],
-				"description": "Additional snapshot-relative paths whose existing bytes should be reported; defaults to an empty list."
+				"description": "Snapshot-relative file paths to hash and size after setup and checks. Only files readable inside the snapshot are included; missing paths and paths resolving outside the snapshot are omitted, and the default is [].",
+				"examples": [
+					["dist/server.js"]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "SnapshotRunService.execute",
 				"type": "Promise<Executed>",
-				"description": "Execution results, source drift, setup failures, tool versions, declared artifacts, optional build identities and build failures."
+				"description": "The resolved report contains check outcomes, sorted tracked-file mutations and added paths, setup/tool failures, readable requested artifacts, and build failures. It includes build identities only when the config declares builds, and artifact entries contain byte length and SHA-256.",
+				"examples": [
+					{
+						"outcomes": [],
+						"mutated": [],
+						"added": [],
+						"setupFailures": [],
+						"tools": [],
+						"artifacts": {},
+						"buildFailures": []
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "An uncaught Error from snapshot creation, linking, drift checks, check/tool execution, build identity work, or snapshot removal rejects the execution promise. Output misdeclarations, setup/check failures, unavailable tool versions, and build failures are reported in Executed when the delegated services return them as results."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "SnapshotRunService.execute",
@@ -64,24 +127,58 @@
 						"name": "SnapshotRunService.execute.plan",
 						"type": "PlannedCheck[]",
 						"required": true,
-						"description": "Checks to execute sequentially after setup and tool-version collection."
+						"description": "Ordered checks to run after setup and declared-tool version collection succeed. Each check runs in sequence inside the commit snapshot with its planned command and timeout; no checks run if outputs cover tracked files or setup/tool collection fails.",
+						"examples": [
+							[
+								{
+									"id": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.test.ts",
+									"name": "SnapshotRunService",
+									"kind": "unit",
+									"runner": "vitest",
+									"target": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.test.ts",
+									"cwd": ".",
+									"command": "bun x vitest run src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.test.ts",
+									"timeoutMs": 30000
+								}
+							]
+						]
 					},
 					{
 						"name": "SnapshotRunService.execute.artifactPaths",
 						"type": "string[]",
 						"required": false,
 						"default": [],
-						"description": "Additional snapshot-relative paths whose existing bytes should be reported; defaults to an empty list."
+						"description": "Snapshot-relative file paths to hash and size after setup and checks. Only files readable inside the snapshot are included; missing paths and paths resolving outside the snapshot are omitted, and the default is [].",
+						"examples": [
+							["dist/server.js"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SnapshotRunService.execute",
 						"type": "Promise<Executed>",
-						"description": "Execution results, source drift, setup failures, tool versions, declared artifacts, optional build identities and build failures."
+						"description": "The resolved report contains check outcomes, sorted tracked-file mutations and added paths, setup/tool failures, readable requested artifacts, and build failures. It includes build identities only when the config declares builds, and artifact entries contain byte length and SHA-256.",
+						"examples": [
+							{
+								"outcomes": [],
+								"mutated": [],
+								"added": [],
+								"setupFailures": [],
+								"tools": [],
+								"artifacts": {},
+								"buildFailures": []
+							}
+						]
 					}
 				],
-				"errors": [],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "An uncaught Error from snapshot creation, linking, drift checks, check/tool execution, build identity work, or snapshot removal rejects the execution promise. Output misdeclarations, setup/check failures, unavailable tool versions, and build failures are reported in Executed when the delegated services return them as results."
+					}
+				],
 				"errorStatus": "declared"
 			}
 		],
@@ -93,14 +190,43 @@
 						"name": "SnapshotRunService.constructor.run",
 						"type": "SnapshotRun",
 						"required": true,
-						"description": "Repository root, verification config and run context for the exact commit."
+						"description": "Repository root, parsed verification config, and run context for exporting one commit and running checks in isolation. The context excludes the snapshot directory, which this service creates; the config supplies setup, links, declared outputs, builds, tools, runners, checks, and test timeout.",
+						"examples": [
+							{
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8",
+								"config": {
+									"schemaVersion": 1,
+									"setup": [],
+									"link": [],
+									"outputs": ["dist/"],
+									"builds": [],
+									"tools": [],
+									"runners": {
+										"vitest": "bun x vitest run {target}"
+									},
+									"checks": [],
+									"timeouts": {
+										"test": 600000
+									}
+								},
+								"context": {
+									"directory": "/tmp/harness-runs/1842",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"tree": "89abcdef0123456789abcdef0123456789abcdef",
+									"profile": "ci",
+									"env": {
+										"PATH": "/usr/local/bin:/usr/bin:/bin"
+									}
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SnapshotRunService.constructor",
 						"type": "SnapshotRunService",
-						"description": "Snapshot runner initialized with the repository/config and exact-run context."
+						"description": "A SnapshotRunService instance that retains the supplied run and prepares build identity reporting. Snapshot creation and check execution begin only when execute is called."
 					}
 				],
 				"errors": [],
