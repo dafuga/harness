@@ -22,46 +22,324 @@
 				"name": "planThread.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "Repository handle from planGit: the canonical root and Git directory, optional transactionHead and objectFormat, and the run command that every read and write goes through. transactionHead must equal the checked-out commit when the commit is written, so a handle without it always fails with conflict."
 			},
 			{
 				"name": "planThread.input",
 				"type": "OpenThreadInput",
 				"required": true,
-				"description": "Unit, author, optional title/message and viewed revision; use all-null image fields for an entity thread, or a complete matching image anchor and optional normalized region/option."
+				"description": "Thread to open on one unit: unitId, author (kind person or agent with a non-empty name), an optional title (stored as an empty string when left out), an optional viewedRevision (a branch, tag or commit; the checked-out commit when left out) and an optional first message. Either version, file, imageSha256 and region are all null for an entity thread, or version, file and imageSha256 name an image present at the viewed revision and the current plan, with region (null for the whole image) and option (which must hold that image); any other mix is refused as a partial image anchor.",
+				"examples": [
+					{
+						"unitId": "reports.component.evidence-grid",
+						"version": null,
+						"file": null,
+						"imageSha256": null,
+						"region": null,
+						"title": "Empty state wording",
+						"author": {
+							"kind": "person",
+							"name": "Mira Chen"
+						},
+						"viewedRevision": "4f9c2a7d1b8e3c60a5d9f2e7b41c08d3a6e95f12"
+					},
+					{
+						"unitId": "reports.component.evidence-grid",
+						"version": "v002",
+						"file": "desktop-default.png",
+						"imageSha256": "7a3f9c21d04b8e65a1c72f903e5d8b46c0f19a2de87b35416d2c9f08b4a1e7c3",
+						"region": {
+							"x": 0.125,
+							"y": 0.2,
+							"width": 0.36,
+							"height": 0.18
+						},
+						"option": "o2",
+						"title": "Column spacing",
+						"author": {
+							"kind": "person",
+							"name": "Mira Chen"
+						},
+						"viewedRevision": "4f9c2a7d1b8e3c60a5d9f2e7b41c08d3a6e95f12",
+						"message": {
+							"author": {
+								"kind": "person",
+								"name": "Mira Chen"
+							},
+							"mode": "plan",
+							"agent": null,
+							"body": "The gap between the columns is tighter than the approved design; please check it against the desktop image.",
+							"references": []
+						}
+					}
+				]
 			},
 			{
 				"name": "append.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "Repository handle from planGit: the canonical root and Git directory, optional transactionHead and objectFormat, and the run command that every read and write goes through. transactionHead must equal the checked-out commit when the commit is written, so a handle without it always fails with conflict."
 			},
 			{
 				"name": "append.input",
 				"type": "AppendMessageInput",
 				"required": true,
-				"description": "Unit and thread ID plus author, body, plan/change mode and optional agent, artifact references and change details."
+				"description": "Message for an existing thread: unitId, threadId (a thread of that plan), author, mode (plan or change), body, and optional agent, references and change. A change message needs a change whose target is the current approval and whose image is approved, a plan message must not carry one, and the message is written as the next line of the thread's messages file in its own commit.",
+				"examples": [
+					{
+						"unitId": "reports.component.evidence-grid",
+						"threadId": "6f1c2b9e-4d7a-4e8b-9a31-0c5d7e2f8b14",
+						"author": {
+							"kind": "person",
+							"name": "Mira Chen"
+						},
+						"mode": "plan",
+						"body": "Keep the desktop gap at 12px; the approved design shows that spacing.",
+						"references": [
+							{
+								"kind": "image",
+								"version": "v002",
+								"file": "desktop-default.png",
+								"sha256": "7a3f9c21d04b8e65a1c72f903e5d8b46c0f19a2de87b35416d2c9f08b4a1e7c3",
+								"option": "o2"
+							}
+						]
+					},
+					{
+						"unitId": "reports.component.evidence-grid",
+						"threadId": "6f1c2b9e-4d7a-4e8b-9a31-0c5d7e2f8b14",
+						"author": {
+							"kind": "agent",
+							"name": "design-reviewer"
+						},
+						"mode": "change",
+						"agent": {
+							"provider": "claude-code",
+							"model": "claude-sonnet-5-5"
+						},
+						"body": "Set the desktop grid gap to 16px as the thread asks.",
+						"references": [
+							{
+								"kind": "image",
+								"version": "v002",
+								"file": "desktop-default.png",
+								"sha256": "7a3f9c21d04b8e65a1c72f903e5d8b46c0f19a2de87b35416d2c9f08b4a1e7c3",
+								"option": "o2"
+							}
+						],
+						"change": {
+							"target": {
+								"approvalId": "e1f8a3c5-2b7d-4d0e-9c64-8a3f5b1e7d20",
+								"version": "v002",
+								"imageSha256": "7a3f9c21d04b8e65a1c72f903e5d8b46c0f19a2de87b35416d2c9f08b4a1e7c3",
+								"contractHash": "2f8d61b0c9a4e7f35d12a08c6e4b9f71d3a5c2e80f96b4d17a3c8e52f0b61d94"
+							},
+							"status": "completed",
+							"changedPaths": ["src/components/evidence-grid/index.tsx"],
+							"hostChanges": [
+								{
+									"path": "/workspace/app/src/components/evidence-grid/index.tsx",
+									"before": "const gap = 12;",
+									"after": "const gap = 16;",
+									"coverage": "observed-cli-file-operation"
+								}
+							],
+							"error": null
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "planThread",
 				"type": "unknown",
-				"description": "Commit metadata and the new thread, sequential pin and optional first message. Image anchors are checked at the viewed revision and current plan."
+				"description": "Resolved commit metadata (commit, parent, branch and paths, which are the thread.json and messages.ndjson files) with value, the new PlanThread: its pin is one more than the thread count of the current plan, and messages holds the first message only when one was given. Image anchors are checked at the viewed revision and again at the current plan.",
+				"examples": [
+					{
+						"value": {
+							"id": "0a6e4d15-7c3b-4f92-b8e1-5d2a9c7f40e6",
+							"unitId": "reports.component.evidence-grid",
+							"pin": 1,
+							"title": "Empty state wording",
+							"anchor": null,
+							"viewedRevision": "4f9c2a7d1b8e3c60a5d9f2e7b41c08d3a6e95f12",
+							"createdAt": "2026-11-15T09:12:03.077Z",
+							"createdBy": {
+								"kind": "person",
+								"name": "Mira Chen"
+							},
+							"commit": "5b0d93e6a1f47c28d9e05b3a6f1c8d24e7a90b5f",
+							"messages": []
+						},
+						"commit": "5b0d93e6a1f47c28d9e05b3a6f1c8d24e7a90b5f",
+						"parent": "4f9c2a7d1b8e3c60a5d9f2e7b41c08d3a6e95f12",
+						"branch": "main",
+						"paths": [
+							"src/components/evidence-grid/threads/0a6e4d15-7c3b-4f92-b8e1-5d2a9c7f40e6/thread.json",
+							"src/components/evidence-grid/threads/0a6e4d15-7c3b-4f92-b8e1-5d2a9c7f40e6/messages.ndjson"
+						]
+					},
+					{
+						"value": {
+							"id": "6f1c2b9e-4d7a-4e8b-9a31-0c5d7e2f8b14",
+							"unitId": "reports.component.evidence-grid",
+							"pin": 3,
+							"title": "Column spacing",
+							"anchor": {
+								"version": "v002",
+								"file": "desktop-default.png",
+								"imageSha256": "7a3f9c21d04b8e65a1c72f903e5d8b46c0f19a2de87b35416d2c9f08b4a1e7c3",
+								"state": "default",
+								"viewport": "desktop",
+								"region": {
+									"x": 0.125,
+									"y": 0.2,
+									"width": 0.36,
+									"height": 0.18
+								},
+								"option": "o2"
+							},
+							"viewedRevision": "4f9c2a7d1b8e3c60a5d9f2e7b41c08d3a6e95f12",
+							"createdAt": "2026-11-15T09:30:12.418Z",
+							"createdBy": {
+								"kind": "person",
+								"name": "Mira Chen"
+							},
+							"commit": "c8d40f7e2a91b35d6e0f48a7c2b9d1e53f06a8c4",
+							"messages": [
+								{
+									"id": "b7d4e0a2-93c1-4f6e-8a5d-2e9c71b0f463",
+									"unitId": "reports.component.evidence-grid",
+									"threadId": "6f1c2b9e-4d7a-4e8b-9a31-0c5d7e2f8b14",
+									"sequence": 1,
+									"previous": "c41e07a9b2f35d8e6a10c7b4f9e2d38a51b6c0e7d4f29a83b5c10e6d7f9a2b44",
+									"at": "2026-11-15T09:30:12.431Z",
+									"author": {
+										"kind": "person",
+										"name": "Mira Chen"
+									},
+									"mode": "plan",
+									"agent": null,
+									"body": "The gap between the columns is tighter than the approved design; please check it against the desktop image.",
+									"references": [],
+									"change": null
+								}
+							]
+						},
+						"commit": "c8d40f7e2a91b35d6e0f48a7c2b9d1e53f06a8c4",
+						"parent": "9e21b0c4d7a5f83e61c2d9b08a4f7e3c5d12b6a9",
+						"branch": "main",
+						"paths": [
+							"src/components/evidence-grid/threads/6f1c2b9e-4d7a-4e8b-9a31-0c5d7e2f8b14/thread.json",
+							"src/components/evidence-grid/threads/6f1c2b9e-4d7a-4e8b-9a31-0c5d7e2f8b14/messages.ndjson"
+						]
+					}
+				]
 			},
 			{
 				"name": "append",
 				"type": "unknown",
-				"description": "Commit metadata and appended message with sequence, prior-content hash, timestamp and defaults for optional references/change fields."
+				"description": "Resolved commit metadata (commit, parent, branch and paths, which hold only the thread's messages.ndjson) with value, the appended ThreadMessage: sequence is the thread's message count plus one, and previous is the SHA-256 of the prior line, or of thread.json for the first message. An absent agent defaults to null, absent references to [], and a change without changedPaths or error gets [] and null.",
+				"examples": [
+					{
+						"value": {
+							"id": "3c9a7e15-f8b2-4d61-a0c7-6e2d9b4f1a83",
+							"unitId": "reports.component.evidence-grid",
+							"threadId": "6f1c2b9e-4d7a-4e8b-9a31-0c5d7e2f8b14",
+							"sequence": 2,
+							"previous": "0d8e5a1f7c3b92e6a4d0f8c15b7e9a2d6c3f1e8b0a5d7c9e4f2b6a8d1c3e5f70",
+							"at": "2026-11-15T10:02:47.906Z",
+							"author": {
+								"kind": "person",
+								"name": "Mira Chen"
+							},
+							"mode": "plan",
+							"agent": null,
+							"body": "Keep the desktop gap at 12px; the approved design shows that spacing.",
+							"references": [
+								{
+									"kind": "image",
+									"version": "v002",
+									"file": "desktop-default.png",
+									"sha256": "7a3f9c21d04b8e65a1c72f903e5d8b46c0f19a2de87b35416d2c9f08b4a1e7c3",
+									"option": "o2"
+								}
+							],
+							"change": null
+						},
+						"commit": "1e7b4c09d2a6f58e3b71c0d94a2e6f8b5c3d7a10",
+						"parent": "c8d40f7e2a91b35d6e0f48a7c2b9d1e53f06a8c4",
+						"branch": "main",
+						"paths": [
+							"src/components/evidence-grid/threads/6f1c2b9e-4d7a-4e8b-9a31-0c5d7e2f8b14/messages.ndjson"
+						]
+					},
+					{
+						"value": {
+							"id": "d2e7b9f4-1a6c-4c38-b5d0-7f3e8a2c9b61",
+							"unitId": "reports.component.evidence-grid",
+							"threadId": "6f1c2b9e-4d7a-4e8b-9a31-0c5d7e2f8b14",
+							"sequence": 3,
+							"previous": "9f4b1e7c2a8d05e36b9c1f47d2a80e5b3c6d91f8a4e2b07c5d3f19a6e8b2c4d0",
+							"at": "2026-11-15T10:15:33.260Z",
+							"author": {
+								"kind": "agent",
+								"name": "design-reviewer"
+							},
+							"mode": "change",
+							"agent": {
+								"provider": "claude-code",
+								"model": "claude-sonnet-5-5"
+							},
+							"body": "Set the desktop grid gap to 16px as the thread asks.",
+							"references": [
+								{
+									"kind": "image",
+									"version": "v002",
+									"file": "desktop-default.png",
+									"sha256": "7a3f9c21d04b8e65a1c72f903e5d8b46c0f19a2de87b35416d2c9f08b4a1e7c3",
+									"option": "o2"
+								}
+							],
+							"change": {
+								"target": {
+									"approvalId": "e1f8a3c5-2b7d-4d0e-9c64-8a3f5b1e7d20",
+									"version": "v002",
+									"imageSha256": "7a3f9c21d04b8e65a1c72f903e5d8b46c0f19a2de87b35416d2c9f08b4a1e7c3",
+									"contractHash": "2f8d61b0c9a4e7f35d12a08c6e4b9f71d3a5c2e80f96b4d17a3c8e52f0b61d94"
+								},
+								"status": "completed",
+								"changedPaths": ["src/components/evidence-grid/index.tsx"],
+								"hostChanges": [
+									{
+										"path": "/workspace/app/src/components/evidence-grid/index.tsx",
+										"before": "const gap = 12;",
+										"after": "const gap = 16;",
+										"coverage": "observed-cli-file-operation"
+									}
+								],
+								"error": null
+							}
+						},
+						"commit": "7d2f8a40c6b1e93a5f07d2c8b4e6a19f3c0d5e27",
+						"parent": "1e7b4c09d2a6f58e3b71c0d94a2e6f8b5c3d7a10",
+						"branch": "main",
+						"paths": [
+							"src/components/evidence-grid/threads/6f1c2b9e-4d7a-4e8b-9a31-0c5d7e2f8b14/messages.ndjson"
+						]
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects invalid authors/messages/references, partial or mismatched image anchors, missing threads, unapproved or mismatched changes, unsafe paths and dirty/conflicting writes."
+				"description": "Thrown by the fail helper as a plain Error whose code is a PlanningErrorCode, not as an ExpectedCliError instance: invalid-input, invalid-region, unsafe-path, approval-required, approval-mismatch, not-found and unknown-revision for rejected input; artifact-missing, artifact-corrupt, artifact-tampered, artifact-dirty and invalid-image for unreadable, dirty or invalid stored files; and conflict, repository-busy and git-failed for stale or locked writes and failing Git commands. Other file-system and process-spawn errors are rethrown without a PlanningErrorCode."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "planThread",
@@ -70,24 +348,155 @@
 						"name": "planThread.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "Repository handle from planGit: the canonical root and Git directory, optional transactionHead and objectFormat, and the run command that every read and write goes through. transactionHead must equal the checked-out commit when the commit is written, so a handle without it always fails with conflict."
 					},
 					{
 						"name": "planThread.input",
 						"type": "OpenThreadInput",
 						"required": true,
-						"description": "Unit, author, optional title/message and viewed revision; use all-null image fields for an entity thread, or a complete matching image anchor and optional normalized region/option."
+						"description": "Thread to open on one unit: unitId, author (kind person or agent with a non-empty name), an optional title (stored as an empty string when left out), an optional viewedRevision (a branch, tag or commit; the checked-out commit when left out) and an optional first message. Either version, file, imageSha256 and region are all null for an entity thread, or version, file and imageSha256 name an image present at the viewed revision and the current plan, with region (null for the whole image) and option (which must hold that image); any other mix is refused as a partial image anchor.",
+						"examples": [
+							{
+								"unitId": "reports.component.evidence-grid",
+								"version": null,
+								"file": null,
+								"imageSha256": null,
+								"region": null,
+								"title": "Empty state wording",
+								"author": {
+									"kind": "person",
+									"name": "Mira Chen"
+								},
+								"viewedRevision": "4f9c2a7d1b8e3c60a5d9f2e7b41c08d3a6e95f12"
+							},
+							{
+								"unitId": "reports.component.evidence-grid",
+								"version": "v002",
+								"file": "desktop-default.png",
+								"imageSha256": "7a3f9c21d04b8e65a1c72f903e5d8b46c0f19a2de87b35416d2c9f08b4a1e7c3",
+								"region": {
+									"x": 0.125,
+									"y": 0.2,
+									"width": 0.36,
+									"height": 0.18
+								},
+								"option": "o2",
+								"title": "Column spacing",
+								"author": {
+									"kind": "person",
+									"name": "Mira Chen"
+								},
+								"viewedRevision": "4f9c2a7d1b8e3c60a5d9f2e7b41c08d3a6e95f12",
+								"message": {
+									"author": {
+										"kind": "person",
+										"name": "Mira Chen"
+									},
+									"mode": "plan",
+									"agent": null,
+									"body": "The gap between the columns is tighter than the approved design; please check it against the desktop image.",
+									"references": []
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "planThread",
 						"type": "unknown",
-						"description": "Commit metadata and the new thread, sequential pin and optional first message. Image anchors are checked at the viewed revision and current plan."
+						"description": "Resolved commit metadata (commit, parent, branch and paths, which are the thread.json and messages.ndjson files) with value, the new PlanThread: its pin is one more than the thread count of the current plan, and messages holds the first message only when one was given. Image anchors are checked at the viewed revision and again at the current plan.",
+						"examples": [
+							{
+								"value": {
+									"id": "0a6e4d15-7c3b-4f92-b8e1-5d2a9c7f40e6",
+									"unitId": "reports.component.evidence-grid",
+									"pin": 1,
+									"title": "Empty state wording",
+									"anchor": null,
+									"viewedRevision": "4f9c2a7d1b8e3c60a5d9f2e7b41c08d3a6e95f12",
+									"createdAt": "2026-11-15T09:12:03.077Z",
+									"createdBy": {
+										"kind": "person",
+										"name": "Mira Chen"
+									},
+									"commit": "5b0d93e6a1f47c28d9e05b3a6f1c8d24e7a90b5f",
+									"messages": []
+								},
+								"commit": "5b0d93e6a1f47c28d9e05b3a6f1c8d24e7a90b5f",
+								"parent": "4f9c2a7d1b8e3c60a5d9f2e7b41c08d3a6e95f12",
+								"branch": "main",
+								"paths": [
+									"src/components/evidence-grid/threads/0a6e4d15-7c3b-4f92-b8e1-5d2a9c7f40e6/thread.json",
+									"src/components/evidence-grid/threads/0a6e4d15-7c3b-4f92-b8e1-5d2a9c7f40e6/messages.ndjson"
+								]
+							},
+							{
+								"value": {
+									"id": "6f1c2b9e-4d7a-4e8b-9a31-0c5d7e2f8b14",
+									"unitId": "reports.component.evidence-grid",
+									"pin": 3,
+									"title": "Column spacing",
+									"anchor": {
+										"version": "v002",
+										"file": "desktop-default.png",
+										"imageSha256": "7a3f9c21d04b8e65a1c72f903e5d8b46c0f19a2de87b35416d2c9f08b4a1e7c3",
+										"state": "default",
+										"viewport": "desktop",
+										"region": {
+											"x": 0.125,
+											"y": 0.2,
+											"width": 0.36,
+											"height": 0.18
+										},
+										"option": "o2"
+									},
+									"viewedRevision": "4f9c2a7d1b8e3c60a5d9f2e7b41c08d3a6e95f12",
+									"createdAt": "2026-11-15T09:30:12.418Z",
+									"createdBy": {
+										"kind": "person",
+										"name": "Mira Chen"
+									},
+									"commit": "c8d40f7e2a91b35d6e0f48a7c2b9d1e53f06a8c4",
+									"messages": [
+										{
+											"id": "b7d4e0a2-93c1-4f6e-8a5d-2e9c71b0f463",
+											"unitId": "reports.component.evidence-grid",
+											"threadId": "6f1c2b9e-4d7a-4e8b-9a31-0c5d7e2f8b14",
+											"sequence": 1,
+											"previous": "c41e07a9b2f35d8e6a10c7b4f9e2d38a51b6c0e7d4f29a83b5c10e6d7f9a2b44",
+											"at": "2026-11-15T09:30:12.431Z",
+											"author": {
+												"kind": "person",
+												"name": "Mira Chen"
+											},
+											"mode": "plan",
+											"agent": null,
+											"body": "The gap between the columns is tighter than the approved design; please check it against the desktop image.",
+											"references": [],
+											"change": null
+										}
+									]
+								},
+								"commit": "c8d40f7e2a91b35d6e0f48a7c2b9d1e53f06a8c4",
+								"parent": "9e21b0c4d7a5f83e61c2d9b08a4f7e3c5d12b6a9",
+								"branch": "main",
+								"paths": [
+									"src/components/evidence-grid/threads/6f1c2b9e-4d7a-4e8b-9a31-0c5d7e2f8b14/thread.json",
+									"src/components/evidence-grid/threads/6f1c2b9e-4d7a-4e8b-9a31-0c5d7e2f8b14/messages.ndjson"
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown as a plain Error with a PlanningErrorCode: not-found for a plan missing at HEAD or the viewed revision, or for an image or option that the plan does not hold; unknown-revision for an unresolvable HEAD or viewed revision; invalid-input, unsafe-path, approval-required, approval-mismatch and invalid-region for a bad author, partial or invalid anchor, message, change or changed path; and artifact-missing, artifact-corrupt, artifact-tampered, artifact-dirty, invalid-image, repository-busy, conflict or git-failed for a failed read or write."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "append",
@@ -96,29 +505,182 @@
 						"name": "append.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "Repository handle from planGit: the canonical root and Git directory, optional transactionHead and objectFormat, and the run command that every read and write goes through. transactionHead must equal the checked-out commit when the commit is written, so a handle without it always fails with conflict."
 					},
 					{
 						"name": "append.input",
 						"type": "AppendMessageInput",
 						"required": true,
-						"description": "Unit and thread ID plus author, body, plan/change mode and optional agent, artifact references and change details."
+						"description": "Message for an existing thread: unitId, threadId (a thread of that plan), author, mode (plan or change), body, and optional agent, references and change. A change message needs a change whose target is the current approval and whose image is approved, a plan message must not carry one, and the message is written as the next line of the thread's messages file in its own commit.",
+						"examples": [
+							{
+								"unitId": "reports.component.evidence-grid",
+								"threadId": "6f1c2b9e-4d7a-4e8b-9a31-0c5d7e2f8b14",
+								"author": {
+									"kind": "person",
+									"name": "Mira Chen"
+								},
+								"mode": "plan",
+								"body": "Keep the desktop gap at 12px; the approved design shows that spacing.",
+								"references": [
+									{
+										"kind": "image",
+										"version": "v002",
+										"file": "desktop-default.png",
+										"sha256": "7a3f9c21d04b8e65a1c72f903e5d8b46c0f19a2de87b35416d2c9f08b4a1e7c3",
+										"option": "o2"
+									}
+								]
+							},
+							{
+								"unitId": "reports.component.evidence-grid",
+								"threadId": "6f1c2b9e-4d7a-4e8b-9a31-0c5d7e2f8b14",
+								"author": {
+									"kind": "agent",
+									"name": "design-reviewer"
+								},
+								"mode": "change",
+								"agent": {
+									"provider": "claude-code",
+									"model": "claude-sonnet-5-5"
+								},
+								"body": "Set the desktop grid gap to 16px as the thread asks.",
+								"references": [
+									{
+										"kind": "image",
+										"version": "v002",
+										"file": "desktop-default.png",
+										"sha256": "7a3f9c21d04b8e65a1c72f903e5d8b46c0f19a2de87b35416d2c9f08b4a1e7c3",
+										"option": "o2"
+									}
+								],
+								"change": {
+									"target": {
+										"approvalId": "e1f8a3c5-2b7d-4d0e-9c64-8a3f5b1e7d20",
+										"version": "v002",
+										"imageSha256": "7a3f9c21d04b8e65a1c72f903e5d8b46c0f19a2de87b35416d2c9f08b4a1e7c3",
+										"contractHash": "2f8d61b0c9a4e7f35d12a08c6e4b9f71d3a5c2e80f96b4d17a3c8e52f0b61d94"
+									},
+									"status": "completed",
+									"changedPaths": ["src/components/evidence-grid/index.tsx"],
+									"hostChanges": [
+										{
+											"path": "/workspace/app/src/components/evidence-grid/index.tsx",
+											"before": "const gap = 12;",
+											"after": "const gap = 16;",
+											"coverage": "observed-cli-file-operation"
+										}
+									],
+									"error": null
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "append",
 						"type": "unknown",
-						"description": "Commit metadata and appended message with sequence, prior-content hash, timestamp and defaults for optional references/change fields."
+						"description": "Resolved commit metadata (commit, parent, branch and paths, which hold only the thread's messages.ndjson) with value, the appended ThreadMessage: sequence is the thread's message count plus one, and previous is the SHA-256 of the prior line, or of thread.json for the first message. An absent agent defaults to null, absent references to [], and a change without changedPaths or error gets [] and null.",
+						"examples": [
+							{
+								"value": {
+									"id": "3c9a7e15-f8b2-4d61-a0c7-6e2d9b4f1a83",
+									"unitId": "reports.component.evidence-grid",
+									"threadId": "6f1c2b9e-4d7a-4e8b-9a31-0c5d7e2f8b14",
+									"sequence": 2,
+									"previous": "0d8e5a1f7c3b92e6a4d0f8c15b7e9a2d6c3f1e8b0a5d7c9e4f2b6a8d1c3e5f70",
+									"at": "2026-11-15T10:02:47.906Z",
+									"author": {
+										"kind": "person",
+										"name": "Mira Chen"
+									},
+									"mode": "plan",
+									"agent": null,
+									"body": "Keep the desktop gap at 12px; the approved design shows that spacing.",
+									"references": [
+										{
+											"kind": "image",
+											"version": "v002",
+											"file": "desktop-default.png",
+											"sha256": "7a3f9c21d04b8e65a1c72f903e5d8b46c0f19a2de87b35416d2c9f08b4a1e7c3",
+											"option": "o2"
+										}
+									],
+									"change": null
+								},
+								"commit": "1e7b4c09d2a6f58e3b71c0d94a2e6f8b5c3d7a10",
+								"parent": "c8d40f7e2a91b35d6e0f48a7c2b9d1e53f06a8c4",
+								"branch": "main",
+								"paths": [
+									"src/components/evidence-grid/threads/6f1c2b9e-4d7a-4e8b-9a31-0c5d7e2f8b14/messages.ndjson"
+								]
+							},
+							{
+								"value": {
+									"id": "d2e7b9f4-1a6c-4c38-b5d0-7f3e8a2c9b61",
+									"unitId": "reports.component.evidence-grid",
+									"threadId": "6f1c2b9e-4d7a-4e8b-9a31-0c5d7e2f8b14",
+									"sequence": 3,
+									"previous": "9f4b1e7c2a8d05e36b9c1f47d2a80e5b3c6d91f8a4e2b07c5d3f19a6e8b2c4d0",
+									"at": "2026-11-15T10:15:33.260Z",
+									"author": {
+										"kind": "agent",
+										"name": "design-reviewer"
+									},
+									"mode": "change",
+									"agent": {
+										"provider": "claude-code",
+										"model": "claude-sonnet-5-5"
+									},
+									"body": "Set the desktop grid gap to 16px as the thread asks.",
+									"references": [
+										{
+											"kind": "image",
+											"version": "v002",
+											"file": "desktop-default.png",
+											"sha256": "7a3f9c21d04b8e65a1c72f903e5d8b46c0f19a2de87b35416d2c9f08b4a1e7c3",
+											"option": "o2"
+										}
+									],
+									"change": {
+										"target": {
+											"approvalId": "e1f8a3c5-2b7d-4d0e-9c64-8a3f5b1e7d20",
+											"version": "v002",
+											"imageSha256": "7a3f9c21d04b8e65a1c72f903e5d8b46c0f19a2de87b35416d2c9f08b4a1e7c3",
+											"contractHash": "2f8d61b0c9a4e7f35d12a08c6e4b9f71d3a5c2e80f96b4d17a3c8e52f0b61d94"
+										},
+										"status": "completed",
+										"changedPaths": ["src/components/evidence-grid/index.tsx"],
+										"hostChanges": [
+											{
+												"path": "/workspace/app/src/components/evidence-grid/index.tsx",
+												"before": "const gap = 12;",
+												"after": "const gap = 16;",
+												"coverage": "observed-cli-file-operation"
+											}
+										],
+										"error": null
+									}
+								},
+								"commit": "7d2f8a40c6b1e93a5f07d2c8b4e6a19f3c0d5e27",
+								"parent": "1e7b4c09d2a6f58e3b71c0d94a2e6f8b5c3d7a10",
+								"branch": "main",
+								"paths": [
+									"src/components/evidence-grid/threads/6f1c2b9e-4d7a-4e8b-9a31-0c5d7e2f8b14/messages.ndjson"
+								]
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as a plain Error with a PlanningErrorCode: not-found for a plan or thread that does not exist, unknown-revision for an unresolvable HEAD, unsafe-path for an unsafe threadId or changed path, invalid-input, approval-required and approval-mismatch for a bad author, body, mode, reference or change; and artifact-missing, artifact-corrupt, artifact-tampered, artifact-dirty, invalid-image, repository-busy, conflict or git-failed for a failed read or write."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
