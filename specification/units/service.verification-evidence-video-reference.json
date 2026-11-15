@@ -18,6 +18,7 @@
 			"src/services/verification-evidence/video-reference-service/candidates.ts",
 			"src/services/verification-evidence/video-reference-service/materialize.ts",
 			"src/services/verification-evidence/video-reference-service/origins.ts",
+			"src/services/verification-evidence/video-reference-service/referenceCache.ts",
 			"src/services/verification-evidence/video-reference-service/resolve.ts"
 		],
 		"symbols": [
@@ -36,6 +37,10 @@
 			"VideoReferenceSelection",
 			"VideoReferenceCandidate",
 			"VideoReferenceContext",
+			"VideoMaterializationState",
+			"MetadataMemo",
+			"VideoReferenceMemo",
+			"VideoOriginProof",
 			"referencePaths",
 			"safeReferencePath",
 			"bindReference",
@@ -44,6 +49,12 @@
 			"materializeVideoReferences",
 			"referenceScope",
 			"proveOriginal",
+			"metadataLimit",
+			"createReferenceCache",
+			"scopeKey",
+			"originKey",
+			"memoOrigin",
+			"memoCatalog",
 			"resolveVideoReference"
 		]
 	},
@@ -65,6 +76,12 @@
 				"type": "string[]",
 				"required": false,
 				"default": []
+			},
+			{
+				"name": "VideoReferenceService.constructor.retainMedia",
+				"type": "boolean",
+				"required": false,
+				"default": true
 			},
 			{
 				"name": "VideoReferenceService.resolve.input",
@@ -172,6 +189,61 @@
 				"required": true
 			},
 			{
+				"name": "scopeKey.pinned",
+				"type": "PinnedHistory",
+				"required": true
+			},
+			{
+				"name": "originKey.pinned",
+				"type": "PinnedHistory",
+				"required": true
+			},
+			{
+				"name": "originKey.trail",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "originKey.record",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "originKey.revision",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "memoOrigin.memo",
+				"type": "VideoReferenceMemo",
+				"required": true
+			},
+			{
+				"name": "memoOrigin.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "memoOrigin.load",
+				"type": "() => Promise<VideoOriginProof>",
+				"required": true
+			},
+			{
+				"name": "memoCatalog.memo",
+				"type": "VideoReferenceMemo",
+				"required": true
+			},
+			{
+				"name": "memoCatalog.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "memoCatalog.load",
+				"type": "() => Promise<VideoReferenceCandidate[]>",
+				"required": true
+			},
+			{
 				"name": "resolveVideoReference.root",
 				"type": "string",
 				"required": true
@@ -235,6 +307,30 @@
 			{
 				"name": "proveOriginal",
 				"type": "Promise<void>"
+			},
+			{
+				"name": "metadataLimit",
+				"type": "unknown"
+			},
+			{
+				"name": "createReferenceCache",
+				"type": "VideoReferenceMemo"
+			},
+			{
+				"name": "scopeKey",
+				"type": "string"
+			},
+			{
+				"name": "originKey",
+				"type": "string"
+			},
+			{
+				"name": "memoOrigin",
+				"type": "Promise<VideoOriginProof>"
+			},
+			{
+				"name": "memoCatalog",
+				"type": "Promise<VideoReferenceCandidate[]>"
 			},
 			{
 				"name": "resolveVideoReference",
@@ -530,6 +626,125 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "createReferenceCache",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "createReferenceCache",
+						"type": "VideoReferenceMemo"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scopeKey",
+				"inputs": [
+					{
+						"name": "scopeKey.pinned",
+						"type": "PinnedHistory",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scopeKey",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "originKey",
+				"inputs": [
+					{
+						"name": "originKey.pinned",
+						"type": "PinnedHistory",
+						"required": true
+					},
+					{
+						"name": "originKey.trail",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "originKey.record",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "originKey.revision",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "originKey",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "memoOrigin",
+				"inputs": [
+					{
+						"name": "memoOrigin.memo",
+						"type": "VideoReferenceMemo",
+						"required": true
+					},
+					{
+						"name": "memoOrigin.key",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "memoOrigin.load",
+						"type": "() => Promise<VideoOriginProof>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "memoOrigin",
+						"type": "Promise<VideoOriginProof>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "memoCatalog",
+				"inputs": [
+					{
+						"name": "memoCatalog.memo",
+						"type": "VideoReferenceMemo",
+						"required": true
+					},
+					{
+						"name": "memoCatalog.key",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "memoCatalog.load",
+						"type": "() => Promise<VideoReferenceCandidate[]>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "memoCatalog",
+						"type": "Promise<VideoReferenceCandidate[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "resolveVideoReference",
 				"inputs": [
 					{
@@ -582,6 +797,12 @@
 						"type": "string[]",
 						"required": false,
 						"default": []
+					},
+					{
+						"name": "VideoReferenceService.constructor.retainMedia",
+						"type": "boolean",
+						"required": false,
+						"default": true
 					}
 				],
 				"outputs": [

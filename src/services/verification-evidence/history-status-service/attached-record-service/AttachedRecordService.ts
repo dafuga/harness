@@ -59,6 +59,8 @@ export class AttachedRecordService {
 			const blob = blobs.get(`${pointer.path}/${file.path}`);
 			result.problems.push(...(await this.file(blob, file, result.files)));
 		}
+		blobs.clear();
+		if (this.options.retainMedia === false) result.files.clear();
 		const checked = await recordReferences(this.root, result, {
 			within: this.within,
 			options: this.options

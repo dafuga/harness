@@ -3,11 +3,18 @@ import type {
 	Capture,
 	VerificationRecord
 } from '../../../core/verification-evidence/verificationTypes';
-import type { LineageSource, Soundness } from '../recordLineage.types';
+import type { LineageSource, Soundness, VideoOriginRecord } from '../recordLineage.types';
 import { canonicalJson } from '../canonicalJson';
 
 /** A successful focused parent proves its own clips, while retaining its partial whole-record verdict. */
-export function videoRecordPassed(record: VerificationRecord, unit: string): boolean {
+export function videoRecordPassed(record: VideoOriginRecord, unit: string): boolean {
+	if (!successfulTests(record)) return false;
+	if (
+		!record.components.some(
+			(component) => component.unit === unit && component.change !== 'removed'
+		)
+	)
+		return false;
 	if (record.status === 'passed' && record.failures.length === 0) return true;
 	return (
 		record.failures.length === 1 &&
@@ -20,6 +27,10 @@ export function videoRecordPassed(record: VerificationRecord, unit: string): boo
 	);
 }
 
+function successfulTests(record: VideoOriginRecord): boolean {
+	return record.tests.length > 0 && record.tests.every((test) => test.status === 'passed');
+}
+
 /** Every capture field remains original; only reference bookkeeping changes between parents. */
 export function sameVideoCapture(left: Capture, right: Capture): boolean {
 	const { videoReference: _left, ...a } = left,
@@ -30,7 +41,7 @@ export function sameVideoCapture(left: Capture, right: Capture): boolean {
 }
 
 export function originalVideoCapture(
-	record: VerificationRecord,
+	record: VideoOriginRecord,
 	capture: Capture
 ): Capture | undefined {
 	const found = record.scenarios
@@ -46,7 +57,15 @@ export function originalVideoCapture(
 				item.viewport === capture.viewport &&
 				item.state === capture.state
 		);
-	return found.length === 1 ? found[0] : undefined;
+	if (found.length !== 1 || !originalBuildBound(record, found[0])) return undefined;
+	return found[0];
+}
+
+function originalBuildBound(record: VideoOriginRecord, capture: Capture): boolean {
+	return (
+		capture.server?.revision === record.source.commit &&
+		record.builds?.some((build) => build.buildId === capture.server?.buildId) === true
+	);
 }
 
 export function videoLineage(
@@ -73,6 +92,14 @@ function clipProblems(capture: Capture, source: LineageSource, sound: Soundness)
 	const original = originalVideoCapture(found, capture);
 	if (!original || !sameVideoCapture(original, capture))
 		return [`${subject} differs from its original capture`];
-	const problem = sound(found);
+	const problem = clipSoundness(source, found, sound);
 	return problem ? [`${subject} is not sound: ${problem}`] : [];
+}
+
+function clipSoundness(
+	source: LineageSource,
+	found: VerificationRecord,
+	sound: Soundness
+): string | undefined {
+	return source.clipProblems ? source.clipProblems(found)[0] : sound(found);
 }

@@ -17,6 +17,7 @@
 		"symbols": [
 			"clipParentRecords",
 			"recordDependencies",
+			"wholeRecordDependencies",
 			"videoRecordPassed",
 			"sameVideoCapture",
 			"originalVideoCapture",
@@ -25,7 +26,8 @@
 			"LineageSource",
 			"LineageSource",
 			"Soundness",
-			"RecordLinks"
+			"RecordLinks",
+			"VideoOriginRecord"
 		]
 	},
 	"contract": {
@@ -42,8 +44,13 @@
 				"required": true
 			},
 			{
+				"name": "wholeRecordDependencies.record",
+				"type": "RecordLinks",
+				"required": true
+			},
+			{
 				"name": "videoRecordPassed.record",
-				"type": "VerificationRecord",
+				"type": "VideoOriginRecord",
 				"required": true
 			},
 			{
@@ -63,7 +70,7 @@
 			},
 			{
 				"name": "originalVideoCapture.record",
-				"type": "VerificationRecord",
+				"type": "VideoOriginRecord",
 				"required": true
 			},
 			{
@@ -220,11 +227,29 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "wholeRecordDependencies",
+				"inputs": [
+					{
+						"name": "wholeRecordDependencies.record",
+						"type": "RecordLinks",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "wholeRecordDependencies",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "videoRecordPassed",
 				"inputs": [
 					{
 						"name": "videoRecordPassed.record",
-						"type": "VerificationRecord",
+						"type": "VideoOriginRecord",
 						"required": true
 					},
 					{
@@ -270,7 +295,7 @@
 				"inputs": [
 					{
 						"name": "originalVideoCapture.record",
-						"type": "VerificationRecord",
+						"type": "VideoOriginRecord",
 						"required": true
 					},
 					{

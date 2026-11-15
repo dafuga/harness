@@ -20,7 +20,8 @@ export async function recordReferences(
 		const service = new VideoReferenceService(
 			root,
 			{ evidence: within, notes: scope.options.notes },
-			[...trail, record.id]
+			[...trail, record.id],
+			scope.options.retainMedia !== false
 		);
 		const files = await service.materialize(
 			record,

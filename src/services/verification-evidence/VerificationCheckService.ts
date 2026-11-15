@@ -87,6 +87,8 @@ export class VerificationCheckService {
 		};
 		return recordLineage(record, {
 			find: (id) => find(id)?.record,
+			clipProblems: (dependency) =>
+				recordIntact(dependency) ? [] : ['record content does not match its id'],
 			problems: (dependency) => {
 				const found = find(dependency.id);
 				if (!found) return ['its files are not stored'];

@@ -1,7 +1,10 @@
 // @harness-uid u_alfe4qnget
+import type { Capture } from '../../../core/verification-evidence/verificationTypes';
+import type { VideoArchiveCurrent } from '../VideoArchiveService.types';
 import { captureSchema } from '../../../core/verification-evidence/verificationTypes';
 import { videoBatchPointerSchema } from '../../../utils/verification-evidence/videoClipSchema';
 import { ExpectedCliError } from '../../../core/development-tooling/errors';
+import { canonicalJson } from '../../../utils/development-tooling/canonicalJson';
 import { VideoArchiveService } from '../VideoArchiveService';
 import { bindReference, currentOwner, referencePaths } from './binding';
 import { proveOriginal, referenceScope } from './origins';
@@ -31,9 +34,8 @@ export async function resolveVideoReference(
 	const pinned = await referenceScope(root, context);
 	if (!pinned.evidence)
 		throw new ExpectedCliError('Referenced video evidence is not available in this snapshot.');
-	const selected = await new VideoArchiveService(root).readClip(
-		pointers[0],
-		{
+	const archive = new VideoArchiveService(root),
+		selection = {
 			unit: video.unit,
 			unitUid: uid,
 			clipId: video.clipId,
@@ -41,20 +43,31 @@ export async function resolveVideoReference(
 			viewport: capture.viewport!,
 			profile: video.profile,
 			inputHash: video.inputHash
-		},
-		pinned.evidence
+		};
+	const { inputHash, ...slot } = selection;
+	const descriptor = await archive.describe(pointers[0], pinned.evidence);
+	const metadata = descriptor.batch.clips.find(
+		(clip) => canonicalJson(clip.slot) === canonicalJson(slot) && clip.video.inputHash === inputHash
 	);
-	bindReference(input, selected.clip);
+	if (!metadata)
+		throw new ExpectedCliError('Selected video slot/input does not match its archived metadata.');
+	bindReference(input, metadata);
 	await proveOriginal(root, capture, { ...context, pinned });
+	const selected = await archive.readClip(pointers[0], selection, pinned.evidence);
+	return trustedResult(capture, selected);
+}
+
+function trustedResult(capture: Capture, selected: VideoArchiveCurrent): TrustedVideoReference {
 	const [path, poster] = referencePaths(capture),
-		clip = selected.clip;
+		clip = selected.clip,
+		record = capture.videoReference?.record;
 	return {
 		clip,
 		pointer: selected.pointer,
 		inputHash: clip.video.inputHash,
 		origin: {
 			...clip.original,
-			...(capture.videoReference.record ? { record: capture.videoReference.record } : {})
+			...(record ? { record } : {})
 		},
 		files: new Map([
 			[path, selected.files.get(clip.media.path)!],

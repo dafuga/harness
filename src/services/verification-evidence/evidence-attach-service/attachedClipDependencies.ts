@@ -1,6 +1,7 @@
 // @harness-uid u_rfumv65ikl
 import type { VerificationRecord } from '../../../core/verification-evidence/verificationTypes';
 import { VideoReferenceService } from '../VideoReferenceService';
+import { wholeRecordDependencies } from '../../../utils/development-tooling/record-lineage/recordDependencies';
 
 /** Clip parents are already attached by definition; an absent disposable cache is not their proof. */
 export async function attachedClipDependency(
@@ -8,6 +9,7 @@ export async function attachedClipDependency(
 	record: VerificationRecord,
 	id: string
 ): Promise<boolean> {
+	if (wholeRecordDependencies(record).includes(id)) return false;
 	const captures = record.scenarios
 		.filter((scenario) => scenario.status !== 'referenced')
 		.flatMap((scenario) => scenario.states.flatMap((state) => state.captures))

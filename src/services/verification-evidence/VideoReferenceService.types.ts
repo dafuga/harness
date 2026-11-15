@@ -6,6 +6,7 @@ import type {
 import type { PinnedHistory } from './history-status-service/HistoryStatusService.types';
 import type { VideoArchiveClip } from './VideoArchiveService.types';
 import type { VideoBatchPointer } from '../../utils/verification-evidence/videoClipSchema.types';
+import type { VideoOriginRecord } from '../../utils/development-tooling/recordLineage.types';
 
 export interface VideoReferenceInput {
 	source: Pick<VerificationRecord['source'], 'commit' | 'tree'>;
@@ -34,4 +35,25 @@ export interface VideoReferenceCandidate {
 export interface VideoReferenceContext {
 	pinned?: Pick<PinnedHistory, 'evidence'> & Partial<Pick<PinnedHistory, 'notes'>>;
 	trail: string[];
+	retainMedia?: boolean;
+	memo?: VideoReferenceMemo;
+}
+
+export interface VideoMaterializationState {
+	bytes: number;
+	hashes: Map<string, string>;
+}
+
+export interface MetadataMemo<T> {
+	values: Map<string, { value: T; bytes: number }>;
+	pending: Map<string, Promise<T>>;
+	bytes: number;
+}
+export interface VideoReferenceMemo {
+	origins: MetadataMemo<VideoOriginProof>;
+	catalogs: MetadataMemo<VideoReferenceCandidate[]>;
+}
+export interface VideoOriginProof {
+	record: VideoOriginRecord;
+	evidenceCommit: string;
 }

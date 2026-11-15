@@ -118,8 +118,8 @@ export class EvidenceAttachService {
 		const { record } = stored;
 		for (const id of inheritedRecords(record)) {
 			const subject = `Record ${short(record.id)} cannot be attached`;
+			if (await attachedClipDependency(this.root, record, id)) continue;
 			const dependency = this.store.load(id);
-			if (!dependency && (await attachedClipDependency(this.root, record, id))) continue;
 			if (!dependency)
 				fail(`${subject}: it inherits from record ${short(id)}, which is not available`);
 			await this.attach(dependency.record.source.commit, dependency);
