@@ -20,37 +20,43 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DeviceRevocationService.constructor.store",
 				"type": "HostStorageAdapter",
-				"required": true
+				"required": true,
+				"description": "HostStorageAdapter instance used by revoke() to remove the device credential, enumerate pairings, and remove each pairing whose deviceId exactly matches the request. The service passes the supplied identifier unchanged and does not validate it."
 			},
 			{
 				"name": "DeviceRevocationService.constructor.sockets",
 				"type": "HostSocketsAdapter",
-				"required": true
+				"required": true,
+				"description": "HostSocketsAdapter instance used by revoke() to retrieve sockets for the requested device. Each returned socket is passed to link.drop; the service applies no additional filtering."
 			},
 			{
 				"name": "DeviceRevocationService.constructor.link",
 				"type": "HostLinkService",
-				"required": true
+				"required": true,
+				"description": "HostLinkService instance used by revoke() to drop each retrieved socket and notify the host with the device-revoked message. Socket drops use relayCloseCodes.unauthorized, and the service passes the supplied deviceId unchanged."
 			},
 			{
 				"name": "DeviceRevocationService.revoke.deviceId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "String identifier passed to removeDevice() and sockets.device(), compared exactly with each pairing.deviceId, and included in the host notification. The service performs no format validation.",
+				"examples": ["device-123", "device-456"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeviceRevocationService.revoke",
-				"type": "void"
+				"type": "void",
+				"description": "Returns no value; revoke() removes the device credential, matching pairings, and the device's sockets, then notifies the host, in that order. Calls are synchronous, and an exception from an invoked adapter method propagates without being caught."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "DeviceRevocationService.revoke",
@@ -58,17 +64,20 @@
 					{
 						"name": "DeviceRevocationService.revoke.deviceId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "String identifier passed to removeDevice() and sockets.device(), compared exactly with each pairing.deviceId, and included in the host notification. The service performs no format validation.",
+						"examples": ["device-123", "device-456"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeviceRevocationService.revoke",
-						"type": "void"
+						"type": "void",
+						"description": "Returns no value; revoke() removes the device credential, matching pairings, and the device's sockets, then notifies the host, in that order. Calls are synchronous, and an exception from an invoked adapter method propagates without being caught."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -78,27 +87,31 @@
 					{
 						"name": "DeviceRevocationService.constructor.store",
 						"type": "HostStorageAdapter",
-						"required": true
+						"required": true,
+						"description": "HostStorageAdapter instance used by revoke() to remove the device credential, enumerate pairings, and remove each pairing whose deviceId exactly matches the request. The service passes the supplied identifier unchanged and does not validate it."
 					},
 					{
 						"name": "DeviceRevocationService.constructor.sockets",
 						"type": "HostSocketsAdapter",
-						"required": true
+						"required": true,
+						"description": "HostSocketsAdapter instance used by revoke() to retrieve sockets for the requested device. Each returned socket is passed to link.drop; the service applies no additional filtering."
 					},
 					{
 						"name": "DeviceRevocationService.constructor.link",
 						"type": "HostLinkService",
-						"required": true
+						"required": true,
+						"description": "HostLinkService instance used by revoke() to drop each retrieved socket and notify the host with the device-revoked message. Socket drops use relayCloseCodes.unauthorized, and the service passes the supplied deviceId unchanged."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeviceRevocationService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed DeviceRevocationService instance retains the supplied store, sockets, and link references for later revoke() calls. The constructor performs no validation or other work."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
