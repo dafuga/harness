@@ -63,7 +63,9 @@ test('records actual typed presentations, checked against independent examples',
 	const calls = examples.map(({ name, input }) => ({ name, input, output: recordedValue(input) }));
 	examples.forEach((example, index) => expect(calls[index].output).toEqual(example.expected));
 	const sha256 = createHash('sha256')
-		.update(readFileSync(new URL('../../src/utils/recordedValue.ts', import.meta.url)))
+		.update(
+			readFileSync(new URL('../../src/utils/shared-primitives/recordedValue.ts', import.meta.url))
+		)
 		.digest('hex');
 	recordCapture(
 		{
@@ -78,7 +80,7 @@ test('records actual typed presentations, checked against independent examples',
 			kind: 'function-invocations',
 			unitId: 'reports.function.recorded-value',
 			symbol: 'recordedValue',
-			source: { path: 'packages/reports/src/utils/recordedValue.ts', sha256 },
+			source: { path: 'packages/reports/src/utils/shared-primitives/recordedValue.ts', sha256 },
 			cases: calls
 		})
 	);

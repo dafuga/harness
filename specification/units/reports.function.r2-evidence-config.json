@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/r2EvidenceConfig.ts",
-			"packages/reports/src/utils/verification-evidence/r2EvidenceConfig.ts"
-		],
-		"symbols": ["r2EvidenceConfig", "r2EvidenceConfig"]
+		"source": ["packages/reports/src/utils/verification-evidence/r2EvidenceConfig.ts"],
+		"symbols": ["r2EvidenceConfig"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -9,18 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/utils/replayFrames.ts",
 			"packages/reports/src/utils/reports-media/replayFrames.ts",
 			"packages/reports/src/utils/reports-media/replayFrames.types.ts"
 		],
-		"symbols": [
-			"FRAME_SECONDS",
-			"replayFrames",
-			"FRAME_SECONDS",
-			"replayFrames",
-			"ReplayFrame",
-			"ReplayFrame"
-		]
+		"symbols": ["FRAME_SECONDS", "replayFrames", "ReplayFrame", "ReplayFrame"]
 	},
 	"contract": {
 		"origin": "declared",

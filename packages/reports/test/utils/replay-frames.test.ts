@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { replayFrames } from '../../src/utils/replayFrames';
+import { replayFrames } from '../../src/utils/reports-media/replayFrames';
 import type { Evidence } from '../../src/models/reports-media/Report.types';
 const frame = (id: string, order: number, extra: Partial<Evidence> = {}): Evidence => ({
 	id,
@@ -28,4 +28,9 @@ test('live appended frames retain the previous sequence and input is never mutat
 		replayFrames(original)
 	);
 	expect(JSON.stringify(original)).toBe(previous);
+});
+test('replay frames run in three-second slots', () => {
+	const frames = replayFrames([frame('one', 1), frame('two', 2)]);
+	expect(frames.map((f) => f.start)).toEqual([0, 3]);
+	expect(frames.map((f) => f.duration)).toEqual([3, 3]);
 });

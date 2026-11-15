@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/agents-providers/providerPickerEntry.ts",
-			"packages/reports/src/utils/providerPickerEntry.ts"
-		],
-		"symbols": ["providerPickerEntry", "providerPickerEntry"]
+		"source": ["packages/reports/src/utils/agents-providers/providerPickerEntry.ts"],
+		"symbols": ["providerPickerEntry"]
 	},
 	"contract": {
 		"origin": "declared",
