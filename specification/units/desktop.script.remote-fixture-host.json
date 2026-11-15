@@ -21,27 +21,40 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "startRemoteFixture.options",
 				"type": "RemoteFixtureOptions",
-				"required": true
+				"required": true,
+				"description": "The options the fixture starts with: publicDirectory (required) is created if missing and receives fixture.json at start and offer.json when a pairing offer is created, with the offer's code and scan removed; log (required) receives a line when an automatic approval starts, when it is refused, and for each pairing offer. relayPort and controlPort are fixed ports (any free port when 0 or omitted), and approval 'asked' leaves pairing requests waiting for the control while 'automatic' or omitted approves them for the synthetic project with agents on."
 			}
 		],
 		"outputs": [
 			{
 				"name": "startRemoteFixture",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the running fixture: relayOrigin (the fixture relay's origin), hostId (the enabled host's id), project ({ id, name } of the registered fixture project), controlOrigin (the control's origin), entity ({ entityId, threadId } from the fixture project setup) and stop, an async function that stops the host, closes the control, stops the relay and removes the state and project directories. stop is returned only on success, so a failed start gives no way to stop what it started."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown inside the register callback that fixtureHost passes to RemoteHostService with the message 'The fixture relay refused the registration.' when the fixture relay answers a registration with a non-ok response. This file does not catch it, so it reaches startRemoteFixture only if RemoteHostService lets it through."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by online() with the message 'The fixture host did not reach the fixture relay.' when enable() returned no host, or the host status is not 'online' on each of 200 checks spaced 50 ms apart, so startRemoteFixture rejects with it. Nothing started before it (the relay, the host, the state directory and the project directory) is stopped or removed."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with the error of any step that fails and is not caught in this file, such as startRelay, remoteFixtureProject, mkdtemp, fixtureHost (including the project registry), the host enable and status calls in online(), remoteFixtureControl, mkdir or writeFile. Nothing started before such a failure is stopped or removed, because stop is returned only on success."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "startRemoteFixture",
@@ -49,17 +62,35 @@
 					{
 						"name": "startRemoteFixture.options",
 						"type": "RemoteFixtureOptions",
-						"required": true
+						"required": true,
+						"description": "The options the fixture starts with: publicDirectory (required) is created if missing and receives fixture.json at start and offer.json when a pairing offer is created, with the offer's code and scan removed; log (required) receives a line when an automatic approval starts, when it is refused, and for each pairing offer. relayPort and controlPort are fixed ports (any free port when 0 or omitted), and approval 'asked' leaves pairing requests waiting for the control while 'automatic' or omitted approves them for the synthetic project with agents on."
 					}
 				],
 				"outputs": [
 					{
 						"name": "startRemoteFixture",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the running fixture: relayOrigin (the fixture relay's origin), hostId (the enabled host's id), project ({ id, name } of the registered fixture project), controlOrigin (the control's origin), entity ({ entityId, threadId } from the fixture project setup) and stop, an async function that stops the host, closes the control, stops the relay and removes the state and project directories. stop is returned only on success, so a failed start gives no way to stop what it started."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown inside the register callback that fixtureHost passes to RemoteHostService with the message 'The fixture relay refused the registration.' when the fixture relay answers a registration with a non-ok response. This file does not catch it, so it reaches startRemoteFixture only if RemoteHostService lets it through."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by online() with the message 'The fixture host did not reach the fixture relay.' when enable() returned no host, or the host status is not 'online' on each of 200 checks spaced 50 ms apart, so startRemoteFixture rejects with it. Nothing started before it (the relay, the host, the state directory and the project directory) is stopped or removed."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the error of any step that fails and is not caught in this file, such as startRelay, remoteFixtureProject, mkdtemp, fixtureHost (including the project registry), the host enable and status calls in online(), remoteFixtureControl, mkdir or writeFile. Nothing started before such a failure is stopped or removed, because stop is returned only on success."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
