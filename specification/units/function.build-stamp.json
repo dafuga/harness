@@ -27,32 +27,48 @@
 				"name": "buildStamp.slot",
 				"type": "string",
 				"required": false,
-				"description": "Optional stamp text beginning with harness-build: and followed by 64 lowercase hexadecimal characters."
+				"default": "undefined",
+				"description": "The stamp text the emitted code holds starts with harness-build: and is followed by exactly 64 lowercase hexadecimal characters. A server that cannot read its own files, such as a Worker, passes this slot, and buildStamp returns null for an undefined slot, a missing marker, an identity that is not exactly 64 lowercase hexadecimal characters, or an all-zero identity.",
+				"examples": [
+					"harness-build:3c9f04a7d1e8b26f5a0c93e7d4b1f8a2c6e0d9b5f3a7c1e4d8b2f6a0c5e9d3b7",
+					"harness-build:0000000000000000000000000000000000000000000000000000000000000000"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "buildStampPattern",
 				"type": "unknown",
-				"description": "Global regular expression matching filled or empty harness-build slots with exactly 64 lowercase hexadecimal characters."
+				"description": "It is a global regular expression, /harness-build:[0-9a-f]{64}/g, that matches each stamp slot with 64 lowercase hexadecimal characters in emitted text, whether filled or empty (all zeros). It has no anchors, so when more than 64 hexadecimal characters follow the marker, it matches only the first 64, and its g flag keeps lastIndex between calls to test or exec."
 			},
 			{
 				"name": "sdkPackage",
 				"type": "unknown",
-				"description": "The SDK package identity reported by the console: @dafuga01/harness version 0.1.3."
+				"description": "The package a console answers from is named @dafuga01/harness at version 0.1.4. Its code comment says a test keeps it equal to package.json.",
+				"examples": [
+					{
+						"name": "@dafuga01/harness",
+						"version": "0.1.4"
+					}
+				]
 			},
 			{
 				"name": "emptyBuildStamp",
 				"type": "string",
-				"description": "An empty stamp slot consisting of harness-build: followed by 64 zeros."
+				"description": "The slot generated code holds until harness verify stamp writes the identity of the emitted files into it, consisting of harness-build: followed by 64 zeros. The function builds this string on each call, so the module holds no slot value itself.",
+				"examples": [
+					"harness-build:0000000000000000000000000000000000000000000000000000000000000000"
+				]
 			},
 			{
 				"name": "buildStamp",
 				"type": "string | null",
-				"description": "The 64-character identity of a correctly shaped nonzero slot, or null for a missing, malformed or all-zero slot."
+				"description": "The 64 lowercase hexadecimal characters that follow harness-build: in a correctly shaped slot are returned without the marker. It is null when the slot is undefined, lacks the marker, has a remainder that is not exactly 64 lowercase hexadecimal characters, or is all zeros, and an all-zero slot is the placeholder that emptyBuildStamp returns for a slot that has not been stamped yet.",
+				"examples": ["3c9f04a7d1e8b26f5a0c93e7d4b1f8a2c6e0d9b5f3a7c1e4d8b2f6a0c5e9d3b7", null]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "emptyBuildStamp",
@@ -61,11 +77,14 @@
 					{
 						"name": "emptyBuildStamp",
 						"type": "string",
-						"description": "An empty stamp slot consisting of harness-build: followed by 64 zeros."
+						"description": "The slot generated code holds until harness verify stamp writes the identity of the emitted files into it, consisting of harness-build: followed by 64 zeros. The function builds this string on each call, so the module holds no slot value itself.",
+						"examples": [
+							"harness-build:0000000000000000000000000000000000000000000000000000000000000000"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "buildStamp",
@@ -74,18 +93,24 @@
 						"name": "buildStamp.slot",
 						"type": "string",
 						"required": false,
-						"description": "Optional stamp text beginning with harness-build: and followed by 64 lowercase hexadecimal characters."
+						"default": "undefined",
+						"description": "The stamp text the emitted code holds starts with harness-build: and is followed by exactly 64 lowercase hexadecimal characters. A server that cannot read its own files, such as a Worker, passes this slot, and buildStamp returns null for an undefined slot, a missing marker, an identity that is not exactly 64 lowercase hexadecimal characters, or an all-zero identity.",
+						"examples": [
+							"harness-build:3c9f04a7d1e8b26f5a0c93e7d4b1f8a2c6e0d9b5f3a7c1e4d8b2f6a0c5e9d3b7",
+							"harness-build:0000000000000000000000000000000000000000000000000000000000000000"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "buildStamp",
 						"type": "string | null",
-						"description": "The 64-character identity of a correctly shaped nonzero slot, or null for a missing, malformed or all-zero slot."
+						"description": "The 64 lowercase hexadecimal characters that follow harness-build: in a correctly shaped slot are returned without the marker. It is null when the slot is undefined, lacks the marker, has a remainder that is not exactly 64 lowercase hexadecimal characters, or is all zeros, and an all-zero slot is the placeholder that emptyBuildStamp returns for a slot that has not been stamped yet.",
+						"examples": ["3c9f04a7d1e8b26f5a0c93e7d4b1f8a2c6e0d9b5f3a7c1e4d8b2f6a0c5e9d3b7", null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
