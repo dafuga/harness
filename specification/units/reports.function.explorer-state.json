@@ -36,92 +36,276 @@
 				"name": "captureUnbound.capture",
 				"type": "HarnessCapture",
 				"required": true,
-				"description": "Capture whose recorded build binding is checked."
+				"description": "Capture whose recorded server revision, kind and provenance determine whether it is tied to the requested commit.",
+				"examples": [
+					{
+						"evidence": "dashboard",
+						"kind": "screenshot",
+						"state": "ready",
+						"viewport": "desktop",
+						"status": "passed",
+						"path": "packages/reports/test-artifacts/explorer/dashboard-ready.png",
+						"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"mediaType": "image/png",
+						"capturedAt": "2026-11-15T10:00:00.000Z",
+						"media": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/pN8AAAAASUVORK5CYII="
+					},
+					{
+						"evidence": "dashboard",
+						"kind": "screenshot",
+						"state": "ready",
+						"viewport": "desktop",
+						"status": "passed",
+						"path": "packages/reports/test-artifacts/explorer/dashboard-ready.png",
+						"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"mediaType": "image/png",
+						"capturedAt": "2026-11-15T10:00:00.000Z",
+						"media": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/pN8AAAAASUVORK5CYII=",
+						"server": {
+							"buildId": "build-20261115T100000Z",
+							"revision": "0123456789abcdef0123456789abcdef01234567"
+						}
+					}
+				]
 			},
 			{
 				"name": "captureUnbound.commit",
 				"type": "string",
 				"required": true,
-				"description": "Commit that the capture should support."
+				"description": "Commit the capture is expected to support. If a different server revision is recorded, both revisions are shortened in the returned reason.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "explorerState.judged",
 				"type": "Judged | null",
 				"required": true,
-				"description": "Scenario declaration, result, record and bound commit, or null when there is no result to judge."
+				"description": "The declared scenario, its recorded result, the record and the commit binding used to judge captures. Null means no result is available to judge.",
+				"examples": [null]
 			},
 			{
 				"name": "explorerState.declared",
 				"type": "HarnessScenario['states'][number]",
 				"required": true,
-				"description": "Declared state and coverage requirement."
+				"description": "One scenario state with its id and declared coverage. Inapplicable states remain exempt; a declaration whose coverage is not required is treated as incomplete.",
+				"examples": [
+					{
+						"id": "ready",
+						"coverage": "required",
+						"units": ["reports.component.evidence-grid"]
+					},
+					{
+						"id": "not-applicable",
+						"coverage": "inapplicable"
+					}
+				]
 			},
 			{
 				"name": "explorerState.absent",
 				"type": "Told",
 				"required": true,
-				"description": "Fallback standing and reason tuple. The standing is used when a required state lacks a judged result; its supplied reason text is not copied by this helper."
+				"description": "Fallback standing and reason tuple for a required state with no judged result or recorded state. The standing is used, but the supplied reason text is discarded.",
+				"examples": [
+					["incomplete", "No result is available."],
+					["passed", ""]
+				]
 			},
 			{
 				"name": "reasonText.text",
 				"type": "string",
 				"required": true,
-				"description": "Recorded reason whose file-location wording should be simplified."
+				"description": "Reason text to simplify for display. A matching “ in <path>” phrase is removed, and other matching file paths are replaced with “a file”.",
+				"examples": [
+					"The report changed in packages/reports/src/utils/explorerState.ts",
+					"See packages/reports/src/utils/explorerState.ts for details"
+				]
 			},
 			{
 				"name": "scenarioFor.declared",
 				"type": "HarnessScenario",
 				"required": true,
-				"description": "Full declared scenario."
+				"description": "Full declared scenario whose states are filtered for one unit. The returned object keeps its other scenario fields and replaces only the states array.",
+				"examples": [
+					{
+						"id": "dashboard-smoke",
+						"title": "Dashboard loads",
+						"kind": "browser",
+						"units": ["reports.component.evidence-grid"],
+						"states": [
+							{
+								"id": "ready",
+								"coverage": "required",
+								"units": ["reports.component.evidence-grid"]
+							}
+						],
+						"viewports": [
+							{
+								"id": "desktop",
+								"width": 1440,
+								"height": 900
+							}
+						],
+						"tests": [
+							{
+								"id": "dashboard-loads",
+								"kind": "browser",
+								"runner": "playwright"
+							}
+						],
+						"evidence": [
+							{
+								"id": "dashboard",
+								"kind": "screenshot",
+								"states": ["ready"],
+								"viewports": ["desktop"]
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "scenarioFor.unit",
 				"type": "string",
 				"required": true,
-				"description": "Unit identifier whose applicable states are requested."
+				"description": "Unit identifier whose applicable scenario states are selected. Visual kinds match states that name the unit or name no units; other kinds use direct or active transitive consumer matches.",
+				"examples": ["reports.component.evidence-grid"]
 			},
 			{
 				"name": "scenarioFor.units",
 				"type": "HarnessUnit[]",
 				"required": false,
 				"default": [],
-				"description": "Optional registry units, defaulting to an empty list, used to follow active consumers transitively."
+				"description": "Registry units used to resolve the unit kind and follow active consumers through dependency links. Defaults to an empty array; if no state matches the unit or a consumer, the full declared scenario is returned.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "coverageWorst.standings",
 				"type": "CoverageStanding[]",
 				"required": true,
-				"description": "Coverage standings to prioritize."
+				"description": "Coverage standings to rank from worst to best. If no value in the fixed order is present, including for an empty array, the result is inapplicable.",
+				"examples": [
+					["failed", "passed"],
+					["passed", "inapplicable"]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "reasonText",
 				"type": "string",
-				"description": "Reason with matching in-file location phrases removed and other matching file paths replaced by a file."
+				"description": "Returns text with matching “ in <path>” phrases removed and other matching file paths replaced by “a file”. Text outside those matches is unchanged.",
+				"examples": ["The report changed", "See a file for details"]
 			},
 			{
 				"name": "scenarioFor",
 				"type": "HarnessScenario",
-				"description": "Scenario narrowed to states naming the unit directly, otherwise states naming a transitive consumer, otherwise the unchanged full scenario."
+				"description": "Returns a shallow copy of the scenario with applicable states: visual kinds keep states naming the unit or no units, while other kinds prefer direct matches and then states naming active transitive consumers. If neither matches, all declared states remain.",
+				"examples": [
+					{
+						"id": "dashboard-smoke",
+						"title": "Dashboard loads",
+						"kind": "browser",
+						"units": ["reports.component.evidence-grid"],
+						"states": [
+							{
+								"id": "ready",
+								"coverage": "required",
+								"units": ["reports.component.evidence-grid"]
+							}
+						],
+						"viewports": [
+							{
+								"id": "desktop",
+								"width": 1440,
+								"height": 900
+							}
+						],
+						"tests": [
+							{
+								"id": "dashboard-loads",
+								"kind": "browser",
+								"runner": "playwright"
+							}
+						],
+						"evidence": [
+							{
+								"id": "dashboard",
+								"kind": "screenshot",
+								"states": ["ready"],
+								"viewports": ["desktop"]
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "coverageWorst",
 				"type": "CoverageStanding",
-				"description": "Worst standing in failed, stale, missing, incomplete, passed order; inapplicable when none of those occurs."
+				"description": "Returns the first present standing in failed, stale, missing, incomplete, passed order. Returns inapplicable when none of those values is present.",
+				"examples": ["failed", "inapplicable"]
 			},
 			{
 				"name": "captureUnbound",
 				"type": "string | null",
-				"description": "Reason when the capture names another revision or a screenshot/actual capture has no build stamp; null otherwise."
+				"description": "Returns a reason when the recorded server revision differs from the requested commit, or when a screenshot or actual-capture provenance has no recorded revision. Returns null for a matching revision or an unstamped other capture kind.",
+				"examples": ["names no build, so it is bound to no commit", null]
 			},
 			{
 				"name": "explorerState",
 				"type": "ExplorerStateCoverage",
-				"description": "State coverage with reasons and evidence slots. Inapplicable states stay exempt; other nonrequired declarations are incomplete. Required states must be recorded as required and include each declared evidence/kind/viewport slot with a passed, stored, correctly bound capture. Missing declarations and slots never count as passed."
+				"description": "Returns the state declaration, standing, reasons and capture slots examined. Inapplicable declarations stay exempt; required states need a result recorded as required, at least one declared slot, and a passed, stored, commit-bound capture in every slot.",
+				"examples": [
+					{
+						"state": "not-applicable",
+						"declared": "inapplicable",
+						"standing": "inapplicable",
+						"reasons": [],
+						"slots": []
+					},
+					{
+						"state": "ready",
+						"declared": "required",
+						"standing": "incomplete",
+						"reasons": ["Dashboard loads: ready has no result in the record."],
+						"slots": []
+					},
+					{
+						"state": "ready",
+						"declared": "required",
+						"standing": "passed",
+						"reasons": [],
+						"slots": [
+							{
+								"evidence": "dashboard",
+								"kind": "screenshot",
+								"viewport": "desktop",
+								"capture": {
+									"evidence": "dashboard",
+									"kind": "screenshot",
+									"state": "ready",
+									"viewport": "desktop",
+									"status": "passed",
+									"path": "packages/reports/test-artifacts/explorer/dashboard-ready.png",
+									"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"mediaType": "image/png",
+									"capturedAt": "2026-11-15T10:00:00.000Z",
+									"media": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/pN8AAAAASUVORK5CYII=",
+									"server": {
+										"buildId": "build-20261115T100000Z",
+										"revision": "0123456789abcdef0123456789abcdef01234567"
+									}
+								},
+								"standing": "passed",
+								"reason": null
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "captureUnbound",
@@ -130,24 +314,56 @@
 						"name": "captureUnbound.capture",
 						"type": "HarnessCapture",
 						"required": true,
-						"description": "Capture whose recorded build binding is checked."
+						"description": "Capture whose recorded server revision, kind and provenance determine whether it is tied to the requested commit.",
+						"examples": [
+							{
+								"evidence": "dashboard",
+								"kind": "screenshot",
+								"state": "ready",
+								"viewport": "desktop",
+								"status": "passed",
+								"path": "packages/reports/test-artifacts/explorer/dashboard-ready.png",
+								"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"mediaType": "image/png",
+								"capturedAt": "2026-11-15T10:00:00.000Z",
+								"media": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/pN8AAAAASUVORK5CYII="
+							},
+							{
+								"evidence": "dashboard",
+								"kind": "screenshot",
+								"state": "ready",
+								"viewport": "desktop",
+								"status": "passed",
+								"path": "packages/reports/test-artifacts/explorer/dashboard-ready.png",
+								"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"mediaType": "image/png",
+								"capturedAt": "2026-11-15T10:00:00.000Z",
+								"media": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/pN8AAAAASUVORK5CYII=",
+								"server": {
+									"buildId": "build-20261115T100000Z",
+									"revision": "0123456789abcdef0123456789abcdef01234567"
+								}
+							}
+						]
 					},
 					{
 						"name": "captureUnbound.commit",
 						"type": "string",
 						"required": true,
-						"description": "Commit that the capture should support."
+						"description": "Commit the capture is expected to support. If a different server revision is recorded, both revisions are shortened in the returned reason.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "captureUnbound",
 						"type": "string | null",
-						"description": "Reason when the capture names another revision or a screenshot/actual capture has no build stamp; null otherwise."
+						"description": "Returns a reason when the recorded server revision differs from the requested commit, or when a screenshot or actual-capture provenance has no recorded revision. Returns null for a matching revision or an unstamped other capture kind.",
+						"examples": ["names no build, so it is bound to no commit", null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "explorerState",
@@ -156,30 +372,93 @@
 						"name": "explorerState.judged",
 						"type": "Judged | null",
 						"required": true,
-						"description": "Scenario declaration, result, record and bound commit, or null when there is no result to judge."
+						"description": "The declared scenario, its recorded result, the record and the commit binding used to judge captures. Null means no result is available to judge.",
+						"examples": [null]
 					},
 					{
 						"name": "explorerState.declared",
 						"type": "HarnessScenario['states'][number]",
 						"required": true,
-						"description": "Declared state and coverage requirement."
+						"description": "One scenario state with its id and declared coverage. Inapplicable states remain exempt; a declaration whose coverage is not required is treated as incomplete.",
+						"examples": [
+							{
+								"id": "ready",
+								"coverage": "required",
+								"units": ["reports.component.evidence-grid"]
+							},
+							{
+								"id": "not-applicable",
+								"coverage": "inapplicable"
+							}
+						]
 					},
 					{
 						"name": "explorerState.absent",
 						"type": "Told",
 						"required": true,
-						"description": "Fallback standing and reason tuple. The standing is used when a required state lacks a judged result; its supplied reason text is not copied by this helper."
+						"description": "Fallback standing and reason tuple for a required state with no judged result or recorded state. The standing is used, but the supplied reason text is discarded.",
+						"examples": [
+							["incomplete", "No result is available."],
+							["passed", ""]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerState",
 						"type": "ExplorerStateCoverage",
-						"description": "State coverage with reasons and evidence slots. Inapplicable states stay exempt; other nonrequired declarations are incomplete. Required states must be recorded as required and include each declared evidence/kind/viewport slot with a passed, stored, correctly bound capture. Missing declarations and slots never count as passed."
+						"description": "Returns the state declaration, standing, reasons and capture slots examined. Inapplicable declarations stay exempt; required states need a result recorded as required, at least one declared slot, and a passed, stored, commit-bound capture in every slot.",
+						"examples": [
+							{
+								"state": "not-applicable",
+								"declared": "inapplicable",
+								"standing": "inapplicable",
+								"reasons": [],
+								"slots": []
+							},
+							{
+								"state": "ready",
+								"declared": "required",
+								"standing": "incomplete",
+								"reasons": ["Dashboard loads: ready has no result in the record."],
+								"slots": []
+							},
+							{
+								"state": "ready",
+								"declared": "required",
+								"standing": "passed",
+								"reasons": [],
+								"slots": [
+									{
+										"evidence": "dashboard",
+										"kind": "screenshot",
+										"viewport": "desktop",
+										"capture": {
+											"evidence": "dashboard",
+											"kind": "screenshot",
+											"state": "ready",
+											"viewport": "desktop",
+											"status": "passed",
+											"path": "packages/reports/test-artifacts/explorer/dashboard-ready.png",
+											"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+											"mediaType": "image/png",
+											"capturedAt": "2026-11-15T10:00:00.000Z",
+											"media": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/pN8AAAAASUVORK5CYII=",
+											"server": {
+												"buildId": "build-20261115T100000Z",
+												"revision": "0123456789abcdef0123456789abcdef01234567"
+											}
+										},
+										"standing": "passed",
+										"reason": null
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "reasonText",
@@ -188,18 +467,23 @@
 						"name": "reasonText.text",
 						"type": "string",
 						"required": true,
-						"description": "Recorded reason whose file-location wording should be simplified."
+						"description": "Reason text to simplify for display. A matching “ in <path>” phrase is removed, and other matching file paths are replaced with “a file”.",
+						"examples": [
+							"The report changed in packages/reports/src/utils/explorerState.ts",
+							"See packages/reports/src/utils/explorerState.ts for details"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reasonText",
 						"type": "string",
-						"description": "Reason with matching in-file location phrases removed and other matching file paths replaced by a file."
+						"description": "Returns text with matching “ in <path>” phrases removed and other matching file paths replaced by “a file”. Text outside those matches is unchanged.",
+						"examples": ["The report changed", "See a file for details"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "scenarioFor",
@@ -208,31 +492,109 @@
 						"name": "scenarioFor.declared",
 						"type": "HarnessScenario",
 						"required": true,
-						"description": "Full declared scenario."
+						"description": "Full declared scenario whose states are filtered for one unit. The returned object keeps its other scenario fields and replaces only the states array.",
+						"examples": [
+							{
+								"id": "dashboard-smoke",
+								"title": "Dashboard loads",
+								"kind": "browser",
+								"units": ["reports.component.evidence-grid"],
+								"states": [
+									{
+										"id": "ready",
+										"coverage": "required",
+										"units": ["reports.component.evidence-grid"]
+									}
+								],
+								"viewports": [
+									{
+										"id": "desktop",
+										"width": 1440,
+										"height": 900
+									}
+								],
+								"tests": [
+									{
+										"id": "dashboard-loads",
+										"kind": "browser",
+										"runner": "playwright"
+									}
+								],
+								"evidence": [
+									{
+										"id": "dashboard",
+										"kind": "screenshot",
+										"states": ["ready"],
+										"viewports": ["desktop"]
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "scenarioFor.unit",
 						"type": "string",
 						"required": true,
-						"description": "Unit identifier whose applicable states are requested."
+						"description": "Unit identifier whose applicable scenario states are selected. Visual kinds match states that name the unit or name no units; other kinds use direct or active transitive consumer matches.",
+						"examples": ["reports.component.evidence-grid"]
 					},
 					{
 						"name": "scenarioFor.units",
 						"type": "HarnessUnit[]",
 						"required": false,
 						"default": [],
-						"description": "Optional registry units, defaulting to an empty list, used to follow active consumers transitively."
+						"description": "Registry units used to resolve the unit kind and follow active consumers through dependency links. Defaults to an empty array; if no state matches the unit or a consumer, the full declared scenario is returned.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scenarioFor",
 						"type": "HarnessScenario",
-						"description": "Scenario narrowed to states naming the unit directly, otherwise states naming a transitive consumer, otherwise the unchanged full scenario."
+						"description": "Returns a shallow copy of the scenario with applicable states: visual kinds keep states naming the unit or no units, while other kinds prefer direct matches and then states naming active transitive consumers. If neither matches, all declared states remain.",
+						"examples": [
+							{
+								"id": "dashboard-smoke",
+								"title": "Dashboard loads",
+								"kind": "browser",
+								"units": ["reports.component.evidence-grid"],
+								"states": [
+									{
+										"id": "ready",
+										"coverage": "required",
+										"units": ["reports.component.evidence-grid"]
+									}
+								],
+								"viewports": [
+									{
+										"id": "desktop",
+										"width": 1440,
+										"height": 900
+									}
+								],
+								"tests": [
+									{
+										"id": "dashboard-loads",
+										"kind": "browser",
+										"runner": "playwright"
+									}
+								],
+								"evidence": [
+									{
+										"id": "dashboard",
+										"kind": "screenshot",
+										"states": ["ready"],
+										"viewports": ["desktop"]
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "coverageWorst",
@@ -241,18 +603,23 @@
 						"name": "coverageWorst.standings",
 						"type": "CoverageStanding[]",
 						"required": true,
-						"description": "Coverage standings to prioritize."
+						"description": "Coverage standings to rank from worst to best. If no value in the fixed order is present, including for an empty array, the result is inapplicable.",
+						"examples": [
+							["failed", "passed"],
+							["passed", "inapplicable"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "coverageWorst",
 						"type": "CoverageStanding",
-						"description": "Worst standing in failed, stale, missing, incomplete, passed order; inapplicable when none of those occurs."
+						"description": "Returns the first present standing in failed, stale, missing, incomplete, passed order. Returns inapplicable when none of those values is present.",
+						"examples": ["failed", "inapplicable"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
