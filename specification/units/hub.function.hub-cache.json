@@ -18,17 +18,30 @@
 				"name": "hubCache.bucket",
 				"type": "R2Bucket",
 				"required": false,
-				"description": "Optional R2 bucket; omission creates a fresh per-call memory cache."
+				"default": "undefined",
+				"description": "Optional R2 bucket holding projection entries under the 'projections/' key prefix. Omitting it (or passing a falsy value) selects an in-memory cache whose Map is created fresh for each hubCache call, so nothing is shared between calls; R2 is a disposable projection store, and authority always comes from GitHub before use."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubCache",
 				"type": "CollaborationCache",
-				"description": "Cache get/put/delete methods. R2 uses a projections prefix and stores identity/hash metadata, treating read failures as misses and swallowing put/delete failures. Memory puts clone entries and gets return the retained entry or null."
+				"description": "Object with get, put and delete methods, backed by R2 or by memory. With R2, entries go under 'projections/' with identity (JSON-encoded) and sha256 as custom metadata, get returns null for a missing object or read failure, and put/delete swallow bucket call errors; with memory, put stores a structuredClone of the entry and get returns that same retained object or null."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "DataCloneError",
+				"type": "thrown",
+				"description": "Memory put rejects with a DataCloneError when structuredClone cannot copy the entry (for example one holding a function), and the entry is not stored."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "R2 put rejects with a TypeError when JSON.stringify(entry.identity) throws (for example on a circular or BigInt identity), because it runs before bucket.put is called, so the .catch in saveBucket never sees it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubCache",
@@ -37,18 +50,19 @@
 						"name": "hubCache.bucket",
 						"type": "R2Bucket",
 						"required": false,
-						"description": "Optional R2 bucket; omission creates a fresh per-call memory cache."
+						"default": "undefined",
+						"description": "Optional R2 bucket holding projection entries under the 'projections/' key prefix. Omitting it (or passing a falsy value) selects an in-memory cache whose Map is created fresh for each hubCache call, so nothing is shared between calls; R2 is a disposable projection store, and authority always comes from GitHub before use."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubCache",
 						"type": "CollaborationCache",
-						"description": "Cache get/put/delete methods. R2 uses a projections prefix and stores identity/hash metadata, treating read failures as misses and swallowing put/delete failures. Memory puts clone entries and gets return the retained entry or null."
+						"description": "Object with get, put and delete methods, backed by R2 or by memory. With R2, entries go under 'projections/' with identity (JSON-encoded) and sha256 as custom metadata, get returns null for a missing object or read failure, and put/delete swallow bucket call errors; with memory, put stores a structuredClone of the entry and get returns that same retained object or null."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
