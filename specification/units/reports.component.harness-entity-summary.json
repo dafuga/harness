@@ -47,31 +47,151 @@
 				"name": "EntitySummary.measure",
 				"type": "EntityMeasure",
 				"required": true,
-				"description": "Required prepared size and performance rows including emitted target identity, notes, environment, tolerance and over-policy flags."
+				"description": "The prepared size and performance rows rendered in the Performance profile. Compact mode selects the first measured latency, navigation, duration or time row and a matching memory, heap or RSS row; detailed mode preserves every performance row and shows a timing table only when there is more than one.",
+				"examples": [
+					{
+						"size": [
+							{
+								"label": "Source size",
+								"value": "18.4 KB",
+								"rawValue": 18400,
+								"unitOfMeasure": "bytes"
+							},
+							{
+								"label": "Emitted size · process (native)",
+								"value": "400 KB",
+								"rawValue": 400000,
+								"unitOfMeasure": "bytes",
+								"target": "process"
+							},
+							{
+								"label": "Complexity",
+								"value": "3",
+								"rawValue": 3
+							}
+						],
+						"performance": [
+							{
+								"workload": "Build",
+								"metric": "Warm latency per call",
+								"target": "process",
+								"profile": "release",
+								"value": "12 ms",
+								"rawValue": 12,
+								"unitOfMeasure": "ms",
+								"tolerance": "5%",
+								"over": false
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "EntitySummary.compact",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional flag, false by default. True hides inline size notes while retaining their tooltips."
+				"description": "Selects compact overview facts when true and the detailed profile when false. The default is false; compact mode hides notes for measured size rows while keeping notes for unmeasured values.",
+				"examples": [false, true]
 			},
 			{
 				"name": "EntitySummary.comparison",
 				"type": "MetricComparison | null",
 				"required": false,
 				"default": null,
-				"description": "Optional metric comparison used by compact overview rows; defaults to null."
+				"description": "The optional before and after commits and their measurement rows, rendered only when compact is true and this value is non-null. Commit labels use the first seven characters, and comparison rows are calculated from the two measures.",
+				"examples": [
+					null,
+					{
+						"before": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"measure": {
+								"size": [
+									{
+										"label": "Source size",
+										"value": "18.4 KB",
+										"rawValue": 18400,
+										"unitOfMeasure": "bytes"
+									},
+									{
+										"label": "Emitted size · process (native)",
+										"value": "400 KB",
+										"rawValue": 400000,
+										"unitOfMeasure": "bytes",
+										"target": "process"
+									},
+									{
+										"label": "Complexity",
+										"value": "3",
+										"rawValue": 3
+									}
+								],
+								"performance": [
+									{
+										"workload": "Build",
+										"metric": "Warm latency per call",
+										"target": "process",
+										"profile": "release",
+										"value": "12 ms",
+										"rawValue": 12,
+										"unitOfMeasure": "ms",
+										"tolerance": "5%",
+										"over": false
+									}
+								]
+							}
+						},
+						"after": {
+							"commit": "89abcdef0123456789abcdef0123456789abcdef",
+							"measure": {
+								"size": [
+									{
+										"label": "Source size",
+										"value": "18.5 KB",
+										"rawValue": 18500,
+										"unitOfMeasure": "bytes"
+									},
+									{
+										"label": "Emitted size · process (native)",
+										"value": "410 KB",
+										"rawValue": 410000,
+										"unitOfMeasure": "bytes",
+										"target": "process"
+									},
+									{
+										"label": "Complexity",
+										"value": "3",
+										"rawValue": 3
+									}
+								],
+								"performance": [
+									{
+										"workload": "Build",
+										"metric": "Warm latency per call",
+										"target": "process",
+										"profile": "release",
+										"value": "11 ms",
+										"rawValue": 11,
+										"unitOfMeasure": "ms",
+										"tolerance": "5%",
+										"over": false
+									}
+								]
+							}
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntitySummary",
 				"type": "markup",
-				"description": "One Performance profile card with equal-height label/value rows. Output-size rows with target none are omitted; real target sizes and unavailable reasons remain visible. Workload profiles stay separate and supplied tolerance flags remain visible."
+				"description": "A Performance profile card containing summary facts or metric changes. Detailed mode shows a timing table when there is more than one performance row, while compact mode shows comparison changes only when a non-null comparison is supplied."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
