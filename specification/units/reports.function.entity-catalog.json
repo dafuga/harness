@@ -48,121 +48,982 @@
 				"name": "catalogFilter.rows",
 				"type": "CatalogRow[]",
 				"required": true,
-				"description": "Collection rows to filter without mutating the original array."
+				"description": "The rows to narrow and order. The filter builds a new array before sorting it, so the array passed in is not mutated.",
+				"examples": [
+					[
+						{
+							"entity": {
+								"id": "reports.component.harness-explorer-table",
+								"category": "components",
+								"role": "Component",
+								"name": "ExplorerTable",
+								"purpose": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+								"unit": {
+									"id": "reports.component.harness-explorer-table",
+									"kind": "component",
+									"status": "active",
+									"title": "Entity catalog table",
+									"responsibility": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+									"dependencies": [
+										{
+											"unit": "reports.function.entity-catalog",
+											"via": "import"
+										}
+									],
+									"scenarios": ["component-catalog-previews"],
+									"owns": {
+										"source": ["packages/reports/src/components/explorer-ui/ExplorerTable.svelte"],
+										"symbols": ["ExplorerTable"]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/components/explorer-ui/ExplorerTable.svelte"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "b41f6c20a9e37d05",
+									"group": {
+										"id": "explorer-ui",
+										"title": "Explorer & navigation"
+									}
+								},
+								"verdict": {
+									"passed": true,
+									"label": "Proven",
+									"reasons": []
+								},
+								"change": "direct",
+								"appRoute": null
+							},
+							"id": "reports.component.harness-explorer-table",
+							"name": "ExplorerTable",
+							"summary": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+							"changed": true,
+							"shared": false,
+							"verdict": {
+								"passed": true,
+								"label": "Proven",
+								"reasons": []
+							},
+							"usedOn": [],
+							"usedBy": ["ExplorerIndex"],
+							"contains": [],
+							"targets": ["module"],
+							"components": 0,
+							"group": {
+								"id": "explorer-ui",
+								"title": "Explorer & navigation"
+							}
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "catalogFilter.filter",
 				"type": "CatalogFilter",
 				"required": true,
-				"description": "Search text, changed-only flag and ordering. Search matches name, purpose and function symbols case-insensitively after trimming."
+				"description": "Search text (trimmed and matched case-insensitively against the row's name, entity name, unit title, summary and group title, and against its setting value, helper name or, for APIs, owned symbols, also with camel-case boundaries split), changedOnly, and order (name, name-desc, changed or failed). The optional verification ('all' or 'passed'; any other value keeps only unpassed rows), usage ('all' or 'shared'; any other value keeps only unshared rows) and groups (group ids; empty keeps every group) narrow the rows further.",
+				"examples": [
+					{
+						"search": "",
+						"changedOnly": false,
+						"order": "name",
+						"verification": "all",
+						"usage": "all",
+						"groups": []
+					},
+					{
+						"search": "table",
+						"changedOnly": true,
+						"order": "changed",
+						"verification": "passed",
+						"usage": "shared",
+						"groups": ["explorer-ui"]
+					}
+				]
 			},
 			{
 				"name": "isShared.related",
 				"type": "Relations",
 				"required": true,
-				"description": "Resolved relations to inspect for shared use."
+				"description": "The resolved relations of one entity. Unless the unit is listed under functions, isShared reads only usedBy and pages and reports shared when either has more than one entry.",
+				"examples": [
+					{
+						"pages": [],
+						"usedBy": [],
+						"components": []
+					},
+					{
+						"pages": [],
+						"usedBy": [
+							{
+								"id": "reports.component.harness-explorer-index",
+								"category": "components",
+								"role": "Component",
+								"name": "ExplorerIndex",
+								"purpose": "Filters, orders and lists the rows of one explorer category.",
+								"unit": {
+									"id": "reports.component.harness-explorer-index",
+									"kind": "component",
+									"status": "active",
+									"title": "Explorer index",
+									"responsibility": "Filters, orders and lists the rows of one explorer category.",
+									"dependencies": [
+										{
+											"unit": "reports.function.entity-catalog",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte"
+										],
+										"symbols": ["ExplorerIndex"]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "e27c95d0a14b6f38",
+									"group": {
+										"id": "explorer-ui",
+										"title": "Explorer & navigation"
+									}
+								},
+								"verdict": {
+									"passed": false,
+									"label": "Failed",
+									"reasons": ["Its verification record at this commit did not pass."]
+								},
+								"change": "indirect",
+								"appRoute": null
+							}
+						],
+						"components": []
+					}
+				]
 			},
 			{
 				"name": "isShared.unit",
 				"type": "ExplorerEntity['unit']",
 				"required": false,
-				"description": "For a function, use its recorded per-helper consumers; other entity kinds retain their existing relationship rules."
+				"default": "undefined",
+				"description": "The optional unit checked first. When explorerCategory lists it under functions, shared use is whether one of its helpers passes helperContract (pure and at least two distinct consumers); otherwise related alone decides.",
+				"examples": [
+					{
+						"id": "reports.function.entity-catalog",
+						"kind": "function",
+						"status": "active",
+						"title": "Entity collection rows",
+						"responsibility": "Lists concrete instantiated classes and pure helper exports; collections require shared owners, while relationships retain classes private to one owner. Relationship cards include pure single-consumer callees, while the public Helpers collection retains its shared eligibility rule.",
+						"dependencies": [
+							{
+								"unit": "reports.function.entity-usage",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": ["packages/reports/src/utils/explorer-ui/entityCatalog.ts"],
+							"symbols": ["isShared", "functionName", "byName", "entityCatalog", "listed"]
+						},
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/utils/explorer-ui/entityCatalog.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "7d3a0e9f5c21b84e",
+						"helpers": [
+							{
+								"source": "packages/reports/src/utils/explorer-ui/entityCatalog.ts",
+								"name": "isShared",
+								"inputs": [
+									{
+										"name": "related",
+										"type": "Relations",
+										"required": true
+									},
+									{
+										"name": "unit",
+										"type": "ExplorerEntity['unit']",
+										"required": false
+									}
+								],
+								"output": "boolean"
+							},
+							{
+								"source": "packages/reports/src/utils/explorer-ui/entityCatalog.ts",
+								"name": "functionName",
+								"inputs": [
+									{
+										"name": "unit",
+										"type": "CatalogRow['entity']['unit']",
+										"required": true
+									}
+								],
+								"output": "string"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "functionName.unit",
 				"type": "CatalogRow['entity']['unit']",
 				"required": true,
-				"description": "The selected revision’s recorded exported shared helpers."
+				"description": "The unit whose recorded helpers are read. Only the name of its first helper is returned, and a unit that records no helpers gives an empty string.",
+				"examples": [
+					{
+						"id": "reports.function.entity-catalog",
+						"kind": "function",
+						"status": "active",
+						"title": "Entity collection rows",
+						"responsibility": "Lists concrete instantiated classes and pure helper exports; collections require shared owners, while relationships retain classes private to one owner. Relationship cards include pure single-consumer callees, while the public Helpers collection retains its shared eligibility rule.",
+						"dependencies": [
+							{
+								"unit": "reports.function.entity-usage",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": ["packages/reports/src/utils/explorer-ui/entityCatalog.ts"],
+							"symbols": ["isShared", "functionName", "byName", "entityCatalog", "listed"]
+						},
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/utils/explorer-ui/entityCatalog.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "7d3a0e9f5c21b84e",
+						"helpers": [
+							{
+								"source": "packages/reports/src/utils/explorer-ui/entityCatalog.ts",
+								"name": "isShared",
+								"inputs": [
+									{
+										"name": "related",
+										"type": "Relations",
+										"required": true
+									},
+									{
+										"name": "unit",
+										"type": "ExplorerEntity['unit']",
+										"required": false
+									}
+								],
+								"output": "boolean"
+							},
+							{
+								"source": "packages/reports/src/utils/explorer-ui/entityCatalog.ts",
+								"name": "functionName",
+								"inputs": [
+									{
+										"name": "unit",
+										"type": "CatalogRow['entity']['unit']",
+										"required": true
+									}
+								],
+								"output": "string"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "byName.left",
 				"type": "CatalogRow",
 				"required": true,
-				"description": "First catalog row compared by its canonical display name."
+				"description": "The first row to compare. Its key is its helper name when it has a helper, and its row name otherwise.",
+				"examples": [
+					{
+						"entity": {
+							"id": "reports.component.harness-explorer-table",
+							"category": "components",
+							"role": "Component",
+							"name": "ExplorerTable",
+							"purpose": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+							"unit": {
+								"id": "reports.component.harness-explorer-table",
+								"kind": "component",
+								"status": "active",
+								"title": "Entity catalog table",
+								"responsibility": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+								"dependencies": [
+									{
+										"unit": "reports.function.entity-catalog",
+										"via": "import"
+									}
+								],
+								"scenarios": ["component-catalog-previews"],
+								"owns": {
+									"source": ["packages/reports/src/components/explorer-ui/ExplorerTable.svelte"],
+									"symbols": ["ExplorerTable"]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/components/explorer-ui/ExplorerTable.svelte"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "b41f6c20a9e37d05",
+								"group": {
+									"id": "explorer-ui",
+									"title": "Explorer & navigation"
+								}
+							},
+							"verdict": {
+								"passed": true,
+								"label": "Proven",
+								"reasons": []
+							},
+							"change": "direct",
+							"appRoute": null
+						},
+						"id": "reports.component.harness-explorer-table",
+						"name": "ExplorerTable",
+						"summary": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+						"changed": true,
+						"shared": false,
+						"verdict": {
+							"passed": true,
+							"label": "Proven",
+							"reasons": []
+						},
+						"usedOn": [],
+						"usedBy": ["ExplorerIndex"],
+						"contains": [],
+						"targets": ["module"],
+						"components": 0,
+						"group": {
+							"id": "explorer-ui",
+							"title": "Explorer & navigation"
+						}
+					}
+				]
 			},
 			{
 				"name": "byName.right",
 				"type": "CatalogRow",
 				"required": true,
-				"description": "Second catalog row compared case-insensitively with the first."
+				"description": "The second row to compare, keyed the same way as left and compared with the English locale at base sensitivity, so letter case and accents are ignored.",
+				"examples": [
+					{
+						"entity": {
+							"id": "reports.component.harness-explorer-index",
+							"category": "components",
+							"role": "Component",
+							"name": "ExplorerIndex",
+							"purpose": "Filters, orders and lists the rows of one explorer category.",
+							"unit": {
+								"id": "reports.component.harness-explorer-index",
+								"kind": "component",
+								"status": "active",
+								"title": "Explorer index",
+								"responsibility": "Filters, orders and lists the rows of one explorer category.",
+								"dependencies": [
+									{
+										"unit": "reports.function.entity-catalog",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": [
+										"packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte"
+									],
+									"symbols": ["ExplorerIndex"]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "e27c95d0a14b6f38",
+								"group": {
+									"id": "explorer-ui",
+									"title": "Explorer & navigation"
+								}
+							},
+							"verdict": {
+								"passed": false,
+								"label": "Failed",
+								"reasons": ["Its verification record at this commit did not pass."]
+							},
+							"change": "indirect",
+							"appRoute": null
+						},
+						"id": "reports.component.harness-explorer-index",
+						"name": "ExplorerIndex",
+						"summary": "Filters, orders and lists the rows of one explorer category.",
+						"changed": false,
+						"shared": false,
+						"verdict": {
+							"passed": false,
+							"label": "Failed",
+							"reasons": ["Its verification record at this commit did not pass."]
+						},
+						"usedOn": ["Component catalog"],
+						"usedBy": [],
+						"contains": ["ExplorerTable"],
+						"targets": ["module"],
+						"components": 1,
+						"group": {
+							"id": "explorer-ui",
+							"title": "Explorer & navigation"
+						}
+					}
+				]
 			},
 			{
 				"name": "entityCatalog.entities",
 				"type": "ExplorerEntity[]",
 				"required": true,
-				"description": "Entities available at the shown revision."
+				"description": "Entities available at the shown revision; only those whose category is the requested one are read, and for configs only units of kind config are kept.",
+				"examples": [
+					[
+						{
+							"id": "reports.component.harness-explorer-table",
+							"category": "components",
+							"role": "Component",
+							"name": "ExplorerTable",
+							"purpose": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+							"unit": {
+								"id": "reports.component.harness-explorer-table",
+								"kind": "component",
+								"status": "active",
+								"title": "Entity catalog table",
+								"responsibility": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+								"dependencies": [
+									{
+										"unit": "reports.function.entity-catalog",
+										"via": "import"
+									}
+								],
+								"scenarios": ["component-catalog-previews"],
+								"owns": {
+									"source": ["packages/reports/src/components/explorer-ui/ExplorerTable.svelte"],
+									"symbols": ["ExplorerTable"]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/components/explorer-ui/ExplorerTable.svelte"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "b41f6c20a9e37d05",
+								"group": {
+									"id": "explorer-ui",
+									"title": "Explorer & navigation"
+								}
+							},
+							"verdict": {
+								"passed": true,
+								"label": "Proven",
+								"reasons": []
+							},
+							"change": "direct",
+							"appRoute": null
+						},
+						{
+							"id": "reports.component.harness-explorer-index",
+							"category": "components",
+							"role": "Component",
+							"name": "ExplorerIndex",
+							"purpose": "Filters, orders and lists the rows of one explorer category.",
+							"unit": {
+								"id": "reports.component.harness-explorer-index",
+								"kind": "component",
+								"status": "active",
+								"title": "Explorer index",
+								"responsibility": "Filters, orders and lists the rows of one explorer category.",
+								"dependencies": [
+									{
+										"unit": "reports.function.entity-catalog",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": [
+										"packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte"
+									],
+									"symbols": ["ExplorerIndex"]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "e27c95d0a14b6f38",
+								"group": {
+									"id": "explorer-ui",
+									"title": "Explorer & navigation"
+								}
+							},
+							"verdict": {
+								"passed": false,
+								"label": "Failed",
+								"reasons": ["Its verification record at this commit did not pass."]
+							},
+							"change": "indirect",
+							"appRoute": null
+						}
+					]
+				]
 			},
 			{
 				"name": "entityCatalog.category",
 				"type": "ExplorerCategory",
 				"required": true,
-				"description": "Category to list."
+				"description": "The category to list; entities of other categories are skipped, and services, functions and configs each apply their own admission rules.",
+				"examples": ["components", "functions"]
 			},
 			{
 				"name": "entityCatalog.relations",
 				"type": "(id: string) => Relations",
 				"required": true,
-				"description": "Lookup called once for each entity in the requested category."
+				"description": "Lookup called once for each entity in the requested category, with the entity id, to return that entity's relations."
 			},
 			{
 				"name": "entityCatalog.options",
 				"type": "{ related?: boolean; consumers?: ExplorerEntity[]; revision?: HarnessRevision }",
 				"required": false,
 				"default": {},
-				"description": "Resolve admission and footer identity from active revision owners, including private named callers; public collections remain filtered."
+				"description": "With related, a service needs one usable owner instead of two, a function keeps its pure helpers (or its own row when it has none), and configs keep one row per module instead of one per variable. consumers, when given, replaces entities as the list usage owners are resolved from, and revision is passed to that resolution.",
+				"examples": [
+					{},
+					{
+						"related": true
+					}
+				]
 			},
 			{
 				"name": "listed.names",
 				"type": "string[]",
 				"required": true,
-				"description": "Names to summarize in a table cell."
+				"description": "The names to summarize, in the order given; an empty list gives 'none'.",
+				"examples": [
+					["ExplorerTable", "ExplorerIndex", "EntityRelations"],
+					[]
+				]
 			},
 			{
 				"name": "listed.most",
 				"type": "number",
 				"required": false,
 				"default": 1,
-				"description": "Maximum names to show before the remainder count; defaults to one."
+				"description": "The most names shown before the remainder count; with more names than this, the first most names are shown followed by '+ N more'. Defaults to 1.",
+				"examples": [1, 2]
 			}
 		],
 		"outputs": [
 			{
 				"name": "catalogOrders",
 				"type": "unknown",
-				"description": "Supported orders: name, name-desc, changed and failed."
+				"description": "The readonly list of order keys, in this order: name, name-desc, changed and failed; CatalogOrder is derived from it.",
+				"examples": [
+					["name", "name-desc", "changed", "failed"]
+				]
 			},
 			{
 				"name": "orderLabels",
 				"type": "Record<CatalogOrder, string>",
-				"description": "Readable labels for the supported orders."
+				"description": "The display text of each order key: 'Name (A → Z)', 'Name (Z → A)', 'Changed first' and 'Failed first'.",
+				"examples": [
+					{
+						"name": "Name (A → Z)",
+						"name-desc": "Name (Z → A)",
+						"changed": "Changed first",
+						"failed": "Failed first"
+					}
+				]
 			},
 			{
 				"name": "isShared",
 				"type": "boolean",
-				"description": "True when more than one entity uses the unit or more than one page shows it."
+				"description": "For a unit listed under functions, true when one of its helpers passes helperContract; otherwise true when usedBy or pages has more than one entry.",
+				"examples": [true, false]
 			},
 			{
 				"name": "entityCatalog",
 				"type": "CatalogRow[]",
-				"description": "Sorted rows retaining distinct resolved consumers of every module kind, excluding removed entries and helper owner self-references, so rendering can indicate overflow. Related configs produce one module row; config collections expose variable rows."
+				"description": "The category's rows, sorted by byName, each with its relations and verdict; a service needs enough usable owners, a function yields one row per admitted helper (or, under related, its own row when none is pure), and a config yields one row per variable unless related. A service's usedIn lists the distinct owners other than the service itself that are active and not removed.",
+				"examples": [
+					[
+						{
+							"entity": {
+								"id": "reports.component.harness-explorer-index",
+								"category": "components",
+								"role": "Component",
+								"name": "ExplorerIndex",
+								"purpose": "Filters, orders and lists the rows of one explorer category.",
+								"unit": {
+									"id": "reports.component.harness-explorer-index",
+									"kind": "component",
+									"status": "active",
+									"title": "Explorer index",
+									"responsibility": "Filters, orders and lists the rows of one explorer category.",
+									"dependencies": [
+										{
+											"unit": "reports.function.entity-catalog",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte"
+										],
+										"symbols": ["ExplorerIndex"]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "e27c95d0a14b6f38",
+									"group": {
+										"id": "explorer-ui",
+										"title": "Explorer & navigation"
+									}
+								},
+								"verdict": {
+									"passed": false,
+									"label": "Failed",
+									"reasons": ["Its verification record at this commit did not pass."]
+								},
+								"change": "indirect",
+								"appRoute": null
+							},
+							"id": "reports.component.harness-explorer-index",
+							"name": "ExplorerIndex",
+							"summary": "Filters, orders and lists the rows of one explorer category.",
+							"changed": false,
+							"shared": false,
+							"verdict": {
+								"passed": false,
+								"label": "Failed",
+								"reasons": ["Its verification record at this commit did not pass."]
+							},
+							"usedOn": ["Component catalog"],
+							"usedBy": [],
+							"contains": ["ExplorerTable"],
+							"targets": ["module"],
+							"components": 1,
+							"group": {
+								"id": "explorer-ui",
+								"title": "Explorer & navigation"
+							}
+						},
+						{
+							"entity": {
+								"id": "reports.component.harness-explorer-table",
+								"category": "components",
+								"role": "Component",
+								"name": "ExplorerTable",
+								"purpose": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+								"unit": {
+									"id": "reports.component.harness-explorer-table",
+									"kind": "component",
+									"status": "active",
+									"title": "Entity catalog table",
+									"responsibility": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+									"dependencies": [
+										{
+											"unit": "reports.function.entity-catalog",
+											"via": "import"
+										}
+									],
+									"scenarios": ["component-catalog-previews"],
+									"owns": {
+										"source": ["packages/reports/src/components/explorer-ui/ExplorerTable.svelte"],
+										"symbols": ["ExplorerTable"]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/components/explorer-ui/ExplorerTable.svelte"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "b41f6c20a9e37d05",
+									"group": {
+										"id": "explorer-ui",
+										"title": "Explorer & navigation"
+									}
+								},
+								"verdict": {
+									"passed": true,
+									"label": "Proven",
+									"reasons": []
+								},
+								"change": "direct",
+								"appRoute": null
+							},
+							"id": "reports.component.harness-explorer-table",
+							"name": "ExplorerTable",
+							"summary": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+							"changed": true,
+							"shared": false,
+							"verdict": {
+								"passed": true,
+								"label": "Proven",
+								"reasons": []
+							},
+							"usedOn": [],
+							"usedBy": ["ExplorerIndex"],
+							"contains": [],
+							"targets": ["module"],
+							"components": 0,
+							"group": {
+								"id": "explorer-ui",
+								"title": "Explorer & navigation"
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "catalogFilter",
 				"type": "CatalogRow[]",
-				"description": "Matching rows in the requested order. Changed-first and failed-first ties sort by name; failed-first includes every verdict that is not passed. Function names, rather than hidden titles, define alphabetical ordering."
+				"description": "The rows that pass every filter, in filter.order; name orders use the helper name when a row has one, and changed or failed order put flagged rows first with ties sorted by name, where failed counts every verdict that is not passed.",
+				"examples": [
+					[
+						{
+							"entity": {
+								"id": "reports.component.harness-explorer-table",
+								"category": "components",
+								"role": "Component",
+								"name": "ExplorerTable",
+								"purpose": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+								"unit": {
+									"id": "reports.component.harness-explorer-table",
+									"kind": "component",
+									"status": "active",
+									"title": "Entity catalog table",
+									"responsibility": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+									"dependencies": [
+										{
+											"unit": "reports.function.entity-catalog",
+											"via": "import"
+										}
+									],
+									"scenarios": ["component-catalog-previews"],
+									"owns": {
+										"source": ["packages/reports/src/components/explorer-ui/ExplorerTable.svelte"],
+										"symbols": ["ExplorerTable"]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/components/explorer-ui/ExplorerTable.svelte"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "b41f6c20a9e37d05",
+									"group": {
+										"id": "explorer-ui",
+										"title": "Explorer & navigation"
+									}
+								},
+								"verdict": {
+									"passed": true,
+									"label": "Proven",
+									"reasons": []
+								},
+								"change": "direct",
+								"appRoute": null
+							},
+							"id": "reports.component.harness-explorer-table",
+							"name": "ExplorerTable",
+							"summary": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+							"changed": true,
+							"shared": false,
+							"verdict": {
+								"passed": true,
+								"label": "Proven",
+								"reasons": []
+							},
+							"usedOn": [],
+							"usedBy": ["ExplorerIndex"],
+							"contains": [],
+							"targets": ["module"],
+							"components": 0,
+							"group": {
+								"id": "explorer-ui",
+								"title": "Explorer & navigation"
+							}
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "listed",
 				"type": "string",
-				"description": "none for an empty list; otherwise names joined by middle dots, with a remainder count when the limit is exceeded."
+				"description": "'none' for an empty list; otherwise the names joined with ' · ', or, when there are more names than most, the first most names followed by ' + N more'.",
+				"examples": ["none", "ExplorerTable · ExplorerIndex", "ExplorerTable + 2 more"]
 			},
 			{
 				"name": "functionName",
 				"type": "string",
-				"description": "The first recorded helper name, or an empty string when no helper metadata is available."
+				"description": "The name of the unit's first recorded helper, or an empty string when the unit records no helpers.",
+				"examples": ["isShared", ""]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "catalogFilter",
@@ -171,24 +1032,210 @@
 						"name": "catalogFilter.rows",
 						"type": "CatalogRow[]",
 						"required": true,
-						"description": "Collection rows to filter without mutating the original array."
+						"description": "The rows to narrow and order. The filter builds a new array before sorting it, so the array passed in is not mutated.",
+						"examples": [
+							[
+								{
+									"entity": {
+										"id": "reports.component.harness-explorer-table",
+										"category": "components",
+										"role": "Component",
+										"name": "ExplorerTable",
+										"purpose": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+										"unit": {
+											"id": "reports.component.harness-explorer-table",
+											"kind": "component",
+											"status": "active",
+											"title": "Entity catalog table",
+											"responsibility": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+											"dependencies": [
+												{
+													"unit": "reports.function.entity-catalog",
+													"via": "import"
+												}
+											],
+											"scenarios": ["component-catalog-previews"],
+											"owns": {
+												"source": [
+													"packages/reports/src/components/explorer-ui/ExplorerTable.svelte"
+												],
+												"symbols": ["ExplorerTable"]
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/components/explorer-ui/ExplorerTable.svelte"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "b41f6c20a9e37d05",
+											"group": {
+												"id": "explorer-ui",
+												"title": "Explorer & navigation"
+											}
+										},
+										"verdict": {
+											"passed": true,
+											"label": "Proven",
+											"reasons": []
+										},
+										"change": "direct",
+										"appRoute": null
+									},
+									"id": "reports.component.harness-explorer-table",
+									"name": "ExplorerTable",
+									"summary": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+									"changed": true,
+									"shared": false,
+									"verdict": {
+										"passed": true,
+										"label": "Proven",
+										"reasons": []
+									},
+									"usedOn": [],
+									"usedBy": ["ExplorerIndex"],
+									"contains": [],
+									"targets": ["module"],
+									"components": 0,
+									"group": {
+										"id": "explorer-ui",
+										"title": "Explorer & navigation"
+									}
+								}
+							],
+							[]
+						]
 					},
 					{
 						"name": "catalogFilter.filter",
 						"type": "CatalogFilter",
 						"required": true,
-						"description": "Search text, changed-only flag and ordering. Search matches name, purpose and function symbols case-insensitively after trimming."
+						"description": "Search text (trimmed and matched case-insensitively against the row's name, entity name, unit title, summary and group title, and against its setting value, helper name or, for APIs, owned symbols, also with camel-case boundaries split), changedOnly, and order (name, name-desc, changed or failed). The optional verification ('all' or 'passed'; any other value keeps only unpassed rows), usage ('all' or 'shared'; any other value keeps only unshared rows) and groups (group ids; empty keeps every group) narrow the rows further.",
+						"examples": [
+							{
+								"search": "",
+								"changedOnly": false,
+								"order": "name",
+								"verification": "all",
+								"usage": "all",
+								"groups": []
+							},
+							{
+								"search": "table",
+								"changedOnly": true,
+								"order": "changed",
+								"verification": "passed",
+								"usage": "shared",
+								"groups": ["explorer-ui"]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "catalogFilter",
 						"type": "CatalogRow[]",
-						"description": "Matching rows in the requested order. Changed-first and failed-first ties sort by name; failed-first includes every verdict that is not passed. Function names, rather than hidden titles, define alphabetical ordering."
+						"description": "The rows that pass every filter, in filter.order; name orders use the helper name when a row has one, and changed or failed order put flagged rows first with ties sorted by name, where failed counts every verdict that is not passed.",
+						"examples": [
+							[
+								{
+									"entity": {
+										"id": "reports.component.harness-explorer-table",
+										"category": "components",
+										"role": "Component",
+										"name": "ExplorerTable",
+										"purpose": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+										"unit": {
+											"id": "reports.component.harness-explorer-table",
+											"kind": "component",
+											"status": "active",
+											"title": "Entity catalog table",
+											"responsibility": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+											"dependencies": [
+												{
+													"unit": "reports.function.entity-catalog",
+													"via": "import"
+												}
+											],
+											"scenarios": ["component-catalog-previews"],
+											"owns": {
+												"source": [
+													"packages/reports/src/components/explorer-ui/ExplorerTable.svelte"
+												],
+												"symbols": ["ExplorerTable"]
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/components/explorer-ui/ExplorerTable.svelte"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "b41f6c20a9e37d05",
+											"group": {
+												"id": "explorer-ui",
+												"title": "Explorer & navigation"
+											}
+										},
+										"verdict": {
+											"passed": true,
+											"label": "Proven",
+											"reasons": []
+										},
+										"change": "direct",
+										"appRoute": null
+									},
+									"id": "reports.component.harness-explorer-table",
+									"name": "ExplorerTable",
+									"summary": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+									"changed": true,
+									"shared": false,
+									"verdict": {
+										"passed": true,
+										"label": "Proven",
+										"reasons": []
+									},
+									"usedOn": [],
+									"usedBy": ["ExplorerIndex"],
+									"contains": [],
+									"targets": ["module"],
+									"components": 0,
+									"group": {
+										"id": "explorer-ui",
+										"title": "Explorer & navigation"
+									}
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "isShared",
@@ -197,24 +1244,168 @@
 						"name": "isShared.related",
 						"type": "Relations",
 						"required": true,
-						"description": "Resolved relations to inspect for shared use."
+						"description": "The resolved relations of one entity. Unless the unit is listed under functions, isShared reads only usedBy and pages and reports shared when either has more than one entry.",
+						"examples": [
+							{
+								"pages": [],
+								"usedBy": [],
+								"components": []
+							},
+							{
+								"pages": [],
+								"usedBy": [
+									{
+										"id": "reports.component.harness-explorer-index",
+										"category": "components",
+										"role": "Component",
+										"name": "ExplorerIndex",
+										"purpose": "Filters, orders and lists the rows of one explorer category.",
+										"unit": {
+											"id": "reports.component.harness-explorer-index",
+											"kind": "component",
+											"status": "active",
+											"title": "Explorer index",
+											"responsibility": "Filters, orders and lists the rows of one explorer category.",
+											"dependencies": [
+												{
+													"unit": "reports.function.entity-catalog",
+													"via": "import"
+												}
+											],
+											"scenarios": [],
+											"owns": {
+												"source": [
+													"packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte"
+												],
+												"symbols": ["ExplorerIndex"]
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "e27c95d0a14b6f38",
+											"group": {
+												"id": "explorer-ui",
+												"title": "Explorer & navigation"
+											}
+										},
+										"verdict": {
+											"passed": false,
+											"label": "Failed",
+											"reasons": ["Its verification record at this commit did not pass."]
+										},
+										"change": "indirect",
+										"appRoute": null
+									}
+								],
+								"components": []
+							}
+						]
 					},
 					{
 						"name": "isShared.unit",
 						"type": "ExplorerEntity['unit']",
 						"required": false,
-						"description": "For a function, use its recorded per-helper consumers; other entity kinds retain their existing relationship rules."
+						"default": "undefined",
+						"description": "The optional unit checked first. When explorerCategory lists it under functions, shared use is whether one of its helpers passes helperContract (pure and at least two distinct consumers); otherwise related alone decides.",
+						"examples": [
+							{
+								"id": "reports.function.entity-catalog",
+								"kind": "function",
+								"status": "active",
+								"title": "Entity collection rows",
+								"responsibility": "Lists concrete instantiated classes and pure helper exports; collections require shared owners, while relationships retain classes private to one owner. Relationship cards include pure single-consumer callees, while the public Helpers collection retains its shared eligibility rule.",
+								"dependencies": [
+									{
+										"unit": "reports.function.entity-usage",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": ["packages/reports/src/utils/explorer-ui/entityCatalog.ts"],
+									"symbols": ["isShared", "functionName", "byName", "entityCatalog", "listed"]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/utils/explorer-ui/entityCatalog.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "7d3a0e9f5c21b84e",
+								"helpers": [
+									{
+										"source": "packages/reports/src/utils/explorer-ui/entityCatalog.ts",
+										"name": "isShared",
+										"inputs": [
+											{
+												"name": "related",
+												"type": "Relations",
+												"required": true
+											},
+											{
+												"name": "unit",
+												"type": "ExplorerEntity['unit']",
+												"required": false
+											}
+										],
+										"output": "boolean"
+									},
+									{
+										"source": "packages/reports/src/utils/explorer-ui/entityCatalog.ts",
+										"name": "functionName",
+										"inputs": [
+											{
+												"name": "unit",
+												"type": "CatalogRow['entity']['unit']",
+												"required": true
+											}
+										],
+										"output": "string"
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "isShared",
 						"type": "boolean",
-						"description": "True when more than one entity uses the unit or more than one page shows it."
+						"description": "For a unit listed under functions, true when one of its helpers passes helperContract; otherwise true when usedBy or pages has more than one entry.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "functionName",
@@ -223,18 +1414,90 @@
 						"name": "functionName.unit",
 						"type": "CatalogRow['entity']['unit']",
 						"required": true,
-						"description": "The selected revision’s recorded exported shared helpers."
+						"description": "The unit whose recorded helpers are read. Only the name of its first helper is returned, and a unit that records no helpers gives an empty string.",
+						"examples": [
+							{
+								"id": "reports.function.entity-catalog",
+								"kind": "function",
+								"status": "active",
+								"title": "Entity collection rows",
+								"responsibility": "Lists concrete instantiated classes and pure helper exports; collections require shared owners, while relationships retain classes private to one owner. Relationship cards include pure single-consumer callees, while the public Helpers collection retains its shared eligibility rule.",
+								"dependencies": [
+									{
+										"unit": "reports.function.entity-usage",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": ["packages/reports/src/utils/explorer-ui/entityCatalog.ts"],
+									"symbols": ["isShared", "functionName", "byName", "entityCatalog", "listed"]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/utils/explorer-ui/entityCatalog.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "7d3a0e9f5c21b84e",
+								"helpers": [
+									{
+										"source": "packages/reports/src/utils/explorer-ui/entityCatalog.ts",
+										"name": "isShared",
+										"inputs": [
+											{
+												"name": "related",
+												"type": "Relations",
+												"required": true
+											},
+											{
+												"name": "unit",
+												"type": "ExplorerEntity['unit']",
+												"required": false
+											}
+										],
+										"output": "boolean"
+									},
+									{
+										"source": "packages/reports/src/utils/explorer-ui/entityCatalog.ts",
+										"name": "functionName",
+										"inputs": [
+											{
+												"name": "unit",
+												"type": "CatalogRow['entity']['unit']",
+												"required": true
+											}
+										],
+										"output": "string"
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "functionName",
 						"type": "string",
-						"description": "The first recorded helper name, or an empty string when no helper metadata is available."
+						"description": "The name of the unit's first recorded helper, or an empty string when the unit records no helpers.",
+						"examples": ["isShared", ""]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "byName",
@@ -243,23 +1506,187 @@
 						"name": "byName.left",
 						"type": "CatalogRow",
 						"required": true,
-						"description": "First catalog row compared by its canonical display name."
+						"description": "The first row to compare. Its key is its helper name when it has a helper, and its row name otherwise.",
+						"examples": [
+							{
+								"entity": {
+									"id": "reports.component.harness-explorer-table",
+									"category": "components",
+									"role": "Component",
+									"name": "ExplorerTable",
+									"purpose": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+									"unit": {
+										"id": "reports.component.harness-explorer-table",
+										"kind": "component",
+										"status": "active",
+										"title": "Entity catalog table",
+										"responsibility": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+										"dependencies": [
+											{
+												"unit": "reports.function.entity-catalog",
+												"via": "import"
+											}
+										],
+										"scenarios": ["component-catalog-previews"],
+										"owns": {
+											"source": [
+												"packages/reports/src/components/explorer-ui/ExplorerTable.svelte"
+											],
+											"symbols": ["ExplorerTable"]
+										},
+										"contract": {
+											"inputs": [],
+											"outputs": [],
+											"errors": []
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "packages/reports/src/components/explorer-ui/ExplorerTable.svelte"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"version": "b41f6c20a9e37d05",
+										"group": {
+											"id": "explorer-ui",
+											"title": "Explorer & navigation"
+										}
+									},
+									"verdict": {
+										"passed": true,
+										"label": "Proven",
+										"reasons": []
+									},
+									"change": "direct",
+									"appRoute": null
+								},
+								"id": "reports.component.harness-explorer-table",
+								"name": "ExplorerTable",
+								"summary": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+								"changed": true,
+								"shared": false,
+								"verdict": {
+									"passed": true,
+									"label": "Proven",
+									"reasons": []
+								},
+								"usedOn": [],
+								"usedBy": ["ExplorerIndex"],
+								"contains": [],
+								"targets": ["module"],
+								"components": 0,
+								"group": {
+									"id": "explorer-ui",
+									"title": "Explorer & navigation"
+								}
+							}
+						]
 					},
 					{
 						"name": "byName.right",
 						"type": "CatalogRow",
 						"required": true,
-						"description": "Second catalog row compared case-insensitively with the first."
+						"description": "The second row to compare, keyed the same way as left and compared with the English locale at base sensitivity, so letter case and accents are ignored.",
+						"examples": [
+							{
+								"entity": {
+									"id": "reports.component.harness-explorer-index",
+									"category": "components",
+									"role": "Component",
+									"name": "ExplorerIndex",
+									"purpose": "Filters, orders and lists the rows of one explorer category.",
+									"unit": {
+										"id": "reports.component.harness-explorer-index",
+										"kind": "component",
+										"status": "active",
+										"title": "Explorer index",
+										"responsibility": "Filters, orders and lists the rows of one explorer category.",
+										"dependencies": [
+											{
+												"unit": "reports.function.entity-catalog",
+												"via": "import"
+											}
+										],
+										"scenarios": [],
+										"owns": {
+											"source": [
+												"packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte"
+											],
+											"symbols": ["ExplorerIndex"]
+										},
+										"contract": {
+											"inputs": [],
+											"outputs": [],
+											"errors": []
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"version": "e27c95d0a14b6f38",
+										"group": {
+											"id": "explorer-ui",
+											"title": "Explorer & navigation"
+										}
+									},
+									"verdict": {
+										"passed": false,
+										"label": "Failed",
+										"reasons": ["Its verification record at this commit did not pass."]
+									},
+									"change": "indirect",
+									"appRoute": null
+								},
+								"id": "reports.component.harness-explorer-index",
+								"name": "ExplorerIndex",
+								"summary": "Filters, orders and lists the rows of one explorer category.",
+								"changed": false,
+								"shared": false,
+								"verdict": {
+									"passed": false,
+									"label": "Failed",
+									"reasons": ["Its verification record at this commit did not pass."]
+								},
+								"usedOn": ["Component catalog"],
+								"usedBy": [],
+								"contains": ["ExplorerTable"],
+								"targets": ["module"],
+								"components": 1,
+								"group": {
+									"id": "explorer-ui",
+									"title": "Explorer & navigation"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "byName",
-						"type": "number"
+						"type": "number",
+						"description": "Negative when left sorts before right, zero when the keys compare equal, and positive when left sorts after right.",
+						"examples": [-1, 0, 1]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "entityCatalog",
@@ -268,37 +1695,326 @@
 						"name": "entityCatalog.entities",
 						"type": "ExplorerEntity[]",
 						"required": true,
-						"description": "Entities available at the shown revision."
+						"description": "Entities available at the shown revision; only those whose category is the requested one are read, and for configs only units of kind config are kept.",
+						"examples": [
+							[
+								{
+									"id": "reports.component.harness-explorer-table",
+									"category": "components",
+									"role": "Component",
+									"name": "ExplorerTable",
+									"purpose": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+									"unit": {
+										"id": "reports.component.harness-explorer-table",
+										"kind": "component",
+										"status": "active",
+										"title": "Entity catalog table",
+										"responsibility": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+										"dependencies": [
+											{
+												"unit": "reports.function.entity-catalog",
+												"via": "import"
+											}
+										],
+										"scenarios": ["component-catalog-previews"],
+										"owns": {
+											"source": [
+												"packages/reports/src/components/explorer-ui/ExplorerTable.svelte"
+											],
+											"symbols": ["ExplorerTable"]
+										},
+										"contract": {
+											"inputs": [],
+											"outputs": [],
+											"errors": []
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "packages/reports/src/components/explorer-ui/ExplorerTable.svelte"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"version": "b41f6c20a9e37d05",
+										"group": {
+											"id": "explorer-ui",
+											"title": "Explorer & navigation"
+										}
+									},
+									"verdict": {
+										"passed": true,
+										"label": "Proven",
+										"reasons": []
+									},
+									"change": "direct",
+									"appRoute": null
+								},
+								{
+									"id": "reports.component.harness-explorer-index",
+									"category": "components",
+									"role": "Component",
+									"name": "ExplorerIndex",
+									"purpose": "Filters, orders and lists the rows of one explorer category.",
+									"unit": {
+										"id": "reports.component.harness-explorer-index",
+										"kind": "component",
+										"status": "active",
+										"title": "Explorer index",
+										"responsibility": "Filters, orders and lists the rows of one explorer category.",
+										"dependencies": [
+											{
+												"unit": "reports.function.entity-catalog",
+												"via": "import"
+											}
+										],
+										"scenarios": [],
+										"owns": {
+											"source": [
+												"packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte"
+											],
+											"symbols": ["ExplorerIndex"]
+										},
+										"contract": {
+											"inputs": [],
+											"outputs": [],
+											"errors": []
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"version": "e27c95d0a14b6f38",
+										"group": {
+											"id": "explorer-ui",
+											"title": "Explorer & navigation"
+										}
+									},
+									"verdict": {
+										"passed": false,
+										"label": "Failed",
+										"reasons": ["Its verification record at this commit did not pass."]
+									},
+									"change": "indirect",
+									"appRoute": null
+								}
+							]
+						]
 					},
 					{
 						"name": "entityCatalog.category",
 						"type": "ExplorerCategory",
 						"required": true,
-						"description": "Category to list."
+						"description": "The category to list; entities of other categories are skipped, and services, functions and configs each apply their own admission rules.",
+						"examples": ["components", "functions"]
 					},
 					{
 						"name": "entityCatalog.relations",
 						"type": "(id: string) => Relations",
 						"required": true,
-						"description": "Lookup called once for each entity in the requested category."
+						"description": "Lookup called once for each entity in the requested category, with the entity id, to return that entity's relations."
 					},
 					{
 						"name": "entityCatalog.options",
 						"type": "{ related?: boolean; consumers?: ExplorerEntity[]; revision?: HarnessRevision }",
 						"required": false,
 						"default": {},
-						"description": "Resolve admission and footer identity from active revision owners, including private named callers; public collections remain filtered."
+						"description": "With related, a service needs one usable owner instead of two, a function keeps its pure helpers (or its own row when it has none), and configs keep one row per module instead of one per variable. consumers, when given, replaces entities as the list usage owners are resolved from, and revision is passed to that resolution.",
+						"examples": [
+							{},
+							{
+								"related": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "entityCatalog",
 						"type": "CatalogRow[]",
-						"description": "Sorted rows retaining distinct resolved consumers of every module kind, excluding removed entries and helper owner self-references, so rendering can indicate overflow. Related configs produce one module row; config collections expose variable rows."
+						"description": "The category's rows, sorted by byName, each with its relations and verdict; a service needs enough usable owners, a function yields one row per admitted helper (or, under related, its own row when none is pure), and a config yields one row per variable unless related. A service's usedIn lists the distinct owners other than the service itself that are active and not removed.",
+						"examples": [
+							[
+								{
+									"entity": {
+										"id": "reports.component.harness-explorer-index",
+										"category": "components",
+										"role": "Component",
+										"name": "ExplorerIndex",
+										"purpose": "Filters, orders and lists the rows of one explorer category.",
+										"unit": {
+											"id": "reports.component.harness-explorer-index",
+											"kind": "component",
+											"status": "active",
+											"title": "Explorer index",
+											"responsibility": "Filters, orders and lists the rows of one explorer category.",
+											"dependencies": [
+												{
+													"unit": "reports.function.entity-catalog",
+													"via": "import"
+												}
+											],
+											"scenarios": [],
+											"owns": {
+												"source": [
+													"packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte"
+												],
+												"symbols": ["ExplorerIndex"]
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "e27c95d0a14b6f38",
+											"group": {
+												"id": "explorer-ui",
+												"title": "Explorer & navigation"
+											}
+										},
+										"verdict": {
+											"passed": false,
+											"label": "Failed",
+											"reasons": ["Its verification record at this commit did not pass."]
+										},
+										"change": "indirect",
+										"appRoute": null
+									},
+									"id": "reports.component.harness-explorer-index",
+									"name": "ExplorerIndex",
+									"summary": "Filters, orders and lists the rows of one explorer category.",
+									"changed": false,
+									"shared": false,
+									"verdict": {
+										"passed": false,
+										"label": "Failed",
+										"reasons": ["Its verification record at this commit did not pass."]
+									},
+									"usedOn": ["Component catalog"],
+									"usedBy": [],
+									"contains": ["ExplorerTable"],
+									"targets": ["module"],
+									"components": 1,
+									"group": {
+										"id": "explorer-ui",
+										"title": "Explorer & navigation"
+									}
+								},
+								{
+									"entity": {
+										"id": "reports.component.harness-explorer-table",
+										"category": "components",
+										"role": "Component",
+										"name": "ExplorerTable",
+										"purpose": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+										"unit": {
+											"id": "reports.component.harness-explorer-table",
+											"kind": "component",
+											"status": "active",
+											"title": "Entity catalog table",
+											"responsibility": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+											"dependencies": [
+												{
+													"unit": "reports.function.entity-catalog",
+													"via": "import"
+												}
+											],
+											"scenarios": ["component-catalog-previews"],
+											"owns": {
+												"source": [
+													"packages/reports/src/components/explorer-ui/ExplorerTable.svelte"
+												],
+												"symbols": ["ExplorerTable"]
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/components/explorer-ui/ExplorerTable.svelte"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "b41f6c20a9e37d05",
+											"group": {
+												"id": "explorer-ui",
+												"title": "Explorer & navigation"
+											}
+										},
+										"verdict": {
+											"passed": true,
+											"label": "Proven",
+											"reasons": []
+										},
+										"change": "direct",
+										"appRoute": null
+									},
+									"id": "reports.component.harness-explorer-table",
+									"name": "ExplorerTable",
+									"summary": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
+									"changed": true,
+									"shared": false,
+									"verdict": {
+										"passed": true,
+										"label": "Proven",
+										"reasons": []
+									},
+									"usedOn": [],
+									"usedBy": ["ExplorerIndex"],
+									"contains": [],
+									"targets": ["module"],
+									"components": 0,
+									"group": {
+										"id": "explorer-ui",
+										"title": "Explorer & navigation"
+									}
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "listed",
@@ -307,25 +2023,31 @@
 						"name": "listed.names",
 						"type": "string[]",
 						"required": true,
-						"description": "Names to summarize in a table cell."
+						"description": "The names to summarize, in the order given; an empty list gives 'none'.",
+						"examples": [
+							["ExplorerTable", "ExplorerIndex", "EntityRelations"],
+							[]
+						]
 					},
 					{
 						"name": "listed.most",
 						"type": "number",
 						"required": false,
 						"default": 1,
-						"description": "Maximum names to show before the remainder count; defaults to one."
+						"description": "The most names shown before the remainder count; with more names than this, the first most names are shown followed by '+ N more'. Defaults to 1.",
+						"examples": [1, 2]
 					}
 				],
 				"outputs": [
 					{
 						"name": "listed",
 						"type": "string",
-						"description": "none for an empty list; otherwise names joined by middle dots, with a remainder count when the limit is exceeded."
+						"description": "'none' for an empty list; otherwise the names joined with ' · ', or, when there are more names than most, the first most names followed by ' + N more'.",
+						"examples": ["none", "ExplorerTable · ExplorerIndex", "ExplorerTable + 2 more"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
