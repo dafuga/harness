@@ -28,11 +28,13 @@ test('capture orchestration archives actual native assertion events and observed
 
 test('capture orchestration retains original clips without creating warm browser work', async () => {
 	expect(typeof new VideoCaptureService().record).toBe('function');
-	await measureWorkload(
-		'service.verification-evidence-video-capture',
-		'cold-warm-input-lifecycle',
-		async () => expect(await withTempRepo(assertCaptureLifecycle)).toEqual(['component.player'])
-	);
+	await expect(
+		measureWorkload(
+			'service.verification-evidence-video-capture',
+			'cold-warm-input-lifecycle',
+			() => withTempRepo(assertCaptureLifecycle)
+		)
+	).resolves.toEqual({ registered: ['component.player'], aliases: 2 });
 }, 30_000);
 
 test('capture orchestration refuses unbound recording before scripts or browser creation', async () => {

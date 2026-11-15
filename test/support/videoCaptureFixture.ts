@@ -64,7 +64,7 @@ export async function videoCaptureFixture({ root, git }: TemporaryRepo) {
 			proposals.unshift({
 				capture: {
 					...capture,
-					path: `evidence/${result.source.commit}/pilot/${capture.path}`,
+					path: `evidence/${result.source.commit}/pilot/${capture.video!.clipId}/clip.mp4`,
 					videoReference: {
 						...capture.videoReference!,
 						record: 'a'.repeat(64),
