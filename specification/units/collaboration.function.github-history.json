@@ -21,52 +21,61 @@
 				"name": "githubHistory.adapter",
 				"type": "SourceAdapter",
 				"required": true,
-				"description": "Source adapter for resolving refs and reading immutable trees."
+				"description": "Source adapter providing resolve(repository, ref) for branch refs and commit ids in commits(), optionalRef() and historyPage(), and tree(repository, commit) for the entries that changed() compares. This unit uses those return values as given, without parsing them, and lets any error they throw propagate unchanged."
 			},
 			{
 				"name": "githubHistory.options",
 				"type": "Omit<GitHubOptions, 'repository'>",
 				"required": true,
-				"description": "Scoped token callback and optional fetch implementation."
+				"description": "Token callback and optional fetch implementation: each method builds githubTransport({ ...options, repository }, 'read') for the repository it receives, so the token is requested for contents read permission on that repository's installation and repository id, and fetch falls back to the global fetch when omitted."
 			},
 			{
 				"name": "ensureAncestry.client",
 				"type": "GitHubTransport",
 				"required": true,
-				"description": "Transport used to compare the requested commit with the branch tip."
+				"description": "Transport whose request(path) makes the one compare call GET /compare/{commit}...{tip}, which is skipped when commit equals tip; ensureAncestry adds no error handling around that call."
 			},
 			{
 				"name": "ensureAncestry.commit",
 				"type": "string",
 				"required": true,
-				"description": "Commit that must equal the tip or be its ancestor."
+				"description": "Commit that ensureAncestry checks against tip: a value equal to tip passes without a request, otherwise GitHub's compare must report status ahead or identical with this value as merge_base_commit.sha. The function does not validate the string's format.",
+				"examples": [
+					"3f9c1a7e5b2d84f06c1e9a3b7d5f2e8c4a6b0d17",
+					"b41e8d02f7a9c3516e2d0b8f4a7c9e13d5f6a208"
+				]
 			},
 			{
 				"name": "ensureAncestry.tip",
 				"type": "string",
 				"required": true,
-				"description": "Branch-tip commit to compare against."
+				"description": "Branch-tip commit used as the head of the compare request and as the value that commit is compared with for equality; the function does not validate its format.",
+				"examples": [
+					"9d2c6f0a4e8b1375c9a2d4f6e8b0c1a3d5f7e9b2",
+					"e70a5b3c9d1f4286a0e3c7b5d9f1a2e4c6b8d0f3"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ensureAncestry",
 				"type": "Promise<void>",
-				"description": "Resolves without a value when the commits match or GitHub confirms the requested ancestor."
+				"description": "Resolves with no value when commit equals tip or when the compare response reports status ahead or identical with commit as merge_base_commit.sha; every other outcome rejects, as listed in errors."
 			},
 			{
 				"name": "githubHistory",
 				"type": "Omit<SourceHistoryAdapter, keyof SourceAdapter | 'raw' | 'rawMany'>",
-				"description": "History methods that list branches and commits, compare each commit to its first parent, resolve optional refs, read facts and test reachability."
+				"description": "Object of seven methods (historyPage, branches, commits, changed, optionalRef, facts, reaches), each building a read transport from the options for the repository it is given on every call. They list branches and history, return the non-tree paths that changed against a commit's first parent (all non-tree paths for a root commit), return the adapter's resolution of an optional ref or null when GitHub has no such ref, and read commit facts and reachability."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects unreachable anchors, invalid input or source data, unavailable GitHub and histories exceeding 100 pages of 100 records."
+				"description": "Plain Error (not an ExpectedCliError, so isExpectedCliError() returns false) made by fail(code), with the message 'Collaboration <code>' and a code property of invalid-input, invalid-path, invalid-ref, ref-mismatch, history-limit, unreachable-anchor, github-unavailable, repository-denied or commit-mismatch. Errors thrown by adapter.resolve and adapter.tree are not wrapped and reach the caller unchanged."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "githubHistory",
@@ -75,24 +84,24 @@
 						"name": "githubHistory.adapter",
 						"type": "SourceAdapter",
 						"required": true,
-						"description": "Source adapter for resolving refs and reading immutable trees."
+						"description": "Source adapter providing resolve(repository, ref) for branch refs and commit ids in commits(), optionalRef() and historyPage(), and tree(repository, commit) for the entries that changed() compares. This unit uses those return values as given, without parsing them, and lets any error they throw propagate unchanged."
 					},
 					{
 						"name": "githubHistory.options",
 						"type": "Omit<GitHubOptions, 'repository'>",
 						"required": true,
-						"description": "Scoped token callback and optional fetch implementation."
+						"description": "Token callback and optional fetch implementation: each method builds githubTransport({ ...options, repository }, 'read') for the repository it receives, so the token is requested for contents read permission on that repository's installation and repository id, and fetch falls back to the global fetch when omitted."
 					}
 				],
 				"outputs": [
 					{
 						"name": "githubHistory",
 						"type": "Omit<SourceHistoryAdapter, keyof SourceAdapter | 'raw' | 'rawMany'>",
-						"description": "History methods that list branches and commits, compare each commit to its first parent, resolve optional refs, read facts and test reachability."
+						"description": "Object of seven methods (historyPage, branches, commits, changed, optionalRef, facts, reaches), each building a read transport from the options for the repository it is given on every call. They list branches and history, return the non-tree paths that changed against a commit's first parent (all non-tree paths for a root commit), return the adapter's resolution of an optional ref or null when GitHub has no such ref, and read commit facts and reachability."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ensureAncestry",
@@ -101,35 +110,44 @@
 						"name": "ensureAncestry.client",
 						"type": "GitHubTransport",
 						"required": true,
-						"description": "Transport used to compare the requested commit with the branch tip."
+						"description": "Transport whose request(path) makes the one compare call GET /compare/{commit}...{tip}, which is skipped when commit equals tip; ensureAncestry adds no error handling around that call."
 					},
 					{
 						"name": "ensureAncestry.commit",
 						"type": "string",
 						"required": true,
-						"description": "Commit that must equal the tip or be its ancestor."
+						"description": "Commit that ensureAncestry checks against tip: a value equal to tip passes without a request, otherwise GitHub's compare must report status ahead or identical with this value as merge_base_commit.sha. The function does not validate the string's format.",
+						"examples": [
+							"3f9c1a7e5b2d84f06c1e9a3b7d5f2e8c4a6b0d17",
+							"b41e8d02f7a9c3516e2d0b8f4a7c9e13d5f6a208"
+						]
 					},
 					{
 						"name": "ensureAncestry.tip",
 						"type": "string",
 						"required": true,
-						"description": "Branch-tip commit to compare against."
+						"description": "Branch-tip commit used as the head of the compare request and as the value that commit is compared with for equality; the function does not validate its format.",
+						"examples": [
+							"9d2c6f0a4e8b1375c9a2d4f6e8b0c1a3d5f7e9b2",
+							"e70a5b3c9d1f4286a0e3c7b5d9f1a2e4c6b8d0f3"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ensureAncestry",
 						"type": "Promise<void>",
-						"description": "Resolves without a value when the commits match or GitHub confirms the requested ancestor."
+						"description": "Resolves with no value when commit equals tip or when the compare response reports status ahead or identical with commit as merge_base_commit.sha; every other outcome rejects, as listed in errors."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Plain Error (not an ExpectedCliError) made by fail(code): unreachable-anchor when the compare response is not ahead or identical with commit as merge_base_commit.sha, invalid-input when the response has the wrong shape, and invalid-path when commit or tip puts a '..' segment in the compare path. Any non-2xx compare response, 404 included, and any failure in the transport's token, fetch or response read is github-unavailable."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
