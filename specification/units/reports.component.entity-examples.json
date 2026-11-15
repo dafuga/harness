@@ -27,40 +27,85 @@
 				"type": "UnitDocumentation",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Documentation read from this entity at the selected commit; absent or invalid content shows a gap."
+				"description": "The documentation read from this entity at the selected commit, supplying its examples, optional setup and optional gap reason. Without documentation, only the 'No usage examples are documented at this commit.' notice shows; the gap reason shows beneath that notice only when there are no examples, and the Markdown text and path are never rendered.",
+				"examples": [
+					{
+						"path": "specification/examples/service.agent-activity.md",
+						"setup": "// As runActivity.ts creates it; ProjectActivityService.show passes its own root and checkouts.\nconst root = await activityRoot();\nconst checkouts = await new ProjectWorkRepository(root).checkouts();\nconst agents = new AgentActivityService(root, checkouts);",
+						"examples": [
+							{
+								"name": "Refuse a registration that does not say who the agent is",
+								"call": "await agents.register({ task: \"Document service examples\" })",
+								"input": {
+									"task": "Document service examples"
+								},
+								"error": {
+									"name": "ExpectedCliError",
+									"message": "--label must say who the agent is."
+								}
+							},
+							{
+								"name": "Finish with an outcome",
+								"call": "// Resolves with no value, shown as null.\nawait agents.finish(agentId, false, \"Service examples documented\")",
+								"input": ["<agentId>", false, "Service examples documented"],
+								"output": null
+							}
+						]
+					},
+					{
+						"path": "packages/reports/src/utils/projects-sessions/activityReading.md",
+						"examples": [
+							{
+								"name": "Fresh sample",
+								"call": "activityReading(\n  { tracking: \"available\", working: 0, unreadable: 0, roster: [] },\n  \"2026-10-11T12:00:00Z\",\n  Date.parse(\"2026-10-11T12:00:05Z\")\n).current",
+								"input": {
+									"sampleAgeSeconds": 5
+								},
+								"output": true
+							}
+						]
+					},
+					{
+						"path": "specification/examples/service.agent-activity.md",
+						"examples": [],
+						"gap": "The document is not available at this commit."
+					}
+				]
 			},
 			{
 				"name": "EntityExamples.setupTitle",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional heading for setup shown once before documented calls."
+				"description": "Heading shown once above the documented setup code, instead of repeating that code before each example; it matters only when examples are documented, and an empty string counts as absent. When setupTitle is given without a documented setup, the note 'How to create it is not documented at this commit.' shows instead of a heading.",
+				"examples": ["Create the service", "Create the formatter"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityExamples",
 				"type": "markup",
-				"description": "Only example titles and code snippets, or a stated gap when documentation is absent."
+				"description": "Markup of each documented example's title and code, with its expected output or thrown error as a comment, and the documented setup under the setupTitle heading or before each call. Without documented examples it shows only the 'No usage examples are documented at this commit.' notice, followed by the documentation's gap reason when one is present."
 			}
 		],
 		"errors": [
 			{
 				"name": "TypeError",
 				"type": "thrown",
-				"description": "An example containing BigInt cannot be serialized."
+				"description": "Thrown while formatting an example when a BigInt appears in its output or error, or in its input when the example has no call, because JSON serialization cannot format it."
 			},
 			{
 				"name": "RangeError",
 				"type": "thrown",
-				"description": "The recursive formatter cannot render a circular example."
+				"description": "Thrown while formatting an example whose value contains itself or nests deeper than the call stack allows, because the formatter recurses without a limit."
 			},
 			{
 				"name": "Value access or conversion error",
 				"type": "thrown",
-				"description": "A supplied getter, proxy or value conversion callback can throw while formatting an example."
+				"description": "Thrown when a getter or Proxy trap on an example or on the documentation throws while it is read, and that error propagates unchanged."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
