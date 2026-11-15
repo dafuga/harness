@@ -21,35 +21,380 @@
 				"name": "entityMetricComparison.host",
 				"type": "MetricHost",
 				"required": true,
-				"description": "The viewed revision, optional first-parent revision and explorer route used to determine whether a Page comparison applies."
+				"description": "The shown head revision, its first-parent revision and the explorer route, whose category must be 'pages'; a null parent, as for a first commit, yields no comparison. The parent's newest valid verdict record and its focused regression observations supply the before measure.",
+				"examples": [
+					{
+						"head": {
+							"commit": "e4c1a92f7b0d3856ac19f2e47d0b8e61c53a9d07",
+							"registry": {
+								"available": true,
+								"units": [
+									{
+										"id": "reports.page.harness-branch-branch-at-models",
+										"kind": "page",
+										"status": "active",
+										"title": "/harness/branch/[branch]/[...at]/models",
+										"responsibility": "Owns the /harness/branch/[branch]/[...at]/models route page.",
+										"dependencies": [
+											{
+												"unit": "reports.component.harness-explorer-catalog-screen",
+												"via": "import"
+											},
+											{
+												"unit": "reports.component.harness-screen",
+												"via": "import"
+											}
+										],
+										"scenarios": [],
+										"owns": {
+											"source": [
+												"packages/reports/src/routes/harness/branch/[branch]/[...at]/models/+page.svelte"
+											],
+											"symbols": ["+page"]
+										},
+										"contract": {
+											"inputs": [],
+											"outputs": [
+												{
+													"name": "+page",
+													"type": "markup"
+												}
+											],
+											"errors": []
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "packages/reports/src/routes/harness/branch/[branch]/[...at]/models/+page.svelte"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"sourceMeasurements": [
+											{
+												"unit": "reports.page.harness-branch-branch-at-models",
+												"metric": "source-bytes",
+												"unitOfMeasure": "bytes",
+												"value": 19104,
+												"workload": null,
+												"profile": null
+											},
+											{
+												"unit": "reports.page.harness-branch-branch-at-models",
+												"metric": "complexity",
+												"unitOfMeasure": "points",
+												"value": 44,
+												"workload": null,
+												"profile": null
+											}
+										],
+										"version": "5d1e8a03c47b9f26"
+									}
+								],
+								"scenarios": [],
+								"graph": {
+									"edges": []
+								}
+							},
+							"comparison": null,
+							"records": [],
+							"explanations": []
+						},
+						"parent": {
+							"commit": "9a2f6c1e0d7b4835f1e9c02a6b7d3e48a0c5f619",
+							"registry": {
+								"available": true,
+								"units": [
+									{
+										"id": "reports.page.harness-branch-branch-at-models",
+										"kind": "page",
+										"status": "active",
+										"title": "/harness/branch/[branch]/[...at]/models",
+										"responsibility": "Owns the /harness/branch/[branch]/[...at]/models route page.",
+										"dependencies": [
+											{
+												"unit": "reports.component.harness-explorer-catalog-screen",
+												"via": "import"
+											},
+											{
+												"unit": "reports.component.harness-screen",
+												"via": "import"
+											}
+										],
+										"scenarios": [],
+										"owns": {
+											"source": [
+												"packages/reports/src/routes/harness/branch/[branch]/[...at]/models/+page.svelte"
+											],
+											"symbols": ["+page"]
+										},
+										"contract": {
+											"inputs": [],
+											"outputs": [
+												{
+													"name": "+page",
+													"type": "markup"
+												}
+											],
+											"errors": []
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "packages/reports/src/routes/harness/branch/[branch]/[...at]/models/+page.svelte"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"sourceMeasurements": [
+											{
+												"unit": "reports.page.harness-branch-branch-at-models",
+												"metric": "source-bytes",
+												"unitOfMeasure": "bytes",
+												"value": 18432,
+												"workload": null,
+												"profile": null
+											},
+											{
+												"unit": "reports.page.harness-branch-branch-at-models",
+												"metric": "complexity",
+												"unitOfMeasure": "points",
+												"value": 42,
+												"workload": null,
+												"profile": null
+											}
+										],
+										"version": "a7f0c4e19b26d803"
+									}
+								],
+								"scenarios": [],
+								"graph": {
+									"edges": []
+								}
+							},
+							"comparison": null,
+							"records": [],
+							"explanations": []
+						},
+						"route": {
+							"branch": "main",
+							"commit": "e4c1a92f7b0d3856ac19f2e47d0b8e61c53a9d07",
+							"category": "pages",
+							"entity": "reports.page.harness-branch-branch-at-models"
+						}
+					}
+				]
 			},
 			{
 				"name": "entityMetricComparison.entity",
 				"type": "ExplorerEntity",
 				"required": true,
-				"description": "The viewed entity; comparisons require an active Page in both registries and exclude entities shown from a removed revision."
+				"description": "The explorer entity being compared; only its id, category and lastAt are read. It must have category 'pages' and no lastAt, since a unit the shown commit removed carries one, and its id must match an active unit in both the head and the parent registries.",
+				"examples": [
+					{
+						"id": "reports.page.harness-branch-branch-at-models",
+						"category": "pages",
+						"role": "Page",
+						"name": "Models",
+						"purpose": "Owns the /harness/branch/[branch]/[...at]/models route page.",
+						"unit": {
+							"id": "reports.page.harness-branch-branch-at-models",
+							"kind": "page",
+							"status": "active",
+							"title": "/harness/branch/[branch]/[...at]/models",
+							"responsibility": "Owns the /harness/branch/[branch]/[...at]/models route page.",
+							"dependencies": [
+								{
+									"unit": "reports.component.harness-explorer-catalog-screen",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.harness-screen",
+									"via": "import"
+								}
+							],
+							"scenarios": [],
+							"owns": {
+								"source": [
+									"packages/reports/src/routes/harness/branch/[branch]/[...at]/models/+page.svelte"
+								],
+								"symbols": ["+page"]
+							},
+							"contract": {
+								"inputs": [],
+								"outputs": [
+									{
+										"name": "+page",
+										"type": "markup"
+									}
+								],
+								"errors": []
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/reports/src/routes/harness/branch/[branch]/[...at]/models/+page.svelte"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"sourceMeasurements": [
+								{
+									"unit": "reports.page.harness-branch-branch-at-models",
+									"metric": "source-bytes",
+									"unitOfMeasure": "bytes",
+									"value": 19104,
+									"workload": null,
+									"profile": null
+								},
+								{
+									"unit": "reports.page.harness-branch-branch-at-models",
+									"metric": "complexity",
+									"unitOfMeasure": "points",
+									"value": 44,
+									"workload": null,
+									"profile": null
+								}
+							],
+							"version": "5d1e8a03c47b9f26"
+						},
+						"verdict": {
+							"passed": false,
+							"label": "Evidence missing",
+							"reasons": ["No verification record is attached to this commit."]
+						},
+						"change": null,
+						"appRoute": "/harness/branch/[branch]/[...at]/models"
+					}
+				]
 			},
 			{
 				"name": "entityMetricComparison.measure",
 				"type": "EntityMeasure",
 				"required": true,
-				"description": "The caller-provided current measurement profile to pair with measurements derived from the parent revision."
+				"description": "The caller's current measurement profile of the entity, as size and performance rows. When a comparison applies it is returned unchanged as the after measure, paired with the head commit; when none applies it is not read.",
+				"examples": [
+					{
+						"size": [
+							{
+								"label": "Source size",
+								"value": "19.1 KB",
+								"rawValue": 19104,
+								"unitOfMeasure": "bytes"
+							},
+							{
+								"label": "Emitted size",
+								"target": "none",
+								"value": "Not measured",
+								"rawValue": null,
+								"unitOfMeasure": "bytes",
+								"note": "This unit declares no process or Wasm output."
+							},
+							{
+								"label": "Complexity",
+								"value": "44",
+								"rawValue": 44
+							}
+						],
+						"performance": []
+					}
+				]
 			},
 			{
 				"name": "entityMetricComparison.helper",
 				"type": "string",
 				"required": false,
-				"description": "Optional selected helper name; a nonempty helper selection disables whole-Page measurement comparison."
+				"default": "undefined",
+				"description": "The name of a selected helper, or undefined for the whole Page. Any nonempty helper makes the function return null, since only whole-Page measurement is compared; an empty string does not.",
+				"examples": ["explorerVerdict", "entityMeasure"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "entityMetricComparison",
 				"type": "MetricComparison | null",
-				"description": "Current and first-parent commit/profile pairs, including eligible parent focused observations; null when the view or registry entries do not permit comparison."
+				"description": "The before side is the first parent's commit with its measure, built from the parent's active unit, its newest valid verdict record and the measurements of its regressions whose green phase is recorded at that commit or source tree; the after side is the head commit with the caller's measure. It is null when the route or entity is not a Page, a helper is selected, the entity carries lastAt, the parent is null, or either registry lacks an active unit with the entity's id.",
+				"examples": [
+					{
+						"before": {
+							"commit": "9a2f6c1e0d7b4835f1e9c02a6b7d3e48a0c5f619",
+							"measure": {
+								"size": [
+									{
+										"label": "Source size",
+										"value": "18.4 KB",
+										"rawValue": 18432,
+										"unitOfMeasure": "bytes"
+									},
+									{
+										"label": "Emitted size",
+										"target": "none",
+										"value": "Not measured",
+										"rawValue": null,
+										"unitOfMeasure": "bytes",
+										"note": "This unit declares no process or Wasm output."
+									},
+									{
+										"label": "Complexity",
+										"value": "42",
+										"rawValue": 42
+									}
+								],
+								"performance": []
+							}
+						},
+						"after": {
+							"commit": "e4c1a92f7b0d3856ac19f2e47d0b8e61c53a9d07",
+							"measure": {
+								"size": [
+									{
+										"label": "Source size",
+										"value": "19.1 KB",
+										"rawValue": 19104,
+										"unitOfMeasure": "bytes"
+									},
+									{
+										"label": "Emitted size",
+										"target": "none",
+										"value": "Not measured",
+										"rawValue": null,
+										"unitOfMeasure": "bytes",
+										"note": "This unit declares no process or Wasm output."
+									},
+									{
+										"label": "Complexity",
+										"value": "44",
+										"rawValue": 44
+									}
+								],
+								"performance": []
+							}
+						}
+					},
+					null
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "entityMetricComparison",
@@ -58,36 +403,380 @@
 						"name": "entityMetricComparison.host",
 						"type": "MetricHost",
 						"required": true,
-						"description": "The viewed revision, optional first-parent revision and explorer route used to determine whether a Page comparison applies."
+						"description": "The shown head revision, its first-parent revision and the explorer route, whose category must be 'pages'; a null parent, as for a first commit, yields no comparison. The parent's newest valid verdict record and its focused regression observations supply the before measure.",
+						"examples": [
+							{
+								"head": {
+									"commit": "e4c1a92f7b0d3856ac19f2e47d0b8e61c53a9d07",
+									"registry": {
+										"available": true,
+										"units": [
+											{
+												"id": "reports.page.harness-branch-branch-at-models",
+												"kind": "page",
+												"status": "active",
+												"title": "/harness/branch/[branch]/[...at]/models",
+												"responsibility": "Owns the /harness/branch/[branch]/[...at]/models route page.",
+												"dependencies": [
+													{
+														"unit": "reports.component.harness-explorer-catalog-screen",
+														"via": "import"
+													},
+													{
+														"unit": "reports.component.harness-screen",
+														"via": "import"
+													}
+												],
+												"scenarios": [],
+												"owns": {
+													"source": [
+														"packages/reports/src/routes/harness/branch/[branch]/[...at]/models/+page.svelte"
+													],
+													"symbols": ["+page"]
+												},
+												"contract": {
+													"inputs": [],
+													"outputs": [
+														{
+															"name": "+page",
+															"type": "markup"
+														}
+													],
+													"errors": []
+												},
+												"runtime": {
+													"kind": "module",
+													"targets": [
+														{
+															"kind": "module",
+															"entry": "packages/reports/src/routes/harness/branch/[branch]/[...at]/models/+page.svelte"
+														}
+													]
+												},
+												"budgets": {
+													"size": "frozen",
+													"complexity": "frozen",
+													"performance": []
+												},
+												"sourceMeasurements": [
+													{
+														"unit": "reports.page.harness-branch-branch-at-models",
+														"metric": "source-bytes",
+														"unitOfMeasure": "bytes",
+														"value": 19104,
+														"workload": null,
+														"profile": null
+													},
+													{
+														"unit": "reports.page.harness-branch-branch-at-models",
+														"metric": "complexity",
+														"unitOfMeasure": "points",
+														"value": 44,
+														"workload": null,
+														"profile": null
+													}
+												],
+												"version": "5d1e8a03c47b9f26"
+											}
+										],
+										"scenarios": [],
+										"graph": {
+											"edges": []
+										}
+									},
+									"comparison": null,
+									"records": [],
+									"explanations": []
+								},
+								"parent": {
+									"commit": "9a2f6c1e0d7b4835f1e9c02a6b7d3e48a0c5f619",
+									"registry": {
+										"available": true,
+										"units": [
+											{
+												"id": "reports.page.harness-branch-branch-at-models",
+												"kind": "page",
+												"status": "active",
+												"title": "/harness/branch/[branch]/[...at]/models",
+												"responsibility": "Owns the /harness/branch/[branch]/[...at]/models route page.",
+												"dependencies": [
+													{
+														"unit": "reports.component.harness-explorer-catalog-screen",
+														"via": "import"
+													},
+													{
+														"unit": "reports.component.harness-screen",
+														"via": "import"
+													}
+												],
+												"scenarios": [],
+												"owns": {
+													"source": [
+														"packages/reports/src/routes/harness/branch/[branch]/[...at]/models/+page.svelte"
+													],
+													"symbols": ["+page"]
+												},
+												"contract": {
+													"inputs": [],
+													"outputs": [
+														{
+															"name": "+page",
+															"type": "markup"
+														}
+													],
+													"errors": []
+												},
+												"runtime": {
+													"kind": "module",
+													"targets": [
+														{
+															"kind": "module",
+															"entry": "packages/reports/src/routes/harness/branch/[branch]/[...at]/models/+page.svelte"
+														}
+													]
+												},
+												"budgets": {
+													"size": "frozen",
+													"complexity": "frozen",
+													"performance": []
+												},
+												"sourceMeasurements": [
+													{
+														"unit": "reports.page.harness-branch-branch-at-models",
+														"metric": "source-bytes",
+														"unitOfMeasure": "bytes",
+														"value": 18432,
+														"workload": null,
+														"profile": null
+													},
+													{
+														"unit": "reports.page.harness-branch-branch-at-models",
+														"metric": "complexity",
+														"unitOfMeasure": "points",
+														"value": 42,
+														"workload": null,
+														"profile": null
+													}
+												],
+												"version": "a7f0c4e19b26d803"
+											}
+										],
+										"scenarios": [],
+										"graph": {
+											"edges": []
+										}
+									},
+									"comparison": null,
+									"records": [],
+									"explanations": []
+								},
+								"route": {
+									"branch": "main",
+									"commit": "e4c1a92f7b0d3856ac19f2e47d0b8e61c53a9d07",
+									"category": "pages",
+									"entity": "reports.page.harness-branch-branch-at-models"
+								}
+							}
+						]
 					},
 					{
 						"name": "entityMetricComparison.entity",
 						"type": "ExplorerEntity",
 						"required": true,
-						"description": "The viewed entity; comparisons require an active Page in both registries and exclude entities shown from a removed revision."
+						"description": "The explorer entity being compared; only its id, category and lastAt are read. It must have category 'pages' and no lastAt, since a unit the shown commit removed carries one, and its id must match an active unit in both the head and the parent registries.",
+						"examples": [
+							{
+								"id": "reports.page.harness-branch-branch-at-models",
+								"category": "pages",
+								"role": "Page",
+								"name": "Models",
+								"purpose": "Owns the /harness/branch/[branch]/[...at]/models route page.",
+								"unit": {
+									"id": "reports.page.harness-branch-branch-at-models",
+									"kind": "page",
+									"status": "active",
+									"title": "/harness/branch/[branch]/[...at]/models",
+									"responsibility": "Owns the /harness/branch/[branch]/[...at]/models route page.",
+									"dependencies": [
+										{
+											"unit": "reports.component.harness-explorer-catalog-screen",
+											"via": "import"
+										},
+										{
+											"unit": "reports.component.harness-screen",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"packages/reports/src/routes/harness/branch/[branch]/[...at]/models/+page.svelte"
+										],
+										"symbols": ["+page"]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [
+											{
+												"name": "+page",
+												"type": "markup"
+											}
+										],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/routes/harness/branch/[branch]/[...at]/models/+page.svelte"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"sourceMeasurements": [
+										{
+											"unit": "reports.page.harness-branch-branch-at-models",
+											"metric": "source-bytes",
+											"unitOfMeasure": "bytes",
+											"value": 19104,
+											"workload": null,
+											"profile": null
+										},
+										{
+											"unit": "reports.page.harness-branch-branch-at-models",
+											"metric": "complexity",
+											"unitOfMeasure": "points",
+											"value": 44,
+											"workload": null,
+											"profile": null
+										}
+									],
+									"version": "5d1e8a03c47b9f26"
+								},
+								"verdict": {
+									"passed": false,
+									"label": "Evidence missing",
+									"reasons": ["No verification record is attached to this commit."]
+								},
+								"change": null,
+								"appRoute": "/harness/branch/[branch]/[...at]/models"
+							}
+						]
 					},
 					{
 						"name": "entityMetricComparison.measure",
 						"type": "EntityMeasure",
 						"required": true,
-						"description": "The caller-provided current measurement profile to pair with measurements derived from the parent revision."
+						"description": "The caller's current measurement profile of the entity, as size and performance rows. When a comparison applies it is returned unchanged as the after measure, paired with the head commit; when none applies it is not read.",
+						"examples": [
+							{
+								"size": [
+									{
+										"label": "Source size",
+										"value": "19.1 KB",
+										"rawValue": 19104,
+										"unitOfMeasure": "bytes"
+									},
+									{
+										"label": "Emitted size",
+										"target": "none",
+										"value": "Not measured",
+										"rawValue": null,
+										"unitOfMeasure": "bytes",
+										"note": "This unit declares no process or Wasm output."
+									},
+									{
+										"label": "Complexity",
+										"value": "44",
+										"rawValue": 44
+									}
+								],
+								"performance": []
+							}
+						]
 					},
 					{
 						"name": "entityMetricComparison.helper",
 						"type": "string",
 						"required": false,
-						"description": "Optional selected helper name; a nonempty helper selection disables whole-Page measurement comparison."
+						"default": "undefined",
+						"description": "The name of a selected helper, or undefined for the whole Page. Any nonempty helper makes the function return null, since only whole-Page measurement is compared; an empty string does not.",
+						"examples": ["explorerVerdict", "entityMeasure"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "entityMetricComparison",
 						"type": "MetricComparison | null",
-						"description": "Current and first-parent commit/profile pairs, including eligible parent focused observations; null when the view or registry entries do not permit comparison."
+						"description": "The before side is the first parent's commit with its measure, built from the parent's active unit, its newest valid verdict record and the measurements of its regressions whose green phase is recorded at that commit or source tree; the after side is the head commit with the caller's measure. It is null when the route or entity is not a Page, a helper is selected, the entity carries lastAt, the parent is null, or either registry lacks an active unit with the entity's id.",
+						"examples": [
+							{
+								"before": {
+									"commit": "9a2f6c1e0d7b4835f1e9c02a6b7d3e48a0c5f619",
+									"measure": {
+										"size": [
+											{
+												"label": "Source size",
+												"value": "18.4 KB",
+												"rawValue": 18432,
+												"unitOfMeasure": "bytes"
+											},
+											{
+												"label": "Emitted size",
+												"target": "none",
+												"value": "Not measured",
+												"rawValue": null,
+												"unitOfMeasure": "bytes",
+												"note": "This unit declares no process or Wasm output."
+											},
+											{
+												"label": "Complexity",
+												"value": "42",
+												"rawValue": 42
+											}
+										],
+										"performance": []
+									}
+								},
+								"after": {
+									"commit": "e4c1a92f7b0d3856ac19f2e47d0b8e61c53a9d07",
+									"measure": {
+										"size": [
+											{
+												"label": "Source size",
+												"value": "19.1 KB",
+												"rawValue": 19104,
+												"unitOfMeasure": "bytes"
+											},
+											{
+												"label": "Emitted size",
+												"target": "none",
+												"value": "Not measured",
+												"rawValue": null,
+												"unitOfMeasure": "bytes",
+												"note": "This unit declares no process or Wasm output."
+											},
+											{
+												"label": "Complexity",
+												"value": "44",
+												"rawValue": 44
+											}
+										],
+										"performance": []
+									}
+								}
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
