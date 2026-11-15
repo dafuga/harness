@@ -16,7 +16,16 @@ test('unitIdentity derives kind and name from Harness scaffold folders', () => {
 		['src/configs/downloadsConfig.ts', 'config.downloads'],
 		['src/configs/downloads/transferConfig.ts', 'config.downloads-transfer'],
 		['src/config/downloadsConfig.ts', 'config.downloads'],
-		['src/audit/adapters/cpp.ts', 'audit.adapters-cpp'],
+		[
+			'src/audit/development-tooling/adapters/antelopeDapp.ts',
+			'audit.development-tooling-adapters-antelope-dapp'
+		],
+		['src/audit/development-tooling/adapters/cpp.ts', 'audit.development-tooling-adapters-cpp'],
+		[
+			'src/audit/development-tooling/adapters/python.ts',
+			'audit.development-tooling-adapters-python'
+		],
+		['src/audit/development-tooling/adapters/rust.ts', 'audit.development-tooling-adapters-rust'],
 		['src/components/EvidenceGrid.svelte', 'component.evidence-grid'],
 		[
 			'src/components/entity-contract/serviceMethods.ts',

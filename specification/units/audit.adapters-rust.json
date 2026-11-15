@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/adapters/rust.ts", "src/audit/development-tooling/adapters/rust.ts"],
-		"symbols": ["rustAdapter", "rustAdapter"]
+		"source": ["src/audit/development-tooling/adapters/rust.ts"],
+		"symbols": ["rustAdapter"]
 	},
 	"contract": {
 		"origin": "derived",

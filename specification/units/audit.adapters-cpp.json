@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/adapters/cpp.ts", "src/audit/development-tooling/adapters/cpp.ts"],
-		"symbols": ["cppAdapter", "cppAdapter"]
+		"source": ["src/audit/development-tooling/adapters/cpp.ts"],
+		"symbols": ["cppAdapter"]
 	},
 	"contract": {
 		"origin": "derived",

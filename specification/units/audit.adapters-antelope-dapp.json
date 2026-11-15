@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/audit/adapters/antelopeDapp.ts",
-			"src/audit/development-tooling/adapters/antelopeDapp.ts"
-		],
-		"symbols": ["antelopeDappAdapter", "antelopeDappAdapter"]
+		"source": ["src/audit/development-tooling/adapters/antelopeDapp.ts"],
+		"symbols": ["antelopeDappAdapter"]
 	},
 	"contract": {
 		"origin": "derived",
