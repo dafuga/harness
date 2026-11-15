@@ -15,46 +15,202 @@
 		"symbols": ["runImpact", "runtimeKind", "renderImpact", "ImpactOptions", "ImpactOptions"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "runImpact.options",
 				"type": "ImpactOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Chooses what to compare: root is the directory of the Git repository to read (default: the current directory), base is the revision to compare from (default: HEAD; 'none' compares against an empty starting point), head is the revision to compare to (default: the working tree), and runtime is module, wasm, process or http, or default for the measured choice on this machine (used when omitted). Every field is optional, so an empty object compares HEAD with the working tree of the repository in the current directory on the measured default runtime.",
+				"examples": [
+					{},
+					{
+						"base": "3f9c2a1b7d4e5f60718293a4b5c6d7e8f9012345",
+						"head": "9a8b7c6d5e4f30211a2b3c4d5e6f708192a3b4c5",
+						"runtime": "process"
+					},
+					{
+						"root": "/home/dev/harness",
+						"base": "none",
+						"runtime": "module"
+					}
+				]
 			},
 			{
 				"name": "runtimeKind.value",
 				"type": "string | undefined",
-				"required": true
+				"required": true,
+				"description": "The runtime name from the options: undefined or 'default' selects the measured default, and any other value must be exactly module, wasm, process or http, otherwise runtimeKind throws ExpectedCliError. The comparison is exact and case-sensitive, with no trimming.",
+				"examples": ["default", "process", "http"]
 			},
 			{
 				"name": "renderImpact.report",
 				"type": "ImpactReport",
-				"required": true
+				"required": true,
+				"description": "The impact report to render, normally the value runImpact resolved to. renderImpact reads its base, head, runtime, expanded, changed, units, tests, scenarios and uncertain fields and performs no validation.",
+				"examples": [
+					{
+						"base": "6c1f0a4e9b2d7837f5a1c0e8d4b93a2f71e50d86",
+						"head": "working-tree",
+						"runtime": "module",
+						"expanded": false,
+						"changed": [
+							{
+								"path": "src/workflows/development-tooling/runImpact.ts",
+								"status": "modified",
+								"classification": "source",
+								"unit": "workflow.run-impact"
+							}
+						],
+						"units": {
+							"direct": ["workflow.run-impact"],
+							"indirect": [],
+							"added": [],
+							"removed": []
+						},
+						"tests": {
+							"selected": ["test/verify-range.e2e.test.ts"],
+							"excluded": [
+								"test/services/kernel-parity.test.ts",
+								"test/utils/impact-kernel.test.ts"
+							],
+							"removed": []
+						},
+						"scenarios": {
+							"affected": [],
+							"unaffected": []
+						},
+						"uncertain": []
+					},
+					{
+						"base": "3f9c2a1b7d4e5f60718293a4b5c6d7e8f9012345",
+						"head": "9a8b7c6d5e4f30211a2b3c4d5e6f708192a3b4c5",
+						"runtime": "process",
+						"expanded": false,
+						"changed": [
+							{
+								"path": "src/workflows/development-tooling/runImpact.types.ts",
+								"status": "modified",
+								"classification": "source",
+								"unit": "workflow.run-impact"
+							}
+						],
+						"units": {
+							"direct": ["workflow.run-impact"],
+							"indirect": [],
+							"added": [],
+							"removed": []
+						},
+						"tests": {
+							"selected": ["test/utils/impact-kernel.test.ts"],
+							"excluded": ["test/services/kernel-parity.test.ts", "test/verify-range.e2e.test.ts"],
+							"removed": []
+						},
+						"scenarios": {
+							"affected": [],
+							"unaffected": []
+						},
+						"uncertain": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "runImpact",
-				"type": "Promise<ImpactReport>"
+				"type": "Promise<ImpactReport>",
+				"description": "The impact report of the comparison: base is the full hash of the base commit or 'none' for an empty starting point, and head is the full hash of the head commit or 'working-tree' when head was omitted. runtime is the kind of kernel runtime that computed the report, and expanded is true when a global, unclassified or uncovered change selected every test.",
+				"examples": [
+					{
+						"base": "6c1f0a4e9b2d7837f5a1c0e8d4b93a2f71e50d86",
+						"head": "working-tree",
+						"runtime": "module",
+						"expanded": false,
+						"changed": [
+							{
+								"path": "src/workflows/development-tooling/runImpact.ts",
+								"status": "modified",
+								"classification": "source",
+								"unit": "workflow.run-impact"
+							}
+						],
+						"units": {
+							"direct": ["workflow.run-impact"],
+							"indirect": [],
+							"added": [],
+							"removed": []
+						},
+						"tests": {
+							"selected": ["test/verify-range.e2e.test.ts"],
+							"excluded": [
+								"test/services/kernel-parity.test.ts",
+								"test/utils/impact-kernel.test.ts"
+							],
+							"removed": []
+						},
+						"scenarios": {
+							"affected": [],
+							"unaffected": []
+						},
+						"uncertain": []
+					},
+					{
+						"base": "3f9c2a1b7d4e5f60718293a4b5c6d7e8f9012345",
+						"head": "9a8b7c6d5e4f30211a2b3c4d5e6f708192a3b4c5",
+						"runtime": "process",
+						"expanded": false,
+						"changed": [
+							{
+								"path": "src/workflows/development-tooling/runImpact.types.ts",
+								"status": "modified",
+								"classification": "source",
+								"unit": "workflow.run-impact"
+							}
+						],
+						"units": {
+							"direct": ["workflow.run-impact"],
+							"indirect": [],
+							"added": [],
+							"removed": []
+						},
+						"tests": {
+							"selected": ["test/utils/impact-kernel.test.ts"],
+							"excluded": ["test/services/kernel-parity.test.ts", "test/verify-range.e2e.test.ts"],
+							"removed": []
+						},
+						"scenarios": {
+							"affected": [],
+							"unaffected": []
+						},
+						"uncertain": []
+					}
+				]
 			},
 			{
 				"name": "runtimeKind",
-				"type": "RuntimeKind | 'default'"
+				"type": "RuntimeKind | 'default'",
+				"description": "The requested runtime kind: 'default' when the value is undefined or 'default', otherwise the value itself, which is one of module, wasm, process or http. The measured choice for 'default' is made later by kernel() in UnitRuntimeService.",
+				"examples": ["default", "wasm", "process"]
 			},
 			{
 				"name": "renderImpact",
-				"type": "string"
+				"type": "string",
+				"description": "The plain-text summary of an impact report: a header line naming head, base and runtime, the counts of changed files, units, tests and scenarios, one indented line per selected test and affected scenario, a widening line when expanded is true, and one indented line per uncertain entry, all joined with newlines.",
+				"examples": [
+					"Impact of working-tree against 6c1f0a4e9b2d7837f5a1c0e8d4b93a2f71e50d86 using the module runtime.\nChanged: 1 files.\nUnits: 1 direct, 0 indirect, 0 added, 0 removed.\nTests: 1 of 3 tests selected.\n  test/verify-range.e2e.test.ts\nScenarios: 0 of 0 affected.",
+					"Impact of 9a8b7c6d5e4f30211a2b3c4d5e6f708192a3b4c5 against 3f9c2a1b7d4e5f60718293a4b5c6d7e8f9012345 using the process runtime.\nChanged: 1 files.\nUnits: 1 direct, 0 indirect, 0 added, 0 removed.\nTests: 1 of 3 tests selected.\n  test/utils/impact-kernel.test.ts\nScenarios: 0 of 0 affected."
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by fail() when root is not a Git repository, a revision does not name a commit or names an evidence revision, the runtime name is unknown, the wasm or process runtime is not built, the http runtime has no HARNESS_KERNEL_URL, or the impact kernel returns a failed response."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "runImpact",
@@ -63,17 +219,106 @@
 						"name": "runImpact.options",
 						"type": "ImpactOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Chooses what to compare: root is the directory of the Git repository to read (default: the current directory), base is the revision to compare from (default: HEAD; 'none' compares against an empty starting point), head is the revision to compare to (default: the working tree), and runtime is module, wasm, process or http, or default for the measured choice on this machine (used when omitted). Every field is optional, so an empty object compares HEAD with the working tree of the repository in the current directory on the measured default runtime.",
+						"examples": [
+							{},
+							{
+								"base": "3f9c2a1b7d4e5f60718293a4b5c6d7e8f9012345",
+								"head": "9a8b7c6d5e4f30211a2b3c4d5e6f708192a3b4c5",
+								"runtime": "process"
+							},
+							{
+								"root": "/home/dev/harness",
+								"base": "none",
+								"runtime": "module"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "runImpact",
-						"type": "Promise<ImpactReport>"
+						"type": "Promise<ImpactReport>",
+						"description": "The impact report of the comparison: base is the full hash of the base commit or 'none' for an empty starting point, and head is the full hash of the head commit or 'working-tree' when head was omitted. runtime is the kind of kernel runtime that computed the report, and expanded is true when a global, unclassified or uncovered change selected every test.",
+						"examples": [
+							{
+								"base": "6c1f0a4e9b2d7837f5a1c0e8d4b93a2f71e50d86",
+								"head": "working-tree",
+								"runtime": "module",
+								"expanded": false,
+								"changed": [
+									{
+										"path": "src/workflows/development-tooling/runImpact.ts",
+										"status": "modified",
+										"classification": "source",
+										"unit": "workflow.run-impact"
+									}
+								],
+								"units": {
+									"direct": ["workflow.run-impact"],
+									"indirect": [],
+									"added": [],
+									"removed": []
+								},
+								"tests": {
+									"selected": ["test/verify-range.e2e.test.ts"],
+									"excluded": [
+										"test/services/kernel-parity.test.ts",
+										"test/utils/impact-kernel.test.ts"
+									],
+									"removed": []
+								},
+								"scenarios": {
+									"affected": [],
+									"unaffected": []
+								},
+								"uncertain": []
+							},
+							{
+								"base": "3f9c2a1b7d4e5f60718293a4b5c6d7e8f9012345",
+								"head": "9a8b7c6d5e4f30211a2b3c4d5e6f708192a3b4c5",
+								"runtime": "process",
+								"expanded": false,
+								"changed": [
+									{
+										"path": "src/workflows/development-tooling/runImpact.types.ts",
+										"status": "modified",
+										"classification": "source",
+										"unit": "workflow.run-impact"
+									}
+								],
+								"units": {
+									"direct": ["workflow.run-impact"],
+									"indirect": [],
+									"added": [],
+									"removed": []
+								},
+								"tests": {
+									"selected": ["test/utils/impact-kernel.test.ts"],
+									"excluded": [
+										"test/services/kernel-parity.test.ts",
+										"test/verify-range.e2e.test.ts"
+									],
+									"removed": []
+								},
+								"scenarios": {
+									"affected": [],
+									"unaffected": []
+								},
+								"uncertain": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Rejects with ExpectedCliError when openRange refuses root or a revision (not a Git repository, a revision that does not name a commit, or an evidence revision), when runtimeKind receives an unknown runtime name, when kernel() of UnitRuntimeService finds the wasm or process runtime not built or http without HARNESS_KERNEL_URL, or when compute() of ImpactService receives a failed response from the impact kernel."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "runtimeKind",
@@ -81,22 +326,27 @@
 					{
 						"name": "runtimeKind.value",
 						"type": "string | undefined",
-						"required": true
+						"required": true,
+						"description": "The runtime name from the options: undefined or 'default' selects the measured default, and any other value must be exactly module, wasm, process or http, otherwise runtimeKind throws ExpectedCliError. The comparison is exact and case-sensitive, with no trimming.",
+						"examples": ["default", "process", "http"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "runtimeKind",
-						"type": "RuntimeKind | 'default'"
+						"type": "RuntimeKind | 'default'",
+						"description": "The requested runtime kind: 'default' when the value is undefined or 'default', otherwise the value itself, which is one of module, wasm, process or http. The measured choice for 'default' is made later by kernel() in UnitRuntimeService.",
+						"examples": ["default", "wasm", "process"]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws ExpectedCliError when the value is neither undefined, 'default', module, wasm, process nor http, and its message lists the valid names."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderImpact",
@@ -104,17 +354,91 @@
 					{
 						"name": "renderImpact.report",
 						"type": "ImpactReport",
-						"required": true
+						"required": true,
+						"description": "The impact report to render, normally the value runImpact resolved to. renderImpact reads its base, head, runtime, expanded, changed, units, tests, scenarios and uncertain fields and performs no validation.",
+						"examples": [
+							{
+								"base": "6c1f0a4e9b2d7837f5a1c0e8d4b93a2f71e50d86",
+								"head": "working-tree",
+								"runtime": "module",
+								"expanded": false,
+								"changed": [
+									{
+										"path": "src/workflows/development-tooling/runImpact.ts",
+										"status": "modified",
+										"classification": "source",
+										"unit": "workflow.run-impact"
+									}
+								],
+								"units": {
+									"direct": ["workflow.run-impact"],
+									"indirect": [],
+									"added": [],
+									"removed": []
+								},
+								"tests": {
+									"selected": ["test/verify-range.e2e.test.ts"],
+									"excluded": [
+										"test/services/kernel-parity.test.ts",
+										"test/utils/impact-kernel.test.ts"
+									],
+									"removed": []
+								},
+								"scenarios": {
+									"affected": [],
+									"unaffected": []
+								},
+								"uncertain": []
+							},
+							{
+								"base": "3f9c2a1b7d4e5f60718293a4b5c6d7e8f9012345",
+								"head": "9a8b7c6d5e4f30211a2b3c4d5e6f708192a3b4c5",
+								"runtime": "process",
+								"expanded": false,
+								"changed": [
+									{
+										"path": "src/workflows/development-tooling/runImpact.types.ts",
+										"status": "modified",
+										"classification": "source",
+										"unit": "workflow.run-impact"
+									}
+								],
+								"units": {
+									"direct": ["workflow.run-impact"],
+									"indirect": [],
+									"added": [],
+									"removed": []
+								},
+								"tests": {
+									"selected": ["test/utils/impact-kernel.test.ts"],
+									"excluded": [
+										"test/services/kernel-parity.test.ts",
+										"test/verify-range.e2e.test.ts"
+									],
+									"removed": []
+								},
+								"scenarios": {
+									"affected": [],
+									"unaffected": []
+								},
+								"uncertain": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderImpact",
-						"type": "string"
+						"type": "string",
+						"description": "The plain-text summary of an impact report: a header line naming head, base and runtime, the counts of changed files, units, tests and scenarios, one indented line per selected test and affected scenario, a widening line when expanded is true, and one indented line per uncertain entry, all joined with newlines.",
+						"examples": [
+							"Impact of working-tree against 6c1f0a4e9b2d7837f5a1c0e8d4b93a2f71e50d86 using the module runtime.\nChanged: 1 files.\nUnits: 1 direct, 0 indirect, 0 added, 0 removed.\nTests: 1 of 3 tests selected.\n  test/verify-range.e2e.test.ts\nScenarios: 0 of 0 affected.",
+							"Impact of 9a8b7c6d5e4f30211a2b3c4d5e6f708192a3b4c5 against 3f9c2a1b7d4e5f60718293a4b5c6d7e8f9012345 using the process runtime.\nChanged: 1 files.\nUnits: 1 direct, 0 indirect, 0 added, 0 removed.\nTests: 1 of 3 tests selected.\n  test/utils/impact-kernel.test.ts\nScenarios: 0 of 0 affected."
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
