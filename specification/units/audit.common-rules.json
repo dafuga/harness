@@ -21,69 +21,147 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "splitLines.contents",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The text to split into lines. Only newline characters separate lines: nothing is trimmed, so a CRLF file keeps a carriage return at the end of each line, and an empty string gives one empty line.",
+				"examples": ["export const version = 2;\n", "export class Parser {\n  parse() {}\n}\n"]
 			},
 			{
 				"name": "auditFileLength.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The file path copied into the finding's path field. It is used as given: the function does not read the file or check that the path exists.",
+				"examples": ["src/audit/development-tooling/commonRules.ts", "src/audit/commonRules.ts"]
 			},
 			{
 				"name": "auditFileLength.lines",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "The lines of one file. Only lines.length is read, so every entry counts, including the final empty entry that splitLines produces from a trailing newline, and the text of the entries is never inspected.",
+				"examples": [
+					["export class Parser {", "  parse() {}", "}", ""],
+					[
+						"import { harnessRuleLimits } from '../../rules/explorer-ui/catalog';",
+						"",
+						"export const total = 2;"
+					]
+				]
 			},
 			{
 				"name": "auditFileLength.limits",
 				"type": "HarnessRuleLimits",
-				"required": false
+				"required": false,
+				"description": "Sets the thresholds for this check, and only maxFileLines is read here. Defaults to harnessRuleLimits, the shared object exported by the explorer-ui catalog, whose maxFileLines is 220.",
+				"examples": [
+					{
+						"maxFileLines": 220,
+						"maxFunctionLines": 55,
+						"maxClassLines": 120,
+						"maxMethodLines": 35,
+						"maxNestingDepth": 4,
+						"maxParameters": 4,
+						"maxComplexity": 10,
+						"maxClassesPerFile": 1
+					}
+				]
 			},
 			{
 				"name": "auditClassCount.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The file path copied into the finding's path field. It is used as given: the function does not read the file or check that the path exists.",
+				"examples": ["src/audit/development-tooling/commonRules.ts", "src/audit/commonRules.ts"]
 			},
 			{
 				"name": "auditClassCount.lines",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "The lines to scan for class declarations. A line counts only when, after optional leading whitespace, it starts with class or export class followed by a name, so export default class, abstract class and declarations in the middle of a line are not counted.",
+				"examples": [
+					["export class Parser {", "  parse() {}", "}", "", "class Lexer {", "}"],
+					["export function parse(text: string): number {", "  return text.length;", "}"]
+				]
 			},
 			{
 				"name": "auditClassCount.limits",
 				"type": "HarnessRuleLimits",
-				"required": false
+				"required": false,
+				"description": "Sets the thresholds for this check, and only maxClassesPerFile is read here. Defaults to harnessRuleLimits, the shared object exported by the explorer-ui catalog, whose maxClassesPerFile is 1.",
+				"examples": [
+					{
+						"maxFileLines": 220,
+						"maxFunctionLines": 55,
+						"maxClassLines": 120,
+						"maxMethodLines": 35,
+						"maxNestingDepth": 4,
+						"maxParameters": 4,
+						"maxComplexity": 10,
+						"maxClassesPerFile": 1
+					}
+				]
 			},
 			{
 				"name": "maskTemplateLiterals.contents",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The source text to mask. Only backticks are tracked: characters between a backtick and the next unescaped backtick are blanked except newlines, and quotes and comments are not parsed, so a backtick inside either also starts a span.",
+				"examples": ["const label = `Hi ${name}`;", "const s = `line one\nline two`;"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "splitLines",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "The lines of the input in order, with each newline character removed and any carriage return left in place. A trailing newline gives a final empty string, and an empty input gives one empty line.",
+				"examples": [
+					["export const version = 2;"],
+					["export class Parser {", "  parse() {}", "}", ""],
+					[""]
+				]
 			},
 			{
 				"name": "auditFileLength",
-				"type": "AuditFinding[]"
+				"type": "AuditFinding[]",
+				"description": "An empty array when lines.length is at most limits.maxFileLines; otherwise one small-file finding with the given path and a message giving the line count and the limit.",
+				"examples": [
+					[],
+					[
+						{
+							"path": "src/audit/development-tooling/commonRules.ts",
+							"rule": "small-file",
+							"message": "File has 412 lines. Limit is 220. Split it by responsibility."
+						}
+					]
+				]
 			},
 			{
 				"name": "auditClassCount",
-				"type": "AuditFinding[]"
+				"type": "AuditFinding[]",
+				"description": "An empty array when the number of counted class lines is at most limits.maxClassesPerFile; otherwise one max-classes-per-file finding with the given path and a message giving the count and the limit.",
+				"examples": [
+					[],
+					[
+						{
+							"path": "src/audit/development-tooling/commonRules.ts",
+							"rule": "max-classes-per-file",
+							"message": "File defines 3 classes. Limit is 1."
+						}
+					]
+				]
 			},
 			{
 				"name": "maskTemplateLiterals",
-				"type": "string"
+				"type": "string",
+				"description": "The input with each character between a backtick and the next unescaped backtick replaced by a space, keeping those delimiting backticks and every newline character. Splitting the result on newline characters gives the same number of lines as the input.",
+				"examples": ["const a = ` `;", "const s = `        \n        `;"]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "splitLines",
@@ -91,17 +169,25 @@
 					{
 						"name": "splitLines.contents",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The text to split into lines. Only newline characters separate lines: nothing is trimmed, so a CRLF file keeps a carriage return at the end of each line, and an empty string gives one empty line.",
+						"examples": ["export const version = 2;\n", "export class Parser {\n  parse() {}\n}\n"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "splitLines",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "The lines of the input in order, with each newline character removed and any carriage return left in place. A trailing newline gives a final empty string, and an empty input gives one empty line.",
+						"examples": [
+							["export const version = 2;"],
+							["export class Parser {", "  parse() {}", "}", ""],
+							[""]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "auditFileLength",
@@ -109,27 +195,62 @@
 					{
 						"name": "auditFileLength.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The file path copied into the finding's path field. It is used as given: the function does not read the file or check that the path exists.",
+						"examples": ["src/audit/development-tooling/commonRules.ts", "src/audit/commonRules.ts"]
 					},
 					{
 						"name": "auditFileLength.lines",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "The lines of one file. Only lines.length is read, so every entry counts, including the final empty entry that splitLines produces from a trailing newline, and the text of the entries is never inspected.",
+						"examples": [
+							["export class Parser {", "  parse() {}", "}", ""],
+							[
+								"import { harnessRuleLimits } from '../../rules/explorer-ui/catalog';",
+								"",
+								"export const total = 2;"
+							]
+						]
 					},
 					{
 						"name": "auditFileLength.limits",
 						"type": "HarnessRuleLimits",
-						"required": false
+						"required": false,
+						"description": "Sets the thresholds for this check, and only maxFileLines is read here. Defaults to harnessRuleLimits, the shared object exported by the explorer-ui catalog, whose maxFileLines is 220.",
+						"examples": [
+							{
+								"maxFileLines": 220,
+								"maxFunctionLines": 55,
+								"maxClassLines": 120,
+								"maxMethodLines": 35,
+								"maxNestingDepth": 4,
+								"maxParameters": 4,
+								"maxComplexity": 10,
+								"maxClassesPerFile": 1
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "auditFileLength",
-						"type": "AuditFinding[]"
+						"type": "AuditFinding[]",
+						"description": "An empty array when lines.length is at most limits.maxFileLines; otherwise one small-file finding with the given path and a message giving the line count and the limit.",
+						"examples": [
+							[],
+							[
+								{
+									"path": "src/audit/development-tooling/commonRules.ts",
+									"rule": "small-file",
+									"message": "File has 412 lines. Limit is 220. Split it by responsibility."
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "auditClassCount",
@@ -137,27 +258,58 @@
 					{
 						"name": "auditClassCount.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The file path copied into the finding's path field. It is used as given: the function does not read the file or check that the path exists.",
+						"examples": ["src/audit/development-tooling/commonRules.ts", "src/audit/commonRules.ts"]
 					},
 					{
 						"name": "auditClassCount.lines",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "The lines to scan for class declarations. A line counts only when, after optional leading whitespace, it starts with class or export class followed by a name, so export default class, abstract class and declarations in the middle of a line are not counted.",
+						"examples": [
+							["export class Parser {", "  parse() {}", "}", "", "class Lexer {", "}"],
+							["export function parse(text: string): number {", "  return text.length;", "}"]
+						]
 					},
 					{
 						"name": "auditClassCount.limits",
 						"type": "HarnessRuleLimits",
-						"required": false
+						"required": false,
+						"description": "Sets the thresholds for this check, and only maxClassesPerFile is read here. Defaults to harnessRuleLimits, the shared object exported by the explorer-ui catalog, whose maxClassesPerFile is 1.",
+						"examples": [
+							{
+								"maxFileLines": 220,
+								"maxFunctionLines": 55,
+								"maxClassLines": 120,
+								"maxMethodLines": 35,
+								"maxNestingDepth": 4,
+								"maxParameters": 4,
+								"maxComplexity": 10,
+								"maxClassesPerFile": 1
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "auditClassCount",
-						"type": "AuditFinding[]"
+						"type": "AuditFinding[]",
+						"description": "An empty array when the number of counted class lines is at most limits.maxClassesPerFile; otherwise one max-classes-per-file finding with the given path and a message giving the count and the limit.",
+						"examples": [
+							[],
+							[
+								{
+									"path": "src/audit/development-tooling/commonRules.ts",
+									"rule": "max-classes-per-file",
+									"message": "File defines 3 classes. Limit is 1."
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "maskTemplateLiterals",
@@ -165,17 +317,21 @@
 					{
 						"name": "maskTemplateLiterals.contents",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The source text to mask. Only backticks are tracked: characters between a backtick and the next unescaped backtick are blanked except newlines, and quotes and comments are not parsed, so a backtick inside either also starts a span.",
+						"examples": ["const label = `Hi ${name}`;", "const s = `line one\nline two`;"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "maskTemplateLiterals",
-						"type": "string"
+						"type": "string",
+						"description": "The input with each character between a backtick and the next unescaped backtick replaced by a space, keeping those delimiting backticks and every newline character. Splitting the result on newline characters gives the same number of lines as the input.",
+						"examples": ["const a = ` `;", "const s = `        \n        `;"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
