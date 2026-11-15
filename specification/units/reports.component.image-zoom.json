@@ -33,20 +33,28 @@
 				"name": "ImageZoom.src",
 				"type": "string",
 				"required": true,
-				"description": "Required image address. The component loads this directly into the image element."
+				"description": "This required string is bound directly to the image element and identifies the source compared when tracking whether that image is loading or failed. The component does not parse or validate the source.",
+				"examples": [
+					"https://reports.example.com/evidence/inspection-42.jpg",
+					"/evidence/inspection-42.jpg"
+				]
 			},
 			{
 				"name": "ImageZoom.alt",
 				"type": "string",
 				"required": true,
-				"description": "Required image alternative text."
+				"description": "This required string is bound to the image element's alt attribute for the selected source. The component does not derive or validate its text.",
+				"examples": [
+					"South elevation showing the installed flashing.",
+					"Close-up of the roof framing at the north wall."
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ImageZoom",
 				"type": "markup",
-				"description": "An image initially fitted to its stage, with fit, actual-size and stepped zoom controls. Zoom preserves the pointer or viewport-center position; an enlarged image can be dragged with the primary mouse button. Trackpad zoom is bounded between fit and four times natural size. Loading and failed requests show visible status messages; failed images hide the broken-image placeholder."
+				"description": "Renders zoom controls, a fitted image stage, and loading or failure status for the current source; the percentage is shown only after that source loads. Zoom controls provide fit and 1× natural-size actions plus fixed scale steps from 0.25× to 4×, while trackpad controls use the fitted scale as their minimum and 4× as their maximum; mouse dragging pans the image only when zoomed and starts on the image with the primary button."
 			}
 		],
 		"errors": [],
