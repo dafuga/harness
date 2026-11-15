@@ -30,32 +30,37 @@
 				"name": "previewOwner.port",
 				"type": "number",
 				"required": true,
-				"description": "Loopback port used to reserve the one preview slot.",
+				"description": "Loopback TCP port on 127.0.0.1 whose /__harness_preview__ endpoint is probed on every attempt, so it decides which listener's status is read. The value is not range-checked, so a port with no listener makes fetch reject with a TypeError.",
 				"examples": [47840]
 			},
 			{
 				"name": "previewOwner.identity",
 				"type": "string",
 				"required": true,
-				"description": "Fingerprint of the checkout and selected history data.",
-				"examples": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]
+				"description": "Expected fingerprint of the checkout and selected history data, which must equal the owner's reported identity by strict string equality. The string is not format-checked, so any value is compared as-is and a mismatch throws the 'A different Harness preview is already running' error.",
+				"examples": [
+					"9f2c4e7a1b8d03f56e2a9c71d4b8e0f3a6c5d2b1e9f8a7c6d5b4e3f2a1c0d9e8",
+					"3c7e1a9b5d2f80e4a6c3b7d1f5e9a2c8b4d6f0e3a7c1b9d5f2e8a4c6b0d3f7e1"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "previewOwnerPort",
 				"type": "unknown",
-				"description": "Releases only this process’s preview and ownership listener; a reusing process leaves the owner running."
+				"description": "Exported numeric constant 47840 named previewOwnerPort in utils/accounts-access/previewOwner.ts; the previewOwner function never reads it and uses only its port argument.",
+				"examples": [47840]
 			},
 			{
 				"name": "previewOwnerPath",
 				"type": "unknown",
-				"description": "Releases only this process’s preview and ownership listener; a reusing process leaves the owner running."
+				"description": "Exported string constant '/__harness_preview__' from utils/accounts-access/previewOwner.ts, appended to http://127.0.0.1:<port> on every probe. The probe sets redirect to 'error', so a redirect fails the request instead of being followed.",
+				"examples": ["/__harness_preview__"]
 			},
 			{
 				"name": "previewOwner",
 				"type": "Promise<string>",
-				"description": "Address of a matching, ready preview.",
+				"description": "Resolves to the owner's reported url only after the protocol, url and identity checks pass and that url is non-null; the value is always an http://127.0.0.1:<digits> address and is never null. Any failed check rejects, and so does a url that stays null across 100 attempts.",
 				"examples": ["http://127.0.0.1:5688"]
 			}
 		],
@@ -63,10 +68,40 @@
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Refuses an unrelated listener, a different checkout or a preview that never finishes starting.",
-				"examples": ["Preview ownership port is occupied by another application."]
+				"description": "Thrown with 'Preview ownership port is occupied by another application.' when the probe gets a non-OK status, a body longer than 2048 characters, or a JSON body whose protocol is not 'harness-preview-v1'."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with 'Invalid preview owner address.' when the reported url is non-null but is not http://127.0.0.1:<digits>, which includes an empty string or a missing url field."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with 'A different Harness preview is already running at <url>. Close it before switching checkout or history data.' when the reported identity is not equal to the requested identity; <url> is the reported url, or 'startup' when url is null."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with 'The existing Harness preview is still starting; no duplicate was launched.' after 100 attempts in which the owner still reported a null url, each followed by a 100 ms wait."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Raised when the request or reading its body fails at the network level, including a refused connection and any redirect (because redirect is 'error'), or when the body is the JSON literal null so that owner.protocol cannot be read."
+			},
+			{
+				"name": "TimeoutError",
+				"type": "thrown",
+				"description": "Raised when a probe does not complete within 1000 ms, because each request is bounded by AbortSignal.timeout(1000)."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Raised by JSON.parse when a response with an ok status and a body of at most 2048 characters is not valid JSON."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "previewOwner",
@@ -75,32 +110,66 @@
 						"name": "previewOwner.port",
 						"type": "number",
 						"required": true,
-						"description": "Loopback port used to reserve the one preview slot.",
+						"description": "Loopback TCP port on 127.0.0.1 whose /__harness_preview__ endpoint is probed on every attempt, so it decides which listener's status is read. The value is not range-checked, so a port with no listener makes fetch reject with a TypeError.",
 						"examples": [47840]
 					},
 					{
 						"name": "previewOwner.identity",
 						"type": "string",
 						"required": true,
-						"description": "Fingerprint of the checkout and selected history data.",
-						"examples": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]
+						"description": "Expected fingerprint of the checkout and selected history data, which must equal the owner's reported identity by strict string equality. The string is not format-checked, so any value is compared as-is and a mismatch throws the 'A different Harness preview is already running' error.",
+						"examples": [
+							"9f2c4e7a1b8d03f56e2a9c71d4b8e0f3a6c5d2b1e9f8a7c6d5b4e3f2a1c0d9e8",
+							"3c7e1a9b5d2f80e4a6c3b7d1f5e9a2c8b4d6f0e3a7c1b9d5f2e8a4c6b0d3f7e1"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "previewOwner",
 						"type": "Promise<string>",
-						"description": "Address of a matching, ready preview.",
+						"description": "Resolves to the owner's reported url only after the protocol, url and identity checks pass and that url is non-null; the value is always an http://127.0.0.1:<digits> address and is never null. Any failed check rejects, and so does a url that stays null across 100 attempts.",
 						"examples": ["http://127.0.0.1:5688"]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with 'Preview ownership port is occupied by another application.' when the probe gets a non-OK status, a body longer than 2048 characters, or a JSON body whose protocol is not 'harness-preview-v1'."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with 'Invalid preview owner address.' when the reported url is non-null but is not http://127.0.0.1:<digits>, which includes an empty string or a missing url field."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with 'A different Harness preview is already running at <url>. Close it before switching checkout or history data.' when the reported identity is not equal to the requested identity; <url> is the reported url, or 'startup' when url is null."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with 'The existing Harness preview is still starting; no duplicate was launched.' after 100 attempts in which the owner still reported a null url, each followed by a 100 ms wait."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Raised when the request or reading its body fails at the network level, including a refused connection and any redirect (because redirect is 'error'), or when the body is the JSON literal null so that owner.protocol cannot be read."
+					},
+					{
+						"name": "TimeoutError",
+						"type": "thrown",
+						"description": "Raised when a probe does not complete within 1000 ms, because each request is bounded by AbortSignal.timeout(1000)."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Raised by JSON.parse when a response with an ok status and a body of at most 2048 characters is not valid JSON."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
