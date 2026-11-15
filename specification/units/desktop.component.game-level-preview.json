@@ -28,29 +28,43 @@
 				"name": "GameLevelPreview.layout",
 				"type": "LevelLayout",
 				"required": true,
-				"description": "Validated floor, spawn and objects rendered for human review."
+				"description": "The complete LevelLayout object passed unchanged as the preview view's world. The run begins at spawn.x and spawn.z; this component does not validate or modify the remaining geometry.",
+				"examples": [
+					{
+						"width": 24,
+						"depth": 16,
+						"spawn": {
+							"x": 3,
+							"z": 4
+						},
+						"objects": []
+					}
+				]
 			},
 			{
 				"name": "GameLevelPreview.dimension",
 				"type": "Dimension",
 				"required": true,
-				"description": "Select the native 2D or 3D renderer."
+				"description": "Selects the 2D renderer for 2d or the 3D renderer for 3d. Changing it remounts the keyed canvas so its renderer is recreated.",
+				"examples": ["2d", "3d"]
 			},
 			{
 				"name": "GameLevelPreview.label",
 				"type": "string",
 				"required": true,
-				"description": "Accessible name of the level preview canvas."
+				"description": "Sets the preview view title and canvas aria-label. It must be a string, but the component applies no validation or normalization.",
+				"examples": ["Level preview", "Forest level preview"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameLevelPreview",
 				"type": "markup",
-				"description": "Render the generated level geometry for human review before gameplay."
+				"description": "A wrapper containing a 1280-by-704 canvas; CSS scales its displayed width to the container and keeps its height automatic. The canvas uses the selected renderer and exposes the supplied label as its accessible name."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
