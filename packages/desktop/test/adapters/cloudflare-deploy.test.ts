@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { CloudflareDeployAdapter } from '../../src/adapters/CloudflareDeployAdapter';
+import { CloudflareDeployAdapter } from '../../src/adapters/development-tooling/CloudflareDeployAdapter';
 import type { CloudflareTarget, DeployCommand } from '../../src/models/Deployment.types';
 const target: CloudflareTarget = {
 	environment: 'stage',

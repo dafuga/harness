@@ -1,6 +1,6 @@
 import { test, vi } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
-import { AgentSettingsAdapter } from '../../src/adapters/AgentSettingsAdapter';
+import { AgentSettingsAdapter } from '../../src/lib/agents-providers/agent-settings/AgentSettingsAdapter';
 
 function fixture(raw: string | null = null) {
 	const storage = {

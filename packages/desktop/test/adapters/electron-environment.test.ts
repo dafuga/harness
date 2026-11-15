@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { ElectronEnvironmentAdapter } from '../../src/adapters/ElectronEnvironmentAdapter';
+import { ElectronEnvironmentAdapter } from '../../src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
 
 const harness = { snapshot: vi.fn() } as unknown as DesktopBridge;

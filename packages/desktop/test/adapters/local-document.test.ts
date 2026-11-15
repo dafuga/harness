@@ -1,5 +1,5 @@
 import { test, expect } from 'vitest';
-import { LocalDocumentAdapter } from '../../src/adapters/LocalDocumentAdapter';
+import { LocalDocumentAdapter } from '../../src/adapters/reports-media/LocalDocumentAdapter';
 test('concurrent app-data updates retain every pending change and a rejected change does not block the queue', async () => {
 	const document = new LocalDocumentAdapter<number[]>(undefined, () => []);
 	await Promise.all(
