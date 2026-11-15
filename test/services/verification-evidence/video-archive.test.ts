@@ -4,7 +4,8 @@ import { withTempRepo } from '../../support/temporary';
 import {
 	videoArchiveFixture,
 	videoArchiveBudgetExamples,
-	invalidVideoArchiveInputs
+	invalidVideoArchiveInputs,
+	videoArchiveRemote
 } from '../../support/videoArchiveFixture';
 import { EvidenceBranchRepository } from '../../../src/repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository';
 import { LfsAdapter } from '../../../src/adapters/git-source-history/LfsAdapter';
@@ -177,34 +178,34 @@ test('archive reads never fetch and explicit fetch verifies the received evidenc
 	await withTempRepo(async ({ root, git }) => {
 		const input = await videoArchiveFixture(root, git),
 			service = new VideoArchiveService(root);
-		const [pointer] = await service.write([input]);
-		const fetch = vi.spyOn(LfsAdapter.prototype, 'fetch').mockResolvedValue(undefined);
-		const run = vi.spyOn(GitAdapter.prototype, 'run');
-		await service.read(pointer);
-		expect(fetch).not.toHaveBeenCalled();
-		git('update-ref', 'refs/remotes/archive-fixture/evidence', pointer.evidence.commit);
-		run.mockRestore();
-		const actualRun = GitAdapter.prototype.run;
-		const explicit = vi.spyOn(GitAdapter.prototype, 'run').mockImplementation(function (
-			this: GitAdapter,
-			args,
-			options
-		) {
-			if (args[0] === 'fetch') return Promise.resolve('');
-			if (args[0] === 'rev-parse' && args[1] === 'FETCH_HEAD^{commit}')
-				return Promise.resolve(pointer.evidence.commit);
-			return actualRun.call(this, args, options);
+		const [pointer] = await service.write([input]),
+			remote = await videoArchiveRemote(root, input);
+		await withTempRepo(async (client) => {
+			client.git('commit', '--allow-empty', '-qm', 'feat: unrelated fresh restore fixture');
+			const head = client.git('rev-parse', 'HEAD'),
+				consumer = new VideoArchiveService(client.root);
+			client.git('remote', 'add', 'archive-fixture', remote);
+			const run = vi.spyOn(GitAdapter.prototype, 'run');
+			try {
+				await expect(consumer.read(pointer)).rejects.toThrow(/ancestry/i);
+				expect(run.mock.calls.filter(([args]) => args[0] === 'fetch')).toEqual([]);
+				const fetched = await consumer.fetch(pointer, 'archive-fixture');
+				expect(fetched.batch.clips[0].original).toEqual(input.original);
+				const ref = sourceArchiveRef(input.original.revision);
+				expect(run).toHaveBeenCalledWith(['fetch', '--no-tags', '--', 'archive-fixture', ref]);
+				expect(client.git('rev-parse', ref)).toBe(input.original.revision);
+				expect(client.git('rev-parse', 'HEAD')).toBe(head);
+				expect(await new EvidenceBranchRepository(client.root).tip()).toBeUndefined();
+				const target = join(client.root, '.cache/restore');
+				await consumer.restore(pointer, target, pointer.evidence.commit);
+				expect(hash(await readFile(join(target, `media/${input.sha256}.mp4`)))).toBe(input.sha256);
+				client.git('update-ref', ref, head);
+				await expect(consumer.fetch(pointer, 'archive-fixture')).rejects.toThrow(/conflict/i);
+				expect(client.git('rev-parse', ref)).toBe(head);
+				await expect(consumer.fetch(pointer, remote)).rejects.toThrow(/remote/i);
+			} finally {
+				run.mockRestore();
+			}
 		});
-		expect((await service.fetch(pointer, 'archive-fixture')).pointer).toEqual(pointer);
-		expect(fetch).toHaveBeenCalledWith('archive-fixture', pointer.evidence.commit);
-		expect(explicit).toHaveBeenCalledWith([
-			'fetch',
-			'--no-tags',
-			'--',
-			'archive-fixture',
-			evidenceRef
-		]);
-		explicit.mockRestore();
-		fetch.mockRestore();
 	});
 });

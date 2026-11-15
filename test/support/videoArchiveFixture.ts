@@ -2,6 +2,10 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { frameFlagFixture, hash } from './frameFlagFixture';
+import { GitAdapter } from '../../src/adapters/git-source-history/GitAdapter';
+import { LfsAdapter } from '../../src/adapters/git-source-history/LfsAdapter';
+import { evidenceRef } from '../../src/core/git-source-history/historyTypes';
+import { sourceArchiveRef } from '../../src/utils/git-source-history/historyRefs';
 import type {
 	VideoArchiveInput,
 	VideoArchiveClip
@@ -145,4 +149,24 @@ export function invalidVideoArchiveInputs(
 		{ ...input, video: { ...input.video, width: 162 } },
 		{ ...input, video: { ...input.video, states: [{ id: 'playing', atSeconds: 2 }] } }
 	];
+}
+
+/** Task-owned bare filesystem remote, containing only evidence and the retained source ref. */
+export async function videoArchiveRemote(root: string, input: VideoArchiveInput): Promise<string> {
+	const remote = join(root, '.cache/archive-remote.git');
+	await mkdir(join(root, '.cache'), { recursive: true });
+	await new GitAdapter(root).run(['init', '--bare', '--quiet', remote]);
+	const ref = sourceArchiveRef(input.original.revision);
+	await new GitAdapter(remote).run([
+		'fetch',
+		'--no-tags',
+		'--',
+		root,
+		`${evidenceRef}:${evidenceRef}`,
+		`${ref}:${ref}`
+	]);
+	const lfs = new LfsAdapter(remote);
+	await lfs.store(input.videoBytes);
+	await lfs.store(input.posterBytes);
+	return remote;
 }
