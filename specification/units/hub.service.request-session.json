@@ -26,54 +26,125 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RequestSessionService.constructor.options",
 				"type": "RequestSessionOptions",
-				"required": true
+				"required": true,
+				"description": "Required settings used by the service: a session repository for credential lookups and the configured public origin for unsafe-method same-origin checks."
 			},
 			{
 				"name": "RequestSessionService.resolve.request",
 				"type": "Request",
-				"required": true
+				"required": true,
+				"description": "The Fetch request whose authorization or cookie credential and URL path are checked to resolve a live session in scope."
 			},
 			{
 				"name": "RequestSessionService.browser.request",
 				"type": "Request",
-				"required": true
+				"required": true,
+				"description": "The Fetch request used to resolve a browser cookie session; an Authorization header is rejected."
 			},
 			{
 				"name": "RequestSessionService.required.request",
 				"type": "Request",
-				"required": true
+				"required": true,
+				"description": "The Fetch request whose selected authorization or cookie session must be live and in scope."
 			},
 			{
 				"name": "RequestSessionService.crossOrigin.request",
 				"type": "Request",
-				"required": true
+				"required": true,
+				"description": "The Fetch request whose method and origin are checked; GET, HEAD and OPTIONS are always treated as safe."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RequestSessionService.resolve",
-				"type": "Promise<SessionRecord | null>"
+				"type": "Promise<SessionRecord | null>",
+				"description": "The live session only when its kind matches the credential channel and its resource covers the request path; otherwise null. Unsafe cross-origin cookie requests resolve to null, and an Authorization header never falls back to cookies.",
+				"examples": [null]
 			},
 			{
 				"name": "RequestSessionService.browser",
-				"type": "Promise<SessionRecord>"
+				"type": "Promise<SessionRecord>",
+				"description": "The browser-kind session resolved from the cookie. Authorization requests, unsafe cross-origin requests and requests without a live browser session throw the declared authentication failures.",
+				"examples": [
+					{
+						"idHash": "5d3a8f1c9e42b6074c1d8a3f6e0b9257a4c3d1e8f6b0925c7a1e4d3b8f6c2059",
+						"kind": "browser",
+						"parentHash": "d8b4e2f9016c7a3d5e9f0b2c4a7d1e6389c5f0b2d4a6e8f173b9c5d00e2a4f68",
+						"actor": {
+							"id": "google-11223344556677889900",
+							"email": "alex.rivera@example.com",
+							"name": "Alex Rivera",
+							"emailVerified": true
+						},
+						"resource": "projects",
+						"createdAt": 1794700800000,
+						"expiresAt": 1795305600000,
+						"revokedAt": null
+					}
+				]
 			},
 			{
 				"name": "RequestSessionService.required",
-				"type": "Promise<SessionRecord>"
+				"type": "Promise<SessionRecord>",
+				"description": "The live in-scope session resolved from the selected credential channel. Unsafe cross-origin cookie requests and requests without a live in-scope session throw the declared authentication failures.",
+				"examples": [
+					{
+						"idHash": "5d3a8f1c9e42b6074c1d8a3f6e0b9257a4c3d1e8f6b0925c7a1e4d3b8f6c2059",
+						"kind": "browser",
+						"parentHash": "d8b4e2f9016c7a3d5e9f0b2c4a7d1e6389c5f0b2d4a6e8f173b9c5d00e2a4f68",
+						"actor": {
+							"id": "google-11223344556677889900",
+							"email": "alex.rivera@example.com",
+							"name": "Alex Rivera",
+							"emailVerified": true
+						},
+						"resource": "projects",
+						"createdAt": 1794700800000,
+						"expiresAt": 1795305600000,
+						"revokedAt": null
+					},
+					{
+						"idHash": "c1a7d9e43b6f8025a2e4c7d91f3b5a6e0c8d2f417b9e35a6c0d4f8210e7b593a",
+						"kind": "native",
+						"parentHash": "5d3a8f1c9e42b6074c1d8a3f6e0b9257a4c3d1e8f6b0925c7a1e4d3b8f6c2059",
+						"actor": {
+							"id": "google-11223344556677889900",
+							"email": "alex.rivera@example.com",
+							"name": "Alex Rivera",
+							"emailVerified": true
+						},
+						"resource": "projects",
+						"createdAt": 1794700800000,
+						"expiresAt": 1797292800000,
+						"revokedAt": null
+					}
+				]
 			},
 			{
 				"name": "RequestSessionService.crossOrigin",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when the request method is not GET, HEAD or OPTIONS and the request is not same-origin with the configured origin; safe methods return false.",
+				"examples": [false, true]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "session-required",
+				"type": "thrown",
+				"description": "Thrown when browser() receives an Authorization header or cannot resolve a live browser cookie session, or when required() cannot resolve a live in-scope session."
+			},
+			{
+				"name": "origin-denied",
+				"type": "thrown",
+				"description": "Thrown for an unsafe cross-origin request in browser(), or for an unsafe cross-origin cookie request in required()."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RequestSessionService.resolve",
@@ -81,17 +152,20 @@
 					{
 						"name": "RequestSessionService.resolve.request",
 						"type": "Request",
-						"required": true
+						"required": true,
+						"description": "The Fetch request whose authorization or cookie credential and URL path are checked to resolve a live session in scope."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RequestSessionService.resolve",
-						"type": "Promise<SessionRecord | null>"
+						"type": "Promise<SessionRecord | null>",
+						"description": "The live session only when its kind matches the credential channel and its resource covers the request path; otherwise null. Unsafe cross-origin cookie requests resolve to null, and an Authorization header never falls back to cookies.",
+						"examples": [null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RequestSessionService.browser",
@@ -99,17 +173,47 @@
 					{
 						"name": "RequestSessionService.browser.request",
 						"type": "Request",
-						"required": true
+						"required": true,
+						"description": "The Fetch request used to resolve a browser cookie session; an Authorization header is rejected."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RequestSessionService.browser",
-						"type": "Promise<SessionRecord>"
+						"type": "Promise<SessionRecord>",
+						"description": "The browser-kind session resolved from the cookie. Authorization requests, unsafe cross-origin requests and requests without a live browser session throw the declared authentication failures.",
+						"examples": [
+							{
+								"idHash": "5d3a8f1c9e42b6074c1d8a3f6e0b9257a4c3d1e8f6b0925c7a1e4d3b8f6c2059",
+								"kind": "browser",
+								"parentHash": "d8b4e2f9016c7a3d5e9f0b2c4a7d1e6389c5f0b2d4a6e8f173b9c5d00e2a4f68",
+								"actor": {
+									"id": "google-11223344556677889900",
+									"email": "alex.rivera@example.com",
+									"name": "Alex Rivera",
+									"emailVerified": true
+								},
+								"resource": "projects",
+								"createdAt": 1794700800000,
+								"expiresAt": 1795305600000,
+								"revokedAt": null
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "session-required",
+						"type": "thrown",
+						"description": "Thrown when browser() receives an Authorization header or cannot resolve a live browser cookie session, or when required() cannot resolve a live in-scope session."
+					},
+					{
+						"name": "origin-denied",
+						"type": "thrown",
+						"description": "Thrown for an unsafe cross-origin request in browser(), or for an unsafe cross-origin cookie request in required()."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RequestSessionService.required",
@@ -117,17 +221,62 @@
 					{
 						"name": "RequestSessionService.required.request",
 						"type": "Request",
-						"required": true
+						"required": true,
+						"description": "The Fetch request whose selected authorization or cookie session must be live and in scope."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RequestSessionService.required",
-						"type": "Promise<SessionRecord>"
+						"type": "Promise<SessionRecord>",
+						"description": "The live in-scope session resolved from the selected credential channel. Unsafe cross-origin cookie requests and requests without a live in-scope session throw the declared authentication failures.",
+						"examples": [
+							{
+								"idHash": "5d3a8f1c9e42b6074c1d8a3f6e0b9257a4c3d1e8f6b0925c7a1e4d3b8f6c2059",
+								"kind": "browser",
+								"parentHash": "d8b4e2f9016c7a3d5e9f0b2c4a7d1e6389c5f0b2d4a6e8f173b9c5d00e2a4f68",
+								"actor": {
+									"id": "google-11223344556677889900",
+									"email": "alex.rivera@example.com",
+									"name": "Alex Rivera",
+									"emailVerified": true
+								},
+								"resource": "projects",
+								"createdAt": 1794700800000,
+								"expiresAt": 1795305600000,
+								"revokedAt": null
+							},
+							{
+								"idHash": "c1a7d9e43b6f8025a2e4c7d91f3b5a6e0c8d2f417b9e35a6c0d4f8210e7b593a",
+								"kind": "native",
+								"parentHash": "5d3a8f1c9e42b6074c1d8a3f6e0b9257a4c3d1e8f6b0925c7a1e4d3b8f6c2059",
+								"actor": {
+									"id": "google-11223344556677889900",
+									"email": "alex.rivera@example.com",
+									"name": "Alex Rivera",
+									"emailVerified": true
+								},
+								"resource": "projects",
+								"createdAt": 1794700800000,
+								"expiresAt": 1797292800000,
+								"revokedAt": null
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "origin-denied",
+						"type": "thrown",
+						"description": "Thrown for an unsafe cross-origin request in browser(), or for an unsafe cross-origin cookie request in required()."
+					},
+					{
+						"name": "session-required",
+						"type": "thrown",
+						"description": "Thrown when browser() receives an Authorization header or cannot resolve a live browser cookie session, or when required() cannot resolve a live in-scope session."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RequestSessionService.crossOrigin",
@@ -135,17 +284,20 @@
 					{
 						"name": "RequestSessionService.crossOrigin.request",
 						"type": "Request",
-						"required": true
+						"required": true,
+						"description": "The Fetch request whose method and origin are checked; GET, HEAD and OPTIONS are always treated as safe."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RequestSessionService.crossOrigin",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when the request method is not GET, HEAD or OPTIONS and the request is not same-origin with the configured origin; safe methods return false.",
+						"examples": [false, true]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -155,17 +307,19 @@
 					{
 						"name": "RequestSessionService.constructor.options",
 						"type": "RequestSessionOptions",
-						"required": true
+						"required": true,
+						"description": "Required settings used by the service: a session repository for credential lookups and the configured public origin for unsafe-method same-origin checks."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RequestSessionService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Creates a service that retains the supplied repository and public origin; the constructor does not validate the options."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
