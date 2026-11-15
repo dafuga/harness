@@ -19,27 +19,83 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ResponseCheckInputValidator.validateCriteria.raw",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The untyped value passed to validateCriteria, which must be an array (an empty array is accepted and returns an empty result). Each element must be a non-null, non-array object whose id and description are strings with at least one non-whitespace character, the ids must be unique within the array after trimming, and any other properties are ignored.",
+				"examples": [
+					[],
+					[
+						{
+							"id": "cites-source",
+							"description": "The response cites at least one source document."
+						}
+					],
+					[
+						{
+							"id": "word-limit",
+							"description": "The response stays under 200 words."
+						},
+						{
+							"id": "rollback-plan",
+							"description": "The response explains how to roll back the change."
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ResponseCheckInputValidator.validateCriteria",
-				"type": "ResponseCriterion[]"
+				"type": "ResponseCriterion[]",
+				"description": "The validated criteria in input order, each a new object holding only its trimmed id and trimmed description. It is returned only when every check passes, and it is an empty array when the input array is empty.",
+				"examples": [
+					[],
+					[
+						{
+							"id": "cites-source",
+							"description": "The response cites at least one source document."
+						}
+					],
+					[
+						{
+							"id": "word-limit",
+							"description": "The response stays under 200 words."
+						},
+						{
+							"id": "rollback-plan",
+							"description": "The response explains how to roll back the change."
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown as an Error with the message 'Criteria must be a JSON array.' when the raw value passed to validateCriteria is not an array."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown as an Error with the message 'Each criterion needs an id and description.' when an element is null, not an object, or an array."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown as an Error with the message 'Criterion ids and descriptions must be nonempty strings.' when an element's id or description is not a string or is empty after trimming."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown as an Error with the message 'Criterion ids must be unique.' when an element's id repeats an earlier element's id after trimming."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ResponseCheckInputValidator.validateCriteria",
@@ -47,22 +103,78 @@
 					{
 						"name": "ResponseCheckInputValidator.validateCriteria.raw",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The untyped value passed to validateCriteria, which must be an array (an empty array is accepted and returns an empty result). Each element must be a non-null, non-array object whose id and description are strings with at least one non-whitespace character, the ids must be unique within the array after trimming, and any other properties are ignored.",
+						"examples": [
+							[],
+							[
+								{
+									"id": "cites-source",
+									"description": "The response cites at least one source document."
+								}
+							],
+							[
+								{
+									"id": "word-limit",
+									"description": "The response stays under 200 words."
+								},
+								{
+									"id": "rollback-plan",
+									"description": "The response explains how to roll back the change."
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ResponseCheckInputValidator.validateCriteria",
-						"type": "ResponseCriterion[]"
+						"type": "ResponseCriterion[]",
+						"description": "The validated criteria in input order, each a new object holding only its trimmed id and trimmed description. It is returned only when every check passes, and it is an empty array when the input array is empty.",
+						"examples": [
+							[],
+							[
+								{
+									"id": "cites-source",
+									"description": "The response cites at least one source document."
+								}
+							],
+							[
+								{
+									"id": "word-limit",
+									"description": "The response stays under 200 words."
+								},
+								{
+									"id": "rollback-plan",
+									"description": "The response explains how to roll back the change."
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as an Error with the message 'Criteria must be a JSON array.' when the raw value passed to validateCriteria is not an array."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown as an Error with the message 'Each criterion needs an id and description.' when an element is null, not an object, or an array."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown as an Error with the message 'Criterion ids and descriptions must be nonempty strings.' when an element's id or description is not a string or is empty after trimming."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown as an Error with the message 'Criterion ids must be unique.' when an element's id repeats an earlier element's id after trimming."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
