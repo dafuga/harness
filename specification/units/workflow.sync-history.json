@@ -12,52 +12,97 @@
 		"symbols": ["syncHistory", "renderSync", "SyncAction", "SyncAction"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "syncHistory.action",
 				"type": "SyncAction",
-				"required": true
+				"required": true,
+				"description": "Selects the HistorySyncService method to run and is used directly as its name, so it must be 'fetch', 'push' or 'sync'.",
+				"examples": ["fetch", "push", "sync"]
 			},
 			{
 				"name": "syncHistory.remote",
 				"type": "string",
 				"required": false,
-				"default": "origin"
+				"default": "origin",
+				"description": "The git remote to exchange history with; it must be a remote of the repository at root, or the call rejects with the message \"<remote>\" is not a remote of this repository. Defaults to 'origin'.",
+				"examples": ["origin", "upstream"]
 			},
 			{
 				"name": "syncHistory.root",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "The directory whose git repository is used; it is resolved to an absolute path before the remote check. Defaults to process.cwd(), evaluated on each call.",
+				"examples": ["/home/dev/projects/app", "/srv/git/billing-service"]
 			},
 			{
 				"name": "renderSync.action",
 				"type": "SyncAction",
-				"required": true
+				"required": true,
+				"description": "The action whose result is summarized, with the same values as syncHistory.action. Only 'fetch' omits the trailing clause, which is '; sent to <remote>' or '; nothing sent to <remote>'.",
+				"examples": ["fetch", "push", "sync"]
 			},
 			{
 				"name": "renderSync.result",
 				"type": "Synced",
-				"required": true
+				"required": true,
+				"description": "The Synced value to summarize. renderSync reads its evidence, notes, pushed and remote fields, and pushed alone selects between 'sent to' and 'nothing sent to'.",
+				"examples": [
+					{
+						"evidence": "created",
+						"notes": "fast-forwarded",
+						"pushed": true,
+						"remote": "origin"
+					},
+					{
+						"evidence": "unchanged",
+						"notes": "absent",
+						"pushed": false,
+						"remote": "upstream"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "syncHistory",
-				"type": "Promise<Synced>"
+				"type": "Promise<Synced>",
+				"description": "Resolves with the Synced value from the HistorySyncService method named by action, run for the remote named by remote. It rejects instead when remote is not a remote of the repository at root.",
+				"examples": [
+					{
+						"evidence": "created",
+						"notes": "fast-forwarded",
+						"pushed": true,
+						"remote": "origin"
+					},
+					{
+						"evidence": "merged",
+						"notes": "unchanged",
+						"pushed": false,
+						"remote": "upstream"
+					}
+				]
 			},
 			{
 				"name": "renderSync",
-				"type": "string"
+				"type": "string",
+				"description": "Summarizes a Synced value as 'Evidence <evidence>, notes <notes>' followed by a period. For any action other than 'fetch', the clause '; sent to <remote>' (when result.pushed is truthy) or '; nothing sent to <remote>' (when it is falsy) comes before that period, where <remote> is result.remote.",
+				"examples": [
+					"Evidence created, notes fast-forwarded; sent to origin.",
+					"Evidence unchanged, notes absent; nothing sent to upstream.",
+					"Evidence merged, notes unchanged."
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised by fail() in syncHistory when GitAdapter.attempt(['remote', 'get-url', remote]) returns a falsy result, with the message \"<remote>\" is not a remote of this repository. Because syncHistory is async, the caller receives it as a rejected promise."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "syncHistory",
@@ -65,33 +110,55 @@
 					{
 						"name": "syncHistory.action",
 						"type": "SyncAction",
-						"required": true
+						"required": true,
+						"description": "Selects the HistorySyncService method to run and is used directly as its name, so it must be 'fetch', 'push' or 'sync'.",
+						"examples": ["fetch", "push", "sync"]
 					},
 					{
 						"name": "syncHistory.remote",
 						"type": "string",
 						"required": false,
-						"default": "origin"
+						"default": "origin",
+						"description": "The git remote to exchange history with; it must be a remote of the repository at root, or the call rejects with the message \"<remote>\" is not a remote of this repository. Defaults to 'origin'.",
+						"examples": ["origin", "upstream"]
 					},
 					{
 						"name": "syncHistory.root",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "The directory whose git repository is used; it is resolved to an absolute path before the remote check. Defaults to process.cwd(), evaluated on each call.",
+						"examples": ["/home/dev/projects/app", "/srv/git/billing-service"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "syncHistory",
-						"type": "Promise<Synced>"
+						"type": "Promise<Synced>",
+						"description": "Resolves with the Synced value from the HistorySyncService method named by action, run for the remote named by remote. It rejects instead when remote is not a remote of the repository at root.",
+						"examples": [
+							{
+								"evidence": "created",
+								"notes": "fast-forwarded",
+								"pushed": true,
+								"remote": "origin"
+							},
+							{
+								"evidence": "merged",
+								"notes": "unchanged",
+								"pushed": false,
+								"remote": "upstream"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised by fail() in syncHistory when GitAdapter.attempt(['remote', 'get-url', remote]) returns a falsy result, with the message \"<remote>\" is not a remote of this repository. Because syncHistory is async, the caller receives it as a rejected promise."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderSync",
@@ -99,22 +166,45 @@
 					{
 						"name": "renderSync.action",
 						"type": "SyncAction",
-						"required": true
+						"required": true,
+						"description": "The action whose result is summarized, with the same values as syncHistory.action. Only 'fetch' omits the trailing clause, which is '; sent to <remote>' or '; nothing sent to <remote>'.",
+						"examples": ["fetch", "push", "sync"]
 					},
 					{
 						"name": "renderSync.result",
 						"type": "Synced",
-						"required": true
+						"required": true,
+						"description": "The Synced value to summarize. renderSync reads its evidence, notes, pushed and remote fields, and pushed alone selects between 'sent to' and 'nothing sent to'.",
+						"examples": [
+							{
+								"evidence": "created",
+								"notes": "fast-forwarded",
+								"pushed": true,
+								"remote": "origin"
+							},
+							{
+								"evidence": "unchanged",
+								"notes": "absent",
+								"pushed": false,
+								"remote": "upstream"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderSync",
-						"type": "string"
+						"type": "string",
+						"description": "Summarizes a Synced value as 'Evidence <evidence>, notes <notes>' followed by a period. For any action other than 'fetch', the clause '; sent to <remote>' (when result.pushed is truthy) or '; nothing sent to <remote>' (when it is falsy) comes before that period, where <remote> is result.remote.",
+						"examples": [
+							"Evidence created, notes fast-forwarded; sent to origin.",
+							"Evidence unchanged, notes absent; nothing sent to upstream.",
+							"Evidence merged, notes unchanged."
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
