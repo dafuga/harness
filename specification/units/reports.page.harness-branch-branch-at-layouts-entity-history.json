@@ -24,41 +24,48 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The commits that changed the shell, newest first, each against its first parent, with reasons, sizes and reviews. A commit whose change is unknown says so."
+				"description": "The commits that changed, added or removed the layout itself through the shown commit, newest first, each compared with its first parent. Each row gives its reasons, its size and complexity with their changes against the nearest earlier measured commit, its latency under the chosen performance profile, and a 'Budget increase approved' pill where the commit has an approval review; commits whose change the history does not record stay unlisted until they are read, and a note counts them with the history's reason and reads up to ten more on request."
 			},
 			{
 				"name": "title",
 				"type": "string",
-				"description": "Shell history · Harness"
+				"description": "The document title that HarnessScreen sets from the page's title 'Layout history', so it reads 'Layout history · Harness'.",
+				"examples": ["Layout history · Harness"]
 			}
 		],
 		"errors": [
 			{
 				"name": "not-in-history",
 				"type": "notice",
-				"description": "A branch or commit the history does not hold, or a commit the branch does not contain, is said. No other revision is shown."
+				"description": "A branch the history does not hold, the tip of a branch it does not hold, a commit it does not hold, or a commit its branch does not contain is said in an alert notice that names it. No other revision is shown, and the notice links 'Open the newest commit' to the explorer's home when the history has one."
 			},
 			{
 				"name": "no-registry",
 				"type": "notice",
-				"description": "A revision that stores no unit registry says so. The registry of another revision is not shown."
+				"description": "A shown revision whose registry is not available is said under the title 'No registry at this revision', with the registry's stored gap or, when it has none, 'No unit registry is stored at' and its short commit, followed by a full stop. Its 'Stay on this revision' link goes to the layouts list of the same branch and commit; the layout and its history are not drawn in its place, and no other revision's registry is shown."
 			},
 			{
 				"name": "not-at-revision",
 				"type": "notice",
-				"description": "A shell the shown revision does not hold is said, with the way back to the collection."
+				"description": "An entity the shown revision does not list in any category, and this commit did not remove, is said under 'Not at this revision', naming it and the short commit. Its 'Back to the collection' link goes to the layouts list of the same branch and commit, and nothing from another revision is shown in its place."
 			},
 			{
 				"name": "other-category",
 				"type": "redirect",
-				"description": "A unit that is not a shell at this revision is led to the address of its own category."
+				"description": "A unit the shown revision lists under another category is moved to the address of its own category by a replacing navigation once that revision is read, keeping its branch, commit and entity."
 			},
 			{
 				"name": "not-admitted",
 				"type": "403",
-				"description": "A request the owner policy does not admit is refused before any history is read."
+				"description": "A request the owner policy does not admit is answered 403 'Forbidden' by the server before any page is rendered or any history is read. The policy admits a request only in loopback owner mode, with the server bound to a loopback address, no address header configured, and a loopback client address."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The history client throws new Error with the message '<path> could not be loaded (<status>)', such as 'index.json could not be loaded (403)', when a data response is not OK; a network failure or a body that is not JSON rejects the read with the platform's error. The page catches it: a failed index or shown revision shows a notice asking the reader to refresh the page, and a failed first parent is read as none."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
