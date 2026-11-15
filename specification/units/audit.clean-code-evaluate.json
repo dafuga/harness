@@ -9,17 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/audit/cleanCodeEvaluate.ts",
 			"src/audit/development-tooling/cleanCodeEvaluate.ts",
 			"src/audit/development-tooling/cleanCodeEvaluate.types.ts"
 		],
-		"symbols": [
-			"evaluateCleanCodeFile",
-			"evaluateCleanCodeFile",
-			"JevEvaluator",
-			"JevEvaluator",
-			"EvaluationInput"
-		]
+		"symbols": ["evaluateCleanCodeFile", "JevEvaluator", "JevEvaluator", "EvaluationInput"]
 	},
 	"contract": {
 		"origin": "derived",

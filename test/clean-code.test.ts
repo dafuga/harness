@@ -1,7 +1,12 @@
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
+import { existsSync } from 'node:fs';
 import { rm } from 'node:fs/promises';
+import { join } from 'node:path';
 import { resolveCleanCodeSettings } from '../src/audit/development-tooling/cleanCodeConfig';
-import { discoverCleanCodeFiles, matchesExclusion } from '../src/audit/cleanCodeDiscovery';
+import {
+	discoverCleanCodeFiles,
+	matchesExclusion
+} from '../src/audit/development-tooling/cleanCodeDiscovery';
 import { BoundedCommandAdapter } from '../src/adapters/execution-runtimes/BoundedCommandAdapter';
 import { reviewCleanCode } from '../src/audit/development-tooling/reviewCleanCode';
 import { fixtureEvaluation, reviewFixtureRoot, reviewSettings } from './support/cleanCodeFixture';
@@ -102,4 +107,13 @@ test('dry runs inventory files without evaluating or requiring credentials', asy
 	expect(calls).toBe(0);
 	expect(report.status).toBe('dry-run');
 	expect(report.coverage.selectedFiles).toEqual(['src/utils/greet.ts']);
+});
+
+test('each relocated clean-code module lives only at its development-tooling path', () => {
+	const audit = join(import.meta.dirname, '../src/audit');
+	const names = ['cleanCodeDiscovery', 'cleanCodeEvaluate', 'cleanCodeRelated', 'cleanCodeRender'];
+	for (const name of names) {
+		expect(existsSync(join(audit, `${name}.ts`)), name).toBe(false);
+		expect(existsSync(join(audit, 'development-tooling', `${name}.ts`)), name).toBe(true);
+	}
 });

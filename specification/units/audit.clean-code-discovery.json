@@ -8,16 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/audit/cleanCodeDiscovery.ts",
-			"src/audit/development-tooling/cleanCodeDiscovery.ts"
-		],
-		"symbols": [
-			"discoverCleanCodeFiles",
-			"matchesExclusion",
-			"discoverCleanCodeFiles",
-			"matchesExclusion"
-		]
+		"source": ["src/audit/development-tooling/cleanCodeDiscovery.ts"],
+		"symbols": ["discoverCleanCodeFiles", "matchesExclusion"]
 	},
 	"contract": {
 		"origin": "declared",

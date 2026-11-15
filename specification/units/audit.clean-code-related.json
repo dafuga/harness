@@ -8,16 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/audit/cleanCodeRelated.ts",
-			"src/audit/development-tooling/cleanCodeRelated.ts"
-		],
-		"symbols": [
-			"relatedReviewPaths",
-			"reviewConventionPaths",
-			"relatedReviewPaths",
-			"reviewConventionPaths"
-		]
+		"source": ["src/audit/development-tooling/cleanCodeRelated.ts"],
+		"symbols": ["relatedReviewPaths", "reviewConventionPaths"]
 	},
 	"contract": {
 		"origin": "derived",
