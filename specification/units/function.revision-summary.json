@@ -21,23 +21,115 @@
 				"name": "revisionSummary.status",
 				"type": "Pick<CommitStatus, 'records'>",
 				"required": true,
-				"description": "Attached record status, validity and problems from history inspection."
+				"description": "The records attached to one commit, each with its record id, outcome, valid flag and problems from history inspection, while its evidence pointer is not read here. Only records with valid set to true can make coverage verified or failed, and an empty list means no record is attached to the commit.",
+				"examples": [
+					{
+						"records": [
+							{
+								"record": "7a3f0c91e5d2b84a6f19c0e3d7b25a48c1f6e09b3d2a7c5e8f14b06d9a2c3e71",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"evidence": {
+									"commit": "3b7f0e2c9a1d4865e0b3f7c2a9d1e6f84c0b5a27",
+									"path": "records/9e2d7c41b0a38f65d1e4c9b27a0f83d6c5e1b924/7a3f0c91e5d2b84a6f19c0e3d7b25a48c1f6e09b3d2a7c5e8f14b06d9a2c3e71",
+									"manifest": "c49e27a1d0b5f3862e9a4d70b1c5f8e26a3d9b04f7c1e8a52d6b0f93e4a7c1d5"
+								}
+							}
+						]
+					},
+					{
+						"records": [
+							{
+								"record": "b04d7e19c3a25f8e61d0b7c94a2e5f38d1c6a0e7b92f4d58a3c1e6f07b9d2a44",
+								"status": "passed",
+								"valid": false,
+								"problems": ["note finish time differs from the record"],
+								"evidence": {
+									"commit": "f84c0b5a27d91e3b6a0c7f2e95d18b4a3c6e0f72",
+									"path": "records/d17a6c3e0b9f2845a7e1c0d36b9f2a84e5c7d013/b04d7e19c3a25f8e61d0b7c94a2e5f38d1c6a0e7b92f4d58a3c1e6f07b9d2a44",
+									"manifest": "e0f3a9c6125b7d84f2a0e6c93b15d7f8a4c2e61b09d3f7a58e2c40b6d1a9f237"
+								}
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "revisionSummary.views",
 				"type": "Viewed[]",
 				"required": true,
-				"description": "Readable record views supplying profile, finish time and comparison base by record id."
+				"description": "Readable record views, each with a record id, profile id, finish time and base commit. The first view whose id matches a status record supplies that record's profile, finish time and base; a status record with no matching view reports 'unknown' for profile and finish time and null for base, and views with no matching status record are ignored.",
+				"examples": [
+					[
+						{
+							"id": "7a3f0c91e5d2b84a6f19c0e3d7b25a48c1f6e09b3d2a7c5e8f14b06d9a2c3e71",
+							"profile": "5c1e8a0b9d2f4e61",
+							"finishedAt": "2026-11-14T18:22:07.412Z",
+							"source": {
+								"commit": "9e2d7c41b0a38f65d1e4c9b27a0f83d6c5e1b924",
+								"tree": "0c71f5a2e9d4b83f16a07c5e2d9b4f81a3e6c750",
+								"base": "4b8e1f0a92c7d35e61f0b8a4c2d9e7f3a6b1c05d",
+								"baseRecord": "e5b19d0a4c7f2836b0d9e4a1c75f28d3a6b0e9c14f7d2a58c3e0b96d1f47a2c8"
+							}
+						}
+					],
+					[
+						{
+							"id": "b04d7e19c3a25f8e61d0b7c94a2e5f38d1c6a0e7b92f4d58a3c1e6f07b9d2a44",
+							"profile": "a7d03f9c2e18b645",
+							"finishedAt": "2026-11-15T09:41:53.087Z",
+							"source": {
+								"commit": "d17a6c3e0b9f2845a7e1c0d36b9f2a84e5c7d013",
+								"tree": "5e0a9d4b71c2f8e3064a7b1d9c2e58f0a6b3d7e4",
+								"base": null
+							}
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "revisionSummary",
 				"type": "RevisionRecords",
-				"description": "Coverage, gaps and record summaries. No records is unverified; any usable passed record is verified; usable failures yield failed; only unusable records yield invalid. Unreadable metadata is unknown and invalid-record problems are named as gaps."
+				"description": "The commit's coverage is 'unverified' with no records, 'verified' when any valid passed record exists, 'failed' when valid records exist but none passed, and 'invalid' when records exist but none is valid. Gaps are the line 'no verification record is attached to this commit' when there are no records, otherwise each problem of an invalid record written as 'record <first 12 characters of its id>: <problem>'; each record summary takes profile, finish time and base from its matching view, with 'unknown' for profile and finish time and null for base when there is none.",
+				"examples": [
+					{
+						"coverage": "verified",
+						"gaps": [],
+						"records": [
+							{
+								"id": "7a3f0c91e5d2b84a6f19c0e3d7b25a48c1f6e09b3d2a7c5e8f14b06d9a2c3e71",
+								"status": "passed",
+								"profile": "5c1e8a0b9d2f4e61",
+								"finishedAt": "2026-11-14T18:22:07.412Z",
+								"base": "4b8e1f0a92c7d35e61f0b8a4c2d9e7f3a6b1c05d",
+								"valid": true,
+								"problems": []
+							}
+						]
+					},
+					{
+						"coverage": "invalid",
+						"gaps": ["record b04d7e19c3a2: note finish time differs from the record"],
+						"records": [
+							{
+								"id": "b04d7e19c3a25f8e61d0b7c94a2e5f38d1c6a0e7b92f4d58a3c1e6f07b9d2a44",
+								"status": "passed",
+								"profile": "a7d03f9c2e18b645",
+								"finishedAt": "2026-11-15T09:41:53.087Z",
+								"base": null,
+								"valid": false,
+								"problems": ["note finish time differs from the record"]
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "revisionSummary",
@@ -46,24 +138,115 @@
 						"name": "revisionSummary.status",
 						"type": "Pick<CommitStatus, 'records'>",
 						"required": true,
-						"description": "Attached record status, validity and problems from history inspection."
+						"description": "The records attached to one commit, each with its record id, outcome, valid flag and problems from history inspection, while its evidence pointer is not read here. Only records with valid set to true can make coverage verified or failed, and an empty list means no record is attached to the commit.",
+						"examples": [
+							{
+								"records": [
+									{
+										"record": "7a3f0c91e5d2b84a6f19c0e3d7b25a48c1f6e09b3d2a7c5e8f14b06d9a2c3e71",
+										"status": "passed",
+										"valid": true,
+										"problems": [],
+										"evidence": {
+											"commit": "3b7f0e2c9a1d4865e0b3f7c2a9d1e6f84c0b5a27",
+											"path": "records/9e2d7c41b0a38f65d1e4c9b27a0f83d6c5e1b924/7a3f0c91e5d2b84a6f19c0e3d7b25a48c1f6e09b3d2a7c5e8f14b06d9a2c3e71",
+											"manifest": "c49e27a1d0b5f3862e9a4d70b1c5f8e26a3d9b04f7c1e8a52d6b0f93e4a7c1d5"
+										}
+									}
+								]
+							},
+							{
+								"records": [
+									{
+										"record": "b04d7e19c3a25f8e61d0b7c94a2e5f38d1c6a0e7b92f4d58a3c1e6f07b9d2a44",
+										"status": "passed",
+										"valid": false,
+										"problems": ["note finish time differs from the record"],
+										"evidence": {
+											"commit": "f84c0b5a27d91e3b6a0c7f2e95d18b4a3c6e0f72",
+											"path": "records/d17a6c3e0b9f2845a7e1c0d36b9f2a84e5c7d013/b04d7e19c3a25f8e61d0b7c94a2e5f38d1c6a0e7b92f4d58a3c1e6f07b9d2a44",
+											"manifest": "e0f3a9c6125b7d84f2a0e6c93b15d7f8a4c2e61b09d3f7a58e2c40b6d1a9f237"
+										}
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "revisionSummary.views",
 						"type": "Viewed[]",
 						"required": true,
-						"description": "Readable record views supplying profile, finish time and comparison base by record id."
+						"description": "Readable record views, each with a record id, profile id, finish time and base commit. The first view whose id matches a status record supplies that record's profile, finish time and base; a status record with no matching view reports 'unknown' for profile and finish time and null for base, and views with no matching status record are ignored.",
+						"examples": [
+							[
+								{
+									"id": "7a3f0c91e5d2b84a6f19c0e3d7b25a48c1f6e09b3d2a7c5e8f14b06d9a2c3e71",
+									"profile": "5c1e8a0b9d2f4e61",
+									"finishedAt": "2026-11-14T18:22:07.412Z",
+									"source": {
+										"commit": "9e2d7c41b0a38f65d1e4c9b27a0f83d6c5e1b924",
+										"tree": "0c71f5a2e9d4b83f16a07c5e2d9b4f81a3e6c750",
+										"base": "4b8e1f0a92c7d35e61f0b8a4c2d9e7f3a6b1c05d",
+										"baseRecord": "e5b19d0a4c7f2836b0d9e4a1c75f28d3a6b0e9c14f7d2a58c3e0b96d1f47a2c8"
+									}
+								}
+							],
+							[
+								{
+									"id": "b04d7e19c3a25f8e61d0b7c94a2e5f38d1c6a0e7b92f4d58a3c1e6f07b9d2a44",
+									"profile": "a7d03f9c2e18b645",
+									"finishedAt": "2026-11-15T09:41:53.087Z",
+									"source": {
+										"commit": "d17a6c3e0b9f2845a7e1c0d36b9f2a84e5c7d013",
+										"tree": "5e0a9d4b71c2f8e3064a7b1d9c2e58f0a6b3d7e4",
+										"base": null
+									}
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "revisionSummary",
 						"type": "RevisionRecords",
-						"description": "Coverage, gaps and record summaries. No records is unverified; any usable passed record is verified; usable failures yield failed; only unusable records yield invalid. Unreadable metadata is unknown and invalid-record problems are named as gaps."
+						"description": "The commit's coverage is 'unverified' with no records, 'verified' when any valid passed record exists, 'failed' when valid records exist but none passed, and 'invalid' when records exist but none is valid. Gaps are the line 'no verification record is attached to this commit' when there are no records, otherwise each problem of an invalid record written as 'record <first 12 characters of its id>: <problem>'; each record summary takes profile, finish time and base from its matching view, with 'unknown' for profile and finish time and null for base when there is none.",
+						"examples": [
+							{
+								"coverage": "verified",
+								"gaps": [],
+								"records": [
+									{
+										"id": "7a3f0c91e5d2b84a6f19c0e3d7b25a48c1f6e09b3d2a7c5e8f14b06d9a2c3e71",
+										"status": "passed",
+										"profile": "5c1e8a0b9d2f4e61",
+										"finishedAt": "2026-11-14T18:22:07.412Z",
+										"base": "4b8e1f0a92c7d35e61f0b8a4c2d9e7f3a6b1c05d",
+										"valid": true,
+										"problems": []
+									}
+								]
+							},
+							{
+								"coverage": "invalid",
+								"gaps": ["record b04d7e19c3a2: note finish time differs from the record"],
+								"records": [
+									{
+										"id": "b04d7e19c3a25f8e61d0b7c94a2e5f38d1c6a0e7b92f4d58a3c1e6f07b9d2a44",
+										"status": "passed",
+										"profile": "a7d03f9c2e18b645",
+										"finishedAt": "2026-11-15T09:41:53.087Z",
+										"base": null,
+										"valid": false,
+										"problems": ["note finish time differs from the record"]
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
