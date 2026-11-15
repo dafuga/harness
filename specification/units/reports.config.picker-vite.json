@@ -11,11 +11,8 @@
 		"visibility": "internal"
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/configs/development-tooling/pickerViteConfig.ts",
-			"packages/reports/src/configs/pickerViteConfig.ts"
-		],
-		"symbols": ["default", "default"]
+		"source": ["packages/reports/src/configs/development-tooling/pickerViteConfig.ts"],
+		"symbols": ["default"]
 	},
 	"contract": {
 		"origin": "derived",

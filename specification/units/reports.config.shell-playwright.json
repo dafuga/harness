@@ -11,11 +11,8 @@
 		"visibility": "internal"
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/configs/development-tooling/shellPlaywrightConfig.ts",
-			"packages/reports/src/configs/shellPlaywrightConfig.ts"
-		],
-		"symbols": ["default", "default"]
+		"source": ["packages/reports/src/configs/development-tooling/shellPlaywrightConfig.ts"],
+		"symbols": ["default"]
 	},
 	"contract": {
 		"origin": "derived",

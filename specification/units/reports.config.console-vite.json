@@ -11,11 +11,8 @@
 		"visibility": "internal"
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/configs/consoleViteConfig.ts",
-			"packages/reports/src/configs/development-tooling/consoleViteConfig.ts"
-		],
-		"symbols": ["default", "default"]
+		"source": ["packages/reports/src/configs/development-tooling/consoleViteConfig.ts"],
+		"symbols": ["default"]
 	},
 	"contract": {
 		"origin": "derived",
