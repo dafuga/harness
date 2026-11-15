@@ -21,29 +21,38 @@
 				"name": "imageUrl.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "The workspace supplying the image reader, current snapshot commit and optional project identity. No read is started if the reader connection or commit is absent."
+				"description": "The Workspace whose bridge, snapshot revision commit, and context are read to build the image request. A read is attempted only when the request, bridge, and commit are truthy; otherwise the callback only receives its initial empty values."
 			},
 			{
 				"name": "imageUrl.request",
 				"type": "ImageRequest | null",
 				"required": true,
-				"description": "The entity identity, design version and SHA-256 image identifier to send to the image reader, or null to request no image. This helper passes those identifiers through without validating them itself."
+				"description": "A nullable object with entityId, version, and sha256 string fields that is spread into the bridge image request when the workspace has a bridge and commit. The helper does not validate these strings, and null skips the read.",
+				"examples": [
+					{
+						"entityId": "design-image-42",
+						"version": "v3",
+						"sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+					},
+					null
+				]
 			},
 			{
 				"name": "imageUrl.apply",
 				"type": "(url: string, error: string) => void",
 				"required": true,
-				"description": "Receives empty URL and error strings immediately. On success it receives a temporary URL with an empty error; on a failed read it receives an empty URL and the failure converted to text. Returned bytes are presented as a PNG image."
+				"description": "The callback immediately receives empty URL and error strings, then receives a completion only when a bridge image read starts and settles before cleanup. Success supplies a temporary object URL for bytes wrapped as image/png and an empty error; a caught failure supplies an empty URL and String(cause)."
 			}
 		],
 		"outputs": [
 			{
 				"name": "imageUrl",
 				"type": "()",
-				"description": "A cleanup function that suppresses later results and releases the temporary URL if one was created. Call it when the view is removed or its project, commit or image changes; it does not cancel the underlying read."
+				"description": "The returned disposer marks pending work as disposed and suppresses its later callback. If a URL has been created, it schedules revocation after Svelte tick; it does not cancel the bridge image request."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "imageUrl",
@@ -52,30 +61,38 @@
 						"name": "imageUrl.workspace",
 						"type": "Workspace",
 						"required": true,
-						"description": "The workspace supplying the image reader, current snapshot commit and optional project identity. No read is started if the reader connection or commit is absent."
+						"description": "The Workspace whose bridge, snapshot revision commit, and context are read to build the image request. A read is attempted only when the request, bridge, and commit are truthy; otherwise the callback only receives its initial empty values."
 					},
 					{
 						"name": "imageUrl.request",
 						"type": "ImageRequest | null",
 						"required": true,
-						"description": "The entity identity, design version and SHA-256 image identifier to send to the image reader, or null to request no image. This helper passes those identifiers through without validating them itself."
+						"description": "A nullable object with entityId, version, and sha256 string fields that is spread into the bridge image request when the workspace has a bridge and commit. The helper does not validate these strings, and null skips the read.",
+						"examples": [
+							{
+								"entityId": "design-image-42",
+								"version": "v3",
+								"sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+							},
+							null
+						]
 					},
 					{
 						"name": "imageUrl.apply",
 						"type": "(url: string, error: string) => void",
 						"required": true,
-						"description": "Receives empty URL and error strings immediately. On success it receives a temporary URL with an empty error; on a failed read it receives an empty URL and the failure converted to text. Returned bytes are presented as a PNG image."
+						"description": "The callback immediately receives empty URL and error strings, then receives a completion only when a bridge image read starts and settles before cleanup. Success supplies a temporary object URL for bytes wrapped as image/png and an empty error; a caught failure supplies an empty URL and String(cause)."
 					}
 				],
 				"outputs": [
 					{
 						"name": "imageUrl",
 						"type": "()",
-						"description": "A cleanup function that suppresses later results and releases the temporary URL if one was created. Call it when the view is removed or its project, commit or image changes; it does not cancel the underlying read."
+						"description": "The returned disposer marks pending work as disposed and suppresses its later callback. If a URL has been created, it schedules revocation after Svelte tick; it does not cancel the bridge image request."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
