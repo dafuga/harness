@@ -21,28 +21,50 @@
 				"name": "buildIdentity.files",
 				"type": "BuiltFile[]",
 				"required": true,
-				"description": "Built files with forward-slash paths inside the build directory and SHA-256 content hashes; input order does not affect the result."
+				"description": "Each item supplies a forward-slash path inside the build directory and a sha256 content-digest string. The function sorts a copy by path before hashing and does not validate either field.",
+				"examples": [
+					[
+						{
+							"path": "dist/assets/app.js",
+							"sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+						},
+						{
+							"path": "dist/index.html",
+							"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "builtFileHash.bytes",
 				"type": "Buffer",
 				"required": true,
-				"description": "Original bytes of one emitted file, optionally containing harness-build stamp slots."
+				"description": "Original bytes of one emitted file, held in a Node Buffer. Stamp normalization is attempted only when the bytes contain harness-build:."
 			}
 		],
 		"outputs": [
 			{
 				"name": "buildIdentity",
 				"type": "string",
-				"description": "Lowercase SHA-256 digest over each content hash and path in sorted path order."
+				"description": "A lowercase hexadecimal SHA-256 digest of the path and content-hash records, ordered by path. The function hashes the supplied strings as-is and does not validate that paths are unique or that sha256 values are valid digests.",
+				"examples": ["e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"]
 			},
 			{
 				"name": "builtFileHash",
 				"type": "{ sha256: string; stamps: string[]; slots: number }",
-				"description": "SHA-256 of the bytes with all valid stamp slots emptied, all nonzero identities found in those slots, and the total slot count. Files without slots are hashed unchanged."
+				"description": "Without harness-build:, sha256 hashes the original bytes; otherwise matching buildStampPattern strings are replaced with emptyBuildStamp() before hashing as Latin-1 bytes. stamps collects the buildStamp results for those matches, and slots is their count.",
+				"examples": [
+					{
+						"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+						"stamps": [],
+						"slots": 0
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "buildIdentity",
@@ -51,18 +73,32 @@
 						"name": "buildIdentity.files",
 						"type": "BuiltFile[]",
 						"required": true,
-						"description": "Built files with forward-slash paths inside the build directory and SHA-256 content hashes; input order does not affect the result."
+						"description": "Each item supplies a forward-slash path inside the build directory and a sha256 content-digest string. The function sorts a copy by path before hashing and does not validate either field.",
+						"examples": [
+							[
+								{
+									"path": "dist/assets/app.js",
+									"sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+								},
+								{
+									"path": "dist/index.html",
+									"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+								}
+							],
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "buildIdentity",
 						"type": "string",
-						"description": "Lowercase SHA-256 digest over each content hash and path in sorted path order."
+						"description": "A lowercase hexadecimal SHA-256 digest of the path and content-hash records, ordered by path. The function hashes the supplied strings as-is and does not validate that paths are unique or that sha256 values are valid digests.",
+						"examples": ["e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "builtFileHash",
@@ -71,18 +107,25 @@
 						"name": "builtFileHash.bytes",
 						"type": "Buffer",
 						"required": true,
-						"description": "Original bytes of one emitted file, optionally containing harness-build stamp slots."
+						"description": "Original bytes of one emitted file, held in a Node Buffer. Stamp normalization is attempted only when the bytes contain harness-build:."
 					}
 				],
 				"outputs": [
 					{
 						"name": "builtFileHash",
 						"type": "{ sha256: string; stamps: string[]; slots: number }",
-						"description": "SHA-256 of the bytes with all valid stamp slots emptied, all nonzero identities found in those slots, and the total slot count. Files without slots are hashed unchanged."
+						"description": "Without harness-build:, sha256 hashes the original bytes; otherwise matching buildStampPattern strings are replaced with emptyBuildStamp() before hashing as Latin-1 bytes. stamps collects the buildStamp results for those matches, and slots is their count.",
+						"examples": [
+							{
+								"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+								"stamps": [],
+								"slots": 0
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
