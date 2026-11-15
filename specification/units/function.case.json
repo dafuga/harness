@@ -27,58 +27,59 @@
 				"name": "toKebabCase.textToConvert",
 				"type": "string",
 				"required": true,
-				"description": "Text to split at lowercase-or-digit to uppercase transitions and non-alphanumeric separators.",
-				"examples": ["Hello world"]
+				"description": "The text whose casing and separator characters decide where the kebab-case words split. Only ASCII letters and digits form words, any other character ends a word, and a lowercase letter or digit followed by an uppercase letter starts a new word, so HTTPResponse stays one word.",
+				"examples": ["Hello world", "orderID", "parseHTTPResponse"]
 			},
 			{
 				"name": "toPascalCase.textToConvert",
 				"type": "string",
 				"required": true,
-				"description": "Text to split into normalized lowercase words before capitalizing each word.",
-				"examples": ["Hello world"]
+				"description": "The text whose casing and separator characters decide the words, each of which is lowercased and then given an uppercase first character. Only ASCII letters and digits form words, any other character ends a word, and a lowercase letter or digit followed by an uppercase letter starts a new word, so HTTPResponse stays one word.",
+				"examples": ["Hello world", "orderID", "parseHTTPResponse"]
 			},
 			{
 				"name": "toCamelCase.textToConvert",
 				"type": "string",
 				"required": true,
-				"description": "Text to split into words before building Pascal case and lowering its first character.",
-				"examples": ["Hello world"]
+				"description": "The text whose casing and separator characters decide the words that form the Pascal result before its first character is lowercased. Only ASCII letters and digits form words, any other character ends a word, and a lowercase letter or digit followed by an uppercase letter starts a new word, so HTTPResponse stays one word.",
+				"examples": ["Hello world", "orderID", "parseHTTPResponse"]
 			},
 			{
 				"name": "toSnakeCase.textToConvert",
 				"type": "string",
 				"required": true,
-				"description": "Text to split at case transitions and non-alphanumeric separators.",
-				"examples": ["Hello world"]
+				"description": "The text whose casing and separator characters decide where the snake_case words split. Only ASCII letters and digits form words, any other character ends a word, and a lowercase letter or digit followed by an uppercase letter starts a new word, so HTTPResponse stays one word.",
+				"examples": ["Hello world", "orderID", "parseHTTPResponse"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "toKebabCase.kebabCaseText",
 				"type": "string",
-				"description": "Lowercase words joined by hyphens; empty or separator-only input becomes an empty string.",
-				"examples": ["hello-world"]
+				"description": "The lowercase words of the input joined with hyphens and no leading or trailing hyphen. It is an empty string when the input has no ASCII letters or digits, such as an empty input or one made only of separators.",
+				"examples": ["hello-world", "order-id", "parse-httpresponse"]
 			},
 			{
 				"name": "toPascalCase.pascalCaseText",
 				"type": "string",
-				"description": "Words joined with each first letter capitalized; empty input becomes an empty string.",
-				"examples": ["HelloWorld"]
+				"description": "The lowercase words of the input joined with no separator, each with its first character uppercased (a word that starts with a digit is unchanged). It is an empty string when the input has no ASCII letters or digits, such as an empty input or one made only of separators.",
+				"examples": ["HelloWorld", "OrderId", "ParseHttpresponse"]
 			},
 			{
 				"name": "toCamelCase.camelCaseText",
 				"type": "string",
-				"description": "Joined words with a lowercase first character and capitalized later word initials.",
-				"examples": ["helloWorld"]
+				"description": "The words of the input joined with no separator, where the first word is lowercase and each later word has its first character uppercased. It is an empty string when the input has no ASCII letters or digits, such as an empty input or one made only of separators.",
+				"examples": ["helloWorld", "orderId", "parseHttpresponse"]
 			},
 			{
 				"name": "toSnakeCase.snakeCaseText",
 				"type": "string",
-				"description": "Lowercase words joined by underscores; empty or separator-only input becomes an empty string.",
-				"examples": ["hello_world"]
+				"description": "The lowercase words of the input joined with underscores and no leading or trailing underscore. It is an empty string when the input has no ASCII letters or digits, such as an empty input or one made only of separators.",
+				"examples": ["hello_world", "order_id", "parse_httpresponse"]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "toKebabCase",
@@ -87,18 +88,20 @@
 						"name": "toKebabCase.textToConvert",
 						"type": "string",
 						"required": true,
-						"description": "Text to split at lowercase-or-digit to uppercase transitions and non-alphanumeric separators.",
-						"examples": ["Hello world"]
+						"description": "The text whose casing and separator characters decide where the kebab-case words split. Only ASCII letters and digits form words, any other character ends a word, and a lowercase letter or digit followed by an uppercase letter starts a new word, so HTTPResponse stays one word.",
+						"examples": ["Hello world", "orderID", "parseHTTPResponse"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "toKebabCase",
-						"type": "string"
+						"type": "string",
+						"description": "The lowercase words of the input joined with hyphens and no leading or trailing hyphen. It is an empty string when the input has no ASCII letters or digits, such as an empty input or one made only of separators.",
+						"examples": ["hello-world", "order-id", "parse-httpresponse"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "toPascalCase",
@@ -107,18 +110,20 @@
 						"name": "toPascalCase.textToConvert",
 						"type": "string",
 						"required": true,
-						"description": "Text to split into normalized lowercase words before capitalizing each word.",
-						"examples": ["Hello world"]
+						"description": "The text whose casing and separator characters decide the words, each of which is lowercased and then given an uppercase first character. Only ASCII letters and digits form words, any other character ends a word, and a lowercase letter or digit followed by an uppercase letter starts a new word, so HTTPResponse stays one word.",
+						"examples": ["Hello world", "orderID", "parseHTTPResponse"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "toPascalCase",
-						"type": "string"
+						"type": "string",
+						"description": "The lowercase words of the input joined with no separator, each with its first character uppercased (a word that starts with a digit is unchanged). It is an empty string when the input has no ASCII letters or digits, such as an empty input or one made only of separators.",
+						"examples": ["HelloWorld", "OrderId", "ParseHttpresponse"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "toCamelCase",
@@ -127,18 +132,20 @@
 						"name": "toCamelCase.textToConvert",
 						"type": "string",
 						"required": true,
-						"description": "Text to split into words before building Pascal case and lowering its first character.",
-						"examples": ["Hello world"]
+						"description": "The text whose casing and separator characters decide the words that form the Pascal result before its first character is lowercased. Only ASCII letters and digits form words, any other character ends a word, and a lowercase letter or digit followed by an uppercase letter starts a new word, so HTTPResponse stays one word.",
+						"examples": ["Hello world", "orderID", "parseHTTPResponse"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "toCamelCase",
-						"type": "string"
+						"type": "string",
+						"description": "The words of the input joined with no separator, where the first word is lowercase and each later word has its first character uppercased. It is an empty string when the input has no ASCII letters or digits, such as an empty input or one made only of separators.",
+						"examples": ["helloWorld", "orderId", "parseHttpresponse"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "toSnakeCase",
@@ -147,18 +154,20 @@
 						"name": "toSnakeCase.textToConvert",
 						"type": "string",
 						"required": true,
-						"description": "Text to split at case transitions and non-alphanumeric separators.",
-						"examples": ["Hello world"]
+						"description": "The text whose casing and separator characters decide where the snake_case words split. Only ASCII letters and digits form words, any other character ends a word, and a lowercase letter or digit followed by an uppercase letter starts a new word, so HTTPResponse stays one word.",
+						"examples": ["Hello world", "orderID", "parseHTTPResponse"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "toSnakeCase",
-						"type": "string"
+						"type": "string",
+						"description": "The lowercase words of the input joined with underscores and no leading or trailing underscore. It is an empty string when the input has no ASCII letters or digits, such as an empty input or one made only of separators.",
+						"examples": ["hello_world", "order_id", "parse_httpresponse"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
