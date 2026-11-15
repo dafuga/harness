@@ -21,23 +21,24 @@
 				"name": "analyticsCpuClient.update",
 				"type": "(sample: CpuState) => void",
 				"required": true,
-				"description": "Callback receiving a parsed CPU snapshot, or null when an active request fails."
+				"description": "Callback called with each refresh result while the client is active: a CpuSnapshot from a successful /api/analytics-cpu response, cast without runtime validation, or null when the request fails, the response is not ok, or the body is not valid JSON. It is never called after stop(), and if it throws while receiving a sample, it is called again with null."
 			}
 		],
 		"outputs": [
 			{
 				"name": "analyticsCpuClient",
 				"type": "unknown",
-				"description": "Returns refresh and stop. Starts one request immediately and polls every five seconds while visible; overlapping requests are skipped. Stop cancels the timer and aborts the request, suppressing subsequent delivery."
+				"description": "The object returned by analyticsCpuClient, with refresh() and stop() members: refresh() fetches /api/analytics-cpu with cache 'no-store' and the client's abort signal, and resolves when that attempt finishes, returning at once without a request while a request is pending or after stop(); stop() clears the 5000 ms polling timer, aborts the in-flight request, and blocks later update calls. analyticsCpuClient starts one request immediately and then calls refresh every 5000 ms, skipping ticks while document.visibilityState is not 'visible', and refresh() rejects only if update throws while receiving null."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "A non-success HTTP response creates CPU sample unavailable. internally; refresh catches failures and delivers null while active."
+				"description": "Thrown inside refresh with the message 'CPU sample unavailable.' when the /api/analytics-cpu response is not ok. refresh catches it, along with network and JSON failures, and calls update(null) while the client is active, so callers of analyticsCpuClient never receive it."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "analyticsCpuClient",
@@ -46,18 +47,24 @@
 						"name": "analyticsCpuClient.update",
 						"type": "(sample: CpuState) => void",
 						"required": true,
-						"description": "Callback receiving a parsed CPU snapshot, or null when an active request fails."
+						"description": "Callback called with each refresh result while the client is active: a CpuSnapshot from a successful /api/analytics-cpu response, cast without runtime validation, or null when the request fails, the response is not ok, or the body is not valid JSON. It is never called after stop(), and if it throws while receiving a sample, it is called again with null."
 					}
 				],
 				"outputs": [
 					{
 						"name": "analyticsCpuClient",
 						"type": "unknown",
-						"description": "Returns refresh and stop. Starts one request immediately and polls every five seconds while visible; overlapping requests are skipped. Stop cancels the timer and aborts the request, suppressing subsequent delivery."
+						"description": "The object returned by analyticsCpuClient, with refresh() and stop() members: refresh() fetches /api/analytics-cpu with cache 'no-store' and the client's abort signal, and resolves when that attempt finishes, returning at once without a request while a request is pending or after stop(); stop() clears the 5000 ms polling timer, aborts the in-flight request, and blocks later update calls. analyticsCpuClient starts one request immediately and then calls refresh every 5000 ms, skipping ticks while document.visibilityState is not 'visible', and refresh() rejects only if update throws while receiving null."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown inside refresh with the message 'CPU sample unavailable.' when the /api/analytics-cpu response is not ok. refresh catches it, along with network and JSON failures, and calls update(null) while the client is active, so callers of analyticsCpuClient never receive it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
