@@ -21,50 +21,185 @@
 				"name": "planningConvert.plan",
 				"type": "PlanDetail",
 				"required": true,
-				"description": "The stored plan with its contract fields and contract hash."
+				"description": "The stored plan supplied to the conversion. The function reads contract.inputs, contract.outputs, contract.errors and the plan-level contractHash.",
+				"examples": [
+					{
+						"unitId": "desktop.function.planning-convert",
+						"category": "function",
+						"slug": "planning-convert",
+						"title": "Convert stored planning details",
+						"goal": "Convert stored planning records for desktop display.",
+						"createdAt": "2026-10-25T10:30:00.000Z",
+						"createdBy": {
+							"kind": "person",
+							"name": "Reviewer"
+						},
+						"baseRevision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"path": "packages/desktop/src/utils/projects-sessions",
+						"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"lifecycle": "draft",
+						"registered": true,
+						"verified": false,
+						"latestVersion": null,
+						"contract": {
+							"responsibility": "Converts stored plan contracts, approvals, threads and messages into desktop display records.",
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"states": [],
+							"viewports": ["diagram"]
+						},
+						"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"approval": null,
+						"versionCount": 0,
+						"threadCount": 0,
+						"versions": [],
+						"approvals": [],
+						"threads": []
+					}
+				]
 			},
 			{
 				"name": "approvalInfo.record",
 				"type": "ApprovalRecord",
 				"required": true,
-				"description": "The stored approval, including image records, version, contract hash, reviewer timestamp, current flag and optional design option."
+				"description": "The stored approval supplied to the summary conversion. Its image entries contribute only sha256 values, and a truthy option is included in the result.",
+				"examples": [
+					{
+						"id": "8c61a1d2-7b4a-4f4f-9a3d-4e2c9b4a1037",
+						"unitId": "desktop.function.planning-convert",
+						"version": "v1",
+						"images": [
+							{
+								"file": "packages/desktop/src/utils/projects-sessions/planningConvert.ts",
+								"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							}
+						],
+						"notesSha256": null,
+						"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"reviewer": "Reviewer",
+						"approvedAt": "2026-10-25T10:30:00.000Z",
+						"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"current": true
+					}
+				]
 			},
 			{
 				"name": "threadInfo.thread",
 				"type": "PlanThread",
 				"required": true,
-				"description": "The stored thread with its pin, optional image anchor and messages."
+				"description": "The stored thread supplied to the summary conversion. The function passes through id and pin, counts messages, and uses null anchor fields when anchor is absent.",
+				"examples": [
+					{
+						"id": "a3f2c8d1-6b74-4a91-8e20-5f6d3b7c9012",
+						"unitId": "desktop.function.planning-convert",
+						"pin": 1,
+						"title": "Planning conversion review",
+						"anchor": null,
+						"viewedRevision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"createdAt": "2026-10-25T10:30:00.000Z",
+						"createdBy": {
+							"kind": "person",
+							"name": "Reviewer"
+						},
+						"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"messages": []
+					}
+				]
 			},
 			{
 				"name": "messageInfo.message",
 				"type": "StoredMessage",
 				"required": true,
-				"description": "The stored message, its author, text, mode, optional agent metadata and artifact references."
+				"description": "The stored message supplied to the display conversion. The first image reference supplies imageSha256 and has priority for version, followed by the first notes reference and then change.target.version.",
+				"examples": [
+					{
+						"id": "4b2e9d73-1c65-4f80-a317-6d9c2e5b8041",
+						"unitId": "desktop.function.planning-convert",
+						"threadId": "a3f2c8d1-6b74-4a91-8e20-5f6d3b7c9012",
+						"sequence": 1,
+						"previous": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"at": "2026-10-25T10:30:00.000Z",
+						"author": {
+							"kind": "person",
+							"name": "Reviewer"
+						},
+						"mode": "plan",
+						"agent": null,
+						"body": "Review the updated planning details.",
+						"references": [],
+						"change": null
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "planningConvert",
 				"type": "EntityContract",
-				"description": "An entity contract retaining inputs, outputs and hash, and converting each error name into a field of type error."
+				"description": "The desktop entity contract returned for a plan. It keeps inputs and outputs, converts each error name to an object with type error, and copies contractHash to hash.",
+				"examples": [
+					{
+						"inputs": [],
+						"outputs": [],
+						"errors": [],
+						"hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+					}
+				]
 			},
 			{
 				"name": "approvalInfo",
 				"type": "ApprovalInfo",
-				"description": "An approval summary with image hashes, version, contract hash, timestamp, current status and optional option."
+				"description": "The desktop approval summary returned from a stored approval. Image records become imageHashes, and option is present only when the stored option is truthy.",
+				"examples": [
+					{
+						"id": "8c61a1d2-7b4a-4f4f-9a3d-4e2c9b4a1037",
+						"version": "v1",
+						"imageHashes": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"],
+						"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"approvedAt": "2026-10-25T10:30:00.000Z",
+						"current": true
+					}
+				]
 			},
 			{
 				"name": "threadInfo",
 				"type": "ThreadInfo",
-				"description": "A thread summary with its anchor and message count. Missing anchors become null image fields."
+				"description": "The desktop thread summary returned from a stored thread. It copies the anchor fields or uses null when anchor is absent, includes option only when truthy, and counts messages.",
+				"examples": [
+					{
+						"id": "a3f2c8d1-6b74-4a91-8e20-5f6d3b7c9012",
+						"pin": 1,
+						"version": null,
+						"imageSha256": null,
+						"state": null,
+						"viewport": null,
+						"region": null,
+						"messageCount": 0
+					}
+				]
 			},
 			{
 				"name": "messageInfo",
 				"type": "ThreadMessage",
-				"description": "A display message whose person author becomes user and other authors become agent. Version comes from the first image reference, then notes, then a Change target; image hash comes from the first image reference. Missing agent details become null."
+				"description": "The desktop message returned from a stored message. Person authors map to user and other authors to agent; version uses image, then notes, then change target, and missing agent values or image hash become null.",
+				"examples": [
+					{
+						"id": "4b2e9d73-1c65-4f80-a317-6d9c2e5b8041",
+						"at": "2026-10-25T10:30:00.000Z",
+						"author": "user",
+						"text": "Review the updated planning details.",
+						"mode": "plan",
+						"provider": null,
+						"model": null,
+						"version": null,
+						"imageSha256": null
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "planningConvert",
@@ -73,18 +208,62 @@
 						"name": "planningConvert.plan",
 						"type": "PlanDetail",
 						"required": true,
-						"description": "The stored plan with its contract fields and contract hash."
+						"description": "The stored plan supplied to the conversion. The function reads contract.inputs, contract.outputs, contract.errors and the plan-level contractHash.",
+						"examples": [
+							{
+								"unitId": "desktop.function.planning-convert",
+								"category": "function",
+								"slug": "planning-convert",
+								"title": "Convert stored planning details",
+								"goal": "Convert stored planning records for desktop display.",
+								"createdAt": "2026-10-25T10:30:00.000Z",
+								"createdBy": {
+									"kind": "person",
+									"name": "Reviewer"
+								},
+								"baseRevision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"path": "packages/desktop/src/utils/projects-sessions",
+								"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"lifecycle": "draft",
+								"registered": true,
+								"verified": false,
+								"latestVersion": null,
+								"contract": {
+									"responsibility": "Converts stored plan contracts, approvals, threads and messages into desktop display records.",
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"states": [],
+									"viewports": ["diagram"]
+								},
+								"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"approval": null,
+								"versionCount": 0,
+								"threadCount": 0,
+								"versions": [],
+								"approvals": [],
+								"threads": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "planningConvert",
 						"type": "EntityContract",
-						"description": "An entity contract retaining inputs, outputs and hash, and converting each error name into a field of type error."
+						"description": "The desktop entity contract returned for a plan. It keeps inputs and outputs, converts each error name to an object with type error, and copies contractHash to hash.",
+						"examples": [
+							{
+								"inputs": [],
+								"outputs": [],
+								"errors": [],
+								"hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "approvalInfo",
@@ -93,18 +272,47 @@
 						"name": "approvalInfo.record",
 						"type": "ApprovalRecord",
 						"required": true,
-						"description": "The stored approval, including image records, version, contract hash, reviewer timestamp, current flag and optional design option."
+						"description": "The stored approval supplied to the summary conversion. Its image entries contribute only sha256 values, and a truthy option is included in the result.",
+						"examples": [
+							{
+								"id": "8c61a1d2-7b4a-4f4f-9a3d-4e2c9b4a1037",
+								"unitId": "desktop.function.planning-convert",
+								"version": "v1",
+								"images": [
+									{
+										"file": "packages/desktop/src/utils/projects-sessions/planningConvert.ts",
+										"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+									}
+								],
+								"notesSha256": null,
+								"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"reviewer": "Reviewer",
+								"approvedAt": "2026-10-25T10:30:00.000Z",
+								"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"current": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "approvalInfo",
 						"type": "ApprovalInfo",
-						"description": "An approval summary with image hashes, version, contract hash, timestamp, current status and optional option."
+						"description": "The desktop approval summary returned from a stored approval. Image records become imageHashes, and option is present only when the stored option is truthy.",
+						"examples": [
+							{
+								"id": "8c61a1d2-7b4a-4f4f-9a3d-4e2c9b4a1037",
+								"version": "v1",
+								"imageHashes": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"],
+								"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"approvedAt": "2026-10-25T10:30:00.000Z",
+								"current": true
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "threadInfo",
@@ -113,18 +321,47 @@
 						"name": "threadInfo.thread",
 						"type": "PlanThread",
 						"required": true,
-						"description": "The stored thread with its pin, optional image anchor and messages."
+						"description": "The stored thread supplied to the summary conversion. The function passes through id and pin, counts messages, and uses null anchor fields when anchor is absent.",
+						"examples": [
+							{
+								"id": "a3f2c8d1-6b74-4a91-8e20-5f6d3b7c9012",
+								"unitId": "desktop.function.planning-convert",
+								"pin": 1,
+								"title": "Planning conversion review",
+								"anchor": null,
+								"viewedRevision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"createdAt": "2026-10-25T10:30:00.000Z",
+								"createdBy": {
+									"kind": "person",
+									"name": "Reviewer"
+								},
+								"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"messages": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "threadInfo",
 						"type": "ThreadInfo",
-						"description": "A thread summary with its anchor and message count. Missing anchors become null image fields."
+						"description": "The desktop thread summary returned from a stored thread. It copies the anchor fields or uses null when anchor is absent, includes option only when truthy, and counts messages.",
+						"examples": [
+							{
+								"id": "a3f2c8d1-6b74-4a91-8e20-5f6d3b7c9012",
+								"pin": 1,
+								"version": null,
+								"imageSha256": null,
+								"state": null,
+								"viewport": null,
+								"region": null,
+								"messageCount": 0
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "messageInfo",
@@ -133,18 +370,50 @@
 						"name": "messageInfo.message",
 						"type": "StoredMessage",
 						"required": true,
-						"description": "The stored message, its author, text, mode, optional agent metadata and artifact references."
+						"description": "The stored message supplied to the display conversion. The first image reference supplies imageSha256 and has priority for version, followed by the first notes reference and then change.target.version.",
+						"examples": [
+							{
+								"id": "4b2e9d73-1c65-4f80-a317-6d9c2e5b8041",
+								"unitId": "desktop.function.planning-convert",
+								"threadId": "a3f2c8d1-6b74-4a91-8e20-5f6d3b7c9012",
+								"sequence": 1,
+								"previous": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"at": "2026-10-25T10:30:00.000Z",
+								"author": {
+									"kind": "person",
+									"name": "Reviewer"
+								},
+								"mode": "plan",
+								"agent": null,
+								"body": "Review the updated planning details.",
+								"references": [],
+								"change": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "messageInfo",
 						"type": "ThreadMessage",
-						"description": "A display message whose person author becomes user and other authors become agent. Version comes from the first image reference, then notes, then a Change target; image hash comes from the first image reference. Missing agent details become null."
+						"description": "The desktop message returned from a stored message. Person authors map to user and other authors to agent; version uses image, then notes, then change target, and missing agent values or image hash become null.",
+						"examples": [
+							{
+								"id": "4b2e9d73-1c65-4f80-a317-6d9c2e5b8041",
+								"at": "2026-10-25T10:30:00.000Z",
+								"author": "user",
+								"text": "Review the updated planning details.",
+								"mode": "plan",
+								"provider": null,
+								"model": null,
+								"version": null,
+								"imageSha256": null
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
