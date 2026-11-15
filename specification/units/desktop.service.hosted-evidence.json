@@ -22,41 +22,154 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HostedEvidenceService.constructor.transport",
 				"type": "Transport",
-				"required": true
+				"required": true,
+				"description": "Provides the path builder plus evidence and artifact loaders used by this service. Its loader methods are callbacks, and the interface does not constrain their rejection classes."
 			},
 			{
 				"name": "HostedEvidenceService.constructor.options",
 				"type": "HostedReadOptions",
-				"required": true
+				"required": true,
+				"description": "Configures HostedReadService with the hosted origin, credential lookup, optional HTTP and authority hooks, optional projection cache, and cache-status callback. It contains callbacks and may contain a ProjectionCacheService instance, so the value has no exact JSON representation."
 			},
 			{
 				"name": "HostedEvidenceService.evidence.input",
 				"type": "Asked",
-				"required": true
+				"required": true,
+				"description": "Asked combines projectId, entityId, commit, branch, and mode, where mode is current or commit. The service copies it and uses it for the evidence path, read key, transport request, and answer binding.",
+				"examples": [
+					{
+						"projectId": "project-alpha",
+						"entityId": "reports.component.evidence-grid",
+						"commit": "d34db33f9e1a42c5b71d08a6e4c32f9012345678",
+						"branch": "main",
+						"mode": "current"
+					}
+				]
 			},
 			{
 				"name": "HostedEvidenceService.artifact.input",
 				"type": "EvidenceArtifactQuery & { projectId: string }",
-				"required": true
+				"required": true,
+				"description": "Combines the same project and entity revision query with side, recordId, scenarioId, state, evidenceId, viewport, sha256, notesRevision, and evidenceRevision. The service copies it for the artifact path, read key, and transport request; recordId has no service-level format check.",
+				"examples": [
+					{
+						"projectId": "project-alpha",
+						"entityId": "reports.component.evidence-grid",
+						"commit": "d34db33f9e1a42c5b71d08a6e4c32f9012345678",
+						"branch": "main",
+						"mode": "current",
+						"side": "after",
+						"recordId": "record-001",
+						"scenarioId": "checkout",
+						"state": "confirmed",
+						"evidenceId": "order-confirmation",
+						"viewport": "desktop-1440x900",
+						"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+						"notesRevision": null,
+						"evidenceRevision": null
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HostedEvidenceService.evidence",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns the evidence result after the validator checks its shape and binds it to the asked project, entity, branch, mode, and commit. The read may be fresh or use a revalidated offline cache, and its identity is pinned for later artifact reads.",
+				"examples": [
+					{
+						"identity": {
+							"principalId": "principal-42",
+							"projectId": "project-alpha",
+							"repositoryId": 42,
+							"requestedRef": "main",
+							"sourceCommit": "d34db33f9e1a42c5b71d08a6e4c32f9012345678",
+							"sourceTree": "89abcdef89abcdef89abcdef89abcdef89abcdef",
+							"notesRef": "refs/notes/harness",
+							"notesRevision": null,
+							"evidenceRef": "refs/heads/harness-evidence",
+							"evidenceRevision": null,
+							"historyIndexRevision": null,
+							"collaborationRevision": null,
+							"artifactHash": null,
+							"profile": null
+						},
+						"scope": {
+							"location": {
+								"branch": "main",
+								"commit": "d34db33f9e1a42c5b71d08a6e4c32f9012345678",
+								"category": null,
+								"entity": "reports.component.evidence-grid"
+							},
+							"mode": "current",
+							"branch": "main",
+							"tip": "d34db33f9e1a42c5b71d08a6e4c32f9012345678",
+							"commit": "d34db33f9e1a42c5b71d08a6e4c32f9012345678",
+							"atTip": true,
+							"parent": null,
+							"summary": {
+								"commit": "d34db33f9e1a42c5b71d08a6e4c32f9012345678",
+								"parents": [],
+								"subject": "Update evidence grid",
+								"author": "Example Author",
+								"committedAt": "2026-11-15T00:00:00.000Z",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "unverified",
+								"gaps": ["No evidence record is available."],
+								"records": [],
+								"legacy": []
+							}
+						},
+						"evidence": {
+							"mode": "current",
+							"scenarios": [],
+							"after": {
+								"commit": "d34db33f9e1a42c5b71d08a6e4c32f9012345678",
+								"detail": null,
+								"record": null,
+								"gap": "No evidence record is available.",
+								"coverage": [],
+								"captures": []
+							},
+							"before": null,
+							"initial": null,
+							"incomparable": []
+						},
+						"behavior": {
+							"mode": "current",
+							"rows": [],
+							"summary": "not-compared",
+							"reason": "No evidence records were available for comparison.",
+							"scenarios": []
+						}
+					}
+				]
 			},
 			{
 				"name": "HostedEvidenceService.artifact",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns validated artifact bytes as a Uint8Array with the served media type and requested SHA-256. The validator enforces the 11 MiB limit, hash, and supported media attestation, and a Uint8Array has no exact JSON representation."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The implementation and its read validators throw Error for invalid evidence, artifact integrity, credentials, authority changes, or cache identity checks. The injected transport can also reject with its own error class."
+			},
+			{
+				"name": "HostedFailureValidator",
+				"type": "thrown",
+				"description": "A classified hosted request failure may reject a read. Offline failures can use a verified cached value, while denied and failed requests are rethrown."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HostedEvidenceService.evidence",
@@ -64,17 +177,108 @@
 					{
 						"name": "HostedEvidenceService.evidence.input",
 						"type": "Asked",
-						"required": true
+						"required": true,
+						"description": "Asked combines projectId, entityId, commit, branch, and mode, where mode is current or commit. The service copies it and uses it for the evidence path, read key, transport request, and answer binding.",
+						"examples": [
+							{
+								"projectId": "project-alpha",
+								"entityId": "reports.component.evidence-grid",
+								"commit": "d34db33f9e1a42c5b71d08a6e4c32f9012345678",
+								"branch": "main",
+								"mode": "current"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostedEvidenceService.evidence",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns the evidence result after the validator checks its shape and binds it to the asked project, entity, branch, mode, and commit. The read may be fresh or use a revalidated offline cache, and its identity is pinned for later artifact reads.",
+						"examples": [
+							{
+								"identity": {
+									"principalId": "principal-42",
+									"projectId": "project-alpha",
+									"repositoryId": 42,
+									"requestedRef": "main",
+									"sourceCommit": "d34db33f9e1a42c5b71d08a6e4c32f9012345678",
+									"sourceTree": "89abcdef89abcdef89abcdef89abcdef89abcdef",
+									"notesRef": "refs/notes/harness",
+									"notesRevision": null,
+									"evidenceRef": "refs/heads/harness-evidence",
+									"evidenceRevision": null,
+									"historyIndexRevision": null,
+									"collaborationRevision": null,
+									"artifactHash": null,
+									"profile": null
+								},
+								"scope": {
+									"location": {
+										"branch": "main",
+										"commit": "d34db33f9e1a42c5b71d08a6e4c32f9012345678",
+										"category": null,
+										"entity": "reports.component.evidence-grid"
+									},
+									"mode": "current",
+									"branch": "main",
+									"tip": "d34db33f9e1a42c5b71d08a6e4c32f9012345678",
+									"commit": "d34db33f9e1a42c5b71d08a6e4c32f9012345678",
+									"atTip": true,
+									"parent": null,
+									"summary": {
+										"commit": "d34db33f9e1a42c5b71d08a6e4c32f9012345678",
+										"parents": [],
+										"subject": "Update evidence grid",
+										"author": "Example Author",
+										"committedAt": "2026-11-15T00:00:00.000Z",
+										"branches": ["main"],
+										"retained": true,
+										"coverage": "unverified",
+										"gaps": ["No evidence record is available."],
+										"records": [],
+										"legacy": []
+									}
+								},
+								"evidence": {
+									"mode": "current",
+									"scenarios": [],
+									"after": {
+										"commit": "d34db33f9e1a42c5b71d08a6e4c32f9012345678",
+										"detail": null,
+										"record": null,
+										"gap": "No evidence record is available.",
+										"coverage": [],
+										"captures": []
+									},
+									"before": null,
+									"initial": null,
+									"incomparable": []
+								},
+								"behavior": {
+									"mode": "current",
+									"rows": [],
+									"summary": "not-compared",
+									"reason": "No evidence records were available for comparison.",
+									"scenarios": []
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Evidence validation, query binding, current-tip or first-parent checks, and hosted-read credential or cache identity guards can throw Error. Rejections from the injected evidence transport pass through with transport-defined error classes."
+					},
+					{
+						"name": "HostedFailureValidator",
+						"type": "thrown",
+						"description": "A classified hosted request failure may reject the evidence read. An offline failure resolves only when an admissible cached value is available; denied and failed requests are rethrown."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostedEvidenceService.artifact",
@@ -82,17 +286,48 @@
 					{
 						"name": "HostedEvidenceService.artifact.input",
 						"type": "EvidenceArtifactQuery & { projectId: string }",
-						"required": true
+						"required": true,
+						"description": "Combines the same project and entity revision query with side, recordId, scenarioId, state, evidenceId, viewport, sha256, notesRevision, and evidenceRevision. The service copies it for the artifact path, read key, and transport request; recordId has no service-level format check.",
+						"examples": [
+							{
+								"projectId": "project-alpha",
+								"entityId": "reports.component.evidence-grid",
+								"commit": "d34db33f9e1a42c5b71d08a6e4c32f9012345678",
+								"branch": "main",
+								"mode": "current",
+								"side": "after",
+								"recordId": "record-001",
+								"scenarioId": "checkout",
+								"state": "confirmed",
+								"evidenceId": "order-confirmation",
+								"viewport": "desktop-1440x900",
+								"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"notesRevision": null,
+								"evidenceRevision": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostedEvidenceService.artifact",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns validated artifact bytes as a Uint8Array with the served media type and requested SHA-256. The validator enforces the 11 MiB limit, hash, and supported media attestation, and a Uint8Array has no exact JSON representation."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Artifact size, SHA-256, media-attestation, kept-cache validation, or hosted-read guard failures throw Error. Rejections from the injected artifact transport pass through with transport-defined error classes."
+					},
+					{
+						"name": "HostedFailureValidator",
+						"type": "thrown",
+						"description": "A classified hosted request failure may reject the artifact read. An offline failure resolves only when an admissible cached value is available; denied and failed requests are rethrown."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -102,22 +337,25 @@
 					{
 						"name": "HostedEvidenceService.constructor.transport",
 						"type": "Transport",
-						"required": true
+						"required": true,
+						"description": "Provides the path builder plus evidence and artifact loaders used by this service. Its loader methods are callbacks, and the interface does not constrain their rejection classes."
 					},
 					{
 						"name": "HostedEvidenceService.constructor.options",
 						"type": "HostedReadOptions",
-						"required": true
+						"required": true,
+						"description": "Configures HostedReadService with the hosted origin, credential lookup, optional HTTP and authority hooks, optional projection cache, and cache-status callback. It contains callbacks and may contain a ProjectionCacheService instance, so the value has no exact JSON representation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostedEvidenceService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed HostedEvidenceService instance, which holds the transport, HostedReadService, and RemoteArtifactCacheService. A class instance has no JSON representation."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
