@@ -22,31 +22,39 @@
 				"name": "unitLinks.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace with snapshot, selected entity, busy state and pinning state."
+				"description": "Supplies the snapshot, selected entity, busy state, pin state and route scope used to resolve references. Without a snapshot the resolver always returns null; busy state or a changed project, branch, commit or pin state prevents resolution."
 			},
 			{
 				"name": "unitLinks.current",
 				"type": "CatalogEntity | null",
 				"required": false,
 				"default": null,
-				"description": "Optional current entity detail; defaults to null and is used only for the entity actually selected."
+				"description": "Defaults to null. The entity is used only when it matches the workspace selected entity, and only as a fallback when the requested ID is not in the snapshot catalog.",
+				"examples": [null]
 			},
 			{
 				"name": "unitLinks.options",
 				"type": "{ history?: boolean }",
 				"required": false,
 				"default": {},
-				"description": "Optional link options; history selects commit-history destinations instead of detail pages. Defaults to an empty object."
+				"description": "Defaults to an empty object. When history is true, generated routes use the history suffix; omitted or false history uses no suffix.",
+				"examples": [
+					{
+						"history": true
+					},
+					{}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "unitLinks",
 				"type": "(id: string)",
-				"description": "Resolver returning unit name, category and route, or null for invalid IDs, absent units, busy state or changed project/revision scope. Pinned views keep their commit in the route."
+				"description": "Returns a resolver that finds IDs in the snapshot catalog, falling back only to the matching loaded entity, and yields a link with to, name and category or null. It yields null for non-unit or missing IDs, while the workspace is busy, or after the shown project, branch, commit or pin state changes; routes include a commit only for pinned views."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "unitLinks",
@@ -55,32 +63,39 @@
 						"name": "unitLinks.workspace",
 						"type": "Workspace",
 						"required": true,
-						"description": "Workspace with snapshot, selected entity, busy state and pinning state."
+						"description": "Supplies the snapshot, selected entity, busy state, pin state and route scope used to resolve references. Without a snapshot the resolver always returns null; busy state or a changed project, branch, commit or pin state prevents resolution."
 					},
 					{
 						"name": "unitLinks.current",
 						"type": "CatalogEntity | null",
 						"required": false,
 						"default": null,
-						"description": "Optional current entity detail; defaults to null and is used only for the entity actually selected."
+						"description": "Defaults to null. The entity is used only when it matches the workspace selected entity, and only as a fallback when the requested ID is not in the snapshot catalog.",
+						"examples": [null]
 					},
 					{
 						"name": "unitLinks.options",
 						"type": "{ history?: boolean }",
 						"required": false,
 						"default": {},
-						"description": "Optional link options; history selects commit-history destinations instead of detail pages. Defaults to an empty object."
+						"description": "Defaults to an empty object. When history is true, generated routes use the history suffix; omitted or false history uses no suffix.",
+						"examples": [
+							{
+								"history": true
+							},
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "unitLinks",
 						"type": "(id: string)",
-						"description": "Resolver returning unit name, category and route, or null for invalid IDs, absent units, busy state or changed project/revision scope. Pinned views keep their commit in the route."
+						"description": "Returns a resolver that finds IDs in the snapshot catalog, falling back only to the matching loaded entity, and yields a link with to, name and category or null. It yields null for non-unit or missing IDs, while the workspace is busy, or after the shown project, branch, commit or pin state changes; routes include a commit only for pinned views."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
