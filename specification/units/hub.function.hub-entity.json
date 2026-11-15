@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/routes/api/[...path]/hub-projection-service/hubEntity.ts",
-			"packages/hub/src/utils/hubEntity.ts"
-		],
-		"symbols": ["hubEntity", "hubEntity"]
+		"source": ["packages/hub/src/routes/api/[...path]/hub-projection-service/hubEntity.ts"],
+		"symbols": ["hubEntity"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -127,11 +124,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubEntity.ts",
+		"entry": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubEntity.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/hubEntity.ts"
+				"entry": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubEntity.ts"
 			}
 		]
 	},
