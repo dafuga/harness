@@ -61,7 +61,7 @@
 				"name": "CatalogRevision.coverage",
 				"type": "string",
 				"required": true,
-				"description": "Coverage copied from the indexed revision by CatalogWriteService; the historyIndex schema allows only verified, failed, invalid or unverified. The model keeps it as a plain string and neither restricts nor checks the value.",
+				"description": "Coverage copied from the indexed revision by CatalogWriteService; indexedRevisionSchema (historyIndexTypes.ts) allows only verified, failed, invalid or unverified. The model keeps it as a plain string and neither restricts nor checks the value.",
 				"examples": ["unverified"]
 			},
 			{
@@ -75,7 +75,7 @@
 				"name": "CatalogRevision.data",
 				"type": "json",
 				"required": true,
-				"description": "The complete IndexedRevision for the commit, as defined by the strict historyIndex revision schema, which CatalogWriteService stores as the whole revision object. create requires it, update accepts it as an optional patch, and the adapter receives the same object reference because only the outer input is shallow-copied."
+				"description": "The complete IndexedRevision for the commit, as defined by the strict indexedRevisionSchema, which CatalogWriteService stores as the whole revision object. create requires it, update accepts it as an optional patch, and the adapter receives the same object reference because only the outer input is shallow-copied."
 			}
 		],
 		"outputs": [

@@ -22,7 +22,7 @@
 				"name": "default",
 				"type": "UserConfig",
 				"required": true,
-				"description": "The default Vite configuration object for building the picker library. It applies when Vite loads this config module, uses the Svelte plugin and the src/utils/providerPickerEntry.ts library entry, and fixes output settings to dist/picker, the iife format, the HarnessPicker global name, and the picker file name with emptyOutDir enabled and CSS code splitting disabled; the Svelte plugin contains callback hooks that JSON cannot express."
+				"description": "The default Vite configuration object for building the picker library. It applies when Vite loads this config module, uses the Svelte plugin and the src/utils/agents-providers/providerPickerEntry.ts library entry, and fixes output settings to dist/picker, the iife format, the HarnessPicker global name, and the picker file name with emptyOutDir enabled and CSS code splitting disabled; the Svelte plugin contains callback hooks that JSON cannot express."
 			}
 		],
 		"errors": [],
