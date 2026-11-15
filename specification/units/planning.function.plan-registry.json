@@ -34,7 +34,7 @@
 		"outputs": [
 			{
 				"name": "planningIgnores",
-				"type": "unknown",
+				"type": "string[]",
 				"description": "Array of ignore globs for planning artifact folders under the seven supported categories. Each category excludes plan.json, .gitattributes, and files under designs/ and threads/.",
 				"examples": [
 					[

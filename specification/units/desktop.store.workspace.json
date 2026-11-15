@@ -20,7 +20,7 @@
 		"outputs": [
 			{
 				"name": "createWorkspaceStore",
-				"type": "unknown",
+				"type": "WorkspaceState",
 				"description": "A `WorkspaceState` instance created on each call, which holds the shown project's snapshot, entity, category, route suffix, project list, capabilities, offline view and error text and begins with no project shown. It has no bridge until `connect()` supplies one, and `navigate`, `loadProjects` and `refresh` return without acting while no bridge is connected."
 			}
 		],
@@ -33,7 +33,7 @@
 				"outputs": [
 					{
 						"name": "createWorkspaceStore",
-						"type": "unknown",
+						"type": "WorkspaceState",
 						"description": "A `WorkspaceState` instance created on each call, which holds the shown project's snapshot, entity, category, route suffix, project list, capabilities, offline view and error text and begins with no project shown. It has no bridge until `connect()` supplies one, and `navigate`, `loadProjects` and `refresh` return without acting while no bridge is connected."
 					}
 				],

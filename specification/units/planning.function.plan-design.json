@@ -102,12 +102,12 @@
 		"outputs": [
 			{
 				"name": "readImage",
-				"type": "unknown",
+				"type": "Promise<import('../../../models/planning-collaboration/PlanningView.types').ImageContent & Pick<import('../../../models/planning-collaboration/Planning.types').DesignImage, 'content'>>",
 				"description": "Resolves to the stored image metadata plus unit ID, version, verified PNG bytes as a Uint8Array, design commit, and image holding metadata. It rejects when the image is absent or its hash, dimensions, or byte length do not match."
 			},
 			{
 				"name": "planDesign",
-				"type": "unknown",
+				"type": "Promise<import('../../../../models/planning-collaboration/PlanningView.types').Committed<DesignVersion>>",
 				"description": "Resolves to commit metadata and the appended design version, including hashed prompt and optional notes files, base revision, images, contract hash, and revision source. Versions are numbered from the existing plan length; visual plans require images, functions reject images, and image-free nonvisual plans require notes.",
 				"examples": [
 					{
@@ -139,7 +139,7 @@
 			},
 			{
 				"name": "approve",
-				"type": "unknown",
+				"type": "Promise<import('../../../../models/planning-collaboration/PlanningView.types').Committed<ApprovalRecord>>",
 				"description": "Resolves to commit metadata and the saved approval record, marked current and bound to the requested version, reviewer, images, contract hash, and notes hash or null. Only the latest design is eligible, and the binding must match its content and any selected approvable option.",
 				"examples": [
 					{
@@ -205,7 +205,7 @@
 				"outputs": [
 					{
 						"name": "planDesign",
-						"type": "unknown",
+						"type": "Promise<import('../../../../models/planning-collaboration/PlanningView.types').Committed<DesignVersion>>",
 						"description": "Resolves to commit metadata and the appended design version, including hashed prompt and optional notes files, base revision, images, contract hash, and revision source. Versions are numbered from the existing plan length; visual plans require images, functions reject images, and image-free nonvisual plans require notes.",
 						"examples": [
 							{
@@ -279,7 +279,7 @@
 				"outputs": [
 					{
 						"name": "approve",
-						"type": "unknown",
+						"type": "Promise<import('../../../../models/planning-collaboration/PlanningView.types').Committed<ApprovalRecord>>",
 						"description": "Resolves to commit metadata and the saved approval record, marked current and bound to the requested version, reviewer, images, contract hash, and notes hash or null. Only the latest design is eligible, and the binding must match its content and any selected approvable option.",
 						"examples": [
 							{
@@ -340,7 +340,7 @@
 				"outputs": [
 					{
 						"name": "readImage",
-						"type": "unknown",
+						"type": "Promise<import('../../../models/planning-collaboration/PlanningView.types').ImageContent & Pick<import('../../../models/planning-collaboration/Planning.types').DesignImage, 'content'>>",
 						"description": "Resolves to the stored image metadata plus unit ID, version, verified PNG bytes as a Uint8Array, design commit, and image holding metadata. It rejects when the image is absent or its hash, dimensions, or byte length do not match."
 					}
 				],

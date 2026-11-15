@@ -17,7 +17,7 @@
 		"outputs": [
 			{
 				"name": "hostedEvidenceDetail",
-				"type": "unknown",
+				"type": "typeof hostedEvidenceDetail",
 				"description": "A strict Zod object schema for one hosted revision detail: a 40-character lowercase hex commit, the unit registry and graph, a nullable comparison, an optional nullable source impact, an optional nullable side string, verification records, explanations, an optional range-reason count and optional regression proofs. Hosted evidence answers check each side's detail against it, so a side's detail must match it or be null; the schema reads nothing itself, rejects undeclared keys in every object it defines, and caps its own text at 1,000,000 characters, names at 1 to 300 characters and arrays at 5,000 items, while regression proofs keep their own schema.",
 				"examples": [
 					{
@@ -75,7 +75,7 @@
 										"outputs": [
 											{
 												"name": "hostedEvidenceDetail",
-												"type": "unknown"
+												"type": "typeof hostedEvidenceDetail"
 											}
 										],
 										"errors": []

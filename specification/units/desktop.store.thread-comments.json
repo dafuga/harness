@@ -34,7 +34,7 @@
 		"outputs": [
 			{
 				"name": "createThreadCommentsStore",
-				"type": "unknown",
+				"type": "ThreadCommentsState",
 				"description": "A new ThreadCommentsState instance bound to the supplied workspace. It tracks pending drafts, the last acknowledged collaboration commit, an error string, and whether a comment submission is busy."
 			}
 		],
@@ -60,7 +60,7 @@
 				"outputs": [
 					{
 						"name": "createThreadCommentsStore",
-						"type": "unknown",
+						"type": "ThreadCommentsState",
 						"description": "A new ThreadCommentsState instance bound to the supplied workspace. It tracks pending drafts, the last acknowledged collaboration commit, an error string, and whether a comment submission is busy."
 					}
 				],

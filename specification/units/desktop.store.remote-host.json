@@ -27,7 +27,7 @@
 		"outputs": [
 			{
 				"name": "createRemoteHostStore",
-				"type": "unknown",
+				"type": "RemoteHostState",
 				"description": "The RemoteHostState instance that createRemoteHostStore returns for the given workspace, holding the reactive status (null until one is accepted), error (empty string), busy flag and the remote host actions. It has no port listener until start() attaches one, and dispose() detaches it."
 			}
 		],
@@ -47,7 +47,7 @@
 				"outputs": [
 					{
 						"name": "createRemoteHostStore",
-						"type": "unknown",
+						"type": "RemoteHostState",
 						"description": "The RemoteHostState instance that createRemoteHostStore returns for the given workspace, holding the reactive status (null until one is accepted), error (empty string), busy flag and the remote host actions. It has no port listener until start() attaches one, and dispose() detaches it."
 					}
 				],

@@ -17,7 +17,7 @@
 		"outputs": [
 			{
 				"name": "hostedEvidenceSchema",
-				"type": "unknown",
+				"type": "typeof hostedEvidenceSchema",
 				"description": "The zod object schema `hostedEvidenceSchema` defines the accepted structure of a hosted evidence answer, with `identity`, `scope`, `evidence` and `behavior` sections, and answers are validated against it. It fixes status and mode choices and the notes and evidence refs to `refs/notes/harness` and `refs/heads/harness-evidence`, requires 40-character lowercase hex SHAs and 64-character lowercase hex content hashes, rejects undeclared keys in every object, and limits names to 1 to 300 characters, other text to 1,000,000 characters and lists to 5,000 items, except in the nested record maps, browser diagnostics and regression views; it takes no request input, so it cannot check that an answer matches a particular request."
 			}
 		],

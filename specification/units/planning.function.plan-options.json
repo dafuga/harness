@@ -683,7 +683,7 @@
 		"outputs": [
 			{
 				"name": "planOptions",
-				"type": "unknown",
+				"type": "{ images: DesignImage[]; options?: DesignOption[] }",
 				"description": "The written images of the design: for options, all option images combined, with options listing each DesignOption's prompt, revised prompt, generator and image bindings; a single design returns images alone.",
 				"examples": [
 					{
@@ -862,7 +862,7 @@
 				"outputs": [
 					{
 						"name": "planOptions",
-						"type": "unknown",
+						"type": "{ images: DesignImage[]; options?: DesignOption[] }",
 						"description": "The written images of the design: for options, all option images combined, with options listing each DesignOption's prompt, revised prompt, generator and image bindings; a single design returns images alone.",
 						"examples": [
 							{
@@ -1298,7 +1298,7 @@
 				"outputs": [
 					{
 						"name": "id",
-						"type": "unknown",
+						"type": "string",
 						"description": "The one-based option identifier: o followed by the position plus one, such as o1 for position 0.",
 						"examples": ["o1", "o2", "o10"]
 					}

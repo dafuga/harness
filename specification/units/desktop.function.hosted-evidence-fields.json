@@ -17,7 +17,7 @@
 		"outputs": [
 			{
 				"name": "hostedEvidenceFields",
-				"type": "unknown",
+				"type": "typeof hostedEvidenceFields",
 				"description": "An object of zod schemas and builder functions (s, name, sha, hash, array, names, obj, bool, num, mode, passed, capture, scenario, unit) that hosted captures, scenarios and units are validated against, with capture, scenario and unit as strict objects that reject unknown keys. The schemas check structure only, not proof of execution: strings are at most 1,000,000 characters, name values are nonempty and at most 300 characters, sha values are 40-character lowercase hex strings (server revision), hash values are 64-character lowercase hex strings (capture sha256), arrays hold at most 5,000 items, numbers must be finite, the mode enum accepts only 'current' or 'commit', and the passed enum accepts only 'passed' or 'failed'."
 			}
 		],
