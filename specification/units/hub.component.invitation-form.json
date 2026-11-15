@@ -36,17 +36,19 @@
 				"name": "InvitationForm.projectId",
 				"type": "string",
 				"required": true,
-				"description": "Required project identifier sent to the invitation operation. Authorization and invitation validity remain server responsibilities."
+				"description": "Project identifier passed unchanged to projects.invite when an invitation is submitted; the component does not validate its format.",
+				"examples": ["project-123"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "InvitationForm",
 				"type": "markup",
-				"description": "Email and role form, initially Commenter, also offering Viewer. Trims email and blocks empty or concurrent submissions. On success shows the invitation link, code and expiry with separate-copy actions and a reminder that no email is sent here. Errors clear the invitation and appear as alerts. Clipboard failure gives manual-copy guidance; success shows a copied status."
+				"description": "Renders the email and role form, initially set to commenter, and submits a trimmed email with role normalized to viewer, writer, or commenter; empty emails and concurrent submissions are ignored. On success it shows the invitation link and one-time code until the displayed expiry for the invited Google account, with copy controls; invitation failures and clipboard results appear inline, and no email is sent."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
