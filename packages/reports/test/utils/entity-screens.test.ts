@@ -199,6 +199,25 @@ test('the gallery gets every screenshot of both sides, each side marked as what 
 		}
 	});
 	expect(catalogShot(video)?.mimeType).not.toBe('video/mp4');
+	const inheritedVideo = structuredClone(video);
+	const inheritedClip = inheritedVideo.after.captures.at(-1)!;
+	inheritedClip.current = false;
+	inheritedClip.inheritedFrom = commits.first;
+	inheritedClip.capture.server!.revision = commits.first;
+	const source = inheritedVideo.after.record!;
+	source.id = 'f'.repeat(64);
+	const result = source.scenarios.find((item) => item.id === inheritedClip.scenario)!;
+	result.inherited = true;
+	result.status = 'referenced';
+	result.testedRevision = commits.first;
+	result.origin = { record: 'a'.repeat(64), commit: commits.first };
+	expect(galleryItems(inheritedVideo).find((item) => item.mediaType === 'video')).toMatchObject({
+		video: {
+			reference: { record: 'a'.repeat(64), revision: commits.first },
+			selectedRevision: commits.tip,
+			freshness: 'inherited'
+		}
+	});
 });
 
 test('a declared catalog preview selects its exact state and viewport without a fallback', () => {
