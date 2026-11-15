@@ -22,7 +22,11 @@
 				"name": "ReferenceText.text",
 				"type": "string",
 				"required": true,
-				"description": "Required plain text parsed for [[unit:<id>]] references. Unknown references and ordinary text remain as written; nothing is interpreted as markup."
+				"description": "Required plain text parsed for [[unit:<id>]] references. Unknown references and ordinary text remain as written; nothing is interpreted as markup.",
+				"examples": [
+					"See [[unit:reports.component.evidence-grid]] for details.",
+					"Plain text without references."
+				]
 			},
 			{
 				"name": "ReferenceText.workspace",
@@ -35,14 +39,16 @@
 				"type": "CatalogEntity | null",
 				"required": false,
 				"default": null,
-				"description": "Optional viewed entity, null by default, available for reference lookup before the catalog lists it."
+				"description": "Optional viewed entity, null by default, available for reference lookup before the catalog lists it.",
+				"examples": [null]
 			},
 			{
 				"name": "ReferenceText.history",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Opens recognized unit references at their commit history when true; defaults to false."
+				"description": "Opens recognized unit references at their commit history when true; defaults to false.",
+				"examples": [false, true]
 			}
 		],
 		"outputs": [
@@ -53,6 +59,7 @@
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
