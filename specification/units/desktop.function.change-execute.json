@@ -29,46 +29,47 @@
 				"name": "changeExecute.context",
 				"type": "RunContext",
 				"required": true,
-				"description": "The prepared Change context: selected runner, request with approval, entity, project directory and revision, planning access, cancellation signal and event callback. Approval is assumed already checked."
+				"description": "The prepared Change context for one run: selected runner, request with approval, entity, run id, project root, revision, planning access, session, abort signal and emit callback. Approval is assumed already checked and is not validated here, so changeExecute uses request.approval as given."
 			},
 			{
 				"name": "changeExecute.options",
 				"type": "{ directory: string; observe: (path: string) => void; }",
 				"required": true,
-				"description": "A temporary directory for the first approved image, when one exists, and a callback to observe file paths reported by the runner."
+				"description": "The options for one run: directory, where approved.png is written when the approval has a first image hash, and observe, which receives each file path the runner reports. Nothing here creates directory, so it must already exist for that write, and observe is passed to the runner unchanged."
 			},
 			{
 				"name": "recordChange.context",
 				"type": "RunContext",
 				"required": true,
-				"description": "The same run context used to identify the entity, thread, approval, branch and public reply when recording the outcome."
+				"description": "The same context object that changeExecute received; recordChange uses it for the entity, thread, approval, branch, project root and the stored reply. The reply is looked up by this object's identity and removed when read, so a copied context, or a second call with the same context, records an empty reply."
 			},
 			{
 				"name": "recordChange.outcome",
 				"type": "{ before: SourceSnapshot; host: ReturnType<typeof hostChanges>; failure: Error | null; }",
 				"required": true,
-				"description": "The before-change source snapshot, host-operation recorder and failure or null. These determine changed files, observed host operations and completed, failed or cancelled status."
+				"description": "The before-change source snapshot, compared with a fresh snapshot of the project root to find changed files; the host recorder, whose record(id) gives observed host operations; and the run's failure or null. Status is 'cancelled' when the context signal is aborted or the failure is a RunCancelled, 'failed' for any other failure, and 'completed' when there is none; the failure message is kept up to 600 characters."
 			}
 		],
 		"outputs": [
 			{
 				"name": "changeExecute",
 				"type": "unknown",
-				"description": "A promise that completes without a return value after the runner finishes. Emits progress and public text, retains the reply for recording and supplies write access with the approved reference image when present. It does not run verification."
+				"description": "Resolves with no value once the runner returns; the runner runs with write access and the approved reference image path when one exists, streamed text and status are emitted, and the reply is kept for recordChange. It does not run verification, and it rejects with RunCancelled when the signal is aborted after the runner returns."
 			},
 			{
 				"name": "recordChange",
 				"type": "unknown",
-				"description": "A promise that completes after comparing source snapshots, recording host operations, emitting changed files and appending an agent message to the thread. The message retains up to 20,000 characters of reply, counts changed files and host operations, names known owning units and states that verification is pending."
+				"description": "Resolves with no value after comparing source snapshots, recording host operations, emitting changed files and appending one agent message to the thread. The message holds the trimmed reply, if any, cut to its first 20,000 characters with a newline and an ellipsis when longer, then a summary of the status, file and operation counts, owning units when the unit registry at the revision can be read, and that verification is pending."
 			}
 		],
 		"errors": [
 			{
 				"name": "RunCancelled",
 				"type": "thrown",
-				"description": "Thrown when the cancellation signal is aborted after the runner returns; runner cancellation can also propagate. Recording marks an aborted or cancelled run as cancelled."
+				"description": "Thrown by changeExecute when context.signal is aborted once runner.run has returned; a RunCancelled raised by runner.run also reaches the caller because changeExecute does not catch runner errors. recordChange does not throw it and records the run as 'cancelled' when the signal is aborted or the failure is a RunCancelled."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "changeExecute",
@@ -77,29 +78,30 @@
 						"name": "changeExecute.context",
 						"type": "RunContext",
 						"required": true,
-						"description": "The prepared Change context: selected runner, request with approval, entity, project directory and revision, planning access, cancellation signal and event callback. Approval is assumed already checked."
+						"description": "The prepared Change context for one run: selected runner, request with approval, entity, run id, project root, revision, planning access, session, abort signal and emit callback. Approval is assumed already checked and is not validated here, so changeExecute uses request.approval as given."
 					},
 					{
 						"name": "changeExecute.options",
 						"type": "{ directory: string; observe: (path: string) => void; }",
 						"required": true,
-						"description": "A temporary directory for the first approved image, when one exists, and a callback to observe file paths reported by the runner."
+						"description": "The options for one run: directory, where approved.png is written when the approval has a first image hash, and observe, which receives each file path the runner reports. Nothing here creates directory, so it must already exist for that write, and observe is passed to the runner unchanged."
 					}
 				],
 				"outputs": [
 					{
 						"name": "changeExecute",
 						"type": "unknown",
-						"description": "A promise that completes without a return value after the runner finishes. Emits progress and public text, retains the reply for recording and supplies write access with the approved reference image when present. It does not run verification."
+						"description": "Resolves with no value once the runner returns; the runner runs with write access and the approved reference image path when one exists, streamed text and status are emitted, and the reply is kept for recordChange. It does not run verification, and it rejects with RunCancelled when the signal is aborted after the runner returns."
 					}
 				],
 				"errors": [
 					{
 						"name": "RunCancelled",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by changeExecute when context.signal is aborted once runner.run has returned; a RunCancelled raised by runner.run also reaches the caller because changeExecute does not catch runner errors. recordChange does not throw it and records the run as 'cancelled' when the signal is aborted or the failure is a RunCancelled."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "recordChange",
@@ -108,24 +110,24 @@
 						"name": "recordChange.context",
 						"type": "RunContext",
 						"required": true,
-						"description": "The same run context used to identify the entity, thread, approval, branch and public reply when recording the outcome."
+						"description": "The same context object that changeExecute received; recordChange uses it for the entity, thread, approval, branch, project root and the stored reply. The reply is looked up by this object's identity and removed when read, so a copied context, or a second call with the same context, records an empty reply."
 					},
 					{
 						"name": "recordChange.outcome",
 						"type": "{ before: SourceSnapshot; host: ReturnType<typeof hostChanges>; failure: Error | null; }",
 						"required": true,
-						"description": "The before-change source snapshot, host-operation recorder and failure or null. These determine changed files, observed host operations and completed, failed or cancelled status."
+						"description": "The before-change source snapshot, compared with a fresh snapshot of the project root to find changed files; the host recorder, whose record(id) gives observed host operations; and the run's failure or null. Status is 'cancelled' when the context signal is aborted or the failure is a RunCancelled, 'failed' for any other failure, and 'completed' when there is none; the failure message is kept up to 600 characters."
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordChange",
 						"type": "unknown",
-						"description": "A promise that completes after comparing source snapshots, recording host operations, emitting changed files and appending an agent message to the thread. The message retains up to 20,000 characters of reply, counts changed files and host operations, names known owning units and states that verification is pending."
+						"description": "Resolves with no value after comparing source snapshots, recording host operations, emitting changed files and appending one agent message to the thread. The message holds the trimmed reply, if any, cut to its first 20,000 characters with a newline and an ellipsis when longer, then a summary of the status, file and operation counts, owning units when the unit registry at the revision can be read, and that verification is pending."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
