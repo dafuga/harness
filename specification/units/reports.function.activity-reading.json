@@ -10,15 +10,14 @@
 	"documentation": "packages/reports/src/utils/projects-sessions/activityReading.md",
 	"owns": {
 		"source": [
+			"packages/reports/src/components/activity-agents/activityReading.ts",
 			"packages/reports/src/components/projects-sessions/activity-agents/activityReading.ts",
-			"packages/reports/src/utils/activityReading.ts",
 			"packages/reports/src/utils/projects-sessions/activityReading.ts",
 			"packages/reports/src/utils/projects-sessions/activityReading.types.ts"
 		],
 		"symbols": [
 			"activityReading",
 			"activityReading",
-			"readingAge",
 			"readingAge",
 			"activityReading",
 			"ActivityReading",

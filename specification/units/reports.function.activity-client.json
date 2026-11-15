@@ -10,7 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/projects-sessions/site-activity/activityClient.ts",
-			"packages/reports/src/utils/activityClient.ts"
+			"packages/reports/src/components/site-activity/activityClient.ts"
 		],
 		"symbols": ["activityClient", "activityClient"]
 	},
@@ -88,11 +88,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/activityClient.ts",
+		"entry": "packages/reports/src/components/projects-sessions/site-activity/activityClient.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/activityClient.ts"
+				"entry": "packages/reports/src/components/projects-sessions/site-activity/activityClient.ts"
 			}
 		]
 	},

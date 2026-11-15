@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/reports-media/analytics-cpu/analyticsCpuClient.ts",
-			"packages/reports/src/utils/analyticsCpuClient.ts",
 			"packages/reports/src/utils/reports-media/analyticsCpuClient.ts"
 		],
-		"symbols": ["analyticsCpuClient", "analyticsCpuClient", "CpuState", "analyticsCpuClient"]
+		"symbols": ["analyticsCpuClient", "CpuState", "analyticsCpuClient"]
 	},
 	"contract": {
 		"origin": "declared",
