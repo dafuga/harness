@@ -25,14 +25,14 @@
 				"name": "PreviewWorkerService.constructor.entry",
 				"type": "string",
 				"required": true,
-				"description": "Compiled Node entry path for the worker process.",
+				"description": "Path to the Node script that each launch passes as the first argument to node, on start and on every recovery restart. The constructor stores it without checking that the file exists.",
 				"examples": ["/projects/harness/packages/reports/.cache/preview-node-example/entry.mjs"]
 			},
 			{
 				"name": "PreviewWorkerService.constructor.args",
 				"type": "string[]",
 				"required": true,
-				"description": "Validated worker arguments passed unchanged to each replacement.",
+				"description": "Arguments appended unchanged after the entry on every launch, including recovery restarts. The constructor does not validate them.",
 				"examples": [
 					[
 						"--port",
@@ -48,7 +48,7 @@
 				"name": "PreviewWorkerService.constructor.url",
 				"type": "string",
 				"required": true,
-				"description": "Stable worker URL used for readiness and health checks and returned to callers.",
+				"description": "URL that every readiness and health probe uses and that start() returns; it does not change across restarts. The class does not pass it to the child, so the child's args must make it listen there.",
 				"examples": ["http://127.0.0.1:5688"]
 			}
 		],
@@ -56,30 +56,27 @@
 			{
 				"name": "PreviewWorkerService.start",
 				"type": "Promise<PreviewHandle>",
-				"description": "Starts a worker, waits for its health response to match the child PID and token, then schedules recovery checks and returns its URL/close handle.",
-				"examples": [
-					{
-						"url": "http://127.0.0.1:5688",
-						"close": "[Function]"
-					}
-				]
+				"description": "Resolves after a health probe with this launch's token reports the spawned child's PID, then schedules the first health check 1500 ms later and returns the stable URL with a close handle."
 			},
 			{
 				"name": "PreviewWorkerService.close",
 				"type": "Promise<void>",
-				"description": "Stops health checks and gracefully stops the owned child, escalating to SIGKILL after two seconds; does not respawn.",
-				"examples": [null]
+				"description": "Marks the service stopped so that no recovery or respawn runs, cancels the scheduled health check, sends SIGTERM to the owned child, and resolves once it exits, with SIGKILL sent if it has not exited within 2000 ms. It resolves immediately when no child is running."
 			}
 		],
 		"errors": [
 			{
 				"name": "Preview worker startup failure",
 				"type": "thrown",
-				"description": "start rejects when the child cannot be launched, exits before readiness, remains unhealthy through the startup deadline, or the service was stopped. Recovery retries later with backoff.",
-				"examples": ["Preview worker did not become ready.", "Preview stopped."]
+				"description": "start rejects with 'Preview stopped.' if close() has already run; with the message of a child 'error' event (such as a spawn failure) raised before readiness; with 'Preview worker exited before readiness.' if the child exits before readiness; and with 'Preview worker did not become ready.' after the 20000 ms startup deadline or when close() stops the launch loop before a probe reports the child's PID. Recovery catches these errors, logs them with console.warn unless the service is stopped, and retries after a backoff that starts at 250 ms, doubles, and caps at 30000 ms."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "launch() throws a new plain Error (no subclass, code or cause) with one of the messages listed under 'Preview worker startup failure', and start() rejects with that same Error. check() also throws an Error with the message 'Worker identity changed.', but its own catch handles it, so no caller receives it."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "PreviewWorkerService.start",
@@ -88,24 +85,19 @@
 					{
 						"name": "PreviewWorkerService.start",
 						"type": "Promise<PreviewHandle>",
-						"description": "Starts a worker, waits for its health response to match the child PID and token, then schedules recovery checks and returns its URL/close handle.",
-						"examples": [
-							{
-								"url": "http://127.0.0.1:5688",
-								"close": "[Function]"
-							}
-						]
+						"description": "Resolves after a health probe with this launch's token reports the spawned child's PID, then schedules the first health check 1500 ms later and returns the stable URL with a close handle."
 					}
 				],
 				"errors": [
 					{
 						"name": "Preview worker startup failure",
 						"type": "thrown",
-						"description": "start rejects when the worker cannot launch, exits before ready, or remains unready through the startup deadline.",
-						"examples": [
-							"Preview worker did not become ready.",
-							"Preview worker exited before readiness."
-						]
+						"description": "start rejects with 'Preview stopped.' if close() has already run; with the message of a child 'error' event (such as a spawn failure) raised before readiness; with 'Preview worker exited before readiness.' if the child exits before readiness; and with 'Preview worker did not become ready.' after the 20000 ms startup deadline or when close() stops the launch loop before a probe reports the child's PID. Recovery catches these errors, logs them with console.warn unless the service is stopped, and retries after a backoff that starts at 250 ms, doubles, and caps at 30000 ms."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "launch() throws a new plain Error (no subclass, code or cause) with one of the messages listed under 'Preview worker startup failure', and start() rejects with that same Error. check() also throws an Error with the message 'Worker identity changed.', but its own catch handles it, so no caller receives it."
 					}
 				],
 				"errorStatus": "declared"
@@ -117,8 +109,7 @@
 					{
 						"name": "PreviewWorkerService.close",
 						"type": "Promise<void>",
-						"description": "Stops health checks and gracefully stops the owned child, escalating to SIGKILL after two seconds; does not respawn.",
-						"examples": [null]
+						"description": "Marks the service stopped so that no recovery or respawn runs, cancels the scheduled health check, sends SIGTERM to the owned child, and resolves once it exits, with SIGKILL sent if it has not exited within 2000 ms. It resolves immediately when no child is running."
 					}
 				],
 				"errors": [],
@@ -133,14 +124,14 @@
 						"name": "PreviewWorkerService.constructor.entry",
 						"type": "string",
 						"required": true,
-						"description": "Compiled Node entry path for the worker process.",
+						"description": "Path to the Node script that each launch passes as the first argument to node, on start and on every recovery restart. The constructor stores it without checking that the file exists.",
 						"examples": ["/projects/harness/packages/reports/.cache/preview-node-example/entry.mjs"]
 					},
 					{
 						"name": "PreviewWorkerService.constructor.args",
 						"type": "string[]",
 						"required": true,
-						"description": "Validated worker arguments passed unchanged to each replacement.",
+						"description": "Arguments appended unchanged after the entry on every launch, including recovery restarts. The constructor does not validate them.",
 						"examples": [
 							[
 								"--port",
@@ -156,7 +147,7 @@
 						"name": "PreviewWorkerService.constructor.url",
 						"type": "string",
 						"required": true,
-						"description": "Stable worker URL used for readiness and health checks and returned to callers.",
+						"description": "URL that every readiness and health probe uses and that start() returns; it does not change across restarts. The class does not pass it to the child, so the child's args must make it listen there.",
 						"examples": ["http://127.0.0.1:5688"]
 					}
 				],
@@ -164,7 +155,7 @@
 					{
 						"name": "PreviewWorkerService.constructor",
 						"type": "PreviewWorkerService",
-						"description": "Supervisor initialized with the worker entry, arguments and stable URL."
+						"description": "Instance that stores the entry, args and URL and starts no child until start() is called."
 					}
 				],
 				"errors": [],
