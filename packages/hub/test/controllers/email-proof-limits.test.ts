@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import type { SignInResult } from '../../src/models/HubAuth.types';
+import type { SignInResult } from '../../src/models/accounts-access/HubAuth.types';
 import { SESSION_COOKIE } from '../../src/utils/authCookies';
 import { another, emailFixture, linActor, withProof } from '../support/emailFixture';
 import type { EmailFixture } from '../support/emailFixture';

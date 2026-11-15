@@ -9,14 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/models/HubAuth.types.ts",
 			"packages/hub/src/models/accounts-access/HubAuth.types.ts",
 			"packages/hub/src/models/accounts-access/HubAuthValues.ts"
 		],
 		"symbols": [
-			"EMAIL_CODE_LENGTH",
-			"NATIVE_AUDIENCE",
-			"NATIVE_ACTION",
 			"HubEnvironment",
 			"AuthEnv",
 			"InstallationTokenInput",

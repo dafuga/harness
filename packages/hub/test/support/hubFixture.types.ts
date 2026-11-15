@@ -1,5 +1,5 @@
-import type { EmailProofDelivery } from '../../src/models/HubAuth.types';
-import type { EmailProofMessage } from '../../src/models/HubAuth.types';
+import type { EmailProofDelivery } from '../../src/models/accounts-access/HubAuth.types';
+import type { EmailProofMessage } from '../../src/models/accounts-access/HubAuth.types';
 import type { hubFixture } from './hubFixture';
 
 export interface HubOptions {

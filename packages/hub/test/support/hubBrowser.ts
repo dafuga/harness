@@ -1,5 +1,5 @@
 import type { Headers } from './hubBrowser.types';
-import type { HubAuth } from '../../src/models/HubAuth.types';
+import type { HubAuth } from '../../src/models/accounts-access/HubAuth.types';
 import { ORIGIN } from './authFixture';
 
 /** A browser as the hub sees it: a cookie jar, an Origin on POST, and a record of every URL. */

@@ -1,5 +1,5 @@
 import { afterEach, expect, test, vi } from 'vitest';
-import type { AuthStatus, SignInResult } from '../../src/models/HubAuth.types';
+import type { AuthStatus, SignInResult } from '../../src/models/accounts-access/HubAuth.types';
 import { PROOF_TTL } from '../../src/services/email-proof-service/EmailProofService';
 import { EMAIL_PROOF_COOKIE, SESSION_COOKIE } from '../../src/utils/authCookies';
 import { ORIGIN } from '../support/authFixture';

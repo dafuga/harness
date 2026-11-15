@@ -1,5 +1,8 @@
 import type { FakeDelivery, HubOptions } from './hubFixture.types';
-import type { AuthChallenge, EmailProofMessage } from '../../src/models/HubAuth.types';
+import type {
+	AuthChallenge,
+	EmailProofMessage
+} from '../../src/models/accounts-access/HubAuth.types';
 import { GoogleIdentityService } from '../../src/services/GoogleIdentityService';
 import type { AuthConfig } from '../../src/utils/authConfig';
 import { composeHubAuth } from '../../src/lib/verification-evidence/server/auth/composeHubAuth';

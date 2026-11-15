@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import type { GithubRepositories } from '../../src/models/HubAuth.types';
+import type { GithubRepositories } from '../../src/models/accounts-access/HubAuth.types';
 import { ORIGIN, ada } from '../support/authFixture';
 import { ADA_GITHUB, GRACE_GITHUB, SOURCE_REPOSITORY } from '../support/githubFakeState';
 import { failure } from '../support/githubFixture';

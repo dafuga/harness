@@ -1,6 +1,6 @@
 import { generateKeyPairSync } from 'node:crypto';
 import { expect, test } from 'vitest';
-import type { InstallationTokenInput } from '../../src/models/HubAuth.types';
+import type { InstallationTokenInput } from '../../src/models/accounts-access/HubAuth.types';
 import {
 	COLLABORATION_REPOSITORY,
 	FOREIGN_INSTALLATION,

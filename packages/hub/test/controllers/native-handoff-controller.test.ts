@@ -1,5 +1,8 @@
 import { expect, test } from 'vitest';
-import type { NativeAuthorization, NativeStartResult } from '../../src/models/HubAuth.types';
+import type {
+	NativeAuthorization,
+	NativeStartResult
+} from '../../src/models/accounts-access/HubAuth.types';
 import { randomToken, sha256Url } from '../../src/utils/authSecrets';
 import { ORIGIN, ada } from '../support/authFixture';
 import type { HubBrowser } from '../support/hubBrowser';

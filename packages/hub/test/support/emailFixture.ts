@@ -1,4 +1,4 @@
-import type { SignInResult } from '../../src/models/HubAuth.types';
+import type { SignInResult } from '../../src/models/accounts-access/HubAuth.types';
 import { EMAIL_PROOF_COOKIE } from '../../src/utils/authCookies';
 import { ORIGIN } from './authFixture';
 import { LIN } from './googleFixture';
