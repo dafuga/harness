@@ -18,17 +18,117 @@
 				"name": "historyPages.pages",
 				"type": "HistoryEvent[][]",
 				"required": false,
-				"description": "The history pages supplied as separate arguments, in the order they were read."
+				"description": "Each argument is one page of an entity's history events, in the order the pages were read; any number of pages may be passed, and with none the value is an empty array. Matching uses only `id`: a later event is dropped when an earlier page or an earlier position in the same page already holds its `id`, whatever its other fields contain.",
+				"examples": [
+					[
+						[
+							{
+								"id": "9c41e7a2d5b0f83e6a17c4d92b8e05f1a3d6c7e4",
+								"at": "2026-11-09T18:20:44Z",
+								"kind": "commit",
+								"title": "Keep first occurrence when combining history pages",
+								"detail": "Committed change. Measurements and verification are recorded separately.",
+								"commit": "9c41e7a2d5b0f83e6a17c4d92b8e05f1a3d6c7e4",
+								"version": null
+							},
+							{
+								"id": "4e0a93d7b16c2f58e9d04a7c3b61f2e85d9a0c36",
+								"at": "2026-11-08T11:05:17Z",
+								"kind": "commit",
+								"title": "Load the next history page on demand",
+								"detail": "Committed change. Measurements and verification are recorded separately.",
+								"commit": "4e0a93d7b16c2f58e9d04a7c3b61f2e85d9a0c36",
+								"version": null
+							}
+						],
+						[
+							{
+								"id": "4e0a93d7b16c2f58e9d04a7c3b61f2e85d9a0c36",
+								"at": "2026-11-08T11:05:17Z",
+								"kind": "commit",
+								"title": "Load the next history page on demand",
+								"detail": "Committed change. Measurements and verification are recorded separately.",
+								"commit": "4e0a93d7b16c2f58e9d04a7c3b61f2e85d9a0c36",
+								"version": null
+							},
+							{
+								"id": "7f2c58b0e4a19d63c7b2e5f08a4d19c6e3b7a25f",
+								"at": "2026-11-07T16:42:09Z",
+								"kind": "commit",
+								"title": "Add history coverage to entity detail",
+								"detail": "Committed change. Measurements and verification are recorded separately.",
+								"commit": "7f2c58b0e4a19d63c7b2e5f08a4d19c6e3b7a25f",
+								"version": null
+							}
+						]
+					],
+					[
+						[
+							{
+								"id": "9c41e7a2d5b0f83e6a17c4d92b8e05f1a3d6c7e4",
+								"at": "2026-11-09T18:20:44Z",
+								"kind": "commit",
+								"title": "Keep first occurrence when combining history pages",
+								"detail": "Committed change. Measurements and verification are recorded separately.",
+								"commit": "9c41e7a2d5b0f83e6a17c4d92b8e05f1a3d6c7e4",
+								"version": null
+							}
+						]
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "historyPages",
 				"type": "HistoryEvent[]",
-				"description": "One list in page order, with duplicate event identities removed. The first event with each identity is retained; no timestamp sorting is performed."
+				"description": "The events of every page in argument order, with each later event whose `id` already appeared removed, so the copy from the earliest page is the one returned; the returned events are the same objects that were passed in. It is never sorted by `at`, so the order follows the pages even where timestamps disagree.",
+				"examples": [
+					[
+						{
+							"id": "9c41e7a2d5b0f83e6a17c4d92b8e05f1a3d6c7e4",
+							"at": "2026-11-09T18:20:44Z",
+							"kind": "commit",
+							"title": "Keep first occurrence when combining history pages",
+							"detail": "Committed change. Measurements and verification are recorded separately.",
+							"commit": "9c41e7a2d5b0f83e6a17c4d92b8e05f1a3d6c7e4",
+							"version": null
+						},
+						{
+							"id": "4e0a93d7b16c2f58e9d04a7c3b61f2e85d9a0c36",
+							"at": "2026-11-08T11:05:17Z",
+							"kind": "commit",
+							"title": "Load the next history page on demand",
+							"detail": "Committed change. Measurements and verification are recorded separately.",
+							"commit": "4e0a93d7b16c2f58e9d04a7c3b61f2e85d9a0c36",
+							"version": null
+						},
+						{
+							"id": "7f2c58b0e4a19d63c7b2e5f08a4d19c6e3b7a25f",
+							"at": "2026-11-07T16:42:09Z",
+							"kind": "commit",
+							"title": "Add history coverage to entity detail",
+							"detail": "Committed change. Measurements and verification are recorded separately.",
+							"commit": "7f2c58b0e4a19d63c7b2e5f08a4d19c6e3b7a25f",
+							"version": null
+						}
+					],
+					[
+						{
+							"id": "9c41e7a2d5b0f83e6a17c4d92b8e05f1a3d6c7e4",
+							"at": "2026-11-09T18:20:44Z",
+							"kind": "commit",
+							"title": "Keep first occurrence when combining history pages",
+							"detail": "Committed change. Measurements and verification are recorded separately.",
+							"commit": "9c41e7a2d5b0f83e6a17c4d92b8e05f1a3d6c7e4",
+							"version": null
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "historyPages",
@@ -37,18 +137,117 @@
 						"name": "historyPages.pages",
 						"type": "HistoryEvent[][]",
 						"required": false,
-						"description": "The history pages supplied as separate arguments, in the order they were read."
+						"description": "Each argument is one page of an entity's history events, in the order the pages were read; any number of pages may be passed, and with none the value is an empty array. Matching uses only `id`: a later event is dropped when an earlier page or an earlier position in the same page already holds its `id`, whatever its other fields contain.",
+						"examples": [
+							[
+								[
+									{
+										"id": "9c41e7a2d5b0f83e6a17c4d92b8e05f1a3d6c7e4",
+										"at": "2026-11-09T18:20:44Z",
+										"kind": "commit",
+										"title": "Keep first occurrence when combining history pages",
+										"detail": "Committed change. Measurements and verification are recorded separately.",
+										"commit": "9c41e7a2d5b0f83e6a17c4d92b8e05f1a3d6c7e4",
+										"version": null
+									},
+									{
+										"id": "4e0a93d7b16c2f58e9d04a7c3b61f2e85d9a0c36",
+										"at": "2026-11-08T11:05:17Z",
+										"kind": "commit",
+										"title": "Load the next history page on demand",
+										"detail": "Committed change. Measurements and verification are recorded separately.",
+										"commit": "4e0a93d7b16c2f58e9d04a7c3b61f2e85d9a0c36",
+										"version": null
+									}
+								],
+								[
+									{
+										"id": "4e0a93d7b16c2f58e9d04a7c3b61f2e85d9a0c36",
+										"at": "2026-11-08T11:05:17Z",
+										"kind": "commit",
+										"title": "Load the next history page on demand",
+										"detail": "Committed change. Measurements and verification are recorded separately.",
+										"commit": "4e0a93d7b16c2f58e9d04a7c3b61f2e85d9a0c36",
+										"version": null
+									},
+									{
+										"id": "7f2c58b0e4a19d63c7b2e5f08a4d19c6e3b7a25f",
+										"at": "2026-11-07T16:42:09Z",
+										"kind": "commit",
+										"title": "Add history coverage to entity detail",
+										"detail": "Committed change. Measurements and verification are recorded separately.",
+										"commit": "7f2c58b0e4a19d63c7b2e5f08a4d19c6e3b7a25f",
+										"version": null
+									}
+								]
+							],
+							[
+								[
+									{
+										"id": "9c41e7a2d5b0f83e6a17c4d92b8e05f1a3d6c7e4",
+										"at": "2026-11-09T18:20:44Z",
+										"kind": "commit",
+										"title": "Keep first occurrence when combining history pages",
+										"detail": "Committed change. Measurements and verification are recorded separately.",
+										"commit": "9c41e7a2d5b0f83e6a17c4d92b8e05f1a3d6c7e4",
+										"version": null
+									}
+								]
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "historyPages",
 						"type": "HistoryEvent[]",
-						"description": "One list in page order, with duplicate event identities removed. The first event with each identity is retained; no timestamp sorting is performed."
+						"description": "The events of every page in argument order, with each later event whose `id` already appeared removed, so the copy from the earliest page is the one returned; the returned events are the same objects that were passed in. It is never sorted by `at`, so the order follows the pages even where timestamps disagree.",
+						"examples": [
+							[
+								{
+									"id": "9c41e7a2d5b0f83e6a17c4d92b8e05f1a3d6c7e4",
+									"at": "2026-11-09T18:20:44Z",
+									"kind": "commit",
+									"title": "Keep first occurrence when combining history pages",
+									"detail": "Committed change. Measurements and verification are recorded separately.",
+									"commit": "9c41e7a2d5b0f83e6a17c4d92b8e05f1a3d6c7e4",
+									"version": null
+								},
+								{
+									"id": "4e0a93d7b16c2f58e9d04a7c3b61f2e85d9a0c36",
+									"at": "2026-11-08T11:05:17Z",
+									"kind": "commit",
+									"title": "Load the next history page on demand",
+									"detail": "Committed change. Measurements and verification are recorded separately.",
+									"commit": "4e0a93d7b16c2f58e9d04a7c3b61f2e85d9a0c36",
+									"version": null
+								},
+								{
+									"id": "7f2c58b0e4a19d63c7b2e5f08a4d19c6e3b7a25f",
+									"at": "2026-11-07T16:42:09Z",
+									"kind": "commit",
+									"title": "Add history coverage to entity detail",
+									"detail": "Committed change. Measurements and verification are recorded separately.",
+									"commit": "7f2c58b0e4a19d63c7b2e5f08a4d19c6e3b7a25f",
+									"version": null
+								}
+							],
+							[
+								{
+									"id": "9c41e7a2d5b0f83e6a17c4d92b8e05f1a3d6c7e4",
+									"at": "2026-11-09T18:20:44Z",
+									"kind": "commit",
+									"title": "Keep first occurrence when combining history pages",
+									"detail": "Committed change. Measurements and verification are recorded separately.",
+									"commit": "9c41e7a2d5b0f83e6a17c4d92b8e05f1a3d6c7e4",
+									"version": null
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
