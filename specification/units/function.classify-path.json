@@ -34,23 +34,91 @@
 				"name": "classifyPath.path",
 				"type": "string",
 				"required": true,
-				"description": "Repository-relative path using forward slashes, to compare with workspace roots and configured patterns."
+				"description": "Repository-relative path from the repository root, using forward slashes, such as 'src/utils/classifyPath.ts'. It chooses the owning workspace and is compared in full against the registry, ignored and global rules, while its workspace-relative form is used for the default global files, test patterns and source identity; classifyPath does not normalize it, so a leading './' or a backslash is compared as written.",
+				"examples": [
+					"src/utils/development-tooling/classify-path/classifyPath.ts",
+					"packages/web/src/lib/format.ts",
+					"test/unit/classify-path.test.ts"
+				]
 			},
 			{
 				"name": "classifyPath.config",
 				"type": "UnitsConfig",
 				"required": true,
-				"description": "Workspace roots and ignored, global and test patterns used for classification."
+				"description": "The units configuration (UnitsConfig): its workspaces (each with a name and a root) choose the owning workspace, its ignored and global patterns are matched against the whole path, and its test patterns against the workspace-relative path. classifyPath does not validate this value, and the registry, workloads and default global file list are module constants rather than fields of it.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"workspaces": [
+							{
+								"name": "",
+								"root": "."
+							}
+						],
+						"tests": ["test/", "tests/"],
+						"global": [],
+						"ignored": ["**/*.md", "specification/features/", "specification/loops/", ".gitignore"],
+						"references": []
+					},
+					{
+						"schemaVersion": 1,
+						"workspaces": [
+							{
+								"name": "",
+								"root": "."
+							},
+							{
+								"name": "web",
+								"root": "packages/web"
+							}
+						],
+						"tests": ["test/", "tests/"],
+						"global": ["packages/shared/tokens.css"],
+						"ignored": ["**/*.md", "specification/features/"],
+						"references": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "classifyPath",
 				"type": "PathClass",
-				"description": "Classification, workspace name and root, workspace-relative path, and source identity when recognized. The deepest matching workspace wins; registry, ignored, global, test and source checks run in that order."
+				"description": "The classification of the path ('registry', 'ignored', 'global', 'test', 'source' or 'other'), its owning workspace name and root, and its path relative to that root (the whole path when the root is '.'). Ownership goes to the deepest nested workspace whose root plus '/' is a prefix of the path, otherwise to the '.' workspace or an unnamed '.' root when none is configured; the checks run in the order registry, ignored, global, test and source, and identity (id, kind and name) is set exactly when the classification is 'source'.",
+				"examples": [
+					{
+						"classification": "source",
+						"workspace": "",
+						"workspaceRoot": ".",
+						"relative": "src/utils/development-tooling/classify-path/classifyPath.ts",
+						"identity": {
+							"id": "function.development-tooling-classify-path-classify-path",
+							"kind": "function",
+							"name": "development-tooling-classify-path-classify-path"
+						}
+					},
+					{
+						"classification": "source",
+						"workspace": "web",
+						"workspaceRoot": "packages/web",
+						"relative": "src/lib/format.ts",
+						"identity": {
+							"id": "web.module.format",
+							"kind": "module",
+							"name": "format"
+						}
+					},
+					{
+						"classification": "test",
+						"workspace": "",
+						"workspaceRoot": ".",
+						"relative": "test/unit/classify-path.test.ts"
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "classifyPath",
@@ -59,24 +127,96 @@
 						"name": "classifyPath.path",
 						"type": "string",
 						"required": true,
-						"description": "Repository-relative path using forward slashes, to compare with workspace roots and configured patterns."
+						"description": "Repository-relative path from the repository root, using forward slashes, such as 'src/utils/classifyPath.ts'. It chooses the owning workspace and is compared in full against the registry, ignored and global rules, while its workspace-relative form is used for the default global files, test patterns and source identity; classifyPath does not normalize it, so a leading './' or a backslash is compared as written.",
+						"examples": [
+							"src/utils/development-tooling/classify-path/classifyPath.ts",
+							"packages/web/src/lib/format.ts",
+							"test/unit/classify-path.test.ts"
+						]
 					},
 					{
 						"name": "classifyPath.config",
 						"type": "UnitsConfig",
 						"required": true,
-						"description": "Workspace roots and ignored, global and test patterns used for classification."
+						"description": "The units configuration (UnitsConfig): its workspaces (each with a name and a root) choose the owning workspace, its ignored and global patterns are matched against the whole path, and its test patterns against the workspace-relative path. classifyPath does not validate this value, and the registry, workloads and default global file list are module constants rather than fields of it.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"workspaces": [
+									{
+										"name": "",
+										"root": "."
+									}
+								],
+								"tests": ["test/", "tests/"],
+								"global": [],
+								"ignored": [
+									"**/*.md",
+									"specification/features/",
+									"specification/loops/",
+									".gitignore"
+								],
+								"references": []
+							},
+							{
+								"schemaVersion": 1,
+								"workspaces": [
+									{
+										"name": "",
+										"root": "."
+									},
+									{
+										"name": "web",
+										"root": "packages/web"
+									}
+								],
+								"tests": ["test/", "tests/"],
+								"global": ["packages/shared/tokens.css"],
+								"ignored": ["**/*.md", "specification/features/"],
+								"references": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "classifyPath",
 						"type": "PathClass",
-						"description": "Classification, workspace name and root, workspace-relative path, and source identity when recognized. The deepest matching workspace wins; registry, ignored, global, test and source checks run in that order."
+						"description": "The classification of the path ('registry', 'ignored', 'global', 'test', 'source' or 'other'), its owning workspace name and root, and its path relative to that root (the whole path when the root is '.'). Ownership goes to the deepest nested workspace whose root plus '/' is a prefix of the path, otherwise to the '.' workspace or an unnamed '.' root when none is configured; the checks run in the order registry, ignored, global, test and source, and identity (id, kind and name) is set exactly when the classification is 'source'.",
+						"examples": [
+							{
+								"classification": "source",
+								"workspace": "",
+								"workspaceRoot": ".",
+								"relative": "src/utils/development-tooling/classify-path/classifyPath.ts",
+								"identity": {
+									"id": "function.development-tooling-classify-path-classify-path",
+									"kind": "function",
+									"name": "development-tooling-classify-path-classify-path"
+								}
+							},
+							{
+								"classification": "source",
+								"workspace": "web",
+								"workspaceRoot": "packages/web",
+								"relative": "src/lib/format.ts",
+								"identity": {
+									"id": "web.module.format",
+									"kind": "module",
+									"name": "format"
+								}
+							},
+							{
+								"classification": "test",
+								"workspace": "",
+								"workspaceRoot": ".",
+								"relative": "test/unit/classify-path.test.ts"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
