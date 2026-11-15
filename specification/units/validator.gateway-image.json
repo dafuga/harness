@@ -20,22 +20,53 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GatewayImageValidator.parse.input",
 				"type": "Record<string, unknown>",
-				"required": true
+				"required": true,
+				"description": "A record containing one gateway image input. parse reads an embedded data URI from image_url (a string or an object with url) first, otherwise it reads resource.mimeType/blob, source.media_type/data, or top-level mimeType/data; the bytes must be base64 PNG, JPEG, GIF, or WebP with a matching signature and no more than 5 MiB decoded, while remote URLs, local paths, and provider file IDs are unsupported.",
+				"examples": [
+					{
+						"mimeType": "image/png",
+						"data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/pZsAAAAASUVORK5CYII="
+					},
+					{
+						"resource": {
+							"mimeType": "image/png",
+							"blob": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/pZsAAAAASUVORK5CYII="
+						}
+					},
+					{
+						"image_url": {
+							"url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/pZsAAAAASUVORK5CYII="
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GatewayImageValidator.parse",
-				"type": "GatewayImage"
+				"type": "GatewayImage",
+				"description": "The validated image payload returned by parse. data is the canonical base64 block and mimeType is image/png, image/jpeg, image/gif, or image/webp; the decoded bytes are at most 5 MiB and must match the declared MIME signature.",
+				"examples": [
+					{
+						"data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/pZsAAAAASUVORK5CYII=",
+						"mimeType": "image/png"
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "gatewayContentError",
+				"type": "thrown",
+				"description": "parse throws the error produced by gatewayContentError when the MIME type or data is missing, has the wrong kind, or uses an unsupported MIME type; when base64 is malformed, noncanonical, or exceeds the encoded or decoded size limits; or when decoded bytes do not match the declared image signature. The implementation uses messages for required PNG/JPEG/GIF/WebP bytes, invalid or over-limit data, and invalid data or a MIME mismatch."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "GatewayImageValidator.parse",
@@ -43,17 +74,48 @@
 					{
 						"name": "GatewayImageValidator.parse.input",
 						"type": "Record<string, unknown>",
-						"required": true
+						"required": true,
+						"description": "A record containing one gateway image input. parse reads an embedded data URI from image_url (a string or an object with url) first, otherwise it reads resource.mimeType/blob, source.media_type/data, or top-level mimeType/data; the bytes must be base64 PNG, JPEG, GIF, or WebP with a matching signature and no more than 5 MiB decoded, while remote URLs, local paths, and provider file IDs are unsupported.",
+						"examples": [
+							{
+								"mimeType": "image/png",
+								"data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/pZsAAAAASUVORK5CYII="
+							},
+							{
+								"resource": {
+									"mimeType": "image/png",
+									"blob": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/pZsAAAAASUVORK5CYII="
+								}
+							},
+							{
+								"image_url": {
+									"url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/pZsAAAAASUVORK5CYII="
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GatewayImageValidator.parse",
-						"type": "GatewayImage"
+						"type": "GatewayImage",
+						"description": "The validated image payload returned by parse. data is the canonical base64 block and mimeType is image/png, image/jpeg, image/gif, or image/webp; the decoded bytes are at most 5 MiB and must match the declared MIME signature.",
+						"examples": [
+							{
+								"data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/pZsAAAAASUVORK5CYII=",
+								"mimeType": "image/png"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "gatewayContentError",
+						"type": "thrown",
+						"description": "parse throws the error produced by gatewayContentError when the MIME type or data is missing, has the wrong kind, or uses an unsupported MIME type; when base64 is malformed, noncanonical, or exceeds the encoded or decoded size limits; or when decoded bytes do not match the declared image signature. The implementation uses messages for required PNG/JPEG/GIF/WebP bytes, invalid or over-limit data, and invalid data or a MIME mismatch."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
