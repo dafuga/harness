@@ -25,68 +25,114 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "UnitRegistryRepository.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem root joined with unit-manifest paths for write and remove. The constructor stores this root unchanged.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+				]
 			},
 			{
 				"name": "UnitRegistryRepository.config.tree",
 				"type": "SourceTree",
-				"required": true
+				"required": true,
+				"description": "SourceTree snapshot whose list and read methods supply the units config file, if present. It determines whether the default config is returned or the stored config is validated."
 			},
 			{
 				"name": "UnitRegistryRepository.read.tree",
 				"type": "SourceTree",
-				"required": true
+				"required": true,
+				"description": "SourceTree snapshot whose listed files and contents provide manifests under unitsDirectory. It is used to read and validate the registry."
 			},
 			{
 				"name": "UnitRegistryRepository.write.manifests",
 				"type": "ComponentManifest[]",
-				"required": true
+				"required": true,
+				"description": "Manifests to store as canonical JSON files named from each manifest id. Existing files whose contents already equal stableJson output are skipped.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "UnitRegistryRepository.remove.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Unit id used to locate its manifest JSON file under unitsDirectory. Removal uses force, so a missing file is ignored.",
+				"examples": ["reports.component.evidence-grid"]
 			},
 			{
 				"name": "UnitRegistryRepository.path.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Unit id appended to unitsDirectory with a .json suffix. The method returns this repository-relative path without checking whether the file exists.",
+				"examples": ["reports.component.evidence-grid"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "UnitRegistryRepository.config",
-				"type": "Promise<UnitsConfig>"
+				"type": "Promise<UnitsConfig>",
+				"description": "The parsed UnitsConfig from harness.units.json when the file is present and valid; when absent, the method returns defaultUnitsConfig. Invalid JSON or schema data causes fail to throw ExpectedCliError.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"workspaces": [
+							{
+								"name": "",
+								"root": "."
+							}
+						],
+						"tests": ["test/", "tests/"],
+						"global": [],
+						"ignored": ["**/*.md", "specification/features/", "specification/loops/", ".gitignore"],
+						"references": []
+					}
+				]
 			},
 			{
 				"name": "UnitRegistryRepository.read",
-				"type": "Promise<RegistryRead>"
+				"type": "Promise<RegistryRead>",
+				"description": "RegistryRead containing validated manifests from JSON files under specification/units, validation errors, and ids of manifests whose stored text differs from stableJson output. Historical manifests are validated with contractQuality disabled, and invalid manifests are omitted.",
+				"examples": [
+					{
+						"manifests": [],
+						"errors": [],
+						"unformatted": []
+					}
+				]
 			},
 			{
 				"name": "UnitRegistryRepository.write",
-				"type": "Promise<string[]>"
+				"type": "Promise<string[]>",
+				"description": "Repository-relative paths of manifests whose canonical JSON contents were written. Manifests whose existing file contents already equal stableJson output are omitted.",
+				"examples": [
+					["specification/units/reports.component.evidence-grid.json"]
+				]
 			},
 			{
 				"name": "UnitRegistryRepository.remove",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves to undefined after attempting to remove the unit JSON file under the repository root. Missing files are ignored because removal uses force: true."
 			},
 			{
 				"name": "UnitRegistryRepository.path",
-				"type": "string"
+				"type": "string",
+				"description": "Repository-relative manifest path formed as specification/units/<id>.json. The method does not access the filesystem.",
+				"examples": ["specification/units/reports.component.evidence-grid.json"]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when the parsed value of harness.units.json fails unitsConfigSchema validation. Its message is the schema errors joined with newline characters."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "UnitRegistryRepository.config",
@@ -94,22 +140,45 @@
 					{
 						"name": "UnitRegistryRepository.config.tree",
 						"type": "SourceTree",
-						"required": true
+						"required": true,
+						"description": "SourceTree snapshot whose list and read methods supply the units config file, if present. It determines whether the default config is returned or the stored config is validated."
 					}
 				],
 				"outputs": [
 					{
 						"name": "UnitRegistryRepository.config",
-						"type": "Promise<UnitsConfig>"
+						"type": "Promise<UnitsConfig>",
+						"description": "The parsed UnitsConfig from harness.units.json when the file is present and valid; when absent, the method returns defaultUnitsConfig. Invalid JSON or schema data causes fail to throw ExpectedCliError.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"workspaces": [
+									{
+										"name": "",
+										"root": "."
+									}
+								],
+								"tests": ["test/", "tests/"],
+								"global": [],
+								"ignored": [
+									"**/*.md",
+									"specification/features/",
+									"specification/loops/",
+									".gitignore"
+								],
+								"references": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the parsed value of harness.units.json fails unitsConfigSchema validation. Its message is the schema errors joined with newline characters."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "UnitRegistryRepository.read",
@@ -117,17 +186,26 @@
 					{
 						"name": "UnitRegistryRepository.read.tree",
 						"type": "SourceTree",
-						"required": true
+						"required": true,
+						"description": "SourceTree snapshot whose listed files and contents provide manifests under unitsDirectory. It is used to read and validate the registry."
 					}
 				],
 				"outputs": [
 					{
 						"name": "UnitRegistryRepository.read",
-						"type": "Promise<RegistryRead>"
+						"type": "Promise<RegistryRead>",
+						"description": "RegistryRead containing validated manifests from JSON files under specification/units, validation errors, and ids of manifests whose stored text differs from stableJson output. Historical manifests are validated with contractQuality disabled, and invalid manifests are omitted.",
+						"examples": [
+							{
+								"manifests": [],
+								"errors": [],
+								"unformatted": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "UnitRegistryRepository.write",
@@ -135,17 +213,25 @@
 					{
 						"name": "UnitRegistryRepository.write.manifests",
 						"type": "ComponentManifest[]",
-						"required": true
+						"required": true,
+						"description": "Manifests to store as canonical JSON files named from each manifest id. Existing files whose contents already equal stableJson output are skipped.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "UnitRegistryRepository.write",
-						"type": "Promise<string[]>"
+						"type": "Promise<string[]>",
+						"description": "Repository-relative paths of manifests whose canonical JSON contents were written. Manifests whose existing file contents already equal stableJson output are omitted.",
+						"examples": [
+							["specification/units/reports.component.evidence-grid.json"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "UnitRegistryRepository.remove",
@@ -153,17 +239,20 @@
 					{
 						"name": "UnitRegistryRepository.remove.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Unit id used to locate its manifest JSON file under unitsDirectory. Removal uses force, so a missing file is ignored.",
+						"examples": ["reports.component.evidence-grid"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "UnitRegistryRepository.remove",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves to undefined after attempting to remove the unit JSON file under the repository root. Missing files are ignored because removal uses force: true."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "UnitRegistryRepository.path",
@@ -171,17 +260,21 @@
 					{
 						"name": "UnitRegistryRepository.path.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Unit id appended to unitsDirectory with a .json suffix. The method returns this repository-relative path without checking whether the file exists.",
+						"examples": ["reports.component.evidence-grid"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "UnitRegistryRepository.path",
-						"type": "string"
+						"type": "string",
+						"description": "Repository-relative manifest path formed as specification/units/<id>.json. The method does not access the filesystem.",
+						"examples": ["specification/units/reports.component.evidence-grid.json"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -191,17 +284,22 @@
 					{
 						"name": "UnitRegistryRepository.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem root joined with unit-manifest paths for write and remove. The constructor stores this root unchanged.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "UnitRegistryRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed UnitRegistryRepository instance, initialized with the supplied root and a ComponentManifestValidator. It is the object used to call the registry methods."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
