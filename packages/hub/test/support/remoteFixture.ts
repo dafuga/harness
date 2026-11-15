@@ -2,7 +2,7 @@ import type { HostIdentity, RemoteFixtureOptions } from './remoteFixture.types';
 import { createECDH, createHash } from 'node:crypto';
 import type { Actor } from 'collaboration';
 import type { HubEnv } from '../../src/configs/development-tooling/hubEnvConfig';
-import { HubApiController } from '../../src/controllers/hub-api-controller/HubApiController';
+import { HubApiController } from '../../src/routes/api/[...path]/hub-api-controller/HubApiController';
 import { hubRemote } from '../../src/routes/api/[...path]/hubRemote';
 import { actor } from './projectionFixture';
 import { remoteHostsFake } from './remoteHostsFake';

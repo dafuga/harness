@@ -10,7 +10,7 @@ import {
 	type EvidenceSide
 } from '../../../desktop/src/utils/reports-media/artifactQuery';
 import { mediaFile } from '../../../reports/src/utils/explorer-ui/harnessEvidence';
-import { HubApiController } from '../../src/controllers/hub-api-controller/HubApiController';
+import { HubApiController } from '../../src/routes/api/[...path]/hub-api-controller/HubApiController';
 import { HubProjectionService } from '../../src/routes/api/[...path]/hub-projection-service/HubProjectionService';
 import { hubCache } from '../../src/routes/api/[...path]/hubCache';
 import { hubSource } from '../../src/utils/development-tooling/hubSource';

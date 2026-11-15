@@ -11,7 +11,7 @@ import type {
 import { createCollaboration } from 'collaboration';
 import { hubCache } from '../../src/routes/api/[...path]/hubCache';
 import { HubProjectionService } from '../../src/routes/api/[...path]/hub-projection-service/HubProjectionService';
-import { HubApiController } from '../../src/controllers/hub-api-controller/HubApiController';
+import { HubApiController } from '../../src/routes/api/[...path]/hub-api-controller/HubApiController';
 const encode = (v: unknown) => new TextEncoder().encode(JSON.stringify(v));
 export const actor: Actor = {
 	id: 'google:fixture-one',

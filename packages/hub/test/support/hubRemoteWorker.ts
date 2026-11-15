@@ -1,6 +1,6 @@
 import type { Actor } from 'collaboration';
 import { hubEnvConfig } from '../../src/configs/development-tooling/hubEnvConfig';
-import { HubApiController } from '../../src/controllers/hub-api-controller/HubApiController';
+import { HubApiController } from '../../src/routes/api/[...path]/hub-api-controller/HubApiController';
 import { hubRemote } from '../../src/routes/api/[...path]/hubRemote';
 
 /**

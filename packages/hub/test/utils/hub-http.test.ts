@@ -1,5 +1,8 @@
 import { expect, test } from 'vitest';
-import { hubHttpFailure } from '../../src/controllers/hub-api-controller/hubHttp';
+import {
+	hubHttpFailure,
+	hubQuery
+} from '../../src/routes/api/[...path]/hub-api-controller/hubHttp';
 import { hubBody } from '../../src/utils/networking-security/hub-http/hubHttp';
 test('unknown provider detail and status never enter public errors', async () => {
 	for (const error of [
@@ -50,4 +53,31 @@ test('chunked bodies stop consuming once the byte limit is exceeded', async () =
 	await expect(hubBody(request)).rejects.toThrow();
 	expect(cancelled).toBe(true);
 	expect(pulls).toBeLessThan(6);
+});
+
+test('a query admits one well-formed entity and commit, and refuses any other input as invalid', () => {
+	const commit = 'a'.repeat(40);
+	const query = (search: string) => {
+		try {
+			return hubQuery(new Request(`https://fixture.example/api/x?${search}`));
+		} catch (error) {
+			return (error as { code?: string }).code;
+		}
+	};
+	expect(query(`entityId=page.titles&commit=${commit}`)).toEqual({
+		entityId: 'page.titles',
+		commit,
+		branch: '',
+		path: '',
+		version: '',
+		sha256: '',
+		threadId: ''
+	});
+	for (const search of [
+		`entityId=Page.Titles&commit=${commit}`,
+		`entityId=page&commit=${commit}`,
+		`entityId=page.titles&commit=${'A'.repeat(40)}`,
+		'entityId=page.titles'
+	])
+		expect(query(search)).toBe('invalid-input');
 });
