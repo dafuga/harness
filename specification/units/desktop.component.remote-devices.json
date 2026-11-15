@@ -30,29 +30,95 @@
 				"name": "RemoteDevices.devices",
 				"type": "RemoteDeviceInfo[]",
 				"required": true,
-				"description": "Required approved-device records with identities, names, project grants and connection information. Online means Connected; otherwise shows last-seen time or Not connected."
+				"description": "Required list of approved phones, one row per record keyed by deviceId, so each record needs a distinct deviceId. Each row shows name, a chip per projectIds entry, the grant summary from agents and comments, and connectivity: Connected when online is true, otherwise Last seen with the lastSeenAt time (ISO timestamps are shown in local time) or Not connected when lastSeenAt is null.",
+				"examples": [
+					[
+						{
+							"deviceId": "7c2e41b9d05a8f3e6b1c94d2a7f0e8b35d6c1a90",
+							"name": "Work iPhone",
+							"platform": "ios",
+							"projectIds": [
+								"local-3b9e1f04a7c2d8e65f0a9c3e7b1d4f82c6e0a2b4d9f71835e2d8b6a0c4f19372",
+								"local-8a4d1c7f0e926b35d20f7a9c4e1b8635f9c3e0a7b2d548160b6e9d2f8a3c7154"
+							],
+							"comments": true,
+							"agents": true,
+							"approvedAt": "2026-11-02T09:14:37.512Z",
+							"lastSeenAt": "2026-11-15T08:41:12.087Z",
+							"online": true
+						},
+						{
+							"deviceId": "5e0c9a7d2b41f6c83a9e0d57b2c46f18e3a9d0c4",
+							"name": "Desk iPhone",
+							"platform": "ios",
+							"projectIds": [
+								"local-3b9e1f04a7c2d8e65f0a9c3e7b1d4f82c6e0a2b4d9f71835e2d8b6a0c4f19372"
+							],
+							"comments": false,
+							"agents": false,
+							"approvedAt": "2026-10-20T16:05:03.941Z",
+							"lastSeenAt": "2026-11-12T19:27:50.330Z",
+							"online": false
+						}
+					],
+					[
+						{
+							"deviceId": "a3f19d6e0b2c74815d9e3a6f0c2b8e47d1a5f96b",
+							"name": "Review iPhone",
+							"platform": "ios",
+							"projectIds": [
+								"local-8a4d1c7f0e926b35d20f7a9c4e1b8635f9c3e0a7b2d548160b6e9d2f8a3c7154"
+							],
+							"agents": false,
+							"approvedAt": "2026-11-15T07:58:44.209Z",
+							"lastSeenAt": null,
+							"online": false
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "RemoteDevices.projects",
 				"type": "{ id: string; name: string }[]",
 				"required": true,
-				"description": "Required identifier/name lookup for grants; absent projects say Project no longer listed."
+				"description": "Required lookup from project id to name, rebuilt when projects changes, that names each project chip in a phone row; an id with no match shows Project no longer listed. A repeated id keeps the later name, since the lookup is built as a Map.",
+				"examples": [
+					[
+						{
+							"id": "local-3b9e1f04a7c2d8e65f0a9c3e7b1d4f82c6e0a2b4d9f71835e2d8b6a0c4f19372",
+							"name": "Harness Desktop"
+						},
+						{
+							"id": "local-8a4d1c7f0e926b35d20f7a9c4e1b8635f9c3e0a7b2d548160b6e9d2f8a3c7154",
+							"name": "Field notes"
+						}
+					],
+					[
+						{
+							"id": "local-3b9e1f04a7c2d8e65f0a9c3e7b1d4f82c6e0a2b4d9f71835e2d8b6a0c4f19372",
+							"name": "Harness Desktop"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "RemoteDevices.store",
 				"type": "RemoteHost",
 				"required": true,
-				"description": "Host store supplying busy state and revoke. A click passes the device identifier; busy disables the button."
+				"description": "The RemoteHost store: its busy flag disables every Revoke button while it is true, and each Revoke click calls revoke with that row's deviceId. The component neither awaits nor reads revoke's result, so a failed revocation never appears in this markup and is kept in the store's error field."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteDevices",
 				"type": "markup",
-				"description": "Approved-phone list with project badges, permission summaries, connectivity and Revoke actions, or No phone is approved for an empty list. Revocation effects and errors are handled outside this list."
+				"description": "Markup of an aria-labelled list (Approved phones) when devices has entries, with one item per phone holding its name, a chip per granted project, its grant summary, its connectivity text and a Revoke button that is disabled while the store is busy; when devices is empty it is a muted span reading No phone is approved. Revocation results and errors are not rendered in this markup."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
