@@ -21,28 +21,50 @@
 				"name": "fileHash.path",
 				"type": "string",
 				"required": true,
-				"description": "Filesystem path to inspect."
+				"description": "Filesystem path to inspect, passed unchanged to lstat so that a final symbolic link is reported as a link and not followed. sourceSnapshot passes an absolute path built as resolve(root, listedPath) for each listed file.",
+				"examples": [
+					"/workspace/acme-web/packages/desktop/src/utils/sourceSnapshot.ts",
+					"/workspace/acme-web/packages/shared/config/tsconfig.json"
+				]
 			},
 			{
 				"name": "sourceSnapshot.root",
 				"type": "string",
 				"required": true,
-				"description": "Repository root used to list working source paths."
+				"description": "Repository directory that gitRead passes to git -C, which decides the working tree that is listed, and each listed path is resolved against it before hashing. It must be a directory inside a Git working tree, otherwise git exits with an error and sourceSnapshot rejects.",
+				"examples": ["/workspace/acme-web", "/home/dev/src/billing-service"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "fileHash",
 				"type": "Promise<string | null>",
-				"description": "SHA-256 for a regular file, link: plus target for a symbolic link, or null for missing/nonfile paths."
+				"description": "SHA-256 of a regular file's contents as 64 lowercase hex characters, or 'link:' followed by the symbolic link's target text exactly as readlink returns it, without resolving it. It is null when the path does not exist (ENOENT) or is a directory or other non-regular entry, and other filesystem errors reject instead of returning null.",
+				"examples": [
+					"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+					"link:../shared/tsconfig.base.json",
+					null
+				]
 			},
 			{
 				"name": "sourceSnapshot",
 				"type": "Promise<SourceSnapshot>",
-				"description": "Map of Git-listed paths to current file hashes or link markers, omitting paths with no file value."
+				"description": "Map from each root-relative path that git ls-files lists (tracked files, plus untracked files not matched by the standard ignore rules) to its fileHash value, with duplicate paths collapsed. Paths whose fileHash is null, such as deleted tracked files, directories, and submodules, are omitted, and one rejected fileHash rejects the whole snapshot."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "NodeJS.ErrnoException",
+				"type": "thrown",
+				"description": "Filesystem error from lstat, readlink, or opening and reading a file, with a code other than ENOENT (for example EACCES or ENOTDIR). fileHash rethrows it unchanged, and sourceSnapshot rejects with it when any listed path fails this way."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Error that gitRead's execFile call rejects with when git exits non-zero (for example, when root is not inside a Git working tree), when the git executable cannot be started (for example, code ENOENT when it is not on PATH), or when git's stdout exceeds the 64000000-byte maxBuffer. sourceSnapshot does not catch it, so it rejects with the same error."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "fileHash",
@@ -51,18 +73,33 @@
 						"name": "fileHash.path",
 						"type": "string",
 						"required": true,
-						"description": "Filesystem path to inspect."
+						"description": "Filesystem path to inspect, passed unchanged to lstat so that a final symbolic link is reported as a link and not followed. sourceSnapshot passes an absolute path built as resolve(root, listedPath) for each listed file.",
+						"examples": [
+							"/workspace/acme-web/packages/desktop/src/utils/sourceSnapshot.ts",
+							"/workspace/acme-web/packages/shared/config/tsconfig.json"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "fileHash",
 						"type": "Promise<string | null>",
-						"description": "SHA-256 for a regular file, link: plus target for a symbolic link, or null for missing/nonfile paths."
+						"description": "SHA-256 of a regular file's contents as 64 lowercase hex characters, or 'link:' followed by the symbolic link's target text exactly as readlink returns it, without resolving it. It is null when the path does not exist (ENOENT) or is a directory or other non-regular entry, and other filesystem errors reject instead of returning null.",
+						"examples": [
+							"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+							"link:../shared/tsconfig.base.json",
+							null
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Filesystem error from lstat, readlink, or opening and reading a file, with a code other than ENOENT (for example EACCES or ENOTDIR). fileHash rethrows it unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "sourceSnapshot",
@@ -71,18 +108,30 @@
 						"name": "sourceSnapshot.root",
 						"type": "string",
 						"required": true,
-						"description": "Repository root used to list working source paths."
+						"description": "Repository directory that gitRead passes to git -C, which decides the working tree that is listed, and each listed path is resolved against it before hashing. It must be a directory inside a Git working tree, otherwise git exits with an error and sourceSnapshot rejects.",
+						"examples": ["/workspace/acme-web", "/home/dev/src/billing-service"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sourceSnapshot",
 						"type": "Promise<SourceSnapshot>",
-						"description": "Map of Git-listed paths to current file hashes or link markers, omitting paths with no file value."
+						"description": "Map from each root-relative path that git ls-files lists (tracked files, plus untracked files not matched by the standard ignore rules) to its fileHash value, with duplicate paths collapsed. Paths whose fileHash is null, such as deleted tracked files, directories, and submodules, are omitted, and one rejected fileHash rejects the whole snapshot."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Error that gitRead's execFile call rejects with when git exits non-zero (for example, when root is not inside a Git working tree), when the git executable cannot be started (for example, code ENOENT when it is not on PATH), or when git's stdout exceeds the 64000000-byte maxBuffer. sourceSnapshot does not catch it, so it rejects with the same error."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Filesystem error from lstat, readlink, or opening and reading a file, with a code other than ENOENT (for example EACCES or ENOTDIR). fileHash rethrows it unchanged, and sourceSnapshot rejects with it when any listed path fails this way."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
