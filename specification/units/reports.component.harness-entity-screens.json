@@ -48,58 +48,254 @@
 				"name": "EntityScreens.options",
 				"type": "ScreenOption[]",
 				"required": true,
-				"description": "Available visual scenarios and viewports. Overview uses the fixed page preview, or the first declared scenario and state."
+				"description": "The visual scenarios of the entity, each with its scenario id, title, required state ids and viewports (id, label, size). Viewport buttons list the viewports of the picked scenario: the focused scenario when one is present, otherwise the preview's scenario (no buttons when this list lacks it), or the first scenario when there is no preview.",
+				"examples": [
+					[
+						{
+							"scenario": "archived-orders",
+							"title": "Archived orders",
+							"states": ["archived"],
+							"viewports": [
+								{
+									"id": "desktop",
+									"label": "Desktop",
+									"size": "1440 × 900"
+								},
+								{
+									"id": "mobile",
+									"label": "Mobile",
+									"size": "390 × 844"
+								}
+							]
+						}
+					],
+					[
+						{
+							"scenario": "focused",
+							"title": "Focused screenshots",
+							"states": ["default"],
+							"viewports": [
+								{
+									"id": "desktop",
+									"label": "Desktop",
+									"size": "1440 × 900"
+								}
+							]
+						}
+					]
+				]
 			},
 			{
 				"name": "EntityScreens.evidence",
 				"type": "ExplorerEvidence",
 				"required": true,
-				"description": "Required captures/comparison mode and incomparability reasons."
+				"description": "The captures the entity is shown with: in commit mode `before` is the parent side and `after` the selected commit, `initial` gives the reason when `before` is null, and current mode shows only `after`. `incomparable` lists why the two sides are not like for like, such as different profiles, viewport sizes or tests, and is read only in commit mode.",
+				"examples": [
+					{
+						"mode": "commit",
+						"scenarios": [],
+						"after": {
+							"commit": "d41a0c9e7b2f58163a0e4d9c7b1f2a6e8c3d5b07",
+							"detail": {
+								"commit": "d41a0c9e7b2f58163a0e4d9c7b1f2a6e8c3d5b07",
+								"registry": {
+									"available": true,
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"records": [],
+								"explanations": []
+							},
+							"record": null,
+							"captures": [],
+							"coverage": [],
+							"gap": "No verification record is attached to this commit."
+						},
+						"before": null,
+						"initial": "This is the first commit of its history: there is no parent to compare with.",
+						"incomparable": []
+					},
+					{
+						"mode": "current",
+						"scenarios": [],
+						"after": {
+							"commit": "b8d3f0a6c1e47925d0b3a9e8f6c2d1a4b7e05c93",
+							"detail": null,
+							"record": null,
+							"captures": [],
+							"coverage": [],
+							"gap": "Revision b8d3f0a is not available here; no other revision is shown in its place."
+						},
+						"before": null,
+						"initial": null,
+						"incomparable": []
+					}
+				]
 			},
 			{
 				"name": "EntityScreens.scope",
 				"type": "ExplorerScope",
 				"required": true,
-				"description": "Required commit/parent context for labels and links."
+				"description": "The page's scope, of which the component reads only `commit` and `parent`. Each pane caption ends with the short form of the revision its capture names, falling back to `commit` for the after pane and `parent` for the before pane; a null parent leaves the before caption without a revision.",
+				"examples": [
+					{
+						"location": {
+							"branch": "main",
+							"commit": "9c1e4b7a2d5f83061e9b4c2a7d5f0e8b3a6c1d24",
+							"category": "components",
+							"entity": "reports.component.harness-entity-screens"
+						},
+						"mode": "commit",
+						"branch": "main",
+						"tip": "e52a7b19d3c6f08a4b1e9d27c5f30a8b6d4e1f29",
+						"commit": "9c1e4b7a2d5f83061e9b4c2a7d5f0e8b3a6c1d24",
+						"atTip": false,
+						"parent": "3f7a0d62c18e94b5a07d3e6f1c2b8a9d4e5f6071",
+						"summary": {
+							"commit": "9c1e4b7a2d5f83061e9b4c2a7d5f0e8b3a6c1d24",
+							"parents": ["3f7a0d62c18e94b5a07d3e6f1c2b8a9d4e5f6071"],
+							"subject": "Show viewport buttons on entity screenshots",
+							"author": "Alex Morgan",
+							"committedAt": "2026-11-10T16:41:37Z",
+							"branches": ["main"],
+							"retained": true,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						}
+					},
+					{
+						"location": {
+							"branch": "main",
+							"commit": null,
+							"category": "components",
+							"entity": "reports.component.harness-entity-screens"
+						},
+						"mode": "current",
+						"branch": "main",
+						"tip": "e52a7b19d3c6f08a4b1e9d27c5f30a8b6d4e1f29",
+						"commit": "e52a7b19d3c6f08a4b1e9d27c5f30a8b6d4e1f29",
+						"atTip": true,
+						"parent": "9c1e4b7a2d5f83061e9b4c2a7d5f0e8b3a6c1d24",
+						"summary": {
+							"commit": "e52a7b19d3c6f08a4b1e9d27c5f30a8b6d4e1f29",
+							"parents": ["9c1e4b7a2d5f83061e9b4c2a7d5f0e8b3a6c1d24"],
+							"subject": "Label entity screenshot captions with their revisions",
+							"author": "Alex Morgan",
+							"committedAt": "2026-11-12T09:15:02Z",
+							"branches": ["main"],
+							"retained": true,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						}
+					}
+				]
 			},
 			{
 				"name": "EntityScreens.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "Required prefix concatenated with screenshot files."
+				"description": "The URL prefix concatenated directly with each capture's file name, for image sources and as the EvidenceViewer asset base. The harness console passes its base plus '/media/', for example '/harness/media/'.",
+				"examples": ["/harness/media/"]
 			},
 			{
 				"name": "EntityScreens.nav",
 				"type": "EntityNav",
 				"required": true,
-				"description": "Required navigation to tests or selected-commit view."
+				"description": "Used only in commit mode for the 'View full comparison' action: `href` gives its link and `go` opens it, both for the entity's states tab that entityLens builds from `route` at the same branch and commit. `href` runs while rendering and `go` runs on click."
 			},
 			{
 				"name": "EntityScreens.reasons",
 				"type": "Reasons",
 				"required": true,
-				"description": "Required recorded change reasons, shown for paired comparisons with original text available."
+				"description": "The commit's recorded reasons for this entity, shown only in commit mode. Its `behavior.text` is the 'Behavior change' text, or a fallback sentence when it is empty, and EntityReasons renders the full reasons after it.",
+				"examples": [
+					{
+						"behavior": {
+							"text": "Lists the viewports of the picked scenario and keeps its scenario and state when a viewport is chosen.",
+							"cut": false
+						},
+						"simplification": {
+							"text": "Merged the two viewport lookups into one search over the option list.",
+							"cut": false,
+							"outcomes": ["Kept"]
+						},
+						"performance": {
+							"text": "Reused the picked viewport size instead of recomputing it on each render.",
+							"cut": false,
+							"outcomes": ["No measurable change"]
+						},
+						"notes": [
+							{
+								"behavior": "Lists the viewports of the picked scenario and keeps its scenario and state when a viewport is chosen.",
+								"subjects": ["the whole entity"]
+							}
+						],
+						"attempted": [
+							{
+								"attempt": "Merged the two viewport lookups into one search over the option list.",
+								"uses": [
+									{
+										"subject": "the whole entity",
+										"kind": "simplification",
+										"outcome": "Kept"
+									}
+								]
+							},
+							{
+								"attempt": "Reused the picked viewport size instead of recomputing it on each render.",
+								"uses": [
+									{
+										"subject": "the whole entity",
+										"kind": "performance",
+										"outcome": "No measurable change"
+									}
+								]
+							}
+						],
+						"long": false
+					}
+				]
 			},
 			{
 				"name": "EntityScreens.preview",
 				"type": "ScreenPick",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Exact optional scenario, state and initial viewport declared for this page. Viewport buttons preserve its scenario and state. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "The scenario, state and viewport this page declares as its preview: with a focused scenario in options only the preview's state and viewport are used, otherwise its scenario and state are shown as given and kept by viewport buttons. When omitted (undefined), the focused scenario is shown if present, else the first scenario, each with its first state and viewport.",
+				"examples": [
+					{
+						"scenario": "archived-orders",
+						"state": "archived",
+						"viewport": "desktop"
+					},
+					{
+						"scenario": "focused",
+						"state": "default",
+						"viewport": "desktop"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityScreens",
 				"type": "markup",
-				"description": "Captions retain capture revisions without a separator when none exists. Viewport buttons retain scenario and state. Selecting an image mounts its full-size viewer; a closed viewer adds no empty-selection text. Rejected or absent captures remain explicit gaps. States: current: The current revision is shown without a parent pane. incomparable: A notice explains incompatible capture dimensions while retaining the evidence. viewer-open: The screenshot viewer dialog is open with decoded image content and zoom controls. mobile-selected: The Mobile device control is selected and displays its recorded capture."
+				"description": "The screenshot section: its heading ('Current screenshot' in current mode, 'Commit comparison' in commit mode, or 'Before and after, not alike' when commit mode has incomparable reasons), viewport buttons that change only the viewport, a 'Not comparable' notice listing the reasons when commit mode has any, and one figure per side. Each figure shows its image as a button that opens EvidenceViewer, or a 'No capture' notice with the side's reason, and commit mode adds a 'View full comparison' link and a 'Behavior change' block."
 			}
 		],
 		"errors": [
 			{
 				"name": "Caller navigation or rendering error",
 				"type": "propagated",
-				"description": "Errors in supplied navigation and rendered viewer dependencies propagate. Missing, lost or incomparable captures instead render their documented evidence-gap notices."
+				"description": "An error thrown by the caller's `nav.href` while the commit-mode 'View full comparison' link renders, or by a child rendered here such as EvidenceViewer, is not caught and propagates up the render tree; an error from `nav.go` is raised in the click handler instead. Missing captures and incomparable sides throw nothing: they render the 'No capture' and 'Not comparable' notices."
 			}
 		],
 		"errorStatus": "declared",
