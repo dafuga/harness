@@ -10,19 +10,9 @@
 	"owns": {
 		"source": [
 			"src/workflows/development-tooling/runImpact.ts",
-			"src/workflows/development-tooling/runImpact.types.ts",
-			"src/workflows/runImpact.ts"
+			"src/workflows/development-tooling/runImpact.types.ts"
 		],
-		"symbols": [
-			"runImpact",
-			"runtimeKind",
-			"renderImpact",
-			"ImpactOptions",
-			"ImpactOptions",
-			"runImpact",
-			"runtimeKind",
-			"renderImpact"
-		]
+		"symbols": ["runImpact", "runtimeKind", "renderImpact", "ImpactOptions", "ImpactOptions"]
 	},
 	"contract": {
 		"origin": "derived",

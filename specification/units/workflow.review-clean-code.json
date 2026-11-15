@@ -10,17 +10,9 @@
 	"owns": {
 		"source": [
 			"src/audit/development-tooling/reviewCleanCode.ts",
-			"src/audit/development-tooling/reviewCleanCode.types.ts",
-			"src/workflows/reviewCleanCode.ts"
+			"src/audit/development-tooling/reviewCleanCode.types.ts"
 		],
-		"symbols": [
-			"reviewCleanCode",
-			"ReviewCleanCodeInput",
-			"ReviewCleanCodeInput",
-			"ReviewedEntry",
-			"reviewCleanCode",
-			"ReviewCleanCodeInput"
-		]
+		"symbols": ["reviewCleanCode", "ReviewCleanCodeInput", "ReviewCleanCodeInput", "ReviewedEntry"]
 	},
 	"contract": {
 		"origin": "derived",

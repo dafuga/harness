@@ -3,7 +3,7 @@ import { rm, symlink } from 'node:fs/promises';
 import { spawnSync } from 'node:child_process';
 import { join } from 'node:path';
 import { snapshotCleanCodeFile } from '../src/audit/cleanCodeSnapshot';
-import { reviewCleanCode } from '../src/workflows/reviewCleanCode';
+import { reviewCleanCode } from '../src/audit/development-tooling/reviewCleanCode';
 import {
 	fixtureEvaluation,
 	reviewFixtureRoot,

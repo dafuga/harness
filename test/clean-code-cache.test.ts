@@ -2,7 +2,7 @@ import { afterEach, beforeEach, expect, test } from 'vitest';
 import { mkdtemp, readdir, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { reviewCleanCode } from '../src/workflows/reviewCleanCode';
+import { reviewCleanCode } from '../src/audit/development-tooling/reviewCleanCode';
 import {
 	fixtureEvaluation,
 	reviewFixtureRoot,

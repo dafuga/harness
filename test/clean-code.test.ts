@@ -3,7 +3,7 @@ import { rm } from 'node:fs/promises';
 import { resolveCleanCodeSettings } from '../src/audit/development-tooling/cleanCodeConfig';
 import { discoverCleanCodeFiles, matchesExclusion } from '../src/audit/cleanCodeDiscovery';
 import { BoundedCommandAdapter } from '../src/adapters/execution-runtimes/BoundedCommandAdapter';
-import { reviewCleanCode } from '../src/workflows/reviewCleanCode';
+import { reviewCleanCode } from '../src/audit/development-tooling/reviewCleanCode';
 import { fixtureEvaluation, reviewFixtureRoot, reviewSettings } from './support/cleanCodeFixture';
 
 let root: string;

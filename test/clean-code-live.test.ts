@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { reviewCleanCode } from '../src/workflows/reviewCleanCode';
+import { reviewCleanCode } from '../src/audit/development-tooling/reviewCleanCode';
 import { cleanCodeExamples } from './support/cleanCodeExamples';
 import { reviewSettings, writeReviewFixture } from './support/cleanCodeFixture';
 

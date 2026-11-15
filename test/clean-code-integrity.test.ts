@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, test } from 'vitest';
 import { rm } from 'node:fs/promises';
-import { reviewCleanCode } from '../src/workflows/reviewCleanCode';
+import { reviewCleanCode } from '../src/audit/development-tooling/reviewCleanCode';
 import { snapshotCleanCodeFile } from '../src/audit/cleanCodeSnapshot';
 import { projectFiles } from '../src/templates/project';
 import {
