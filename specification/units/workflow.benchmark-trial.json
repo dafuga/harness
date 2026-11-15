@@ -18,17 +18,29 @@
 				"name": "runBenchmarkTrial.input",
 				"type": "BenchmarkTrialInput",
 				"required": true,
-				"description": "Run, candidate, runner, persistence callback and shared trial context."
+				"description": "This input carries one trial's run definition, candidate, runner, persist callback, external abort signal, files for evaluateBenchmarkSubmission and mutable trial record, plus the base directory from which the workspace, baseline and evaluation paths are derived. The run definition's budget.timeoutMs sets one deadline shared by setupBenchmarkWorkspace, every agent turn and every evaluation, and budget.repairs caps the repair attempts after the first submission."
 			}
 		],
 		"outputs": [
 			{
 				"name": "runBenchmarkTrial",
 				"type": "Promise<void>",
-				"description": "Persists a bounded trial outcome and cleans its temporary workspaces."
+				"description": "Resolves with no value after input.persist() has resolved and the trial workspace and the evaluation directory under input.directory are removed, regardless of the trial's final status (input.trial.status records it, and input.trial.error holds the caught Error's message or a fixed fallback text). It rejects when input.persist() or either removal rejects, because errors from workspace setup, agent turns and evaluation are caught and recorded on the trial instead."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "input.persist() rejection",
+				"type": "thrown",
+				"description": "The rejection of input.persist() propagates unchanged from the finally block, so runBenchmarkTrial rejects and the trial workspace and the evaluation directory are not removed."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A filesystem error from node:fs/promises rm while removing the trial workspace or the evaluation directory. force: true ignores only missing paths, so any other failure makes runBenchmarkTrial reject, and a failed workspace removal also skips the evaluation removal."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "runBenchmarkTrial",
@@ -37,18 +49,29 @@
 						"name": "runBenchmarkTrial.input",
 						"type": "BenchmarkTrialInput",
 						"required": true,
-						"description": "Run, candidate, runner, persistence callback and shared trial context."
+						"description": "This input carries one trial's run definition, candidate, runner, persist callback, external abort signal, files for evaluateBenchmarkSubmission and mutable trial record, plus the base directory from which the workspace, baseline and evaluation paths are derived. The run definition's budget.timeoutMs sets one deadline shared by setupBenchmarkWorkspace, every agent turn and every evaluation, and budget.repairs caps the repair attempts after the first submission."
 					}
 				],
 				"outputs": [
 					{
 						"name": "runBenchmarkTrial",
 						"type": "Promise<void>",
-						"description": "Persists a bounded trial outcome and cleans its temporary workspaces."
+						"description": "Resolves with no value after input.persist() has resolved and the trial workspace and the evaluation directory under input.directory are removed, regardless of the trial's final status (input.trial.status records it, and input.trial.error holds the caught Error's message or a fixed fallback text). It rejects when input.persist() or either removal rejects, because errors from workspace setup, agent turns and evaluation are caught and recorded on the trial instead."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "input.persist() rejection",
+						"type": "thrown",
+						"description": "The rejection of input.persist() propagates unchanged from the finally block, so runBenchmarkTrial rejects and the trial workspace and the evaluation directory are not removed."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A filesystem error from node:fs/promises rm while removing the trial workspace or the evaluation directory. force: true ignores only missing paths, so any other failure makes runBenchmarkTrial reject, and a failed workspace removal also skips the evaluation removal."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
