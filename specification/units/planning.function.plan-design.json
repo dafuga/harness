@@ -32,63 +32,147 @@
 				"name": "planDesign.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "A repository handle used to resolve the unit, revisions, plan state, cleanup, image sources, and the design commit. It is required for repository operations performed by planDesign."
 			},
 			{
 				"name": "planDesign.input",
 				"type": "AddDesignInput",
 				"required": true,
-				"description": "Unit, prompt and generator with images or options, optional notes and contract, base revision and revision source; expectedLatest enforces an optional latest-version check."
+				"description": "Identifies the target unit and design prompt; optional generator metadata, notes, contract, base revision, revision source, and expected latest version affect the stored version or validation. Visual plans require images, function plans reject images, and image-free nonvisual plans require notes.",
+				"examples": [
+					{
+						"unitId": "planning.function.plan-design",
+						"prompt": "Review the current planning workflow.",
+						"generator": {
+							"provider": "openai",
+							"model": "gpt-6-luna"
+						},
+						"images": [],
+						"notes": "Keep the current approval flow."
+					}
+				]
 			},
 			{
 				"name": "approve.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "A repository handle used to resolve the unit, current design, image files, cleanup, and approval commit. It is required for repository operations performed by approve."
 			},
 			{
 				"name": "approve.input",
 				"type": "ApproveDesignInput",
 				"required": true,
-				"description": "Latest unit/version, reviewer, contract hash, exact image bindings, optional notes hash and option selection."
+				"description": "Binds an approval to a unit and version with reviewer, contract hash, and image list, plus optional notes hash and option. Only the latest design can be approved, and its supplied binding must match the current design content.",
+				"examples": [
+					{
+						"unitId": "reports.component.evidence-grid",
+						"version": "v001",
+						"images": [
+							{
+								"file": "overview-desktop.png",
+								"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+							}
+						],
+						"notesSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"reviewer": "design-reviewer@example.com"
+					}
+				]
 			},
 			{
 				"name": "readImage.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "A repository handle used to resolve revisions and plan metadata and read the image blob. It is required for repository operations performed by readImage."
 			},
 			{
 				"name": "readImage.input",
 				"type": "ReadImageInput",
 				"required": true,
-				"description": "Unit ID, version and file, with optional revision, expected hash and option; revision defaults to HEAD."
+				"description": "Identifies the unit, version, and image file; optional revision and option are forwarded to revision lookup and image ownership checks. A supplied nonempty SHA-256 is compared with stored metadata, and the blob hash, dimensions, and byte length are always verified.",
+				"examples": [
+					{
+						"unitId": "reports.component.evidence-grid",
+						"version": "v001",
+						"file": "overview-desktop.png"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "readImage",
 				"type": "unknown",
-				"description": "Verified PNG bytes and image metadata, owning option when present, and version creation commit."
+				"description": "Resolves to the stored image metadata plus unit ID, version, verified PNG bytes as a Uint8Array, design commit, and image holding metadata. It rejects when the image is absent or its hash, dimensions, or byte length do not match."
 			},
 			{
 				"name": "planDesign",
 				"type": "unknown",
-				"description": "Commit metadata and the appended sequential design version. Visual units require images; functions reject images; headless versions without images require notes."
+				"description": "Resolves to commit metadata and the appended design version, including hashed prompt and optional notes files, base revision, images, contract hash, and revision source. Versions are numbered from the existing plan length; visual plans require images, functions reject images, and image-free nonvisual plans require notes.",
+				"examples": [
+					{
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"value": {
+							"unitId": "planning.function.plan-design",
+							"version": "v001",
+							"createdAt": "2026-11-15T09:30:00.000Z",
+							"generator": {
+								"provider": "openai",
+								"model": "gpt-6-luna"
+							},
+							"prompt": {
+								"file": "prompt.md",
+								"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							},
+							"notes": {
+								"file": "notes.md",
+								"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+							},
+							"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+							"images": [],
+							"contract": {},
+							"contractHash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+							"revises": null
+						}
+					}
+				]
 			},
 			{
 				"name": "approve",
 				"type": "unknown",
-				"description": "Commit metadata and the saved approval marked current after matching the latest version and exact content."
+				"description": "Resolves to commit metadata and the saved approval record, marked current and bound to the requested version, reviewer, images, contract hash, and notes hash or null. Only the latest design is eligible, and the binding must match its content and any selected approvable option.",
+				"examples": [
+					{
+						"commit": "fedcba9876543210fedcba9876543210fedcba98",
+						"value": {
+							"id": "550e8400-e29b-41d4-a716-446655440000",
+							"unitId": "reports.component.evidence-grid",
+							"version": "v001",
+							"images": [
+								{
+									"file": "overview-desktop.png",
+									"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+								}
+							],
+							"notesSha256": null,
+							"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"reviewer": "design-reviewer@example.com",
+							"approvedAt": "2026-11-15T09:35:00.000Z",
+							"commit": "fedcba9876543210fedcba9876543210fedcba98",
+							"current": true
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects invalid input/images, stale versions, missing or changed artifacts, mismatched approvals and unsafe or dirty writes; Git failures propagate."
+				"description": "The declared CLI validation error for invalid design input, stale versions, missing images, changed artifacts, or mismatched approvals. Repository, plan-reading, image-decoding, cleanup, and commit failures can also reject the operation."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "planDesign",
@@ -97,29 +181,69 @@
 						"name": "planDesign.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "A repository handle used to resolve the unit, revisions, plan state, cleanup, image sources, and the design commit. It is required for repository operations performed by planDesign."
 					},
 					{
 						"name": "planDesign.input",
 						"type": "AddDesignInput",
 						"required": true,
-						"description": "Unit, prompt and generator with images or options, optional notes and contract, base revision and revision source; expectedLatest enforces an optional latest-version check."
+						"description": "Identifies the target unit and design prompt; optional generator metadata, notes, contract, base revision, revision source, and expected latest version affect the stored version or validation. Visual plans require images, function plans reject images, and image-free nonvisual plans require notes.",
+						"examples": [
+							{
+								"unitId": "planning.function.plan-design",
+								"prompt": "Review the current planning workflow.",
+								"generator": {
+									"provider": "openai",
+									"model": "gpt-6-luna"
+								},
+								"images": [],
+								"notes": "Keep the current approval flow."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "planDesign",
 						"type": "unknown",
-						"description": "Commit metadata and the appended sequential design version. Visual units require images; functions reject images; headless versions without images require notes."
+						"description": "Resolves to commit metadata and the appended design version, including hashed prompt and optional notes files, base revision, images, contract hash, and revision source. Versions are numbered from the existing plan length; visual plans require images, functions reject images, and image-free nonvisual plans require notes.",
+						"examples": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"value": {
+									"unitId": "planning.function.plan-design",
+									"version": "v001",
+									"createdAt": "2026-11-15T09:30:00.000Z",
+									"generator": {
+										"provider": "openai",
+										"model": "gpt-6-luna"
+									},
+									"prompt": {
+										"file": "prompt.md",
+										"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+									},
+									"notes": {
+										"file": "notes.md",
+										"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+									},
+									"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+									"images": [],
+									"contract": {},
+									"contractHash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+									"revises": null
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects for invalid viewport or image state, category/content mismatch, invalid prompt or notes, stale latest version, or a revision source that does not bind the image; repository, plan-reading, and image-reading failures also propagate."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "approve",
@@ -128,29 +252,67 @@
 						"name": "approve.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "A repository handle used to resolve the unit, current design, image files, cleanup, and approval commit. It is required for repository operations performed by approve."
 					},
 					{
 						"name": "approve.input",
 						"type": "ApproveDesignInput",
 						"required": true,
-						"description": "Latest unit/version, reviewer, contract hash, exact image bindings, optional notes hash and option selection."
+						"description": "Binds an approval to a unit and version with reviewer, contract hash, and image list, plus optional notes hash and option. Only the latest design can be approved, and its supplied binding must match the current design content.",
+						"examples": [
+							{
+								"unitId": "reports.component.evidence-grid",
+								"version": "v001",
+								"images": [
+									{
+										"file": "overview-desktop.png",
+										"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+									}
+								],
+								"notesSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"reviewer": "design-reviewer@example.com"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "approve",
 						"type": "unknown",
-						"description": "Commit metadata and the saved approval marked current after matching the latest version and exact content."
+						"description": "Resolves to commit metadata and the saved approval record, marked current and bound to the requested version, reviewer, images, contract hash, and notes hash or null. Only the latest design is eligible, and the binding must match its content and any selected approvable option.",
+						"examples": [
+							{
+								"commit": "fedcba9876543210fedcba9876543210fedcba98",
+								"value": {
+									"id": "550e8400-e29b-41d4-a716-446655440000",
+									"unitId": "reports.component.evidence-grid",
+									"version": "v001",
+									"images": [
+										{
+											"file": "overview-desktop.png",
+											"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+										}
+									],
+									"notesSha256": null,
+									"contractHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"reviewer": "design-reviewer@example.com",
+									"approvedAt": "2026-11-15T09:35:00.000Z",
+									"commit": "fedcba9876543210fedcba9876543210fedcba98",
+									"current": true
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects when the requested version is not latest, the selected option is not approvable, the approval does not match the design, or a bound image cannot be read; repository and commit failures also propagate."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "readImage",
@@ -159,29 +321,37 @@
 						"name": "readImage.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "A repository handle used to resolve revisions and plan metadata and read the image blob. It is required for repository operations performed by readImage."
 					},
 					{
 						"name": "readImage.input",
 						"type": "ReadImageInput",
 						"required": true,
-						"description": "Unit ID, version and file, with optional revision, expected hash and option; revision defaults to HEAD."
+						"description": "Identifies the unit, version, and image file; optional revision and option are forwarded to revision lookup and image ownership checks. A supplied nonempty SHA-256 is compared with stored metadata, and the blob hash, dimensions, and byte length are always verified.",
+						"examples": [
+							{
+								"unitId": "reports.component.evidence-grid",
+								"version": "v001",
+								"file": "overview-desktop.png"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "readImage",
 						"type": "unknown",
-						"description": "Verified PNG bytes and image metadata, owning option when present, and version creation commit."
+						"description": "Resolves to the stored image metadata plus unit ID, version, verified PNG bytes as a Uint8Array, design commit, and image holding metadata. It rejects when the image is absent or its hash, dimensions, or byte length do not match."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects when version or filename validation fails, the image is absent, the supplied hash differs, or the stored blob hash, dimensions, or byte length fail verification; repository and decode failures also propagate."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
