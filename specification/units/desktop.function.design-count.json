@@ -18,28 +18,66 @@
 				"name": "designCount.request",
 				"type": "RunRequest | ProjectRunRequest | ProjectTaskRequest",
 				"required": true,
-				"description": "A Plan or Change request with an optional designOptions count. An explicit count is allowed only on Plan and must be an integer from 1 to 10."
+				"description": "The request whose optional designOptions count is checked: a RunRequest (mode 'plan' or 'change'), a ProjectRunRequest (mode always 'plan') or a ProjectTaskRequest (mode 'ask' or 'change'). An explicit designOptions is accepted only when mode is 'plan', where it must be an integer from 1 to 10; with designOptions omitted, any mode returns defaultDesignOptions (3).",
+				"examples": [
+					{
+						"mode": "plan",
+						"approval": null,
+						"provider": "claude",
+						"model": "claude-opus-5-5",
+						"effort": "xhigh",
+						"entityId": "desktop.function.design-count",
+						"threadId": "4d6e1f2a-8b3c-4d5e-9f70-a1b2c3d4e5f6",
+						"text": "Plan five design options for the error message shown when a count is out of range.",
+						"designOptions": 5
+					},
+					{
+						"intent": "create",
+						"projectId": "0b7c2d4e-5f61-4a8b-9c3d-1e2f3a4b5c6d",
+						"category": "functions",
+						"mode": "plan",
+						"provider": "claude",
+						"model": "claude-opus-5-5",
+						"effort": null,
+						"text": "Plan a function that validates the design-option count of a visual unit."
+					},
+					{
+						"intent": "task",
+						"projectId": "0b7c2d4e-5f61-4a8b-9c3d-1e2f3a4b5c6d",
+						"category": "functions",
+						"mode": "change",
+						"branch": "main",
+						"commit": "9f1c4e2b7a3d5f06e8b1c2d3a4f5e6d7c8b9a0f1",
+						"provider": "claude",
+						"model": "claude-opus-5-5",
+						"effort": "high",
+						"text": "Keep the design-count error messages in step with the rule they enforce."
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "defaultDesignOptions",
 				"type": "unknown",
-				"description": "The default count, 3."
+				"description": "The exported constant defaultDesignOptions, declared as the literal 3. designCount returns this value whenever a request omits designOptions, for any mode.",
+				"examples": [3]
 			},
 			{
 				"name": "designCount",
 				"type": "number",
-				"description": "The supplied valid count, or 3 when omitted. The omitted-count default is returned even for Change; this helper does not itself generate designs."
+				"description": "The validated designOptions count of a Plan request, an integer from 1 to 10, or defaultDesignOptions (3) when designOptions is omitted in any mode. An explicit designOptions on a request whose mode is not 'plan' throws instead of returning a value.",
+				"examples": [3, 5, 10]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Throws if a Change explicitly supplies a count, or a Plan count is not a whole number from 1 to 10."
+				"description": "Throws Error('A Change makes no design options.') when designOptions is defined on a request whose mode is not 'plan', including an 'ask' ProjectTaskRequest. Throws Error('Design options must be a whole number from 1 to 10.') when a Plan's designOptions is not an integer from 1 to 10, such as 0, 11 or 2.5."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "designCount",
@@ -48,23 +86,60 @@
 						"name": "designCount.request",
 						"type": "RunRequest | ProjectRunRequest | ProjectTaskRequest",
 						"required": true,
-						"description": "A Plan or Change request with an optional designOptions count. An explicit count is allowed only on Plan and must be an integer from 1 to 10."
+						"description": "The request whose optional designOptions count is checked: a RunRequest (mode 'plan' or 'change'), a ProjectRunRequest (mode always 'plan') or a ProjectTaskRequest (mode 'ask' or 'change'). An explicit designOptions is accepted only when mode is 'plan', where it must be an integer from 1 to 10; with designOptions omitted, any mode returns defaultDesignOptions (3).",
+						"examples": [
+							{
+								"mode": "plan",
+								"approval": null,
+								"provider": "claude",
+								"model": "claude-opus-5-5",
+								"effort": "xhigh",
+								"entityId": "desktop.function.design-count",
+								"threadId": "4d6e1f2a-8b3c-4d5e-9f70-a1b2c3d4e5f6",
+								"text": "Plan five design options for the error message shown when a count is out of range.",
+								"designOptions": 5
+							},
+							{
+								"intent": "create",
+								"projectId": "0b7c2d4e-5f61-4a8b-9c3d-1e2f3a4b5c6d",
+								"category": "functions",
+								"mode": "plan",
+								"provider": "claude",
+								"model": "claude-opus-5-5",
+								"effort": null,
+								"text": "Plan a function that validates the design-option count of a visual unit."
+							},
+							{
+								"intent": "task",
+								"projectId": "0b7c2d4e-5f61-4a8b-9c3d-1e2f3a4b5c6d",
+								"category": "functions",
+								"mode": "change",
+								"branch": "main",
+								"commit": "9f1c4e2b7a3d5f06e8b1c2d3a4f5e6d7c8b9a0f1",
+								"provider": "claude",
+								"model": "claude-opus-5-5",
+								"effort": "high",
+								"text": "Keep the design-count error messages in step with the rule they enforce."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "designCount",
 						"type": "number",
-						"description": "The supplied valid count, or 3 when omitted. The omitted-count default is returned even for Change; this helper does not itself generate designs."
+						"description": "The validated designOptions count of a Plan request, an integer from 1 to 10, or defaultDesignOptions (3) when designOptions is omitted in any mode. An explicit designOptions on a request whose mode is not 'plan' throws instead of returning a value.",
+						"examples": [3, 5, 10]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error('A Change makes no design options.') when designOptions is defined on a request whose mode is not 'plan', including an 'ask' ProjectTaskRequest. Throws Error('Design options must be a whole number from 1 to 10.') when a Plan's designOptions is not an integer from 1 to 10, such as 0, 11 or 2.5."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
