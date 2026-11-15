@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional child snippet accepted for native-element API compatibility; this void element renders no child content."
+				"description": "Optional Svelte Snippet declared in the props type and removed from the spread by destructuring, so it is never forwarded to the element. The markup never renders it, so passing a snippet has no effect on the output."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlInputSearch",
 				"type": "markup",
-				"description": "The actual native input element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native input element itself: every prop except children is spread onto it, then type is set to 'search', so a caller-supplied type never takes effect. No wrapper element is rendered, and the markup body is whitespace only, so no child content is written."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
