@@ -12,22 +12,24 @@
 		"symbols": ["registerCodexPickerCommand"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerCodexPickerCommand.codex",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "The commander Command that receives the picker-mcp and picker-preview subcommands; the function uses it only during the call, by calling its command() method twice. The function performs no check on the value, so the caller must pass a Command from commander."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerCodexPickerCommand",
-				"type": "void"
+				"type": "void",
+				"description": "The function returns nothing; its effect is adding the picker-mcp and picker-preview subcommands to codex. Their action handlers are async and run later, when commander dispatches those subcommands, not during this call."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "registerCodexPickerCommand",
@@ -35,17 +37,19 @@
 					{
 						"name": "registerCodexPickerCommand.codex",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "The commander Command that receives the picker-mcp and picker-preview subcommands; the function uses it only during the call, by calling its command() method twice. The function performs no check on the value, so the caller must pass a Command from commander."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerCodexPickerCommand",
-						"type": "void"
+						"type": "void",
+						"description": "The function returns nothing; its effect is adding the picker-mcp and picker-preview subcommands to codex. Their action handlers are async and run later, when commander dispatches those subcommands, not during this call."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
