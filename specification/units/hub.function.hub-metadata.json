@@ -18,17 +18,24 @@
 				"name": "hubMetadata.context",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+				"description": "Source context supplying the entries, identity, commit, repository, cache, source adapter, and metadata state used by the loader. Loading occurs only when source.rawMany exists and metadata is falsy."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubMetadata",
 				"type": "Promise<void>",
-				"description": "Returns nothing after populating context.metadata; concurrent calls share metadataPending. Does nothing when metadata exists or the adapter lacks rawMany. Invalid cache bundles are deleted and refetched, and failed loads clear the pending promise."
+				"description": "Resolves to undefined after the shared load completes and stores the bundle in context.metadata. It resolves immediately when context.metadata is truthy or context.source.rawMany is absent; a load rejection clears metadataPending and propagates."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "unknown",
+				"type": "thrown",
+				"description": "Rejects with the underlying thrown or rejected value from metadata path construction, cache access/deletion/write, source.rawMany, or bundle transformation/validation. A failed shared load clears metadataPending and propagates that value unchanged."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubMetadata",
@@ -37,18 +44,24 @@
 						"name": "hubMetadata.context",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+						"description": "Source context supplying the entries, identity, commit, repository, cache, source adapter, and metadata state used by the loader. Loading occurs only when source.rawMany exists and metadata is falsy."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubMetadata",
 						"type": "Promise<void>",
-						"description": "Returns nothing after populating context.metadata; concurrent calls share metadataPending. Does nothing when metadata exists or the adapter lacks rawMany. Invalid cache bundles are deleted and refetched, and failed loads clear the pending promise."
+						"description": "Resolves to undefined after the shared load completes and stores the bundle in context.metadata. It resolves immediately when context.metadata is truthy or context.source.rawMany is absent; a load rejection clears metadataPending and propagates."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "Rejects with the underlying thrown or rejected value from metadata path construction, cache access/deletion/write, source.rawMany, or bundle transformation/validation. A failed shared load clears metadataPending and propagates that value unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
