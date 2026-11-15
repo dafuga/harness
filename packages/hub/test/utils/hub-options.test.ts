@@ -2,7 +2,7 @@ import type { Binding } from './hub-options.test.types';
 import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
 import { hubImageOption, hubRevision } from '../../src/utils/hub-catalog/hubImageOption';
-import { hubOptions } from '../../src/utils/hub-designs/hubOptions';
+import { hubOptions } from '../../src/utils/networking-security/hub-designs/hubOptions';
 import type { HubDesign } from '../../src/utils/hubSchemas';
 const [a, b, c] = ['a', 'b', 'c'].map((letter) => ({
 	file: `o-${letter}-default-desktop.png`,
