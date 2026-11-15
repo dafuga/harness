@@ -573,8 +573,8 @@
 		},
 		{
 			"from": "packages/desktop/src/components/shared-primitives/CoveragePanel.svelte",
-			"specifier": "$reports/utils/explorerName",
-			"to": "packages/reports/src/utils/explorerName.ts",
+			"specifier": "$reports/utils/explorer-ui/explorerName",
+			"to": "packages/reports/src/utils/explorer-ui/explorerName.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -609,8 +609,8 @@
 		},
 		{
 			"from": "packages/desktop/src/components/shared-primitives/RelationshipsPanel.svelte",
-			"specifier": "$reports/utils/explorerName",
-			"to": "packages/reports/src/utils/explorerName.ts",
+			"specifier": "$reports/utils/explorer-ui/explorerName",
+			"to": "packages/reports/src/utils/explorer-ui/explorerName.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -687,14 +687,14 @@
 		},
 		{
 			"from": "packages/desktop/src/components/explorer-ui/EntityCard.svelte",
-			"specifier": "$reports/utils/explorerName",
-			"to": "packages/reports/src/utils/explorerName.ts",
+			"specifier": "$reports/utils/explorer-ui/explorerName",
+			"to": "packages/reports/src/utils/explorer-ui/explorerName.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
 			"from": "packages/desktop/src/components/explorer-ui/CatalogView.svelte",
-			"specifier": "$reports/utils/explorerName",
-			"to": "packages/reports/src/utils/explorerName.ts",
+			"specifier": "$reports/utils/explorer-ui/explorerName",
+			"to": "packages/reports/src/utils/explorer-ui/explorerName.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -723,8 +723,8 @@
 		},
 		{
 			"from": "packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
-			"specifier": "$reports/utils/explorerName",
-			"to": "packages/reports/src/utils/explorerName.ts",
+			"specifier": "$reports/utils/explorer-ui/explorerName",
+			"to": "packages/reports/src/utils/explorer-ui/explorerName.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -747,8 +747,8 @@
 		},
 		{
 			"from": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
-			"specifier": "$reports/utils/explorerName",
-			"to": "packages/reports/src/utils/explorerName.ts",
+			"specifier": "$reports/utils/explorer-ui/explorerName",
+			"to": "packages/reports/src/utils/explorer-ui/explorerName.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -759,8 +759,8 @@
 		},
 		{
 			"from": "packages/desktop/src/components/explorer-ui/reference-text/unitLinks.ts",
-			"specifier": "$reports/utils/explorerName",
-			"to": "packages/reports/src/utils/explorerName.ts",
+			"specifier": "$reports/utils/explorer-ui/explorerName",
+			"to": "packages/reports/src/utils/explorer-ui/explorerName.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -777,8 +777,8 @@
 		},
 		{
 			"from": "packages/desktop/src/components/projects-sessions/nav-bar/workspaceSearch.ts",
-			"specifier": "$reports/utils/explorerName",
-			"to": "packages/reports/src/utils/explorerName.ts",
+			"specifier": "$reports/utils/explorer-ui/explorerName",
+			"to": "packages/reports/src/utils/explorer-ui/explorerName.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -855,8 +855,8 @@
 		},
 		{
 			"from": "packages/desktop/src/utils/explorer-ui/catalogUnit.ts",
-			"specifier": "$reports/utils/explorerName",
-			"to": "packages/reports/src/utils/explorerName.ts",
+			"specifier": "$reports/utils/explorer-ui/explorerName",
+			"to": "packages/reports/src/utils/explorer-ui/explorerName.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{

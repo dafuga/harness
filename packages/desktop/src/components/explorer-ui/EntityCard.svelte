@@ -2,7 +2,7 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_wdrbpttpis -->
 <script lang="ts">
-	import { explorerName } from '$reports/utils/explorerName';
+	import { explorerName } from '$reports/utils/explorer-ui/explorerName';
 	import type { CatalogEntity } from '../../models/development-tooling/Desktop.types';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import { imageUrl } from '../../utils/reports-media/imageUrl';

@@ -6,7 +6,7 @@
 	import type { Section } from './EntityView.types';
 
 	import { onDestroy, onMount, untrack } from 'svelte';
-	import { explorerAppRoute, explorerName } from '$reports/utils/explorerName';
+	import { explorerAppRoute, explorerName } from '$reports/utils/explorer-ui/explorerName';
 	import { createEntityEvidenceStore } from '../../../lib/stores/explorer-ui/entityEvidence.svelte';
 	import type { Workspace } from '../../../lib/stores/projects-sessions/workspace.svelte';
 	import type { ThreadInfo } from '../../../models/development-tooling/Desktop.types';

@@ -3,7 +3,7 @@
 <!-- @harness-uid u_ccoo7xabwn -->
 <script lang="ts">
 	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
-	import { explorerName } from '$reports/utils/explorerName';
+	import { explorerName } from '$reports/utils/explorer-ui/explorerName';
 	import type { Category, Relationship } from '../../models/development-tooling/Desktop.types';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import PlanBadge from '../planning-collaboration/PlanBadge.svelte';

@@ -5,7 +5,7 @@ import MessageList from '../src/components/shared-primitives/MessageList.svelte'
 import { createWorkspaceStore } from '../src/lib/stores/workspace.svelte';
 import type { CatalogEntity, ProjectSnapshot } from '../src/models/Desktop.types';
 import type { ThreadEntry } from '../src/utils/commentEntries';
-import { explorerName } from '../../reports/src/utils/explorerName';
+import { explorerName } from '../../reports/src/utils/explorer-ui/explorerName';
 
 /**
  * Agent text names units as [[unit:<id>]]. A reference to an entity of the shown project at the

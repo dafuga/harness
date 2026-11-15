@@ -5,7 +5,7 @@
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 
 	import { onMount, untrack } from 'svelte';
-	import { explorerName } from '$reports/utils/explorerName';
+	import { explorerName } from '$reports/utils/explorer-ui/explorerName';
 	import type { ProviderState } from '../../../models/Desktop.types';
 	import type { ThreadPanelProps } from './ThreadPanel.types';
 	import type { RunEvent } from '../../../models/development-tooling/DesktopBridge.types';

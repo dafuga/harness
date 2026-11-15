@@ -2,7 +2,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
 import type { CatalogEntity, ProjectSnapshot } from '../../src/models/Desktop.types';
 import { workspaceSearch } from '../../src/components/nav-bar/workspaceSearch';
-import { explorerName } from '../../../reports/src/utils/explorerName';
+import { explorerName } from '../../../reports/src/utils/explorer-ui/explorerName';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 
 /**

@@ -2,7 +2,7 @@
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { WorkspaceSearch } from '../../../utils/projects-sessions/workspaceSearch';
 import type { SearchEntry } from '$reports/utils/entitySearch';
-import { explorerName } from '$reports/utils/explorerName';
+import { explorerName } from '$reports/utils/explorer-ui/explorerName';
 import {
 	categories,
 	type CatalogEntity,

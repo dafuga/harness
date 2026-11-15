@@ -1,6 +1,6 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
-import { explorerAppRoute, explorerName } from '../../src/utils/explorerName';
+import { explorerAppRoute, explorerName } from '../../src/utils/explorer-ui/explorerName';
 import { unit } from '../explorerFixture';
 
 const named = (id: string, kind: string, title: string) => explorerName(unit(id, kind, { title }));

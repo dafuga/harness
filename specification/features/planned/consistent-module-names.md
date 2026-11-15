@@ -30,7 +30,7 @@ Strengthen the existing explorer-name, entity-catalog and responsive entity-prev
 
 ## Changed units
 
-- reports.function.explorer-name: [source](/Users/danielfugere/.codex/worktrees/service-cards/harness/packages/reports/src/utils/explorerName.ts); this backend naming module has no public collection card.
+- reports.function.explorer-name: [source](/Users/danielfugere/projects/harness-shots/luna-pyramid-p2-stubs-a-luna/slot-1/packages/reports/src/utils/explorer-ui/explorerName.ts); this backend naming module has no public collection card.
 - reports.function.entity-catalog: [source](/Users/danielfugere/.codex/worktrees/service-cards/harness/packages/reports/src/utils/entityCatalog.ts), including owned filter module; no public collection card.
 - guide.scaffolds and guide.guide: existing static guidance, no explorer category.
 - function.catalog and template.project-guidance: naming policy and emitted agent instructions, no explorer category.
