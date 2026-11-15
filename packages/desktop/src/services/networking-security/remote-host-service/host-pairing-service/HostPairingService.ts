@@ -9,7 +9,7 @@ import type {
 } from './HostPairingService.types';
 import { remoteLimits } from '../../../../../../remote/src/models/Remote.types';
 import type { RemoteGrant } from '../../../../../../remote/src/models/Remote.types';
-import type { RemotePairingRequest } from '../../../../../../remote/src/models/RemoteControl.types';
+import type { RemotePairingRequest } from '../../../../../../remote/src/models/networking-security/RemoteControl.types';
 import type { PairingSecret } from '../../../../../../remote/src/models/RemoteSecure.types';
 import {
 	openPairing,

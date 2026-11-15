@@ -1,6 +1,6 @@
-import type { RelayPairingState } from '../../src/models/RemoteRelay.types';
+import type { RelayPairingState } from '../../src/models/networking-security/RemoteRelay.types';
 import type { HostPairingService } from '../../src/services/host-pairing-service/HostPairingService';
-import type { RemotePairingRequest } from '../../src/models/RemoteControl.types';
+import type { RemotePairingRequest } from '../../src/models/networking-security/RemoteControl.types';
 
 export interface Entry {
 	state: RelayPairingState;

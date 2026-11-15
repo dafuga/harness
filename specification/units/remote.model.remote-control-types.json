@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/remote/src/models/RemoteControl.types.ts",
 			"packages/remote/src/models/networking-security/RemoteControl.types.ts",
 			"packages/remote/src/models/networking-security/RemoteControlValues.ts"
 		],
 		"symbols": [
-			"remoteScanFailures",
 			"RemoteRevision",
 			"RemoteGrant",
 			"RemoteConnectionEvent",

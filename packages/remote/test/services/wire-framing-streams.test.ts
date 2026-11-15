@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import type { WirePart } from '../../src/models/RemoteLocal.types';
+import type { WirePart } from '../../src/models/networking-security/RemoteLocal.types';
 import { WireFramingService } from '../../src/services/WireFramingService';
 import type { WireFramingOptions } from '../../src/services/WireFramingService';
 

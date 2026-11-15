@@ -9,13 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/remote/src/models/RemoteRelay.types.ts",
 			"packages/remote/src/models/networking-security/RemoteRelay.types.ts",
 			"packages/remote/src/models/networking-security/RemoteRelayValues.ts"
 		],
 		"symbols": [
-			"relayCloseCodes",
-			"relayHeaders",
 			"RelayErrorCode",
 			"RelayPairingState",
 			"RelayPairingInfo",

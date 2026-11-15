@@ -1,6 +1,6 @@
 // @harness-uid u_fdl627yh3i
 import type { Body } from './RemoteHostValidator.types';
-import type { RemoteHostRegisterInput } from '../../../../remote/src/models/RemoteRelay.types';
+import type { RemoteHostRegisterInput } from '../../../../remote/src/models/networking-security/RemoteRelay.types';
 import { remoteIdentity, remotePatterns } from '../../../../remote/src/utils/remoteIdentity';
 import { hubFail } from '../../utils/development-tooling/hubJson';
 

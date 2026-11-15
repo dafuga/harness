@@ -1,5 +1,5 @@
 // @harness-uid u_is7zwhy6fa
-import type { RemoteHostSummary } from '../../../../remote/src/models/RemoteRelay.types';
+import type { RemoteHostSummary } from '../../../../remote/src/models/networking-security/RemoteRelay.types';
 
 export type Fields = Record<string, unknown>;
 

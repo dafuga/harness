@@ -1,7 +1,7 @@
 // @harness-uid u_vusx2wyapy
 import type { Route, Call } from './HubRemoteController.types';
 import type { Actor } from 'collaboration';
-import type { RemoteHostRegistration } from '../../../../../../remote/src/models/RemoteRelay.types';
+import type { RemoteHostRegistration } from '../../../../../../remote/src/models/networking-security/RemoteRelay.types';
 import { hubBody, hubHttp } from '../../../../utils/networking-security/hub-http/hubHttp';
 import { hubFail } from '../../../../utils/development-tooling/hubJson';
 import type { HubRemoteRuntime } from '../../../../utils/networking-security/hubRemote';

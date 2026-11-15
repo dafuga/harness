@@ -6,7 +6,7 @@ import type {
 	RelayManageRegister,
 	RelayRegistered,
 	RemoteHostSummary
-} from '../../../../../remote/src/models/RemoteRelay.types';
+} from '../../../../../remote/src/models/networking-security/RemoteRelay.types';
 import { hubFail } from '../../../utils/development-tooling/hubJson';
 import { RelayReplyValidator } from '../../../validators/networking-security/RelayReplyValidator';
 

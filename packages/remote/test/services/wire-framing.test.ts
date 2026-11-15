@@ -1,7 +1,7 @@
 import type { Options } from './wire-framing.test.types';
 import { expect, test } from 'vitest';
 import { remoteLimits } from '../../src/models/Remote.types';
-import type { WirePart } from '../../src/models/RemoteLocal.types';
+import type { WirePart } from '../../src/models/networking-security/RemoteLocal.types';
 import { WireFramingService } from '../../src/services/WireFramingService';
 /** A sender whose later steps run only when the test says so. */
 function sender(options: Options = {}) {

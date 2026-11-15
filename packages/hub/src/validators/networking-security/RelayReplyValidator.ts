@@ -3,7 +3,7 @@ import type { Fields, Device } from './RelayReplyValidator.types';
 import type {
 	RelayRegistered,
 	RemoteHostSummary
-} from '../../../../remote/src/models/RemoteRelay.types';
+} from '../../../../remote/src/models/networking-security/RemoteRelay.types';
 import { hubFail } from '../../utils/development-tooling/hubJson';
 
 function unavailable(): never {

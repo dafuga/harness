@@ -1,7 +1,7 @@
 // @harness-uid u_al7bz52zmd
 import type { ScanFailure } from './scanNotice.types';
-import { remoteScanFailures } from '../../../../remote/src/models/RemoteControl.types';
-import type { RemoteScanFailure } from '../../../../remote/src/models/RemoteControl.types';
+import { remoteScanFailures } from '../../../../remote/src/models/networking-security/RemoteControl.types';
+import type { RemoteScanFailure } from '../../../../remote/src/models/networking-security/RemoteControl.types';
 
 export const scanFailures: readonly ScanFailure[] = remoteScanFailures;
 

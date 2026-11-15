@@ -1,7 +1,7 @@
 // @harness-uid u_at4omr5js3
 import type { RemoteKeyPair } from '../../../../../../remote/src/models/RemoteSecure.types';
-import type { RelayPairingRequest } from '../../../../../../remote/src/models/RemoteRelay.types';
-import type { RemotePairingRequest } from '../../../../../../remote/src/models/RemoteControl.types';
+import type { RelayPairingRequest } from '../../../../../../remote/src/models/networking-security/RemoteRelay.types';
+import type { RemotePairingRequest } from '../../../../../../remote/src/models/networking-security/RemoteControl.types';
 
 export interface HostPairingOptions {
 	hostId: string;
