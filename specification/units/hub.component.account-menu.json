@@ -27,17 +27,25 @@
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional project identifier. When a person is signed in and this value is nonempty, adds a Members link for that project; otherwise omits that link."
+				"description": "An optional project UUID used as the Members route parameter; it defaults to undefined when omitted. When a session actor exists and the value is truthy, the component renders a Members link for that project; otherwise it omits that link.",
+				"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "AccountMenu",
 				"type": "markup",
-				"description": "When a person is signed in, shows their name with their email as a tooltip, a Projects link, an optional Members link and a Sign out button. Projects and Members use full document navigation. Sign out calls the session operation and is disabled while the session is busy. Renders nothing when there is no signed-in person."
+				"description": "When a session actor exists, renders the actor name with email tooltip, a Projects link, a Members link only for a truthy projectId, and a Sign out button; otherwise it renders nothing. Projects and Members trigger document navigation, and Sign out calls session.signOut() and is disabled while the session is busy."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown during component initialization when browserContext() has no provided context, because the implementation destructures session from its return value."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
