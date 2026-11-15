@@ -12,27 +12,85 @@
 		"symbols": ["runAudit", "AuditCommandOptions", "AuditCommandOptions"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "runAudit.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project directory to audit, resolved with node:path resolve() against the current working directory and used as the audit root, as the loop-state root when a loop is set, and as the root given to the clean-code analytics record. runAudit does not check that the directory exists.",
+				"examples": ["/workspace/acme-shop", "./packages/billing-api"]
 			},
 			{
 				"name": "runAudit.options",
 				"type": "AuditCommandOptions",
-				"required": true
+				"required": true,
+				"description": "Audit command flags: profile defaults to 'auto' and must be app, auto, dapp or lib; cleanCode, gate, dryRun and refresh are forwarded to auditProject as cleanCode.enabled, cleanCode.gate, cleanCode.dryRun and cleanCode.refresh; json (which takes precedence over coverage) prints the whole result, and coverage selects the coverage view. Unset loop, step, task and report fall back to their HARNESS_ANALYTICS_* variables and agentModel to HARNESS_AGENT_MODEL, and resolvedContext and validateReport check them before the audit runs.",
+				"examples": [
+					{
+						"profile": "auto",
+						"coverage": true
+					},
+					{
+						"profile": "lib",
+						"json": true,
+						"cleanCode": true,
+						"gate": true
+					},
+					{
+						"report": "release-2026-11-14",
+						"agentModel": "claude-sonnet-5-5",
+						"cleanCode": true,
+						"dryRun": true
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "runAudit",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves to undefined after console.log has printed the audit: the whole result as JSON when json is set, otherwise the findings text (or the coverage view when coverage is set) followed by the clean-code summary when one was produced. The exit status is not part of the resolved value; it is set on process.exitCode to cleanCodeExitCode(result), which returns 0, 1 or 2."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by resolvedContext when task is set together with loop or step, after the HARNESS_ANALYTICS_* defaults are applied; the message is 'Use either --task or --loop/--step.'"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by resolvedContext when step is set without loop; the message is '--step requires --loop.'"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by resolvedContext when a loop is set and the loop state has no step whose id equals step; the message is 'Loop step does not exist.'"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by validateReport when report is set and does not match /^[a-zA-Z0-9-]+$/; the message is 'Invalid report ID.'"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejected by validateReport when runs/<report>/manifest.json under PROJECT_REPORTS_HOME (default $HOME/.codex/project-reports) cannot be read; a missing manifest rejects with a Node ENOENT error."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Thrown by parseAuditProfile through fail when options.profile (or 'auto' when omitted) is not app, auto, dapp or lib; the message names the unsupported value and lists auto, app, dapp and lib."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Propagated, not created here: runAudit has no try/catch, so an error thrown or rejected by auditProject, recordCleanCode or readLoop (called by resolvedContext when a loop is set) reaches the caller unchanged."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "runAudit",
@@ -40,22 +98,80 @@
 					{
 						"name": "runAudit.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project directory to audit, resolved with node:path resolve() against the current working directory and used as the audit root, as the loop-state root when a loop is set, and as the root given to the clean-code analytics record. runAudit does not check that the directory exists.",
+						"examples": ["/workspace/acme-shop", "./packages/billing-api"]
 					},
 					{
 						"name": "runAudit.options",
 						"type": "AuditCommandOptions",
-						"required": true
+						"required": true,
+						"description": "Audit command flags: profile defaults to 'auto' and must be app, auto, dapp or lib; cleanCode, gate, dryRun and refresh are forwarded to auditProject as cleanCode.enabled, cleanCode.gate, cleanCode.dryRun and cleanCode.refresh; json (which takes precedence over coverage) prints the whole result, and coverage selects the coverage view. Unset loop, step, task and report fall back to their HARNESS_ANALYTICS_* variables and agentModel to HARNESS_AGENT_MODEL, and resolvedContext and validateReport check them before the audit runs.",
+						"examples": [
+							{
+								"profile": "auto",
+								"coverage": true
+							},
+							{
+								"profile": "lib",
+								"json": true,
+								"cleanCode": true,
+								"gate": true
+							},
+							{
+								"report": "release-2026-11-14",
+								"agentModel": "claude-sonnet-5-5",
+								"cleanCode": true,
+								"dryRun": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "runAudit",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves to undefined after console.log has printed the audit: the whole result as JSON when json is set, otherwise the findings text (or the coverage view when coverage is set) followed by the clean-code summary when one was produced. The exit status is not part of the resolved value; it is set on process.exitCode to cleanCodeExitCode(result), which returns 0, 1 or 2."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by resolvedContext when task is set together with loop or step, after the HARNESS_ANALYTICS_* defaults are applied; the message is 'Use either --task or --loop/--step.'"
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by resolvedContext when step is set without loop; the message is '--step requires --loop.'"
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by resolvedContext when a loop is set and the loop state has no step whose id equals step; the message is 'Loop step does not exist.'"
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by validateReport when report is set and does not match /^[a-zA-Z0-9-]+$/; the message is 'Invalid report ID.'"
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejected by validateReport when runs/<report>/manifest.json under PROJECT_REPORTS_HOME (default $HOME/.codex/project-reports) cannot be read; a missing manifest rejects with a Node ENOENT error."
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown by parseAuditProfile through fail when options.profile (or 'auto' when omitted) is not app, auto, dapp or lib; the message names the unsupported value and lists auto, app, dapp and lib."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Propagated, not created here: runAudit has no try/catch, so an error thrown or rejected by auditProject, recordCleanCode or readLoop (called by resolvedContext when a loop is set) reaches the caller unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
