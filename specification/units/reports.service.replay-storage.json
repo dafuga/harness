@@ -20,56 +20,124 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ReplayStorageService.store.report",
 				"type": "Report",
-				"required": true
+				"required": true,
+				"description": "Report supplied for the replay operation; its id selects the R2 key and its startedAt value determines the 30-day retention check. The id must satisfy safeId and the timestamp must parse to a finite date; expired reports are rejected.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "378413ad-29d3-4b7c-be71-828250cf0123",
+						"project": {
+							"id": "357f144b4cee261e",
+							"name": "slot-8",
+							"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+						},
+						"title": "Replay storage verification",
+						"mode": "feature",
+						"environment": "local",
+						"historical": false,
+						"startedAt": "2026-11-01T00:00:00.000Z",
+						"updatedAt": "2026-11-01T00:00:00.000Z",
+						"summary": "",
+						"status": "running",
+						"state": "active",
+						"checks": [],
+						"evidence": [],
+						"findings": [],
+						"coverage": [],
+						"acceptance": []
+					}
+				]
 			},
 			{
 				"name": "ReplayStorageService.store.directory",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Report-run directory containing storage.json and the local replay file. store checks that the directory itself is not a symlink and writes the receipt after upload.",
+				"examples": [
+					"/Users/danielfugere/.codex/project-reports/runs/378413ad-29d3-4b7c-be71-828250cf0123"
+				]
 			},
 			{
 				"name": "ReplayStorageService.store.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Replay filename used for the R2 key and local receipt; it must be 64 lowercase hexadecimal characters followed by .mp4. store requires it to be a registered regular file directly inside the report directory.",
+				"examples": ["7e6cc9f9b0915b43a671b5a7eecc37b2c1d87729b8a433893ba0aa4f9f2689ef.mp4"]
 			},
 			{
 				"name": "ReplayStorageService.restore.report",
 				"type": "Report",
-				"required": true
+				"required": true,
+				"description": "Report supplied for the replay operation; its id selects the R2 key and its startedAt value determines the 30-day retention check. The id must satisfy safeId and the timestamp must parse to a finite date; expired reports are rejected.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "378413ad-29d3-4b7c-be71-828250cf0123",
+						"project": {
+							"id": "357f144b4cee261e",
+							"name": "slot-8",
+							"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+						},
+						"title": "Replay storage verification",
+						"mode": "feature",
+						"environment": "local",
+						"historical": false,
+						"startedAt": "2026-11-01T00:00:00.000Z",
+						"updatedAt": "2026-11-01T00:00:00.000Z",
+						"summary": "",
+						"status": "running",
+						"state": "active",
+						"checks": [],
+						"evidence": [],
+						"findings": [],
+						"coverage": [],
+						"acceptance": []
+					}
+				]
 			},
 			{
 				"name": "ReplayStorageService.restore.directory",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Report-run directory containing storage.json and the restored replay destination. A missing directory is treated like no receipt; a symlinked directory is rejected.",
+				"examples": [
+					"/Users/danielfugere/.codex/project-reports/runs/378413ad-29d3-4b7c-be71-828250cf0123"
+				]
 			},
 			{
 				"name": "ReplayStorageService.restore.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Replay filename used for the R2 key and report-directory destination; it must be 64 lowercase hexadecimal characters followed by .mp4. A symlink at the destination is rejected.",
+				"examples": ["7e6cc9f9b0915b43a671b5a7eecc37b2c1d87729b8a433893ba0aa4f9f2689ef.mp4"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ReplayStorageService.store",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to true after uploading the replay and writing its SHA-256 receipt. Resolves to false when R2 is unconfigured or a receipt already exists.",
+				"examples": [true, false]
 			},
 			{
 				"name": "ReplayStorageService.restore",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to replay Buffer bytes after a receipt-backed R2 fetch with a matching SHA-256 digest, or undefined when no receipt exists or R2 is unconfigured. The bytes are written to the report directory before resolution."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Error rejects invalid replay filenames or report IDs, invalid timestamps or reports expired after 30 days, invalid or symlinked local replay paths, and digest mismatches. Underlying filesystem and R2 failures can also reject."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ReplayStorageService.store",
@@ -77,32 +145,67 @@
 					{
 						"name": "ReplayStorageService.store.report",
 						"type": "Report",
-						"required": true
+						"required": true,
+						"description": "Report supplied for the replay operation; its id selects the R2 key and its startedAt value determines the 30-day retention check. The id must satisfy safeId and the timestamp must parse to a finite date; expired reports are rejected.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "378413ad-29d3-4b7c-be71-828250cf0123",
+								"project": {
+									"id": "357f144b4cee261e",
+									"name": "slot-8",
+									"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+								},
+								"title": "Replay storage verification",
+								"mode": "feature",
+								"environment": "local",
+								"historical": false,
+								"startedAt": "2026-11-01T00:00:00.000Z",
+								"updatedAt": "2026-11-01T00:00:00.000Z",
+								"summary": "",
+								"status": "running",
+								"state": "active",
+								"checks": [],
+								"evidence": [],
+								"findings": [],
+								"coverage": [],
+								"acceptance": []
+							}
+						]
 					},
 					{
 						"name": "ReplayStorageService.store.directory",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Report-run directory containing storage.json and the local replay file. store checks that the directory itself is not a symlink and writes the receipt after upload.",
+						"examples": [
+							"/Users/danielfugere/.codex/project-reports/runs/378413ad-29d3-4b7c-be71-828250cf0123"
+						]
 					},
 					{
 						"name": "ReplayStorageService.store.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Replay filename used for the R2 key and local receipt; it must be 64 lowercase hexadecimal characters followed by .mp4. store requires it to be a registered regular file directly inside the report directory.",
+						"examples": ["7e6cc9f9b0915b43a671b5a7eecc37b2c1d87729b8a433893ba0aa4f9f2689ef.mp4"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReplayStorageService.store",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to true after uploading the replay and writing its SHA-256 receipt. Resolves to false when R2 is unconfigured or a receipt already exists.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Error rejects invalid replay filenames or report IDs, invalid timestamps or reports expired after 30 days, symlinked replay directories, or missing, unregistered, invalid, or escaping local assets. Filesystem and R2 write failures also reject."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ReplayStorageService.restore",
@@ -110,32 +213,66 @@
 					{
 						"name": "ReplayStorageService.restore.report",
 						"type": "Report",
-						"required": true
+						"required": true,
+						"description": "Report supplied for the replay operation; its id selects the R2 key and its startedAt value determines the 30-day retention check. The id must satisfy safeId and the timestamp must parse to a finite date; expired reports are rejected.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "378413ad-29d3-4b7c-be71-828250cf0123",
+								"project": {
+									"id": "357f144b4cee261e",
+									"name": "slot-8",
+									"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+								},
+								"title": "Replay storage verification",
+								"mode": "feature",
+								"environment": "local",
+								"historical": false,
+								"startedAt": "2026-11-01T00:00:00.000Z",
+								"updatedAt": "2026-11-01T00:00:00.000Z",
+								"summary": "",
+								"status": "running",
+								"state": "active",
+								"checks": [],
+								"evidence": [],
+								"findings": [],
+								"coverage": [],
+								"acceptance": []
+							}
+						]
 					},
 					{
 						"name": "ReplayStorageService.restore.directory",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Report-run directory containing storage.json and the restored replay destination. A missing directory is treated like no receipt; a symlinked directory is rejected.",
+						"examples": [
+							"/Users/danielfugere/.codex/project-reports/runs/378413ad-29d3-4b7c-be71-828250cf0123"
+						]
 					},
 					{
 						"name": "ReplayStorageService.restore.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Replay filename used for the R2 key and report-directory destination; it must be 64 lowercase hexadecimal characters followed by .mp4. A symlink at the destination is rejected.",
+						"examples": ["7e6cc9f9b0915b43a671b5a7eecc37b2c1d87729b8a433893ba0aa4f9f2689ef.mp4"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReplayStorageService.restore",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to replay Buffer bytes after a receipt-backed R2 fetch with a matching SHA-256 digest, or undefined when no receipt exists or R2 is unconfigured. The bytes are written to the report directory before resolution."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Error rejects invalid replay filenames or report IDs, invalid timestamps or reports expired after 30 days, symlinked replay directories or destinations, and digest mismatches. Missing R2 bodies and filesystem or R2 request failures also reject."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
