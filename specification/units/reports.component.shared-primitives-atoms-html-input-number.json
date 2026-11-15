@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional child snippet accepted for native-element API compatibility; this void element renders no child content."
+				"description": "Optional Svelte Snippet that the component removes from the props, so it is never forwarded to the input as an attribute. The template never renders it, so passing it never changes the output."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlInputNumber",
 				"type": "markup",
-				"description": "The actual native input element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native input element that the component renders, with no wrapper element: every prop except children is spread onto it as an attribute, then type is set to 'number' after the spread, which overrides any type passed in. Its body is whitespace only, so it renders no child content."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
