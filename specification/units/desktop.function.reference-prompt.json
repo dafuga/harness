@@ -18,24 +18,35 @@
 				"name": "referencePrompt.ids",
 				"type": "string[]",
 				"required": true,
-				"description": "Candidate IDs; invalid grammar and duplicates are removed, preserving the first occurrence, up to 120 IDs."
+				"description": "Candidate unit IDs to list in the instructions. Only IDs accepted by isUnitId are retained, duplicate IDs keep their first occurrence, and the list is capped at 120.",
+				"examples": [
+					["desktop.function.reference-prompt"],
+					["desktop.function.entity-references", "desktop.function.reference-prompt"],
+					[]
+				]
 			},
 			{
 				"name": "referencePrompt.discover",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Includes discovery guidance when true; defaults to false for already known unit references."
+				"description": "When true, the instructions require reading another unit’s canonical manifest at the selected revision and using only its verified ID. When false, the instructions say to name an unlisted unit in plain words; the default is false.",
+				"examples": [false, true]
 			}
 		],
 		"outputs": [
 			{
 				"name": "referencePrompt",
 				"type": "string",
-				"description": "Instructions to use registered unit references, followed by the accepted IDs or none."
+				"description": "A three-line instruction string that lists retained IDs as [[unit:<id>]] references or says none. Its second line gives unlisted-unit guidance based on discover.",
+				"examples": [
+					"Name a unit as [[unit:<id>]] with its registered id, never by a file name, a path or a\nguessed id. Name a unit that is not listed here in plain words.\nUnits you may name: [[unit:desktop.function.reference-prompt]]",
+					"Name a unit as [[unit:<id>]] with its registered id, never by a file name, a path or a\nguessed id. For another unit, first read its canonical manifest at the selected revision; use only its verified id.\nUnits you may name: none"
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "referencePrompt",
@@ -44,25 +55,35 @@
 						"name": "referencePrompt.ids",
 						"type": "string[]",
 						"required": true,
-						"description": "Candidate IDs; invalid grammar and duplicates are removed, preserving the first occurrence, up to 120 IDs."
+						"description": "Candidate unit IDs to list in the instructions. Only IDs accepted by isUnitId are retained, duplicate IDs keep their first occurrence, and the list is capped at 120.",
+						"examples": [
+							["desktop.function.reference-prompt"],
+							["desktop.function.entity-references", "desktop.function.reference-prompt"],
+							[]
+						]
 					},
 					{
 						"name": "referencePrompt.discover",
 						"type": "boolean",
 						"required": false,
 						"default": false,
-						"description": "Includes discovery guidance when true; defaults to false for already known unit references."
+						"description": "When true, the instructions require reading another unit’s canonical manifest at the selected revision and using only its verified ID. When false, the instructions say to name an unlisted unit in plain words; the default is false.",
+						"examples": [false, true]
 					}
 				],
 				"outputs": [
 					{
 						"name": "referencePrompt",
 						"type": "string",
-						"description": "Instructions to use registered unit references, followed by the accepted IDs or none."
+						"description": "A three-line instruction string that lists retained IDs as [[unit:<id>]] references or says none. Its second line gives unlisted-unit guidance based on discover.",
+						"examples": [
+							"Name a unit as [[unit:<id>]] with its registered id, never by a file name, a path or a\nguessed id. Name a unit that is not listed here in plain words.\nUnits you may name: [[unit:desktop.function.reference-prompt]]",
+							"Name a unit as [[unit:<id>]] with its registered id, never by a file name, a path or a\nguessed id. For another unit, first read its canonical manifest at the selected revision; use only its verified id.\nUnits you may name: none"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
