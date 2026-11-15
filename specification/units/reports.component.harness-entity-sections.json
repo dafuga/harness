@@ -54,39 +54,240 @@
 				"name": "EntitySections.host",
 				"type": "ExplorerScreenProps",
 				"required": true,
-				"description": "Everything the host gives a screen: the shown revision, address, entities and its answers."
+				"description": "The host's props for one screen: `route` gives the tab that chooses the branch, `lens` answers the entity's relations, evidence and behavior, `scope` gives the commit the tabs are bound to (the source tab falls back to it when the entity has no `lastAt`), and `mediaBase` and `index.sourceRepository` go to the media panels and the source tab. The whole object goes to `entityShown`, `entityMetricComparison`, `helperRelations` and `EntityRelations`, and it is spread into `ExplorerPermissionsScreen` on an API's permissions tab."
 			},
 			{
 				"name": "EntitySections.entity",
 				"type": "ExplorerEntity",
 				"required": true,
-				"description": "The entity the screen shows."
+				"description": "The explorer entity the screen shows: `category` selects the branch, `name` labels the tab panels, `id` keys `host.lens.relations` and is the endpoint of an API's permissions, and `unit` feeds the contract, source, table and evidence panels. A unit the shown commit removed carries `change` set to `removed` and `lastAt`, the commit at which its last contract, table and source are shown.",
+				"examples": [
+					{
+						"id": "reports.component.harness-entity-sections",
+						"category": "components",
+						"role": "Component",
+						"name": "EntitySections",
+						"purpose": "Shows the selected entity tab, including model Table schema and optional source, while preserving the branch and commit. Selected-helper Uses show only its actual helper callees; old empty Uses links render Overview.",
+						"unit": {
+							"id": "reports.component.harness-entity-sections",
+							"kind": "component",
+							"status": "active",
+							"title": "Entity sections",
+							"responsibility": "Shows the selected entity tab, including model Table schema and optional source, while preserving the branch and commit. Selected-helper Uses show only its actual helper callees; old empty Uses links render Overview.",
+							"dependencies": [
+								{
+									"unit": "reports.component.entity-contract",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.harness-entity-overview",
+									"via": "import"
+								},
+								{
+									"unit": "reports.model.explorer-types",
+									"via": "import"
+								}
+							],
+							"scenarios": [],
+							"owns": {
+								"source": [
+									"packages/reports/src/components/explorer-ui/entity-sections/EntitySections.svelte"
+								],
+								"symbols": [
+									"EntitySections",
+									"EntitySections.header",
+									"EntitySections.children",
+									"EntitySections.verificationPanel"
+								]
+							},
+							"contract": {
+								"inputs": [
+									{
+										"name": "EntitySections.host",
+										"type": "ExplorerScreenProps",
+										"required": true
+									},
+									{
+										"name": "EntitySections.entity",
+										"type": "ExplorerEntity",
+										"required": true
+									},
+									{
+										"name": "EntitySections.nav",
+										"type": "EntityNav",
+										"required": true
+									},
+									{
+										"name": "EntitySections.pane",
+										"type": "Snippet",
+										"required": true
+									}
+								],
+								"outputs": [
+									{
+										"name": "EntitySections.entityTabPanel",
+										"type": "markup"
+									}
+								],
+								"errors": [
+									{
+										"name": "Caller callback or content error",
+										"type": "propagated"
+									}
+								]
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/reports/src/components/explorer-ui/entity-sections/EntitySections.svelte"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "5c1e0a9d7b3f42e8"
+						},
+						"verdict": {
+							"passed": false,
+							"label": "Coverage incomplete",
+							"reasons": ["No scenario covers this unit; tests alone do not show how it behaves."]
+						},
+						"change": null,
+						"appRoute": null
+					},
+					{
+						"id": "reports.component.harness-entity-sections",
+						"category": "components",
+						"role": "Component",
+						"name": "EntitySections",
+						"purpose": "Shows the selected entity tab, including model Table schema and optional source, while preserving the branch and commit. Selected-helper Uses show only its actual helper callees; old empty Uses links render Overview.",
+						"unit": {
+							"id": "reports.component.harness-entity-sections",
+							"kind": "component",
+							"status": "active",
+							"title": "Entity sections",
+							"responsibility": "Shows the selected entity tab, including model Table schema and optional source, while preserving the branch and commit. Selected-helper Uses show only its actual helper callees; old empty Uses links render Overview.",
+							"dependencies": [
+								{
+									"unit": "reports.component.entity-contract",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.harness-entity-overview",
+									"via": "import"
+								},
+								{
+									"unit": "reports.model.explorer-types",
+									"via": "import"
+								}
+							],
+							"scenarios": [],
+							"owns": {
+								"source": [
+									"packages/reports/src/components/explorer-ui/entity-sections/EntitySections.svelte"
+								],
+								"symbols": [
+									"EntitySections",
+									"EntitySections.header",
+									"EntitySections.children",
+									"EntitySections.verificationPanel"
+								]
+							},
+							"contract": {
+								"inputs": [
+									{
+										"name": "EntitySections.host",
+										"type": "ExplorerScreenProps",
+										"required": true
+									},
+									{
+										"name": "EntitySections.entity",
+										"type": "ExplorerEntity",
+										"required": true
+									},
+									{
+										"name": "EntitySections.nav",
+										"type": "EntityNav",
+										"required": true
+									},
+									{
+										"name": "EntitySections.pane",
+										"type": "Snippet",
+										"required": true
+									}
+								],
+								"outputs": [
+									{
+										"name": "EntitySections.entityTabPanel",
+										"type": "markup"
+									}
+								],
+								"errors": [
+									{
+										"name": "Caller callback or content error",
+										"type": "propagated"
+									}
+								]
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/reports/src/components/explorer-ui/entity-sections/EntitySections.svelte"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "5c1e0a9d7b3f42e8"
+						},
+						"verdict": {
+							"passed": false,
+							"label": "Removed at this commit",
+							"reasons": [
+								"This commit removed it; its contract is shown as it last was, at 3f9c2a1."
+							]
+						},
+						"change": "removed",
+						"appRoute": null,
+						"lastAt": "3f9c2a1d7b84e05c6a19f2d3e8b47c05a1d9e6f2"
+					}
+				]
 			},
 			{
 				"name": "EntitySections.nav",
 				"type": "EntityNav",
 				"required": true,
-				"description": "Where the screen is and how it reaches another address."
+				"description": "How the screen reaches other addresses: this component passes `nav` unchanged to `EntityRelations`, `EntitySource` and, through the verification panel, `EntityTests`, and it never reads or calls its members. Its members (`route`, `href`, `go` and the optional `source`) are not inspected here."
 			},
 			{
 				"name": "EntitySections.pane",
 				"type": "Snippet",
 				"required": true,
-				"description": "The evidence an entity of this kind is first shown with."
+				"description": "The evidence snippet, rendered with no arguments as the children of `EntityOverview`, so it shows only on the overview branch that this component takes when no tab branch matches. Its prop comment says it is shown above the entity's summary, and any error it throws propagates out of this component."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntitySections.entityTabPanel",
 				"type": "markup",
-				"description": "The selected overview, contract, relationships, recordings, examples, permissions, source or source-declared model table. Phone schema rows retain Column, Property, Type, Primary key, Nullable and Default labels; long identifiers scroll within their cells. No database is queried. States: used-in: The selected section lists entities that consume this entity. uses: The selected section lists this entity's recorded dependencies. audio: The selected section displays recorded audio evidence and transcripts. states: The selected section displays declared behavior states. tests: The selected section displays verification tests and expandable verification details. table-empty: The model Table tab explains that no committed storage table is declared."
+				"description": "The markup of the selected entity tab, taken from the first branch that matches in this order: the API permissions screen, the relations list (`used-in`, `uses`, `models` or `apis`), examples for functions and services on the examples or tests tab, component audio, states or tests, source, contract, the model table, and otherwise `EntityOverview` with the pane snippet. Each `tabpanel` block is labelled with the entity name and the tab it shows, and the model table gives every column row `data-label` cells (Column, Property, Type, Primary key, Nullable, Default) and shows the note that this revision records no database table for this model when it has neither a table nor a gap."
 			}
 		],
 		"errors": [
 			{
 				"name": "Caller callback or content error",
 				"type": "propagated",
-				"description": "Errors from supplied pane callbacks or snippets propagate when invoked; this component does not provide an error boundary."
+				"description": "Errors from the `pane` snippet, from the `host.lens` callbacks (`relations`, `evidence`, `behavior`) when the rendered branch calls them, and from the helpers and child components it calls all propagate out of this component, which has no try/catch or error boundary."
 			}
 		],
 		"errorStatus": "declared",
