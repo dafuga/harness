@@ -55,87 +55,108 @@
 				"name": "ExplorerModulesScreen.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Project and branch history supplied by the Explorer host."
+				"description": "Not read by this component; it is forwarded to the shared ExplorerFrame inside the host object that this component passes unchanged."
 			},
 			{
 				"name": "ExplorerModulesScreen.head",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Selected immutable revision; its module catalog supplies the shown plugin definitions."
+				"description": "Only head.modules is read: when it is set, its modules are filtered to drop entries with visibility 'internal' and builtin entries that are includedByDefault unless testing is set, and its gaps are shown as a notice. When head.modules is unset, the screen shows the message 'No plugin catalog was indexed for this revision.' and never a plugin list or plugin detail."
 			},
 			{
 				"name": "ExplorerModulesScreen.parent",
 				"type": "HarnessRevision | null",
 				"required": true,
-				"description": "First parent used by the shared Explorer frame; null at a branch tip or first commit."
+				"description": "Not read by this component; it is forwarded to the shared ExplorerFrame inside the host object, and this component never checks it for null.",
+				"examples": [null]
 			},
 			{
 				"name": "ExplorerModulesScreen.scope",
 				"type": "ExplorerScope",
 				"required": true,
-				"description": "Selected branch, commit and availability context used by the shared frame."
+				"description": "Not read by this component; it is forwarded to the shared ExplorerFrame inside the host object that this component passes unchanged."
 			},
 			{
 				"name": "ExplorerModulesScreen.route",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Current Modules list or plugin detail address, including selected branch and commit."
+				"description": "Its entity field selects the view: when it is unset or empty the Plugins list renders, and when it is set the plugin whose definition.id equals it renders, or 'Plugin not found' when no plugin in the filtered catalog has that id. Its branch and commit are copied into the breadcrumb and plugin links that this component builds, and for installed plugins the whole route is passed to moduleResourceLocation to build resource links.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "3f8a1c9d7e52b0a46f1d8c2e9b75a03d4f6e1c28",
+						"category": "pages",
+						"screen": "modules"
+					},
+					{
+						"branch": "feature/headless-testing",
+						"commit": "b7e04d2a91c6f35e08d7a4b2c1f9e60d5a38c7b4",
+						"category": "pages",
+						"screen": "modules",
+						"entity": "headless-browser"
+					}
+				]
 			},
 			{
 				"name": "ExplorerModulesScreen.entities",
 				"type": "ExplorerEntity[]",
 				"required": true,
-				"description": "Revision-scoped entity catalog supplied to the shared Explorer frame."
+				"description": "Not read by this component; it is forwarded to the shared ExplorerFrame inside the host object that this component passes unchanged.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "ExplorerModulesScreen.lens",
 				"type": "EntityLens",
 				"required": true,
-				"description": "Host readers for entity contracts, measurements and captured evidence."
+				"description": "Only lens.href is used: the link snippet calls it with each ExplorerLocation while rendering, and its return value becomes that link's href. An error thrown by href is not caught in this component, so it propagates out of rendering."
 			},
 			{
 				"name": "ExplorerModulesScreen.client",
 				"type": "Pick<HarnessClient, 'revision'>",
 				"required": true,
-				"description": "Revision loader used by the shared Explorer frame for historical navigation."
+				"description": "Not read by this component; it is forwarded to the shared ExplorerFrame inside the host object that this component passes unchanged."
 			},
 			{
 				"name": "ExplorerModulesScreen.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "Base URL from which the shared frame resolves captured media."
+				"description": "A string field of host that this component never reads; it reaches the shared ExplorerFrame inside the host object that this component passes unchanged.",
+				"examples": ["/harness/media", "https://reports.example.com/harness/media"]
 			},
 			{
 				"name": "ExplorerModulesScreen.onroute",
 				"type": "(to: ExplorerLocation) => void",
 				"required": true,
-				"description": "Requests navigation while preserving the selected explorer scope."
+				"description": "Called with the target ExplorerLocation of a link in this screen only when plainClick accepts the click, and after this component has called preventDefault on the event."
 			}
 		],
 		"outputs": [
 			{
 				"name": "catalog",
 				"type": "markup",
-				"description": "Discover capability modules and their installation and generation instructions."
+				"description": "The markup this component renders inside the shared ExplorerFrame. With no route.entity it shows the Plugins heading and the plugin list (with a notice listing head.modules gaps when there are any), or an empty-state message when there is no catalog or no plugins; with route.entity it shows a breadcrumb and that plugin's detail, or a 'Plugin not found' heading with an empty-state message."
 			}
 		],
 		"errors": [
 			{
 				"name": "lens.href callback error",
 				"type": "thrown",
-				"description": "An error supplied by the URL callback propagates while rendering plugin links."
+				"description": "An error thrown by host.lens.href is not caught in this component, so it propagates out of rendering the links that call it: the plugin titles in the list, the Plugins breadcrumb in a plugin view, and the resource titles of installed plugins."
 			},
 			{
 				"name": "onroute callback error",
 				"type": "thrown",
-				"description": "An error supplied by the navigation callback propagates when a plugin link is activated."
+				"description": "An error thrown by host.onroute is not caught in this component, so it propagates out of the link's click handler after this component has already called preventDefault on the event."
 			},
 			{
 				"name": "each_key_duplicate",
 				"type": "thrown",
-				"description": "Duplicate plugin IDs or resource IDs throw when their keyed lists are mounted or updated."
+				"description": "Two plugins with the same definition.id, or two resources in one plugin with the same id, give a keyed each block duplicate keys, which Svelte reports as an each_key_duplicate error while that block mounts or updates."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
