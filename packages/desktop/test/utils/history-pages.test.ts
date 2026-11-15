@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { historyPages } from '../../src/components/history-panel/historyPages';
+import { historyPages } from '../../src/components/git-source-history/history-panel/historyPages';
 import type { HistoryEvent } from '../../src/models/Desktop.types';
 
 const event = (id: string) => ({ id, title: id }) as HistoryEvent;
