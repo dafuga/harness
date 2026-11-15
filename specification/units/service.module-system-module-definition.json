@@ -38,30 +38,38 @@
 			{
 				"name": "moduleFileSchema",
 				"type": "unknown",
-				"description": "Schema or stable filename used to validate and locate module metadata."
+				"description": "A strict Zod schema for a module file with exactly a trimmed, non-empty path and string contents. Unknown fields are rejected, and contents may be empty."
 			},
 			{
 				"name": "moduleResourceSchema",
 				"type": "unknown",
-				"description": "Schema or stable filename used to validate and locate module metadata."
+				"description": "A strict schema for a resource object with slug-form id and kind, trimmed non-empty title and singular, at least one trimmed non-empty instruction, optional catalog limited to apis, permissions, module-library, layouts, components, models, services, functions, types, configs, styles, or dependencies, and optional boolean primary. Exactly one of non-empty files (strict file objects with trimmed non-empty path and string contents; omitted files defaults to []) or generator is accepted; generator is either scaffold with scaffold equal to model or a scaffoldKinds value and optional level molecule or organism, or dependency alone; unknown fields are rejected and the other optional fields have no defaults."
 			},
 			{
 				"name": "moduleDefinitionSchema",
 				"type": "unknown",
-				"description": "Schema or stable filename used to validate and locate module metadata."
+				"description": "A strict schema for a module definition with schemaVersion 1, a slug id, a version made of exactly three numeric components, trimmed non-empty title and description, at least one trimmed non-empty instruction, setup file objects with trimmed non-empty paths and string contents, a dependencies record, and at least one resource. Optional appOnly and includedByDefault are booleans, visibility is internal or plugin, testing is a strict object with headless true and a trimmed non-empty script, order is an integer from 0 through 10000, and packageScripts and devDependencies are records; these optional fields have no defaults, record values are trimmed non-empty strings, resource ids must be unique, and unknown fields are rejected."
 			},
 			{
 				"name": "moduleStateSchema",
 				"type": "unknown",
-				"description": "Schema or stable filename used to validate and locate module metadata."
+				"description": "A strict schema for persisted module state with schemaVersion 1, modules pairing a module definition with source builtin or project, and resource entries containing slug-form module and type ids, a trimmed non-empty name, and at least one trimmed non-empty file path. Both arrays may be empty, entries and top-level state reject unknown fields."
 			},
 			{
 				"name": "moduleStateFile",
 				"type": "unknown",
-				"description": "Schema or stable filename used to validate and locate module metadata."
+				"description": "The fixed filename used for persisted module state. Its value is harness.modules.json.",
+				"examples": ["harness.modules.json"]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Thrown by a caller's .parse() when a module file, resource, definition, or state value fails validation, including strict-object checks and the custom resource-file/generator exclusivity or duplicate-resource-id checks. This module exports the schemas but does not itself call .parse()."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
