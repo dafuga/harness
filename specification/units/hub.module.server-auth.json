@@ -26,32 +26,61 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "createHubAuth.env",
 				"type": "AuthEnv",
-				"required": true
+				"required": true,
+				"description": "The platform environment record; every field is optional, and a missing or malformed value disables the feature that needs it. Sign-in requires HARNESS_GOOGLE_CLIENT_ID (letters, digits, dot, underscore or hyphen, up to 200 characters), HARNESS_SESSION_SECRET (at least 32 characters), HARNESS_ENVIRONMENT (local, staging or production) and HARNESS_PUBLIC_ORIGIN (an origin whose path is only /, with no query, hash or credentials, using https, or http for localhost, 127.0.0.1 or [::1] in the local environment); when any of them is missing or malformed, createHubAuth returns the disabled HubAuth.",
+				"examples": [
+					{
+						"HARNESS_GOOGLE_CLIENT_ID": "1038261927364-q8k3m2v7h1n4e6s9.apps.googleusercontent.com",
+						"HARNESS_SESSION_SECRET": "9c4e1a7f3b8d2e6a5f0c9b1d7e3a8f4c6b2d9e0a1f5c7b3e8d4a6f2c0b9e1d7a",
+						"HARNESS_PUBLIC_ORIGIN": "https://hub.example.com",
+						"HARNESS_ENVIRONMENT": "production",
+						"HARNESS_EMAIL_API_KEY": "re_Jk8PqN2wXy5Lz7Vb",
+						"HARNESS_EMAIL_FROM": "Harness <sign-in@hub.example.com>"
+					},
+					{
+						"HARNESS_GOOGLE_CLIENT_ID": "508173642918-p3m7c1v9x4b6z2n8.apps.googleusercontent.com",
+						"HARNESS_SESSION_SECRET": "4a7d1c9e2f6b8a03d5e7c1f9b2a4d6e8c0f3b5a7d9e1c3f5b7a9d1e3c5f7b9a1",
+						"HARNESS_PUBLIC_ORIGIN": "http://localhost:5173",
+						"HARNESS_ENVIRONMENT": "local"
+					},
+					{}
+				]
 			},
 			{
 				"name": "createHubAuth.store",
 				"type": "AuthStore | null",
-				"required": true
+				"required": true,
+				"description": "The AuthStore of credentials and one-time state: challenges, GitHub states, sessions, grants, exchanges, email proofs, the email ledger and purge. A null store makes createHubAuth return the disabled HubAuth without reading any store, and that HubAuth authenticates nobody.",
+				"examples": [null]
 			},
 			{
 				"name": "createHubAuth.delivery",
 				"type": "EmailProofDelivery | null",
-				"required": false
+				"required": false,
+				"description": "Mails proof codes to addresses Google does not vouch for; an explicit null sends none, so starting an email proof fails with email-delivery-disabled. Defaults to createResendDelivery(env) when the argument is omitted or undefined: a Resend-backed sender when HARNESS_EMAIL_API_KEY and HARNESS_EMAIL_FROM are both present and well formed, otherwise null.",
+				"examples": [null]
 			}
 		],
 		"outputs": [
 			{
 				"name": "createHubAuth",
-				"type": "HubAuth"
+				"type": "HubAuth",
+				"description": "The HubAuth surface: actor(request) resolves the signed-in Actor or null, handle(request) answers only /api/auth/* and /api/github/* and returns null for other paths, and authorizeRepository and token reject with AuthFailure when refused. When createHubAuth returns the disabled HubAuth, the two status routes answer with configured false, other auth routes answer with an auth-disabled error, and authorizeRepository and token reject with github-disabled."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "createHubAuth itself throws nothing; the HubAuth it returns rejects authorizeRepository and token with an AuthFailure whose code names the refused check, such as github-disabled when GitHub is not configured. actor and handle never reject with it, because handle turns every failure into a coded JSON response."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "createHubAuth",
@@ -59,27 +88,50 @@
 					{
 						"name": "createHubAuth.env",
 						"type": "AuthEnv",
-						"required": true
+						"required": true,
+						"description": "The platform environment record; every field is optional, and a missing or malformed value disables the feature that needs it. Sign-in requires HARNESS_GOOGLE_CLIENT_ID (letters, digits, dot, underscore or hyphen, up to 200 characters), HARNESS_SESSION_SECRET (at least 32 characters), HARNESS_ENVIRONMENT (local, staging or production) and HARNESS_PUBLIC_ORIGIN (an origin whose path is only /, with no query, hash or credentials, using https, or http for localhost, 127.0.0.1 or [::1] in the local environment); when any of them is missing or malformed, createHubAuth returns the disabled HubAuth.",
+						"examples": [
+							{
+								"HARNESS_GOOGLE_CLIENT_ID": "1038261927364-q8k3m2v7h1n4e6s9.apps.googleusercontent.com",
+								"HARNESS_SESSION_SECRET": "9c4e1a7f3b8d2e6a5f0c9b1d7e3a8f4c6b2d9e0a1f5c7b3e8d4a6f2c0b9e1d7a",
+								"HARNESS_PUBLIC_ORIGIN": "https://hub.example.com",
+								"HARNESS_ENVIRONMENT": "production",
+								"HARNESS_EMAIL_API_KEY": "re_Jk8PqN2wXy5Lz7Vb",
+								"HARNESS_EMAIL_FROM": "Harness <sign-in@hub.example.com>"
+							},
+							{
+								"HARNESS_GOOGLE_CLIENT_ID": "508173642918-p3m7c1v9x4b6z2n8.apps.googleusercontent.com",
+								"HARNESS_SESSION_SECRET": "4a7d1c9e2f6b8a03d5e7c1f9b2a4d6e8c0f3b5a7d9e1c3f5b7a9d1e3c5f7b9a1",
+								"HARNESS_PUBLIC_ORIGIN": "http://localhost:5173",
+								"HARNESS_ENVIRONMENT": "local"
+							},
+							{}
+						]
 					},
 					{
 						"name": "createHubAuth.store",
 						"type": "AuthStore | null",
-						"required": true
+						"required": true,
+						"description": "The AuthStore of credentials and one-time state: challenges, GitHub states, sessions, grants, exchanges, email proofs, the email ledger and purge. A null store makes createHubAuth return the disabled HubAuth without reading any store, and that HubAuth authenticates nobody.",
+						"examples": [null]
 					},
 					{
 						"name": "createHubAuth.delivery",
 						"type": "EmailProofDelivery | null",
-						"required": false
+						"required": false,
+						"description": "Mails proof codes to addresses Google does not vouch for; an explicit null sends none, so starting an email proof fails with email-delivery-disabled. Defaults to createResendDelivery(env) when the argument is omitted or undefined: a Resend-backed sender when HARNESS_EMAIL_API_KEY and HARNESS_EMAIL_FROM are both present and well formed, otherwise null.",
+						"examples": [null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "createHubAuth",
-						"type": "HubAuth"
+						"type": "HubAuth",
+						"description": "The HubAuth surface: actor(request) resolves the signed-in Actor or null, handle(request) answers only /api/auth/* and /api/github/* and returns null for other paths, and authorizeRepository and token reject with AuthFailure when refused. When createHubAuth returns the disabled HubAuth, the two status routes answer with configured false, other auth routes answer with an auth-disabled error, and authorizeRepository and token reject with github-disabled."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
