@@ -18,17 +18,59 @@
 				"name": "canonicalJson.value",
 				"type": "unknown",
 				"required": true,
-				"description": "JSON-shaped value to serialize. Undefined object properties are omitted; arrays retain order. Objects are read through enumerable own keys rather than a custom JSON serializer."
+				"description": "Value passed to the serializer; arrays retain their order, and each object's own enumerable string keys are sorted recursively. Undefined-valued object properties are omitted, while BigInt values and cycles or deep recursion can fail during serialization.",
+				"examples": [
+					{
+						"b": 2,
+						"a": {
+							"y": 1,
+							"x": 0
+						},
+						"items": [
+							{
+								"z": 4,
+								"a": 3
+							},
+							2
+						]
+					},
+					[
+						{
+							"b": 2,
+							"a": 1
+						},
+						{
+							"d": 4,
+							"c": 3
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "canonicalJson",
 				"type": "string",
-				"description": "Compact JSON text with recursively sorted object keys and unchanged array order for JSON-serializable input."
+				"description": "Compact JSON text produced after recursively sorting object keys while preserving array order. For top-level undefined, a function, or a symbol, JSON.stringify returns undefined rather than a string; BigInt values and recursive cycles can throw.",
+				"examples": [
+					"{\"a\":{\"x\":0,\"y\":1},\"b\":2,\"items\":[{\"a\":3,\"z\":4},2]}",
+					"[{\"a\":1,\"b\":2},{\"c\":3,\"d\":4}]"
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "JSON.stringify throws when a BigInt value remains in the sorted result and cannot be serialized."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Recursive sorting can exhaust the JavaScript call stack for cyclic references or sufficiently deep input; no cycle detection is performed."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "canonicalJson",
@@ -37,18 +79,59 @@
 						"name": "canonicalJson.value",
 						"type": "unknown",
 						"required": true,
-						"description": "JSON-shaped value to serialize. Undefined object properties are omitted; arrays retain order. Objects are read through enumerable own keys rather than a custom JSON serializer."
+						"description": "Value passed to the serializer; arrays retain their order, and each object's own enumerable string keys are sorted recursively. Undefined-valued object properties are omitted, while BigInt values and cycles or deep recursion can fail during serialization.",
+						"examples": [
+							{
+								"b": 2,
+								"a": {
+									"y": 1,
+									"x": 0
+								},
+								"items": [
+									{
+										"z": 4,
+										"a": 3
+									},
+									2
+								]
+							},
+							[
+								{
+									"b": 2,
+									"a": 1
+								},
+								{
+									"d": 4,
+									"c": 3
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "canonicalJson",
 						"type": "string",
-						"description": "Compact JSON text with recursively sorted object keys and unchanged array order for JSON-serializable input."
+						"description": "Compact JSON text produced after recursively sorting object keys while preserving array order. For top-level undefined, a function, or a symbol, JSON.stringify returns undefined rather than a string; BigInt values and recursive cycles can throw.",
+						"examples": [
+							"{\"a\":{\"x\":0,\"y\":1},\"b\":2,\"items\":[{\"a\":3,\"z\":4},2]}",
+							"[{\"a\":1,\"b\":2},{\"c\":3,\"d\":4}]"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "JSON.stringify throws when a BigInt value remains in the sorted result and cannot be serialized."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Recursive sorting can exhaust the JavaScript call stack for cyclic references or sufficiently deep input; no cycle detection is performed."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
