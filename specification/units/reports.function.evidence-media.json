@@ -21,40 +21,74 @@
 				"name": "formatDuration.seconds",
 				"type": "number",
 				"required": false,
-				"description": "Optional duration in seconds.",
-				"examples": [90]
+				"default": "undefined",
+				"description": "Duration in seconds, used for audio clip lengths: the recorded durationSeconds, or the duration an audio element reports after its metadata loads. Fractions are dropped by flooring, and undefined, NaN, infinite or negative values produce an empty string.",
+				"examples": [4.52, 93.8, 3725.4]
 			},
 			{
 				"name": "mediaMime.file",
 				"type": "string",
 				"required": true,
-				"description": "Filename whose final extension is checked case-insensitively."
+				"description": "Filename or stored asset name; the text from its last dot to the end is lowercased and looked up in the MIME table. No directory is stripped, and a name without a dot never matches, so it gets application/octet-stream.",
+				"examples": [
+					"0c4e8b1d7f3a9e52b6d0c8f1a4e7b3d9c2f6a0e5b8d1c4f7a3e9b2d6c0f5a817.mp3",
+					"Checkout-Walkthrough.M4A",
+					"3f9c1e7a5b2d8064c1a9f3e7d2b5a80f6e4c1d9b7a2f3e8c5d0b1a4f7e6c9d23.png"
+				]
 			},
 			{
 				"name": "evidenceMedia.item",
 				"type": "Pick<Evidence, 'mediaType' | 'file'>",
 				"required": true,
-				"description": "Evidence with optional explicit media type and file address."
+				"description": "Evidence item with an optional explicit mediaType ('image' or 'audio') and its file address. The file is read only when mediaType is falsy, so a set mediaType is returned without touching file.",
+				"examples": [
+					{
+						"file": "3f9c1e7a5b2d8064c1a9f3e7d2b5a80f6e4c1d9b7a2f3e8c5d0b1a4f7e6c9d23.png"
+					},
+					{
+						"mediaType": "audio",
+						"file": "a61d0f9e3c7b2a85d4e1f6c09b3a7d52e8f1c4b6a9d0e3f7c2b5a8d1e4f6c930.ogg"
+					},
+					{
+						"mediaType": "image",
+						"file": "5e2a9c0f7b4d1e83a6c5f0d9b2e7a4c1f8d3b6e0a9c2f5d7b1e4a8c3f6d0b9e2.webp"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "mediaMime",
 				"type": "unknown",
-				"description": "Known MIME type for supported image, audio, video and document extensions, otherwise application/octet-stream."
+				"description": "MIME type for each evidence file, taken from its final extension and matched case-insensitively against .png, .jpg, .jpeg, .webp, .wav, .mp3, .m4a, .ogg, .mp4, .pdf, .zip and .html; it is passed to the evidence store on upload and to the media response when a file is served. Any other extension, or none, gives application/octet-stream.",
+				"examples": ["audio/mpeg", "audio/mp4", "image/png"]
 			},
 			{
 				"name": "evidenceMedia",
 				"type": "'image' | 'audio'",
-				"description": "Explicit media type when present; otherwise audio for an audio extension or data:audio/ URL, and image for everything else."
+				"description": "Media kind the evidence views use to split audio from image items: the item's mediaType when it is set (returned without further checks), otherwise 'audio' for .wav, .mp3, .m4a and .ogg files and data:audio/ addresses. Without a set mediaType, every other file, including .mp4, .pdf, .zip and .html files, is 'image'.",
+				"examples": ["image", "audio"]
 			},
 			{
 				"name": "formatDuration",
 				"type": "string",
-				"description": "Floored duration as minutes:seconds or hours:minutes:seconds. Empty for absent, negative or nonfinite values."
+				"description": "Floored duration returned as minutes:seconds below one hour and as hours:minutes:seconds from 3600 seconds on, with seconds always padded to two digits and minutes padded only in the hours form. An empty string is returned for undefined, negative, NaN and infinite inputs.",
+				"examples": ["0:04", "1:33", "1:02:05"]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by mediaMime when file is null, undefined or another non-string value, because the function calls string methods on it."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by evidenceMedia when item is null or undefined, or when mediaType is falsy and file is not a string."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "formatDuration",
@@ -63,19 +97,21 @@
 						"name": "formatDuration.seconds",
 						"type": "number",
 						"required": false,
-						"description": "Optional duration in seconds.",
-						"examples": [90]
+						"default": "undefined",
+						"description": "Duration in seconds, used for audio clip lengths: the recorded durationSeconds, or the duration an audio element reports after its metadata loads. Fractions are dropped by flooring, and undefined, NaN, infinite or negative values produce an empty string.",
+						"examples": [4.52, 93.8, 3725.4]
 					}
 				],
 				"outputs": [
 					{
 						"name": "formatDuration",
 						"type": "string",
-						"description": "Floored duration as minutes:seconds or hours:minutes:seconds. Empty for absent, negative or nonfinite values."
+						"description": "Floored duration returned as minutes:seconds below one hour and as hours:minutes:seconds from 3600 seconds on, with seconds always padded to two digits and minutes padded only in the hours form. An empty string is returned for undefined, negative, NaN and infinite inputs.",
+						"examples": ["0:04", "1:33", "1:02:05"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "mediaMime",
@@ -84,18 +120,30 @@
 						"name": "mediaMime.file",
 						"type": "string",
 						"required": true,
-						"description": "Filename whose final extension is checked case-insensitively."
+						"description": "Filename or stored asset name; the text from its last dot to the end is lowercased and looked up in the MIME table. No directory is stripped, and a name without a dot never matches, so it gets application/octet-stream.",
+						"examples": [
+							"0c4e8b1d7f3a9e52b6d0c8f1a4e7b3d9c2f6a0e5b8d1c4f7a3e9b2d6c0f5a817.mp3",
+							"Checkout-Walkthrough.M4A",
+							"3f9c1e7a5b2d8064c1a9f3e7d2b5a80f6e4c1d9b7a2f3e8c5d0b1a4f7e6c9d23.png"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "mediaMime",
 						"type": "unknown",
-						"description": "Known MIME type for supported image, audio, video and document extensions, otherwise application/octet-stream."
+						"description": "MIME type for each evidence file, taken from its final extension and matched case-insensitively against .png, .jpg, .jpeg, .webp, .wav, .mp3, .m4a, .ogg, .mp4, .pdf, .zip and .html; it is passed to the evidence store on upload and to the media response when a file is served. Any other extension, or none, gives application/octet-stream.",
+						"examples": ["audio/mpeg", "audio/mp4", "image/png"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by mediaMime when file is null, undefined or another non-string value, because the function calls string methods on it."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "evidenceMedia",
@@ -104,18 +152,38 @@
 						"name": "evidenceMedia.item",
 						"type": "Pick<Evidence, 'mediaType' | 'file'>",
 						"required": true,
-						"description": "Evidence with optional explicit media type and file address."
+						"description": "Evidence item with an optional explicit mediaType ('image' or 'audio') and its file address. The file is read only when mediaType is falsy, so a set mediaType is returned without touching file.",
+						"examples": [
+							{
+								"file": "3f9c1e7a5b2d8064c1a9f3e7d2b5a80f6e4c1d9b7a2f3e8c5d0b1a4f7e6c9d23.png"
+							},
+							{
+								"mediaType": "audio",
+								"file": "a61d0f9e3c7b2a85d4e1f6c09b3a7d52e8f1c4b6a9d0e3f7c2b5a8d1e4f6c930.ogg"
+							},
+							{
+								"mediaType": "image",
+								"file": "5e2a9c0f7b4d1e83a6c5f0d9b2e7a4c1f8d3b6e0a9c2f5d7b1e4a8c3f6d0b9e2.webp"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "evidenceMedia",
 						"type": "'image' | 'audio'",
-						"description": "Explicit media type when present; otherwise audio for an audio extension or data:audio/ URL, and image for everything else."
+						"description": "Media kind the evidence views use to split audio from image items: the item's mediaType when it is set (returned without further checks), otherwise 'audio' for .wav, .mp3, .m4a and .ogg files and data:audio/ addresses. Without a set mediaType, every other file, including .mp4, .pdf, .zip and .html files, is 'image'.",
+						"examples": ["image", "audio"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by evidenceMedia when item is null or undefined, or when mediaType is falsy and file is not a string."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
