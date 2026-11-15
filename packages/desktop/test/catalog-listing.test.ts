@@ -4,7 +4,7 @@ import { afterEach, test } from 'vitest';
 import { expect } from '../../../test/verificationExpect';
 import type { ComponentManifest } from '../../../src/lib/contracts';
 import { explorerCategory, explorerRole } from '../../reports/src/utils/explorerCategory';
-import { CatalogService } from '../src/services/catalog-service/CatalogService';
+import { CatalogService } from '../src/services/projects-sessions/project-session-service/catalog-service/CatalogService';
 import { catalogUnit, planCatalog } from '../src/utils/catalogUnit';
 import { manifest } from './catalog-listing-manifests';
 import { imagelessDesign, listingProject, pagePlan, previewReads } from './catalog-listing-fixture';
