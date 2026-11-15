@@ -18,57 +18,183 @@
 				"name": "conditionMatches.condition",
 				"type": "Condition",
 				"required": true,
-				"description": "State field, comparison operator and expected value defining one checkpoint condition."
+				"description": "The state field, operator, and expected value for one comparison. `eq` uses strict equality; `gte` and `lte` compare only when both values are numbers.",
+				"examples": [
+					{
+						"field": "doorOpen",
+						"op": "eq",
+						"value": true
+					},
+					{
+						"field": "score",
+						"op": "gte",
+						"value": 3
+					}
+				]
 			},
 			{
 				"name": "conditionMatches.state",
 				"type": "Readonly<GameState>",
 				"required": true,
-				"description": "Read-only game state evaluated without modifying the supplied snapshot."
+				"description": "The state snapshot read at `condition.field` when evaluating the condition. Values are strings, numbers, or booleans, and numeric operators return false if either compared value is not a number.",
+				"examples": [
+					{
+						"doorOpen": false,
+						"score": 3
+					},
+					{
+						"event": "key-found",
+						"lives": 2
+					}
+				]
 			},
 			{
 				"name": "checkpointEligible.node",
 				"type": "Checkpoint",
 				"required": true,
-				"description": "Checkpoint whose completion status, prerequisites and conditions determine eligibility."
+				"description": "The checkpoint whose id, repeatable flag, prerequisites, and conditions are checked. It is eligible only when its completion, prerequisite, and condition checks pass.",
+				"examples": [
+					{
+						"id": "open-door",
+						"title": "Open the Door",
+						"description": "Open the door after reaching the required score.",
+						"x": 160,
+						"y": 90,
+						"requires": [],
+						"conditions": [
+							{
+								"field": "score",
+								"op": "gte",
+								"value": 3
+							}
+						],
+						"actions": [
+							{
+								"type": "set",
+								"target": "doorOpen",
+								"value": true
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "checkpointEligible.run",
 				"type": "GameRun",
 				"required": true,
-				"description": "Current deterministic tick, game state, completed checkpoints, events and execution trace."
+				"description": "The current run supplies completed checkpoint ids and the state used to evaluate prerequisites and conditions. A non-repeatable checkpoint already listed in `completed` is ineligible.",
+				"examples": [
+					{
+						"tick": 2,
+						"seed": 17,
+						"state": {
+							"score": 3,
+							"doorOpen": false
+						},
+						"completed": [],
+						"events": [],
+						"trace": []
+					}
+				]
 			},
 			{
 				"name": "checkpointGraph.run",
 				"type": "GameRun",
 				"required": true,
-				"description": "Current deterministic tick, game state, completed checkpoints, events and execution trace."
+				"description": "The initial run supplies the state, completed ids, tick, events, and trace for this evaluation. The returned run is a shallow copy with its state and completed, events, and trace arrays copied before eligible actions are applied.",
+				"examples": [
+					{
+						"tick": 2,
+						"seed": 17,
+						"state": {
+							"score": 3,
+							"doorOpen": false
+						},
+						"completed": [],
+						"events": [],
+						"trace": []
+					}
+				]
 			},
 			{
 				"name": "checkpointGraph.view",
 				"type": "GameView",
 				"required": true,
-				"description": "Active game view containing scene direction and executable checkpoints."
+				"description": "The view supplies the checkpoints considered for this evaluation. Eligible checkpoints are sorted by id using `localeCompare` before their actions are applied.",
+				"examples": [
+					{
+						"id": "opening",
+						"title": "Opening",
+						"dimension": "2d",
+						"style": "flat ink illustration",
+						"checkpoints": [
+							{
+								"id": "open-door",
+								"title": "Open the Door",
+								"description": "Open the door after reaching the required score.",
+								"x": 160,
+								"y": 90,
+								"requires": [],
+								"conditions": [
+									{
+										"field": "score",
+										"op": "gte",
+										"value": 3
+									}
+								],
+								"actions": [
+									{
+										"type": "set",
+										"target": "doorOpen",
+										"value": true
+									}
+								]
+							}
+						]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "conditionMatches",
 				"type": "boolean",
-				"description": "Whether the current field satisfies equality or the supported numeric comparison."
+				"description": "True when the condition uses strict equality and the values match, or when both values are numbers and the selected `gte` or `lte` comparison succeeds. Nonnumeric ordered comparisons return false.",
+				"examples": [true, false]
 			},
 			{
 				"name": "checkpointEligible",
 				"type": "boolean",
-				"description": "Whether the checkpoint can run given prior completion, prerequisites and current state."
+				"description": "True when the checkpoint is repeatable or not already completed, every prerequisite id is completed, and every condition matches the run state.",
+				"examples": [true, false]
 			},
 			{
 				"name": "checkpointGraph",
 				"type": "GameRun",
-				"description": "New game run with eligible checkpoint actions, bounded trace and emitted events applied once in stable order."
+				"description": "A copied run after checkpoints eligible against the initial run have been applied in id order using `localeCompare`. After each applied checkpoint, its id is added if needed and a trace entry is appended; events and trace are truncated to their last 1000 entries.",
+				"examples": [
+					{
+						"tick": 2,
+						"seed": 17,
+						"state": {
+							"score": 3,
+							"doorOpen": true
+						},
+						"completed": ["open-door"],
+						"events": [],
+						"trace": [
+							{
+								"tick": 2,
+								"checkpointId": "open-door",
+								"reason": "score gte 3"
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "conditionMatches",
@@ -77,24 +203,47 @@
 						"name": "conditionMatches.condition",
 						"type": "Condition",
 						"required": true,
-						"description": "State field, comparison operator and expected value defining one checkpoint condition."
+						"description": "The state field, operator, and expected value for one comparison. `eq` uses strict equality; `gte` and `lte` compare only when both values are numbers.",
+						"examples": [
+							{
+								"field": "doorOpen",
+								"op": "eq",
+								"value": true
+							},
+							{
+								"field": "score",
+								"op": "gte",
+								"value": 3
+							}
+						]
 					},
 					{
 						"name": "conditionMatches.state",
 						"type": "Readonly<GameState>",
 						"required": true,
-						"description": "Read-only game state evaluated without modifying the supplied snapshot."
+						"description": "The state snapshot read at `condition.field` when evaluating the condition. Values are strings, numbers, or booleans, and numeric operators return false if either compared value is not a number.",
+						"examples": [
+							{
+								"doorOpen": false,
+								"score": 3
+							},
+							{
+								"event": "key-found",
+								"lives": 2
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "conditionMatches",
 						"type": "boolean",
-						"description": "Whether the current field satisfies equality or the supported numeric comparison."
+						"description": "True when the condition uses strict equality and the values match, or when both values are numbers and the selected `gte` or `lte` comparison succeeds. Nonnumeric ordered comparisons return false.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "checkpointEligible",
@@ -103,24 +252,62 @@
 						"name": "checkpointEligible.node",
 						"type": "Checkpoint",
 						"required": true,
-						"description": "Checkpoint whose completion status, prerequisites and conditions determine eligibility."
+						"description": "The checkpoint whose id, repeatable flag, prerequisites, and conditions are checked. It is eligible only when its completion, prerequisite, and condition checks pass.",
+						"examples": [
+							{
+								"id": "open-door",
+								"title": "Open the Door",
+								"description": "Open the door after reaching the required score.",
+								"x": 160,
+								"y": 90,
+								"requires": [],
+								"conditions": [
+									{
+										"field": "score",
+										"op": "gte",
+										"value": 3
+									}
+								],
+								"actions": [
+									{
+										"type": "set",
+										"target": "doorOpen",
+										"value": true
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "checkpointEligible.run",
 						"type": "GameRun",
 						"required": true,
-						"description": "Current deterministic tick, game state, completed checkpoints, events and execution trace."
+						"description": "The current run supplies completed checkpoint ids and the state used to evaluate prerequisites and conditions. A non-repeatable checkpoint already listed in `completed` is ineligible.",
+						"examples": [
+							{
+								"tick": 2,
+								"seed": 17,
+								"state": {
+									"score": 3,
+									"doorOpen": false
+								},
+								"completed": [],
+								"events": [],
+								"trace": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "checkpointEligible",
 						"type": "boolean",
-						"description": "Whether the checkpoint can run given prior completion, prerequisites and current state."
+						"description": "True when the checkpoint is repeatable or not already completed, every prerequisite id is completed, and every condition matches the run state.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "checkpointGraph",
@@ -129,24 +316,88 @@
 						"name": "checkpointGraph.run",
 						"type": "GameRun",
 						"required": true,
-						"description": "Current deterministic tick, game state, completed checkpoints, events and execution trace."
+						"description": "The initial run supplies the state, completed ids, tick, events, and trace for this evaluation. The returned run is a shallow copy with its state and completed, events, and trace arrays copied before eligible actions are applied.",
+						"examples": [
+							{
+								"tick": 2,
+								"seed": 17,
+								"state": {
+									"score": 3,
+									"doorOpen": false
+								},
+								"completed": [],
+								"events": [],
+								"trace": []
+							}
+						]
 					},
 					{
 						"name": "checkpointGraph.view",
 						"type": "GameView",
 						"required": true,
-						"description": "Active game view containing scene direction and executable checkpoints."
+						"description": "The view supplies the checkpoints considered for this evaluation. Eligible checkpoints are sorted by id using `localeCompare` before their actions are applied.",
+						"examples": [
+							{
+								"id": "opening",
+								"title": "Opening",
+								"dimension": "2d",
+								"style": "flat ink illustration",
+								"checkpoints": [
+									{
+										"id": "open-door",
+										"title": "Open the Door",
+										"description": "Open the door after reaching the required score.",
+										"x": 160,
+										"y": 90,
+										"requires": [],
+										"conditions": [
+											{
+												"field": "score",
+												"op": "gte",
+												"value": 3
+											}
+										],
+										"actions": [
+											{
+												"type": "set",
+												"target": "doorOpen",
+												"value": true
+											}
+										]
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "checkpointGraph",
 						"type": "GameRun",
-						"description": "New game run with eligible checkpoint actions, bounded trace and emitted events applied once in stable order."
+						"description": "A copied run after checkpoints eligible against the initial run have been applied in id order using `localeCompare`. After each applied checkpoint, its id is added if needed and a trace entry is appended; events and trace are truncated to their last 1000 entries.",
+						"examples": [
+							{
+								"tick": 2,
+								"seed": 17,
+								"state": {
+									"score": 3,
+									"doorOpen": true
+								},
+								"completed": ["open-door"],
+								"events": [],
+								"trace": [
+									{
+										"tick": 2,
+										"checkpointId": "open-door",
+										"reason": "score gte 3"
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
