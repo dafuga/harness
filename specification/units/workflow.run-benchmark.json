@@ -18,28 +18,293 @@
 				"name": "runBenchmark.input",
 				"type": "RunBenchmarkInput",
 				"required": true,
-				"description": "Definition path, explicit runners, private repository and cancellation context."
+				"description": "The request for one run: the benchmark definition file path (the definition's project must resolve to the Git repository root), the codex and claude runners, the repository that saves the run, and the AbortSignal that stops scheduling and interrupts the active trial. The optional seed defaults to randomUUID() when it is undefined or null and fixes the candidate order, and the optional onProgress callback is skipped when it is undefined."
 			},
 			{
 				"name": "benchmarkSchedule.run",
 				"type": "BenchmarkRun",
 				"required": true,
-				"description": "Pinned benchmark definition, candidate configurations and recorded trial outcomes."
+				"description": "Only run.seed, the ids in definition.candidates and definition.budget.repetitions (validated as an integer from 1 to 100) are read to build the schedule, so recorded trials and other fields do not change it.",
+				"examples": [
+					{
+						"version": 1,
+						"id": "3f6a9c1e-42b7-4d8e-a1f0-6c2b9e7d5a14",
+						"project": "/srv/repos/retry-service",
+						"revision": "a4c9e27f1b08d35e6f2a9c7b4d1e8f0a3b5c6d7e",
+						"fingerprint": "8e2f5a1c7d9b03e6f4a8c2d15b7e9f01a3c6d8e4b2f0a7c9d1e5b3f8a6c4d2e0",
+						"seed": "c81e7f3a-0d4b-4a92-8e15-7b3c9d2f6e10",
+						"definition": {
+							"version": 1,
+							"name": "retry-backoff-fix",
+							"project": ".",
+							"revision": "main",
+							"task": "Make the retry client wait the full jittered backoff before each resubmission.",
+							"contract": "Keep the public RetryClient API unchanged and edit only the allowed files.",
+							"allowedFiles": ["src/net/retry.ts"],
+							"checks": [
+								{
+									"id": "unit",
+									"command": "npm test -- retry"
+								}
+							],
+							"setup": ["npm ci --ignore-scripts"],
+							"candidates": [
+								{
+									"id": "codex-high",
+									"runner": "codex",
+									"model": "gpt-5-codex",
+									"effort": "high",
+									"instructions": "",
+									"tools": "default"
+								},
+								{
+									"id": "claude-sonnet",
+									"runner": "claude",
+									"model": "claude-sonnet-5-5",
+									"effort": "medium",
+									"instructions": "",
+									"tools": "default"
+								}
+							],
+							"budget": {
+								"repetitions": 1,
+								"timeoutMs": 900000,
+								"repairs": 0
+							}
+						},
+						"runnerVersions": {
+							"codex-high": "codex-cli 0.92.0",
+							"claude-sonnet": "2.1.0 (Claude Code)"
+						},
+						"startedAt": "2026-11-15T09:12:44.318Z",
+						"ownerPid": 48213,
+						"trials": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "runBenchmark",
 				"type": "Promise<BenchmarkRun>",
-				"description": "Persisted run with each completed, failed or interrupted trial outcome."
+				"description": "The run after the schedule loop, saved to the repository before it resolves, with completedAt set only when the signal was not aborted. Each trial keeps its final status (passed, failed, invalid, timeout, error or interrupted), and runner, setup and evaluation failures are recorded on that trial as its status and error instead of rejecting the promise.",
+				"examples": [
+					{
+						"version": 1,
+						"id": "3f6a9c1e-42b7-4d8e-a1f0-6c2b9e7d5a14",
+						"project": "/srv/repos/retry-service",
+						"revision": "a4c9e27f1b08d35e6f2a9c7b4d1e8f0a3b5c6d7e",
+						"fingerprint": "8e2f5a1c7d9b03e6f4a8c2d15b7e9f01a3c6d8e4b2f0a7c9d1e5b3f8a6c4d2e0",
+						"seed": "c81e7f3a-0d4b-4a92-8e15-7b3c9d2f6e10",
+						"definition": {
+							"version": 1,
+							"name": "retry-backoff-fix",
+							"project": ".",
+							"revision": "main",
+							"task": "Make the retry client wait the full jittered backoff before each resubmission.",
+							"contract": "Keep the public RetryClient API unchanged and edit only the allowed files.",
+							"allowedFiles": ["src/net/retry.ts"],
+							"checks": [
+								{
+									"id": "unit",
+									"command": "npm test -- retry"
+								}
+							],
+							"setup": ["npm ci --ignore-scripts"],
+							"candidates": [
+								{
+									"id": "codex-high",
+									"runner": "codex",
+									"model": "gpt-5-codex",
+									"effort": "high",
+									"instructions": "",
+									"tools": "default"
+								},
+								{
+									"id": "claude-sonnet",
+									"runner": "claude",
+									"model": "claude-sonnet-5-5",
+									"effort": "medium",
+									"instructions": "",
+									"tools": "default"
+								}
+							],
+							"budget": {
+								"repetitions": 1,
+								"timeoutMs": 900000,
+								"repairs": 0
+							}
+						},
+						"runnerVersions": {
+							"codex-high": "codex-cli 0.92.0",
+							"claude-sonnet": "2.1.0 (Claude Code)"
+						},
+						"startedAt": "2026-11-15T09:12:44.318Z",
+						"ownerPid": 48213,
+						"completedAt": "2026-11-15T09:16:21.447Z",
+						"trials": [
+							{
+								"id": "0b7d2e91-5c3a-4f16-9e84-d2a6b8c1f03e",
+								"candidate": "codex-high",
+								"repetition": 1,
+								"status": "passed",
+								"firstSubmissionPassed": true,
+								"submissions": [
+									{
+										"passed": true,
+										"invalidFiles": [],
+										"checks": [
+											{
+												"id": "unit",
+												"exitCode": 0,
+												"durationMs": 4120,
+												"stdout": "PASS src/net/retry.test.ts\n",
+												"stderr": ""
+											}
+										],
+										"patch": "diff --git a/src/net/retry.ts b/src/net/retry.ts\n@@ -41 +41 @@\n-  return base;\n+  return base + jitter(attempt);\n"
+									}
+								],
+								"turns": [
+									{
+										"session": "0196c3e2-7f1a-7b4d-8c90-5e2a1d6f9b83",
+										"reportedModel": "gpt-5-codex",
+										"usage": {
+											"inputTokens": 48211,
+											"outputTokens": 3190,
+											"cacheReadTokens": 40960
+										}
+									}
+								],
+								"agentDurationMs": 83412,
+								"evaluationDurationMs": 6210,
+								"durationMs": 89790,
+								"repairs": 0
+							},
+							{
+								"id": "e4a7c0d5-18f2-4b69-a3d1-9c5e7f2b4a08",
+								"candidate": "claude-sonnet",
+								"repetition": 1,
+								"status": "failed",
+								"firstSubmissionPassed": false,
+								"submissions": [
+									{
+										"passed": false,
+										"invalidFiles": [],
+										"checks": [
+											{
+												"id": "unit",
+												"exitCode": 1,
+												"durationMs": 3875,
+												"stdout": "FAIL src/net/retry.test.ts\n",
+												"stderr": "Expected delay 1200 ms, received 400 ms\n"
+											}
+										],
+										"patch": "diff --git a/src/net/retry.ts b/src/net/retry.ts\n@@ -41 +41 @@\n-  return base;\n+  return base * 2;\n"
+									}
+								],
+								"turns": [
+									{
+										"session": "b5e1c7a2-9d4f-4e83-a6b0-1f7c3e9d8a25",
+										"reportedModel": "claude-sonnet-5-5",
+										"usage": {
+											"inputTokens": 1204,
+											"outputTokens": 5630,
+											"cacheReadTokens": 88310,
+											"reportedCostUsd": 0.4126
+										}
+									}
+								],
+								"agentDurationMs": 118904,
+								"evaluationDurationMs": 4330,
+								"durationMs": 123240,
+								"repairs": 0
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "benchmarkSchedule",
 				"type": "unknown",
-				"description": "Seeded candidate ordering for each declared repetition."
+				"description": "Flat execution order of {candidate, repetition} entries: for each repetition from 1 to budget.repetitions, one entry per candidate, sorted by the SHA-256 fingerprint of [run.seed, entry].",
+				"examples": [
+					[
+						{
+							"candidate": "codex-high",
+							"repetition": 1
+						},
+						{
+							"candidate": "claude-sonnet",
+							"repetition": 1
+						}
+					]
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by prepareBenchmark when the file at path is not valid JSON, before the schema is checked."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Thrown by BenchmarkDefinitionValidator.validate when the parsed definition fails the strict schema, for example an unknown key, a budget value outside its range, an invalid allowedFiles path, or a codex candidate that uses files tools or max effort."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by BenchmarkDefinitionValidator.validate with message 'Duplicate benchmark identifiers or paths.' when the schema passes but allowedFiles, check ids or candidate ids contain a duplicate."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by benchmarkGit with message 'Benchmark Git operation failed. Verify the project and revision.' when a git command exits non-zero: the rev-parse calls and the ls-tree listing in prepareBenchmark, and the ls-tree listing and git archive in snapshotBenchmark."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by prepareBenchmark with message 'Benchmark project must be the Git repository root.' when the resolved project directory is not the realpath of the Git top-level directory."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by benchmarkFiles with message 'Benchmark snapshots do not support symlinks or submodules.' when a tree entry is not a regular 100644 or 100755 blob; prepareBenchmark and snapshotBenchmark both call it."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by CodexBenchmarkAdapter.preflight with message 'Codex runner is unavailable.' when codex --version exits non-zero; prepareBenchmark awaits it for each codex candidate, so no run is saved."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by ClaudeBenchmarkAdapter.preflight with message 'Claude runner is unavailable.' when claude --version exits non-zero; prepareBenchmark awaits it for each claude candidate, so no run is saved."
+			},
+			{
+				"name": "BoundedCommandFailure",
+				"type": "thrown",
+				"description": "Rejected with BoundedCommandFailure through benchmarkProcess when a git, tar or runner --version child cannot start, hits its time limit, or writes more than the 8,000,000-byte output bound (message 'Command output limit exceeded.' in that case); prepareBenchmark and snapshotBenchmark do not catch it."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by snapshotBenchmark with message 'Could not extract benchmark snapshot.' when the tar extraction of the git archive exits non-zero."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by snapshotBenchmark with message 'Snapshot files are missing; export-ignore archives are unsupported.' when a file listed by benchmarkFiles is missing or not a regular file in the extracted baseline."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Node.js file-system error (for example with code ENOENT) from reading the definition, resolving the project, or creating and removing run directories; errors thrown by the supplied repository's directory or save methods also reject runBenchmark."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "runBenchmark",
@@ -48,18 +313,214 @@
 						"name": "runBenchmark.input",
 						"type": "RunBenchmarkInput",
 						"required": true,
-						"description": "Definition path, explicit runners, private repository and cancellation context."
+						"description": "The request for one run: the benchmark definition file path (the definition's project must resolve to the Git repository root), the codex and claude runners, the repository that saves the run, and the AbortSignal that stops scheduling and interrupts the active trial. The optional seed defaults to randomUUID() when it is undefined or null and fixes the candidate order, and the optional onProgress callback is skipped when it is undefined."
 					}
 				],
 				"outputs": [
 					{
 						"name": "runBenchmark",
 						"type": "Promise<BenchmarkRun>",
-						"description": "Persisted run with each completed, failed or interrupted trial outcome."
+						"description": "The run after the schedule loop, saved to the repository before it resolves, with completedAt set only when the signal was not aborted. Each trial keeps its final status (passed, failed, invalid, timeout, error or interrupted), and runner, setup and evaluation failures are recorded on that trial as its status and error instead of rejecting the promise.",
+						"examples": [
+							{
+								"version": 1,
+								"id": "3f6a9c1e-42b7-4d8e-a1f0-6c2b9e7d5a14",
+								"project": "/srv/repos/retry-service",
+								"revision": "a4c9e27f1b08d35e6f2a9c7b4d1e8f0a3b5c6d7e",
+								"fingerprint": "8e2f5a1c7d9b03e6f4a8c2d15b7e9f01a3c6d8e4b2f0a7c9d1e5b3f8a6c4d2e0",
+								"seed": "c81e7f3a-0d4b-4a92-8e15-7b3c9d2f6e10",
+								"definition": {
+									"version": 1,
+									"name": "retry-backoff-fix",
+									"project": ".",
+									"revision": "main",
+									"task": "Make the retry client wait the full jittered backoff before each resubmission.",
+									"contract": "Keep the public RetryClient API unchanged and edit only the allowed files.",
+									"allowedFiles": ["src/net/retry.ts"],
+									"checks": [
+										{
+											"id": "unit",
+											"command": "npm test -- retry"
+										}
+									],
+									"setup": ["npm ci --ignore-scripts"],
+									"candidates": [
+										{
+											"id": "codex-high",
+											"runner": "codex",
+											"model": "gpt-5-codex",
+											"effort": "high",
+											"instructions": "",
+											"tools": "default"
+										},
+										{
+											"id": "claude-sonnet",
+											"runner": "claude",
+											"model": "claude-sonnet-5-5",
+											"effort": "medium",
+											"instructions": "",
+											"tools": "default"
+										}
+									],
+									"budget": {
+										"repetitions": 1,
+										"timeoutMs": 900000,
+										"repairs": 0
+									}
+								},
+								"runnerVersions": {
+									"codex-high": "codex-cli 0.92.0",
+									"claude-sonnet": "2.1.0 (Claude Code)"
+								},
+								"startedAt": "2026-11-15T09:12:44.318Z",
+								"ownerPid": 48213,
+								"completedAt": "2026-11-15T09:16:21.447Z",
+								"trials": [
+									{
+										"id": "0b7d2e91-5c3a-4f16-9e84-d2a6b8c1f03e",
+										"candidate": "codex-high",
+										"repetition": 1,
+										"status": "passed",
+										"firstSubmissionPassed": true,
+										"submissions": [
+											{
+												"passed": true,
+												"invalidFiles": [],
+												"checks": [
+													{
+														"id": "unit",
+														"exitCode": 0,
+														"durationMs": 4120,
+														"stdout": "PASS src/net/retry.test.ts\n",
+														"stderr": ""
+													}
+												],
+												"patch": "diff --git a/src/net/retry.ts b/src/net/retry.ts\n@@ -41 +41 @@\n-  return base;\n+  return base + jitter(attempt);\n"
+											}
+										],
+										"turns": [
+											{
+												"session": "0196c3e2-7f1a-7b4d-8c90-5e2a1d6f9b83",
+												"reportedModel": "gpt-5-codex",
+												"usage": {
+													"inputTokens": 48211,
+													"outputTokens": 3190,
+													"cacheReadTokens": 40960
+												}
+											}
+										],
+										"agentDurationMs": 83412,
+										"evaluationDurationMs": 6210,
+										"durationMs": 89790,
+										"repairs": 0
+									},
+									{
+										"id": "e4a7c0d5-18f2-4b69-a3d1-9c5e7f2b4a08",
+										"candidate": "claude-sonnet",
+										"repetition": 1,
+										"status": "failed",
+										"firstSubmissionPassed": false,
+										"submissions": [
+											{
+												"passed": false,
+												"invalidFiles": [],
+												"checks": [
+													{
+														"id": "unit",
+														"exitCode": 1,
+														"durationMs": 3875,
+														"stdout": "FAIL src/net/retry.test.ts\n",
+														"stderr": "Expected delay 1200 ms, received 400 ms\n"
+													}
+												],
+												"patch": "diff --git a/src/net/retry.ts b/src/net/retry.ts\n@@ -41 +41 @@\n-  return base;\n+  return base * 2;\n"
+											}
+										],
+										"turns": [
+											{
+												"session": "b5e1c7a2-9d4f-4e83-a6b0-1f7c3e9d8a25",
+												"reportedModel": "claude-sonnet-5-5",
+												"usage": {
+													"inputTokens": 1204,
+													"outputTokens": 5630,
+													"cacheReadTokens": 88310,
+													"reportedCostUsd": 0.4126
+												}
+											}
+										],
+										"agentDurationMs": 118904,
+										"evaluationDurationMs": 4330,
+										"durationMs": 123240,
+										"repairs": 0
+									}
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by prepareBenchmark when the file at path is not valid JSON, before the schema is checked."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown by BenchmarkDefinitionValidator.validate when the parsed definition fails the strict schema, for example an unknown key, a budget value outside its range, an invalid allowedFiles path, or a codex candidate that uses files tools or max effort."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by BenchmarkDefinitionValidator.validate with message 'Duplicate benchmark identifiers or paths.' when the schema passes but allowedFiles, check ids or candidate ids contain a duplicate."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by benchmarkGit with message 'Benchmark Git operation failed. Verify the project and revision.' when a git command exits non-zero: the rev-parse calls and the ls-tree listing in prepareBenchmark, and the ls-tree listing and git archive in snapshotBenchmark."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by prepareBenchmark with message 'Benchmark project must be the Git repository root.' when the resolved project directory is not the realpath of the Git top-level directory."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by benchmarkFiles with message 'Benchmark snapshots do not support symlinks or submodules.' when a tree entry is not a regular 100644 or 100755 blob; prepareBenchmark and snapshotBenchmark both call it."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by CodexBenchmarkAdapter.preflight with message 'Codex runner is unavailable.' when codex --version exits non-zero; prepareBenchmark awaits it for each codex candidate, so no run is saved."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by ClaudeBenchmarkAdapter.preflight with message 'Claude runner is unavailable.' when claude --version exits non-zero; prepareBenchmark awaits it for each claude candidate, so no run is saved."
+					},
+					{
+						"name": "BoundedCommandFailure",
+						"type": "thrown",
+						"description": "Rejected with BoundedCommandFailure through benchmarkProcess when a git, tar or runner --version child cannot start, hits its time limit, or writes more than the 8,000,000-byte output bound (message 'Command output limit exceeded.' in that case); prepareBenchmark and snapshotBenchmark do not catch it."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by snapshotBenchmark with message 'Could not extract benchmark snapshot.' when the tar extraction of the git archive exits non-zero."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by snapshotBenchmark with message 'Snapshot files are missing; export-ignore archives are unsupported.' when a file listed by benchmarkFiles is missing or not a regular file in the extracted baseline."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Node.js file-system error (for example with code ENOENT) from reading the definition, resolving the project, or creating and removing run directories; errors thrown by the supplied repository's directory or save methods also reject runBenchmark."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "benchmarkSchedule",
@@ -68,18 +529,86 @@
 						"name": "benchmarkSchedule.run",
 						"type": "BenchmarkRun",
 						"required": true,
-						"description": "Pinned benchmark definition, candidate configurations and recorded trial outcomes."
+						"description": "Only run.seed, the ids in definition.candidates and definition.budget.repetitions (validated as an integer from 1 to 100) are read to build the schedule, so recorded trials and other fields do not change it.",
+						"examples": [
+							{
+								"version": 1,
+								"id": "3f6a9c1e-42b7-4d8e-a1f0-6c2b9e7d5a14",
+								"project": "/srv/repos/retry-service",
+								"revision": "a4c9e27f1b08d35e6f2a9c7b4d1e8f0a3b5c6d7e",
+								"fingerprint": "8e2f5a1c7d9b03e6f4a8c2d15b7e9f01a3c6d8e4b2f0a7c9d1e5b3f8a6c4d2e0",
+								"seed": "c81e7f3a-0d4b-4a92-8e15-7b3c9d2f6e10",
+								"definition": {
+									"version": 1,
+									"name": "retry-backoff-fix",
+									"project": ".",
+									"revision": "main",
+									"task": "Make the retry client wait the full jittered backoff before each resubmission.",
+									"contract": "Keep the public RetryClient API unchanged and edit only the allowed files.",
+									"allowedFiles": ["src/net/retry.ts"],
+									"checks": [
+										{
+											"id": "unit",
+											"command": "npm test -- retry"
+										}
+									],
+									"setup": ["npm ci --ignore-scripts"],
+									"candidates": [
+										{
+											"id": "codex-high",
+											"runner": "codex",
+											"model": "gpt-5-codex",
+											"effort": "high",
+											"instructions": "",
+											"tools": "default"
+										},
+										{
+											"id": "claude-sonnet",
+											"runner": "claude",
+											"model": "claude-sonnet-5-5",
+											"effort": "medium",
+											"instructions": "",
+											"tools": "default"
+										}
+									],
+									"budget": {
+										"repetitions": 1,
+										"timeoutMs": 900000,
+										"repairs": 0
+									}
+								},
+								"runnerVersions": {
+									"codex-high": "codex-cli 0.92.0",
+									"claude-sonnet": "2.1.0 (Claude Code)"
+								},
+								"startedAt": "2026-11-15T09:12:44.318Z",
+								"ownerPid": 48213,
+								"trials": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "benchmarkSchedule",
 						"type": "unknown",
-						"description": "Seeded candidate ordering for each declared repetition."
+						"description": "Flat execution order of {candidate, repetition} entries: for each repetition from 1 to budget.repetitions, one entry per candidate, sorted by the SHA-256 fingerprint of [run.seed, entry].",
+						"examples": [
+							[
+								{
+									"candidate": "codex-high",
+									"repetition": 1
+								},
+								{
+									"candidate": "claude-sonnet",
+									"repetition": 1
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
