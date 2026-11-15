@@ -28,82 +28,77 @@
 				"name": "EntityVisualScreen.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Prepared history index for the selected repository and its recorded revisions."
+				"description": "The HarnessIndex value is carried on host, which this component passes to EntityFrame and EntitySections. This file does not inspect the index or impose additional limits on it."
 			},
 			{
 				"name": "EntityVisualScreen.head",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Exact selected source revision supplying every displayed contract, measurement and capture."
+				"description": "The HarnessRevision value is carried on host, which this component passes to EntityFrame and EntitySections. This file does not inspect the revision fields directly."
 			},
 			{
 				"name": "EntityVisualScreen.parent",
 				"type": "HarnessRevision | null",
 				"required": true,
-				"description": "First parent of the selected commit, or null at a branch tip or first commit."
+				"description": "The nullable HarnessRevision value is carried on host and passed through with the rest of host to EntityFrame and EntitySections. This file does not read or alter parent directly.",
+				"examples": [null]
 			},
 			{
 				"name": "EntityVisualScreen.scope",
 				"type": "ExplorerScope",
 				"required": true,
-				"description": "Selected branch, commit and comparison scope shared by the explorer host."
+				"description": "When the entity category is not components, this value is passed unchanged to EntityScreens. It is also carried on host to EntityFrame and EntitySections."
 			},
 			{
 				"name": "EntityVisualScreen.route",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Current explorer location, including category, entity, section and tab."
+				"description": "The ExplorerLocation value is carried on host to EntityFrame and EntitySections. This file does not read route directly or invoke navigation from it."
 			},
 			{
 				"name": "EntityVisualScreen.entities",
 				"type": "ExplorerEntity[]",
 				"required": true,
-				"description": "Units projected from the selected revision, including entities removed by the shown commit."
+				"description": "The ExplorerEntity list is carried on host to EntityFrame and EntitySections. This file does not traverse host.entities directly; its pane uses the entity supplied to the children snippet.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "EntityVisualScreen.lens",
 				"type": "EntityLens",
 				"required": true,
-				"description": "Host-provided readers for entity relationships, history and selected-revision details."
+				"description": "For each pane render, this component calls host.lens.evidence(entity.unit) and passes the result to the visual and audio children when they render. The result’s scenarios are supplied to screenOptions; this file adds no fallback or local transformation."
 			},
 			{
 				"name": "EntityVisualScreen.client",
 				"type": "Pick<HarnessClient, 'revision'>",
 				"required": true,
-				"description": "Revision reader used only for commits the displayed history requests."
+				"description": "The revision-reader value is carried on host, which this component passes to EntityFrame and EntitySections. This file does not call client.revision directly."
 			},
 			{
 				"name": "EntityVisualScreen.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "Base URL for retained recorded evidence media."
+				"description": "When the entity category is not components, this string is passed unchanged to EntityScreens and EntityAudio. This file does not construct or normalize the base value.",
+				"examples": ["https://reports.example.test/evidence/"]
 			},
 			{
 				"name": "EntityVisualScreen.onroute",
 				"type": "(to: ExplorerLocation) => void",
 				"required": true,
-				"description": "Receives the requested explorer destination for host-controlled navigation."
+				"description": "The navigation callback is carried on host to EntityFrame and EntitySections. This file does not invoke onroute directly."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityVisualScreen.screenshotOverview",
 				"type": "markup",
-				"description": "Page and shell screenshots lead Overview and retain their recorded audio there. Components keep screenshots above every tab through the shared frame and show recordings in Audio. Screenshot selection receives the entity preview binding."
+				"description": "The markup renders an hx-div with data-harness-component=\"harness-entity-visual-screen\" and display: contents around EntityFrame and EntitySections. In the pane, EntityScreens and EntityAudio render only when entity.category is not components; EntityScreens receives entity.unit.preview and evidence.scenarios through screenOptions."
 			}
 		],
-		"errors": [
-			{
-				"name": "no-registry",
-				"type": "stated",
-				"description": "A revision that stores no unit registry says so; nothing of another revision is shown."
-			},
-			{
-				"name": "entity-missing",
-				"type": "stated",
-				"description": "An entity the shown revision does not hold is said to be missing, with the way back to its collection."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
