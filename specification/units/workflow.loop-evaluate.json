@@ -36,35 +36,98 @@
 				"name": "evaluateLoop.input",
 				"type": "EvaluateLoopInput",
 				"required": true,
-				"description": "Loop id and optional root/time provider, with runEvaluators controlling whether configured repository commands run; omission defaults to running them."
+				"description": "Identifies the loop state to read, which must not be closed. Optional root and now values select the repository and trace timestamp; setting runEvaluators to false skips configured commands, while omission runs them.",
+				"examples": [
+					{
+						"loop": "release"
+					},
+					{
+						"loop": "release",
+						"runEvaluators": false
+					}
+				]
 			},
 			{
 				"name": "renderLoopEvaluation.result",
 				"type": "LoopEvaluationResult",
 				"required": true,
-				"description": "Evaluation result returned by evaluateLoop."
+				"description": "Supplies a completed evaluation result for formatting. A skipped result and an empty results list select dedicated messages.",
+				"examples": [
+					{
+						"loop": "release",
+						"tracePath": "specification/loops/release/trace.ndjson",
+						"passed": true,
+						"results": [
+							{
+								"id": "lint",
+								"title": "Lint",
+								"command": "yarn lint",
+								"exitCode": 0,
+								"stdout": "Done in 1.8s\n",
+								"durationMs": 1842,
+								"stderr": ""
+							}
+						]
+					},
+					{
+						"loop": "release",
+						"tracePath": "specification/loops/release/trace.ndjson",
+						"passed": false,
+						"results": [],
+						"skipped": true
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "evaluateLoop",
 				"type": "Promise<LoopEvaluationResult>",
-				"description": "Loop id, trace path, pass/fail outcome, evaluator stdout/stderr and exit codes; skipped mode writes a trace and returns passed false with skipped true."
+				"description": "Resolves with the loop name, relative trace path, pass flag, and evaluator results; skipped is present only when runEvaluators is false. When execution is enabled, passed is true exactly when every result has exit code 0, including an empty result list; skipped mode always returns false.",
+				"examples": [
+					{
+						"loop": "release",
+						"tracePath": "specification/loops/release/trace.ndjson",
+						"passed": true,
+						"results": [
+							{
+								"id": "lint",
+								"title": "Lint",
+								"command": "yarn lint",
+								"exitCode": 0,
+								"stdout": "Done in 1.8s\n",
+								"durationMs": 1842,
+								"stderr": ""
+							}
+						]
+					},
+					{
+						"loop": "release",
+						"tracePath": "specification/loops/release/trace.ndjson",
+						"passed": false,
+						"results": [],
+						"skipped": true
+					}
+				]
 			},
 			{
 				"name": "renderLoopEvaluation",
 				"type": "string",
-				"description": "Human-readable loop evaluator summary."
+				"description": "Formats the loop name and evaluator status for display; skipped results and empty result lists use dedicated messages. For non-empty results it lists status, evaluator id and title, command, and exit code, but omits stdout and stderr.",
+				"examples": [
+					"Loop: release\nResult: passed\n\n[passed] lint - Lint\n  command: yarn lint\n  exit code: 0",
+					"Loop: release\nEvaluators: skipped (repository commands disabled)"
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Invalid or missing loop state."
+				"description": "Raised when the loop file is absent, parsed state fails validation, or the loaded loop is marked closed."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "evaluateLoop",
@@ -73,21 +136,55 @@
 						"name": "evaluateLoop.input",
 						"type": "EvaluateLoopInput",
 						"required": true,
-						"description": "Loop id and optional root/time provider, with runEvaluators controlling whether configured repository commands run; omission defaults to running them."
+						"description": "Identifies the loop state to read, which must not be closed. Optional root and now values select the repository and trace timestamp; setting runEvaluators to false skips configured commands, while omission runs them.",
+						"examples": [
+							{
+								"loop": "release"
+							},
+							{
+								"loop": "release",
+								"runEvaluators": false
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "evaluateLoop",
 						"type": "Promise<LoopEvaluationResult>",
-						"description": "Loop id, trace path, pass/fail outcome, evaluator stdout/stderr and exit codes; skipped mode writes a trace and returns passed false with skipped true."
+						"description": "Resolves with the loop name, relative trace path, pass flag, and evaluator results; skipped is present only when runEvaluators is false. When execution is enabled, passed is true exactly when every result has exit code 0, including an empty result list; skipped mode always returns false.",
+						"examples": [
+							{
+								"loop": "release",
+								"tracePath": "specification/loops/release/trace.ndjson",
+								"passed": true,
+								"results": [
+									{
+										"id": "lint",
+										"title": "Lint",
+										"command": "yarn lint",
+										"exitCode": 0,
+										"stdout": "Done in 1.8s\n",
+										"durationMs": 1842,
+										"stderr": ""
+									}
+								]
+							},
+							{
+								"loop": "release",
+								"tracePath": "specification/loops/release/trace.ndjson",
+								"passed": false,
+								"results": [],
+								"skipped": true
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Invalid or missing loop state."
+						"description": "Raised when the loop file is absent, parsed state fails validation, or the loaded loop is marked closed."
 					}
 				],
 				"errorStatus": "declared"
@@ -99,14 +196,43 @@
 						"name": "renderLoopEvaluation.result",
 						"type": "LoopEvaluationResult",
 						"required": true,
-						"description": "Evaluation result returned by evaluateLoop."
+						"description": "Supplies a completed evaluation result for formatting. A skipped result and an empty results list select dedicated messages.",
+						"examples": [
+							{
+								"loop": "release",
+								"tracePath": "specification/loops/release/trace.ndjson",
+								"passed": true,
+								"results": [
+									{
+										"id": "lint",
+										"title": "Lint",
+										"command": "yarn lint",
+										"exitCode": 0,
+										"stdout": "Done in 1.8s\n",
+										"durationMs": 1842,
+										"stderr": ""
+									}
+								]
+							},
+							{
+								"loop": "release",
+								"tracePath": "specification/loops/release/trace.ndjson",
+								"passed": false,
+								"results": [],
+								"skipped": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderLoopEvaluation",
 						"type": "string",
-						"description": "Human-readable loop evaluator summary."
+						"description": "Formats the loop name and evaluator status for display; skipped results and empty result lists use dedicated messages. For non-empty results it lists status, evaluator id and title, command, and exit code, but omits stdout and stderr.",
+						"examples": [
+							"Loop: release\nResult: passed\n\n[passed] lint - Lint\n  command: yarn lint\n  exit code: 0",
+							"Loop: release\nEvaluators: skipped (repository commands disabled)"
+						]
 					}
 				],
 				"errors": [],
