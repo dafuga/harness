@@ -20,71 +20,100 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "localOrigin.origin",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The origin to test, as a string such as http://127.0.0.1:8787, before the run may talk to it. Only plain http on 127.0.0.1 with a port of 2 to 5 digits and nothing after the port passes, so localhost, https and a trailing slash are refused.",
+				"examples": ["http://127.0.0.1:8787", "http://127.0.0.1:43117", "http://localhost:8787"]
 			},
 			{
 				"name": "redacted.text",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The text to scrub of secrets before the run prints or writes it. Each listed secret, and its form with every character outside A-Z, a-z and 0-9 removed, is replaced by [hidden] wherever it occurs, matching exactly and case-sensitively.",
+				"examples": ["Pairing code K7Q2-9WXM accepted", "Typed K7Q29WXM instead"]
 			},
 			{
 				"name": "redacted.secrets",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "The secrets to hide, each matched as written and with every character outside A-Z, a-z and 0-9 removed; a form shorter than 4 characters is ignored. An empty list hides nothing.",
+				"examples": [
+					["K7Q2-9WXM"],
+					["K7Q2-9WXM", "R4T8-ZP2L"]
+				]
 			},
 			{
 				"name": "expiredOffer.scan",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The offer string whose first ;exp=<digits>; segment is replaced by an expiry 60 seconds before the time given as expiredOffer.now. A string with no such segment is returned unchanged.",
+				"examples": ["harness-pair:v1;exp=1794787200;", "harness-pair:v1;exp=1794790800;"]
 			},
 			{
 				"name": "expiredOffer.now",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "The time to age the offer against, in epoch milliseconds as Date.now() gives it; the new exp is 60 seconds before it. Defaults to Date.now(), evaluated at each call.",
+				"examples": [1794700800000, 1794745200000]
 			},
 			{
 				"name": "otherVersion.scan",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The offer string whose first harness-pair:v1; is changed to harness-pair:v2;. A string without harness-pair:v1; is returned unchanged.",
+				"examples": ["harness-pair:v1;exp=1794787200;", "harness-pair:v1;exp=1794790800;"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "loopbackArgument",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The launch argument by which a Debug product, and only a Debug product, accepts a local relay: the fixed string -HarnessRemoteLoopback.",
+				"examples": ["-HarnessRemoteLoopback"]
 			},
 			{
 				"name": "localOrigin",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True only for plain http on 127.0.0.1 with a port of 2 to 5 digits and nothing after the port, the only address the run talks to; false for every other origin.",
+				"examples": [true, false]
 			},
 			{
 				"name": "redacted",
-				"type": "string"
+				"type": "string",
+				"description": "The input text with each form of a listed secret (as written, or with every character outside A-Z, a-z and 0-9 removed) that has at least 4 characters replaced by [hidden]; text with none of these forms, or an empty secrets list, comes back unchanged.",
+				"examples": ["Pairing code [hidden] accepted", "Typed [hidden] instead"]
 			},
 			{
 				"name": "scanMarker",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The words by which a product is known to hold the TEST ONLY scan fixture; no product of the real source does. It is the fixed string HarnessSyntheticScans.",
+				"examples": ["HarnessSyntheticScans"]
 			},
 			{
 				"name": "scanArgument",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The launch argument that tells the TEST ONLY scan fixture copy what its scans answer: the fixed string -HarnessSyntheticScans, which is scanMarker with a leading dash.",
+				"examples": ["-HarnessSyntheticScans"]
 			},
 			{
 				"name": "expiredOffer",
-				"type": "string"
+				"type": "string",
+				"description": "The offer with its first ;exp=<digits>; replaced by an expiry 60 seconds before the time given as expiredOffer.now, so a phone must refuse it as expired; an offer with no such segment comes back unchanged.",
+				"examples": ["harness-pair:v1;exp=1794700740;", "harness-pair:v1;exp=1794745140;"]
 			},
 			{
 				"name": "otherVersion",
-				"type": "string"
+				"type": "string",
+				"description": "The offer with its first harness-pair:v1; changed to harness-pair:v2;, a version no phone knows, so a phone must refuse it as unsupported; an offer without harness-pair:v1; comes back unchanged.",
+				"examples": ["harness-pair:v2;exp=1794787200;", "harness-pair:v2;exp=1794790800;"]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "localOrigin",
@@ -92,17 +121,21 @@
 					{
 						"name": "localOrigin.origin",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The origin to test, as a string such as http://127.0.0.1:8787, before the run may talk to it. Only plain http on 127.0.0.1 with a port of 2 to 5 digits and nothing after the port passes, so localhost, https and a trailing slash are refused.",
+						"examples": ["http://127.0.0.1:8787", "http://127.0.0.1:43117", "http://localhost:8787"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "localOrigin",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True only for plain http on 127.0.0.1 with a port of 2 to 5 digits and nothing after the port, the only address the run talks to; false for every other origin.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "redacted",
@@ -110,22 +143,31 @@
 					{
 						"name": "redacted.text",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The text to scrub of secrets before the run prints or writes it. Each listed secret, and its form with every character outside A-Z, a-z and 0-9 removed, is replaced by [hidden] wherever it occurs, matching exactly and case-sensitively.",
+						"examples": ["Pairing code K7Q2-9WXM accepted", "Typed K7Q29WXM instead"]
 					},
 					{
 						"name": "redacted.secrets",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "The secrets to hide, each matched as written and with every character outside A-Z, a-z and 0-9 removed; a form shorter than 4 characters is ignored. An empty list hides nothing.",
+						"examples": [
+							["K7Q2-9WXM"],
+							["K7Q2-9WXM", "R4T8-ZP2L"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "redacted",
-						"type": "string"
+						"type": "string",
+						"description": "The input text with each form of a listed secret (as written, or with every character outside A-Z, a-z and 0-9 removed) that has at least 4 characters replaced by [hidden]; text with none of these forms, or an empty secrets list, comes back unchanged.",
+						"examples": ["Pairing code [hidden] accepted", "Typed [hidden] instead"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "expiredOffer",
@@ -133,22 +175,28 @@
 					{
 						"name": "expiredOffer.scan",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The offer string whose first ;exp=<digits>; segment is replaced by an expiry 60 seconds before the time given as expiredOffer.now. A string with no such segment is returned unchanged.",
+						"examples": ["harness-pair:v1;exp=1794787200;", "harness-pair:v1;exp=1794790800;"]
 					},
 					{
 						"name": "expiredOffer.now",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "The time to age the offer against, in epoch milliseconds as Date.now() gives it; the new exp is 60 seconds before it. Defaults to Date.now(), evaluated at each call.",
+						"examples": [1794700800000, 1794745200000]
 					}
 				],
 				"outputs": [
 					{
 						"name": "expiredOffer",
-						"type": "string"
+						"type": "string",
+						"description": "The offer with its first ;exp=<digits>; replaced by an expiry 60 seconds before the time given as expiredOffer.now, so a phone must refuse it as expired; an offer with no such segment comes back unchanged.",
+						"examples": ["harness-pair:v1;exp=1794700740;", "harness-pair:v1;exp=1794745140;"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "otherVersion",
@@ -156,17 +204,21 @@
 					{
 						"name": "otherVersion.scan",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The offer string whose first harness-pair:v1; is changed to harness-pair:v2;. A string without harness-pair:v1; is returned unchanged.",
+						"examples": ["harness-pair:v1;exp=1794787200;", "harness-pair:v1;exp=1794790800;"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "otherVersion",
-						"type": "string"
+						"type": "string",
+						"description": "The offer with its first harness-pair:v1; changed to harness-pair:v2;, a version no phone knows, so a phone must refuse it as unsupported; an offer without harness-pair:v1; comes back unchanged.",
+						"examples": ["harness-pair:v2;exp=1794787200;", "harness-pair:v2;exp=1794790800;"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
