@@ -2,7 +2,8 @@ import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
 import { unitDocumentation } from '../../../../src/utils/unit-documentation/unitDocumentation';
 import { expect, test } from 'vitest';
-import { activityReading } from '../../src/components/activity-agents/activityReading';
+import { activityReading } from '../../src/components/projects-sessions/activity-agents/activityReading';
+import { activityDisplay } from '../../src/components/projects-sessions/activity-agents/activityDisplay';
 import { activityPayload, manyAgents } from '../../tests/e2e/support/activityPayload';
 
 const at = Date.parse('2026-10-11T12:00:00.000Z');
@@ -46,4 +47,11 @@ test('committed activity examples describe the function’s actual behavior', ()
 		expect(example.call).not.toMatch(/const |agents|sampledAt/);
 		expect(runInNewContext(example.call!, { activityReading })).toEqual(example.output);
 	}
+});
+
+test('activity relocation preserves the projects-sessions public entries', async () => {
+	const reading = await import('../../src/utils/projects-sessions/activityReading');
+	const display = await import('../../src/utils/projects-sessions/activityDisplay');
+	expect(reading.activityReading).toBe(activityReading);
+	expect(display.activityDisplay).toBe(activityDisplay);
 });
