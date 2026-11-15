@@ -27,24 +27,26 @@
 				"name": "CommandBlock.label",
 				"type": "string",
 				"required": true,
-				"description": "Caption naming what the command does."
+				"description": "The required string shown as the figure caption above the command. This component imposes no length limit on the caption.",
+				"examples": ["Install dependencies", "Run the test suite"]
 			},
 			{
 				"name": "CommandBlock.command",
 				"type": "string",
 				"required": true,
-				"description": "The command text, shown verbatim and wrapped when long."
+				"description": "The required CLI command string rendered inside the code element. Whitespace and line breaks are preserved, and long lines or tokens may wrap in the preformatted block.",
+				"examples": ["pnpm install", "pnpm test --filter reports"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CommandBlock",
 				"type": "markup",
-				"description": "A figure with the caption and a preformatted command."
+				"description": "A figure containing a caption from label and a preformatted code block from command. The block preserves whitespace and wraps long content."
 			}
 		],
 		"errors": [],
-		"errorStatus": "declared",
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
