@@ -18,12 +18,13 @@
 		"symbols": ["+page"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
-				"type": "markup"
+				"type": "markup",
+				"description": "The page markup rendered for the /harness/branch/[branch]/[...at]/models/[entity] route: one HarnessScreen element with the fixed title \"Model\" and EntityConfigScreen as its content. This file reads no route parameters and declares no props; the markup that HarnessScreen and EntityConfigScreen render is defined in their own files, not here."
 			}
 		],
 		"errors": [],
