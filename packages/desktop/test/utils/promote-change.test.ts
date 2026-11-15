@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { prepareChangeEnvironment } from '../../src/utils/promoteChange';
+import { prepareChangeEnvironment } from '../../src/utils/projects-sessions/promoteChange';
 import { fixture, approve } from '../run-fixture';
 test('legacy changes remain local, environment changes reject missing deployment mapping before an agent starts', async () => {
 	const f = await fixture();

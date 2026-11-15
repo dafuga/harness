@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/projects-sessions/promoteChange.ts",
-			"packages/desktop/src/utils/projects-sessions/promoteChange.types.ts",
-			"packages/desktop/src/utils/promoteChange.ts"
+			"packages/desktop/src/utils/projects-sessions/promoteChange.types.ts"
 		],
-		"symbols": ["prepareChangeEnvironment", "promoteChange", "PromotionContext", "promoteChange"]
+		"symbols": ["prepareChangeEnvironment", "promoteChange", "PromotionContext"]
 	},
 	"contract": {
 		"origin": "declared",

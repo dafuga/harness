@@ -1,5 +1,5 @@
 // @harness-uid u_fq2qh7235c
-import { prepareChangeEnvironment } from '../../../utils/promoteChange';
+import { prepareChangeEnvironment } from '../../../utils/projects-sessions/promoteChange';
 import type { Preparation } from '../../../utils/agents-providers/prepareRun';
 import { imageModel, messageFor } from '../../../utils/agents-providers/prepareRun';
 import { randomUUID } from 'node:crypto';

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { qrLimits } from '../../src/utils/qrSymbol';
+import { qrLimits } from '../../src/utils/networking-security/qrSymbol';
 import { qrSymbol } from '../../src/components/networking-security/remote-offer-code/qrSymbol';
 import { decoded, decodedPixels, offerVectors, pixels, runs } from '../qr-fixture';
 

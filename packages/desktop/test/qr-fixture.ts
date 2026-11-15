@@ -1,7 +1,7 @@
 import type { OfferVectors } from './qr-fixture.types';
 import { readFileSync } from 'node:fs';
 import jsQR from 'jsqr';
-import type { QrSymbol } from '../src/utils/qrSymbol';
+import type { QrSymbol } from '../src/utils/networking-security/qrSymbol';
 const file = new URL('../../remote/test/support/offer-vectors.json', import.meta.url);
 export const offerVectors = JSON.parse(readFileSync(file, 'utf8')) as OfferVectors;
 

@@ -3,7 +3,7 @@ import type { ProjectTaskContext } from '../../../utils/agents-providers/prepare
 import { randomUUID } from 'node:crypto';
 import type { ProjectTaskRequest } from '../../../models/development-tooling/DesktopBridge.types';
 import type { Preparation } from '../../../utils/agents-providers/prepareRun';
-import { prepareChangeEnvironment } from '../../../utils/promoteChange';
+import { prepareChangeEnvironment } from '../../../utils/projects-sessions/promoteChange';
 import { RunCancelled } from '../../../models/agents-providers/AgentRunner.types';
 
 /** Rechecks project and revision before selecting a runner. No client can choose its cwd. */
