@@ -9,13 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/services/device-session-service/DeviceSessionService.ts",
 			"packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
 			"packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.types.ts"
 		],
 		"symbols": [
-			"DeviceSessionService",
-			"DeviceSessionOptions",
 			"DeviceSessionService",
 			"DeviceSessionService.constructor",
 			"DeviceSessionService.end",

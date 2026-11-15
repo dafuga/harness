@@ -4,7 +4,7 @@ import type { AgentTurn } from '../src/models/agents-providers/AgentRunner.types
 import type { RunEvent } from '../src/models/DesktopBridge.types';
 import { CommentOutboxService } from '../src/services/projects-sessions/CommentOutboxService';
 import { DesktopRunService } from '../src/services/agents-providers/desktop-run-service/DesktopRunService';
-import { DeviceSessionService } from '../src/services/device-session-service/DeviceSessionService';
+import { DeviceSessionService } from '../src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService';
 import { ProjectRegistryService } from '../src/services/projects-sessions/ProjectRegistryService';
 import { ProjectSessionService } from '../src/services/projects-sessions/project-session-service/ProjectSessionService';
 import { ProviderDiscoveryService } from '../src/services/provider-discovery-service/ProviderDiscoveryService';
