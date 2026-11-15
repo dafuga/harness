@@ -18,65 +18,120 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CommitMessageService.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The directory that every git command of the service runs in as its working directory. The constructor does not check it.",
+				"examples": ["/workspace/payments-service", "/home/ci/checkouts/billing-api"]
 			},
 			{
 				"name": "CommitMessageService.written.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The path of the file Git gives a commit-msg hook, which holds the message being committed. It is read as UTF-8 text from that path, and a relative path resolves against the process working directory, not against root.",
+				"examples": [".git/COMMIT_EDITMSG", "/workspace/payments-service/.git/COMMIT_EDITMSG"]
 			},
 			{
 				"name": "CommitMessageService.written.edited",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "Whether Git opened an editor for the message; it defaults to the expression process.env.GIT_EDITOR !== ':', which is true unless GIT_EDITOR is a colon. True makes the default cleanup strip, which drops comment lines, and false makes it whitespace, which keeps lines that start with the comment mark, unless commit.cleanup names a mode other than default.",
+				"examples": [true, false]
 			},
 			{
 				"name": "CommitMessageService.stored.base",
 				"type": "string | null | undefined",
-				"required": true
+				"required": true,
+				"description": "The commit the measured range starts after, which the range leaves out. When it is null, undefined or an empty string, every commit that head reaches and that is held to the limits is measured.",
+				"examples": ["5e8c2a0f4d91b37c6a2e0d8f1b4c9a7e3d5f2b10", null]
 			},
 			{
 				"name": "CommitMessageService.stored.head",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The commit whose history is measured: each commit that head reaches and base does not reach is measured in topological order, with every commit a merge brings in and not only its first parents. A revision that git resolves to a commit works too.",
+				"examples": [
+					"a41f07c93e6d2b58f0c17e4a9d3b6f82c5e10d74",
+					"d02b9e6c51a8f47e3b0d92c6a1f58e04b7c3d9a2"
+				]
 			},
 			{
 				"name": "CommitMessageService.reported.report",
 				"type": "Report",
-				"required": true
+				"required": true,
+				"description": "The report of the range, which must have a failures list of strings: the problems of the stored messages are appended to that list. Every other field is kept as it is, and the report that was given is not changed."
 			},
 			{
 				"name": "CommitMessageService.reported.base",
 				"type": "string | null | undefined",
-				"required": true
+				"required": true,
+				"description": "The commit the measured range starts after, which the range leaves out. When it is null, undefined or an empty string, every commit that head reaches and that is held to the limits is measured.",
+				"examples": ["5e8c2a0f4d91b37c6a2e0d8f1b4c9a7e3d5f2b10", null]
 			},
 			{
 				"name": "CommitMessageService.reported.head",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The commit whose history is measured: each commit that head reaches and base does not reach is measured in topological order, with every commit a merge brings in and not only its first parents. A revision that git resolves to a commit works too.",
+				"examples": [
+					"a41f07c93e6d2b58f0c17e4a9d3b6f82c5e10d74",
+					"d02b9e6c51a8f47e3b0d92c6a1f58e04b7c3d9a2"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CommitMessageService.written",
-				"type": "Promise<string[]>"
+				"type": "Promise<string[]>",
+				"description": "The problems with the message in the file, one string per problem, such as a subject over its character limit. The array is empty when the message has no problem, and also when the index is not held to the limits, which is when it holds evidence or its verification config does not declare a writing version.",
+				"examples": [
+					[],
+					["subject does not start with feat:, fix:, chore: or cleanup:."],
+					[
+						"subject has 84 characters; the limit is 72.",
+						"body has 412 characters; the limit is 400."
+					]
+				]
 			},
 			{
 				"name": "CommitMessageService.stored",
-				"type": "Promise<string[]>"
+				"type": "Promise<string[]>",
+				"description": "The problems with the stored messages of the commits held to the limits in the range, each prefixed with the word commit and the first seven characters of its SHA. It is an empty array when none of those commits has a problem.",
+				"examples": [
+					[],
+					[
+						"commit a41f07c: subject does not start with feat:, fix:, chore: or cleanup:.",
+						"commit d02b9e6: body has 430 characters; the limit is 400."
+					]
+				]
 			},
 			{
 				"name": "CommitMessageService.reported",
-				"type": "Promise<Report>"
+				"type": "Promise<Report>",
+				"description": "The report that was given, with the problems of the stored messages in the range appended to its failures in the order that stored returns them. Every other field is kept as it is."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejected by stored, and so by reported, when a git rev-list or git log call exits with a non-zero status, for example for a base or head that git cannot resolve. Its message is git with its arguments, then failed: and git's stderr."
+			},
+			{
+				"name": "BoundedCommandFailure",
+				"type": "thrown",
+				"description": "Rejected by written, stored and reported when git cannot be started in root, runs past its 30-minute local deadline, or writes more than 128 MiB of combined output. Its message names the cause."
+			},
+			{
+				"name": "NodeJS.ErrnoException",
+				"type": "thrown",
+				"description": "Rejected by written, once the index is held to the limits, when the file cannot be read; for example ENOENT when it does not exist or EACCES when it cannot be opened. Nothing is read when the index is not held, so no file error comes from that case."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CommitMessageService.written",
@@ -84,22 +139,46 @@
 					{
 						"name": "CommitMessageService.written.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The path of the file Git gives a commit-msg hook, which holds the message being committed. It is read as UTF-8 text from that path, and a relative path resolves against the process working directory, not against root.",
+						"examples": [".git/COMMIT_EDITMSG", "/workspace/payments-service/.git/COMMIT_EDITMSG"]
 					},
 					{
 						"name": "CommitMessageService.written.edited",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "Whether Git opened an editor for the message; it defaults to the expression process.env.GIT_EDITOR !== ':', which is true unless GIT_EDITOR is a colon. True makes the default cleanup strip, which drops comment lines, and false makes it whitespace, which keeps lines that start with the comment mark, unless commit.cleanup names a mode other than default.",
+						"examples": [true, false]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CommitMessageService.written",
-						"type": "Promise<string[]>"
+						"type": "Promise<string[]>",
+						"description": "The problems with the message in the file, one string per problem, such as a subject over its character limit. The array is empty when the message has no problem, and also when the index is not held to the limits, which is when it holds evidence or its verification config does not declare a writing version.",
+						"examples": [
+							[],
+							["subject does not start with feat:, fix:, chore: or cleanup:."],
+							[
+								"subject has 84 characters; the limit is 72.",
+								"body has 412 characters; the limit is 400."
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "BoundedCommandFailure",
+						"type": "thrown",
+						"description": "Rejected by written, stored and reported when git cannot be started in root, runs past its 30-minute local deadline, or writes more than 128 MiB of combined output. Its message names the cause."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Rejected by written, once the index is held to the limits, when the file cannot be read; for example ENOENT when it does not exist or EACCES when it cannot be opened. Nothing is read when the index is not held, so no file error comes from that case."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CommitMessageService.stored",
@@ -107,22 +186,48 @@
 					{
 						"name": "CommitMessageService.stored.base",
 						"type": "string | null | undefined",
-						"required": true
+						"required": true,
+						"description": "The commit the measured range starts after, which the range leaves out. When it is null, undefined or an empty string, every commit that head reaches and that is held to the limits is measured.",
+						"examples": ["5e8c2a0f4d91b37c6a2e0d8f1b4c9a7e3d5f2b10", null]
 					},
 					{
 						"name": "CommitMessageService.stored.head",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The commit whose history is measured: each commit that head reaches and base does not reach is measured in topological order, with every commit a merge brings in and not only its first parents. A revision that git resolves to a commit works too.",
+						"examples": [
+							"a41f07c93e6d2b58f0c17e4a9d3b6f82c5e10d74",
+							"d02b9e6c51a8f47e3b0d92c6a1f58e04b7c3d9a2"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CommitMessageService.stored",
-						"type": "Promise<string[]>"
+						"type": "Promise<string[]>",
+						"description": "The problems with the stored messages of the commits held to the limits in the range, each prefixed with the word commit and the first seven characters of its SHA. It is an empty array when none of those commits has a problem.",
+						"examples": [
+							[],
+							[
+								"commit a41f07c: subject does not start with feat:, fix:, chore: or cleanup:.",
+								"commit d02b9e6: body has 430 characters; the limit is 400."
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejected by stored, and so by reported, when a git rev-list or git log call exits with a non-zero status, for example for a base or head that git cannot resolve. Its message is git with its arguments, then failed: and git's stderr."
+					},
+					{
+						"name": "BoundedCommandFailure",
+						"type": "thrown",
+						"description": "Rejected by written, stored and reported when git cannot be started in root, runs past its 30-minute local deadline, or writes more than 128 MiB of combined output. Its message names the cause."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CommitMessageService.reported",
@@ -130,27 +235,47 @@
 					{
 						"name": "CommitMessageService.reported.report",
 						"type": "Report",
-						"required": true
+						"required": true,
+						"description": "The report of the range, which must have a failures list of strings: the problems of the stored messages are appended to that list. Every other field is kept as it is, and the report that was given is not changed."
 					},
 					{
 						"name": "CommitMessageService.reported.base",
 						"type": "string | null | undefined",
-						"required": true
+						"required": true,
+						"description": "The commit the measured range starts after, which the range leaves out. When it is null, undefined or an empty string, every commit that head reaches and that is held to the limits is measured.",
+						"examples": ["5e8c2a0f4d91b37c6a2e0d8f1b4c9a7e3d5f2b10", null]
 					},
 					{
 						"name": "CommitMessageService.reported.head",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The commit whose history is measured: each commit that head reaches and base does not reach is measured in topological order, with every commit a merge brings in and not only its first parents. A revision that git resolves to a commit works too.",
+						"examples": [
+							"a41f07c93e6d2b58f0c17e4a9d3b6f82c5e10d74",
+							"d02b9e6c51a8f47e3b0d92c6a1f58e04b7c3d9a2"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CommitMessageService.reported",
-						"type": "Promise<Report>"
+						"type": "Promise<Report>",
+						"description": "The report that was given, with the problems of the stored messages in the range appended to its failures in the order that stored returns them. Every other field is kept as it is."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejected by stored, and so by reported, when a git rev-list or git log call exits with a non-zero status, for example for a base or head that git cannot resolve. Its message is git with its arguments, then failed: and git's stderr."
+					},
+					{
+						"name": "BoundedCommandFailure",
+						"type": "thrown",
+						"description": "Rejected by written, stored and reported when git cannot be started in root, runs past its 30-minute local deadline, or writes more than 128 MiB of combined output. Its message names the cause."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -160,17 +285,20 @@
 					{
 						"name": "CommitMessageService.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The directory that every git command of the service runs in as its working directory. The constructor does not check it.",
+						"examples": ["/workspace/payments-service", "/home/ci/checkouts/billing-api"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CommitMessageService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new CommitMessageService, which holds a git adapter for root and runs no git command."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
