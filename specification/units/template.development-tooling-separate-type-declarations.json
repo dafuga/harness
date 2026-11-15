@@ -18,17 +18,38 @@
 				"name": "separateTypeDeclarations.files",
 				"type": "PlannedFile[]",
 				"required": true,
-				"description": "Scaffold files with paths and TypeScript source; generated type declarations are self-contained or use imported types."
+				"description": "An ordered list of planned files with paths and source contents. A file is split only when its path ends in .ts but not .d.ts and its top-level statements include an interface or type alias plus a class, function, or variable declaration.",
+				"examples": [
+					[
+						{
+							"path": "src/feature.ts",
+							"contents": "export interface FeatureOptions { enabled: boolean; }\n\nexport function createFeature(options: FeatureOptions) { return options.enabled; }\n"
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "separateTypeDeclarations",
 				"type": "PlannedFile[]",
-				"description": "Planned implementation and sibling .types.ts files with type-only imports and compatibility exports; non-TypeScript and type-only files retain their contents."
+				"description": "The returned planned file list, with each eligible implementation rewritten to import its named declarations from a sibling .types.ts file and re-export them for compatibility. Files without both a runtime declaration and at least one interface or type alias, including non-.ts and .d.ts files, are retained without splitting.",
+				"examples": [
+					[
+						{
+							"path": "src/feature.ts",
+							"contents": "import type { FeatureOptions } from './feature.types';\n\nexport function createFeature(options: FeatureOptions) { return options.enabled; }\n\nexport type { FeatureOptions } from './feature.types';\n"
+						},
+						{
+							"path": "src/feature.types.ts",
+							"contents": "export interface FeatureOptions { enabled: boolean; }\n"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "separateTypeDeclarations",
@@ -37,18 +58,38 @@
 						"name": "separateTypeDeclarations.files",
 						"type": "PlannedFile[]",
 						"required": true,
-						"description": "Scaffold files with paths and TypeScript source; generated type declarations are self-contained or use imported types."
+						"description": "An ordered list of planned files with paths and source contents. A file is split only when its path ends in .ts but not .d.ts and its top-level statements include an interface or type alias plus a class, function, or variable declaration.",
+						"examples": [
+							[
+								{
+									"path": "src/feature.ts",
+									"contents": "export interface FeatureOptions { enabled: boolean; }\n\nexport function createFeature(options: FeatureOptions) { return options.enabled; }\n"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "separateTypeDeclarations",
 						"type": "PlannedFile[]",
-						"description": "Planned implementation and sibling .types.ts files with type-only imports and compatibility exports; non-TypeScript and type-only files retain their contents."
+						"description": "The returned planned file list, with each eligible implementation rewritten to import its named declarations from a sibling .types.ts file and re-export them for compatibility. Files without both a runtime declaration and at least one interface or type alias, including non-.ts and .d.ts files, are retained without splitting.",
+						"examples": [
+							[
+								{
+									"path": "src/feature.ts",
+									"contents": "import type { FeatureOptions } from './feature.types';\n\nexport function createFeature(options: FeatureOptions) { return options.enabled; }\n\nexport type { FeatureOptions } from './feature.types';\n"
+								},
+								{
+									"path": "src/feature.types.ts",
+									"contents": "export interface FeatureOptions { enabled: boolean; }\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
