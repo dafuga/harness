@@ -64,12 +64,12 @@ test('ContractsCommand show resolves stored identity and owned paths without rea
 		});
 	}
 	expect(await run('show', fixture.price.id)).toContain('Subtotal in EUR.');
-	expect(reads.mock.calls.every(([path]) => String(path).includes('/specification/units/'))).toBe(
-		true
-	);
-	expect(lists.mock.calls.every(([path]) => String(path).includes('/specification/units'))).toBe(
-		true
-	);
+	expect(
+		reads.mock.calls.every(([path]) => /\/specification\/(units|scenarios)\//.test(String(path)))
+	).toBe(true);
+	expect(
+		lists.mock.calls.every(([path]) => /\/specification\/(units|scenarios)/.test(String(path)))
+	).toBe(true);
 	await expect(run('show', '../outside')).rejects.toThrow(/outside|within/i);
 	await expect(run('show', 'unknown.unit')).rejects.toThrow(/No contracts/i);
 });
@@ -98,7 +98,9 @@ test('ContractsCommand search ranks contract fields and distinguishes literal re
 		'PriceQuote',
 		'RangeError',
 		'model.invoice',
-		'price-loading'
+		'price-loading',
+		'quote-pending',
+		'Waiting for currency'
 	])
 		expect(
 			JSON.parse(await run('search', query, '--json')).some(

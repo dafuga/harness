@@ -45,6 +45,17 @@ export async function contractsProject() {
 		...contractUnit('service.old', 'src/services/billing/Old.ts'),
 		status: 'retired'
 	};
+	await writeContract(root, '../scenarios/price-flow.json', {
+		schemaVersion: 1,
+		id: 'price-loading',
+		title: 'Quote flow',
+		kind: 'headless',
+		units: [price.id],
+		states: [{ id: 'quote-pending', title: 'Waiting for currency', coverage: 'required' }],
+		viewports: [],
+		tests: [{ id: 'quote', kind: 'unit', runner: 'vitest', target: 'test/quote.test.ts' }],
+		evidence: []
+	});
 	await writeContract(root, 'nested/price.json', price);
 	for (const unit of [invoice, checkout, sibling, retired])
 		await writeContract(root, `${unit.id}.json`, unit);
