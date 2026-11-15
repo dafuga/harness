@@ -18,10 +18,33 @@
 			{
 				"name": "gameRenderOptions",
 				"type": "unknown",
-				"description": "Supported Restyle and Lucy model selections, fast-mode flags and cost rates per minute."
+				"description": "This is the fixed object returned whenever gameRenderOptions is called, with restyle, lucy, and fast entries; each entry has label, model, fast, and rate fields. It matters when a caller invokes this function to obtain its supported options, and the function defines exactly these three entries.",
+				"examples": [
+					{
+						"restyle": {
+							"label": "Lucy Restyle",
+							"model": "lucy-restyle-2",
+							"fast": false,
+							"rate": 0.6
+						},
+						"lucy": {
+							"label": "Lucy 2.5",
+							"model": "lucy-2.5",
+							"fast": false,
+							"rate": 1.2
+						},
+						"fast": {
+							"label": "Lucy 2.5 Fast",
+							"model": "lucy-2.5",
+							"fast": true,
+							"rate": 2.4
+						}
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "gameRenderOptions",
@@ -30,11 +53,33 @@
 					{
 						"name": "gameRenderOptions",
 						"type": "unknown",
-						"description": "Supported Restyle and Lucy model selections, fast-mode flags and cost rates per minute."
+						"description": "This is the fixed object returned whenever gameRenderOptions is called, with restyle, lucy, and fast entries; each entry has label, model, fast, and rate fields. It matters when a caller invokes this function to obtain its supported options, and the function defines exactly these three entries.",
+						"examples": [
+							{
+								"restyle": {
+									"label": "Lucy Restyle",
+									"model": "lucy-restyle-2",
+									"fast": false,
+									"rate": 0.6
+								},
+								"lucy": {
+									"label": "Lucy 2.5",
+									"model": "lucy-2.5",
+									"fast": false,
+									"rate": 1.2
+								},
+								"fast": {
+									"label": "Lucy 2.5 Fast",
+									"model": "lucy-2.5",
+									"fast": true,
+									"rate": 2.4
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
