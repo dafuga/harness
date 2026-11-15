@@ -20,17 +20,18 @@
 				"name": "planReads.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "The repository Git handle whose objectFormat and run function determine whether a read can be reused. Only a stated sha1 or sha256 object format enables reuse; calls outside recognized plain-read shapes are delegated directly."
 			}
 		],
 		"outputs": [
 			{
 				"name": "planReads",
 				"type": "Git",
-				"description": "Wrapped Git handle sharing in-flight and successful recognized reads at full lowercase IDs of the repository object format. Returned buffers are copied; mutable revisions, writes, calls with input/environment overrides and failed reads are not retained."
+				"description": "The returned Git handle copies the input and wraps run to reuse in-flight or successful matching recognized reads pinned to full lowercase IDs of the declared sha1 or sha256 object format. Reuse is scoped to this wrapper, returned buffers are copied, and calls with input or environment overrides, unrecognized or mutable revisions, and failed reads are not retained."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "planReads",
@@ -39,18 +40,18 @@
 						"name": "planReads.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "The repository Git handle whose objectFormat and run function determine whether a read can be reused. Only a stated sha1 or sha256 object format enables reuse; calls outside recognized plain-read shapes are delegated directly."
 					}
 				],
 				"outputs": [
 					{
 						"name": "planReads",
 						"type": "Git",
-						"description": "Wrapped Git handle sharing in-flight and successful recognized reads at full lowercase IDs of the repository object format. Returned buffers are copied; mutable revisions, writes, calls with input/environment overrides and failed reads are not retained."
+						"description": "The returned Git handle copies the input and wraps run to reuse in-flight or successful matching recognized reads pinned to full lowercase IDs of the declared sha1 or sha256 object format. Reuse is scoped to this wrapper, returned buffers are copied, and calls with input or environment overrides, unrecognized or mutable revisions, and failed reads are not retained."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
