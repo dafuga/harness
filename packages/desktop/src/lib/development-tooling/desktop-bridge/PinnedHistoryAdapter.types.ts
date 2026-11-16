@@ -4,6 +4,10 @@ import type { HarnessRevision } from '$reports/models/explorer-ui/Harness.types'
 import type { RevisionRecords } from '../../../../../../src/utils/development-tooling/revisionSummary';
 import type { HistoryStatusService } from '../../../../../../src/services/verification-evidence/history-status-service/HistoryStatusService';
 
+export class CommitNotFoundError extends Error {
+	override name = 'CommitNotFoundError';
+}
+
 export type CommitFacts = Pick<
 	HarnessRevisionSummary,
 	'commit' | 'parents' | 'subject' | 'author' | 'committedAt'
