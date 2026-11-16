@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/reportRetention.ts",
-			"packages/reports/src/utils/reports-media/reportRetention.ts"
+			"packages/reports/src/utils/reports-media/reportRetention.ts",
+			"packages/reports/src/utils/reports-media/reportRetention.types.ts"
 		],
 		"symbols": [
 			"reportLifetimeMs",
@@ -18,7 +19,8 @@
 			"reportRetention",
 			"reportLifetimeMs",
 			"reportCloudPrefixes",
-			"reportRetention"
+			"reportRetention",
+			"InvalidReportRetentionTimestampError"
 		]
 	},
 	"contract": {
