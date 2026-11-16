@@ -1,9 +1,10 @@
 // @harness-uid u_7nghhlp6ww
-import type {
-	RemoteSocket,
-	Reply,
-	DeviceStatus,
-	DeviceConnectionOptions
+import {
+	DeviceConnectionError,
+	type RemoteSocket,
+	type Reply,
+	type DeviceStatus,
+	type DeviceConnectionOptions
 } from './DeviceConnectionService.types';
 import { remoteLimits } from '../../models/networking-security/Remote.types';
 import type { RemoteAttachment } from '../../models/networking-security/Remote.types';
@@ -18,7 +19,10 @@ import { WireClientService } from './WireClientService';
 
 function within<T>(work: Promise<T>, milliseconds: number): Promise<T> {
 	return new Promise((resolve, reject) => {
-		const timer = setTimeout(() => reject(new Error('The computer did not answer.')), milliseconds);
+		const timer = setTimeout(
+			() => reject(new DeviceConnectionError('The computer did not answer.')),
+			milliseconds
+		);
 		const settle = () => clearTimeout(timer);
 		work.then(resolve, reject).then(settle, settle);
 	});
@@ -75,7 +79,8 @@ export class DeviceConnectionService {
 			const answered = new Promise<SecurePacket | null>((resolve) => (this.reply = resolve));
 			socket.send(JSON.stringify(await channel.hello()));
 			const packet = await within(answered, deadline);
-			if (packet?.type !== 'accept') throw new Error('The computer refused this device.');
+			if (packet?.type !== 'accept')
+				throw new DeviceConnectionError('The computer refused this device.');
 			await channel.accept(packet);
 			this.channel = channel;
 			const send = (text: string) =>

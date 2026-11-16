@@ -4,6 +4,10 @@ import type { AttachInput } from '../../models/networking-security/Remote.types'
 import type { WireClientService } from './WireClientService';
 import type { SecurePacket } from '../../models/networking-security/RemoteSecure.types';
 
+export class DeviceConnectionError extends Error {
+	override name = 'DeviceConnectionError';
+}
+
 /** The few things a transport must offer. Text frames only. */
 export interface RemoteSocket {
 	opened: Promise<void>;
