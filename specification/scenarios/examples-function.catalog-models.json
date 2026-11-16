@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.catalog-models",
+	"title": "function.catalog-models examples",
+	"kind": "headless",
+	"units": ["function.catalog-models"],
+	"builds": [],
+	"states": [
+		{
+			"id": "catalog-models-list-all-declared-query-catalog-models",
+			"title": "Catalog models list all declared query catalog models",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.catalog-models.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["catalog-models-list-all-declared-query-catalog-models"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["catalog-models-list-all-declared-query-catalog-models"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["catalog-models-list-all-declared-query-catalog-models"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
