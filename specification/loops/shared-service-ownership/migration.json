@@ -2208,14 +2208,22 @@
 			"unit": "desktop.service.remote-device-sessions",
 			"from": "packages/desktop/src/services/RemoteDeviceSessionsService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
-			"definition": "f94196b4018bf795307928eb69bc9d1a1409363c15695075d4e7e807cfb37dc7",
+			"definition": "304ec40005d70807352f970b2f87fdc7357629b98cf212b75d3ae33cbac9dee3",
 			"relocationDefinition": "53acfdf80eaf7aadf2fd5badff05ee77c037c0d9cea8eb0fe415bb39a0f79653",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "db7eff33b38b20f1300b0d589dd422121c332d42",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
-				"definition": "f94196b4018bf795307928eb69bc9d1a1409363c15695075d4e7e807cfb37dc7",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "304ec40005d70807352f970b2f87fdc7357629b98cf212b75d3ae33cbac9dee3",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.remote-device-sessions, written by haiku); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
+					"definition": "f94196b4018bf795307928eb69bc9d1a1409363c15695075d4e7e807cfb37dc7",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "hub.controller.hub-api",
@@ -2273,7 +2281,14 @@
 			"unit": "hub.function.hub-http",
 			"from": "packages/hub/src/controllers/hub-api-controller/hubHttp.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubHttp.ts",
-			"definition": "ea28ff7eb52b85f215c76d01547f598e1ea19b2d4a60648bc12af5b848b214f6"
+			"definition": "cf4a7e07a0ad27c77715727553256432003ce4640262b8896e6a8a96a0062c6e",
+			"relocationDefinition": "ea28ff7eb52b85f215c76d01547f598e1ea19b2d4a60648bc12af5b848b214f6",
+			"review": {
+				"commit": "2cc1f9bc70897919117f0ba8bc39495d828bb82b",
+				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubHttp.ts",
+				"definition": "cf4a7e07a0ad27c77715727553256432003ce4640262b8896e6a8a96a0062c6e",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-hub.function.hub-http, written by luna); behavior unchanged."
+			}
 		},
 		{
 			"unit": "adapter.desktop-integrity",
@@ -3163,13 +3178,13 @@
 			"unit": "reports.adapter.report-pages-retention",
 			"from": "packages/reports/src/adapters/ReportPagesRetentionAdapter.ts",
 			"to": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts",
-			"definition": "b4e51a557729bcf63cbce6d28e41df9641d5b92dfa06daeec94e5ab1498ddff7",
+			"definition": "0b0c448efa17a8082180f8478909c6c4e72dc58a4619c28ece46ba37d06217c3",
 			"relocationDefinition": "8277258b463411f5dc0b60f2f199e7d2b83478fc9fbe986bac924e1de01a5df4",
 			"review": {
-				"commit": "73ef6fa1c0b168e71240bae4cb9d05258058f3cf",
+				"commit": "ff4f6756f8a9bb6506a43ce53600a92679f75fd7",
 				"path": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts",
-				"definition": "b4e51a557729bcf63cbce6d28e41df9641d5b92dfa06daeec94e5ab1498ddff7",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.adapter.report-pages-retention, written by luna); messages and behavior unchanged."
+				"definition": "0b0c448efa17a8082180f8478909c6c4e72dc58a4619c28ece46ba37d06217c3",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.adapter.report-pages-retention, written by luna); behavior unchanged."
 			},
 			"previousReviews": [
 				{
@@ -3177,6 +3192,12 @@
 					"path": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts",
 					"definition": "e7aae4518baf087b89273b4e636084e439d56ef74ecf1b38a759e604c8fcfe97",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "73ef6fa1c0b168e71240bae4cb9d05258058f3cf",
+					"path": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts",
+					"definition": "b4e51a557729bcf63cbce6d28e41df9641d5b92dfa06daeec94e5ab1498ddff7",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.adapter.report-pages-retention, written by luna); messages and behavior unchanged."
 				}
 			]
 		},
@@ -3328,13 +3349,13 @@
 			"unit": "desktop.service.project-operations",
 			"from": "packages/desktop/src/services/ProjectOperationsService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectOperationsService.ts",
-			"definition": "69708c91ae004c0fc9a99bd2a06f5303c3b1d76429fa4ae9762c44d5e78a5836",
+			"definition": "f4148e794a98724dcc07cb4f1088ed488be87c090a67d5cfb6c47e856e0b2474",
 			"relocationDefinition": "8d0441fb6f610462198b107ee9a3517285b6b96143c340361063e994a2c94a5c",
 			"review": {
-				"commit": "14066847cee16d362b5ea21d1296f7b469567819",
+				"commit": "7b9b54c2e391bfb97e41d9f59fd1128a4560752c",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectOperationsService.ts",
-				"definition": "69708c91ae004c0fc9a99bd2a06f5303c3b1d76429fa4ae9762c44d5e78a5836",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.project-operations, written by luna); messages and behavior unchanged."
+				"definition": "f4148e794a98724dcc07cb4f1088ed488be87c090a67d5cfb6c47e856e0b2474",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.project-operations, written by luna); behavior unchanged."
 			},
 			"previousReviews": [
 				{
@@ -3342,6 +3363,12 @@
 					"path": "packages/desktop/src/services/ProjectOperationsService.ts",
 					"definition": "df70d5294b43a7a26cd848d6e0e1bf6f5a982dbe9da22e44e18d81f9f9e0d48a",
 					"reason": "Retain the game branch’s snapshot of the already open project."
+				},
+				{
+					"commit": "14066847cee16d362b5ea21d1296f7b469567819",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectOperationsService.ts",
+					"definition": "69708c91ae004c0fc9a99bd2a06f5303c3b1d76429fa4ae9762c44d5e78a5836",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.project-operations, written by luna); messages and behavior unchanged."
 				}
 			]
 		},
@@ -3519,7 +3546,14 @@
 			"unit": "relay.adapter.host-sockets",
 			"from": "packages/relay/src/adapters/HostSocketsAdapter.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/HostSocketsAdapter.ts",
-			"definition": "c8e688667bd8d7314e8b0b11f9c39ad2a3da28cc951ae52fb0fe0ae4f8a01a88"
+			"definition": "515028a1d2f3d84b6d35387c0ce1a3cfe68b6bf2cd253335f2e9b5a8f3762063",
+			"relocationDefinition": "c8e688667bd8d7314e8b0b11f9c39ad2a3da28cc951ae52fb0fe0ae4f8a01a88",
+			"review": {
+				"commit": "931656943f13623cd4b6106319cd1676f3511dcd",
+				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostSocketsAdapter.ts",
+				"definition": "515028a1d2f3d84b6d35387c0ce1a3cfe68b6bf2cd253335f2e9b5a8f3762063",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-relay.adapter.host-sockets, written by luna); behavior unchanged."
+			}
 		},
 		{
 			"unit": "desktop.service.local-transport",
@@ -3631,7 +3665,14 @@
 			"unit": "workflow.response-check-input",
 			"from": "src/workflows/responseCheckInput.ts",
 			"to": "src/cli/program/responseCheckInput.ts",
-			"definition": "f95c036bbfe0b37d7e9aa3ba559ddcadb671bc694a00378e0b6ecf48f45456d4"
+			"definition": "b2c15b86691f037f52d1d57bb9ccf950d27600b17ad329f8fdc3251487e27ad4",
+			"relocationDefinition": "f95c036bbfe0b37d7e9aa3ba559ddcadb671bc694a00378e0b6ecf48f45456d4",
+			"review": {
+				"commit": "c7c97a5ee63f05e0fc3940b3b935ef6c7fee1a9b",
+				"path": "src/cli/program/responseCheckInput.ts",
+				"definition": "b2c15b86691f037f52d1d57bb9ccf950d27600b17ad329f8fdc3251487e27ad4",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-workflow.response-check-input, written by haiku); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "serializer.claude-tools",
@@ -3886,7 +3927,14 @@
 			"unit": "desktop.function.remote-failure-text",
 			"from": "packages/desktop/src/services/device-session-service/remoteFailureText.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/remoteFailureText.ts",
-			"definition": "cb50e7d5e3595d591971bc25f6c6841e147978c543abde02c42229be60890ec3"
+			"definition": "95ff724dbb34ffb31555a7ee99c114f92289522c8496f586744370c479eae02b",
+			"relocationDefinition": "cb50e7d5e3595d591971bc25f6c6841e147978c543abde02c42229be60890ec3",
+			"review": {
+				"commit": "3c242e3ae6448cb230e42cefddd040162e84917e",
+				"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/remoteFailureText.ts",
+				"definition": "95ff724dbb34ffb31555a7ee99c114f92289522c8496f586744370c479eae02b",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.function.remote-failure-text, written by luna); behavior unchanged."
+			}
 		},
 		{
 			"unit": "service.legacy-import",
@@ -3905,7 +3953,14 @@
 			"unit": "function.legacy-report",
 			"from": "src/services/legacy-import-service/legacyReport.ts",
 			"to": "src/cli/program/legacy-import-service/legacyReport.ts",
-			"definition": "5ce428305c12c585c4526efaac220b7b5d58ca1f44c365bf2d99b3a34580fdf3"
+			"definition": "38ff29c1f4db83854fc5bd3b013947334ff2015023092a065566d646906be0b0",
+			"relocationDefinition": "5ce428305c12c585c4526efaac220b7b5d58ca1f44c365bf2d99b3a34580fdf3",
+			"review": {
+				"commit": "dc2adf1ed360700297a36c83ef3bb7fdaa1b1112",
+				"path": "src/cli/program/legacy-import-service/legacyReport.ts",
+				"definition": "38ff29c1f4db83854fc5bd3b013947334ff2015023092a065566d646906be0b0",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-function.legacy-report, written by luna); behavior unchanged."
+			}
 		},
 		{
 			"unit": "repository.legacy-report",
@@ -3924,14 +3979,22 @@
 			"unit": "desktop.service.projection-cache",
 			"from": "packages/desktop/src/services/projection-cache-service/ProjectionCacheService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
-			"definition": "b68b7af23dce4748422c9166b1a6530019f05b46fd878c02beeac74a2dba5deb",
+			"definition": "e3ba09afe96d89bc56b1899649bca2b618bf4bb40b3bde116ad0fd84e97844cb",
 			"relocationDefinition": "e2ffa99957b1f8890f13849efdc76dc22e94fe5c95662f0b9c594031e63be076",
 			"review": {
-				"commit": "a0702d156fd79ec6ed8f9429fb5808840fd95f0d",
+				"commit": "17cddc014d08de3ed0c98629741a67a958d8e3a4",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
-				"definition": "b68b7af23dce4748422c9166b1a6530019f05b46fd878c02beeac74a2dba5deb",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.projection-cache, written by haiku); messages and behavior unchanged."
-			}
+				"definition": "e3ba09afe96d89bc56b1899649bca2b618bf4bb40b3bde116ad0fd84e97844cb",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.projection-cache, written by haiku); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a0702d156fd79ec6ed8f9429fb5808840fd95f0d",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
+					"definition": "b68b7af23dce4748422c9166b1a6530019f05b46fd878c02beeac74a2dba5deb",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.projection-cache, written by haiku); messages and behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.projection-cache-discard",
@@ -4531,7 +4594,14 @@
 			"unit": "hub.entry.hooks-server",
 			"from": "packages/hub/src/hooks.server.ts",
 			"to": "packages/hub/src/lib/development-tooling/server-hooks/hooks.server.ts",
-			"definition": "d6de198639572484e2829450568f01debacede62c3d6274e20fdc79a8ea4de1d"
+			"definition": "a778c130bed6f0e7165e36c651512b93621b02145c034cbf45d47501ca6b4963",
+			"relocationDefinition": "d6de198639572484e2829450568f01debacede62c3d6274e20fdc79a8ea4de1d",
+			"review": {
+				"commit": "6141f56ae9bbf31cd03a70fed56f045364b7db8f",
+				"path": "packages/hub/src/lib/development-tooling/server-hooks/hooks.server.ts",
+				"definition": "a778c130bed6f0e7165e36c651512b93621b02145c034cbf45d47501ca6b4963",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-hub.entry.hooks-server, written by luna); behavior unchanged."
+			}
 		},
 		{
 			"unit": "hub.middleware.hub-responses",
@@ -4706,13 +4776,13 @@
 			"unit": "desktop.service.local-transport-client",
 			"from": "packages/desktop/src/services/LocalTransportClientService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/LocalTransportClientService.ts",
-			"definition": "1a861568730ba3682840b0f426290b0b49b7882bf5ed518b4e31e0e2af9bdb0d",
+			"definition": "d0a04272365054a962e797ada2d263c5581408d1315849ed2856f8dcf3409d80",
 			"relocationDefinition": "0e3be5d2f39adfa9674e3c23158e2aa577543d021a80a90020a45076a8c361af",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "4addaeff16a836f59721f96e9077bc1d87703d56",
 				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/LocalTransportClientService.ts",
-				"definition": "1a861568730ba3682840b0f426290b0b49b7882bf5ed518b4e31e0e2af9bdb0d",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				"definition": "d0a04272365054a962e797ada2d263c5581408d1315849ed2856f8dcf3409d80",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.local-transport-client, written by luna); behavior unchanged."
 			},
 			"previousReviews": [
 				{
@@ -4720,6 +4790,12 @@
 					"path": "packages/desktop/src/services/LocalTransportClientService.ts",
 					"definition": "feef703fe74a059e33f7ed0faef4b1c1b8208aae27c8b09e278f4965d52c36a6",
 					"reason": "Retain the game branch’s local transport request bound for full-size game documents."
+				},
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/LocalTransportClientService.ts",
+					"definition": "1a861568730ba3682840b0f426290b0b49b7882bf5ed518b4e31e0e2af9bdb0d",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
 				}
 			]
 		},
@@ -4830,14 +4906,22 @@
 			"unit": "workflow.response-check-evaluate",
 			"from": "src/workflows/responseCheckEvaluate.ts",
 			"to": "src/cli/program/responseCheckEvaluate.ts",
-			"definition": "dff12cecda5aa9dfdc4589cc72c1a66f31d331ede5eb710603f1241078a324e4",
+			"definition": "3fd6c66b23ef377e0f4178a18e6eec0982f1c6c82d0c0645cc390aa440385155",
 			"relocationDefinition": "ae5733eee279bb145f9c1c5a72a9b07ad7b9c1aa4cf7132cf4f27e9a3c6904ad",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "5cd0b974574121fdaaeb003caa64c2b71192e3ee",
 				"path": "src/cli/program/responseCheckEvaluate.ts",
-				"definition": "dff12cecda5aa9dfdc4589cc72c1a66f31d331ede5eb710603f1241078a324e4",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "3fd6c66b23ef377e0f4178a18e6eec0982f1c6c82d0c0645cc390aa440385155",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-workflow.response-check-evaluate, written by haiku); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/responseCheckEvaluate.ts",
+					"definition": "dff12cecda5aa9dfdc4589cc72c1a66f31d331ede5eb710603f1241078a324e4",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "adapter.cpu-process",
@@ -4864,7 +4948,14 @@
 			"unit": "function.cpu-processes",
 			"from": "src/adapters/cpu-process-adapter/cpuProcesses.ts",
 			"to": "src/services/development-tooling/cpu-usage-service/cpu-process-adapter/cpuProcesses.ts",
-			"definition": "da089e6a90cd02560631a444e472879062e757d276657ae2889cdd287296154f"
+			"definition": "a2833181a1a16fdd985e1bf3acd6b17465d32bc80418fb416337ffa159d316a8",
+			"relocationDefinition": "da089e6a90cd02560631a444e472879062e757d276657ae2889cdd287296154f",
+			"review": {
+				"commit": "fcc9805b161a82fd7afc7776e8c583b6ce8d4021",
+				"path": "src/services/development-tooling/cpu-usage-service/cpu-process-adapter/cpuProcesses.ts",
+				"definition": "a2833181a1a16fdd985e1bf3acd6b17465d32bc80418fb416337ffa159d316a8",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-function.cpu-processes, written by luna); behavior unchanged."
+			}
 		},
 		{
 			"unit": "service.codex-gateway",
@@ -4954,14 +5045,22 @@
 			"unit": "desktop.service.remote-projection",
 			"from": "packages/desktop/src/services/RemoteProjectionService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts",
-			"definition": "86a43c18d17429b60706e465c69d47834c58f6c7029edc0b32e2131db6d907ab",
+			"definition": "03fc4158dddc9d1bcc335f3671d0b44313c90d650da105dafab98c69796d7c10",
 			"relocationDefinition": "de1f8f7b45e2210c8c54cbb5faef610b1fd382a23c38aaee970a92a171aeab9b",
 			"review": {
-				"commit": "4918b699bbdabafcee22a0630ae7a02a1bc3d91c",
+				"commit": "010a18d91172ae52d253b27bfcc415aea8b3fb7d",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts",
-				"definition": "86a43c18d17429b60706e465c69d47834c58f6c7029edc0b32e2131db6d907ab",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.remote-projection, written by luna); messages and behavior unchanged."
-			}
+				"definition": "03fc4158dddc9d1bcc335f3671d0b44313c90d650da105dafab98c69796d7c10",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.remote-projection, written by luna); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "4918b699bbdabafcee22a0630ae7a02a1bc3d91c",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts",
+					"definition": "86a43c18d17429b60706e465c69d47834c58f6c7029edc0b32e2131db6d907ab",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.remote-projection, written by luna); messages and behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.project-discovery",
@@ -4988,14 +5087,22 @@
 			"unit": "workflow.review-clean-code",
 			"from": "src/workflows/reviewCleanCode.ts",
 			"to": "src/audit/development-tooling/reviewCleanCode.ts",
-			"definition": "04e49773a58e5b15ed544714c7dd52931dec2568434bcdd0a6b0fa1e41460a10",
+			"definition": "1412390f428954d2384e486dedd6385f10d9dd6a685e9f3280741800dde2ebff",
 			"relocationDefinition": "44b4bab69c483cf432c2ed13f325f301a3b3fb4229a1663559dba7e8ea494c62",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "e36398034fd6877436a2c5cfd3191ba2b9cd7597",
 				"path": "src/audit/development-tooling/reviewCleanCode.ts",
-				"definition": "04e49773a58e5b15ed544714c7dd52931dec2568434bcdd0a6b0fa1e41460a10",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "1412390f428954d2384e486dedd6385f10d9dd6a685e9f3280741800dde2ebff",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-workflow.review-clean-code, written by luna); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/audit/development-tooling/reviewCleanCode.ts",
+					"definition": "04e49773a58e5b15ed544714c7dd52931dec2568434bcdd0a6b0fa1e41460a10",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.plan-run",
@@ -5181,14 +5288,22 @@
 			"unit": "remote.service.response-ledger",
 			"from": "packages/remote/src/services/ResponseLedgerService.ts",
 			"to": "packages/remote/src/services/networking-security/wire-session-service/ResponseLedgerService.ts",
-			"definition": "c1c0345d1fed8cda43c9ccc1de7f71cad73031337310561dd14cc326ae3be90c",
+			"definition": "cd3c69cbbf2c90a61468d436121a819802fd26bc78101d15573ef69fd4356064",
 			"relocationDefinition": "d566b05cb230f17316ee1a3e79071658e942276a05f11f5de213b2392efefd41",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "f8b3dc177737e9a6ec38f08c9ba7f0b6bab1a523",
 				"path": "packages/remote/src/services/networking-security/wire-session-service/ResponseLedgerService.ts",
-				"definition": "c1c0345d1fed8cda43c9ccc1de7f71cad73031337310561dd14cc326ae3be90c",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "cd3c69cbbf2c90a61468d436121a819802fd26bc78101d15573ef69fd4356064",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-remote.service.response-ledger, written by luna); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/remote/src/services/networking-security/wire-session-service/ResponseLedgerService.ts",
+					"definition": "c1c0345d1fed8cda43c9ccc1de7f71cad73031337310561dd14cc326ae3be90c",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "service.console-uninstall",
@@ -5476,7 +5591,14 @@
 			"unit": "function.impact-kernel",
 			"from": "src/workflows/run-kernel/impactKernel.ts",
 			"to": "src/cli/program/run-kernel/impactKernel.ts",
-			"definition": "dfad609f762a2f9ef4930fea731d76778910061081ac1a408822f8cf1302f628"
+			"definition": "54b4afcbf780109399563ec1e520033d71e21403b45865bbc02094756ca12dbc",
+			"relocationDefinition": "dfad609f762a2f9ef4930fea731d76778910061081ac1a408822f8cf1302f628",
+			"review": {
+				"commit": "4792415499f11452587b3ac872f7d90ac4ad1726",
+				"path": "src/cli/program/run-kernel/impactKernel.ts",
+				"definition": "54b4afcbf780109399563ec1e520033d71e21403b45865bbc02094756ca12dbc",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-function.impact-kernel, written by luna); behavior unchanged."
+			}
 		},
 		{
 			"unit": "function.kernel-workload",
@@ -5846,13 +5968,13 @@
 			"unit": "desktop.service.local-client",
 			"from": "packages/desktop/src/services/LocalClientService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-			"definition": "1f8781d596660ae51c109384f6efb74834a9e19cfa93c319f71ee6dc8b668d1e",
+			"definition": "eb6cae1949145f9b58555a4d60ed9ca862b477f7e4db6df371fc20079ba94f92",
 			"relocationDefinition": "db0ec4b62e6922c297169687608d262d5d27c0fbea6e3b27da2a52def20bb765",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "5335b4805da23435b714d1946548347ad02c33ac",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-				"definition": "1f8781d596660ae51c109384f6efb74834a9e19cfa93c319f71ee6dc8b668d1e",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				"definition": "eb6cae1949145f9b58555a4d60ed9ca862b477f7e4db6df371fc20079ba94f92",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.local-client, written by haiku); behavior unchanged."
 			},
 			"previousReviews": [
 				{
@@ -5860,6 +5982,12 @@
 					"path": "packages/desktop/src/services/LocalClientService.ts",
 					"definition": "b22f573e49778ad7dbda682a022403c64da2ae30cb03d8b9f33db55b527d5893",
 					"reason": "Retain the game branch’s local transport request bound for full-size game documents."
+				},
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
+					"definition": "1f8781d596660ae51c109384f6efb74834a9e19cfa93c319f71ee6dc8b668d1e",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
 				}
 			]
 		},
@@ -6019,32 +6147,47 @@
 			"unit": "desktop.adapter.capacitor-account",
 			"from": "packages/desktop/src/adapters/capacitor-account-adapter/CapacitorAccountAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-			"definition": "70a7d0dab7d16078c4fea5135346fdd88a87b30923b8d0c9a46cdf779dd45ce5",
+			"definition": "90c49bf638dd8ae45b616d797d3b186a746159b844784334cf64f807e6b5ef75",
 			"relocationDefinition": "f54f1586b418a653ad39961751f61e977322b2dfa5d0ab7c8f660f3bb3cdd01a",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "80802304f8cf42761392581cf21cdf806f72d931",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-				"definition": "70a7d0dab7d16078c4fea5135346fdd88a87b30923b8d0c9a46cdf779dd45ce5",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "90c49bf638dd8ae45b616d797d3b186a746159b844784334cf64f807e6b5ef75",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.adapter.capacitor-account, written by haiku); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
+					"definition": "70a7d0dab7d16078c4fea5135346fdd88a87b30923b8d0c9a46cdf779dd45ce5",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.adapter.capacitor-account",
 			"from": "packages/desktop/src/adapters/capacitor-account-adapter/capacitorAccountCodec.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts",
-			"definition": "66cb4f1b1f00e91a021140ec2916703f6f4b2e01dd1b4cc30197a9bb5dfc842b"
+			"definition": "b8b0c2cb30ee941365c1542817ef6981730a0d72aa948e1f65adab1c06a73126",
+			"relocationDefinition": "66cb4f1b1f00e91a021140ec2916703f6f4b2e01dd1b4cc30197a9bb5dfc842b",
+			"review": {
+				"commit": "80802304f8cf42761392581cf21cdf806f72d931",
+				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts",
+				"definition": "b8b0c2cb30ee941365c1542817ef6981730a0d72aa948e1f65adab1c06a73126",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.adapter.capacitor-account, written by haiku); behavior unchanged."
+			}
 		},
 		{
 			"unit": "workflow.create-project",
 			"from": "src/workflows/create-project/createProject.ts",
 			"to": "src/cli/program/create-project/createProject.ts",
-			"definition": "1e96e6ce8d029b320a828135312efef03142585dae49afe7f84970097d62aaed",
+			"definition": "4d7ca85277a9378e2953b14ae5872cc691d87a51af224736fa5a0c2a63b057b1",
 			"relocationDefinition": "079d03bf5f45ed18001faf540c6fe2ea44ec45252b43225525d9e377022a84d1",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "1a8f8ea070bdec7b258cd9143559f780e7f1f49a",
 				"path": "src/cli/program/create-project/createProject.ts",
-				"definition": "1e96e6ce8d029b320a828135312efef03142585dae49afe7f84970097d62aaed",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				"definition": "4d7ca85277a9378e2953b14ae5872cc691d87a51af224736fa5a0c2a63b057b1",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-workflow.create-project, written by haiku); messages and behavior unchanged."
 			},
 			"previousReviews": [
 				{
@@ -6052,6 +6195,12 @@
 					"path": "src/workflows/create-project/createProject.ts",
 					"definition": "6d8ebd2b12dfe7c85ac76def00cf62ea5fb3f9956bf84f53affbee9219b0f4f4",
 					"reason": "Retain the game branch’s dimension, parent folder and partial-creation handling."
+				},
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/create-project/createProject.ts",
+					"definition": "1e96e6ce8d029b320a828135312efef03142585dae49afe7f84970097d62aaed",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
 				}
 			]
 		},

@@ -6233,6 +6233,99 @@
 			"commit": "3d7ae7e3b80eba98db7c6976b8b7359fa9613644",
 			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-hub.function.browser-artifact, written by luna); messages and behavior unchanged.",
 			"definition": "c8dc5368ebeb7c6b4c8794d7a6ff325b97758335337079d22831e5d1b6b1b00e"
+		},
+		{
+			"unit": "collaboration.function.commit-records",
+			"name": "commitRecords",
+			"commit": "a5b101b0925e0232ef42898facea10c2e1882003",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-collaboration.function.commit-records, written by haiku); behavior unchanged.",
+			"definition": "cbfd2d1937f3f9c6c877d455d9c2896be3b5b82b5949d77a744458aacafcda5c"
+		},
+		{
+			"unit": "desktop.function.desktop-ipc",
+			"name": "desktopIpc",
+			"commit": "5859690f5cbce384063b89dabe474ff865ba1dc3",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.function.desktop-ipc, written by luna); behavior unchanged.",
+			"definition": "065ead987ce41867f3a26cd79493781057cefb6637877b3540d4b32619eede4e"
+		},
+		{
+			"unit": "desktop.function.public-cli-events",
+			"name": "publicCliEvents",
+			"commit": "733099aca3d2147ad4f81eb1d3d2ffe58c119899",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.function.public-cli-events, written by luna); behavior unchanged.",
+			"definition": "d8f3fce1fcd0b47ab8cfe87a3b4b4f7e6a18372c567f353e5e52a247486773ec"
+		},
+		{
+			"unit": "desktop.function.remote-failure-text",
+			"name": "remoteFailureText",
+			"commit": "3c242e3ae6448cb230e42cefddd040162e84917e",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.function.remote-failure-text, written by luna); behavior unchanged.",
+			"definition": "70190fa3c60940b1e6833347d4c16f0acf0b75f28c6455f1a80f024c52a3a101"
+		},
+		{
+			"unit": "desktop.function.remote-labels",
+			"name": "grantSummary",
+			"commit": "d86728ff657b2269155c858958fb4ef9f94ff033",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.function.remote-labels, written by luna); behavior unchanged.",
+			"definition": "9fbb37de5b278382b92f9df869b73c44b5d74df17e6769c555def94ff4131753"
+		},
+		{
+			"unit": "desktop.function.scan-notice",
+			"name": "scanFailure",
+			"to": "packages/desktop/src/utils/scan-notice/scanNotice.ts",
+			"ownerSource": "packages/desktop/src/utils/scan-notice/scanNotice.ts",
+			"commit": "2e8635841bc75251f8d3e3dd0ad887e1d3530a8d",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.function.scan-notice, written by luna); behavior unchanged.",
+			"definition": "5f0106e15181ab19aaea13bb3c40dd4de0c514ac3ed9daf55e1389d6e905166d"
+		},
+		{
+			"unit": "function.comparison-context",
+			"name": "requestDigest",
+			"commit": "10df2b78b08165f16df97852d09eebf66039b48b",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-function.comparison-context, written by haiku); behavior unchanged.",
+			"definition": "ffb2cce882fa2ae82a4ec580a431c5ae79cde46ff4a3321f43de32e5d2385037"
+		},
+		{
+			"unit": "function.cpu-processes",
+			"name": "cpuProcesses",
+			"commit": "fcc9805b161a82fd7afc7776e8c583b6ce8d4021",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-function.cpu-processes, written by luna); behavior unchanged.",
+			"definition": "a2858195e7099acd3d89a973a9288b7db25dc95725b7f05666410b0f8994933c"
+		},
+		{
+			"unit": "function.impact-kernel",
+			"name": "impactKernelText",
+			"commit": "4792415499f11452587b3ac872f7d90ac4ad1726",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-function.impact-kernel, written by luna); behavior unchanged.",
+			"definition": "c6656f1f933975b83461cdc0f80d43908da0ac129e09ce71c118de058aebae82"
+		},
+		{
+			"unit": "function.kernel-request",
+			"name": "kernelRequest",
+			"commit": "c3f0d2f6b84004d80efbe7cfa034387c466ecea3",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-function.kernel-request, written by luna); behavior unchanged.",
+			"definition": "cffda72b310c6d14c281402e71a867262e3f7003bcb43123cf1344497628b5a6"
+		},
+		{
+			"unit": "function.legacy-report",
+			"name": "legacyReport",
+			"commit": "dc2adf1ed360700297a36c83ef3bb7fdaa1b1112",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-function.legacy-report, written by luna); behavior unchanged.",
+			"definition": "34ae7b791b5751571de9a8e82fbdee7ed734585db16ee94c4550107da9bf8e1a"
+		},
+		{
+			"unit": "hub.function.hub-http",
+			"name": "hubHttpFailure",
+			"commit": "2cc1f9bc70897919117f0ba8bc39495d828bb82b",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-hub.function.hub-http, written by luna); behavior unchanged.",
+			"definition": "04ea862b180a211f48c32e252af1562667b87e4517966d1591afafaa89ba2e1a"
+		},
+		{
+			"unit": "remote.function.remote-bytes",
+			"name": "stableJson",
+			"commit": "1880c7d23f5dc93a8d0b51a1af0fb5e86c3c295a",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-remote.function.remote-bytes, written by luna); behavior unchanged.",
+			"definition": "dc9aad405cde2120b6cfec1fd3193fc0b8dcda78df5d867168d8b8291d1e47c0"
 		}
 	],
 	"retiredOwners": [
