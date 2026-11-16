@@ -31,7 +31,7 @@
 		"inputs": [
 			{
 				"name": "AuthRecordValidator.challenge.value",
-				"type": "unknown",
+				"type": "object",
 				"required": true,
 				"description": "A stored challenge row consumed when validating a persisted challenge. It must be a non-null object with non-empty string id_hash, nonce, and csrf_hash fields and a safe-integer expires_at; invalid rows throw the corruption Error.",
 				"examples": [
@@ -45,7 +45,7 @@
 			},
 			{
 				"name": "AuthRecordValidator.session.value",
-				"type": "unknown",
+				"type": "object",
 				"required": true,
 				"description": "A stored session row consumed when validating a persisted session. kind must be browser or native, required text fields must be non-empty strings, numeric fields must be safe integers, and null or missing parent_hash and revoked_at become null.",
 				"examples": [
@@ -65,7 +65,7 @@
 			},
 			{
 				"name": "AuthRecordValidator.githubState.value",
-				"type": "unknown",
+				"type": "object",
 				"required": true,
 				"description": "A stored GitHub state row consumed when validating a persisted OAuth state. Its required text columns must be non-empty strings and grant_generation and expires_at must be safe integers.",
 				"examples": [
@@ -81,7 +81,7 @@
 			},
 			{
 				"name": "AuthRecordValidator.grant.value",
-				"type": "unknown",
+				"type": "object",
 				"required": true,
 				"description": "A stored GitHub grant row consumed when validating a persisted grant. actor_id, login, and cipher text fields must be non-empty strings, github_user_id and created_at and expires_at must be safe integers, and null or missing token and refresh metadata becomes null.",
 				"examples": [
@@ -100,7 +100,7 @@
 			},
 			{
 				"name": "AuthRecordValidator.emailProof.value",
-				"type": "unknown",
+				"type": "object",
 				"required": true,
 				"description": "A stored email proof row consumed when validating a persisted proof. Required text fields must be non-empty strings, integer columns must be safe integers, and claimed must be exactly numeric 0 or 1; null or missing code_hash and code_expires_at becomes null.",
 				"examples": [
@@ -119,7 +119,7 @@
 			},
 			{
 				"name": "AuthRecordValidator.verifiedEmail.value",
-				"type": "unknown",
+				"type": "object",
 				"required": true,
 				"description": "A stored verified-email row consumed when validating a persisted email verification. actor_id and email_hash must be non-empty strings, and verified_at and expires_at must be safe integers.",
 				"examples": [
@@ -133,7 +133,7 @@
 			},
 			{
 				"name": "AuthRecordValidator.grantState.value",
-				"type": "unknown",
+				"type": "object",
 				"required": true,
 				"description": "A stored grant-state row consumed when validating the current grant generation. generation must be a safe integer; a non-null revoked_at makes a tombstone and skips the other columns, while an unrevoked row must also contain a valid grant and may have a nullable refreshing_until.",
 				"examples": [
@@ -159,7 +159,7 @@
 			},
 			{
 				"name": "AuthRecordValidator.exchange.value",
-				"type": "unknown",
+				"type": "object",
 				"required": true,
 				"description": "A stored native exchange row consumed when validating a persisted native exchange. environment must be local, staging, or production; status must be pending, approved, or consumed; required text fields must be non-empty strings, optional subject and parent_hash become null when null or missing, and expires_at must be a safe integer.",
 				"examples": [
@@ -348,7 +348,7 @@
 				"inputs": [
 					{
 						"name": "AuthRecordValidator.challenge.value",
-						"type": "unknown",
+						"type": "object",
 						"required": true,
 						"description": "A stored challenge row consumed when validating a persisted challenge. It must be a non-null object with non-empty string id_hash, nonce, and csrf_hash fields and a safe-integer expires_at; invalid rows throw the corruption Error.",
 						"examples": [
@@ -390,7 +390,7 @@
 				"inputs": [
 					{
 						"name": "AuthRecordValidator.session.value",
-						"type": "unknown",
+						"type": "object",
 						"required": true,
 						"description": "A stored session row consumed when validating a persisted session. kind must be browser or native, required text fields must be non-empty strings, numeric fields must be safe integers, and null or missing parent_hash and revoked_at become null.",
 						"examples": [
@@ -447,7 +447,7 @@
 				"inputs": [
 					{
 						"name": "AuthRecordValidator.githubState.value",
-						"type": "unknown",
+						"type": "object",
 						"required": true,
 						"description": "A stored GitHub state row consumed when validating a persisted OAuth state. Its required text columns must be non-empty strings and grant_generation and expires_at must be safe integers.",
 						"examples": [
@@ -493,7 +493,7 @@
 				"inputs": [
 					{
 						"name": "AuthRecordValidator.grant.value",
-						"type": "unknown",
+						"type": "object",
 						"required": true,
 						"description": "A stored GitHub grant row consumed when validating a persisted grant. actor_id, login, and cipher text fields must be non-empty strings, github_user_id and created_at and expires_at must be safe integers, and null or missing token and refresh metadata becomes null.",
 						"examples": [
@@ -545,7 +545,7 @@
 				"inputs": [
 					{
 						"name": "AuthRecordValidator.emailProof.value",
-						"type": "unknown",
+						"type": "object",
 						"required": true,
 						"description": "A stored email proof row consumed when validating a persisted proof. Required text fields must be non-empty strings, integer columns must be safe integers, and claimed must be exactly numeric 0 or 1; null or missing code_hash and code_expires_at becomes null.",
 						"examples": [
@@ -600,7 +600,7 @@
 				"inputs": [
 					{
 						"name": "AuthRecordValidator.verifiedEmail.value",
-						"type": "unknown",
+						"type": "object",
 						"required": true,
 						"description": "A stored verified-email row consumed when validating a persisted email verification. actor_id and email_hash must be non-empty strings, and verified_at and expires_at must be safe integers.",
 						"examples": [
@@ -642,7 +642,7 @@
 				"inputs": [
 					{
 						"name": "AuthRecordValidator.grantState.value",
-						"type": "unknown",
+						"type": "object",
 						"required": true,
 						"description": "A stored grant-state row consumed when validating the current grant generation. generation must be a safe integer; a non-null revoked_at makes a tombstone and skips the other columns, while an unrevoked row must also contain a valid grant and may have a nullable refreshing_until.",
 						"examples": [
@@ -710,7 +710,7 @@
 				"inputs": [
 					{
 						"name": "AuthRecordValidator.exchange.value",
-						"type": "unknown",
+						"type": "object",
 						"required": true,
 						"description": "A stored native exchange row consumed when validating a persisted native exchange. environment must be local, staging, or production; status must be pending, approved, or consumed; required text fields must be non-empty strings, optional subject and parent_hash become null when null or missing, and expires_at must be a safe integer.",
 						"examples": [
