@@ -19,5 +19,8 @@ export function assertPilotVideoInputs() {
 			plan = new VideoEvidenceService().plan(scenario.video!);
 		}, `pilot input closure ${id}`).not.toThrow();
 		expect(plan?.record).toHaveLength(slots);
+		const warm = new VideoEvidenceService().plan(scenario.video!, plan!.record);
+		expect(warm.record, `declared pilot dependencies permit warm reuse ${id}`).toEqual([]);
+		expect(warm.reuse).toHaveLength(slots);
 	}
 }
