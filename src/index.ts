@@ -194,3 +194,9 @@ export { NativeVideoRecorderService } from './services/verification-evidence/Nat
 export { VideoArchiveService } from './services/verification-evidence/VideoArchiveService';
 export { VideoReferenceService } from './services/verification-evidence/VideoReferenceService';
 export { VideoCaptureService } from './services/verification-evidence/VideoCaptureService';
+export { JobHistoryRepository } from './repositories/execution-runtimes/JobHistoryRepository';
+export { JobStatisticsService } from './services/execution-runtimes/JobStatisticsService';
+export { QueueEtaService } from './services/execution-runtimes/QueueEtaService';
+export { DriverQueueAdapter } from './adapters/execution-runtimes/DriverQueueAdapter';
+export { JobBackfillService } from './services/execution-runtimes/JobBackfillService';
+export { JobsCommand } from './commands/execution-runtimes/JobsCommand';
