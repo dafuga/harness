@@ -2,10 +2,7 @@
 import { Buffer } from 'node:buffer';
 import { createHash } from 'node:crypto';
 import type { PlanningErrorCode } from '../../models/planning-collaboration/PlanningView.types';
-
-type PlanDataValue = string | number | boolean | null | undefined | object;
-
-export function planData(value: PlanDataValue): string {
+export function planData(value: unknown): string {
 	if (Array.isArray(value)) return `[${value.map(planData).join(',')}]`;
 	if (value && typeof value === 'object')
 		return `{${Object.entries(value)
@@ -20,7 +17,7 @@ export const hash = (value: string | Uint8Array) =>
 export function fail(code: PlanningErrorCode, message: string): never {
 	throw Object.assign(new Error(message), { code, path: null });
 }
-export const json = (value: PlanDataValue) => `${planData(value)}\n`;
+export const json = (value: unknown) => `${planData(value)}\n`;
 export const now = () => new Date().toISOString();
 export function parse<T>(value: Uint8Array): T {
 	try {
