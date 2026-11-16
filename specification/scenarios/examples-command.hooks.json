@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-command.hooks",
+	"title": "command.hooks examples",
+	"kind": "headless",
+	"units": ["command.hooks"],
+	"builds": [],
+	"states": [
+		{
+			"id": "registers-the-hooks-command-tree",
+			"title": "Registers the hooks command tree",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/command.hooks.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["registers-the-hooks-command-tree"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["registers-the-hooks-command-tree"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["registers-the-hooks-command-tree"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
