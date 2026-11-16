@@ -31,9 +31,7 @@
 						},
 						"head": {
 							"nodes": ["node-a", "node-b"],
-							"edges": [
-								[0, 1]
-							]
+							"edges": [[0, 1]]
 						},
 						"changed": ["node-b"],
 						"uncertain": [],
@@ -69,9 +67,7 @@
 							},
 							"head": {
 								"nodes": ["node-a", "node-b"],
-								"edges": [
-									[0, 1]
-								]
+								"edges": [[0, 1]]
 							},
 							"changed": ["node-b"],
 							"uncertain": [],
@@ -106,9 +102,7 @@
 								},
 								"head": {
 									"nodes": ["node-a", "node-b"],
-									"edges": [
-										[0, 1]
-									]
+									"edges": [[0, 1]]
 								},
 								"changed": ["node-b"],
 								"uncertain": [],
@@ -131,9 +125,7 @@
 									},
 									"head": {
 										"nodes": ["node-a", "node-b"],
-										"edges": [
-											[0, 1]
-										]
+										"edges": [[0, 1]]
 									},
 									"changed": ["node-b"],
 									"uncertain": [],

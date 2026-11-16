@@ -41,10 +41,7 @@
 				"name": "publicCliEvents",
 				"type": "string[]",
 				"description": "The result contains text strings from content parts in their original order. Only parts with type \"text\" and a string text value are included; other parts and malformed events yield no entries.",
-				"examples": [
-					["Ready."],
-					[]
-				]
+				"examples": [["Ready."], []]
 			}
 		],
 		"errors": [],
@@ -78,10 +75,7 @@
 						"name": "publicCliEvents",
 						"type": "string[]",
 						"description": "The result contains text strings from content parts in their original order. Only parts with type \"text\" and a string text value are included; other parts and malformed events yield no entries.",
-						"examples": [
-							["Ready."],
-							[]
-						]
+						"examples": [["Ready."], []]
 					}
 				],
 				"errors": [],
