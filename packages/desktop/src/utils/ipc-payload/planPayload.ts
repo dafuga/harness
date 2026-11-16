@@ -24,12 +24,11 @@ const proposed = z.strictObject({
 });
 
 /** Keep the authored contract; states and viewports belong to the planning API. */
-export function planPayload(input: object): PlanDraft {
-	const fields = input as Record<string, unknown>;
+export function planPayload(input: Record<string, unknown>): PlanDraft {
 	return {
-		category: enumField(fields.category, categories),
-		title: textField(fields.title, 160),
-		goal: textField(fields.goal, 6000),
-		...(fields.contract === undefined ? {} : { contract: proposed.parse(fields.contract) })
+		category: enumField(input.category, categories),
+		title: textField(input.title, 160),
+		goal: textField(input.goal, 6000),
+		...(input.contract === undefined ? {} : { contract: proposed.parse(input.contract) })
 	};
 }
