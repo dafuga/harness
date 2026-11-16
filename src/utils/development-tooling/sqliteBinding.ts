@@ -1,5 +1,6 @@
 // @harness-uid u_sggnkny4w3
 import type { SqliteField, SqliteValue } from '../../core/development-tooling/sqliteTypes';
+import { InvalidSqliteFieldValueError } from './sqliteBinding.types';
 export function sqliteBinding(value: unknown, field: SqliteField): SqliteValue {
 	if (value === null && field.nullable) return null;
 	if (field.type === 'json' && value !== undefined) {
@@ -8,7 +9,7 @@ export function sqliteBinding(value: unknown, field: SqliteField): SqliteValue {
 	}
 	const scalar = scalarBinding(value, field.type);
 	if (scalar !== undefined) return scalar;
-	throw new Error(`Invalid SQLite ${field.type} field value`);
+	throw new InvalidSqliteFieldValueError(`Invalid SQLite ${field.type} field value`);
 }
 
 function scalarBinding(value: unknown, type: SqliteField['type']): SqliteValue | undefined {
