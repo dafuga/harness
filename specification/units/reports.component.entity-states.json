@@ -443,7 +443,7 @@
 			{
 				"name": "EntityStates",
 				"type": "markup",
-				"description": "The States gallery for the selected scenario: one card per state of that scenario with its Before and After or Current captures, a Viewport select when a viewport is available, a Scenario select only when there is more than one scenario, a Notice that joins the incomparable notes, a Notice for each state whose coverage is not required and a Notice for each missing capture. Opening a capture shows it at full size in an EvidenceViewer."
+				"description": "The States gallery for the selected scenario: one card per state of that scenario with its Before and After or Current captures, a Viewport select when a viewport is available, a Scenario select only when there is more than one scenario, a Notice that joins the incomparable notes, a Notice for each state whose coverage is not required and a Notice for each missing capture. Opening a capture shows it at full size in an EvidenceViewer. Graph coverage uses the newest valid result of the selected scenario at the exact revision, so a later record for another scenario does not hide it."
 			}
 		],
 		"errors": [

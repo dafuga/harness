@@ -39,7 +39,17 @@
 	let scenarios = $derived(evidence.scenarios.filter((scenario) => scenario.viewports.length > 0));
 	let scenario = $derived(scenarios.find((item) => item.id === wanted) ?? scenarios[0]);
 	let playlist = $derived(scenario?.video?.playlists.find((item) => item.id === path));
-	let graphCoverage = $derived(evidence.after.record?.scenarios.find((item) => item.id === scenario?.id)?.videoCoverage ?? []);
+	let graphCoverage = $derived.by(() => {
+		const records =
+			evidence.after.detail?.records ?? (evidence.after.record ? [evidence.after.record] : []);
+		return (
+			records
+				.filter((record) => record.valid && record.source.commit === evidence.after.commit)
+				.sort((left, right) => right.finishedAt.localeCompare(left.finishedAt))
+				.flatMap((record) => record.scenarios)
+				.find((item) => item.id === scenario?.id)?.videoCoverage ?? []
+		);
+	});
 	let screen = $derived(
 		scenario?.viewports.find((item) => item.id === viewport) ?? scenario?.viewports[0]
 	);
@@ -147,7 +157,11 @@
 			{/if}
 		</hx-div>
 	</hx-header>
-	{#if scenario?.video}<VideoGraphNavigation library={scenario.video} coverage={graphCoverage} bind:selected={path} />{/if}
+	{#if scenario?.video}<VideoGraphNavigation
+			library={scenario.video}
+			coverage={graphCoverage}
+			bind:selected={path}
+		/>{/if}
 	{#if evidence.incomparable.length}<Notice as="p" className={'state-gap entity-states-state-gap'}
 			>{evidence.incomparable.join(' ')}</Notice
 		>{/if}
