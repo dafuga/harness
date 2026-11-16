@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.validator.relay-reply",
+	"title": "hub.validator.relay-reply examples",
+	"kind": "headless",
+	"units": ["hub.validator.relay-reply"],
+	"builds": [],
+	"states": [
+		{
+			"id": "rebuilds-a-registration-and-rejects-another-host",
+			"title": "Rebuilds a registration and rejects another host",
+			"coverage": "required"
+		},
+		{
+			"id": "rebuilds-a-host-summary-and-drops-unnamed-fields",
+			"title": "Rebuilds a host summary and drops unnamed fields",
+			"coverage": "required"
+		},
+		{
+			"id": "accepts-only-an-ok-reply-as-the-acknowledgement",
+			"title": "Accepts only an ok reply as the acknowledgement",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.validator.relay-reply.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"rebuilds-a-registration-and-rejects-another-host",
+				"rebuilds-a-host-summary-and-drops-unnamed-fields",
+				"accepts-only-an-ok-reply-as-the-acknowledgement"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"rebuilds-a-registration-and-rejects-another-host",
+				"rebuilds-a-host-summary-and-drops-unnamed-fields",
+				"accepts-only-an-ok-reply-as-the-acknowledgement"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"rebuilds-a-registration-and-rejects-another-host",
+				"rebuilds-a-host-summary-and-drops-unnamed-fields",
+				"accepts-only-an-ok-reply-as-the-acknowledgement"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
