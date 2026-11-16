@@ -4,8 +4,10 @@ import type {
 	Operation,
 	Input
 } from './CapacitorBridgeAdapter.types';
+import { RequestRefusedError } from './CapacitorBridgeAdapter.types';
 import {
 	projectlessMethods,
+	RemoteFailure,
 	revisionMethods
 } from '../../../../../../remote/src/models/Remote.types';
 import type { DesktopBridge } from '../../../../models/development-tooling/DesktopBridge.types';
@@ -34,7 +36,9 @@ const unfinished = 'The computer could not complete this request.';
 /** What the plugin rejects with becomes an ordinary error that keeps the code of the computer. */
 function failure(cause: unknown): Error {
 	const { code, message } = (cause ?? {}) as { code?: string; message?: string };
-	return Object.assign(new Error(message || unfinished), { code: code || 'failed' });
+	return Object.assign(new RemoteFailure('failed', message || unfinished), {
+		code: code || 'failed'
+	});
 }
 
 /**
@@ -92,7 +96,7 @@ export class CapacitorBridgeAdapter {
 	private required(): DesktopBridge {
 		const ask = <T>(method: RemoteMethod, input?: object) => this.request<T>(method, input);
 		return {
-			openProject: () => Promise.reject(new Error(noFolder)),
+			openProject: () => Promise.reject(new RequestRefusedError(noFolder)),
 			snapshot: (input) => this.snapshot(input),
 			entity: (input) => ask('entity', input),
 			source: (input) => ask('source', input),
@@ -135,7 +139,9 @@ export class CapacitorBridgeAdapter {
 
 	private async send(method: RemoteMethod, input: object = {}): Promise<RemoteNativeAnswer> {
 		if (!this.granted.has(method))
-			throw Object.assign(new Error(notAttached), { code: 'method-denied' });
+			throw Object.assign(new RemoteFailure('method-denied', notAttached), {
+				code: 'method-denied'
+			});
 		const body: Input = { ...input };
 		if (!projectlessMethods.includes(method)) body.projectId ??= this.selected ?? undefined;
 		if (revisionMethods.includes(method)) body.revision = this.revision(body.projectId);
@@ -150,7 +156,7 @@ export class CapacitorBridgeAdapter {
 
 	private revision(projectId: string | undefined): RemoteRevision {
 		const known = projectId ? this.revisions.get(projectId) : undefined;
-		if (!known) throw new Error(noRevision);
+		if (!known) throw new RequestRefusedError(noRevision);
 		return known;
 	}
 
