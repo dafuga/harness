@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.execution-runtimes-job-backfill-result-files",
+	"title": "service.execution-runtimes-job-backfill-result-files examples",
+	"kind": "headless",
+	"units": ["service.execution-runtimes-job-backfill-result-files"],
+	"builds": [],
+	"states": [
+		{
+			"id": "finds-sorted-result-files-in-bounded-result-collections",
+			"title": "Finds sorted result files in bounded result collections",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.execution-runtimes-job-backfill-result-files.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["finds-sorted-result-files-in-bounded-result-collections"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["finds-sorted-result-files-in-bounded-result-collections"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["finds-sorted-result-files-in-bounded-result-collections"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
