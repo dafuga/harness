@@ -1,4 +1,5 @@
-import { expect } from 'vitest';
+import { expect, vi } from 'vitest';
+import { HistoryNoteRepository } from '../../src/repositories/git-source-history/history-note-repository/HistoryNoteRepository';
 import { readFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { withTempRepo } from './temporary';
@@ -26,7 +27,17 @@ export async function assertSelectedFrameReader(): Promise<void> {
 			viewport: f.capture.viewport!
 		};
 		const service = new FrameFlagService(root);
-		const flag = await service.flag({ clip: reference, frameNumber: 2, note: 'Healthy A edge' });
+		const fullHistory = vi.spyOn(HistoryNoteRepository.prototype, 'all');
+		let flag: Awaited<ReturnType<FrameFlagService['flag']>>;
+		try {
+			flag = await service.flag({ clip: reference, frameNumber: 2, note: 'Healthy A edge' });
+			expect(
+				fullHistory,
+				'one selected frame must not materialize every unrelated history note'
+			).not.toHaveBeenCalled();
+		} finally {
+			fullHistory.mockRestore();
+		}
 		expect(flag, 'healthy selected archive clip supports frame feedback').toMatchObject({
 			clip: { ...reference, sha256: f.capture.sha256 },
 			frameNumber: 2
