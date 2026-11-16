@@ -9,9 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/reportLocalCleanup.ts"
+			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/reportLocalCleanup.ts",
+			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/reportLocalCleanup.types.ts"
 		],
-		"symbols": ["reportLocalCleanup"]
+		"symbols": ["reportLocalCleanup", "InvalidReportCleanupRootError"]
 	},
 	"contract": {
 		"origin": "declared",
