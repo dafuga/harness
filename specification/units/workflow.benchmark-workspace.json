@@ -8,7 +8,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/benchmark-service/benchmarkWorkspace.ts"],
+		"source": [
+			"src/cli/program/benchmark-service/benchmarkWorkspace.ts",
+			"src/cli/program/benchmark-service/benchmarkWorkspace.types.ts"
+		],
 		"symbols": [
 			"benchmarkGit",
 			"benchmarkFiles",
@@ -16,7 +19,8 @@
 			"createBenchmarkWorkspace",
 			"regularBenchmarkFile",
 			"benchmarkFileValue",
-			"overlayBenchmarkFiles"
+			"overlayBenchmarkFiles",
+			"BenchmarkWorkspaceError"
 		]
 	},
 	"contract": {

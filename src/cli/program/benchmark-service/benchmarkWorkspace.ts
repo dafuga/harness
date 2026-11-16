@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 import { createReadStream } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { benchmarkProcess } from './benchmarkProcess';
+import { BenchmarkWorkspaceError } from './benchmarkWorkspace.types';
 
 export async function benchmarkGit(cwd: string, args: string[]): Promise<string> {
 	const result = await benchmarkProcess({
@@ -11,7 +12,9 @@ export async function benchmarkGit(cwd: string, args: string[]): Promise<string>
 		cwd
 	});
 	if (result.exitCode)
-		throw new Error('Benchmark Git operation failed. Verify the project and revision.');
+		throw new BenchmarkWorkspaceError(
+			'Benchmark Git operation failed. Verify the project and revision.'
+		);
 	return result.stdout;
 }
 export async function benchmarkFiles(project: string, revision: string): Promise<string[]> {
@@ -20,7 +23,7 @@ export async function benchmarkFiles(project: string, revision: string): Promise
 	if (
 		entries.some((entry) => !entry.startsWith('100644 blob ') && !entry.startsWith('100755 blob '))
 	)
-		throw new Error('Benchmark snapshots do not support symlinks or submodules.');
+		throw new BenchmarkWorkspaceError('Benchmark snapshots do not support symlinks or submodules.');
 	return entries.map((entry) => entry.slice(entry.indexOf('\t') + 1));
 }
 export async function snapshotBenchmark(
@@ -36,10 +39,12 @@ export async function snapshotBenchmark(
 		command: ['tar', '-xf', archive, '-C', destination],
 		cwd: project
 	});
-	if (result.exitCode) throw new Error('Could not extract benchmark snapshot.');
+	if (result.exitCode) throw new BenchmarkWorkspaceError('Could not extract benchmark snapshot.');
 	for (const file of files) {
 		if (!(await regularBenchmarkFile(destination, file)))
-			throw new Error('Snapshot files are missing; export-ignore archives are unsupported.');
+			throw new BenchmarkWorkspaceError(
+				'Snapshot files are missing; export-ignore archives are unsupported.'
+			);
 	}
 	await rm(archive);
 	return files;
