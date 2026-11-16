@@ -125,7 +125,7 @@
 			},
 			{
 				"name": "beatFromEnvironment.env",
-				"type": "unknown",
+				"type": "Record<string, string | undefined>",
 				"required": false,
 				"description": "Only HARNESS_AGENT_ID is read from it, trimmed, and a value that is missing or blank means nothing is beaten. Defaults to process.env, the environment of the running process.",
 				"examples": [
@@ -178,7 +178,7 @@
 			},
 			{
 				"name": "renderShown.activity",
-				"type": "unknown",
+				"type": "ProjectActivity",
 				"required": true,
 				"description": "The project activity to render: renderShown reads its repository name, branch and head, its loop types and its recent work, and does not read its changed files.",
 				"examples": [
@@ -252,7 +252,7 @@
 			},
 			{
 				"name": "renderShown.live",
-				"type": "unknown",
+				"type": "LiveActivity",
 				"required": true,
 				"description": "The live activity to render: renderShown reads the name, branch and count of uncommitted changes of each checkout, and renders the agent roster it holds.",
 				"examples": [
@@ -900,7 +900,7 @@
 				"inputs": [
 					{
 						"name": "beatFromEnvironment.env",
-						"type": "unknown",
+						"type": "Record<string, string | undefined>",
 						"required": false,
 						"description": "Only HARNESS_AGENT_ID is read from it, trimmed, and a value that is missing or blank means nothing is beaten. Defaults to process.env, the environment of the running process.",
 						"examples": [
@@ -1030,7 +1030,7 @@
 				"inputs": [
 					{
 						"name": "renderShown.activity",
-						"type": "unknown",
+						"type": "ProjectActivity",
 						"required": true,
 						"description": "The project activity to render: renderShown reads its repository name, branch and head, its loop types and its recent work, and does not read its changed files.",
 						"examples": [
@@ -1104,7 +1104,7 @@
 					},
 					{
 						"name": "renderShown.live",
-						"type": "unknown",
+						"type": "LiveActivity",
 						"required": true,
 						"description": "The live activity to render: renderShown reads the name, branch and count of uncommitted changes of each checkout, and renders the agent roster it holds.",
 						"examples": [
