@@ -21,6 +21,9 @@
 			"NativeSessionAdapter.save",
 			"NativeSessionAdapter.clear",
 			"NativeEncryption",
+			"InvalidStoredHostedSessionError",
+			"StoredHostedSessionUnavailableError",
+			"HostedSessionEncryptionRequiredError",
 			"NativeEncryption"
 		]
 	},
