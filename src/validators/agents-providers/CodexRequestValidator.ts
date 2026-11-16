@@ -2,6 +2,8 @@
 import { z } from 'zod';
 import type { GatewayRequest } from '../../utils/development-tooling/gatewayTypes';
 
+type JsonValue = null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
+
 const schema = z.object({
 	model: z.literal('claude-opus-5-5'),
 	stream: z.literal(true),
@@ -12,7 +14,7 @@ const schema = z.object({
 });
 
 export class CodexRequestValidator {
-	parse(value: unknown): GatewayRequest {
+	parse(value: JsonValue): GatewayRequest {
 		return schema.parse(value);
 	}
 }

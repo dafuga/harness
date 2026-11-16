@@ -16,7 +16,7 @@
 		"inputs": [
 			{
 				"name": "CodexRequestValidator.parse.value",
-				"type": "unknown",
+				"type": "JsonValue",
 				"required": true,
 				"description": "The raw request body passed to CodexRequestValidator.parse, typed unknown because nothing is checked until zod runs. It must be an object with model exactly 'claude-opus-5-5', stream exactly true, input as an array of objects (an empty array is accepted), optional tools as an array of objects (missing tools becomes []), optional instructions as a string, and previous_response_id absent or undefined; other keys are dropped, and any value that breaks these rules makes parse throw a ZodError.",
 				"examples": [
@@ -135,7 +135,7 @@
 				"inputs": [
 					{
 						"name": "CodexRequestValidator.parse.value",
-						"type": "unknown",
+						"type": "JsonValue",
 						"required": true,
 						"description": "The raw request body passed to CodexRequestValidator.parse, typed unknown because nothing is checked until zod runs. It must be an object with model exactly 'claude-opus-5-5', stream exactly true, input as an array of objects (an empty array is accepted), optional tools as an array of objects (missing tools becomes []), optional instructions as a string, and previous_response_id absent or undefined; other keys are dropped, and any value that breaks these rules makes parse throw a ZodError.",
 						"examples": [
