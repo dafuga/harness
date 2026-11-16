@@ -1,5 +1,6 @@
 // @harness-uid u_rmurdehorf
 import { createHash } from 'node:crypto';
+import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import type {
 	ModuleTask,
 	ModuleTaskInput,
@@ -10,7 +11,7 @@ export function moduleTaskPrompt(task: ModuleTask, commit: string): string {
 	if (
 		createHash('sha256').update(stableJson(task.wantedContract)).digest('hex') !== task.contractHash
 	)
-		throw new Error('Wanted contract hash does not match the committed task.');
+		throw new ExpectedCliError('Wanted contract hash does not match the committed task.');
 	return [
 		`Overall goal: ${task.feature.goal}`,
 		`Feature TLDR: ${task.feature.tldr}`,
@@ -34,15 +35,15 @@ export function taskSelection(
 ): TaskSelection {
 	if (task.model === 'auto') {
 		if (task.provider || task.intelligence)
-			throw new Error(
+			throw new ExpectedCliError(
 				'Set an explicit model before provider or intelligence; auto owns both choices.'
 			);
 		return { provider: 'claude', model: 'claude-haiku-5-5', intelligence: 'medium' };
 	}
 	const provider = task.provider ?? modelProvider(task.model);
-	if (!provider) throw new Error('Set provider for this exact model id.');
+	if (!provider) throw new ExpectedCliError('Set provider for this exact model id.');
 	if (provider === 'claude' && task.intelligence === 'ultra')
-		throw new Error('Claude does not support ultra intelligence.');
+		throw new ExpectedCliError('Claude does not support ultra intelligence.');
 	return { provider, model: task.model, intelligence: task.intelligence ?? 'medium' };
 }
 function modelProvider(model: string): TaskSelection['provider'] | undefined {
