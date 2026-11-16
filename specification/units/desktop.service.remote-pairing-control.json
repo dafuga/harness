@@ -24,7 +24,11 @@
 			"RemotePairingControlService.seen",
 			"RemotePairingControlService.flush",
 			"RemoteHostAccess",
-			"RemoteHostAccess"
+			"RemoteHostAccess",
+			"ProjectNotOpenedError",
+			"PairingOfferUnsupportedError",
+			"PairingOfferCreationError",
+			"PairingRequestNotWaitingError"
 		]
 	},
 	"contract": {

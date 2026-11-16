@@ -1,4 +1,10 @@
 // @harness-uid u_kl5coeje2e
+import {
+	PairingOfferCreationError,
+	PairingOfferUnsupportedError,
+	PairingRequestNotWaitingError,
+	ProjectNotOpenedError
+} from './RemotePairingControlService.types';
 import type { RemoteHostAccess } from './RemotePairingControlService.types';
 import { RemoteInputValidator, offerEnvironment } from '../../../../../remote/src/index';
 import type {
@@ -43,7 +49,7 @@ async function scoped(
 			.filter((project) => approval.projectIds.includes(project.id))
 			.map(({ id, name }) => ({ id, name }));
 	if (projects.length !== approval.projectIds.length)
-		throw new Error('Only projects opened on this computer can be shared.');
+		throw new ProjectNotOpenedError('Only projects opened on this computer can be shared.');
 	return { ...approval, projects };
 }
 
@@ -77,12 +83,16 @@ export class RemotePairingControlService {
 		const { runtime, state } = this.host.current(),
 			earlier = runtime.pairing.offer();
 		if (!offerEnvironment(state.origin ?? ''))
-			throw new Error('The relay of this computer cannot be shown to a phone as a QR code.');
+			throw new PairingOfferUnsupportedError(
+				'The relay of this computer cannot be shown to a phone as a QR code.'
+			);
 		if (earlier) void this.tell(runtime, { type: 'pairing-close', pairingId: earlier.pairingId });
 		const pairingId = await openedOffer(runtime);
 		const { pairing } = await this.host.published();
 		if (pairing?.pairingId === pairingId) return pairing;
-		throw new Error(runtime.pairing.offer() ? replaced : 'The pairing offer could not be opened.');
+		throw new PairingOfferCreationError(
+			runtime.pairing.offer() ? replaced : 'The pairing offer could not be opened.'
+		);
 	}
 	/** Withdraws the open offer and whoever asked with it: neither can be used any more. */
 	async closePairing(): Promise<RemoteHostStatus> {
@@ -103,7 +113,8 @@ export class RemotePairingControlService {
 			waiting = runtime.pairing
 				.requests()
 				.some((item) => item.pairingId === pairingId && item.deviceId === shown);
-		if (!waiting) throw new Error('This pairing request is no longer waiting.');
+		if (!waiting)
+			throw new PairingRequestNotWaitingError('This pairing request is no longer waiting.');
 		const earlier = state.devices.find((device) => device.deviceId === shown),
 			generation = (earlier ? earlier.generation : 0) + 1,
 			grant = {
