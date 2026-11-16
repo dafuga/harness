@@ -50,7 +50,7 @@
 			},
 			{
 				"name": "LocalClientService.emit.value",
-				"type": "unknown",
+				"type": "RunEvent | CacheStatus | RemoteConnectionEvent",
 				"required": true,
 				"description": "The payload that emit forwards unchanged to the wire session; the two sends in this file pass a RunEvent on the 'run' channel. emit does not inspect the value.",
 				"examples": [
@@ -157,7 +157,7 @@
 					},
 					{
 						"name": "LocalClientService.emit.value",
-						"type": "unknown",
+						"type": "RunEvent | CacheStatus | RemoteConnectionEvent",
 						"required": true,
 						"description": "The payload that emit forwards unchanged to the wire session; the two sends in this file pass a RunEvent on the 'run' channel. emit does not inspect the value.",
 						"examples": [
@@ -250,6 +250,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.model.agent-runner-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-bridge-types",
 			"via": "import",
 			"origin": "derived"
 		},
