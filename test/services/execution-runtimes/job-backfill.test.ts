@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { JobBackfillService } from '../../../src/services/execution-runtimes/JobBackfillService';
 import { JobHistoryRepository } from '../../../src/repositories/execution-runtimes/JobHistoryRepository';
@@ -29,6 +29,7 @@ test('import reads historical phase results once and skips invalid or absent tim
 			durationMs: 120000,
 			timingSource: 'file-mtime-minus-duration'
 		});
+		verifyAttempts(root, repo, service);
 		writeFileSync(
 			path,
 			JSON.stringify({ task: 'task', model: 'luna', status: 'pass', seconds: -1 })
@@ -37,3 +38,47 @@ test('import reads historical phase results once and skips invalid or absent tim
 		repo.close();
 	});
 });
+
+function verifyAttempts(
+	root: string,
+	repo: JobHistoryRepository,
+	service: JobBackfillService
+): void {
+	const dir = join(root, 'results-code-phase-reverify', 'gate');
+	mkdirSync(dir, { recursive: true });
+	const path = join(dir, 'result.json');
+	writeFileSync(
+		path,
+		JSON.stringify({
+			task: 'gate',
+			unit: 'unit.gate',
+			model: 'haiku',
+			status: 'pass',
+			tried: [
+				{ model: 'luna', seconds: 10, ok: false },
+				{ model: 'haiku', seconds: 20, ok: true }
+			]
+		})
+	);
+	const endedAt = Math.round(statSync(path).mtimeMs);
+	repo.import({
+		id: 'gate',
+		unit: 'unit.gate',
+		source: `backfill:${path}`,
+		attempt: 1,
+		type: 'reverify',
+		model: 'haiku',
+		startedAt: endedAt - 30000,
+		endedAt,
+		durationMs: 30000,
+		outcome: 'pass',
+		timingSource: 'file-mtime-minus-duration'
+	});
+	expect(service.import(root)).toMatchObject({ imported: 2, duplicate: 1 });
+	expect(repo.all().filter((row) => row.type === 'reverify')).toMatchObject([
+		{ model: 'luna', durationMs: 10000, attempt: 1, outcome: 'fail' },
+		{ model: 'haiku', durationMs: 20000, attempt: 2, outcome: 'pass' }
+	]);
+	expect(service.import(root)).toMatchObject({ imported: 0, duplicate: 3 });
+	expect(repo.all()).toHaveLength(3);
+}
