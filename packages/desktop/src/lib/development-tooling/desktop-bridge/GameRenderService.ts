@@ -14,7 +14,7 @@ const renderers = new Map<string, DecartAdapter>();
 export class GameRenderService {
 	constructor(
 		private session: ProjectSessionService,
-		private transportReady = () => false,
+		private transportReady: () => boolean = () => false,
 		private send: (url: string, options: RequestInit) => Promise<Response> = globalThis.fetch
 	) {}
 	async start(input: RenderSessionRequest) {
