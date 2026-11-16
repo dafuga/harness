@@ -23,7 +23,7 @@
 			},
 			{
 				"name": "evidencePayload.x",
-				"type": "object",
+				"type": "Record<string, unknown>",
 				"required": true,
 				"description": "The request object, read by field name; a null or undefined value throws a TypeError, and an identifier is lowercase letters or digits with single dots or hyphens only between them. Every call needs entityId (an identifier up to 120 characters), commit (exactly 40 lowercase hex characters), branch (not blank and up to 255 characters, otherwise unchecked) and mode (current or commit), and an evidence:artifact call also needs side (before or after), recordId and sha256 (exactly 64 lowercase hex characters each), scenarioId, state and evidenceId (identifiers up to 120 characters each), viewport (null or an identifier up to 300 characters), and notesRevision and evidenceRevision (null or exactly 40 lowercase hex characters).",
 				"examples": [
@@ -117,7 +117,7 @@
 					},
 					{
 						"name": "evidencePayload.x",
-						"type": "object",
+						"type": "Record<string, unknown>",
 						"required": true,
 						"description": "The request object, read by field name; a null or undefined value throws a TypeError, and an identifier is lowercase letters or digits with single dots or hyphens only between them. Every call needs entityId (an identifier up to 120 characters), commit (exactly 40 lowercase hex characters), branch (not blank and up to 255 characters, otherwise unchecked) and mode (current or commit), and an evidence:artifact call also needs side (before or after), recordId and sha256 (exactly 64 lowercase hex characters each), scenarioId, state and evidenceId (identifiers up to 120 characters each), viewport (null or an identifier up to 300 characters), and notesRevision and evidenceRevision (null or exactly 40 lowercase hex characters).",
 						"examples": [
@@ -205,11 +205,6 @@
 	"dependencies": [
 		{
 			"unit": "desktop.function.ipc-fields",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.model.desktop-evidence-types",
 			"via": "import",
 			"origin": "derived"
 		}
