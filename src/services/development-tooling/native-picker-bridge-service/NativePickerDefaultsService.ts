@@ -5,6 +5,7 @@ import {
 	type PickerData,
 	type PickerRpc
 } from '../../../utils/development-tooling/nativePickerProtocol';
+import { InvalidConfigurationEditsError } from './NativePickerDefaultsService.types';
 
 /** Copy-local, in-memory preferences; the original OpenAI config remains authoritative on launch. */
 export class NativePickerDefaultsService {
@@ -15,7 +16,8 @@ export class NativePickerDefaultsService {
 	) {}
 
 	async write(params: PickerData, options?: PickerData): Promise<PickerData> {
-		if (!Array.isArray(params.edits)) throw new Error('Invalid configuration edits');
+		if (!Array.isArray(params.edits))
+			throw new InvalidConfigurationEditsError('Invalid configuration edits');
 		const modelEdits = params.edits.filter((edit) => this.isModelEdit(edit));
 		const remaining = params.edits.filter((edit) => !this.isModelEdit(edit));
 		for (const edit of modelEdits) {

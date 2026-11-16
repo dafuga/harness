@@ -9,13 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/services/development-tooling/native-picker-bridge-service/NativePickerDefaultsService.ts"
+			"src/services/development-tooling/native-picker-bridge-service/NativePickerDefaultsService.ts",
+			"src/services/development-tooling/native-picker-bridge-service/NativePickerDefaultsService.types.ts"
 		],
 		"symbols": [
 			"NativePickerDefaultsService",
 			"NativePickerDefaultsService.constructor",
 			"NativePickerDefaultsService.write",
-			"NativePickerDefaultsService.read"
+			"NativePickerDefaultsService.read",
+			"InvalidConfigurationEditsError"
 		]
 	},
 	"contract": {
