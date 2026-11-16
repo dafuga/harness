@@ -10,6 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/remote/src/utils/networking-security/remoteKeys.ts",
+			"packages/remote/src/utils/networking-security/remoteKeys.types.ts",
 			"packages/remote/src/utils/remoteKeys.ts"
 		],
 		"symbols": [
@@ -19,6 +20,7 @@
 			"exportRemoteKeys",
 			"deriveBytes",
 			"aesKey",
+			"RemoteKeyError",
 			"remoteKeys",
 			"sharedSecret",
 			"importRemoteKeys",
