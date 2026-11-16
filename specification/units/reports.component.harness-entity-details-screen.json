@@ -369,12 +369,12 @@
 				"inputs": [
 					{
 						"name": "EntityDetailsScreen.children.entity",
-						"type": "unknown",
+						"type": "ExplorerEntity",
 						"required": true
 					},
 					{
 						"name": "EntityDetailsScreen.children.nav",
-						"type": "unknown",
+						"type": "EntityNav",
 						"required": true
 					}
 				],
@@ -406,12 +406,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.entity-shown",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.model.explorer-screen-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
 			"via": "import",
 			"origin": "derived"
 		}
