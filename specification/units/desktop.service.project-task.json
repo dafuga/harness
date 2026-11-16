@@ -9,9 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService.ts"
+			"packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService.ts",
+			"packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService.types.ts"
 		],
-		"symbols": ["ProjectTaskService", "ProjectTaskService.run"]
+		"symbols": [
+			"ProjectTaskService",
+			"ProjectTaskService.run",
+			"ReadOnlyAgentChangedFilesError",
+			"ReadOnlyAgentChangedFilesError.constructor"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -92,7 +98,20 @@
 				"errorStatus": "declared"
 			}
 		],
-		"initialization": []
+		"initialization": [
+			{
+				"name": "ReadOnlyAgentChangedFilesError.constructor",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ReadOnlyAgentChangedFilesError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{
