@@ -47,14 +47,14 @@
 			},
 			{
 				"name": "text.value",
-				"type": "T",
+				"type": "unknown",
 				"required": true,
 				"description": "Accepts only a string whose trimmed form is nonempty and whose JavaScript length is at most 1,000,000. Validation does not trim or replace the original value.",
 				"examples": ["Plan design", "Plan validation notes"]
 			},
 			{
 				"name": "slug.value",
-				"type": "T",
+				"type": "unknown",
 				"required": true,
 				"description": "Accepts a lowercase slug starting with a letter, followed by lowercase letters or digits and optionally hyphen-separated nonempty lowercase alphanumeric groups. It must be at most 64 characters.",
 				"examples": ["planning", "plan-validate", "rev2"]
@@ -245,7 +245,7 @@
 				"inputs": [
 					{
 						"name": "text.value",
-						"type": "T",
+						"type": "unknown",
 						"required": true,
 						"description": "Accepts only a string whose trimmed form is nonempty and whose JavaScript length is at most 1,000,000. Validation does not trim or replace the original value.",
 						"examples": ["Plan design", "Plan validation notes"]
@@ -254,7 +254,7 @@
 				"outputs": [
 					{
 						"name": "text",
-						"type": "asserts value is T & string",
+						"type": "asserts value is string",
 						"description": "On success the assertion narrows the supplied value to string; it returns undefined and leaves the original value unchanged."
 					}
 				],
@@ -272,7 +272,7 @@
 				"inputs": [
 					{
 						"name": "slug.value",
-						"type": "T",
+						"type": "unknown",
 						"required": true,
 						"description": "Accepts a lowercase slug starting with a letter, followed by lowercase letters or digits and optionally hyphen-separated nonempty lowercase alphanumeric groups. It must be at most 64 characters.",
 						"examples": ["planning", "plan-validate", "rev2"]
@@ -281,7 +281,7 @@
 				"outputs": [
 					{
 						"name": "slug",
-						"type": "asserts value is T & string",
+						"type": "asserts value is string",
 						"description": "On success the assertion narrows the supplied value to string; it returns undefined without altering the slug."
 					}
 				],
