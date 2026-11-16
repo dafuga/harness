@@ -10,9 +10,16 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/shared-primitives/recorded-preview/artifactBytes.ts",
+			"packages/desktop/src/components/shared-primitives/recorded-preview/artifactBytes.types.ts",
 			"packages/desktop/src/utils/shared-primitives/artifactBytes.ts"
 		],
-		"symbols": ["artifactBytes", "unreadArtifact", "damagedArtifact", "artifactBytes"]
+		"symbols": [
+			"artifactBytes",
+			"ArtifactReadError",
+			"unreadArtifact",
+			"damagedArtifact",
+			"artifactBytes"
+		]
 	},
 	"contract": {
 		"origin": "declared",
