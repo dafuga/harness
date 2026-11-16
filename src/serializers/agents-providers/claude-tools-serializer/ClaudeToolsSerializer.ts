@@ -7,6 +7,7 @@ import type { GatewayItem, GatewaySession } from '../../../utils/development-too
 import type { CodexSessionRepository } from '../../../cli/program/codex-gateway-service/codex-session-repository/CodexSessionRepository';
 import { GatewayContentSerializer } from '../../development-tooling/GatewayContentSerializer';
 import { GatewayEventsService } from './GatewayEventsService';
+import { UnsupportedToolShapeError } from './ClaudeToolsSerializer.types';
 
 export class ClaudeToolsSerializer {
 	private readonly events = new GatewayEventsService();
@@ -21,7 +22,7 @@ export class ClaudeToolsSerializer {
 
 	private createTool(definition: GatewayItem, session: GatewaySession, index: number) {
 		if (!['function', 'custom'].includes(String(definition.type)))
-			throw new Error('Unsupported Codex tool shape');
+			throw new UnsupportedToolShapeError('Unsupported Codex tool shape');
 		const name = String(definition.name);
 		const custom = definition.type === 'custom';
 		const json = custom
