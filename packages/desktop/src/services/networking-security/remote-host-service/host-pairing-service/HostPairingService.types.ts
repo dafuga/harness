@@ -3,6 +3,14 @@ import type { RemoteKeyPair } from '../../../../../../remote/src/models/networki
 import type { RelayPairingRequest } from '../../../../../../remote/src/models/networking-security/RemoteRelay.types';
 import type { RemotePairingRequest } from '../../../../../../remote/src/models/networking-security/RemoteControl.types';
 
+export class PairingRequestNotFoundError extends Error {
+	override name = 'PairingRequestNotFoundError';
+}
+
+export class PairingPhoneMismatchError extends Error {
+	override name = 'PairingPhoneMismatchError';
+}
+
 export interface HostPairingOptions {
 	hostId: string;
 	keys: RemoteKeyPair;
