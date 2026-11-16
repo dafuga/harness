@@ -33,7 +33,7 @@
 			},
 			{
 				"name": "GameProjectService.constructor.projectsRoot",
-				"type": "unknown",
+				"type": "string",
 				"required": false,
 				"description": "The folder that create uses as the parent of each new project folder; create creates it recursively when it is missing. Defaults to join(homedir(), 'projects'): the 'projects' folder inside the user's home directory.",
 				"examples": ["/workspace/projects", "/workspace/game-projects"]
@@ -548,7 +548,7 @@
 					},
 					{
 						"name": "GameProjectService.constructor.projectsRoot",
-						"type": "unknown",
+						"type": "string",
 						"required": false,
 						"description": "The folder that create uses as the parent of each new project folder; create creates it recursively when it is missing. Defaults to join(homedir(), 'projects'): the 'projects' folder inside the user's home directory.",
 						"examples": ["/workspace/projects", "/workspace/game-projects"]

@@ -13,7 +13,7 @@ import type { ProjectSessionService } from '../../../services/projects-sessions/
 export class GameProjectService {
 	constructor(
 		private session: ProjectSessionService,
-		private projectsRoot = join(homedir(), 'projects')
+		private projectsRoot: string = join(homedir(), 'projects')
 	) {}
 	async create(input: Parameters<NonNullable<DesktopBridge['gameCreate']>>[0]) {
 		if (this.session.busy || this.session.pending)
