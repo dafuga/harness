@@ -1094,6 +1094,12 @@
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
+			"from": "packages/desktop/src/components/reports-media/RuntimeAudio.svelte",
+			"specifier": "$reports/helpers/verification-evidence/comparisonPanes.types",
+			"to": "packages/reports/src/helpers/verification-evidence/comparisonPanes.types.ts",
+			"reason": "Shared Reports types through the workspace build alias."
+		},
+		{
 			"from": "packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte",
 			"specifier": "$shared/shared-primitives/ComparePanes.svelte",
 			"to": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
@@ -1106,6 +1112,12 @@
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte",
+			"specifier": "$reports/helpers/verification-evidence/comparisonPanes.types",
+			"to": "packages/reports/src/helpers/verification-evidence/comparisonPanes.types.ts",
+			"reason": "Shared Reports types through the workspace build alias."
+		},
+		{
 			"from": "packages/desktop/src/components/execution-runtimes/RuntimeScreens.svelte",
 			"specifier": "$shared/shared-primitives/ComparePanes.svelte",
 			"to": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
@@ -1116,6 +1128,12 @@
 			"specifier": "$reports/helpers/verification-evidence/comparisonPanes",
 			"to": "packages/reports/src/helpers/verification-evidence/comparisonPanes.ts",
 			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeScreens.svelte",
+			"specifier": "$reports/helpers/verification-evidence/comparisonPanes.types",
+			"to": "packages/reports/src/helpers/verification-evidence/comparisonPanes.types.ts",
+			"reason": "Shared Reports types through the workspace build alias."
 		},
 		{
 			"from": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
@@ -1230,6 +1248,12 @@
 			"specifier": "$reports/helpers/verification-evidence/behaviorFacts",
 			"to": "packages/reports/src/helpers/verification-evidence/behaviorFacts.ts",
 			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte",
+			"specifier": "$reports/helpers/verification-evidence/behaviorFacts.types",
+			"to": "packages/reports/src/helpers/verification-evidence/behaviorFacts.types.ts",
+			"reason": "Shared Reports types through the workspace build alias."
 		},
 		{
 			"from": "packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte",
