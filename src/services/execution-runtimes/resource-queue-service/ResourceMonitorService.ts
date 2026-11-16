@@ -1,5 +1,6 @@
 // @harness-uid u_o3ryl56fze
 import { setTimeout as delay } from 'node:timers/promises';
+import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import { mib } from '../../../core/execution-runtimes/resourceTypes';
 import type {
 	ResourceJob,
@@ -52,7 +53,7 @@ export class ResourceMonitorService {
 				.all()
 				.some((parent) => parent.id === job.parentId && parent.state === 'running')
 		)
-			throw new Error('Parent resource reservation ended');
+			throw new ExpectedCliError('Parent resource reservation ended');
 	}
 
 	async wait(id: string, request: ResourceRequest, options: RunOptions): Promise<void> {
@@ -74,10 +75,10 @@ export class ResourceMonitorService {
 			lastSample = sample;
 			check();
 			if (impossibleRequest(request, sample, config))
-				throw new Error('Resource request exceeds usable capacity after reserves');
+				throw new ExpectedCliError('Resource request exceeds usable capacity after reserves');
 			lastJobs = this.options.queue.schedule(sample, config);
 			const job = lastJobs.find((j) => j.id === id);
-			if (!job) throw new Error('Resource request disappeared');
+			if (!job) throw new ExpectedCliError('Resource request disappeared');
 			this.checkParent(job);
 			if (job.state === 'running') return;
 			if (job.notice && job.notice !== stated) {
@@ -91,7 +92,7 @@ export class ResourceMonitorService {
 
 function checkWaiting(options: RunOptions, deadline: number, message: () => string): void {
 	options.signal?.throwIfAborted();
-	if (Date.now() > deadline) throw new Error(message());
+	if (Date.now() > deadline) throw new ExpectedCliError(message());
 }
 
 function timeoutMessage(
