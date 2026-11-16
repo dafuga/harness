@@ -24,7 +24,9 @@
 			"AgentHttpAdapter.shown",
 			"AgentHttpAdapter.listen",
 			"AgentHttpAdapter.call",
-			"AgentCall"
+			"AgentCall",
+			"AgentBranchTipViewRequiredError",
+			"UnacknowledgedAgentRequestError"
 		]
 	},
 	"contract": {
