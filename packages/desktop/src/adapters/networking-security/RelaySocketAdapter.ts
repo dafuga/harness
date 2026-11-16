@@ -1,5 +1,9 @@
 // @harness-uid u_a556ymjyde
-import type { RelaySocketAdapterConfig, HeaderSocketConstructor } from './RelaySocketAdapter.types';
+import {
+	RelaySocketConnectionError,
+	type RelaySocketAdapterConfig,
+	type HeaderSocketConstructor
+} from './RelaySocketAdapter.types';
 import type { RemoteSocket } from '../../../../remote/src/index';
 const open = 1;
 
@@ -11,7 +15,9 @@ export class RelaySocketAdapter {
 			socket = new Socket(url, { headers });
 		const opened = new Promise<void>((resolve, reject) => {
 			socket.addEventListener('open', () => resolve());
-			socket.addEventListener('error', () => reject(new Error('The relay could not be reached.')));
+			socket.addEventListener('error', () =>
+				reject(new RelaySocketConnectionError('The relay could not be reached.'))
+			);
 		});
 		opened.catch(() => undefined);
 		return {
