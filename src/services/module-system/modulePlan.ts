@@ -1,6 +1,7 @@
 // @harness-uid u_jeu6jsmjv2
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 import type { ModuleDefinition } from './moduleDefinition.types';
 import type { PlannedFile } from '../../core/development-tooling/files';
 
@@ -11,7 +12,7 @@ export async function modulePackagePlan(
 ): Promise<PlannedFile> {
 	const manifest = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
 	if (definition.appOnly && !['app', 'game'].includes(manifest.harness?.kind))
-		throw new Error('This module requires a Harness app project.');
+		throw new ExpectedCliError('This module requires a Harness app project.');
 	for (const field of ['dependencies', 'devDependencies'] as const) {
 		if (Object.keys(definition[field] ?? {}).length)
 			manifest[field] = moduleDependencies(manifest[field], definition[field]);
@@ -48,7 +49,9 @@ function moduleDependencies(
 	const dependencies = { ...existing };
 	for (const [name, version] of Object.entries(requested)) {
 		if (dependencies[name] && dependencies[name] !== version)
-			throw new Error(`Resolve the existing dependency ${name} before installing this module.`);
+			throw new ExpectedCliError(
+				`Resolve the existing dependency ${name} before installing this module.`
+			);
 		dependencies[name] = version;
 	}
 	return dependencies;

@@ -407,6 +407,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.files",
 			"via": "import",
 			"origin": "derived"
