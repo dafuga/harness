@@ -17,7 +17,7 @@ const record = (v: unknown): v is RecordValue =>
 const text = (v: unknown) => typeof v === 'string' && v.length <= 4000;
 const validList = (v: unknown) => list(v) && v.every(safe);
 
-export function validateDocument(input: unknown): string[] {
+export function validateDocument<T>(input: T): string[] {
 	if (
 		!record(input) ||
 		input.version !== 1 ||
@@ -125,7 +125,7 @@ function validateAction(a: unknown, views: RecordValue[], errors: string[]): voi
 	if (a.type === 'visibility' && typeof a.value !== 'boolean')
 		errors.push('Visibility must be boolean');
 }
-export function assertDocument(input: unknown): asserts input is GameDocument {
+export function assertDocument<T>(input: T): asserts input is T & GameDocument {
 	const errors = validateDocument(input);
 	if (errors.length) throw new InvalidGameDocumentError(errors.join('; '));
 }
