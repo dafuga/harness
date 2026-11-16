@@ -33,7 +33,9 @@ export class VerificationStoreRepository {
 	load(reference: string): StoredRecord | undefined {
 		const path = resolve(this.root, reference);
 		if (existsSync(path) && statSync(path).isFile()) return this.read(path);
-		return this.all().find((stored) => stored.record.id === reference);
+		for (const stored of this.records())
+			if (stored.record.id === reference) return stored;
+		return undefined;
 	}
 
 	/** The most recent record of a commit, whatever its outcome. */
