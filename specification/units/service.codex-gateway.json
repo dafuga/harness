@@ -8,11 +8,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/codex-gateway-service/CodexGatewayService.ts"],
+		"source": [
+			"src/cli/program/codex-gateway-service/CodexGatewayService.ts",
+			"src/cli/program/codex-gateway-service/CodexGatewayService.types.ts"
+		],
 		"symbols": [
 			"CodexGatewayService",
 			"CodexGatewayService.constructor",
-			"CodexGatewayService.fetch"
+			"CodexGatewayService.fetch",
+			"InvalidGatewayRequestError"
 		]
 	},
 	"contract": {

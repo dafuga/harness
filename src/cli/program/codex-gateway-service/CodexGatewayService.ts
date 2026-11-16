@@ -3,6 +3,7 @@ import { timingSafeEqual } from 'node:crypto';
 import { CodexRequestValidator } from '../../../validators/agents-providers/CodexRequestValidator';
 import { CodexSessionRepository } from './codex-session-repository/CodexSessionRepository';
 import { ClaudeGatewayAdapter } from './ClaudeGatewayAdapter';
+import { InvalidGatewayRequestError } from './CodexGatewayService.types';
 import { gatewayReplay } from './gatewayReplay';
 import { gatewayStream } from './gatewayStream';
 
@@ -32,17 +33,19 @@ export class CodexGatewayService {
 	private async respond(request: globalThis.Request): Promise<Response> {
 		try {
 			const body = await request.text();
-			if (Buffer.byteLength(body) > 32 * 1024 * 1024) throw new Error('Request too large');
+			if (Buffer.byteLength(body) > 32 * 1024 * 1024)
+				throw new InvalidGatewayRequestError('Request too large');
 			const input = new CodexRequestValidator().parse(JSON.parse(body));
 			const id = request.headers.get('thread-id');
-			if (!id || id.length > 256) throw new Error('thread-id required');
+			if (!id || id.length > 256) throw new InvalidGatewayRequestError('thread-id required');
 			const session = this.repository.create(id);
 			if (session.emit)
 				return Response.json({ error: 'Session has an active response' }, { status: 409 });
 			const key = gatewayReplay(input);
 			const cached = session.replays.get(key);
 			if (cached) return new Response(cached, { headers: { 'Content-Type': 'text/event-stream' } });
-			if (session.replays.size >= 16) throw new Error('Prototype request limit reached');
+			if (session.replays.size >= 16)
+				throw new InvalidGatewayRequestError('Prototype request limit reached');
 			const adapter = new ClaudeGatewayAdapter(this.repository);
 			adapter.validate(input, session);
 			const response = gatewayStream(session, this.repository, { key, signal: request.signal });
