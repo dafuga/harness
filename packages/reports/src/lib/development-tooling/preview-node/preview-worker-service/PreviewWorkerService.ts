@@ -2,8 +2,10 @@
 import { spawn, type ChildProcess } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
 import { commandEnvironment } from '../../../../../../../src/adapters/execution-runtimes/BoundedCommandAdapter';
+import { ExpectedCliError } from '../../../../../../../src/core/development-tooling/errors';
 import { setTimeout as delay } from 'node:timers/promises';
 import { readPreviewHealth } from './previewHealth';
+import { PreviewWorkerIdentityChangedError } from './PreviewWorkerService.types';
 import type { PreviewHandle } from '../../../../services/accounts-access/preview-server-service/PreviewServerService';
 
 /** A single recoverable worker; the separate supervisor retains the ownership listener. */
@@ -32,7 +34,7 @@ export class PreviewWorkerService {
 		await this.stop();
 	}
 	private async launch() {
-		if (this.stopped) throw new Error('Preview stopped.');
+		if (this.stopped) throw new ExpectedCliError('Preview stopped.');
 		this.token = randomUUID();
 		const child = spawn('node', [this.entry, ...this.args], {
 			stdio: 'inherit',
@@ -44,7 +46,7 @@ export class PreviewWorkerService {
 		const deadline = Date.now() + 20000;
 		while (!this.stopped && Date.now() < deadline) {
 			if (failure || child.exitCode !== null || child.signalCode !== null)
-				throw new Error(failure || 'Preview worker exited before readiness.');
+				throw new ExpectedCliError(failure || 'Preview worker exited before readiness.');
 			try {
 				if ((await readPreviewHealth(this.url, this.token)).pid === child.pid) return;
 			} catch {
@@ -52,7 +54,7 @@ export class PreviewWorkerService {
 			}
 			await delay(100);
 		}
-		throw new Error('Preview worker did not become ready.');
+		throw new ExpectedCliError('Preview worker did not become ready.');
 	}
 	private schedule() {
 		if (!this.stopped) this.timer = setTimeout(() => void this.check(), 1500);
@@ -60,7 +62,8 @@ export class PreviewWorkerService {
 	private async check() {
 		try {
 			const health = await readPreviewHealth(this.url, this.token);
-			if (health.pid !== this.child?.pid) throw new Error('Worker identity changed.');
+			if (health.pid !== this.child?.pid)
+				throw new PreviewWorkerIdentityChangedError('Worker identity changed.');
 			this.misses = health.errors >= 3 && !health.busy ? this.misses + 1 : 0;
 			if (!this.misses && Date.now() - this.healthySince > 30000) this.retries = 0;
 		} catch {
