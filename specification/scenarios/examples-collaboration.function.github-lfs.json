@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-collaboration.function.github-lfs",
+	"title": "collaboration.function.github-lfs examples",
+	"kind": "headless",
+	"units": ["collaboration.function.github-lfs"],
+	"builds": [],
+	"states": [
+		{
+			"id": "returns-bytes-that-are-not-an-lfs-pointer-unchanged",
+			"title": "Returns bytes that are not an LFS pointer unchanged",
+			"coverage": "required"
+		},
+		{
+			"id": "downloads-a-pointed-to-object-whose-size-and-hash-match",
+			"title": "Downloads a pointed-to object whose size and hash match",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-malformed-pointers-and-sizes-over-the-limit",
+			"title": "Rejects malformed pointers and sizes over the limit",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-a-download-url-that-is-not-a-permitted-https-host",
+			"title": "Refuses a download URL that is not a permitted HTTPS host",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-lfs-unavailable-when-bytes-do-not-match-the-pointer",
+			"title": "Reports lfs-unavailable when bytes do not match the pointer",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-lfs-unavailable-when-token-transfer-or-reply-fails",
+			"title": "Reports lfs-unavailable when token, transfer or reply fails",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/collaboration.function.github-lfs.test.ts",
+			"cwd": "packages/collaboration",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"returns-bytes-that-are-not-an-lfs-pointer-unchanged",
+				"downloads-a-pointed-to-object-whose-size-and-hash-match",
+				"rejects-malformed-pointers-and-sizes-over-the-limit",
+				"refuses-a-download-url-that-is-not-a-permitted-https-host",
+				"reports-lfs-unavailable-when-bytes-do-not-match-the-pointer",
+				"reports-lfs-unavailable-when-token-transfer-or-reply-fails"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"returns-bytes-that-are-not-an-lfs-pointer-unchanged",
+				"downloads-a-pointed-to-object-whose-size-and-hash-match",
+				"rejects-malformed-pointers-and-sizes-over-the-limit",
+				"refuses-a-download-url-that-is-not-a-permitted-https-host",
+				"reports-lfs-unavailable-when-bytes-do-not-match-the-pointer",
+				"reports-lfs-unavailable-when-token-transfer-or-reply-fails"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"returns-bytes-that-are-not-an-lfs-pointer-unchanged",
+				"downloads-a-pointed-to-object-whose-size-and-hash-match",
+				"rejects-malformed-pointers-and-sizes-over-the-limit",
+				"refuses-a-download-url-that-is-not-a-permitted-https-host",
+				"reports-lfs-unavailable-when-bytes-do-not-match-the-pointer",
+				"reports-lfs-unavailable-when-token-transfer-or-reply-fails"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
