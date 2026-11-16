@@ -58,7 +58,15 @@ export async function recordAnalytics(
 		console.error('Warning: Harness analytics could not be recorded.');
 	}
 }
-export function fingerprint(value: unknown): string {
+/** JSON.stringify input; nested undefined is allowed, top-level undefined throws. */
+type FingerprintValue =
+	| string
+	| number
+	| boolean
+	| null
+	| readonly (FingerprintValue | undefined)[]
+	| { [key: string]: FingerprintValue | undefined };
+export function fingerprint(value: FingerprintValue): string {
 	return createHash('sha256').update(JSON.stringify(value)).digest('hex');
 }
 export async function validateReport(context: AnalyticsContext): Promise<void> {

@@ -83,7 +83,7 @@
 			},
 			{
 				"name": "fingerprint.value",
-				"type": "unknown",
+				"type": "FingerprintValue",
 				"required": true,
 				"description": "Value serialized with JSON.stringify before SHA-256 hashing. It must serialize to a string; cyclic values and values such as undefined that serialize to no string throw.",
 				"examples": [
@@ -292,7 +292,7 @@
 				"inputs": [
 					{
 						"name": "fingerprint.value",
-						"type": "unknown",
+						"type": "FingerprintValue",
 						"required": true,
 						"description": "Value serialized with JSON.stringify before SHA-256 hashing. It must serialize to a string; cyclic values and values such as undefined that serialize to no string throw.",
 						"examples": [
