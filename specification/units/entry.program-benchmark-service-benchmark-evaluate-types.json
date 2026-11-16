@@ -9,16 +9,45 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/cli/program/benchmark-service/benchmarkEvaluate.types.ts"],
-		"symbols": ["BenchmarkEvaluationInput"]
+		"symbols": [
+			"BenchmarkSetupError",
+			"BenchmarkSetupError.constructor",
+			"BenchmarkEvaluationInput"
+		]
 	},
 	"contract": {
 		"origin": "declared",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "BenchmarkSetupError.constructor.message",
+				"type": "string",
+				"required": true
+			}
+		],
 		"outputs": [],
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [],
-		"initialization": []
+		"initialization": [
+			{
+				"name": "BenchmarkSetupError.constructor",
+				"inputs": [
+					{
+						"name": "BenchmarkSetupError.constructor.message",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BenchmarkSetupError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{
