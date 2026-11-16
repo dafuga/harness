@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.report-cli",
+	"title": "reports.function.report-cli examples",
+	"kind": "headless",
+	"units": ["reports.function.report-cli"],
+	"builds": [],
+	"states": [
+		{
+			"id": "parses-report-operations-flags-and-positionals",
+			"title": "Parses report operations flags and positionals",
+			"coverage": "required"
+		},
+		{
+			"id": "reads-inline-and-file-json-input",
+			"title": "Reads inline and file JSON input",
+			"coverage": "required"
+		},
+		{
+			"id": "requires-a-nonblank-value-and-preserves-whitespace",
+			"title": "Requires a nonblank value and preserves whitespace",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.report-cli.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"parses-report-operations-flags-and-positionals",
+				"reads-inline-and-file-json-input",
+				"requires-a-nonblank-value-and-preserves-whitespace"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"parses-report-operations-flags-and-positionals",
+				"reads-inline-and-file-json-input",
+				"requires-a-nonblank-value-and-preserves-whitespace"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"parses-report-operations-flags-and-positionals",
+				"reads-inline-and-file-json-input",
+				"requires-a-nonblank-value-and-preserves-whitespace"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
