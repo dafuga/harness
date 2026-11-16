@@ -9,10 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/adapters/networking-security/HostedSessionEncryptionRequiredError.ts",
+			"packages/desktop/src/adapters/networking-security/InvalidStoredHostedSessionError.ts",
 			"packages/desktop/src/adapters/networking-security/NativeSessionAdapter.ts",
-			"packages/desktop/src/adapters/networking-security/NativeSessionAdapter.types.ts"
+			"packages/desktop/src/adapters/networking-security/NativeSessionAdapter.types.ts",
+			"packages/desktop/src/adapters/networking-security/StoredHostedSessionUnavailableError.ts"
 		],
 		"symbols": [
+			"HostedSessionEncryptionRequiredError",
+			"InvalidStoredHostedSessionError",
 			"NativeSessionAdapter",
 			"NativeSessionAdapter.constructor",
 			"NativeSessionAdapter.invalidate",
@@ -21,10 +26,8 @@
 			"NativeSessionAdapter.save",
 			"NativeSessionAdapter.clear",
 			"NativeEncryption",
-			"InvalidStoredHostedSessionError",
-			"StoredHostedSessionUnavailableError",
-			"HostedSessionEncryptionRequiredError",
-			"NativeEncryption"
+			"NativeEncryption",
+			"StoredHostedSessionUnavailableError"
 		]
 	},
 	"contract": {

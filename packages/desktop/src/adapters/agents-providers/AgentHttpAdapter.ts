@@ -1,9 +1,7 @@
 // @harness-uid u_5gsnsmohic
-import {
-	AgentBranchTipViewRequiredError,
-	UnacknowledgedAgentRequestError,
-	type AgentCall
-} from './AgentHttpAdapter.types';
+import type { AgentCall } from './AgentHttpAdapter.types';
+import { AgentBranchTipViewRequiredError } from './AgentBranchTipViewRequiredError';
+import { UnacknowledgedAgentRequestError } from './UnacknowledgedAgentRequestError';
 import type { RunEvent, RevisionQuery } from '../../models/development-tooling/DesktopBridge.types';
 import type { ProjectSnapshot } from '../../models/development-tooling/Desktop.types';
 /** Ignore volatile context when retrying an unacknowledged start; resend its original payload. */

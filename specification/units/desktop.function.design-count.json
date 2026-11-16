@@ -9,14 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/utils/planning-collaboration/designCount.ts",
-			"packages/desktop/src/utils/planning-collaboration/designCount.types.ts"
+			"packages/desktop/src/utils/planning-collaboration/DesignOptionsOnChangeError.ts",
+			"packages/desktop/src/utils/planning-collaboration/InvalidDesignOptionsError.ts",
+			"packages/desktop/src/utils/planning-collaboration/designCount.ts"
 		],
 		"symbols": [
-			"defaultDesignOptions",
-			"designCount",
 			"DesignOptionsOnChangeError",
-			"InvalidDesignOptionsError"
+			"InvalidDesignOptionsError",
+			"defaultDesignOptions",
+			"designCount"
 		]
 	},
 	"contract": {

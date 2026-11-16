@@ -7,11 +7,9 @@ import { reportLock } from '../../utils/reports-media/reportLock';
 import { resultStatus } from '../../utils/reports-media/reportState';
 import { r2ObjectKey } from '../../adapters/reports-media/R2ScreenshotStoreAdapter';
 import type { Evidence, Report } from '../../models/reports-media/Report.types';
-import {
-	InvalidCleanupTimeError,
-	InvalidReportAssetsDirectoryError,
-	InvalidReportExportsDirectoryError
-} from './ScreenshotRetentionService.types';
+import { InvalidCleanupTimeError } from './InvalidCleanupTimeError';
+import { InvalidReportAssetsDirectoryError } from './InvalidReportAssetsDirectoryError';
+import { InvalidReportExportsDirectoryError } from './InvalidReportExportsDirectoryError';
 
 const retentionMs = 30 * 24 * 60 * 60 * 1000;
 function expired(item: Evidence, report: Report, cutoff: number) {

@@ -1,10 +1,8 @@
 // @harness-uid u_b7hlwurone
-import {
-	CliCommandFailedError,
-	CliOutputLimitError,
-	CliRequestTimeoutError,
-	type ProcessOptions
-} from './cliProcess.types';
+import type { ProcessOptions } from './cliProcess.types';
+import { CliCommandFailedError } from './CliCommandFailedError';
+import { CliOutputLimitError } from './CliOutputLimitError';
+import { CliRequestTimeoutError } from './CliRequestTimeoutError';
 export type { ProcessOptions } from './cliProcess.types';
 import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import { StringDecoder } from 'node:string_decoder';

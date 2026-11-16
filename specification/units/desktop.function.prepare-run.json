@@ -11,20 +11,22 @@
 		"source": [
 			"packages/desktop/src/services/agents-providers/desktop-run-service/prepareRun.ts",
 			"packages/desktop/src/services/agents-providers/desktop-run-service/prepareRun.types.ts",
+			"packages/desktop/src/utils/agents-providers/CodexImageGenerationCapabilityError.ts",
+			"packages/desktop/src/utils/agents-providers/DefaultImageOrchestrationModelMissingError.ts",
 			"packages/desktop/src/utils/agents-providers/prepareRun.ts",
 			"packages/desktop/src/utils/agents-providers/prepareRun.types.ts"
 		],
 		"symbols": [
 			"prepareRun",
 			"ThreadNotInEntityError",
+			"CodexImageGenerationCapabilityError",
+			"DefaultImageOrchestrationModelMissingError",
 			"imageModel",
 			"messageFor",
 			"recordRunFailure",
 			"prepareRun",
 			"Preparation",
-			"Preparation",
-			"CodexImageGenerationCapabilityError",
-			"DefaultImageOrchestrationModelMissingError"
+			"Preparation"
 		]
 	},
 	"contract": {

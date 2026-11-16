@@ -9,14 +9,16 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/utils/reports-media/audio-asset/audioAsset.ts",
-			"packages/reports/src/utils/reports-media/audio-asset/audioAsset.types.ts"
+			"packages/reports/src/utils/reports-media/audio-asset/AudioContentMismatchError.ts",
+			"packages/reports/src/utils/reports-media/audio-asset/InvalidAudioFileError.ts",
+			"packages/reports/src/utils/reports-media/audio-asset/UnsupportedAudioFormatError.ts",
+			"packages/reports/src/utils/reports-media/audio-asset/audioAsset.ts"
 		],
 		"symbols": [
-			"audioAsset",
+			"AudioContentMismatchError",
 			"InvalidAudioFileError",
 			"UnsupportedAudioFormatError",
-			"AudioContentMismatchError"
+			"audioAsset"
 		]
 	},
 	"contract": {

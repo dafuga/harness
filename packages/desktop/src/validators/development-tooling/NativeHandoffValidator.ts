@@ -1,12 +1,10 @@
 // @harness-uid u_u5rruiwyuu
 import { responseRecord } from '../projects-sessions/RemoteProjectResponseValidator';
-import {
-	ExpiredNativeHandoffError,
-	InvalidNativeHandoffError,
-	InvalidNativeHandoffIdentityError,
-	InvalidNativeHandoffUrlError,
-	NativeHandoffBindingMismatchError
-} from './NativeHandoffValidator.types';
+import { ExpiredNativeHandoffError } from './ExpiredNativeHandoffError';
+import { InvalidNativeHandoffError } from './InvalidNativeHandoffError';
+import { InvalidNativeHandoffIdentityError } from './InvalidNativeHandoffIdentityError';
+import { InvalidNativeHandoffUrlError } from './InvalidNativeHandoffUrlError';
+import { NativeHandoffBindingMismatchError } from './NativeHandoffBindingMismatchError';
 import type { NativeHostedCredential } from '../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 import type { NativeHostedStatus } from '../../models/projects-sessions/ProjectContext.types';
 export class NativeHandoffValidator {

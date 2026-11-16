@@ -9,19 +9,21 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/services/reports-media/ScreenshotRetentionService.ts",
-			"packages/reports/src/services/reports-media/ScreenshotRetentionService.types.ts"
+			"packages/reports/src/services/reports-media/InvalidCleanupTimeError.ts",
+			"packages/reports/src/services/reports-media/InvalidReportAssetsDirectoryError.ts",
+			"packages/reports/src/services/reports-media/InvalidReportExportsDirectoryError.ts",
+			"packages/reports/src/services/reports-media/ScreenshotRetentionService.ts"
 		],
 		"symbols": [
-			"ScreenshotRetentionService",
-			"ScreenshotRetentionService.constructor",
-			"ScreenshotRetentionService.run",
 			"InvalidCleanupTimeError",
 			"InvalidCleanupTimeError.constructor",
 			"InvalidReportAssetsDirectoryError",
 			"InvalidReportAssetsDirectoryError.constructor",
 			"InvalidReportExportsDirectoryError",
-			"InvalidReportExportsDirectoryError.constructor"
+			"InvalidReportExportsDirectoryError.constructor",
+			"ScreenshotRetentionService",
+			"ScreenshotRetentionService.constructor",
+			"ScreenshotRetentionService.run"
 		]
 	},
 	"contract": {
@@ -113,26 +115,6 @@
 		],
 		"initialization": [
 			{
-				"name": "ScreenshotRetentionService.constructor",
-				"inputs": [
-					{
-						"name": "ScreenshotRetentionService.constructor.repository",
-						"type": "ReportRepository",
-						"required": false,
-						"description": "The repository that run uses to list the reports it scans, to load each one, and to resolve its directory. Defaults to new ReportRepository() when omitted, and the readonly field keeps that repository for every run call."
-					}
-				],
-				"outputs": [
-					{
-						"name": "ScreenshotRetentionService.constructor",
-						"type": "ScreenshotRetentionService",
-						"description": "The ScreenshotRetentionService instance the constructor creates, holding the given repository (or a new ReportRepository() when none is passed) in its readonly repository field. run is its only public method."
-					}
-				],
-				"errors": [],
-				"errorStatus": "declared"
-			},
-			{
 				"name": "InvalidCleanupTimeError.constructor",
 				"inputs": [],
 				"outputs": [
@@ -167,6 +149,26 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "ScreenshotRetentionService.constructor",
+				"inputs": [
+					{
+						"name": "ScreenshotRetentionService.constructor.repository",
+						"type": "ReportRepository",
+						"required": false,
+						"description": "The repository that run uses to list the reports it scans, to load each one, and to resolve its directory. Defaults to new ReportRepository() when omitted, and the readonly field keeps that repository for every run call."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ScreenshotRetentionService.constructor",
+						"type": "ScreenshotRetentionService",
+						"description": "The ScreenshotRetentionService instance the constructor creates, holding the given repository (or a new ReportRepository() when none is passed) in its readonly repository field. run is its only public method."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
 			}
 		]
 	},

@@ -11,19 +11,3 @@ export interface RemoteHostAccess {
 	published(): Promise<RemoteHostStatus>;
 	name(): string;
 }
-
-export class ProjectNotOpenedError extends Error {
-	override name = 'ProjectNotOpenedError';
-}
-
-export class PairingOfferUnsupportedError extends Error {
-	override name = 'PairingOfferUnsupportedError';
-}
-
-export class PairingOfferCreationError extends Error {
-	override name = 'PairingOfferCreationError';
-}
-
-export class PairingRequestNotWaitingError extends Error {
-	override name = 'PairingRequestNotWaitingError';
-}

@@ -9,17 +9,19 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/AgentChangedFilesError.ts",
 			"packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
 			"packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.types.ts",
+			"packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/SourceRevisionAdvancedError.ts",
 			"packages/desktop/src/services/desktop-run-service/project-run-service/ProjectRunService.ts"
 		],
 		"symbols": [
+			"AgentChangedFilesError",
 			"plannedBefore",
 			"ProjectRunService",
 			"ProjectRunService.run",
 			"Progress",
 			"Host",
-			"AgentChangedFilesError",
 			"SourceRevisionAdvancedError",
 			"plannedBefore",
 			"ProjectRunService"

@@ -1,11 +1,9 @@
 // @harness-uid u_rnymveoz42
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
-import {
-	InvalidRevisionError,
-	SourceFileTooLargeError,
-	UnsafeSourcePathError
-} from './gitRead.types';
+import { InvalidRevisionError } from './InvalidRevisionError';
+import { SourceFileTooLargeError } from './SourceFileTooLargeError';
+import { UnsafeSourcePathError } from './UnsafeSourcePathError';
 
 const run = promisify(execFile);
 

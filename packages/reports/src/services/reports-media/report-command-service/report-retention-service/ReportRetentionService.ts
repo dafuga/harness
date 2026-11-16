@@ -9,12 +9,10 @@ import { reportLock } from '../../../../utils/reports-media/reportLock';
 import { reportRetention, reportLifetimeMs } from '../../../../utils/reports-media/reportRetention';
 import { reportLocalCleanup } from './reportLocalCleanup';
 import { InvalidReportCleanupRootError } from './reportLocalCleanup.types';
-import { InvalidReportPublicationReceiptError } from './ReportPagesRetentionAdapter.types';
-import {
-	InvalidExportLockError,
-	InvalidPublicationRetentionTimestampError,
-	InvalidPublicationStagingDirectoryError
-} from './ReportRetentionService.types';
+import { InvalidReportPublicationReceiptError } from './InvalidReportPublicationReceiptError';
+import { InvalidExportLockError } from './InvalidExportLockError';
+import { InvalidPublicationRetentionTimestampError } from './InvalidPublicationRetentionTimestampError';
+import { InvalidPublicationStagingDirectoryError } from './InvalidPublicationStagingDirectoryError';
 import type { StorageSyncOptions } from '../ReportStorageSyncService';
 import type { Report } from '../../../../models/reports-media/Report.types';
 import { reportCleanupLog } from './reportCleanupLog';

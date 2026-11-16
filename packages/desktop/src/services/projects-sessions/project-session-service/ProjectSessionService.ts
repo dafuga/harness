@@ -13,13 +13,11 @@ import { CatalogService } from './catalog-service/CatalogService';
 import type { RevisionQuery } from '../../../models/development-tooling/DesktopBridge.types';
 import type { ProjectSnapshot } from '../../../models/development-tooling/Desktop.types';
 import { gitRead } from '../../../utils/projects-sessions/gitRead';
-import {
-	CheckedOutBranchChangedError,
-	ProjectNotOpenError,
-	ProjectNotSelectedError,
-	ProjectRevisionReadOnlyError,
-	ProjectSwitchBlockedError
-} from './ProjectSessionService.types';
+import { CheckedOutBranchChangedError } from './CheckedOutBranchChangedError';
+import { ProjectNotOpenError } from './ProjectNotOpenError';
+import { ProjectNotSelectedError } from './ProjectNotSelectedError';
+import { ProjectRevisionReadOnlyError } from './ProjectRevisionReadOnlyError';
+import { ProjectSwitchBlockedError } from './ProjectSwitchBlockedError';
 export class ProjectSessionService {
 	root: string | null = null;
 	projectId: string | null = null;

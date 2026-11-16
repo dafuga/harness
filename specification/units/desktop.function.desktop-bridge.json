@@ -9,17 +9,23 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/DesktopSessionEndedError.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/DraftSourceNotRegisteredError.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/HostedSignInNotConfiguredError.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/PlanningArtifactsBusyError.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/RepositoryLeaseUnavailableError.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/UnknownEntityError.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.types.ts"
 		],
 		"symbols": [
-			"desktopBridge",
-			"PlanningArtifactsBusyError",
 			"DesktopSessionEndedError",
-			"RepositoryLeaseUnavailableError",
-			"UnknownEntityError",
 			"DraftSourceNotRegisteredError",
 			"HostedSignInNotConfiguredError",
+			"PlanningArtifactsBusyError",
+			"RepositoryLeaseUnavailableError",
+			"UnknownEntityError",
+			"desktopBridge",
 			"BridgeContext"
 		]
 	},

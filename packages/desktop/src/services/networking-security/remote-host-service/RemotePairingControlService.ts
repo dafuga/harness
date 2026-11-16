@@ -1,10 +1,8 @@
 // @harness-uid u_kl5coeje2e
-import {
-	PairingOfferCreationError,
-	PairingOfferUnsupportedError,
-	PairingRequestNotWaitingError,
-	ProjectNotOpenedError
-} from './RemotePairingControlService.types';
+import { PairingOfferCreationError } from './PairingOfferCreationError';
+import { PairingOfferUnsupportedError } from './PairingOfferUnsupportedError';
+import { PairingRequestNotWaitingError } from './PairingRequestNotWaitingError';
+import { ProjectNotOpenedError } from './ProjectNotOpenedError';
 import type { RemoteHostAccess } from './RemotePairingControlService.types';
 import { RemoteInputValidator, offerEnvironment } from '../../../../../remote/src/index';
 import type {

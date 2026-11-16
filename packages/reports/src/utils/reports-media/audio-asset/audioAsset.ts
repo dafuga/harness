@@ -2,11 +2,9 @@
 import { createHash } from 'node:crypto';
 import { extname } from 'node:path';
 import { mediaMime } from '../../verification-evidence/evidenceMedia';
-import {
-	AudioContentMismatchError,
-	InvalidAudioFileError,
-	UnsupportedAudioFormatError
-} from './audioAsset.types';
+import { AudioContentMismatchError } from './AudioContentMismatchError';
+import { InvalidAudioFileError } from './InvalidAudioFileError';
+import { UnsupportedAudioFormatError } from './UnsupportedAudioFormatError';
 import { wavInfo } from './wavInfo';
 
 function mp3Offset(bytes: Buffer) {

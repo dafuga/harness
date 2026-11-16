@@ -1,12 +1,10 @@
 // @harness-uid u_6yzc5wxfxm
 import type { PreviewOwner } from '../../../utils/accounts-access/previewOwner';
 import { previewOwnerPath } from '../../../utils/accounts-access/previewOwner';
-import {
-	InvalidPreviewOwnerAddressError,
-	PreviewOwnerIdentityMismatchError,
-	PreviewOwnerPortOccupiedError,
-	PreviewOwnerStillStartingError
-} from './previewOwner.types';
+import { InvalidPreviewOwnerAddressError } from './InvalidPreviewOwnerAddressError';
+import { PreviewOwnerIdentityMismatchError } from './PreviewOwnerIdentityMismatchError';
+import { PreviewOwnerPortOccupiedError } from './PreviewOwnerPortOccupiedError';
+import { PreviewOwnerStillStartingError } from './PreviewOwnerStillStartingError';
 
 /** A bound slot is never assumed to be ours merely because it answers HTTP. */
 export async function previewOwner(port: number, identity: string): Promise<string> {

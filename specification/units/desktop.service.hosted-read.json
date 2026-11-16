@@ -9,22 +9,28 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/development-tooling/HostedAuthorityChangedError.ts",
+			"packages/desktop/src/services/development-tooling/HostedCacheIdentityMismatchError.ts",
 			"packages/desktop/src/services/development-tooling/HostedReadService.ts",
-			"packages/desktop/src/services/development-tooling/HostedReadService.types.ts"
+			"packages/desktop/src/services/development-tooling/HostedReadService.types.ts",
+			"packages/desktop/src/services/development-tooling/HostedSessionRequiredError.ts",
+			"packages/desktop/src/services/development-tooling/IncompleteHostedCacheIdentityError.ts",
+			"packages/desktop/src/services/development-tooling/InvalidHostedCacheRevisionError.ts",
+			"packages/desktop/src/services/development-tooling/InvalidHostedCollaborationRevisionError.ts"
 		],
 		"symbols": [
+			"HostedAuthorityChangedError",
+			"HostedCacheIdentityMismatchError",
 			"HostedReadService",
 			"HostedReadService.constructor",
 			"HostedReadService.read",
 			"HostedReadOptions",
-			"HostedAuthorityChangedError",
+			"HostedReadOptions",
+			"ReadContext",
 			"HostedSessionRequiredError",
-			"HostedCacheIdentityMismatchError",
 			"IncompleteHostedCacheIdentityError",
 			"InvalidHostedCacheRevisionError",
-			"InvalidHostedCollaborationRevisionError",
-			"HostedReadOptions",
-			"ReadContext"
+			"InvalidHostedCollaborationRevisionError"
 		]
 	},
 	"contract": {

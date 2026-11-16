@@ -9,18 +9,19 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/planning/src/utils/planning-collaboration/plan-write/LfsFilterOutputMismatchError.ts",
+			"packages/planning/src/utils/planning-collaboration/plan-write/MissingLfsFilterError.ts",
 			"packages/planning/src/utils/planning-collaboration/plan-write/planCommit.ts",
-			"packages/planning/src/utils/planning-collaboration/plan-write/planCommit.types.ts",
 			"packages/planning/src/utils/planning-collaboration/planCommit.ts",
 			"packages/planning/src/utils/planning-collaboration/planCommit.types.ts"
 		],
 		"symbols": [
-			"planCommit",
-			"requireLfsFilters",
-			"MissingLfsFilterError",
-			"MissingLfsFilterError.constructor",
 			"LfsFilterOutputMismatchError",
 			"LfsFilterOutputMismatchError.constructor",
+			"MissingLfsFilterError",
+			"MissingLfsFilterError.constructor",
+			"planCommit",
+			"requireLfsFilters",
 			"stageFiles",
 			"planCommit",
 			"requireLfsFilters",
@@ -288,11 +289,11 @@
 		],
 		"initialization": [
 			{
-				"name": "MissingLfsFilterError.constructor",
+				"name": "LfsFilterOutputMismatchError.constructor",
 				"inputs": [],
 				"outputs": [
 					{
-						"name": "MissingLfsFilterError.constructor",
+						"name": "LfsFilterOutputMismatchError.constructor",
 						"type": "unknown"
 					}
 				],
@@ -300,11 +301,11 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "LfsFilterOutputMismatchError.constructor",
+				"name": "MissingLfsFilterError.constructor",
 				"inputs": [],
 				"outputs": [
 					{
-						"name": "LfsFilterOutputMismatchError.constructor",
+						"name": "MissingLfsFilterError.constructor",
 						"type": "unknown"
 					}
 				],

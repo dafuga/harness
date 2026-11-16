@@ -9,16 +9,18 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportRetentionService.ts",
-			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportRetentionService.types.ts"
+			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/InvalidExportLockError.ts",
+			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/InvalidPublicationRetentionTimestampError.ts",
+			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/InvalidPublicationStagingDirectoryError.ts",
+			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportRetentionService.ts"
 		],
 		"symbols": [
+			"InvalidExportLockError",
+			"InvalidPublicationRetentionTimestampError",
+			"InvalidPublicationStagingDirectoryError",
 			"ReportRetentionService",
 			"ReportRetentionService.constructor",
-			"ReportRetentionService.run",
-			"InvalidPublicationStagingDirectoryError",
-			"InvalidPublicationRetentionTimestampError",
-			"InvalidExportLockError"
+			"ReportRetentionService.run"
 		]
 	},
 	"contract": {

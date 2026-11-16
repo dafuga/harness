@@ -10,7 +10,12 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/development-tooling/DeploymentActivityService.ts",
-			"packages/desktop/src/services/development-tooling/DeploymentActivityService.types.ts"
+			"packages/desktop/src/services/development-tooling/DeploymentActivityService.types.ts",
+			"packages/desktop/src/services/development-tooling/DeploymentAlreadyStartedError.ts",
+			"packages/desktop/src/services/development-tooling/DeploymentCapacityError.ts",
+			"packages/desktop/src/services/development-tooling/MissingDeploymentTargetError.ts",
+			"packages/desktop/src/services/development-tooling/RequiredLowerEnvironmentDeploymentError.ts",
+			"packages/desktop/src/services/development-tooling/UnknownDeploymentError.ts"
 		],
 		"symbols": [
 			"DeploymentActivityService",
@@ -21,13 +26,13 @@
 			"DeploymentActivityService.ensureCapacity",
 			"DeploymentActivityService.schedule",
 			"desktopDeployments",
-			"UnknownDeploymentError",
-			"DeploymentCapacityError",
-			"DeploymentAlreadyStartedError",
-			"RequiredLowerEnvironmentDeploymentError",
-			"MissingDeploymentTargetError",
 			"Work",
-			"Entry"
+			"Entry",
+			"DeploymentAlreadyStartedError",
+			"DeploymentCapacityError",
+			"MissingDeploymentTargetError",
+			"RequiredLowerEnvironmentDeploymentError",
+			"UnknownDeploymentError"
 		]
 	},
 	"contract": {

@@ -4,7 +4,8 @@ import type {
 	ProjectTaskRequest,
 	RunRequest
 } from '../../models/development-tooling/DesktopBridge.types';
-import { DesignOptionsOnChangeError, InvalidDesignOptionsError } from './designCount.types';
+import { DesignOptionsOnChangeError } from './DesignOptionsOnChangeError';
+import { InvalidDesignOptionsError } from './InvalidDesignOptionsError';
 
 /** Design options a Plan of a visual unit makes when it states no count of its own. */
 export const defaultDesignOptions = 3;

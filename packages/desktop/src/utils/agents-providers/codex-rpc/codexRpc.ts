@@ -8,7 +8,8 @@ import { killOwnedProcess } from '../cliProcess';
 import { streamLines } from '../../shared-primitives/streamLines';
 import type { RpcEvent, RpcPending } from '../rpcMessages';
 import { rpcMessages, rpcRequest } from './rpcMessages';
-import { CodexConnectionClosedError, CodexMessageTooLargeError } from './codexRpc.types';
+import { CodexConnectionClosedError } from './CodexConnectionClosedError';
+import { CodexMessageTooLargeError } from './CodexMessageTooLargeError';
 /** Consumes diagnostics without exposing raw output or private reasoning to the renderer. */
 function connection(command: CliCommand, resources?: ResourceContext) {
 	const child = spawn(command.command, command.args, {

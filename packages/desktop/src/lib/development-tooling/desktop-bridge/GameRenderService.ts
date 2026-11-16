@@ -3,12 +3,10 @@ import { DecartAdapter } from '../../../../../game/src/adapters/agents-providers
 import type { RenderSessionRequest } from '../../../../../game/src/models/game-authoring/Game.types';
 import type { ProjectSessionService } from '../../../services/projects-sessions/project-session-service/ProjectSessionService';
 import { ProjectGameCredentialAdapter } from '../../../adapters/game-authoring/ProjectGameCredentialAdapter';
-import {
-	CredentialSafeProviderTransportUnavailableError,
-	DecartTokenRequestError,
-	GameRenderBusyError,
-	InvalidDecartTokenResponseError
-} from './GameRenderService.types';
+import { CredentialSafeProviderTransportUnavailableError } from './CredentialSafeProviderTransportUnavailableError';
+import { DecartTokenRequestError } from './DecartTokenRequestError';
+import { GameRenderBusyError } from './GameRenderBusyError';
+import { InvalidDecartTokenResponseError } from './InvalidDecartTokenResponseError';
 const renderers = new Map<string, DecartAdapter>();
 
 export class GameRenderService {

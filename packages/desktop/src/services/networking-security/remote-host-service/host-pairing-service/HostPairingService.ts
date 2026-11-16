@@ -7,7 +7,8 @@ import type {
 	HostPairingApproved,
 	Requested
 } from './HostPairingService.types';
-import { PairingPhoneMismatchError, PairingRequestNotFoundError } from './HostPairingService.types';
+import { PairingPhoneMismatchError } from './PairingPhoneMismatchError';
+import { PairingRequestNotFoundError } from './PairingRequestNotFoundError';
 import { remoteLimits } from '../../../../../../remote/src/models/Remote.types';
 import type { RemoteGrant } from '../../../../../../remote/src/models/Remote.types';
 import type { RemotePairingRequest } from '../../../../../../remote/src/models/networking-security/RemoteControl.types';

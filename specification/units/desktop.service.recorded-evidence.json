@@ -9,18 +9,20 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/LocalBranchRequiredError.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-bridge/RecordedEvidenceService.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-bridge/RecordedEvidenceService.types.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/RecordedEvidenceService.types.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/RegisteredProjectIdRequiredError.ts"
 		],
 		"symbols": [
+			"LocalBranchRequiredError",
 			"RecordedEvidenceService",
 			"RecordedEvidenceService.constructor",
 			"RecordedEvidenceService.evidence",
 			"RecordedEvidenceService.artifact",
 			"Shown",
-			"RegisteredProjectIdRequiredError",
-			"LocalBranchRequiredError",
-			"ProjectRead"
+			"ProjectRead",
+			"RegisteredProjectIdRequiredError"
 		]
 	},
 	"contract": {

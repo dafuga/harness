@@ -10,12 +10,14 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/InvalidHostedSourceError.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.types.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/UnknownHostedImageAnchorError.ts"
 		],
 		"symbols": [
 			"NativeHostedCredential",
 			"RemoteHttpProjectAdapter",
+			"InvalidHostedSourceError",
 			"NativeHostedCredential",
 			"RemoteHttpProjectAdapter",
 			"RemoteHttpProjectAdapter.constructor",
@@ -33,7 +35,6 @@
 			"RemoteHttpProjectAdapter.history",
 			"RemoteHttpProjectAdapter.capabilities",
 			"RemoteHttpProjectAdapter.addComment",
-			"InvalidHostedSourceError",
 			"UnknownHostedImageAnchorError"
 		]
 	},

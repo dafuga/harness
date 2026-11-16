@@ -11,12 +11,10 @@ import { reportIngest } from './reportIngest';
 import { ReportRecordValidator } from '../../../validators/reports-media/ReportRecordValidator';
 import { registeredAsset } from '../../../utils/reports-media/reportAssets';
 import { EvidenceStorageService } from '../../../services/verification-evidence/EvidenceStorageService';
-import {
-	InvalidReportDirectoryError,
-	ReportAlreadyFinalizedError,
-	ReportNotActiveError,
-	ReportNotFinalizingError
-} from './ReportRepository.types';
+import { InvalidReportDirectoryError } from './InvalidReportDirectoryError';
+import { ReportAlreadyFinalizedError } from './ReportAlreadyFinalizedError';
+import { ReportNotActiveError } from './ReportNotActiveError';
+import { ReportNotFinalizingError } from './ReportNotFinalizingError';
 
 export class ReportRepository {
 	readonly root: string;

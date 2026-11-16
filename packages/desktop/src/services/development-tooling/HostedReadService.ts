@@ -1,14 +1,12 @@
 // @harness-uid u_qqalll47m3
 import type { HostedReadOptions, ReadContext } from './HostedReadService.types';
 import type { CacheIdentity } from '../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
-import {
-	HostedAuthorityChangedError,
-	HostedCacheIdentityMismatchError,
-	HostedSessionRequiredError,
-	IncompleteHostedCacheIdentityError,
-	InvalidHostedCacheRevisionError,
-	InvalidHostedCollaborationRevisionError
-} from './HostedReadService.types';
+import { HostedAuthorityChangedError } from './HostedAuthorityChangedError';
+import { HostedCacheIdentityMismatchError } from './HostedCacheIdentityMismatchError';
+import { HostedSessionRequiredError } from './HostedSessionRequiredError';
+import { IncompleteHostedCacheIdentityError } from './IncompleteHostedCacheIdentityError';
+import { InvalidHostedCacheRevisionError } from './InvalidHostedCacheRevisionError';
+import { InvalidHostedCollaborationRevisionError } from './InvalidHostedCollaborationRevisionError';
 import { HostedFailureValidator } from '../../validators/development-tooling/HostedFailureValidator';
 export class HostedReadService {
 	constructor(private options: HostedReadOptions) {}

@@ -10,21 +10,25 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/validators/RemoteProjectResponseValidator.ts",
-			"packages/desktop/src/validators/projects-sessions/RemoteProjectResponseValidator.ts",
-			"packages/desktop/src/validators/projects-sessions/RemoteProjectResponseValidator.types.ts"
+			"packages/desktop/src/validators/projects-sessions/HostedActorIdentityError.ts",
+			"packages/desktop/src/validators/projects-sessions/HostedActorRequiredError.ts",
+			"packages/desktop/src/validators/projects-sessions/HostedCommentAnchorMismatchError.ts",
+			"packages/desktop/src/validators/projects-sessions/HostedCommentIdentityMismatchError.ts",
+			"packages/desktop/src/validators/projects-sessions/HostedCommentNotAcknowledgedError.ts",
+			"packages/desktop/src/validators/projects-sessions/HostedThreadMismatchError.ts",
+			"packages/desktop/src/validators/projects-sessions/InvalidHostedEntityError.ts",
+			"packages/desktop/src/validators/projects-sessions/InvalidHostedHistoryEventError.ts",
+			"packages/desktop/src/validators/projects-sessions/InvalidHostedHistoryPageError.ts",
+			"packages/desktop/src/validators/projects-sessions/InvalidHostedMessagesError.ts",
+			"packages/desktop/src/validators/projects-sessions/InvalidHostedProjectError.ts",
+			"packages/desktop/src/validators/projects-sessions/InvalidHostedProjectsError.ts",
+			"packages/desktop/src/validators/projects-sessions/InvalidHostedResponseRecordError.ts",
+			"packages/desktop/src/validators/projects-sessions/InvalidHostedSnapshotError.ts",
+			"packages/desktop/src/validators/projects-sessions/RemoteProjectResponseValidator.ts"
 		],
 		"symbols": [
 			"responseRecord",
 			"RemoteProjectResponseValidator",
-			"responseRecord",
-			"RemoteProjectResponseValidator",
-			"RemoteProjectResponseValidator.actor",
-			"RemoteProjectResponseValidator.projects",
-			"RemoteProjectResponseValidator.snapshot",
-			"RemoteProjectResponseValidator.entity",
-			"RemoteProjectResponseValidator.messages",
-			"RemoteProjectResponseValidator.history",
-			"RemoteProjectResponseValidator.comment",
 			"HostedActorIdentityError",
 			"HostedActorRequiredError",
 			"HostedCommentAnchorMismatchError",
@@ -38,7 +42,16 @@
 			"InvalidHostedProjectError",
 			"InvalidHostedProjectsError",
 			"InvalidHostedResponseRecordError",
-			"InvalidHostedSnapshotError"
+			"InvalidHostedSnapshotError",
+			"responseRecord",
+			"RemoteProjectResponseValidator",
+			"RemoteProjectResponseValidator.actor",
+			"RemoteProjectResponseValidator.projects",
+			"RemoteProjectResponseValidator.snapshot",
+			"RemoteProjectResponseValidator.entity",
+			"RemoteProjectResponseValidator.messages",
+			"RemoteProjectResponseValidator.history",
+			"RemoteProjectResponseValidator.comment"
 		]
 	},
 	"contract": {

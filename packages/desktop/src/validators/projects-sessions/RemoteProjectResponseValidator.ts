@@ -10,22 +10,20 @@ import type {
 	ThreadMessage,
 	HistoryEvent
 } from '../../models/development-tooling/Desktop.types';
-import {
-	HostedActorIdentityError,
-	HostedActorRequiredError,
-	HostedCommentAnchorMismatchError,
-	HostedCommentIdentityMismatchError,
-	HostedCommentNotAcknowledgedError,
-	HostedThreadMismatchError,
-	InvalidHostedEntityError,
-	InvalidHostedHistoryEventError,
-	InvalidHostedHistoryPageError,
-	InvalidHostedMessagesError,
-	InvalidHostedProjectError,
-	InvalidHostedProjectsError,
-	InvalidHostedResponseRecordError,
-	InvalidHostedSnapshotError
-} from './RemoteProjectResponseValidator.types';
+import { HostedActorIdentityError } from './HostedActorIdentityError';
+import { HostedActorRequiredError } from './HostedActorRequiredError';
+import { HostedCommentAnchorMismatchError } from './HostedCommentAnchorMismatchError';
+import { HostedCommentIdentityMismatchError } from './HostedCommentIdentityMismatchError';
+import { HostedCommentNotAcknowledgedError } from './HostedCommentNotAcknowledgedError';
+import { HostedThreadMismatchError } from './HostedThreadMismatchError';
+import { InvalidHostedEntityError } from './InvalidHostedEntityError';
+import { InvalidHostedHistoryEventError } from './InvalidHostedHistoryEventError';
+import { InvalidHostedHistoryPageError } from './InvalidHostedHistoryPageError';
+import { InvalidHostedMessagesError } from './InvalidHostedMessagesError';
+import { InvalidHostedProjectError } from './InvalidHostedProjectError';
+import { InvalidHostedProjectsError } from './InvalidHostedProjectsError';
+import { InvalidHostedResponseRecordError } from './InvalidHostedResponseRecordError';
+import { InvalidHostedSnapshotError } from './InvalidHostedSnapshotError';
 export function responseRecord(value: unknown): Record<string, unknown> {
 	if (!value || typeof value !== 'object' || Array.isArray(value))
 		throw new InvalidHostedResponseRecordError('Invalid hosted response.');

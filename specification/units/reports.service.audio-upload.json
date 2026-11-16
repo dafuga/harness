@@ -9,22 +9,25 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/services/reports-media/AudioDetailsTooLargeError.ts",
 			"packages/reports/src/services/reports-media/AudioUploadService.ts",
-			"packages/reports/src/services/reports-media/AudioUploadService.types.ts"
+			"packages/reports/src/services/reports-media/AudioUploadService.types.ts",
+			"packages/reports/src/services/reports-media/InvalidAudioFileSizeError.ts",
+			"packages/reports/src/services/reports-media/InvalidAudioTitleError.ts"
 		],
 		"symbols": [
+			"AudioDetailsTooLargeError",
 			"AudioUploadService",
 			"AudioUploadService.constructor",
 			"AudioUploadService.upload",
 			"AudioUploadService.uploadComparison",
 			"AudioUploadInput",
 			"AudioComparisonInput",
-			"InvalidAudioTitleError",
-			"AudioDetailsTooLargeError",
-			"InvalidAudioFileSizeError",
 			"AudioDetails",
 			"AudioUploadInput",
-			"AudioComparisonInput"
+			"AudioComparisonInput",
+			"InvalidAudioFileSizeError",
+			"InvalidAudioTitleError"
 		]
 	},
 	"contract": {

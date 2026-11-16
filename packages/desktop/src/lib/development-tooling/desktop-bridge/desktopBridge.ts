@@ -2,15 +2,13 @@
 import { AgentActivityService } from '../../../../../../src/services/agents-providers/agent-activity-service/AgentActivityService';
 import { ProjectWorkRepository } from '../../../../../../src/repositories/projects-sessions/ProjectWorkRepository';
 import { GameLevelService } from './GameLevelService';
-import {
-	DesktopSessionEndedError,
-	DraftSourceNotRegisteredError,
-	HostedSignInNotConfiguredError,
-	PlanningArtifactsBusyError,
-	RepositoryLeaseUnavailableError,
-	UnknownEntityError,
-	type BridgeContext
-} from './desktopBridge.types';
+import type { BridgeContext } from './desktopBridge.types';
+import { DesktopSessionEndedError } from './DesktopSessionEndedError';
+import { DraftSourceNotRegisteredError } from './DraftSourceNotRegisteredError';
+import { HostedSignInNotConfiguredError } from './HostedSignInNotConfiguredError';
+import { PlanningArtifactsBusyError } from './PlanningArtifactsBusyError';
+import { RepositoryLeaseUnavailableError } from './RepositoryLeaseUnavailableError';
+import { UnknownEntityError } from './UnknownEntityError';
 import { GameImageService } from './GameImageService';
 import { GameProjectService } from './GameProjectService';
 import { GameRenderService } from './GameRenderService';

@@ -1,12 +1,7 @@
 // @harness-uid u_4fbefo5t7a
-import {
-	HostedAgentUnavailableError,
-	ProjectIdRequiredError,
-	type Listener,
-	type Guard,
-	type Reads,
-	type Denied
-} from './browserBridge.types';
+import type { Listener, Guard, Reads, Denied } from './browserBridge.types';
+import { HostedAgentUnavailableError } from './HostedAgentUnavailableError';
+import { ProjectIdRequiredError } from './ProjectIdRequiredError';
 import { AgentHttpAdapter } from '../../agents-providers/AgentHttpAdapter';
 import { browserEvidenceReads } from './browserEvidenceReads';
 import type { CommittedThread, ProjectSummary } from 'collaboration';

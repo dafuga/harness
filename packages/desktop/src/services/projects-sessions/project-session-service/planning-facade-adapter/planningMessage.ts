@@ -5,7 +5,8 @@ import type {
 } from '../../../../../../planning/src/lib/planning/index';
 import type { MessageDraft } from '../../../../models/planning-collaboration/PlanningPort.types';
 import type { PlanningContext } from '../../../../utils/projects-sessions/planning-reads/planRecord';
-import { ApprovalVersionMismatchError, DesignApprovalRequiredError } from './planningMessage.types';
+import { ApprovalVersionMismatchError } from './ApprovalVersionMismatchError';
+import { DesignApprovalRequiredError } from './DesignApprovalRequiredError';
 import { messageInfo } from '../../../../utils/projects-sessions/planningConvert';
 import { reviewer } from '../../../../utils/projects-sessions/planningWrites';
 

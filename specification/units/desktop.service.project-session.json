@@ -9,10 +9,18 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/projects-sessions/project-session-service/CheckedOutBranchChangedError.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/ProjectNotOpenError.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/ProjectNotSelectedError.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/ProjectRevisionReadOnlyError.ts",
 			"packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts",
-			"packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.types.ts"
+			"packages/desktop/src/services/projects-sessions/project-session-service/ProjectSwitchBlockedError.ts"
 		],
 		"symbols": [
+			"CheckedOutBranchChangedError",
+			"ProjectNotOpenError",
+			"ProjectNotSelectedError",
+			"ProjectRevisionReadOnlyError",
 			"ProjectSessionService",
 			"ProjectSessionService.constructor",
 			"ProjectSessionService.assertProject",
@@ -22,11 +30,7 @@
 			"ProjectSessionService.requireProject",
 			"ProjectSessionService.mutable",
 			"ProjectSessionService.atBranch",
-			"ProjectNotSelectedError",
-			"ProjectSwitchBlockedError",
-			"ProjectNotOpenError",
-			"ProjectRevisionReadOnlyError",
-			"CheckedOutBranchChangedError"
+			"ProjectSwitchBlockedError"
 		]
 	},
 	"contract": {

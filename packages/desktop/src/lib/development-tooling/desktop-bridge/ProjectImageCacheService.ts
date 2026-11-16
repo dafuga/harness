@@ -1,6 +1,7 @@
 // @harness-uid u_tzt7ru2vow
 import { createHash } from 'node:crypto';
-import { ImageHashMismatchError, UnknownProjectImageError } from './ProjectImageCacheService.types';
+import { ImageHashMismatchError } from './ImageHashMismatchError';
+import { UnknownProjectImageError } from './UnknownProjectImageError';
 import type { CacheIdentity } from '../../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import type { ImageQuery } from '../../../models/development-tooling/DesktopBridge.types';
 import type { ProjectSessionService } from '../../../services/projects-sessions/project-session-service/ProjectSessionService';

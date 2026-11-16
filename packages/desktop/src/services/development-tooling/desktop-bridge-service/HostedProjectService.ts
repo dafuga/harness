@@ -1,14 +1,11 @@
 // @harness-uid u_h3qimurn22
-import {
-	HostedProjectBusyError,
-	HostedProjectEvidenceUnavailableError,
-	HostedProjectExecutorUnavailableError,
-	HostedProjectNotSelectedError,
-	HostedProjectOperationUnsupportedError,
-	HostedProjectReadUnavailableError,
-	type Bridge,
-	type HostedInput
-} from './HostedProjectService.types';
+import type { Bridge, HostedInput } from './HostedProjectService.types';
+import { HostedProjectBusyError } from './HostedProjectBusyError';
+import { HostedProjectEvidenceUnavailableError } from './HostedProjectEvidenceUnavailableError';
+import { HostedProjectExecutorUnavailableError } from './HostedProjectExecutorUnavailableError';
+import { HostedProjectNotSelectedError } from './HostedProjectNotSelectedError';
+import { HostedProjectOperationUnsupportedError } from './HostedProjectOperationUnsupportedError';
+import { HostedProjectReadUnavailableError } from './HostedProjectReadUnavailableError';
 import type { ProjectSessionService } from '../../projects-sessions/project-session-service/ProjectSessionService';
 import type {
 	RemoteProjectPort,

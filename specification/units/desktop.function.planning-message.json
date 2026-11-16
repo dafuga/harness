@@ -9,10 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts",
-			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.types.ts"
+			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/ApprovalVersionMismatchError.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/DesignApprovalRequiredError.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts"
 		],
-		"symbols": ["planningMessage", "DesignApprovalRequiredError", "ApprovalVersionMismatchError"]
+		"symbols": ["ApprovalVersionMismatchError", "DesignApprovalRequiredError", "planningMessage"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -10,11 +10,3 @@ export interface Progress {
 }
 
 export type Host = ReturnType<typeof hostChanges>;
-
-export class AgentChangedFilesError extends Error {
-	override name = 'AgentChangedFilesError';
-}
-
-export class SourceRevisionAdvancedError extends Error {
-	override name = 'SourceRevisionAdvancedError';
-}

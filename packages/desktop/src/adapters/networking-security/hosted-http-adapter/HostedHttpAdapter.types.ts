@@ -1,15 +1,4 @@
 // @harness-uid u_3aonxezbbl
-export class InvalidHostedOriginError extends Error {
-	override name = 'InvalidHostedOriginError';
-}
-
-export class HostedSessionRequiredError extends Error {
-	override name = 'HostedSessionRequiredError';
-}
-
-export class UntrustedHostedRequestPathError extends Error {
-	override name = 'UntrustedHostedRequestPathError';
-}
 
 export interface NativeHostedCredential {
 	origin: string;

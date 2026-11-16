@@ -26,10 +26,8 @@ import {
 import { HostedHttpAdapter } from '../../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 import { RemoteProjectionService } from './RemoteProjectionService';
 import type { HostedReadOptions } from '../../../../services/development-tooling/HostedReadService';
-import {
-	InvalidHostedSourceError,
-	UnknownHostedImageAnchorError
-} from './RemoteHttpProjectAdapter.types';
+import { InvalidHostedSourceError } from './InvalidHostedSourceError';
+import { UnknownHostedImageAnchorError } from './UnknownHostedImageAnchorError';
 
 export { type NativeHostedCredential } from '../../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 

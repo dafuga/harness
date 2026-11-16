@@ -7,11 +7,9 @@ import {
 	type HostedReadOptions
 } from '../../../../services/development-tooling/HostedReadService';
 import { ProjectDiscoveryService } from './ProjectDiscoveryService';
-import {
-	HostedCacheCommitMismatchError,
-	HostedCommitMismatchError,
-	InvalidHostedProjectIdError
-} from './RemoteProjectionService.types';
+import { HostedCacheCommitMismatchError } from './HostedCacheCommitMismatchError';
+import { HostedCommitMismatchError } from './HostedCommitMismatchError';
+import { InvalidHostedProjectIdError } from './InvalidHostedProjectIdError';
 /** Names the rule a kept snapshot was listed by; one kept under another rule is not looked up. */
 const listed = 'pure-helper-contracts-v1:';
 export class RemoteProjectionService {

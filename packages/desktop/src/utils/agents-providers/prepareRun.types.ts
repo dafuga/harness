@@ -10,11 +10,3 @@ export interface Preparation {
 	generator: ImageGenerator;
 	emit: (event: RunEvent) => void;
 }
-
-export class CodexImageGenerationCapabilityError extends Error {
-	override name = 'CodexImageGenerationCapabilityError';
-}
-
-export class DefaultImageOrchestrationModelMissingError extends Error {
-	override name = 'DefaultImageOrchestrationModelMissingError';
-}

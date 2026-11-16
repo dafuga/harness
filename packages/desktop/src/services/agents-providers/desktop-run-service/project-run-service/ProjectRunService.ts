@@ -1,10 +1,7 @@
 // @harness-uid u_5lbtt7fx6n
-import {
-	AgentChangedFilesError,
-	SourceRevisionAdvancedError,
-	type Progress,
-	type Host
-} from './ProjectRunService.types';
+import type { Progress, Host } from './ProjectRunService.types';
+import { AgentChangedFilesError } from './AgentChangedFilesError';
+import { SourceRevisionAdvancedError } from './SourceRevisionAdvancedError';
 import { RunCancelled } from '../../../../models/agents-providers/AgentRunner.types';
 import type {
 	CreatedEntity,
@@ -20,7 +17,7 @@ import {
 	recordRunFailure
 } from '../../../../utils/agents-providers/prepareRun';
 import { projectProposal, proposalPrompt } from './projectProposal';
-import { type ProjectProposal } from '../../../../utils/agents-providers/projectProposal';
+import type { ProjectProposal } from '../../../../utils/agents-providers/projectProposal';
 import { proposalUnits } from './proposalUnits';
 import { sourceChanges } from '../../../../utils/git-source-history/sourceChanges';
 import {

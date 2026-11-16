@@ -4,11 +4,9 @@ import type {
 	AudioUploadInput,
 	AudioComparisonInput
 } from './AudioUploadService.types';
-import {
-	AudioDetailsTooLargeError,
-	InvalidAudioFileSizeError,
-	InvalidAudioTitleError
-} from './AudioUploadService.types';
+import { AudioDetailsTooLargeError } from './AudioDetailsTooLargeError';
+import { InvalidAudioFileSizeError } from './InvalidAudioFileSizeError';
+import { InvalidAudioTitleError } from './InvalidAudioTitleError';
 import { randomUUID } from 'node:crypto';
 import type { ReportRepository } from '../../repositories/reports-media/report-repository/ReportRepository';
 import { audioAsset } from '../../utils/reports-media/audio-asset/audioAsset';

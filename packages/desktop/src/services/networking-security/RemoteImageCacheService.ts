@@ -2,10 +2,8 @@
 import type { CacheIdentity } from '../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import type { ImageQuery } from '../../models/development-tooling/DesktopBridge.types';
 import type { ProjectionCacheService } from '../../lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService';
-import {
-	HostedCacheIdentityMismatchError,
-	IncompleteHostedCacheIdentityError
-} from './RemoteImageCacheService.types';
+import { HostedCacheIdentityMismatchError } from './HostedCacheIdentityMismatchError';
+import { IncompleteHostedCacheIdentityError } from './IncompleteHostedCacheIdentityError';
 export class RemoteImageCacheService {
 	constructor(private cache: ProjectionCacheService) {}
 	async read(

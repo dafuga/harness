@@ -5,7 +5,8 @@ import { createHash } from 'node:crypto';
 import { LocalDocumentAdapter } from '../../adapters/reports-media/LocalDocumentAdapter';
 import { gitRead } from '../../utils/projects-sessions/gitRead';
 import type { DesktopProject } from '../../models/projects-sessions/ProjectContext.types';
-import { InvalidProjectRegistryError, UnknownProjectError } from './ProjectRegistryService.types';
+import { InvalidProjectRegistryError } from './InvalidProjectRegistryError';
+import { UnknownProjectError } from './UnknownProjectError';
 export class ProjectRegistryService {
 	private document: LocalDocumentAdapter<DesktopProject[]>;
 	constructor(file?: string) {

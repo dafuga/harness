@@ -9,10 +9,17 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/repositories/reports-media/report-repository/ReportRepository.ts",
-			"packages/reports/src/repositories/reports-media/report-repository/ReportRepository.types.ts"
+			"packages/reports/src/repositories/reports-media/report-repository/InvalidReportDirectoryError.ts",
+			"packages/reports/src/repositories/reports-media/report-repository/ReportAlreadyFinalizedError.ts",
+			"packages/reports/src/repositories/reports-media/report-repository/ReportNotActiveError.ts",
+			"packages/reports/src/repositories/reports-media/report-repository/ReportNotFinalizingError.ts",
+			"packages/reports/src/repositories/reports-media/report-repository/ReportRepository.ts"
 		],
 		"symbols": [
+			"InvalidReportDirectoryError",
+			"ReportAlreadyFinalizedError",
+			"ReportNotActiveError",
+			"ReportNotFinalizingError",
 			"ReportRepository",
 			"ReportRepository.constructor",
 			"ReportRepository.directory",
@@ -22,11 +29,7 @@
 			"ReportRepository.record",
 			"ReportRepository.mutateActive",
 			"ReportRepository.seal",
-			"ReportRepository.finish",
-			"InvalidReportDirectoryError",
-			"ReportNotActiveError",
-			"ReportAlreadyFinalizedError",
-			"ReportNotFinalizingError"
+			"ReportRepository.finish"
 		]
 	},
 	"contract": {

@@ -9,20 +9,22 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.types.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/HostedCacheCommitMismatchError.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/HostedCommitMismatchError.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/InvalidHostedProjectIdError.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts"
 		],
 		"symbols": [
+			"HostedCacheCommitMismatchError",
+			"HostedCommitMismatchError",
+			"InvalidHostedProjectIdError",
 			"RemoteProjectionService",
 			"RemoteProjectionService.constructor",
 			"RemoteProjectionService.branch",
 			"RemoteProjectionService.snapshot",
 			"RemoteProjectionService.projects",
 			"RemoteProjectionService.read",
-			"RemoteProjectionService.path",
-			"InvalidHostedProjectIdError",
-			"HostedCacheCommitMismatchError",
-			"HostedCommitMismatchError"
+			"RemoteProjectionService.path"
 		]
 	},
 	"contract": {

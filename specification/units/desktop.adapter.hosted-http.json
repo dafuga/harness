@@ -10,7 +10,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/adapters/networking-security/hosted-http-adapter/HostedHttpAdapter.ts",
-			"packages/desktop/src/adapters/networking-security/hosted-http-adapter/HostedHttpAdapter.types.ts"
+			"packages/desktop/src/adapters/networking-security/hosted-http-adapter/HostedHttpAdapter.types.ts",
+			"packages/desktop/src/adapters/networking-security/hosted-http-adapter/HostedSessionRequiredError.ts",
+			"packages/desktop/src/adapters/networking-security/hosted-http-adapter/InvalidHostedOriginError.ts",
+			"packages/desktop/src/adapters/networking-security/hosted-http-adapter/UntrustedHostedRequestPathError.ts"
 		],
 		"symbols": [
 			"HostedHttpAdapter",
@@ -22,11 +25,11 @@
 			"HostedHttpAdapter.request",
 			"NativeHostedCredential",
 			"RemoteHttpOptions",
-			"InvalidHostedOriginError",
-			"HostedSessionRequiredError",
-			"UntrustedHostedRequestPathError",
 			"NativeHostedCredential",
-			"RemoteHttpOptions"
+			"RemoteHttpOptions",
+			"HostedSessionRequiredError",
+			"InvalidHostedOriginError",
+			"UntrustedHostedRequestPathError"
 		]
 	},
 	"contract": {

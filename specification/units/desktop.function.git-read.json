@@ -11,19 +11,21 @@
 		"source": [
 			"packages/desktop/src/services/project-session-service/git-source-adapter/gitRead.ts",
 			"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/gitRead.ts",
-			"packages/desktop/src/utils/projects-sessions/gitRead.ts",
-			"packages/desktop/src/utils/projects-sessions/gitRead.types.ts"
+			"packages/desktop/src/utils/projects-sessions/InvalidRevisionError.ts",
+			"packages/desktop/src/utils/projects-sessions/SourceFileTooLargeError.ts",
+			"packages/desktop/src/utils/projects-sessions/UnsafeSourcePathError.ts",
+			"packages/desktop/src/utils/projects-sessions/gitRead.ts"
 		],
 		"symbols": [
 			"gitFiles",
 			"gitFiles",
+			"InvalidRevisionError",
+			"SourceFileTooLargeError",
+			"UnsafeSourcePathError",
 			"gitRead",
 			"gitRevision",
 			"gitText",
-			"gitFiles",
-			"InvalidRevisionError",
-			"UnsafeSourcePathError",
-			"SourceFileTooLargeError"
+			"gitFiles"
 		]
 	},
 	"contract": {

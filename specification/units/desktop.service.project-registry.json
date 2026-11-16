@@ -9,17 +9,18 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/projects-sessions/InvalidProjectRegistryError.ts",
 			"packages/desktop/src/services/projects-sessions/ProjectRegistryService.ts",
-			"packages/desktop/src/services/projects-sessions/ProjectRegistryService.types.ts"
+			"packages/desktop/src/services/projects-sessions/UnknownProjectError.ts"
 		],
 		"symbols": [
+			"InvalidProjectRegistryError",
+			"InvalidProjectRegistryError.constructor",
 			"ProjectRegistryService",
 			"ProjectRegistryService.constructor",
 			"ProjectRegistryService.register",
 			"ProjectRegistryService.list",
 			"ProjectRegistryService.get",
-			"InvalidProjectRegistryError",
-			"InvalidProjectRegistryError.constructor",
 			"UnknownProjectError",
 			"UnknownProjectError.constructor"
 		]
@@ -204,6 +205,18 @@
 		],
 		"initialization": [
 			{
+				"name": "InvalidProjectRegistryError.constructor",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "InvalidProjectRegistryError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "ProjectRegistryService.constructor",
 				"inputs": [
 					{
@@ -224,18 +237,6 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
-			},
-			{
-				"name": "InvalidProjectRegistryError.constructor",
-				"inputs": [],
-				"outputs": [
-					{
-						"name": "InvalidProjectRegistryError.constructor",
-						"type": "unknown"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
 			},
 			{
 				"name": "UnknownProjectError.constructor",

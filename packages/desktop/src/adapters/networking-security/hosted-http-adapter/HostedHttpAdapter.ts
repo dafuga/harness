@@ -1,9 +1,7 @@
 // @harness-uid u_3aonxezbbl
-import {
-	HostedSessionRequiredError,
-	InvalidHostedOriginError,
-	UntrustedHostedRequestPathError
-} from './HostedHttpAdapter.types';
+import { HostedSessionRequiredError } from './HostedSessionRequiredError';
+import { InvalidHostedOriginError } from './InvalidHostedOriginError';
+import { UntrustedHostedRequestPathError } from './UntrustedHostedRequestPathError';
 import type { RemoteHttpOptions, NativeHostedCredential } from './HostedHttpAdapter.types';
 import { hostedPublicFailure } from './hostedPublicFailure';
 import { HostedFailureValidator } from '../../../validators/development-tooling/HostedFailureValidator';

@@ -1,7 +1,8 @@
 // @harness-uid u_ohtelrq27t
 import type { CommitContext } from '../planCommit';
 import { stageFiles } from '../planCommit';
-import { LfsFilterOutputMismatchError, MissingLfsFilterError } from './planCommit.types';
+import { LfsFilterOutputMismatchError } from './LfsFilterOutputMismatchError';
+import { MissingLfsFilterError } from './MissingLfsFilterError';
 import { Buffer } from 'node:buffer';
 import { copyFile, mkdir, mkdtemp, open, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';

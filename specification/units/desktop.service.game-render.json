@@ -9,16 +9,19 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/CredentialSafeProviderTransportUnavailableError.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/DecartTokenRequestError.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/GameRenderBusyError.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-bridge/GameRenderService.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-bridge/GameRenderService.types.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/InvalidDecartTokenResponseError.ts"
 		],
 		"symbols": [
+			"CredentialSafeProviderTransportUnavailableError",
+			"DecartTokenRequestError",
+			"GameRenderBusyError",
 			"GameRenderService",
 			"GameRenderService.constructor",
 			"GameRenderService.start",
-			"GameRenderBusyError",
-			"CredentialSafeProviderTransportUnavailableError",
-			"DecartTokenRequestError",
 			"InvalidDecartTokenResponseError"
 		]
 	},

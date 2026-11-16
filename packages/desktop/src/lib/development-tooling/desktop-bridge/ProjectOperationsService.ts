@@ -6,11 +6,9 @@ import type {
 	ProjectCapabilities,
 	ProjectContext
 } from '../../../models/projects-sessions/ProjectContext.types';
-import {
-	InvalidProjectDiscussionAnchorError,
-	UnknownCommentImageAnchorError,
-	UnknownCommentThreadError
-} from './ProjectOperationsService.types';
+import { InvalidProjectDiscussionAnchorError } from './InvalidProjectDiscussionAnchorError';
+import { UnknownCommentImageAnchorError } from './UnknownCommentImageAnchorError';
+import { UnknownCommentThreadError } from './UnknownCommentThreadError';
 export class ProjectOperationsService {
 	constructor(
 		private session: ProjectSessionService,

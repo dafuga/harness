@@ -9,18 +9,22 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/validators/development-tooling/NativeHandoffValidator.ts",
-			"packages/desktop/src/validators/development-tooling/NativeHandoffValidator.types.ts"
+			"packages/desktop/src/validators/development-tooling/ExpiredNativeHandoffError.ts",
+			"packages/desktop/src/validators/development-tooling/InvalidNativeHandoffError.ts",
+			"packages/desktop/src/validators/development-tooling/InvalidNativeHandoffIdentityError.ts",
+			"packages/desktop/src/validators/development-tooling/InvalidNativeHandoffUrlError.ts",
+			"packages/desktop/src/validators/development-tooling/NativeHandoffBindingMismatchError.ts",
+			"packages/desktop/src/validators/development-tooling/NativeHandoffValidator.ts"
 		],
 		"symbols": [
-			"NativeHandoffValidator",
-			"NativeHandoffValidator.start",
-			"NativeHandoffValidator.exchange",
 			"ExpiredNativeHandoffError",
 			"InvalidNativeHandoffError",
 			"InvalidNativeHandoffIdentityError",
 			"InvalidNativeHandoffUrlError",
-			"NativeHandoffBindingMismatchError"
+			"NativeHandoffBindingMismatchError",
+			"NativeHandoffValidator",
+			"NativeHandoffValidator.start",
+			"NativeHandoffValidator.exchange"
 		]
 	},
 	"contract": {

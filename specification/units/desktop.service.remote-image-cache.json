@@ -9,15 +9,16 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/services/networking-security/RemoteImageCacheService.ts",
-			"packages/desktop/src/services/networking-security/RemoteImageCacheService.types.ts"
+			"packages/desktop/src/services/networking-security/HostedCacheIdentityMismatchError.ts",
+			"packages/desktop/src/services/networking-security/IncompleteHostedCacheIdentityError.ts",
+			"packages/desktop/src/services/networking-security/RemoteImageCacheService.ts"
 		],
 		"symbols": [
+			"HostedCacheIdentityMismatchError",
+			"IncompleteHostedCacheIdentityError",
 			"RemoteImageCacheService",
 			"RemoteImageCacheService.constructor",
-			"RemoteImageCacheService.read",
-			"HostedCacheIdentityMismatchError",
-			"IncompleteHostedCacheIdentityError"
+			"RemoteImageCacheService.read"
 		]
 	},
 	"contract": {

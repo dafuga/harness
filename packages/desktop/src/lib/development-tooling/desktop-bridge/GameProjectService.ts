@@ -2,7 +2,8 @@
 import { mkdir, rm } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
-import { GameProjectAlreadyExistsError, GameProjectBusyError } from './GameProjectService.types';
+import { GameProjectAlreadyExistsError } from './GameProjectAlreadyExistsError';
+import { GameProjectBusyError } from './GameProjectBusyError';
 import { GitAdapter } from '../../../../../../src/adapters/git-source-history/GitAdapter';
 import { createProject } from '../../../../../../src/cli/program/create-project/createProject';
 import { validateProjectName } from '../../../../../../src/cli/program/create-project/validation';

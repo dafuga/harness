@@ -1,10 +1,7 @@
 // @harness-uid u_sjbkerzshs
-import {
-	LocalBranchRequiredError,
-	RegisteredProjectIdRequiredError,
-	type ProjectRead,
-	type Shown
-} from './RecordedEvidenceService.types';
+import type { ProjectRead, Shown } from './RecordedEvidenceService.types';
+import { LocalBranchRequiredError } from './LocalBranchRequiredError';
+import { RegisteredProjectIdRequiredError } from './RegisteredProjectIdRequiredError';
 import type { CacheIdentity } from '../../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import { explorerEvidence } from '$reports/utils/explorer-ui/explorerEvidence';
 import {
