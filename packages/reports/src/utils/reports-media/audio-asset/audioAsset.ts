@@ -2,6 +2,11 @@
 import { createHash } from 'node:crypto';
 import { extname } from 'node:path';
 import { mediaMime } from '../../verification-evidence/evidenceMedia';
+import {
+	AudioContentMismatchError,
+	InvalidAudioFileError,
+	UnsupportedAudioFormatError
+} from './audioAsset.types';
 import { wavInfo } from './wavInfo';
 
 function mp3Offset(bytes: Buffer) {
@@ -98,13 +103,14 @@ const validators: Record<string, (bytes: Buffer) => boolean> = {
 };
 
 export function audioAsset(bytes: Buffer, filename: string) {
-	if (!bytes.length || bytes.length > 50_000_000) throw new Error('Invalid audio file or size');
+	if (!bytes.length || bytes.length > 50_000_000)
+		throw new InvalidAudioFileError('Invalid audio file or size');
 	const extension = extname(filename).toLowerCase();
 	const mime = mediaMime(filename);
-	if (!mime.startsWith('audio/')) throw new Error('Unsupported audio format');
+	if (!mime.startsWith('audio/')) throw new UnsupportedAudioFormatError('Unsupported audio format');
 	const metadata = extension === '.wav' ? wavInfo(bytes) : {};
 	if (extension !== '.wav' && !validators[extension]?.(bytes))
-		throw new Error('Audio content does not match its filename');
+		throw new AudioContentMismatchError('Audio content does not match its filename');
 	return {
 		name: createHash('sha256').update(bytes).digest('hex') + extension,
 		mimeType: mime,
