@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.source-archive",
+	"title": "service.source-archive examples",
+	"kind": "headless",
+	"units": ["service.source-archive"],
+	"builds": [],
+	"states": [
+		{
+			"id": "archives-committed-source-and-its-direct-test-importer",
+			"title": "Archives committed source and its direct test importer",
+			"coverage": "required"
+		},
+		{
+			"id": "leaves-inactive-units-without-archived-source",
+			"title": "Leaves inactive units without archived source",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.source-archive.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"archives-committed-source-and-its-direct-test-importer",
+				"leaves-inactive-units-without-archived-source"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"archives-committed-source-and-its-direct-test-importer",
+				"leaves-inactive-units-without-archived-source"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"archives-committed-source-and-its-direct-test-importer",
+				"leaves-inactive-units-without-archived-source"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
