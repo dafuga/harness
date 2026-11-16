@@ -24,7 +24,7 @@
 		"inputs": [
 			{
 				"name": "GatewayImageValidator.parse.input",
-				"type": "Record<string, unknown>",
+				"type": "GatewayItem",
 				"required": true,
 				"description": "A record containing one gateway image input. parse reads an embedded data URI from image_url (a string or an object with url) first, otherwise it reads resource.mimeType/blob, source.media_type/data, or top-level mimeType/data; the bytes must be base64 PNG, JPEG, GIF, or WebP with a matching signature and no more than 5 MiB decoded, while remote URLs, local paths, and provider file IDs are unsupported.",
 				"examples": [
@@ -73,7 +73,7 @@
 				"inputs": [
 					{
 						"name": "GatewayImageValidator.parse.input",
-						"type": "Record<string, unknown>",
+						"type": "GatewayItem",
 						"required": true,
 						"description": "A record containing one gateway image input. parse reads an embedded data URI from image_url (a string or an object with url) first, otherwise it reads resource.mimeType/blob, source.media_type/data, or top-level mimeType/data; the bytes must be base64 PNG, JPEG, GIF, or WebP with a matching signature and no more than 5 MiB decoded, while remote URLs, local paths, and provider file IDs are unsupported.",
 						"examples": [
@@ -123,6 +123,11 @@
 	"dependencies": [
 		{
 			"unit": "function.gateway-content-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.gateway-types",
 			"via": "import",
 			"origin": "derived"
 		}
