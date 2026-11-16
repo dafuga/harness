@@ -9,13 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/services/agents-providers/provider-discovery-service/ProviderDiscoveryService.ts"
+			"packages/desktop/src/services/agents-providers/provider-discovery-service/ProviderDiscoveryService.ts",
+			"packages/desktop/src/services/agents-providers/provider-discovery-service/ProviderDiscoveryService.types.ts"
 		],
 		"symbols": [
 			"ProviderDiscoveryService",
 			"ProviderDiscoveryService.constructor",
 			"ProviderDiscoveryService.list",
-			"ProviderDiscoveryService.select"
+			"ProviderDiscoveryService.select",
+			"ProviderUnavailableError"
 		]
 	},
 	"contract": {
