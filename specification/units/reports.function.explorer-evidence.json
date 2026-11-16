@@ -71,7 +71,7 @@
 			{
 				"name": "explorerEvidence",
 				"type": "ExplorerEvidence",
-				"description": "Returns evidence for the exact requested commit and, for a selected commit with a first parent, its parent; an unavailable or mismatched revision is shown as a gap instead of substituting another revision. Captures, scenario and state coverage, initial-commit status, and reasons the sides are incomparable are retained; only a usable, non-inherited capture is marked current.",
+				"description": "Returns evidence for the exact requested commit and, for a selected commit with a first parent, its parent; an unavailable or mismatched revision is shown as a gap instead of substituting another revision. Captures, scenario and state coverage, initial-commit status, and reasons the sides are incomparable are retained. The latest capture is selected independently for each scenario/state/evidence/kind/viewport slot and each video owner/clip id, so clips sharing a state stay distinct. Only a usable, non-inherited capture is marked current.",
 				"examples": [
 					{
 						"mode": "current",
@@ -164,7 +164,7 @@
 					{
 						"name": "explorerEvidence",
 						"type": "ExplorerEvidence",
-						"description": "Returns evidence for the exact requested commit and, for a selected commit with a first parent, its parent; an unavailable or mismatched revision is shown as a gap instead of substituting another revision. Captures, scenario and state coverage, initial-commit status, and reasons the sides are incomparable are retained; only a usable, non-inherited capture is marked current.",
+						"description": "Returns evidence for the exact requested commit and, for a selected commit with a first parent, its parent; an unavailable or mismatched revision is shown as a gap instead of substituting another revision. Captures, scenario and state coverage, initial-commit status, and reasons the sides are incomparable are retained. The latest capture is selected independently for each scenario/state/evidence/kind/viewport slot and each video owner/clip id, so clips sharing a state stay distinct. Only a usable, non-inherited capture is marked current.",
 						"examples": [
 							{
 								"mode": "current",

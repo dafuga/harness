@@ -76,7 +76,9 @@ function recordedCaptures(detail: HarnessRevision, unit: Named): ExplorerCapture
 				item.state,
 				item.capture.evidence,
 				item.capture.kind,
-				item.capture.viewport ?? ''
+				item.capture.viewport ?? '',
+				item.capture.video?.unit ?? '',
+				item.capture.video?.clipId ?? ''
 			].join('\n');
 			if (seen.has(key)) return false;
 			seen.add(key);
