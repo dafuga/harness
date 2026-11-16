@@ -12,7 +12,15 @@
 			"packages/reports/scripts/harness-scale-data.ts",
 			"packages/reports/scripts/harness-scale-data.types.ts"
 		],
-		"symbols": ["generatedUnits", "generatedFailures", "writeScaleData", "Unit", "Detail"]
+		"symbols": [
+			"generatedUnits",
+			"generatedFailures",
+			"writeScaleData",
+			"FailedRevisionRecordNotFoundError",
+			"SlugifyTemplateNotFoundError",
+			"Unit",
+			"Detail"
+		]
 	},
 	"contract": {
 		"origin": "declared",
