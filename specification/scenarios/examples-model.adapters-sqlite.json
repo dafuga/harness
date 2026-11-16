@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-model.adapters-sqlite",
+	"title": "model.adapters-sqlite examples",
+	"kind": "headless",
+	"units": ["model.adapters-sqlite"],
+	"builds": [],
+	"states": [
+		{
+			"id": "registers-a-valid-model-declaration",
+			"title": "Registers a valid model declaration",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-model-without-its-primary-key-field",
+			"title": "Rejects a model without its primary key field",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/model.adapters-sqlite.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"registers-a-valid-model-declaration",
+				"rejects-a-model-without-its-primary-key-field"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"registers-a-valid-model-declaration",
+				"rejects-a-model-without-its-primary-key-field"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"registers-a-valid-model-declaration",
+				"rejects-a-model-without-its-primary-key-field"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
