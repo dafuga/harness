@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.analytics-cpu-client",
+	"title": "reports.function.analytics-cpu-client examples",
+	"kind": "headless",
+	"units": ["reports.function.analytics-cpu-client"],
+	"builds": [],
+	"states": [
+		{
+			"id": "publishes-the-parsed-cpu-snapshot",
+			"title": "Publishes the parsed CPU snapshot",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-null-for-a-failed-http-response",
+			"title": "Reports null for a failed HTTP response",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-null-when-the-request-rejects",
+			"title": "Reports null when the request rejects",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-null-when-the-body-is-not-json",
+			"title": "Reports null when the body is not JSON",
+			"coverage": "required"
+		},
+		{
+			"id": "makes-no-request-or-report-after-stop",
+			"title": "Makes no request or report after stop",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.analytics-cpu-client.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"publishes-the-parsed-cpu-snapshot",
+				"reports-null-for-a-failed-http-response",
+				"reports-null-when-the-request-rejects",
+				"reports-null-when-the-body-is-not-json",
+				"makes-no-request-or-report-after-stop"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"publishes-the-parsed-cpu-snapshot",
+				"reports-null-for-a-failed-http-response",
+				"reports-null-when-the-request-rejects",
+				"reports-null-when-the-body-is-not-json",
+				"makes-no-request-or-report-after-stop"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"publishes-the-parsed-cpu-snapshot",
+				"reports-null-for-a-failed-http-response",
+				"reports-null-when-the-request-rejects",
+				"reports-null-when-the-body-is-not-json",
+				"makes-no-request-or-report-after-stop"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
