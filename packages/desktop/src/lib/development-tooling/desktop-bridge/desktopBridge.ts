@@ -2,7 +2,15 @@
 import { AgentActivityService } from '../../../../../../src/services/agents-providers/agent-activity-service/AgentActivityService';
 import { ProjectWorkRepository } from '../../../../../../src/repositories/projects-sessions/ProjectWorkRepository';
 import { GameLevelService } from './GameLevelService';
-import type { BridgeContext } from './desktopBridge.types';
+import {
+	DesktopSessionEndedError,
+	DraftSourceNotRegisteredError,
+	HostedSignInNotConfiguredError,
+	PlanningArtifactsBusyError,
+	RepositoryLeaseUnavailableError,
+	UnknownEntityError,
+	type BridgeContext
+} from './desktopBridge.types';
 import { GameImageService } from './GameImageService';
 import { GameProjectService } from './GameProjectService';
 import { GameRenderService } from './GameRenderService';
@@ -25,9 +33,12 @@ const projectIndependentMethods: Array<keyof DesktopBridge> = [
 async function writable(context: BridgeContext) {
 	const { session } = context;
 	if (session.busy || session.arbiter.held(session.root))
-		throw new Error('Wait for the current run before changing planning artifacts.');
+		throw new PlanningArtifactsBusyError(
+			'Wait for the current run before changing planning artifacts.'
+		);
 	const project = await session.mutable();
-	if (context.alive && !context.alive()) throw new Error('This session has ended.');
+	if (context.alive && !context.alive())
+		throw new DesktopSessionEndedError('This session has ended.');
 	return project;
 }
 /** Planning writes of one repository happen one at a time, whichever client asks. */
@@ -36,7 +47,9 @@ function exclusive<T>(session: ProjectSessionService, work: () => Promise<T>): P
 	return session.arbiter.exclusive(root, async () => {
 		const release = await repositoryLease(root);
 		if (!release)
-			throw new Error('Wait for the current run or planning write in this or another Harness app.');
+			throw new RepositoryLeaseUnavailableError(
+				'Wait for the current run or planning write in this or another Harness app.'
+			);
 		try {
 			release.signal.throwIfAborted();
 			const value = await work();
@@ -52,7 +65,7 @@ async function thread(context: BridgeContext, input: Parameters<DesktopBridge['o
 		plan = (await p.planning.plans(p.revision.commit)).find((item) => item.id === input.entityId);
 	if (!plan) {
 		const unit = (await p.source.units(p.revision.commit)).find((u) => u.id === input.entityId);
-		if (!unit) throw new Error('Unknown entity.');
+		if (!unit) throw new UnknownEntityError('Unknown entity.');
 		await p.planning.ensurePlan(unit);
 	}
 	return p.planning.openThread(input);
@@ -60,7 +73,7 @@ async function thread(context: BridgeContext, input: Parameters<DesktopBridge['o
 async function source(context: BridgeContext, input: Parameters<DesktopBridge['source']>[0]) {
 	const adapter = context.session.requireProject().source,
 		unit = (await adapter.units(input.commit)).find((u) => u.id === input.entityId);
-	if (!unit) throw new Error('This draft has no registered source.');
+	if (!unit) throw new DraftSourceNotRegisteredError('This draft has no registered source.');
 	return adapter.source(unit, input.commit, input.path);
 }
 async function create(context: BridgeContext, input: Parameters<DesktopBridge['createPlan']>[0]) {
@@ -74,7 +87,8 @@ function authentication(session: ProjectSessionService) {
 		hostedStatus: () =>
 			session.auth?.status() ?? Promise.resolve({ configured: false, state: 'signed-out' }),
 		connectHosted: async () => {
-			if (!session.auth) throw new Error('Hosted sign-in is not configured.');
+			if (!session.auth)
+				throw new HostedSignInNotConfiguredError('Hosted sign-in is not configured.');
 			return session.auth.connect();
 		},
 		disconnectHosted: () =>
