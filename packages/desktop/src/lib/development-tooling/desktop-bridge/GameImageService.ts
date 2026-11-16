@@ -1,6 +1,7 @@
 // @harness-uid u_semfvbq3vk
 import { LevelValidator } from '../../../../../game/src/validators/game-authoring/LevelValidator';
 import type { Request } from './GameImageService.types';
+import { GameImageRequestError } from './GameImageService.types';
 import { GameDocumentRepository } from '../../../../../game/src/repositories/game-authoring/GameDocumentRepository';
 import { CheckpointImageRepository } from '../../../../../game/src/repositories/game-authoring/CheckpointImageRepository';
 import { GptImageAdapter } from '../../../../../game/src/adapters/agents-providers/GptImageAdapter';
@@ -19,7 +20,7 @@ export class GameImageService {
 		this.session.assertProject(input.projectId);
 		const { root } = await this.session.mutable();
 		if (this.session.busy || active.has(root))
-			throw new Error('Wait for the current game operation.');
+			throw new GameImageRequestError('Wait for the current game operation.');
 		active.add(root);
 		try {
 			return await this.create(root, input);
@@ -36,12 +37,14 @@ export class GameImageService {
 		assertDocument(input.document);
 		const view = input.document.views.find((v) => v.id === input.viewId);
 		const node = view?.checkpoints.find((c) => c.id === input.checkpointId);
-		if (!view || !node) throw new Error('Select an existing game checkpoint.');
+		if (!view || !node) throw new GameImageRequestError('Select an existing game checkpoint.');
 		if (!LevelValidator.isReady(view))
-			throw new Error('Approve and build the level before creating checkpoint images.');
+			throw new GameImageRequestError(
+				'Approve and build the level before creating checkpoint images.'
+			);
 		const saved = await new GameDocumentRepository(root).read();
 		if (saved.revision !== input.expectedRevision)
-			throw new Error('The game changed. Reload before generating.');
+			throw new GameImageRequestError('The game changed. Reload before generating.');
 		const prompt = [
 			'Create a polished gameplay checkpoint image, a visual target for a game.',
 			'Keep consistent characters, environment and art direction. Show the checkpoint state. No HUD, text labels or UI.',
@@ -52,7 +55,8 @@ export class GameImageService {
 			'Conditions: ' + JSON.stringify(node.conditions),
 			'Consequences: ' + JSON.stringify(node.actions)
 		].join('\n');
-		if (prompt.length > 20000) throw new Error('Checkpoint image guidance is too long.');
+		if (prompt.length > 20000)
+			throw new GameImageRequestError('Checkpoint image guidance is too long.');
 		const key = await new ProjectGameCredentialAdapter(root).read('HARNESS_GAME_OPENAI_API_KEY');
 		const bytes = await this.adapter.generate(key, prompt);
 		const path = await new CheckpointImageRepository(root).save(bytes);
