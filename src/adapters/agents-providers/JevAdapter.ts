@@ -1,5 +1,6 @@
 // @harness-uid u_wbj45qwkyz
 import type { JevAdapterConfig } from './JevAdapter.types';
+import { JevEvaluationError } from './JevAdapter.types';
 import { APIError, TypeSafeClient } from '@typesafe-ai/sdk';
 import type { JevEvaluation, JevRequest } from '../../core/agents-providers/jevTypes';
 import { JevResponseValidator } from '../../validators/agents-providers/JevResponseValidator';
@@ -22,7 +23,7 @@ export class JevAdapter {
 	}
 
 	async evaluate(request: JevRequest, signal?: AbortSignal): Promise<JevEvaluation> {
-		if (signal?.aborted) throw new Error('Jev review was cancelled or timed out.');
+		if (signal?.aborted) throw new JevEvaluationError('Jev review was cancelled or timed out.');
 		const deadline = AbortSignal.timeout(30000);
 		const combined = signal ? AbortSignal.any([signal, deadline]) : deadline;
 		try {
@@ -36,12 +37,13 @@ export class JevAdapter {
 				this.config.model !== 'jev-preview' &&
 				result.model !== this.config.model
 			)
-				throw new Error('Model mismatch');
+				throw new JevEvaluationError('Model mismatch');
 			return result;
 		} catch (error) {
-			if (error instanceof APIError) throw new Error(`Jev request failed (HTTP ${error.status}).`);
-			if (combined.aborted) throw new Error('Jev review was cancelled or timed out.');
-			throw new Error('Jev request or response validation failed.');
+			if (error instanceof APIError)
+				throw new JevEvaluationError(`Jev request failed (HTTP ${error.status}).`);
+			if (combined.aborted) throw new JevEvaluationError('Jev review was cancelled or timed out.');
+			throw new JevEvaluationError('Jev request or response validation failed.');
 		}
 	}
 }
