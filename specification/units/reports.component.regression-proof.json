@@ -102,7 +102,7 @@
 				"inputs": [
 					{
 						"name": "RegressionProof.children.pane",
-						"type": "unknown",
+						"type": "ComparisonPane<RegressionPoint>",
 						"required": true
 					}
 				],
@@ -120,7 +120,7 @@
 				"inputs": [
 					{
 						"name": "RegressionProof.children.pane",
-						"type": "unknown",
+						"type": "ComparisonPane<RegressionPoint>",
 						"required": true
 					}
 				],
