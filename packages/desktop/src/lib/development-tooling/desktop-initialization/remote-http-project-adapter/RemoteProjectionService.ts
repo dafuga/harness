@@ -14,6 +14,14 @@ import {
 } from './RemoteProjectionService.types';
 /** Names the rule a kept snapshot was listed by; one kept under another rule is not looked up. */
 const listed = 'pure-helper-contracts-v1:';
+type RemoteProjectionValue =
+	| null
+	| boolean
+	| number
+	| string
+	| RemoteProjectionValue[]
+	| { [key: string]: RemoteProjectionValue };
+
 export class RemoteProjectionService {
 	private reads: HostedReadService;
 	private discovery: ProjectDiscoveryService;
@@ -61,11 +69,11 @@ export class RemoteProjectionService {
 	async read<T>(
 		input: { projectId: string; commit: string; branch?: string | null },
 		operation: string,
-		validate: (value: unknown) => T,
-		load?: () => Promise<unknown>
+		validate: (value: RemoteProjectionValue) => T,
+		load?: () => Promise<RemoteProjectionValue>
 	): Promise<T> {
 		const path = this.path(input.projectId, operation, input);
-		const fetchValue = load ?? (() => this.http.json(path));
+		const fetchValue = load ?? (async () => (await this.http.json(path)) as RemoteProjectionValue);
 
 		const result = await this.reads.read(
 			{ projectId: input.projectId, key: path },
@@ -87,7 +95,7 @@ export class RemoteProjectionService {
 					throw new HostedCommitMismatchError('Hosted commit mismatch.');
 				return { value: validate(await fetchValue()), identity: metadata.cache?.identity };
 			},
-			validate
+			(value) => validate(value as RemoteProjectionValue)
 		);
 		return result.value;
 	}
