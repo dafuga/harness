@@ -173,7 +173,7 @@
 			},
 			{
 				"name": "grantSummary.grant",
-				"type": "{ projects: unknown[]; agents: boolean }",
+				"type": "RemoteGrant",
 				"required": true,
 				"description": "A grant with the projects to count and the agents permission flag. Project entries are not inspected, and this input type does not include a comments flag.",
 				"examples": [
@@ -539,7 +539,7 @@
 				"inputs": [
 					{
 						"name": "grantSummary.grant",
-						"type": "{ projects: unknown[]; agents: boolean }",
+						"type": "RemoteGrant",
 						"required": true,
 						"description": "A grant with the projects to count and the agents permission flag. Project entries are not inspected, and this input type does not include a comments flag.",
 						"examples": [
