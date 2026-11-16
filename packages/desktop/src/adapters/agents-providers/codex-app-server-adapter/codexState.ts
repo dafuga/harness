@@ -4,6 +4,7 @@ import type { ProviderState } from '../../../models/development-tooling/Desktop.
 import { cliProcess } from '../../../utils/agents-providers/cliProcess';
 import { codexRpc } from '../../../utils/agents-providers/codex-rpc/codexRpc';
 import { providerModels } from './providerModels';
+import { CodexChatGPTSignInError } from './codexState.types';
 
 export async function codexState(command: CliCommand, server: CliCommand): Promise<ProviderState> {
 	const base: ProviderState = {
@@ -25,7 +26,7 @@ export async function codexState(command: CliCommand, server: CliCommand): Promi
 				refreshToken: false
 			});
 			if (account.account?.type !== 'chatgpt')
-				throw new Error('Sign in to Codex CLI with a ChatGPT subscription.');
+				throw new CodexChatGPTSignInError('Sign in to Codex CLI with a ChatGPT subscription.');
 			const models = await rpc.request<{ data: Parameters<typeof providerModels>[0] }>(
 				'model/list',
 				{ limit: 100 }
