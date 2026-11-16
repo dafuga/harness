@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.store.deployments",
+	"title": "desktop.store.deployments examples",
+	"kind": "headless",
+	"units": ["desktop.store.deployments"],
+	"builds": [],
+	"states": [
+		{
+			"id": "selects-production-deployment-status-after-refresh",
+			"title": "selects production deployment status after refresh",
+			"coverage": "required"
+		},
+		{
+			"id": "reviews-the-current-commit-for-production",
+			"title": "reviews the current commit for production",
+			"coverage": "required"
+		},
+		{
+			"id": "executes-an-eligible-production-plan",
+			"title": "executes an eligible production plan",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.store.deployments.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"selects-production-deployment-status-after-refresh",
+				"reviews-the-current-commit-for-production",
+				"executes-an-eligible-production-plan"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"selects-production-deployment-status-after-refresh",
+				"reviews-the-current-commit-for-production",
+				"executes-an-eligible-production-plan"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"selects-production-deployment-status-after-refresh",
+				"reviews-the-current-commit-for-production",
+				"executes-an-eligible-production-plan"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
