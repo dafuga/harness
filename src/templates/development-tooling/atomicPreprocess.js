@@ -5,6 +5,11 @@ import { parse } from 'svelte/compiler';
 import { nativeAtoms, nativeAtomSource } from './htmlElements.js';
 import { atomicSyntax } from './atomicSyntax.js';
 
+/** Thrown when a native atom cannot be inlined; the message says which check failed. */
+class NativeAtomError extends Error {
+	name = 'NativeAtomError';
+}
+
 /** Inline native atoms before Svelte validation so native bindings, CSS and semantics survive. */
 export function atomicComponents(options = {}) {
 	return {
@@ -17,13 +22,13 @@ export function atomicComponents(options = {}) {
 			const imports = atomImports(tree, filename, options.aliases ?? {});
 			const atoms = new Map(imports.map((entry) => [entry.name, entry.atom]));
 			for (const { node, definition } of syntax.atoms) {
-				if (!definition) throw new Error(`Unknown native atom ${node.name}.`);
+				if (!definition) throw new NativeAtomError(`Unknown native atom ${node.name}.`);
 				if (atoms.has(node.name)) continue;
-				if (!syntax.directory) throw new Error(`Declare @harness-atoms in ${filename}.`);
+				if (!syntax.directory) throw new NativeAtomError(`Declare @harness-atoms in ${filename}.`);
 				const path = resolve(dirname(filename), syntax.directory, definition.name + '.svelte');
 				const source = readFileSync(path, 'utf8');
 				if (!sameDefinition(source, definition))
-					throw new Error(`Native atom ${path} does not match its element contract.`);
+					throw new NativeAtomError(`Native atom ${path} does not match its element contract.`);
 				atoms.set(node.name, definition);
 				imports.push({ path });
 			}
@@ -51,10 +56,13 @@ function atomImports(tree, filename, aliases) {
 		const binding = node.specifiers.find((entry) => entry.type === 'ImportDefaultSpecifier');
 		if (!binding || node.specifiers.length !== 1) return [];
 		const path = atomImportPath(specifier, filename, aliases);
-		if (!path) throw new Error(`Cannot resolve native atom ${specifier}; configure its alias.`);
+		if (!path)
+			throw new NativeAtomError(`Cannot resolve native atom ${specifier}; configure its alias.`);
 		const source = readFileSync(path, 'utf8');
 		if (!sameDefinition(source, atom))
-			throw new Error(`Native atom ${path} must retain its element contract and have no styles.`);
+			throw new NativeAtomError(
+				`Native atom ${path} must retain its element contract and have no styles.`
+			);
 		return [{ name: binding.local.name, atom, path, start: node.start, end: node.end }];
 	});
 }
