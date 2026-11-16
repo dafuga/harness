@@ -1,4 +1,5 @@
 import { expect, vi } from 'vitest';
+import { EvidenceTreeAdapter } from '../../src/adapters/verification-evidence/EvidenceTreeAdapter';
 import { HistoryNoteRepository } from '../../src/repositories/git-source-history/history-note-repository/HistoryNoteRepository';
 import { readFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -28,6 +29,7 @@ export async function assertSelectedFrameReader(): Promise<void> {
 		};
 		const service = new FrameFlagService(root);
 		const fullHistory = vi.spyOn(HistoryNoteRepository.prototype, 'all');
+		const treeReads = vi.spyOn(EvidenceTreeAdapter.prototype, 'list');
 		let flag: Awaited<ReturnType<FrameFlagService['flag']>>;
 		try {
 			flag = await service.flag({ clip: reference, frameNumber: 2, note: 'Healthy A edge' });
@@ -35,8 +37,13 @@ export async function assertSelectedFrameReader(): Promise<void> {
 				fullHistory,
 				'one selected frame must not materialize every unrelated history note'
 			).not.toHaveBeenCalled();
+			expect(
+				treeReads.mock.calls.every((call) => call.length > 1),
+				'one selected frame must not enumerate unrelated evidence paths'
+			).toBe(true);
 		} finally {
 			fullHistory.mockRestore();
+			treeReads.mockRestore();
 		}
 		expect(flag, 'healthy selected archive clip supports frame feedback').toMatchObject({
 			clip: { ...reference, sha256: f.capture.sha256 },
