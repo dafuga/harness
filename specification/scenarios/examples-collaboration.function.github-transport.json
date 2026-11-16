@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-collaboration.function.github-transport",
+	"title": "collaboration.function.github-transport examples",
+	"kind": "headless",
+	"units": ["collaboration.function.github-transport"],
+	"builds": [],
+	"states": [
+		{
+			"id": "creates-a-scoped-github-contents-transport",
+			"title": "Creates a scoped GitHub contents transport",
+			"coverage": "required"
+		},
+		{
+			"id": "maps-supported-git-refs-to-api-paths",
+			"title": "Maps supported Git refs to API paths",
+			"coverage": "required"
+		},
+		{
+			"id": "reads-exact-branch-and-notes-refs",
+			"title": "Reads exact branch and notes refs",
+			"coverage": "required"
+		},
+		{
+			"id": "resolves-exact-refs-and-rejects-missing-refs",
+			"title": "Resolves exact refs and rejects missing refs",
+			"coverage": "required"
+		},
+		{
+			"id": "encodes-byte-arrays-as-standard-base64",
+			"title": "Encodes byte arrays as standard base64",
+			"coverage": "required"
+		},
+		{
+			"id": "decodes-whitespace-and-rejects-invalid-base64",
+			"title": "Decodes whitespace and rejects invalid base64",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/collaboration.function.github-transport.test.ts",
+			"cwd": "packages/collaboration",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"creates-a-scoped-github-contents-transport",
+				"maps-supported-git-refs-to-api-paths",
+				"reads-exact-branch-and-notes-refs",
+				"resolves-exact-refs-and-rejects-missing-refs",
+				"encodes-byte-arrays-as-standard-base64",
+				"decodes-whitespace-and-rejects-invalid-base64"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"creates-a-scoped-github-contents-transport",
+				"maps-supported-git-refs-to-api-paths",
+				"reads-exact-branch-and-notes-refs",
+				"resolves-exact-refs-and-rejects-missing-refs",
+				"encodes-byte-arrays-as-standard-base64",
+				"decodes-whitespace-and-rejects-invalid-base64"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"creates-a-scoped-github-contents-transport",
+				"maps-supported-git-refs-to-api-paths",
+				"reads-exact-branch-and-notes-refs",
+				"resolves-exact-refs-and-rejects-missing-refs",
+				"encodes-byte-arrays-as-standard-base64",
+				"decodes-whitespace-and-rejects-invalid-base64"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
