@@ -16,7 +16,7 @@
 		"inputs": [
 			{
 				"name": "resolveCleanCodeSettings.raw",
-				"type": "unknown",
+				"type": "CleanCodeConfig | undefined",
 				"required": true,
 				"description": "Raw value supplied to resolveCleanCodeSettings for the cleanCode setting; it is parsed on every call, and undefined becomes {}, while null, arrays, and primitives throw ExpectedCliError. The resolver reads mode (off, advisory, or gate; null defaults to off), minConfidence (finite number in (0, 1]; null defaults to 0.85), apiKeyEnv (^[A-Z][A-Z0-9_]*$; null defaults to HARNESS_JEV_API_KEY), model (jev-[a-zA-Z0-9.-]+, with undefined defaulting to jev-1.13.0), and exclude (array of nonblank strings, with undefined defaulting to []); other keys are ignored.",
 				"examples": [
@@ -92,7 +92,7 @@
 				"inputs": [
 					{
 						"name": "resolveCleanCodeSettings.raw",
-						"type": "unknown",
+						"type": "CleanCodeConfig | undefined",
 						"required": true,
 						"description": "Raw value supplied to resolveCleanCodeSettings for the cleanCode setting; it is parsed on every call, and undefined becomes {}, while null, arrays, and primitives throw ExpectedCliError. The resolver reads mode (off, advisory, or gate; null defaults to off), minConfidence (finite number in (0, 1]; null defaults to 0.85), apiKeyEnv (^[A-Z][A-Z0-9_]*$; null defaults to HARNESS_JEV_API_KEY), model (jev-[a-zA-Z0-9.-]+, with undefined defaulting to jev-1.13.0), and exclude (array of nonblank strings, with undefined defaulting to []); other keys are ignored.",
 						"examples": [

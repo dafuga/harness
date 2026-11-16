@@ -1,6 +1,6 @@
 // @harness-uid u_eoggq5h5p5
 import { fail } from '../../core/development-tooling/errors';
-import type { CleanCodeOptions, CleanCodeSettings } from './cleanCodeTypes';
+import type { CleanCodeConfig, CleanCodeOptions, CleanCodeSettings } from './cleanCodeTypes';
 
 export const cleanCodeDefaults: CleanCodeSettings = {
 	mode: 'off',
@@ -11,7 +11,7 @@ export const cleanCodeDefaults: CleanCodeSettings = {
 };
 
 export function resolveCleanCodeSettings(
-	raw: unknown,
+	raw: CleanCodeConfig | undefined,
 	options: CleanCodeOptions = {}
 ): CleanCodeSettings {
 	const config = configObject(raw);
