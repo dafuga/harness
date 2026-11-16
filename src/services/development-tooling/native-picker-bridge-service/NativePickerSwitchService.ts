@@ -6,6 +6,7 @@ import {
 	type PickerRpc
 } from '../../../utils/development-tooling/nativePickerProtocol';
 import { NativePickerIdleValidator } from '../../../validators/development-tooling/NativePickerIdleValidator';
+import { NativePickerSwitchError } from './NativePickerSwitchService.types';
 
 /** Only used by the experimental desktop copy, never the running vendor client. */
 export class NativePickerSwitchService {
@@ -16,17 +17,19 @@ export class NativePickerSwitchService {
 
 	async apply(params: PickerData, context: PickerData = {}): Promise<PickerData> {
 		const threadId = params.threadId;
-		if (typeof threadId !== 'string') throw new Error('Missing thread ID');
+		if (typeof threadId !== 'string') throw new NativePickerSwitchError('Missing thread ID');
 		const previous = nativePickerProtocol(
 			(await this.rpc('thread/read', { threadId, includeTurns: false })).thread
 		);
 		const idle = await new NativePickerIdleValidator().validate(previous, this.rpc);
-		if (!idle.valid) throw new Error(idle.errors[0]);
+		if (!idle.valid) throw new NativePickerSwitchError(idle.errors[0]);
 		if (previous.ephemeral === true)
-			throw new Error('Provider switching requires persisted history');
+			throw new NativePickerSwitchError('Provider switching requires persisted history');
 		const remote = await this.rpc('remoteControl/status/read', {});
 		if (remote.status !== 'disabled')
-			throw new Error('Close remote clients and disable remote control before switching');
+			throw new NativePickerSwitchError(
+				'Close remote clients and disable remote control before switching'
+			);
 		await this.rpc('thread/unsubscribe', { threadId });
 		await this.waitClosed(threadId);
 		const provider = pickerProvider(params.model);
@@ -39,7 +42,9 @@ export class NativePickerSwitchService {
 			return resumed;
 		} catch (error) {
 			await this.rollback(previous, context);
-			throw new Error(`Provider switch failed; previous settings restored. ${String(error)}`);
+			throw new NativePickerSwitchError(
+				`Provider switch failed; previous settings restored. ${String(error)}`
+			);
 		}
 	}
 
@@ -69,12 +74,13 @@ export class NativePickerSwitchService {
 		const deadline = Date.now() + (this.options.timeoutMs ?? 10_000);
 		do {
 			const result = await this.rpc('thread/loaded/list', { limit: 10000 });
-			if (result.nextCursor != null) throw new Error('Cannot verify every loaded chat');
+			if (result.nextCursor != null)
+				throw new NativePickerSwitchError('Cannot verify every loaded chat');
 			if (Array.isArray(result.data) && !result.data.includes(threadId)) return;
 			if (Date.now() >= deadline) break;
 			await new Promise((resolve) => setTimeout(resolve, 100));
 		} while (Date.now() < deadline);
-		throw new Error('Chat has not closed on every client; provider unchanged');
+		throw new NativePickerSwitchError('Chat has not closed on every client; provider unchanged');
 	}
 
 	private async verify(
@@ -91,7 +97,7 @@ export class NativePickerSwitchService {
 			result.modelProvider !== provider ||
 			result.reasoningEffort !== effort
 		)
-			throw new Error('Resumed provider, model or effort did not match');
+			throw new NativePickerSwitchError('Resumed provider, model or effort did not match');
 	}
 
 	private async rollback(previous: PickerData, context: PickerData): Promise<void> {
@@ -109,7 +115,7 @@ export class NativePickerSwitchService {
 			);
 			await this.verify(threadId, previous.model, previous.modelProvider, previous.reasoningEffort);
 		} catch {
-			throw new Error(
+			throw new NativePickerSwitchError(
 				'Provider switch failed and rollback could not be verified; manual recovery required'
 			);
 		}
