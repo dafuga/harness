@@ -1,0 +1,77 @@
+import { mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { test } from 'vitest';
+import { expect } from '../../../../test/verificationExpect';
+import { recordExampleCases } from '../../../../test/support/recordExampleCases';
+import {
+	reportServerEnvironment,
+	ReportServerService
+} from '../../src/services/reports-media/report-command-service/report-server-service/ReportServerService';
+import { ReportRepository } from '../../src/repositories/reports-media/report-repository/ReportRepository';
+
+test('Builds a loopback environment from inherited values', () => {
+	const result = reportServerEnvironment(
+		5588,
+		{ PATH: '/usr/local/bin', CI: 'true' },
+		'/workspace/project'
+	);
+	expect(result).toMatchObject({
+		PATH: '/usr/local/bin',
+		CI: 'true',
+		HOST: '127.0.0.1',
+		PORT: '5588',
+		ORIGIN: 'http://127.0.0.1:5588',
+		BODY_SIZE_LIMIT: '110M',
+		HARNESS_SITE_ROOT: '/workspace/project',
+		HARNESS_OWNER_MODE: 'loopback',
+		HARNESS_BIND: '127.0.0.1'
+	});
+	recordExampleCases(
+		{
+			unitId: 'reports.service.report-server',
+			symbol: 'reportServerEnvironment',
+			state: 'builds-a-loopback-environment-from-inherited-values',
+			evidence: 'examples-cases',
+			file: 'builds-a-loopback-environment-from-inherited-values.json'
+		},
+		[
+			{
+				name: 'sets loopback address and server settings while retaining inherited values',
+				input: { port: 5588, base: { PATH: '/usr/local/bin', CI: 'true' }, cwd: '/workspace/project' },
+				output: result
+			}
+		]
+	);
+});
+
+test('Leaves an unrecorded report server stopped', async () => {
+	const root = mkdtempSync(join(tmpdir(), 'report-server-example-'));
+	try {
+		const service = new ReportServerService(new ReportRepository(root));
+		const result = await service.stop(5588);
+		expect(result).toMatchObject({
+			port: 5588,
+			stopped: false,
+			reason: 'This report store recorded no server on this port.'
+		});
+		recordExampleCases(
+			{
+				unitId: 'reports.service.report-server',
+				symbol: 'ReportServerService.stop',
+				state: 'leaves-an-unrecorded-report-server-stopped',
+				evidence: 'examples-cases',
+				file: 'leaves-an-unrecorded-report-server-stopped.json'
+			},
+			[
+				{
+				name: 'returns the empty-record result for a temporary report store',
+				input: { port: 5588 },
+				output: result
+			}
+		]
+		);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
