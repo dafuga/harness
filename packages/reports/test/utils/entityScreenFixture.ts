@@ -105,7 +105,14 @@ export function assertRecordedVideoSlots(page: HarnessUnit, tip: Revision) {
 		newest = persisted.records[0];
 	newest.id = 'f'.repeat(64);
 	const state = newest.scenarios.find((scenario) => scenario.id === 'orders-page')!.states[0];
-	const shots = [...state.captures];
+	const shots = [...state.captures, { ...state.captures[0], viewport: 'tablet' }];
+	persisted.registry.scenarios
+		.find((scenario) => scenario.id === 'orders-page')!
+		.viewports!.push({
+			id: 'tablet',
+			width: 834,
+			height: 1112
+		});
 	state.captures.push(
 		...Array.from({ length: 16 }, (_, index) =>
 			shots.map(
@@ -129,11 +136,11 @@ export function assertRecordedVideoSlots(page: HarnessUnit, tip: Revision) {
 	const clips = galleryItems(projected).filter((item) => item.mediaType === 'video');
 	expect(
 		clips,
-		'all16 persisted branches survive revision projection at both viewports'
-	).toHaveLength(32);
-	expect(new Set(clips.map((item) => item.id)).size).toBe(32);
+		'all16 persisted branches survive revision projection at all3 viewports'
+	).toHaveLength(48);
+	expect(new Set(clips.map((item) => item.id)).size).toBe(48);
 	expect(new Set(clips.map((item) => item.video!.reference?.record))).toEqual(new Set([newest.id]));
 	for (let index = 0; index < 16; index++) {
-		expect(clips.filter((item) => item.video!.clipId === `search-${index}`)).toHaveLength(2);
+		expect(clips.filter((item) => item.video!.clipId === `search-${index}`)).toHaveLength(3);
 	}
 }
