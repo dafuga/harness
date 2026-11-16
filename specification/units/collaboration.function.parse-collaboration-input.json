@@ -197,9 +197,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CollaborationInputError",
 				"type": "thrown",
-				"description": "The plain Error built by fail, with message Collaboration followed by the code and a code property holding that code. parseCollaborationInput throws it with invalid-input, safePath throws it with invalid-path, and fail throws it with whatever code it receives."
+				"description": "The CollaborationInputError built by fail, with message Collaboration followed by the code and a code property holding that code. parseCollaborationInput throws it with invalid-input, safePath throws it with invalid-path, and fail throws it with whatever code it receives."
 			},
 			{
 				"name": "DOMException",
@@ -229,9 +229,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CollaborationInputError",
 						"type": "thrown",
-						"description": "The plain Error built by fail, with message Collaboration followed by the code and a code property holding that code. fail throws it on every call, so it never returns a value."
+						"description": "The CollaborationInputError built by fail, with message Collaboration followed by the code and a code property holding that code. fail throws it on every call, so it never returns a value."
 					}
 				],
 				"errorStatus": "declared"
@@ -281,9 +281,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CollaborationInputError",
 						"type": "thrown",
-						"description": "The plain Error from fail with code invalid-input, thrown when schema.safeParse does not succeed; its message is Collaboration invalid-input."
+						"description": "The CollaborationInputError from fail with code invalid-input, thrown when schema.safeParse does not succeed; its message is Collaboration invalid-input."
 					}
 				],
 				"errorStatus": "declared"
@@ -354,9 +354,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CollaborationInputError",
 						"type": "thrown",
-						"description": "The plain Error from fail with code invalid-path, thrown when the path is empty, starts with a slash, contains a backslash, has an empty, dot or double-dot segment, or contains a character below U+0020."
+						"description": "The CollaborationInputError from fail with code invalid-path, thrown when the path is empty, starts with a slash, contains a backslash, has an empty, dot or double-dot segment, or contains a character below U+0020."
 					}
 				],
 				"errorStatus": "declared"

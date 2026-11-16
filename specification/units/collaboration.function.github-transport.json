@@ -134,9 +134,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CollaborationInputError",
 				"type": "thrown",
-				"description": "The package's plain Error from fail (message 'Collaboration <code>', with a code property) represents the validation and request failures this transport exposes, including invalid refs or paths, invalid content, missing or non-unique exact refs, repository denial, and unavailable GitHub requests. readRef returns null for an ordinary missing ref, while exactRef rejects when its ref is absent."
+				"description": "The package's CollaborationInputError from fail (message 'Collaboration <code>', with a code property) represents the validation and request failures this transport exposes, including invalid refs or paths, invalid content, missing or non-unique exact refs, repository denial, and unavailable GitHub requests. readRef returns null for an ordinary missing ref, while exactRef rejects when its ref is absent."
 			}
 		],
 		"errorStatus": "declared",
@@ -168,9 +168,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CollaborationInputError",
 						"type": "thrown",
-						"description": "Rejects with the package's plain Error from fail for invalid refs or paths, unavailable or malformed GitHub responses, mismatched ref results, or a missing exact ref. readRef itself returns null for an ordinary missing ref."
+						"description": "Rejects with the package's CollaborationInputError from fail for invalid refs or paths, unavailable or malformed GitHub responses, mismatched ref results, or a missing exact ref. readRef itself returns null for an ordinary missing ref."
 					}
 				],
 				"errorStatus": "declared"
@@ -201,9 +201,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CollaborationInputError",
 						"type": "thrown",
-						"description": "The package's plain Error from fail is thrown when repository options fail validation or check detects a different repository ID or a public repository under privateOnly; request methods also throw it for invalid paths or unavailable GitHub requests. Repository validation can fail while creating the transport."
+						"description": "The package's CollaborationInputError from fail is thrown when repository options fail validation or check detects a different repository ID or a public repository under privateOnly; request methods also throw it for invalid paths or unavailable GitHub requests. Repository validation can fail while creating the transport."
 					}
 				],
 				"errorStatus": "declared"
@@ -229,9 +229,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CollaborationInputError",
 						"type": "thrown",
-						"description": "The package's plain Error from fail is thrown when the ref is outside the heads, notes, or tags namespaces or fails the safe-path or Git ref character checks."
+						"description": "The package's CollaborationInputError from fail is thrown when the ref is outside the heads, notes, or tags namespaces or fails the safe-path or Git ref character checks."
 					}
 				],
 				"errorStatus": "declared"
@@ -263,9 +263,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CollaborationInputError",
 						"type": "thrown",
-						"description": "Rejects with the package's plain Error from fail for invalid refs or paths, unavailable or malformed GitHub responses, or results without exactly one exact ref match. A 404 or an empty notes match returns null."
+						"description": "Rejects with the package's CollaborationInputError from fail for invalid refs or paths, unavailable or malformed GitHub responses, or results without exactly one exact ref match. A 404 or an empty notes match returns null."
 					}
 				],
 				"errorStatus": "declared"
@@ -311,9 +311,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CollaborationInputError",
 						"type": "thrown",
-						"description": "The package's plain Error from fail is thrown when the whitespace-stripped input cannot be decoded as base64."
+						"description": "The package's CollaborationInputError from fail is thrown when the whitespace-stripped input cannot be decoded as base64."
 					}
 				],
 				"errorStatus": "declared"

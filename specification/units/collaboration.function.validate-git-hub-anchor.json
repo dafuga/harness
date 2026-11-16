@@ -104,9 +104,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CollaborationInputError",
 				"type": "thrown",
-				"description": "fail() throws a plain Error, not an ExpectedCliError, with a code property (message 'Collaboration <code>') set to invalid-input, invalid-source, invalid-entity, invalid-version, invalid-path, invalid-image, image-integrity or unreachable-anchor. Adapter and transport rejections pass through unchanged, except that a failed read, invalid UTF-8 or invalid JSON in a source JSON file is reported as invalid-source."
+				"description": "fail() throws a CollaborationInputError, not an ExpectedCliError, with a code property (message 'Collaboration <code>') set to invalid-input, invalid-source, invalid-entity, invalid-version, invalid-path, invalid-image, image-integrity or unreachable-anchor. Adapter and transport rejections pass through unchanged, except that a failed read, invalid UTF-8 or invalid JSON in a source JSON file is reported as invalid-source."
 			}
 		],
 		"errorStatus": "declared",
@@ -202,9 +202,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CollaborationInputError",
 						"type": "thrown",
-						"description": "fail() throws a plain Error, not an ExpectedCliError, with a code property (message 'Collaboration <code>') set to invalid-input, invalid-source, invalid-entity, invalid-version, invalid-path, invalid-image, image-integrity or unreachable-anchor. Adapter and transport rejections pass through unchanged, except that a failed read, invalid UTF-8 or invalid JSON in a source JSON file is reported as invalid-source."
+						"description": "fail() throws a CollaborationInputError, not an ExpectedCliError, with a code property (message 'Collaboration <code>') set to invalid-input, invalid-source, invalid-entity, invalid-version, invalid-path, invalid-image, image-integrity or unreachable-anchor. Adapter and transport rejections pass through unchanged, except that a failed read, invalid UTF-8 or invalid JSON in a source JSON file is reported as invalid-source."
 					}
 				],
 				"errorStatus": "declared"

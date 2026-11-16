@@ -70,9 +70,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CollaborationInputError",
 				"type": "thrown",
-				"description": "Plain Error (not an ExpectedCliError, so isExpectedCliError() returns false) made by fail(code), with the message 'Collaboration <code>' and a code property of invalid-input, invalid-path, invalid-ref, ref-mismatch, history-limit, unreachable-anchor, github-unavailable, repository-denied or commit-mismatch. Errors thrown by adapter.resolve and adapter.tree are not wrapped and reach the caller unchanged."
+				"description": "CollaborationInputError (not an ExpectedCliError, so isExpectedCliError() returns false) made by fail(code), with the message 'Collaboration <code>' and a code property of invalid-input, invalid-path, invalid-ref, ref-mismatch, history-limit, unreachable-anchor, github-unavailable, repository-denied or commit-mismatch. Errors thrown by adapter.resolve and adapter.tree are not wrapped and reach the caller unchanged."
 			}
 		],
 		"errorStatus": "declared",
@@ -142,9 +142,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CollaborationInputError",
 						"type": "thrown",
-						"description": "Plain Error (not an ExpectedCliError) made by fail(code): unreachable-anchor when the compare response is not ahead or identical with commit as merge_base_commit.sha, invalid-input when the response has the wrong shape, and invalid-path when commit or tip puts a '..' segment in the compare path. Any non-2xx compare response, 404 included, and any failure in the transport's token, fetch or response read is github-unavailable."
+						"description": "CollaborationInputError (not an ExpectedCliError) made by fail(code): unreachable-anchor when the compare response is not ahead or identical with commit as merge_base_commit.sha, invalid-input when the response has the wrong shape, and invalid-path when commit or tip puts a '..' segment in the compare path. Any non-2xx compare response, 404 included, and any failure in the transport's token, fetch or response read is github-unavailable."
 					}
 				],
 				"errorStatus": "declared"
