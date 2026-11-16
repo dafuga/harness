@@ -22,7 +22,8 @@
 			"AuthRequestValidator.githubCallback",
 			"AuthRequestValidator.emailCode",
 			"AuthRequestValidator.repositoryId",
-			"Body"
+			"Body",
+			"JsonValue"
 		]
 	},
 	"contract": {
@@ -137,7 +138,7 @@
 			},
 			{
 				"name": "AuthRequestValidator.repositoryId.value",
-				"type": "unknown",
+				"type": "JsonValue",
 				"required": true,
 				"description": "The raw value to check as a GitHub repository id, of any JSON type. It is accepted only when it is a JavaScript number that is a safe integer and greater than zero; anything else throws `invalid-request`.",
 				"examples": [712438905, 38213746]
@@ -565,7 +566,7 @@
 				"inputs": [
 					{
 						"name": "AuthRequestValidator.repositoryId.value",
-						"type": "unknown",
+						"type": "JsonValue",
 						"required": true,
 						"description": "The raw value to check as a GitHub repository id, of any JSON type. It is accepted only when it is a JavaScript number that is a safe integer and greater than zero; anything else throws `invalid-request`.",
 						"examples": [712438905, 38213746]
