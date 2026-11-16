@@ -98,3 +98,42 @@ export function assertVideoSlots(evidence: ExplorerEvidence) {
 	).toBe(2);
 	for (const item of items) expect(item.title).toContain(item.video!.clipId);
 }
+
+/** Exercise persisted captures before revision projection, including clips sharing a state. */
+export function assertRecordedVideoSlots(page: HarnessUnit, tip: Revision) {
+	const persisted = structuredClone(tip),
+		newest = persisted.records[0];
+	newest.id = 'f'.repeat(64);
+	const state = newest.scenarios.find((scenario) => scenario.id === 'orders-page')!.states[0];
+	const shots = [...state.captures];
+	state.captures.push(
+		...Array.from({ length: 16 }, (_, index) =>
+			shots.map(
+				(shot) =>
+					({
+						...shot,
+						evidence: 'motion',
+						kind: 'video',
+						mediaType: 'video/mp4',
+						media: `media/search-${index}-${shot.viewport}.mp4`,
+						video: { clipId: `search-${index}`, unit: ids.page, inputHash: 'd'.repeat(64) }
+					}) as never
+			)
+		).flat()
+	);
+	const older = structuredClone(newest);
+	older.id = 'e'.repeat(64);
+	older.finishedAt = '2026-10-09T09:00:00.000Z';
+	persisted.records.push(older);
+	const projected = evidence(page, persisted);
+	const clips = galleryItems(projected).filter((item) => item.mediaType === 'video');
+	expect(
+		clips,
+		'all16 persisted branches survive revision projection at both viewports'
+	).toHaveLength(32);
+	expect(new Set(clips.map((item) => item.id)).size).toBe(32);
+	expect(new Set(clips.map((item) => item.video!.reference.record))).toEqual(new Set([newest.id]));
+	for (let index = 0; index < 16; index++) {
+		expect(clips.filter((item) => item.video!.clipId === `search-${index}`)).toHaveLength(2);
+	}
+}

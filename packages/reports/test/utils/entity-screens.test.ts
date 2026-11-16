@@ -1,5 +1,10 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
-import { evidence, assertVideoProjection, assertVideoSlots } from './entityScreenFixture';
+import {
+	evidence,
+	assertVideoProjection,
+	assertVideoSlots,
+	assertRecordedVideoSlots
+} from './entityScreenFixture';
 import { expect, test } from 'vitest';
 import {
 	catalogShot,
@@ -167,6 +172,7 @@ test('the gallery gets every screenshot of both sides, each side marked as what 
 	expect(galleryItems(evidence(page, head))).toEqual([]);
 	expect(new Set(items.map((item) => item.id)).size).toBe(items.length);
 	assertVideoSlots(assertVideoProjection(page, tip));
+	assertRecordedVideoSlots(page, tip);
 });
 
 test('a declared catalog preview selects its exact state and viewport without a fallback', () => {
