@@ -34,8 +34,8 @@
 				"name": "ModuleTaskRunnerAdapter.constructor.execute",
 				"type": "TaskProcessExecutor",
 				"required": false,
-				"description": "Optional process executor for CLI calls; when omitted, the adapter uses taskProcess to launch the selected provider command. The documented default is the source expression taskProcess, evaluated by the implementation; it is not a literal string value.",
-				"default": "taskProcess"
+				"default": "taskProcess",
+				"description": "Optional process executor for CLI calls; when omitted, the adapter uses taskProcess to launch the selected provider command. The documented default is the source expression taskProcess, evaluated by the implementation; it is not a literal string value."
 			},
 			{
 				"name": "ModuleTaskRunnerAdapter.command.selection",
@@ -357,8 +357,8 @@
 						"name": "ModuleTaskRunnerAdapter.constructor.execute",
 						"type": "TaskProcessExecutor",
 						"required": false,
-						"description": "Optional process executor for CLI calls; when omitted, the adapter uses taskProcess to launch the selected provider command. The documented default is the source expression taskProcess, evaluated by the implementation; it is not a literal string value.",
-						"default": "taskProcess"
+						"default": "taskProcess",
+						"description": "Optional process executor for CLI calls; when omitted, the adapter uses taskProcess to launch the selected provider command. The documented default is the source expression taskProcess, evaluated by the implementation; it is not a literal string value."
 					}
 				],
 				"outputs": [

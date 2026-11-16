@@ -25,9 +25,9 @@
 				"name": "LoadingState.label",
 				"type": "string",
 				"required": false,
-				"default": "Loading\u2026",
-				"description": "Use this text to identify what data the host is waiting on; it defaults to Loading\u2026. Long labels wrap anywhere in the available width.",
-				"examples": ["Loading reports\u2026", "Reading project evidence"]
+				"default": "Loading…",
+				"description": "Use this text to identify what data the host is waiting on; it defaults to Loading…. Long labels wrap anywhere in the available width.",
+				"examples": ["Loading reports…", "Reading project evidence"]
 			},
 			{
 				"name": "LoadingState.inline",

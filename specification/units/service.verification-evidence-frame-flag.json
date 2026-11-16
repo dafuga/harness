@@ -81,15 +81,15 @@
 				"name": "FrameFlagService.constructor.root",
 				"type": "string",
 				"required": false,
-				"description": "Repository used for source notes, immutable evidence and retained frame objects. The documented default is the source expression process.cwd(), evaluated by the implementation; it is not a literal string value.",
-				"default": "process.cwd()"
+				"default": "process.cwd()",
+				"description": "Repository used for source notes, immutable evidence and retained frame objects. The documented default is the source expression process.cwd(), evaluated by the implementation; it is not a literal string value."
 			},
 			{
 				"name": "FrameFlagService.constructor.reader",
 				"type": "FrameClipReader",
 				"required": false,
-				"description": "Exact-reference reader. The default follows attached verified evidence; injected readers must satisfy the same runtime binding checks. The documented default is the source expression defaultAttachedReader, evaluated by the implementation; it is not a literal string value.",
-				"default": "defaultAttachedReader"
+				"default": "defaultAttachedReader",
+				"description": "Exact-reference reader. The default follows attached verified evidence; injected readers must satisfy the same runtime binding checks. The documented default is the source expression defaultAttachedReader, evaluated by the implementation; it is not a literal string value."
 			},
 			{
 				"name": "FrameFlagService.flag.input",
@@ -150,15 +150,15 @@
 				"name": "defaultAttachedReader.root",
 				"type": "string",
 				"required": false,
-				"description": "Project checkout used for immutable source and evidence reads. The documented default is the source expression process.cwd(), evaluated by the implementation; it is not a literal string value.",
-				"default": "process.cwd()"
+				"default": "process.cwd()",
+				"description": "Project checkout used for immutable source and evidence reads. The documented default is the source expression process.cwd(), evaluated by the implementation; it is not a literal string value."
 			},
 			{
 				"name": "defaultAttachedReader.pinned",
 				"type": "PinnedHistory",
 				"required": false,
-				"description": "Optional fixed evidence and notes snapshot; supplied bounds are never widened. Omission passes undefined; the implementation applies the documented optional behavior.",
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Optional fixed evidence and notes snapshot; supplied bounds are never widened. Omission passes undefined; the implementation applies the documented optional behavior."
 			},
 			{
 				"name": "inspectFrameClip.clip",
@@ -332,8 +332,8 @@
 				"name": "readFrameFlags.reader",
 				"type": "FrameClipReader",
 				"required": false,
-				"description": "Exact-reference clip reader; its returned claim is independently validated before use. Omission passes undefined; the implementation applies the documented optional behavior.",
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Exact-reference clip reader; its returned claim is independently validated before use. Omission passes undefined; the implementation applies the documented optional behavior."
 			},
 			{
 				"name": "storeFrameResolution.root",
@@ -381,8 +381,8 @@
 				"name": "readFrameCapture.pinned",
 				"type": "PinnedHistory",
 				"required": false,
-				"description": "Immutable evidence and notes commits; null refuses unavailable evidence or notes. Omission passes undefined; the implementation applies the documented optional behavior.",
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Immutable evidence and notes commits; null refuses unavailable evidence or notes. Omission passes undefined; the implementation applies the documented optional behavior."
 			}
 		],
 		"outputs": [
@@ -399,7 +399,7 @@
 			{
 				"name": "FrameFlagService.list",
 				"type": "Promise<FrameFlag[]>",
-				"description": "Only this owner\u2019s retained flags, with immutable replacement proof replayed before resolved status is accepted; supplied current hashes may mark unresolved feedback stale."
+				"description": "Only this owner’s retained flags, with immutable replacement proof replayed before resolved status is accepted; supplied current hashes may mark unresolved feedback stale."
 			},
 			{
 				"name": "FrameFlagService.feedback",
@@ -611,7 +611,7 @@
 					{
 						"name": "FrameFlagService.list",
 						"type": "Promise<FrameFlag[]>",
-						"description": "Only this owner\u2019s retained flags, with immutable replacement proof replayed before resolved status is accepted; supplied current hashes may mark unresolved feedback stale."
+						"description": "Only this owner’s retained flags, with immutable replacement proof replayed before resolved status is accepted; supplied current hashes may mark unresolved feedback stale."
 					}
 				],
 				"errors": [
@@ -726,15 +726,15 @@
 						"name": "defaultAttachedReader.root",
 						"type": "string",
 						"required": false,
-						"description": "Project checkout used for immutable source and evidence reads. The documented default is the source expression process.cwd(), evaluated by the implementation; it is not a literal string value.",
-						"default": "process.cwd()"
+						"default": "process.cwd()",
+						"description": "Project checkout used for immutable source and evidence reads. The documented default is the source expression process.cwd(), evaluated by the implementation; it is not a literal string value."
 					},
 					{
 						"name": "defaultAttachedReader.pinned",
 						"type": "PinnedHistory",
 						"required": false,
-						"description": "Optional fixed evidence and notes snapshot; supplied bounds are never widened. Omission passes undefined; the implementation applies the documented optional behavior.",
-						"default": "undefined (omitted)"
+						"default": "undefined (omitted)",
+						"description": "Optional fixed evidence and notes snapshot; supplied bounds are never widened. Omission passes undefined; the implementation applies the documented optional behavior."
 					}
 				],
 				"outputs": [
@@ -1206,8 +1206,8 @@
 						"name": "readFrameFlags.reader",
 						"type": "FrameClipReader",
 						"required": false,
-						"description": "Exact-reference clip reader; its returned claim is independently validated before use. Omission passes undefined; the implementation applies the documented optional behavior.",
-						"default": "undefined (omitted)"
+						"default": "undefined (omitted)",
+						"description": "Exact-reference clip reader; its returned claim is independently validated before use. Omission passes undefined; the implementation applies the documented optional behavior."
 					}
 				],
 				"outputs": [
@@ -1320,8 +1320,8 @@
 						"name": "readFrameCapture.pinned",
 						"type": "PinnedHistory",
 						"required": false,
-						"description": "Immutable evidence and notes commits; null refuses unavailable evidence or notes. Omission passes undefined; the implementation applies the documented optional behavior.",
-						"default": "undefined (omitted)"
+						"default": "undefined (omitted)",
+						"description": "Immutable evidence and notes commits; null refuses unavailable evidence or notes. Omission passes undefined; the implementation applies the documented optional behavior."
 					}
 				],
 				"outputs": [
@@ -1349,15 +1349,15 @@
 						"name": "FrameFlagService.constructor.root",
 						"type": "string",
 						"required": false,
-						"description": "Repository used for source notes, immutable evidence and retained frame objects. The documented default is the source expression process.cwd(), evaluated by the implementation; it is not a literal string value.",
-						"default": "process.cwd()"
+						"default": "process.cwd()",
+						"description": "Repository used for source notes, immutable evidence and retained frame objects. The documented default is the source expression process.cwd(), evaluated by the implementation; it is not a literal string value."
 					},
 					{
 						"name": "FrameFlagService.constructor.reader",
 						"type": "FrameClipReader",
 						"required": false,
-						"description": "Exact-reference reader. The default follows attached verified evidence; injected readers must satisfy the same runtime binding checks. The documented default is the source expression defaultAttachedReader, evaluated by the implementation; it is not a literal string value.",
-						"default": "defaultAttachedReader"
+						"default": "defaultAttachedReader",
+						"description": "Exact-reference reader. The default follows attached verified evidence; injected readers must satisfy the same runtime binding checks. The documented default is the source expression defaultAttachedReader, evaluated by the implementation; it is not a literal string value."
 					}
 				],
 				"outputs": [

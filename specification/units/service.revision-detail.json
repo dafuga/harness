@@ -64,8 +64,8 @@
 				"name": "RevisionDetailService.constructor.kept",
 				"type": "unknown",
 				"required": false,
-				"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map. The documented default is the source expression revisionSources(root), evaluated at construction; it is not a literal collaborator value.",
-				"default": "revisionSources(root)"
+				"default": "revisionSources(root)",
+				"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map. The documented default is the source expression revisionSources(root), evaluated at construction; it is not a literal collaborator value."
 			},
 			{
 				"name": "RevisionDetailService.build.commit",
@@ -387,8 +387,8 @@
 						"name": "RevisionDetailService.constructor.kept",
 						"type": "unknown",
 						"required": false,
-						"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map. The documented default is the source expression revisionSources(root), evaluated at construction; it is not a literal collaborator value.",
-						"default": "revisionSources(root)"
+						"default": "revisionSources(root)",
+						"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map. The documented default is the source expression revisionSources(root), evaluated at construction; it is not a literal collaborator value."
 					}
 				],
 				"outputs": [

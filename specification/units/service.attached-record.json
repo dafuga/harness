@@ -42,7 +42,7 @@
 				"type": "string | null",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional evidence commit that pins pointer validation to that commit\u2019s history. Null rejects every pointer; when omitted, evidence is unpinned and each stored evidence commit can be followed.",
+				"description": "Optional evidence commit that pins pointer validation to that commit’s history. Null rejects every pointer; when omitted, evidence is unpinned and each stored evidence commit can be followed.",
 				"examples": ["0123456789abcdef0123456789abcdef01234567", null]
 			},
 			{
@@ -84,7 +84,7 @@
 				"type": "string | null",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "The optional snapshot/root binding for this operation. Omission leaves this low-level descriptor\u2019s ancestry unpinned; a commit string pins ancestry and null refuses unavailable evidence."
+				"description": "The optional snapshot/root binding for this operation. Omission leaves this low-level descriptor’s ancestry unpinned; a commit string pins ancestry and null refuses unavailable evidence."
 			},
 			{
 				"name": "recordReferences.root",
@@ -187,7 +187,7 @@
 						"type": "string | null",
 						"required": false,
 						"default": "undefined (omitted)",
-						"description": "The optional snapshot/root binding for this operation. Omission leaves this low-level descriptor\u2019s ancestry unpinned; a commit string pins ancestry and null refuses unavailable evidence."
+						"description": "The optional snapshot/root binding for this operation. Omission leaves this low-level descriptor’s ancestry unpinned; a commit string pins ancestry and null refuses unavailable evidence."
 					}
 				],
 				"outputs": [
@@ -251,7 +251,7 @@
 						"type": "string | null",
 						"required": false,
 						"default": "undefined (omitted)",
-						"description": "Optional evidence commit that pins pointer validation to that commit\u2019s history. Null rejects every pointer; when omitted, evidence is unpinned and each stored evidence commit can be followed.",
+						"description": "Optional evidence commit that pins pointer validation to that commit’s history. Null rejects every pointer; when omitted, evidence is unpinned and each stored evidence commit can be followed.",
 						"examples": ["0123456789abcdef0123456789abcdef01234567", null]
 					},
 					{

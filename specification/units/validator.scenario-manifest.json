@@ -167,8 +167,8 @@
 				"name": "videoScenarioSourceContext.paths",
 				"type": "string[]",
 				"required": false,
-				"description": "Paths supplied to videoScenarioSourceContext under its declared string[] contract. Omission passes undefined; the implementation applies the documented optional behavior.",
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Paths supplied to videoScenarioSourceContext under its declared string[] contract. Omission passes undefined; the implementation applies the documented optional behavior."
 			},
 			{
 				"name": "videoScenarioSources.context",
@@ -493,8 +493,8 @@
 						"name": "videoScenarioSourceContext.paths",
 						"type": "string[]",
 						"required": false,
-						"description": "Paths supplied to videoScenarioSourceContext under its declared string[] contract. Omission passes undefined; the implementation applies the documented optional behavior.",
-						"default": "undefined (omitted)"
+						"default": "undefined (omitted)",
+						"description": "Paths supplied to videoScenarioSourceContext under its declared string[] contract. Omission passes undefined; the implementation applies the documented optional behavior."
 					}
 				],
 				"outputs": [

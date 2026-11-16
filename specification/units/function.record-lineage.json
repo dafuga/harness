@@ -183,7 +183,9 @@
 				"required": false,
 				"default": [],
 				"description": "An initial trail of ancestor record IDs used to detect a cycle when it contains the current or a recursively visited record ID. Defaults to [].",
-				"examples": [["fe161936b67b24b1a2ea4473a86fc891fbbf83928e5d0472a744ce2d3005c42b"]]
+				"examples": [
+					["fe161936b67b24b1a2ea4473a86fc891fbbf83928e5d0472a744ce2d3005c42b"]
+				]
 			}
 		],
 		"outputs": [
@@ -191,7 +193,10 @@
 				"name": "recordLineage",
 				"type": "string[]",
 				"description": "Returns strings for detected base or referenced-scenario ancestry problems, including missing, mismatched, failed, unsound or cyclic records and differing scenario states. Returns [] when no checked lineage has a problem; referenced scenarios without referencedRecord are skipped.",
-				"examples": [[], ["base record fe161936b67b is not available"]]
+				"examples": [
+					[],
+					["base record fe161936b67b is not available"]
+				]
 			}
 		],
 		"errors": [
@@ -479,7 +484,9 @@
 						"required": false,
 						"default": [],
 						"description": "An initial trail of ancestor record IDs used to detect a cycle when it contains the current or a recursively visited record ID. Defaults to [].",
-						"examples": [["fe161936b67b24b1a2ea4473a86fc891fbbf83928e5d0472a744ce2d3005c42b"]]
+						"examples": [
+							["fe161936b67b24b1a2ea4473a86fc891fbbf83928e5d0472a744ce2d3005c42b"]
+						]
 					}
 				],
 				"outputs": [
@@ -487,7 +494,10 @@
 						"name": "recordLineage",
 						"type": "string[]",
 						"description": "Returns strings for detected base or referenced-scenario ancestry problems, including missing, mismatched, failed, unsound or cyclic records and differing scenario states. Returns [] when no checked lineage has a problem; referenced scenarios without referencedRecord are skipped.",
-						"examples": [[], ["base record fe161936b67b is not available"]]
+						"examples": [
+							[],
+							["base record fe161936b67b is not available"]
+						]
 					}
 				],
 				"errors": [],
