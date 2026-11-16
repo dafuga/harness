@@ -10,7 +10,7 @@ import {
 
 /** Checks that a verification record is well formed and self-sufficient. */
 export class VerificationRecordValidator {
-	validate(value: unknown): ManifestValidation<VerificationRecord> {
+	validate<TValue>(value: TValue): ManifestValidation<VerificationRecord> {
 		const label = recordLabel(value);
 		const parsed = verificationRecordSchema.safeParse(value);
 		if (!parsed.success) return { errors: schemaErrors(parsed.error, label) };

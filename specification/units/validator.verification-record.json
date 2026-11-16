@@ -16,7 +16,7 @@
 		"inputs": [
 			{
 				"name": "VerificationRecordValidator.validate.value",
-				"type": "unknown",
+				"type": "TValue",
 				"required": true,
 				"description": "The untrusted value supplied to validate for schema parsing. The parameter accepts any runtime value; only values accepted by verificationRecordSchema receive measurement and recorded-unit checks.",
 				"examples": [null]
@@ -42,7 +42,7 @@
 				"inputs": [
 					{
 						"name": "VerificationRecordValidator.validate.value",
-						"type": "unknown",
+						"type": "TValue",
 						"required": true,
 						"description": "The untrusted value supplied to validate for schema parsing. The parameter accepts any runtime value; only values accepted by verificationRecordSchema receive measurement and recorded-unit checks.",
 						"examples": [null]
