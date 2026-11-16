@@ -13,6 +13,7 @@ import {
 import type { Capture } from '../../../../../core/verification-evidence/verificationTypes';
 import type { CaptureLimits } from './captureLimits.types';
 import { digestFile, oversizeCapture, RecordBudget } from './captureLimits';
+import { CaptureInspectionError } from './gatherCaptures.types';
 import { evidenceDirectoryFailure } from './evidenceDirectoryFailure';
 import { mediaFacts } from './mediaFacts';
 import { posterBudget, inspectVideoPoster } from './videoPoster';
@@ -71,7 +72,8 @@ function inspectBudgeted(
 	}: { recordPath: string; limits: CaptureLimits; budget: RecordBudget }
 ): Gathered | string {
 	const stat = lstatSync(file);
-	if (!stat.isFile()) throw new Error('Capture must be a regular file, not a symlink.');
+	if (!stat.isFile())
+		throw new CaptureInspectionError('Capture must be a regular file, not a symlink.');
 	checkVideoBytes(line, stat.size);
 	const refused =
 		oversizeCapture(line.file, stat.size, limits) ??
@@ -119,7 +121,7 @@ function load(
 	const media = ['screenshot', 'audio', 'video'].includes(line.kind);
 	if (!media && line.kind !== 'benchmark') return digestFile(source, limits.maxCaptureBytes);
 	const { contents: decoded, ...digest } = digestFile(source, limits.maxCaptureBytes, true);
-	if (!decoded) throw new Error('Capture bytes were not read.');
+	if (!decoded) throw new CaptureInspectionError('Capture bytes were not read.');
 	return {
 		...digest,
 		facts: media ? mediaFacts(decoded, line.mediaType) : undefined,
@@ -147,9 +149,9 @@ export function indexLines(path: string, result: GatherResult): string[] {
 	if (!existsSync(path)) return [];
 	try {
 		if (!lstatSync(dirname(path)).isDirectory())
-			throw new Error('Capture directory must be a regular directory.');
+			throw new CaptureInspectionError('Capture directory must be a regular directory.');
 		const index = lstatSync(path);
-		if (!index.isFile()) throw new Error('Capture index must be a regular file.');
+		if (!index.isFile()) throw new CaptureInspectionError('Capture index must be a regular file.');
 		if (index.size > maxCaptureIndexBytes) {
 			// Said on its own, with the file and both sizes, so the cap is never hit silently.
 			result.failures.push(
@@ -178,7 +180,7 @@ function parseJson(text: string): unknown {
 
 function checkVideoBytes(line: CaptureLine, bytes: number): void {
 	if (line.kind === 'video' && bytes > 8 * 1024 * 1024)
-		throw new Error('Video exceeds the fixed 8 MiB clip cap.');
+		throw new CaptureInspectionError('Video exceeds the fixed 8 MiB clip cap.');
 }
 
 export { gatherVerificationCaptures } from './gatherVideoReferences';

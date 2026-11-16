@@ -12,11 +12,13 @@
 			"src/utils/verification-evidence/gatherCaptures.ts",
 			"src/workflows/run-verify/verification-service/check-run-service/gatherCaptures.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures.types.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherVideoReferences.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherVideoReferences.types.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/videoPoster.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/videoRunReaders.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/videoSidecar.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/videoSidecar.types.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/videoReferenceAdmission.ts"
 		],
 		"symbols": [
@@ -28,16 +30,19 @@
 			"gatherLine",
 			"indexLines",
 			"gatherVerificationCaptures",
+			"CaptureInspectionError",
 			"gatherVerificationCaptures",
 			"VideoGatherContext",
 			"CaptureGatherScope",
 			"GatherVideoSidecar",
 			"VideoGatherSession",
+			"VideoReferenceAdmissionError",
 			"posterBudget",
 			"inspectVideoPoster",
 			"videoRunReaders",
 			"videoSidecar",
 			"sidecarCapture",
+			"VideoSidecarError",
 			"admitVideoReference",
 			"trustedVideoReference"
 		]

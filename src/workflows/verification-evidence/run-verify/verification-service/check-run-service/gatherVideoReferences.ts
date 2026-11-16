@@ -10,11 +10,12 @@ import type {
 } from '../../../../../utils/verification-evidence/gatherCaptures';
 import type { Capture } from '../../../../../core/verification-evidence/verificationTypes';
 import type { CaptureLimits } from './captureLimits.types';
-import type {
-	CaptureGatherScope,
-	VideoGatherContext,
-	GatherVideoSidecar,
-	VideoGatherSession
+import {
+	VideoReferenceAdmissionError,
+	type CaptureGatherScope,
+	type VideoGatherContext,
+	type GatherVideoSidecar,
+	type VideoGatherSession
 } from './gatherVideoReferences.types';
 import { VideoReferenceService } from '../../../../../services/verification-evidence/VideoReferenceService';
 import { evidenceDirectoryFailure } from './evidenceDirectoryFailure';
@@ -70,7 +71,10 @@ async function gatherIndexedCapture(
 		else result.gathered.push(item);
 		return;
 	}
-	if (!session.video) throw new Error('Video reference has no independent snapshot input proof.');
+	if (!session.video)
+		throw new VideoReferenceAdmissionError(
+			'Video reference has no independent snapshot input proof.'
+		);
 	session.sidecar ??= videoSidecar(session.directory);
 	const { item, pointer } = await gatheredReference(
 		{ sidecar: session.sidecar, line, recordPath: session.recordPath, limits: session.limits },
@@ -111,12 +115,14 @@ async function gatheredReference(
 		batches: input.sidecar.batches
 	});
 	if (verified.inputHash !== slot.inputHash)
-		throw new Error('Resolved clip input proof differs from current snapshot.');
+		throw new VideoReferenceAdmissionError(
+			'Resolved clip input proof differs from current snapshot.'
+		);
 	const bytes = verified.files.get(capture.path);
-	if (!bytes) throw new Error('Resolved video has no canonical media.');
+	if (!bytes) throw new VideoReferenceAdmissionError('Resolved video has no canonical media.');
 	const facts = mediaFacts(bytes, capture.mediaType);
 	if (!('kind' in facts) || facts.kind !== 'video')
-		throw new Error('Resolved video is not decodable.');
+		throw new VideoReferenceAdmissionError('Resolved video is not decodable.');
 	const item: Gathered = { line: input.line, capture, facts };
 	admitVideoReference(item, context.source.commit, verified.inputHash);
 	return { item, pointer: verified.pointer };
@@ -125,15 +131,17 @@ async function gatheredReference(
 function currentReference(capture: Capture, context: VideoGatherContext, limits: CaptureLimits) {
 	const video = capture.video;
 	if (capture.kind !== 'video' || !video)
-		throw new Error('Only video captures may name a child batch.');
+		throw new VideoReferenceAdmissionError('Only video captures may name a child batch.');
 	const slot = context.slots.find(
 		(s) => s.unit === video.unit && s.clipId === video.clipId && s.viewport === capture.viewport
 	);
 	if (slot?.inputHash !== video.inputHash)
-		throw new Error('Referenced clip does not match current snapshot inputs.');
+		throw new VideoReferenceAdmissionError(
+			'Referenced clip does not match current snapshot inputs.'
+		);
 	const refusal =
 		oversizeCapture(capture.path, capture.bytes, limits) ??
 		oversizeCapture(video.poster.file, video.poster.bytes, limits);
-	if (refusal) throw new Error(refusal);
+	if (refusal) throw new VideoReferenceAdmissionError(refusal);
 	return slot;
 }
