@@ -20,7 +20,7 @@
 		"inputs": [
 			{
 				"name": "recordedValue.value",
-				"type": "unknown",
+				"type": "Value",
 				"required": true,
 				"description": "The already-parsed value to present, of any JSON shape (undefined is shown as 'Not recorded'). It is only read, never rewritten, and the result keeps at most four levels, twelve items per collection and 120 values in total, with scalar text over 240 characters cut and marked shortened.",
 				"examples": [
@@ -44,7 +44,7 @@
 			},
 			{
 				"name": "read.value",
-				"type": "unknown",
+				"type": "Value",
 				"required": true,
 				"description": "The already-parsed value at this position, of any JSON shape (undefined is shown as 'Not recorded'). It is only read, never rewritten, and objects or arrays are expanded only while the depth and budget limits allow.",
 				"examples": [
@@ -176,7 +176,7 @@
 				"inputs": [
 					{
 						"name": "recordedValue.value",
-						"type": "unknown",
+						"type": "Value",
 						"required": true,
 						"description": "The already-parsed value to present, of any JSON shape (undefined is shown as 'Not recorded'). It is only read, never rewritten, and the result keeps at most four levels, twelve items per collection and 120 values in total, with scalar text over 240 characters cut and marked shortened.",
 						"examples": [
@@ -293,7 +293,7 @@
 				"inputs": [
 					{
 						"name": "read.value",
-						"type": "unknown",
+						"type": "Value",
 						"required": true,
 						"description": "The already-parsed value at this position, of any JSON shape (undefined is shown as 'Not recorded'). It is only read, never rewritten, and objects or arrays are expanded only while the depth and budget limits allow.",
 						"examples": [
