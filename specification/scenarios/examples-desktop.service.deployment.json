@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.service.deployment",
+	"title": "desktop.service.deployment examples",
+	"kind": "headless",
+	"units": ["desktop.service.deployment"],
+	"builds": [],
+	"states": [
+		{
+			"id": "lists-deployment-activities",
+			"title": "Lists deployment activities",
+			"coverage": "required"
+		},
+		{
+			"id": "looks-up-deployment-progress-by-plan-and-project-root",
+			"title": "Looks up deployment progress by plan and project root",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-automatic-production-deployment",
+			"title": "Refuses automatic production deployment",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.service.deployment.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"lists-deployment-activities",
+				"looks-up-deployment-progress-by-plan-and-project-root",
+				"refuses-automatic-production-deployment"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"lists-deployment-activities",
+				"looks-up-deployment-progress-by-plan-and-project-root",
+				"refuses-automatic-production-deployment"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"lists-deployment-activities",
+				"looks-up-deployment-progress-by-plan-and-project-root",
+				"refuses-automatic-production-deployment"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
