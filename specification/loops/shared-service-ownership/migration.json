@@ -2287,14 +2287,22 @@
 			"unit": "hub.function.hub-http",
 			"from": "packages/hub/src/controllers/hub-api-controller/hubHttp.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubHttp.ts",
-			"definition": "cf4a7e07a0ad27c77715727553256432003ce4640262b8896e6a8a96a0062c6e",
+			"definition": "ea28ff7eb52b85f215c76d01547f598e1ea19b2d4a60648bc12af5b848b214f6",
 			"relocationDefinition": "ea28ff7eb52b85f215c76d01547f598e1ea19b2d4a60648bc12af5b848b214f6",
 			"review": {
-				"commit": "2cc1f9bc70897919117f0ba8bc39495d828bb82b",
+				"commit": "bb4b0e129bf4449a0a98529f584283792e0acd8b",
 				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubHttp.ts",
-				"definition": "cf4a7e07a0ad27c77715727553256432003ce4640262b8896e6a8a96a0062c6e",
-				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-hub.function.hub-http, written by luna); behavior unchanged."
-			}
+				"definition": "ea28ff7eb52b85f215c76d01547f598e1ea19b2d4a60648bc12af5b848b214f6",
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 2cc1f9bc70 (hub.function.hub-http); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "2cc1f9bc70897919117f0ba8bc39495d828bb82b",
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubHttp.ts",
+					"definition": "cf4a7e07a0ad27c77715727553256432003ce4640262b8896e6a8a96a0062c6e",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-hub.function.hub-http, written by luna); behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "adapter.desktop-integrity",
@@ -3574,14 +3582,22 @@
 			"unit": "relay.adapter.host-sockets",
 			"from": "packages/relay/src/adapters/HostSocketsAdapter.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/HostSocketsAdapter.ts",
-			"definition": "515028a1d2f3d84b6d35387c0ce1a3cfe68b6bf2cd253335f2e9b5a8f3762063",
+			"definition": "c8e688667bd8d7314e8b0b11f9c39ad2a3da28cc951ae52fb0fe0ae4f8a01a88",
 			"relocationDefinition": "c8e688667bd8d7314e8b0b11f9c39ad2a3da28cc951ae52fb0fe0ae4f8a01a88",
 			"review": {
-				"commit": "931656943f13623cd4b6106319cd1676f3511dcd",
+				"commit": "f579a3b851e1951bcfb9a4e40a106aeb8d8274a4",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostSocketsAdapter.ts",
-				"definition": "515028a1d2f3d84b6d35387c0ce1a3cfe68b6bf2cd253335f2e9b5a8f3762063",
-				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-relay.adapter.host-sockets, written by luna); behavior unchanged."
-			}
+				"definition": "c8e688667bd8d7314e8b0b11f9c39ad2a3da28cc951ae52fb0fe0ae4f8a01a88",
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 931656943f (relay.adapter.host-sockets); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "931656943f13623cd4b6106319cd1676f3511dcd",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostSocketsAdapter.ts",
+					"definition": "515028a1d2f3d84b6d35387c0ce1a3cfe68b6bf2cd253335f2e9b5a8f3762063",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-relay.adapter.host-sockets, written by luna); behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.local-transport",
@@ -3955,14 +3971,22 @@
 			"unit": "desktop.function.remote-failure-text",
 			"from": "packages/desktop/src/services/device-session-service/remoteFailureText.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/remoteFailureText.ts",
-			"definition": "95ff724dbb34ffb31555a7ee99c114f92289522c8496f586744370c479eae02b",
+			"definition": "cb50e7d5e3595d591971bc25f6c6841e147978c543abde02c42229be60890ec3",
 			"relocationDefinition": "cb50e7d5e3595d591971bc25f6c6841e147978c543abde02c42229be60890ec3",
 			"review": {
-				"commit": "3c242e3ae6448cb230e42cefddd040162e84917e",
+				"commit": "2f8284cff81e51387c15b876688e5c4c39b1002f",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/remoteFailureText.ts",
-				"definition": "95ff724dbb34ffb31555a7ee99c114f92289522c8496f586744370c479eae02b",
-				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.function.remote-failure-text, written by luna); behavior unchanged."
-			}
+				"definition": "cb50e7d5e3595d591971bc25f6c6841e147978c543abde02c42229be60890ec3",
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 3c242e3ae6 (desktop.function.remote-failure-text); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "3c242e3ae6448cb230e42cefddd040162e84917e",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/remoteFailureText.ts",
+					"definition": "95ff724dbb34ffb31555a7ee99c114f92289522c8496f586744370c479eae02b",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.function.remote-failure-text, written by luna); behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "service.legacy-import",
@@ -3981,14 +4005,22 @@
 			"unit": "function.legacy-report",
 			"from": "src/services/legacy-import-service/legacyReport.ts",
 			"to": "src/cli/program/legacy-import-service/legacyReport.ts",
-			"definition": "38ff29c1f4db83854fc5bd3b013947334ff2015023092a065566d646906be0b0",
+			"definition": "5ce428305c12c585c4526efaac220b7b5d58ca1f44c365bf2d99b3a34580fdf3",
 			"relocationDefinition": "5ce428305c12c585c4526efaac220b7b5d58ca1f44c365bf2d99b3a34580fdf3",
 			"review": {
-				"commit": "dc2adf1ed360700297a36c83ef3bb7fdaa1b1112",
+				"commit": "34029d3d4dabe3ba202cce3af78c8294f21a05ca",
 				"path": "src/cli/program/legacy-import-service/legacyReport.ts",
-				"definition": "38ff29c1f4db83854fc5bd3b013947334ff2015023092a065566d646906be0b0",
-				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-function.legacy-report, written by luna); behavior unchanged."
-			}
+				"definition": "5ce428305c12c585c4526efaac220b7b5d58ca1f44c365bf2d99b3a34580fdf3",
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change dc2adf1ed3 (function.legacy-report); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "dc2adf1ed360700297a36c83ef3bb7fdaa1b1112",
+					"path": "src/cli/program/legacy-import-service/legacyReport.ts",
+					"definition": "38ff29c1f4db83854fc5bd3b013947334ff2015023092a065566d646906be0b0",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-function.legacy-report, written by luna); behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "repository.legacy-report",
@@ -4007,13 +4039,13 @@
 			"unit": "desktop.service.projection-cache",
 			"from": "packages/desktop/src/services/projection-cache-service/ProjectionCacheService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
-			"definition": "e3ba09afe96d89bc56b1899649bca2b618bf4bb40b3bde116ad0fd84e97844cb",
+			"definition": "b68b7af23dce4748422c9166b1a6530019f05b46fd878c02beeac74a2dba5deb",
 			"relocationDefinition": "e2ffa99957b1f8890f13849efdc76dc22e94fe5c95662f0b9c594031e63be076",
 			"review": {
-				"commit": "17cddc014d08de3ed0c98629741a67a958d8e3a4",
+				"commit": "fe87a3cbde936143822f13d56d8144be443bc199",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
-				"definition": "e3ba09afe96d89bc56b1899649bca2b618bf4bb40b3bde116ad0fd84e97844cb",
-				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.projection-cache, written by haiku); behavior unchanged."
+				"definition": "b68b7af23dce4748422c9166b1a6530019f05b46fd878c02beeac74a2dba5deb",
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 17cddc014d (desktop.service.projection-cache); behavior unchanged."
 			},
 			"previousReviews": [
 				{
@@ -4021,6 +4053,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
 					"definition": "b68b7af23dce4748422c9166b1a6530019f05b46fd878c02beeac74a2dba5deb",
 					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.projection-cache, written by haiku); messages and behavior unchanged."
+				},
+				{
+					"commit": "17cddc014d08de3ed0c98629741a67a958d8e3a4",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
+					"definition": "e3ba09afe96d89bc56b1899649bca2b618bf4bb40b3bde116ad0fd84e97844cb",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.projection-cache, written by haiku); behavior unchanged."
 				}
 			]
 		},
@@ -4812,13 +4850,13 @@
 			"unit": "desktop.service.local-transport-client",
 			"from": "packages/desktop/src/services/LocalTransportClientService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/LocalTransportClientService.ts",
-			"definition": "d0a04272365054a962e797ada2d263c5581408d1315849ed2856f8dcf3409d80",
+			"definition": "1a861568730ba3682840b0f426290b0b49b7882bf5ed518b4e31e0e2af9bdb0d",
 			"relocationDefinition": "0e3be5d2f39adfa9674e3c23158e2aa577543d021a80a90020a45076a8c361af",
 			"review": {
-				"commit": "4addaeff16a836f59721f96e9077bc1d87703d56",
+				"commit": "3acbbd383e7678d4c88ca65ac63b92e762eeb927",
 				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/LocalTransportClientService.ts",
-				"definition": "d0a04272365054a962e797ada2d263c5581408d1315849ed2856f8dcf3409d80",
-				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.local-transport-client, written by luna); behavior unchanged."
+				"definition": "1a861568730ba3682840b0f426290b0b49b7882bf5ed518b4e31e0e2af9bdb0d",
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 4addaeff16 (desktop.service.local-transport-client); behavior unchanged."
 			},
 			"previousReviews": [
 				{
@@ -4832,6 +4870,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/LocalTransportClientService.ts",
 					"definition": "1a861568730ba3682840b0f426290b0b49b7882bf5ed518b4e31e0e2af9bdb0d",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "4addaeff16a836f59721f96e9077bc1d87703d56",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/LocalTransportClientService.ts",
+					"definition": "d0a04272365054a962e797ada2d263c5581408d1315849ed2856f8dcf3409d80",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.local-transport-client, written by luna); behavior unchanged."
 				}
 			]
 		},
@@ -5088,13 +5132,13 @@
 			"unit": "desktop.service.remote-projection",
 			"from": "packages/desktop/src/services/RemoteProjectionService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts",
-			"definition": "03fc4158dddc9d1bcc335f3671d0b44313c90d650da105dafab98c69796d7c10",
+			"definition": "86a43c18d17429b60706e465c69d47834c58f6c7029edc0b32e2131db6d907ab",
 			"relocationDefinition": "de1f8f7b45e2210c8c54cbb5faef610b1fd382a23c38aaee970a92a171aeab9b",
 			"review": {
-				"commit": "010a18d91172ae52d253b27bfcc415aea8b3fb7d",
+				"commit": "4237aa8118f9808b4ca5ab7442b4c793ae5c30ba",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts",
-				"definition": "03fc4158dddc9d1bcc335f3671d0b44313c90d650da105dafab98c69796d7c10",
-				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.remote-projection, written by luna); behavior unchanged."
+				"definition": "86a43c18d17429b60706e465c69d47834c58f6c7029edc0b32e2131db6d907ab",
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 010a18d911 (desktop.service.remote-projection); behavior unchanged."
 			},
 			"previousReviews": [
 				{
@@ -5102,6 +5146,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts",
 					"definition": "86a43c18d17429b60706e465c69d47834c58f6c7029edc0b32e2131db6d907ab",
 					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.remote-projection, written by luna); messages and behavior unchanged."
+				},
+				{
+					"commit": "010a18d91172ae52d253b27bfcc415aea8b3fb7d",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts",
+					"definition": "03fc4158dddc9d1bcc335f3671d0b44313c90d650da105dafab98c69796d7c10",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.remote-projection, written by luna); behavior unchanged."
 				}
 			]
 		},
@@ -5331,13 +5381,13 @@
 			"unit": "remote.service.response-ledger",
 			"from": "packages/remote/src/services/ResponseLedgerService.ts",
 			"to": "packages/remote/src/services/networking-security/wire-session-service/ResponseLedgerService.ts",
-			"definition": "cd3c69cbbf2c90a61468d436121a819802fd26bc78101d15573ef69fd4356064",
+			"definition": "c1c0345d1fed8cda43c9ccc1de7f71cad73031337310561dd14cc326ae3be90c",
 			"relocationDefinition": "d566b05cb230f17316ee1a3e79071658e942276a05f11f5de213b2392efefd41",
 			"review": {
-				"commit": "f8b3dc177737e9a6ec38f08c9ba7f0b6bab1a523",
+				"commit": "9313b0fcc3e1614d65478cd145d737b584b9772e",
 				"path": "packages/remote/src/services/networking-security/wire-session-service/ResponseLedgerService.ts",
-				"definition": "cd3c69cbbf2c90a61468d436121a819802fd26bc78101d15573ef69fd4356064",
-				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-remote.service.response-ledger, written by luna); behavior unchanged."
+				"definition": "c1c0345d1fed8cda43c9ccc1de7f71cad73031337310561dd14cc326ae3be90c",
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change f8b3dc1777 (remote.service.response-ledger); behavior unchanged."
 			},
 			"previousReviews": [
 				{
@@ -5345,6 +5395,12 @@
 					"path": "packages/remote/src/services/networking-security/wire-session-service/ResponseLedgerService.ts",
 					"definition": "c1c0345d1fed8cda43c9ccc1de7f71cad73031337310561dd14cc326ae3be90c",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "f8b3dc177737e9a6ec38f08c9ba7f0b6bab1a523",
+					"path": "packages/remote/src/services/networking-security/wire-session-service/ResponseLedgerService.ts",
+					"definition": "cd3c69cbbf2c90a61468d436121a819802fd26bc78101d15573ef69fd4356064",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-remote.service.response-ledger, written by luna); behavior unchanged."
 				}
 			]
 		},
@@ -5365,13 +5421,13 @@
 			"unit": "reports.service.console-agent",
 			"from": "packages/reports/src/services/ConsoleAgentService.ts",
 			"to": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
-			"definition": "341c9d4798a8c7c701b19718254cafedc1cb06b518575c381d36de20f9715af2",
+			"definition": "823fbfcaaf05196e2f5f7ca74ff2608654bc21ff867c34e25ffeaa524f899a25",
 			"relocationDefinition": "2a0274757c369262eb9cc7098eb14483461e21fd95c40fc82cb6b5371dcd1695",
 			"review": {
-				"commit": "9058fcc15d7937818b465ec87c4710f4e17cb7b2",
+				"commit": "75e486963e72fac1a0b3765e096743908625abf0",
 				"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
-				"definition": "341c9d4798a8c7c701b19718254cafedc1cb06b518575c381d36de20f9715af2",
-				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.service.console-agent, written by haiku); behavior unchanged."
+				"definition": "823fbfcaaf05196e2f5f7ca74ff2608654bc21ff867c34e25ffeaa524f899a25",
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 9058fcc15d (reports.service.console-agent); behavior unchanged."
 			},
 			"previousReviews": [
 				{
@@ -5403,6 +5459,12 @@
 					"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
 					"definition": "823fbfcaaf05196e2f5f7ca74ff2608654bc21ff867c34e25ffeaa524f899a25",
 					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.service.console-agent, written by haiku); messages and behavior unchanged."
+				},
+				{
+					"commit": "9058fcc15d7937818b465ec87c4710f4e17cb7b2",
+					"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
+					"definition": "341c9d4798a8c7c701b19718254cafedc1cb06b518575c381d36de20f9715af2",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.service.console-agent, written by haiku); behavior unchanged."
 				}
 			]
 		},
@@ -5640,14 +5702,22 @@
 			"unit": "function.impact-kernel",
 			"from": "src/workflows/run-kernel/impactKernel.ts",
 			"to": "src/cli/program/run-kernel/impactKernel.ts",
-			"definition": "54b4afcbf780109399563ec1e520033d71e21403b45865bbc02094756ca12dbc",
+			"definition": "dfad609f762a2f9ef4930fea731d76778910061081ac1a408822f8cf1302f628",
 			"relocationDefinition": "dfad609f762a2f9ef4930fea731d76778910061081ac1a408822f8cf1302f628",
 			"review": {
-				"commit": "4792415499f11452587b3ac872f7d90ac4ad1726",
+				"commit": "75c197fe17226006fe3dbfbf65802238c7613ae7",
 				"path": "src/cli/program/run-kernel/impactKernel.ts",
-				"definition": "54b4afcbf780109399563ec1e520033d71e21403b45865bbc02094756ca12dbc",
-				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-function.impact-kernel, written by luna); behavior unchanged."
-			}
+				"definition": "dfad609f762a2f9ef4930fea731d76778910061081ac1a408822f8cf1302f628",
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 4792415499 (function.impact-kernel); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "4792415499f11452587b3ac872f7d90ac4ad1726",
+					"path": "src/cli/program/run-kernel/impactKernel.ts",
+					"definition": "54b4afcbf780109399563ec1e520033d71e21403b45865bbc02094756ca12dbc",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-function.impact-kernel, written by luna); behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "function.kernel-workload",
@@ -6202,13 +6272,13 @@
 			"unit": "desktop.adapter.capacitor-account",
 			"from": "packages/desktop/src/adapters/capacitor-account-adapter/CapacitorAccountAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-			"definition": "90c49bf638dd8ae45b616d797d3b186a746159b844784334cf64f807e6b5ef75",
+			"definition": "28418e2a350f2be7f85874f88cb640e98e4ca1f334c4ce53548e0588d470ee3c",
 			"relocationDefinition": "f54f1586b418a653ad39961751f61e977322b2dfa5d0ab7c8f660f3bb3cdd01a",
 			"review": {
-				"commit": "80802304f8cf42761392581cf21cdf806f72d931",
+				"commit": "a9ac44a3810a40ffae7c91c2aa9888a2c52574fd",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-				"definition": "90c49bf638dd8ae45b616d797d3b186a746159b844784334cf64f807e6b5ef75",
-				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.adapter.capacitor-account, written by haiku); behavior unchanged."
+				"definition": "28418e2a350f2be7f85874f88cb640e98e4ca1f334c4ce53548e0588d470ee3c",
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 80802304f8 (desktop.adapter.capacitor-account); behavior unchanged."
 			},
 			"previousReviews": [
 				{
@@ -6216,6 +6286,12 @@
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
 					"definition": "70a7d0dab7d16078c4fea5135346fdd88a87b30923b8d0c9a46cdf779dd45ce5",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "80802304f8cf42761392581cf21cdf806f72d931",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
+					"definition": "90c49bf638dd8ae45b616d797d3b186a746159b844784334cf64f807e6b5ef75",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.adapter.capacitor-account, written by haiku); behavior unchanged."
 				}
 			]
 		},
@@ -6223,14 +6299,22 @@
 			"unit": "desktop.adapter.capacitor-account",
 			"from": "packages/desktop/src/adapters/capacitor-account-adapter/capacitorAccountCodec.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts",
-			"definition": "b8b0c2cb30ee941365c1542817ef6981730a0d72aa948e1f65adab1c06a73126",
+			"definition": "117865db4b85eac2434b1f4550df3aaa9b3a78b18dc20bd4ca00dad2ec3e2a54",
 			"relocationDefinition": "66cb4f1b1f00e91a021140ec2916703f6f4b2e01dd1b4cc30197a9bb5dfc842b",
 			"review": {
-				"commit": "80802304f8cf42761392581cf21cdf806f72d931",
+				"commit": "a9ac44a3810a40ffae7c91c2aa9888a2c52574fd",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts",
-				"definition": "b8b0c2cb30ee941365c1542817ef6981730a0d72aa948e1f65adab1c06a73126",
-				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.adapter.capacitor-account, written by haiku); behavior unchanged."
-			}
+				"definition": "117865db4b85eac2434b1f4550df3aaa9b3a78b18dc20bd4ca00dad2ec3e2a54",
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 80802304f8 (desktop.adapter.capacitor-account); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "80802304f8cf42761392581cf21cdf806f72d931",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts",
+					"definition": "b8b0c2cb30ee941365c1542817ef6981730a0d72aa948e1f65adab1c06a73126",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.adapter.capacitor-account, written by haiku); behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "workflow.create-project",
