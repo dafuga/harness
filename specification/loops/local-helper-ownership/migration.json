@@ -6326,6 +6326,50 @@
 			"commit": "1880c7d23f5dc93a8d0b51a1af0fb5e86c3c295a",
 			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-remote.function.remote-bytes, written by luna); behavior unchanged.",
 			"definition": "dc9aad405cde2120b6cfec1fd3193fc0b8dcda78df5d867168d8b8291d1e47c0"
+		},
+		{
+			"unit": "reports.function.explorer-artifact",
+			"name": "artifactBehavior",
+			"commit": "0a34418fbf5d4657ba02d75ec7bc63b253aca0c6",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.function.explorer-artifact, written by luna); behavior unchanged.",
+			"definition": "db21fe9a2f202957b2c82d4be29f80308cb349d898217d4aa889749bbd33ce6f"
+		},
+		{
+			"unit": "reports.function.explorer-reading",
+			"name": "artifactDifferences",
+			"commit": "da23a3009b133547bee5aba7317bc1f88fa3aaea",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.function.explorer-reading, written by haiku); behavior unchanged.",
+			"definition": "c69202e3fddd8607718ad5f85dc189387d81df297a958c3e161d045e06fca383"
+		},
+		{
+			"unit": "reports.function.harness-layout",
+			"name": "harnessLayout",
+			"to": "packages/reports/src/components/explorer-ui/harness-map/harnessLayout.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-map/HarnessMap.svelte",
+			"commit": "b56e19f545b24a196fd3d2e161c28720ff971d5a",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.function.harness-layout, written by luna); behavior unchanged.",
+			"definition": "98fbda5836c29c241247523438d3fda641578dd889eb1ac02ea2da9914c41d4b"
+		},
+		{
+			"unit": "reports.function.recorded-value",
+			"name": "recordedValue",
+			"commit": "c8c99cb59f1ca74a1bf5078bda6862b9f2c0122f",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.function.recorded-value, written by luna); behavior unchanged.",
+			"definition": "1773ee6bcbeddbd429401e733e046100bacf18e3d5382932dfc087044967c2c6"
+		},
+		{
+			"unit": "reports.function.report-cleanup-log",
+			"name": "reportCleanupLog",
+			"commit": "1a95df8cade8484c9bc5084bf3f6be73e0476e19",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.function.report-cleanup-log, written by haiku); behavior unchanged.",
+			"definition": "b420cc9a3b9d53034ca04de01944670f57189cddabb0758b3dbb1b66ef8863af"
+		},
+		{
+			"unit": "reports.function.report-local-cleanup",
+			"name": "reportLocalCleanup",
+			"commit": "49a3a4fdf5d3f7ac3e0de502fe915648eacdb7e9",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.function.report-local-cleanup, written by luna); behavior unchanged.",
+			"definition": "59d4e2c2d9d06bf56664f6403763f7e0edbb0d9aca3bbc34f620a1098e1e5be8"
 		}
 	],
 	"retiredOwners": [
