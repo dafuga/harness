@@ -11,8 +11,11 @@
 		"visibility": "internal"
 	},
 	"owns": {
-		"source": ["src/commands/module-system/module-command/TestingPluginService.ts"],
-		"symbols": ["TestingPluginService", "TestingPluginService.run"]
+		"source": [
+			"src/commands/module-system/module-command/TestingPluginService.ts",
+			"src/commands/module-system/module-command/TestingPluginService.types.ts"
+		],
+		"symbols": ["TestingPluginService", "TestingPluginService.run", "TestingPluginServiceError"]
 	},
 	"contract": {
 		"origin": "declared",
