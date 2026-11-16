@@ -76,7 +76,8 @@ export class FrameFlagService {
 		return (
 			await readFrameFlags(
 				this.root,
-				this.reader === defaultAttachedReader ? undefined : this.reader
+				this.reader === defaultAttachedReader ? undefined : this.reader,
+				unit
 			)
 		)
 			.filter((flag) => flag.clip.unit === unit)
