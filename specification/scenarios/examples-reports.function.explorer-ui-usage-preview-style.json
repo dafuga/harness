@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.explorer-ui-usage-preview-style",
+	"title": "reports.function.explorer-ui-usage-preview-style examples",
+	"kind": "headless",
+	"units": ["reports.function.explorer-ui-usage-preview-style"],
+	"builds": [],
+	"states": [
+		{
+			"id": "places-visible-usage-previews-within-the-viewport",
+			"title": "Places visible usage previews within the viewport",
+			"coverage": "required"
+		},
+		{
+			"id": "hides-usage-previews-when-their-link-is-off-screen",
+			"title": "Hides usage previews when their link is off screen",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.explorer-ui-usage-preview-style.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"places-visible-usage-previews-within-the-viewport",
+				"hides-usage-previews-when-their-link-is-off-screen"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"places-visible-usage-previews-within-the-viewport",
+				"hides-usage-previews-when-their-link-is-off-screen"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"places-visible-usage-previews-within-the-viewport",
+				"hides-usage-previews-when-their-link-is-off-screen"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
