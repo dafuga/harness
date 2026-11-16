@@ -41,7 +41,7 @@ export class RevisionDetailService {
 	constructor(
 		private readonly root: string,
 		private readonly history: HistoryStatusService,
-		private readonly kept = revisionSources(root)
+		private readonly kept: ReturnType<typeof revisionSources> = revisionSources(root)
 	) {
 		this.git = new GitAdapter(root);
 	}

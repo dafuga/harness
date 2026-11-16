@@ -62,7 +62,7 @@
 			},
 			{
 				"name": "RevisionDetailService.constructor.kept",
-				"type": "unknown",
+				"type": "ReturnType<typeof revisionSources>",
 				"required": false,
 				"default": "revisionSources(root)",
 				"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map. The documented default is the source expression revisionSources(root), evaluated at construction; it is not a literal collaborator value."
@@ -385,7 +385,7 @@
 					},
 					{
 						"name": "RevisionDetailService.constructor.kept",
-						"type": "unknown",
+						"type": "ReturnType<typeof revisionSources>",
 						"required": false,
 						"default": "revisionSources(root)",
 						"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map. The documented default is the source expression revisionSources(root), evaluated at construction; it is not a literal collaborator value."
