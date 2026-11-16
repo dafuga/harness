@@ -1,4 +1,9 @@
 // @harness-uid u_3aonxezbbl
+import {
+	HostedSessionRequiredError,
+	InvalidHostedOriginError,
+	UntrustedHostedRequestPathError
+} from './HostedHttpAdapter.types';
 import type { RemoteHttpOptions, NativeHostedCredential } from './HostedHttpAdapter.types';
 import { hostedPublicFailure } from './hostedPublicFailure';
 import { HostedFailureValidator } from '../../../validators/development-tooling/HostedFailureValidator';
@@ -15,7 +20,7 @@ function hostedOrigin(value: string): string {
 		url.search ||
 		url.hash
 	)
-		throw new Error('Use an exact HTTPS hosted origin.');
+		throw new InvalidHostedOriginError('Use an exact HTTPS hosted origin.');
 	return url.origin;
 }
 
@@ -47,7 +52,7 @@ export class HostedHttpAdapter {
 			!credential.token
 		) {
 			await this.options.onDenied?.(credential?.principalId ?? '');
-			throw new Error('A verified hosted session is required.');
+			throw new HostedSessionRequiredError('A verified hosted session is required.');
 		}
 		const response = await this.request('/api/auth/status', credential);
 		try {
@@ -68,7 +73,7 @@ export class HostedHttpAdapter {
 		publicFailure = false
 	): Promise<Response> {
 		if (!path.startsWith('/api/') || new URL(path, this.origin).origin !== this.origin)
-			throw new Error('Untrusted hosted request path.');
+			throw new UntrustedHostedRequestPathError('Untrusted hosted request path.');
 		try {
 			const response = await (this.options.fetch ?? fetch)(this.origin + path, {
 				...init,
