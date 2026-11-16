@@ -146,7 +146,11 @@ test('a capture that names a build its scoped run skipped is still a problem, re
 		compiled: new Map([['web', 'web-1']]),
 		skipped: new Set(['docs'])
 	};
-	expect(docsProblem(builds)).toBe(
+	let diagnostic: string | undefined;
+	expect(() => {
+		diagnostic = docsProblem(builds);
+	}, 'ordinary non-video evidence must keep its build diagnostic').not.toThrow();
+	expect(diagnostic).toBe(
 		'capture pages-flow.json names build docs, which this scoped run skipped'
 	);
 });
