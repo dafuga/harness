@@ -29,6 +29,9 @@ export async function stateTests(
 	options: { headless?: boolean } = {}
 ): Promise<StateTest[]> {
 	const paths = declaredTestPaths(context, unit, state);
+	const video = videoTestPaths(context, unit.id, state);
+	for (const [file, viewports] of video)
+		paths.set(file, new Set([...(paths.get(file) ?? []), ...viewports]));
 	if (!options.headless)
 		for (const file of attributedTests(context, unit))
 			if (!paths.has(file)) paths.set(file, new Set());
@@ -39,12 +42,31 @@ export async function stateTests(
 			context.testSyntax.set(file, authoredTest(await guidanceText(context, file)));
 		const syntax = context.testSyntax.get(file)!;
 		if (
-			syntax.test &&
-			(options.headless || syntax.states.has(state) || (viewports.size > 0 && syntax.matrix))
+			(syntax.test || (video.has(file) && syntax.motion)) &&
+			(options.headless ||
+				syntax.states.has(state) ||
+				(viewports.size > 0 && (syntax.matrix || video.has(file))))
 		)
 			found.push({ file, viewports: [...viewports] });
 	}
 	return found;
+}
+
+/** A declared recording factory needs actual assertions and state marks, not just fixture strings. */
+function videoTestPaths(context: GuidanceContext, unit: string, state: string) {
+	const paths = new Map<string, Set<string>>();
+	for (const scenario of context.loaded.scenarios) {
+		if (!scenario.units.includes(unit)) continue;
+		for (const clip of scenario.video?.clips ?? []) {
+			if (clip.unit !== unit || unitStateName(unit, clip.state) !== state) continue;
+			if (context.loaded.index.files.get(clip.script.path)?.classification !== 'test') continue;
+			paths.set(
+				clip.script.path,
+				new Set([...(paths.get(clip.script.path) ?? []), ...clip.viewports])
+			);
+		}
+	}
+	return paths;
 }
 
 function declaredTestPaths(context: GuidanceContext, unit: ComponentManifest, state: string) {
@@ -110,12 +132,21 @@ function attributedTests(context: GuidanceContext, unit: ComponentManifest): str
 
 function authoredTest(text: string) {
 	const source = ts.createSourceFile('test.ts', text, ts.ScriptTarget.Latest, true);
-	const found = { test: false, states: new Set<string>(), matrix: false };
+	const found = { test: false, states: new Set<string>(), matrix: false, motion: false };
+	let assertion = false,
+		mark = false;
 	const visit = (node: ts.Node) => {
 		if (ts.isCallExpression(node)) {
 			const called = node.expression.getText(source);
 			if (/^(?:test|it)(?:\.describe)?\.(?:skip|todo)\b/.test(called)) return;
 			if (/^(?:test|it)(?:\.(?:each|only))?$/.test(called)) found.test = true;
+			if (/^expect(?:\.poll)?$/.test(called)) assertion = true;
+			if (
+				called === 'mark' &&
+				ts.isStringLiteralLike(node.arguments[0]) &&
+				node.arguments[0].text === 'state'
+			)
+				mark = true;
 		}
 		if (ts.isStringLiteralLike(node)) found.states.add(node.text);
 		if (
@@ -126,5 +157,6 @@ function authoredTest(text: string) {
 		ts.forEachChild(node, visit);
 	};
 	visit(source);
+	found.motion = assertion && mark;
 	return found;
 }
