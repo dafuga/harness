@@ -90,7 +90,10 @@ test('host and device ids are forty lowercase hex characters', async () => {
 		[hostId]
 	];
 	for (const value of bad) {
-		expect([value, await verdict(() => validator.hostId(value))]).toEqual([value, 'invalid-input']);
-		expect(await verdict(() => validator.deviceId(value))).toBe('invalid-input');
+		expect([value, await verdict(() => validator.hostId(value as never))]).toEqual([
+			value,
+			'invalid-input'
+		]);
+		expect(await verdict(() => validator.deviceId(value as never))).toBe('invalid-input');
 	}
 });
