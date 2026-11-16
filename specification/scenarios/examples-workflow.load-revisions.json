@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-workflow.load-revisions",
+	"title": "workflow.load-revisions examples",
+	"kind": "headless",
+	"units": ["workflow.load-revisions"],
+	"builds": [],
+	"states": [
+		{
+			"id": "creates-the-empty-pre-commit-revision-side",
+			"title": "Creates the empty pre-commit revision side",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-root-outside-a-git-repository",
+			"title": "Rejects a root outside a Git repository",
+			"coverage": "required"
+		},
+		{
+			"id": "loads-an-empty-base-against-a-repository-working-tree",
+			"title": "Loads an empty base against a repository working tree",
+			"coverage": "required"
+		},
+		{
+			"id": "loads-a-compact-reason-side-for-a-repository-commit",
+			"title": "Loads a compact reason side for a repository commit",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/workflow.load-revisions.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"creates-the-empty-pre-commit-revision-side",
+				"rejects-a-root-outside-a-git-repository",
+				"loads-an-empty-base-against-a-repository-working-tree",
+				"loads-a-compact-reason-side-for-a-repository-commit"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"creates-the-empty-pre-commit-revision-side",
+				"rejects-a-root-outside-a-git-repository",
+				"loads-an-empty-base-against-a-repository-working-tree",
+				"loads-a-compact-reason-side-for-a-repository-commit"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"creates-the-empty-pre-commit-revision-side",
+				"rejects-a-root-outside-a-git-repository",
+				"loads-an-empty-base-against-a-repository-working-tree",
+				"loads-a-compact-reason-side-for-a-repository-commit"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
