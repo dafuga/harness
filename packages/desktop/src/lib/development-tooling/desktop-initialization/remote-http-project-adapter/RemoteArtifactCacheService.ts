@@ -1,5 +1,9 @@
 // @harness-uid u_pusbp2fy7z
-import type { Query, Media } from './RemoteArtifactCacheService.types';
+import {
+	InvalidKeptArtifactError,
+	type Query,
+	type Media
+} from './RemoteArtifactCacheService.types';
 import type { CacheIdentity } from '../../../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import { HostedArtifactValidator } from '../../../../validators/development-tooling/HostedArtifactValidator';
 import { artifactLimit } from '../../../../utils/reports-media/artifactMedia';
@@ -61,7 +65,7 @@ export class RemoteArtifactCacheService {
 			typeof held.data !== 'string' ||
 			held.data.length > Math.ceil(artifactLimit / 3) * 4
 		)
-			throw new Error('Invalid kept artifact or capture exceeds 11 MiB.');
+			throw new InvalidKeptArtifactError('Invalid kept artifact or capture exceeds 11 MiB.');
 		return this.validator.artifact(
 			{ bytes: new Uint8Array(Buffer.from(held.data, 'base64')), mediaType: held.mediaType },
 			hash
