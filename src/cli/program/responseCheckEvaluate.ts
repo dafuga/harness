@@ -2,6 +2,7 @@
 import type { Evaluate } from './responseCheckEvaluate.types';
 import { JevAdapter } from '../../adapters/agents-providers/JevAdapter';
 import type { JevChoice } from '../../core/agents-providers/jevTypes';
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 import type {
 	ResponseAssessment,
 	ResponseCheckInput,
@@ -56,7 +57,9 @@ function assessment(
 function credentialedEvaluator(settings: ResponseCheckSettings): Evaluate {
 	const apiKey = process.env[settings.apiKeyEnv];
 	if (!apiKey?.trim())
-		throw new Error('Missing project-owned JEV credential in the selected environment variable.');
+		throw new ExpectedCliError(
+			'Missing project-owned JEV credential in the selected environment variable.'
+		);
 	const adapter = new JevAdapter({ apiKey, model: settings.model });
 	return (request) => adapter.evaluate(request);
 }
