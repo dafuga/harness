@@ -11,8 +11,11 @@
 		"visibility": "internal"
 	},
 	"owns": {
-		"source": ["src/services/module-system/ModuleInstallService.ts"],
-		"symbols": ["ModuleInstallService", "ModuleInstallService.add"]
+		"source": [
+			"src/services/module-system/ModuleInstallService.ts",
+			"src/services/module-system/ModuleInstallService.types.ts"
+		],
+		"symbols": ["ModuleInstallService", "ModuleInstallService.add", "ModuleCatalogGapError"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -92,6 +95,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "service.module-system-module-catalog",
 			"via": "import",
