@@ -15,10 +15,13 @@ const file = 'src/utils/packer.ts';
 const source = (digits: string, method: string) =>
 	`// build: ${digits}\nexport function packer(value: string): string {\n\treturn value.${method}();\n}\n`;
 
-/** The commits it made, by what happened at each. */
+/**
+ * The commits it made, by what happened at each. The parameter is annotated inline because the
+ * unit contract reads a destructured parameter's types only from an inline annotation.
+ */
 export async function seedEmitted(
 	repo: VerifyRepo,
-	{ verified, explain }: EmittedSeed
+	{ verified, explain }: { verified: EmittedSeed['verified']; explain: EmittedSeed['explain'] }
 ): Promise<Record<'emitting' | 'packed' | 'swapped' | 'repacked' | 'vanished', string>> {
 	await repo.write(file, source('p3 w5', 'toLowerCase'));
 	const config = await repo.json<{ setup?: object[]; outputs?: string[] }>('harness.verify.json');
