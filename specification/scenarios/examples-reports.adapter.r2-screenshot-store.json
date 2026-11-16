@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.adapter.r2-screenshot-store",
+	"title": "reports.adapter.r2-screenshot-store examples",
+	"kind": "headless",
+	"units": ["reports.adapter.r2-screenshot-store"],
+	"builds": [],
+	"states": [
+		{
+			"id": "resolves-process-settings-ahead-of-local-r2-values",
+			"title": "resolves process settings ahead of local R2 values",
+			"coverage": "required"
+		},
+		{
+			"id": "builds-a-validated-screenshot-object-key",
+			"title": "builds a validated screenshot object key",
+			"coverage": "required"
+		},
+		{
+			"id": "stores-and-retrieves-screenshot-bytes-through-the-client",
+			"title": "stores and retrieves screenshot bytes through the client",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.adapter.r2-screenshot-store.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"resolves-process-settings-ahead-of-local-r2-values",
+				"builds-a-validated-screenshot-object-key",
+				"stores-and-retrieves-screenshot-bytes-through-the-client"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"resolves-process-settings-ahead-of-local-r2-values",
+				"builds-a-validated-screenshot-object-key",
+				"stores-and-retrieves-screenshot-bytes-through-the-client"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"resolves-process-settings-ahead-of-local-r2-values",
+				"builds-a-validated-screenshot-object-key",
+				"stores-and-retrieves-screenshot-bytes-through-the-client"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
