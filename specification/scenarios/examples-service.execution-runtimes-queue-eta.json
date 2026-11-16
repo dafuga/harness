@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.execution-runtimes-queue-eta",
+	"title": "service.execution-runtimes-queue-eta examples",
+	"kind": "headless",
+	"units": ["service.execution-runtimes-queue-eta"],
+	"builds": [],
+	"states": [
+		{
+			"id": "estimates-queued-jobs-across-the-model-slot-lanes",
+			"title": "Estimates queued jobs across the model slot lanes",
+			"coverage": "required"
+		},
+		{
+			"id": "blocks-the-estimate-when-a-model-has-no-slots",
+			"title": "Blocks the estimate when a model has no slots",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-unknown-status-when-no-duration-history-exists",
+			"title": "Reports unknown status when no duration history exists",
+			"coverage": "required"
+		},
+		{
+			"id": "extrapolates-the-tail-of-a-running-job-past-every-sample",
+			"title": "Extrapolates the tail of a running job past every sample",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-slot-counts-outside-the-safe-integer-range",
+			"title": "Rejects slot counts outside the safe integer range",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.execution-runtimes-queue-eta.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"estimates-queued-jobs-across-the-model-slot-lanes",
+				"blocks-the-estimate-when-a-model-has-no-slots",
+				"reports-unknown-status-when-no-duration-history-exists",
+				"extrapolates-the-tail-of-a-running-job-past-every-sample",
+				"rejects-slot-counts-outside-the-safe-integer-range"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"estimates-queued-jobs-across-the-model-slot-lanes",
+				"blocks-the-estimate-when-a-model-has-no-slots",
+				"reports-unknown-status-when-no-duration-history-exists",
+				"extrapolates-the-tail-of-a-running-job-past-every-sample",
+				"rejects-slot-counts-outside-the-safe-integer-range"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"estimates-queued-jobs-across-the-model-slot-lanes",
+				"blocks-the-estimate-when-a-model-has-no-slots",
+				"reports-unknown-status-when-no-duration-history-exists",
+				"extrapolates-the-tail-of-a-running-job-past-every-sample",
+				"rejects-slot-counts-outside-the-safe-integer-range"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
