@@ -5,6 +5,7 @@
 	import Notice from './explorer-kit/Notice.svelte';
 	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
 	import { comparisonPanes } from '../../helpers/verification-evidence/comparisonPanes';
+	import type { ComparisonPane } from '../../helpers/verification-evidence/comparisonPanes.types';
 
 	import type { ExplorerEvidence, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
@@ -187,7 +188,7 @@
 						className="state-panes"
 						framed={false}
 					>
-						{#snippet children(pane)}
+						{#snippet children(pane: ComparisonPane<Evidence>)}
 							{#if pane.value}
 								{@const item = pane.value}
 								{@const shown = prepared(item)}
