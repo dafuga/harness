@@ -1,12 +1,12 @@
 // @harness-uid u_wjuptfssn5
 import { UnsupportedModelSelectionError, type PickerData } from './nativePickerProtocol.types';
 
-export function nativePickerProtocol<Value>(value: Value): PickerData {
+export function nativePickerProtocol(value: unknown): PickerData {
 	if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
 	return value as PickerData;
 }
 
-export function pickerProvider<Model>(model: Model): string {
+export function pickerProvider(model: unknown): string {
 	if (model === 'claude-opus-5-5') return 'harness-claude';
 	if (typeof model !== 'string' || model.startsWith('claude-'))
 		throw new UnsupportedModelSelectionError('Unsupported model selection');
