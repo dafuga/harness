@@ -66,7 +66,7 @@
 			},
 			{
 				"name": "WireClientService.request.input",
-				"type": "Record<string, unknown>",
+				"type": "WireRequest['input']",
 				"required": false,
 				"default": {},
 				"description": "The arguments object sent with the request, unchanged unless the method is in mutationMethods, where any `epoch` key is overwritten with the current cursor epoch. It defaults to {} when no argument is passed.",
@@ -397,7 +397,7 @@
 					},
 					{
 						"name": "WireClientService.request.input",
-						"type": "Record<string, unknown>",
+						"type": "WireRequest['input']",
 						"required": false,
 						"default": {},
 						"description": "The arguments object sent with the request, unchanged unless the method is in mutationMethods, where any `epoch` key is overwritten with the current cursor epoch. It defaults to {} when no argument is passed.",
