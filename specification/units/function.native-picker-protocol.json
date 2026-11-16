@@ -32,7 +32,7 @@
 		"inputs": [
 			{
 				"name": "nativePickerProtocol.value",
-				"type": "unknown",
+				"type": "Value",
 				"required": true,
 				"description": "Unknown protocol value, returned as is only when it is a non-null, non-array object; the function never reads or validates its keys. Every other value, including null, undefined, primitives, arrays and functions, is replaced by a new empty object.",
 				"examples": [
@@ -45,7 +45,7 @@
 			},
 			{
 				"name": "pickerProvider.model",
-				"type": "unknown",
+				"type": "Model",
 				"required": true,
 				"description": "Selected model value that determines the provider: exactly 'claude-opus-5-5' maps to 'harness-claude', and any other string not beginning with 'claude-' maps to 'openai'. Nonstring values and other strings beginning with 'claude-' are rejected by throwing an Error.",
 				"examples": ["claude-opus-5-5", "gpt-5", "claude-sonnet-5-5"]
@@ -112,7 +112,7 @@
 				"inputs": [
 					{
 						"name": "nativePickerProtocol.value",
-						"type": "unknown",
+						"type": "Value",
 						"required": true,
 						"description": "Unknown protocol value, returned as is only when it is a non-null, non-array object; the function never reads or validates its keys. Every other value, including null, undefined, primitives, arrays and functions, is replaced by a new empty object.",
 						"examples": [
@@ -145,7 +145,7 @@
 				"inputs": [
 					{
 						"name": "pickerProvider.model",
-						"type": "unknown",
+						"type": "Model",
 						"required": true,
 						"description": "Selected model value that determines the provider: exactly 'claude-opus-5-5' maps to 'harness-claude', and any other string not beginning with 'claude-' maps to 'openai'. Nonstring values and other strings beginning with 'claude-' are rejected by throwing an Error.",
 						"examples": ["claude-opus-5-5", "gpt-5", "claude-sonnet-5-5"]
