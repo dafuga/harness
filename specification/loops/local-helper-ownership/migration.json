@@ -6168,6 +6168,71 @@
 			"commit": "321aad17c351cbff727dc42a1ebc4f56f2062b6d",
 			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.function.wav-info, written by haiku); messages and behavior unchanged.",
 			"definition": "9b0b3d86823878001137132cb2433b891edcd0f9d211d103d3fdaa0219ffc778"
+		},
+		{
+			"unit": "desktop.function.artifact-media",
+			"name": "artifactMedia",
+			"to": "packages/desktop/src/utils/artifact-answer/artifactMedia.ts",
+			"ownerSource": "packages/desktop/src/utils/artifact-answer/artifactAnswer.ts",
+			"commit": "67038e17a5ff2990b83c188595b2c3a66382615b",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.artifact-media, written by luna); messages and behavior unchanged.",
+			"definition": "880261ae09bf4f585de14ab06335f03999e58a52706321d5f0c6791fe2a2c243"
+		},
+		{
+			"unit": "desktop.function.codex-state",
+			"name": "codexState",
+			"commit": "53cdb8285aede7cbd7e3d50cc4c1748acb6659cc",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.codex-state, written by luna); messages and behavior unchanged.",
+			"definition": "02ee9b1e46851ac8ab0ee6d4dc2a077af9fdf9e18b9890f9d58dc454a3c3774d"
+		},
+		{
+			"unit": "desktop.function.desktop-ipc",
+			"name": "desktopIpc",
+			"commit": "3bc31a815555f026be1a986534bdd3aa99e91c04",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.desktop-ipc, written by luna); messages and behavior unchanged.",
+			"definition": "d1f0e0e852756c64dd4cbf2c22d09a7025a1d9139fcd6c77a7a69821dcff0440"
+		},
+		{
+			"unit": "desktop.function.planning-reads",
+			"name": "planningReads",
+			"commit": "9e877aacd0ee365f1c643321e119a78de3b22545",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-reads, written by luna); messages and behavior unchanged.",
+			"definition": "038397c23ac20923145cfcc1b0add5c72e216aa9f543612eb25ae701f4579d66"
+		},
+		{
+			"unit": "desktop.function.planning-reads",
+			"name": "readPlanMessages",
+			"commit": "9e877aacd0ee365f1c643321e119a78de3b22545",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-reads, written by luna); messages and behavior unchanged.",
+			"definition": "7912cf8a42cb2340edecec819a01e831b8012874b1de82b44e5241de76c146dc"
+		},
+		{
+			"unit": "desktop.function.planning-reads",
+			"name": "readPlanImage",
+			"commit": "9e877aacd0ee365f1c643321e119a78de3b22545",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-reads, written by luna); messages and behavior unchanged.",
+			"definition": "478f6a2355c30f2ce18ab766d846d89fa6a1cc4d691dbd0dcbbd8316e72cc00b"
+		},
+		{
+			"unit": "desktop.function.prepare-project-run",
+			"name": "prepareProjectRun",
+			"commit": "c94fd0f0bd9160d827e75f5ffc284b93fb6d308e",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.prepare-project-run, written by luna); messages and behavior unchanged.",
+			"definition": "48e9f4d099d7af467a8c070e8b8a6b040701bd1aa6da12357ddb7c4a469bd356"
+		},
+		{
+			"unit": "desktop.function.renderer-assets",
+			"name": "rendererAssets",
+			"commit": "3289b82f457545ea6ce4a5d92c682f6756897c6c",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.renderer-assets, written by luna); messages and behavior unchanged.",
+			"definition": "45933419887c29acd9b73f9b23fe92175286b3d4996a04544eed9c7dc8c85ebb"
+		},
+		{
+			"unit": "hub.function.browser-artifact",
+			"name": "browserArtifact",
+			"commit": "3d7ae7e3b80eba98db7c6976b8b7359fa9613644",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-hub.function.browser-artifact, written by luna); messages and behavior unchanged.",
+			"definition": "c8dc5368ebeb7c6b4c8794d7a6ff325b97758335337079d22831e5d1b6b1b00e"
 		}
 	],
 	"retiredOwners": [
