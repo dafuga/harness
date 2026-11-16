@@ -2,6 +2,7 @@
 import { join } from 'node:path';
 import type { ResourceContext } from '../../core/execution-runtimes/resourceTypes';
 import { runIsolated } from '../reports-media/run-isolated/runIsolated';
+import { InvalidResourceCommandInputError } from './resourceCommand.types';
 import { resourceHome } from './resourceConfig';
 /** The existing ownership-aware runner preserves streams and tears down only its own processes. */
 export async function resourceCommand(
@@ -11,7 +12,8 @@ export async function resourceCommand(
 	timeoutMs = 21600000
 ): Promise<number> {
 	validateTimeout(timeoutMs);
-	if (!args.length) throw new Error('A managed command is required after --');
+	if (!args.length)
+		throw new InvalidResourceCommandInputError('A managed command is required after --');
 	const result = await runIsolated({
 		command: args[0],
 		args: args.slice(1),
@@ -35,5 +37,5 @@ export async function resourceCommand(
 
 function validateTimeout(timeout: number): void {
 	if (!Number.isFinite(timeout) || timeout <= 0 || timeout > 2147483647)
-		throw new Error('Invalid managed command timeout');
+		throw new InvalidResourceCommandInputError('Invalid managed command timeout');
 }
