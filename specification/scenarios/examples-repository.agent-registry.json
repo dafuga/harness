@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-repository.agent-registry",
+	"title": "repository.agent-registry examples",
+	"kind": "headless",
+	"units": ["repository.agent-registry"],
+	"builds": [],
+	"states": [
+		{
+			"id": "registers-an-agent-and-reads-it-back",
+			"title": "Registers an agent and reads it back",
+			"coverage": "required"
+		},
+		{
+			"id": "keeps-the-first-end-an-agent-writes",
+			"title": "Keeps the first end an agent writes",
+			"coverage": "required"
+		},
+		{
+			"id": "replaces-the-heartbeat-of-a-registered-agent",
+			"title": "Replaces the heartbeat of a registered agent",
+			"coverage": "required"
+		},
+		{
+			"id": "lists-registered-agents-and-counts-unreadable-ones",
+			"title": "Lists registered agents and counts unreadable ones",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/repository.agent-registry.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"registers-an-agent-and-reads-it-back",
+				"keeps-the-first-end-an-agent-writes",
+				"replaces-the-heartbeat-of-a-registered-agent",
+				"lists-registered-agents-and-counts-unreadable-ones"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"registers-an-agent-and-reads-it-back",
+				"keeps-the-first-end-an-agent-writes",
+				"replaces-the-heartbeat-of-a-registered-agent",
+				"lists-registered-agents-and-counts-unreadable-ones"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"registers-an-agent-and-reads-it-back",
+				"keeps-the-first-end-an-agent-writes",
+				"replaces-the-heartbeat-of-a-registered-agent",
+				"lists-registered-agents-and-counts-unreadable-ones"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
