@@ -16,7 +16,7 @@
 		"inputs": [
 			{
 				"name": "isRecord.value",
-				"type": "unknown",
+				"type": "T",
 				"required": true,
 				"description": "Value to classify before treating it as a record. Any JavaScript value is accepted; only non-null objects that are not arrays return true.",
 				"examples": [
@@ -50,7 +50,7 @@
 				"inputs": [
 					{
 						"name": "isRecord.value",
-						"type": "unknown",
+						"type": "T",
 						"required": true,
 						"description": "Value to classify before treating it as a record. Any JavaScript value is accepted; only non-null objects that are not arrays return true.",
 						"examples": [
@@ -65,7 +65,7 @@
 				"outputs": [
 					{
 						"name": "isRecord",
-						"type": "value is Record<string, unknown>",
+						"type": "value is T & Record<string, unknown>",
 						"description": "Boolean result used to decide whether to treat the input as a record. It is true exactly for non-null values whose JavaScript type is object and that are not arrays; the predicate does not inspect properties or require a plain-object prototype.",
 						"examples": [true, false]
 					}
