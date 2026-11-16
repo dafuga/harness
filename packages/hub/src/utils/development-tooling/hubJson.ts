@@ -16,7 +16,14 @@ export async function hubHash(value: Uint8Array | string): Promise<string> {
 		.map((b) => b.toString(16).padStart(2, '0'))
 		.join('');
 }
-export async function hubContractHash(value: unknown) {
+type HubJsonValue =
+	| null
+	| boolean
+	| number
+	| string
+	| HubJsonValue[]
+	| { [key: string]: HubJsonValue };
+export async function hubContractHash(value: HubJsonValue) {
 	return hubHash(canonicalJson(value));
 }
 export function hubFail(code = 'artifact-corrupt'): never {

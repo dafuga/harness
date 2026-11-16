@@ -39,7 +39,7 @@
 			},
 			{
 				"name": "hubContractHash.value",
-				"type": "unknown",
+				"type": "HubJsonValue",
 				"required": true,
 				"description": "A value passed to canonicalJson so its serialization can be hashed. Accepted shapes and serialization limits follow canonicalJson.",
 				"examples": [
@@ -197,7 +197,7 @@
 				"inputs": [
 					{
 						"name": "hubContractHash.value",
-						"type": "unknown",
+						"type": "HubJsonValue",
 						"required": true,
 						"description": "A value passed to canonicalJson so its serialization can be hashed. Accepted shapes and serialization limits follow canonicalJson.",
 						"examples": [
