@@ -1,9 +1,11 @@
 // @harness-uid u_dhwgyywtay
-import type {
-	LocalControl,
-	LocalOperationsOptions,
-	Fields,
-	Operation
+
+import {
+	DesktopOperationUnavailableError,
+	type LocalControl,
+	type LocalOperationsOptions,
+	type Fields,
+	type Operation
 } from './LocalOperationsService.types';
 import { remoteMethods } from '../../../../../remote/src/index';
 import type { RemoteMethod, WireRequest } from '../../../../../remote/src/index';
@@ -40,7 +42,8 @@ export class LocalOperationsService {
 		if (Object.hasOwn(controls, method)) return this.control(controls[method], input);
 		const payload = this.payloads.parse(channels[method as keyof typeof channels], input),
 			operation = (this.options.bridge as Fields)[method];
-		if (typeof operation !== 'function') throw new Error('Desktop operation unavailable.');
+		if (typeof operation !== 'function')
+			throw new DesktopOperationUnavailableError('Desktop operation unavailable.');
 		const value = await (operation as Operation)(payload);
 		if (method === 'artifact')
 			return binaryAnswer((value as Artifact).bytes, (value as Artifact).mediaType);
