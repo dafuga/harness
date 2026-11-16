@@ -6,3 +6,7 @@ export interface CatalogQuery {
 	limit?: number;
 	offset?: number;
 }
+/** An unsupported catalog schema version, or invalid catalog pagination. */
+export class InvalidCatalogError extends Error {
+	override name = 'InvalidCatalogError';
+}

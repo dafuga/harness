@@ -1,5 +1,6 @@
 // @harness-uid u_63clvffenx
 import type { CatalogQuery } from './CatalogRepository.types';
+import { InvalidCatalogError } from './CatalogRepository.types';
 import { createSqliteAdapter } from '../../adapters/development-tooling/SqliteAdapter';
 import type { HistoryIndex, IndexedRevision } from '../../core/historyIndexTypes';
 import type { SqliteDatabase, SqliteValue } from '../../core/development-tooling/sqliteTypes';
@@ -23,7 +24,7 @@ export class CatalogRepository {
 			"SELECT schema_version FROM catalog_metadata WHERE id='catalog'"
 		)[0];
 		if (schema && schema.schema_version !== 1)
-			throw new Error('Unsupported SQLite catalog schema version');
+			throw new InvalidCatalogError('Unsupported SQLite catalog schema version');
 		if (initialize) this.indexes();
 	}
 	replace(index: HistoryIndex, snapshots: CatalogSnapshot[]): void {
@@ -70,7 +71,7 @@ export class CatalogRepository {
 			!Number.isInteger(offset) ||
 			offset < 0
 		)
-			throw new Error('Invalid catalog pagination');
+			throw new InvalidCatalogError('Invalid catalog pagination');
 	}
 	dependencies(unitId: string, commit?: string): Array<{ unit: string; via: string }> {
 		return this.adapter.query(
