@@ -1,6 +1,7 @@
 // @harness-uid u_xop3oggsaf
 import { cpSync, readFileSync, rmSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
+import { ScanFixtureMismatchError } from './ios-scan-fixture.types';
 import { scanMarker } from './ios-acceptance-guards';
 import { simulatorSigning } from './ios-build-options';
 import { followed } from './ios-build-processes';
@@ -40,7 +41,9 @@ function isolatedSource(): string {
 		.map((file) => relative(real, file))
 		.filter((file) => fileDigest(resolve(real, file)) !== fileDigest(resolve(copy, file)));
 	if (differing.join() === camera) return resolve(copy, 'App/App.xcodeproj');
-	throw new Error(`The isolated copy differs in more than its scanner: ${differing.join(', ')}`);
+	throw new ScanFixtureMismatchError(
+		`The isolated copy differs in more than its scanner: ${differing.join(', ')}`
+	);
 }
 
 /**
@@ -68,6 +71,8 @@ export async function buildScanFixture(): Promise<string> {
 	succeeded('xcodebuild', built);
 	const product = resolve(data, 'Build/Products/Debug-iphonesimulator/App.app');
 	if (!holds(product, scanMarker))
-		throw new Error('The scan fixture product does not hold the synthetic scanner.');
+		throw new ScanFixtureMismatchError(
+			'The scan fixture product does not hold the synthetic scanner.'
+		);
 	return changedCopy(product, scanFixtureProduct, { localNetworking: true, inspection: true });
 }

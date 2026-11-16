@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/ios-scan-fixture.ts"],
-		"symbols": ["scanFixtureProduct", "holds", "buildScanFixture"]
+		"source": [
+			"packages/desktop/scripts/ios-scan-fixture.ts",
+			"packages/desktop/scripts/ios-scan-fixture.types.ts"
+		],
+		"symbols": ["scanFixtureProduct", "holds", "buildScanFixture", "ScanFixtureMismatchError"]
 	},
 	"contract": {
 		"origin": "declared",
