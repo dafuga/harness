@@ -1,4 +1,5 @@
 // @harness-uid u_b4uzqkb2i6
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import { ModuleTaskRunnerAdapter } from '../../adapters/agents-providers/ModuleTaskRunnerAdapter';
 import { ModuleTaskAnalyticsService } from './ModuleTaskAnalyticsService';
@@ -29,7 +30,7 @@ export class ModuleTaskWorkerService {
 	}
 	async once(worker: string, modules: string[] = [], signal = AbortSignal.timeout(900000)) {
 		if (!/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/.test(worker))
-			throw new Error('Worker must be a lowercase dotted or dashed identifier.');
+			throw new ExpectedCliError('Worker must be a lowercase dotted or dashed identifier.');
 		const owner = await this.repository.owner();
 		const claim = await this.repository.update((queue) =>
 			claimedTask(queue, worker, modules, owner)

@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"src/services/agents-providers/ModuleTaskWorkerService.ts",
-			"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
+			"src/services/agents-providers/module-task-worker-service/taskClaim.ts",
+			"src/services/agents-providers/module-task-worker-service/taskClaim.types.ts"
 		],
 		"symbols": [
 			"ModuleTaskWorkerService",
@@ -19,7 +20,8 @@
 			"pendingTaskResult",
 			"claimedTask",
 			"finishTask",
-			"taskWrites"
+			"taskWrites",
+			"WorkerOutsideModuleError"
 		]
 	},
 	"contract": {
@@ -1381,7 +1383,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.agents-providers-module-task-worktree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},
