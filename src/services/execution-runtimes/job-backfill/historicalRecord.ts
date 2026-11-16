@@ -40,3 +40,14 @@ export function historicalAttempts(record: JobRecord, data: HistoricalResult): J
 		};
 	});
 }
+
+/** Use only explicit model metadata or recognized model directories; never unit names. */
+export function historicalModel(data: HistoricalResult, directory: string): string {
+	if (data.model) return data.model;
+	if (data.worker) return data.worker;
+	return ['luna', 'haiku', 'sol', 'opus', 'sonnet', 'terra', 'astra', 'grok', 'gemini'].includes(
+		directory
+	)
+		? directory
+		: 'unknown';
+}

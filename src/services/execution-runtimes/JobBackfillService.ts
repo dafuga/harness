@@ -8,7 +8,8 @@ import { driverJobType } from '../../adapters/execution-runtimes/driver-queue/dr
 import {
 	historicalIdentity,
 	historicalOutcome,
-	historicalAttempts
+	historicalAttempts,
+	historicalModel
 } from './job-backfill/historicalRecord';
 import { resultFiles } from './job-backfill/resultFiles';
 /** Imports original elapsed wall time; inferred historical timestamps are labelled. */
@@ -41,7 +42,7 @@ export class JobBackfillService {
 		const endedAt = Math.round(statSync(path).mtimeMs),
 			durationMs = Math.round(duration * 1000);
 		const collection = relative(root, path).split('/')[0];
-		const model = data.model ?? data.worker ?? relative(root, path).split('/')[1];
+		const model = historicalModel(data, relative(root, path).split('/')[1]);
 		return historicalAttempts(
 			{
 				...historicalIdentity(data, path),

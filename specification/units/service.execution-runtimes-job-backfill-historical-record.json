@@ -16,6 +16,7 @@
 			"historicalIdentity",
 			"historicalOutcome",
 			"historicalAttempts",
+			"historicalModel",
 			"HistoricalIdentity"
 		]
 	},
@@ -52,6 +53,18 @@
 				"type": "HistoricalResult",
 				"required": true,
 				"description": "Parsed result with optional serial tried entries. Finite nonnegative attempt durations preserve each model and outcome; incomplete attempt timing retains the aggregate."
+			},
+			{
+				"name": "historicalModel.data",
+				"type": "HistoricalResult",
+				"required": true,
+				"description": "Parsed historical result; explicit model then worker metadata take precedence over directory inference."
+			},
+			{
+				"name": "historicalModel.directory",
+				"type": "string",
+				"required": true,
+				"description": "Model directory candidate from the result path. Only recognized model names are accepted; unit names and other folders remain unknown."
 			}
 		],
 		"outputs": [
@@ -137,6 +150,32 @@
 						"name": "historicalAttempts",
 						"type": "JobRecord[]",
 						"description": "One record per timed reverify attempt, with sequential attempt IDs, original model/outcome, and contiguous inferred timestamps ending at the file mtime. Other phases retain their aggregate record."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "historicalModel",
+				"inputs": [
+					{
+						"name": "historicalModel.data",
+						"type": "HistoricalResult",
+						"required": true,
+						"description": "Parsed historical result; explicit model then worker metadata take precedence over directory inference."
+					},
+					{
+						"name": "historicalModel.directory",
+						"type": "string",
+						"required": true,
+						"description": "Model directory candidate from the result path. Only recognized model names are accepted; unit names and other folders remain unknown."
+					}
+				],
+				"outputs": [
+					{
+						"name": "historicalModel",
+						"type": "string",
+						"description": "Explicit model/worker label, a recognized model folder, or unknown when the source supplies no model evidence."
 					}
 				],
 				"errors": [],

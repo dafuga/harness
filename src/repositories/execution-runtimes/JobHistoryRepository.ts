@@ -63,7 +63,7 @@ export class JobHistoryRepository {
 			Number(
 				this.db
 					.prepare(
-						`INSERT INTO job_history VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET data=excluded.data WHERE json_extract(job_history.data, '$.timingSource')='file-mtime-minus-duration' AND json_extract(job_history.data, '$.type')='reverify' AND json_extract(excluded.data, '$.timingSource')='file-mtime-minus-attempt-durations' AND json_extract(excluded.data, '$.type')='reverify' AND json_extract(excluded.data, '$.source') LIKE 'backfill:%'`
+						`INSERT INTO job_history VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET data=excluded.data WHERE json_extract(job_history.data, '$.timingSource')='file-mtime-minus-duration' AND json_extract(job_history.data, '$.type')='reverify' AND json_extract(excluded.data, '$.timingSource')='file-mtime-minus-attempt-durations' AND json_extract(excluded.data, '$.type')='reverify' AND json_extract(excluded.data, '$.source') LIKE 'backfill:%' OR (json_extract(job_history.data, '$.timingSource') LIKE 'file-mtime-minus-%' AND json_extract(excluded.data, '$.timingSource') LIKE 'file-mtime-minus-%' AND json_extract(excluded.data, '$.model')='unknown' AND json_extract(job_history.data, '$.model')!='unknown' AND json_extract(excluded.data, '$.source') LIKE 'backfill:%')`
 					)
 					.run(jobKey(record), JSON.stringify(record)).changes
 			) === 1
