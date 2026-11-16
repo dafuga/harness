@@ -14,6 +14,7 @@ import {
 	prepareVideoEvidence as fixture
 } from '../../support/videoEvidenceFixture';
 import { assertVideoInputBindings } from '../../support/videoInputConfigs';
+import { assertPilotVideoInputs } from '../../support/pilotVideoInputs';
 const videoUnit = 'service.verification-evidence-video-evidence';
 afterEach(() => vi.restoreAllMocks());
 vi.mock('node:fs', { spy: true });
@@ -69,7 +70,10 @@ test('clip planning reuses unchanged inputs and invalidates only actual consumer
 				'first'
 			]);
 			await assertTrackedVideoInputs(root, manifest);
-		}).then(async () => expect((await assertVideoInputBindings()).record).toEqual([]))
+		}).then(async () => {
+			expect((await assertVideoInputBindings()).record).toEqual([]);
+			assertPilotVideoInputs();
+		})
 	);
 }, 15_000);
 test('clip planning follows shared dependencies and rejects missing source bindings', async () => {
