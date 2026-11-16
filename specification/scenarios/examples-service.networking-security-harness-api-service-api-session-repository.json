@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.networking-security-harness-api-service-api-session-repository",
+	"title": "service.networking-security-harness-api-service-api-session-repository examples",
+	"kind": "headless",
+	"units": ["service.networking-security-harness-api-service-api-session-repository"],
+	"builds": [],
+	"states": [
+		{
+			"id": "loads-a-saved-token-for-its-exact-origin",
+			"title": "Loads a saved token for its exact origin",
+			"coverage": "required"
+		},
+		{
+			"id": "creates-and-saves-a-token-when-no-session-exists",
+			"title": "Creates and saves a token when no session exists",
+			"coverage": "required"
+		},
+		{
+			"id": "reuses-an-existing-token-without-creating-another",
+			"title": "Reuses an existing token without creating another",
+			"coverage": "required"
+		},
+		{
+			"id": "forgets-a-saved-session-and-tolerates-an-absent-session",
+			"title": "Forgets a saved session and tolerates an absent session",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.networking-security-harness-api-service-api-session-repository.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"loads-a-saved-token-for-its-exact-origin",
+				"creates-and-saves-a-token-when-no-session-exists",
+				"reuses-an-existing-token-without-creating-another",
+				"forgets-a-saved-session-and-tolerates-an-absent-session"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"loads-a-saved-token-for-its-exact-origin",
+				"creates-and-saves-a-token-when-no-session-exists",
+				"reuses-an-existing-token-without-creating-another",
+				"forgets-a-saved-session-and-tolerates-an-absent-session"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"loads-a-saved-token-for-its-exact-origin",
+				"creates-and-saves-a-token-when-no-session-exists",
+				"reuses-an-existing-token-without-creating-another",
+				"forgets-a-saved-session-and-tolerates-an-absent-session"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
