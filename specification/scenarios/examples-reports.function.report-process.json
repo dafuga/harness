@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.report-process",
+	"title": "reports.function.report-process examples",
+	"kind": "headless",
+	"units": ["reports.function.report-process"],
+	"builds": [],
+	"states": [
+		{
+			"id": "runs-a-successful-command-and-captures-its-output",
+			"title": "Runs a successful command and captures its output",
+			"coverage": "required"
+		},
+		{
+			"id": "resolves-a-nonzero-exit-code-without-rejecting",
+			"title": "Resolves a nonzero exit code without rejecting",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-when-the-executable-cannot-be-started",
+			"title": "Rejects when the executable cannot be started",
+			"coverage": "required"
+		},
+		{
+			"id": "passes-the-explicit-environment-and-working-directory",
+			"title": "Passes the explicit environment and working directory",
+			"coverage": "required"
+		},
+		{
+			"id": "keeps-only-the-last-two-million-characters-of-output",
+			"title": "Keeps only the last two million characters of output",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.report-process.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"runs-a-successful-command-and-captures-its-output",
+				"resolves-a-nonzero-exit-code-without-rejecting",
+				"rejects-when-the-executable-cannot-be-started",
+				"passes-the-explicit-environment-and-working-directory",
+				"keeps-only-the-last-two-million-characters-of-output"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"runs-a-successful-command-and-captures-its-output",
+				"resolves-a-nonzero-exit-code-without-rejecting",
+				"rejects-when-the-executable-cannot-be-started",
+				"passes-the-explicit-environment-and-working-directory",
+				"keeps-only-the-last-two-million-characters-of-output"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"runs-a-successful-command-and-captures-its-output",
+				"resolves-a-nonzero-exit-code-without-rejecting",
+				"rejects-when-the-executable-cannot-be-started",
+				"passes-the-explicit-environment-and-working-directory",
+				"keeps-only-the-last-two-million-characters-of-output"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
