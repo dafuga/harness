@@ -12,7 +12,7 @@
 			"packages/relay/src/validators/development-tooling/HostCommandValidator.ts",
 			"packages/relay/src/validators/development-tooling/HostCommandValidator.types.ts"
 		],
-		"symbols": ["HostCommandValidator", "HostCommandValidator.command", "Check"]
+		"symbols": ["HostCommandValidator", "HostCommandValidator.command", "Check", "HostCommandError"]
 	},
 	"contract": {
 		"origin": "declared",
