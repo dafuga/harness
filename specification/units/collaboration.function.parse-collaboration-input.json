@@ -59,13 +59,13 @@
 			},
 			{
 				"name": "parseCollaborationInput.schema",
-				"type": "z.ZodType<T>",
+				"type": "Schema",
 				"required": true,
 				"description": "Zod schema object, a class instance that cannot be written as JSON, which the function runs with safeParse against the value and which determines the type T that is returned. A failed safeParse makes the function throw instead of returning."
 			},
 			{
 				"name": "parseCollaborationInput.value",
-				"type": "unknown",
+				"type": "Value",
 				"required": true,
 				"description": "Untrusted value of any type, passed unchanged to schema.safeParse; the function adds no checks of its own, so the schema alone decides whether the value is accepted.",
 				"examples": [
@@ -241,13 +241,13 @@
 				"inputs": [
 					{
 						"name": "parseCollaborationInput.schema",
-						"type": "z.ZodType<T>",
+						"type": "Schema",
 						"required": true,
 						"description": "Zod schema object, a class instance that cannot be written as JSON, which the function runs with safeParse against the value and which determines the type T that is returned. A failed safeParse makes the function throw instead of returning."
 					},
 					{
 						"name": "parseCollaborationInput.value",
-						"type": "unknown",
+						"type": "Value",
 						"required": true,
 						"description": "Untrusted value of any type, passed unchanged to schema.safeParse; the function adds no checks of its own, so the schema alone decides whether the value is accepted.",
 						"examples": [
@@ -265,7 +265,7 @@
 				"outputs": [
 					{
 						"name": "parseCollaborationInput",
-						"type": "T",
+						"type": "z.output<Schema>",
 						"description": "The data from a successful schema.safeParse with the schema's transforms already applied, and this is the function's only return value. On failure the function throws an Error with code invalid-input instead, and the same function is exported under the alias parse.",
 						"examples": [
 							"3f9a1c0e-5b7d-4a46-8c1e-f0b9d4a7c2e5",

@@ -59,7 +59,10 @@ export const anchorSchema = z
 export function fail(code: string): never {
 	throw Object.assign(new CollaborationInputError(`Collaboration ${code}`), { code });
 }
-export function parseCollaborationInput<T>(schema: z.ZodType<T>, value: unknown): T {
+export function parseCollaborationInput<Schema extends z.ZodType, Value>(
+	schema: Schema,
+	value: Value
+): z.output<Schema> {
 	const result = schema.safeParse(value);
 	if (!result.success) return fail('invalid-input');
 	return result.data;
