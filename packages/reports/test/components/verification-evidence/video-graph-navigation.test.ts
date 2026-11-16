@@ -61,4 +61,24 @@ test('VideoGraphNavigation.svelte is generated', () => {
 	expect(gallery, 'state gallery must mount modular video paths and graph coverage').toContain(
 		'Video paths and coverage'
 	);
+	const own = record(commits.tip),
+		unrelated = record(commits.tip);
+	own.scenarios.find((item) => item.id === 'orders-page')!.videoCoverage = coverage;
+	unrelated.id = 'e'.repeat(64);
+	unrelated.finishedAt = '2026-10-09T10:01:00.000Z';
+	unrelated.scenarios = unrelated.scenarios.filter((item) => item.id !== 'orders-page');
+	const scoped = entityEvidence(
+		units.find((unit) => unit.id === ids.page)!,
+		revision(commits.tip, [unrelated, own])
+	);
+	scoped.scenarios[0].video = library as never;
+	const scopedGallery = render(EntityStates, {
+		props: { name: 'OrderList', evidence: scoped, scope: scope('current') } as never
+	}).body;
+	expect(
+		scopedGallery,
+		'a later unrelated scope retains the owning scenario graph coverage'
+	).toContain('mobile/edge/search-empty');
+	expect(scopedGallery).toContain('50%');
+	expect(scopedGallery).not.toContain('No verified graph coverage is attached.');
 });
