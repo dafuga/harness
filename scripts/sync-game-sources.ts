@@ -3,6 +3,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { posix } from 'node:path';
 import { format } from 'prettier';
 import { formatConfigFiles } from '../src/templates/development-tooling/formatConfig';
+import { UnembeddedImportError } from './sync-game-sources.types';
 
 /** Generated games keep their src/lib/game layout; each destination names its engine source. */
 export const gameSourceLayout: Readonly<Record<string, string>> = {
@@ -35,7 +36,8 @@ export async function embeddedSource(destination: string, text: string): Promise
 		(_whole, lead: string, specifier: string) => {
 			const target = posix.join(posix.dirname(source), specifier) + '.ts';
 			const embedded = destinations.find((path) => gameSourceLayout[path] === target);
-			if (!embedded) throw new Error(`${source} imports ${specifier}, which is not embedded.`);
+			if (!embedded)
+				throw new UnembeddedImportError(`${source} imports ${specifier}, which is not embedded.`);
 			const moved = posix.relative(posix.dirname(destination), embedded).replace(/\.ts$/, '');
 			return `${lead}'${moved.startsWith('.') ? moved : './' + moved}'`;
 		}
