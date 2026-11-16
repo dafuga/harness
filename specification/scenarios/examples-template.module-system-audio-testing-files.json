@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-template.module-system-audio-testing-files",
+	"title": "template.module-system-audio-testing-files examples",
+	"kind": "headless",
+	"units": ["template.module-system-audio-testing-files"],
+	"builds": [],
+	"states": [
+		{
+			"id": "emits-headless-audio-service-and-runner-files",
+			"title": "Emits headless audio service and runner files",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/template.module-system-audio-testing-files.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["emits-headless-audio-service-and-runner-files"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["emits-headless-audio-service-and-runner-files"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["emits-headless-audio-service-and-runner-files"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
