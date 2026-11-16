@@ -1,10 +1,10 @@
 // @harness-uid u_ulnsle5cie
-import type { Position } from './stableJson.types';
+import type { Position, StableJsonInput } from './stableJson.types';
 const printWidth = 100;
 const tabWidth = 2;
 
 /** Serializes JSON in the project Prettier style so generated files pass format checks. */
-export function stableJson(value: unknown): string {
+export function stableJson(value: StableJsonInput): string {
 	return `${render(value, { indent: 0, reserved: 0 })}\n`;
 }
 
