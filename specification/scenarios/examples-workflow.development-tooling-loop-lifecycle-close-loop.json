@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-workflow.development-tooling-loop-lifecycle-close-loop",
+	"title": "workflow.development-tooling-loop-lifecycle-close-loop examples",
+	"kind": "headless",
+	"units": ["workflow.development-tooling-loop-lifecycle-close-loop"],
+	"builds": [],
+	"states": [
+		{
+			"id": "abandons-an-open-loop-and-records-the-closure-in-its-trace",
+			"title": "Abandons an open loop and records the closure in its trace",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-abandoning-a-loop-that-has-no-pending-steps",
+			"title": "Rejects abandoning a loop that has no pending steps",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/workflow.development-tooling-loop-lifecycle-close-loop.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"abandons-an-open-loop-and-records-the-closure-in-its-trace",
+				"rejects-abandoning-a-loop-that-has-no-pending-steps"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"abandons-an-open-loop-and-records-the-closure-in-its-trace",
+				"rejects-abandoning-a-loop-that-has-no-pending-steps"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"abandons-an-open-loop-and-records-the-closure-in-its-trace",
+				"rejects-abandoning-a-loop-that-has-no-pending-steps"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
