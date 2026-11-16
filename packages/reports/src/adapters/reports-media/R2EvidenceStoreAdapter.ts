@@ -3,14 +3,15 @@ import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3
 import { safeId } from '../../utils/reports-media/reportFiles';
 import { r2EvidenceConfig } from '../../utils/verification-evidence/r2EvidenceConfig';
 import type { R2ScreenshotStoreAdapterConfig } from './R2ScreenshotStoreAdapter';
+import { R2EvidenceStoreError } from './R2EvidenceStoreAdapter.types';
 
 export function evidenceObjectKey(reportId: string, file: string) {
 	if (!/^[a-f0-9]{64}\.(png|jpg|webp|wav|mp3|m4a|ogg)$/.test(file))
-		throw new Error('Invalid R2 evidence name');
+		throw new R2EvidenceStoreError('Invalid R2 evidence name');
 	return `report-evidence/runs/${safeId(reportId)}/assets/${file}`;
 }
 export function replayObjectKey(reportId: string, file: string) {
-	if (!/^[a-f0-9]{64}\.mp4$/.test(file)) throw new Error('Invalid R2 replay name');
+	if (!/^[a-f0-9]{64}\.mp4$/.test(file)) throw new R2EvidenceStoreError('Invalid R2 replay name');
 	return `report-evidence/runs/${safeId(reportId)}/replays/${file}`;
 }
 export class R2EvidenceStoreAdapter {
@@ -53,7 +54,7 @@ export class R2EvidenceStoreAdapter {
 		const response = await this.client.send(
 			new GetObjectCommand({ Bucket: this.config.bucket, Key: key })
 		);
-		if (!response.Body) throw new Error('R2 evidence has no body');
+		if (!response.Body) throw new R2EvidenceStoreError('R2 evidence has no body');
 		return Buffer.from(await response.Body.transformToByteArray());
 	}
 }
