@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.verification-evidence-frame-flag",
+	"title": "service.verification-evidence-frame-flag examples",
+	"kind": "headless",
+	"units": ["service.verification-evidence-frame-flag"],
+	"builds": [],
+	"states": [
+		{
+			"id": "lists-no-flags-for-a-unit-without-stored-feedback",
+			"title": "Lists no flags for a unit without stored feedback",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-frame-request-for-a-flag-that-was-never-stored",
+			"title": "Rejects a frame request for a flag that was never stored",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.verification-evidence-frame-flag.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"lists-no-flags-for-a-unit-without-stored-feedback",
+				"rejects-a-frame-request-for-a-flag-that-was-never-stored"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"lists-no-flags-for-a-unit-without-stored-feedback",
+				"rejects-a-frame-request-for-a-flag-that-was-never-stored"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"lists-no-flags-for-a-unit-without-stored-feedback",
+				"rejects-a-frame-request-for-a-flag-that-was-never-stored"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
