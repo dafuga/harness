@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-workflow.verification-evidence-run-verify-scoped-verify",
+	"title": "workflow.verification-evidence-run-verify-scoped-verify examples",
+	"kind": "headless",
+	"units": ["workflow.verification-evidence-run-verify-scoped-verify"],
+	"builds": [],
+	"states": [
+		{
+			"id": "refuses-scoped-verification-without-a-covering-scenario",
+			"title": "Refuses scoped verification without a covering scenario",
+			"coverage": "required"
+		},
+		{
+			"id": "renders-screenshot-and-evidence-attachment-outcomes",
+			"title": "Renders screenshot and evidence attachment outcomes",
+			"coverage": "required"
+		},
+		{
+			"id": "uses-the-head-revision-as-the-scoped-base",
+			"title": "Uses the head revision as the scoped base",
+			"coverage": "required"
+		},
+		{
+			"id": "builds-an-empty-impact-report-for-the-scoped-revision",
+			"title": "Builds an empty impact report for the scoped revision",
+			"coverage": "required"
+		},
+		{
+			"id": "writes-scoped-timings-and-suppresses-unscoped-output",
+			"title": "Writes scoped timings and suppresses unscoped output",
+			"coverage": "required"
+		},
+		{
+			"id": "sets-verification-priority-and-entity-options",
+			"title": "Sets verification priority and entity options",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/workflow.verification-evidence-run-verify-scoped-verify.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"refuses-scoped-verification-without-a-covering-scenario",
+				"renders-screenshot-and-evidence-attachment-outcomes",
+				"uses-the-head-revision-as-the-scoped-base",
+				"builds-an-empty-impact-report-for-the-scoped-revision",
+				"writes-scoped-timings-and-suppresses-unscoped-output",
+				"sets-verification-priority-and-entity-options"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"refuses-scoped-verification-without-a-covering-scenario",
+				"renders-screenshot-and-evidence-attachment-outcomes",
+				"uses-the-head-revision-as-the-scoped-base",
+				"builds-an-empty-impact-report-for-the-scoped-revision",
+				"writes-scoped-timings-and-suppresses-unscoped-output",
+				"sets-verification-priority-and-entity-options"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"refuses-scoped-verification-without-a-covering-scenario",
+				"renders-screenshot-and-evidence-attachment-outcomes",
+				"uses-the-head-revision-as-the-scoped-base",
+				"builds-an-empty-impact-report-for-the-scoped-revision",
+				"writes-scoped-timings-and-suppresses-unscoped-output",
+				"sets-verification-priority-and-entity-options"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
