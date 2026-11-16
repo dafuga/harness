@@ -6,18 +6,19 @@ import type { Report } from '../../../../models/reports-media/Report.types';
 import { replayFrames, FRAME_SECONDS } from '../../../../utils/reports-media/replayFrames';
 import { registeredAsset } from '../../../../utils/reports-media/reportAssets';
 import { reportProcess } from '../../../../utils/reports-media/reportProcess';
+import { ReplayVideoError } from './replayVideo.types';
 
 export async function replayVideo(report: Report, directory: string) {
 	const frames = replayFrames(report.evidence);
 	if (!frames.length || frames.length > 500)
-		throw new Error('Replay requires between 1 and 500 available screenshots');
+		throw new ReplayVideoError('Replay requires between 1 and 500 available screenshots');
 	const cache = join(directory, 'replays');
 	if ((await lstat(cache).catch(() => undefined))?.isSymbolicLink())
-		throw new Error('Invalid replay directory');
+		throw new ReplayVideoError('Invalid replay directory');
 	await mkdir(cache, { recursive: true, mode: 0o700 });
 	const destination = join(cache, replayVideoKey(report) + '.mp4');
 	const info = await lstat(destination).catch(() => null);
-	if (info?.isSymbolicLink()) throw new Error('Invalid replay artifact');
+	if (info?.isSymbolicLink()) throw new ReplayVideoError('Invalid replay artifact');
 	if (info?.isFile()) return destination;
 	const temporary = await mkdtemp(join(cache, 'encode-'));
 	try {
@@ -62,7 +63,8 @@ async function copyFrames(report: Report, directory: string, temporary: string) 
 					],
 					temporary
 				);
-				if (result.code !== 0) throw new Error('A screenshot could not be rendered for the video');
+				if (result.code !== 0)
+					throw new ReplayVideoError('A screenshot could not be rendered for the video');
 				return name;
 			})
 		);
@@ -112,5 +114,5 @@ async function encodeReplay(names: string[], directory: string) {
 		directory
 	);
 	if (result.code !== 0)
-		throw new Error('Video generation failed. The screenshot replay remains available.');
+		throw new ReplayVideoError('Video generation failed. The screenshot replay remains available.');
 }
