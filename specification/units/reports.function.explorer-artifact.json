@@ -34,7 +34,7 @@
 		"inputs": [
 			{
 				"name": "artifactBehavior.document",
-				"type": "Document",
+				"type": "unknown",
 				"required": true,
 				"description": "The document value to inspect for recorded run observations. Null, arrays, and other non-object values return null; object fields are normalized into the behavior result.",
 				"examples": [
@@ -107,7 +107,7 @@
 			},
 			{
 				"name": "artifactText.value",
-				"type": "Value",
+				"type": "unknown",
 				"required": true,
 				"description": "The recorded value to turn into display text. Strings pass through, undefined becomes Not recorded, and other values are passed to JSON.stringify with two-space indentation.",
 				"examples": [
@@ -244,7 +244,7 @@
 				"inputs": [
 					{
 						"name": "artifactBehavior.document",
-						"type": "Document",
+						"type": "unknown",
 						"required": true,
 						"description": "The document value to inspect for recorded run observations. Null, arrays, and other non-object values return null; object fields are normalized into the behavior result.",
 						"examples": [
@@ -434,7 +434,7 @@
 				"inputs": [
 					{
 						"name": "artifactText.value",
-						"type": "Value",
+						"type": "unknown",
 						"required": true,
 						"description": "The recorded value to turn into display text. Strings pass through, undefined becomes Not recorded, and other values are passed to JSON.stringify with two-space indentation.",
 						"examples": [
