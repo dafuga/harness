@@ -1,5 +1,9 @@
 // @harness-uid u_ns5pi3bjv5
 import type { PickerClient } from '../../../utils/agents-providers/providerPickerClient';
+import {
+	PickerSelectionRejectedError,
+	PreviewRequestRejectedError
+} from './providerPickerClient.types';
 import { App } from '@modelcontextprotocol/ext-apps';
 import type { PickerSnapshot } from '../../../../../../src/core/development-tooling/pickerTypes';
 
@@ -16,7 +20,7 @@ export async function providerPickerClient(
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({ name, arguments: args })
 				});
-				if (!response.ok) throw new Error('Preview request rejected.');
+				if (!response.ok) throw new PreviewRequestRejectedError('Preview request rejected.');
 				return response.json() as Promise<unknown>;
 			},
 			close: async () => {}
@@ -36,7 +40,9 @@ export async function providerPickerClient(
 		call: async (name, args = {}) => {
 			const result = await app.callServerTool({ name, arguments: args });
 			if (result.isError)
-				throw new Error('Selection rejected. Refresh the panel and check the session ID.');
+				throw new PickerSelectionRejectedError(
+					'Selection rejected. Refresh the panel and check the session ID.'
+				);
 			return result.structuredContent;
 		},
 		close: () => app.close()

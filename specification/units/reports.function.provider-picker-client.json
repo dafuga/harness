@@ -10,9 +10,16 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/agents-providers/provider-picker/providerPickerClient.ts",
+			"packages/reports/src/components/agents-providers/provider-picker/providerPickerClient.types.ts",
 			"packages/reports/src/utils/agents-providers/providerPickerClient.ts"
 		],
-		"symbols": ["providerPickerClient", "PickerClient", "providerPickerClient"]
+		"symbols": [
+			"providerPickerClient",
+			"PreviewRequestRejectedError",
+			"PickerSelectionRejectedError",
+			"PickerClient",
+			"providerPickerClient"
+		]
 	},
 	"contract": {
 		"origin": "declared",
