@@ -16,12 +16,12 @@ export const categories = {
 	service: 'services'
 };
 
-export function text(value: unknown): asserts value is string {
+export function text<T>(value: T): asserts value is T & string {
 	if (typeof value !== 'string' || !value.trim() || value.length > 1000000)
 		fail('invalid-input', 'Expected non-empty text');
 }
 
-export function slug(value: unknown): asserts value is string {
+export function slug<T>(value: T): asserts value is T & string {
 	if (
 		typeof value !== 'string' ||
 		!/^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/.test(value) ||
