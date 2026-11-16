@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts"],
-		"symbols": ["codexRpc"]
+		"source": [
+			"packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts",
+			"packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.types.ts"
+		],
+		"symbols": ["codexRpc", "CodexConnectionClosedError", "CodexMessageTooLargeError"]
 	},
 	"contract": {
 		"origin": "declared",
