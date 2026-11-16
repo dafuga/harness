@@ -1,4 +1,5 @@
 import { expect, test, vi } from 'vitest';
+import { buildProgram } from '../../../src/cli/program';
 import { loadCliProgram } from '../../../src/cli/loadCliProgram';
 import { withTempDir } from '../../support/temporary';
 
@@ -15,6 +16,7 @@ test('jobs CLI records, reports statistics, active jobs and a JSON what-if from 
 				.parseAsync(['node', 'harness', 'jobs', ...args]);
 		try {
 			expect((await loadCliProgram([])).helpInformation()).toContain('jobs');
+			expect((await loadCliProgram([])).helpInformation()).toBe(buildProgram().helpInformation());
 			await run([
 				'record',
 				'start',
