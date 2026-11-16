@@ -10,6 +10,7 @@ import type {
 	ProposedContract
 } from '../../../../models/development-tooling/DesktopBridge.types';
 import { referencePrompt } from '../../../../utils/agents-providers/referencePrompt';
+import { InvalidProposalError } from './projectProposal.types';
 
 const most = { answer: 20_000, title: 160, goal: 600, proposal: 6000 } as const;
 
@@ -22,7 +23,8 @@ const fenced = /^```(?:json)?\s*\n([\s\S]*?)\n```$/;
 /** A title names a thing. A separator, a parent or a hidden name is a place, and is refused. */
 const place = /[\\/\p{Cc}]|\.\.|^[.~]/u;
 
-const refused = (why: string) => new Error(`The agent's proposal was not used: ${why}`);
+const refused = (why: string) =>
+	new InvalidProposalError(`The agent's proposal was not used: ${why}`);
 
 /** An object that holds these fields and no other; `what` says which part of the answer it is. */
 function only(value: unknown, fields: string[], what: string): Record<string, unknown> {
