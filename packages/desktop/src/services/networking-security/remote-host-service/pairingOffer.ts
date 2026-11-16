@@ -1,4 +1,5 @@
 // @harness-uid u_slsujlaboc
+import { InvalidPairingOfferError } from './pairingOffer.types';
 import type { PairingOffer } from '../../../../../remote/src/utils/networking-security/pairingOffer';
 import {
 	offerEnvironment,
@@ -15,6 +16,6 @@ export function pairingOffer(offer: PairingOffer): string {
 	const environment = offerEnvironment(String(offer.origin));
 	const text = environment ? written(offer, environment) : '';
 	if (text.length > offerRules.maxLength || !shape.test(text))
-		throw new Error('Invalid pairing offer.');
+		throw new InvalidPairingOfferError('Invalid pairing offer.');
 	return text;
 }
