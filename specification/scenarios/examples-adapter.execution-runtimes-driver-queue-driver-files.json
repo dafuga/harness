@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-adapter.execution-runtimes-driver-queue-driver-files",
+	"title": "adapter.execution-runtimes-driver-queue-driver-files examples",
+	"kind": "headless",
+	"units": ["adapter.execution-runtimes-driver-queue-driver-files"],
+	"builds": [],
+	"states": [
+		{
+			"id": "reads-existing-and-missing-driver-json-snapshots",
+			"title": "Reads existing and missing driver JSON snapshots",
+			"coverage": "required"
+		},
+		{
+			"id": "extracts-live-driver-process-metadata",
+			"title": "Extracts live driver process metadata",
+			"coverage": "required"
+		},
+		{
+			"id": "checks-driver-process-liveness",
+			"title": "Checks driver process liveness",
+			"coverage": "required"
+		},
+		{
+			"id": "classifies-primary-driver-job-phases",
+			"title": "Classifies primary driver job phases",
+			"coverage": "required"
+		},
+		{
+			"id": "classifies-remaining-driver-job-phases",
+			"title": "Classifies remaining driver job phases",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/adapter.execution-runtimes-driver-queue-driver-files.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"reads-existing-and-missing-driver-json-snapshots",
+				"extracts-live-driver-process-metadata",
+				"checks-driver-process-liveness",
+				"classifies-primary-driver-job-phases",
+				"classifies-remaining-driver-job-phases"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"reads-existing-and-missing-driver-json-snapshots",
+				"extracts-live-driver-process-metadata",
+				"checks-driver-process-liveness",
+				"classifies-primary-driver-job-phases",
+				"classifies-remaining-driver-job-phases"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"reads-existing-and-missing-driver-json-snapshots",
+				"extracts-live-driver-process-metadata",
+				"checks-driver-process-liveness",
+				"classifies-primary-driver-job-phases",
+				"classifies-remaining-driver-job-phases"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
