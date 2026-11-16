@@ -11,6 +11,7 @@ import {
 	reportServerRecord,
 	type StoppedServer
 } from '../../../../utils/reports-media/reportServerRecord';
+import { ReportServerUnavailableError } from './ReportServerService.types';
 import { stopReportServer } from './reportServerRecord';
 
 const appRoot = reportRuntimeRoot();
@@ -49,7 +50,7 @@ export class ReportServerService {
 			if (existing || (await this.occupied(port))) continue;
 			return this.started(port, identity);
 		}
-		throw new Error('No available loopback port from preferred range');
+		throw new ReportServerUnavailableError('No available loopback port from preferred range');
 	}
 	private async reused(port: number) {
 		const known = await reportServerRecord(this.repository.root, port).read();
@@ -59,7 +60,7 @@ export class ReportServerService {
 	private async started(port: number, identity: string) {
 		const pid = this.start(port);
 		if (!(await this.waitReady(port, identity)))
-			throw new Error(`Report server failed to start on port ${port}`);
+			throw new ReportServerUnavailableError(`Report server failed to start on port ${port}`);
 		const started = (await processStarted(pid)) ?? '';
 		const record = { pid, port, started, buildId: this.build() };
 		await reportServerRecord(this.repository.root, port).write(record);
