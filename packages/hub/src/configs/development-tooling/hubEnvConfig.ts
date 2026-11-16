@@ -18,14 +18,17 @@ const names = [
 	'HARNESS_EMAIL_FROM',
 	'HARNESS_RELAY_ORIGIN'
 ] as const;
+/** Callers pass unvalidated records: the input is any object, and each value is checked on read. */
+type EnvValues = Partial<Record<string, string | D1Database | R2Bucket | DurableObjectNamespace>>;
 /** Only product-dedicated settings are accepted; unrelated host credentials never enter runtime. */
-export function hubEnvConfig(input: Record<string, unknown>): HubEnv {
+export function hubEnvConfig(input: object): HubEnv {
+	const values = input as EnvValues;
 	const env = Object.fromEntries(
-		names.flatMap((key) => (typeof input[key] === 'string' ? [[key, input[key]]] : []))
+		names.flatMap((key) => (typeof values[key] === 'string' ? [[key, values[key]]] : []))
 	) as HubEnv;
-	if (input.DB) env.DB = input.DB as D1Database;
-	if (input.CACHE) env.CACHE = input.CACHE as R2Bucket;
-	if (input.REMOTE_HOSTS) env.REMOTE_HOSTS = input.REMOTE_HOSTS as DurableObjectNamespace;
+	if (values.DB) env.DB = values.DB as D1Database;
+	if (values.CACHE) env.CACHE = values.CACHE as R2Bucket;
+	if (values.REMOTE_HOSTS) env.REMOTE_HOSTS = values.REMOTE_HOSTS as DurableObjectNamespace;
 	return env;
 }
 

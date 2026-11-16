@@ -22,7 +22,7 @@
 		"inputs": [
 			{
 				"name": "hubEnvConfig.input",
-				"type": "Record<string, unknown>",
+				"type": "object",
 				"required": true,
 				"description": "Candidate hub environment settings supplied when constructing the runtime configuration. The builder copies only allowlisted HARNESS_* values that are strings and truthy DB, CACHE, or REMOTE_HOSTS bindings; other keys and non-string settings are ignored.",
 				"examples": [
@@ -65,7 +65,7 @@
 				"inputs": [
 					{
 						"name": "hubEnvConfig.input",
-						"type": "Record<string, unknown>",
+						"type": "object",
 						"required": true,
 						"description": "Candidate hub environment settings supplied when constructing the runtime configuration. The builder copies only allowlisted HARNESS_* values that are strings and truthy DB, CACHE, or REMOTE_HOSTS bindings; other keys and non-string settings are ignored.",
 						"examples": [
