@@ -3,9 +3,16 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { buildProgram } from '../../../src/cli/program';
 import { loadCliProgram } from '../../../src/cli/loadCliProgram';
+import { measureWorkload } from '../../support/measureWorkload';
 import { withTempDir } from '../../support/temporary';
 
 test('jobs CLI records, reports statistics, active jobs and a JSON what-if from any directory', async () => {
+	const sdk = await measureWorkload(
+		'entry.index',
+		'jobs-public-entry',
+		() => import('../../../src/index')
+	);
+	expect(typeof sdk.JobsCommand).toBe('function');
 	await withTempDir('harness-jobs-cli-', async (home) => {
 		vi.stubEnv('HARNESS_JOBS_HOME', home);
 		const output: unknown[][] = [];
