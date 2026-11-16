@@ -10,8 +10,8 @@ import { contractFindings } from './contractFindings';
 
 /** Checks one stored unit manifest against the schema and its own file name. */
 export class ComponentManifestValidator {
-	validate(
-		value: unknown,
+	validate<TCandidate>(
+		value: TCandidate,
 		file: string,
 		options: { contractQuality?: boolean } = {}
 	): ManifestValidation<ComponentManifest> {
