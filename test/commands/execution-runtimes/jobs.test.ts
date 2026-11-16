@@ -14,6 +14,7 @@ test('jobs CLI records, reports statistics, active jobs and a JSON what-if from 
 				.exitOverride()
 				.parseAsync(['node', 'harness', 'jobs', ...args]);
 		try {
+			expect((await loadCliProgram([])).helpInformation()).toContain('jobs');
 			await run([
 				'record',
 				'start',
