@@ -3,7 +3,7 @@ import type {
 	NativeRecordingScript,
 	NativeRecordingSession
 } from '../../../../../../src/services/verification-evidence/NativeVideoRecorderService.types';
-import { openPreview, readyPreview } from './previewPage';
+import { previewOrigin, servePreview } from './previewApi';
 import { readyVideoMedia, videoSignature } from './platformVideoCheckpoint';
 
 const unit = 'reports.component.shared-primitives-loading-state';
@@ -11,8 +11,9 @@ const unit = 'reports.component.shared-primitives-loading-state';
 export function record(setup: { home: string }) {
 	return {
 		async prepare({ page }: NativeRecordingSession) {
-			await openPreview(page, setup.home, unit);
-			await readyPreview(page, unit);
+			await page.route('**/*', (route) => servePreview(route, setup.home));
+			await page.goto(`${previewOrigin}/?unit=${encodeURIComponent(unit)}`);
+			await expect(page.locator(`[data-preview-unit="${unit}"]`)).toBeVisible();
 			await readyVideoMedia(page);
 			await expect(page.getByRole('status')).toContainText('Loading');
 		},
