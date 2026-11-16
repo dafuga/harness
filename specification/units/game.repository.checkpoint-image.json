@@ -8,12 +8,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/game/src/repositories/game-authoring/CheckpointImageRepository.ts"],
+		"source": [
+			"packages/game/src/repositories/game-authoring/CheckpointImageRepository.ts",
+			"packages/game/src/repositories/game-authoring/CheckpointImageRepository.types.ts"
+		],
 		"symbols": [
 			"CheckpointImageRepository",
 			"CheckpointImageRepository.constructor",
 			"CheckpointImageRepository.save",
-			"CheckpointImageRepository.read"
+			"CheckpointImageRepository.read",
+			"CheckpointImageError"
 		]
 	},
 	"contract": {
