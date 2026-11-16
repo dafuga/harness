@@ -390,7 +390,7 @@
 				"inputs": [
 					{
 						"name": "EntityBehavior.children.pane",
-						"type": "unknown",
+						"type": "ComparisonPane<EntityBehavior>",
 						"required": true
 					}
 				],
@@ -408,7 +408,7 @@
 				"inputs": [
 					{
 						"name": "EntityBehavior.label.row",
-						"type": "unknown",
+						"type": "BehaviorFact",
 						"required": true
 					}
 				],
@@ -426,7 +426,7 @@
 				"inputs": [
 					{
 						"name": "EntityBehavior.children.row",
-						"type": "unknown",
+						"type": "BehaviorFact",
 						"required": true
 					}
 				],
