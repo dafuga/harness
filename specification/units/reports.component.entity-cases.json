@@ -29,7 +29,13 @@
 			"packages/reports/src/components/explorer-ui/entity-cases/EntityCases.types.ts",
 			"packages/reports/src/components/explorer-ui/entity-cases/entityCases.css"
 		],
-		"symbols": ["EntityCases", "EntityCases.header", "EntityCases.children", "Row"]
+		"symbols": [
+			"EntityCases",
+			"EntityCases.header",
+			"EntityCases.children",
+			"EntityCasesDocument",
+			"Row"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -37,7 +43,7 @@
 		"inputs": [
 			{
 				"name": "EntityCases.document",
-				"type": "unknown",
+				"type": "EntityCasesDocument",
 				"required": false,
 				"default": "undefined (omitted)",
 				"description": "Optional recorded document passed with unit to artifactCases when examples is undefined, to produce observed rows or a gap. In the non-gap recorded view, it appears in the expandable full-values disclosure.",
@@ -187,6 +193,11 @@
 		},
 		{
 			"unit": "reports.function.artifact-cases",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
 			"via": "import",
 			"origin": "derived"
 		}

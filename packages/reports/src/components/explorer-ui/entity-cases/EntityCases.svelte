@@ -3,7 +3,7 @@
 <!-- @harness-uid u_bmfjvxz4dh -->
 <script lang="ts">
 	import DataTable from '../../shared-primitives/DataTable.svelte';
-	import type { Row } from './EntityCases.types';
+	import type { EntityCasesDocument, Row } from './EntityCases.types';
 
 	import type { UsageExample } from '../../../../../../src/utils/unit-documentation/unitDocumentation';
 	import { artifactCases } from './artifactCases';
@@ -14,7 +14,7 @@
 		unit,
 		callable = true
 	}: {
-		document?: unknown;
+		document?: EntityCasesDocument;
 		examples?: UsageExample[];
 		unit?: string;
 		callable?: boolean;
