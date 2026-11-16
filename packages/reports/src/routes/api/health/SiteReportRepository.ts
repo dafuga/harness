@@ -1,5 +1,6 @@
 // @harness-uid u_rliyq74tnr
 import type { Report } from '../../../models/reports-media/Report.types';
+import { SiteReportNotFoundError } from './SiteReportRepository.types';
 import { ownedBySite } from '../../../utils/reports-media/reportSite';
 import { ReportRepository } from '../../../repositories/reports-media/report-repository/ReportRepository';
 
@@ -12,7 +13,8 @@ import { ReportRepository } from '../../../repositories/reports-media/report-rep
 export class SiteReportRepository extends ReportRepository {
 	async get(id: string): Promise<Report> {
 		const run = await super.get(id);
-		if (!ownedBySite(run.project)) throw new Error('ENOENT: no such report on this site');
+		if (!ownedBySite(run.project))
+			throw new SiteReportNotFoundError('ENOENT: no such report on this site');
 		return run;
 	}
 }
