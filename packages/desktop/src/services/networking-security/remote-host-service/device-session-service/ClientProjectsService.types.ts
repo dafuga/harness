@@ -10,6 +10,10 @@ import type { ProjectionCacheService } from '../../../../lib/development-tooling
 import type { ProjectSessionService } from '../../../projects-sessions/project-session-service/ProjectSessionService';
 import type { DesktopRunService } from '../../../agents-providers/desktop-run-service/DesktopRunService';
 
+export class ClientProjectsSessionEndedError extends Error {
+	override name = 'ClientProjectsSessionEndedError';
+}
+
 export interface ClientProjectsOptions {
 	registry: ProjectRegistryService;
 	outbox: CommentOutboxService;
