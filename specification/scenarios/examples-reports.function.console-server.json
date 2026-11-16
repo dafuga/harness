@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.console-server",
+	"title": "reports.function.console-server examples",
+	"kind": "headless",
+	"units": ["reports.function.console-server"],
+	"builds": [],
+	"states": [
+		{
+			"id": "resolves-the-configured-console-history-directory",
+			"title": "Resolves the configured console history directory",
+			"coverage": "required"
+		},
+		{
+			"id": "reads-console-history-json-and-media-from-its-directory",
+			"title": "Reads console history JSON and media from its directory",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.console-server.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"resolves-the-configured-console-history-directory",
+				"reads-console-history-json-and-media-from-its-directory"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"resolves-the-configured-console-history-directory",
+				"reads-console-history-json-and-media-from-its-directory"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"resolves-the-configured-console-history-directory",
+				"reads-console-history-json-and-media-from-its-directory"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
