@@ -1,5 +1,6 @@
 // @harness-uid u_gegtad6hae
 import type { SnapshotPort, HeldDiscovery } from './ProjectDiscoveryService.types';
+import { HostedAuthorityChangedError } from './ProjectDiscoveryService.types';
 import { createHash } from 'node:crypto';
 import type { CacheIdentity } from '../../../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import type { DesktopProject } from '../../../../models/projects-sessions/ProjectContext.types';
@@ -46,11 +47,11 @@ export class ProjectDiscoveryService {
 			(value) => this.validator.projects(value)
 		);
 		if (!before || !(await this.same(before)))
-			throw new Error('Hosted authority changed during project discovery.');
+			throw new HostedAuthorityChangedError('Hosted authority changed during project discovery.');
 		if (this.options.cache && !listed.offline)
 			await this.settle(before.principalId, listed.value, held);
 		if (!(await this.same(before)))
-			throw new Error('Hosted authority changed during project discovery.');
+			throw new HostedAuthorityChangedError('Hosted authority changed during project discovery.');
 		return listed.value;
 	}
 	/** Purges what left, reads what came, keeps a changed list, then says what was taken away. */
