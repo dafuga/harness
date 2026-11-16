@@ -1,4 +1,6 @@
 // @harness-uid u_4kuxhelnsj
+import { UnsupportedHostedMediaDeclarationError } from './hostedAttestation.types';
+
 const kinds = new Map([
 	['image/png', 'screenshot'],
 	['image/jpeg', 'screenshot'],
@@ -16,6 +18,6 @@ export function hostedAttestation(stated: string) {
 	const type = matched?.[1].toLowerCase();
 	const kind = type && kinds.get(type);
 	if (!kind || !type || (kind !== 'output' && stated.includes(';')))
-		throw new Error(unshownHostedArtifact);
+		throw new UnsupportedHostedMediaDeclarationError(unshownHostedArtifact);
 	return { kind, mediaType: type };
 }
