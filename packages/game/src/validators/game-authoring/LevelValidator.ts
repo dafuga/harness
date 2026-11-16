@@ -3,7 +3,7 @@ import type { RecordValue } from './gameDocument.types';
 
 /** Validates data-only geometry; model output never grants approval or executes code. */
 export class LevelValidator {
-	static layout(input: {} | null): input is LevelLayout {
+	static layout(input: unknown): input is LevelLayout {
 		if (!record(input) || !validFloor(input) || !record(input.spawn)) return false;
 		if (
 			!point(input.spawn, Number(input.width), Number(input.depth)) ||
@@ -20,7 +20,7 @@ export class LevelValidator {
 		const spawn = input.spawn;
 		return !input.objects.some((o) => o.kind === 'wall' && overlaps(spawn.x, spawn.z, o));
 	}
-	static planning(input: {} | null): input is LevelPlanning {
+	static planning(input: unknown): input is LevelPlanning {
 		if (!record(input) || !text(input.concept) || !text(input.description)) return false;
 		if (input.proposal !== undefined && !validProposal(input.proposal)) return false;
 		return [input.approved, input.built].every((id) => id === undefined || hash(id));
