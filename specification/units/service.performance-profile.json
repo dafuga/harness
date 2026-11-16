@@ -144,7 +144,7 @@
 			},
 			{
 				"name": "PerformanceProfileService.measure.operation",
-				"type": "() => unknown",
+				"type": "() => T",
 				"required": true,
 				"description": "Representative callback that must be safe to repeat: measure awaits it once per warmup and once per iteration of every round, so it runs warmups + rounds * iterations times, its return values are discarded, and any error or rejection propagates out of measure."
 			},
@@ -178,7 +178,7 @@
 			},
 			{
 				"name": "PerformanceProfileService.capture.operation",
-				"type": "() => unknown",
+				"type": "() => T",
 				"required": true,
 				"description": "Representative callback that must be safe to repeat: capture runs it through measure, so it is awaited once per warmup and once per iteration of every round (warmups + rounds * iterations times), its return values are discarded, and any error or rejection propagates out of capture."
 			}
@@ -670,7 +670,7 @@
 					},
 					{
 						"name": "PerformanceProfileService.measure.operation",
-						"type": "() => unknown",
+						"type": "() => T",
 						"required": true,
 						"description": "Representative callback that must be safe to repeat: measure awaits it once per warmup and once per iteration of every round, so it runs warmups + rounds * iterations times, its return values are discarded, and any error or rejection propagates out of measure."
 					}
@@ -774,7 +774,7 @@
 					},
 					{
 						"name": "PerformanceProfileService.capture.operation",
-						"type": "() => unknown",
+						"type": "() => T",
 						"required": true,
 						"description": "Representative callback that must be safe to repeat: capture runs it through measure, so it is awaited once per warmup and once per iteration of every round (warmups + rounds * iterations times), its return values are discarded, and any error or rejection propagates out of capture."
 					}

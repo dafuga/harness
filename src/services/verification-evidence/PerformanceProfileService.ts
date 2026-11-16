@@ -79,7 +79,7 @@ export class PerformanceProfileService {
 		return measurements;
 	}
 
-	async measure(input: ProfileInput, operation: () => unknown): Promise<Measured[]> {
+	async measure<T>(input: ProfileInput, operation: () => T): Promise<Measured[]> {
 		const { unit, workload, callable, rounds, iterations, warmups } = profileInput.parse(input);
 		for (let index = 0; index < warmups; index++) await operation();
 		const elapsed: number[] = [];
@@ -115,7 +115,7 @@ export class PerformanceProfileService {
 	}
 
 	/** Sampling and capture use the same Harness evidence protocol as verification. */
-	async capture(input: ProfileInput, operation: () => unknown): Promise<Measured[]> {
+	async capture<T>(input: ProfileInput, operation: () => T): Promise<Measured[]> {
 		const measurements = await this.measure(input, operation);
 		const key = JSON.stringify([input.unit, input.callable ?? '', input.workload]);
 		const name = uniqueCaptureName('profile', key);
