@@ -8,8 +8,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/verification-evidence/verifyDeploymentSnapshot.ts"],
-		"symbols": ["captureDeploymentTarget", "verifyDeploymentSnapshot"]
+		"source": [
+			"packages/desktop/src/utils/verification-evidence/verifyDeploymentSnapshot.ts",
+			"packages/desktop/src/utils/verification-evidence/verifyDeploymentSnapshot.types.ts"
+		],
+		"symbols": [
+			"captureDeploymentTarget",
+			"verifyDeploymentSnapshot",
+			"DeploymentSnapshotVerificationError"
+		]
 	},
 	"contract": {
 		"origin": "declared",
