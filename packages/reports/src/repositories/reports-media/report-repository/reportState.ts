@@ -1,12 +1,13 @@
 // @harness-uid u_62ienadhbw
 import type { BeginInput, Report } from '../../../models/reports-media/Report.types';
+import { InvalidReportStateInputError } from './reportState.types';
 import { basename, resolve } from 'node:path';
 import { createHash, randomUUID } from 'node:crypto';
 import { cleanData } from '../../../utils/development-tooling/sanitize';
 
 export function reportState(input: BeginInput): Report {
 	if (!input.project || !input.title || !['feature', 'suite'].includes(input.mode))
-		throw new Error('Project, title and valid mode are required');
+		throw new InvalidReportStateInputError('Project, title and valid mode are required');
 	const path = resolve(input.project);
 	const now = new Date().toISOString();
 	return cleanData({

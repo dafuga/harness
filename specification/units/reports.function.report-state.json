@@ -10,9 +10,16 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/repositories/reports-media/report-repository/reportState.ts",
+			"packages/reports/src/repositories/reports-media/report-repository/reportState.types.ts",
 			"packages/reports/src/utils/reports-media/reportState.ts"
 		],
-		"symbols": ["reportState", "resultStatus", "interrupted", "reportState"]
+		"symbols": [
+			"reportState",
+			"InvalidReportStateInputError",
+			"resultStatus",
+			"interrupted",
+			"reportState"
+		]
 	},
 	"contract": {
 		"origin": "declared",
