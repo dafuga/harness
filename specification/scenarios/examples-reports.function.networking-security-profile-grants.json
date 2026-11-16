@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.networking-security-profile-grants",
+	"title": "reports.function.networking-security-profile-grants examples",
+	"kind": "headless",
+	"units": ["reports.function.networking-security-profile-grants"],
+	"builds": [],
+	"states": [
+		{
+			"id": "keeps-only-the-grants-of-the-requested-kind",
+			"title": "Keeps only the grants of the requested kind",
+			"coverage": "required"
+		},
+		{
+			"id": "returns-an-empty-array-when-no-grant-has-the-requested-kind",
+			"title": "Returns an empty array when no grant has the requested kind",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-a-typeerror-when-the-profile-declares-no-grants-list",
+			"title": "Throws a TypeError when the profile declares no grants list",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.networking-security-profile-grants.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"keeps-only-the-grants-of-the-requested-kind",
+				"returns-an-empty-array-when-no-grant-has-the-requested-kind",
+				"throws-a-typeerror-when-the-profile-declares-no-grants-list"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"keeps-only-the-grants-of-the-requested-kind",
+				"returns-an-empty-array-when-no-grant-has-the-requested-kind",
+				"throws-a-typeerror-when-the-profile-declares-no-grants-list"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"keeps-only-the-grants-of-the-requested-kind",
+				"returns-an-empty-array-when-no-grant-has-the-requested-kind",
+				"throws-a-typeerror-when-the-profile-declares-no-grants-list"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
