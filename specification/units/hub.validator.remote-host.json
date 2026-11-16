@@ -45,7 +45,7 @@
 			},
 			{
 				"name": "RemoteHostValidator.hostId.value",
-				"type": "string",
+				"type": "unknown",
 				"required": true,
 				"description": "The untyped value offered as a host identifier, such as the hostId field of a request body. It is accepted only when it is a string of exactly 40 lowercase hexadecimal characters, and hostId() checks that format alone without comparing the value to any key.",
 				"examples": [
@@ -55,7 +55,7 @@
 			},
 			{
 				"name": "RemoteHostValidator.deviceId.value",
-				"type": "string",
+				"type": "unknown",
 				"required": true,
 				"description": "The untyped value offered as a device identifier, such as the deviceId field of a request. It is accepted only when it is a string of exactly 40 lowercase hexadecimal characters, and deviceId() checks that format alone without comparing the value to any key.",
 				"examples": [
@@ -171,7 +171,7 @@
 				"inputs": [
 					{
 						"name": "RemoteHostValidator.hostId.value",
-						"type": "string",
+						"type": "unknown",
 						"required": true,
 						"description": "The untyped value offered as a host identifier, such as the hostId field of a request body. It is accepted only when it is a string of exactly 40 lowercase hexadecimal characters, and hostId() checks that format alone without comparing the value to any key.",
 						"examples": [
@@ -205,7 +205,7 @@
 				"inputs": [
 					{
 						"name": "RemoteHostValidator.deviceId.value",
-						"type": "string",
+						"type": "unknown",
 						"required": true,
 						"description": "The untyped value offered as a device identifier, such as the deviceId field of a request. It is accepted only when it is a string of exactly 40 lowercase hexadecimal characters, and deviceId() checks that format alone without comparing the value to any key.",
 						"examples": [

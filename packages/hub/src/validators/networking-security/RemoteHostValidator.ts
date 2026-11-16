@@ -35,7 +35,7 @@ async function identityOf(hostKey: string): Promise<string | null> {
 export class RemoteHostValidator {
 	/** The id has to be the one its key certifies: a host cannot be registered under another's. */
 	async registration(body: Body): Promise<RemoteHostRegisterInput> {
-		const hostId = matching(body.hostId, remotePatterns.hostId);
+		const hostId = this.hostId(body.hostId);
 		const hostKey = matching(body.hostKey, remotePatterns.key);
 		const credentialHash = matching(body.credentialHash, remotePatterns.hash);
 		const name = nameOf(body.name);
@@ -43,11 +43,11 @@ export class RemoteHostValidator {
 		return { hostId, hostKey, credentialHash, name };
 	}
 
-	hostId(value: string): string {
+	hostId(value: unknown): string {
 		return matching(value, remotePatterns.hostId);
 	}
 
-	deviceId(value: string): string {
+	deviceId(value: unknown): string {
 		return matching(value, remotePatterns.deviceId);
 	}
 }
