@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.script.ios-acceptance-pairing",
+	"title": "desktop.script.ios-acceptance-pairing examples",
+	"kind": "headless",
+	"units": ["desktop.script.ios-acceptance-pairing"],
+	"builds": [],
+	"states": [
+		{
+			"id": "pairs-with-the-fixture-computer-after-approval",
+			"title": "pairs with the fixture computer after approval",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.script.ios-acceptance-pairing.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["pairs-with-the-fixture-computer-after-approval"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["pairs-with-the-fixture-computer-after-approval"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["pairs-with-the-fixture-computer-after-approval"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
