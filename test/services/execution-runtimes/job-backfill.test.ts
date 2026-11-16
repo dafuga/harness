@@ -35,6 +35,7 @@ test('import reads historical phase results once and skips invalid or absent tim
 			JSON.stringify({ task: 'task', model: 'luna', status: 'pass', seconds: -1 })
 		);
 		expect(service.import(root)).toMatchObject({ skipped: 1 });
+		verifyUnknownModel(root, repo, service);
 		repo.close();
 	});
 });
@@ -81,4 +82,32 @@ function verifyAttempts(
 	]);
 	expect(service.import(root)).toMatchObject({ imported: 0, duplicate: 3 });
 	expect(repo.all()).toHaveLength(3);
+}
+
+function verifyUnknownModel(
+	root: string,
+	repo: JobHistoryRepository,
+	service: JobBackfillService
+): void {
+	const dir = join(root, 'results-components', 'shape');
+	mkdirSync(dir, { recursive: true });
+	const path = join(dir, 'result.json');
+	writeFileSync(path, JSON.stringify({ unit: 'shape', seconds: 1, status: 'pass' }));
+	const endedAt = Math.round(statSync(path).mtimeMs);
+	repo.import({
+		id: 'shape',
+		unit: 'shape',
+		source: `backfill:${path}`,
+		attempt: 1,
+		type: 'component',
+		model: 'shape',
+		startedAt: endedAt - 1000,
+		endedAt,
+		durationMs: 1000,
+		outcome: 'pass',
+		timingSource: 'file-mtime-minus-duration'
+	});
+	expect(service.import(root)).toMatchObject({ imported: 1, duplicate: 2, skipped: 1 });
+	expect(repo.all().find((row) => row.id === 'shape')?.model).toBe('unknown');
+	expect(service.import(root)).toMatchObject({ imported: 0, duplicate: 3, skipped: 1 });
 }
