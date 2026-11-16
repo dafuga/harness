@@ -141,12 +141,7 @@ function authoredTest(text: string) {
 			if (/^(?:test|it)(?:\.describe)?\.(?:skip|todo)\b/.test(called)) return;
 			if (/^(?:test|it)(?:\.(?:each|only))?$/.test(called)) found.test = true;
 			if (/^expect(?:\.poll)?$/.test(called)) assertion = true;
-			if (
-				called === 'mark' &&
-				ts.isStringLiteralLike(node.arguments[0]) &&
-				node.arguments[0].text === 'state'
-			)
-				mark = true;
+			if (stateMark(node, called)) mark = true;
 		}
 		if (ts.isStringLiteralLike(node)) found.states.add(node.text);
 		if (
@@ -159,4 +154,13 @@ function authoredTest(text: string) {
 	visit(source);
 	found.motion = assertion && mark;
 	return found;
+}
+
+function stateMark(node: ts.CallExpression, called: string): boolean {
+	return (
+		called === 'mark' &&
+		node.arguments.length >= 2 &&
+		ts.isStringLiteralLike(node.arguments[0]) &&
+		node.arguments[0].text === 'state'
+	);
 }
