@@ -11,3 +11,8 @@ export interface AnswerInput {
 	/** The stored revision of the shown commit, and of its first parent where one is compared. */
 	revisions: ExplorerRevisions;
 }
+
+/** An answer too large for one message of any transport, refused rather than cut short. */
+export class AnswerTooLargeError extends Error {
+	override name = 'AnswerTooLargeError';
+}
