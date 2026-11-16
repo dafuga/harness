@@ -1,5 +1,5 @@
 // @harness-uid u_vhwqsfglmz
-import { redirect, type ServerLoadEvent } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 import {
 	consoleCanonical,
 	explorerExact
@@ -11,7 +11,7 @@ import { consoleData } from '../../../utils/explorer-ui/console-server/consoleSe
  * explorer address they stand for. An exact explorer address is served as it is, without
  * reading the history; what it shows is decided from the index in the browser.
  */
-export async function load({ url }: ServerLoadEvent) {
+export async function load({ url }: { url: URL }) {
 	if (explorerExact(url.pathname.slice('/harness'.length), url.search)) return {};
 	const index = await consoleData.json('index.json');
 	const target = index ? consoleCanonical(JSON.parse(index), url, '/harness') : undefined;
