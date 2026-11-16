@@ -9,7 +9,8 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/repositories/reports-media/report-repository/ReportRepository.ts"
+			"packages/reports/src/repositories/reports-media/report-repository/ReportRepository.ts",
+			"packages/reports/src/repositories/reports-media/report-repository/ReportRepository.types.ts"
 		],
 		"symbols": [
 			"ReportRepository",
@@ -21,7 +22,11 @@
 			"ReportRepository.record",
 			"ReportRepository.mutateActive",
 			"ReportRepository.seal",
-			"ReportRepository.finish"
+			"ReportRepository.finish",
+			"InvalidReportDirectoryError",
+			"ReportNotActiveError",
+			"ReportAlreadyFinalizedError",
+			"ReportNotFinalizingError"
 		]
 	},
 	"contract": {
