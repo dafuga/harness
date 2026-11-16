@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/cli/program/benchmark-service/benchmarkEvents.types.ts"],
-		"symbols": ["RunnerEvent"]
+		"symbols": ["RunnerEvent", "IncompleteBenchmarkSubmissionError"]
 	},
 	"contract": {
 		"origin": "declared",
