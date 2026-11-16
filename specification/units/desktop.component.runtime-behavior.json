@@ -144,7 +144,7 @@
 				"inputs": [
 					{
 						"name": "RuntimeBehavior.children.pane",
-						"type": "unknown",
+						"type": "ComparisonPane<EntityBehavior>",
 						"required": true
 					}
 				],
@@ -162,7 +162,7 @@
 				"inputs": [
 					{
 						"name": "RuntimeBehavior.label.row",
-						"type": "unknown",
+						"type": "BehaviorFact",
 						"required": true
 					}
 				],
@@ -180,7 +180,7 @@
 				"inputs": [
 					{
 						"name": "RuntimeBehavior.children.row",
-						"type": "unknown",
+						"type": "BehaviorFact",
 						"required": true
 					}
 				],
