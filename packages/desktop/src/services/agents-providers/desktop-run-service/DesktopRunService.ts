@@ -1,5 +1,5 @@
 // @harness-uid u_w56luc7zgc
-import type { Prepared } from './DesktopRunService.types';
+import { DesktopRunStartConflictError, type Prepared } from './DesktopRunService.types';
 import type {
 	ProjectRunRequest,
 	ProjectTaskRequest,
@@ -48,7 +48,7 @@ export class DesktopRunService {
 		designCount(request);
 		const root = this.session.root;
 		if (this.session.busy || !this.claim(root))
-			throw new Error('A run is already active in this project.');
+			throw new DesktopRunStartConflictError('A run is already active in this project.');
 		this.session.busy = true;
 		try {
 			const controller = new AbortController();
@@ -57,7 +57,9 @@ export class DesktopRunService {
 			this.lease?.signal.addEventListener('abort', () => controller.abort(), { once: true });
 			if (this.lease?.signal.aborted) controller.abort();
 			if (root && !this.lease)
-				throw new Error('An agent or planning write is active in another Harness app.');
+				throw new DesktopRunStartConflictError(
+					'An agent or planning write is active in another Harness app.'
+				);
 			const context = await this.prepared(request, controller);
 			this.active = { id: context.id, controller };
 			setTimeout(() => {
