@@ -25,7 +25,7 @@
 		"inputs": [
 			{
 				"name": "ModuleTaskCommand.constructor.service",
-				"type": "unknown",
+				"type": "ModuleTaskService",
 				"required": false,
 				"description": "The ModuleTaskService instance backing the registered feature, add, schema, list, show, prompt, review, retry and sync actions. When omitted, the constructor evaluates `new ModuleTaskService()`."
 			},
@@ -79,7 +79,7 @@
 				"inputs": [
 					{
 						"name": "ModuleTaskCommand.constructor.service",
-						"type": "unknown",
+						"type": "ModuleTaskService",
 						"required": false,
 						"description": "The ModuleTaskService instance backing the registered feature, add, schema, list, show, prompt, review, retry and sync actions. When omitted, the constructor evaluates `new ModuleTaskService()`."
 					}

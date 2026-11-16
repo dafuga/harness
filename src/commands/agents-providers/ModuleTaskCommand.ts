@@ -8,7 +8,7 @@ import { ModuleTaskWorkerService } from '../../services/agents-providers/ModuleT
 import { TaskWorkerInterruptedError, type WorkerFlags } from './ModuleTaskCommand.types';
 /** Task admission, discovery and foreground worker wiring; task check keeps its completion gate. */
 export class ModuleTaskCommand {
-	constructor(private readonly service = new ModuleTaskService()) {}
+	constructor(private readonly service: ModuleTaskService = new ModuleTaskService()) {}
 	register(task: Command): void {
 		this.authoring(task);
 		this.reads(task);
