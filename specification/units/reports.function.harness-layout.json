@@ -126,7 +126,7 @@
 			},
 			{
 				"name": "harnessLayout.perRow",
-				"type": "unknown",
+				"type": "number",
 				"required": false,
 				"description": "Units per row, which wraps every layer into rows of that many units; when the argument is undefined it defaults to mapColumns(units.length), which is between 6 and 24. Nothing validates it, and 0 with at least one unit gives NaN or infinite positions and an infinite height.",
 				"examples": [6, 12, 24]
@@ -374,7 +374,7 @@
 					},
 					{
 						"name": "harnessLayout.perRow",
-						"type": "unknown",
+						"type": "number",
 						"required": false,
 						"description": "Units per row, which wraps every layer into rows of that many units; when the argument is undefined it defaults to mapColumns(units.length), which is between 6 and 24. Nothing validates it, and 0 with at least one unit gives NaN or infinite positions and an infinite height.",
 						"examples": [6, 12, 24]
