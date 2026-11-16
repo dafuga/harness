@@ -41,7 +41,8 @@
 				"name": "QueueEtaService.estimate.now",
 				"type": "number",
 				"required": false,
-				"description": "Epoch milliseconds used to compute elapsed running time and finish clocks. Defaults to Date.now(); display uses Europe/Lisbon."
+				"default": "Date.now()",
+				"description": "Defaults to Date.now() in epoch milliseconds; finish clocks use Europe/Lisbon."
 			}
 		],
 		"outputs": [
@@ -73,7 +74,8 @@
 						"name": "QueueEtaService.estimate.now",
 						"type": "number",
 						"required": false,
-						"description": "Epoch milliseconds used to compute elapsed running time and finish clocks. Defaults to Date.now(); display uses Europe/Lisbon."
+						"default": "Date.now()",
+						"description": "Defaults to Date.now() in epoch milliseconds; finish clocks use Europe/Lisbon."
 					}
 				],
 				"outputs": [

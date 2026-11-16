@@ -30,13 +30,15 @@
 				"name": "driverProcesses.root",
 				"type": "string",
 				"required": false,
-				"description": "Driver collection root used to resolve slot task and result paths and scope live process discovery. Only code_task slot processes belonging to this root contribute model capacity."
+				"default": "undefined",
+				"description": "Defaults to undefined, which leaves process discovery unscoped; the adapter always supplies its driver root."
 			},
 			{
 				"name": "livePid.pid",
 				"type": "number",
 				"required": false,
-				"description": "Positive process ID checked with signal zero. Omitted, malformed, inaccessible or dead processes return false."
+				"default": "undefined",
+				"description": "Defaults to undefined and therefore returns false without sending a signal."
 			},
 			{
 				"name": "driverJobType.name",
@@ -109,7 +111,8 @@
 						"name": "driverProcesses.root",
 						"type": "string",
 						"required": false,
-						"description": "Driver collection root used to resolve slot task and result paths and scope live process discovery. Only code_task slot processes belonging to this root contribute model capacity."
+						"default": "undefined",
+						"description": "Defaults to undefined, which leaves process discovery unscoped; the adapter always supplies its driver root."
 					}
 				],
 				"outputs": [
@@ -129,7 +132,8 @@
 						"name": "livePid.pid",
 						"type": "number",
 						"required": false,
-						"description": "Positive process ID checked with signal zero. Omitted, malformed, inaccessible or dead processes return false."
+						"default": "undefined",
+						"description": "Defaults to undefined and therefore returns false without sending a signal."
 					}
 				],
 				"outputs": [

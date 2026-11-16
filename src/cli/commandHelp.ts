@@ -2,13 +2,6 @@
 /** Cheap root-help metadata, checked against every actual command registration. */
 export const commandHelp = [
 	{
-		name: 'jobs',
-		signature: 'jobs',
-		description: 'Record job durations and estimate queued work.',
-		term: 'jobs',
-		aliases: []
-	},
-	{
 		name: 'codex',
 		signature: 'codex',
 		description: 'Local experimental Codex compatibility gateway.',
@@ -27,6 +20,13 @@ export const commandHelp = [
 		signature: 'resources',
 		description: 'Shared CPU and memory admission for managed work.',
 		term: 'resources',
+		aliases: []
+	},
+	{
+		name: 'jobs',
+		signature: 'jobs',
+		description: 'Record job durations and estimate queued work.',
+		term: 'jobs',
 		aliases: []
 	},
 	{

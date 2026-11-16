@@ -33,7 +33,8 @@
 				"name": "historicalOutcome.status",
 				"type": "string",
 				"required": false,
-				"description": "Historical outcome; pass and pass-prefixed values normalize to pass, cancelled remains cancelled and other or missing statuses become fail."
+				"default": "undefined",
+				"description": "Defaults to undefined, which normalizes to fail because no passing or cancelled status was recorded."
 			}
 		],
 		"outputs": [
@@ -84,7 +85,8 @@
 						"name": "historicalOutcome.status",
 						"type": "string",
 						"required": false,
-						"description": "Historical outcome; pass and pass-prefixed values normalize to pass, cancelled remains cancelled and other or missing statuses become fail."
+						"default": "undefined",
+						"description": "Defaults to undefined, which normalizes to fail because no passing or cancelled status was recorded."
 					}
 				],
 				"outputs": [

@@ -33,7 +33,8 @@
 				"name": "JobHistoryRepository.constructor.home",
 				"type": "string",
 				"required": false,
-				"description": "Directory containing history.sqlite. Defaults to HARNESS_JOBS_HOME or ~/.codex/harness/jobs and is created with private permissions."
+				"default": "process.env.HARNESS_JOBS_HOME ?? join(homedir(), '.codex', 'harness', 'jobs')",
+				"description": "Defaults to HARNESS_JOBS_HOME, then ~/.codex/harness/jobs; the directory is created with private permissions."
 			},
 			{
 				"name": "JobHistoryRepository.start.input",
@@ -202,7 +203,8 @@
 						"name": "JobHistoryRepository.constructor.home",
 						"type": "string",
 						"required": false,
-						"description": "Directory containing history.sqlite. Defaults to HARNESS_JOBS_HOME or ~/.codex/harness/jobs and is created with private permissions."
+						"default": "process.env.HARNESS_JOBS_HOME ?? join(homedir(), '.codex', 'harness', 'jobs')",
+						"description": "Defaults to HARNESS_JOBS_HOME, then ~/.codex/harness/jobs; the directory is created with private permissions."
 					}
 				],
 				"outputs": [

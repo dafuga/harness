@@ -30,7 +30,8 @@
 				"name": "driverWorkerQueue.processes",
 				"type": "DriverProcess[]",
 				"required": false,
-				"description": "Optional injected live slot inventory for deterministic reads. Omission inspects code_task processes belonging to this driver root."
+				"default": "undefined",
+				"description": "Defaults to undefined, selecting live code_task processes scoped to the supplied driver root."
 			}
 		],
 		"outputs": [
@@ -62,7 +63,8 @@
 						"name": "driverWorkerQueue.processes",
 						"type": "DriverProcess[]",
 						"required": false,
-						"description": "Optional injected live slot inventory for deterministic reads. Omission inspects code_task processes belonging to this driver root."
+						"default": "undefined",
+						"description": "Defaults to undefined, selecting live code_task processes scoped to the supplied driver root."
 					}
 				],
 				"outputs": [

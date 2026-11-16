@@ -39,7 +39,8 @@
 				"name": "DriverQueueAdapter.render.state",
 				"type": "DriverActive",
 				"required": false,
-				"description": "Active driver snapshot to render. Adapter render defaults to a fresh read; dead PIDs are filtered by active(), not by the formatter."
+				"default": "this.active()",
+				"description": "Defaults to this.active(), a fresh read-only driver snapshot with dead PIDs removed."
 			}
 		],
 		"outputs": [
@@ -95,7 +96,8 @@
 						"name": "DriverQueueAdapter.render.state",
 						"type": "DriverActive",
 						"required": false,
-						"description": "Active driver snapshot to render. Adapter render defaults to a fresh read; dead PIDs are filtered by active(), not by the formatter."
+						"default": "this.active()",
+						"description": "Defaults to this.active(), a fresh read-only driver snapshot with dead PIDs removed."
 					}
 				],
 				"outputs": [
