@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.source-blocks",
+	"title": "function.source-blocks examples",
+	"kind": "headless",
+	"units": ["function.source-blocks"],
+	"builds": [],
+	"states": [
+		{
+			"id": "splits-typescript-and-svelte-source-into-named-and-remainder",
+			"title": "Splits TypeScript and Svelte source into named and remainder",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.source-blocks.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["splits-typescript-and-svelte-source-into-named-and-remainder"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["splits-typescript-and-svelte-source-into-named-and-remainder"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["splits-typescript-and-svelte-source-into-named-and-remainder"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
