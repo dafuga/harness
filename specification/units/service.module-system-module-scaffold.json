@@ -159,6 +159,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.module-system-module-definition",
 			"via": "import",
 			"origin": "derived"
