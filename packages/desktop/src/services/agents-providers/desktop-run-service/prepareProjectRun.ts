@@ -2,6 +2,7 @@
 import type { ProjectRunContext } from '../../../utils/agents-providers/prepareProjectRun';
 import { randomUUID } from 'node:crypto';
 import { RunCancelled } from '../../../models/agents-providers/AgentRunner.types';
+import { InvalidProjectRunRequestError } from './prepareProjectRun.types';
 import type { ProjectRunRequest } from '../../../models/development-tooling/DesktopBridge.types';
 import { creationProject } from '../../../utils/ipc-payload/ipcPayload';
 import type { Preparation } from '../../../utils/agents-providers/prepareRun';
@@ -17,7 +18,7 @@ export async function prepareProjectRun(
 	controller: AbortController
 ): Promise<ProjectRunContext> {
 	if (request.intent !== 'create' || request.mode !== 'plan')
-		throw new Error('Something new is asked for as a Plan.');
+		throw new InvalidProjectRunRequestError('Something new is asked for as a Plan.');
 	// Whatever carried the request here, it names its project, and that is the one that is open.
 	preparation.session.assertProject(creationProject(request.projectId));
 	const project = await preparation.session.mutable();
