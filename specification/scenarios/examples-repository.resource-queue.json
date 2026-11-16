@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-repository.resource-queue",
+	"title": "repository.resource-queue examples",
+	"kind": "headless",
+	"units": ["repository.resource-queue"],
+	"builds": [],
+	"states": [
+		{
+			"id": "adds-jobs-and-lists-them-in-sequence-order",
+			"title": "Adds jobs and lists them in sequence order",
+			"coverage": "required"
+		},
+		{
+			"id": "patches-a-stored-job-and-ignores-an-unknown-id",
+			"title": "Patches a stored job and ignores an unknown id",
+			"coverage": "required"
+		},
+		{
+			"id": "removes-only-the-job-whose-id-matches",
+			"title": "Removes only the job whose id matches",
+			"coverage": "required"
+		},
+		{
+			"id": "notices-queued-work-on-stale-telemetry-then-grants-it",
+			"title": "Notices queued work on stale telemetry then grants it",
+			"coverage": "required"
+		},
+		{
+			"id": "keeps-the-newest-snapshot-across-older-and-future-samples",
+			"title": "Keeps the newest snapshot across older and future samples",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-stored-job-that-fails-the-job-schema",
+			"title": "Rejects a stored job that fails the job schema",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/repository.resource-queue.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"adds-jobs-and-lists-them-in-sequence-order",
+				"patches-a-stored-job-and-ignores-an-unknown-id",
+				"removes-only-the-job-whose-id-matches",
+				"notices-queued-work-on-stale-telemetry-then-grants-it",
+				"keeps-the-newest-snapshot-across-older-and-future-samples",
+				"rejects-a-stored-job-that-fails-the-job-schema"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"adds-jobs-and-lists-them-in-sequence-order",
+				"patches-a-stored-job-and-ignores-an-unknown-id",
+				"removes-only-the-job-whose-id-matches",
+				"notices-queued-work-on-stale-telemetry-then-grants-it",
+				"keeps-the-newest-snapshot-across-older-and-future-samples",
+				"rejects-a-stored-job-that-fails-the-job-schema"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"adds-jobs-and-lists-them-in-sequence-order",
+				"patches-a-stored-job-and-ignores-an-unknown-id",
+				"removes-only-the-job-whose-id-matches",
+				"notices-queued-work-on-stale-telemetry-then-grants-it",
+				"keeps-the-newest-snapshot-across-older-and-future-samples",
+				"rejects-a-stored-job-that-fails-the-job-schema"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
