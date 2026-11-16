@@ -2,6 +2,7 @@
 import { readFile, realpath, stat } from 'node:fs/promises';
 import { resolve, relative, extname } from 'node:path';
 import { createHash } from 'node:crypto';
+import { RendererAssetMissingError } from './rendererAssets.types';
 
 const types: Record<string, string> = {
 	'.html': 'text/html',
@@ -45,7 +46,7 @@ export async function rendererAssets(root: string, url: string, connect = ''): P
 	if (path === null) return new Response('Refused', { status: 403 });
 	let file = resolve(root, '.' + path);
 	try {
-		if (!(await stat(file)).isFile()) throw new Error('Missing');
+		if (!(await stat(file)).isFile()) throw new RendererAssetMissingError('Missing');
 	} catch {
 		file = resolve(root, 'index.html');
 	}

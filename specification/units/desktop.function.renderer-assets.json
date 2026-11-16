@@ -11,6 +11,7 @@
 		"source": [
 			"packages/desktop/src/lib/desktop-initialization/initialize-desktop/rendererAssets.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/rendererAssets.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/rendererAssets.types.ts",
 			"packages/desktop/src/lib/initialize-desktop/rendererAssets.ts",
 			"packages/desktop/src/utils/rendererAssets.ts"
 		],
@@ -19,6 +20,7 @@
 			"rendererAssets",
 			"rendererPolicy",
 			"rendererAssets",
+			"RendererAssetMissingError",
 			"rendererPolicy",
 			"rendererAssets",
 			"rendererPolicy",
