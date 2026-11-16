@@ -16,7 +16,7 @@
 		"inputs": [
 			{
 				"name": "canonicalJson.value",
-				"type": "unknown",
+				"type": "T",
 				"required": true,
 				"description": "Value passed to the serializer; arrays retain their order, and each object's own enumerable string keys are sorted recursively. Undefined-valued object properties are omitted, while BigInt values and cycles or deep recursion can fail during serialization.",
 				"examples": [
@@ -77,7 +77,7 @@
 				"inputs": [
 					{
 						"name": "canonicalJson.value",
-						"type": "unknown",
+						"type": "T",
 						"required": true,
 						"description": "Value passed to the serializer; arrays retain their order, and each object's own enumerable string keys are sorted recursively. Undefined-valued object properties are omitted, while BigInt values and cycles or deep recursion can fail during serialization.",
 						"examples": [
