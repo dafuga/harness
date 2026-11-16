@@ -16,7 +16,7 @@
 		"inputs": [
 			{
 				"name": "portableJson.value",
-				"type": "unknown",
+				"type": "Candidate",
 				"required": true,
 				"description": "The value to inspect: a finite number, a well-formed string, a boolean, null, an array, or an object whose prototype is Object.prototype or null. For objects, only own enumerable string-keyed fields are checked and undefined fields are skipped; undefined outside object fields, NaN or infinite numbers, strings or keys with lone surrogates, functions, symbols, bigints, non-array objects with another prototype and nesting beyond 64 levels make the result false.",
 				"examples": [
@@ -74,7 +74,7 @@
 				"inputs": [
 					{
 						"name": "portableJson.value",
-						"type": "unknown",
+						"type": "Candidate",
 						"required": true,
 						"description": "The value to inspect: a finite number, a well-formed string, a boolean, null, an array, or an object whose prototype is Object.prototype or null. For objects, only own enumerable string-keyed fields are checked and undefined fields are skipped; undefined outside object fields, NaN or infinite numbers, strings or keys with lone surrogates, functions, symbols, bigints, non-array objects with another prototype and nesting beyond 64 levels make the result false.",
 						"examples": [

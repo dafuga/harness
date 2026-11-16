@@ -17,7 +17,7 @@ const wellFormed: (text: string) => boolean = native
  * plain objects and arrays, and at most 64 levels of nesting. Anything else would be changed
  * or rejected somewhere between JavaScript, JSON text and a native JSON parser.
  */
-export function portableJson(value: unknown, level = 0): boolean {
+export function portableJson<Candidate>(value: Candidate, level = 0): boolean {
 	if (typeof value === 'number') return Number.isFinite(value);
 	if (typeof value === 'string') return wellFormed(value);
 	if (value === null || typeof value === 'boolean') return true;
