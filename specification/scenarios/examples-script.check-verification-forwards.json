@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-script.check-verification-forwards",
+	"title": "script.check-verification-forwards examples",
+	"kind": "headless",
+	"units": ["script.check-verification-forwards"],
+	"builds": [],
+	"states": [
+		{
+			"id": "checkverificationforwards-returned-no-issues-when-every-regi",
+			"title": "checkVerificationForwards returned no issues when every registered forward resolves to its canonical target",
+			"coverage": "required"
+		},
+		{
+			"id": "checkverificationforwards-returned-one-registry-issue-instea",
+			"title": "checkVerificationForwards returned one registry issue instead of throwing for a missing or unusable registry or root",
+			"coverage": "required"
+		},
+		{
+			"id": "checkverificationforwards-reported-each-discovered-forward-t",
+			"title": "checkVerificationForwards reported each discovered forward that the registry does not list",
+			"coverage": "required"
+		},
+		{
+			"id": "checkverificationforwards-reported-each-registered-forward-t",
+			"title": "checkVerificationForwards reported each registered forward that is missing, resolves elsewhere or has drifted",
+			"coverage": "required"
+		},
+		{
+			"id": "checkverificationforwards-threw-for-a-registered-source-or-t",
+			"title": "checkVerificationForwards threw for a registered source or target that exists but cannot be read",
+			"coverage": "required"
+		},
+		{
+			"id": "checkverificationforwards-threw-for-a-registry-entry-that-is",
+			"title": "checkVerificationForwards threw for a registry entry that is null or has a non-string path or target",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/script.check-verification-forwards.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"checkverificationforwards-returned-no-issues-when-every-regi",
+				"checkverificationforwards-returned-one-registry-issue-instea",
+				"checkverificationforwards-reported-each-discovered-forward-t",
+				"checkverificationforwards-reported-each-registered-forward-t",
+				"checkverificationforwards-threw-for-a-registered-source-or-t",
+				"checkverificationforwards-threw-for-a-registry-entry-that-is"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"checkverificationforwards-returned-no-issues-when-every-regi",
+				"checkverificationforwards-returned-one-registry-issue-instea",
+				"checkverificationforwards-reported-each-discovered-forward-t",
+				"checkverificationforwards-reported-each-registered-forward-t",
+				"checkverificationforwards-threw-for-a-registered-source-or-t",
+				"checkverificationforwards-threw-for-a-registry-entry-that-is"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"checkverificationforwards-returned-no-issues-when-every-regi",
+				"checkverificationforwards-returned-one-registry-issue-instea",
+				"checkverificationforwards-reported-each-discovered-forward-t",
+				"checkverificationforwards-reported-each-registered-forward-t",
+				"checkverificationforwards-threw-for-a-registered-source-or-t",
+				"checkverificationforwards-threw-for-a-registry-entry-that-is"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
