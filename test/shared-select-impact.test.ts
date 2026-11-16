@@ -84,7 +84,10 @@ test('no import written through a build alias of any package is left as a packag
 	const outside = [...loaded.index.files.values()].filter((file) =>
 		file.references.some((item) => names.has(item.external ?? ''))
 	);
-	expect(outside.map((file) => file.path)).toEqual([]);
+	expect(
+		outside.map((file) => file.path),
+		'workspace build aliases must resolve inside their owning package'
+	).toEqual([]);
 });
 test('the registry stores Select as a derived dependency of each of its consumers, and is not stale', () => {
 	expect(loaded.index.files.get(selectTest)?.classification).toBe('test');
