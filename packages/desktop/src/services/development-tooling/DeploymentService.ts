@@ -1,5 +1,6 @@
 // @harness-uid u_sbr2ymmwy7
 import type { ReviewedDeployment, DeploymentOptions } from './DeploymentService.types';
+import { DeploymentPreconditionError } from './DeploymentService.types';
 import { CloudflareDeployAdapter } from '../../adapters/development-tooling/CloudflareDeployAdapter';
 import { desktopDeployments } from './DeploymentActivityService';
 import type { DeploymentActivityService } from './DeploymentActivityService';
@@ -48,9 +49,9 @@ export class DeploymentService {
 		const reviewed = this.plans.get(input.planId);
 		this.plans.delete(input.planId);
 		if (!reviewed || Date.parse(reviewed.plan.expiresAt) <= Date.now())
-			throw new Error('Please review a fresh deployment plan.');
+			throw new DeploymentPreconditionError('Please review a fresh deployment plan.');
 		if (this.root(input) !== reviewed.root || this.session.projectId !== reviewed.projectId)
-			throw new Error('The selected project changed.');
+			throw new DeploymentPreconditionError('The selected project changed.');
 		await deploymentCurrent(reviewed.root, reviewed.plan, {
 			plugin: this.plugin,
 			fingerprint: reviewed.fingerprint
@@ -64,7 +65,7 @@ export class DeploymentService {
 	}
 	async automatic(input: DeploymentQuery) {
 		if (!['dev', 'stage', 'preprod'].includes(input.environment))
-			throw new Error('Production requires the Deploy UI.');
+			throw new DeploymentPreconditionError('Production requires the Deploy UI.');
 		return this.deploy({ ...input, planId: (await this.plan(input)).id });
 	}
 	enqueue(input: DeploymentQuery) {
@@ -79,7 +80,7 @@ export class DeploymentService {
 	}
 	private root(input: ProjectContext): string {
 		this.session.assertProject(input.projectId);
-		if (!this.session.root) throw new Error('Select a local project first.');
+		if (!this.session.root) throw new DeploymentPreconditionError('Select a local project first.');
 		return this.session.root;
 	}
 }
