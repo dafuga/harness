@@ -132,7 +132,7 @@ export function assertRecordedVideoSlots(page: HarnessUnit, tip: Revision) {
 		'all16 persisted branches survive revision projection at both viewports'
 	).toHaveLength(32);
 	expect(new Set(clips.map((item) => item.id)).size).toBe(32);
-	expect(new Set(clips.map((item) => item.video!.reference.record))).toEqual(new Set([newest.id]));
+	expect(new Set(clips.map((item) => item.video!.reference?.record))).toEqual(new Set([newest.id]));
 	for (let index = 0; index < 16; index++) {
 		expect(clips.filter((item) => item.video!.clipId === `search-${index}`)).toHaveLength(2);
 	}
