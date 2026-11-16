@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.files",
+	"title": "function.files examples",
+	"kind": "headless",
+	"units": ["function.files"],
+	"builds": [],
+	"states": [
+		{
+			"id": "writes-planned-files-with-create-skip-and-force-statuses",
+			"title": "Writes planned files with create skip and force statuses",
+			"coverage": "required"
+		},
+		{
+			"id": "creates-distinct-parent-directories-without-writing-files",
+			"title": "Creates distinct parent directories without writing files",
+			"coverage": "required"
+		},
+		{
+			"id": "renders-file-statuses-in-input-order",
+			"title": "Renders file statuses in input order",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.files.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"writes-planned-files-with-create-skip-and-force-statuses",
+				"creates-distinct-parent-directories-without-writing-files",
+				"renders-file-statuses-in-input-order"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"writes-planned-files-with-create-skip-and-force-statuses",
+				"creates-distinct-parent-directories-without-writing-files",
+				"renders-file-statuses-in-input-order"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"writes-planned-files-with-create-skip-and-force-statuses",
+				"creates-distinct-parent-directories-without-writing-files",
+				"renders-file-statuses-in-input-order"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
