@@ -1,5 +1,6 @@
 // @harness-uid u_fcsung7usu
 import type { Receipts } from './ReplayStorageService.types';
+import { ReplayStorageError } from './ReplayStorageService.types';
 import { createHash } from 'node:crypto';
 import { lstat, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -9,7 +10,8 @@ import { registeredAsset } from '../../utils/reports-media/reportAssets';
 import { atomicJson, readJson } from '../../utils/reports-media/reportFiles';
 import { reportRetention } from '../../utils/reports-media/reportRetention';
 async function receipts(directory: string): Promise<Receipts> {
-	if ((await lstat(directory)).isSymbolicLink()) throw new Error('Invalid replay directory');
+	if ((await lstat(directory)).isSymbolicLink())
+		throw new ReplayStorageError('Invalid replay directory');
 	return readJson<Receipts>(join(directory, 'storage.json')).catch(
 		(error: NodeJS.ErrnoException) => {
 			if (error.code !== 'ENOENT') throw error;
@@ -20,7 +22,7 @@ async function receipts(directory: string): Promise<Receipts> {
 export class ReplayStorageService {
 	async store(report: Report, directory: string, file: string) {
 		replayObjectKey(report.id, file);
-		if (reportRetention(report)) throw new Error('Report expired after 30 days');
+		if (reportRetention(report)) throw new ReplayStorageError('Report expired after 30 days');
 		const storage = R2EvidenceStoreAdapter.fromEnvironment();
 		if (!storage) return false;
 		const recorded = await receipts(directory);
@@ -33,7 +35,7 @@ export class ReplayStorageService {
 	}
 	async restore(report: Report, directory: string, file: string) {
 		replayObjectKey(report.id, file);
-		if (reportRetention(report)) throw new Error('Report expired after 30 days');
+		if (reportRetention(report)) throw new ReplayStorageError('Report expired after 30 days');
 		const recorded = await receipts(directory).catch((error: NodeJS.ErrnoException) => {
 			if (error.code !== 'ENOENT') throw error;
 			return {} as Receipts;
@@ -43,10 +45,10 @@ export class ReplayStorageService {
 		if (!storage) return undefined;
 		const bytes = await storage.getReplay(report.id, file);
 		if (createHash('sha256').update(bytes).digest('hex') !== recorded[file])
-			throw new Error('Cloud replay digest differs');
+			throw new ReplayStorageError('Cloud replay digest differs');
 		const destination = join(directory, file);
 		if ((await lstat(destination).catch(() => undefined))?.isSymbolicLink())
-			throw new Error('Invalid replay artifact');
+			throw new ReplayStorageError('Invalid replay artifact');
 		await writeFile(destination, bytes, { mode: 0o600 });
 		return bytes;
 	}
