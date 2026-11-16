@@ -2,7 +2,9 @@
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <!-- @harness-uid u_2bsn62t2p2 -->
 <script lang="ts">
+	import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
+	import type { EntityNav } from '../../utils/explorer-ui/entityLens';
 	import { screenOptions } from '../../utils/explorer-ui/entityScreens';
 	import { entityChanged } from '../../utils/explorer-ui/entityShown';
 	import EntityAudio from './EntityAudio.svelte';
@@ -16,7 +18,7 @@
 	screenshots, which stay above every tab. The marker of the screen draws no box. -->
 <hx-div class="ex-screen" data-harness-component="harness-entity-visual-screen">
 	<EntityFrame {host}>
-		{#snippet children(entity, nav)}
+		{#snippet children(entity: ExplorerEntity, nav: EntityNav)}
 			<EntitySections {host} {entity} {nav}>
 				{#snippet pane()}
 					{@const evidence = host.lens.evidence(entity.unit)}
