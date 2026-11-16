@@ -1,6 +1,5 @@
 import { expect, test } from 'vitest';
 import type { ImpactInput, ImpactOutput } from '../../src/core/execution-runtimes/kernelTypes';
-import type { RuntimeRequest } from '../../src/core/execution-runtimes/runtimeTypes';
 import { impactKernel } from '../../src/utils/impact-kernel/impactKernel';
 import { impactKernelText } from '../../src/cli/program/run-kernel/impactKernel';
 import { kernelRequest } from '../../src/utils/execution-runtimes/impact-kernel/kernelRequest';
@@ -12,7 +11,7 @@ test('the TypeScript reference satisfies every shared vector', () => {
 	expect(kernelVectors.length).toBeGreaterThanOrEqual(25);
 	for (const vector of kernelVectors) {
 		if (vector.request !== undefined) {
-			expect(impactKernel(vector.request as RuntimeRequest), vector.name).toEqual(vector.response);
+			expect(impactKernel(vector.request), vector.name).toEqual(vector.response);
 		}
 		expect(JSON.parse(impactKernelText(vectorText(vector))), vector.name).toEqual(vector.response);
 	}

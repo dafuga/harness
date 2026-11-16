@@ -13,12 +13,12 @@ import { notPortable, portableJson } from '../../development-tooling/portableJso
  * TypeScript reference of the impact kernel; the Rust kernel must match it exactly.
  * A request that is not portable JSON is refused as `invalid-json` before anything else.
  */
-export function impactKernel<Request>(request: Request): RuntimeResponse {
+export function impactKernel(request: unknown): RuntimeResponse {
 	return portableJson(request) ? impactKernelPortable(request) : notPortable;
 }
 
 /** The kernel proper, for a caller that has already established the request is portable. */
-export function impactKernelPortable<Request>(request: Request): RuntimeResponse {
+export function impactKernelPortable(request: unknown): RuntimeResponse {
 	if (!isObject(request) || typeof request.operation !== 'string') {
 		return runtimeFailure('invalid-request', 'request must be an object with an operation');
 	}

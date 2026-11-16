@@ -75,10 +75,8 @@ afterAll(async () => {
 });
 
 test('the reference refuses requests that are not portable JSON', () => {
-	for (const [name, request] of nonPortable)
-		expect(impactKernel(request as RuntimeRequest), name).toEqual(refused);
-	for (const [name, request] of portable)
-		expect(impactKernel(request as RuntimeRequest), name).toEqual(version);
+	for (const [name, request] of nonPortable) expect(impactKernel(request), name).toEqual(refused);
+	for (const [name, request] of portable) expect(impactKernel(request), name).toEqual(version);
 });
 
 test('every runtime refuses a structured request it could not carry faithfully', async () => {

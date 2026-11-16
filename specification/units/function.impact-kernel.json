@@ -41,7 +41,7 @@
 			},
 			{
 				"name": "impactKernel.request",
-				"type": "Request",
+				"type": "unknown",
 				"required": true,
 				"description": "Any JavaScript value to check with portableJson before dispatch. After admission, only a non-array object with a string operation proceeds; version and impact are the supported operation names.",
 				"examples": [
@@ -68,7 +68,7 @@
 			},
 			{
 				"name": "impactKernelPortable.request",
-				"type": "Request",
+				"type": "unknown",
 				"required": true,
 				"description": "A request already admitted as portable JSON by the caller and supplied for dispatch. The entry accepts only a non-array object with a string operation; it handles version and impact, returning structured failures for unsupported operations or invalid impact inputs.",
 				"examples": [
@@ -209,7 +209,7 @@
 				"inputs": [
 					{
 						"name": "impactKernel.request",
-						"type": "Request",
+						"type": "unknown",
 						"required": true,
 						"description": "Any JavaScript value to check with portableJson before dispatch. After admission, only a non-array object with a string operation proceeds; version and impact are the supported operation names.",
 						"examples": [
@@ -281,7 +281,7 @@
 				"inputs": [
 					{
 						"name": "impactKernelPortable.request",
-						"type": "Request",
+						"type": "unknown",
 						"required": true,
 						"description": "A request already admitted as portable JSON by the caller and supplied for dispatch. The entry accepts only a non-array object with a string operation; it handles version and impact, returning structured failures for unsupported operations or invalid impact inputs.",
 						"examples": [
