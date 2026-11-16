@@ -54,7 +54,7 @@
 			},
 			{
 				"name": "SqliteTableAdapter.findBy.fields",
-				"type": "Record<string, unknown>",
+				"type": "Record<string, SqliteFieldValue>",
 				"required": true,
 				"description": "A field-to-value map converted by sqliteInput to build the WHERE clause. Null values become IS NULL checks, non-null values are bound, and an empty map selects without a WHERE clause.",
 				"examples": [
@@ -67,7 +67,7 @@
 			},
 			{
 				"name": "SqliteTableAdapter.insert.input",
-				"type": "Record<string, unknown>",
+				"type": "Record<string, SqliteFieldValue>",
 				"required": true,
 				"description": "A field-to-value map converted by sqliteInput before the INSERT statement is prepared. Values are bound through placeholders, while an empty map uses DEFAULT VALUES.",
 				"examples": [
@@ -87,7 +87,7 @@
 			},
 			{
 				"name": "SqliteTableAdapter.update.input",
-				"type": "Record<string, unknown>",
+				"type": "Record<string, SqliteFieldValue>",
 				"required": true,
 				"description": "A field-to-value map converted by sqliteInput for the UPDATE statement; an own property matching the primary key throws Error. An empty map returns find(id), and updatedAt is refreshed when its model default is timestamp.",
 				"examples": [
@@ -208,7 +208,7 @@
 				"inputs": [
 					{
 						"name": "SqliteTableAdapter.findBy.fields",
-						"type": "Record<string, unknown>",
+						"type": "Record<string, SqliteFieldValue>",
 						"required": true,
 						"description": "A field-to-value map converted by sqliteInput to build the WHERE clause. Null values become IS NULL checks, non-null values are bound, and an empty map selects without a WHERE clause.",
 						"examples": [
@@ -244,7 +244,7 @@
 				"inputs": [
 					{
 						"name": "SqliteTableAdapter.insert.input",
-						"type": "Record<string, unknown>",
+						"type": "Record<string, SqliteFieldValue>",
 						"required": true,
 						"description": "A field-to-value map converted by sqliteInput before the INSERT statement is prepared. Values are bound through placeholders, while an empty map uses DEFAULT VALUES.",
 						"examples": [
@@ -284,7 +284,7 @@
 					},
 					{
 						"name": "SqliteTableAdapter.update.input",
-						"type": "Record<string, unknown>",
+						"type": "Record<string, SqliteFieldValue>",
 						"required": true,
 						"description": "A field-to-value map converted by sqliteInput for the UPDATE statement; an own property matching the primary key throws Error. An empty map returns find(id), and updatedAt is refreshed when its model default is timestamp.",
 						"examples": [
