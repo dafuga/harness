@@ -1,8 +1,9 @@
 // @harness-uid u_s57l555a7w
 /** Allowlist public assistant text. Private reasoning and tool bodies never cross IPC. */
-export function publicCliEvents(value: unknown): string[] {
-	if (!value || typeof value !== 'object') return [];
-	const event = value as Record<string, unknown>;
+export function publicCliEvents(value: object): string[] {
+	const candidate: unknown = value;
+	if (!candidate || typeof candidate !== 'object') return [];
+	const event = candidate as Record<string, unknown>;
 	if (event.type !== 'assistant' || !event.message || typeof event.message !== 'object') return [];
 	const content = (event.message as Record<string, unknown>).content;
 	if (!Array.isArray(content)) return [];

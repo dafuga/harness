@@ -59,7 +59,8 @@ test('subscription subprocesses omit API overrides without changing the parent',
 });
 
 test('private reasoning is never forwarded to the renderer', () => {
-	expect(publicCliEvents({ type: 'reasoning', text: 'PRIVATE' })).toEqual([]);
+	const reasoningEvent: Record<string, unknown> = { type: 'reasoning', text: 'PRIVATE' };
+	expect(publicCliEvents(reasoningEvent)).toEqual([]);
 	expect(
 		publicCliEvents({
 			type: 'assistant',
