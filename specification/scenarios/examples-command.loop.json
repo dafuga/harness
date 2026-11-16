@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-command.loop",
+	"title": "command.loop examples",
+	"kind": "headless",
+	"units": ["command.loop"],
+	"builds": [],
+	"states": [
+		{
+			"id": "registers-the-loop-command-tree",
+			"title": "Registers the loop command tree",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/command.loop.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["registers-the-loop-command-tree"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["registers-the-loop-command-tree"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["registers-the-loop-command-tree"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
