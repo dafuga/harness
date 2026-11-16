@@ -176,7 +176,13 @@
 			"NativeVideoRecorderService",
 			"VideoArchiveService",
 			"VideoReferenceService",
-			"VideoCaptureService"
+			"VideoCaptureService",
+			"JobHistoryRepository",
+			"JobStatisticsService",
+			"QueueEtaService",
+			"DriverQueueAdapter",
+			"JobBackfillService",
+			"JobsCommand"
 		]
 	},
 	"contract": {
@@ -235,6 +241,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.execution-runtimes-driver-queue",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.networking-security-harness-http",
 			"via": "reexport",
 			"origin": "derived"
@@ -276,6 +287,11 @@
 		},
 		{
 			"unit": "command.development-tooling-contracts",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.execution-runtimes-jobs",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -585,6 +601,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.execution-runtimes-job-history",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.provider-switch",
 			"via": "reexport",
 			"origin": "derived"
@@ -666,6 +687,21 @@
 		},
 		{
 			"unit": "service.desktop-experiment",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-job-backfill",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-job-statistics",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-queue-eta",
 			"via": "reexport",
 			"origin": "derived"
 		},

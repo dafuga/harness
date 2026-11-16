@@ -1,0 +1,114 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.execution-runtimes-driver-queue-driver-worker-queue",
+	"uid": "u_6zzpeilqub",
+	"kind": "adapter",
+	"title": "driverWorkerQueue",
+	"responsibility": "Read live worker task suffixes by slot cursor, preserving retryable future failures and skipping completed passes.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/execution-runtimes/driver-queue/driverWorkerQueue.ts"],
+		"symbols": ["driverWorkerQueue"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "driverWorkerQueue.root",
+				"type": "string",
+				"required": true,
+				"description": "Driver collection root used to resolve slot task and result paths and scope live process discovery. Only code_task slot processes belonging to this root contribute model capacity."
+			},
+			{
+				"name": "driverWorkerQueue.state",
+				"type": "DriverActive",
+				"required": true,
+				"description": "Active driver snapshot to render. Adapter render defaults to a fresh read; dead PIDs are filtered by active(), not by the formatter."
+			},
+			{
+				"name": "driverWorkerQueue.processes",
+				"type": "DriverProcess[]",
+				"required": false,
+				"description": "Optional injected live slot inventory for deterministic reads. Omission inspects code_task processes belonging to this driver root."
+			}
+		],
+		"outputs": [
+			{
+				"name": "driverWorkerQueue",
+				"type": "Pick<QueueSnapshot, 'queued' | 'slots'>",
+				"description": "Queued task suffixes and observed model slot counts, excluding active tasks and completed passes while retaining future retryable failures."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "driverWorkerQueue",
+				"inputs": [
+					{
+						"name": "driverWorkerQueue.root",
+						"type": "string",
+						"required": true,
+						"description": "Driver collection root used to resolve slot task and result paths and scope live process discovery. Only code_task slot processes belonging to this root contribute model capacity."
+					},
+					{
+						"name": "driverWorkerQueue.state",
+						"type": "DriverActive",
+						"required": true,
+						"description": "Active driver snapshot to render. Adapter render defaults to a fresh read; dead PIDs are filtered by active(), not by the formatter."
+					},
+					{
+						"name": "driverWorkerQueue.processes",
+						"type": "DriverProcess[]",
+						"required": false,
+						"description": "Optional injected live slot inventory for deterministic reads. Omission inspects code_task processes belonging to this driver root."
+					}
+				],
+				"outputs": [
+					{
+						"name": "driverWorkerQueue",
+						"type": "Pick<QueueSnapshot, 'queued' | 'slots'>",
+						"description": "Queued task suffixes and observed model slot counts, excluding active tasks and completed passes while retaining future retryable failures."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-driver-queue",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.execution-runtimes-driver-queue-driver-files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-queue-eta",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/execution-runtimes/driver-queue/driverWorkerQueue.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/execution-runtimes/driver-queue/driverWorkerQueue.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

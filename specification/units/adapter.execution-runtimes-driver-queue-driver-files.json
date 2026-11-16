@@ -1,0 +1,191 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.execution-runtimes-driver-queue-driver-files",
+	"uid": "u_6orewnn4cn",
+	"kind": "adapter",
+	"title": "driverFiles",
+	"responsibility": "Read driver JSON and live slot metadata without writes, prune dead PIDs, and classify job phases consistently with backfill.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/execution-runtimes/driver-queue/driverFiles.ts"],
+		"symbols": ["driverJson", "driverProcesses", "livePid", "driverJobType"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "driverJson.path",
+				"type": "string",
+				"required": true,
+				"description": "Filesystem address to read; JSON and filesystem failures propagate. Historical identity uses only its containing folder as a fallback."
+			},
+			{
+				"name": "driverJson.fallback",
+				"type": "T",
+				"required": true,
+				"description": "Value returned only when the JSON snapshot path does not exist; invalid existing JSON still throws."
+			},
+			{
+				"name": "driverProcesses.root",
+				"type": "string",
+				"required": false,
+				"description": "Driver collection root used to resolve slot task and result paths and scope live process discovery. Only code_task slot processes belonging to this root contribute model capacity."
+			},
+			{
+				"name": "livePid.pid",
+				"type": "number",
+				"required": false,
+				"description": "Positive process ID checked with signal zero. Omitted, malformed, inaccessible or dead processes return false."
+			},
+			{
+				"name": "driverJobType.name",
+				"type": "string",
+				"required": true,
+				"description": "Task or collection name inspected for reverify, contract, stub, smell, video or component prefixes; unmatched names use code."
+			}
+		],
+		"outputs": [
+			{
+				"name": "driverJson",
+				"type": "T",
+				"description": "Parsed existing JSON or the caller fallback for a missing file; no snapshot is rewritten."
+			},
+			{
+				"name": "driverProcesses",
+				"type": "DriverProcess[]",
+				"description": "Live code_task slot metadata extracted from ps without printing command lines or environments."
+			},
+			{
+				"name": "livePid",
+				"type": "boolean",
+				"description": "Whether a positive process ID is alive and accessible to signal zero."
+			},
+			{
+				"name": "driverJobType",
+				"type": "string",
+				"description": "Stable phase label used by both live queued tasks and historical duration samples."
+			}
+		],
+		"errors": [
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Existing malformed JSON is rejected instead of silently presenting an empty queue; filesystem and ps failures also propagate."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "driverJson",
+				"inputs": [
+					{
+						"name": "driverJson.path",
+						"type": "string",
+						"required": true,
+						"description": "Filesystem address to read; JSON and filesystem failures propagate. Historical identity uses only its containing folder as a fallback."
+					},
+					{
+						"name": "driverJson.fallback",
+						"type": "T",
+						"required": true,
+						"description": "Value returned only when the JSON snapshot path does not exist; invalid existing JSON still throws."
+					}
+				],
+				"outputs": [
+					{
+						"name": "driverJson",
+						"type": "T",
+						"description": "Parsed existing JSON or the caller fallback for a missing file; no snapshot is rewritten."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "driverProcesses",
+				"inputs": [
+					{
+						"name": "driverProcesses.root",
+						"type": "string",
+						"required": false,
+						"description": "Driver collection root used to resolve slot task and result paths and scope live process discovery. Only code_task slot processes belonging to this root contribute model capacity."
+					}
+				],
+				"outputs": [
+					{
+						"name": "driverProcesses",
+						"type": "DriverProcess[]",
+						"description": "Live code_task slot metadata extracted from ps without printing command lines or environments."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "livePid",
+				"inputs": [
+					{
+						"name": "livePid.pid",
+						"type": "number",
+						"required": false,
+						"description": "Positive process ID checked with signal zero. Omitted, malformed, inaccessible or dead processes return false."
+					}
+				],
+				"outputs": [
+					{
+						"name": "livePid",
+						"type": "boolean",
+						"description": "Whether a positive process ID is alive and accessible to signal zero."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "driverJobType",
+				"inputs": [
+					{
+						"name": "driverJobType.name",
+						"type": "string",
+						"required": true,
+						"description": "Task or collection name inspected for reverify, contract, stub, smell, video or component prefixes; unmatched names use code."
+					}
+				],
+				"outputs": [
+					{
+						"name": "driverJobType",
+						"type": "string",
+						"description": "Stable phase label used by both live queued tasks and historical duration samples."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-driver-queue",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/execution-runtimes/driver-queue/driverFiles.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/execution-runtimes/driver-queue/driverFiles.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

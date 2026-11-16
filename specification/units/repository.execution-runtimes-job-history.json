@@ -1,0 +1,253 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.execution-runtimes-job-history",
+	"uid": "u_tjf4wq5l2c",
+	"kind": "repository",
+	"title": "JobHistoryRepository",
+	"responsibility": "Persist idempotent job attempts in a per-user SQLite WAL store shared by worktrees and concurrent runners.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/execution-runtimes/JobHistoryRepository.ts",
+			"src/repositories/execution-runtimes/JobHistoryRepository.types.ts"
+		],
+		"symbols": [
+			"JobHistoryRepository",
+			"JobHistoryRepository.constructor",
+			"JobHistoryRepository.start",
+			"JobHistoryRepository.end",
+			"JobHistoryRepository.import",
+			"JobHistoryRepository.all",
+			"JobHistoryRepository.close",
+			"JobKey",
+			"JobStart",
+			"JobEnd",
+			"JobRecord"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "JobHistoryRepository.constructor.home",
+				"type": "string",
+				"required": false,
+				"description": "Directory containing history.sqlite. Defaults to HARNESS_JOBS_HOME or ~/.codex/harness/jobs and is created with private permissions."
+			},
+			{
+				"name": "JobHistoryRepository.start.input",
+				"type": "JobStart",
+				"required": true,
+				"description": "Lifecycle record validated before persistence: nonempty identity, positive attempt and finite nonnegative timestamps. Completed records require outcome and matching duration."
+			},
+			{
+				"name": "JobHistoryRepository.end.input",
+				"type": "JobEnd",
+				"required": true,
+				"description": "Lifecycle record validated before persistence: nonempty identity, positive attempt and finite nonnegative timestamps. Completed records require outcome and matching duration."
+			},
+			{
+				"name": "JobHistoryRepository.import.input",
+				"type": "JobRecord",
+				"required": true,
+				"description": "Lifecycle record validated before persistence: nonempty identity, positive attempt and finite nonnegative timestamps. Completed records require outcome and matching duration."
+			}
+		],
+		"outputs": [
+			{
+				"name": "JobHistoryRepository.start",
+				"type": "JobRecord",
+				"description": "Stored attempt, preserving the first start when the same source-job-attempt is recorded again."
+			},
+			{
+				"name": "JobHistoryRepository.end",
+				"type": "JobRecord",
+				"description": "Completed stored attempt with elapsed milliseconds and outcome; duplicate completion preserves the first outcome and timing."
+			},
+			{
+				"name": "JobHistoryRepository.import",
+				"type": "boolean",
+				"description": "True when a complete historical attempt is inserted, false when its source-job-attempt already exists."
+			},
+			{
+				"name": "JobHistoryRepository.all",
+				"type": "JobRecord[]",
+				"description": "All stored job records in insertion order, including unfinished and cancelled records for callers to classify."
+			},
+			{
+				"name": "JobHistoryRepository.close",
+				"type": "void",
+				"description": "No return value; closes the SQLite connection."
+			}
+		],
+		"errors": [
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Rejects invalid lifecycle timing, identity or scheduling flags before the operation can record or estimate work."
+			},
+			{
+				"name": "SQLiteError",
+				"type": "thrown",
+				"description": "Filesystem permissions, SQLite opening, busy-timeout, SQL or connection errors propagate; end rolls back its transaction before rethrowing."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "JobHistoryRepository.start",
+				"inputs": [
+					{
+						"name": "JobHistoryRepository.start.input",
+						"type": "JobStart",
+						"required": true,
+						"description": "Lifecycle record validated before persistence: nonempty identity, positive attempt and finite nonnegative timestamps. Completed records require outcome and matching duration."
+					}
+				],
+				"outputs": [
+					{
+						"name": "JobHistoryRepository.start",
+						"type": "JobRecord",
+						"description": "Stored attempt, preserving the first start when the same source-job-attempt is recorded again."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "JobHistoryRepository.end",
+				"inputs": [
+					{
+						"name": "JobHistoryRepository.end.input",
+						"type": "JobEnd",
+						"required": true,
+						"description": "Lifecycle record validated before persistence: nonempty identity, positive attempt and finite nonnegative timestamps. Completed records require outcome and matching duration."
+					}
+				],
+				"outputs": [
+					{
+						"name": "JobHistoryRepository.end",
+						"type": "JobRecord",
+						"description": "Completed stored attempt with elapsed milliseconds and outcome; duplicate completion preserves the first outcome and timing."
+					}
+				],
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Rejects invalid lifecycle timing, identity or scheduling flags before the operation can record or estimate work."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "JobHistoryRepository.import",
+				"inputs": [
+					{
+						"name": "JobHistoryRepository.import.input",
+						"type": "JobRecord",
+						"required": true,
+						"description": "Lifecycle record validated before persistence: nonempty identity, positive attempt and finite nonnegative timestamps. Completed records require outcome and matching duration."
+					}
+				],
+				"outputs": [
+					{
+						"name": "JobHistoryRepository.import",
+						"type": "boolean",
+						"description": "True when a complete historical attempt is inserted, false when its source-job-attempt already exists."
+					}
+				],
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Rejects invalid lifecycle timing, identity or scheduling flags before the operation can record or estimate work."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "JobHistoryRepository.all",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "JobHistoryRepository.all",
+						"type": "JobRecord[]",
+						"description": "All stored job records in insertion order, including unfinished and cancelled records for callers to classify."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "JobHistoryRepository.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "JobHistoryRepository.close",
+						"type": "void",
+						"description": "No return value; closes the SQLite connection."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "JobHistoryRepository.constructor",
+				"inputs": [
+					{
+						"name": "JobHistoryRepository.constructor.home",
+						"type": "string",
+						"required": false,
+						"description": "Directory containing history.sqlite. Defaults to HARNESS_JOBS_HOME or ~/.codex/harness/jobs and is created with private permissions."
+					}
+				],
+				"outputs": [
+					{
+						"name": "JobHistoryRepository.constructor",
+						"type": "unknown",
+						"description": "Constructed JobHistoryRepository instance retaining only its declared collaborators and state; repository construction opens the durable SQLite store."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.open-sqlite",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.execution-runtimes-job-history-job-validation",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/execution-runtimes/JobHistoryRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/execution-runtimes/JobHistoryRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

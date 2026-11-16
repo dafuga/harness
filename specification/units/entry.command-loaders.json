@@ -74,6 +74,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "command.execution-runtimes-jobs",
+			"via": "dynamic-import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.explain",
 			"via": "dynamic-import",
 			"origin": "derived"

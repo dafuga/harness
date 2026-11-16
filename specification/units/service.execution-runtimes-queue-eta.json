@@ -1,0 +1,142 @@
+{
+	"schemaVersion": 1,
+	"id": "service.execution-runtimes-queue-eta",
+	"uid": "u_zqftrauna4",
+	"kind": "service",
+	"title": "QueueEtaService",
+	"responsibility": "Schedule queued and elapsed running jobs over model-specific slots and report p50-p90 duration scenarios with Lisbon clocks.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/execution-runtimes/QueueEtaService.ts",
+			"src/services/execution-runtimes/QueueEtaService.types.ts"
+		],
+		"symbols": [
+			"QueueEtaService",
+			"QueueEtaService.constructor",
+			"QueueEtaService.estimate",
+			"QueueJob",
+			"QueueSnapshot",
+			"QueueEstimate",
+			"ScheduleContext"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "QueueEtaService.constructor.statistics",
+				"type": "JobStatisticsService",
+				"required": true,
+				"description": "Duration statistics service providing sample summaries and ordered fallbacks for every scheduled type/model pair."
+			},
+			{
+				"name": "QueueEtaService.estimate.queue",
+				"type": "QueueSnapshot",
+				"required": true,
+				"description": "Queued and running job metadata with explicit model slot counts. Reverify jobs share their own pool; absent capacity blocks an estimate."
+			},
+			{
+				"name": "QueueEtaService.estimate.now",
+				"type": "number",
+				"required": false,
+				"description": "Epoch milliseconds used to compute elapsed running time and finish clocks. Defaults to Date.now(); display uses Europe/Lisbon."
+			}
+		],
+		"outputs": [
+			{
+				"name": "QueueEtaService.estimate",
+				"type": "QueueEstimate",
+				"description": "Queue service returns status, counts, slots, p50/p90 makespans, Lisbon finish clocks and sample notes. Statistics service returns a selected distribution or null when history has no usable samples."
+			}
+		],
+		"errors": [
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Rejects invalid lifecycle timing, identity or scheduling flags before the operation can record or estimate work."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "QueueEtaService.estimate",
+				"inputs": [
+					{
+						"name": "QueueEtaService.estimate.queue",
+						"type": "QueueSnapshot",
+						"required": true,
+						"description": "Queued and running job metadata with explicit model slot counts. Reverify jobs share their own pool; absent capacity blocks an estimate."
+					},
+					{
+						"name": "QueueEtaService.estimate.now",
+						"type": "number",
+						"required": false,
+						"description": "Epoch milliseconds used to compute elapsed running time and finish clocks. Defaults to Date.now(); display uses Europe/Lisbon."
+					}
+				],
+				"outputs": [
+					{
+						"name": "QueueEtaService.estimate",
+						"type": "QueueEstimate",
+						"description": "Queue service returns status, counts, slots, p50/p90 makespans, Lisbon finish clocks and sample notes. Statistics service returns a selected distribution or null when history has no usable samples."
+					}
+				],
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Rejects invalid lifecycle timing, identity or scheduling flags before the operation can record or estimate work."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "QueueEtaService.constructor",
+				"inputs": [
+					{
+						"name": "QueueEtaService.constructor.statistics",
+						"type": "JobStatisticsService",
+						"required": true,
+						"description": "Duration statistics service providing sample summaries and ordered fallbacks for every scheduled type/model pair."
+					}
+				],
+				"outputs": [
+					{
+						"name": "QueueEtaService.constructor",
+						"type": "unknown",
+						"description": "Constructed QueueEtaService instance retaining only its declared collaborators and state; repository construction opens the durable SQLite store."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "service.execution-runtimes-job-statistics",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/QueueEtaService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/QueueEtaService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

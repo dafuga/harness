@@ -12,6 +12,7 @@ import { registerActivityCommand } from './program/ActivityCommand';
 import { registerReportCommand } from './program/ReportCommand';
 import { registerResourcesCommand } from './program/ResourcesCommand';
 import { Command } from 'commander';
+import { JobsCommand } from '../commands/execution-runtimes/JobsCommand';
 import { registerResponseCheckCommand } from './program/ResponseCheckCommand';
 import { registerAuditCommand } from './program/audit';
 import { registerGenerateCommand } from './program/generate';
@@ -40,6 +41,7 @@ export function buildProgram(): Command {
 	registerCodexCommand(program);
 	registerBenchmarkCommand(program);
 	registerResourcesCommand(program);
+	new JobsCommand().register(program);
 	registerAnalyticsCommand(program);
 	registerActivityCommand(program);
 	registerReportCommand(program);

@@ -1,0 +1,126 @@
+{
+	"schemaVersion": 1,
+	"id": "service.execution-runtimes-job-backfill-historical-record",
+	"uid": "u_6atknznspb",
+	"kind": "service",
+	"title": "historicalRecord",
+	"responsibility": "Normalize historical result identity and outcome while preserving unit IDs and distinguishing cancellation.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/execution-runtimes/job-backfill/historicalRecord.ts",
+			"src/services/execution-runtimes/job-backfill/historicalRecord.types.ts"
+		],
+		"symbols": ["historicalIdentity", "historicalOutcome", "HistoricalIdentity"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "historicalIdentity.data",
+				"type": "HistoricalResult",
+				"required": true,
+				"description": "Parsed historical result metadata; prefers explicit task/unit identity and normalizes its status without executing result content."
+			},
+			{
+				"name": "historicalIdentity.path",
+				"type": "string",
+				"required": true,
+				"description": "Filesystem address to read; JSON and filesystem failures propagate. Historical identity uses only its containing folder as a fallback."
+			},
+			{
+				"name": "historicalOutcome.status",
+				"type": "string",
+				"required": false,
+				"description": "Historical outcome; pass and pass-prefixed values normalize to pass, cancelled remains cancelled and other or missing statuses become fail."
+			}
+		],
+		"outputs": [
+			{
+				"name": "historicalIdentity",
+				"type": "unknown",
+				"description": "Task and unit identity using explicit result fields before the result directory name."
+			},
+			{
+				"name": "historicalOutcome",
+				"type": "'pass' | 'fail' | 'cancelled'",
+				"description": "Normalized pass, fail or cancelled lifecycle outcome."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "historicalIdentity",
+				"inputs": [
+					{
+						"name": "historicalIdentity.data",
+						"type": "HistoricalResult",
+						"required": true,
+						"description": "Parsed historical result metadata; prefers explicit task/unit identity and normalizes its status without executing result content."
+					},
+					{
+						"name": "historicalIdentity.path",
+						"type": "string",
+						"required": true,
+						"description": "Filesystem address to read; JSON and filesystem failures propagate. Historical identity uses only its containing folder as a fallback."
+					}
+				],
+				"outputs": [
+					{
+						"name": "historicalIdentity",
+						"type": "HistoricalIdentity",
+						"description": "Task and unit identity using explicit result fields before the result directory name."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "historicalOutcome",
+				"inputs": [
+					{
+						"name": "historicalOutcome.status",
+						"type": "string",
+						"required": false,
+						"description": "Historical outcome; pass and pass-prefixed values normalize to pass, cancelled remains cancelled and other or missing statuses become fail."
+					}
+				],
+				"outputs": [
+					{
+						"name": "historicalOutcome",
+						"type": "'pass' | 'fail' | 'cancelled'",
+						"description": "Normalized pass, fail or cancelled lifecycle outcome."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.execution-runtimes-job-backfill",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/job-backfill/historicalRecord.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/job-backfill/historicalRecord.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

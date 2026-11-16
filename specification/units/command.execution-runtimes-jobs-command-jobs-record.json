@@ -1,0 +1,121 @@
+{
+	"schemaVersion": 1,
+	"id": "command.execution-runtimes-jobs-command-jobs-record",
+	"uid": "u_x7ymwrkzlr",
+	"kind": "command",
+	"title": "jobsRecord",
+	"responsibility": "Validate timezone-aware lifecycle flags and dispatch job starts or completions to the durable repository.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/execution-runtimes/jobs-command/jobsRecord.ts"],
+		"symbols": ["jobsRecord"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "jobsRecord.history",
+				"type": "JobHistoryRepository",
+				"required": true,
+				"description": "Open JobHistoryRepository used for the action. The caller owns its lifetime unless withJobHistory opened it."
+			},
+			{
+				"name": "jobsRecord.phase",
+				"type": "string",
+				"required": true,
+				"description": "Lifecycle phase selected by the start/end CLI subcommand; start records identity and start timing, end completes an existing attempt."
+			},
+			{
+				"name": "jobsRecord.flags",
+				"type": "JobsOptions",
+				"required": true,
+				"description": "Lifecycle identity, source, attempt and timestamp options. Attempt defaults to one and timestamp to the current clock; explicit timestamps require a timezone."
+			}
+		],
+		"outputs": [
+			{
+				"name": "jobsRecord",
+				"type": "JobRecord",
+				"description": "Persisted start or completed job record returned by the repository after lifecycle validation."
+			}
+		],
+		"errors": [
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Rejects invalid lifecycle timing, identity or scheduling flags before the operation can record or estimate work."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "jobsRecord",
+				"inputs": [
+					{
+						"name": "jobsRecord.history",
+						"type": "JobHistoryRepository",
+						"required": true,
+						"description": "Open JobHistoryRepository used for the action. The caller owns its lifetime unless withJobHistory opened it."
+					},
+					{
+						"name": "jobsRecord.phase",
+						"type": "string",
+						"required": true,
+						"description": "Lifecycle phase selected by the start/end CLI subcommand; start records identity and start timing, end completes an existing attempt."
+					},
+					{
+						"name": "jobsRecord.flags",
+						"type": "JobsOptions",
+						"required": true,
+						"description": "Lifecycle identity, source, attempt and timestamp options. Attempt defaults to one and timestamp to the current clock; explicit timestamps require a timezone."
+					}
+				],
+				"outputs": [
+					{
+						"name": "jobsRecord",
+						"type": "JobRecord",
+						"description": "Persisted start or completed job record returned by the repository after lifecycle validation."
+					}
+				],
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Rejects invalid lifecycle timing, identity or scheduling flags before the operation can record or estimate work."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.execution-runtimes-jobs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.execution-runtimes-job-history",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/execution-runtimes/jobs-command/jobsRecord.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/execution-runtimes/jobs-command/jobsRecord.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,131 @@
+{
+	"schemaVersion": 1,
+	"id": "service.execution-runtimes-job-backfill",
+	"uid": "u_izz5miwhbq",
+	"kind": "service",
+	"title": "JobBackfillService",
+	"responsibility": "Import elapsed historical job durations once per result source and report duplicate, missing and invalid timing.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/execution-runtimes/JobBackfillService.ts",
+			"src/services/execution-runtimes/JobBackfillService.types.ts"
+		],
+		"symbols": [
+			"JobBackfillService",
+			"JobBackfillService.constructor",
+			"JobBackfillService.import",
+			"HistoricalResult",
+			"BackfillResult"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "JobBackfillService.constructor.history",
+				"type": "JobHistoryRepository",
+				"required": true,
+				"description": "Open JobHistoryRepository used for the action. The caller owns its lifetime unless withJobHistory opened it."
+			},
+			{
+				"name": "JobBackfillService.import.root",
+				"type": "string",
+				"required": true,
+				"description": "Historical results root; only results-* collection directories are traversed to a bounded depth. Filesystem errors at the collection boundary propagate."
+			}
+		],
+		"outputs": [
+			{
+				"name": "JobBackfillService.import",
+				"type": "BackfillResult",
+				"description": "Counts imported, duplicate and skipped records, plus per-file parse, validation or database errors. An unreadable result does not stop other imports."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "JobBackfillService.import",
+				"inputs": [
+					{
+						"name": "JobBackfillService.import.root",
+						"type": "string",
+						"required": true,
+						"description": "Historical results root; only results-* collection directories are traversed to a bounded depth. Filesystem errors at the collection boundary propagate."
+					}
+				],
+				"outputs": [
+					{
+						"name": "JobBackfillService.import",
+						"type": "BackfillResult",
+						"description": "Counts imported, duplicate and skipped records, plus per-file parse, validation or database errors. An unreadable result does not stop other imports."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "JobBackfillService.constructor",
+				"inputs": [
+					{
+						"name": "JobBackfillService.constructor.history",
+						"type": "JobHistoryRepository",
+						"required": true,
+						"description": "Open JobHistoryRepository used for the action. The caller owns its lifetime unless withJobHistory opened it."
+					}
+				],
+				"outputs": [
+					{
+						"name": "JobBackfillService.constructor",
+						"type": "unknown",
+						"description": "Constructed JobBackfillService instance retaining only its declared collaborators and state; repository construction opens the durable SQLite store."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-driver-queue-driver-files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.execution-runtimes-job-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-job-backfill-historical-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-job-backfill-result-files",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/JobBackfillService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/JobBackfillService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
