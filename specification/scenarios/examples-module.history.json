@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-module.history",
+	"title": "module.history examples",
+	"kind": "headless",
+	"units": ["module.history"],
+	"builds": [],
+	"states": [
+		{
+			"id": "builds-the-git-lfs-pointer-text-for-a-media-object",
+			"title": "Builds the Git LFS pointer text for a media object",
+			"coverage": "required"
+		},
+		{
+			"id": "recognises-media-extensions-as-lfs-stored-paths",
+			"title": "Recognises media extensions as LFS-stored paths",
+			"coverage": "required"
+		},
+		{
+			"id": "classifies-refs-by-the-prefix-they-live-under",
+			"title": "Classifies refs by the prefix they live under",
+			"coverage": "required"
+		},
+		{
+			"id": "builds-the-source-archive-ref-for-a-tested-commit",
+			"title": "Builds the source archive ref for a tested commit",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/module.history.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"builds-the-git-lfs-pointer-text-for-a-media-object",
+				"recognises-media-extensions-as-lfs-stored-paths",
+				"classifies-refs-by-the-prefix-they-live-under",
+				"builds-the-source-archive-ref-for-a-tested-commit"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"builds-the-git-lfs-pointer-text-for-a-media-object",
+				"recognises-media-extensions-as-lfs-stored-paths",
+				"classifies-refs-by-the-prefix-they-live-under",
+				"builds-the-source-archive-ref-for-a-tested-commit"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"builds-the-git-lfs-pointer-text-for-a-media-object",
+				"recognises-media-extensions-as-lfs-stored-paths",
+				"classifies-refs-by-the-prefix-they-live-under",
+				"builds-the-source-archive-ref-for-a-tested-commit"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
