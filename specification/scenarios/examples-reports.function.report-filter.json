@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.report-filter",
+	"title": "reports.function.report-filter examples",
+	"kind": "headless",
+	"units": ["reports.function.report-filter"],
+	"builds": [],
+	"states": [
+		{
+			"id": "classifies-viewports-by-known-words-before-numeric-widths",
+			"title": "Classifies viewports by known words before numeric widths",
+			"coverage": "required"
+		},
+		{
+			"id": "gallery-hides-before-images-and-paired-before-audio",
+			"title": "Gallery hides before images and paired before audio",
+			"coverage": "required"
+		},
+		{
+			"id": "matches-a-report-item-when-its-paired-before-item-passes",
+			"title": "Matches a report item when its paired before item passes",
+			"coverage": "required"
+		},
+		{
+			"id": "searches-all-text-fields-and-sorts-by-order",
+			"title": "Searches all text fields and sorts by order",
+			"coverage": "required"
+		},
+		{
+			"id": "selects-projects-by-id-and-case-insensitive-query",
+			"title": "Selects projects by id and case-insensitive query",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.report-filter.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"classifies-viewports-by-known-words-before-numeric-widths",
+				"gallery-hides-before-images-and-paired-before-audio",
+				"matches-a-report-item-when-its-paired-before-item-passes",
+				"searches-all-text-fields-and-sorts-by-order",
+				"selects-projects-by-id-and-case-insensitive-query"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"classifies-viewports-by-known-words-before-numeric-widths",
+				"gallery-hides-before-images-and-paired-before-audio",
+				"matches-a-report-item-when-its-paired-before-item-passes",
+				"searches-all-text-fields-and-sorts-by-order",
+				"selects-projects-by-id-and-case-insensitive-query"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"classifies-viewports-by-known-words-before-numeric-widths",
+				"gallery-hides-before-images-and-paired-before-audio",
+				"matches-a-report-item-when-its-paired-before-item-passes",
+				"searches-all-text-fields-and-sorts-by-order",
+				"selects-projects-by-id-and-case-insensitive-query"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
