@@ -1,6 +1,6 @@
 // @harness-uid u_ba5zbksv6k
 /** JSON with object keys sorted at every depth, so equal values always serialize identically. */
-export function canonicalJson<T>(value: T): string {
+export function canonicalJson(value: unknown): string {
 	return JSON.stringify(sorted(value));
 }
 
