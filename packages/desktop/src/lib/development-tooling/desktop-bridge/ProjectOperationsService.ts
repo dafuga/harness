@@ -1,5 +1,6 @@
 // @harness-uid u_26fcc4te3c
 import type { ProjectSessionService } from '../../../services/projects-sessions/project-session-service/ProjectSessionService';
+import type { CommentOutboxService } from '../../../services/projects-sessions/CommentOutboxService';
 import type {
 	HumanCommentDraft,
 	ProjectCapabilities,
@@ -13,7 +14,7 @@ import {
 export class ProjectOperationsService {
 	constructor(
 		private session: ProjectSessionService,
-		private outbox = session.outbox
+		private outbox: CommentOutboxService = session.outbox
 	) {}
 	listProjects() {
 		return this.session.registry.list();
