@@ -8,12 +8,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/game/src/repositories/game-authoring/GameDocumentRepository.ts"],
+		"source": [
+			"packages/game/src/repositories/game-authoring/GameDocumentRepository.ts",
+			"packages/game/src/repositories/game-authoring/GameDocumentRepository.types.ts"
+		],
 		"symbols": [
 			"GameDocumentRepository",
 			"GameDocumentRepository.constructor",
 			"GameDocumentRepository.read",
-			"GameDocumentRepository.save"
+			"GameDocumentRepository.save",
+			"GameDocumentError"
 		]
 	},
 	"contract": {
