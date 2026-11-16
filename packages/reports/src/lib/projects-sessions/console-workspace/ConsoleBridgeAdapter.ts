@@ -1,5 +1,6 @@
 // @harness-uid u_i4ujwaodpy
 import type { EventBatch } from './ConsoleBridgeAdapter.types';
+import { ConsoleBridgeError } from './ConsoleBridgeAdapter.types';
 import {
 	agentRequestKey,
 	definitiveAgentFailure
@@ -30,7 +31,7 @@ export class ConsoleBridgeAdapter {
 			.then((value) => {
 				if (generation !== this.generation) {
 					void this.request('disconnect', {}, undefined, value.token).catch(() => undefined);
-					throw new Error('Chat closed while connecting.');
+					throw new ConsoleBridgeError('Chat closed while connecting.');
 				}
 				this.token = value.token;
 				return value.snapshot as ProjectSnapshot;
@@ -55,7 +56,7 @@ export class ConsoleBridgeAdapter {
 				if (method === 'listProjects') return async () => [];
 				if (method === 'selectProject')
 					return async () => {
-						throw new Error('This web preview has one project.');
+						throw new ConsoleBridgeError('This web preview has one project.');
 					};
 				return async (input: unknown = {}) => {
 					await adapter.connect();
@@ -76,7 +77,7 @@ export class ConsoleBridgeAdapter {
 	private start = async (input: unknown) => {
 		const key = agentRequestKey(input);
 		if (this.pending && this.pending.key !== key)
-			throw new Error('Retry the previous request before sending another.');
+			throw new ConsoleBridgeError('Retry the previous request before sending another.');
 		const pending = this.pending ?? { key, input: structuredClone(input), id: crypto.randomUUID() };
 		this.pending = pending;
 		try {
@@ -128,7 +129,7 @@ async function consoleRequest(body: {
 	});
 	const value = await response.json();
 	if (!response.ok)
-		throw Object.assign(new Error(value.error || 'Chat unavailable.'), {
+		throw Object.assign(new ConsoleBridgeError(value.error || 'Chat unavailable.'), {
 			status: response.status
 		});
 	return value;
