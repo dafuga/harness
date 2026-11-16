@@ -16,7 +16,7 @@
 		"inputs": [
 			{
 				"name": "GET.url",
-				"type": "unknown",
+				"type": "URL",
 				"required": true,
 				"description": "The request URL from SvelteKit's RequestEvent; the handler reads only its 'run' query parameter through url.searchParams.get('run'). That value must match /^[a-f0-9-]{36}$/ (36 characters, each a lowercase hex digit or a hyphen), or the request fails with a 400 before any report lookup."
 			},
@@ -53,7 +53,7 @@
 				"inputs": [
 					{
 						"name": "GET.url",
-						"type": "unknown",
+						"type": "URL",
 						"required": true,
 						"description": "The request URL from SvelteKit's RequestEvent; the handler reads only its 'run' query parameter through url.searchParams.get('run'). That value must match /^[a-f0-9-]{36}$/ (36 characters, each a lowercase hex digit or a hyphen), or the request fails with a 400 before any report lookup."
 					},
