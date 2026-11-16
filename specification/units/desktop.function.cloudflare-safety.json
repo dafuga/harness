@@ -19,7 +19,7 @@
 		"inputs": [
 			{
 				"name": "cloudflareSafety.config",
-				"type": "object",
+				"type": "Record<string, unknown>",
 				"required": true,
 				"description": "The Wrangler configuration object, read but never modified: its top-level routes or route are always protected, and the env entries named prod or production, plus the entry named by the wranglerEnvironment of the first workers target with environment prod, add protected routes. An env entry that is missing or has neither routes nor route inherits the top-level routes, every route must be a string or an object whose pattern is a string, and only the URL hostname of each route is compared, so paths and ports are ignored.",
 				"examples": [
@@ -151,7 +151,7 @@
 				"inputs": [
 					{
 						"name": "cloudflareSafety.config",
-						"type": "object",
+						"type": "Record<string, unknown>",
 						"required": true,
 						"description": "The Wrangler configuration object, read but never modified: its top-level routes or route are always protected, and the env entries named prod or production, plus the entry named by the wranglerEnvironment of the first workers target with environment prod, add protected routes. An env entry that is missing or has neither routes nor route inherits the top-level routes, every route must be a string or an object whose pattern is a string, and only the URL hostname of each route is compared, so paths and ports are ignored.",
 						"examples": [
