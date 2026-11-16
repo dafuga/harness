@@ -73,7 +73,7 @@
 				"inputs": [
 					{
 						"name": "MeasuresPanel.label.row",
-						"type": "unknown",
+						"type": "MeasuresPanelRow",
 						"required": true
 					}
 				],
@@ -91,7 +91,7 @@
 				"inputs": [
 					{
 						"name": "MeasuresPanel.children.row",
-						"type": "unknown",
+						"type": "MeasuresPanelRow",
 						"required": true
 					}
 				],
