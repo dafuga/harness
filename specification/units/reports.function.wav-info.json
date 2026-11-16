@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/reports-media/audio-asset/wavInfo.ts"],
-		"symbols": ["wavInfo"]
+		"source": [
+			"packages/reports/src/utils/reports-media/audio-asset/wavInfo.ts",
+			"packages/reports/src/utils/reports-media/audio-asset/wavInfo.types.ts"
+		],
+		"symbols": ["wavInfo", "InvalidWavError"]
 	},
 	"contract": {
 		"origin": "declared",
