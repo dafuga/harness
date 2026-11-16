@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-workflow.development-tooling-guide-units-state-tests",
+	"title": "workflow.development-tooling-guide-units-state-tests examples",
+	"kind": "headless",
+	"units": ["workflow.development-tooling-guide-units-state-tests"],
+	"builds": [],
+	"states": [
+		{
+			"id": "finds-a-declared-state-test",
+			"title": "Finds a declared state test",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/workflow.development-tooling-guide-units-state-tests.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["finds-a-declared-state-test"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["finds-a-declared-state-test"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["finds-a-declared-state-test"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
