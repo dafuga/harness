@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.explanation-types",
+	"title": "function.explanation-types examples",
+	"kind": "headless",
+	"units": ["function.explanation-types"],
+	"builds": [],
+	"states": [
+		{
+			"id": "explanation-schema-accepts-complete-reasons-and-rejects-unkn",
+			"title": "Explanation schema accepts complete reasons and rejects unknown fields",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.explanation-types.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["explanation-schema-accepts-complete-reasons-and-rejects-unkn"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["explanation-schema-accepts-complete-reasons-and-rejects-unkn"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["explanation-schema-accepts-complete-reasons-and-rejects-unkn"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
