@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.change-environment",
+	"title": "desktop.function.change-environment examples",
+	"kind": "headless",
+	"units": ["desktop.function.change-environment"],
+	"builds": [],
+	"states": [
+		{
+			"id": "promotes-each-environment-in-order-stopping-at-preprod",
+			"title": "promotes each environment in order, stopping at preprod",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-an-unsupported-deployment-environment",
+			"title": "rejects an unsupported deployment environment",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.change-environment.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"promotes-each-environment-in-order-stopping-at-preprod",
+				"rejects-an-unsupported-deployment-environment"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"promotes-each-environment-in-order-stopping-at-preprod",
+				"rejects-an-unsupported-deployment-environment"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"promotes-each-environment-in-order-stopping-at-preprod",
+				"rejects-an-unsupported-deployment-environment"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
