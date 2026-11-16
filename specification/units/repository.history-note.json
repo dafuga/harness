@@ -51,7 +51,8 @@
 				"type": "string | null",
 				"required": false,
 				"description": "Omit to read the current notes ref. Supply the full immutable notes-commit hash to read only the supplied source commit note from that snapshot; null holds no notes. An absent source note yields empty entries and problems. Other note blobs are not read or parsed.",
-				"examples": ["89abcdef89abcdef89abcdef89abcdef89abcdef", null]
+				"examples": ["89abcdef89abcdef89abcdef89abcdef89abcdef", null],
+				"default": "undefined (omitted)"
 			},
 			{
 				"name": "HistoryNoteRepository.append.commit",
@@ -249,7 +250,8 @@
 						"type": "string | null",
 						"required": false,
 						"description": "Omit to read the current notes ref. Supply the full immutable notes-commit hash to read only the supplied source commit note from that snapshot; null holds no notes. An absent source note yields empty entries and problems. Other note blobs are not read or parsed.",
-						"examples": ["89abcdef89abcdef89abcdef89abcdef89abcdef", null]
+						"examples": ["89abcdef89abcdef89abcdef89abcdef89abcdef", null],
+						"default": "undefined (omitted)"
 					}
 				],
 				"outputs": [

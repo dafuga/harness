@@ -1,4 +1,6 @@
 import { expect, vi } from 'vitest';
+import type { EvidencePointer } from '../../src/core/git-source-history/historyTypes';
+import type { FrameClipReference } from '../../src/services/verification-evidence/FrameFlagService.types';
 import { EvidenceTreeAdapter } from '../../src/adapters/verification-evidence/EvidenceTreeAdapter';
 import { HistoryNoteRepository } from '../../src/repositories/git-source-history/history-note-repository/HistoryNoteRepository';
 import { readFile, rm } from 'node:fs/promises';
@@ -14,21 +16,7 @@ import { hash } from './frameFlagFixture';
 export async function assertSelectedFrameReader(): Promise<void> {
 	await withTempRepo(async ({ root, git }) => {
 		const f = await videoSharedParent(root, git);
-		const manifest = `${f.evidence.path}/manifest.json`;
-		const requested = [
-			manifest,
-			...Array.from(
-				{ length: 5000 },
-				(_, index) => `${f.evidence.path}/absent-${index}-${'x'.repeat(400)}`
-			)
-		];
-		const many = new EvidenceTreeAdapter(root).readMany(f.evidence.commit, requested);
-		await expect(
-			many,
-			'large scoped evidence queries fit bounded argument batches'
-		).resolves.toHaveProperty('size', 1);
-		expect(hash((await many).get(manifest)!)).toBe(f.evidence.manifest);
-
+		await assertLargeScopedRead(root, f.evidence);
 		await rm(await new LfsAdapter(root).path(f.captures[1].sha256));
 		const history = new HistoryStatusService(root);
 		expect((await history.status(f.parent.source.commit)).verified).toBe(false);
@@ -43,23 +31,7 @@ export async function assertSelectedFrameReader(): Promise<void> {
 			viewport: f.capture.viewport!
 		};
 		const service = new FrameFlagService(root);
-		const fullHistory = vi.spyOn(HistoryNoteRepository.prototype, 'all');
-		const treeReads = vi.spyOn(EvidenceTreeAdapter.prototype, 'list');
-		let flag: Awaited<ReturnType<FrameFlagService['flag']>>;
-		try {
-			flag = await service.flag({ clip: reference, frameNumber: 2, note: 'Healthy A edge' });
-			expect(
-				fullHistory,
-				'one selected frame must not materialize every unrelated history note'
-			).not.toHaveBeenCalled();
-			expect(
-				treeReads.mock.calls.every((call) => call.length > 1),
-				'one selected frame must not enumerate unrelated evidence paths'
-			).toBe(true);
-		} finally {
-			fullHistory.mockRestore();
-			treeReads.mockRestore();
-		}
+		const flag = await selectedFlag(service, reference);
 		expect(flag, 'healthy selected archive clip supports frame feedback').toMatchObject({
 			clip: { ...reference, sha256: f.capture.sha256 },
 			frameNumber: 2
@@ -87,4 +59,41 @@ export async function assertSelectedFrameReader(): Promise<void> {
 		])
 			await expect(service.flag({ clip: invalid, frameNumber: 2 })).rejects.toThrow();
 	});
+}
+
+async function assertLargeScopedRead(root: string, evidence: EvidencePointer): Promise<void> {
+	const manifest = `${evidence.path}/manifest.json`;
+	const requested = [
+		manifest,
+		...Array.from(
+			{ length: 5000 },
+			(_, index) => `${evidence.path}/absent-${index}-${'x'.repeat(400)}`
+		)
+	];
+	const many = new EvidenceTreeAdapter(root).readMany(evidence.commit, requested);
+	await expect(
+		many,
+		'large scoped evidence queries fit bounded argument batches'
+	).resolves.toHaveProperty('size', 1);
+	expect(hash((await many).get(manifest)!)).toBe(evidence.manifest);
+}
+
+async function selectedFlag(service: FrameFlagService, reference: FrameClipReference) {
+	const fullHistory = vi.spyOn(HistoryNoteRepository.prototype, 'all');
+	const treeReads = vi.spyOn(EvidenceTreeAdapter.prototype, 'list');
+	try {
+		const flag = await service.flag({ clip: reference, frameNumber: 2, note: 'Healthy A edge' });
+		expect(
+			fullHistory,
+			'one selected frame must not materialize every unrelated history note'
+		).not.toHaveBeenCalled();
+		expect(
+			treeReads.mock.calls.every((call) => call.length > 1),
+			'one selected frame must not enumerate unrelated evidence paths'
+		).toBe(true);
+		return flag;
+	} finally {
+		fullHistory.mockRestore();
+		treeReads.mockRestore();
+	}
 }

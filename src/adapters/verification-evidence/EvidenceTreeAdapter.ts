@@ -85,17 +85,12 @@ export class EvidenceTreeAdapter {
 			: [undefined];
 		const args = ['--literal-pathspecs', 'ls-tree', '-r', '-l', '-z', commit];
 		for (const scope of scopes)
-			this.rememberListing(await this.git.run(scope ? [...args, '--', ...scope] : args), selected);
+			rememberListing(
+				await this.git.run(scope ? [...args, '--', ...scope] : args),
+				selected,
+				this.blobSizes
+			);
 		return selected;
-	}
-
-	private rememberListing(output: string, selected: Map<string, string>): void {
-		for (const line of output.split('\0')) {
-			const match = /^\d+ blob ([0-9a-f]+) +([0-9]+)\t(.+)$/s.exec(line);
-			if (!match) continue;
-			this.blobSizes.set(match[1], Number(match[2]));
-			selected.set(match[3], match[1]);
-		}
 	}
 
 	/** Creates a commit that adds files to its first parent's tree; no ref is moved. */
@@ -194,3 +189,16 @@ function batchBlobs(bytes: Buffer, hashes: string[]): Map<string, Buffer> {
 }
 
 export type { TreeFile, TreeCommit } from './EvidenceTreeAdapter.types';
+
+function rememberListing(
+	output: string,
+	selected: Map<string, string>,
+	sizes: Map<string, number>
+): void {
+	for (const line of output.split('\0')) {
+		const match = /^\d+ blob ([0-9a-f]+) +([0-9]+)\t(.+)$/s.exec(line);
+		if (!match) continue;
+		sizes.set(match[1], Number(match[2]));
+		selected.set(match[3], match[1]);
+	}
+}

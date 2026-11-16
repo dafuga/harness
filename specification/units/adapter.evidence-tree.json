@@ -133,7 +133,11 @@
 				"type": "string[]",
 				"required": false,
 				"description": "Omit to list every blob. Supply literal repository-relative files or directories to enumerate only those paths and directory descendants; an empty array returns an empty map without invoking Git. Names retain their complete repository-relative paths, and wildcard characters are literal. Only selected blob sizes are remembered. Duplicate paths are coalesced and scoped Git queries use weighted 32KiB argument batches, so large manifests do not become one oversized process argument list. A single path plus the 128-byte per-argument allowance must fit the 32KiB budget; oversized names reject with Error.",
-				"examples": [["video-feedback/"], ["records/verification/manifest.json"]]
+				"examples": [
+					["video-feedback/"],
+					["records/verification/manifest.json"]
+				],
+				"default": "undefined (omitted)"
 			},
 			{
 				"name": "EvidenceTreeAdapter.commit.input",
@@ -220,7 +224,11 @@
 				"type": "number[]",
 				"required": true,
 				"description": "Byte size of each blob in one batch read. The result adds 128 bytes of room per blob for its header line and trailing newline, and an empty list gives 1.",
-				"examples": [[1024, 65536, 2048], [268435456], [0]]
+				"examples": [
+					[1024, 65536, 2048],
+					[268435456],
+					[0]
+				]
 			},
 			{
 				"name": "batchGroups.hashes",
@@ -517,7 +525,11 @@
 						"type": "string[]",
 						"required": false,
 						"description": "Omit to list every blob. Supply literal repository-relative files or directories to enumerate only those paths and directory descendants; an empty array returns an empty map without invoking Git. Names retain their complete repository-relative paths, and wildcard characters are literal. Only selected blob sizes are remembered. Duplicate paths are coalesced and scoped Git queries use weighted 32KiB argument batches, so large manifests do not become one oversized process argument list. A single path plus the 128-byte per-argument allowance must fit the 32KiB budget; oversized names reject with Error.",
-						"examples": [["video-feedback/"], ["records/verification/manifest.json"]]
+						"examples": [
+							["video-feedback/"],
+							["records/verification/manifest.json"]
+						],
+						"default": "undefined (omitted)"
 					}
 				],
 				"outputs": [
@@ -663,7 +675,11 @@
 						"type": "number[]",
 						"required": true,
 						"description": "Byte size of each blob in one batch read. The result adds 128 bytes of room per blob for its header line and trailing newline, and an empty list gives 1.",
-						"examples": [[1024, 65536, 2048], [268435456], [0]]
+						"examples": [
+							[1024, 65536, 2048],
+							[268435456],
+							[0]
+						]
 					}
 				],
 				"outputs": [
