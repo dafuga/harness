@@ -1,11 +1,9 @@
 // @harness-uid u_gq3kw7cl76
 import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
-import {
-	ApiDeclarationBuildError,
-	EdgeBundleBuildError,
-	EdgeBundlePortabilityError,
-	PublicApiBundleBuildError
-} from './build-api.types';
+import { ApiDeclarationBuildError } from './ApiDeclarationBuildError';
+import { EdgeBundleBuildError } from './EdgeBundleBuildError';
+import { EdgeBundlePortabilityError } from './EdgeBundlePortabilityError';
+import { PublicApiBundleBuildError } from './PublicApiBundleBuildError';
 
 /** Builds the side-effect-free public API, its declarations and the shipped kernel artifacts. */
 const entries = {

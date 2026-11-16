@@ -9,10 +9,14 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/repositories/reports-media/AnalyticsInitializationTimeoutError.ts",
 			"src/repositories/reports-media/AnalyticsRepository.ts",
-			"src/repositories/reports-media/AnalyticsRepository.types.ts"
+			"src/repositories/reports-media/InvalidRetentionCutoffError.ts",
+			"src/repositories/reports-media/UnsupportedAnalyticsSchemaVersionError.ts"
 		],
 		"symbols": [
+			"AnalyticsInitializationTimeoutError",
+			"AnalyticsInitializationTimeoutError.constructor",
 			"AnalyticsRepository",
 			"AnalyticsRepository.constructor",
 			"AnalyticsRepository.open",
@@ -22,12 +26,10 @@
 			"AnalyticsRepository.events",
 			"AnalyticsRepository.prune",
 			"AnalyticsRepository.close",
-			"UnsupportedAnalyticsSchemaVersionError",
-			"UnsupportedAnalyticsSchemaVersionError.constructor",
 			"InvalidRetentionCutoffError",
 			"InvalidRetentionCutoffError.constructor",
-			"AnalyticsInitializationTimeoutError",
-			"AnalyticsInitializationTimeoutError.constructor"
+			"UnsupportedAnalyticsSchemaVersionError",
+			"UnsupportedAnalyticsSchemaVersionError.constructor"
 		]
 	},
 	"contract": {
@@ -562,6 +564,19 @@
 		],
 		"initialization": [
 			{
+				"name": "AnalyticsInitializationTimeoutError.constructor",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "AnalyticsInitializationTimeoutError.constructor",
+						"type": "unknown",
+						"description": "The new AnalyticsInitializationTimeoutError, with its fixed message and name set."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
 				"name": "AnalyticsRepository.constructor",
 				"inputs": [
 					{
@@ -614,19 +629,6 @@
 				"errorStatus": "declared"
 			},
 			{
-				"name": "UnsupportedAnalyticsSchemaVersionError.constructor",
-				"inputs": [],
-				"outputs": [
-					{
-						"name": "UnsupportedAnalyticsSchemaVersionError.constructor",
-						"type": "unknown",
-						"description": "The new UnsupportedAnalyticsSchemaVersionError, with its fixed message and name set."
-					}
-				],
-				"errors": [],
-				"errorStatus": "declared"
-			},
-			{
 				"name": "InvalidRetentionCutoffError.constructor",
 				"inputs": [],
 				"outputs": [
@@ -640,13 +642,13 @@
 				"errorStatus": "declared"
 			},
 			{
-				"name": "AnalyticsInitializationTimeoutError.constructor",
+				"name": "UnsupportedAnalyticsSchemaVersionError.constructor",
 				"inputs": [],
 				"outputs": [
 					{
-						"name": "AnalyticsInitializationTimeoutError.constructor",
+						"name": "UnsupportedAnalyticsSchemaVersionError.constructor",
 						"type": "unknown",
-						"description": "The new AnalyticsInitializationTimeoutError, with its fixed message and name set."
+						"description": "The new UnsupportedAnalyticsSchemaVersionError, with its fixed message and name set."
 					}
 				],
 				"errors": [],

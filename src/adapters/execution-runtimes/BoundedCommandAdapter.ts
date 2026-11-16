@@ -2,13 +2,13 @@
 import { spawn, spawnSync, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import { basename } from 'node:path';
 import {
-	CommandAbortedError,
-	CommandBoundsError,
-	CommandOutputLimitError,
-	DirectProbeRestrictionError,
 	type BoundedCommandOptions,
 	type BoundedCommandResult
 } from './BoundedCommandAdapter.types';
+import { CommandAbortedError } from './CommandAbortedError';
+import { CommandBoundsError } from './CommandBoundsError';
+import { CommandOutputLimitError } from './CommandOutputLimitError';
+import { DirectProbeRestrictionError } from './DirectProbeRestrictionError';
 import { commandDeadlines } from './bounded-command-adapter/commandDeadlines';
 import {
 	BoundedCommandFailure,

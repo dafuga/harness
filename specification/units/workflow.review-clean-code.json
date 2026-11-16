@@ -9,15 +9,18 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/audit/development-tooling/JevRequestFailedError.ts",
+			"src/audit/development-tooling/ReviewCancelledError.ts",
+			"src/audit/development-tooling/ReviewCredentialMissingError.ts",
 			"src/audit/development-tooling/reviewCleanCode.ts",
 			"src/audit/development-tooling/reviewCleanCode.types.ts"
 		],
 		"symbols": [
-			"reviewCleanCode",
-			"ReviewCleanCodeInput",
+			"JevRequestFailedError",
 			"ReviewCancelledError",
 			"ReviewCredentialMissingError",
-			"JevRequestFailedError",
+			"reviewCleanCode",
+			"ReviewCleanCodeInput",
 			"ReviewCleanCodeInput",
 			"ReviewedEntry"
 		]

@@ -8,12 +8,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["scripts/build-api.ts", "scripts/build-api.types.ts"],
+		"source": [
+			"scripts/ApiDeclarationBuildError.ts",
+			"scripts/EdgeBundleBuildError.ts",
+			"scripts/EdgeBundlePortabilityError.ts",
+			"scripts/PublicApiBundleBuildError.ts",
+			"scripts/build-api.ts"
+		],
 		"symbols": [
 			"ApiDeclarationBuildError",
-			"PublicApiBundleBuildError",
 			"EdgeBundleBuildError",
-			"EdgeBundlePortabilityError"
+			"EdgeBundlePortabilityError",
+			"PublicApiBundleBuildError"
 		]
 	},
 	"contract": {

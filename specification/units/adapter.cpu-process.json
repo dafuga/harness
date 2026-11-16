@@ -9,14 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/development-tooling/cpu-usage-service/cpu-process-adapter/CpuCountersUnavailableError.ts",
 			"src/services/development-tooling/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.ts",
-			"src/services/development-tooling/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.types.ts"
+			"src/services/development-tooling/cpu-usage-service/cpu-process-adapter/UnsupportedCpuProcessPlatformError.ts"
 		],
 		"symbols": [
+			"CpuCountersUnavailableError",
 			"CpuProcessAdapter",
 			"CpuProcessAdapter.sample",
-			"UnsupportedCpuProcessPlatformError",
-			"CpuCountersUnavailableError"
+			"UnsupportedCpuProcessPlatformError"
 		]
 	},
 	"contract": {

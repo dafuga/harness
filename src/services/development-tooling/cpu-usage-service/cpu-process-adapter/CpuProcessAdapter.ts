@@ -3,10 +3,8 @@ import { performance } from 'node:perf_hooks';
 import { BoundedCommandAdapter } from '../../../../adapters/execution-runtimes/BoundedCommandAdapter';
 import { cpus, platform } from 'node:os';
 import { cpuProcesses } from './cpuProcesses';
-import {
-	CpuCountersUnavailableError,
-	UnsupportedCpuProcessPlatformError
-} from './CpuProcessAdapter.types';
+import { CpuCountersUnavailableError } from './CpuCountersUnavailableError';
+import { UnsupportedCpuProcessPlatformError } from './UnsupportedCpuProcessPlatformError';
 import type { CpuReading } from '../../../../utils/development-tooling/cpuMetrics';
 
 export class CpuProcessAdapter {

@@ -6,11 +6,9 @@ import { mkdirSync, chmodSync } from 'node:fs';
 import { join } from 'node:path';
 import { realpath } from 'node:fs/promises';
 import { homedir } from 'node:os';
-import {
-	AnalyticsInitializationTimeoutError,
-	InvalidRetentionCutoffError,
-	UnsupportedAnalyticsSchemaVersionError
-} from './AnalyticsRepository.types';
+import { AnalyticsInitializationTimeoutError } from './AnalyticsInitializationTimeoutError';
+import { InvalidRetentionCutoffError } from './InvalidRetentionCutoffError';
+import { UnsupportedAnalyticsSchemaVersionError } from './UnsupportedAnalyticsSchemaVersionError';
 import type { AnalyticsEvent } from '../../core/reports-media/analyticsTypes';
 import { AnalyticsEvent as AnalyticsEventModel } from '../../models/reports-media/AnalyticsEvent';
 import { sqliteTableSql } from '../../utils/development-tooling/sqliteTableSql';

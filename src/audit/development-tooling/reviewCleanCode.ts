@@ -1,10 +1,8 @@
 // @harness-uid u_ioz2iepk5w
 import type { ReviewCleanCodeInput, ReviewedEntry } from './reviewCleanCode.types';
-import {
-	JevRequestFailedError,
-	ReviewCancelledError,
-	ReviewCredentialMissingError
-} from './reviewCleanCode.types';
+import { JevRequestFailedError } from './JevRequestFailedError';
+import { ReviewCancelledError } from './ReviewCancelledError';
+import { ReviewCredentialMissingError } from './ReviewCredentialMissingError';
 import { resolve } from 'node:path';
 import { JevAdapter } from '../../adapters/agents-providers/JevAdapter';
 import { collectAuditedFiles } from './collect';
