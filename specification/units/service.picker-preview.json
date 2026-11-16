@@ -8,11 +8,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/codex-picker-command/PickerPreviewService.ts"],
+		"source": [
+			"src/cli/program/codex-picker-command/PickerPreviewService.ts",
+			"src/cli/program/codex-picker-command/PickerPreviewService.types.ts"
+		],
 		"symbols": [
 			"PickerPreviewService",
 			"PickerPreviewService.constructor",
-			"PickerPreviewService.fetch"
+			"PickerPreviewService.fetch",
+			"InvalidPickerPreviewRequestError"
 		]
 	},
 	"contract": {
