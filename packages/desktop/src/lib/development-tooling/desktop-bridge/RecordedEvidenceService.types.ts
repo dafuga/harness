@@ -4,6 +4,14 @@ import type { ProjectSessionService } from '../../../services/projects-sessions/
 
 export type Shown = Pick<EntityEvidenceQuery, 'branch' | 'commit'>;
 
+export class RegisteredProjectIdRequiredError extends Error {
+	override name = 'RegisteredProjectIdRequiredError';
+}
+
+export class LocalBranchRequiredError extends Error {
+	override name = 'LocalBranchRequiredError';
+}
+
 export type ProjectRead = Pick<
 	ReturnType<ProjectSessionService['requireProject']>,
 	'root' | 'source'

@@ -1,5 +1,10 @@
 // @harness-uid u_sjbkerzshs
-import type { ProjectRead, Shown } from './RecordedEvidenceService.types';
+import {
+	LocalBranchRequiredError,
+	RegisteredProjectIdRequiredError,
+	type ProjectRead,
+	type Shown
+} from './RecordedEvidenceService.types';
 import type { CacheIdentity } from '../../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import { explorerEvidence } from '$reports/utils/explorer-ui/explorerEvidence';
 import {
@@ -64,7 +69,7 @@ export class RecordedEvidenceService {
 		this.session.assertProject(query.projectId);
 		const { root, source } = this.session.requireProject();
 		const projectId = this.session.projectId;
-		if (!projectId) throw new Error('Open a registered project first.');
+		if (!projectId) throw new RegisteredProjectIdRequiredError('Open a registered project first.');
 		return { root, source, projectId };
 	}
 
@@ -77,7 +82,7 @@ export class RecordedEvidenceService {
 	/** Where a read is in history, and the stored revisions it shows, at pinned revisions. */
 	private async scoped(query: EntityEvidenceQuery, pins: PinnedRevisions, project: ProjectRead) {
 		const { root, source } = project;
-		if (!query.branch) throw new Error(unbranched);
+		if (!query.branch) throw new LocalBranchRequiredError(unbranched);
 		const { commit, tip } = await source.revision({ branch: query.branch, commit: query.commit });
 		recordedTip({ ...query, commit }, tip);
 		const history = this.history(root);
