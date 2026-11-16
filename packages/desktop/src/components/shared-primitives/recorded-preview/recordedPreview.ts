@@ -2,6 +2,7 @@
 import { errorMessage } from '$reports/helpers/strings/errorMessage';
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { PreviewPick } from './recordedPreview.types';
+import { RecordedPreviewError } from './recordedPreview.types';
 import type {
 	RecordedThumbnail,
 	PreviewState
@@ -24,17 +25,17 @@ const empty = (status: PreviewState['status'], reason = ''): PreviewState => ({
 
 function sameScope(result: EntityEvidenceResult, scope: EntityEvidenceQuery): void {
 	if (result.scope.commit !== scope.commit || result.scope.location.entity !== scope.entityId)
-		throw new Error('The screenshot answer belongs to another entity or commit.');
+		throw new RecordedPreviewError('The screenshot answer belongs to another entity or commit.');
 	if (scope.projectId && result.identity.projectId !== scope.projectId)
-		throw new Error('The screenshot answer belongs to another project.');
+		throw new RecordedPreviewError('The screenshot answer belongs to another project.');
 	if (result.identity.sourceCommit !== scope.commit)
-		throw new Error('The screenshot identity belongs to another commit.');
+		throw new RecordedPreviewError('The screenshot identity belongs to another commit.');
 }
 
 function declared(thumb: RecordedThumbnail): PreviewPick | null {
 	if (thumb.scenario || thumb.state || thumb.viewport) {
 		if (!thumb.scenario || !thumb.state || !thumb.viewport)
-			throw new Error('The screenshot binding is incomplete.');
+			throw new RecordedPreviewError('The screenshot binding is incomplete.');
 		return { scenario: thumb.scenario, state: thumb.state, viewport: thumb.viewport };
 	}
 	return null;
@@ -114,7 +115,7 @@ export function recordedPreview(
 				const { bytes, mediaType } = await artifactBytes(bridge, pick.query);
 				if (disposed) return;
 				if (!['image/png', 'image/jpeg'].includes(mediaType))
-					throw new Error('The recorded bytes are not a screenshot.');
+					throw new RecordedPreviewError('The recorded bytes are not a screenshot.');
 				url = URL.createObjectURL(new Blob([new Uint8Array(bytes)], { type: mediaType }));
 				apply({ status: 'ready', url, caption: pick.caption, reason: '' });
 			})
