@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/validators/RemoteProjectResponseValidator.ts",
-			"packages/desktop/src/validators/projects-sessions/RemoteProjectResponseValidator.ts"
+			"packages/desktop/src/validators/projects-sessions/RemoteProjectResponseValidator.ts",
+			"packages/desktop/src/validators/projects-sessions/RemoteProjectResponseValidator.types.ts"
 		],
 		"symbols": [
 			"responseRecord",
@@ -23,7 +24,21 @@
 			"RemoteProjectResponseValidator.entity",
 			"RemoteProjectResponseValidator.messages",
 			"RemoteProjectResponseValidator.history",
-			"RemoteProjectResponseValidator.comment"
+			"RemoteProjectResponseValidator.comment",
+			"HostedActorIdentityError",
+			"HostedActorRequiredError",
+			"HostedCommentAnchorMismatchError",
+			"HostedCommentIdentityMismatchError",
+			"HostedCommentNotAcknowledgedError",
+			"HostedThreadMismatchError",
+			"InvalidHostedEntityError",
+			"InvalidHostedHistoryEventError",
+			"InvalidHostedHistoryPageError",
+			"InvalidHostedMessagesError",
+			"InvalidHostedProjectError",
+			"InvalidHostedProjectsError",
+			"InvalidHostedResponseRecordError",
+			"InvalidHostedSnapshotError"
 		]
 	},
 	"contract": {
