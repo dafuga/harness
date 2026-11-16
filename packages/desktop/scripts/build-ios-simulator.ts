@@ -15,6 +15,7 @@ import {
 	verifiedSignature
 } from './ios-products';
 import { buildScanFixture, holds, scanFixtureProduct } from './ios-scan-fixture';
+import { NormalProductRejectedError } from './build-ios-simulator.types';
 
 /**
  * Builds the iOS app for a simulator: Debug by default, `--release` for the Release
@@ -64,9 +65,13 @@ async function build(plan: IosBuildPlan): Promise<void> {
 	if (built.left) console.error(built.left);
 	succeeded('xcodebuild', built);
 	if (allowsLocalNetworking(product) || inspectable(product))
-		throw new Error('A normal product must have no networking exception and no web inspection.');
+		throw new NormalProductRejectedError(
+			'A normal product must have no networking exception and no web inspection.'
+		);
 	if (holds(product, scanMarker))
-		throw new Error('A normal product must not hold the synthetic scanner of a test copy.');
+		throw new NormalProductRejectedError(
+			'A normal product must not hold the synthetic scanner of a test copy.'
+		);
 	console.log(`${plan.configuration} simulator build; signature ${verifiedSignature(product)}.`);
 	console.log(product);
 	if (!plan.fixture) return;

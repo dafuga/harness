@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/build-ios-simulator.ts"],
-		"symbols": []
+		"source": [
+			"packages/desktop/scripts/build-ios-simulator.ts",
+			"packages/desktop/scripts/build-ios-simulator.types.ts"
+		],
+		"symbols": ["NormalProductRejectedError"]
 	},
 	"contract": {
 		"origin": "declared",
