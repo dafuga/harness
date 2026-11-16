@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.explorer-ui-entity-contract-method-names",
+	"title": "reports.function.explorer-ui-entity-contract-method-names examples",
+	"kind": "headless",
+	"units": ["reports.function.explorer-ui-entity-contract-method-names"],
+	"builds": [],
+	"states": [
+		{
+			"id": "matches-literal-owner-declarations",
+			"title": "Matches literal owner declarations",
+			"coverage": "required"
+		},
+		{
+			"id": "extracts-declared-methods-with-optional-whole-members",
+			"title": "Extracts declared methods with optional whole members",
+			"coverage": "required"
+		},
+		{
+			"id": "orders-unique-methods-by-contract-priority",
+			"title": "Orders unique methods by contract priority",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.explorer-ui-entity-contract-method-names.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"matches-literal-owner-declarations",
+				"extracts-declared-methods-with-optional-whole-members",
+				"orders-unique-methods-by-contract-priority"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"matches-literal-owner-declarations",
+				"extracts-declared-methods-with-optional-whole-members",
+				"orders-unique-methods-by-contract-priority"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"matches-literal-owner-declarations",
+				"extracts-declared-methods-with-optional-whole-members",
+				"orders-unique-methods-by-contract-priority"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
