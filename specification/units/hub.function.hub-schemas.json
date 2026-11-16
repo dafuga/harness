@@ -43,7 +43,7 @@
 			},
 			{
 				"name": "hubSchemas.value",
-				"type": "Input",
+				"type": "unknown",
 				"required": true,
 				"description": "The untrusted value to check, such as a plan, design or approval record read from hosted storage; it is passed unchanged to schema.safeParse, so nothing is coerced, defaulted or trimmed before the check. A value the schema rejects makes hubSchemas throw artifact-corrupt, and no partial result is returned.",
 				"examples": [
@@ -246,7 +246,7 @@
 					},
 					{
 						"name": "hubSchemas.value",
-						"type": "Input",
+						"type": "unknown",
 						"required": true,
 						"description": "The untrusted value to check, such as a plan, design or approval record read from hosted storage; it is passed unchanged to schema.safeParse, so nothing is coerced, defaulted or trimmed before the check. A value the schema rejects makes hubSchemas throw artifact-corrupt, and no partial result is returned.",
 						"examples": [

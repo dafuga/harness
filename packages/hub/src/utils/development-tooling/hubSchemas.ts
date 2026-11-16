@@ -92,7 +92,7 @@ export const hubApprovalSchema = z.object({
 	/** The one option approved, when its version has options. */
 	option: optionId.optional()
 });
-export function hubSchemas<T, Input = unknown>(schema: z.ZodType<T>, value: Input): T {
+export function hubSchemas<T>(schema: z.ZodType<T>, value: unknown): T {
 	const parsed = schema.safeParse(value);
 	if (!parsed.success)
 		throw Object.assign(new Error('Invalid Harness artifact'), { code: 'artifact-corrupt' });
