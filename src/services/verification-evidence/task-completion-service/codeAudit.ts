@@ -1,5 +1,6 @@
 // @harness-uid u_ki6in3esls
 import { CommitTreeAdapter } from '../../../adapters/git-source-history/CommitTreeAdapter';
+import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import { VerificationStoreRepository } from '../../../repositories/verification-evidence/VerificationStoreRepository';
 import type { TaskCheck } from './planAudit';
 
@@ -10,7 +11,9 @@ export async function codeAudit(
 ): Promise<TaskCheck[]> {
 	const stored = new VerificationStoreRepository(root).latest(commit);
 	if (!stored)
-		throw new Error('Run harness verify run; no verification record proves the task commit.');
+		throw new ExpectedCliError(
+			'Run harness verify run; no verification record proves the task commit.'
+		);
 	// A missing record needs no compiler or framework dependency, including in the packed SDK.
 	const [
 		{ VerificationCheckService },
@@ -25,7 +28,7 @@ export async function codeAudit(
 	]);
 	const verified = await new VerificationCheckService(root).check(commit, stored);
 	if (verified.status !== 'passed' || stored.record.status !== 'passed')
-		throw new Error(`Harness verification failed: ${verified.problems.join('; ')}`);
+		throw new ExpectedCliError(`Harness verification failed: ${verified.problems.join('; ')}`);
 	const side = await loadSide(
 		root,
 		await CommitTreeAdapter.open(root, commit),
