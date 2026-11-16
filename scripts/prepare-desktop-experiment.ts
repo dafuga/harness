@@ -5,16 +5,19 @@ import { access, mkdir, rename } from 'node:fs/promises';
 import { DesktopArchiveAdapter } from './prepare-desktop-experiment/DesktopArchiveAdapter';
 import { DesktopExperimentService } from './prepare-desktop-experiment/DesktopExperimentService';
 import { desktopPatchConfig } from '../src/configs/development-tooling/desktopPatchConfig';
+import { ExpectedCliError } from '../src/core/development-tooling/errors';
 import { DesktopIntegrityAdapter } from './prepare-desktop-experiment/DesktopIntegrityAdapter';
+import { ExperimentalAppBuildError } from './prepare-desktop-experiment.types';
 
 const source = '/Applications/ChatGPT.app';
 const target = join(homedir(), 'Applications/Codex Harness Experimental.app');
-if (resolve(source) === resolve(target)) throw new Error('Separate app copy required');
+if (resolve(source) === resolve(target)) throw new ExpectedCliError('Separate app copy required');
 const processes = Bun.spawn(['/bin/ps', '-axo', 'command='], { stdout: 'pipe', stderr: 'pipe' });
 const running = await new Response(processes.stdout).text();
-if ((await processes.exited) !== 0) throw new Error('Could not check running desktop processes');
+if ((await processes.exited) !== 0)
+	throw new ExpectedCliError('Could not check running desktop processes');
 if (running.split('\n').some((line) => line.startsWith(join(target, 'Contents/MacOS/'))))
-	throw new Error('Quit the experimental app before preparing it');
+	throw new ExpectedCliError('Quit the experimental app before preparing it');
 const cache = join(import.meta.dir, '../.cache/codex-picker-evidence/desktop-copy');
 await mkdir(cache, { recursive: true, mode: 0o700 });
 const archive = new DesktopArchiveAdapter();
@@ -36,7 +39,7 @@ const build = await Bun.build({
 	target: 'browser',
 	format: 'esm'
 });
-if (!build.success) throw new Error('Bridge build failed');
+if (!build.success) throw new ExperimentalAppBuildError('Bridge build failed');
 changes.set('webview/assets/harness-native-picker.js', await build.outputs[0].text());
 const temporary = join(cache, 'patched.asar');
 const hash = await archive.patch(sourceAsar, temporary, changes);
@@ -55,7 +58,7 @@ for (const [edit] of edits) {
 		stderr: 'pipe'
 	});
 	if ((await child.exited) !== 0 && !edit.startsWith('Delete '))
-		throw new Error(`Plist edit failed: ${edit}`);
+		throw new ExperimentalAppBuildError(`Plist edit failed: ${edit}`);
 }
 await new DesktopIntegrityAdapter().update(target);
 const native = join(target, 'Contents/MacOS/CodexHarnessElectron');
@@ -75,7 +78,8 @@ const launcher = Bun.spawn(
 	],
 	{ stdout: 'pipe', stderr: 'pipe' }
 );
-if ((await launcher.exited) !== 0) throw new Error('Desktop launcher build failed');
+if ((await launcher.exited) !== 0)
+	throw new ExperimentalAppBuildError('Desktop launcher build failed');
 await Bun.write(
 	join(cache, 'build.json'),
 	JSON.stringify(
