@@ -43,12 +43,15 @@ export const videoCatalogVariants = {
 };
 
 export function videoFixtureFlags(variant: string) {
-	const flags = ['initial-flags-one', 'one'].includes(variant)
-		? frameFlags.slice(0, 1)
-		: ['initial-flags-many', 'with-initial-flags', 'many'].includes(variant)
-			? frameFlags
-			: [];
-	return flags.map((flag) => ({ ...flag, atSeconds: flag.frameNumber / 10 }));
+	const flags =
+		variant === ''
+			? [{ ...frameFlags[0], frameNumber: 5 }]
+			: ['initial-flags-one', 'one'].includes(variant)
+				? frameFlags.slice(0, 1)
+				: ['initial-flags-many', 'with-initial-flags', 'many'].includes(variant)
+					? frameFlags
+					: [];
+	return flags.map((flag) => ({ ...flag, atSeconds: flag.frameNumber / 30 }));
 }
 
 export function videoCatalogProps(id: string, variant: string): PreviewProps | null {

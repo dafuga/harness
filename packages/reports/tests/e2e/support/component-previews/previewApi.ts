@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { catalogFixtureMedia } from './catalogFixtureMedia';
 import { shellMedia } from './shellArtworkImages';
-import { serveVideoPlayerFixture } from './videoPlayerFixture';
+import { serveVideoPlayerFixture, serveVideoPlayerFrameFixture } from './videoPlayerFixture';
 import { serveVideoFeedback } from './videoFeedbackFixture';
 import { shellActivity } from './shellCatalogRoutes';
 import { index, revision, record } from '../../../../test/entityFixture';
@@ -46,6 +46,7 @@ export async function servePreview(route: Route, home: string, markup = '') {
 	if (url.pathname === '/api/project-activity') return activityFixture(route);
 	if (url.pathname === '/api/agent') return consoleAgentFixture(route);
 	if (url.pathname === '/api/video-flags') return serveVideoFeedback(route);
+	if (url.pathname === '/api/video-flag-frame') return serveVideoPlayerFrameFixture(route);
 	if (url.pathname === '/api/replay-video')
 		return route.fulfill({ contentType: 'video/mp4', body: 'Synthetic export response.' });
 	if (url.pathname === '/tools') return pickerFixture(route);

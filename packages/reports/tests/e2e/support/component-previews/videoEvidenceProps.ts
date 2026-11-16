@@ -6,8 +6,8 @@ export const videoEvidenceProps = {
 		durationSeconds: 1,
 		video: {
 			...videoItem.video!,
-			frameRate: 10,
-			frameCount: 10,
+			frameRate: 30,
+			frameCount: 30,
 			poster: { ...videoItem.video!.poster, url: undefined }
 		}
 	}
