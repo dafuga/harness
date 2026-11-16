@@ -7,7 +7,7 @@ import {
 } from '../../core/execution-runtimes/runtimeTypes';
 
 /** Accepts only a well-formed response envelope; anything else is an `invalid-response`. */
-export function runtimeResponse(value: object): RuntimeResponse {
+export function runtimeResponse(value: unknown): RuntimeResponse {
 	if (isEnvelope(value)) return value;
 	return runtimeFailure(
 		'invalid-response',

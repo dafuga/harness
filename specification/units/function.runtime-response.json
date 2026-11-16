@@ -29,7 +29,7 @@
 		"inputs": [
 			{
 				"name": "runtimeResponse.value",
-				"type": "object",
+				"type": "unknown",
 				"required": true,
 				"description": "Any value to validate; runtimeResponseText passes it the result of JSON.parse. Only a non-null object can pass: it is returned unchanged when ok is exactly true and it has an output property (any value), or when ok is exactly false and error has string code and message properties; any other value becomes an invalid-response failure.",
 				"examples": [
@@ -127,7 +127,7 @@
 				"inputs": [
 					{
 						"name": "runtimeResponse.value",
-						"type": "object",
+						"type": "unknown",
 						"required": true,
 						"description": "Any value to validate; runtimeResponseText passes it the result of JSON.parse. Only a non-null object can pass: it is returned unchanged when ok is exactly true and it has an output property (any value), or when ok is exactly false and error has string code and message properties; any other value becomes an invalid-response failure.",
 						"examples": [
