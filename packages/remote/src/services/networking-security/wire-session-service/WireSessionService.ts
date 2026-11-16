@@ -50,7 +50,7 @@ export class WireSessionService {
 		return { receive: (text) => this.receive(sink, text), close: () => this.release(sink) };
 	}
 	/** Recorded for replay, and sent now when a connection is attached. */
-	emit(channel: WireChannel, value: unknown): void {
+	emit<Value>(channel: WireChannel, value: Value): void {
 		if (!this.over) this.deliver(this.current, this.events.append(channel, value));
 	}
 	/** Revocation or shutdown: late answers and events are dropped, nothing more is accepted. */
