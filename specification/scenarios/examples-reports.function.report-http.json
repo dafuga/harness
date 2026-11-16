@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.report-http",
+	"title": "reports.function.report-http examples",
+	"kind": "headless",
+	"units": ["reports.function.report-http"],
+	"builds": [],
+	"states": [
+		{
+			"id": "serves-a-registered-local-asset-with-its-media-type",
+			"title": "Serves a registered local asset with its media type",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-an-evidence-file-that-is-missing-or-unknown",
+			"title": "Rejects an evidence file that is missing or unknown",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-any-evidence-type-other-than-assets",
+			"title": "Rejects any evidence type other than assets",
+			"coverage": "required"
+		},
+		{
+			"id": "fails-remote-evidence-when-r2-storage-is-not-configured",
+			"title": "Fails remote evidence when R2 storage is not configured",
+			"coverage": "required"
+		},
+		{
+			"id": "serves-remote-screenshots-from-r2-with-their-media-type",
+			"title": "Serves remote screenshots from R2 with their media type",
+			"coverage": "required"
+		},
+		{
+			"id": "describes-the-server-by-a-digest-of-its-repository-root",
+			"title": "Describes the server by a digest of its repository root",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.report-http.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"serves-a-registered-local-asset-with-its-media-type",
+				"rejects-an-evidence-file-that-is-missing-or-unknown",
+				"rejects-any-evidence-type-other-than-assets",
+				"fails-remote-evidence-when-r2-storage-is-not-configured",
+				"serves-remote-screenshots-from-r2-with-their-media-type",
+				"describes-the-server-by-a-digest-of-its-repository-root"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"serves-a-registered-local-asset-with-its-media-type",
+				"rejects-an-evidence-file-that-is-missing-or-unknown",
+				"rejects-any-evidence-type-other-than-assets",
+				"fails-remote-evidence-when-r2-storage-is-not-configured",
+				"serves-remote-screenshots-from-r2-with-their-media-type",
+				"describes-the-server-by-a-digest-of-its-repository-root"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"serves-a-registered-local-asset-with-its-media-type",
+				"rejects-an-evidence-file-that-is-missing-or-unknown",
+				"rejects-any-evidence-type-other-than-assets",
+				"fails-remote-evidence-when-r2-storage-is-not-configured",
+				"serves-remote-screenshots-from-r2-with-their-media-type",
+				"describes-the-server-by-a-digest-of-its-repository-root"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
