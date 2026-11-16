@@ -2,7 +2,6 @@
 import type { AcceptanceCheck } from './ios-acceptance-record.types';
 import { redacted } from './ios-acceptance-guards';
 import { errorMessage } from '../../reports/src/helpers/strings/errorMessage';
-import type { ThrownValue } from '../../reports/src/helpers/strings/errorMessage.types';
 
 /**
  * TEST ONLY. What a native acceptance run found: every assertion by name, passed or failed. It
@@ -30,14 +29,14 @@ export class AcceptanceRecord {
 		return redacted(text, this.secrets);
 	}
 
-	check(passed: boolean, name: string): void {
+	check(passed: unknown, name: string): void {
 		const check = { phase: this.phase, name: this.safe(name), passed: Boolean(passed) };
 		this.checks.push(check);
 		this.print(`${check.passed ? 'ok   ' : 'FAIL '}${check.name}`);
 	}
 
 	/** A phase that could not go on is a failed check, with the reason. */
-	stopped(error: ThrownValue): void {
+	stopped(error: unknown): void {
 		const reason = errorMessage(error);
 		this.check(false, `the phase stopped: ${reason.split('\n')[0].slice(0, 240)}`);
 	}

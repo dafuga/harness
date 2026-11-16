@@ -58,7 +58,7 @@
 			},
 			{
 				"name": "AcceptanceRecord.check.passed",
-				"type": "boolean",
+				"type": "unknown",
 				"required": true,
 				"description": "Any value converted with Boolean(...) to determine the check’s passed flag. It matters when recording an assertion; truthy values count as passed and falsy values count as failed.",
 				"examples": [true, false, 0]
@@ -72,7 +72,7 @@
 			},
 			{
 				"name": "AcceptanceRecord.stopped.error",
-				"type": "ThrownValue",
+				"type": "unknown",
 				"required": true,
 				"description": "Value passed to errorMessage when a phase cannot continue. The first line of its resulting message, capped at 240 characters, is embedded in the failed check name.",
 				"examples": [
@@ -195,7 +195,7 @@
 				"inputs": [
 					{
 						"name": "AcceptanceRecord.check.passed",
-						"type": "boolean",
+						"type": "unknown",
 						"required": true,
 						"description": "Any value converted with Boolean(...) to determine the check’s passed flag. It matters when recording an assertion; truthy values count as passed and falsy values count as failed.",
 						"examples": [true, false, 0]
@@ -223,7 +223,7 @@
 				"inputs": [
 					{
 						"name": "AcceptanceRecord.stopped.error",
-						"type": "ThrownValue",
+						"type": "unknown",
 						"required": true,
 						"description": "Value passed to errorMessage when a phase cannot continue. The first line of its resulting message, capped at 240 characters, is embedded in the failed check name.",
 						"examples": [

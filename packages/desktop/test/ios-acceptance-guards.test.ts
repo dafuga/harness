@@ -49,7 +49,7 @@ test('the record counts every assertion and never prints or keeps a code it was 
 	record.begin('Pairing');
 	record.hide('WXYZ-2345');
 	record.check(true, 'the code WXYZ-2345 was entered');
-	record.check(false, 'nothing reached the relay');
+	record.check(0, 'nothing reached the relay');
 	record.stopped(new Error('"Connected" did not appear; last seen: WXYZ2345\nstack'));
 	expect([record.passed, record.failed]).toEqual([1, 2]);
 	expect(record.checks.map((check) => check.phase)).toEqual(['Pairing', 'Pairing', 'Pairing']);
