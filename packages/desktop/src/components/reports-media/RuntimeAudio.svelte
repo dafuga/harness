@@ -6,6 +6,7 @@
 	import ComparePanes from '$shared/shared-primitives/ComparePanes.svelte';
 	import { comparisonPanes } from '$reports/helpers/verification-evidence/comparisonPanes';
 	import { errorMessage } from '$reports/helpers/strings/errorMessage';
+	import type { ComparisonPane } from '$reports/helpers/verification-evidence/comparisonPanes.types';
 
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 
@@ -56,12 +57,12 @@
 				paneClass="runtime-pane"
 				headings={paired}
 			>
-				{#snippet heading(pane)}
+				{#snippet heading(pane: ComparisonPane<Evidence>)}
 					<hx-p class="ex-pane-head"
 						><hx-strong>{pane.side === 'before' ? 'Before' : 'After'}</hx-strong></hx-p
 					>
 				{/snippet}
-				{#snippet children(pane)}
+				{#snippet children(pane: ComparisonPane<Evidence>)}
 					{@const clip = pane.value!}
 					{#await evidence.url(pane.side, clip.file)}
 						<hx-p class="muted">Reading the clip…</hx-p>
@@ -75,7 +76,7 @@
 							></Notice
 						>{/await}
 				{/snippet}
-				{#snippet gap(pane)}
+				{#snippet gap(pane: ComparisonPane<Evidence>)}
 					<Notice as="p" className="runtime-gap runtime-audio-runtime-gap"
 						><Status variant="icon" status="failed" reason="No clip" /><hx-span
 							>No clip of this state is recorded for {shortCommit(pane.commit)}.</hx-span
