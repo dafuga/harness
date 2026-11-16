@@ -154,7 +154,7 @@
 				"inputs": [
 					{
 						"name": "RuntimeScreens.children.pane",
-						"type": "unknown",
+						"type": "ComparisonPane<Evidence>",
 						"required": true
 					}
 				],
@@ -262,6 +262,11 @@
 		},
 		{
 			"unit": "reports.helper.verification-evidence-comparison-panes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
 			"via": "import",
 			"origin": "derived"
 		}
