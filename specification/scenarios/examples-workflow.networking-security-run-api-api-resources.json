@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-workflow.networking-security-run-api-api-resources",
+	"title": "workflow.networking-security-run-api-api-resources examples",
+	"kind": "headless",
+	"units": ["workflow.networking-security-run-api-api-resources"],
+	"builds": [],
+	"states": [
+		{
+			"id": "filters-a-catalog-from-the-selected-snapshot",
+			"title": "Filters a catalog from the selected snapshot",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/workflow.networking-security-run-api-api-resources.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["filters-a-catalog-from-the-selected-snapshot"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["filters-a-catalog-from-the-selected-snapshot"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["filters-a-catalog-from-the-selected-snapshot"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
