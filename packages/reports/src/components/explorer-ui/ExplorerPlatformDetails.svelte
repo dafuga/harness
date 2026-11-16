@@ -140,8 +140,8 @@
 			</hx-p>
 			{#if entry}
 				<DetailList rows={['Runtime', 'Declared at']} rowKey={(name) => name} className="pf-meta">
-					{#snippet label(name)}{name}{/snippet}
-					{#snippet children(name)}
+					{#snippet label(name: string)}{name}{/snippet}
+					{#snippet children(name: string)}
 						{#if name === 'Runtime'}{entry.runtime}
 						{:else}<hx-code>{shortCommit(host.scope.commit)}</hx-code>{/if}
 					{/snippet}
