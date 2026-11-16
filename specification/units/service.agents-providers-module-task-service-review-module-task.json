@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/agents-providers/module-task-service/reviewModuleTask.ts"],
-		"symbols": ["reviewModuleTask"]
+		"source": [
+			"src/services/agents-providers/module-task-service/reviewModuleTask.ts",
+			"src/services/agents-providers/module-task-service/reviewModuleTask.types.ts"
+		],
+		"symbols": ["TaskNotAwaitingAttemptReviewError", "reviewModuleTask", "StaleTaskReviewError"]
 	},
 	"contract": {
 		"origin": "declared",

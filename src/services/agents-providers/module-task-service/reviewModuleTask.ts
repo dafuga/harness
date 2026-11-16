@@ -5,6 +5,10 @@ import { ModuleTaskWorktreeAdapter } from '../../../adapters/agents-providers/Mo
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { taskWrites } from '../module-task-worker-service/taskClaim';
 import { ModuleTaskAnalyticsService } from '../ModuleTaskAnalyticsService';
+import { StaleTaskReviewError } from './reviewModuleTask.types';
+export class TaskNotAwaitingAttemptReviewError extends Error {
+	override name = 'TaskNotAwaitingAttemptReviewError';
+}
 /** A review is bound to one submitted claim; duplicate or stale reviews cannot bounce it twice. */
 export async function reviewModuleTask(
 	root: string,
@@ -15,7 +19,7 @@ export async function reviewModuleTask(
 	const review = reviewInputSchema.parse(input);
 	const before = (await repository.read()).data.tasks.find((task) => task.id === id);
 	if (before?.status !== 'review' || before.claim?.token !== review.attempt || !before.result)
-		throw new Error('Task is not awaiting this attempt review.');
+		throw new TaskNotAwaitingAttemptReviewError('Task is not awaiting this attempt review.');
 	let checkpoint = before.result.checkpointCommit;
 	if (review.verdict === 'incomplete' && !checkpoint) {
 		const source = before.result.sourceCommit ?? before.sourceCommit;
@@ -37,7 +41,7 @@ export async function reviewModuleTask(
 			task.contractHash !== before.contractHash ||
 			!task.result
 		)
-			throw new Error('Task review is stale; no result was overwritten.');
+			throw new StaleTaskReviewError('Task review is stale; no result was overwritten.');
 		task.reviews.push({
 			...review,
 			at: new Date().toISOString(),
