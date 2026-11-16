@@ -1,6 +1,7 @@
 // @harness-uid u_edyoybfg3o
 import type { Command } from 'commander';
 import { readFile, stat } from 'node:fs/promises';
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { CodexGatewayService } from './codex-gateway-service/CodexGatewayService';
 import { registerCodexPickerCommand } from './codex-picker-command/CodexPickerCommand';
 
@@ -17,9 +18,11 @@ export function registerCodexCommand(program: Command): void {
 		.option('--port <port>', 'Local port.', '47831')
 		.action(async (options: { tokenFile: string; port: string }) => {
 			const info = await stat(options.tokenFile);
-			if (info.mode & 0o077) throw new Error('Token file must have owner-only permissions');
+			if (info.mode & 0o077)
+				throw new ExpectedCliError('Token file must have owner-only permissions');
 			const token = (await readFile(options.tokenFile, 'utf8')).trim();
-			if (token.length < 32) throw new Error('Gateway token must contain at least 32 characters');
+			if (token.length < 32)
+				throw new ExpectedCliError('Gateway token must contain at least 32 characters');
 			const service = new CodexGatewayService({ token });
 			const server = Bun.serve({
 				hostname: '127.0.0.1',
