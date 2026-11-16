@@ -21,14 +21,14 @@ export const scanNotices: Record<RemoteScanFailure, string> = {
 };
 
 /** The way a scan ended, read from the code of what the plugin rejected with, or null. */
-export function scanFailure<Cause>(cause: Cause): RemoteScanFailure | null {
+export function scanFailure(cause: unknown): RemoteScanFailure | null {
 	const code =
 		typeof cause === 'object' && cause !== null ? (cause as { code?: unknown }).code : '';
 	return scanFailures.find((item) => item === code) ?? null;
 }
 
 /** What the page says when a scan was rejected: the words of that ending, or the cause itself. */
-export function scanNotice<Cause>(cause: Cause): string {
+export function scanNotice(cause: unknown): string {
 	const failure = scanFailure(cause);
 	return failure ? scanNotices[failure] : String(cause);
 }

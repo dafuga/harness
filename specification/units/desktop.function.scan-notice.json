@@ -36,7 +36,7 @@
 		"inputs": [
 			{
 				"name": "scanFailure.cause",
-				"type": "Cause",
+				"type": "unknown",
 				"required": true,
 				"description": "Value rejected by the pairing scan; an object's code is checked against the known scan-failure codes. Non-objects and unrecognized codes produce null.",
 				"examples": [
@@ -51,7 +51,7 @@
 			},
 			{
 				"name": "scanNotice.cause",
-				"type": "Cause",
+				"type": "unknown",
 				"required": true,
 				"description": "Value rejected by the pairing scan; a recognized object code maps to its notice, while any other cause is converted with String(cause).",
 				"examples": [
@@ -133,7 +133,7 @@
 				"inputs": [
 					{
 						"name": "scanFailure.cause",
-						"type": "Cause",
+						"type": "unknown",
 						"required": true,
 						"description": "Value rejected by the pairing scan; an object's code is checked against the known scan-failure codes. Non-objects and unrecognized codes produce null.",
 						"examples": [
@@ -163,7 +163,7 @@
 				"inputs": [
 					{
 						"name": "scanNotice.cause",
-						"type": "Cause",
+						"type": "unknown",
 						"required": true,
 						"description": "Value rejected by the pairing scan; a recognized object code maps to its notice, while any other cause is converted with String(cause).",
 						"examples": [
