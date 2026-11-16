@@ -1,5 +1,11 @@
 // @harness-uid u_gq3kw7cl76
 import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import {
+	ApiDeclarationBuildError,
+	EdgeBundleBuildError,
+	EdgeBundlePortabilityError,
+	PublicApiBundleBuildError
+} from './build-api.types';
 
 /** Builds the side-effect-free public API, its declarations and the shipped kernel artifacts. */
 const entries = {
@@ -24,7 +30,7 @@ async function buildDeclarations(): Promise<void> {
 		stdout: 'inherit',
 		stderr: 'inherit'
 	});
-	if (built.exitCode !== 0) throw new Error('Public API declarations failed.');
+	if (built.exitCode !== 0) throw new ApiDeclarationBuildError('Public API declarations failed.');
 	await mkdir('dist/types/lib', { recursive: true });
 	for (const entry of ['index', ...entryNames, ...edgeEntries]) {
 		const source = entries[entry as keyof typeof entries] ?? entry;
@@ -53,7 +59,8 @@ for (const [entry, source] of Object.entries(entries)) {
 		external: entry === 'verification' ? Object.keys(dependencies) : [],
 		splitting: entry === 'verification'
 	});
-	if (!result.success) throw new Error(`Public API bundle failed.\n${result.logs.join('\n')}`);
+	if (!result.success)
+		throw new PublicApiBundleBuildError(`Public API bundle failed.\n${result.logs.join('\n')}`);
 }
 await writeFile(
 	'dist/api/index.js',
@@ -69,10 +76,14 @@ for (const entry of edgeEntries) {
 		outdir: 'dist/api',
 		packages: 'external'
 	});
-	if (!result.success) throw new Error(`Edge bundle ${entry} failed.\n${result.logs.join('\n')}`);
+	if (!result.success)
+		throw new EdgeBundleBuildError(`Edge bundle ${entry} failed.\n${result.logs.join('\n')}`);
 	const code = await readFile(`dist/api/${entry}.js`, 'utf8');
 	const foreign = code.match(/from\s+["'](node:[^"']+|bun[^"']*)["']|\brequire\(/);
-	if (foreign) throw new Error(`Edge bundle ${entry} is not portable: it contains ${foreign[0]}`);
+	if (foreign)
+		throw new EdgeBundlePortabilityError(
+			`Edge bundle ${entry} is not portable: it contains ${foreign[0]}`
+		);
 }
 
 await buildDeclarations();
