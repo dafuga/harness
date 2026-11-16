@@ -99,7 +99,7 @@
 			{
 				"name": "stateTests",
 				"type": "Promise<StateTest[]>",
-				"description": "Authored test files that exist in the loaded index and contain a test or it call that is not skipped or todo, plus either the state as a string literal or, when a matching scenario whose tests resolve to the file declares viewports, one of the identifiers catalogCases, previewVariants, variants, previewState or state. Each viewports list holds the viewport IDs of the matching scenarios whose tests resolve to that file, and is empty when only dependency attribution found it.",
+				"description": "Authored test files that exist in the loaded index and contain a test or it call that is not skipped or todo, plus either the state as a string literal or, when a matching scenario whose tests resolve to the file declares viewports, one of the identifiers catalogCases, previewVariants, variants, previewState or state. Each viewports list holds the viewport IDs of the matching scenarios whose tests resolve to that file, and is empty when only dependency attribution found it. Declared native recording factories under tests receive their clip viewports only when their source contains assertions and state marks; an empty factory receives no test credit.",
 				"examples": [
 					[
 						{
@@ -214,7 +214,7 @@
 					{
 						"name": "stateTests",
 						"type": "Promise<StateTest[]>",
-						"description": "Authored test files that exist in the loaded index and contain a test or it call that is not skipped or todo, plus either the state as a string literal or, when a matching scenario whose tests resolve to the file declares viewports, one of the identifiers catalogCases, previewVariants, variants, previewState or state. Each viewports list holds the viewport IDs of the matching scenarios whose tests resolve to that file, and is empty when only dependency attribution found it.",
+						"description": "Authored test files that exist in the loaded index and contain a test or it call that is not skipped or todo, plus either the state as a string literal or, when a matching scenario whose tests resolve to the file declares viewports, one of the identifiers catalogCases, previewVariants, variants, previewState or state. Each viewports list holds the viewport IDs of the matching scenarios whose tests resolve to that file, and is empty when only dependency attribution found it. Declared native recording factories under tests receive their clip viewports only when their source contains assertions and state marks; an empty factory receives no test credit.",
 						"examples": [
 							[
 								{

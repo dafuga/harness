@@ -43,7 +43,7 @@
 			{
 				"name": "stateRegistries",
 				"type": "Promise<StateRegistry[]>",
-				"description": "Resolves to rows shaped as {entity, where, kind, states} extracted from matching JSON and TS/JS declarations, with where recording the path and kind set to required-states for matching paths or catalog otherwise. Entities outside the dotted/hyphenated ID pattern are ignored; state strings are deduplicated and empty strings become default.",
+				"description": "Resolves to rows shaped as {entity, where, kind, states} extracted from matching JSON and TS/JS declarations, with where recording the path and kind set to required-states for matching paths or catalog otherwise. Entities outside the dotted/hyphenated ID pattern are ignored; state strings are deduplicated and empty strings become default. A video entry names the associated state of one clip and has kind video; it is distinct from a complete catalog or required-state inventory.",
 				"examples": [
 					[
 						{
@@ -110,7 +110,7 @@
 					{
 						"name": "stateRegistries",
 						"type": "Promise<StateRegistry[]>",
-						"description": "Resolves to rows shaped as {entity, where, kind, states} extracted from matching JSON and TS/JS declarations, with where recording the path and kind set to required-states for matching paths or catalog otherwise. Entities outside the dotted/hyphenated ID pattern are ignored; state strings are deduplicated and empty strings become default.",
+						"description": "Resolves to rows shaped as {entity, where, kind, states} extracted from matching JSON and TS/JS declarations, with where recording the path and kind set to required-states for matching paths or catalog otherwise. Entities outside the dotted/hyphenated ID pattern are ignored; state strings are deduplicated and empty strings become default. A video entry names the associated state of one clip and has kind video; it is distinct from a complete catalog or required-state inventory.",
 						"examples": [
 							[
 								{
