@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/networking-security/hostedResponse.ts"],
-		"symbols": ["hostedResponse"]
+		"source": [
+			"packages/desktop/src/utils/networking-security/hostedResponse.ts",
+			"packages/desktop/src/utils/networking-security/hostedResponse.types.ts"
+		],
+		"symbols": ["hostedResponse", "HostedResponseTooLargeError"]
 	},
 	"contract": {
 		"origin": "declared",
