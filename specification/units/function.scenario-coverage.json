@@ -16,7 +16,8 @@
 			"src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/videoCoverage.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/videoCoverage.types.ts",
-			"src/workflows/verification-evidence/run-verify/verification-service/videoFlagCoverage.ts"
+			"src/workflows/verification-evidence/run-verify/verification-service/videoFlagCoverage.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/videoMetadataProblem.ts"
 		],
 		"symbols": [
 			"problem",
@@ -36,7 +37,8 @@
 			"videoCoverageFailures",
 			"videoCoverageReport",
 			"VideoCoverageReport",
-			"videoFlagCoverageFailure"
+			"videoFlagCoverageFailure",
+			"videoMetadataProblem"
 		]
 	},
 	"contract": {
@@ -338,6 +340,24 @@
 				"type": "Gathered",
 				"required": true,
 				"description": "One admitted video capture whose explicit addressed IDs and capture time must satisfy its exact owner, clip and viewport."
+			},
+			{
+				"name": "videoMetadataProblem.video",
+				"type": "NonNullable<Gathered['line']['video']>",
+				"required": true,
+				"description": "Declared retained video dimensions, cadence, frame count, poster and observed state/edge timestamps to compare with decoded media."
+			},
+			{
+				"name": "videoMetadataProblem.facts",
+				"type": "Extract<MediaFacts, { kind: 'video' }>",
+				"required": true,
+				"description": "Actual facts obtained from the admitted H.264 video, including its dimensions, cadence, frame count and duration."
+			},
+			{
+				"name": "videoMetadataProblem.line",
+				"type": "Gathered['line']",
+				"required": true,
+				"description": "Original capture line whose duration and asserted state must agree with the video metadata."
 			}
 		],
 		"outputs": [
@@ -841,6 +861,38 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "videoMetadataProblem",
+				"inputs": [
+					{
+						"name": "videoMetadataProblem.video",
+						"type": "NonNullable<Gathered['line']['video']>",
+						"required": true,
+						"description": "Declared retained video dimensions, cadence, frame count, poster and observed state/edge timestamps to compare with decoded media."
+					},
+					{
+						"name": "videoMetadataProblem.facts",
+						"type": "Extract<MediaFacts, { kind: 'video' }>",
+						"required": true,
+						"description": "Actual facts obtained from the admitted H.264 video, including its dimensions, cadence, frame count and duration."
+					},
+					{
+						"name": "videoMetadataProblem.line",
+						"type": "Gathered['line']",
+						"required": true,
+						"description": "Original capture line whose duration and asserted state must agree with the video metadata."
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoMetadataProblem",
+						"type": "string | undefined",
+						"description": "First decoded-metadata, retained-timestamp or missing-state diagnostic, or undefined when those checks agree. The comparison leaves media and provenance unchanged."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": []
