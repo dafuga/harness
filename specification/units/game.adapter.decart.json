@@ -18,7 +18,10 @@
 			"DecartAdapter.start",
 			"renderRate",
 			"validateSession",
-			"TokenClient"
+			"TokenClient",
+			"InvalidPreviewRequestError",
+			"ActivePreviewLeaseError",
+			"DecartTokenCreationError"
 		]
 	},
 	"contract": {
