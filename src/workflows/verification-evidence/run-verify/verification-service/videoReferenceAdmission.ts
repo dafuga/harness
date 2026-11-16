@@ -12,8 +12,9 @@ export function admitVideoReference(item: Gathered, commit: string, inputHash: s
 
 /** Serialized references and copies of an admitted object carry no authority. */
 export function trustedVideoReference(input: CoverageInput, item: Gathered): boolean {
-	const proof = proofs.get(item),
-		video = item.capture.video;
+	const proof = proofs.get(item);
+	if (!proof) return false;
+	const video = item.capture.video;
 	return !!(
 		proof &&
 		video &&
