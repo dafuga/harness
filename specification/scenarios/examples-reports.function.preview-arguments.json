@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.preview-arguments",
+	"title": "reports.function.preview-arguments examples",
+	"kind": "headless",
+	"units": ["reports.function.preview-arguments"],
+	"builds": [],
+	"states": [
+		{
+			"id": "preview-options-resolve-checkout-and-hash-settings",
+			"title": "Preview options resolve checkout and hash settings",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.preview-arguments.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["preview-options-resolve-checkout-and-hash-settings"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["preview-options-resolve-checkout-and-hash-settings"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["preview-options-resolve-checkout-and-hash-settings"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
