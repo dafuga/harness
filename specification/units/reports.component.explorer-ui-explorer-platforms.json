@@ -201,7 +201,7 @@
 				"inputs": [
 					{
 						"name": "ExplorerPlatforms.label.name",
-						"type": "unknown",
+						"type": "string",
 						"required": true
 					}
 				],
@@ -219,7 +219,7 @@
 				"inputs": [
 					{
 						"name": "ExplorerPlatforms.children.name",
-						"type": "unknown",
+						"type": "string",
 						"required": true
 					}
 				],

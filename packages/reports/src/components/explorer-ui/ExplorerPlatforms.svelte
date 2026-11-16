@@ -104,8 +104,8 @@
 			{card.entry?.summary ?? `Nothing is declared for ${card.name} at this revision.`}
 		</hx-p>
 		<DetailList rows={['Status', 'Runtime']} rowKey={(name) => name} className="pf-facts">
-			{#snippet label(name)}{name}{/snippet}
-			{#snippet children(name)}
+			{#snippet label(name: string)}{name}{/snippet}
+			{#snippet children(name: string)}
 				{#if name === 'Status'}<hx-span class="pf-status" data-status={card.status.id}
 						>{card.status.label}</hx-span
 					>
