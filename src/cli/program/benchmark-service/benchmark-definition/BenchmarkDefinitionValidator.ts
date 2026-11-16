@@ -1,6 +1,7 @@
 // @harness-uid u_u5y4g7wbkc
 import { z } from 'zod';
 import type { BenchmarkDefinition } from '../../../../core/agents-providers/subagentBenchmarkTypes';
+import { ExpectedCliError } from '../../../../core/development-tooling/errors';
 
 const text = z.string().trim().min(1);
 const id = text.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
@@ -58,7 +59,7 @@ export class BenchmarkDefinitionValidator {
 			definition.candidates.map((candidate) => candidate.id)
 		]) {
 			if (new Set(values).size !== values.length)
-				throw new Error('Duplicate benchmark identifiers or paths.');
+				throw new ExpectedCliError('Duplicate benchmark identifiers or paths.');
 		}
 		return definition;
 	}
