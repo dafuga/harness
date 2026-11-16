@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.module.server-auth",
+	"title": "hub.module.server-auth examples",
+	"kind": "headless",
+	"units": ["hub.module.server-auth"],
+	"builds": [],
+	"states": [
+		{
+			"id": "enables-sign-in-only-with-complete-settings-and-a-store",
+			"title": "Enables sign-in only with complete settings and a store",
+			"coverage": "required"
+		},
+		{
+			"id": "resolves-the-actor-only-from-a-live-session-cookie",
+			"title": "Resolves the actor only from a live session cookie",
+			"coverage": "required"
+		},
+		{
+			"id": "answers-auth-routes-with-coded-errors-and-skips-others",
+			"title": "Answers auth routes with coded errors and skips others",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-repository-and-token-calls-without-github",
+			"title": "Refuses repository and token calls without GitHub",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.module.server-auth.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"enables-sign-in-only-with-complete-settings-and-a-store",
+				"resolves-the-actor-only-from-a-live-session-cookie",
+				"answers-auth-routes-with-coded-errors-and-skips-others",
+				"refuses-repository-and-token-calls-without-github"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"enables-sign-in-only-with-complete-settings-and-a-store",
+				"resolves-the-actor-only-from-a-live-session-cookie",
+				"answers-auth-routes-with-coded-errors-and-skips-others",
+				"refuses-repository-and-token-calls-without-github"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"enables-sign-in-only-with-complete-settings-and-a-store",
+				"resolves-the-actor-only-from-a-live-session-cookie",
+				"answers-auth-routes-with-coded-errors-and-skips-others",
+				"refuses-repository-and-token-calls-without-github"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
