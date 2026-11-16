@@ -41,7 +41,7 @@
 			},
 			{
 				"name": "reportLocalCleanup.knownRuns",
-				"type": "unknown",
+				"type": "Set<string>",
 				"required": false,
 				"description": "Set of run directory names to preserve under the root runs directory; names are compared with its entries. Defaults to new Set<string>()."
 			}
@@ -90,7 +90,7 @@
 					},
 					{
 						"name": "reportLocalCleanup.knownRuns",
-						"type": "unknown",
+						"type": "Set<string>",
 						"required": false,
 						"description": "Set of run directory names to preserve under the root runs directory; names are compared with its entries. Defaults to new Set<string>()."
 					}

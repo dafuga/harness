@@ -24,7 +24,7 @@ export async function reportLocalCleanup(
 	root: string,
 	cutoff: number,
 	dryRun = false,
-	knownRuns = new Set<string>()
+	knownRuns: Set<string> = new Set<string>()
 ) {
 	if (!Number.isFinite(cutoff) || (await lstat(root)).isSymbolicLink())
 		throw new InvalidReportCleanupRootError('Invalid report cleanup root');
