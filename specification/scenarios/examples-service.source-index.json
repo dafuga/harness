@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.source-index",
+	"title": "service.source-index examples",
+	"kind": "headless",
+	"units": ["service.source-index"],
+	"builds": [],
+	"states": [
+		{
+			"id": "resolves-owner-prefixed-props-from-a-props-destructuring",
+			"title": "Resolves owner-prefixed props from a $props destructuring",
+			"coverage": "required"
+		},
+		{
+			"id": "indexes-readable-files-and-omits-ignored-ones",
+			"title": "Indexes readable files and omits ignored ones",
+			"coverage": "required"
+		},
+		{
+			"id": "resolves-default-and-named-import-bindings",
+			"title": "Resolves default and named import bindings",
+			"coverage": "required"
+		},
+		{
+			"id": "keeps-picked-omitted-and-required-props",
+			"title": "Keeps picked, omitted and required props",
+			"coverage": "required"
+		},
+		{
+			"id": "reads-storage-records-from-static-definitions",
+			"title": "Reads storage records from static definitions",
+			"coverage": "required"
+		},
+		{
+			"id": "classifies-typescript-execution-by-its-statements",
+			"title": "Classifies TypeScript execution by its statements",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.source-index.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"resolves-owner-prefixed-props-from-a-props-destructuring",
+				"indexes-readable-files-and-omits-ignored-ones",
+				"resolves-default-and-named-import-bindings",
+				"keeps-picked-omitted-and-required-props",
+				"reads-storage-records-from-static-definitions",
+				"classifies-typescript-execution-by-its-statements"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"resolves-owner-prefixed-props-from-a-props-destructuring",
+				"indexes-readable-files-and-omits-ignored-ones",
+				"resolves-default-and-named-import-bindings",
+				"keeps-picked-omitted-and-required-props",
+				"reads-storage-records-from-static-definitions",
+				"classifies-typescript-execution-by-its-statements"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"resolves-owner-prefixed-props-from-a-props-destructuring",
+				"indexes-readable-files-and-omits-ignored-ones",
+				"resolves-default-and-named-import-bindings",
+				"keeps-picked-omitted-and-required-props",
+				"reads-storage-records-from-static-definitions",
+				"classifies-typescript-execution-by-its-statements"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
