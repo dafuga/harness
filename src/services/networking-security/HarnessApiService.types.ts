@@ -19,6 +19,9 @@ export interface HarnessApiOptions {
 	after?: string;
 }
 
+/** Named values a caller passes as request input; the service does not validate them. */
+export type ApiFields = Record<string, unknown>;
+
 export interface ApiSnapshot {
 	project: { id?: string };
 	revision: { branch: string; commit: string; atTip: boolean };

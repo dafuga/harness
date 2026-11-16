@@ -20,6 +20,7 @@
 			"HarnessApiService.read",
 			"HarnessApiService.call",
 			"HarnessApiOptions",
+			"ApiFields",
 			"ApiSnapshot"
 		]
 	},
@@ -51,7 +52,7 @@
 			},
 			{
 				"name": "HarnessApiService.read.input",
-				"type": "Record<string, unknown>",
+				"type": "ApiFields",
 				"required": false,
 				"default": {},
 				"description": "Record of query values for the requested resource, passed inside the local agent request or converted to hosted query parameters; hosted reads omit null and undefined values and stringify the rest. Defaults to {}.",
@@ -70,7 +71,7 @@
 			},
 			{
 				"name": "HarnessApiService.call.input",
-				"type": "Record<string, unknown>",
+				"type": "ApiFields",
 				"required": true,
 				"description": "Record of parameters forwarded as the agent operation input. This service does not validate its keys; guarded write methods also require a writable branch tip.",
 				"examples": [
@@ -203,7 +204,7 @@
 					},
 					{
 						"name": "HarnessApiService.read.input",
-						"type": "Record<string, unknown>",
+						"type": "ApiFields",
 						"required": false,
 						"default": {},
 						"description": "Record of query values for the requested resource, passed inside the local agent request or converted to hosted query parameters; hosted reads omit null and undefined values and stringify the rest. Defaults to {}.",
@@ -242,7 +243,7 @@
 					},
 					{
 						"name": "HarnessApiService.call.input",
-						"type": "Record<string, unknown>",
+						"type": "ApiFields",
 						"required": true,
 						"description": "Record of parameters forwarded as the agent operation input. This service does not validate its keys; guarded write methods also require a writable branch tip.",
 						"examples": [
