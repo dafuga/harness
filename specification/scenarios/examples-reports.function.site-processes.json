@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.site-processes",
+	"title": "reports.function.site-processes examples",
+	"kind": "headless",
+	"units": ["reports.function.site-processes"],
+	"builds": [],
+	"states": [
+		{
+			"id": "drops-agents-whose-working-directory-cannot-be-told",
+			"title": "Drops agents whose working directory cannot be told",
+			"coverage": "required"
+		},
+		{
+			"id": "recalculates-the-agents-group-from-the-agents-that-remain",
+			"title": "Recalculates the agents group from the agents that remain",
+			"coverage": "required"
+		},
+		{
+			"id": "keeps-a-null-tracked-percentage-and-the-input-unchanged",
+			"title": "Keeps a null tracked percentage and the input unchanged",
+			"coverage": "required"
+		},
+		{
+			"id": "lets-a-directory-lookup-error-reach-the-caller",
+			"title": "Lets a directory lookup error reach the caller",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.site-processes.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"drops-agents-whose-working-directory-cannot-be-told",
+				"recalculates-the-agents-group-from-the-agents-that-remain",
+				"keeps-a-null-tracked-percentage-and-the-input-unchanged",
+				"lets-a-directory-lookup-error-reach-the-caller"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"drops-agents-whose-working-directory-cannot-be-told",
+				"recalculates-the-agents-group-from-the-agents-that-remain",
+				"keeps-a-null-tracked-percentage-and-the-input-unchanged",
+				"lets-a-directory-lookup-error-reach-the-caller"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"drops-agents-whose-working-directory-cannot-be-told",
+				"recalculates-the-agents-group-from-the-agents-that-remain",
+				"keeps-a-null-tracked-percentage-and-the-input-unchanged",
+				"lets-a-directory-lookup-error-reach-the-caller"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
