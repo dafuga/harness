@@ -8,13 +8,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/repositories/agents-providers/BenchmarkRepository.ts"],
+		"source": [
+			"src/repositories/agents-providers/BenchmarkRepository.ts",
+			"src/repositories/agents-providers/BenchmarkRepository.types.ts"
+		],
 		"symbols": [
 			"BenchmarkRepository",
 			"BenchmarkRepository.constructor",
 			"BenchmarkRepository.directory",
 			"BenchmarkRepository.save",
-			"BenchmarkRepository.read"
+			"BenchmarkRepository.read",
+			"InvalidBenchmarkRunIdError"
 		]
 	},
 	"contract": {
