@@ -53,12 +53,14 @@
 	};
 	/** Whether the recorded text was asked for: it is drawn only then, and never twice at once. */
 	let asked = $state(false);
-	const facts = (stated: ExplorerArtifactBehavior) =>
-		[
+	const facts = (stated: ExplorerArtifactBehavior): [string, string][] => {
+		const rows: [string, string | null][] = [
 			['Scenario', stated.scenario],
 			['Environment', stated.environment],
 			['Test data', stated.fixture]
-		].filter(([, value]) => value);
+		];
+		return rows.filter((row): row is [string, string] => Boolean(row[1]));
+	};
 	const unverified = 'It could not be read and checked against its hash.';
 </script>
 
@@ -69,8 +71,8 @@
 			className="runtime-facts"
 			grouped={false}
 		>
-			{#snippet label([name])}{name}{/snippet}
-			{#snippet children([, value])}{value}{/snippet}
+			{#snippet label([name]: [string, string])}{name}{/snippet}
+			{#snippet children([, value]: [string, string])}{value}{/snippet}
 		</DetailList>{/if}
 	{#if stated.steps.length}<hx-h5>Steps</hx-h5>
 		<hx-ol>
