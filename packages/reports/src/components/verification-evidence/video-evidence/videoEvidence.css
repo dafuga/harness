@@ -22,6 +22,11 @@ figure img {
 	border-radius: var(--hx-radius-small);
 	background: var(--hx-color-background);
 }
+figure img {
+	width: auto;
+	height: auto;
+	max-width: 100%;
+}
 label,
 form,
 .video-timeline {

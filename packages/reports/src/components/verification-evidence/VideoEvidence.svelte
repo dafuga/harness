@@ -93,7 +93,8 @@
 		selected = flag;
 		if (player && video) {
 			player.pause();
-			player.currentTime = frame / video.frameRate;
+			// Seek inside the frame so browser timestamp rounding cannot select its predecessor.
+			player.currentTime = (frame + 0.5) / video.frameRate;
 		}
 	}
 	function currentFrame() {
