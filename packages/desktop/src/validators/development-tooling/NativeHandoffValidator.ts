@@ -1,5 +1,12 @@
 // @harness-uid u_u5rruiwyuu
 import { responseRecord } from '../projects-sessions/RemoteProjectResponseValidator';
+import {
+	ExpiredNativeHandoffError,
+	InvalidNativeHandoffError,
+	InvalidNativeHandoffIdentityError,
+	InvalidNativeHandoffUrlError,
+	NativeHandoffBindingMismatchError
+} from './NativeHandoffValidator.types';
 import type { NativeHostedCredential } from '../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 import type { NativeHostedStatus } from '../../models/projects-sessions/ProjectContext.types';
 export class NativeHandoffValidator {
@@ -10,7 +17,7 @@ export class NativeHandoffValidator {
 			!/^[\w-]{1,200}$/.test(item.handoffId) ||
 			item.verificationUrl !== `${origin}/native/${encodeURIComponent(item.handoffId)}`
 		)
-			throw new Error('Invalid native handoff URL.');
+			throw new InvalidNativeHandoffUrlError('Invalid native handoff URL.');
 		if (
 			typeof item.userCode !== 'string' ||
 			item.userCode.length > 40 ||
@@ -18,7 +25,7 @@ export class NativeHandoffValidator {
 			item.interval < 1 ||
 			item.interval > 30
 		)
-			throw new Error('Invalid native handoff.');
+			throw new InvalidNativeHandoffError('Invalid native handoff.');
 		const expiresAt = this.expiry(item.expiresAt, now);
 		return {
 			handoffId: item.handoffId,
@@ -41,7 +48,7 @@ export class NativeHandoffValidator {
 			item.resource !== expected.resource ||
 			typeof item.authorization !== 'string'
 		)
-			throw new Error('Native handoff binding mismatch.');
+			throw new NativeHandoffBindingMismatchError('Native handoff binding mismatch.');
 		this.expiry(item.expiresAt, now);
 		if (
 			typeof actor.id !== 'string' ||
@@ -49,7 +56,7 @@ export class NativeHandoffValidator {
 			typeof actor.name !== 'string' ||
 			actor.emailVerified !== true
 		)
-			throw new Error('Invalid native handoff identity.');
+			throw new InvalidNativeHandoffIdentityError('Invalid native handoff identity.');
 		return {
 			credential: { origin: expected.origin, principalId: actor.id, token: item.authorization },
 			status: {
@@ -65,7 +72,7 @@ export class NativeHandoffValidator {
 			!Number.isFinite(Date.parse(value)) ||
 			Date.parse(value) <= now
 		)
-			throw new Error('Expired native handoff.');
+			throw new ExpiredNativeHandoffError('Expired native handoff.');
 		return value;
 	}
 }
