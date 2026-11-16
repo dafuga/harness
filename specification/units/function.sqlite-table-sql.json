@@ -8,8 +8,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/development-tooling/sqliteTableSql.ts"],
-		"symbols": ["sqliteIdentifier", "sqliteColumn", "sqliteTableSql"]
+		"source": [
+			"src/utils/development-tooling/sqliteTableSql.ts",
+			"src/utils/development-tooling/sqliteTableSql.types.ts"
+		],
+		"symbols": [
+			"sqliteIdentifier",
+			"sqliteColumn",
+			"sqliteTableSql",
+			"InvalidSqliteDefinitionError"
+		]
 	},
 	"contract": {
 		"origin": "declared",
