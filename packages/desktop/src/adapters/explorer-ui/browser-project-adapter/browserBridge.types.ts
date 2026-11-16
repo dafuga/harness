@@ -3,6 +3,14 @@ import type { DesktopBridge } from '../../../models/development-tooling/DesktopB
 import type { CacheStatus } from '../../../models/projects-sessions/ProjectContext.types';
 import type { ProjectContext } from '../../../models/projects-sessions/ProjectContext.types';
 
+export class HostedAgentUnavailableError extends Error {
+	override name = 'HostedAgentUnavailableError';
+}
+
+export class ProjectIdRequiredError extends Error {
+	override name = 'ProjectIdRequiredError';
+}
+
 export type Reads = Pick<
 	DesktopBridge,
 	'listProjects' | 'selectProject' | 'capabilities' | 'snapshot' | 'entity' | 'source'
