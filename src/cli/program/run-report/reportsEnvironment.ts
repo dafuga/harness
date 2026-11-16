@@ -3,6 +3,7 @@ import type { ReportSettings } from './reportsEnvironment.types';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
+import { ExpectedCliError } from '../../../core/development-tooling/errors';
 
 export function reportsEnvironment(): typeof process.env {
 	const file =
@@ -13,7 +14,7 @@ export function reportsEnvironment(): typeof process.env {
 		settings = JSON.parse(readFileSync(file, 'utf8')) as ReportSettings;
 	} catch (error) {
 		if ((error as { code?: string }).code !== 'ENOENT')
-			throw new Error('Invalid Harness report settings file.');
+			throw new ExpectedCliError('Invalid Harness report settings file.');
 	}
 	return {
 		...process.env,
