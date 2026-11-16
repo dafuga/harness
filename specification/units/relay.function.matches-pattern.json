@@ -16,7 +16,7 @@
 		"inputs": [
 			{
 				"name": "matchesPattern.value",
-				"type": "unknown",
+				"type": "T",
 				"required": true,
 				"description": "The candidate value to check. Only string values are tested; any other type returns false without reading the pattern.",
 				"examples": [
@@ -54,7 +54,7 @@
 				"inputs": [
 					{
 						"name": "matchesPattern.value",
-						"type": "unknown",
+						"type": "T",
 						"required": true,
 						"description": "The candidate value to check. Only string values are tested; any other type returns false without reading the pattern.",
 						"examples": [
@@ -73,7 +73,7 @@
 				"outputs": [
 					{
 						"name": "matchesPattern",
-						"type": "value is string",
+						"type": "value is T & string",
 						"description": "Returns true only when value is a string and pattern.test finds a match in it, which narrows value to string where the result is true. It returns false for non-string values and for strings with no match, so a false result does not show that value is not a string.",
 						"examples": [true, false]
 					}
