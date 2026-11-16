@@ -8,3 +8,7 @@ export interface RemoteRegistrationAdapterConfig {
 	credentials: () => Promise<NativeHostedCredential | null>;
 	fetch?: typeof fetch;
 }
+/** The hub did not register this computer: it is signed out here, or its answer is invalid. */
+export class HubRegistrationError extends Error {
+	override name = 'HubRegistrationError';
+}
