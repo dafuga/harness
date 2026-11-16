@@ -8,7 +8,11 @@ import type { ResourceContext } from '../../../core/execution-runtimes/resourceT
 /** Keep subscription auth on this host; never forward inherited provider keys or raw event logs. */
 export function taskProcess(command: string[], input: TaskRunInput): Promise<TaskProcessResult> {
 	return resourceWork(
-		{ priority: 'coding', memoryMiB: 2048, label: 'Module task CLI' },
+		{
+			priority: 'coding',
+			memoryMiB: parsePositiveIntegerEnvironmentValue(process.env.HARNESS_TASK_MEMORY_MIB, 2048),
+			label: 'Module task CLI'
+		},
 		(resources) => runTaskProcess(command, input, resources),
 		process.env,
 		{ signal: input.signal }
