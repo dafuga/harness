@@ -11,7 +11,6 @@ import type {
 	ModuleTask,
 	TaskFeature
 } from '../../repositories/agents-providers/ModuleTaskRepository.types';
-import type { reviewInputSchema } from '../../repositories/agents-providers/module-task-repository/taskUsage';
 import { stableJson } from '../../utils/development-tooling/stableJson';
 import { moduleTaskPrompt, taskSelection } from './module-task-service/taskPrompt';
 import { z } from 'zod';
@@ -34,7 +33,7 @@ export class ModuleTaskService {
 			return feature;
 		});
 	}
-	async add(input: z.input<typeof taskInputSchema>) {
+	async add(input: unknown) {
 		const parsed = taskInputSchema.parse(input);
 		taskSelection(parsed);
 		const tree = await CommitTreeAdapter.open(this.root, 'HEAD');
@@ -102,7 +101,7 @@ export class ModuleTaskService {
 			return task;
 		});
 	}
-	review(id: string, input: z.input<typeof reviewInputSchema>) {
+	review(id: string, input: unknown) {
 		return reviewModuleTask(this.root, this.repository, id, input);
 	}
 }

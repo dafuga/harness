@@ -57,7 +57,7 @@
 			},
 			{
 				"name": "ModuleTaskService.add.input",
-				"type": "z.input<typeof taskInputSchema>",
+				"type": "unknown",
 				"required": true,
 				"description": "Untrusted task request parsed by taskInputSchema before model selection and committed-module checks. It must contain a wanted contract and a new task id.",
 				"examples": [
@@ -161,7 +161,7 @@
 			},
 			{
 				"name": "ModuleTaskService.review.input",
-				"type": "z.input<typeof reviewInputSchema>",
+				"type": "unknown",
 				"required": true,
 				"description": "Untrusted review request parsed by reviewInputSchema. It requires a UUID attempt and accepted or incomplete verdict; incomplete reviews require nonempty feedback.",
 				"examples": [
@@ -900,7 +900,7 @@
 				"inputs": [
 					{
 						"name": "ModuleTaskService.add.input",
-						"type": "z.input<typeof taskInputSchema>",
+						"type": "unknown",
 						"required": true,
 						"description": "Untrusted task request parsed by taskInputSchema before model selection and committed-module checks. It must contain a wanted contract and a new task id.",
 						"examples": [
@@ -1435,7 +1435,7 @@
 					},
 					{
 						"name": "ModuleTaskService.review.input",
-						"type": "z.input<typeof reviewInputSchema>",
+						"type": "unknown",
 						"required": true,
 						"description": "Untrusted review request parsed by reviewInputSchema. It requires a UUID attempt and accepted or incomplete verdict; incomplete reviews require nonempty feedback.",
 						"examples": [
@@ -1918,11 +1918,6 @@
 		},
 		{
 			"unit": "repository.agents-providers-module-task",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "repository.agents-providers-module-task-repository-task-usage",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -104,7 +104,7 @@ test('incomplete review commits a repair base, requeues once, and keeps prior wo
 	try {
 		await worker.once('owner');
 		const first = (await service.show('orders-validation')).task;
-		const review: Parameters<typeof service.review>[1] = {
+		const review = {
 			attempt: first.claim!.token,
 			verdict: 'incomplete',
 			reviewer: 'tester',
