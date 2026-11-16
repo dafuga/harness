@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.model.accounts-access-hub-email-store-types",
+	"title": "hub.model.accounts-access-hub-email-store-types examples",
+	"kind": "headless",
+	"units": ["hub.model.accounts-access-hub-email-store-types"],
+	"builds": [],
+	"states": [
+		{
+			"id": "importing-the-hubemailstore-model-returns-no-runtime-value",
+			"title": "Importing the HubEmailStore model returns no runtime value",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.model.accounts-access-hub-email-store-types.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["importing-the-hubemailstore-model-returns-no-runtime-value"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["importing-the-hubemailstore-model-returns-no-runtime-value"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["importing-the-hubemailstore-model-returns-no-runtime-value"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
