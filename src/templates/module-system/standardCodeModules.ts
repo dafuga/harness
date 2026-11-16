@@ -1,6 +1,7 @@
 // @harness-uid u_77iip254x7
 import { scaffoldKinds } from '../development-tooling/scaffoldTypes';
 import type { ModuleDefinition } from '../../services/module-system/moduleDefinition.types';
+import { UnknownStandardScaffoldError } from './standardCodeModules.types';
 const moduleIds: Record<string, string> = { functions: 'helpers', 'module-library': 'modules' };
 /** Standard capabilities are ordinary module definitions, included before any project installation. */
 export const standardCodeModules: ModuleDefinition[] = [
@@ -106,7 +107,7 @@ function resourceGeneration(
 			]
 		};
 	const scaffold = kind === 'model' ? 'model' : scaffoldKinds.find((value) => value === kind);
-	if (!scaffold) throw new Error('Unknown standard scaffold.');
+	if (!scaffold) throw new UnknownStandardScaffoldError('Unknown standard scaffold.');
 	return { files: [], generator: { kind: 'scaffold', scaffold } };
 }
 
