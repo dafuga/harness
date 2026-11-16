@@ -3,6 +3,7 @@ import { setImmediate } from 'node:timers';
 import type { SourceTree, TreeEntry } from '../../core/development-tooling/sourceTypes';
 import { fail } from '../../core/development-tooling/errors';
 import { GitAdapter } from './GitAdapter';
+import { CommitFileNotFoundError } from './CommitTreeAdapter.types';
 
 /** Reads the files of one exact commit straight from the object database. */
 export class CommitTreeAdapter implements SourceTree {
@@ -36,7 +37,7 @@ export class CommitTreeAdapter implements SourceTree {
 	/** Reads are gathered for one tick and served by a single `git cat-file --batch`. */
 	async read(path: string): Promise<string> {
 		const entry = (await this.list()).find((item) => item.path === path);
-		if (!entry) throw new Error(`${path} does not exist at ${this.revision}`);
+		if (!entry) throw new CommitFileNotFoundError(`${path} does not exist at ${this.revision}`);
 		return new Promise((resolve) => {
 			this.waiting.set(entry.hash, [...(this.waiting.get(entry.hash) ?? []), resolve]);
 			if (this.flushing) return;
