@@ -1,14 +1,16 @@
 // @harness-uid u_gnssflbak6
+import { IpcFieldError } from './ipcFields.types';
+
 export function ipcFields(value: unknown): Record<string, unknown> {
 	if (!value || typeof value !== 'object' || Array.isArray(value))
-		throw new Error('Expected an object.');
+		throw new IpcFieldError('Expected an object.');
 	return value as Record<string, unknown>;
 }
 
 export function textField(value: unknown, max = 300, pattern?: RegExp): string {
 	if (typeof value !== 'string' || !value.trim() || value.length > max)
-		throw new Error('Invalid text field.');
-	if (pattern && !pattern.test(value)) throw new Error('Invalid identifier.');
+		throw new IpcFieldError('Invalid text field.');
+	if (pattern && !pattern.test(value)) throw new IpcFieldError('Invalid identifier.');
 	return value;
 }
 
@@ -25,7 +27,7 @@ export const idPattern = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 export const versionPattern = /^v\d{3,}$/;
 
 export function enumField<T extends string>(value: unknown, allowed: readonly T[]): T {
-	if (!allowed.includes(value as T)) throw new Error('Invalid option.');
+	if (!allowed.includes(value as T)) throw new IpcFieldError('Invalid option.');
 	return value as T;
 }
 
