@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-command.scenarios",
+	"title": "command.scenarios examples",
+	"kind": "headless",
+	"units": ["command.scenarios"],
+	"builds": [],
+	"states": [
+		{
+			"id": "lists-scenarios-with-capture-summaries",
+			"title": "lists scenarios with capture summaries",
+			"coverage": "required"
+		},
+		{
+			"id": "shows-required-captures-and-rejects-an-unknown-scenario",
+			"title": "shows required captures and rejects an unknown scenario",
+			"coverage": "required"
+		},
+		{
+			"id": "checks-errors-while-keeping-coverage-diagnostics-report-only",
+			"title": "checks errors while keeping coverage diagnostics report-only",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/command.scenarios.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"lists-scenarios-with-capture-summaries",
+				"shows-required-captures-and-rejects-an-unknown-scenario",
+				"checks-errors-while-keeping-coverage-diagnostics-report-only"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"lists-scenarios-with-capture-summaries",
+				"shows-required-captures-and-rejects-an-unknown-scenario",
+				"checks-errors-while-keeping-coverage-diagnostics-report-only"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"lists-scenarios-with-capture-summaries",
+				"shows-required-captures-and-rejects-an-unknown-scenario",
+				"checks-errors-while-keeping-coverage-diagnostics-report-only"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
