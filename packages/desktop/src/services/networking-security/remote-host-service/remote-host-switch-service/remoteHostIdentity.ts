@@ -11,6 +11,7 @@ import {
 } from '../../../../../../remote/src/index';
 import type { RemoteKeyPair } from '../../../../../../remote/src/index';
 import type { RemoteHostState } from '../../../../adapters/networking-security/RemoteHostStoreAdapter';
+import { HubNoRelayError } from './remoteHostIdentity.types';
 
 /** A new identity of this computer: a key pair, the id that key certifies, and a credential. */
 export async function remoteHostIdentity(): Promise<RemoteHostState> {
@@ -42,7 +43,8 @@ export async function registerRemoteHost(
 	const input = { hostId, hostKey: state.keys.publicKey, credentialHash: hash, name },
 		registration = await register(input),
 		origin = relayOrigin(registration.origin);
-	if (!origin || registration.hostId !== hostId) throw new Error('The hub named no relay.');
+	if (!origin || registration.hostId !== hostId)
+		throw new HubNoRelayError('The hub named no relay.');
 	Object.assign(state, { enabled: true, origin, generation: registration.generation });
 	return keys;
 }
