@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.adapter.d1-auth-store",
+	"title": "hub.adapter.d1-auth-store examples",
+	"kind": "headless",
+	"units": ["hub.adapter.d1-auth-store"],
+	"builds": [],
+	"states": [
+		{
+			"id": "purge-binds-the-cutoff-to-each-cleanup-statement-in-order",
+			"title": "purge binds the cutoff to each cleanup statement in order",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.adapter.d1-auth-store.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["purge-binds-the-cutoff-to-each-cleanup-statement-in-order"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["purge-binds-the-cutoff-to-each-cleanup-statement-in-order"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["purge-binds-the-cutoff-to-each-cleanup-statement-in-order"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
