@@ -3,7 +3,18 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { reportLifetimeMs } from '../../../../utils/reports-media/reportRetention';
 
-export async function reportCleanupLog(root: string, result: unknown) {
+/** Summary of one retention run as ReportRetentionService builds it; serialized unchanged. */
+interface RetentionResult {
+	plannedReports: string[];
+	deletedReports: string[];
+	cloudObjects: number;
+	pages: number;
+	localFiles: number;
+	errors: string[];
+	dryRun: boolean;
+}
+
+export async function reportCleanupLog(root: string, result: RetentionResult) {
 	const path = join(root, 'retention-history.jsonl');
 	const previous = await readFile(path, 'utf8').catch((error: NodeJS.ErrnoException) => {
 		if (error.code !== 'ENOENT') throw error;
