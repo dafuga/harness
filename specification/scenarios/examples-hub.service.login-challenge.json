@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.service.login-challenge",
+	"title": "hub.service.login-challenge examples",
+	"kind": "headless",
+	"units": ["hub.service.login-challenge"],
+	"builds": [],
+	"states": [
+		{
+			"id": "constructs-without-touching-the-store-or-the-hasher",
+			"title": "constructs without touching the store or the hasher",
+			"coverage": "required"
+		},
+		{
+			"id": "issues-a-cookie-and-challenge-and-stores-only-hashes",
+			"title": "issues a cookie and challenge and stores only hashes",
+			"coverage": "required"
+		},
+		{
+			"id": "consumes-a-challenge-once-and-returns-its-nonce",
+			"title": "consumes a challenge once and returns its nonce",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-a-null-or-unknown-cookie-and-keeps-the-challenge",
+			"title": "refuses a null or unknown cookie and keeps the challenge",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-a-wrong-csrf-value-and-spends-the-challenge",
+			"title": "refuses a wrong CSRF value and spends the challenge",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-a-challenge-once-its-five-minute-expiry-passes",
+			"title": "refuses a challenge once its five-minute expiry passes",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.service.login-challenge.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"constructs-without-touching-the-store-or-the-hasher",
+				"issues-a-cookie-and-challenge-and-stores-only-hashes",
+				"consumes-a-challenge-once-and-returns-its-nonce",
+				"refuses-a-null-or-unknown-cookie-and-keeps-the-challenge",
+				"refuses-a-wrong-csrf-value-and-spends-the-challenge",
+				"refuses-a-challenge-once-its-five-minute-expiry-passes"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"constructs-without-touching-the-store-or-the-hasher",
+				"issues-a-cookie-and-challenge-and-stores-only-hashes",
+				"consumes-a-challenge-once-and-returns-its-nonce",
+				"refuses-a-null-or-unknown-cookie-and-keeps-the-challenge",
+				"refuses-a-wrong-csrf-value-and-spends-the-challenge",
+				"refuses-a-challenge-once-its-five-minute-expiry-passes"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"constructs-without-touching-the-store-or-the-hasher",
+				"issues-a-cookie-and-challenge-and-stores-only-hashes",
+				"consumes-a-challenge-once-and-returns-its-nonce",
+				"refuses-a-null-or-unknown-cookie-and-keeps-the-challenge",
+				"refuses-a-wrong-csrf-value-and-spends-the-challenge",
+				"refuses-a-challenge-once-its-five-minute-expiry-passes"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
