@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.media-response",
+	"title": "reports.function.media-response examples",
+	"kind": "headless",
+	"units": ["reports.function.media-response"],
+	"builds": [],
+	"states": [
+		{
+			"id": "returns-the-complete-media-body-with-default-headers",
+			"title": "Returns the complete media body with default headers",
+			"coverage": "required"
+		},
+		{
+			"id": "returns-the-selected-bytes-for-a-valid-range",
+			"title": "Returns the selected bytes for a valid range",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-malformed-and-unsatisfiable-ranges",
+			"title": "Rejects malformed and unsatisfiable ranges",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.media-response.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"returns-the-complete-media-body-with-default-headers",
+				"returns-the-selected-bytes-for-a-valid-range",
+				"rejects-malformed-and-unsatisfiable-ranges"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"returns-the-complete-media-body-with-default-headers",
+				"returns-the-selected-bytes-for-a-valid-range",
+				"rejects-malformed-and-unsatisfiable-ranges"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"returns-the-complete-media-body-with-default-headers",
+				"returns-the-selected-bytes-for-a-valid-range",
+				"rejects-malformed-and-unsatisfiable-ranges"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
