@@ -44,7 +44,7 @@ function shapeOf(item: Record<string, unknown> | null): Record<string, Check> | 
 
 /** What a relay forwards and what a secure channel accepts. Failures are never answered. */
 export class SecurePacketValidator {
-	packet(value: unknown): SecurePacket {
+	packet<Candidate>(value: Candidate): SecurePacket {
 		const item =
 			value && typeof value === 'object' && !Array.isArray(value)
 				? (value as Record<string, unknown>)

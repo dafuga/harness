@@ -24,7 +24,7 @@
 		"inputs": [
 			{
 				"name": "SecurePacketValidator.packet.value",
-				"type": "unknown",
+				"type": "Candidate",
 				"required": true,
 				"description": "value is the unknown candidate passed to packet. It is accepted only when it is a non-array object with a recognized type, exactly that type's fields, and valid field values.",
 				"examples": [
@@ -111,7 +111,7 @@
 				"inputs": [
 					{
 						"name": "SecurePacketValidator.packet.value",
-						"type": "unknown",
+						"type": "Candidate",
 						"required": true,
 						"description": "value is the unknown candidate passed to packet. It is accepted only when it is a non-array object with a recognized type, exactly that type's fields, and valid field values.",
 						"examples": [
