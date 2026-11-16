@@ -126,7 +126,7 @@
 			},
 			{
 				"name": "recordRunFailure.error",
-				"type": "unknown",
+				"type": "Failure",
 				"required": true,
 				"description": "The failure value to report. Error instances contribute a message limited to 200 characters; other values use the generic text Run failed.",
 				"examples": ["Provider exited with status 1."]
@@ -354,7 +354,7 @@
 					},
 					{
 						"name": "recordRunFailure.error",
-						"type": "unknown",
+						"type": "Failure",
 						"required": true,
 						"description": "The failure value to report. Error instances contribute a message limited to 200 characters; other values use the generic text Run failed.",
 						"examples": ["Provider exited with status 1."]

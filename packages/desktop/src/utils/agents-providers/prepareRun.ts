@@ -47,7 +47,10 @@ export function messageFor(
 	};
 }
 
-export async function recordRunFailure(context: Omit<RunContext, 'entity'>, error: unknown) {
+export async function recordRunFailure<Failure>(
+	context: Omit<RunContext, 'entity'>,
+	error: Failure
+) {
 	if (context.failureRecorded) return;
 	await context.session.atBranch(context.revision.branch);
 	const change =
