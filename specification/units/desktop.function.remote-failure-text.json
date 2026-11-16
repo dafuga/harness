@@ -18,7 +18,7 @@
 		"inputs": [
 			{
 				"name": "remoteFailureText.error",
-				"type": "Thrown",
+				"type": "unknown",
 				"required": true,
 				"description": "The thrown or rejected value to describe. A RemoteFailure keeps its code and message unchanged, an Error passes its message to the ordinary-message checks, and any other value contributes no text and so gets the generic wording."
 			},
@@ -60,7 +60,7 @@
 				"inputs": [
 					{
 						"name": "remoteFailureText.error",
-						"type": "Thrown",
+						"type": "unknown",
 						"required": true,
 						"description": "The thrown or rejected value to describe. A RemoteFailure keeps its code and message unchanged, an Error passes its message to the ordinary-message checks, and any other value contributes no text and so gets the generic wording."
 					},
