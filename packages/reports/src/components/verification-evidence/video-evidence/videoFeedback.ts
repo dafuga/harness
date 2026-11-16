@@ -4,12 +4,19 @@ import type { FrameFlag } from '../../../../../../src/services/verification-evid
 
 /** The API returns errors as JSON; retain their explanation for the reviewer. */
 async function reply(response: Response): Promise<Record<string, unknown>> {
-	const body = await response.json().catch(() => ({}));
+	const body: unknown = await response.json().catch(() => ({}));
+	if (!feedbackObject(body))
+		throw new FrameFeedbackFailure('Frame feedback returned a non-object response.');
 	if (!response.ok)
 		throw new FrameFeedbackFailure(
 			String(body.error ?? `Frame feedback failed (${response.status}).`)
 		);
 	return body;
+}
+
+/** JSON is untrusted until the response boundary admits an object. */
+function feedbackObject(value: unknown): value is Record<string, unknown> {
+	return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 export async function loadVideoFlags(
