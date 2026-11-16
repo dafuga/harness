@@ -1,5 +1,13 @@
 // @harness-uid u_ycbuxdmxoz
-import type { LocalBootstrap } from '../../../../../remote/src/index';
+import type { CacheStatus } from '../../../models/projects-sessions/ProjectContext.types';
+import type { RunEvent } from '../../../models/development-tooling/RunContext.types';
+import type { LocalBootstrap, RemoteConnectionEvent } from '../../../../../remote/src/index';
+
+export interface LocalTransportEventMap {
+	run: RunEvent;
+	cache: CacheStatus;
+	connection: RemoteConnectionEvent;
+}
 
 /** The WebSocket of a page, or anything shaped like it. */
 export interface LocalSocketPort {

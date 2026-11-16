@@ -21,6 +21,7 @@
 			"LocalTransportClientService.close",
 			"LocalSocketPort",
 			"LocalTransportClientOptions",
+			"LocalTransportEventMap",
 			"LocalSocketPort",
 			"LocalTransportClientOptions",
 			"LocalTransportClientService",
@@ -56,14 +57,14 @@
 			},
 			{
 				"name": "LocalTransportClientService.on.channel",
-				"type": "WireChannel",
+				"type": "C",
 				"required": true,
 				"description": "The wire channel to listen on: 'run', 'cache' or 'connection'. Listening does not open a connection, so events arrive only after a request has connected, and 'connection' also gets { kind: 'resync' } after a reattach that lost events (a replay gap or a new epoch).",
 				"examples": ["run", "cache", "connection"]
 			},
 			{
 				"name": "LocalTransportClientService.on.listener",
-				"type": "(value: unknown) => void",
+				"type": "(value: LocalTransportEventMap[C]) => void",
 				"required": true,
 				"description": "Called with the value of each event on the channel, in order and once, until the function returned by on is called. If it throws, nothing reports the error to the caller: the client closes the socket and reconnects."
 			}
@@ -176,14 +177,14 @@
 				"inputs": [
 					{
 						"name": "LocalTransportClientService.on.channel",
-						"type": "WireChannel",
+						"type": "C",
 						"required": true,
 						"description": "The wire channel to listen on: 'run', 'cache' or 'connection'. Listening does not open a connection, so events arrive only after a request has connected, and 'connection' also gets { kind: 'resync' } after a reattach that lost events (a replay gap or a new epoch).",
 						"examples": ["run", "cache", "connection"]
 					},
 					{
 						"name": "LocalTransportClientService.on.listener",
-						"type": "(value: unknown) => void",
+						"type": "(value: LocalTransportEventMap[C]) => void",
 						"required": true,
 						"description": "Called with the value of each event on the channel, in order and once, until the function returned by on is called. If it throws, nothing reports the error to the caller: the client closes the socket and reconnects."
 					}
@@ -236,6 +237,16 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.run-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "remote.entry.index",
 			"via": "import",

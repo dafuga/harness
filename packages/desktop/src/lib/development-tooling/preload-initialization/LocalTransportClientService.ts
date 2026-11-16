@@ -1,7 +1,8 @@
 // @harness-uid u_ycbuxdmxoz
 import type {
 	LocalSocketPort,
-	LocalTransportClientOptions
+	LocalTransportClientOptions,
+	LocalTransportEventMap
 } from './LocalTransportClientService.types';
 import {
 	WireClientService,
@@ -36,8 +37,11 @@ export class LocalTransportClientService {
 		await this.ready();
 		return this.wire.request<T>(method, { ...input });
 	}
-	on(channel: WireChannel, listener: (value: unknown) => void): () => void {
-		return this.wire.on(channel, listener);
+	on<C extends WireChannel>(
+		channel: C,
+		listener: (value: LocalTransportEventMap[C]) => void
+	): () => void {
+		return this.wire.on(channel, listener as Parameters<WireClientService['on']>[1]);
 	}
 	close(): void {
 		this.stopped = true;
