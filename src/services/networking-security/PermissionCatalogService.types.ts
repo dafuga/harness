@@ -10,3 +10,7 @@ export interface PermissionSourceTree {
 	read(path: string): Promise<string>;
 	list(): Promise<Array<{ path: string }>>;
 }
+/** A permission profile whose id differs from its source filename or repeats another profile's id. */
+export class ProfileIdentityError extends Error {
+	override name = 'ProfileIdentityError';
+}

@@ -3,6 +3,7 @@ import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { z } from 'zod';
 import type { PermissionCatalog, PermissionSourceTree } from './PermissionCatalogService.types';
+import { ProfileIdentityError } from './PermissionCatalogService.types';
 const text = z.string().trim().min(1);
 const data = z.strictObject({
 	resource: text,
@@ -51,9 +52,9 @@ export class PermissionCatalogService {
 			try {
 				const profile = profileSchema.parse(JSON.parse(await tree.read(path)));
 				if (profile.id !== match[1])
-					throw new Error('Profile identity does not match its source file.');
+					throw new ProfileIdentityError('Profile identity does not match its source file.');
 				if (catalog.profiles.some((entry) => entry.id === profile.id))
-					throw new Error('Duplicate profile identity.');
+					throw new ProfileIdentityError('Duplicate profile identity.');
 				catalog.profiles.push({ ...profile, source: path });
 			} catch {
 				catalog.gaps.push(`Invalid permission profile: ${path}`);
