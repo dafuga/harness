@@ -1,6 +1,7 @@
 // @harness-uid u_ouedfqze7m
 import type { PreviewHealth } from '../../../../utils/development-tooling/previewHealth';
 import { path } from '../../../../utils/development-tooling/previewHealth';
+import { WorkerNotReadyError } from './previewHealth.types';
 
 export async function readPreviewHealth(url: string, token: string): Promise<PreviewHealth> {
 	const response = await fetch(url + path, {
@@ -9,6 +10,7 @@ export async function readPreviewHealth(url: string, token: string): Promise<Pre
 		redirect: 'error'
 	});
 	const health = (await response.json()) as PreviewHealth;
-	if (!response.ok || health.protocol !== 'harness-worker-v1') throw new Error('Worker not ready.');
+	if (!response.ok || health.protocol !== 'harness-worker-v1')
+		throw new WorkerNotReadyError('Worker not ready.');
 	return health;
 }
