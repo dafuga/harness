@@ -4,3 +4,7 @@ export interface ReviewInputFile {
 	contents: string;
 	hash: string;
 }
+
+export class InvalidReviewInputError extends Error {
+	override name = 'InvalidReviewInputError';
+}
