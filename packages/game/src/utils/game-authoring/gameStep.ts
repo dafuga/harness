@@ -6,6 +6,7 @@ import type {
 	Mechanic
 } from '../../models/game-authoring/Game.types';
 import { checkpointGraph } from './checkpointGraph';
+import { GameStepRefusedError } from './gameStep.types';
 import { keyDoor } from './keyDoor';
 
 /** A game step refused because its level is not approved and built, a movement delta is not finite, or a mechanic patch writes a duplicate or unsafe state key. */
