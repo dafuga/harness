@@ -49,7 +49,7 @@ export class HostSocketsAdapter {
 	}
 
 	/** Sends one JSON text frame. False when the socket is gone; nothing is kept for later. */
-	send<Frame>(socket: WebSocket, frame: Frame): boolean {
+	send(socket: WebSocket, frame: unknown): boolean {
 		try {
 			socket.send(JSON.stringify(frame));
 			return true;
