@@ -135,6 +135,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.build-identity",
 			"via": "import",
 			"origin": "derived"
