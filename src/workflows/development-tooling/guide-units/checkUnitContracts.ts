@@ -83,6 +83,7 @@ async function stateFindings(
 		))
 	);
 	for (const registry of registries) {
+		if (registry.kind === 'video') continue;
 		const declared = new Set([
 			'default',
 			...registry.states.map((name) => unitStateName(unit.id, name))

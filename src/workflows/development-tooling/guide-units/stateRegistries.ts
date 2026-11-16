@@ -136,7 +136,7 @@ function videoRegistries(text: string, where: string): StateRegistry[] {
 	return parsed.data.video.clips.map((clip) => ({
 		entity: clip.unit,
 		where: `${where}#video/${clip.id}`,
-		kind: 'required-states',
+		kind: 'video',
 		states: [clip.state]
 	}));
 }

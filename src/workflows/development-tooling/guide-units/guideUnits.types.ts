@@ -12,7 +12,7 @@ export interface GuidanceOptions {
 export interface StateRegistry {
 	entity: string;
 	where: string;
-	kind: 'catalog' | 'required-states';
+	kind: 'catalog' | 'required-states' | 'video';
 	states: string[];
 }
 
