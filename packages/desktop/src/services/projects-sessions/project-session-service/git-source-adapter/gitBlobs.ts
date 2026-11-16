@@ -1,10 +1,12 @@
 // @harness-uid u_4vonmiz2h2
 import type { BlobRequest } from './gitBlobs.types';
+import { GitBlobReadError } from './gitBlobs.types';
 import { execFile } from 'node:child_process';
 
 export async function gitBlobs(root: string, request: BlobRequest): Promise<Map<string, Buffer>> {
 	if (!request.paths.length) return new Map();
-	if (request.paths.some((p) => /[\n\r\0]/.test(p))) throw new Error('Unsupported Git path.');
+	if (request.paths.some((p) => /[\n\r\0]/.test(p)))
+		throw new GitBlobReadError('Unsupported Git path.');
 	const output = await new Promise<Buffer>((resolve, reject) => {
 		const child = execFile(
 			'git',
@@ -25,7 +27,7 @@ function parseBlobs(output: Buffer, paths: string[]): Map<string, Buffer> {
 			header = output.subarray(cursor, end).toString(),
 			size = Number(header.split(' ')[2]);
 		if (end < 0 || !Number.isSafeInteger(size) || size < 0 || cursor + size > output.length)
-			throw new Error('Invalid Git blob response.');
+			throw new GitBlobReadError('Invalid Git blob response.');
 		cursor = end + 1;
 		blobs.set(path, output.subarray(cursor, cursor + size));
 		cursor += size + 1;
