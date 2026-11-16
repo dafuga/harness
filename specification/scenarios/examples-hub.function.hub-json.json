@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.function.hub-json",
+	"title": "hub.function.hub-json examples",
+	"kind": "headless",
+	"units": ["hub.function.hub-json"],
+	"builds": [],
+	"states": [
+		{
+			"id": "decodes-committed-json-and-rejects-corrupt-bytes",
+			"title": "Decodes committed JSON and rejects corrupt bytes",
+			"coverage": "required"
+		},
+		{
+			"id": "hashes-utf-8-strings-and-byte-inputs",
+			"title": "Hashes UTF-8 strings and byte inputs",
+			"coverage": "required"
+		},
+		{
+			"id": "hashes-a-canonical-contract-value",
+			"title": "Hashes a canonical contract value",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-artifact-errors-with-the-requested-code",
+			"title": "Throws artifact errors with the requested code",
+			"coverage": "required"
+		},
+		{
+			"id": "accepts-safe-filenames-and-rejects-invalid-paths",
+			"title": "Accepts safe filenames and rejects invalid paths",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.function.hub-json.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"decodes-committed-json-and-rejects-corrupt-bytes",
+				"hashes-utf-8-strings-and-byte-inputs",
+				"hashes-a-canonical-contract-value",
+				"throws-artifact-errors-with-the-requested-code",
+				"accepts-safe-filenames-and-rejects-invalid-paths"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"decodes-committed-json-and-rejects-corrupt-bytes",
+				"hashes-utf-8-strings-and-byte-inputs",
+				"hashes-a-canonical-contract-value",
+				"throws-artifact-errors-with-the-requested-code",
+				"accepts-safe-filenames-and-rejects-invalid-paths"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"decodes-committed-json-and-rejects-corrupt-bytes",
+				"hashes-utf-8-strings-and-byte-inputs",
+				"hashes-a-canonical-contract-value",
+				"throws-artifact-errors-with-the-requested-code",
+				"accepts-safe-filenames-and-rejects-invalid-paths"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
