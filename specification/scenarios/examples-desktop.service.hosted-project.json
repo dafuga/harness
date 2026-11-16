@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.service.hosted-project",
+	"title": "desktop.service.hosted-project examples",
+	"kind": "headless",
+	"units": ["desktop.service.hosted-project"],
+	"builds": [],
+	"states": [
+		{
+			"id": "dispatches-shared-project-selection-and-capabilities",
+			"title": "Dispatches shared project selection and capabilities",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.service.hosted-project.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["dispatches-shared-project-selection-and-capabilities"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["dispatches-shared-project-selection-and-capabilities"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["dispatches-shared-project-selection-and-capabilities"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
