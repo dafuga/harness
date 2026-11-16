@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.verify-types",
+	"title": "function.verify-types examples",
+	"kind": "headless",
+	"units": ["function.verify-types"],
+	"builds": [],
+	"states": [
+		{
+			"id": "returns-the-default-verify-config-with-its-runner-templates",
+			"title": "Returns the default verify config with its runner templates",
+			"coverage": "required"
+		},
+		{
+			"id": "parses-a-minimal-config-and-fills-its-defaults",
+			"title": "Parses a minimal config and fills its defaults",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-config-with-an-unknown-key",
+			"title": "Rejects a config with an unknown key",
+			"coverage": "required"
+		},
+		{
+			"id": "accepts-a-workload-within-the-round-and-iteration-limits",
+			"title": "Accepts a workload within the round and iteration limits",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.verify-types.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"returns-the-default-verify-config-with-its-runner-templates",
+				"parses-a-minimal-config-and-fills-its-defaults",
+				"rejects-a-config-with-an-unknown-key",
+				"accepts-a-workload-within-the-round-and-iteration-limits"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"returns-the-default-verify-config-with-its-runner-templates",
+				"parses-a-minimal-config-and-fills-its-defaults",
+				"rejects-a-config-with-an-unknown-key",
+				"accepts-a-workload-within-the-round-and-iteration-limits"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"returns-the-default-verify-config-with-its-runner-templates",
+				"parses-a-minimal-config-and-fills-its-defaults",
+				"rejects-a-config-with-an-unknown-key",
+				"accepts-a-workload-within-the-round-and-iteration-limits"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
