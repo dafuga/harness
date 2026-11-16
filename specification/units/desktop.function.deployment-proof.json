@@ -8,8 +8,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/projects-sessions/deploymentProof.ts"],
-		"symbols": ["deploymentProof", "deploymentBlockers", "deploymentHealth", "deploymentCurrent"]
+		"source": [
+			"packages/desktop/src/utils/projects-sessions/deploymentProof.ts",
+			"packages/desktop/src/utils/projects-sessions/deploymentProof.types.ts"
+		],
+		"symbols": [
+			"deploymentProof",
+			"deploymentBlockers",
+			"deploymentHealth",
+			"deploymentCurrent",
+			"DeploymentNotCurrentError"
+		]
 	},
 	"contract": {
 		"origin": "declared",
