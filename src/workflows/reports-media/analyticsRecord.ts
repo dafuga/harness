@@ -5,6 +5,7 @@ import { realpath, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { AnalyticsRepository } from '../../repositories/reports-media/AnalyticsRepository';
 import type { AnalyticsContext, AnalyticsEvent } from '../../core/reports-media/analyticsTypes';
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { loopPaths, readLoop } from '../development-tooling/loop-state/loopState';
 
 export async function projectIdentity(root: string): Promise<string> {
@@ -27,13 +28,13 @@ export async function resolvedContext(
 ): Promise<AnalyticsContext> {
 	context = contextDefaults(context);
 	if (context.task && (context.loop || context.step))
-		throw new Error('Use either --task or --loop/--step.');
-	if (context.step && !context.loop) throw new Error('--step requires --loop.');
+		throw new ExpectedCliError('Use either --task or --loop/--step.');
+	if (context.step && !context.loop) throw new ExpectedCliError('--step requires --loop.');
 	const model = authorModel(context);
 	if (!context.loop) return { ...context, agentModel: model };
 	const state = await readLoop(loopPaths(root, context.loop).state);
 	if (context.step && !state.steps.some((step) => step.id === context.step))
-		throw new Error('Loop step does not exist.');
+		throw new ExpectedCliError('Loop step does not exist.');
 	return { ...context, agentModel: model ?? state.agentModel, loopRun: state.createdAt };
 }
 export async function recordAnalytics(
@@ -62,7 +63,7 @@ export function fingerprint(value: unknown): string {
 }
 export async function validateReport(context: AnalyticsContext): Promise<void> {
 	if (!context.report) return;
-	if (!/^[a-zA-Z0-9-]+$/.test(context.report)) throw new Error('Invalid report ID.');
+	if (!/^[a-zA-Z0-9-]+$/.test(context.report)) throw new ExpectedCliError('Invalid report ID.');
 	const home = process.env.PROJECT_REPORTS_HOME ?? `${process.env.HOME}/.codex/project-reports`;
 	await readFile(resolve(home, 'runs', context.report, 'manifest.json'));
 }
