@@ -28,7 +28,7 @@ test.each([
 	expect(planned(path)).toEqual([
 		{
 			cwd: 'packages/reports',
-			command: `bun x playwright test --config src/configs/shellPlaywrightConfig.ts ${spec}`,
+			command: `bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts ${spec}`,
 			timeoutMs: config.timeouts.test
 		}
 	]);

@@ -129,7 +129,7 @@ test('capture readiness runs under the server-free shell config', async () => {
 	const path = 'packages/reports/tests/e2e/explorer-shell-capture-readiness.spec.ts';
 	expect(existsSync(path)).toBe(true);
 	expect(planned(path)[0].command).toBe(
-		'bun x playwright test --config src/configs/shellPlaywrightConfig.ts tests/e2e/explorer-shell-capture-readiness.spec.ts'
+		'bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts tests/e2e/explorer-shell-capture-readiness.spec.ts'
 	);
 	try {
 		vi.stubEnv('PLAYWRIGHT_BROWSERS_PATH', '/unavailable-harness-unit-browser');
