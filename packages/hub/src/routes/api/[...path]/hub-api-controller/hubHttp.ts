@@ -67,7 +67,7 @@ const publicErrors: Record<string, number> = {
 	'method-not-allowed': 405
 };
 
-export function hubHttpFailure(error: unknown) {
+export function hubHttpFailure<TError>(error: TError) {
 	let candidate: unknown = null;
 	if (error && typeof error === 'object' && 'code' in error) candidate = error.code;
 	const code =
