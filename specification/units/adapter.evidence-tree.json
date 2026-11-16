@@ -27,6 +27,7 @@
 			"batchGroups",
 			"TreeFile",
 			"TreeCommit",
+			"InvalidGitBatchResponseError",
 			"TreeFile",
 			"TreeCommit"
 		]
@@ -784,6 +785,11 @@
 		},
 		{
 			"unit": "function.commit-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		}

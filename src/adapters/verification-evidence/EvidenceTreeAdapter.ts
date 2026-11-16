@@ -1,5 +1,10 @@
 // @harness-uid u_pkblm2rnm6
-import type { TreeCommit, TreeFile } from './EvidenceTreeAdapter.types';
+import {
+	InvalidGitBatchResponseError,
+	type TreeCommit,
+	type TreeFile
+} from './EvidenceTreeAdapter.types';
+import { ExpectedCliError } from '../../core/errors';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -74,7 +79,7 @@ export class EvidenceTreeAdapter {
 	async list(commit: string, paths?: string[]): Promise<Map<string, string>> {
 		if (paths?.length === 0) return new Map();
 		if (paths?.some((path) => Buffer.byteLength(path) + 128 > 32 * 1024))
-			throw new Error('A scoped evidence path exceeds the 32KiB argument budget.');
+			throw new ExpectedCliError('A scoped evidence path exceeds the 32KiB argument budget.');
 		const selected = new Map<string, string>();
 		const scopes = paths
 			? batchGroups(
@@ -162,14 +167,15 @@ function batchBlobs(bytes: Buffer, hashes: string[]): Map<string, Buffer> {
 		);
 		const size = Number(header?.[2]);
 		if (end < 0 || header?.[1] !== hash || !Number.isSafeInteger(size))
-			throw new Error('Invalid Git batch response');
+			throw new InvalidGitBatchResponseError('Invalid Git batch response');
 		const start = end + 1,
 			next = start + size;
-		if (next >= bytes.length || bytes[next] !== 10) throw new Error('Invalid Git batch response');
+		if (next >= bytes.length || bytes[next] !== 10)
+			throw new InvalidGitBatchResponseError('Invalid Git batch response');
 		blobs.set(hash, bytes.subarray(start, next));
 		offset = next + 1;
 	}
-	if (offset !== bytes.length) throw new Error('Invalid Git batch response');
+	if (offset !== bytes.length) throw new InvalidGitBatchResponseError('Invalid Git batch response');
 	return blobs;
 }
 
