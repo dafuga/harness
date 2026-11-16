@@ -73,9 +73,9 @@
 				"description": "Refused with a thrown plain Error when the capture kind is not screenshot, audio, output, assertions or trace, when screenshot bytes are not PNG or JPEG, when the recorded audio type is not one the function knows or its bytes do not match it, or when a result is not valid UTF-8 or contains a null character. Invalid JSON is not refused; it is served as plain text."
 			},
 			{
-				"name": "Error",
+				"name": "ArtifactMediaError",
 				"type": "thrown",
-				"description": "The plain Error that artifactMedia throws synchronously for every refused input, with a message that names the case: an unsupported capture kind, screenshot bytes that are not PNG or JPEG, a recorded audio type the function does not know, audio bytes that do not match their type, or a result that is not valid UTF-8 or contains a null character."
+				"description": "The ArtifactMediaError that artifactMedia throws synchronously for every refused input, with a message that names the case: an unsupported capture kind, screenshot bytes that are not PNG or JPEG, a recorded audio type the function does not know, audio bytes that do not match their type, or a result that is not valid UTF-8 or contains a null character."
 			}
 		],
 		"errorStatus": "declared",
@@ -120,9 +120,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ArtifactMediaError",
 						"type": "thrown",
-						"description": "The plain Error that artifactMedia throws synchronously for every refused input, with a message that names the case: an unsupported capture kind, screenshot bytes that are not PNG or JPEG, a recorded audio type the function does not know, audio bytes that do not match their type, or a result that is not valid UTF-8 or contains a null character."
+						"description": "The ArtifactMediaError that artifactMedia throws synchronously for every refused input, with a message that names the case: an unsupported capture kind, screenshot bytes that are not PNG or JPEG, a recorded audio type the function does not know, audio bytes that do not match their type, or a result that is not valid UTF-8 or contains a null character."
 					}
 				],
 				"errorStatus": "declared"

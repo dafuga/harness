@@ -161,9 +161,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Thrown by validateModel when no choice has the requested model id, and thrown when a nonempty requested effort is not among the selected choice's efforts. Both are plain Error objects with fixed messages."
+				"description": "Thrown by validateModel when no choice has the requested model id, and thrown when a nonempty requested effort is not among the selected choice's efforts. Both are ExpectedCliError objects with fixed messages."
 			}
 		],
 		"errorStatus": "declared",
@@ -322,9 +322,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Thrown by validateModel when no choice has the requested model id, and thrown when a nonempty requested effort is not among the selected choice's efforts. Both are plain Error objects with fixed messages."
+						"description": "Thrown by validateModel when no choice has the requested model id, and thrown when a nonempty requested effort is not among the selected choice's efforts. Both are ExpectedCliError objects with fixed messages."
 					}
 				],
 				"errorStatus": "declared"

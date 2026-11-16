@@ -72,9 +72,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "The service throws a plain Error with message 'A scaffold generator is required.' when resource.generator?.kind is not scaffold; native errors from delegated filesystem operations also propagate through the promise."
+				"description": "The service throws a ExpectedCliError with message 'A scaffold generator is required.' when resource.generator?.kind is not scaffold; native errors from delegated filesystem operations also propagate through the promise."
 			},
 			{
 				"name": "ExpectedCliError",
@@ -142,9 +142,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "The service throws a plain Error with message 'A scaffold generator is required.' when resource.generator?.kind is not scaffold; native errors from delegated filesystem operations also propagate through the promise."
+						"description": "The service throws a ExpectedCliError with message 'A scaffold generator is required.' when resource.generator?.kind is not scaffold; native errors from delegated filesystem operations also propagate through the promise."
 					},
 					{
 						"name": "ExpectedCliError",

@@ -357,9 +357,9 @@
 				"description": "Thrown when the chosen side is absent or no capture matches the whole binding. Also thrown when the listed record is not the binding’s record, when the judging record is missing, invalid or of another commit, or when it has no scenario with the binding’s scenarioId."
 			},
 			{
-				"name": "Error",
+				"name": "CaptureUnlistedError",
 				"type": "thrown",
-				"description": "Every refusal is thrown as a plain Error with the message 'This capture is not listed by the evidence of this entity at these revisions.'; nothing else is thrown."
+				"description": "Every refusal is thrown as a CaptureUnlistedError with the message 'This capture is not listed by the evidence of this entity at these revisions.'; nothing else is thrown."
 			}
 		],
 		"errorStatus": "declared",
@@ -695,9 +695,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CaptureUnlistedError",
 						"type": "thrown",
-						"description": "Every refusal is thrown as a plain Error with the message 'This capture is not listed by the evidence of this entity at these revisions.'; nothing else is thrown."
+						"description": "Every refusal is thrown as a CaptureUnlistedError with the message 'This capture is not listed by the evidence of this entity at these revisions.'; nothing else is thrown."
 					}
 				],
 				"errorStatus": "declared"

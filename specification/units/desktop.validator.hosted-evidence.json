@@ -188,9 +188,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "HostedEvidenceValidationError",
 				"type": "thrown",
-				"description": "A generic Error is thrown when the answer fails hostedEvidenceSchema, a bound answer field differs from the query, or the current-tip or first-parent requirement fails. Its message is either \"This app does not accept the hosted evidence answer.\" or \"The hosted answer is of another evidence read.\""
+				"description": "a HostedEvidenceValidationError is thrown when the answer fails hostedEvidenceSchema, a bound answer field differs from the query, or the current-tip or first-parent requirement fails. Its message is either \"This app does not accept the hosted evidence answer.\" or \"The hosted answer is of another evidence read.\""
 			}
 		],
 		"errorStatus": "declared",
@@ -365,9 +365,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HostedEvidenceValidationError",
 						"type": "thrown",
-						"description": "A generic Error is thrown when the answer fails hostedEvidenceSchema, a bound answer field differs from the query, or the current-tip or first-parent requirement fails. Its message is either \"This app does not accept the hosted evidence answer.\" or \"The hosted answer is of another evidence read.\""
+						"description": "a HostedEvidenceValidationError is thrown when the answer fails hostedEvidenceSchema, a bound answer field differs from the query, or the current-tip or first-parent requirement fails. Its message is either \"This app does not accept the hosted evidence answer.\" or \"The hosted answer is of another evidence read.\""
 					}
 				],
 				"errorStatus": "declared"

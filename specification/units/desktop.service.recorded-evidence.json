@@ -274,9 +274,14 @@
 				"description": "Thrown when the source history holds no entry for the commit a read asks for; a commit that Git has just resolved for the read is normally found."
 			},
 			{
-				"name": "Error",
+				"name": "RegisteredProjectIdRequiredError",
 				"type": "thrown",
-				"description": "Thrown as a plain Error with the message 'Open a registered project first.' when the open project has no registered id, and with the message 'Select a local branch to read recorded evidence on.' when no branch is named."
+				"description": "Thrown with the message 'Open a registered project first.' when the open project has no registered id."
+			},
+			{
+				"name": "LocalBranchRequiredError",
+				"type": "thrown",
+				"description": "Thrown with the message 'Select a local branch to read recorded evidence on.' when no branch is named."
 			}
 		],
 		"errorStatus": "declared",
@@ -467,9 +472,14 @@
 						"description": "Thrown when the source history holds no entry for the commit a read asks for; a commit that Git has just resolved for the read is normally found."
 					},
 					{
-						"name": "Error",
+						"name": "RegisteredProjectIdRequiredError",
 						"type": "thrown",
-						"description": "Thrown as a plain Error with the message 'Open a registered project first.' when the open project has no registered id, and with the message 'Select a local branch to read recorded evidence on.' when no branch is named."
+						"description": "Thrown with the message 'Open a registered project first.' when the open project has no registered id."
+					},
+					{
+						"name": "LocalBranchRequiredError",
+						"type": "thrown",
+						"description": "Thrown with the message 'Select a local branch to read recorded evidence on.' when no branch is named."
 					}
 				],
 				"errorStatus": "declared"
@@ -566,9 +576,14 @@
 						"description": "Thrown when the source history holds no entry for the commit a read asks for; a commit that Git has just resolved for the read is normally found."
 					},
 					{
-						"name": "Error",
+						"name": "RegisteredProjectIdRequiredError",
 						"type": "thrown",
-						"description": "Thrown as a plain Error with the message 'Open a registered project first.' when the open project has no registered id, and with the message 'Select a local branch to read recorded evidence on.' when no branch is named."
+						"description": "Thrown with the message 'Open a registered project first.' when the open project has no registered id."
+					},
+					{
+						"name": "LocalBranchRequiredError",
+						"type": "thrown",
+						"description": "Thrown with the message 'Select a local branch to read recorded evidence on.' when no branch is named."
 					}
 				],
 				"errorStatus": "declared"

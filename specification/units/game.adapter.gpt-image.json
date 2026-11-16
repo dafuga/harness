@@ -59,9 +59,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ImageGenerationError",
 				"type": "thrown",
-				"description": "Thrown as a plain Error with these messages: 'Image generation failed. Check this project’s OpenAI configuration. No retry was made.' when the request is rejected (network failure, the 180-second timeout, or a redirect, since the request sets redirect: 'error'); 'Image generation failed (HTTP <status>). No retry was made.' when the HTTP status is not OK; 'Generated image exceeds the size limit.' when the response text is longer than 24,000,000 characters; 'Provider did not return a PNG image.' when the body is not JSON or data[0].b64_json is missing, empty or not base64; and 'Provider did not return a valid PNG image.' when the decoded image is over 12,000,000 bytes or lacks the PNG signature. Errors from reading the response body are not caught and propagate unchanged."
+				"description": "Thrown as a ImageGenerationError with these messages: 'Image generation failed. Check this project’s OpenAI configuration. No retry was made.' when the request is rejected (network failure, the 180-second timeout, or a redirect, since the request sets redirect: 'error'); 'Image generation failed (HTTP <status>). No retry was made.' when the HTTP status is not OK; 'Generated image exceeds the size limit.' when the response text is longer than 24,000,000 characters; 'Provider did not return a PNG image.' when the body is not JSON or data[0].b64_json is missing, empty or not base64; and 'Provider did not return a valid PNG image.' when the decoded image is over 12,000,000 bytes or lacks the PNG signature. Errors from reading the response body are not caught and propagate unchanged."
 			},
 			{
 				"name": "TypeError",
@@ -104,9 +104,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ImageGenerationError",
 						"type": "thrown",
-						"description": "Thrown as a plain Error with these messages: 'Image generation failed. Check this project’s OpenAI configuration. No retry was made.' when the request is rejected (network failure, the 180-second timeout, or a redirect, since the request sets redirect: 'error'); 'Image generation failed (HTTP <status>). No retry was made.' when the HTTP status is not OK; 'Generated image exceeds the size limit.' when the response text is longer than 24,000,000 characters; 'Provider did not return a PNG image.' when the body is not JSON or data[0].b64_json is missing, empty or not base64; and 'Provider did not return a valid PNG image.' when the decoded image is over 12,000,000 bytes or lacks the PNG signature. Errors from reading the response body are not caught and propagate unchanged."
+						"description": "Thrown as a ImageGenerationError with these messages: 'Image generation failed. Check this project’s OpenAI configuration. No retry was made.' when the request is rejected (network failure, the 180-second timeout, or a redirect, since the request sets redirect: 'error'); 'Image generation failed (HTTP <status>). No retry was made.' when the HTTP status is not OK; 'Generated image exceeds the size limit.' when the response text is longer than 24,000,000 characters; 'Provider did not return a PNG image.' when the body is not JSON or data[0].b64_json is missing, empty or not base64; and 'Provider did not return a valid PNG image.' when the decoded image is over 12,000,000 bytes or lacks the PNG signature. Errors from reading the response body are not caught and propagate unchanged."
 					},
 					{
 						"name": "TypeError",

@@ -273,9 +273,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidGameDocumentError",
 				"type": "thrown",
-				"description": "A plain Error thrown by assertDocument only when validateDocument returns at least one message; its message is those messages joined with '; ' in the order they were produced."
+				"description": "a InvalidGameDocumentError thrown by assertDocument only when validateDocument returns at least one message; its message is those messages joined with '; ' in the order they were produced."
 			}
 		],
 		"errorStatus": "declared",
@@ -548,9 +548,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidGameDocumentError",
 						"type": "thrown",
-						"description": "A plain Error thrown by assertDocument only when validateDocument returns at least one message; its message is those messages joined with '; ' in the order they were produced."
+						"description": "a InvalidGameDocumentError thrown by assertDocument only when validateDocument returns at least one message; its message is those messages joined with '; ' in the order they were produced."
 					}
 				],
 				"errorStatus": "declared"

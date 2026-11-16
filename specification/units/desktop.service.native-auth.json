@@ -100,9 +100,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "NativeSignInError",
 				"type": "thrown",
-				"description": "Plain Error objects thrown by this unit: connect() rejects with 'OS encryption is required for hosted sessions.' when store.available() is false, and status() rejects with 'Native handoff expired or was refused.' when the polled handoff answers with a status other than 'pending' or 'approved'. Failures from the HTTP adapter, the session store, the validators and the open callback are not caught here and reach the caller unchanged."
+				"description": "NativeSignInError objects thrown by this unit: connect() rejects with 'OS encryption is required for hosted sessions.' when store.available() is false, and status() rejects with 'Native handoff expired or was refused.' when the polled handoff answers with a status other than 'pending' or 'approved'. Failures from the HTTP adapter, the session store, the validators and the open callback are not caught here and reach the caller unchanged."
 			}
 		],
 		"errorStatus": "declared",
@@ -141,7 +141,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "NativeSignInError",
 						"type": "thrown",
 						"description": "Thrown when store.available() is false, before any handoff request is sent, and connect() rejects with the message 'OS encryption is required for hosted sessions.'"
 					}
@@ -180,7 +180,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "NativeSignInError",
 						"type": "thrown",
 						"description": "Thrown when the polled handoff answers with a status other than 'pending' or 'approved', after the pending handoff is cleared, and status() rejects with the message 'Native handoff expired or was refused.'"
 					}
