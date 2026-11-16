@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-adapter.sqlite",
+	"title": "adapter.sqlite examples",
+	"kind": "headless",
+	"units": ["adapter.sqlite"],
+	"builds": [],
+	"states": [
+		{
+			"id": "creates-a-task-row-with-declared-field-mappings",
+			"title": "Creates a task row with declared field mappings",
+			"coverage": "required"
+		},
+		{
+			"id": "finds-tasks-by-id-and-declared-field-filters",
+			"title": "Finds tasks by id and declared field filters",
+			"coverage": "required"
+		},
+		{
+			"id": "updates-a-task-and-refreshes-its-timestamp",
+			"title": "Updates a task and refreshes its timestamp",
+			"coverage": "required"
+		},
+		{
+			"id": "deletes-a-task-and-reports-missing-rows",
+			"title": "Deletes a task and reports missing rows",
+			"coverage": "required"
+		},
+		{
+			"id": "runs-caller-sql-with-positional-bindings",
+			"title": "Runs caller SQL with positional bindings",
+			"coverage": "required"
+		},
+		{
+			"id": "commits-synchronous-inserts-and-rolls-back-failed-writes",
+			"title": "Commits synchronous inserts and rolls back failed writes",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/adapter.sqlite.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"creates-a-task-row-with-declared-field-mappings",
+				"finds-tasks-by-id-and-declared-field-filters",
+				"updates-a-task-and-refreshes-its-timestamp",
+				"deletes-a-task-and-reports-missing-rows",
+				"runs-caller-sql-with-positional-bindings",
+				"commits-synchronous-inserts-and-rolls-back-failed-writes"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"creates-a-task-row-with-declared-field-mappings",
+				"finds-tasks-by-id-and-declared-field-filters",
+				"updates-a-task-and-refreshes-its-timestamp",
+				"deletes-a-task-and-reports-missing-rows",
+				"runs-caller-sql-with-positional-bindings",
+				"commits-synchronous-inserts-and-rolls-back-failed-writes"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"creates-a-task-row-with-declared-field-mappings",
+				"finds-tasks-by-id-and-declared-field-filters",
+				"updates-a-task-and-refreshes-its-timestamp",
+				"deletes-a-task-and-reports-missing-rows",
+				"runs-caller-sql-with-positional-bindings",
+				"commits-synchronous-inserts-and-rolls-back-failed-writes"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
