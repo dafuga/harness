@@ -10,17 +10,21 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/agents-providers/desktop-run-service/prepareRun.ts",
+			"packages/desktop/src/services/agents-providers/desktop-run-service/prepareRun.types.ts",
 			"packages/desktop/src/utils/agents-providers/prepareRun.ts",
 			"packages/desktop/src/utils/agents-providers/prepareRun.types.ts"
 		],
 		"symbols": [
 			"prepareRun",
+			"ThreadNotInEntityError",
 			"imageModel",
 			"messageFor",
 			"recordRunFailure",
 			"prepareRun",
 			"Preparation",
-			"Preparation"
+			"Preparation",
+			"CodexImageGenerationCapabilityError",
+			"DefaultImageOrchestrationModelMissingError"
 		]
 	},
 	"contract": {
