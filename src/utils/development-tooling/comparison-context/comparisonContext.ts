@@ -5,10 +5,11 @@ import {
 	warmupCalls,
 	type Comparison
 } from '../../../core/development-tooling/comparisonTypes';
+import type { RuntimeRequest } from '../../../core/execution-runtimes/runtimeTypes';
 import { canonicalJson } from '../canonicalJson';
 
 /** Fingerprint of a complete request; equal requests hash equally whatever their key order. */
-export function requestDigest(request: unknown): string {
+export function requestDigest(request: RuntimeRequest): string {
 	return createHash('sha256').update(canonicalJson(request)).digest('hex');
 }
 
@@ -17,7 +18,7 @@ export function requestDigest(request: unknown): string {
  * and the sampling it actually uses rather than from the workload's name.
  */
 export function comparisonContext(
-	request: unknown,
+	request: RuntimeRequest,
 	sampling: { rounds: number; iterations: number }
 ): Comparison {
 	return {
