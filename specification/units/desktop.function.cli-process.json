@@ -12,7 +12,15 @@
 			"packages/desktop/src/utils/agents-providers/cliProcess.ts",
 			"packages/desktop/src/utils/agents-providers/cliProcess.types.ts"
 		],
-		"symbols": ["ProcessOptions", "killOwnedProcess", "cliProcess", "ProcessOptions"]
+		"symbols": [
+			"ProcessOptions",
+			"killOwnedProcess",
+			"cliProcess",
+			"CliRequestTimeoutError",
+			"CliOutputLimitError",
+			"CliCommandFailedError",
+			"ProcessOptions"
+		]
 	},
 	"contract": {
 		"origin": "declared",
