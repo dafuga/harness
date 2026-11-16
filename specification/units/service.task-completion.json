@@ -22,7 +22,8 @@
 			"TaskCompletionService.require",
 			"taskCompletionInstructions",
 			"TaskAuditInput",
-			"TaskAudit"
+			"TaskAudit",
+			"TaskSourceChangedError"
 		]
 	},
 	"contract": {
@@ -664,6 +665,11 @@
 	"dependencies": [
 		{
 			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},
