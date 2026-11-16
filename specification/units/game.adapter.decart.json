@@ -9,19 +9,22 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/game/src/adapters/agents-providers/ActivePreviewLeaseError.ts",
 			"packages/game/src/adapters/agents-providers/DecartAdapter.ts",
-			"packages/game/src/adapters/agents-providers/DecartAdapter.types.ts"
+			"packages/game/src/adapters/agents-providers/DecartAdapter.types.ts",
+			"packages/game/src/adapters/agents-providers/DecartTokenCreationError.ts",
+			"packages/game/src/adapters/agents-providers/InvalidPreviewRequestError.ts"
 		],
 		"symbols": [
+			"ActivePreviewLeaseError",
 			"DecartAdapter",
 			"DecartAdapter.constructor",
 			"DecartAdapter.start",
 			"renderRate",
 			"validateSession",
 			"TokenClient",
-			"InvalidPreviewRequestError",
-			"ActivePreviewLeaseError",
-			"DecartTokenCreationError"
+			"DecartTokenCreationError",
+			"InvalidPreviewRequestError"
 		]
 	},
 	"contract": {

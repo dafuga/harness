@@ -1,5 +1,5 @@
 import type { Point, Box } from './Software3dAdapter.types';
-import { Canvas2dContextUnavailableError } from './Software3dAdapter.types';
+import { Canvas2dContextUnavailableError } from './Canvas2dContextUnavailableError';
 import type { FrameSource, GameRun, GameView } from '../../models/game-authoring/Game.types';
 
 /** The same primitive world projected onto Canvas when WebGL is unavailable. */

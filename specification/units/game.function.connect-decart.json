@@ -9,10 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/game/src/adapters/agents-providers/DecartConnectionFailedError.ts",
+			"packages/game/src/adapters/agents-providers/DecartPreviewCancelledError.ts",
 			"packages/game/src/adapters/agents-providers/DecartStreamAdapter.ts",
-			"packages/game/src/adapters/agents-providers/DecartStreamAdapter.types.ts"
+			"packages/game/src/adapters/agents-providers/DecartStreamAdapter.types.ts",
+			"packages/game/src/adapters/agents-providers/DecartTransportUnavailableError.ts"
 		],
 		"symbols": [
+			"DecartConnectionFailedError",
+			"DecartPreviewCancelledError",
 			"decartTransportReady",
 			"DecartStreamAdapter",
 			"DecartStreamAdapter.constructor",
@@ -20,12 +25,10 @@
 			"connectDecart",
 			"VideoConnection",
 			"VideoConnector",
-			"DecartTransportUnavailableError",
-			"DecartPreviewCancelledError",
-			"DecartConnectionFailedError",
 			"VideoConnection",
 			"VideoConnector",
-			"Prompt"
+			"Prompt",
+			"DecartTransportUnavailableError"
 		]
 	},
 	"contract": {

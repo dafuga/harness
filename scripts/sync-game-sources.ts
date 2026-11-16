@@ -18,8 +18,16 @@ export const gameSourceLayout: Readonly<Record<string, string>> = {
 	'adapters/ThreeSceneAdapter.ts': 'adapters/game-authoring/ThreeSceneAdapter.ts',
 	'adapters/Software3dAdapter.ts': 'adapters/game-authoring/Software3dAdapter.ts',
 	'adapters/Software3dAdapter.types.ts': 'adapters/game-authoring/Software3dAdapter.types.ts',
+	'adapters/Canvas2dContextUnavailableError.ts':
+		'adapters/game-authoring/Canvas2dContextUnavailableError.ts',
 	'adapters/DecartStreamAdapter.ts': 'adapters/agents-providers/DecartStreamAdapter.ts',
-	'adapters/DecartStreamAdapter.types.ts': 'adapters/agents-providers/DecartStreamAdapter.types.ts'
+	'adapters/DecartStreamAdapter.types.ts': 'adapters/agents-providers/DecartStreamAdapter.types.ts',
+	'adapters/DecartTransportUnavailableError.ts':
+		'adapters/agents-providers/DecartTransportUnavailableError.ts',
+	'adapters/DecartPreviewCancelledError.ts':
+		'adapters/agents-providers/DecartPreviewCancelledError.ts',
+	'adapters/DecartConnectionFailedError.ts':
+		'adapters/agents-providers/DecartConnectionFailedError.ts'
 };
 
 /** The formatting a generated project checks, so embedded sources pass its own format check. */

@@ -9,17 +9,18 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/game/src/adapters/game-authoring/Canvas2dContextUnavailableError.ts",
 			"packages/game/src/adapters/game-authoring/Software3dAdapter.ts",
 			"packages/game/src/adapters/game-authoring/Software3dAdapter.types.ts"
 		],
 		"symbols": [
+			"Canvas2dContextUnavailableError",
 			"Software3dAdapter",
 			"Software3dAdapter.constructor",
 			"Software3dAdapter.render",
 			"Software3dAdapter.dispose",
 			"Point",
-			"Box",
-			"Canvas2dContextUnavailableError"
+			"Box"
 		]
 	},
 	"contract": {

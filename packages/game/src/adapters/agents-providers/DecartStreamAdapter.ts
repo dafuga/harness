@@ -1,9 +1,7 @@
 import type { Prompt, VideoConnection } from './DecartStreamAdapter.types';
-import {
-	DecartConnectionFailedError,
-	DecartPreviewCancelledError,
-	DecartTransportUnavailableError
-} from './DecartStreamAdapter.types';
+import { DecartConnectionFailedError } from './DecartConnectionFailedError';
+import { DecartPreviewCancelledError } from './DecartPreviewCancelledError';
+import { DecartTransportUnavailableError } from './DecartTransportUnavailableError';
 import type { RenderSession } from '../../models/game-authoring/Game.types';
 /** The public vendor SDK puts its client credential in a URL. No safe transport is registered. */
 export function decartTransportReady(): boolean {
