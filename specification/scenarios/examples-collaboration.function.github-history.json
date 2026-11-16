@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-collaboration.function.github-history",
+	"title": "collaboration.function.github-history examples",
+	"kind": "headless",
+	"units": ["collaboration.function.github-history"],
+	"builds": [],
+	"states": [
+		{
+			"id": "ensureancestry-accepts-the-tip-itself-without-a-request",
+			"title": "ensureAncestry accepts the tip itself without a request",
+			"coverage": "required"
+		},
+		{
+			"id": "ensureancestry-accepts-only-commits-that-the-tip-contains",
+			"title": "ensureAncestry accepts only commits that the tip contains",
+			"coverage": "required"
+		},
+		{
+			"id": "ensureancestry-refuses-unsafe-paths-and-unusable-replies",
+			"title": "ensureAncestry refuses unsafe paths and unusable replies",
+			"coverage": "required"
+		},
+		{
+			"id": "githubhistory-commits-lists-history-from-a-branch-tip",
+			"title": "githubHistory commits lists history from a branch tip",
+			"coverage": "required"
+		},
+		{
+			"id": "githubhistory-changed-lists-paths-against-the-first-parent",
+			"title": "githubHistory changed lists paths against the first parent",
+			"coverage": "required"
+		},
+		{
+			"id": "githubhistory-optionalref-resolves-a-ref-or-returns-null",
+			"title": "githubHistory optionalRef resolves a ref or returns null",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/collaboration.function.github-history.test.ts",
+			"cwd": "packages/collaboration",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"ensureancestry-accepts-the-tip-itself-without-a-request",
+				"ensureancestry-accepts-only-commits-that-the-tip-contains",
+				"ensureancestry-refuses-unsafe-paths-and-unusable-replies",
+				"githubhistory-commits-lists-history-from-a-branch-tip",
+				"githubhistory-changed-lists-paths-against-the-first-parent",
+				"githubhistory-optionalref-resolves-a-ref-or-returns-null"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"ensureancestry-accepts-the-tip-itself-without-a-request",
+				"ensureancestry-accepts-only-commits-that-the-tip-contains",
+				"ensureancestry-refuses-unsafe-paths-and-unusable-replies",
+				"githubhistory-commits-lists-history-from-a-branch-tip",
+				"githubhistory-changed-lists-paths-against-the-first-parent",
+				"githubhistory-optionalref-resolves-a-ref-or-returns-null"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"ensureancestry-accepts-the-tip-itself-without-a-request",
+				"ensureancestry-accepts-only-commits-that-the-tip-contains",
+				"ensureancestry-refuses-unsafe-paths-and-unusable-replies",
+				"githubhistory-commits-lists-history-from-a-branch-tip",
+				"githubhistory-changed-lists-paths-against-the-first-parent",
+				"githubhistory-optionalref-resolves-a-ref-or-returns-null"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
