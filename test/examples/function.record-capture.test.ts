@@ -1,0 +1,72 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { test } from 'vitest';
+import { evidenceRequested, recordCapture } from '../../src/utils/reports-media/record-capture/recordCapture';
+import type { Environment } from '../../src/utils/reports-media/record-capture/recordCapture.types';
+import { recordExampleCases } from '../support/recordExampleCases';
+import { withTempDir } from '../support/temporary';
+import { expect } from '../verificationExpect';
+
+test('Evidence recording requires both opt-in settings', () => {
+	const requested: Environment = {
+		HARNESS_EVIDENCE_DIR: '.cache/harness/evidence',
+		TAKE_SCREENSHOT: '1'
+	};
+	const alternate: Environment = {
+		HARNESS_EVIDENCE_DIR: '.cache/harness/evidence',
+		TAKE_SCREENSHOT: 'true'
+	};
+	const results = [evidenceRequested(requested), evidenceRequested(alternate)];
+	expect(results).toEqual([true, false]);
+	recordExampleCases(
+		{
+			unitId: 'function.record-capture',
+			symbol: 'evidenceRequested',
+			state: 'evidence-recording-requires-both-opt-in-settings',
+			evidence: 'examples-cases',
+			file: 'evidence-recording-requires-both-opt-in-settings.json'
+		},
+		[
+			{ name: 'evidence directory and screenshot opt-in are set', input: requested, output: true },
+			{ name: 'nonempty directory has a nonmatching screenshot value', input: alternate, output: false }
+		]
+	);
+});
+
+test('Requested captures write bytes and append their metadata', async () => {
+	await withTempDir('record-capture-', (directory) => {
+		const env = { HARNESS_EVIDENCE_DIR: directory, TAKE_SCREENSHOT: '1' };
+		const line = {
+			evidence: 'reports.component.evidence-grid',
+			kind: 'output' as const,
+			state: 'reports.capture-grid.ready',
+			file: 'verification-output.txt',
+			mediaType: 'text/plain'
+		};
+		const bytes = 'Rendered verification output.\n';
+		const recorded = recordCapture(line, bytes, env);
+		const content = readFileSync(join(directory, line.file), 'utf8');
+		const index = readFileSync(join(directory, 'captures.ndjson'), 'utf8');
+		expect({ recorded, content, index }).toEqual({
+			recorded: true,
+			content: bytes,
+			index: `${JSON.stringify(line)}\n`
+		});
+		recordExampleCases(
+			{
+				unitId: 'function.record-capture',
+				symbol: 'recordCapture',
+				state: 'requested-captures-write-bytes-and-append-their-metadata',
+				evidence: 'examples-cases',
+				file: 'requested-captures-write-bytes-and-append-their-metadata.json'
+			},
+			[
+				{
+					name: 'requested text output is written and indexed',
+					input: { line, bytes, env },
+					output: { recorded, content, index }
+				}
+			]
+		);
+	});
+});
