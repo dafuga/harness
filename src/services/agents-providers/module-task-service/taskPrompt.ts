@@ -12,10 +12,20 @@ export function moduleTaskPrompt(task: ModuleTask, commit: string): string {
 		createHash('sha256').update(stableJson(task.wantedContract)).digest('hex') !== task.contractHash
 	)
 		throw new ExpectedCliError('Wanted contract hash does not match the committed task.');
+	const workerBrief = [
+		'Work on this feature through its module contracts. Follow the Harness workflow.',
+		'Edit only the allowed task files in this prompt; never edit specification/units/; contracts are read-only.',
+		'Do not delegate, commit, push, deploy or access credentials.',
+		"Keep files within the repository's line and naming limits.",
+		"Use the repository's test and lint commands. Report verification performed and remaining gaps.",
+		'Preserve unrelated work. CLI completion is not verification.',
+		'Open relevant sections of root AGENTS.md when the task needs them.',
+		'Your only channel is Harness: put questions, blockers and contract doubts in your final message; do not contact anyone or any other service.'
+	].join(' ');
 	return [
 		`Overall goal: ${task.feature.goal}`,
 		`Feature TLDR: ${task.feature.tldr}`,
-		'Work on this feature through its module contracts. Follow AGENTS.md and the Harness workflow. Do not delegate, commit, push, deploy or access credentials. Preserve unrelated work. CLI completion is not verification.',
+		workerBrief,
 		`Module: ${task.module.id}`,
 		`Overall module goal: ${task.module.goal}`,
 		`Allowed task files: ${task.module.files.join(', ')}`,
