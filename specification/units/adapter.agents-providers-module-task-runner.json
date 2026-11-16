@@ -24,6 +24,7 @@
 			"TaskPublicEvent",
 			"ModuleTaskRunError",
 			"taskProcess",
+			"parsePositiveIntegerEnvironmentValue",
 			"TaskOutputOverflowError"
 		]
 	},
@@ -86,6 +87,16 @@
 				"type": "TaskRunInput",
 				"required": true,
 				"description": "Run context supplying the selected provider and model, child working directory, prompt for stdin and signal for cancellation."
+			},
+			{
+				"name": "parsePositiveIntegerEnvironmentValue.value",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "parsePositiveIntegerEnvironmentValue.fallback",
+				"type": "number",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -347,6 +358,29 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "parsePositiveIntegerEnvironmentValue",
+				"inputs": [
+					{
+						"name": "parsePositiveIntegerEnvironmentValue.value",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "parsePositiveIntegerEnvironmentValue.fallback",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "parsePositiveIntegerEnvironmentValue",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
