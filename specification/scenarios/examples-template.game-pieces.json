@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-template.game-pieces",
+	"title": "template.game-pieces examples",
+	"kind": "headless",
+	"units": ["template.game-pieces"],
+	"builds": [],
+	"states": [
+		{
+			"id": "generates-a-game-view-config",
+			"title": "Generates a game view config",
+			"coverage": "required"
+		},
+		{
+			"id": "generates-a-mechanic-utility-and-test",
+			"title": "Generates a mechanic utility and test",
+			"coverage": "required"
+		},
+		{
+			"id": "generates-a-checkpoint-config",
+			"title": "Generates a checkpoint config",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/template.game-pieces.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"generates-a-game-view-config",
+				"generates-a-mechanic-utility-and-test",
+				"generates-a-checkpoint-config"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"generates-a-game-view-config",
+				"generates-a-mechanic-utility-and-test",
+				"generates-a-checkpoint-config"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"generates-a-game-view-config",
+				"generates-a-mechanic-utility-and-test",
+				"generates-a-checkpoint-config"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
