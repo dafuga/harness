@@ -178,9 +178,19 @@
 				"description": "Thrown by new URL(options.origin) for a non-absolute origin string, by reading options.origin when options is null or undefined, and by JSON.stringify(body) in publicJson() for a circular or BigInt body."
 			},
 			{
-				"name": "Error",
+				"name": "InvalidHostedOriginError",
 				"type": "thrown",
-				"description": "Plain Error with one of three messages: 'Use an exact HTTPS hosted origin.' from the constructor, 'A verified hosted session is required.' from authorize() (and so json()), or 'Untrusted hosted request path.' from request() (and so publicJson() and json())."
+				"description": "Thrown by the constructor with 'Use an exact HTTPS hosted origin.'"
+			},
+			{
+				"name": "HostedSessionRequiredError",
+				"type": "thrown",
+				"description": "Thrown with 'A verified hosted session is required.' from authorize() (and so json())."
+			},
+			{
+				"name": "UntrustedHostedRequestPathError",
+				"type": "thrown",
+				"description": "Thrown with 'Untrusted hosted request path.' from request() (and so publicJson() and json())."
 			},
 			{
 				"name": "HostedFailureValidator.classify result",
@@ -276,7 +286,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "UntrustedHostedRequestPathError",
 						"type": "thrown",
 						"description": "Thrown with 'Untrusted hosted request path.' by request() before any fetch when path does not start with '/api/' or resolves to another origin."
 					},
@@ -317,7 +327,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HostedSessionRequiredError",
 						"type": "thrown",
 						"description": "Thrown with 'A verified hosted session is required.' when credentials() resolves to null, to a credential whose origin differs from the adapter origin, or to one with an empty principalId or token; onDenied(principalId) is awaited first, and a rejection from it replaces this error."
 					},
@@ -371,9 +381,14 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HostedSessionRequiredError",
 						"type": "thrown",
-						"description": "Thrown with 'A verified hosted session is required.' by authorize() when no verified credential is returned, or with 'Untrusted hosted request path.' by request() after authorize() has succeeded and path does not start with '/api/' or resolves to another origin."
+						"description": "Thrown with 'A verified hosted session is required.' by authorize() when no verified credential is returned."
+					},
+					{
+						"name": "UntrustedHostedRequestPathError",
+						"type": "thrown",
+						"description": "Thrown with 'Untrusted hosted request path.' by request() after authorize() has succeeded and path does not start with '/api/' or resolves to another origin."
 					},
 					{
 						"name": "RemoteProjectResponseValidator.actor error",
@@ -461,7 +476,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "UntrustedHostedRequestPathError",
 						"type": "thrown",
 						"description": "Thrown with 'Untrusted hosted request path.' before any fetch when path does not start with '/api/' or resolves to another origin; this error is not passed through HostedFailureValidator.classify."
 					},

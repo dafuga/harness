@@ -247,9 +247,19 @@
 				"examples": ["Timed out waiting to initialize the analytics database."]
 			},
 			{
-				"name": "Error",
+				"name": "UnsupportedAnalyticsSchemaVersionError",
 				"type": "thrown",
-				"description": "Plain Error instances (no custom subclass) are thrown from three places in the module: the schema-version check run by the synchronous constructor and by open, the retention-cutoff check in prune, and the initialization timeout in open. They carry the messages 'Unsupported analytics schema version.', 'Retention cutoff must be an ISO UTC timestamp in the past.', and 'Timed out waiting to initialize the analytics database.' respectively."
+				"description": "Thrown by the schema-version check that the synchronous constructor and open run, with the message 'Unsupported analytics schema version.'"
+			},
+			{
+				"name": "InvalidRetentionCutoffError",
+				"type": "thrown",
+				"description": "Thrown by the retention-cutoff check in prune, with the message 'Retention cutoff must be an ISO UTC timestamp in the past.'"
+			},
+			{
+				"name": "AnalyticsInitializationTimeoutError",
+				"type": "thrown",
+				"description": "Thrown by the initialization timeout in open, with the message 'Timed out waiting to initialize the analytics database.'"
 			}
 		],
 		"errorStatus": "declared",
@@ -523,9 +533,9 @@
 						"examples": ["Retention cutoff must be an ISO UTC timestamp in the past."]
 					},
 					{
-						"name": "Error",
+						"name": "InvalidRetentionCutoffError",
 						"type": "thrown",
-						"description": "A plain Error (no custom subclass) created with new Error(...) and thrown by prune before any query runs when before does not parse as a Date, does not end in 'Z', has a first 19 characters that differ from its normalized UTC form, or is not strictly earlier than now. Its message is 'Retention cutoff must be an ISO UTC timestamp in the past.'"
+						"description": "An InvalidRetentionCutoffError thrown by prune before any query runs when before does not parse as a Date, does not end in 'Z', has a first 19 characters that differ from its normalized UTC form, or is not strictly earlier than now. Its message is 'Retention cutoff must be an ISO UTC timestamp in the past.'"
 					}
 				],
 				"errorStatus": "declared"
@@ -609,11 +619,12 @@
 				"outputs": [
 					{
 						"name": "UnsupportedAnalyticsSchemaVersionError.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new UnsupportedAnalyticsSchemaVersionError, with its fixed message and name set."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "InvalidRetentionCutoffError.constructor",
@@ -621,11 +632,12 @@
 				"outputs": [
 					{
 						"name": "InvalidRetentionCutoffError.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new InvalidRetentionCutoffError, with its fixed message and name set."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AnalyticsInitializationTimeoutError.constructor",
@@ -633,11 +645,12 @@
 				"outputs": [
 					{
 						"name": "AnalyticsInitializationTimeoutError.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new AnalyticsInitializationTimeoutError, with its fixed message and name set."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},

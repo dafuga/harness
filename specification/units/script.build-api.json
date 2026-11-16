@@ -22,9 +22,29 @@
 		"outputs": [],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ApiDeclarationBuildError",
 				"type": "thrown",
-				"description": "Plain Error thrown when the tsc declaration build exits non-zero, when a public API or edge Bun.build call reports failure (the message then includes the build logs), or when a built edge bundle has a from clause naming a node: or bun specifier or contains a require() call. Uncaught filesystem rejections, such as a missing package.json or target/kernel/impact-kernel.wasm, also make the script fail, while a failed copy of specification/measurements/impact-kernel is ignored."
+				"description": "Thrown with 'Public API declarations failed.' when the tsc declaration build exits non-zero."
+			},
+			{
+				"name": "PublicApiBundleBuildError",
+				"type": "thrown",
+				"description": "Thrown when the public API Bun.build call reports failure; the message includes the build logs."
+			},
+			{
+				"name": "EdgeBundleBuildError",
+				"type": "thrown",
+				"description": "Thrown when an edge Bun.build call reports failure; the message names the entry and includes the build logs."
+			},
+			{
+				"name": "EdgeBundlePortabilityError",
+				"type": "thrown",
+				"description": "Thrown when a built edge bundle has a from clause naming a node: or bun specifier or contains a require() call."
+			},
+			{
+				"name": "Error",
+				"type": "propagated",
+				"description": "Uncaught filesystem rejections, such as a missing package.json or target/kernel/impact-kernel.wasm, also make the script fail, while a failed copy of specification/measurements/impact-kernel is ignored."
 			},
 			{
 				"name": "SyntaxError",
