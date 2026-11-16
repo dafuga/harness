@@ -2,20 +2,20 @@
 import type { DeploymentConfig } from '../../models/development-tooling/Deployment.types';
 import { CloudflareSafetyError } from './cloudflareSafety.types';
 /** Route overlap is an environment boundary, independent of a Worker's name. */
-export function cloudflareSafety(
-	config: Record<string, unknown>,
-	targets: DeploymentConfig['targets']
-) {
-	const environments = (config.env ?? {}) as Record<string, Record<string, unknown>>;
-	const protectedHosts = hosts(config);
+export function cloudflareSafety(config: object, targets: DeploymentConfig['targets']) {
+	const wranglerConfig = config as Record<string, unknown>;
+	const environments = (wranglerConfig.env ?? {}) as Record<string, Record<string, unknown>>;
+	const protectedHosts = hosts(wranglerConfig);
 	for (const name of ['prod', 'production'])
-		protectedHosts.push(...hosts(environments[name] ?? {}, config));
+		protectedHosts.push(...hosts(environments[name] ?? {}, wranglerConfig));
 	const configured = Object.values(targets).filter((target) => target.kind === 'workers');
 	const production = configured.find((target) => target.environment === 'prod');
 	if (production)
-		protectedHosts.push(...hosts(environments[production.wranglerEnvironment] ?? {}, config));
+		protectedHosts.push(
+			...hosts(environments[production.wranglerEnvironment] ?? {}, wranglerConfig)
+		);
 	for (const target of configured.filter((target) => target.environment !== 'prod')) {
-		const selected = hosts(environments[target.wranglerEnvironment] ?? {}, config);
+		const selected = hosts(environments[target.wranglerEnvironment] ?? {}, wranglerConfig);
 		if (selected.some((host) => host.includes('*') || protectedHosts.includes(host)))
 			throw new CloudflareSafetyError(
 				'A lower Worker environment inherits or overlaps a production route. Configure distinct hosts.'
