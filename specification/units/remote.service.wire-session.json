@@ -56,7 +56,7 @@
 			},
 			{
 				"name": "WireSessionService.emit.value",
-				"type": "Value",
+				"type": "unknown",
 				"required": true,
 				"description": "Provides the payload stored in the event log and included in the wire event. Its type is unconstrained (unknown), so this service does not define a per-channel payload shape.",
 				"examples": [
@@ -144,7 +144,7 @@
 					},
 					{
 						"name": "WireSessionService.emit.value",
-						"type": "Value",
+						"type": "unknown",
 						"required": true,
 						"description": "Provides the payload stored in the event log and included in the wire event. Its type is unconstrained (unknown), so this service does not define a per-channel payload shape.",
 						"examples": [
