@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-audit.config",
+	"title": "audit.config examples",
+	"kind": "headless",
+	"units": ["audit.config"],
+	"builds": [],
+	"states": [
+		{
+			"id": "reads-defaults-and-normalizes-configured-audit-settings",
+			"title": "reads defaults and normalizes configured audit settings",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-invalid-audit-configuration",
+			"title": "rejects invalid audit configuration",
+			"coverage": "required"
+		},
+		{
+			"id": "partitions-findings-by-configured-ignore-path-and-rule",
+			"title": "partitions findings by configured ignore path and rule",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/audit.config.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"reads-defaults-and-normalizes-configured-audit-settings",
+				"rejects-invalid-audit-configuration",
+				"partitions-findings-by-configured-ignore-path-and-rule"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"reads-defaults-and-normalizes-configured-audit-settings",
+				"rejects-invalid-audit-configuration",
+				"partitions-findings-by-configured-ignore-path-and-rule"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"reads-defaults-and-normalizes-configured-audit-settings",
+				"rejects-invalid-audit-configuration",
+				"partitions-findings-by-configured-ignore-path-and-rule"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
