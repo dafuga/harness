@@ -60,7 +60,7 @@
 			},
 			{
 				"name": "galleryEvidence.pairs",
-				"type": "unknown",
+				"type": "ReadonlyMap<string, Evidence>",
 				"required": false,
 				"description": "Optional after-to-before audio pair map, defaulting to audioPairs(items)."
 			},
@@ -171,7 +171,7 @@
 					},
 					{
 						"name": "galleryEvidence.pairs",
-						"type": "unknown",
+						"type": "ReadonlyMap<string, Evidence>",
 						"required": false,
 						"description": "Optional after-to-before audio pair map, defaulting to audioPairs(items)."
 					}
