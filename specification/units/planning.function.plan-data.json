@@ -16,7 +16,7 @@
 		"inputs": [
 			{
 				"name": "planData.value",
-				"type": "unknown",
+				"type": "PlanDataValue",
 				"required": true,
 				"description": "JSON-compatible value to serialize recursively."
 			},
@@ -42,7 +42,7 @@
 			},
 			{
 				"name": "json.value",
-				"type": "unknown",
+				"type": "PlanDataValue",
 				"required": true,
 				"description": "JSON-compatible value to serialize with a trailing newline."
 			},
@@ -110,7 +110,7 @@
 				"inputs": [
 					{
 						"name": "planData.value",
-						"type": "unknown",
+						"type": "PlanDataValue",
 						"required": true,
 						"description": "JSON-compatible value to serialize recursively."
 					}
@@ -196,7 +196,7 @@
 				"inputs": [
 					{
 						"name": "json.value",
-						"type": "unknown",
+						"type": "PlanDataValue",
 						"required": true,
 						"description": "JSON-compatible value to serialize with a trailing newline."
 					}
