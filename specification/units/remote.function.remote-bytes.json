@@ -52,7 +52,7 @@
 		"inputs": [
 			{
 				"name": "stableJson.value",
-				"type": "unknown",
+				"type": "WireRequest['input']",
 				"required": true,
 				"description": "Any JSON-like value to serialize deterministically: object keys are sorted by UTF-16 code unit at every depth, undefined object properties are dropped, and objects are read from their own enumerable keys, so toJSON is never called on them. BigInt values and cyclic structures throw, functions and symbols become null, and sparse array holes become empty elements, which is not valid JSON.",
 				"examples": [
@@ -264,7 +264,7 @@
 				"inputs": [
 					{
 						"name": "stableJson.value",
-						"type": "unknown",
+						"type": "WireRequest['input']",
 						"required": true,
 						"description": "Any JSON-like value to serialize deterministically: object keys are sorted by UTF-16 code unit at every depth, undefined object properties are dropped, and objects are read from their own enumerable keys, so toJSON is never called on them. BigInt values and cyclic structures throw, functions and symbols become null, and sparse array holes become empty elements, which is not valid JSON.",
 						"examples": [
@@ -607,7 +607,13 @@
 		],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "remote.model.remote-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/remote/src/utils/networking-security/remoteBytes.ts",
