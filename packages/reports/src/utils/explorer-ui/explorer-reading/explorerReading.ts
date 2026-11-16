@@ -1,5 +1,5 @@
 // @harness-uid u_tifhg2ffwr
-import type { ArtifactValue, Fields } from './explorerReading.types';
+import type { Fields } from './explorerReading.types';
 import type {
 	ExplorerArtifact,
 	ExplorerBehavior,
@@ -90,16 +90,12 @@ function stated(document: unknown): unknown {
  * the same behaviour are the same, and a document that declares nothing is compared whole. Text
  * that is not a document is compared as it is. Empty when nothing differs.
  */
-export function artifactDifferences(before: ArtifactValue, after: ArtifactValue): string[] {
+export function artifactDifferences(before: unknown, after: unknown): string[] {
 	return differs(stated(before), stated(after), '');
 }
 
-/**
- * What a read result holds to compare: its document, or its text when it is not one. A document
- * is parsed JSON, the value `ArtifactValue` describes; the model types it as unknown.
- */
-const held = (read: ExplorerArtifact): ArtifactValue =>
-	(read.document ?? read.text) as ArtifactValue;
+/** What a read result holds to compare: its document, or its text when it is not one. */
+const held = (read: ExplorerArtifact) => read.document ?? read.text;
 
 /** One row with what both results hold, and what that says happened to the behaviour. */
 function resolved(

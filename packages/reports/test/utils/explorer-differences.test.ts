@@ -1,6 +1,5 @@
 import { expect, test } from 'vitest';
 import { artifactDifferences } from '../../src/utils/explorer-reading/explorerReading';
-import type { ArtifactValue } from '../../src/utils/explorer-ui/explorer-reading/explorerReading.types';
 
 /** What a run declares about itself, in the one place and version the reader recognises. */
 const declared = (stamp: number, more: object = {}) => ({
@@ -128,7 +127,7 @@ test('a declared run hides nothing but the declaration: every other time in it i
 });
 
 test('a declaration of no known version declares nothing, so all of it is compared', () => {
-	const versions: ArtifactValue[] = [2, '1', null];
+	const versions: unknown[] = [2, '1', undefined];
 	for (const version of versions) {
 		const run = (stamp: number) => ({
 			harnessRun: { version, at: stamp },
@@ -144,7 +143,7 @@ test('a declaration of no known version declares nothing, so all of it is compar
 });
 
 test('an entry of a trace declares for itself: what is no declaration of this version is compared', () => {
-	const run = (carried: ArtifactValue) => ({
+	const run = (carried: unknown) => ({
 		harnessRun: { version: 1 },
 		trace: [{ harnessRun: carried }]
 	});
@@ -170,7 +169,7 @@ test('a declaration sets aside only when, how long and which process: the rest o
 		'trace[0].harnessRun.answer'
 	]);
 	// A time that is not a time, a duration or a process that is not a number: values again.
-	const typed = (startedAt: ArtifactValue, durationMs: ArtifactValue, pid: ArtifactValue) => ({
+	const typed = (startedAt: unknown, durationMs: unknown, pid: unknown) => ({
 		harnessRun: { version: 1, startedAt, durationMs, pid }
 	});
 	expect(

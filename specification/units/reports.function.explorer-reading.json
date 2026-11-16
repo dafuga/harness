@@ -22,7 +22,6 @@
 			"artifactDifferences",
 			"explorerReading",
 			"Fields",
-			"ArtifactValue",
 			"artifactRun",
 			"artifactDifferences",
 			"explorerReading"
@@ -33,7 +32,7 @@
 		"inputs": [
 			{
 				"name": "artifactDifferences.before",
-				"type": "ArtifactValue",
+				"type": "unknown",
 				"required": true,
 				"description": "Earlier recorded value: a parsed document, or the text of a result that is not one. An object whose harnessRun declares version 1 has its recognized run metadata set aside before the comparison; anything else is compared as it is.",
 				"examples": [
@@ -54,7 +53,7 @@
 			},
 			{
 				"name": "artifactDifferences.after",
-				"type": "ArtifactValue",
+				"type": "unknown",
 				"required": true,
 				"description": "Later recorded value: a parsed document, or the text of a result that is not one. It is prepared the same way as the earlier value, so the two are compared on what each holds.",
 				"examples": [
@@ -281,7 +280,7 @@
 				"inputs": [
 					{
 						"name": "artifactDifferences.before",
-						"type": "ArtifactValue",
+						"type": "unknown",
 						"required": true,
 						"description": "Earlier recorded value: a parsed document, or the text of a result that is not one. An object whose harnessRun declares version 1 has its recognized run metadata set aside before the comparison; anything else is compared as it is.",
 						"examples": [
@@ -302,7 +301,7 @@
 					},
 					{
 						"name": "artifactDifferences.after",
-						"type": "ArtifactValue",
+						"type": "unknown",
 						"required": true,
 						"description": "Later recorded value: a parsed document, or the text of a result that is not one. It is prepared the same way as the earlier value, so the two are compared on what each holds.",
 						"examples": [
