@@ -17,3 +17,8 @@ export interface E2eFixtures {
 	/** A checkout of a fixture application, by its directory name. */
 	site(name: string): string;
 }
+
+/** Thrown when this process belongs to no browser run: HARNESS_E2E_ROOT is unset or empty. */
+export class E2eRootNotSetError extends Error {
+	override name = 'E2eRootNotSetError';
+}
