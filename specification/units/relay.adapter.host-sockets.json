@@ -78,7 +78,7 @@
 			},
 			{
 				"name": "HostSocketsAdapter.send.frame",
-				"type": "unknown",
+				"type": "Frame",
 				"required": true,
 				"description": "The value JSON-stringified and sent as one text frame. Serialization or send failures make the operation return false.",
 				"examples": [
@@ -334,7 +334,7 @@
 					},
 					{
 						"name": "HostSocketsAdapter.send.frame",
-						"type": "unknown",
+						"type": "Frame",
 						"required": true,
 						"description": "The value JSON-stringified and sent as one text frame. Serialization or send failures make the operation return false.",
 						"examples": [
