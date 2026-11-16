@@ -20,13 +20,13 @@
 		"inputs": [
 			{
 				"name": "handle.event",
-				"type": "unknown",
+				"type": "RequestEvent",
 				"required": true,
 				"description": "The SvelteKit RequestEvent for the current request, passed unchanged to resolve(event) and never read by the hook. It matters only as the input to resolve, and the hook neither validates nor changes it."
 			},
 			{
 				"name": "handle.resolve",
-				"type": "unknown",
+				"type": "Parameters<Handle>[0]['resolve']",
 				"required": true,
 				"description": "SvelteKit's resolve function, called once as resolve(event) with no ResolveOptions and awaited for the Response that the hook passes to HubResponsesMiddleware. The hook adds no try/catch around that await, so any rejection from resolve propagates out of handle."
 			}
@@ -57,13 +57,13 @@
 				"inputs": [
 					{
 						"name": "handle.event",
-						"type": "unknown",
+						"type": "RequestEvent",
 						"required": true,
 						"description": "The SvelteKit RequestEvent for the current request, passed unchanged to resolve(event) and never read by the hook. It matters only as the input to resolve, and the hook neither validates nor changes it."
 					},
 					{
 						"name": "handle.resolve",
-						"type": "unknown",
+						"type": "Parameters<Handle>[0]['resolve']",
 						"required": true,
 						"description": "SvelteKit's resolve function, called once as resolve(event) with no ResolveOptions and awaited for the Response that the hook passes to HubResponsesMiddleware. The hook adds no try/catch around that await, so any rejection from resolve propagates out of handle."
 					}
