@@ -10,9 +10,17 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/repositories/reports-media/report-repository/reportFiles.ts",
-			"packages/reports/src/utils/reports-media/reportFiles.ts"
+			"packages/reports/src/utils/reports-media/reportFiles.ts",
+			"packages/reports/src/utils/reports-media/reportFiles.types.ts"
 		],
-		"symbols": ["reportFiles", "safeId", "readJson", "atomicJson", "reportFiles"]
+		"symbols": [
+			"reportFiles",
+			"safeId",
+			"readJson",
+			"atomicJson",
+			"reportFiles",
+			"InvalidReportOrAssetIdError"
+		]
 	},
 	"contract": {
 		"origin": "declared",
