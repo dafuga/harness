@@ -8,7 +8,7 @@ export class HostedFailureValidator extends Error {
 		super('Hosted request failed or access was refused.');
 	}
 
-	static classify<Thrown>(error: Thrown): HostedFailureValidator {
+	static classify(error: unknown): HostedFailureValidator {
 		if (error instanceof HostedFailureValidator) return error;
 		const cause =
 			error instanceof Error ? (error.cause as { code?: string } | undefined) : undefined;
