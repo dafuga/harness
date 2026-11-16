@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-workflow.loop-state-new-loop-state",
+	"title": "workflow.loop-state-new-loop-state examples",
+	"kind": "headless",
+	"units": ["workflow.loop-state-new-loop-state"],
+	"builds": [],
+	"states": [
+		{
+			"id": "adds-completion-only-when-a-task-kind-is-requested",
+			"title": "Adds completion only when a task kind is requested",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/workflow.loop-state-new-loop-state.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["adds-completion-only-when-a-task-kind-is-requested"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["adds-completion-only-when-a-task-kind-is-requested"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["adds-completion-only-when-a-task-kind-is-requested"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
