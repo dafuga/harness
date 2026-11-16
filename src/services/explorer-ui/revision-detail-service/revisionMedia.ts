@@ -1,5 +1,5 @@
 // @harness-uid u_x5bcnj5gs4
-import { shortCommit } from '$reports/helpers/strings/shortCommit';
+import { shortCommit } from '../../../../packages/reports/src/helpers/strings/shortCommit';
 import { posix } from 'node:path';
 import type { AttachedRecord } from '../../verification-evidence/history-status-service/attached-record-service/AttachedRecordService.types';
 import type { MediaPlacer } from '../../../utils/development-tooling/mediaPlace';
