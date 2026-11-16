@@ -99,7 +99,7 @@ export class EvidenceTreeAdapter {
 		const env = { GIT_INDEX_FILE: join(scratch, 'index') };
 		try {
 			if (input.parents[0]) await this.git.run(['read-tree', input.parents[0]], { env });
-			const blobs = await this.blobs(input.files);
+			const blobs = await commitBlobs(this.git, input.files);
 			const info = input.files.map((file, index) => `100644 ${blobs[index]}\t${file.path}\n`);
 			await this.git.run(['update-index', '--add', '--index-info'], { env, input: info.join('') });
 			const tree = await this.git.run(['write-tree'], { env });
@@ -119,21 +119,6 @@ export class EvidenceTreeAdapter {
 	}
 
 	/** Files on disk are hashed in one process; generated content one at a time. */
-	private async blobs(files: TreeFile[]): Promise<string[]> {
-		const onDisk = files.flatMap((file) => ('file' in file.content ? [file.content.file] : []));
-		const hashed = onDisk.length
-			? (await this.git.run(['hash-object', '-w', '--stdin-paths'], { input: onDisk.join('\n') }))
-					.split('\n')
-					.reverse()
-			: [];
-		const ids: string[] = [];
-		for (const { content } of files) {
-			if ('file' in content) ids.push(hashed.pop() ?? '');
-			else if ('blob' in content) ids.push(content.blob);
-			else ids.push(await this.git.run(['hash-object', '-w', '--stdin'], { input: content.bytes }));
-		}
-		return ids;
-	}
 }
 
 /** Byte lengths delimit binary content; a malformed protocol response never becomes evidence. */
@@ -201,4 +186,20 @@ function rememberListing(
 		sizes.set(match[1], Number(match[2]));
 		selected.set(match[3], match[1]);
 	}
+}
+
+async function commitBlobs(git: GitAdapter, files: TreeFile[]): Promise<string[]> {
+	const onDisk = files.flatMap((file) => ('file' in file.content ? [file.content.file] : []));
+	const hashed = onDisk.length
+		? (await git.run(['hash-object', '-w', '--stdin-paths'], { input: onDisk.join('\n') }))
+				.split('\n')
+				.reverse()
+		: [];
+	const ids: string[] = [];
+	for (const { content } of files) {
+		if ('file' in content) ids.push(hashed.pop() ?? '');
+		else if ('blob' in content) ids.push(content.blob);
+		else ids.push(await git.run(['hash-object', '-w', '--stdin'], { input: content.bytes }));
+	}
+	return ids;
 }
