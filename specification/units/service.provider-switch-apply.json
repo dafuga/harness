@@ -8,11 +8,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/agents-providers/ProviderSwitchApplyService.ts"],
+		"source": [
+			"src/services/agents-providers/ProviderSwitchApplyService.ts",
+			"src/services/agents-providers/ProviderSwitchApplyService.types.ts"
+		],
 		"symbols": [
 			"ProviderSwitchApplyService",
 			"ProviderSwitchApplyService.constructor",
-			"ProviderSwitchApplyService.apply"
+			"ProviderSwitchApplyService.apply",
+			"SwitchVerificationError"
 		]
 	},
 	"contract": {
