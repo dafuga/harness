@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.execution-runtimes-job-backfill",
+	"title": "service.execution-runtimes-job-backfill examples",
+	"kind": "headless",
+	"units": ["service.execution-runtimes-job-backfill"],
+	"builds": [],
+	"states": [
+		{
+			"id": "imports-timed-results-once-and-skips-missing-timing",
+			"title": "Imports timed results once and skips missing timing",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.execution-runtimes-job-backfill.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["imports-timed-results-once-and-skips-missing-timing"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["imports-timed-results-once-and-skips-missing-timing"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["imports-timed-results-once-and-skips-missing-timing"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
