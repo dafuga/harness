@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.hosted-artifact",
+	"title": "desktop.function.hosted-artifact examples",
+	"kind": "headless",
+	"units": ["desktop.function.hosted-artifact"],
+	"builds": [],
+	"states": [
+		{
+			"id": "returns-verified-json-bytes-with-the-normalized-declared-med",
+			"title": "returns verified JSON bytes with the normalized declared media type",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-a-hosted-artifact-with-an-unsupported-media-type",
+			"title": "refuses a hosted artifact with an unsupported media type",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-bytes-whose-digest-differs-from-the-requested-sha-25",
+			"title": "refuses bytes whose digest differs from the requested SHA-256",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.hosted-artifact.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"returns-verified-json-bytes-with-the-normalized-declared-med",
+				"refuses-a-hosted-artifact-with-an-unsupported-media-type",
+				"refuses-bytes-whose-digest-differs-from-the-requested-sha-25"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"returns-verified-json-bytes-with-the-normalized-declared-med",
+				"refuses-a-hosted-artifact-with-an-unsupported-media-type",
+				"refuses-bytes-whose-digest-differs-from-the-requested-sha-25"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"returns-verified-json-bytes-with-the-normalized-declared-med",
+				"refuses-a-hosted-artifact-with-an-unsupported-media-type",
+				"refuses-bytes-whose-digest-differs-from-the-requested-sha-25"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
