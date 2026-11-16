@@ -8,8 +8,25 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/validators/reports-media/ReportRecordValidator.ts"],
-		"symbols": ["ReportRecordValidator", "ReportRecordValidator.validate"]
+		"source": [
+			"packages/reports/src/validators/reports-media/ReportRecordValidator.ts",
+			"packages/reports/src/validators/reports-media/ReportRecordValidator.types.ts"
+		],
+		"symbols": [
+			"ReportRecordValidator",
+			"ReportRecordValidator.validate",
+			"UnsupportedRecordKindError",
+			"MissingRecordDataError",
+			"MissingSummaryTextError",
+			"InvalidAcceptanceCriteriaError",
+			"MissingRecordTitleError",
+			"InvalidRecordStatusError",
+			"InvalidEvidenceStatusError",
+			"MissingEvidencePathError",
+			"InvalidEvidencePhaseError",
+			"InvalidAudioDurationError",
+			"InvalidAudioTranscriptError"
+		]
 	},
 	"contract": {
 		"origin": "declared",
