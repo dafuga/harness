@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import { lstat, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
-import { CheckpointImageError } from './CheckpointImageRepository.types';
+import { CheckpointImageError } from './CheckpointImageError';
 const pattern = /^static\/game\/checkpoints\/[a-f0-9]{64}\.png$/;
 export class CheckpointImageRepository {
 	constructor(private root: string) {}

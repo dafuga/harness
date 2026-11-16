@@ -6,7 +6,7 @@ import { dirname, join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import type { GameDocument } from '../../models/game-authoring/Game.types';
 import { assertDocument } from '../../validators/game-authoring/gameDocument';
-import { GameDocumentError } from './GameDocumentRepository.types';
+import { GameDocumentError } from './GameDocumentError';
 
 /** The largest game.json, in UTF-8 bytes, that is saved and read. */
 const documentBytes = 1048576;

@@ -9,15 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/game/src/repositories/game-authoring/GameDocumentRepository.ts",
-			"packages/game/src/repositories/game-authoring/GameDocumentRepository.types.ts"
+			"packages/game/src/repositories/game-authoring/GameDocumentError.ts",
+			"packages/game/src/repositories/game-authoring/GameDocumentRepository.ts"
 		],
 		"symbols": [
+			"GameDocumentError",
 			"GameDocumentRepository",
 			"GameDocumentRepository.constructor",
 			"GameDocumentRepository.read",
-			"GameDocumentRepository.save",
-			"GameDocumentError"
+			"GameDocumentRepository.save"
 		]
 	},
 	"contract": {

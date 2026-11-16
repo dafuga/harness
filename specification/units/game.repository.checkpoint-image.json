@@ -9,15 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/game/src/repositories/game-authoring/CheckpointImageRepository.ts",
-			"packages/game/src/repositories/game-authoring/CheckpointImageRepository.types.ts"
+			"packages/game/src/repositories/game-authoring/CheckpointImageError.ts",
+			"packages/game/src/repositories/game-authoring/CheckpointImageRepository.ts"
 		],
 		"symbols": [
+			"CheckpointImageError",
 			"CheckpointImageRepository",
 			"CheckpointImageRepository.constructor",
 			"CheckpointImageRepository.save",
-			"CheckpointImageRepository.read",
-			"CheckpointImageError"
+			"CheckpointImageRepository.read"
 		]
 	},
 	"contract": {
