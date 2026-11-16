@@ -180,7 +180,7 @@
 				"inputs": [
 					{
 						"name": "EvidenceViewer.children.pane",
-						"type": "unknown",
+						"type": "ComparisonPane<Evidence>",
 						"required": true
 					}
 				],
