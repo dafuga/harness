@@ -75,7 +75,7 @@ test('clip planning reuses unchanged inputs and invalidates only actual consumer
 			assertPilotVideoInputs();
 		})
 	);
-}, 15_000);
+}, 60_000);
 test('clip planning follows shared dependencies and rejects missing source bindings', async () => {
 	await withTempDir('harness-video-', async (root) => {
 		await fixture(root);

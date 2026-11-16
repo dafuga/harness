@@ -14,11 +14,10 @@ export function assertPilotVideoInputs() {
 		const scenario = scenarioManifestSchema.parse(
 			JSON.parse(readFileSync(join(process.cwd(), 'specification/scenarios', `${id}.json`), 'utf8'))
 		);
-		expect(
-			() => new VideoEvidenceService().plan(scenario.video!),
-			`pilot input closure ${id}`
-		).not.toThrow();
-		const plan = new VideoEvidenceService().plan(scenario.video!);
-		expect(plan.record).toHaveLength(slots);
+		let plan: ReturnType<VideoEvidenceService['plan']> | undefined;
+		expect(() => {
+			plan = new VideoEvidenceService().plan(scenario.video!);
+		}, `pilot input closure ${id}`).not.toThrow();
+		expect(plan?.record).toHaveLength(slots);
 	}
 }
