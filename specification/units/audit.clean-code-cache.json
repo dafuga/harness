@@ -80,7 +80,7 @@
 				"name": "readReviewCache.key",
 				"type": "string",
 				"required": true,
-				"description": "Cache key inserted verbatim into the <key>.json lookup filename. The function does not validate or normalize the key string.",
+				"description": "Cache key used as the <key>.json lookup filename. Only a reviewCacheKey digest (64 lowercase hexadecimal characters) is accepted; any other key, such as one with path segments, is a cache miss and returns undefined without touching the filesystem.",
 				"examples": ["8b7f5247e2937405454a84258cbe9bdcdb83604e7892f0ddc46618814d0ace78"]
 			},
 			{
@@ -94,7 +94,7 @@
 				"name": "writeReviewCache.key",
 				"type": "string",
 				"required": true,
-				"description": "Cache key inserted verbatim into the temporary and final cache filenames. The function does not validate or normalize the key string.",
+				"description": "Cache key used in the temporary and final cache filenames. Only a reviewCacheKey digest (64 lowercase hexadecimal characters) is accepted; any other key, such as one with path segments, is ignored and nothing is written.",
 				"examples": ["8b7f5247e2937405454a84258cbe9bdcdb83604e7892f0ddc46618814d0ace78"]
 			},
 			{
@@ -249,7 +249,7 @@
 						"name": "readReviewCache.key",
 						"type": "string",
 						"required": true,
-						"description": "Cache key inserted verbatim into the <key>.json lookup filename. The function does not validate or normalize the key string.",
+						"description": "Cache key used as the <key>.json lookup filename. Only a reviewCacheKey digest (64 lowercase hexadecimal characters) is accepted; any other key, such as one with path segments, is a cache miss and returns undefined without touching the filesystem.",
 						"examples": ["8b7f5247e2937405454a84258cbe9bdcdb83604e7892f0ddc46618814d0ace78"]
 					}
 				],
@@ -301,7 +301,7 @@
 						"name": "writeReviewCache.key",
 						"type": "string",
 						"required": true,
-						"description": "Cache key inserted verbatim into the temporary and final cache filenames. The function does not validate or normalize the key string.",
+						"description": "Cache key used in the temporary and final cache filenames. Only a reviewCacheKey digest (64 lowercase hexadecimal characters) is accepted; any other key, such as one with path segments, is ignored and nothing is written.",
 						"examples": ["8b7f5247e2937405454a84258cbe9bdcdb83604e7892f0ddc46618814d0ace78"]
 					},
 					{
