@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.writing-limits",
+	"title": "function.writing-limits examples",
+	"kind": "headless",
+	"units": ["function.writing-limits"],
+	"builds": [],
+	"states": [
+		{
+			"id": "holds-a-revision-to-the-newest-version-its-config-declares",
+			"title": "Holds a revision to the newest version its config declares",
+			"coverage": "required"
+		},
+		{
+			"id": "declares-the-limits-only-with-a-version-of-1-or-more",
+			"title": "Declares the limits only with a version of 1 or more",
+			"coverage": "required"
+		},
+		{
+			"id": "counts-words-and-code-points-after-normalising-newlines",
+			"title": "Counts words and code points after normalising newlines",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-empty-and-over-limit-text",
+			"title": "Reports empty and over-limit text",
+			"coverage": "required"
+		},
+		{
+			"id": "gives-each-attempt-the-word-limit-of-its-judged-version",
+			"title": "Gives each attempt the word limit of its judged version",
+			"coverage": "required"
+		},
+		{
+			"id": "prefixes-each-explanation-problem-with-unit-and-symbol",
+			"title": "Prefixes each explanation problem with unit and symbol",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.writing-limits.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"holds-a-revision-to-the-newest-version-its-config-declares",
+				"declares-the-limits-only-with-a-version-of-1-or-more",
+				"counts-words-and-code-points-after-normalising-newlines",
+				"reports-empty-and-over-limit-text",
+				"gives-each-attempt-the-word-limit-of-its-judged-version",
+				"prefixes-each-explanation-problem-with-unit-and-symbol"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"holds-a-revision-to-the-newest-version-its-config-declares",
+				"declares-the-limits-only-with-a-version-of-1-or-more",
+				"counts-words-and-code-points-after-normalising-newlines",
+				"reports-empty-and-over-limit-text",
+				"gives-each-attempt-the-word-limit-of-its-judged-version",
+				"prefixes-each-explanation-problem-with-unit-and-symbol"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"holds-a-revision-to-the-newest-version-its-config-declares",
+				"declares-the-limits-only-with-a-version-of-1-or-more",
+				"counts-words-and-code-points-after-normalising-newlines",
+				"reports-empty-and-over-limit-text",
+				"gives-each-attempt-the-word-limit-of-its-judged-version",
+				"prefixes-each-explanation-problem-with-unit-and-symbol"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
