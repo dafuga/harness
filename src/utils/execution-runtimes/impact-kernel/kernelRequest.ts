@@ -9,7 +9,7 @@ const malformed = (field: string): Parsed<never> => ({
 });
 
 /** Validates an impact input in a fixed order so every implementation reports the same error. */
-export function kernelRequest(input: unknown): Parsed<ImpactInput> {
+export function kernelRequest<Input>(input: Input): Parsed<ImpactInput> {
 	if (!isObject(input)) {
 		return { error: { code: 'invalid-request', message: 'impact input must be an object' } };
 	}
