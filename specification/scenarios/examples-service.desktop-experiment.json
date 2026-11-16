@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.desktop-experiment",
+	"title": "service.desktop-experiment examples",
+	"kind": "headless",
+	"units": ["service.desktop-experiment"],
+	"builds": [],
+	"states": [
+		{
+			"id": "replaces-one-exact-desktop-patch-anchor",
+			"title": "Replaces one exact desktop patch anchor",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-missing-desktop-patch-anchor",
+			"title": "Rejects a missing desktop patch anchor",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-an-absent-configured-desktop-asset",
+			"title": "Rejects an absent configured desktop asset",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.desktop-experiment.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"replaces-one-exact-desktop-patch-anchor",
+				"rejects-a-missing-desktop-patch-anchor",
+				"rejects-an-absent-configured-desktop-asset"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"replaces-one-exact-desktop-patch-anchor",
+				"rejects-a-missing-desktop-patch-anchor",
+				"rejects-an-absent-configured-desktop-asset"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"replaces-one-exact-desktop-patch-anchor",
+				"rejects-a-missing-desktop-patch-anchor",
+				"rejects-an-absent-configured-desktop-asset"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
