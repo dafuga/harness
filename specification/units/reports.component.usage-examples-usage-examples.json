@@ -24,7 +24,7 @@
 			"packages/reports/src/components/shared-primitives/usage-examples/usageExamples.ts",
 			"packages/reports/src/components/shared-primitives/usage-examples/usageExamples.types.ts"
 		],
-		"symbols": ["UsageExamples", "compact", "usageExamples", "Fields"]
+		"symbols": ["UsageExamples", "compact", "usageExamples", "CompactValue", "Fields"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -129,7 +129,7 @@
 				"inputs": [
 					{
 						"name": "compact.value",
-						"type": "unknown",
+						"type": "CompactValue",
 						"required": true,
 						"description": "The value to format: arrays and objects are walked recursively, reading only the own enumerable string-keyed properties of objects, so a BigInt, a circular structure or a throwing getter reached anywhere inside it makes the call fail.",
 						"examples": [

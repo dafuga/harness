@@ -3,6 +3,7 @@ import {
 	compact,
 	usageExamples
 } from '../../src/components/shared-primitives/usage-examples/usageExamples';
+import type { CompactValue } from '../../src/components/shared-primitives/usage-examples/usageExamples.types';
 
 test('snippets retain setup and distinguish falsy outputs from expected errors', () => {
 	const snippets = usageExamples(
@@ -39,7 +40,7 @@ test('formatters propagate unsupported and caller-provided value errors', () => 
 		}
 	};
 	for (const format of [
-		(value: unknown) => compact(value),
+		(value: CompactValue) => compact(value),
 		(value: unknown) => usageExamples([{ name: 'Result', input: null, output: value }])
 	]) {
 		expect(() => format(1n)).toThrow(TypeError);
