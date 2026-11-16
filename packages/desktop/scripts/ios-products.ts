@@ -5,6 +5,7 @@ import { createHash } from 'node:crypto';
 import { cpSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { ExpectedCliError } from '../../../src/core/development-tooling/errors';
 
 /**
  * What a built simulator product is, and the two TEST ONLY changes a copy of one may get. A
@@ -30,7 +31,7 @@ export function tried(command: string[]): { code: number; output: string } {
 export function succeeded(name: string, ended: { code: number; output: string }): string {
 	if (ended.code === 0) return ended.output;
 	const last = ended.output.trim().split('\n').slice(-25).join('\n');
-	throw new Error(`${name} failed (${ended.code}):\n${last}`);
+	throw new ExpectedCliError(`${name} failed (${ended.code}):\n${last}`);
 }
 
 /** The output of a tool that must succeed; a failure is an error with the tool's last words. */
@@ -87,9 +88,9 @@ export function verifiedSignature(product: string): string {
 	const details = tool(['codesign', '-dv', product]);
 	const adHoc = /flags=0x[0-9a-f]+\(.*adhoc.*\)/.test(details);
 	if (!adHoc || !details.includes('TeamIdentifier=not set'))
-		throw new Error('The product is not signed ad hoc without a team.');
+		throw new ExpectedCliError('The product is not signed ad hoc without a team.');
 	const problem = accountProblem(product);
-	if (problem) throw new Error(problem);
+	if (problem) throw new ExpectedCliError(problem);
 	return 'ad hoc, no team, no account';
 }
 
@@ -140,7 +141,7 @@ export function changedCopy(source: string, target: string, change: ProductChang
 	const sign = ['codesign', '--force', '--sign', '-', '--timestamp=none'];
 	tool([...sign, '--preserve-metadata=entitlements,flags', target]);
 	if (simulated(target) === before) return verifiedSignature(target);
-	throw new Error('Signing again changed the simulator entitlements of the product.');
+	throw new ExpectedCliError('Signing again changed the simulator entitlements of the product.');
 }
 
 export type { ProductChange } from './ios-products.types';
