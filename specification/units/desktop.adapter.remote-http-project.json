@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.types.ts"
 		],
 		"symbols": [
 			"NativeHostedCredential",
@@ -31,7 +32,9 @@
 			"RemoteHttpProjectAdapter.messages",
 			"RemoteHttpProjectAdapter.history",
 			"RemoteHttpProjectAdapter.capabilities",
-			"RemoteHttpProjectAdapter.addComment"
+			"RemoteHttpProjectAdapter.addComment",
+			"InvalidHostedSourceError",
+			"UnknownHostedImageAnchorError"
 		]
 	},
 	"contract": {

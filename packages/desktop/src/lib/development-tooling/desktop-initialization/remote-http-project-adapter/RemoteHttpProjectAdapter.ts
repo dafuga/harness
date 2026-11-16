@@ -26,6 +26,10 @@ import {
 import { HostedHttpAdapter } from '../../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 import { RemoteProjectionService } from './RemoteProjectionService';
 import type { HostedReadOptions } from '../../../../services/development-tooling/HostedReadService';
+import {
+	InvalidHostedSourceError,
+	UnknownHostedImageAnchorError
+} from './RemoteHttpProjectAdapter.types';
 
 export { type NativeHostedCredential } from '../../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 
@@ -95,7 +99,7 @@ export class RemoteHttpProjectAdapter implements RemoteProjectPort {
 		return this.projections.read(input, 'source', (value) => {
 			const source = responseRecord(value);
 			if (source.path !== input.path || typeof source.text !== 'string')
-				throw new Error('Invalid hosted source.');
+				throw new InvalidHostedSourceError('Invalid hosted source.');
 			return { path: input.path, text: source.text };
 		});
 	}
@@ -144,7 +148,7 @@ export class RemoteHttpProjectAdapter implements RemoteProjectPort {
 				.find((version) => version.version === input.version)
 				?.images.some((image) => image.sha256 === input.sha256)
 		)
-			throw new Error('Unknown hosted image anchor.');
+			throw new UnknownHostedImageAnchorError('Unknown hosted image anchor.');
 	}
 	private path = (projectId: string, operation: string, input: object = {}) =>
 		this.projections.path(projectId, operation, input);
