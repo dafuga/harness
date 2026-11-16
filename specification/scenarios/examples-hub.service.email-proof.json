@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.service.email-proof",
+	"title": "hub.service.email-proof examples",
+	"kind": "headless",
+	"units": ["hub.service.email-proof"],
+	"builds": [],
+	"states": [
+		{
+			"id": "open-returns-a-pending-cookie-and-stores-only-a-keyed-hash",
+			"title": "open returns a pending cookie and stores only a keyed hash",
+			"coverage": "required"
+		},
+		{
+			"id": "status-reports-a-sent-code-until-the-proof-expires",
+			"title": "status reports a sent code until the proof expires",
+			"coverage": "required"
+		},
+		{
+			"id": "start-mails-one-code-and-refuses-a-repeat-within-a-minute",
+			"title": "start mails one code and refuses a repeat within a minute",
+			"coverage": "required"
+		},
+		{
+			"id": "verify-accepts-only-the-newest-code-and-issues-a-session",
+			"title": "verify accepts only the newest code and issues a session",
+			"coverage": "required"
+		},
+		{
+			"id": "proven-holds-for-the-verified-address-until-30-days-pass",
+			"title": "proven holds for the verified address until 30 days pass",
+			"coverage": "required"
+		},
+		{
+			"id": "cancel-ends-a-proof-and-revokes-the-sessions-it-issued",
+			"title": "cancel ends a proof and revokes the sessions it issued",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.service.email-proof.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"open-returns-a-pending-cookie-and-stores-only-a-keyed-hash",
+				"status-reports-a-sent-code-until-the-proof-expires",
+				"start-mails-one-code-and-refuses-a-repeat-within-a-minute",
+				"verify-accepts-only-the-newest-code-and-issues-a-session",
+				"proven-holds-for-the-verified-address-until-30-days-pass",
+				"cancel-ends-a-proof-and-revokes-the-sessions-it-issued"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"open-returns-a-pending-cookie-and-stores-only-a-keyed-hash",
+				"status-reports-a-sent-code-until-the-proof-expires",
+				"start-mails-one-code-and-refuses-a-repeat-within-a-minute",
+				"verify-accepts-only-the-newest-code-and-issues-a-session",
+				"proven-holds-for-the-verified-address-until-30-days-pass",
+				"cancel-ends-a-proof-and-revokes-the-sessions-it-issued"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"open-returns-a-pending-cookie-and-stores-only-a-keyed-hash",
+				"status-reports-a-sent-code-until-the-proof-expires",
+				"start-mails-one-code-and-refuses-a-repeat-within-a-minute",
+				"verify-accepts-only-the-newest-code-and-issues-a-session",
+				"proven-holds-for-the-verified-address-until-30-days-pass",
+				"cancel-ends-a-proof-and-revokes-the-sessions-it-issued"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
