@@ -1,6 +1,7 @@
 // @harness-uid u_ohtelrq27t
 import type { CommitContext } from '../planCommit';
 import { stageFiles } from '../planCommit';
+import { LfsFilterOutputMismatchError, MissingLfsFilterError } from './planCommit.types';
 import { Buffer } from 'node:buffer';
 import { copyFile, mkdir, mkdtemp, open, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
@@ -81,7 +82,7 @@ export async function requireLfsFilters(git: Git): Promise<void> {
 			await git.run(['config', '--get-regexp', '^filter\\.lfs\\.(clean|process)$'])
 		).toString();
 		if (!config.split('\n').some((line) => /^filter\.lfs\.(clean|process)\s+\S/.test(line)))
-			throw new Error('No configured LFS filter');
+			throw new MissingLfsFilterError();
 		temp = await mkdtemp(join(tmpdir(), 'planning-lfs-preflight-'));
 		await writeFile(join(temp, '.gitattributes'), '*.png filter=lfs\n');
 		const probe = 'harness-lfs-preflight\n';
@@ -102,8 +103,7 @@ export async function requireLfsFilters(git: Git): Promise<void> {
 			probe,
 			{ GIT_DIR: git.dir, GIT_WORK_TREE: temp, GIT_INDEX_FILE: join(temp, 'index') }
 		);
-		if (!actual.equals(expected))
-			throw new Error('Configured filter did not produce an LFS pointer');
+		if (!actual.equals(expected)) throw new LfsFilterOutputMismatchError();
 	} catch {
 		fail(
 			'git-failed',
