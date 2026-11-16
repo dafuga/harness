@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-validator.development-tooling-atomic-composition",
+	"title": "validator.development-tooling-atomic-composition examples",
+	"kind": "headless",
+	"units": ["validator.development-tooling-atomic-composition"],
+	"builds": [],
+	"states": [
+		{
+			"id": "finds-illegal-composition-edges",
+			"title": "Finds illegal composition edges",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-missing-shared-primitive-declarations",
+			"title": "Reports missing shared primitive declarations",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/validator.development-tooling-atomic-composition.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"finds-illegal-composition-edges",
+				"reports-missing-shared-primitive-declarations"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"finds-illegal-composition-edges",
+				"reports-missing-shared-primitive-declarations"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"finds-illegal-composition-edges",
+				"reports-missing-shared-primitive-declarations"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
