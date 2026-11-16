@@ -87,3 +87,14 @@ export async function assertEqualFrameReplay() {
 		).rejects.toThrow(/newer|predat|older/i);
 	});
 }
+
+export async function assertResolvedOwnerRead(root: string, service: FrameFlagService, id: string) {
+	const unrelated = new FrameFlagService(root, async () => {
+		throw new Error('Unrelated resolution media must not be opened');
+	});
+	await expect(
+		unrelated.list('component.other'),
+		'owner-specific feedback does not open unrelated resolution media'
+	).resolves.toEqual([]);
+	expect((await service.list('component.player'))[0]).toMatchObject({ id, status: 'resolved' });
+}

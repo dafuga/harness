@@ -1,5 +1,6 @@
 import {
 	assertEqualFrameReplay,
+	assertResolvedOwnerRead,
 	assertForgedFrameResolution,
 	assertRetainedFrameReadBounds
 } from '../../support/frameFlagReplayChecks';
@@ -169,17 +170,7 @@ test('replacement recordings must address pending flags and resolve them append-
 			).rejects.toThrow(/older|before|predat|newer/i);
 		}
 		await service.address(f.replacementRef);
-		const unrelated = new FrameFlagService(root, async () => {
-			throw new Error('Unrelated resolution media must not be opened');
-		});
-		await expect(
-			unrelated.list('component.other'),
-			'owner-specific feedback does not open unrelated resolution media'
-		).resolves.toEqual([]);
-		expect((await service.list('component.player'))[0]).toMatchObject({
-			id: flag.id,
-			status: 'resolved'
-		});
+		await assertResolvedOwnerRead(root, service, flag.id);
 		const tip = await new EvidenceBranchRepository(root).tip();
 		await service.address(f.replacementRef);
 		expect(await new EvidenceBranchRepository(root).tip()).toBe(tip);
