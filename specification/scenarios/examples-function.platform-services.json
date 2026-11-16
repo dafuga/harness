@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.platform-services",
+	"title": "function.platform-services examples",
+	"kind": "headless",
+	"units": ["function.platform-services"],
+	"builds": [],
+	"states": [
+		{
+			"id": "reads-the-selected-xcode-authority-synchronously",
+			"title": "Reads the selected Xcode authority synchronously",
+			"coverage": "required"
+		},
+		{
+			"id": "probes-the-selected-xcode-authority-asynchronously",
+			"title": "Probes the selected Xcode authority asynchronously",
+			"coverage": "required"
+		},
+		{
+			"id": "classifies-ordinary-command-processes-as-private",
+			"title": "Classifies ordinary command processes as private",
+			"coverage": "required"
+		},
+		{
+			"id": "protects-shared-service-candidates-without-authority",
+			"title": "Protects shared-service candidates without authority",
+			"coverage": "required"
+		},
+		{
+			"id": "delegates-a-vouched-service-after-system-handoff",
+			"title": "Delegates a vouched service after system handoff",
+			"coverage": "required"
+		},
+		{
+			"id": "rechecks-process-identity-and-executable-before-signaling",
+			"title": "Rechecks process identity and executable before signaling",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.platform-services.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"reads-the-selected-xcode-authority-synchronously",
+				"probes-the-selected-xcode-authority-asynchronously",
+				"classifies-ordinary-command-processes-as-private",
+				"protects-shared-service-candidates-without-authority",
+				"delegates-a-vouched-service-after-system-handoff",
+				"rechecks-process-identity-and-executable-before-signaling"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"reads-the-selected-xcode-authority-synchronously",
+				"probes-the-selected-xcode-authority-asynchronously",
+				"classifies-ordinary-command-processes-as-private",
+				"protects-shared-service-candidates-without-authority",
+				"delegates-a-vouched-service-after-system-handoff",
+				"rechecks-process-identity-and-executable-before-signaling"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"reads-the-selected-xcode-authority-synchronously",
+				"probes-the-selected-xcode-authority-asynchronously",
+				"classifies-ordinary-command-processes-as-private",
+				"protects-shared-service-candidates-without-authority",
+				"delegates-a-vouched-service-after-system-handoff",
+				"rechecks-process-identity-and-executable-before-signaling"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
