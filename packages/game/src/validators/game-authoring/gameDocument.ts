@@ -1,5 +1,6 @@
 import { LevelValidator } from './LevelValidator';
 import type { RecordValue } from './gameDocument.types';
+import { InvalidGameDocumentError } from './gameDocument.types';
 import type { GameDocument } from '../../models/game-authoring/Game.types';
 
 /** A game document that failed validation; its message joins those messages with '; '. */
