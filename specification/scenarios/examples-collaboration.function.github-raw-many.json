@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-collaboration.function.github-raw-many",
+	"title": "collaboration.function.github-raw-many examples",
+	"kind": "headless",
+	"units": ["collaboration.function.github-raw-many"],
+	"builds": [],
+	"states": [
+		{
+			"id": "reads-distinct-paths-from-tree-while-reusing-cached-bytes",
+			"title": "reads distinct paths from tree while reusing cached bytes",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/collaboration.function.github-raw-many.test.ts",
+			"cwd": "packages/collaboration",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["reads-distinct-paths-from-tree-while-reusing-cached-bytes"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["reads-distinct-paths-from-tree-while-reusing-cached-bytes"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["reads-distinct-paths-from-tree-while-reusing-cached-bytes"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
