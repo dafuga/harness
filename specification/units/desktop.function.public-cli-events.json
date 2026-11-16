@@ -18,7 +18,7 @@
 		"inputs": [
 			{
 				"name": "publicCliEvents.value",
-				"type": "object",
+				"type": "unknown",
 				"required": true,
 				"description": "The candidate CLI event passed to the extractor. Only a truthy object whose type is \"assistant\", whose message is a truthy object, and whose message.content is an array can yield text; all other values return an empty list.",
 				"examples": [
@@ -55,7 +55,7 @@
 				"inputs": [
 					{
 						"name": "publicCliEvents.value",
-						"type": "object",
+						"type": "unknown",
 						"required": true,
 						"description": "The candidate CLI event passed to the extractor. Only a truthy object whose type is \"assistant\", whose message is a truthy object, and whose message.content is an array can yield text; all other values return an empty list.",
 						"examples": [
