@@ -8,6 +8,13 @@ import { readJson } from '../../../../utils/reports-media/reportFiles';
 import { reportLock } from '../../../../utils/reports-media/reportLock';
 import { reportRetention, reportLifetimeMs } from '../../../../utils/reports-media/reportRetention';
 import { reportLocalCleanup } from './reportLocalCleanup';
+import { InvalidReportCleanupRootError } from './reportLocalCleanup.types';
+import { InvalidReportPublicationReceiptError } from './ReportPagesRetentionAdapter.types';
+import {
+	InvalidExportLockError,
+	InvalidPublicationRetentionTimestampError,
+	InvalidPublicationStagingDirectoryError
+} from './ReportRetentionService.types';
 import type { StorageSyncOptions } from '../ReportStorageSyncService';
 import type { Report } from '../../../../models/reports-media/Report.types';
 import { reportCleanupLog } from './reportCleanupLog';
@@ -36,7 +43,7 @@ async function checkRoot(root: string) {
 		join(root, 'retention-lock')
 	]) {
 		if ((await lstat(path).catch(() => undefined))?.isSymbolicLink())
-			throw new Error('Invalid report cleanup root');
+			throw new InvalidReportCleanupRootError('Invalid report cleanup root');
 	}
 }
 
@@ -52,7 +59,7 @@ async function publication(root: string, id: string) {
 async function removeStaging(root: string, id: string) {
 	const directory = join(root, 'publication-staging');
 	if ((await lstat(directory).catch(() => undefined))?.isSymbolicLink())
-		throw new Error('Invalid publication staging directory');
+		throw new InvalidPublicationStagingDirectoryError('Invalid publication staging directory');
 	for (const name of await readdir(directory).catch(() => [])) {
 		if (name.startsWith(id + '-'))
 			await rm(join(directory, name), { recursive: true, force: true });
@@ -71,9 +78,12 @@ async function orphanPublications(
 		if (!/^[a-zA-Z0-9_-]{1,100}\.json$/.test(file) || known.has(file.slice(0, -5))) continue;
 		const receipt = await publication(repository.root, file.slice(0, -5));
 		if (!receipt || receipt.run !== file.slice(0, -5))
-			throw new Error('Invalid orphan publication receipt');
+			throw new InvalidReportPublicationReceiptError('Invalid orphan publication receipt');
 		const created = Date.parse(receipt.publishedAt);
-		if (!Number.isFinite(created)) throw new Error('Invalid publication retention timestamp');
+		if (!Number.isFinite(created))
+			throw new InvalidPublicationRetentionTimestampError(
+				'Invalid publication retention timestamp'
+			);
 		if (created > cutoff) continue;
 		deleted += await new ReportPagesRetentionAdapter().purge(receipt, dryRun);
 		if (!dryRun) await rm(join(directory, file));
@@ -128,7 +138,7 @@ export class ReportRetentionService {
 		if (dryRun) return this.removeCopies(id, storage, true);
 		const lock = join(directory, 'export-lock');
 		if ((await lstat(lock).catch(() => undefined))?.isSymbolicLink())
-			throw new Error('Invalid export lock');
+			throw new InvalidExportLockError('Invalid export lock');
 		await mkdir(lock, { recursive: true, mode: 0o700 });
 		return reportLock(lock, () =>
 			reportLock(directory, async () => {
@@ -147,7 +157,8 @@ export class ReportRetentionService {
 		dryRun: boolean
 	) {
 		const receipt = await publication(this.repository.root, id);
-		if (receipt && receipt.run !== id) throw new Error('Publication receipt does not match report');
+		if (receipt && receipt.run !== id)
+			throw new InvalidReportPublicationReceiptError('Publication receipt does not match report');
 		const pages = receipt ? await new ReportPagesRetentionAdapter().purge(receipt, dryRun) : 0;
 		const cloudObjects = (await storage?.purge(id, dryRun)) || 0;
 		return { cloudObjects, pages };

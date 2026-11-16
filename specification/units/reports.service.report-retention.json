@@ -9,12 +9,16 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportRetentionService.ts"
+			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportRetentionService.ts",
+			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportRetentionService.types.ts"
 		],
 		"symbols": [
 			"ReportRetentionService",
 			"ReportRetentionService.constructor",
-			"ReportRetentionService.run"
+			"ReportRetentionService.run",
+			"InvalidPublicationStagingDirectoryError",
+			"InvalidPublicationRetentionTimestampError",
+			"InvalidExportLockError"
 		]
 	},
 	"contract": {
