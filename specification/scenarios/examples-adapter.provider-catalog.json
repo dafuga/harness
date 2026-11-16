@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-adapter.provider-catalog",
+	"title": "adapter.provider-catalog examples",
+	"kind": "headless",
+	"units": ["adapter.provider-catalog"],
+	"builds": [],
+	"states": [
+		{
+			"id": "constructs-over-catalog-paths-that-do-not-exist-yet",
+			"title": "Constructs over catalog paths that do not exist yet",
+			"coverage": "required"
+		},
+		{
+			"id": "lists-openai-then-claude-models-and-omits-visibility-hide",
+			"title": "Lists openai then claude models and omits visibility hide",
+			"coverage": "required"
+		},
+		{
+			"id": "contributes-no-models-for-a-missing-or-invalid-catalog",
+			"title": "Contributes no models for a missing or invalid catalog",
+			"coverage": "required"
+		},
+		{
+			"id": "reads-the-catalog-files-again-on-every-list-call",
+			"title": "Reads the catalog files again on every list call",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/adapter.provider-catalog.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"constructs-over-catalog-paths-that-do-not-exist-yet",
+				"lists-openai-then-claude-models-and-omits-visibility-hide",
+				"contributes-no-models-for-a-missing-or-invalid-catalog",
+				"reads-the-catalog-files-again-on-every-list-call"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"constructs-over-catalog-paths-that-do-not-exist-yet",
+				"lists-openai-then-claude-models-and-omits-visibility-hide",
+				"contributes-no-models-for-a-missing-or-invalid-catalog",
+				"reads-the-catalog-files-again-on-every-list-call"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"constructs-over-catalog-paths-that-do-not-exist-yet",
+				"lists-openai-then-claude-models-and-omits-visibility-hide",
+				"contributes-no-models-for-a-missing-or-invalid-catalog",
+				"reads-the-catalog-files-again-on-every-list-call"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
