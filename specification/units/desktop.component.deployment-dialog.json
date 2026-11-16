@@ -90,7 +90,7 @@
 				"inputs": [
 					{
 						"name": "DeploymentDialog.label.row",
-						"type": "unknown",
+						"type": "CommitRow",
 						"required": true
 					}
 				],
@@ -108,7 +108,7 @@
 				"inputs": [
 					{
 						"name": "DeploymentDialog.children.row",
-						"type": "unknown",
+						"type": "CommitRow",
 						"required": true
 					}
 				],
