@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-workflow.networking-security-run-api-api-agent",
+	"title": "workflow.networking-security-run-api-api-agent examples",
+	"kind": "headless",
+	"units": ["workflow.networking-security-run-api-api-agent"],
+	"builds": [],
+	"states": [
+		{
+			"id": "defines-a-plan-from-contract-input",
+			"title": "Defines a plan from contract input",
+			"coverage": "required"
+		},
+		{
+			"id": "calls-the-selected-api-method-with-request-identity",
+			"title": "Calls the selected API method with request identity",
+			"coverage": "required"
+		},
+		{
+			"id": "starts-an-agent-run-with-a-retryable-request-id",
+			"title": "Starts an agent run with a retryable request id",
+			"coverage": "required"
+		},
+		{
+			"id": "parses-nonnegative-safe-event-cursors",
+			"title": "Parses nonnegative safe event cursors",
+			"coverage": "required"
+		},
+		{
+			"id": "filters-events-and-replay-data-to-the-requested-run",
+			"title": "Filters events and replay data to the requested run",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/workflow.networking-security-run-api-api-agent.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"defines-a-plan-from-contract-input",
+				"calls-the-selected-api-method-with-request-identity",
+				"starts-an-agent-run-with-a-retryable-request-id",
+				"parses-nonnegative-safe-event-cursors",
+				"filters-events-and-replay-data-to-the-requested-run"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"defines-a-plan-from-contract-input",
+				"calls-the-selected-api-method-with-request-identity",
+				"starts-an-agent-run-with-a-retryable-request-id",
+				"parses-nonnegative-safe-event-cursors",
+				"filters-events-and-replay-data-to-the-requested-run"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"defines-a-plan-from-contract-input",
+				"calls-the-selected-api-method-with-request-identity",
+				"starts-an-agent-run-with-a-retryable-request-id",
+				"parses-nonnegative-safe-event-cursors",
+				"filters-events-and-replay-data-to-the-requested-run"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
