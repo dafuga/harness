@@ -110,7 +110,7 @@
 			},
 			{
 				"name": "RemoteDeviceSessionsService.announce.value",
-				"type": "unknown",
+				"type": "RemoteConnectionEvent",
 				"required": true,
 				"description": "Opaque event payload passed to each connected session wire emitter with the selected channel. The service does not retain it for entries without a live link.",
 				"examples": [
@@ -303,7 +303,7 @@
 					},
 					{
 						"name": "RemoteDeviceSessionsService.announce.value",
-						"type": "unknown",
+						"type": "RemoteConnectionEvent",
 						"required": true,
 						"description": "Opaque event payload passed to each connected session wire emitter with the selected channel. The service does not retain it for entries without a live link.",
 						"examples": [
