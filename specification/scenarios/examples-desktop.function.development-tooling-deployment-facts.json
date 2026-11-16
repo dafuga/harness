@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.development-tooling-deployment-facts",
+	"title": "desktop.function.development-tooling-deployment-facts examples",
+	"kind": "headless",
+	"units": ["desktop.function.development-tooling-deployment-facts"],
+	"builds": [],
+	"states": [
+		{
+			"id": "formats-deployment-identity-and-available-timestamps",
+			"title": "Formats deployment identity and available timestamps",
+			"coverage": "required"
+		},
+		{
+			"id": "formats-verified-receipt-facts",
+			"title": "Formats verified receipt facts",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.development-tooling-deployment-facts.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"formats-deployment-identity-and-available-timestamps",
+				"formats-verified-receipt-facts"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"formats-deployment-identity-and-available-timestamps",
+				"formats-verified-receipt-facts"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"formats-deployment-identity-and-available-timestamps",
+				"formats-verified-receipt-facts"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
