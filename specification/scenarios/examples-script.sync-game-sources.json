@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-script.sync-game-sources",
+	"title": "script.sync-game-sources examples",
+	"kind": "headless",
+	"units": ["script.sync-game-sources"],
+	"builds": [],
+	"states": [
+		{
+			"id": "rewrites-imports-for-the-generated-game-destination",
+			"title": "Rewrites imports for the generated game destination",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-imports-that-are-not-embedded",
+			"title": "Rejects imports that are not embedded",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/script.sync-game-sources.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"rewrites-imports-for-the-generated-game-destination",
+				"rejects-imports-that-are-not-embedded"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"rewrites-imports-for-the-generated-game-destination",
+				"rejects-imports-that-are-not-embedded"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"rewrites-imports-for-the-generated-game-destination",
+				"rejects-imports-that-are-not-embedded"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
