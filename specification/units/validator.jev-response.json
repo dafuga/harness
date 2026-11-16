@@ -19,7 +19,7 @@
 		"inputs": [
 			{
 				"name": "JevResponseValidator.validate.input",
-				"type": "unknown",
+				"type": "TResponse",
 				"required": true,
 				"description": "The raw Jev response that validate parses, which must be a non-null, non-array object because it is first checked with recordValue. It needs a model string matching /^jev-[a-zA-Z0-9.-]+$/, an answers object with exactly the question keys, and a usage object whose input_tokens and output_tokens are non-negative safe integers.",
 				"examples": [
@@ -233,7 +233,7 @@
 				"inputs": [
 					{
 						"name": "JevResponseValidator.validate.input",
-						"type": "unknown",
+						"type": "TResponse",
 						"required": true,
 						"description": "The raw Jev response that validate parses, which must be a non-null, non-array object because it is first checked with recordValue. It needs a model string matching /^jev-[a-zA-Z0-9.-]+$/, an answers object with exactly the question keys, and a usage object whose input_tokens and output_tokens are non-negative safe integers.",
 						"examples": [

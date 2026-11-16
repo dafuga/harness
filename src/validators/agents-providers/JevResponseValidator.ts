@@ -4,7 +4,7 @@ import { probabilityValue, recordValue, tokenCount } from '../development-toolin
 import { InvalidJevResponseError } from './JevResponseValidator.types';
 
 export class JevResponseValidator {
-	validate(input: unknown, questions: JevQuestions): JevEvaluation {
+	validate<TResponse>(input: TResponse, questions: JevQuestions): JevEvaluation {
 		const raw = recordValue(input);
 		if (typeof raw.model !== 'string' || !/^jev-[a-zA-Z0-9.-]+$/.test(raw.model))
 			throw new InvalidJevResponseError('Invalid Jev model');

@@ -9,7 +9,8 @@ const validator = new CleanCodeResponseValidator();
 
 test('accepts and normalizes the exact typed answer contract', () => {
 	const response = fixtureEvaluation(request);
-	expect(validator.validate({ ...response, extra: 'discarded' }, questions)).toEqual(response);
+	const rawResponse: Record<string, unknown> = { ...response, extra: 'discarded' };
+	expect(validator.validate(rawResponse, questions)).toEqual(response);
 });
 
 test.each([
