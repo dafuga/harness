@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-script.report-specification-storage",
+	"title": "script.report-specification-storage examples",
+	"kind": "headless",
+	"units": ["script.report-specification-storage"],
+	"builds": [],
+	"states": [
+		{
+			"id": "reports-unit-and-ledger-sizes-below-the-heads-up-levels",
+			"title": "Reports unit and ledger sizes below the heads-up levels",
+			"coverage": "required"
+		},
+		{
+			"id": "warns-when-the-budget-ledger-reaches-the-heads-up-size",
+			"title": "Warns when the budget ledger reaches the heads-up size",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-zero-for-missing-unit-and-ledger-paths",
+			"title": "Reports zero for missing unit and ledger paths",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/script.report-specification-storage.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"reports-unit-and-ledger-sizes-below-the-heads-up-levels",
+				"warns-when-the-budget-ledger-reaches-the-heads-up-size",
+				"reports-zero-for-missing-unit-and-ledger-paths"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"reports-unit-and-ledger-sizes-below-the-heads-up-levels",
+				"warns-when-the-budget-ledger-reaches-the-heads-up-size",
+				"reports-zero-for-missing-unit-and-ledger-paths"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"reports-unit-and-ledger-sizes-below-the-heads-up-levels",
+				"warns-when-the-budget-ledger-reaches-the-heads-up-size",
+				"reports-zero-for-missing-unit-and-ledger-paths"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
