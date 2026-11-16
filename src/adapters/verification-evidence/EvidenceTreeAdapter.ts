@@ -46,7 +46,7 @@ export class EvidenceTreeAdapter {
 	/** Exact raw blobs in one batch; missing paths stay absent and duplicate objects are read once. */
 	async readMany(commit: string, paths: string[]): Promise<Map<string, Buffer>> {
 		if (paths.length === 0) return new Map();
-		const listed = await this.list(commit);
+		const listed = await this.list(commit, paths);
 		const requested = paths.flatMap((path) => {
 			const hash = listed.get(path);
 			return hash ? [[path, hash] as const] : [];
@@ -71,8 +71,17 @@ export class EvidenceTreeAdapter {
 	private readonly blobSizes = new Map<string, number>();
 
 	/** Every file path at a commit with its blob id (sizes are kept for batch reads). */
-	async list(commit: string): Promise<Map<string, string>> {
-		const output = await this.git.run(['ls-tree', '-r', '-l', '-z', commit]);
+	async list(commit: string, paths?: string[]): Promise<Map<string, string>> {
+		if (paths?.length === 0) return new Map();
+		const output = await this.git.run([
+			'--literal-pathspecs',
+			'ls-tree',
+			'-r',
+			'-l',
+			'-z',
+			commit,
+			...(paths ? ['--', ...paths] : [])
+		]);
 		const entries = output
 			.split('\0')
 			.map((line) => /^\d+ blob ([0-9a-f]+) +([0-9]+)\t(.+)$/s.exec(line))

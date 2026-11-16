@@ -75,7 +75,7 @@ export async function readVideoBatchDescriptor(
 		'manifest.json',
 		...manifest.files.filter((file) => file.lfs).map((file) => file.path)
 	]);
-	const actual = [...(await repository.tree.list(commit)).keys()].filter((file) =>
+	const actual = [...(await repository.tree.list(commit, [`${path}/`])).keys()].filter((file) =>
 		file.startsWith(`${path}/`)
 	);
 	if (

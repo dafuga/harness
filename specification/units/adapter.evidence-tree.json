@@ -122,11 +122,18 @@
 				"name": "EvidenceTreeAdapter.list.commit",
 				"type": "string",
 				"required": true,
-				"description": "Commit whose complete tree is listed, including files in every subdirectory. Only blob entries are kept, so submodules and other non-blob entries are skipped, and each blob's size is recorded for later readMany batches.",
+				"description": "Commit whose blobs are enumerated, recursively within supplied literal paths or throughout the tree when paths is omitted. Non-blob entries are skipped and blob sizes are recorded for later readMany batches.",
 				"examples": [
 					"7a2d4e6f8b0c1d3e5f7a9b2c4d6e8f0a1b3c5d7e",
 					"3d5e7f9a1b2c4d6e8f0a1b2c3d4e5f6a7b8c9d0e"
 				]
+			},
+			{
+				"name": "EvidenceTreeAdapter.list.paths",
+				"type": "string[]",
+				"required": false,
+				"description": "Omit to list every blob. Supply literal repository-relative files or directories to enumerate only those paths and directory descendants; an empty array returns an empty map without invoking Git. Names retain their complete repository-relative paths, and wildcard characters are literal. Only selected blob sizes are remembered.",
+				"examples": [["video-feedback/"], ["records/verification/manifest.json"]]
 			},
 			{
 				"name": "EvidenceTreeAdapter.commit.input",
@@ -213,11 +220,7 @@
 				"type": "number[]",
 				"required": true,
 				"description": "Byte size of each blob in one batch read. The result adds 128 bytes of room per blob for its header line and trailing newline, and an empty list gives 1.",
-				"examples": [
-					[1024, 65536, 2048],
-					[268435456],
-					[0]
-				]
+				"examples": [[1024, 65536, 2048], [268435456], [0]]
 			},
 			{
 				"name": "batchGroups.hashes",
@@ -282,7 +285,7 @@
 			{
 				"name": "EvidenceTreeAdapter.list",
 				"type": "Promise<Map<string, string>>",
-				"description": "Map from every file path in the commit's tree, at any depth, to its blob id. Only blob entries are included, so submodules and other non-blob entries are absent."
+				"description": "Map from the complete repository-relative path of each selected blob to its blob id. Omitted paths select the whole tree; supplied files/directories limit enumeration, empty paths select nothing, and non-blob entries are absent."
 			},
 			{
 				"name": "EvidenceTreeAdapter.commit",
@@ -503,18 +506,25 @@
 						"name": "EvidenceTreeAdapter.list.commit",
 						"type": "string",
 						"required": true,
-						"description": "Commit whose complete tree is listed, including files in every subdirectory. Only blob entries are kept, so submodules and other non-blob entries are skipped, and each blob's size is recorded for later readMany batches.",
+						"description": "Commit whose blobs are enumerated, recursively within supplied literal paths or throughout the tree when paths is omitted. Non-blob entries are skipped and blob sizes are recorded for later readMany batches.",
 						"examples": [
 							"7a2d4e6f8b0c1d3e5f7a9b2c4d6e8f0a1b3c5d7e",
 							"3d5e7f9a1b2c4d6e8f0a1b2c3d4e5f6a7b8c9d0e"
 						]
+					},
+					{
+						"name": "EvidenceTreeAdapter.list.paths",
+						"type": "string[]",
+						"required": false,
+						"description": "Omit to list every blob. Supply literal repository-relative files or directories to enumerate only those paths and directory descendants; an empty array returns an empty map without invoking Git. Names retain their complete repository-relative paths, and wildcard characters are literal. Only selected blob sizes are remembered.",
+						"examples": [["video-feedback/"], ["records/verification/manifest.json"]]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EvidenceTreeAdapter.list",
 						"type": "Promise<Map<string, string>>",
-						"description": "Map from every file path in the commit's tree, at any depth, to its blob id. Only blob entries are included, so submodules and other non-blob entries are absent."
+						"description": "Map from the complete repository-relative path of each selected blob to its blob id. Omitted paths select the whole tree; supplied files/directories limit enumeration, empty paths select nothing, and non-blob entries are absent."
 					}
 				],
 				"errors": [
@@ -653,11 +663,7 @@
 						"type": "number[]",
 						"required": true,
 						"description": "Byte size of each blob in one batch read. The result adds 128 bytes of room per blob for its header line and trailing newline, and an empty list gives 1.",
-						"examples": [
-							[1024, 65536, 2048],
-							[268435456],
-							[0]
-						]
+						"examples": [[1024, 65536, 2048], [268435456], [0]]
 					}
 				],
 				"outputs": [

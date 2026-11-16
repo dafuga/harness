@@ -49,7 +49,7 @@ export async function readFrameFlags(root: string, reader?: FrameClipReader): Pr
 	const repository = new EvidenceBranchRepository(root),
 		tip = await repository.tip();
 	if (!tip) return [];
-	const paths = [...(await repository.tree.list(tip)).keys()].filter((path) =>
+	const paths = [...(await repository.tree.list(tip, ['video-feedback/'])).keys()].filter((path) =>
 		path.startsWith('video-feedback/')
 	);
 	const pinned = { evidence: tip, notes: (await repository.tree.tip(notesRef)) ?? null };
