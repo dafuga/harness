@@ -1,5 +1,9 @@
 // @harness-uid u_idcdl5fjlo
-import type { SeenService, WatchedService } from './ios-service-observers.types';
+import {
+	ServiceObservationError,
+	type SeenService,
+	type WatchedService
+} from './ios-service-observers.types';
 import { buildObservation, type BuildObservation } from './ios-build-observation';
 import { join } from 'node:path';
 import {
@@ -16,7 +20,8 @@ export async function observeIosServices(
 	rows: Map<number, SeenService> | null,
 	group: number
 ): Promise<BuildObservation> {
-	if (!rows) throw new Error('The services before the build could not be observed.');
+	if (!rows)
+		throw new ServiceObservationError('The services before the build could not be observed.');
 	const authority = await platformServices();
 	// No authority can admit a preexisting service. The build's own descendants still settle.
 	if (!authority) return buildObservation(async () => true);
@@ -30,12 +35,15 @@ export async function observeIosServices(
 			group
 		});
 		if (verdict.standing !== 'delegated')
-			throw new Error('An existing build service could not be attested for observation.');
+			throw new ServiceObservationError(
+				'An existing build service could not be attested for observation.'
+			);
 		const watch = processDescendants(pid);
 		const initial = await watch.alive();
 		const anchored = initial?.some((item) => same(item, known) && item.proven);
 		watch.closed();
-		if (!anchored) throw new Error('An existing build service changed before observation.');
+		if (!anchored)
+			throw new ServiceObservationError('An existing build service changed before observation.');
 		watching.push({ known, watch });
 	}
 	return buildObservation(async (signal) => {
