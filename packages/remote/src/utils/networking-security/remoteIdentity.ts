@@ -1,5 +1,8 @@
 // @harness-uid u_sl6jhpdbx4
-import type { CredentialBinding } from './remoteIdentity.types';
+import {
+	InvalidRemoteIdentityPublicKeyError,
+	type CredentialBinding
+} from './remoteIdentity.types';
 import { fromBase64Url, randomBytes, remoteBytes, sha256, toBase64Url, toHex } from './remoteBytes';
 
 /** Every identifier and encoded value of the protocol. Nothing else is accepted on a wire. */
@@ -27,7 +30,7 @@ export const remotePatterns = {
 export async function remoteIdentity(publicKey: Uint8Array | string): Promise<string> {
 	const bytes = typeof publicKey === 'string' ? fromBase64Url(publicKey) : publicKey;
 	if (bytes.length !== 65 || bytes[0] !== 4)
-		throw new Error('Expected an uncompressed P-256 public key.');
+		throw new InvalidRemoteIdentityPublicKeyError('Expected an uncompressed P-256 public key.');
 	return toHex(await sha256(bytes)).slice(0, 40);
 }
 
