@@ -20,7 +20,7 @@
 		"inputs": [
 			{
 				"name": "hostedCapabilities.value",
-				"type": "unknown",
+				"type": "Value",
 				"required": true,
 				"description": "The hosted project response record; a null, non-object or array value throws. Only id, role and executionAvailable are read: id must equal projectId, role (converted with String()) must be owner, writer, commenter or viewer, and executionAvailable must be exactly true for agents to be enabled on an owner or writer role.",
 				"examples": [
@@ -103,7 +103,7 @@
 				"inputs": [
 					{
 						"name": "hostedCapabilities.value",
-						"type": "unknown",
+						"type": "Value",
 						"required": true,
 						"description": "The hosted project response record; a null, non-object or array value throws. Only id, role and executionAvailable are read: id must equal projectId, role (converted with String()) must be owner, writer, commenter or viewer, and executionAvailable must be exactly true for agents to be enabled on an owner or writer role.",
 						"examples": [

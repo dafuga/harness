@@ -2,7 +2,7 @@
 import { UnknownHostedProjectAccessError } from './hostedCapabilities.types';
 import type { ProjectCapabilities } from '../../models/projects-sessions/ProjectContext.types';
 import { responseRecord } from '../../validators/projects-sessions/RemoteProjectResponseValidator';
-export function hostedCapabilities(value: unknown, projectId: string): ProjectCapabilities {
+export function hostedCapabilities<Value>(value: Value, projectId: string): ProjectCapabilities {
 	const project = responseRecord(value);
 	if (
 		project.id !== projectId ||
