@@ -22,7 +22,7 @@
 		"inputs": [
 			{
 				"name": "LevelValidator.layout.input",
-				"type": "unknown",
+				"type": "{} | null",
 				"required": true,
 				"description": "An unknown value is accepted as LevelLayout data only when floor width and depth are finite values from 1 to 40, spawn and object centers are finite and at least 0.25 units inside each floor edge, and objects is an array of at most 80 entries. Each object needs a unique 1-to-80-character lowercase slug id, an allowed kind, a nonblank label of at most 4,000 characters, and finite width, depth and height from 1 to 40 with its footprint inside the floor; the spawn must clear every wall under the validator’s 0.2-unit overlap check.",
 				"examples": [
@@ -50,7 +50,7 @@
 			},
 			{
 				"name": "LevelValidator.planning.input",
-				"type": "unknown",
+				"type": "{} | null",
 				"required": true,
 				"description": "An unknown value is a LevelPlanning record whose concept and description are strings up to 4,000 characters; optional approved and built values, when supplied, must each be 64 lowercase hexadecimal characters. A supplied proposal must have a 64-character lowercase hexadecimal id, concept, description and summary strings up to 4,000 characters, dimension 2d or 3d, provider codex or claude, a nonempty model string up to 200 characters, and a layout accepted by layout().",
 				"examples": [
@@ -234,7 +234,7 @@
 				"inputs": [
 					{
 						"name": "LevelValidator.layout.input",
-						"type": "unknown",
+						"type": "{} | null",
 						"required": true,
 						"description": "An unknown value is accepted as LevelLayout data only when floor width and depth are finite values from 1 to 40, spawn and object centers are finite and at least 0.25 units inside each floor edge, and objects is an array of at most 80 entries. Each object needs a unique 1-to-80-character lowercase slug id, an allowed kind, a nonblank label of at most 4,000 characters, and finite width, depth and height from 1 to 40 with its footprint inside the floor; the spawn must clear every wall under the validator’s 0.2-unit overlap check.",
 						"examples": [
@@ -277,7 +277,7 @@
 				"inputs": [
 					{
 						"name": "LevelValidator.planning.input",
-						"type": "unknown",
+						"type": "{} | null",
 						"required": true,
 						"description": "An unknown value is a LevelPlanning record whose concept and description are strings up to 4,000 characters; optional approved and built values, when supplied, must each be 64 lowercase hexadecimal characters. A supplied proposal must have a 64-character lowercase hexadecimal id, concept, description and summary strings up to 4,000 characters, dimension 2d or 3d, provider codex or claude, a nonempty model string up to 200 characters, and a layout accepted by layout().",
 						"examples": [
@@ -474,6 +474,11 @@
 	"dependencies": [
 		{
 			"unit": "game.model.game-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "game.validator.game-document",
 			"via": "import",
 			"origin": "derived"
 		}
