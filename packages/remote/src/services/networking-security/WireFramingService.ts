@@ -1,5 +1,6 @@
 // @harness-uid u_d3gl6olc5i
 import type { Outgoing, Assembly, WireFramingOptions } from './WireFramingService.types';
+import { InvalidWirePartError } from './WireFramingService.types';
 import { RemoteFailure, remoteLimits } from '../../models/networking-security/Remote.types';
 import { localTransport } from '../../models/networking-security/RemoteLocal.types';
 import type { WirePart } from '../../models/networking-security/RemoteLocal.types';
@@ -25,7 +26,8 @@ function partOf(frame: string, limit: number): { part: WirePart; bytes: Uint8Arr
 	if (frame.length > limit) throw new RemoteFailure('too-large');
 	try {
 		const item = (JSON.parse(frame) ?? {}) as Partial<WirePart>;
-		if (!shaped(item) || typeof item.data !== 'string') throw new Error('Not a part.');
+		if (!shaped(item) || typeof item.data !== 'string')
+			throw new InvalidWirePartError('Not a part.');
 		return { part: item as WirePart, bytes: fromBase64(item.data) };
 	} catch {
 		throw new RemoteFailure('invalid-message');
