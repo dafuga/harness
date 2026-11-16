@@ -48,7 +48,7 @@ test('AuthRecordValidator refuses rows with a wrong type, enum or missing column
 	expect(() => records.session({ ...session, kind: 'admin' })).toThrow(corrupt);
 	expect(() => records.session({ ...session, expires_at: '2' })).toThrow(corrupt);
 	expect(() => records.session({ ...session, actor_id: '' })).toThrow(corrupt);
-	expect(() => records.session(null as never)).toThrow(corrupt);
+	expect(() => records.session(null)).toThrow(corrupt);
 	expect(() => records.exchange({ ...exchange, status: 'granted' })).toThrow(corrupt);
 	expect(() => records.exchange({ ...exchange, environment: 'test' })).toThrow(corrupt);
 	expect(() => records.challenge({ id_hash: 'h', nonce: 'n', expires_at: 1 })).toThrow(corrupt);

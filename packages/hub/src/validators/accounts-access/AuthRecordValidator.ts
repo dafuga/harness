@@ -46,7 +46,7 @@ function oneOf<T extends string>(row: Row, key: string, allowed: readonly T[]): 
 
 /** Turns a stored row into a typed record, or throws. A row is never coerced into shape. */
 export class AuthRecordValidator {
-	challenge(value: object): ChallengeRecord {
+	challenge(value: unknown): ChallengeRecord {
 		const row = rowOf(value);
 		return {
 			idHash: text(row, 'id_hash'),
@@ -56,7 +56,7 @@ export class AuthRecordValidator {
 		};
 	}
 
-	session(value: object): SessionRecord {
+	session(value: unknown): SessionRecord {
 		const row = rowOf(value);
 		return {
 			idHash: text(row, 'id_hash'),
@@ -75,7 +75,7 @@ export class AuthRecordValidator {
 		};
 	}
 
-	githubState(value: object): GithubStateRecord {
+	githubState(value: unknown): GithubStateRecord {
 		const row = rowOf(value);
 		return {
 			idHash: text(row, 'id_hash'),
@@ -87,7 +87,7 @@ export class AuthRecordValidator {
 		};
 	}
 
-	grant(value: object): GithubGrantRecord {
+	grant(value: unknown): GithubGrantRecord {
 		const row = rowOf(value);
 		return {
 			actorId: text(row, 'actor_id'),
@@ -102,7 +102,7 @@ export class AuthRecordValidator {
 		};
 	}
 
-	emailProof(value: object): EmailProofRecord {
+	emailProof(value: unknown): EmailProofRecord {
 		const row = rowOf(value);
 		const actor = {
 			id: text(row, 'actor_id'),
@@ -121,7 +121,7 @@ export class AuthRecordValidator {
 		};
 	}
 
-	verifiedEmail(value: object): VerifiedEmailRecord {
+	verifiedEmail(value: unknown): VerifiedEmailRecord {
 		const row = rowOf(value);
 		return {
 			actorId: text(row, 'actor_id'),
@@ -132,7 +132,7 @@ export class AuthRecordValidator {
 	}
 
 	/** A revoked row is a tombstone: its generation counts, its other columns are blank. */
-	grantState(value: object): GrantState {
+	grantState(value: unknown): GrantState {
 		const row = rowOf(value);
 		const generation = integer(row, 'generation');
 		if (optional(row, 'revoked_at', integer) !== null) {
@@ -142,7 +142,7 @@ export class AuthRecordValidator {
 		return { generation, grant: this.grant(row), refreshingUntil };
 	}
 
-	exchange(value: object): NativeExchangeRecord {
+	exchange(value: unknown): NativeExchangeRecord {
 		const row = rowOf(value);
 		return {
 			id: text(row, 'id'),
