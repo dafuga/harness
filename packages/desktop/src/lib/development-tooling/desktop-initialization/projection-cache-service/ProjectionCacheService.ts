@@ -50,7 +50,7 @@ export class ProjectionCacheService {
 		);
 		await this.checkGeneration(generation, this.path(identity));
 	}
-	async remember<T>(scope: string, identity: CacheIdentity, value: T): Promise<string> {
+	async remember(scope: string, identity: CacheIdentity, value: unknown): Promise<string> {
 		const generation = this.generation;
 		const oldPath = join(this.directory, `lookup-${digest(scope)}.json`);
 		const previous = await readFile(oldPath, 'utf8')

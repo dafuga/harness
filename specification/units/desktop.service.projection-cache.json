@@ -136,7 +136,7 @@
 			},
 			{
 				"name": "ProjectionCacheService.remember.value",
-				"type": "T",
+				"type": "unknown",
 				"required": true,
 				"description": "Value JSON-serialized into the scoped cache and parsed back by lookup. It must serialize to a defined JSON string, and JSON serialization may not preserve every JavaScript value's original type.",
 				"examples": [
@@ -394,7 +394,7 @@
 					},
 					{
 						"name": "ProjectionCacheService.remember.value",
-						"type": "T",
+						"type": "unknown",
 						"required": true,
 						"description": "Value JSON-serialized into the scoped cache and parsed back by lookup. It must serialize to a defined JSON string, and JSON serialization may not preserve every JavaScript value's original type.",
 						"examples": [
