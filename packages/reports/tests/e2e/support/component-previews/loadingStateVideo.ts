@@ -13,7 +13,8 @@ export function record(setup: { home: string }) {
 		async prepare({ page }: NativeRecordingSession) {
 			await page.route('**/*', (route) => servePreview(route, setup.home));
 			await page.goto(`${previewOrigin}/?unit=${encodeURIComponent(unit)}`);
-			await expect(page.locator(`[data-preview-unit="${unit}"]`)).toBeVisible();
+			await expect(page.locator(`[data-preview-unit="${unit}"]`)).toBeAttached();
+			await expect(page.getByRole('status')).toBeVisible();
 			await readyVideoMedia(page);
 			await expect(page.getByRole('status')).toContainText('Loading');
 		},
