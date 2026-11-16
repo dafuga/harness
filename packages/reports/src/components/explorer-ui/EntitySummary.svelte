@@ -4,6 +4,7 @@
 <script lang="ts">
 	import DetailList from '../shared-primitives/DetailList.svelte';
 	import { entitySummaryFacts, measurementLocation as where } from './entitySummaryFacts';
+	import type { SummaryFact } from './entitySummaryFacts.types';
 	import DataTable from '../shared-primitives/DataTable.svelte';
 	import Card from './explorer-kit/Card.svelte';
 	import { notMeasured, type EntityMeasure } from '../../utils/explorer-ui/entityMeasure';
@@ -70,8 +71,8 @@
 					valueClass={(row) => row.className}
 					valueTitle={(row) => row.title}
 				>
-					{#snippet label(row)}{row.label}{/snippet}
-					{#snippet children(row)}{row.value}{#if row.note}<hx-span class="ex-note"
+					{#snippet label(row: SummaryFact)}{row.label}{/snippet}
+					{#snippet children(row: SummaryFact)}{row.value}{#if row.note}<hx-span class="ex-note"
 								>{row.note}</hx-span
 							>{/if}{/snippet}
 				</DetailList>
