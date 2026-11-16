@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.report-runtime-root",
+	"title": "reports.function.report-runtime-root examples",
+	"kind": "headless",
+	"units": ["reports.function.report-runtime-root"],
+	"builds": [],
+	"states": [
+		{
+			"id": "reports-runtime-root-returns-the-override-exactly-when-set",
+			"title": "reports runtime root returns the override exactly when set",
+			"coverage": "required"
+		},
+		{
+			"id": "falls-back-to-the-packages-reports-folder-when-unset",
+			"title": "falls back to the packages reports folder when unset",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.report-runtime-root.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"reports-runtime-root-returns-the-override-exactly-when-set",
+				"falls-back-to-the-packages-reports-folder-when-unset"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"reports-runtime-root-returns-the-override-exactly-when-set",
+				"falls-back-to-the-packages-reports-folder-when-unset"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"reports-runtime-root-returns-the-override-exactly-when-set",
+				"falls-back-to-the-packages-reports-folder-when-unset"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
