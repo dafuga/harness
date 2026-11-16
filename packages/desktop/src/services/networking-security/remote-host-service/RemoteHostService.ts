@@ -1,5 +1,5 @@
 // @harness-uid u_ddpgjue5tc
-import type { RemoteHostOptions } from './RemoteHostService.types';
+import { RemoteHostUnavailableError, type RemoteHostOptions } from './RemoteHostService.types';
 import { hostname } from 'node:os';
 import type { RemoteHostStatus, RemoteKeyPair } from '../../../../../remote/src/index';
 import type { RemoteHostState } from '../../../adapters/networking-security/RemoteHostStoreAdapter';
@@ -89,7 +89,8 @@ export class RemoteHostService {
 	}
 	current(): { state: RemoteHostState; runtime: RemoteHostRuntimeService } {
 		const { value: state } = this.record;
-		if (!state || !state.enabled || !this.runtime) throw new Error('Turn remote access on first.');
+		if (!state || !state.enabled || !this.runtime)
+			throw new RemoteHostUnavailableError('Turn remote access on first.');
 		return { state, runtime: this.runtime };
 	}
 	async published(): Promise<RemoteHostStatus> {
