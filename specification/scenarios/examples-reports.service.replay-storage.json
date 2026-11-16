@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.service.replay-storage",
+	"title": "reports.service.replay-storage examples",
+	"kind": "headless",
+	"units": ["reports.service.replay-storage"],
+	"builds": [],
+	"states": [
+		{
+			"id": "rejects-a-report-that-expired-after-30-days",
+			"title": "Rejects a report that expired after 30 days",
+			"coverage": "required"
+		},
+		{
+			"id": "restores-nothing-when-the-report-directory-has-no-receipt",
+			"title": "Restores nothing when the report directory has no receipt",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-restore-from-a-symlinked-report-directory",
+			"title": "Rejects a restore from a symlinked report directory",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-restore-with-a-non-digest-replay-filename",
+			"title": "Rejects a restore with a non-digest replay filename",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.service.replay-storage.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"rejects-a-report-that-expired-after-30-days",
+				"restores-nothing-when-the-report-directory-has-no-receipt",
+				"rejects-a-restore-from-a-symlinked-report-directory",
+				"rejects-a-restore-with-a-non-digest-replay-filename"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"rejects-a-report-that-expired-after-30-days",
+				"restores-nothing-when-the-report-directory-has-no-receipt",
+				"rejects-a-restore-from-a-symlinked-report-directory",
+				"rejects-a-restore-with-a-non-digest-replay-filename"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"rejects-a-report-that-expired-after-30-days",
+				"restores-nothing-when-the-report-directory-has-no-receipt",
+				"rejects-a-restore-from-a-symlinked-report-directory",
+				"rejects-a-restore-with-a-non-digest-replay-filename"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
