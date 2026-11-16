@@ -190,7 +190,7 @@
 				"inputs": [
 					{
 						"name": "EntityConfig.label.setting",
-						"type": "unknown",
+						"type": "Setting",
 						"required": true
 					}
 				],
@@ -208,7 +208,7 @@
 				"inputs": [
 					{
 						"name": "EntityConfig.children.setting",
-						"type": "unknown",
+						"type": "Setting",
 						"required": true
 					}
 				],
