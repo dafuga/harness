@@ -2,6 +2,7 @@
 import { lstat, readFile, realpath, mkdir, writeFile, unlink } from 'node:fs/promises';
 import { dirname, join, resolve, relative } from 'node:path';
 import type { PlannedFile } from '../../core/development-tooling/files';
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 
 /** Validate the entire plan before writing; refuse symlink traversal and accidental overwrites. */
 export async function writeModuleFiles(
@@ -15,7 +16,7 @@ export async function writeModuleFiles(
 	const plans: Array<PlannedFile & { previous?: string }> = [];
 	for (const file of files) {
 		const path = moduleOutputPath(file.path);
-		if (seen.has(path)) throw new Error(`Duplicate module output: ${path}`);
+		if (seen.has(path)) throw new ExpectedCliError(`Duplicate module output: ${path}`);
 		seen.add(path);
 		const plan = await moduleFilePlan(canonical, { ...file, path }, replace, allowIdentical);
 		if (plan) plans.push(plan);
@@ -41,14 +42,14 @@ export function moduleOutputPath(path: string): string {
 		!/^(?:src|test|tests|specification|db)\/[A-Za-z0-9_.+@/{}-]+$/.test(path) &&
 		!['package.json', 'harness.groups.json', 'harness.modules.json'].includes(path)
 	)
-		throw new Error(`Unsafe module output path: ${path}`);
+		throw new ExpectedCliError(`Unsafe module output path: ${path}`);
 	if (
 		path
 			.split('/')
 			.some((part) => !part || part === '.' || part === '..' || part === 'node_modules') ||
 		path.includes('{{')
 	)
-		throw new Error(`Unsafe module output path: ${path}`);
+		throw new ExpectedCliError(`Unsafe module output path: ${path}`);
 	return path;
 }
 
@@ -56,10 +57,11 @@ async function assertNoLinks(root: string, path: string): Promise<void> {
 	let target = root;
 	for (const segment of path.split('/')) {
 		target = resolve(target, segment);
-		if (relative(root, target).startsWith('..')) throw new Error('Module path escapes project.');
+		if (relative(root, target).startsWith('..'))
+			throw new ExpectedCliError('Module path escapes project.');
 		try {
 			if ((await lstat(target)).isSymbolicLink())
-				throw new Error(`Module output crosses symlink: ${path}`);
+				throw new ExpectedCliError(`Module output crosses symlink: ${path}`);
 		} catch (error) {
 			if ((error as { code?: string }).code !== 'ENOENT') throw error;
 		}
@@ -99,6 +101,6 @@ async function moduleFilePlan(
 		(!allowIdentical || previous !== file.contents) &&
 		!replace.includes(path)
 	)
-		throw new Error(`Refusing to overwrite existing ${path}.`);
+		throw new ExpectedCliError(`Refusing to overwrite existing ${path}.`);
 	return previous !== file.contents ? { ...file, previous } : undefined;
 }
