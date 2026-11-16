@@ -4,6 +4,7 @@ import type {
 	ProjectTaskRequest,
 	RunRequest
 } from '../../models/development-tooling/DesktopBridge.types';
+import { DesignOptionsOnChangeError, InvalidDesignOptionsError } from './designCount.types';
 
 /** Design options a Plan of a visual unit makes when it states no count of its own. */
 export const defaultDesignOptions = 3;
@@ -15,8 +16,9 @@ export const defaultDesignOptions = 3;
 export function designCount(request: RunRequest | ProjectRunRequest | ProjectTaskRequest): number {
 	const count = request.designOptions;
 	if (count === undefined) return defaultDesignOptions;
-	if (request.mode !== 'plan') throw new Error('A Change makes no design options.');
+	if (request.mode !== 'plan')
+		throw new DesignOptionsOnChangeError('A Change makes no design options.');
 	if (!Number.isInteger(count) || count < 1 || count > 10)
-		throw new Error('Design options must be a whole number from 1 to 10.');
+		throw new InvalidDesignOptionsError('Design options must be a whole number from 1 to 10.');
 	return count;
 }
