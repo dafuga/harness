@@ -1,5 +1,6 @@
 // @harness-uid u_hia5m25mf6
 import type { StorageSyncOptions } from './ReportStorageSyncService.types';
+import { InvalidReplayDirectoryError } from './ReportStorageSyncService.types';
 import { readdir, lstat } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ReportRepository } from '../../../repositories/reports-media/report-repository/ReportRepository';
@@ -60,7 +61,7 @@ export class ReportStorageSyncService {
 	private async replays(directory: string) {
 		const cache = join(directory, 'replays');
 		if ((await lstat(cache).catch(() => undefined))?.isSymbolicLink())
-			throw new Error('Invalid replay directory');
+			throw new InvalidReplayDirectoryError('Invalid replay directory');
 		const files = await readdir(cache).catch((error: NodeJS.ErrnoException) => {
 			if (error.code !== 'ENOENT') throw error;
 			return [] as string[];
