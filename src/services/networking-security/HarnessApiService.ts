@@ -1,5 +1,5 @@
 // @harness-uid u_iv22myh4wi
-import type { ApiFields, ApiSnapshot, HarnessApiOptions } from './HarnessApiService.types';
+import type { ApiSnapshot, HarnessApiOptions } from './HarnessApiService.types';
 import type { ApiResponse } from '../../adapters/networking-security/HarnessHttpAdapter.types';
 import { HarnessHttpAdapter } from '../../adapters/networking-security/HarnessHttpAdapter';
 import { ApiSessionRepository } from './harness-api-service/ApiSessionRepository';
@@ -45,7 +45,7 @@ export class HarnessApiService {
 		const input = { branch: this.options.branch ?? null, commit: this.options.commit ?? null };
 		return (await this.read('snapshot', input)).data as ApiSnapshot;
 	}
-	async read(resource: string, input: ApiFields = {}): Promise<ApiResponse> {
+	async read(resource: string, input: Record<string, unknown> = {}): Promise<ApiResponse> {
 		if (!this.hosted) return this.local(resource, input);
 		if (resource === 'projects') return this.http.request('GET', '/api/projects');
 		return this.http.request('GET', this.projectPath(resource), {
@@ -54,7 +54,11 @@ export class HarnessApiService {
 				.map(([key, field]) => [key, String(field)])
 		});
 	}
-	async call(method: string, input: ApiFields, requestId?: string): Promise<ApiResponse> {
+	async call(
+		method: string,
+		input: Record<string, unknown>,
+		requestId?: string
+	): Promise<ApiResponse> {
 		const body: Record<string, unknown> = { method, input, ...(requestId ? { requestId } : {}) };
 		if (['createPlan', 'startRun', 'approve', 'openThread'].includes(method)) {
 			const snapshot = await this.snapshot();
