@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.provider-picker-client",
+	"title": "reports.function.provider-picker-client examples",
+	"kind": "headless",
+	"units": ["reports.function.provider-picker-client"],
+	"builds": [],
+	"states": [
+		{
+			"id": "preview-initializes-with-a-snapshot-and-calls-tools",
+			"title": "Preview initializes with a snapshot and calls tools",
+			"coverage": "required"
+		},
+		{
+			"id": "preview-rejects-non-ok-tool-responses",
+			"title": "Preview rejects non-OK tool responses",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.provider-picker-client.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"preview-initializes-with-a-snapshot-and-calls-tools",
+				"preview-rejects-non-ok-tool-responses"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"preview-initializes-with-a-snapshot-and-calls-tools",
+				"preview-rejects-non-ok-tool-responses"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"preview-initializes-with-a-snapshot-and-calls-tools",
+				"preview-rejects-non-ok-tool-responses"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
