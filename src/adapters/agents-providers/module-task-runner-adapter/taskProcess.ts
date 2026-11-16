@@ -20,6 +20,14 @@ function runTaskProcess(
 	resources: ResourceContext
 ): Promise<TaskProcessResult> {
 	input.signal.throwIfAborted();
+	const timeoutMs = parsePositiveIntegerEnvironmentValue(
+		process.env.HARNESS_TASK_TIMEOUT_MS,
+		900_000
+	);
+	const outputBytes = parsePositiveIntegerEnvironmentValue(
+		process.env.HARNESS_TASK_OUTPUT_BYTES,
+		8_000_000
+	);
 	return new Promise((resolve, reject) => {
 		const child = spawn(command[0], command.slice(1), {
 			cwd: input.cwd,
@@ -40,10 +48,10 @@ function runTaskProcess(
 		};
 		const abort = () => kill();
 		input.signal.addEventListener('abort', abort, { once: true });
-		const timer = setTimeout(kill, 900000);
+		const timer = setTimeout(kill, timeoutMs);
 		child.stdout.on('data', (chunk: Buffer) => {
 			stdout += chunk.toString();
-			if (stdout.length > 8_000_000) {
+			if (stdout.length > outputBytes) {
 				overflow = true;
 				kill();
 			}
@@ -61,6 +69,14 @@ function runTaskProcess(
 		});
 		child.stdin.end(input.prompt);
 	});
+}
+export function parsePositiveIntegerEnvironmentValue(
+	value: string | undefined,
+	fallback: number
+): number {
+	if (value === undefined || !/^\d+$/.test(value)) return fallback;
+	const parsed = Number(value);
+	return Number.isSafeInteger(parsed) && parsed > 0 ? parsed : fallback;
 }
 function taskEnvironment(resources: ResourceContext): Record<string, string | undefined> {
 	const env: Record<string, string | undefined> = {};

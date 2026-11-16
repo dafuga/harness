@@ -1,12 +1,19 @@
 import { expectTypeOf, test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { ModuleTaskRunnerAdapter } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter';
+import { parsePositiveIntegerEnvironmentValue } from '../../../src/adapters/agents-providers/module-task-runner-adapter/taskProcess';
 import {
 	ModuleTaskRunError,
 	type TaskProcessExecutor
 } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter.types';
 import { observedTaskOperation } from '../../support/taskProfiles';
 import { assertFrameArguments } from '../../support/frameTaskAssertions';
+test('task limits use positive integers and fall back for invalid or unset values', () => {
+	const parse = parsePositiveIntegerEnvironmentValue;
+	expect(parse('1800000', 900_000)).toBe(1_800_000);
+	expect(parse('12000000', 8_000_000)).toBe(12_000_000);
+	expect([parse('invalid', 900_000), parse(undefined, 8_000_000)]).toEqual([900_000, 8_000_000]);
+});
 test('Claude and Codex launch exact models and intelligence without shell interpolation', async () => {
 	const runner = new ModuleTaskRunnerAdapter();
 	expect(
