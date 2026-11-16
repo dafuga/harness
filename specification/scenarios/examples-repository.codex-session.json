@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-repository.codex-session",
+	"title": "repository.codex-session examples",
+	"kind": "headless",
+	"units": ["repository.codex-session"],
+	"builds": [],
+	"states": [
+		{
+			"id": "creates-and-reuses-a-live-codex-session",
+			"title": "Creates and reuses a live Codex session",
+			"coverage": "required"
+		},
+		{
+			"id": "resolves-a-pending-tool-call-and-marks-it-delivered",
+			"title": "Resolves a pending tool call and marks it delivered",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-duplicate-tool-call-id",
+			"title": "Rejects a duplicate tool call ID",
+			"coverage": "required"
+		},
+		{
+			"id": "cancels-a-session-and-rejects-pending-calls",
+			"title": "Cancels a session and rejects pending calls",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/repository.codex-session.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"creates-and-reuses-a-live-codex-session",
+				"resolves-a-pending-tool-call-and-marks-it-delivered",
+				"rejects-a-duplicate-tool-call-id",
+				"cancels-a-session-and-rejects-pending-calls"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"creates-and-reuses-a-live-codex-session",
+				"resolves-a-pending-tool-call-and-marks-it-delivered",
+				"rejects-a-duplicate-tool-call-id",
+				"cancels-a-session-and-rejects-pending-calls"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"creates-and-reuses-a-live-codex-session",
+				"resolves-a-pending-tool-call-and-marks-it-delivered",
+				"rejects-a-duplicate-tool-call-id",
+				"cancels-a-session-and-rejects-pending-calls"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
