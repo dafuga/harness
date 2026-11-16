@@ -1,7 +1,7 @@
 // @harness-uid u_udwbgdiocs
 /** Only our packaged renderer can call privileged project operations. */
 export class NavigationValidator {
-	validate(value: unknown): boolean {
+	validate(value: string | undefined): boolean {
 		if (typeof value !== 'string') return false;
 		try {
 			const url = new URL(value);
