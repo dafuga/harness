@@ -8,12 +8,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/development-tooling/pickerMcpTools.ts", "src/utils/pickerMcpTools.ts"],
+		"source": [
+			"src/utils/development-tooling/pickerMcpTools.ts",
+			"src/utils/development-tooling/pickerMcpTools.types.ts",
+			"src/utils/pickerMcpTools.ts"
+		],
 		"symbols": [
 			"pickerSessionSchema",
 			"pickerSwitchSchema",
 			"pickerCancelSchema",
 			"pickerMcpTools",
+			"UnknownPickerOperationError",
 			"pickerSessionSchema",
 			"pickerSwitchSchema",
 			"pickerCancelSchema",
