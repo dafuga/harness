@@ -7,7 +7,7 @@ import { InvalidBenchmarkRunIdError } from './BenchmarkRepository.types';
 
 export class BenchmarkRepository {
 	constructor(
-		readonly home = join(
+		readonly home: string = join(
 			process.env.HARNESS_ANALYTICS_HOME ?? join(homedir(), '.codex', 'harness'),
 			'benchmarks'
 		)

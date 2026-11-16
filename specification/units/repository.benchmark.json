@@ -26,7 +26,7 @@
 		"inputs": [
 			{
 				"name": "BenchmarkRepository.constructor.home",
-				"type": "unknown",
+				"type": "string",
 				"required": false,
 				"description": "Storage root that directory() joins each run ID to, so it must be a string path. Defaults to join(process.env.HARNESS_ANALYTICS_HOME ?? join(homedir(), '.codex', 'harness'), 'benchmarks'): the HARNESS_ANALYTICS_HOME value when it is defined, otherwise the .codex/harness folder under the home directory, with 'benchmarks' appended.",
 				"examples": [
@@ -514,7 +514,7 @@
 				"inputs": [
 					{
 						"name": "BenchmarkRepository.constructor.home",
-						"type": "unknown",
+						"type": "string",
 						"required": false,
 						"description": "Storage root that directory() joins each run ID to, so it must be a string path. Defaults to join(process.env.HARNESS_ANALYTICS_HOME ?? join(homedir(), '.codex', 'harness'), 'benchmarks'): the HARNESS_ANALYTICS_HOME value when it is defined, otherwise the .codex/harness folder under the home directory, with 'benchmarks' appended.",
 						"examples": [
