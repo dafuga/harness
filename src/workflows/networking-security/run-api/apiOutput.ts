@@ -4,11 +4,8 @@ import type { ApiResponse } from '../../../adapters/networking-security/HarnessH
 import type { HarnessApiOptions } from '../../../services/networking-security/HarnessApiService.types';
 import { fail } from '../../../core/development-tooling/errors';
 
-export async function apiOutput(
-	result: ApiResponse | unknown,
-	options: HarnessApiOptions
-): Promise<void> {
-	const response = result as ApiResponse | null;
+export async function apiOutput<Result>(result: Result, options: HarnessApiOptions): Promise<void> {
+	const response = result as Result & ApiResponse;
 	if (response?.bytes instanceof Uint8Array && isBinary(response.mediaType)) {
 		if (options.select) fail('Field selection requires a JSON response.');
 		if (!options.output)

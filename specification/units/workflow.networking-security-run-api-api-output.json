@@ -16,7 +16,7 @@
 		"inputs": [
 			{
 				"name": "apiOutput.result",
-				"type": "ApiResponse | unknown",
+				"type": "Result",
 				"required": true,
 				"description": "The Harness API result that apiOutput prints, either an ApiResponse or any other value. A binary ApiResponse (bytes is a Uint8Array and mediaType does not start with text/ and does not include json) is written as raw bytes, a non-binary ApiResponse with Uint8Array bytes prints only its data field, and any other value, including an object whose bytes are not a Uint8Array, prints the value itself as JSON; BigInt and circular values make the call fail, and undefined is written as the text undefined.",
 				"examples": [
@@ -98,7 +98,7 @@
 				"inputs": [
 					{
 						"name": "apiOutput.result",
-						"type": "ApiResponse | unknown",
+						"type": "Result",
 						"required": true,
 						"description": "The Harness API result that apiOutput prints, either an ApiResponse or any other value. A binary ApiResponse (bytes is a Uint8Array and mediaType does not start with text/ and does not include json) is written as raw bytes, a non-binary ApiResponse with Uint8Array bytes prints only its data field, and any other value, including an object whose bytes are not a Uint8Array, prints the value itself as JSON; BigInt and circular values make the call fail, and undefined is written as the text undefined.",
 						"examples": [
