@@ -1,5 +1,6 @@
 // @harness-uid u_nmxl4zx5tk
 import type { FixtureAction } from './remote-fixture-control.types';
+import { RemoteFixtureRequestTooLargeError } from './remote-fixture-control.types';
 import { createServer } from 'node:http';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { AddressInfo } from 'node:net';
@@ -20,7 +21,8 @@ async function bodyOf(request: IncomingMessage): Promise<Record<string, unknown>
 	let text = '';
 	for await (const chunk of request) {
 		text += String(chunk);
-		if (text.length > 4096) throw new Error('The request is too large.');
+		if (text.length > 4096)
+			throw new RemoteFixtureRequestTooLargeError('The request is too large.');
 	}
 	const value: unknown = text ? JSON.parse(text) : {};
 	return value && typeof value === 'object' ? (value as Record<string, unknown>) : {};

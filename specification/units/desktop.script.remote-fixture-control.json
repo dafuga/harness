@@ -12,7 +12,12 @@
 			"packages/desktop/scripts/remote-fixture-control.ts",
 			"packages/desktop/scripts/remote-fixture-control.types.ts"
 		],
-		"symbols": ["remoteFixtureControl", "FixtureAction", "FixtureAction"]
+		"symbols": [
+			"remoteFixtureControl",
+			"FixtureAction",
+			"RemoteFixtureRequestTooLargeError",
+			"FixtureAction"
+		]
 	},
 	"contract": {
 		"origin": "declared",
