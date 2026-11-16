@@ -3,6 +3,8 @@
 <!-- @harness-uid u_33yrfodaw3 -->
 <script lang="ts">
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
+	import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
+	import type { EntityNav } from '../../utils/explorer-ui/entityLens';
 	import EntityFrame from './EntityFrame.svelte';
 	import EntityHistory from './entity-history/EntityHistory.svelte';
 	let host: ExplorerScreenProps = $props();
@@ -12,7 +14,7 @@
 	draws no box. -->
 <hx-div class="ex-screen" data-harness-component="harness-entity-history-screen">
 	<EntityFrame {host}>
-		{#snippet children(entity, nav)}
+		{#snippet children(entity: ExplorerEntity, nav: EntityNav)}
 			<!-- A history belongs to one entity at one commit; another one starts from nothing read. -->
 			{#key entity.id + host.scope.commit}
 				<EntityHistory
