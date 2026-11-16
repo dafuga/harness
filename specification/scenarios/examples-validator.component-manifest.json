@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-validator.component-manifest",
+	"title": "validator.component-manifest examples",
+	"kind": "headless",
+	"units": ["validator.component-manifest"],
+	"builds": [],
+	"states": [
+		{
+			"id": "accepts-a-well-formed-manifest",
+			"title": "Accepts a well-formed manifest",
+			"coverage": "required"
+		},
+		{
+			"id": "keeps-the-value-when-only-field-contents-are-wrong",
+			"title": "Keeps the value when only field contents are wrong",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-missing-id-with-schema-messages-only",
+			"title": "Rejects a missing id with schema messages only",
+			"coverage": "required"
+		},
+		{
+			"id": "flags-an-id-that-differs-from-its-file-name",
+			"title": "Flags an id that differs from its file name",
+			"coverage": "required"
+		},
+		{
+			"id": "lists-contract-findings-and-skips-them-when-disabled",
+			"title": "Lists contract findings and skips them when disabled",
+			"coverage": "required"
+		},
+		{
+			"id": "counts-contract-findings-per-kind-across-units",
+			"title": "Counts contract findings per kind across units",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/validator.component-manifest.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"accepts-a-well-formed-manifest",
+				"keeps-the-value-when-only-field-contents-are-wrong",
+				"rejects-a-missing-id-with-schema-messages-only",
+				"flags-an-id-that-differs-from-its-file-name",
+				"lists-contract-findings-and-skips-them-when-disabled",
+				"counts-contract-findings-per-kind-across-units"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"accepts-a-well-formed-manifest",
+				"keeps-the-value-when-only-field-contents-are-wrong",
+				"rejects-a-missing-id-with-schema-messages-only",
+				"flags-an-id-that-differs-from-its-file-name",
+				"lists-contract-findings-and-skips-them-when-disabled",
+				"counts-contract-findings-per-kind-across-units"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"accepts-a-well-formed-manifest",
+				"keeps-the-value-when-only-field-contents-are-wrong",
+				"rejects-a-missing-id-with-schema-messages-only",
+				"flags-an-id-that-differs-from-its-file-name",
+				"lists-contract-findings-and-skips-them-when-disabled",
+				"counts-contract-findings-per-kind-across-units"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
