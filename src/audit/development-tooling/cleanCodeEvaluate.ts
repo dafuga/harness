@@ -1,5 +1,7 @@
 // @harness-uid u_6z4fnqlmbz
 import type { EvaluationInput } from './cleanCodeEvaluate.types';
+import { JevModelMismatchError } from './cleanCodeEvaluate.types';
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { JevResponseValidator as CleanCodeResponseValidator } from '../../validators/agents-providers/JevResponseValidator';
 import { recordValue } from '../../validators/development-tooling/cleanCodeValue';
 import { assessCleanCode, fileReviewStatus } from './cleanCodeAssessment';
@@ -24,7 +26,9 @@ export async function evaluateCleanCodeFile(input: EvaluationInput): Promise<Fil
 	const plan = planReviewLocations(input.snapshot.target.contents, assessments);
 	applyReviewLocations(assessments, plan, value.localization, input.settings.minConfidence);
 	if (!(await reviewInputsCurrent(input.root, input.snapshot.inputs)))
-		throw new Error('Source or supplied context changed during review; result discarded.');
+		throw new ExpectedCliError(
+			'Source or supplied context changed during review; result discarded.'
+		);
 	if (cacheAllowed && !cached) await writeReviewCache(input.root, key, value);
 	return {
 		path: input.snapshot.target.path,
@@ -61,7 +65,7 @@ async function evaluateSnapshot(input: EvaluationInput): Promise<CachedEvaluatio
 	const localization = validator.validate(locationRaw, plan.questions);
 	input.onUsage?.(localization.usage);
 	if (localization.model !== evaluation.model)
-		throw new Error('Jev model changed during localization.');
+		throw new JevModelMismatchError('Jev model changed during localization.');
 	return { evaluation, localization };
 }
 
@@ -90,7 +94,7 @@ async function validatedCache(
 
 function assertModel(result: JevEvaluation, model: string): void {
 	if (!['jev-latest', 'jev-preview'].includes(model) && result.model !== model)
-		throw new Error('Jev returned an unexpected model.');
+		throw new JevModelMismatchError('Jev returned an unexpected model.');
 }
 
 function evaluationUsage(value: CachedEvaluation): JevEvaluation['usage'] {
