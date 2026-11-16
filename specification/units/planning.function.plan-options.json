@@ -375,7 +375,7 @@
 			},
 			{
 				"name": "binding.sha256",
-				"type": "unknown",
+				"type": "Sha256",
 				"required": true,
 				"description": "SHA-256 digest of the image bytes, expected as 64 lowercase hexadecimal characters, copied unchanged without validation.",
 				"examples": [
@@ -1318,7 +1318,7 @@
 					},
 					{
 						"name": "binding.sha256",
-						"type": "unknown",
+						"type": "Sha256",
 						"required": true,
 						"description": "SHA-256 digest of the image bytes, expected as 64 lowercase hexadecimal characters, copied unchanged without validation.",
 						"examples": [

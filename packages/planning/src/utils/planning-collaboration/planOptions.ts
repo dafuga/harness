@@ -2,7 +2,8 @@
 import type {
 	AgentRef,
 	DesignVersion,
-	ImageBinding
+	ImageBinding,
+	Sha256
 } from '../../models/planning-collaboration/Planning.types';
 import { text } from './planValidate';
 
@@ -10,7 +11,10 @@ export const most = 10;
 
 export const id = (at: number) => `o${at + 1}`;
 
-export const binding = ({ file, sha256 }: ImageBinding): ImageBinding => ({ file, sha256 });
+export const binding = ({ file, sha256 }: { file: string; sha256: Sha256 }): ImageBinding => ({
+	file,
+	sha256
+});
 
 export function provenance(generator: AgentRef): AgentRef {
 	text(generator?.provider);
