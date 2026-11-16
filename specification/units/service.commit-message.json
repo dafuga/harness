@@ -36,7 +36,7 @@
 			},
 			{
 				"name": "CommitMessageService.written.edited",
-				"type": "unknown",
+				"type": "boolean",
 				"required": false,
 				"description": "Whether Git opened an editor for the message; it defaults to the expression process.env.GIT_EDITOR !== ':', which is true unless GIT_EDITOR is a colon. True makes the default cleanup strip, which drops comment lines, and false makes it whitespace, which keeps lines that start with the comment mark, unless commit.cleanup names a mode other than default.",
 				"examples": [true, false]
@@ -145,7 +145,7 @@
 					},
 					{
 						"name": "CommitMessageService.written.edited",
-						"type": "unknown",
+						"type": "boolean",
 						"required": false,
 						"description": "Whether Git opened an editor for the message; it defaults to the expression process.env.GIT_EDITOR !== ':', which is true unless GIT_EDITOR is a colon. True makes the default cleanup strip, which drops comment lines, and false makes it whitespace, which keeps lines that start with the comment mark, unless commit.cleanup names a mode other than default.",
 						"examples": [true, false]
