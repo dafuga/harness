@@ -1,5 +1,6 @@
 // @harness-uid u_b5quvbjmrl
 import type { GoogleIdentity } from './googleButton.types';
+import { GoogleSignInLoadError } from './googleButton.types';
 import type { GoogleButton } from '../../../utils/accounts-access/googleButton';
 import { googleIdentityScript } from '../../../utils/accounts-access/googleButton';
 
@@ -17,11 +18,11 @@ function load(): Promise<GoogleIdentity> {
 		script.onload = () => {
 			const identity = loaded();
 			if (identity) resolve(identity);
-			else reject(new Error('Google sign-in did not load.'));
+			else reject(new GoogleSignInLoadError('Google sign-in did not load.'));
 		};
 		script.onerror = () => {
 			loading = null;
-			reject(new Error('Google sign-in could not be loaded.'));
+			reject(new GoogleSignInLoadError('Google sign-in could not be loaded.'));
 		};
 		document.head.appendChild(script);
 	});
