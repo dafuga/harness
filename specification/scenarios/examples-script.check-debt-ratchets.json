@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-script.check-debt-ratchets",
+	"title": "script.check-debt-ratchets examples",
+	"kind": "headless",
+	"units": ["script.check-debt-ratchets"],
+	"builds": [],
+	"states": [
+		{
+			"id": "lists-layer-edges-that-are-new-since-the-base",
+			"title": "Lists layer edges that are new since the base",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-reuse-findings-that-grew-and-counts-that-dropped",
+			"title": "Reports reuse findings that grew and counts that dropped",
+			"coverage": "required"
+		},
+		{
+			"id": "counts-only-imported-mkdtemp-and-mkdtempsync-calls",
+			"title": "Counts only imported mkdtemp and mkdtempSync calls",
+			"coverage": "required"
+		},
+		{
+			"id": "flags-a-grown-test-file-and-an-over-limit-shared-helper",
+			"title": "Flags a grown test file and an over-limit shared helper",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/script.check-debt-ratchets.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"lists-layer-edges-that-are-new-since-the-base",
+				"reports-reuse-findings-that-grew-and-counts-that-dropped",
+				"counts-only-imported-mkdtemp-and-mkdtempsync-calls",
+				"flags-a-grown-test-file-and-an-over-limit-shared-helper"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"lists-layer-edges-that-are-new-since-the-base",
+				"reports-reuse-findings-that-grew-and-counts-that-dropped",
+				"counts-only-imported-mkdtemp-and-mkdtempsync-calls",
+				"flags-a-grown-test-file-and-an-over-limit-shared-helper"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"lists-layer-edges-that-are-new-since-the-base",
+				"reports-reuse-findings-that-grew-and-counts-that-dropped",
+				"counts-only-imported-mkdtemp-and-mkdtempsync-calls",
+				"flags-a-grown-test-file-and-an-over-limit-shared-helper"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
