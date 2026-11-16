@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.benchmark-types",
+	"title": "function.benchmark-types examples",
+	"kind": "headless",
+	"units": ["function.benchmark-types"],
+	"builds": [],
+	"states": [
+		{
+			"id": "calibrationschema-parsed-the-exported-note-and-another-nonem",
+			"title": "calibrationSchema parsed the exported note and another nonempty note",
+			"coverage": "required"
+		},
+		{
+			"id": "calibrationschema-refused-a-record-marked-verified-another-k",
+			"title": "calibrationSchema refused a record marked verified, another kind, an extra field and an empty note",
+			"coverage": "required"
+		},
+		{
+			"id": "benchmeasurementschema-parsed-a-full-and-a-null-commit-id-an",
+			"title": "benchMeasurementSchema parsed a full and a null commit id, and refused an uppercase or a missing commit id",
+			"coverage": "required"
+		},
+		{
+			"id": "kernelbenchmarkschema-parsed-a-clean-record-a-dirty-record-a",
+			"title": "kernelBenchmarkSchema parsed a clean record, a dirty record and a record with an unknown key, and refused an empty workload id",
+			"coverage": "required"
+		},
+		{
+			"id": "kernelbenchmarkschema-refused-schemaversion-2-an-unknown-run",
+			"title": "kernelBenchmarkSchema refused schemaVersion 2, an unknown runtime, an extra source field and a profile with no memoryBytes",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.benchmark-types.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"calibrationschema-parsed-the-exported-note-and-another-nonem",
+				"calibrationschema-refused-a-record-marked-verified-another-k",
+				"benchmeasurementschema-parsed-a-full-and-a-null-commit-id-an",
+				"kernelbenchmarkschema-parsed-a-clean-record-a-dirty-record-a",
+				"kernelbenchmarkschema-refused-schemaversion-2-an-unknown-run"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"calibrationschema-parsed-the-exported-note-and-another-nonem",
+				"calibrationschema-refused-a-record-marked-verified-another-k",
+				"benchmeasurementschema-parsed-a-full-and-a-null-commit-id-an",
+				"kernelbenchmarkschema-parsed-a-clean-record-a-dirty-record-a",
+				"kernelbenchmarkschema-refused-schemaversion-2-an-unknown-run"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"calibrationschema-parsed-the-exported-note-and-another-nonem",
+				"calibrationschema-refused-a-record-marked-verified-another-k",
+				"benchmeasurementschema-parsed-a-full-and-a-null-commit-id-an",
+				"kernelbenchmarkschema-parsed-a-clean-record-a-dirty-record-a",
+				"kernelbenchmarkschema-refused-schemaversion-2-an-unknown-run"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
