@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.commit-message",
+	"title": "function.commit-message examples",
+	"kind": "headless",
+	"units": ["function.commit-message"],
+	"builds": [],
+	"states": [
+		{
+			"id": "written-messages-follow-git-cleanup-modes",
+			"title": "Written messages follow Git cleanup modes",
+			"coverage": "required"
+		},
+		{
+			"id": "stored-messages-report-prefix-and-line-ending-problems",
+			"title": "Stored messages report prefix and line-ending problems",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.commit-message.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"written-messages-follow-git-cleanup-modes",
+				"stored-messages-report-prefix-and-line-ending-problems"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"written-messages-follow-git-cleanup-modes",
+				"stored-messages-report-prefix-and-line-ending-problems"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"written-messages-follow-git-cleanup-modes",
+				"stored-messages-report-prefix-and-line-ending-problems"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
