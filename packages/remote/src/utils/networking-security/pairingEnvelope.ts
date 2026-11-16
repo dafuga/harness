@@ -1,10 +1,5 @@
 // @harness-uid u_yy3k3smxbp
-import type {
-	PairingContext,
-	PairingKeys,
-	PairingKind,
-	PairingValue
-} from './pairingEnvelope.types';
+import type { PairingContext, PairingKeys, PairingKind } from './pairingEnvelope.types';
 import {
 	bytesText,
 	concatBytes,
@@ -35,7 +30,7 @@ function parameters(kind: PairingKind) {
 export async function sealPairing(
 	key: CryptoKey,
 	kind: PairingKind,
-	value: PairingValue
+	value: unknown
 ): Promise<string> {
 	const plain = cryptoSource(remoteBytes(JSON.stringify(value)));
 	return toBase64Url(new Uint8Array(await crypto.subtle.encrypt(parameters(kind), key, plain)));

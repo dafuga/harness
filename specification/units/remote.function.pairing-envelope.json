@@ -21,8 +21,7 @@
 			"PairingKeys",
 			"PairingContext",
 			"PairingKind",
-			"PairingKeys",
-			"PairingValue"
+			"PairingKeys"
 		]
 	},
 	"contract": {
@@ -59,7 +58,7 @@
 			},
 			{
 				"name": "sealPairing.value",
-				"type": "PairingValue",
+				"type": "unknown",
 				"required": true,
 				"description": "Value passed to JSON.stringify and encrypted as its resulting text. It should be JSON-serializable; serialization can reject values such as cyclic objects or BigInt.",
 				"examples": [
@@ -232,7 +231,7 @@
 					},
 					{
 						"name": "sealPairing.value",
-						"type": "PairingValue",
+						"type": "unknown",
 						"required": true,
 						"description": "Value passed to JSON.stringify and encrypted as its resulting text. It should be JSON-serializable; serialization can reject values such as cyclic objects or BigInt.",
 						"examples": [
