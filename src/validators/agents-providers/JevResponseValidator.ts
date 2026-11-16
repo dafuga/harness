@@ -1,15 +1,16 @@
 // @harness-uid u_hqf5srvofj
 import type { JevChoice, JevEvaluation, JevQuestions } from '../../core/agents-providers/jevTypes';
 import { probabilityValue, recordValue, tokenCount } from '../development-tooling/cleanCodeValue';
+import { InvalidJevResponseError } from './JevResponseValidator.types';
 
 export class JevResponseValidator {
 	validate(input: unknown, questions: JevQuestions): JevEvaluation {
 		const raw = recordValue(input);
 		if (typeof raw.model !== 'string' || !/^jev-[a-zA-Z0-9.-]+$/.test(raw.model))
-			throw new Error('Invalid Jev model');
+			throw new InvalidJevResponseError('Invalid Jev model');
 		const answers = recordValue(raw.answers);
 		if (Object.keys(answers).length !== Object.keys(questions).length)
-			throw new Error('Missing Jev answers');
+			throw new InvalidJevResponseError('Missing Jev answers');
 		const usage = recordValue(raw.usage);
 		return {
 			model: raw.model,
@@ -30,16 +31,17 @@ export class JevResponseValidator {
 function parseChoice(value: unknown, options: string[]): JevChoice {
 	const raw = recordValue(value);
 	if (raw.type !== 'choice' || typeof raw.choice !== 'string' || !options.includes(raw.choice))
-		throw new Error('Invalid Jev choice');
+		throw new InvalidJevResponseError('Invalid Jev choice');
 	const probabilities = recordValue(raw.probabilities);
-	if (Object.keys(probabilities).length !== options.length) throw new Error('Invalid Jev options');
+	if (Object.keys(probabilities).length !== options.length)
+		throw new InvalidJevResponseError('Invalid Jev options');
 	const parsed = Object.fromEntries(
 		options.map((key) => [key, probabilityValue(probabilities[key])])
 	);
 	if (Math.abs(Object.values(parsed).reduce((total, item) => total + item, 0) - 1) > 0.01)
-		throw new Error('Invalid Jev distribution');
+		throw new InvalidJevResponseError('Invalid Jev distribution');
 	if (parsed[raw.choice] < Math.max(...Object.values(parsed)))
-		throw new Error('Inconsistent Jev choice');
+		throw new InvalidJevResponseError('Inconsistent Jev choice');
 	return {
 		type: 'choice',
 		choice: raw.choice,
