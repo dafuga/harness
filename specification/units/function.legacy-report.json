@@ -19,7 +19,7 @@
 		"inputs": [
 			{
 				"name": "legacyReport.manifest",
-				"type": "Manifest",
+				"type": "unknown",
 				"required": true,
 				"description": "One manifest from the old report store, typed unknown and validated on every call: it must be an object with non-empty id, startedAt, updatedAt and status strings, a project object with string id, name and path, and string title, mode, environment and state. Any manifest that breaks these rules, including a checks item without a non-empty id or status or an evidence item without a non-empty id, file or status, makes the function return undefined rather than throw; revision is optional, and summary, checks and evidence default to '', [] and [].",
 				"examples": [
@@ -170,7 +170,7 @@
 				"inputs": [
 					{
 						"name": "legacyReport.manifest",
-						"type": "Manifest",
+						"type": "unknown",
 						"required": true,
 						"description": "One manifest from the old report store, typed unknown and validated on every call: it must be an object with non-empty id, startedAt, updatedAt and status strings, a project object with string id, name and path, and string title, mode, environment and state. Any manifest that breaks these rules, including a checks item without a non-empty id or status or an evidence item without a non-empty id, file or status, makes the function return undefined rather than throw; revision is optional, and summary, checks and evidence default to '', [] and [].",
 						"examples": [

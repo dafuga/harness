@@ -38,7 +38,7 @@ const manifestSchema = z.object({
  * Normalises one manifest of the old report store. Dates, outcome and revision are kept exactly
  * as recorded: a run that was still running stays `running`, and a missing revision stays null.
  */
-export function legacyReport<Manifest>(manifest: Manifest): LegacyReport | undefined {
+export function legacyReport(manifest: unknown): LegacyReport | undefined {
 	const parsed = manifestSchema.safeParse(manifest);
 	if (!parsed.success) return undefined;
 	const run = parsed.data;
