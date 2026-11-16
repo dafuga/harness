@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.migration.0001-auth-ephemeral-state",
+	"title": "hub.migration.0001-auth-ephemeral-state examples",
+	"kind": "headless",
+	"units": ["hub.migration.0001-auth-ephemeral-state"],
+	"builds": [],
+	"states": [
+		{
+			"id": "declares-the-five-ephemeral-auth-tables",
+			"title": "Declares the five ephemeral auth tables",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.migration.0001-auth-ephemeral-state.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["declares-the-five-ephemeral-auth-tables"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["declares-the-five-ephemeral-auth-tables"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["declares-the-five-ephemeral-auth-tables"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
