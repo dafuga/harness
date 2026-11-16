@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.record-assembly",
+	"title": "service.record-assembly examples",
+	"kind": "headless",
+	"units": ["service.record-assembly"],
+	"builds": [],
+	"states": [
+		{
+			"id": "omits-video-batches-without-admitted-pointers",
+			"title": "Omits video batches without admitted pointers",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.record-assembly.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["omits-video-batches-without-admitted-pointers"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["omits-video-batches-without-admitted-pointers"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["omits-video-batches-without-admitted-pointers"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
