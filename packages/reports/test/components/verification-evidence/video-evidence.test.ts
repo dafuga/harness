@@ -1,9 +1,10 @@
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
+import { loadVideoFlags } from '../../../src/components/verification-evidence/video-evidence/videoFeedback';
 import { render } from 'svelte/server';
 import VideoEvidence from '../../../src/components/verification-evidence/VideoEvidence.svelte';
 import { videoItem, frameFlags } from './videoEvidenceFixture';
 
-test('VideoEvidence.svelte is generated', () => {
+test('VideoEvidence.svelte is generated', async () => {
 	const { body } = render(VideoEvidence, {
 		props: {
 			item: videoItem,
@@ -39,4 +40,15 @@ test('VideoEvidence.svelte is generated', () => {
 	}).body;
 	expect(absent).not.toContain('Flag current frame');
 	expect(absent).toContain('No attached clip reference');
+	try {
+		vi.stubGlobal(
+			'fetch',
+			async () => new Response('null', { headers: { 'Content-Type': 'application/json' } })
+		);
+		await expect(loadVideoFlags(videoItem.video, new AbortController().signal)).rejects.toThrow(
+			'Frame feedback returned a non-object response.'
+		);
+	} finally {
+		vi.unstubAllGlobals();
+	}
 });
