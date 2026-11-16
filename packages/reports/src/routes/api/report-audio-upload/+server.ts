@@ -3,6 +3,12 @@ import { admitUploadRequest } from '../../../utils/reports-media/admitUploadRequ
 import { json } from '@sveltejs/kit';
 import { AudioUploadService } from '../../../services/reports-media/AudioUploadService';
 import { repository } from '../../../utils/reports-media/reportHttp';
+class InvalidAudioFileError extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = 'InvalidAudioFileError';
+	}
+}
 function uploadFailure(reason: unknown) {
 	const message = reason instanceof Error ? reason.message : '';
 	if (message.includes('finaliz')) return json({ error: message }, { status: 409 });
@@ -17,7 +23,7 @@ export async function POST({ request, url }: { request: Request; url: URL }): Pr
 	try {
 		const form = await request.formData();
 		const audio = form.get('audio');
-		if (!(audio instanceof File)) throw new Error('Choose an audio file');
+		if (!(audio instanceof File)) throw new InvalidAudioFileError('Choose an audio file');
 		const input = {
 			title: String(form.get('title') || ''),
 			audio,
