@@ -11,8 +11,15 @@
 		"visibility": "internal"
 	},
 	"owns": {
-		"source": ["src/services/module-system/ModuleResourceService.ts"],
-		"symbols": ["ModuleResourceService", "ModuleResourceService.generate"]
+		"source": [
+			"src/services/module-system/ModuleResourceService.ts",
+			"src/services/module-system/ModuleResourceService.types.ts"
+		],
+		"symbols": [
+			"ModuleResourceService",
+			"ModuleResourceService.generate",
+			"ModuleResourceGenerationError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

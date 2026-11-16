@@ -16,6 +16,7 @@ import { moduleStateFile } from './moduleDefinition';
 import { writeModuleFiles } from './moduleWrites';
 import { toCamelCase, toKebabCase, toPascalCase } from '../../helpers/strings/case';
 import { validateCodeName } from '../../core/development-tooling/validation';
+import { ModuleResourceGenerationError } from './ModuleResourceService.types';
 
 /** Included and installed capabilities share resource admission, generators and persisted instances. */
 export class ModuleResourceService {
@@ -37,7 +38,7 @@ export class ModuleResourceService {
 					toPascalCase(item.name) === toPascalCase(name)
 			)
 		)
-			throw new Error(`Resource ${name} already exists.`);
+			throw new ModuleResourceGenerationError(`Resource ${name} already exists.`);
 		if (entry.definition.testing) await new ModuleInstallService().add(root, module);
 		if (!state.modules.some((item) => item.definition.id === module))
 			state.modules.push({ definition: entry.definition, source: entry.source });
@@ -63,7 +64,8 @@ function templateExpansion(name: string, group?: string) {
 	};
 	return (source: string) =>
 		source.replace(/\{\{([A-Za-z]+)\}\}/g, (_, key) => {
-			if (!(key in variables)) throw new Error(`Unknown module template variable ${key}.`);
+			if (!(key in variables))
+				throw new ModuleResourceGenerationError(`Unknown module template variable ${key}.`);
 			return variables[key];
 		});
 }
@@ -71,11 +73,15 @@ function templateExpansion(name: string, group?: string) {
 async function resourceAdmission(root: string, module: string, type: string) {
 	const service = new ModuleCatalogService(),
 		catalog = await service.load(root);
-	if (catalog.gaps.length) throw new Error(catalog.gaps.join('\n'));
+	if (catalog.gaps.length) throw new ModuleResourceGenerationError(catalog.gaps.join('\n'));
 	const entry = catalog.modules.find((item) => item.definition.id === module && item.installed);
-	if (!entry) throw new Error(`Install module ${module} before generating resources.`);
+	if (!entry)
+		throw new ModuleResourceGenerationError(
+			`Install module ${module} before generating resources.`
+		);
 	const resource = entry.definition.resources.find((item) => item.id === type);
-	if (!resource) throw new Error(`Unknown resource type ${module}.${type}.`);
+	if (!resource)
+		throw new ModuleResourceGenerationError(`Unknown resource type ${module}.${type}.`);
 	return { entry, resource, state: await service.state(moduleTree(root)) };
 }
 async function resourcePlan(
