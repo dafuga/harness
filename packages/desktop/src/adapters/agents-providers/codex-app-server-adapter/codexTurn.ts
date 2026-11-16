@@ -1,5 +1,6 @@
 // @harness-uid u_eymqu7nm4p
 import type { TurnItem, TurnResult, TurnOptions } from './codexTurn.types';
+import { CodexTurnError } from './codexTurn.types';
 export type { TurnItem, TurnResult, TurnOptions } from './codexTurn.types';
 import type { ResourceContext } from '../../../../../../src/core/execution-runtimes/resourceTypes';
 import type { ResourceQueueService } from '../../../../../../src/services/execution-runtimes/ResourceQueueService';
@@ -41,7 +42,7 @@ async function runCodexTurn(
 				'Follow the supplied unit contract. Do not delegate to other agents. Never claim verification from CLI success.'
 		});
 		if (started.model !== turn.model || started.modelProvider !== 'openai')
-			throw new Error('Codex did not run the requested model/provider.');
+			throw new CodexTurnError('Codex did not run the requested model/provider.');
 		if (turn.signal.aborted) throw new RunCancelled();
 		return await waitTurn(rpc, { turn, threadId: started.thread.id, model: started.model });
 	} finally {
@@ -75,7 +76,7 @@ async function waitTurn(
 			settled = true;
 			complete(error);
 		};
-		const timer = setTimeout(() => finish(new Error('Codex turn timed out.')), 900000);
+		const timer = setTimeout(() => finish(new CodexTurnError('Codex turn timed out.')), 900000);
 		const unsubscribe = rpc.subscribe((event) =>
 			turnNotification(event, { threadId, turn, texts, images, finish })
 		);
@@ -142,14 +143,14 @@ function terminalNotification(
 	const params = event.params!;
 	if (event.method === 'error' && !params.willRetry) {
 		const error = params.error as { message?: string } | undefined;
-		finish(new Error(error?.message ?? 'Codex failed.'));
+		finish(new CodexTurnError(error?.message ?? 'Codex failed.'));
 	}
 	if (event.method === 'turn/completed') {
 		const result = params.turn as { status: string; error?: { message: string } };
 		finish(
 			result.status === 'completed'
 				? null
-				: new Error(result.error?.message ?? 'Codex turn ' + result.status)
+				: new CodexTurnError(result.error?.message ?? 'Codex turn ' + result.status)
 		);
 	}
 }
