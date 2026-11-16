@@ -5,11 +5,15 @@ import { R2ScreenshotStoreAdapter } from '../../../adapters/reports-media/R2Scre
 import { ScreenshotUploadService, type ScreenshotUploadInput } from './ScreenshotUploadService';
 import { repository } from '../../../utils/reports-media/reportHttp';
 
+class MissingScreenshotFilesError extends Error {
+	override name = 'MissingScreenshotFilesError';
+}
+
 function uploadFields(form: FormData): ScreenshotUploadInput {
 	const before = form.get('before');
 	const after = form.get('after');
 	if (!(before instanceof File) || !(after instanceof File))
-		throw new Error('Choose both screenshots');
+		throw new MissingScreenshotFilesError('Choose both screenshots');
 	return {
 		title: String(form.get('title') || ''),
 		viewport: String(form.get('viewport') || ''),
