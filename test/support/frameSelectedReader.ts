@@ -14,6 +14,21 @@ import { hash } from './frameFlagFixture';
 export async function assertSelectedFrameReader(): Promise<void> {
 	await withTempRepo(async ({ root, git }) => {
 		const f = await videoSharedParent(root, git);
+		const manifest = `${f.evidence.path}/manifest.json`;
+		const requested = [
+			manifest,
+			...Array.from(
+				{ length: 5000 },
+				(_, index) => `${f.evidence.path}/absent-${index}-${'x'.repeat(400)}`
+			)
+		];
+		const many = new EvidenceTreeAdapter(root).readMany(f.evidence.commit, requested);
+		await expect(
+			many,
+			'large scoped evidence queries fit bounded argument batches'
+		).resolves.toHaveProperty('size', 1);
+		expect(hash((await many).get(manifest)!)).toBe(f.evidence.manifest);
+
 		await rm(await new LfsAdapter(root).path(f.captures[1].sha256));
 		const history = new HistoryStatusService(root);
 		expect((await history.status(f.parent.source.commit)).verified).toBe(false);
