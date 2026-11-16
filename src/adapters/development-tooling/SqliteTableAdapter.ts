@@ -3,6 +3,7 @@ import type { SqliteDatabase, SqliteModel } from '../../core/development-tooling
 import { sqliteColumn, sqliteIdentifier } from '../../utils/development-tooling/sqliteTableSql';
 import { sqliteInput } from '../../utils/development-tooling/sqliteInput';
 import { sqliteRow } from '../../utils/development-tooling/sqliteRow';
+import { PrimaryKeyUpdateError } from './SqliteTableAdapter.types';
 
 /** Builds only model-declared identifiers; all application values are bound parameters. */
 export class SqliteTableAdapter {
@@ -42,7 +43,7 @@ export class SqliteTableAdapter {
 	}
 	update<T>(id: number | string, input: Record<string, unknown>): T | null {
 		if (Object.hasOwn(input, this.primary))
-			throw new Error('A SQLite primary key cannot be updated');
+			throw new PrimaryKeyUpdateError('A SQLite primary key cannot be updated');
 		if (Object.keys(input).length === 0) return this.find<T>(id);
 		const values = { ...input };
 		if (this.model.fields.updatedAt?.default === 'timestamp')
