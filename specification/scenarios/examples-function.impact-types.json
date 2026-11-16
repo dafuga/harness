@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.impact-types",
+	"title": "function.impact-types examples",
+	"kind": "headless",
+	"units": ["function.impact-types"],
+	"builds": [],
+	"states": [
+		{
+			"id": "changed-files-retain-classifications-and-optional-owners",
+			"title": "Changed files retain classifications and optional owners",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.impact-types.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["changed-files-retain-classifications-and-optional-owners"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["changed-files-retain-classifications-and-optional-owners"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["changed-files-retain-classifications-and-optional-owners"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
