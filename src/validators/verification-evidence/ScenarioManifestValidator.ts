@@ -14,7 +14,7 @@ const unproven = /fixture|not yet|todo|later|no test|unproven|pending|missing|un
 
 /** Checks one scenario contract: its schema and the honesty of its own declarations. */
 export class ScenarioManifestValidator {
-	validate(value: unknown, file: string): ManifestValidation<ScenarioManifest> {
+	validate<Value>(value: Value, file: string): ManifestValidation<ScenarioManifest> {
 		const label =
 			file
 				.split('/')
