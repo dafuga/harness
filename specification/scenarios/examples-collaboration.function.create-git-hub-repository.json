@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-collaboration.function.create-git-hub-repository",
+	"title": "collaboration.function.create-git-hub-repository examples",
+	"kind": "headless",
+	"units": ["collaboration.function.create-git-hub-repository"],
+	"builds": [],
+	"states": [
+		{
+			"id": "reads-records-and-compare-and-swaps-a-private-branch",
+			"title": "Reads records and compare-and-swaps a private branch",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/collaboration.function.create-git-hub-repository.test.ts",
+			"cwd": "packages/collaboration",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["reads-records-and-compare-and-swaps-a-private-branch"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["reads-records-and-compare-and-swaps-a-private-branch"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["reads-records-and-compare-and-swaps-a-private-branch"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
