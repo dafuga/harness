@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.deployment-config",
+	"title": "desktop.function.deployment-config examples",
+	"kind": "headless",
+	"units": ["desktop.function.deployment-config"],
+	"builds": [],
+	"states": [
+		{
+			"id": "resolves-paths-inside-the-project-and-rejects-escapes",
+			"title": "Resolves paths inside the project and rejects escapes",
+			"coverage": "required"
+		},
+		{
+			"id": "loads-detected-targets-and-fingerprints-both-config-files",
+			"title": "Loads detected targets and fingerprints both config files",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.deployment-config.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"resolves-paths-inside-the-project-and-rejects-escapes",
+				"loads-detected-targets-and-fingerprints-both-config-files"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"resolves-paths-inside-the-project-and-rejects-escapes",
+				"loads-detected-targets-and-fingerprints-both-config-files"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"resolves-paths-inside-the-project-and-rejects-escapes",
+				"loads-detected-targets-and-fingerprints-both-config-files"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
