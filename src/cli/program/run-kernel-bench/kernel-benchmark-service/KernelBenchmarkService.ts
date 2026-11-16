@@ -1,5 +1,6 @@
 // @harness-uid u_4c6cbv56v5
 import type { BenchPlan, WorkloadRun, Workload } from './KernelBenchmarkService.types';
+import { KernelServerStartupError } from './KernelBenchmarkService.types';
 import { spawn } from 'node:child_process';
 import {
 	BoundedCommandAdapter,
@@ -186,22 +187,23 @@ export function serveKernel(
 			reject(error);
 		};
 		const timer = setTimeout(
-			() => failed(new Error('Kernel server startup timed out.')),
+			() => failed(new KernelServerStartupError('Kernel server startup timed out.')),
 			startupTimeoutMs
 		);
 		child.once('error', failed);
 		child.once('exit', () => {
-			if (!ready) failed(new Error('Kernel server exited before readiness.'));
+			if (!ready) failed(new KernelServerStartupError('Kernel server exited before readiness.'));
 		});
 		child.stdout.once('data', (chunk: Buffer) => {
 			try {
 				const { url } = JSON.parse(chunk.toString('utf8')) as { url: string };
-				if (typeof url !== 'string') throw new Error('Kernel server returned no URL.');
+				if (typeof url !== 'string')
+					throw new KernelServerStartupError('Kernel server returned no URL.');
 				ready = true;
 				clearTimeout(timer);
 				resolve({ url, stop: () => void child.kill() });
 			} catch {
-				failed(new Error('Kernel server returned invalid readiness data.'));
+				failed(new KernelServerStartupError('Kernel server returned invalid readiness data.'));
 			}
 		});
 	});
