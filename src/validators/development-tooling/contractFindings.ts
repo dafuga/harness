@@ -25,11 +25,8 @@ export function contractFindings(unit: ComponentManifest): string[] {
 function inputFindings(id: string, item: ContractItem): string[] {
 	const label = `${id}: contract input ${item.name}`;
 	const empty = /\.props$/.test(item.name) && /^\{\s*\}$/.test(item.type);
-	const schemaCandidate =
-		id === 'validator.component-manifest' &&
-		item.name === 'ComponentManifestValidator.validate.value';
 	return [
-		...(/\bunknown\b/.test(item.type) && !schemaCandidate ? [`${label} has unknown type`] : []),
+		...(/\bunknown\b/.test(item.type) ? [`${label} has unknown type`] : []),
 		...(empty ? [`${label} is an empty props blob`] : []),
 		...(item.required === undefined ? [`${label} is missing required`] : [])
 	];

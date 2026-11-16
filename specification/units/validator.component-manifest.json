@@ -33,7 +33,7 @@
 		"inputs": [
 			{
 				"name": "ComponentManifestValidator.validate.value",
-				"type": "TCandidate",
+				"type": "unknown",
 				"required": true,
 				"description": "The candidate unit manifest, typed unknown because it is not checked yet; it is parsed with componentManifestSchema before any other rule runs. When that parse fails, the value is returned as the result's value only if every issue has one of the codes too_small, too_big or invalid_format.",
 				"examples": [
@@ -422,7 +422,7 @@
 				"inputs": [
 					{
 						"name": "ComponentManifestValidator.validate.value",
-						"type": "TCandidate",
+						"type": "unknown",
 						"required": true,
 						"description": "The candidate unit manifest, typed unknown because it is not checked yet; it is parsed with componentManifestSchema before any other rule runs. When that parse fails, the value is returned as the result's value only if every issue has one of the codes too_small, too_big or invalid_format.",
 						"examples": [
