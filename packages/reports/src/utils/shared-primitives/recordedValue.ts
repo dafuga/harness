@@ -34,7 +34,7 @@ function columns(items: unknown[]): string[] {
 	return keys.length <= 8 && objects.every((item) => Object.values(item).every(scalar)) ? keys : [];
 }
 
-export function read<Value>(value: Value, depth: number, budget: { left: number }): RecordedNode {
+export function read(value: unknown, depth: number, budget: { left: number }): RecordedNode {
 	if (budget.left-- <= 0) return more();
 	if (scalar(value)) return leaf(value);
 	if (depth >= 4) return more();

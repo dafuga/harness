@@ -24,8 +24,7 @@ test('deep branching values have a bounded presentation and an explicit gap', ()
 });
 
 test('missing table fields do not inherit values, or become null', () => {
-	const rows: Record<string, unknown>[] = [{ toString: 'literal' }, { other: null }];
-	const view = recordedValue(rows);
+	const view = recordedValue([{ toString: 'literal' }, { other: null }]);
 	expect(view).toMatchObject({
 		kind: 'table',
 		rows: [
