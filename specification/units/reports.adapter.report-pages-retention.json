@@ -30,7 +30,7 @@
 		"inputs": [
 			{
 				"name": "ReportPagesRetentionAdapter.constructor.command",
-				"type": "unknown",
+				"type": "typeof reportProcess",
 				"required": false,
 				"description": "Defaults to reportProcess: the runner that `execute` calls as `command(process.execPath, args, root, env)` with args that begin `x wrangler@4.93.0 pages deployment`, and reads `code` and `output` from its result. A `code` other than 0 fails the purge, and any rejection from the runner propagates out of purge."
 			},
@@ -192,7 +192,7 @@
 				"inputs": [
 					{
 						"name": "ReportPagesRetentionAdapter.constructor.command",
-						"type": "unknown",
+						"type": "typeof reportProcess",
 						"required": false,
 						"description": "Defaults to reportProcess: the runner that `execute` calls as `command(process.execPath, args, root, env)` with args that begin `x wrangler@4.93.0 pages deployment`, and reads `code` and `output` from its result. A `code` other than 0 fails the purge, and any rejection from the runner propagates out of purge."
 					},

@@ -26,7 +26,7 @@ function publicationProject(url?: string) {
 }
 export class ReportPagesRetentionAdapter {
 	constructor(
-		private readonly command = reportProcess,
+		private readonly command: typeof reportProcess = reportProcess,
 		private readonly request: (
 			input: string | URL | Request,
 			init?: RequestInit
