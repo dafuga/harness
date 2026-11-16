@@ -28,7 +28,7 @@
 		"inputs": [
 			{
 				"name": "RemoteInputValidator.attach.input",
-				"type": "unknown",
+				"type": "Fields",
 				"required": true,
 				"description": "The raw input to `attach`: an object with exactly the keys `client`, `protocol` and `resume`, and any other shape is refused. `protocol` must be the number 1, `client.kind` must be `electron`, `ios` or `test`, `client.name` must be non-blank and at most 80 characters, and `resume` must be null or `{ epoch, sequence }` with an `epoch` of 32 lowercase hex characters and a `sequence` that is a non-negative safe integer.",
 				"examples": [
@@ -89,7 +89,7 @@
 			},
 			{
 				"name": "RemoteInputValidator.approval.input",
-				"type": "unknown",
+				"type": "Fields",
 				"required": true,
 				"description": "The approval input: an object with exactly `agents`, `deviceId`, `pairingId` and `projectIds`, plus `comments` only when it is sent. `pairingId` must be 32 lowercase hex characters, `deviceId` must be 40 lowercase hex characters, `projectIds` must hold 1 to 64 distinct `local-` project ids, and `agents` must be a boolean; a present `comments` must be a boolean that is true whenever `agents` is true.",
 				"examples": [
@@ -124,7 +124,7 @@
 			},
 			{
 				"name": "RemoteInputValidator.pairing.input",
-				"type": "unknown",
+				"type": "Fields",
 				"required": true,
 				"description": "An object with exactly one key, `pairingId`, whose value must be 32 lowercase hex characters; any other shape or value is refused with `invalid-message`.",
 				"examples": [
@@ -138,7 +138,7 @@
 			},
 			{
 				"name": "RemoteInputValidator.device.input",
-				"type": "unknown",
+				"type": "Fields",
 				"required": true,
 				"description": "An object with exactly one key, `deviceId`, whose value must be 40 lowercase hex characters; any other shape or value is refused with `invalid-message`.",
 				"examples": [
@@ -268,7 +268,7 @@
 				"inputs": [
 					{
 						"name": "RemoteInputValidator.attach.input",
-						"type": "unknown",
+						"type": "Fields",
 						"required": true,
 						"description": "The raw input to `attach`: an object with exactly the keys `client`, `protocol` and `resume`, and any other shape is refused. `protocol` must be the number 1, `client.kind` must be `electron`, `ios` or `test`, `client.name` must be non-blank and at most 80 characters, and `resume` must be null or `{ epoch, sequence }` with an `epoch` of 32 lowercase hex characters and a `sequence` that is a non-negative safe integer.",
 						"examples": [
@@ -424,7 +424,7 @@
 				"inputs": [
 					{
 						"name": "RemoteInputValidator.approval.input",
-						"type": "unknown",
+						"type": "Fields",
 						"required": true,
 						"description": "The approval input: an object with exactly `agents`, `deviceId`, `pairingId` and `projectIds`, plus `comments` only when it is sent. `pairingId` must be 32 lowercase hex characters, `deviceId` must be 40 lowercase hex characters, `projectIds` must hold 1 to 64 distinct `local-` project ids, and `agents` must be a boolean; a present `comments` must be a boolean that is true whenever `agents` is true.",
 						"examples": [
@@ -499,7 +499,7 @@
 				"inputs": [
 					{
 						"name": "RemoteInputValidator.pairing.input",
-						"type": "unknown",
+						"type": "Fields",
 						"required": true,
 						"description": "An object with exactly one key, `pairingId`, whose value must be 32 lowercase hex characters; any other shape or value is refused with `invalid-message`.",
 						"examples": [
@@ -541,7 +541,7 @@
 				"inputs": [
 					{
 						"name": "RemoteInputValidator.device.input",
-						"type": "unknown",
+						"type": "Fields",
 						"required": true,
 						"description": "An object with exactly one key, `deviceId`, whose value must be 40 lowercase hex characters; any other shape or value is refused with `invalid-message`.",
 						"examples": [

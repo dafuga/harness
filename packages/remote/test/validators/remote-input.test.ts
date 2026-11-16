@@ -1,6 +1,7 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { RemoteFailure } from '../../src/models/Remote.types';
+import type { Fields } from '../../src/validators/networking-security/RemoteInputValidator.types';
 import { RemoteInputValidator } from '../../src/validators/networking-security/RemoteInputValidator';
 
 const validator = new RemoteInputValidator(),
@@ -23,7 +24,7 @@ test('attach names protocol 1, a client and a resume point or null', () => {
 	expect(validator.attach(fresh)).toEqual(fresh);
 	expect(validator.attach(resumed)).toEqual(resumed);
 	expect(code(() => validator.attach({ ...fresh, protocol: 2 }))).toBe('protocol-unsupported');
-	const refused: unknown[] = [
+	const refused: Fields[] = [
 		{},
 		{ protocol: 1 },
 		{ protocol: 1, client },
@@ -76,7 +77,7 @@ test('control inputs are exact', () =>
 		);
 		expect(validator.pairing({ pairingId })).toEqual({ pairingId });
 		expect(validator.device({ deviceId: 'd'.repeat(40) })).toEqual({ deviceId: 'd'.repeat(40) });
-		const refused: unknown[] = [
+		const refused: Fields[] = [
 			{ ...approval, projectIds: [] },
 			{ ...approval, projectIds: [projectId, projectId] },
 			{ ...approval, projectIds: ['a6196e55-8746-4bc5-bfeb-5e2c8771e241'] },

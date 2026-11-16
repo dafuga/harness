@@ -54,7 +54,7 @@ function approvalProjects(value: unknown): string[] {
 
 /** Inputs the protocol itself defines. Bridge inputs are validated by the host's own rules. */
 export class RemoteInputValidator {
-	attach(input: unknown): AttachInput {
+	attach(input: Fields): AttachInput {
 		const protocol = fields(input)?.protocol;
 		if (typeof protocol === 'number' && protocol !== REMOTE_PROTOCOL)
 			throw new RemoteFailure('protocol-unsupported');
@@ -78,7 +78,7 @@ export class RemoteInputValidator {
 			commit: matching(item.commit, commit, 'revision-required')
 		};
 	}
-	approval(input: unknown): RemoteApprovalInput {
+	approval(input: Fields): RemoteApprovalInput {
 		const present = fields(input);
 		const withComments = present && Object.hasOwn(present, 'comments');
 		const item = exact(
@@ -99,11 +99,11 @@ export class RemoteInputValidator {
 			...validatedApprovalComments(item)
 		};
 	}
-	pairing(input: unknown): { pairingId: string } {
+	pairing(input: Fields): { pairingId: string } {
 		const item = exact(input, 'pairingId');
 		return { pairingId: matching(item.pairingId, remotePatterns.pairingId, 'invalid-message') };
 	}
-	device(input: unknown): { deviceId: string } {
+	device(input: Fields): { deviceId: string } {
 		const item = exact(input, 'deviceId');
 		return { deviceId: matching(item.deviceId, remotePatterns.deviceId, 'invalid-message') };
 	}
