@@ -8,11 +8,20 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/services/reports-media/ScreenshotRetentionService.ts"],
+		"source": [
+			"packages/reports/src/services/reports-media/ScreenshotRetentionService.ts",
+			"packages/reports/src/services/reports-media/ScreenshotRetentionService.types.ts"
+		],
 		"symbols": [
 			"ScreenshotRetentionService",
 			"ScreenshotRetentionService.constructor",
-			"ScreenshotRetentionService.run"
+			"ScreenshotRetentionService.run",
+			"InvalidCleanupTimeError",
+			"InvalidCleanupTimeError.constructor",
+			"InvalidReportAssetsDirectoryError",
+			"InvalidReportAssetsDirectoryError.constructor",
+			"InvalidReportExportsDirectoryError",
+			"InvalidReportExportsDirectoryError.constructor"
 		]
 	},
 	"contract": {
@@ -122,6 +131,42 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "InvalidCleanupTimeError.constructor",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "InvalidCleanupTimeError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "InvalidReportAssetsDirectoryError.constructor",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "InvalidReportAssetsDirectoryError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "InvalidReportExportsDirectoryError.constructor",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "InvalidReportExportsDirectoryError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		]
 	},
