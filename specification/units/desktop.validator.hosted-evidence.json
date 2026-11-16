@@ -23,7 +23,7 @@
 		"inputs": [
 			{
 				"name": "HostedEvidenceValidator.evidence.value",
-				"type": "unknown",
+				"type": "Candidate",
 				"required": true,
 				"description": "An untrusted candidate hosted answer supplied without a static runtime type. It must pass hostedEvidenceSchema and the checks against the query; original sealed-record validation remains the server's responsibility.",
 				"examples": [
@@ -200,7 +200,7 @@
 				"inputs": [
 					{
 						"name": "HostedEvidenceValidator.evidence.value",
-						"type": "unknown",
+						"type": "Candidate",
 						"required": true,
 						"description": "An untrusted candidate hosted answer supplied without a static runtime type. It must pass hostedEvidenceSchema and the checks against the query; original sealed-record validation remains the server's responsibility.",
 						"examples": [

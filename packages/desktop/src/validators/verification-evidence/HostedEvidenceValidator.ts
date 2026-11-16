@@ -41,7 +41,10 @@ function parentBefore({ scope, evidence }: EntityEvidenceResult) {
 
 /** Checks data shape and binding; original sealed-record validation belongs to the server. */
 export class HostedEvidenceValidator {
-	evidence(value: unknown, query: EntityEvidenceQuery): EntityEvidenceResult {
+	evidence<Candidate = EntityEvidenceResult>(
+		value: Candidate,
+		query: EntityEvidenceQuery
+	): EntityEvidenceResult {
 		const parsed = hostedEvidenceSchema.safeParse(value);
 		if (!parsed.success) throw new HostedEvidenceValidationError(unaccepted);
 		const answer = value as EntityEvidenceResult;
