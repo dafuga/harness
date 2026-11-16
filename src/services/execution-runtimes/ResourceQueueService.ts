@@ -15,6 +15,7 @@ import { ProcessIdentityAdapter } from '../agents-providers/agent-activity-servi
 import { ResourceMonitorService } from './resource-queue-service/ResourceMonitorService';
 import { ResourceQueueRepository } from './resource-queue-service/ResourceQueueRepository';
 import type { Dependencies, RunOptions } from './ResourceQueueService.types';
+import { ResourceQueueError } from './ResourceQueueService.types';
 export type { Dependencies, RunOptions } from './ResourceQueueService.types';
 export class ResourceQueueService {
 	readonly home: string;
@@ -47,7 +48,7 @@ export class ResourceQueueService {
 			options.waitTimeoutMs !== undefined &&
 			(!Number.isFinite(options.waitTimeoutMs) || options.waitTimeoutMs <= 0)
 		)
-			throw new Error('Invalid resource queue wait timeout');
+			throw new ResourceQueueError('Invalid resource queue wait timeout');
 		const id = await this.enqueue(request, env);
 		try {
 			await this.monitor.wait(id, request, options);
@@ -67,8 +68,8 @@ export class ResourceQueueService {
 		const inherited = env.HARNESS_RESOURCE_LEASE;
 		if (inherited) await this.parent(inherited, request);
 		const owner = new ProcessIdentityAdapter().find(process.pid);
-		if (!owner.startedAt) throw new Error('Cannot establish resource request owner');
-		if (this.queue.all().length >= 512) throw new Error('Resource queue is full');
+		if (!owner.startedAt) throw new ResourceQueueError('Cannot establish resource request owner');
+		if (this.queue.all().length >= 512) throw new ResourceQueueError('Resource queue is full');
 		const id = randomUUID(),
 			now = Date.now();
 		this.queue.add({
@@ -112,8 +113,8 @@ export class ResourceQueueService {
 	private async parent(id: string, request: ResourceRequest): Promise<void> {
 		const parent = this.queue.all().find((job) => job.id === id && job.state === 'running');
 		if (!parent || !(await resourceIdentity(parent)))
-			throw new Error('Invalid inherited resource lease');
+			throw new ResourceQueueError('Invalid inherited resource lease');
 		if (request.cpus > parent.cpus || request.memoryMiB > parent.memoryMiB)
-			throw new Error('Nested work exceeds its parent resource reservation');
+			throw new ResourceQueueError('Nested work exceeds its parent resource reservation');
 	}
 }

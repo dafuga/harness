@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/services/execution-runtimes/ResourceQueueService.types.ts"],
-		"symbols": ["RunOptions", "Dependencies"]
+		"symbols": ["RunOptions", "Dependencies", "ResourceQueueError"]
 	},
 	"contract": {
 		"origin": "declared",
