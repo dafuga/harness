@@ -25,13 +25,13 @@
 			},
 			{
 				"name": "seedShells.verified",
-				"type": "unknown",
+				"type": "ShellsSeed['verified']",
 				"required": true,
 				"description": "A callback run after each commit stage to verify repository state. The first resolved outcome supplies the record id used to establish the initial budget."
 			},
 			{
 				"name": "seedShells.explain",
-				"type": "unknown",
+				"type": "ShellsSeed['explain']",
 				"required": true,
 				"description": "A callback invoked after indexing the frame and after declaring it a layout to explain each behavior. Its resolved value is ignored."
 			},
@@ -84,13 +84,13 @@
 					},
 					{
 						"name": "seedShells.verified",
-						"type": "unknown",
+						"type": "ShellsSeed['verified']",
 						"required": true,
 						"description": "A callback run after each commit stage to verify repository state. The first resolved outcome supplies the record id used to establish the initial budget."
 					},
 					{
 						"name": "seedShells.explain",
-						"type": "unknown",
+						"type": "ShellsSeed['explain']",
 						"required": true,
 						"description": "A callback invoked after indexing the frame and after declaring it a layout to explain each behavior. Its resolved value is ignored."
 					},
