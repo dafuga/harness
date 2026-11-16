@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-entry.command-help",
+	"title": "entry.command-help examples",
+	"kind": "headless",
+	"units": ["entry.command-help"],
+	"builds": [],
+	"states": [
+		{
+			"id": "lists-commands-with-aliases-and-display-terms",
+			"title": "Lists commands with aliases and display terms",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/entry.command-help.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["lists-commands-with-aliases-and-display-terms"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["lists-commands-with-aliases-and-display-terms"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["lists-commands-with-aliases-and-display-terms"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
