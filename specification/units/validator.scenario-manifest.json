@@ -32,7 +32,7 @@
 		"inputs": [
 			{
 				"name": "ScenarioManifestValidator.validate.value",
-				"type": "Value",
+				"type": "unknown",
 				"required": true,
 				"description": "The already-parsed JSON of one scenario file, checked against the strict scenario schema, which rejects unknown keys and wrong types. Anything that is not a complete scenario object, including undefined from the repository when the file is not valid JSON, yields schema errors and no value.",
 				"examples": [
@@ -273,7 +273,7 @@
 				"inputs": [
 					{
 						"name": "ScenarioManifestValidator.validate.value",
-						"type": "Value",
+						"type": "unknown",
 						"required": true,
 						"description": "The already-parsed JSON of one scenario file, checked against the strict scenario schema, which rejects unknown keys and wrong types. Anything that is not a complete scenario object, including undefined from the repository when the file is not valid JSON, yields schema errors and no value.",
 						"examples": [
