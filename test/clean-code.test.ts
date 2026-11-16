@@ -1,7 +1,6 @@
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import { rm } from 'node:fs/promises';
 import { resolveCleanCodeSettings } from '../src/audit/development-tooling/cleanCodeConfig';
-import type { CleanCodeConfig } from '../src/audit/development-tooling/cleanCodeTypes';
 import {
 	discoverCleanCodeFiles,
 	matchesExclusion
@@ -53,7 +52,7 @@ test.each([
 	{ apiKeyEnv: 'lowercase' },
 	{ exclude: [3] }
 ])('rejects invalid settings: %j', (settings) => {
-	expect(() => resolveCleanCodeSettings(settings as CleanCodeConfig)).toThrow('cleanCode');
+	expect(() => resolveCleanCodeSettings(settings)).toThrow('cleanCode');
 });
 
 test('insufficient context remains a visible non-clean review item', async () => {
