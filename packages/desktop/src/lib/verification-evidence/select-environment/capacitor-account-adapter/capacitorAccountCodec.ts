@@ -35,11 +35,8 @@ export function failure(
 	return Object.assign(new Error(message), { status, code });
 }
 
-/** What the plugin rejected with: nothing, or an object that may carry a code and a message. */
-export type PluginRejection = { code?: unknown; message?: unknown } | null | undefined;
-
 /** What the plugin rejects with keeps its code and its words, both written natively. */
-export function refusal(cause: PluginRejection) {
+export function refusal(cause: unknown) {
 	const { code, message } = (cause ?? {}) as { code?: unknown; message?: unknown };
 	const named = typeof code === 'string' && code ? code : 'failed';
 	const status = refusals.get(named) ?? 0;
@@ -47,7 +44,7 @@ export function refusal(cause: PluginRejection) {
 }
 
 /** The bytes of an answer, refused whole when they are not base64 or more than the limit. */
-export function decoded(data: string, limit: number): Uint8Array {
+export function decoded(data: unknown, limit: number): Uint8Array {
 	if (typeof data !== 'string') throw failure(0, 'unreadable', unreadable);
 	if (data.length > Math.ceil(limit / 3) * 4) throw failure(413, 'too-large', large);
 	let bytes: Uint8Array;
