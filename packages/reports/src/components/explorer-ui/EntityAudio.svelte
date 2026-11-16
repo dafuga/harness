@@ -5,6 +5,7 @@
 	import Notice from './explorer-kit/Notice.svelte';
 	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
 	import { comparisonPanes } from '../../helpers/verification-evidence/comparisonPanes';
+	import type { ComparisonPane } from '../../helpers/verification-evidence/comparisonPanes.types';
 	import Card from './explorer-kit/Card.svelte';
 	import type { Pair } from './EntityAudio.types';
 
@@ -63,14 +64,14 @@
 		</hx-header>
 		{#each pairs as pair (pair.key)}
 			<ComparePanes panes={pair.panes} headings={paired}>
-				{#snippet children(pane)}
+				{#snippet children(pane: ComparisonPane<Evidence>)}
 					{#if pane.value}<AudioEvidence
 							item={pane.value}
 							assetBase={mediaBase}
 							idPrefix="overview-audio-"
 						/>{/if}
 				{/snippet}
-				{#snippet gap(pane)}
+				{#snippet gap(pane: ComparisonPane<Evidence>)}
 					<Notice as="p" className={'ex-gap entity-audio-ex-gap'}
 						><Status passed={false} label="No clip" /><hx-span
 							>No clip of this state is recorded for {shortCommit(pane.commit)}.</hx-span

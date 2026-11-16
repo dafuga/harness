@@ -291,7 +291,7 @@
 				"inputs": [
 					{
 						"name": "EntityAudio.children.pane",
-						"type": "unknown",
+						"type": "ComparisonPane<Evidence>",
 						"required": true
 					}
 				],
@@ -309,7 +309,7 @@
 				"inputs": [
 					{
 						"name": "EntityAudio.gap.pane",
-						"type": "unknown",
+						"type": "ComparisonPane<Evidence>",
 						"required": true
 					}
 				],
