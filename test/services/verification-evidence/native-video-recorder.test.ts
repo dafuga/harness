@@ -1,8 +1,7 @@
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { withTempDir } from '../../support/temporary';
 import { chromium, type Browser, type Page } from '@playwright/test';
-import { afterAll, beforeAll, expect, test } from 'vitest';
+import { afterAll, beforeAll, expect, test as baseTest } from 'vitest';
 import { NativeVideoRecorderService } from '../../../src/services/verification-evidence/NativeVideoRecorderService';
 import {
 	assertFlagReplacement,
@@ -13,15 +12,17 @@ import {
 import { browserErrorCollector } from '../../support/browserTest';
 
 let browser: Browser;
-const root = mkdtempSync(join(tmpdir(), 'harness-native-video-'));
+const test = baseTest.extend<{ service: NativeVideoRecorderService }>({
+	service: async ({}, use) => {
+		await withTempDir('harness-native-video-', (root) => use(new NativeVideoRecorderService(root)));
+	}
+});
 beforeAll(async () => {
 	browser = await chromium.launch({ headless: true });
 });
 afterAll(async () => {
 	await browser?.close();
-	rmSync(root, { recursive: true, force: true });
 });
-const service = new NativeVideoRecorderService(root);
 function options(slotKey: string) {
 	return {
 		browser,
@@ -69,11 +70,13 @@ function options(slotKey: string) {
 	};
 }
 
-test('NativeVideoRecorderService runs', () => {
+test('NativeVideoRecorderService runs', ({ service }) => {
 	expect(service.run()).toBe('native-video-recorder');
 });
 
-test('NativeVideoRecorderService record validates admission before a context opens', async () => {
+test('NativeVideoRecorderService record validates admission before a context opens', async ({
+	service
+}) => {
 	expect(typeof service.record).toBe('function');
 	const before = browser.contexts().length;
 	for (const viewport of [
@@ -86,7 +89,9 @@ test('NativeVideoRecorderService record validates admission before a context ope
 	expect(browser.contexts()).toHaveLength(before);
 });
 
-test('NativeVideoRecorderService record finalizes mapped native frames and reuses without capture', async () => {
+test('NativeVideoRecorderService record finalizes mapped native frames and reuses without capture', async ({
+	service
+}) => {
 	expect(typeof service.record).toBe('function');
 	let resets = 0;
 	const start = performance.now();
@@ -133,7 +138,9 @@ test('NativeVideoRecorderService record finalizes mapped native frames and reuse
 	);
 }, 30_000);
 
-test('NativeVideoRecorderService record preserves failed diagnostics and releases context and lock', async () => {
+test('NativeVideoRecorderService record preserves failed diagnostics and releases context and lock', async ({
+	service
+}) => {
 	expect(typeof service.record).toBe('function');
 	let resets = 0;
 	await expect(
@@ -156,7 +163,9 @@ test('NativeVideoRecorderService record preserves failed diagnostics and release
 	await expect(service.lookup('failure', 'a'.repeat(64))).rejects.toThrow(/cache/);
 }, 30_000);
 
-test('NativeVideoRecorderService record refuses overlapping slot ownership', async () => {
+test('NativeVideoRecorderService record refuses overlapping slot ownership', async ({
+	service
+}) => {
 	expect(typeof service.record).toBe('function');
 	let release: () => void = () => {};
 	let entered: () => void = () => {};
