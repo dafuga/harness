@@ -8,13 +8,17 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/agents-providers/ProviderSwitchService.ts"],
+		"source": [
+			"src/services/agents-providers/ProviderSwitchService.ts",
+			"src/services/agents-providers/ProviderSwitchService.types.ts"
+		],
 		"symbols": [
 			"ProviderSwitchService",
 			"ProviderSwitchService.constructor",
 			"ProviderSwitchService.status",
 			"ProviderSwitchService.request",
-			"ProviderSwitchService.cancel"
+			"ProviderSwitchService.cancel",
+			"ProviderSwitchOperationError"
 		]
 	},
 	"contract": {
