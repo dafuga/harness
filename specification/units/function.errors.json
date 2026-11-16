@@ -34,7 +34,7 @@
 			},
 			{
 				"name": "isExpectedCliError.error",
-				"type": "unknown",
+				"type": "T",
 				"required": true,
 				"description": "Any value to test, checked with instanceof against ExpectedCliError, so only instances of that class or of its subclasses return true. Values such as null, undefined, primitives, plain Error objects and objects whose name property is ExpectedCliError return false.",
 				"examples": [
@@ -105,7 +105,7 @@
 				"inputs": [
 					{
 						"name": "isExpectedCliError.error",
-						"type": "unknown",
+						"type": "T",
 						"required": true,
 						"description": "Any value to test, checked with instanceof against ExpectedCliError, so only instances of that class or of its subclasses return true. Values such as null, undefined, primitives, plain Error objects and objects whose name property is ExpectedCliError return false.",
 						"examples": [
@@ -121,7 +121,7 @@
 				"outputs": [
 					{
 						"name": "isExpectedCliError",
-						"type": "error is ExpectedCliError",
+						"type": "error is T & ExpectedCliError",
 						"description": "The boolean result of the instanceof check, declared as a type predicate so that a true result narrows the argument to ExpectedCliError in TypeScript. It is false for every other value, including plain Error objects.",
 						"examples": [true, false]
 					}
