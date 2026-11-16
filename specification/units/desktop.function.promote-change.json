@@ -12,7 +12,7 @@
 			"packages/desktop/src/utils/projects-sessions/promoteChange.ts",
 			"packages/desktop/src/utils/projects-sessions/promoteChange.types.ts"
 		],
-		"symbols": ["prepareChangeEnvironment", "promoteChange", "PromotionContext"]
+		"symbols": ["prepareChangeEnvironment", "promoteChange", "PromotionContext", "PromotionError"]
 	},
 	"contract": {
 		"origin": "declared",
