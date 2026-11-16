@@ -70,7 +70,9 @@
 		"vite-node": "3.2.4",
 		"appium-remote-debugger": "17.5.11",
 		"@types/qrcode": "1.5.6",
-		"jsqr": "1.4.0"
+		"jsqr": "1.4.0",
+		"pngjs": "^7.0.0",
+		"@types/pngjs": "^6.0.5"
 	},
 	"main": "dist/main.cjs"
 }
