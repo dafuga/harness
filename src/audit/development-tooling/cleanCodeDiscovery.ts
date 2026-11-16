@@ -1,5 +1,6 @@
 // @harness-uid u_3tqecbjzkv
 import { BoundedCommandAdapter } from '../../adapters/execution-runtimes/BoundedCommandAdapter';
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { basename, relative } from 'node:path';
 import type { CollectedFiles } from './collect';
 import type { ReviewCoverage } from './cleanCodeTypes';
@@ -79,7 +80,7 @@ function gitIgnoredPaths(root: string, paths: string[]): Set<string> {
 			: new Set();
 	} catch (error) {
 		if (!isTimeout(error)) return new Set();
-		throw new Error('Cannot safely determine ignored files for clean code review.', {
+		throw new ExpectedCliError('Cannot safely determine ignored files for clean code review.', {
 			cause: error
 		});
 	}
