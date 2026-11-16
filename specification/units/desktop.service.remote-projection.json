@@ -91,13 +91,13 @@
 			},
 			{
 				"name": "RemoteProjectionService.read.validate",
-				"type": "(value: RemoteProjectionValue) => T",
+				"type": "(value: unknown) => T",
 				"required": true,
 				"description": "A caller-supplied function that validates an unknown fetched or cached value and returns the caller's type T. It is applied before a value is returned."
 			},
 			{
 				"name": "RemoteProjectionService.read.load",
-				"type": "() => Promise<RemoteProjectionValue>",
+				"type": "() => Promise<unknown>",
 				"required": false,
 				"default": "undefined (omitted)",
 				"description": "An optional asynchronous provider for the raw resource value. If omitted, the service fetches the computed resource path through the HTTP adapter."
@@ -368,13 +368,13 @@
 					},
 					{
 						"name": "RemoteProjectionService.read.validate",
-						"type": "(value: RemoteProjectionValue) => T",
+						"type": "(value: unknown) => T",
 						"required": true,
 						"description": "A caller-supplied function that validates an unknown fetched or cached value and returns the caller's type T. It is applied before a value is returned."
 					},
 					{
 						"name": "RemoteProjectionService.read.load",
-						"type": "() => Promise<RemoteProjectionValue>",
+						"type": "() => Promise<unknown>",
 						"required": false,
 						"default": "undefined (omitted)",
 						"description": "An optional asynchronous provider for the raw resource value. If omitted, the service fetches the computed resource path through the HTTP adapter."
