@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/projects-sessions/site-activity/activityClient.ts"],
-		"symbols": ["activityClient"]
+		"source": [
+			"packages/reports/src/components/projects-sessions/site-activity/activityClient.ts",
+			"packages/reports/src/components/projects-sessions/site-activity/activityClient.types.ts"
+		],
+		"symbols": ["activityClient", "ActivityUnavailableError"]
 	},
 	"contract": {
 		"origin": "declared",
