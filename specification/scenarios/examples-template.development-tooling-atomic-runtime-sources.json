@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-template.development-tooling-atomic-runtime-sources",
+	"title": "template.development-tooling-atomic-runtime-sources examples",
+	"kind": "headless",
+	"units": ["template.development-tooling-atomic-runtime-sources"],
+	"builds": [],
+	"states": [
+		{
+			"id": "provides-the-three-generated-atomic-runtime-sources",
+			"title": "Provides the three generated atomic runtime sources",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/template.development-tooling-atomic-runtime-sources.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["provides-the-three-generated-atomic-runtime-sources"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["provides-the-three-generated-atomic-runtime-sources"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["provides-the-three-generated-atomic-runtime-sources"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
