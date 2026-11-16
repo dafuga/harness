@@ -54,7 +54,7 @@ function approvalProjects(value: unknown): string[] {
 
 /** Inputs the protocol itself defines. Bridge inputs are validated by the host's own rules. */
 export class RemoteInputValidator {
-	attach(input: Fields): AttachInput {
+	attach(input: unknown): AttachInput {
 		const protocol = fields(input)?.protocol;
 		if (typeof protocol === 'number' && protocol !== REMOTE_PROTOCOL)
 			throw new RemoteFailure('protocol-unsupported');
@@ -63,13 +63,15 @@ export class RemoteInputValidator {
 		return { protocol: REMOTE_PROTOCOL, client: client(item.client), resume: resume(item.resume) };
 	}
 	/** A project registered on the computer. Paths and hosted project ids never match. */
-	projectId(input: Fields): string {
-		if (input.projectId === undefined) throw new RemoteFailure('project-required');
-		return matching(input.projectId, remotePatterns.projectId, 'project-denied');
+	projectId(input: unknown): string {
+		const projectId = fields(input)?.projectId;
+		if (projectId === undefined) throw new RemoteFailure('project-required');
+		return matching(projectId, remotePatterns.projectId, 'project-denied');
 	}
-	revision(input: Fields): RemoteRevision {
-		if (input.revision === undefined) throw new RemoteFailure('revision-required');
-		const item = exact(input.revision, 'branch,commit', 'revision-required'),
+	revision(input: unknown): RemoteRevision {
+		const revision = fields(input)?.revision;
+		if (revision === undefined) throw new RemoteFailure('revision-required');
+		const item = exact(revision, 'branch,commit', 'revision-required'),
 			{ branch } = item;
 		const named = typeof branch === 'string' && branch.length > 0 && branch.length <= 255;
 		if (!named) throw new RemoteFailure('revision-required');
@@ -78,7 +80,7 @@ export class RemoteInputValidator {
 			commit: matching(item.commit, commit, 'revision-required')
 		};
 	}
-	approval(input: Fields): RemoteApprovalInput {
+	approval(input: unknown): RemoteApprovalInput {
 		const present = fields(input);
 		const withComments = present && Object.hasOwn(present, 'comments');
 		const item = exact(
@@ -99,11 +101,11 @@ export class RemoteInputValidator {
 			...validatedApprovalComments(item)
 		};
 	}
-	pairing(input: Fields): { pairingId: string } {
+	pairing(input: unknown): { pairingId: string } {
 		const item = exact(input, 'pairingId');
 		return { pairingId: matching(item.pairingId, remotePatterns.pairingId, 'invalid-message') };
 	}
-	device(input: Fields): { deviceId: string } {
+	device(input: unknown): { deviceId: string } {
 		const item = exact(input, 'deviceId');
 		return { deviceId: matching(item.deviceId, remotePatterns.deviceId, 'invalid-message') };
 	}
