@@ -102,7 +102,7 @@
 				"name": "EvidenceTreeAdapter.readMany.commit",
 				"type": "string",
 				"required": true,
-				"description": "Commit whose tree supplies the requested paths. readMany lists the whole tree of this commit once and then reads only the blobs for the requested paths.",
+				"description": "Commit from which requested raw blobs are read. Only requested paths are enumerated through bounded literal pathspec batches before unique object hashes are read in bounded blob batches.",
 				"examples": [
 					"5e8a1d0c4b7f3e92a6d1c08f47b2e9d3a5c6f701",
 					"7a2d4e6f8b0c1d3e5f7a9b2c4d6e8f0a1b3c5d7e"
@@ -132,7 +132,7 @@
 				"name": "EvidenceTreeAdapter.list.paths",
 				"type": "string[]",
 				"required": false,
-				"description": "Omit to list every blob. Supply literal repository-relative files or directories to enumerate only those paths and directory descendants; an empty array returns an empty map without invoking Git. Names retain their complete repository-relative paths, and wildcard characters are literal. Only selected blob sizes are remembered.",
+				"description": "Omit to list every blob. Supply literal repository-relative files or directories to enumerate only those paths and directory descendants; an empty array returns an empty map without invoking Git. Names retain their complete repository-relative paths, and wildcard characters are literal. Only selected blob sizes are remembered. Duplicate paths are coalesced and scoped Git queries use weighted 32KiB argument batches, so large manifests do not become one oversized process argument list. A single path plus the 128-byte per-argument allowance must fit the 32KiB budget; oversized names reject with Error.",
 				"examples": [["video-feedback/"], ["records/verification/manifest.json"]]
 			},
 			{
@@ -463,7 +463,7 @@
 						"name": "EvidenceTreeAdapter.readMany.commit",
 						"type": "string",
 						"required": true,
-						"description": "Commit whose tree supplies the requested paths. readMany lists the whole tree of this commit once and then reads only the blobs for the requested paths.",
+						"description": "Commit from which requested raw blobs are read. Only requested paths are enumerated through bounded literal pathspec batches before unique object hashes are read in bounded blob batches.",
 						"examples": [
 							"5e8a1d0c4b7f3e92a6d1c08f47b2e9d3a5c6f701",
 							"7a2d4e6f8b0c1d3e5f7a9b2c4d6e8f0a1b3c5d7e"
@@ -494,7 +494,7 @@
 					{
 						"name": "Error",
 						"type": "thrown",
-						"description": "Thrown as 'Invalid Git batch response' when the cat-file --batch output is malformed, meaning a header that is not a valid blob header for the expected blob, a blob body without a trailing newline, or bytes left after the last blob; errors from the list call and the this.git.bytes call reach the caller unchanged."
+						"description": "Rejects a scoped path that exceeds the 32KiB argument budget including its per-argument allowance. Thrown as 'Invalid Git batch response' when the cat-file --batch output is malformed, meaning a header that is not a valid blob header for the expected blob, a blob body without a trailing newline, or bytes left after the last blob; errors from the list call and the this.git.bytes call reach the caller unchanged."
 					}
 				],
 				"errorStatus": "declared"
@@ -516,7 +516,7 @@
 						"name": "EvidenceTreeAdapter.list.paths",
 						"type": "string[]",
 						"required": false,
-						"description": "Omit to list every blob. Supply literal repository-relative files or directories to enumerate only those paths and directory descendants; an empty array returns an empty map without invoking Git. Names retain their complete repository-relative paths, and wildcard characters are literal. Only selected blob sizes are remembered.",
+						"description": "Omit to list every blob. Supply literal repository-relative files or directories to enumerate only those paths and directory descendants; an empty array returns an empty map without invoking Git. Names retain their complete repository-relative paths, and wildcard characters are literal. Only selected blob sizes are remembered. Duplicate paths are coalesced and scoped Git queries use weighted 32KiB argument batches, so large manifests do not become one oversized process argument list. A single path plus the 128-byte per-argument allowance must fit the 32KiB budget; oversized names reject with Error.",
 						"examples": [["video-feedback/"], ["records/verification/manifest.json"]]
 					}
 				],
@@ -531,7 +531,7 @@
 					{
 						"name": "Error",
 						"type": "thrown",
-						"description": "Errors from the git ls-tree call made through this.git.run reach the caller unchanged, and parsing its output does not throw."
+						"description": "Rejects a scoped path that exceeds the 32KiB argument budget including its per-argument allowance. Errors from the git ls-tree call made through this.git.run reach the caller unchanged, and parsing its output does not throw."
 					}
 				],
 				"errorStatus": "declared"

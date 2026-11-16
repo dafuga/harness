@@ -43,7 +43,7 @@ export class EvidenceTreeAdapter {
 		return result.code === 0 ? result.stdout : undefined;
 	}
 
-	/** Exact raw blobs in one batch; missing paths stay absent and duplicate objects are read once. */
+	/** Exact requested blobs in bounded batches; missing paths stay absent and duplicate objects are read once. */
 	async readMany(commit: string, paths: string[]): Promise<Map<string, Buffer>> {
 		if (paths.length === 0) return new Map();
 		const listed = await this.list(commit, paths);
@@ -73,24 +73,29 @@ export class EvidenceTreeAdapter {
 	/** Every file path at a commit with its blob id (sizes are kept for batch reads). */
 	async list(commit: string, paths?: string[]): Promise<Map<string, string>> {
 		if (paths?.length === 0) return new Map();
-		const output = await this.git.run([
-			'--literal-pathspecs',
-			'ls-tree',
-			'-r',
-			'-l',
-			'-z',
-			commit,
-			...(paths ? ['--', ...paths] : [])
-		]);
-		const entries = output
-			.split('\0')
-			.map((line) => /^\d+ blob ([0-9a-f]+) +([0-9]+)\t(.+)$/s.exec(line))
-			.flatMap((match): Array<[string, string]> => {
-				if (!match) return [];
-				this.blobSizes.set(match[1], Number(match[2]));
-				return [[match[3], match[1]]];
-			});
-		return new Map(entries);
+		if (paths?.some((path) => Buffer.byteLength(path) + 128 > 32 * 1024))
+			throw new Error('A scoped evidence path exceeds the 32KiB argument budget.');
+		const selected = new Map<string, string>();
+		const scopes = paths
+			? batchGroups(
+					[...new Set(paths)],
+					new Map(paths.map((path) => [path, Buffer.byteLength(path)])),
+					32 * 1024
+				)
+			: [undefined];
+		const args = ['--literal-pathspecs', 'ls-tree', '-r', '-l', '-z', commit];
+		for (const scope of scopes)
+			this.rememberListing(await this.git.run(scope ? [...args, '--', ...scope] : args), selected);
+		return selected;
+	}
+
+	private rememberListing(output: string, selected: Map<string, string>): void {
+		for (const line of output.split('\0')) {
+			const match = /^\d+ blob ([0-9a-f]+) +([0-9]+)\t(.+)$/s.exec(line);
+			if (!match) continue;
+			this.blobSizes.set(match[1], Number(match[2]));
+			selected.set(match[3], match[1]);
+		}
 	}
 
 	/** Creates a commit that adds files to its first parent's tree; no ref is moved. */
