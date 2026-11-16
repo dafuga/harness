@@ -1,5 +1,14 @@
 // @harness-uid u_h3qimurn22
-import type { Bridge, HostedInput } from './HostedProjectService.types';
+import {
+	HostedProjectBusyError,
+	HostedProjectEvidenceUnavailableError,
+	HostedProjectExecutorUnavailableError,
+	HostedProjectNotSelectedError,
+	HostedProjectOperationUnsupportedError,
+	HostedProjectReadUnavailableError,
+	type Bridge,
+	type HostedInput
+} from './HostedProjectService.types';
 import type { ProjectSessionService } from '../../projects-sessions/project-session-service/ProjectSessionService';
 import type {
 	RemoteProjectPort,
@@ -40,7 +49,7 @@ export class HostedProjectService {
 		// The local project already open is read again; any switch waits for active work.
 		const reread = this.selected === null && projectId === this.session.projectId;
 		if (!reread && (this.session.busy || this.session.pending))
-			throw new Error('Wait for the active project operation.');
+			throw new HostedProjectBusyError('Wait for the active project operation.');
 		if (projectId.startsWith('local-')) {
 			const snapshot = await local.selectProject!({ projectId });
 			this.selected = null;
@@ -62,7 +71,7 @@ export class HostedProjectService {
 	private async dispatch(key: keyof Bridge, input: Record<string, unknown>) {
 		const projectId = this.selected!;
 		if (input.projectId !== undefined && input.projectId !== projectId)
-			throw new Error('The requested project is not selected.');
+			throw new HostedProjectNotSelectedError('The requested project is not selected.');
 		this.session.pending++;
 		try {
 			return await this.read(key, { ...input, projectId });
@@ -90,13 +99,13 @@ export class HostedProjectService {
 function agent(remote: RemoteProjectPort, key: keyof Bridge, input: HostedInput) {
 	if (remote.agent) return remote.agent(key, input, input.projectId);
 	if (key === 'providers') return [];
-	throw new Error(
+	throw new HostedProjectExecutorUnavailableError(
 		'Agent runs and source mutations are unavailable in shared projects without a connected executor.'
 	);
 }
 function readOperation(remote: RemoteProjectPort, key: keyof Bridge, input: HostedInput) {
 	if (['evidence', 'artifact'].includes(key) && !remote[key as 'evidence' | 'artifact'])
-		throw new Error(unread);
+		throw new HostedProjectEvidenceUnavailableError(unread);
 	const methods = [
 		'snapshot',
 		'entity',
@@ -108,8 +117,10 @@ function readOperation(remote: RemoteProjectPort, key: keyof Bridge, input: Host
 		'artifact'
 	] as const;
 	if (!(methods as readonly string[]).includes(key))
-		throw new Error('Agent runs and source mutations are unavailable in shared projects.');
+		throw new HostedProjectOperationUnsupportedError(
+			'Agent runs and source mutations are unavailable in shared projects.'
+		);
 	const method = remote[key as (typeof methods)[number]] as (input: unknown) => Promise<unknown>;
-	if (!method) throw new Error('Desktop operation unavailable.');
+	if (!method) throw new HostedProjectReadUnavailableError('Desktop operation unavailable.');
 	return method.call(remote, input);
 }
