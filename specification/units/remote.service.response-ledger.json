@@ -61,7 +61,7 @@
 			},
 			{
 				"name": "ResponseLedgerService.run.execute",
-				"type": "() => Promise<T>",
+				"type": "() => Promise<unknown>",
 				"required": true,
 				"description": "The mutation itself, called at most once and only for a new id that the ledger accepts, on a microtask after run returns. Its resolved value becomes the answer kept for that id, and its rejection is replayed to repeats with the same digest while that answer is kept."
 			}
@@ -127,7 +127,7 @@
 					},
 					{
 						"name": "ResponseLedgerService.run.execute",
-						"type": "() => Promise<T>",
+						"type": "() => Promise<unknown>",
 						"required": true,
 						"description": "The mutation itself, called at most once and only for a new id that the ledger accepts, on a microtask after run returns. Its resolved value becomes the answer kept for that id, and its rejection is replayed to repeats with the same digest while that answer is kept."
 					}

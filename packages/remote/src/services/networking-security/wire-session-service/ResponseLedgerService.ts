@@ -13,7 +13,7 @@ export class ResponseLedgerService {
 	private readonly spent = new Map<string, string>();
 	constructor(private readonly options: LedgerOptions = {}) {}
 	/** Runs `execute` unless this id is known; then its first answer, pending or settled, returns. */
-	run<T>(request: { id: string; digest: string }, execute: () => Promise<T>): Promise<unknown> {
+	run(request: { id: string; digest: string }, execute: () => Promise<unknown>): Promise<unknown> {
 		this.expire();
 		const known = this.entries.get(request.id);
 		if (known)
