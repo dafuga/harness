@@ -9,12 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectImageCacheService.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectImageCacheService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectImageCacheService.types.ts"
 		],
 		"symbols": [
 			"ProjectImageCacheService",
 			"ProjectImageCacheService.constructor",
-			"ProjectImageCacheService.read"
+			"ProjectImageCacheService.read",
+			"UnknownProjectImageError",
+			"ImageHashMismatchError"
 		]
 	},
 	"contract": {

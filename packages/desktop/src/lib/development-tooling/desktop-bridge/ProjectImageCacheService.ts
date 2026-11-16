@@ -1,5 +1,6 @@
 // @harness-uid u_tzt7ru2vow
 import { createHash } from 'node:crypto';
+import { ImageHashMismatchError, UnknownProjectImageError } from './ProjectImageCacheService.types';
 import type { CacheIdentity } from '../../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import type { ImageQuery } from '../../../models/development-tooling/DesktopBridge.types';
 import type { ProjectSessionService } from '../../../services/projects-sessions/project-session-service/ProjectSessionService';
@@ -14,7 +15,7 @@ export class ProjectImageCacheService {
 		const image = entity.versions
 			.find((version) => version.version === input.version)
 			?.images.find((image) => image.sha256 === input.sha256);
-		if (!image) throw new Error('Unknown project image.');
+		if (!image) throw new UnknownProjectImageError('Unknown project image.');
 		const identity = await this.identity(input);
 		const cached = await this.session.cache?.get(identity, input.sha256);
 		if (cached && cached.length === image.bytes) return cached;
@@ -23,7 +24,7 @@ export class ProjectImageCacheService {
 			bytes.length !== image.bytes ||
 			createHash('sha256').update(bytes).digest('hex') !== input.sha256
 		)
-			throw new Error('Image hash mismatch.');
+			throw new ImageHashMismatchError('Image hash mismatch.');
 		await this.session.cache?.put(identity, bytes, input.sha256);
 		return bytes;
 	}
