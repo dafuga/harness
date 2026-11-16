@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-repository.catalog",
+	"title": "repository.catalog examples",
+	"kind": "headless",
+	"units": ["repository.catalog"],
+	"builds": [],
+	"states": [
+		{
+			"id": "replaces-the-query-index-and-lists-the-head-unit",
+			"title": "Replaces the query index and lists the head unit",
+			"coverage": "required"
+		},
+		{
+			"id": "lists-dependencies-consumers-and-history-at-the-catalog-head",
+			"title": "Lists dependencies, consumers and history at the catalog head",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-entity-pagination-outside-the-allowed-range",
+			"title": "Rejects entity pagination outside the allowed range",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/repository.catalog.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"replaces-the-query-index-and-lists-the-head-unit",
+				"lists-dependencies-consumers-and-history-at-the-catalog-head",
+				"rejects-entity-pagination-outside-the-allowed-range"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"replaces-the-query-index-and-lists-the-head-unit",
+				"lists-dependencies-consumers-and-history-at-the-catalog-head",
+				"rejects-entity-pagination-outside-the-allowed-range"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"replaces-the-query-index-and-lists-the-head-unit",
+				"lists-dependencies-consumers-and-history-at-the-catalog-head",
+				"rejects-entity-pagination-outside-the-allowed-range"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
