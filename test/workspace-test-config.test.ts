@@ -29,6 +29,7 @@ function project(config?: string): string {
 	for (const file of [
 		'vitest.config.ts',
 		'src/utils/execution-runtimes/resourceWorkers.ts',
+		'src/utils/execution-runtimes/resourceWorkers.types.ts',
 		'test/svelteKitConfigs.ts',
 		'test/setup.ts'
 	]) {
