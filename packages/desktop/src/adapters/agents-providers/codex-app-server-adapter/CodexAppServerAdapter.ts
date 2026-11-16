@@ -9,6 +9,7 @@ import type {
 	ImageRequest
 } from '../../../models/agents-providers/AgentRunner.types';
 import { ImageBytesValidator } from '../../../validators/development-tooling/ImageBytesValidator';
+import { CodexImageGenerationError } from './CodexAppServerAdapter.types';
 import { codexState } from './codexState';
 import { codexTurn } from './codexTurn';
 
@@ -47,7 +48,7 @@ export class CodexAppServerAdapter implements AgentRunner, ImageGenerator {
 		);
 		const item = result.images.find((i) => i.status === 'completed' && !i.failure && i.result);
 		if (!item?.result)
-			throw new Error(
+			throw new CodexImageGenerationError(
 				'Codex returned no completed image generation. ' +
 					(result.text.slice(-600) || 'Check image-generation availability.')
 			);
