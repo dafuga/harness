@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.function.hub-metadata",
+	"title": "hub.function.hub-metadata examples",
+	"kind": "headless",
+	"units": ["hub.function.hub-metadata"],
+	"builds": [],
+	"states": [
+		{
+			"id": "reuses-metadata-or-skips-when-raw-loading-is-unavailable",
+			"title": "Reuses metadata or skips when raw loading is unavailable",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.function.hub-metadata.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["reuses-metadata-or-skips-when-raw-loading-is-unavailable"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["reuses-metadata-or-skips-when-raw-loading-is-unavailable"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["reuses-metadata-or-skips-when-raw-loading-is-unavailable"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
