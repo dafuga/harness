@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-adapter.networking-security-harness-http",
+	"title": "adapter.networking-security-harness-http examples",
+	"kind": "headless",
+	"units": ["adapter.networking-security-harness-http"],
+	"builds": [],
+	"states": [
+		{
+			"id": "returns-decoded-replies-with-their-exact-response-bytes",
+			"title": "Returns decoded replies with their exact response bytes",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/adapter.networking-security-harness-http.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["returns-decoded-replies-with-their-exact-response-bytes"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["returns-decoded-replies-with-their-exact-response-bytes"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["returns-decoded-replies-with-their-exact-response-bytes"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
