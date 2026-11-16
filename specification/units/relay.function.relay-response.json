@@ -23,7 +23,7 @@
 			},
 			{
 				"name": "relayResponse.body",
-				"type": "unknown",
+				"type": "object | string | number | boolean | null | undefined",
 				"required": true,
 				"description": "Value passed to JSON.stringify to form the response text. A BigInt or circular value makes JSON.stringify throw a TypeError, and undefined produces a response with no body.",
 				"examples": [
@@ -116,7 +116,7 @@
 					},
 					{
 						"name": "relayResponse.body",
-						"type": "unknown",
+						"type": "object | string | number | boolean | null | undefined",
 						"required": true,
 						"description": "Value passed to JSON.stringify to form the response text. A BigInt or circular value makes JSON.stringify throw a TypeError, and undefined produces a response with no body.",
 						"examples": [

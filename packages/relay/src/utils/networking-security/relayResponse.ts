@@ -10,7 +10,7 @@ const jsonHeaders = {
 /** Every answer of the relay that has a body: JSON that is never cached and never sniffed. */
 export function relayResponse(
 	status: number,
-	body: unknown,
+	body: object | string | number | boolean | null | undefined,
 	headers: Record<string, string> = {}
 ): Response {
 	return new Response(JSON.stringify(body), { status, headers: { ...jsonHeaders, ...headers } });
