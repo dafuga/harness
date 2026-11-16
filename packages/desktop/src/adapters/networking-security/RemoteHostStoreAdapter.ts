@@ -1,5 +1,6 @@
 // @harness-uid u_wp5yfuo763
 import type { RemoteHostState, RemoteHostStoreAdapterConfig } from './RemoteHostStoreAdapter.types';
+import { RemoteHostStoreError } from './RemoteHostStoreAdapter.types';
 import { mkdir, readFile, rename, unlink, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { randomUUID } from 'node:crypto';
@@ -31,7 +32,7 @@ export class RemoteHostStoreAdapter {
 	}
 	/** Null when nothing was stored. A file that cannot be opened is an error, not a fresh start. */
 	async read(): Promise<RemoteHostState | null> {
-		if (!this.available()) throw new Error(required);
+		if (!this.available()) throw new RemoteHostStoreError(required);
 		const sealed = await readFile(this.config.file).catch((error: NodeJS.ErrnoException) => {
 			if (error.code === 'ENOENT') return null;
 			throw error;
@@ -41,13 +42,13 @@ export class RemoteHostStoreAdapter {
 		try {
 			value = JSON.parse(this.config.encryption.decryptString(sealed));
 		} catch {
-			throw new Error(unreadable);
+			throw new RemoteHostStoreError(unreadable);
 		}
-		if (!valid(value)) throw new Error(unreadable);
+		if (!valid(value)) throw new RemoteHostStoreError(unreadable);
 		return value;
 	}
 	async save(state: RemoteHostState): Promise<void> {
-		if (!this.available()) throw new Error(required);
+		if (!this.available()) throw new RemoteHostStoreError(required);
 		const sealed = this.config.encryption.encryptString(JSON.stringify(state)),
 			temporary = `${this.config.file}.${randomUUID()}.tmp`;
 		await mkdir(dirname(this.config.file), { recursive: true, mode: 0o700 });
