@@ -2,7 +2,7 @@
 import { hubBodyBytes } from './hubBodyBytes';
 import { hubFail } from '../../development-tooling/hubJson';
 
-export function hubHttp<TValue>(value: TValue, status = 200) {
+export function hubHttp(value: unknown, status = 200) {
 	return Response.json(value, {
 		status,
 		headers: {

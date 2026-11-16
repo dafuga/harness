@@ -35,7 +35,7 @@
 			},
 			{
 				"name": "hubHttpFailure.error",
-				"type": "TError",
+				"type": "unknown",
 				"required": true,
 				"description": "An arbitrary error value inspected for a code property when it is an object. A string code in the public status map selects that public error; other values fall back to unavailable.",
 				"examples": [
@@ -49,7 +49,7 @@
 			},
 			{
 				"name": "hubHttp.value",
-				"type": "TValue",
+				"type": "unknown",
 				"required": true,
 				"description": "A value passed to Response.json as the response body. It must be JSON-serializable or response construction can throw.",
 				"examples": [
@@ -178,7 +178,7 @@
 				"inputs": [
 					{
 						"name": "hubHttpFailure.error",
-						"type": "TError",
+						"type": "unknown",
 						"required": true,
 						"description": "An arbitrary error value inspected for a code property when it is an object. A string code in the public status map selects that public error; other values fall back to unavailable.",
 						"examples": [
@@ -206,7 +206,7 @@
 				"inputs": [
 					{
 						"name": "hubHttp.value",
-						"type": "TValue",
+						"type": "unknown",
 						"required": true,
 						"description": "A value passed to Response.json as the response body. It must be JSON-serializable or response construction can throw.",
 						"examples": [
