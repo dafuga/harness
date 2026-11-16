@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.service.project-sync",
+	"title": "desktop.service.project-sync examples",
+	"kind": "headless",
+	"units": ["desktop.service.project-sync"],
+	"builds": [],
+	"states": [
+		{
+			"id": "syncs-active-account-projects-and-ignores-inactive-requests",
+			"title": "Syncs active account projects and ignores inactive requests",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.service.project-sync.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["syncs-active-account-projects-and-ignores-inactive-requests"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["syncs-active-account-projects-and-ignores-inactive-requests"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["syncs-active-account-projects-and-ignores-inactive-requests"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
