@@ -41,7 +41,7 @@
 			},
 			{
 				"name": "ConsoleAgentService.call.input",
-				"type": "object | null | undefined",
+				"type": "unknown",
 				"required": true,
 				"description": "Payload for the selected read or bridge channel, parsed by IpcRequestValidator for bridge operations. The events read coerces optional after with Number and requires a non-negative safe-integer cursor.",
 				"examples": [
@@ -60,7 +60,7 @@
 			},
 			{
 				"name": "consoleAgent.input",
-				"type": "ConsoleAgentRequest",
+				"type": "Record<string, unknown>",
 				"required": true,
 				"description": "Owner-only chat request envelope. The method selects connect, disconnect, a read, or a validated bridge operation; token identifies an in-memory session, input carries the operation payload, and a string requestId is forwarded.",
 				"examples": [
@@ -194,7 +194,7 @@
 					},
 					{
 						"name": "ConsoleAgentService.call.input",
-						"type": "object | null | undefined",
+						"type": "unknown",
 						"required": true,
 						"description": "Payload for the selected read or bridge channel, parsed by IpcRequestValidator for bridge operations. The events read coerces optional after with Number and requires a non-negative safe-integer cursor.",
 						"examples": [
@@ -241,7 +241,7 @@
 				"inputs": [
 					{
 						"name": "consoleAgent.input",
-						"type": "ConsoleAgentRequest",
+						"type": "Record<string, unknown>",
 						"required": true,
 						"description": "Owner-only chat request envelope. The method selects connect, disconnect, a read, or a validated bridge operation; token identifies an in-memory session, input carries the operation payload, and a string requestId is forwarded.",
 						"examples": [

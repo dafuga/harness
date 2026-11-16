@@ -89,11 +89,7 @@ export class ConsoleAgentService {
 		};
 	}
 
-	async call(
-		method: string,
-		input: object | null | undefined,
-		requestId?: string
-	): Promise<unknown> {
+	async call(method: string, input: unknown, requestId?: string): Promise<unknown> {
 		this.touched = Date.now();
 		const reads = { events: () => this.progress(input), registry: () => this.registry(input) };
 		if (Object.hasOwn(reads, method)) return reads[method as keyof typeof reads]();
@@ -133,15 +129,8 @@ export class ConsoleAgentService {
 const key = Symbol.for('harness.console.agents');
 const state = globalThis as typeof globalThis & { [key]?: Map<string, ConsoleAgentService> };
 const clients = (state[key] ??= new Map());
-/** The owner's request body. Each field is checked where it is used. */
-interface ConsoleAgentRequest {
-	method?: string;
-	token?: string;
-	input?: object | null;
-	requestId?: string;
-}
 /** Tokens stay in the tab's memory and request body; no cookie, URL, or disk contains them. */
-export async function consoleAgent(input: ConsoleAgentRequest): Promise<unknown> {
+export async function consoleAgent(input: Record<string, unknown>): Promise<unknown> {
 	if (input.method === 'connect') {
 		availableSessionSlot();
 		const client = new ConsoleAgentService(),
