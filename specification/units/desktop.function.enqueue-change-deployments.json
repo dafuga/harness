@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/projects-sessions/enqueueChangeDeployments.ts"],
-		"symbols": ["enqueueChangeDeployments"]
+		"source": [
+			"packages/desktop/src/utils/projects-sessions/enqueueChangeDeployments.ts",
+			"packages/desktop/src/utils/projects-sessions/enqueueChangeDeployments.types.ts"
+		],
+		"symbols": ["enqueueChangeDeployments", "DeploymentReviewBlockedError"]
 	},
 	"contract": {
 		"origin": "declared",

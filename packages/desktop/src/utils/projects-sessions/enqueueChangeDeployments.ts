@@ -5,6 +5,7 @@ import type {
 } from '../../models/development-tooling/Deployment.types';
 import type { DeploymentOptions } from '../../services/development-tooling/DeploymentService';
 import type { DeploymentActivityService } from '../../services/development-tooling/DeploymentActivityService';
+import { DeploymentReviewBlockedError } from './enqueueChangeDeployments.types';
 import { changeEnvironment } from './changeEnvironment';
 import { reviewDeployment } from './reviewDeployment';
 import { deploymentExecution } from './deploymentExecution';
@@ -25,7 +26,8 @@ export async function enqueueChangeDeployments(
 		)
 	);
 	for (const reviewed of reviews)
-		if (reviewed.plan.blockers.length) throw new Error(reviewed.plan.blockers.join(' '));
+		if (reviewed.plan.blockers.length)
+			throw new DeploymentReviewBlockedError(reviewed.plan.blockers.join(' '));
 	runtime.activities.ensureCapacity(reviews.length);
 	let dependency: Promise<DeploymentReceipt> | undefined;
 	return reviews.map((reviewed) => {
