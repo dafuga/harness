@@ -47,6 +47,13 @@
 				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
+				"name": "HistoryNoteRepository.read.at",
+				"type": "string | null",
+				"required": false,
+				"description": "Omit to read the current notes ref. Supply the full immutable notes-commit hash to read only the supplied source commit note from that snapshot; null holds no notes. An absent source note yields empty entries and problems. Other note blobs are not read or parsed.",
+				"examples": ["89abcdef89abcdef89abcdef89abcdef89abcdef", null]
+			},
+			{
 				"name": "HistoryNoteRepository.append.commit",
 				"type": "string",
 				"required": true,
@@ -107,7 +114,7 @@
 			{
 				"name": "HistoryNoteRepository.read",
 				"type": "Promise<ReadNote>",
-				"description": "Parsed note for the supplied commit, with valid matching entries in entries and malformed or foreign lines described in problems. The parser compares each entry's recorded commit with the supplied commit.",
+				"description": "Parsed note for the supplied commit, with valid matching entries in entries and malformed or foreign lines described in problems. The parser compares each entry's recorded commit with the supplied commit. A supplied notes revision pins the lookup and reads only that source note, so unrelated history is not materialized.",
 				"examples": [
 					{
 						"entries": [
@@ -184,7 +191,7 @@
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Raised when all receives a non-null revision that is not a full 40-character lowercase hexadecimal hash, or when the notes ref still changes after all 20 update attempts."
+				"description": "Raised when read or all receives a non-null notes revision that is not a full 40-character lowercase hexadecimal hash, or when the notes ref still changes after all 20 update attempts."
 			},
 			{
 				"name": "Error",
@@ -236,13 +243,20 @@
 						"required": true,
 						"description": "Commit identifier used to retrieve and parse a note; parsed entries are retained only when their recorded commit equals this value. The class does not validate it before calling Git.",
 						"examples": ["0123456789abcdef0123456789abcdef01234567"]
+					},
+					{
+						"name": "HistoryNoteRepository.read.at",
+						"type": "string | null",
+						"required": false,
+						"description": "Omit to read the current notes ref. Supply the full immutable notes-commit hash to read only the supplied source commit note from that snapshot; null holds no notes. An absent source note yields empty entries and problems. Other note blobs are not read or parsed.",
+						"examples": ["89abcdef89abcdef89abcdef89abcdef89abcdef", null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HistoryNoteRepository.read",
 						"type": "Promise<ReadNote>",
-						"description": "Parsed note for the supplied commit, with valid matching entries in entries and malformed or foreign lines described in problems. The parser compares each entry's recorded commit with the supplied commit.",
+						"description": "Parsed note for the supplied commit, with valid matching entries in entries and malformed or foreign lines described in problems. The parser compares each entry's recorded commit with the supplied commit. A supplied notes revision pins the lookup and reads only that source note, so unrelated history is not materialized.",
 						"examples": [
 							{
 								"entries": [
@@ -275,6 +289,16 @@
 						"name": "BoundedCommandFailure",
 						"type": "thrown",
 						"description": "Rejects Git command execution on process failure, timeout, or output-bound failure. The command adapter retains only bounded captured output."
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Rejects a supplied non-null notes revision unless it is a full 40-character lowercase hexadecimal commit hash."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by GitAdapter.run or bytes when the invoked Git command exits with a non-zero status."
 					}
 				],
 				"errorStatus": "declared"

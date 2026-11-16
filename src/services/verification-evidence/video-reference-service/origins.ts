@@ -2,6 +2,7 @@
 import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import { notesRef } from '../../../core/git-source-history/historyTypes';
 import { EvidenceBranchRepository } from '../../../repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository';
+import { HistoryNoteRepository } from '../../../repositories/git-source-history/history-note-repository/HistoryNoteRepository';
 import { HistoryStatusService } from '../history-status-service/HistoryStatusService';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { VideoArchiveService } from '../VideoArchiveService';
@@ -62,7 +63,7 @@ async function loadOriginal(
 		trail: context.trail,
 		retainMedia: false
 	});
-	const line = await attachedOriginLine(history, capture);
+	const line = await attachedOriginLine(root, pinned, capture);
 	const descriptor = await history.attached.describe(line.evidence),
 		parent = descriptor.record;
 	const tree = await new GitAdapter(root).attempt([
@@ -128,11 +129,12 @@ function originProjection(parent: VideoOriginRecord): VideoOriginRecord {
 }
 
 async function attachedOriginLine(
-	history: HistoryStatusService,
+	root: string,
+	pinned: PinnedHistory,
 	capture: Capture
 ): Promise<VerificationNote> {
 	const reference = capture.videoReference!;
-	const note = (await history.all()).get(reference.revision ?? '');
+	const note = await new HistoryNoteRepository(root).read(reference.revision ?? '', pinned.notes);
 	if (note?.problems.length) throw new ExpectedCliError(note.problems.join('; '));
 	const lines = note?.entries.filter(
 		(entry) => entry.kind === 'verification' && entry.record === reference.record

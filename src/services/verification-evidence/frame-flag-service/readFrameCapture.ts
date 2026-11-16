@@ -2,6 +2,7 @@
 import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import { notesRef } from '../../../core/git-source-history/historyTypes';
 import { EvidenceBranchRepository } from '../../../repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository';
+import { HistoryNoteRepository } from '../../../repositories/git-source-history/history-note-repository/HistoryNoteRepository';
 import { HistoryStatusService } from '../history-status-service/HistoryStatusService';
 import { VideoReferenceService } from '../VideoReferenceService';
 import { owningFrameCapture } from './flagSchema';
@@ -25,7 +26,7 @@ export async function readFrameCapture(
 		notes: (await evidence.tree.tip(notesRef)) ?? null
 	};
 	const history = new HistoryStatusService(root, scope);
-	const line = await frameRecordLine(history, reference);
+	const line = await frameRecordLine(root, scope, reference);
 	const descriptor = await history.attached.describe(line.evidence),
 		record = descriptor.record;
 	if (!record || descriptor.problems.length)
@@ -42,10 +43,11 @@ export async function readFrameCapture(
 }
 
 async function frameRecordLine(
-	history: HistoryStatusService,
+	root: string,
+	pinned: PinnedHistory,
 	reference: FrameClipReference
 ): Promise<VerificationNote> {
-	const note = (await history.all()).get(reference.revision);
+	const note = await new HistoryNoteRepository(root).read(reference.revision, pinned.notes);
 	if (note?.problems.length) throw new ExpectedCliError(note.problems.join('; '));
 	const lines = note?.entries.filter(
 		(entry) => entry.kind === 'verification' && entry.record === reference.record
