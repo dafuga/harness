@@ -21,7 +21,7 @@ import { UnitIndexService, type UnitIndexResult } from './unit-index-service/Uni
 export async function loadUnits(
 	root = process.cwd(),
 	tree?: SourceTree,
-	indexer = new SourceIndexService()
+	indexer: Pick<SourceIndexService, 'index'> = new SourceIndexService()
 ): Promise<LoadedUnits> {
 	const absolute = resolve(root);
 	const source = tree ?? new WorkingTreeAdapter(absolute);
@@ -45,7 +45,10 @@ export async function loadUnits(
 	};
 }
 
-export function graphOf(loaded: LoadedUnits, manifests = loaded.stored): SourceGraph {
+export function graphOf(
+	loaded: LoadedUnits,
+	manifests: ComponentManifest[] = loaded.stored
+): SourceGraph {
 	return new SourceGraphService().build(loaded.index, manifests, loaded.scenarios);
 }
 

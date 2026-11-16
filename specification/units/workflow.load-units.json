@@ -33,7 +33,7 @@
 			},
 			{
 				"name": "loadUnits.indexer",
-				"type": "unknown",
+				"type": "Pick<SourceIndexService, 'index'>",
 				"required": false,
 				"description": "Service that indexes the selected source tree with the loaded UnitsConfig before registry reconciliation. Defaults to new SourceIndexService(); the supplied instance must provide index(source, config)."
 			},
@@ -45,7 +45,7 @@
 			},
 			{
 				"name": "graphOf.manifests",
-				"type": "unknown",
+				"type": "ComponentManifest[]",
 				"required": false,
 				"description": "Manifest list used for graph ownership and dependencies when provided. Defaults to loaded.stored.",
 				"examples": [
@@ -100,7 +100,7 @@
 					},
 					{
 						"name": "loadUnits.indexer",
-						"type": "unknown",
+						"type": "Pick<SourceIndexService, 'index'>",
 						"required": false,
 						"description": "The source index service called with the selected source tree and loaded units config to produce the source index used for the fresh unit index. When omitted, loadUnits creates a SourceIndexService."
 					}
@@ -132,7 +132,7 @@
 					},
 					{
 						"name": "graphOf.manifests",
-						"type": "unknown",
+						"type": "ComponentManifest[]",
 						"required": false,
 						"description": "The manifest list passed to SourceGraphService.build in place of the snapshot's stored manifests. When omitted, the default is loaded.stored; the loaded index and scenarios still come from loaded.",
 						"examples": [
