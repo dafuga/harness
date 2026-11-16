@@ -19,7 +19,7 @@
 		"inputs": [
 			{
 				"name": "validateDocument.input",
-				"type": "T",
+				"type": "unknown",
 				"required": true,
 				"description": "The candidate game document, of any type, that validateDocument checks; any value that is not a non-null, non-array object with version 1, a non-empty views list and a mechanics list makes the function return only ['Invalid game document']. Ids, titles, condition fields, action targets, and mechanic inputs and events must be 1 to 200 characters and cannot be __proto__, constructor or prototype; descriptions, styles, and scalar string values are capped at 4000 characters; x and y must be finite numbers; and every list holds at most 200 entries.",
 				"examples": [
@@ -137,7 +137,7 @@
 			},
 			{
 				"name": "assertDocument.input",
-				"type": "T",
+				"type": "unknown",
 				"required": true,
 				"description": "The candidate game document, of any type, that assertDocument checks by calling validateDocument and throwing when that returns any message. A call that returns normally narrows this value to GameDocument, which requires it to clear every check validateDocument runs, under these limits: ids, titles, condition fields, action targets, and mechanic inputs and events are 1 to 200 characters and cannot be __proto__, constructor or prototype; descriptions, styles, and scalar string values are at most 4000 characters; x and y are finite numbers; and every list holds at most 200 entries.",
 				"examples": [
@@ -285,7 +285,7 @@
 				"inputs": [
 					{
 						"name": "validateDocument.input",
-						"type": "T",
+						"type": "unknown",
 						"required": true,
 						"description": "The candidate game document, of any type, that validateDocument checks; any value that is not a non-null, non-array object with version 1, a non-empty views list and a mechanics list makes the function return only ['Invalid game document']. Ids, titles, condition fields, action targets, and mechanic inputs and events must be 1 to 200 characters and cannot be __proto__, constructor or prototype; descriptions, styles, and scalar string values are capped at 4000 characters; x and y must be finite numbers; and every list holds at most 200 entries.",
 						"examples": [
@@ -422,7 +422,7 @@
 				"inputs": [
 					{
 						"name": "assertDocument.input",
-						"type": "T",
+						"type": "unknown",
 						"required": true,
 						"description": "The candidate game document, of any type, that assertDocument checks by calling validateDocument and throwing when that returns any message. A call that returns normally narrows this value to GameDocument, which requires it to clear every check validateDocument runs, under these limits: ids, titles, condition fields, action targets, and mechanic inputs and events are 1 to 200 characters and cannot be __proto__, constructor or prototype; descriptions, styles, and scalar string values are at most 4000 characters; x and y are finite numbers; and every list holds at most 200 entries.",
 						"examples": [
@@ -542,7 +542,7 @@
 				"outputs": [
 					{
 						"name": "assertDocument",
-						"type": "asserts input is T & GameDocument",
+						"type": "asserts input is GameDocument",
 						"description": "No value is returned: the function has no return statement, so at runtime the result is undefined. Its declared effect is the assertion that input is a GameDocument, which applies only when the call returns without throwing."
 					}
 				],
