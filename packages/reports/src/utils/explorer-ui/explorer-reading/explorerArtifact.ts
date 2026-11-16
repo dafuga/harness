@@ -46,7 +46,7 @@ function assertion(item: unknown): Assertion {
  * its trace. A step, a request or an answer that is structured stays structured. A field the
  * artifact does not have is absent or empty; every other field is kept as it was recorded. Null for a document that is not an object.
  */
-export function artifactBehavior(document: unknown): ExplorerArtifactBehavior | null {
+export function artifactBehavior<Document>(document: Document): ExplorerArtifactBehavior | null {
 	if (typeof document !== 'object' || document === null || Array.isArray(document)) return null;
 	const fields = document as Fields;
 	const input = asked.find((name) => name in fields);

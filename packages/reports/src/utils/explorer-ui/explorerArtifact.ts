@@ -1,6 +1,6 @@
 // @harness-uid u_vden63272o
 /** What a recorded value reads as: a sentence as it is, anything structured as indented JSON. */
-export function artifactText(value: unknown): string {
+export function artifactText<Value>(value: Value): string {
 	if (value === undefined) return 'Not recorded';
 	return typeof value === 'string' ? value : JSON.stringify(value, null, 2);
 }
