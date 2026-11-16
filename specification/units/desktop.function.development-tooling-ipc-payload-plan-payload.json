@@ -16,7 +16,7 @@
 		"inputs": [
 			{
 				"name": "planPayload.input",
-				"type": "Record<string, unknown>",
+				"type": "object",
 				"required": true,
 				"description": "The untrusted createPlan object: category must be one of the eight catalog categories, title must be a non-blank string of at most 160 characters, goal a non-blank string of at most 6000 characters, and contract is validated only when it is not undefined. Every other top-level key is ignored.",
 				"examples": [
@@ -103,7 +103,7 @@
 				"inputs": [
 					{
 						"name": "planPayload.input",
-						"type": "Record<string, unknown>",
+						"type": "object",
 						"required": true,
 						"description": "The untrusted createPlan object: category must be one of the eight catalog categories, title must be a non-blank string of at most 160 characters, goal a non-blank string of at most 6000 characters, and contract is validated only when it is not undefined. Every other top-level key is ignored.",
 						"examples": [
