@@ -25,6 +25,7 @@
 			"ModuleTaskRunError",
 			"taskProcess",
 			"parsePositiveIntegerEnvironmentValue",
+			"parsePositiveNumberEnvironmentValue",
 			"TaskOutputOverflowError"
 		]
 	},
@@ -95,6 +96,16 @@
 			},
 			{
 				"name": "parsePositiveIntegerEnvironmentValue.fallback",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "parsePositiveNumberEnvironmentValue.value",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "parsePositiveNumberEnvironmentValue.fallback",
 				"type": "number",
 				"required": true
 			}
@@ -376,6 +387,29 @@
 				"outputs": [
 					{
 						"name": "parsePositiveIntegerEnvironmentValue",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parsePositiveNumberEnvironmentValue",
+				"inputs": [
+					{
+						"name": "parsePositiveNumberEnvironmentValue.value",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "parsePositiveNumberEnvironmentValue.fallback",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "parsePositiveNumberEnvironmentValue",
 						"type": "number"
 					}
 				],

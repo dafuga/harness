@@ -10,6 +10,7 @@ export function taskProcess(command: string[], input: TaskRunInput): Promise<Tas
 	return resourceWork(
 		{
 			priority: 'coding',
+			cpus: parsePositiveNumberEnvironmentValue(process.env.HARNESS_TASK_CPUS, 1),
 			memoryMiB: parsePositiveIntegerEnvironmentValue(process.env.HARNESS_TASK_MEMORY_MIB, 2048),
 			label: 'Module task CLI'
 		},
@@ -81,6 +82,14 @@ export function parsePositiveIntegerEnvironmentValue(
 	if (value === undefined || !/^\d+$/.test(value)) return fallback;
 	const parsed = Number(value);
 	return Number.isSafeInteger(parsed) && parsed > 0 ? parsed : fallback;
+}
+export function parsePositiveNumberEnvironmentValue(
+	value: string | undefined,
+	fallback: number
+): number {
+	if (value === undefined) return fallback;
+	const parsed = Number(value);
+	return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
 }
 function taskEnvironment(resources: ResourceContext): Record<string, string | undefined> {
 	const env: Record<string, string | undefined> = {};
