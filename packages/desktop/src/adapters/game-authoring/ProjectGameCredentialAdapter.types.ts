@@ -1,2 +1,6 @@
 // @harness-uid u_d7cchzyjdp
 export type GameCredentialName = 'HARNESS_GAME_OPENAI_API_KEY' | 'HARNESS_GAME_DECART_API_KEY';
+
+export class ProjectGameCredentialError extends Error {
+	override name = 'ProjectGameCredentialError';
+}

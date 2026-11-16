@@ -1,4 +1,5 @@
 // @harness-uid u_d7cchzyjdp
+import { ProjectGameCredentialError } from './ProjectGameCredentialAdapter.types';
 import type { GameCredentialName } from './ProjectGameCredentialAdapter.types';
 import { readFile, lstat } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -13,9 +14,10 @@ export class ProjectGameCredentialAdapter {
 		const file = join(this.root, credentialFile);
 		const stat = await lstat(file).catch(() => undefined);
 		if (!stat) throw unconfigured(name);
-		if (!(await this.ignored(name))) throw new Error('Credential file must be ignored.');
+		if (!(await this.ignored(name)))
+			throw new ProjectGameCredentialError('Credential file must be ignored.');
 		if (!stat.isFile() || stat.isSymbolicLink())
-			throw new Error('Credential file must be regular.');
+			throw new ProjectGameCredentialError('Credential file must be regular.');
 		const text = await readFile(file, 'utf8').catch(() => '');
 		const key = text.match(new RegExp('^' + name + '=["\']?([^\\s"\']+)["\']?\\s*$', 'm'))?.[1];
 		if (key) return key;
@@ -36,7 +38,9 @@ export class ProjectGameCredentialAdapter {
 }
 
 function unconfigured(name: GameCredentialName): Error {
-	return new Error('Configure a project-owned ' + name + ' in this project’s ignored .env.local.');
+	return new ProjectGameCredentialError(
+		'Configure a project-owned ' + name + ' in this project’s ignored .env.local.'
+	);
 }
 
 export type { GameCredentialName } from './ProjectGameCredentialAdapter.types';
