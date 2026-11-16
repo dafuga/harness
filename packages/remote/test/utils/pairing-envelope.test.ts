@@ -1,4 +1,8 @@
 import { expect, test } from 'vitest';
+import type {
+	PairingApproval,
+	PairingSecret
+} from '../../src/models/networking-security/RemoteSecure.types';
 import { importRemoteKeys, sharedSecret } from '../../src/utils/remoteKeys';
 import {
 	openPairing,
@@ -31,8 +35,8 @@ async function sides(pairingId = pairing.pairingId) {
 
 test('device and host derive the same envelope keys and reproduce the frozen envelopes', async () => {
 	const { device, host } = await sides(),
-		request = JSON.parse(pairing.requestPlain) as unknown,
-		approval = JSON.parse(pairing.approvalPlain) as unknown;
+		request = JSON.parse(pairing.requestPlain) as PairingSecret,
+		approval = JSON.parse(pairing.approvalPlain) as PairingApproval;
 	expect(await sealPairing(device.request, 'request', request)).toBe(pairing.requestSealed);
 	expect(await openPairing(host.request, 'request', pairing.requestSealed)).toEqual(request);
 	expect(await sealPairing(host.approval, 'approval', approval)).toBe(pairing.approvalSealed);

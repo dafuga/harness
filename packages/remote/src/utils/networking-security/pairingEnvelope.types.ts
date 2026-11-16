@@ -15,3 +15,9 @@ export interface PairingKeys {
 	request: CryptoKey;
 	approval: CryptoKey;
 }
+
+/**
+ * Anything JSON.stringify encodes. Objects stay open because a recursive JSON type would
+ * reject interfaces such as RemoteGrant, which have no index signature.
+ */
+export type PairingValue = string | number | boolean | null | object;
