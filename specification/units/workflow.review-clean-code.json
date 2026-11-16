@@ -12,7 +12,15 @@
 			"src/audit/development-tooling/reviewCleanCode.ts",
 			"src/audit/development-tooling/reviewCleanCode.types.ts"
 		],
-		"symbols": ["reviewCleanCode", "ReviewCleanCodeInput", "ReviewCleanCodeInput", "ReviewedEntry"]
+		"symbols": [
+			"reviewCleanCode",
+			"ReviewCleanCodeInput",
+			"ReviewCancelledError",
+			"ReviewCredentialMissingError",
+			"JevRequestFailedError",
+			"ReviewCleanCodeInput",
+			"ReviewedEntry"
+		]
 	},
 	"contract": {
 		"origin": "declared",

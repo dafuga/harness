@@ -1,5 +1,10 @@
 // @harness-uid u_ioz2iepk5w
 import type { ReviewCleanCodeInput, ReviewedEntry } from './reviewCleanCode.types';
+import {
+	JevRequestFailedError,
+	ReviewCancelledError,
+	ReviewCredentialMissingError
+} from './reviewCleanCode.types';
 import { resolve } from 'node:path';
 import { JevAdapter } from '../../adapters/agents-providers/JevAdapter';
 import { collectAuditedFiles } from './collect';
@@ -66,7 +71,7 @@ async function reviewEntry(
 	let snapshot: ReviewSnapshot | undefined;
 	const usage = { input_tokens: 0, output_tokens: 0 };
 	try {
-		if (input.options?.signal?.aborted) throw new Error('Jev review was cancelled.');
+		if (input.options?.signal?.aborted) throw new ReviewCancelledError('Jev review was cancelled.');
 		snapshot = await snapshotCleanCodeFile({
 			root: input.root,
 			path,
@@ -118,13 +123,13 @@ function lazyEvaluator(settings: CleanCodeSettings): JevEvaluator {
 		try {
 			const apiKey = process.env[settings.apiKeyEnv];
 			if (!apiKey)
-				throw new Error(
+				throw new ReviewCredentialMissingError(
 					`Set ${settings.apiKeyEnv} to a dedicated credential for this project before reviewing.`
 				);
 			adapter ??= new JevAdapter({ apiKey, model: settings.model });
 			return await adapter.evaluate(request, signal);
 		} catch (error) {
-			failure = error instanceof Error ? error : new Error('Jev request failed.');
+			failure = error instanceof Error ? error : new JevRequestFailedError('Jev request failed.');
 			throw failure;
 		}
 	};
