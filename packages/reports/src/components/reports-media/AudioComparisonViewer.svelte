@@ -4,6 +4,7 @@
 <script lang="ts">
 	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
 	import { comparisonPanes } from '../../helpers/verification-evidence/comparisonPanes';
+	import type { ComparisonPane } from '../../helpers/verification-evidence/comparisonPanes.types';
 	import type { View } from './AudioComparisonViewer.types';
 
 	import { onMount } from 'svelte';
@@ -66,7 +67,7 @@
 		<!-- Keyed by recording: an original leaving the view is destroyed, and AudioEvidence pauses it. -->
 
 		<ComparePanes {panes} visible={view === 'compare' ? 'both' : view} framed={false} contents>
-			{#snippet children(pane)}
+			{#snippet children(pane: ComparisonPane<Evidence>)}
 				{#if pane.value}<hx-div
 						class="audio-comparison-side"
 						role="group"
