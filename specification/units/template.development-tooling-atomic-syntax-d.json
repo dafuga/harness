@@ -27,7 +27,7 @@
 			},
 			{
 				"name": "walkAtomicMarkup.node",
-				"type": "unknown",
+				"type": "AST.Fragment",
 				"required": true,
 				"description": "Value to walk, and any type is accepted: null, undefined and other non-object values are ignored, arrays are walked element by element, and objects are walked through their own properties except the properties named parent, metadata, expression and attributes. Each non-array object whose type property is truthy is passed to callback before its properties are walked.",
 				"examples": [
@@ -68,7 +68,7 @@
 			},
 			{
 				"name": "walkAtomicMarkup.callback",
-				"type": "(node: Record<string, unknown>) => void",
+				"type": "(node: AtomicMarkupNode) => void",
 				"required": true,
 				"description": "Function called for each non-array object the walk reaches whose type property is truthy, before that object's properties are walked. Its return value is ignored, and an exception it throws is not caught, so it propagates out of walkAtomicMarkup and ends the walk."
 			}
@@ -410,7 +410,7 @@
 				"inputs": [
 					{
 						"name": "walkAtomicMarkup.node",
-						"type": "unknown",
+						"type": "AST.Fragment",
 						"required": true,
 						"description": "Value to walk, and any type is accepted: null, undefined and other non-object values are ignored, arrays are walked element by element, and objects are walked through their own properties except the properties named parent, metadata, expression and attributes. Each non-array object whose type property is truthy is passed to callback before its properties are walked.",
 						"examples": [
@@ -451,7 +451,7 @@
 					},
 					{
 						"name": "walkAtomicMarkup.callback",
-						"type": "(node: Record<string, unknown>) => void",
+						"type": "(node: AtomicMarkupNode) => void",
 						"required": true,
 						"description": "Function called for each non-array object the walk reaches whose type property is truthy, before that object's properties are walked. Its return value is ignored, and an exception it throws is not caught, so it propagates out of walkAtomicMarkup and ends the walk."
 					}
