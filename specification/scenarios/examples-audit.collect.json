@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-audit.collect",
+	"title": "audit.collect examples",
+	"kind": "headless",
+	"units": ["audit.collect"],
+	"builds": [],
+	"states": [
+		{
+			"id": "collects-recursive-files-and-records-ignored-paths",
+			"title": "Collects recursive files and records ignored paths",
+			"coverage": "required"
+		},
+		{
+			"id": "propagates-filesystem-errors-for-missing-roots",
+			"title": "Propagates filesystem errors for missing roots",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/audit.collect.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"collects-recursive-files-and-records-ignored-paths",
+				"propagates-filesystem-errors-for-missing-roots"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"collects-recursive-files-and-records-ignored-paths",
+				"propagates-filesystem-errors-for-missing-roots"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"collects-recursive-files-and-records-ignored-paths",
+				"propagates-filesystem-errors-for-missing-roots"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
