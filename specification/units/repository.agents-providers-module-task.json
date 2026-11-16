@@ -12,7 +12,9 @@
 			"src/repositories/agents-providers/ModuleTaskRepository.ts",
 			"src/repositories/agents-providers/ModuleTaskRepository.types.ts",
 			"src/repositories/agents-providers/module-task-repository/syncTaskQueue.ts",
+			"src/repositories/agents-providers/module-task-repository/syncTaskQueue.types.ts",
 			"src/repositories/agents-providers/module-task-repository/taskOwner.ts",
+			"src/repositories/agents-providers/module-task-repository/taskOwner.types.ts",
 			"src/repositories/agents-providers/module-task-repository/taskSchemas.ts"
 		],
 		"symbols": [
@@ -35,8 +37,11 @@
 			"TaskRunInput",
 			"TaskRunResult",
 			"TaskRunner",
+			"TaskQueueContentionError",
 			"syncTaskQueue",
+			"TaskQueueSyncError",
 			"taskOwner",
+			"TaskOwnerIdentityError",
 			"featureSchema",
 			"wantedContractSchema",
 			"taskInputSchema",

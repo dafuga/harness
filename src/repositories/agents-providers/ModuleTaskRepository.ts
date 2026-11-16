@@ -1,5 +1,6 @@
 // @harness-uid u_bya7wvvkm5
 import type { ModuleTaskQueue } from './ModuleTaskRepository.types';
+import { TaskQueueContentionError } from './ModuleTaskRepository.types';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import { stableJson } from '../../utils/development-tooling/stableJson';
 import { queueSchema } from './module-task-repository/taskSchemas';
@@ -44,7 +45,7 @@ export class ModuleTaskRepository {
 			]);
 			if (swapped.code === 0) return { value, commit: next };
 		}
-		throw new Error('Task queue changed repeatedly; retry the operation.');
+		throw new TaskQueueContentionError('Task queue changed repeatedly; retry the operation.');
 	}
 	async sync(remote: string) {
 		return syncTaskQueue(this.git, this.ref, remote);
