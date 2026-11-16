@@ -7,7 +7,6 @@ export function fail(message: string): never {
 	throw new ExpectedCliError(message);
 }
 
-/** Accepts any value and keeps its type; a true result narrows it to ExpectedCliError. */
-export function isExpectedCliError<T>(error: T): error is T & ExpectedCliError {
+export function isExpectedCliError(error: unknown): error is ExpectedCliError {
 	return error instanceof ExpectedCliError;
 }
