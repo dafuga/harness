@@ -1,6 +1,7 @@
 // @harness-uid u_3ziialfqrc
 import { projectionCacheDiscard } from './projectionCacheDiscard';
 import { projectionCachePurge } from './projectionCachePurge';
+import { CacheWriteRejectedError } from './ProjectionCacheService.types';
 import { mkdir, readFile, readdir, unlink, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -36,7 +37,7 @@ export class ProjectionCacheService {
 	async put(identity: CacheIdentity, bytes: Uint8Array, expectedHash: string): Promise<void> {
 		const generation = this.generation;
 		if (!/^[a-f0-9]{64}$/.test(expectedHash) || digest(bytes) !== expectedHash)
-			throw new Error('Cache hash mismatch.');
+			throw new CacheWriteRejectedError('Cache hash mismatch.');
 		await mkdir(this.directory, { recursive: true, mode: 0o700 });
 		await writeFile(
 			this.path(identity),
@@ -127,7 +128,7 @@ export class ProjectionCacheService {
 	private async checkGeneration(generation: number, path: string) {
 		if (generation === this.generation) return;
 		await unlink(path).catch(() => undefined);
-		throw new Error('Cached authority changed during the read.');
+		throw new CacheWriteRejectedError('Cached authority changed during the read.');
 	}
 	private path(identity: CacheIdentity): string {
 		return join(this.directory, `projection-${digest(identityKey(identity))}.json`);
