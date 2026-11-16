@@ -3,6 +3,7 @@ import { availableParallelism, cpus } from 'node:os';
 import { performance } from 'node:perf_hooks';
 import { hostResourceLimits } from './hostResourceLimits';
 import type { Counters } from './resourceCpu.types';
+import { CpuIntervalError } from './resourceCpu.types';
 export type { Counters } from './resourceCpu.types';
 export function hostCpuCounters() {
 	const all = cpus();
@@ -26,7 +27,7 @@ export function resourceCpu(previous: Counters, current: Counters) {
 		idle < 0 ||
 		idle > elapsed
 	)
-		throw new Error('Invalid CPU interval');
+		throw new CpuIntervalError('Invalid CPU interval');
 	const usable = Math.min(current.cores, current.affinity, current.limits.cores ?? Infinity);
 	const available = Math.max(
 		0,
@@ -44,8 +45,8 @@ function quotaAvailable(previous: Counters, current: Counters, usable: number): 
 		before = previous.limits.cpuUsedUs;
 	if (used === undefined) return usable;
 	if (before === undefined || used < before || current.limits.cores !== previous.limits.cores)
-		throw new Error('CPU quota changed; waiting for a fresh interval');
+		throw new CpuIntervalError('CPU quota changed; waiting for a fresh interval');
 	const available = usable - (used - before) / (current.at - previous.at) / 1000;
-	if (!Number.isFinite(available)) throw new Error('Invalid CPU quota counters');
+	if (!Number.isFinite(available)) throw new CpuIntervalError('Invalid CPU quota counters');
 	return available;
 }
