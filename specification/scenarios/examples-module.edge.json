@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-module.edge",
+	"title": "module.edge examples",
+	"kind": "headless",
+	"units": ["module.edge"],
+	"builds": [],
+	"states": [
+		{
+			"id": "rejects-requests-that-do-not-use-post",
+			"title": "Rejects requests that do not use POST",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/module.edge.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["rejects-requests-that-do-not-use-post"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["rejects-requests-that-do-not-use-post"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["rejects-requests-that-do-not-use-post"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
