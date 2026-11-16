@@ -1,6 +1,7 @@
 // @harness-uid u_3mciuyjhwa
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { ExpectedCliError } from '../src/core/errors';
 
 export function declaredE2eTests(script: string): string[] {
 	return [...script.matchAll(/(test\/[\w./-]+\.e2e\.test\.ts)(?=\s|$)/g)]
@@ -35,7 +36,7 @@ function main(): void {
 	};
 	const scripts = ['test:e2e', 'test:package'].map((name) => {
 		const script = packageJson.scripts?.[name];
-		if (!script) throw new Error(`package.json is missing the ${name} script.`);
+		if (!script) throw new ExpectedCliError(`package.json is missing the ${name} script.`);
 		return declaredE2eTests(script);
 	});
 	const actualFiles = discoverE2eTests();
