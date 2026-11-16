@@ -27,12 +27,19 @@ const large = 'The answer of the Hub is too large for this phone.';
 const unreadable = 'The Hub sent an answer this app cannot read.';
 
 /** An error as the shared reads expect one: a status, a code and words a person can read. */
-export function failure(status: number, code: string, message = browserError(code, status)) {
+export function failure(
+	status: number,
+	code: string,
+	message: string = browserError(code, status)
+) {
 	return Object.assign(new Error(message), { status, code });
 }
 
+/** What the plugin rejected with: nothing, or an object that may carry a code and a message. */
+export type PluginRejection = { code?: unknown; message?: unknown } | null | undefined;
+
 /** What the plugin rejects with keeps its code and its words, both written natively. */
-export function refusal(cause: unknown) {
+export function refusal(cause: PluginRejection) {
 	const { code, message } = (cause ?? {}) as { code?: unknown; message?: unknown };
 	const named = typeof code === 'string' && code ? code : 'failed';
 	const status = refusals.get(named) ?? 0;
@@ -40,7 +47,7 @@ export function refusal(cause: unknown) {
 }
 
 /** The bytes of an answer, refused whole when they are not base64 or more than the limit. */
-export function decoded(data: unknown, limit: number): Uint8Array {
+export function decoded(data: string, limit: number): Uint8Array {
 	if (typeof data !== 'string') throw failure(0, 'unreadable', unreadable);
 	if (data.length > Math.ceil(limit / 3) * 4) throw failure(413, 'too-large', large);
 	let bytes: Uint8Array;
@@ -81,8 +88,17 @@ export function fields(query: Query = {}): Record<string, string> {
 	return Object.fromEntries(kept);
 }
 
+/** Plain JSON data: the values that may cross the native bridge. */
+export type PlainJson =
+	| string
+	| number
+	| boolean
+	| null
+	| PlainJson[]
+	| { [key: string]: PlainJson };
+
 /** Only plain data crosses the native bridge: no proxy, no undefined. */
-export function plain(body: unknown): unknown {
+export function plain(body: PlainJson | undefined): unknown {
 	return JSON.parse(JSON.stringify(body ?? {}));
 }
 

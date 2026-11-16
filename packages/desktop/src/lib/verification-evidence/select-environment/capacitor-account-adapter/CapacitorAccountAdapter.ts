@@ -1,5 +1,6 @@
 // @harness-uid u_djg3cju4tr
 import type { CapacitorAccountAdapterConfig } from './CapacitorAccountAdapter.types';
+import type { PlainJson, PluginRejection } from './capacitorAccountCodec';
 import { browserBridge } from '../../../../adapters/explorer-ui/browser-project-adapter/browserBridge';
 import type { BrowserApi, Query } from '../../../../models/development-tooling/BrowserApi.types';
 import type { DesktopBridge } from '../../../../models/development-tooling/DesktopBridge.types';
@@ -82,7 +83,7 @@ export class CapacitorAccountAdapter {
 			status = publicStatus(await ask());
 		} catch (cause) {
 			if (asked !== this.generation) return this.known!;
-			const error = refusal(cause);
+			const error = refusal(cause as PluginRejection);
 			if (error.status !== 401) throw error;
 			this.ended();
 			return this.known!;
@@ -118,7 +119,7 @@ export class CapacitorAccountAdapter {
 			this.send({ method: 'GET', path, query: fields(query) });
 		return {
 			get: async <T>(path: string, query?: Query) => json<T>(await read(path, query)),
-			send: async <T>(method: 'POST' | 'DELETE', path: string, body?: unknown) => {
+			send: async <T>(method: 'POST' | 'DELETE', path: string, body?: PlainJson) => {
 				if (method !== 'POST') throw failure(400, 'request-refused', notMade);
 				return json<T>(await this.send({ method, path, body: plain(body) }));
 			},
@@ -138,7 +139,7 @@ export class CapacitorAccountAdapter {
 		try {
 			reply = await this.config.plugin.request(call);
 		} catch (cause) {
-			const error = refusal(cause);
+			const error = refusal(cause as PluginRejection);
 			if (asked === this.generation && error.status === 401) this.ended();
 			throw error;
 		}
