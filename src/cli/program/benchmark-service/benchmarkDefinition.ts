@@ -7,6 +7,7 @@ import { BenchmarkDefinitionValidator } from './benchmark-definition/BenchmarkDe
 import { benchmarkFiles, benchmarkGit } from './benchmarkWorkspace';
 import { CodexBenchmarkAdapter } from './benchmark-definition/CodexBenchmarkAdapter';
 import { ClaudeBenchmarkAdapter } from './benchmark-definition/ClaudeBenchmarkAdapter';
+import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import { fingerprint } from '../../../workflows/reports-media/analyticsRecord';
 export const benchmarkRunners = (): BenchmarkRunners => ({
 	codex: new CodexBenchmarkAdapter(),
@@ -22,7 +23,7 @@ export async function prepareBenchmark(
 	const project = await realpath(resolve(dirname(resolve(path)), definition.project));
 	const gitRoot = (await benchmarkGit(project, ['rev-parse', '--show-toplevel'])).trim();
 	if (project !== (await realpath(gitRoot)))
-		throw new Error('Benchmark project must be the Git repository root.');
+		throw new ExpectedCliError('Benchmark project must be the Git repository root.');
 	const revision = (
 		await benchmarkGit(project, [
 			'rev-parse',
