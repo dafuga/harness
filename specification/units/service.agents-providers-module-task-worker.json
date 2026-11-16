@@ -61,7 +61,7 @@
 			},
 			{
 				"name": "ModuleTaskWorkerService.once.signal",
-				"type": "unknown",
+				"type": "AbortSignal",
 				"required": false,
 				"description": "Abort signal given to the runner as TaskRunInput.signal; the quota fallback checks it with throwIfAborted() before dispatching again. Defaults to AbortSignal.timeout(900000), which aborts after 900000 ms (15 minutes)."
 			},
@@ -688,7 +688,7 @@
 					},
 					{
 						"name": "ModuleTaskWorkerService.once.signal",
-						"type": "unknown",
+						"type": "AbortSignal",
 						"required": false,
 						"description": "Abort signal given to the runner as TaskRunInput.signal; the quota fallback checks it with throwIfAborted() before dispatching again. Defaults to AbortSignal.timeout(900000), which aborts after 900000 ms (15 minutes)."
 					}

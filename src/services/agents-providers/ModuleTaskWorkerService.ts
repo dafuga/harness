@@ -28,7 +28,11 @@ export class ModuleTaskWorkerService {
 	) {
 		this.repository = new ModuleTaskRepository(root);
 	}
-	async once(worker: string, modules: string[] = [], signal = AbortSignal.timeout(900000)) {
+	async once(
+		worker: string,
+		modules: string[] = [],
+		signal: AbortSignal = AbortSignal.timeout(900000)
+	) {
 		if (!/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/.test(worker))
 			throw new ExpectedCliError('Worker must be a lowercase dotted or dashed identifier.');
 		const owner = await this.repository.owner();
