@@ -45,7 +45,11 @@ export async function storeFrameFlag(
 }
 
 /** Reconstruct flags and resolution standing solely from one immutable evidence snapshot. */
-export async function readFrameFlags(root: string, reader?: FrameClipReader): Promise<FrameFlag[]> {
+export async function readFrameFlags(
+	root: string,
+	reader?: FrameClipReader,
+	unit?: string
+): Promise<FrameFlag[]> {
 	const repository = new EvidenceBranchRepository(root),
 		tip = await repository.tip();
 	if (!tip) return [];
@@ -82,9 +86,9 @@ export async function readFrameFlags(root: string, reader?: FrameClipReader): Pr
 	if (new Set(flags.map((flag) => flag.id)).size !== flags.length)
 		throw new ExpectedCliError('Duplicate frame flag identities in retained evidence.');
 	for (const path of paths.filter((path) => path.endsWith('/resolution.json')))
-		await applyResolution(repository, tip, path, { flags, load });
+		await applyResolution(repository, tip, path, { flags, load, unit });
 	for (const path of paths) validateEvidencePath(path, flags);
-	return flags;
+	return flagsForOwner(flags, unit);
 }
 
 async function readFlag(
@@ -117,7 +121,7 @@ async function applyResolution(
 	repository: EvidenceBranchRepository,
 	tip: string,
 	path: string,
-	context: { flags: FrameFlag[]; load: ResolutionReader }
+	context: { flags: FrameFlag[]; load: ResolutionReader; unit?: string }
 ): Promise<void> {
 	const { flags, load } = context;
 	const event = parseFlagJson(resolutionSchema, await repository.tree.read(tip, path));
@@ -130,6 +134,12 @@ async function applyResolution(
 		flag.clip.record === event.replacement.record
 	)
 		throw new ExpectedCliError('Frame resolution does not explicitly address its owning flag.');
+	for (const id of event.addressedFlags) {
+		const addressed = flags.find((candidate) => candidate.id === id);
+		if (!addressed || !sameFrameSlot(addressed.clip, event.replacement))
+			throw new ExpectedCliError('Frame resolution cites unknown or wrong-owner flags.');
+	}
+	if (context.unit && flag.clip.unit !== context.unit) return;
 	const clip = await load(event.replacement);
 	validateReplacement(clip, event, flags);
 	flag.status = 'resolved';
@@ -198,4 +208,8 @@ export async function storeFrameResolution(
 		'fix: record addressed video frame feedback',
 		'resolution.json'
 	);
+}
+
+function flagsForOwner(flags: FrameFlag[], unit?: string): FrameFlag[] {
+	return unit ? flags.filter((flag) => flag.clip.unit === unit) : flags;
 }

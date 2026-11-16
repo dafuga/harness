@@ -336,6 +336,13 @@
 				"description": "Exact-reference clip reader; its returned claim is independently validated before use. Omission passes undefined; the implementation applies the documented optional behavior."
 			},
 			{
+				"name": "readFrameFlags.unit",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Optional owning unit. When supplied, return only its flags and open only its resolution media while checking every retained flag and resolution metadata binding; omission replays all owners."
+			},
+			{
 				"name": "storeFrameResolution.root",
 				"type": "string",
 				"required": true,
@@ -399,7 +406,7 @@
 			{
 				"name": "FrameFlagService.list",
 				"type": "Promise<FrameFlag[]>",
-				"description": "Only this owner’s retained flags, with immutable replacement proof replayed before resolved status is accepted; supplied current hashes may mark unresolved feedback stale."
+				"description": "Only this owner’s retained flags, with immutable replacement media replayed only for this owner before resolved status is accepted; all retained flag metadata, pointer bindings, paths and resolution ownership remain validated. Supplied current hashes may mark unresolved feedback stale."
 			},
 			{
 				"name": "FrameFlagService.feedback",
@@ -611,7 +618,7 @@
 					{
 						"name": "FrameFlagService.list",
 						"type": "Promise<FrameFlag[]>",
-						"description": "Only this owner’s retained flags, with immutable replacement proof replayed before resolved status is accepted; supplied current hashes may mark unresolved feedback stale."
+						"description": "Only this owner’s retained flags, with immutable replacement media replayed only for this owner before resolved status is accepted; all retained flag metadata, pointer bindings, paths and resolution ownership remain validated. Supplied current hashes may mark unresolved feedback stale."
 					}
 				],
 				"errors": [
@@ -1208,6 +1215,13 @@
 						"required": false,
 						"default": "undefined (omitted)",
 						"description": "Exact-reference clip reader; its returned claim is independently validated before use. Omission passes undefined; the implementation applies the documented optional behavior."
+					},
+					{
+						"name": "readFrameFlags.unit",
+						"type": "string",
+						"required": false,
+						"default": "undefined (omitted)",
+						"description": "Optional owning unit. When supplied, return only its flags and open only its resolution media while checking every retained flag and resolution metadata binding; omission replays all owners."
 					}
 				],
 				"outputs": [
