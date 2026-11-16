@@ -1,5 +1,5 @@
 // @harness-uid u_r35cbtisci
-import type { CaptureLimits, CaptureRead } from './captureLimits.types';
+import { CaptureReadError, type CaptureLimits, type CaptureRead } from './captureLimits.types';
 import { createHash } from 'node:crypto';
 import { closeSync, constants, fstatSync, openSync, readSync } from 'node:fs';
 import { verifyConfigFile } from '../../../../../core/verification-evidence/verifyTypes';
@@ -14,11 +14,12 @@ export function digestFile(path: string, maxBytes?: number, retain = false): Cap
 	const chunks: Buffer[] = [];
 	let bytes = 0;
 	try {
-		if (!fstatSync(descriptor).isFile()) throw new Error('Capture must be a regular file.');
+		if (!fstatSync(descriptor).isFile())
+			throw new CaptureReadError('Capture must be a regular file.');
 		for (let read = readSync(descriptor, chunk); read > 0; read = readSync(descriptor, chunk)) {
 			bytes += read;
 			if (maxBytes !== undefined && bytes > maxBytes)
-				throw new Error(
+				throw new CaptureReadError(
 					'Capture exceeded maxCaptureBytes or remaining maxRecordBytes while reading.'
 				);
 			hash.update(chunk.subarray(0, read));
