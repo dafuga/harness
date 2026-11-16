@@ -44,7 +44,7 @@ export function propsType(node: ts.VariableDeclaration): ts.TypeNode | undefined
 export function localProps(
 	type: ts.TypeNode | undefined,
 	file: ts.SourceFile,
-	seen = new Set<string>()
+	seen: Set<string> = new Set<string>()
 ): ContractItem[] {
 	if (!type) return [];
 	if (ts.isParenthesizedTypeNode(type)) return localProps(type.type, file, seen);
@@ -90,14 +90,13 @@ export function boundProps(
 			(entry) => (entry.propertyName?.getText() ?? entry.name.getText()) === item.name
 		);
 		const fallback = binding?.initializer ? bindableValue(binding.initializer) : undefined;
+		let optional: Pick<ContractItem, 'required' | 'default'> = {};
+		if (fallback) optional = { required: false, ...parameterDefault(fallback) };
+		else if (item.required === false) optional = { default: 'undefined (omitted)' };
 		return {
 			...item,
 			name: `${owner}.${item.name}`,
-			...(fallback
-				? { required: false, ...parameterDefault(fallback) }
-				: item.required === false
-					? { default: 'undefined (omitted)' }
-					: {})
+			...optional
 		};
 	});
 }
