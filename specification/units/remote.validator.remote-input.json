@@ -28,7 +28,7 @@
 		"inputs": [
 			{
 				"name": "RemoteInputValidator.attach.input",
-				"type": "Fields",
+				"type": "unknown",
 				"required": true,
 				"description": "The raw input to `attach`: an object with exactly the keys `client`, `protocol` and `resume`, and any other shape is refused. `protocol` must be the number 1, `client.kind` must be `electron`, `ios` or `test`, `client.name` must be non-blank and at most 80 characters, and `resume` must be null or `{ epoch, sequence }` with an `epoch` of 32 lowercase hex characters and a `sequence` that is a non-negative safe integer.",
 				"examples": [
@@ -55,9 +55,9 @@
 			},
 			{
 				"name": "RemoteInputValidator.projectId.input",
-				"type": "Fields",
+				"type": "unknown",
 				"required": true,
-				"description": "The request fields that name the project, read from the `projectId` key. The value must be the string `local-` followed by 64 lowercase hex characters, the form the protocol reserves for projects registered on the computer, so paths and hosted project ids are refused.",
+				"description": "The raw request input that names the project, read from its `projectId` key; an input that is not a non-array object has no such key. The value must be the string `local-` followed by 64 lowercase hex characters, the form the protocol reserves for projects registered on the computer, so paths and hosted project ids are refused.",
 				"examples": [
 					{
 						"projectId": "local-7d3a9f0c12e845b6a09c7e1f3d52b8a46e0c9d17b3f2a85e41d6c0b9e7f3a2d8"
@@ -69,9 +69,9 @@
 			},
 			{
 				"name": "RemoteInputValidator.revision.input",
-				"type": "Fields",
+				"type": "unknown",
 				"required": true,
-				"description": "The request fields that name the checked-out revision, read from the `revision` key. That value must be an object with exactly `branch` and `commit`, where `branch` is a string of 1 to 255 characters and `commit` is a 40-character lowercase hex SHA.",
+				"description": "The raw request input that names the checked-out revision, read from its `revision` key; an input that is not a non-array object has no such key. That value must be an object with exactly `branch` and `commit`, where `branch` is a string of 1 to 255 characters and `commit` is a 40-character lowercase hex SHA.",
 				"examples": [
 					{
 						"revision": {
@@ -89,7 +89,7 @@
 			},
 			{
 				"name": "RemoteInputValidator.approval.input",
-				"type": "Fields",
+				"type": "unknown",
 				"required": true,
 				"description": "The approval input: an object with exactly `agents`, `deviceId`, `pairingId` and `projectIds`, plus `comments` only when it is sent. `pairingId` must be 32 lowercase hex characters, `deviceId` must be 40 lowercase hex characters, `projectIds` must hold 1 to 64 distinct `local-` project ids, and `agents` must be a boolean; a present `comments` must be a boolean that is true whenever `agents` is true.",
 				"examples": [
@@ -124,7 +124,7 @@
 			},
 			{
 				"name": "RemoteInputValidator.pairing.input",
-				"type": "Fields",
+				"type": "unknown",
 				"required": true,
 				"description": "An object with exactly one key, `pairingId`, whose value must be 32 lowercase hex characters; any other shape or value is refused with `invalid-message`.",
 				"examples": [
@@ -138,7 +138,7 @@
 			},
 			{
 				"name": "RemoteInputValidator.device.input",
-				"type": "Fields",
+				"type": "unknown",
 				"required": true,
 				"description": "An object with exactly one key, `deviceId`, whose value must be 40 lowercase hex characters; any other shape or value is refused with `invalid-message`.",
 				"examples": [
@@ -268,7 +268,7 @@
 				"inputs": [
 					{
 						"name": "RemoteInputValidator.attach.input",
-						"type": "Fields",
+						"type": "unknown",
 						"required": true,
 						"description": "The raw input to `attach`: an object with exactly the keys `client`, `protocol` and `resume`, and any other shape is refused. `protocol` must be the number 1, `client.kind` must be `electron`, `ios` or `test`, `client.name` must be non-blank and at most 80 characters, and `resume` must be null or `{ epoch, sequence }` with an `epoch` of 32 lowercase hex characters and a `sequence` that is a non-negative safe integer.",
 						"examples": [
@@ -336,9 +336,9 @@
 				"inputs": [
 					{
 						"name": "RemoteInputValidator.projectId.input",
-						"type": "Fields",
+						"type": "unknown",
 						"required": true,
-						"description": "The request fields that name the project, read from the `projectId` key. The value must be the string `local-` followed by 64 lowercase hex characters, the form the protocol reserves for projects registered on the computer, so paths and hosted project ids are refused.",
+						"description": "The raw request input that names the project, read from its `projectId` key; an input that is not a non-array object has no such key. The value must be the string `local-` followed by 64 lowercase hex characters, the form the protocol reserves for projects registered on the computer, so paths and hosted project ids are refused.",
 						"examples": [
 							{
 								"projectId": "local-7d3a9f0c12e845b6a09c7e1f3d52b8a46e0c9d17b3f2a85e41d6c0b9e7f3a2d8"
@@ -364,7 +364,7 @@
 					{
 						"name": "RemoteFailure",
 						"type": "thrown",
-						"description": "Thrown as RemoteFailure with code `project-required` when `projectId` is undefined, and with code `project-denied` when it is not a string of the form `local-` followed by 64 lowercase hex characters."
+						"description": "Thrown as RemoteFailure with code `project-required` when the input is not a non-array object or its `projectId` is undefined, and with code `project-denied` when it is not a string of the form `local-` followed by 64 lowercase hex characters."
 					}
 				],
 				"errorStatus": "declared"
@@ -374,9 +374,9 @@
 				"inputs": [
 					{
 						"name": "RemoteInputValidator.revision.input",
-						"type": "Fields",
+						"type": "unknown",
 						"required": true,
-						"description": "The request fields that name the checked-out revision, read from the `revision` key. That value must be an object with exactly `branch` and `commit`, where `branch` is a string of 1 to 255 characters and `commit` is a 40-character lowercase hex SHA.",
+						"description": "The raw request input that names the checked-out revision, read from its `revision` key; an input that is not a non-array object has no such key. That value must be an object with exactly `branch` and `commit`, where `branch` is a string of 1 to 255 characters and `commit` is a 40-character lowercase hex SHA.",
 						"examples": [
 							{
 								"revision": {
@@ -414,7 +414,7 @@
 					{
 						"name": "RemoteFailure",
 						"type": "thrown",
-						"description": "Thrown as RemoteFailure with code `revision-required` whenever `revision` is undefined or malformed: not an object with exactly `branch` and `commit`, a `branch` that is empty or longer than 255 characters, or a `commit` that is not 40 lowercase hex characters."
+						"description": "Thrown as RemoteFailure with code `revision-required` whenever the input is not a non-array object, or `revision` is undefined or malformed: not an object with exactly `branch` and `commit`, a `branch` that is empty or longer than 255 characters, or a `commit` that is not 40 lowercase hex characters."
 					}
 				],
 				"errorStatus": "declared"
@@ -424,7 +424,7 @@
 				"inputs": [
 					{
 						"name": "RemoteInputValidator.approval.input",
-						"type": "Fields",
+						"type": "unknown",
 						"required": true,
 						"description": "The approval input: an object with exactly `agents`, `deviceId`, `pairingId` and `projectIds`, plus `comments` only when it is sent. `pairingId` must be 32 lowercase hex characters, `deviceId` must be 40 lowercase hex characters, `projectIds` must hold 1 to 64 distinct `local-` project ids, and `agents` must be a boolean; a present `comments` must be a boolean that is true whenever `agents` is true.",
 						"examples": [
@@ -499,7 +499,7 @@
 				"inputs": [
 					{
 						"name": "RemoteInputValidator.pairing.input",
-						"type": "Fields",
+						"type": "unknown",
 						"required": true,
 						"description": "An object with exactly one key, `pairingId`, whose value must be 32 lowercase hex characters; any other shape or value is refused with `invalid-message`.",
 						"examples": [
@@ -541,7 +541,7 @@
 				"inputs": [
 					{
 						"name": "RemoteInputValidator.device.input",
-						"type": "Fields",
+						"type": "unknown",
 						"required": true,
 						"description": "An object with exactly one key, `deviceId`, whose value must be 40 lowercase hex characters; any other shape or value is refused with `invalid-message`.",
 						"examples": [

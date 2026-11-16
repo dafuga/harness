@@ -1,5 +1,4 @@
 import type { GameView, LevelLayout, LevelPlanning } from '../../models/game-authoring/Game.types';
-import type { RecordValue } from './gameDocument.types';
 
 /** Validates data-only geometry; model output never grants approval or executes code. */
 export class LevelValidator {
@@ -96,7 +95,6 @@ function validProposal(input: unknown): boolean {
 		['codex', 'claude'].includes(String(input.provider)) &&
 		validModel(input.model) &&
 		text(input.summary) &&
-		record(input.layout) &&
 		LevelValidator.layout(input.layout)
 	);
 }
