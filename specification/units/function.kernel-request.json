@@ -20,7 +20,7 @@
 		"inputs": [
 			{
 				"name": "kernelRequest.input",
-				"type": "Input",
+				"type": "unknown",
 				"required": true,
 				"description": "The untrusted value to validate as an impact input. It must be a non-array object with `base` and `head` graphs (`nodes` as string arrays and `edges` as arrays of exactly two nonnegative integers), plus string arrays `changed`, `uncertain`, and `sinks`; extra fields are ignored.",
 				"examples": [
@@ -43,7 +43,7 @@
 			},
 			{
 				"name": "isObject.value",
-				"type": "Value",
+				"type": "unknown",
 				"required": true,
 				"description": "The value passed to the object guard. It returns false for null, arrays, primitives, and functions, and true for other non-null objects regardless of prototype.",
 				"examples": [
@@ -95,7 +95,7 @@
 				"inputs": [
 					{
 						"name": "kernelRequest.input",
-						"type": "Input",
+						"type": "unknown",
 						"required": true,
 						"description": "The untrusted value to validate as an impact input. It must be a non-array object with `base` and `head` graphs (`nodes` as string arrays and `edges` as arrays of exactly two nonnegative integers), plus string arrays `changed`, `uncertain`, and `sinks`; extra fields are ignored.",
 						"examples": [
@@ -151,7 +151,7 @@
 				"inputs": [
 					{
 						"name": "isObject.value",
-						"type": "Value",
+						"type": "unknown",
 						"required": true,
 						"description": "The value passed to the object guard. It returns false for null, arrays, primitives, and functions, and true for other non-null objects regardless of prototype.",
 						"examples": [
@@ -166,7 +166,7 @@
 				"outputs": [
 					{
 						"name": "isObject",
-						"type": "value is Value & Fields",
+						"type": "value is Fields",
 						"description": "A boolean type guard for `Fields` (`Record<string, unknown>`). It returns true for any non-null, non-array object without checking its prototype, and false for arrays, primitives, functions, and null.",
 						"examples": [true, false]
 					}
