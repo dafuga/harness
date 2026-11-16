@@ -1,5 +1,5 @@
 // @harness-uid u_xjxwj3n4f7
-import type { ReviewInputFile } from './cleanCodeFiles.types';
+import { InvalidReviewInputError, type ReviewInputFile } from './cleanCodeFiles.types';
 import { createHash } from 'node:crypto';
 import { lstat, readFile, realpath } from 'node:fs/promises';
 import { isAbsolute, join, relative } from 'node:path';
@@ -22,8 +22,9 @@ export async function readReviewInput(root: string, path: string): Promise<Revie
 		details.isSymbolicLink() ||
 		!details.isFile()
 	)
-		throw new Error('Review input is outside the project or is a symlink.');
-	if (details.size > 1024 * 1024) throw new Error('Review input exceeds the supported size.');
+		throw new InvalidReviewInputError('Review input is outside the project or is a symlink.');
+	if (details.size > 1024 * 1024)
+		throw new InvalidReviewInputError('Review input exceeds the supported size.');
 	const contents = await readFile(absolutePath, 'utf8');
 	return { path, contents, hash: reviewHash(contents) };
 }

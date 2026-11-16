@@ -11,6 +11,7 @@ import type {
 } from '../../models/development-tooling/Deployment.types';
 import { gitRead } from './gitRead';
 import { deploymentState } from './deploymentState';
+import { DeploymentNotCurrentError } from './deploymentProof.types';
 export function deploymentProof(config: DeploymentConfig): string {
 	return createHash('sha256').update(JSON.stringify(config)).digest('hex');
 }
@@ -69,19 +70,23 @@ export async function deploymentCurrent(
 	const config = await guard.plugin.discover(root);
 	if (!config.sourceBranch) config.sourceBranch = plan.branch;
 	if (deploymentProof(config) !== guard.fingerprint)
-		throw new Error(`Deployment configuration changed${guard.phase ?? ''}; review again.`);
+		throw new DeploymentNotCurrentError(
+			`Deployment configuration changed${guard.phase ?? ''}; review again.`
+		);
 	const proof = await deploymentBlockers(root, plan, config);
 	if (
 		plan.environment === 'prod' &&
 		JSON.stringify(proof.promotion) !== JSON.stringify(plan.promotion)
 	)
-		throw new Error('Preprod or production changed; review the promotion again.');
+		throw new DeploymentNotCurrentError(
+			'Preprod or production changed; review the promotion again.'
+		);
 	if (proof.blockers.length) {
 		if (guard.phase)
-			throw new Error(
+			throw new DeploymentNotCurrentError(
 				'Source or promotion state changed during deployment; inspect Cloudflare before retrying.'
 			);
-		throw new Error(proof.blockers.join(' '));
+		throw new DeploymentNotCurrentError(proof.blockers.join(' '));
 	}
 	return config;
 }

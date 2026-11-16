@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/development-tooling/sqliteBinding.ts"],
-		"symbols": ["sqliteBinding"]
+		"source": [
+			"src/utils/development-tooling/sqliteBinding.ts",
+			"src/utils/development-tooling/sqliteBinding.types.ts"
+		],
+		"symbols": ["sqliteBinding", "InvalidSqliteFieldValueError"]
 	},
 	"contract": {
 		"origin": "declared",

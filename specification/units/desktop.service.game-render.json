@@ -8,8 +8,19 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/lib/development-tooling/desktop-bridge/GameRenderService.ts"],
-		"symbols": ["GameRenderService", "GameRenderService.constructor", "GameRenderService.start"]
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/GameRenderService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/GameRenderService.types.ts"
+		],
+		"symbols": [
+			"GameRenderService",
+			"GameRenderService.constructor",
+			"GameRenderService.start",
+			"GameRenderBusyError",
+			"CredentialSafeProviderTransportUnavailableError",
+			"DecartTokenRequestError",
+			"InvalidDecartTokenResponseError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

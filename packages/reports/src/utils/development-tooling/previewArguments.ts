@@ -3,6 +3,7 @@ import type { PreviewArguments, PreviewOptions } from './previewArguments.types'
 import { createHash } from 'node:crypto';
 import { realpathSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { ExpectedCliError } from '../../../../../src/core/development-tooling/errors';
 
 /** The app owns its listener; Vite must never move to another port or expose it remotely. */
 export function previewArguments(
@@ -18,7 +19,7 @@ export function previewArguments(
 	}
 	options.root = realpathSync(options.root);
 	if (!Number.isInteger(options.port) || options.port < 1024 || options.port > 65535)
-		throw new Error('Preview port must be from 1024 to 65535.');
+		throw new ExpectedCliError('Preview port must be from 1024 to 65535.');
 	const settings = Object.keys(env)
 		.sort()
 		.filter(relevant)
@@ -35,7 +36,7 @@ function relevant(key: string): boolean {
 	);
 }
 function applyOption(options: PreviewOptions, arg: string, value: string | undefined): void {
-	if (!value || value.startsWith('--')) throw new Error(`Missing value for ${arg}.`);
+	if (!value || value.startsWith('--')) throw new ExpectedCliError(`Missing value for ${arg}.`);
 	switch (arg) {
 		case '--config':
 			options.configFile = resolve(value);
@@ -44,10 +45,11 @@ function applyOption(options: PreviewOptions, arg: string, value: string | undef
 			options.port = Number(value);
 			break;
 		case '--host':
-			if (value !== '127.0.0.1') throw new Error('Harness previews bind to 127.0.0.1 only.');
+			if (value !== '127.0.0.1')
+				throw new ExpectedCliError('Harness previews bind to 127.0.0.1 only.');
 			break;
 		default:
-			throw new Error(`Unsupported managed preview option: ${arg}`);
+			throw new ExpectedCliError(`Unsupported managed preview option: ${arg}`);
 	}
 }
 

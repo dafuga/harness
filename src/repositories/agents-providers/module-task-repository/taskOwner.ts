@@ -4,6 +4,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import type { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { ProcessIdentityAdapter } from '../../../services/agents-providers/agent-activity-service/ProcessIdentityAdapter';
+import { TaskOwnerIdentityError } from './taskOwner.types';
 /** Distinguish separate clones, including hosts with identical names, without copying credentials. */
 export async function taskOwner(git: GitAdapter) {
 	const common = await git.run(['rev-parse', '--git-common-dir']);
@@ -15,8 +16,10 @@ export async function taskOwner(git: GitAdapter) {
 		if ((error as { code?: string }).code !== 'EEXIST') throw error;
 	}
 	const workspace = (await readFile(path, 'utf8')).trim();
-	if (!/^[a-f0-9-]{36}$/.test(workspace)) throw new Error('Invalid local task owner identity.');
+	if (!/^[a-f0-9-]{36}$/.test(workspace))
+		throw new TaskOwnerIdentityError('Invalid local task owner identity.');
 	const facts = new ProcessIdentityAdapter().find(process.pid);
-	if (!facts.startedAt) throw new Error('Cannot establish task owner process identity.');
+	if (!facts.startedAt)
+		throw new TaskOwnerIdentityError('Cannot establish task owner process identity.');
 	return { workspace, pid: process.pid, startedAt: facts.startedAt };
 }

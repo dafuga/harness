@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/execution-runtimes/resourceCommand.ts"],
-		"symbols": ["resourceCommand"]
+		"source": [
+			"src/utils/execution-runtimes/resourceCommand.ts",
+			"src/utils/execution-runtimes/resourceCommand.types.ts"
+		],
+		"symbols": ["resourceCommand", "InvalidResourceCommandInputError"]
 	},
 	"contract": {
 		"origin": "declared",

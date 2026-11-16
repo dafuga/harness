@@ -3,6 +3,7 @@ import { cliEnvironment } from '../cli-environment/cliEnvironment';
 import { killOwnedProcess } from '../agents-providers/cliProcess';
 import { spawn } from 'node:child_process';
 import type { DeployCommand } from '../../models/development-tooling/Deployment.types';
+import { DeploymentCommandError } from './deploymentCommand.types';
 /** No shell, inherited Cloudflare credentials, or credential-bearing failure output. */
 export async function deploymentCommand(command: DeployCommand): Promise<string> {
 	const env = cliEnvironment();
@@ -20,7 +21,7 @@ export async function deploymentCommand(command: DeployCommand): Promise<string>
 		child.stderr.on('data', () => {});
 		child.on('error', () => {
 			clearTimeout(timer);
-			reject(new Error('Deployment command could not start.'));
+			reject(new DeploymentCommandError('Deployment command could not start.'));
 		});
 		const timer = setTimeout(
 			() => {
@@ -32,7 +33,9 @@ export async function deploymentCommand(command: DeployCommand): Promise<string>
 			clearTimeout(timer);
 			if (code !== 0)
 				reject(
-					new Error(`Deployment step ${command.args.slice(0, 3).join(' ')} failed (${code}).`)
+					new DeploymentCommandError(
+						`Deployment step ${command.args.slice(0, 3).join(' ')} failed (${code}).`
+					)
 				);
 			else resolve(output);
 		});

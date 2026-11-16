@@ -4,6 +4,7 @@ import { R2EvidenceStoreAdapter } from '../../../../adapters/R2EvidenceStoreAdap
 import { r2EvidenceConfig } from '../../../../utils/verification-evidence/r2EvidenceConfig';
 import { safeId } from '../../../../utils/reports-media/reportFiles';
 import { reportCloudPrefixes } from '../../../../utils/reports-media/reportRetention';
+import { CloudCleanupError } from './R2ReportRetentionAdapter.types';
 export class R2ReportRetentionAdapter extends R2EvidenceStoreAdapter {
 	static override fromEnvironment() {
 		const config = r2EvidenceConfig();
@@ -48,11 +49,12 @@ export class R2ReportRetentionAdapter extends R2EvidenceStoreAdapter {
 				})
 			);
 			for (const item of page.Contents || []) {
-				if (!item.Key?.startsWith(prefix)) throw new Error('Cloud object escaped report scope');
+				if (!item.Key?.startsWith(prefix))
+					throw new CloudCleanupError('Cloud object escaped report scope');
 				objects.push(item);
 			}
 			if (page.IsTruncated && !page.NextContinuationToken)
-				throw new Error('Incomplete cloud listing; retry cleanup');
+				throw new CloudCleanupError('Incomplete cloud listing; retry cleanup');
 			token = page.NextContinuationToken;
 		} while (token);
 		return objects;
@@ -69,7 +71,7 @@ export class R2ReportRetentionAdapter extends R2EvidenceStoreAdapter {
 				})
 			);
 			if (result.Errors?.length)
-				throw new Error(
+				throw new CloudCleanupError(
 					`Cloud cleanup failed for ${result.Errors.length} objects; local report retained for retry`
 				);
 		}

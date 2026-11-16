@@ -13,6 +13,7 @@ import type {
 	DeploymentEnvironment
 } from '../../models/development-tooling/Deployment.types';
 import { gitRead } from './gitRead';
+import { DeploymentConfigError } from './deploymentConfig.types';
 const text = z.string().min(1);
 const targetSchema = z.object({
 	wranglerEnvironment: z.string().default(''),
@@ -38,7 +39,7 @@ export function deploymentPath(root: string, path: string): string {
 	const full = resolve(root, path),
 		rel = relative(root, full);
 	if (!rel || rel === '..' || rel.startsWith('../') || rel.startsWith('/'))
-		throw new Error('Deployment paths must stay inside the project.');
+		throw new DeploymentConfigError('Deployment paths must stay inside the project.');
 	return full;
 }
 async function read(root: string, path: string): Promise<string | null> {
@@ -56,7 +57,7 @@ function parse(raw: string, path: string): Record<string, unknown> {
 	const errors: ParseError[] = [];
 	const value = jsonc(raw, errors, { allowTrailingComma: true });
 	if (errors.length || !value || typeof value !== 'object')
-		throw new Error('Invalid Wrangler configuration.');
+		throw new DeploymentConfigError('Invalid Wrangler configuration.');
 	return value;
 }
 async function configFile(root: string, selected?: string) {
@@ -64,7 +65,7 @@ async function configFile(root: string, selected?: string) {
 		const raw = await read(root, path);
 		if (raw !== null) return { path, config: parse(raw, path), raw };
 	}
-	throw new Error('No Cloudflare Wrangler configuration found.');
+	throw new DeploymentConfigError('No Cloudflare Wrangler configuration found.');
 }
 function detected(
 	config: Record<string, unknown>,
@@ -101,7 +102,7 @@ export async function deploymentConfig(root: string): Promise<DeploymentConfig> 
 		.filter((item) => item.kind === 'workers')
 		.map((item) => `${item.accountId}/${item.name}`);
 	if (new Set(workers).size !== workers.length)
-		throw new Error('Environment Worker targets must be distinct.');
+		throw new DeploymentConfigError('Environment Worker targets must be distinct.');
 	return {
 		sourceBranch,
 		targets,
@@ -157,14 +158,17 @@ function inferredTarget(
 }
 function validateTarget(config: Record<string, unknown>, value: CloudflareTarget) {
 	if (value.kind === 'pages') {
-		if (!value.branch) throw new Error(`Explicit Pages branch required for ${value.environment}.`);
+		if (!value.branch)
+			throw new DeploymentConfigError(`Explicit Pages branch required for ${value.environment}.`);
 		return;
 	}
 	const env = (config.env ?? {}) as Record<string, Record<string, unknown>>;
 	const named = env[value.wranglerEnvironment] ?? {};
 	const account = named.account_id ?? config.account_id;
 	if (account && account !== value.accountId)
-		throw new Error('Wrangler and deployment account mappings differ.');
+		throw new DeploymentConfigError('Wrangler and deployment account mappings differ.');
 	if (!value.wranglerEnvironment || named.name !== value.name)
-		throw new Error(`Explicit named Worker configuration required for ${value.environment}.`);
+		throw new DeploymentConfigError(
+			`Explicit named Worker configuration required for ${value.environment}.`
+		);
 }

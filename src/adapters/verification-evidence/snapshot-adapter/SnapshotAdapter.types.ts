@@ -5,3 +5,8 @@ export interface SnapshotDrift {
 	/** Files the commit does not contain and no output declaration covers. */
 	added: string[];
 }
+
+/** Tar exited nonzero while extracting a commit export; the message carries its stderr. */
+export class TarExtractError extends Error {
+	override name = 'TarExtractError';
+}

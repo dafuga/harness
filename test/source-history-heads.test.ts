@@ -2,6 +2,7 @@ import { rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GitAdapter } from '../src/adapters/git-source-history/GitAdapter';
+import { GitCommandError } from '../src/adapters/git-source-history/GitAdapter.types';
 import { SourceHistoryRepository } from '../src/repositories/git-source-history/source-history-repository/SourceHistoryRepository';
 import { withTempRepo } from './support/temporary';
 
@@ -87,7 +88,7 @@ test('a head Git cannot walk fails the read as before, after each head before it
 		git('checkout', '-q', 'main');
 		rmSync(join(root, '.git', 'objects', lost.slice(0, 2), lost.slice(2)));
 		const { result, walks } = await walked(() => new SourceHistoryRepository(root).read(10));
-		expect(result).toBeInstanceOf(Error);
+		expect(result).toBeInstanceOf(GitCommandError);
 		expect((result as Error).message).toMatch(new RegExp(`^git rev-list ${orphan} failed: `));
 		expect(walks).toEqual([c1, c2, orphan]);
 	});

@@ -11,8 +11,11 @@
 		"visibility": "internal"
 	},
 	"owns": {
-		"source": ["src/commands/module-system/ModuleCommand.ts"],
-		"symbols": ["ModuleCommand", "ModuleCommand.register"]
+		"source": [
+			"src/commands/module-system/ModuleCommand.ts",
+			"src/commands/module-system/ModuleCommand.types.ts"
+		],
+		"symbols": ["ModuleCommand", "ModuleCommand.register", "TestingPluginCancelledError"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -64,6 +67,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "service.module-system-module-catalog",
 			"via": "import",

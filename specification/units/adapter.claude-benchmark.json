@@ -8,13 +8,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/benchmark-service/benchmark-definition/ClaudeBenchmarkAdapter.ts"],
+		"source": [
+			"src/cli/program/benchmark-service/benchmark-definition/ClaudeBenchmarkAdapter.ts",
+			"src/cli/program/benchmark-service/benchmark-definition/ClaudeBenchmarkAdapter.types.ts"
+		],
 		"symbols": [
 			"ClaudeBenchmarkAdapter",
 			"ClaudeBenchmarkAdapter.constructor",
 			"ClaudeBenchmarkAdapter.preflight",
 			"ClaudeBenchmarkAdapter.run",
-			"ClaudeBenchmarkAdapter.command"
+			"ClaudeBenchmarkAdapter.command",
+			"ClaudeRunError"
 		]
 	},
 	"contract": {
@@ -300,6 +304,11 @@
 		},
 		{
 			"unit": "function.benchmark-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},

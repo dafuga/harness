@@ -1,4 +1,11 @@
 // @harness-uid u_5nouewhdog
+import {
+	CloudflareCredentialConfigurationError,
+	CloudflareDeploymentIdentityMissingError,
+	CloudflareProductionBranchConflictError,
+	CloudflareProductionBranchUnknownError,
+	CloudflareTargetAccessVerificationError
+} from './CloudflareDeployAdapter.types';
 import type { Options } from './CloudflareDeployAdapter.types';
 import { deploymentConfig } from '../../utils/projects-sessions/deploymentConfig';
 import { deploymentCommand } from '../../utils/projects-sessions/deploymentCommand';
@@ -14,7 +21,10 @@ export class CloudflareDeployAdapter implements DeploymentPlugin {
 	}
 	async deploy(target: CloudflareTarget, source: { root: string; commit: string }) {
 		const token = process.env[target.tokenEnv];
-		if (!token) throw new Error(`Configure the dedicated credential ${target.tokenEnv}.`);
+		if (!token)
+			throw new CloudflareCredentialConfigurationError(
+				`Configure the dedicated credential ${target.tokenEnv}.`
+			);
 		await this.checkTarget(target, token);
 		const args = ['bun', 'x', '--no-install', 'wrangler'];
 		if (target.kind === 'pages')
@@ -54,16 +64,22 @@ export class CloudflareDeployAdapter implements DeploymentPlugin {
 				signal: AbortSignal.timeout(15000)
 			}
 		);
-		if (!response.ok) throw new Error('Cloudflare target/account access could not be verified.');
+		if (!response.ok)
+			throw new CloudflareTargetAccessVerificationError(
+				'Cloudflare target/account access could not be verified.'
+			);
 		if (target.kind !== 'pages') return;
 		const value = (await response.json()) as {
 			success: boolean;
 			result?: { production_branch?: string };
 		};
 		const production = value.result?.production_branch;
-		if (!value.success || !production) throw new Error('Cloudflare production branch is unknown.');
+		if (!value.success || !production)
+			throw new CloudflareProductionBranchUnknownError('Cloudflare production branch is unknown.');
 		if ((target.environment === 'prod') !== (target.branch === production))
-			throw new Error('The Pages target conflicts with the live production branch.');
+			throw new CloudflareProductionBranchConflictError(
+				'The Pages target conflicts with the live production branch.'
+			);
 	}
 }
 
@@ -74,7 +90,7 @@ function deploymentIdentity(target: CloudflareTarget, output: string) {
 			? url?.match(/https:\/\/([a-z0-9]+)\./)?.[1]
 			: output.match(/Version ID:\s*([a-f0-9-]{36})/i)?.[1];
 	if (!deploymentId)
-		throw new Error(
+		throw new CloudflareDeploymentIdentityMissingError(
 			'Cloudflare did not return a deployment identity. Inspect the provider before retrying.'
 		);
 	return { deploymentId, url: url ?? target.healthUrl };

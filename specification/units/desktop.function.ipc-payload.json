@@ -10,6 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/ipc-payload/ipcPayload.ts",
+			"packages/desktop/src/utils/ipc-payload/ipcPayload.types.ts",
 			"packages/desktop/src/utils/ipcPayload.ts"
 		],
 		"symbols": [
@@ -19,6 +20,7 @@
 			"creationPayload",
 			"runPayload",
 			"ipcPayload",
+			"InvalidPayloadError",
 			"approvalPayload",
 			"threadPayload",
 			"creationProject",

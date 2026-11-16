@@ -8,11 +8,19 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/validators/development-tooling/NativeHandoffValidator.ts"],
+		"source": [
+			"packages/desktop/src/validators/development-tooling/NativeHandoffValidator.ts",
+			"packages/desktop/src/validators/development-tooling/NativeHandoffValidator.types.ts"
+		],
 		"symbols": [
 			"NativeHandoffValidator",
 			"NativeHandoffValidator.start",
-			"NativeHandoffValidator.exchange"
+			"NativeHandoffValidator.exchange",
+			"ExpiredNativeHandoffError",
+			"InvalidNativeHandoffError",
+			"InvalidNativeHandoffIdentityError",
+			"InvalidNativeHandoffUrlError",
+			"NativeHandoffBindingMismatchError"
 		]
 	},
 	"contract": {

@@ -4,12 +4,14 @@ import { tmpdir } from 'node:os';
 import { AnalyticsRepository } from '../../../../src/repositories/reports-media/AnalyticsRepository';
 import type { AnalyticsEvent } from '../../../../src/core/reports-media/analyticsTypes';
 import { e2eFixtures } from '../../src/utils/e2e-fixtures/e2eFixtures';
+import { NonTemporaryAnalyticsStoreError } from './analytics-e2e.types';
 
 const { root, analytics, site } = e2eFixtures();
 export function seedAnalyticsE2e(): void {
 	// The store of this run, or one a caller named in a temporary directory; never a real one.
 	const temporary = [root, '/tmp', tmpdir()].some((base) => analytics.startsWith(`${base}/`));
-	if (!temporary) throw new Error('Fixture requires a temporary analytics store.');
+	if (!temporary)
+		throw new NonTemporaryAnalyticsStoreError('Fixture requires a temporary analytics store.');
 	// The fixture store is temporary and holds nothing else, so every seeding starts it afresh.
 	rmSync(analytics, { recursive: true, force: true });
 	process.env.HARNESS_ANALYTICS_HOME = analytics;

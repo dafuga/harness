@@ -3,6 +3,30 @@ import type { RemoteHttpOptions } from '../../adapters/networking-security/hoste
 import type { ProjectionCacheService } from '../../lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService';
 import type { CacheStatus } from '../../models/projects-sessions/ProjectContext.types';
 
+export class HostedAuthorityChangedError extends Error {
+	override name = 'HostedAuthorityChangedError';
+}
+
+export class HostedSessionRequiredError extends Error {
+	override name = 'HostedSessionRequiredError';
+}
+
+export class HostedCacheIdentityMismatchError extends Error {
+	override name = 'HostedCacheIdentityMismatchError';
+}
+
+export class IncompleteHostedCacheIdentityError extends Error {
+	override name = 'IncompleteHostedCacheIdentityError';
+}
+
+export class InvalidHostedCacheRevisionError extends Error {
+	override name = 'InvalidHostedCacheRevisionError';
+}
+
+export class InvalidHostedCollaborationRevisionError extends Error {
+	override name = 'InvalidHostedCollaborationRevisionError';
+}
+
 export interface HostedReadOptions extends RemoteHttpOptions {
 	cache?: ProjectionCacheService;
 	onCacheStatus?: (status: CacheStatus) => void;

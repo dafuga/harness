@@ -1,6 +1,7 @@
 // @harness-uid u_hpruneview
 import { join, resolve } from 'node:path';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
+import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import { verificationsDirectory } from '../../../core/verification-evidence/verifyTypes';
 import { scanVerificationCache } from './scanVerificationCache';
 import type { PruneInventory, PruneInventoryEntry } from './previewHistoryPrune.types';
@@ -55,9 +56,9 @@ function renderEntry(entry: PruneInventoryEntry): string {
 
 function validateRetention(keepLast: number, olderThanDays: number): void {
 	if (!Number.isSafeInteger(keepLast) || keepLast < 0 || keepLast > 100_000)
-		throw new Error('--keep-last must be a whole number between 0 and 100000.');
+		throw new ExpectedCliError('--keep-last must be a whole number between 0 and 100000.');
 	if (!Number.isSafeInteger(olderThanDays) || olderThanDays < 1 || olderThanDays > 36500)
-		throw new Error('--older-than must be between 1 and 36500 whole days.');
+		throw new ExpectedCliError('--older-than must be between 1 and 36500 whole days.');
 }
 
 function applyRetention(

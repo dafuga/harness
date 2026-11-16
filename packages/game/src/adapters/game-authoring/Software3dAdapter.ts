@@ -1,4 +1,5 @@
 import type { Point, Box } from './Software3dAdapter.types';
+import { Canvas2dContextUnavailableError } from './Software3dAdapter.types';
 import type { FrameSource, GameRun, GameView } from '../../models/game-authoring/Game.types';
 
 /** The same primitive world projected onto Canvas when WebGL is unavailable. */
@@ -7,7 +8,8 @@ export class Software3dAdapter implements FrameSource {
 
 	constructor(readonly canvas: HTMLCanvasElement) {
 		const context = canvas.getContext('2d');
-		if (!context) throw new Error('This browser cannot create a game canvas.');
+		if (!context)
+			throw new Canvas2dContextUnavailableError('This browser cannot create a game canvas.');
 		this.ctx = context;
 	}
 

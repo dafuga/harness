@@ -5,6 +5,11 @@ import type {
 	ProjectCapabilities,
 	ProjectContext
 } from '../../../models/projects-sessions/ProjectContext.types';
+import {
+	InvalidProjectDiscussionAnchorError,
+	UnknownCommentImageAnchorError,
+	UnknownCommentThreadError
+} from './ProjectOperationsService.types';
 export class ProjectOperationsService {
 	constructor(
 		private session: ProjectSessionService,
@@ -50,7 +55,7 @@ export class ProjectOperationsService {
 						image.state === input.anchor.state &&
 						image.viewport === input.anchor.viewport
 				);
-			if (!image) throw new Error('Unknown comment image anchor.');
+			if (!image) throw new UnknownCommentImageAnchorError('Unknown comment image anchor.');
 		}
 		if (
 			input.threadId &&
@@ -61,7 +66,7 @@ export class ProjectOperationsService {
 					thread.version === input.anchor.version
 			)
 		)
-			throw new Error('Unknown comment thread.');
+			throw new UnknownCommentThreadError('Unknown comment thread.');
 		return this.outbox.save({ ...input, projectId: this.session.projectId! });
 	}
 	async pendingComments(input: ProjectContext = {}) {
@@ -81,6 +86,6 @@ function projectDiscussion(input: HumanCommentDraft): boolean {
 		input.anchor.viewport ||
 		input.anchor.region
 	)
-		throw new Error('Invalid project discussion anchor.');
+		throw new InvalidProjectDiscussionAnchorError('Invalid project discussion anchor.');
 	return true;
 }

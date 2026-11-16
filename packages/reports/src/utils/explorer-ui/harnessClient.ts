@@ -1,5 +1,6 @@
 // @harness-uid u_l2la5zvioj
 import type { HarnessClient } from './harnessClient.types';
+import { HarnessDataLoadError } from './harnessClient.types';
 import type { ProjectActivity } from '../../../../../src/core/activityTypes';
 import type { StoredSide } from '../../../../../src/utils/explorer-ui/sideImpact';
 import type { HarnessIndex, HarnessRevision } from '../../models/explorer-ui/Harness.types';
@@ -25,7 +26,8 @@ function reading(base: string, fetcher: typeof fetch): HarnessClient {
 		const pending =
 			cache.get(path) ??
 			fetcher(`${base}/data/${path}`).then((response) => {
-				if (!response.ok) throw new Error(`${path} could not be loaded (${response.status})`);
+				if (!response.ok)
+					throw new HarnessDataLoadError(`${path} could not be loaded (${response.status})`);
 				return response.json() as Promise<unknown>;
 			});
 		cache.set(path, pending);

@@ -1,6 +1,7 @@
 // @harness-uid u_xxnguxn63c
 import { open, readFile, stat, unlink } from 'node:fs/promises';
 import { join } from 'node:path';
+import { ReportLockBusyError } from './reportLock.types';
 async function recoverDeadLock(path: string) {
 	const details = await stat(path).catch(() => undefined);
 	if (!details || Date.now() - details.mtimeMs < 5000) return;
@@ -33,5 +34,5 @@ export async function reportLock<T>(directory: string, operation: () => Promise<
 		await recoverDeadLock(path);
 		await new Promise((resolve) => setTimeout(resolve, 25));
 	}
-	throw new Error('Report is busy; retry this update');
+	throw new ReportLockBusyError('Report is busy; retry this update');
 }

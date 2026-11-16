@@ -8,8 +8,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/planning-collaboration/designCount.ts"],
-		"symbols": ["defaultDesignOptions", "designCount"]
+		"source": [
+			"packages/desktop/src/utils/planning-collaboration/designCount.ts",
+			"packages/desktop/src/utils/planning-collaboration/designCount.types.ts"
+		],
+		"symbols": [
+			"defaultDesignOptions",
+			"designCount",
+			"DesignOptionsOnChangeError",
+			"InvalidDesignOptionsError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

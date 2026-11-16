@@ -10,3 +10,7 @@ export interface ResourceDatabase {
 	query(sql: string): Statement;
 	close(): void;
 }
+
+export class UnsupportedResourceQueueSchemaError extends Error {
+	override name = 'UnsupportedResourceQueueSchemaError';
+}

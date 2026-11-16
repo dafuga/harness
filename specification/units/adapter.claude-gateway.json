@@ -8,12 +8,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/codex-gateway-service/ClaudeGatewayAdapter.ts"],
+		"source": [
+			"src/cli/program/codex-gateway-service/ClaudeGatewayAdapter.ts",
+			"src/cli/program/codex-gateway-service/ClaudeGatewayAdapter.types.ts"
+		],
 		"symbols": [
 			"ClaudeGatewayAdapter",
 			"ClaudeGatewayAdapter.constructor",
 			"ClaudeGatewayAdapter.validate",
-			"ClaudeGatewayAdapter.start"
+			"ClaudeGatewayAdapter.start",
+			"InvalidToolContinuationError"
 		]
 	},
 	"contract": {

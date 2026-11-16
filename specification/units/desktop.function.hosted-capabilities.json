@@ -10,9 +10,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/hostedCapabilities.ts",
-			"packages/desktop/src/utils/networking-security/hostedCapabilities.ts"
+			"packages/desktop/src/utils/networking-security/hostedCapabilities.ts",
+			"packages/desktop/src/utils/networking-security/hostedCapabilities.types.ts"
 		],
-		"symbols": ["hostedCapabilities", "hostedCapabilities"]
+		"symbols": ["hostedCapabilities", "hostedCapabilities", "UnknownHostedProjectAccessError"]
 	},
 	"contract": {
 		"origin": "declared",

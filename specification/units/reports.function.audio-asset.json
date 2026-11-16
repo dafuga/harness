@@ -8,8 +8,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/reports-media/audio-asset/audioAsset.ts"],
-		"symbols": ["audioAsset"]
+		"source": [
+			"packages/reports/src/utils/reports-media/audio-asset/audioAsset.ts",
+			"packages/reports/src/utils/reports-media/audio-asset/audioAsset.types.ts"
+		],
+		"symbols": [
+			"audioAsset",
+			"InvalidAudioFileError",
+			"UnsupportedAudioFormatError",
+			"AudioContentMismatchError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

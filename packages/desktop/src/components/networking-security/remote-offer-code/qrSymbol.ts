@@ -1,6 +1,7 @@
 // @harness-uid u_bjqublt2hl
 import type { QrSymbol } from '../../../utils/networking-security/qrSymbol';
 import { qrLimits } from '../../../utils/networking-security/qrSymbol';
+import { QrRefusedError } from './qrSymbol.types';
 import { create } from 'qrcode';
 
 const plain = /^[!-~]+$/;
@@ -25,10 +26,10 @@ function row(dark: (column: number) => boolean, size: number, y: number): string
  * is handed to it and turns its modules into a path. Text that does not fit is refused.
  */
 export function qrSymbol(text: string): QrSymbol {
-	if (!plain.test(text) || text.length > qrLimits.maxBytes) throw new Error(refused);
+	if (!plain.test(text) || text.length > qrLimits.maxBytes) throw new QrRefusedError(refused);
 	const { modules } = create(text, { errorCorrectionLevel: qrLimits.level });
 	const { size } = modules;
-	if (size > qrLimits.maxModules) throw new Error(refused);
+	if (size > qrLimits.maxModules) throw new QrRefusedError(refused);
 	let path = '';
 	for (let y = 0; y < size; y++) path += row((x) => Boolean(modules.get(y, x)), size, y);
 	return { size, quiet: qrLimits.quiet, path };

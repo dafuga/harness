@@ -8,7 +8,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/repositories/reports-media/AnalyticsRepository.ts"],
+		"source": [
+			"src/repositories/reports-media/AnalyticsRepository.ts",
+			"src/repositories/reports-media/AnalyticsRepository.types.ts"
+		],
 		"symbols": [
 			"AnalyticsRepository",
 			"AnalyticsRepository.constructor",
@@ -18,7 +21,13 @@
 			"AnalyticsRepository.recordImported",
 			"AnalyticsRepository.events",
 			"AnalyticsRepository.prune",
-			"AnalyticsRepository.close"
+			"AnalyticsRepository.close",
+			"UnsupportedAnalyticsSchemaVersionError",
+			"UnsupportedAnalyticsSchemaVersionError.constructor",
+			"InvalidRetentionCutoffError",
+			"InvalidRetentionCutoffError.constructor",
+			"AnalyticsInitializationTimeoutError",
+			"AnalyticsInitializationTimeoutError.constructor"
 		]
 	},
 	"contract": {
@@ -593,6 +602,42 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "UnsupportedAnalyticsSchemaVersionError.constructor",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "UnsupportedAnalyticsSchemaVersionError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "InvalidRetentionCutoffError.constructor",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "InvalidRetentionCutoffError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AnalyticsInitializationTimeoutError.constructor",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "AnalyticsInitializationTimeoutError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		]
 	},

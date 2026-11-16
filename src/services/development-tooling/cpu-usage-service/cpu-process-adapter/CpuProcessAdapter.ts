@@ -3,12 +3,16 @@ import { performance } from 'node:perf_hooks';
 import { BoundedCommandAdapter } from '../../../../adapters/execution-runtimes/BoundedCommandAdapter';
 import { cpus, platform } from 'node:os';
 import { cpuProcesses } from './cpuProcesses';
+import {
+	CpuCountersUnavailableError,
+	UnsupportedCpuProcessPlatformError
+} from './CpuProcessAdapter.types';
 import type { CpuReading } from '../../../../utils/development-tooling/cpuMetrics';
 
 export class CpuProcessAdapter {
 	async sample(): Promise<CpuReading> {
 		if (!['darwin', 'linux'].includes(platform()))
-			throw new Error('Unsupported CPU process platform.');
+			throw new UnsupportedCpuProcessPlatformError('Unsupported CPU process platform.');
 		const stdout = await new BoundedCommandAdapter().checked(
 			'ps',
 			['-axo', 'pid=,ppid=,time=,args='],
@@ -19,7 +23,7 @@ export class CpuProcessAdapter {
 			}
 		);
 		const processors = cpus();
-		if (!processors.length) throw new Error('CPU counters unavailable.');
+		if (!processors.length) throw new CpuCountersUnavailableError('CPU counters unavailable.');
 		const cpu = processors.reduce(
 			(result, p) => ({
 				idle: result.idle + p.times.idle,

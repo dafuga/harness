@@ -8,7 +8,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/development-tooling/SqliteTableAdapter.ts"],
+		"source": [
+			"src/adapters/development-tooling/SqliteTableAdapter.ts",
+			"src/adapters/development-tooling/SqliteTableAdapter.types.ts"
+		],
 		"symbols": [
 			"SqliteTableAdapter",
 			"SqliteTableAdapter.constructor",
@@ -16,7 +19,8 @@
 			"SqliteTableAdapter.findBy",
 			"SqliteTableAdapter.insert",
 			"SqliteTableAdapter.update",
-			"SqliteTableAdapter.delete"
+			"SqliteTableAdapter.delete",
+			"PrimaryKeyUpdateError"
 		]
 	},
 	"contract": {

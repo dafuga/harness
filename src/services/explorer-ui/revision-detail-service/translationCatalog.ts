@@ -1,5 +1,6 @@
 // @harness-uid u_gndb6l2t6f
 import type { TranslationScan } from './translationCatalog.types';
+import { ResourcePathError } from './translationCatalog.types';
 import { posix } from 'node:path';
 import type { SourceTree } from '../../../core/development-tooling/sourceTypes';
 import type {
@@ -57,10 +58,10 @@ function remember(index: Map<string, Set<string>>, key: string, path: string) {
 
 function resourcePath(source: string, relative: string): string {
 	if (!relative.startsWith('.'))
-		throw new Error('Only repository-relative JSON resources are read.');
+		throw new ResourcePathError('Only repository-relative JSON resources are read.');
 	const path = posix.normalize(posix.join(posix.dirname(source), relative));
 	if (path.startsWith('../') || path.startsWith('/'))
-		throw new Error('Resource leaves the repository.');
+		throw new ResourcePathError('Resource leaves the repository.');
 	return path;
 }
 

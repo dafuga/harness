@@ -1,5 +1,6 @@
 // @harness-uid u_jrtyisgjb5
 import type { PendingComment } from './CommentOutboxService.types';
+import { CommentSaveError } from './CommentOutboxService.types';
 import { randomUUID } from 'node:crypto';
 import { LocalDocumentAdapter } from '../../adapters/reports-media/LocalDocumentAdapter';
 import type { HumanCommentDraft } from '../../models/projects-sessions/ProjectContext.types';
@@ -11,14 +12,14 @@ export class CommentOutboxService {
 	}
 	save(input: HumanCommentDraft): Promise<PendingComment> {
 		const projectId = input.projectId;
-		if (!projectId) return Promise.reject(new Error('A comment needs a project.'));
+		if (!projectId) return Promise.reject(new CommentSaveError('A comment needs a project.'));
 		return this.document.update((drafts) => {
 			const previous = drafts.find(
 				(draft) => draft.projectId === input.projectId && draft.input.requestId === input.requestId
 			);
 			if (previous) {
 				if (JSON.stringify(previous.input) !== JSON.stringify(input))
-					throw new Error('Conflicting comment request.');
+					throw new CommentSaveError('Conflicting comment request.');
 				return previous;
 			}
 			const draft: PendingComment = {

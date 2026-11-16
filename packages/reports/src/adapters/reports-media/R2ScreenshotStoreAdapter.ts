@@ -1,5 +1,6 @@
 // @harness-uid u_pefjibbljk
 import type { R2ScreenshotStoreAdapterConfig } from './R2ScreenshotStoreAdapter.types';
+import { R2ScreenshotStoreError } from './R2ScreenshotStoreAdapter.types';
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { readFileSync } from 'node:fs';
 import { safeId } from '../../utils/reports-media/reportFiles';
@@ -45,7 +46,8 @@ export function r2ScreenshotConfig(source: NodeJS.ProcessEnv, localFile?: string
 }
 
 export function r2ObjectKey(reportId: string, file: string) {
-	if (!/^[a-f0-9]{64}\.(png|jpg|webp)$/.test(file)) throw new Error('Invalid R2 image name');
+	if (!/^[a-f0-9]{64}\.(png|jpg|webp)$/.test(file))
+		throw new R2ScreenshotStoreError('Invalid R2 image name');
 	return `${screenshotObjectPrefix}runs/${safeId(reportId)}/assets/${file}`;
 }
 
@@ -77,9 +79,9 @@ export class R2ScreenshotStoreAdapter {
 				(value) => !value
 			)
 		)
-			throw new Error('Cloudflare R2 screenshot storage is not configured');
+			throw new R2ScreenshotStoreError('Cloudflare R2 screenshot storage is not configured');
 		if (config.endpoint && !/^http:\/\/127\.0\.0\.1:\d+$/.test(config.endpoint))
-			throw new Error('R2 endpoint override must be a local test server');
+			throw new R2ScreenshotStoreError('R2 endpoint override must be a local test server');
 		return new R2ScreenshotStoreAdapter(config);
 	}
 	async put(reportId: string, file: string, bytes: Buffer, mime: string) {
@@ -96,7 +98,7 @@ export class R2ScreenshotStoreAdapter {
 		const response = await this.client.send(
 			new GetObjectCommand({ Bucket: this.config.bucket, Key: r2ObjectKey(reportId, file) })
 		);
-		if (!response.Body) throw new Error('R2 image has no body');
+		if (!response.Body) throw new R2ScreenshotStoreError('R2 image has no body');
 		return Buffer.from(await response.Body.transformToByteArray());
 	}
 }

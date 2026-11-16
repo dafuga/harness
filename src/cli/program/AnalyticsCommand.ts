@@ -3,6 +3,7 @@ import type { Command } from 'commander';
 import { CpuUsageService } from '../../services/development-tooling/cpu-usage-service/CpuUsageService';
 import { AnalyticsService } from './AnalyticsService';
 import { AnalyticsRepository } from '../../repositories/reports-media/AnalyticsRepository';
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 export function registerAnalyticsCommand(program: Command): void {
 	const analytics = program
 		.command('analytics')
@@ -57,7 +58,7 @@ function registerPruneCommand(analytics: Command): void {
 		.action(async (options: { olderThan: string; apply?: boolean }) => {
 			const days = Number(options.olderThan);
 			if (!Number.isSafeInteger(days) || days < 1 || days > 36500)
-				throw new Error('--older-than must be between 1 and 36500 whole days.');
+				throw new ExpectedCliError('--older-than must be between 1 and 36500 whole days.');
 			const repository = await AnalyticsRepository.open();
 			try {
 				console.log(

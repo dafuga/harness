@@ -3,6 +3,14 @@ import { admitUploadRequest } from '../../../utils/reports-media/admitUploadRequ
 import { json } from '@sveltejs/kit';
 import { AudioUploadService } from '../../../services/reports-media/AudioUploadService';
 import { repository } from '../../../utils/reports-media/reportHttp';
+
+class InvalidComparisonAudioFilesError extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = 'InvalidComparisonAudioFilesError';
+	}
+}
+
 function uploadFailure(reason: unknown) {
 	const message = reason instanceof Error ? reason.message : '';
 	if (message.includes('finaliz')) return json({ error: message }, { status: 409 });
@@ -19,7 +27,7 @@ export async function POST({ request, url }: { request: Request; url: URL }): Pr
 		const before = form.get('before'),
 			after = form.get('after');
 		if (!(before instanceof File) || !(after instanceof File))
-			throw new Error('Choose Before and After audio files');
+			throw new InvalidComparisonAudioFilesError('Choose Before and After audio files');
 		const report = await new AudioUploadService(repository).uploadComparison(
 			String(form.get('reportId') || ''),
 			{

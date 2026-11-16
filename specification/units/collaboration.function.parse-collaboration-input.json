@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"packages/collaboration/src/utils/parseCollaborationInput.ts",
-			"packages/collaboration/src/utils/planning-collaboration/parseCollaborationInput.ts"
+			"packages/collaboration/src/utils/planning-collaboration/parseCollaborationInput.ts",
+			"packages/collaboration/src/utils/planning-collaboration/parseCollaborationInput.types.ts"
 		],
 		"symbols": [
 			"parse",
@@ -42,7 +43,8 @@
 			"parseCollaborationInput",
 			"digest",
 			"safePath",
-			"parse"
+			"parse",
+			"CollaborationInputError"
 		]
 	},
 	"contract": {

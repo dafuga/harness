@@ -10,12 +10,17 @@
 	"owns": {
 		"source": [
 			"packages/planning/src/utils/planning-collaboration/plan-write/planCommit.ts",
+			"packages/planning/src/utils/planning-collaboration/plan-write/planCommit.types.ts",
 			"packages/planning/src/utils/planning-collaboration/planCommit.ts",
 			"packages/planning/src/utils/planning-collaboration/planCommit.types.ts"
 		],
 		"symbols": [
 			"planCommit",
 			"requireLfsFilters",
+			"MissingLfsFilterError",
+			"MissingLfsFilterError.constructor",
+			"LfsFilterOutputMismatchError",
+			"LfsFilterOutputMismatchError.constructor",
 			"stageFiles",
 			"planCommit",
 			"requireLfsFilters",
@@ -281,7 +286,32 @@
 				"errorStatus": "declared"
 			}
 		],
-		"initialization": []
+		"initialization": [
+			{
+				"name": "MissingLfsFilterError.constructor",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "MissingLfsFilterError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LfsFilterOutputMismatchError.constructor",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "LfsFilterOutputMismatchError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

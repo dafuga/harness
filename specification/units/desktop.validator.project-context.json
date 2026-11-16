@@ -8,12 +8,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/validators/projects-sessions/ProjectContextValidator.ts"],
+		"source": [
+			"packages/desktop/src/validators/projects-sessions/ProjectContextValidator.ts",
+			"packages/desktop/src/validators/projects-sessions/ProjectContextValidator.types.ts"
+		],
 		"symbols": [
 			"ProjectContextValidator",
 			"ProjectContextValidator.operation",
 			"ProjectContextValidator.context",
-			"ProjectContextValidator.comment"
+			"ProjectContextValidator.comment",
+			"ExplicitProjectRequiredError"
 		]
 	},
 	"contract": {

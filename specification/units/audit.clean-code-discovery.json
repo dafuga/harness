@@ -326,6 +326,11 @@
 			"unit": "audit.collect",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

@@ -1,5 +1,6 @@
 // @harness-uid u_3ywpxy4uux
 import { z } from 'zod';
+import { UnknownPickerOperationError } from './pickerMcpTools.types';
 import type { ProviderSwitchService } from '../../services/agents-providers/ProviderSwitchService';
 
 export const pickerSessionSchema = z.object({ session_id: z.string().optional() }).strict();
@@ -31,6 +32,6 @@ export async function pickerMcpTools(service: ProviderSwitchService, name: strin
 		return service.cancel(args.session_id, args.request_id);
 	}
 	if (name !== 'open_model_picker' && name !== 'get_provider_status')
-		throw new Error('Unknown picker operation.');
+		throw new UnknownPickerOperationError('Unknown picker operation.');
 	return service.status(pickerSessionSchema.parse(input).session_id ?? null);
 }

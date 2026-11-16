@@ -1,5 +1,6 @@
 // @harness-uid u_nsxu3st5to
 import type { Environment, E2eFixtures } from './e2eFixtures.types';
+import { E2eRootNotSetError } from './e2eFixtures.types';
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -32,7 +33,7 @@ const missing =
  */
 export function e2eFixtures(env: Environment = process.env): E2eFixtures {
 	const root = env.HARNESS_E2E_ROOT;
-	if (!root) throw new Error(missing);
+	if (!root) throw new E2eRootNotSetError(missing);
 	return {
 		root,
 		reports: join(root, 'reports'),

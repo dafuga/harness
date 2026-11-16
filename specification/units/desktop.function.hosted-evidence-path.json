@@ -9,9 +9,14 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/hostedEvidencePath.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/hostedEvidencePath.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/hostedEvidencePath.types.ts"
 		],
-		"symbols": ["hostedEvidencePath"]
+		"symbols": [
+			"hostedEvidencePath",
+			"InvalidHostedProjectError",
+			"InvalidHostedProjectError.constructor"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -106,7 +111,20 @@
 				"errorStatus": "declared"
 			}
 		],
-		"initialization": []
+		"initialization": [
+			{
+				"name": "InvalidHostedProjectError.constructor",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "InvalidHostedProjectError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

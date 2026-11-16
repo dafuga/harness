@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/adapters/R2EvidenceStoreAdapter.ts",
-			"packages/reports/src/adapters/reports-media/R2EvidenceStoreAdapter.ts"
+			"packages/reports/src/adapters/reports-media/R2EvidenceStoreAdapter.ts",
+			"packages/reports/src/adapters/reports-media/R2EvidenceStoreAdapter.types.ts"
 		],
 		"symbols": [
 			"evidenceObjectKey",
@@ -24,7 +25,8 @@
 			"R2EvidenceStoreAdapter.put",
 			"R2EvidenceStoreAdapter.get",
 			"R2EvidenceStoreAdapter.putReplay",
-			"R2EvidenceStoreAdapter.getReplay"
+			"R2EvidenceStoreAdapter.getReplay",
+			"R2EvidenceStoreError"
 		]
 	},
 	"contract": {

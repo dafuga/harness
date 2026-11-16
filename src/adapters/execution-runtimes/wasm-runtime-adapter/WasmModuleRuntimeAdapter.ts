@@ -1,6 +1,7 @@
 // @harness-uid u_hqa74vec52
 import { errorMessage } from '../../../../packages/reports/src/helpers/strings/errorMessage';
 import type { WasmSource, WasmLoader, JsonAbi } from './WasmModuleRuntimeAdapter.types';
+import { RuntimeUnavailableError } from './WasmModuleRuntimeAdapter.types';
 import {
 	defaultRuntimeTimeoutMs,
 	runtimeFailure,
@@ -20,7 +21,7 @@ const unavailableName = 'RuntimeUnavailable';
 
 /** An error that means the unit could not be loaded at all, rather than that it failed. */
 export function wasmUnavailable(message: string): Error {
-	return Object.assign(new Error(message), { name: unavailableName });
+	return Object.assign(new RuntimeUnavailableError(message), { name: unavailableName });
 }
 
 function isLoader(source: WasmSource | WasmLoader): source is WasmLoader {

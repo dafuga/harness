@@ -1,5 +1,5 @@
 // @harness-uid u_lkzrod2wrf
-import type { AnswerInput } from './recordedAnswer.types';
+import { AnswerTooLargeError, type AnswerInput } from './recordedAnswer.types';
 import { explorerBehavior } from '$reports/utils/explorer-ui/explorerBehavior';
 import { explorerEvidence } from '$reports/utils/explorer-ui/explorerEvidence';
 import { remoteLimits } from '../../../../remote/src/index';
@@ -31,7 +31,7 @@ export function recordedAnswer(input: AnswerInput): EntityEvidenceResult {
 	const text = JSON.stringify(answer);
 	// One character is at most three bytes of UTF-8: only a long text is measured exactly.
 	const size = text.length * 3 > most ? new TextEncoder().encode(text).length : text.length;
-	if (size > most) throw new Error(tooLarge);
+	if (size > most) throw new AnswerTooLargeError(tooLarge);
 	return answer;
 }
 

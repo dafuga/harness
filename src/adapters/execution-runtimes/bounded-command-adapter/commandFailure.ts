@@ -1,5 +1,6 @@
 // @harness-uid u_34r2rrehaa
 import { basename } from 'node:path';
+import { CommandTimeoutError } from './commandFailure.types';
 
 /** A rejected command carrying only the already-buffered, bounded output prefix. */
 export class BoundedCommandFailure extends Error {
@@ -26,5 +27,5 @@ function span(ms: number): string {
 
 /** A deadline failure that names the command and the deadline it exceeded. */
 export function timeoutFailure(label: string, timeoutMs: number): Error {
-	return new Error(`Command timed out after ${span(timeoutMs)}: ${label}`);
+	return new CommandTimeoutError(`Command timed out after ${span(timeoutMs)}: ${label}`);
 }

@@ -8,13 +8,20 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/services/projects-sessions/ProjectRegistryService.ts"],
+		"source": [
+			"packages/desktop/src/services/projects-sessions/ProjectRegistryService.ts",
+			"packages/desktop/src/services/projects-sessions/ProjectRegistryService.types.ts"
+		],
 		"symbols": [
 			"ProjectRegistryService",
 			"ProjectRegistryService.constructor",
 			"ProjectRegistryService.register",
 			"ProjectRegistryService.list",
-			"ProjectRegistryService.get"
+			"ProjectRegistryService.get",
+			"InvalidProjectRegistryError",
+			"InvalidProjectRegistryError.constructor",
+			"UnknownProjectError",
+			"UnknownProjectError.constructor"
 		]
 	},
 	"contract": {
@@ -217,6 +224,30 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "InvalidProjectRegistryError.constructor",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "InvalidProjectRegistryError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "UnknownProjectError.constructor",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "UnknownProjectError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		]
 	},

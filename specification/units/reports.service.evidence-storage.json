@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/services/verification-evidence/EvidenceStorageService.ts"],
-		"symbols": ["EvidenceStorageService", "EvidenceStorageService.store"]
+		"source": [
+			"packages/reports/src/services/verification-evidence/EvidenceStorageService.ts",
+			"packages/reports/src/services/verification-evidence/EvidenceStorageService.types.ts"
+		],
+		"symbols": ["EvidenceStorageService", "EvidenceStorageService.store", "ReportExpiredError"]
 	},
 	"contract": {
 		"origin": "declared",

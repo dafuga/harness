@@ -5,6 +5,7 @@ import { createHash } from 'node:crypto';
 import { LocalDocumentAdapter } from '../../adapters/reports-media/LocalDocumentAdapter';
 import { gitRead } from '../../utils/projects-sessions/gitRead';
 import type { DesktopProject } from '../../models/projects-sessions/ProjectContext.types';
+import { InvalidProjectRegistryError, UnknownProjectError } from './ProjectRegistryService.types';
 export class ProjectRegistryService {
 	private document: LocalDocumentAdapter<DesktopProject[]>;
 	constructor(file?: string) {
@@ -34,12 +35,12 @@ export class ProjectRegistryService {
 					!/^local-[a-f0-9]{64}$/.test(project.id)
 			)
 		)
-			throw new Error('Invalid project registry.');
+			throw new InvalidProjectRegistryError();
 		return projects;
 	}
 	async get(id: string): Promise<DesktopProject> {
 		const project = (await this.list()).find((item) => item.id === id);
-		if (!project) throw new Error('Unknown project.');
+		if (!project) throw new UnknownProjectError();
 		return project;
 	}
 }

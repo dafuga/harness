@@ -9,7 +9,8 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectOperationsService.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectOperationsService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectOperationsService.types.ts"
 		],
 		"symbols": [
 			"ProjectOperationsService",
@@ -18,7 +19,10 @@
 			"ProjectOperationsService.selectProject",
 			"ProjectOperationsService.capabilities",
 			"ProjectOperationsService.addComment",
-			"ProjectOperationsService.pendingComments"
+			"ProjectOperationsService.pendingComments",
+			"InvalidProjectDiscussionAnchorError",
+			"UnknownCommentImageAnchorError",
+			"UnknownCommentThreadError"
 		]
 	},
 	"contract": {

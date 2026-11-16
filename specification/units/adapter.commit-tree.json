@@ -8,12 +8,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/git-source-history/CommitTreeAdapter.ts"],
+		"source": [
+			"src/adapters/git-source-history/CommitTreeAdapter.ts",
+			"src/adapters/git-source-history/CommitTreeAdapter.types.ts"
+		],
 		"symbols": [
 			"CommitTreeAdapter",
 			"CommitTreeAdapter.open",
 			"CommitTreeAdapter.list",
-			"CommitTreeAdapter.read"
+			"CommitTreeAdapter.read",
+			"CommitFileNotFoundError"
 		]
 	},
 	"contract": {

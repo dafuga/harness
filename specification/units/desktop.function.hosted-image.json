@@ -9,9 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hostedImage.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hostedImage.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hostedImage.types.ts"
 		],
-		"symbols": ["hostedImage"]
+		"symbols": ["hostedImage", "InvalidHostedImageError"]
 	},
 	"contract": {
 		"origin": "declared",

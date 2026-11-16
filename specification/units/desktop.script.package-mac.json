@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/package-mac.ts"],
-		"symbols": []
+		"source": [
+			"packages/desktop/scripts/package-mac.ts",
+			"packages/desktop/scripts/package-mac.types.ts"
+		],
+		"symbols": ["MacPackageError"]
 	},
 	"contract": {
 		"origin": "declared",

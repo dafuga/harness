@@ -9,6 +9,7 @@ import { R2EvidenceStoreAdapter } from '../../../../../../adapters/R2EvidenceSto
 import type { Report } from '../../../../../../models/reports-media/Report.types';
 import { mediaMime } from '../../../../../../utils/verification-evidence/evidenceMedia';
 import { mediaResponse } from '../../../../../../utils/development-tooling/mediaResponse';
+import { R2EvidenceStorageNotConfiguredError } from './reportHttp.types';
 
 function assetIsRemote(run: Report, file: string) {
 	const matches = run.evidence.filter((item) => item.file === file);
@@ -30,6 +31,9 @@ export async function reportFile(id: string, type: string, file: string, range?:
 async function remoteAsset(id: string, file: string, storage: 'r2' | 'r2-evidence') {
 	if (storage === 'r2') return R2ScreenshotStoreAdapter.fromEnvironment().get(id, file);
 	const adapter = R2EvidenceStoreAdapter.fromEnvironment();
-	if (!adapter) throw new Error('Cloudflare R2 evidence storage is not configured');
+	if (!adapter)
+		throw new R2EvidenceStorageNotConfiguredError(
+			'Cloudflare R2 evidence storage is not configured'
+		);
 	return adapter.get(id, file);
 }

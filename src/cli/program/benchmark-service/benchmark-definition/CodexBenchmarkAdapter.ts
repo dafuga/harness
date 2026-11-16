@@ -5,20 +5,22 @@ import type {
 	BenchmarkRunnerInput,
 	BenchmarkTurn
 } from '../../../../core/agents-providers/subagentBenchmarkTypes';
+import { ExpectedCliError } from '../../../../core/development-tooling/errors';
 import { benchmarkProcess } from '../benchmarkProcess';
 import { benchmarkEvents, codexTurn } from '../benchmarkEvents';
+import { CodexRunError } from './CodexBenchmarkAdapter.types';
 
 export class CodexBenchmarkAdapter implements BenchmarkRunner {
 	constructor(private readonly executable = 'codex') {}
 	async preflight(candidate: BenchmarkCandidate): Promise<string> {
 		if (candidate.tools !== 'default' || candidate.effort === 'max')
-			throw new Error('Unsupported Codex tool or effort setting.');
+			throw new ExpectedCliError('Unsupported Codex tool or effort setting.');
 		const result = await benchmarkProcess({
 			command: [this.executable, '--version'],
 			cwd: process.cwd(),
 			signal: AbortSignal.timeout(10000)
 		});
-		if (result.exitCode) throw new Error('Codex runner is unavailable.');
+		if (result.exitCode) throw new ExpectedCliError('Codex runner is unavailable.');
 		return result.stdout.trim();
 	}
 	async run(input: BenchmarkRunnerInput): Promise<BenchmarkTurn> {
@@ -29,12 +31,12 @@ export class CodexBenchmarkAdapter implements BenchmarkRunner {
 			signal: input.signal
 		});
 		if (result.exitCode)
-			throw new Error(
+			throw new CodexRunError(
 				'Codex runner failed; inspect authentication, model access, and local runner availability.'
 			);
 		const turn = codexTurn(benchmarkEvents(result.stdout));
 		if (turn.reportedModel && turn.reportedModel !== input.candidate.model)
-			throw new Error('Codex reported a different model.');
+			throw new CodexRunError('Codex reported a different model.');
 		return turn;
 	}
 	command(input: BenchmarkRunnerInput): string[] {

@@ -1,6 +1,7 @@
 // @harness-uid u_ftnul333yg
 import { unitIdPattern } from '../../../../../src/lib/contracts';
 import { z } from 'zod';
+import { CollaborationInputError } from './parseCollaborationInput.types';
 export const id = z.uuid();
 export const sha = z.string().regex(/^[a-f0-9]{40}$/);
 export const hash = z.string().regex(/^[a-f0-9]{64}$/);
@@ -56,7 +57,7 @@ export const anchorSchema = z
 			: a.state === null && a.viewport === null && a.region === null
 	);
 export function fail(code: string): never {
-	throw Object.assign(new Error(`Collaboration ${code}`), { code });
+	throw Object.assign(new CollaborationInputError(`Collaboration ${code}`), { code });
 }
 export function parseCollaborationInput<T>(schema: z.ZodType<T>, value: unknown): T {
 	const result = schema.safeParse(value);

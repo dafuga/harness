@@ -1,5 +1,6 @@
 // @harness-uid u_e6ppqxpxuf
 import type { RouteSuffix, WorkspaceRoute, WorkspaceTarget } from './workspaceRoute.types';
+import { WorkspaceAddressError } from './workspaceRoute.types';
 import { categories } from '../../models/development-tooling/Desktop.types';
 import type { Category } from '../../models/development-tooling/Desktop.types';
 import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
@@ -65,13 +66,14 @@ export function isWorkspacePath(path: string): boolean {
 
 export function workspaceRoute(path: string): WorkspaceRoute {
 	const found = scope(path);
-	if (!found) throw new Error('Not a workspace address');
+	if (!found) throw new WorkspaceAddressError('Not a workspace address');
 	const { branch, commit, offset } = revision(found.rest);
 	if (commit !== null && !fullCommit.test(commit))
-		throw new Error('A commit link needs the full commit hash');
+		throw new WorkspaceAddressError('A commit link needs the full commit hash');
 	const requested = found.rest[offset] || 'pages';
 	const category = requested === 'shells' ? 'layouts' : requested;
-	if (!categories.includes(category as Category)) throw new Error('Unknown catalog category');
+	if (!categories.includes(category as Category))
+		throw new WorkspaceAddressError('Unknown catalog category');
 	const entity = found.rest[offset + 1];
 	return {
 		projectId: found.projectId,

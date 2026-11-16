@@ -12,7 +12,13 @@
 			"src/audit/development-tooling/cleanCodeEvaluate.ts",
 			"src/audit/development-tooling/cleanCodeEvaluate.types.ts"
 		],
-		"symbols": ["evaluateCleanCodeFile", "JevEvaluator", "JevEvaluator", "EvaluationInput"]
+		"symbols": [
+			"evaluateCleanCodeFile",
+			"JevEvaluator",
+			"JevEvaluator",
+			"EvaluationInput",
+			"JevModelMismatchError"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -482,6 +488,11 @@
 		},
 		{
 			"unit": "audit.clean-code-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},

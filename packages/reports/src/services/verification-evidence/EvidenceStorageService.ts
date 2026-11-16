@@ -6,13 +6,14 @@ import { R2EvidenceStoreAdapter } from '../../adapters/R2EvidenceStoreAdapter';
 import { registeredAsset } from '../../utils/reports-media/reportAssets';
 import { mediaMime } from '../../utils/verification-evidence/evidenceMedia';
 import { reportRetention } from '../../utils/reports-media/reportRetention';
+import { ReportExpiredError } from './EvidenceStorageService.types';
 
 export class EvidenceStorageService {
 	async store(report: Report, directory: string) {
 		const pending = report.evidence.filter((item) => !item.storage && !item.missing);
 		if (!pending.length) return;
 		if (reportRetention(report))
-			throw new Error('Report expired after 30 days; create a new report');
+			throw new ReportExpiredError('Report expired after 30 days; create a new report');
 		const storage = R2EvidenceStoreAdapter.fromEnvironment();
 		if (!storage) return;
 		const uploaded = new Set<string>();

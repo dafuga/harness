@@ -1,4 +1,6 @@
 // @harness-uid u_oqgfr3u2od
+import { InvalidTestWorkerCeilingError } from './resourceWorkers.types';
+
 /** Test runners honor the managed command's reservation instead of all logical host CPUs. */
 export function resourceWorkers(
 	env: Record<string, string | undefined> = process.env,
@@ -10,7 +12,8 @@ export function resourceWorkers(
 } {
 	const count = Number(env.HARNESS_RESOURCE_CPUS);
 	if (!Number.isFinite(count) || count <= 0) return {};
-	if (!(maximumWorkers >= 1)) throw new Error('Invalid test worker ceiling');
+	if (!(maximumWorkers >= 1))
+		throw new InvalidTestWorkerCeilingError('Invalid test worker ceiling');
 	const workers = Math.max(1, Math.floor(Math.min(count, maximumWorkers)));
 	const worker = { ...env, HARNESS_RESOURCE_CPUS: String(Math.min(1, count)) };
 	const context: Record<string, string> = {

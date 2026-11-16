@@ -8,13 +8,18 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/lib/development-tooling/desktop-bridge/GameProjectService.ts"],
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/GameProjectService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/GameProjectService.types.ts"
+		],
 		"symbols": [
 			"GameProjectService",
 			"GameProjectService.constructor",
 			"GameProjectService.create",
 			"GameProjectService.read",
-			"GameProjectService.save"
+			"GameProjectService.save",
+			"GameProjectBusyError",
+			"GameProjectAlreadyExistsError"
 		]
 	},
 	"contract": {

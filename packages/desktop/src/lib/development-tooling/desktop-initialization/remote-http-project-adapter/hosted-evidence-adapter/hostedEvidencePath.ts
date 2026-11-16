@@ -1,5 +1,6 @@
 // @harness-uid u_352ajnp2sk
 import type { EntityEvidenceQuery } from '../../../../../models/verification-evidence/DesktopEvidence.types';
+import { InvalidHostedProjectError } from './hostedEvidencePath.types';
 import { evidencePayload } from '../../../../../utils/verification-evidence/evidencePayload';
 
 export function hostedEvidencePath(
@@ -7,7 +8,7 @@ export function hostedEvidencePath(
 	operation: 'evidence' | 'artifact'
 ) {
 	if (!/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$/.test(input.projectId))
-		throw new Error('Invalid hosted project.');
+		throw new InvalidHostedProjectError();
 	const selected = evidencePayload(
 		operation === 'artifact' ? 'evidence:artifact' : 'evidence:read',
 		{ ...input }

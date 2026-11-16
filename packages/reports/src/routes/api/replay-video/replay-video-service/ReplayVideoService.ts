@@ -1,4 +1,5 @@
 // @harness-uid u_qj36fxyfe3
+import { ReplayVideoUnavailableError } from './ReplayVideoService.types';
 import { readFile, lstat } from 'node:fs/promises';
 import { join, basename } from 'node:path';
 import { ReportRepository } from '../../../../repositories/reports-media/report-repository/ReportRepository';
@@ -15,11 +16,15 @@ export class ReplayVideoService {
 	constructor(private readonly repository = new ReportRepository()) {}
 	async create(id: string) {
 		const report = await this.repository.get(id);
-		if (reportRetention(report)) throw new Error('Report expired after 30 days');
+		if (reportRetention(report))
+			throw new ReplayVideoUnavailableError('Report expired after 30 days');
 		const key = id + ':' + replayVideoKey(report);
 		let job = jobs.get(key);
 		if (!job) {
-			if (jobs.size >= 2) throw new Error('Another video is being prepared. Try again shortly.');
+			if (jobs.size >= 2)
+				throw new ReplayVideoUnavailableError(
+					'Another video is being prepared. Try again shortly.'
+				);
 			job = reportLock(this.repository.directory(id), () => this.generate(report));
 			jobs.set(key, job);
 		}

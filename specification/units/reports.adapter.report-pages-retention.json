@@ -16,7 +16,13 @@
 			"ReportPagesRetentionAdapter",
 			"ReportPagesRetentionAdapter.constructor",
 			"ReportPagesRetentionAdapter.purge",
-			"Deployment"
+			"Deployment",
+			"InvalidReportPublicationReceiptError",
+			"ReportPublicationProjectMismatchError",
+			"InvalidReportDeploymentIdError",
+			"PublishedReportAbsentFromDeploymentListingError",
+			"MissingProjectReportsCloudflareAccountError",
+			"CloudflarePagesCleanupError"
 		]
 	},
 	"contract": {

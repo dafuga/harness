@@ -1,5 +1,6 @@
 // @harness-uid u_g23u3cx5qx
 import type { ScreenshotUploadInput } from './ScreenshotUploadService.types';
+import { InvalidUploadInputError } from './ScreenshotUploadService.types';
 import { randomUUID } from 'node:crypto';
 import type { Evidence } from '../../../models/reports-media/Report.types';
 import type { ReportRepository } from '../../../repositories/reports-media/report-repository/ReportRepository';
@@ -44,8 +45,9 @@ export class ScreenshotUploadService {
 	) {}
 	async upload(reportId: string, input: ScreenshotUploadInput) {
 		const title = sanitize(input.title.trim());
-		if (!title || title.length > 120) throw new Error('Comparison title must be 1–120 characters');
-		if (!(input.viewport in viewports)) throw new Error('Invalid viewport');
+		if (!title || title.length > 120)
+			throw new InvalidUploadInputError('Comparison title must be 1–120 characters');
+		if (!(input.viewport in viewports)) throw new InvalidUploadInputError('Invalid viewport');
 		const before = Buffer.from(await input.before.arrayBuffer());
 		const after = Buffer.from(await input.after.arrayBuffer());
 		const beforeImage = imageAsset(before, input.before.name);

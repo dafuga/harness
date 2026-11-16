@@ -5,6 +5,7 @@ import type {
 	PendingPairing,
 	DeviceCredentials
 } from './DevicePairingService.types';
+import { DevicePairingError } from './DevicePairingService.types';
 import type {
 	RelayPairingExchange,
 	RelayPairingInfo,
@@ -51,7 +52,7 @@ function checked(input: DevicePairingInput): string {
 		remotePatterns.code.test(normalizeCode(input.code)) &&
 		name.length > 0 &&
 		name.length <= 80;
-	if (!valid || !origin) throw new Error('Check the pairing details and try again.');
+	if (!valid || !origin) throw new DevicePairingError('Check the pairing details and try again.');
 	return origin;
 }
 
@@ -64,7 +65,7 @@ export class DevicePairingService {
 	 */
 	scanned(text: string, device: ScanningDevice, reading: OfferReading): Promise<PendingPairing> {
 		const read = readPairingOffer(text, reading);
-		if ('refused' in read) return Promise.reject(new Error(`offer-${read.refused}`));
+		if ('refused' in read) return Promise.reject(new DevicePairingError(`offer-${read.refused}`));
 		return this.request({ ...read.offer, ...device });
 	}
 	/** Pins the host key by its identifier, then asks with the code sealed to that key. */
@@ -73,7 +74,7 @@ export class DevicePairingService {
 			{ hostId, pairingId } = input;
 		const info = (await this.call({ origin, input }, '')) as RelayPairingInfo;
 		if (typeof info.hostKey !== 'string' || (await remoteIdentity(info.hostKey)) !== hostId)
-			throw new Error('The relay did not present the key of this computer.');
+			throw new DevicePairingError('The relay did not present the key of this computer.');
 		const device = keys ?? (await remoteKeys()),
 			ephemeral = await remoteKeys(),
 			hostKey = fromBase64Url(info.hostKey),
@@ -109,7 +110,7 @@ export class DevicePairingService {
 		)) as PairingApproval;
 		const mine = result.deviceId === deviceId && approval.deviceId === deviceId;
 		if (!mine || !remotePatterns.credential.test(String(result.credential)))
-			throw new Error('The approval is not for this device.');
+			throw new DevicePairingError('The approval is not for this device.');
 		const { hostName, generation, grant } = approval;
 		const identity = { origin, hostId: pending.input.hostId, hostKey, hostName, deviceId };
 		const keys = await exportRemoteKeys(pending.keys);
@@ -132,7 +133,7 @@ export class DevicePairingService {
 						body: JSON.stringify(body)
 					};
 		const response = await (this.options.fetch ?? fetch)(target.origin + path, init);
-		if (!response.ok) throw new Error('The pairing was refused or has expired.');
+		if (!response.ok) throw new DevicePairingError('The pairing was refused or has expired.');
 		return (await response.json()) as unknown;
 	}
 }

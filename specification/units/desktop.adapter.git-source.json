@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/project-session-service/git-source-adapter/GitSourceAdapter.ts",
-			"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+			"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.types.ts"
 		],
 		"symbols": [
 			"GitSourceAdapter",
@@ -25,7 +26,8 @@
 			"GitSourceAdapter.source",
 			"GitSourceAdapter.documentation",
 			"GitSourceAdapter.size",
-			"GitSourceAdapter.contractHash"
+			"GitSourceAdapter.contractHash",
+			"GitSourceError"
 		]
 	},
 	"contract": {

@@ -21,6 +21,11 @@
 			"DeploymentActivityService.ensureCapacity",
 			"DeploymentActivityService.schedule",
 			"desktopDeployments",
+			"UnknownDeploymentError",
+			"DeploymentCapacityError",
+			"DeploymentAlreadyStartedError",
+			"RequiredLowerEnvironmentDeploymentError",
+			"MissingDeploymentTargetError",
 			"Work",
 			"Entry"
 		]

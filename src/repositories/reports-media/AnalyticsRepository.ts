@@ -6,6 +6,11 @@ import { mkdirSync, chmodSync } from 'node:fs';
 import { join } from 'node:path';
 import { realpath } from 'node:fs/promises';
 import { homedir } from 'node:os';
+import {
+	AnalyticsInitializationTimeoutError,
+	InvalidRetentionCutoffError,
+	UnsupportedAnalyticsSchemaVersionError
+} from './AnalyticsRepository.types';
 import type { AnalyticsEvent } from '../../core/reports-media/analyticsTypes';
 import { AnalyticsEvent as AnalyticsEventModel } from '../../models/reports-media/AnalyticsEvent';
 import { sqliteTableSql } from '../../utils/development-tooling/sqliteTableSql';
@@ -96,7 +101,7 @@ export class AnalyticsRepository {
 			date.toISOString().slice(0, 19) !== before.slice(0, 19) ||
 			date.getTime() >= Date.now()
 		)
-			throw new Error('Retention cutoff must be an ISO UTC timestamp in the past.');
+			throw new InvalidRetentionCutoffError();
 		const cutoff = date.toISOString();
 		return this.db.transaction(() => {
 			const { count } = this.db
@@ -142,7 +147,7 @@ async function initializeAsync(db: Database): Promise<void> {
 			if (!isSqliteBusy(error)) throw error;
 			const remaining = deadline - performance.now();
 			if (remaining <= 0) {
-				const timeout = new Error('Timed out waiting to initialize the analytics database.');
+				const timeout = new AnalyticsInitializationTimeoutError();
 				(timeout as Error & { cause?: unknown }).cause = error;
 				throw timeout;
 			}
@@ -156,7 +161,7 @@ async function initializeAsync(db: Database): Promise<void> {
 
 function assertSupportedVersion(db: Database): void {
 	const version = db.query('PRAGMA user_version').get() as { user_version: number };
-	if (version.user_version > 1) throw new Error('Unsupported analytics schema version.');
+	if (version.user_version > 1) throw new UnsupportedAnalyticsSchemaVersionError();
 }
 
 function initializeTables(db: Database): void {

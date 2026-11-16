@@ -5,6 +5,7 @@ import type {
 	EvidenceArtifactQuery,
 	EvidenceArtifactResult
 } from '../../../models/verification-evidence/DesktopEvidence.types';
+import { ArtifactReadError } from './artifactBytes.types';
 
 const hex = (bytes: Uint8Array) =>
 	[...bytes].map((value) => value.toString(16).padStart(2, '0')).join('');
@@ -18,10 +19,10 @@ export async function artifactBytes(
 	bridge: Pick<DesktopBridge, 'artifact'>,
 	query: EvidenceArtifactQuery
 ): Promise<EvidenceArtifactResult> {
-	if (!bridge.artifact) throw new Error(unreadArtifact);
+	if (!bridge.artifact) throw new ArtifactReadError(unreadArtifact);
 	const answer = await bridge.artifact(query);
 	const bytes = new Uint8Array(answer.bytes);
 	const sha256 = hex(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes)));
-	if (sha256 !== query.sha256) throw new Error(damagedArtifact);
+	if (sha256 !== query.sha256) throw new ArtifactReadError(damagedArtifact);
 	return { bytes, mediaType: answer.mediaType, sha256 };
 }

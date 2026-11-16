@@ -9,13 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/R2ReportRetentionAdapter.ts"
+			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/R2ReportRetentionAdapter.ts",
+			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/R2ReportRetentionAdapter.types.ts"
 		],
 		"symbols": [
 			"R2ReportRetentionAdapter",
 			"R2ReportRetentionAdapter.fromEnvironment",
 			"R2ReportRetentionAdapter.purge",
-			"R2ReportRetentionAdapter.orphans"
+			"R2ReportRetentionAdapter.orphans",
+			"CloudCleanupError"
 		]
 	},
 	"contract": {

@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/projects-sessions/deploymentCommand.ts"],
-		"symbols": ["deploymentCommand"]
+		"source": [
+			"packages/desktop/src/utils/projects-sessions/deploymentCommand.ts",
+			"packages/desktop/src/utils/projects-sessions/deploymentCommand.types.ts"
+		],
+		"symbols": ["deploymentCommand", "DeploymentCommandError"]
 	},
 	"contract": {
 		"origin": "declared",

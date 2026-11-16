@@ -1,4 +1,5 @@
 // @harness-uid u_ugascj2swc
+import { ExpectedCliError } from '../../../../../../src/core/errors';
 import { previewNode } from '../preview-node/previewNode';
 import { previewHealth, closePreviewSessions } from './previewHealth';
 import { resolve } from 'node:path';
@@ -13,7 +14,7 @@ export async function initializePreview(args: string[] = process.argv.slice(2)):
 	const options = previewArguments(args),
 		port = Number(process.env.HARNESS_PREVIEW_OWNER_PORT ?? previewOwnerPort);
 	if (!Number.isInteger(port) || port < 1024 || port > 65535)
-		throw new Error('Invalid preview ownership port.');
+		throw new ExpectedCliError('Invalid preview ownership port.');
 	const owner = new PreviewServerService(port);
 	const token = process.env.HARNESS_PREVIEW_WORKER_TOKEN;
 	let worker: { close(): Promise<void> } | undefined;

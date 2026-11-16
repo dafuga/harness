@@ -1,5 +1,6 @@
 import { LevelValidator } from './LevelValidator';
 import type { RecordValue } from './gameDocument.types';
+import { InvalidGameDocumentError } from './gameDocument.types';
 import type { GameDocument } from '../../models/game-authoring/Game.types';
 const safe = (v: unknown): v is string =>
 	typeof v === 'string' &&
@@ -126,7 +127,7 @@ function validateAction(a: unknown, views: RecordValue[], errors: string[]): voi
 }
 export function assertDocument(input: unknown): asserts input is GameDocument {
 	const errors = validateDocument(input);
-	if (errors.length) throw new Error(errors.join('; '));
+	if (errors.length) throw new InvalidGameDocumentError(errors.join('; '));
 }
 
 function cyclic(nodes: RecordValue[]): boolean {

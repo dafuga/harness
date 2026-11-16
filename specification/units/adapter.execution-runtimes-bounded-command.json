@@ -13,6 +13,7 @@
 			"src/adapters/execution-runtimes/BoundedCommandAdapter.types.ts",
 			"src/adapters/execution-runtimes/bounded-command-adapter/commandDeadlines.ts",
 			"src/adapters/execution-runtimes/bounded-command-adapter/commandFailure.ts",
+			"src/adapters/execution-runtimes/bounded-command-adapter/commandFailure.types.ts",
 			"src/adapters/execution-runtimes/bounded-command-adapter/commandOutput.ts"
 		],
 		"symbols": [
@@ -24,6 +25,10 @@
 			"BoundedCommandOptions",
 			"BoundedCommandResult",
 			"commandDeadlines",
+			"CommandAbortedError",
+			"CommandBoundsError",
+			"CommandOutputLimitError",
+			"DirectProbeRestrictionError",
 			"BoundedCommandOptions",
 			"BoundedCommandResult",
 			"commandDeadlines",
@@ -31,6 +36,7 @@
 			"BoundedCommandFailure.constructor",
 			"commandLabel",
 			"timeoutFailure",
+			"CommandTimeoutError",
 			"commandOutput"
 		]
 	},

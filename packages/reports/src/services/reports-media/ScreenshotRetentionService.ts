@@ -7,6 +7,11 @@ import { reportLock } from '../../utils/reports-media/reportLock';
 import { resultStatus } from '../../utils/reports-media/reportState';
 import { r2ObjectKey } from '../../adapters/reports-media/R2ScreenshotStoreAdapter';
 import type { Evidence, Report } from '../../models/reports-media/Report.types';
+import {
+	InvalidCleanupTimeError,
+	InvalidReportAssetsDirectoryError,
+	InvalidReportExportsDirectoryError
+} from './ScreenshotRetentionService.types';
 
 const retentionMs = 30 * 24 * 60 * 60 * 1000;
 function expired(item: Evidence, report: Report, cutoff: number) {
@@ -16,7 +21,7 @@ function expired(item: Evidence, report: Report, cutoff: number) {
 export class ScreenshotRetentionService {
 	constructor(private readonly repository = new ReportRepository()) {}
 	async run(now = new Date()) {
-		if (!Number.isFinite(now.getTime())) throw new Error('Invalid cleanup time');
+		if (!Number.isFinite(now.getTime())) throw new InvalidCleanupTimeError();
 		const cutoff = now.getTime() - retentionMs;
 		let expired = 0;
 		let reports = 0;
@@ -49,7 +54,7 @@ export class ScreenshotRetentionService {
 	private async purgeCopies(directory: string, report: Report, stale: Evidence[]) {
 		const assets = join(directory, 'assets');
 		const info = await lstat(assets).catch(() => undefined);
-		if (info?.isSymbolicLink()) throw new Error('Invalid report assets directory');
+		if (info?.isSymbolicLink()) throw new InvalidReportAssetsDirectoryError();
 		const exportDirectory = join(directory, 'exports');
 		const exportAssets = join(exportDirectory, 'assets');
 		if (report.exports) await this.purgeExports(exportDirectory, exportAssets);
@@ -66,7 +71,7 @@ export class ScreenshotRetentionService {
 	private async purgeExports(directory: string, assets: string) {
 		for (const path of [directory, assets]) {
 			if ((await lstat(path).catch(() => undefined))?.isSymbolicLink())
-				throw new Error('Invalid report exports directory');
+				throw new InvalidReportExportsDirectoryError();
 		}
 		// Older finalized runs inlined their media into these files.
 		for (const name of ['index.html', 'report.pdf', 'report.zip'])

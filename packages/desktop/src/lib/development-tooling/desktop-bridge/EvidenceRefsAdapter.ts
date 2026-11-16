@@ -1,5 +1,6 @@
 // @harness-uid u_tsnp64xshg
 import type { CurrentRefs, PinnedRevisions } from './EvidenceRefsAdapter.types';
+import { RevisionNotHeldError } from './EvidenceRefsAdapter.types';
 import { createHash } from 'node:crypto';
 import { commitPattern } from '../../../utils/ipc-payload/ipcFields';
 import { gitRead } from '../../../utils/projects-sessions/gitRead';
@@ -49,7 +50,7 @@ export class EvidenceRefsAdapter {
 		const named = wanted !== null && tip !== null && commitPattern.test(wanted);
 		const part = named && (await this.reaches(tip, wanted));
 		if (part) return;
-		throw new Error(
+		throw new RevisionNotHeldError(
 			`The ${name} revision of this request is not part of the ${name} of this project.`
 		);
 	}

@@ -12,3 +12,8 @@ export interface HarnessClient {
 	/** What the project did, as recorded when this history was built. */
 	activity(): Promise<ProjectActivity>;
 }
+
+/** A console data resource whose response was not ok, so it could not be loaded. */
+export class HarnessDataLoadError extends Error {
+	override name = 'HarnessDataLoadError';
+}

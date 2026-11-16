@@ -1,5 +1,6 @@
 // @harness-uid u_5fft2ktu72
 import type { Row } from './AuthRecordValidator.types';
+import { AuthRecordCorruptError } from './AuthRecordValidator.types';
 import type { HubEnvironment } from '../../models/accounts-access/HubAuth.types';
 import type {
 	ChallengeRecord,
@@ -17,7 +18,7 @@ const statuses = ['pending', 'approved', 'consumed'] as const;
 const environments: readonly HubEnvironment[] = ['local', 'staging', 'production'];
 
 function corrupt(): never {
-	throw new Error('Hub auth record corrupt');
+	throw new AuthRecordCorruptError('Hub auth record corrupt');
 }
 
 function rowOf(value: unknown): Row {

@@ -2,6 +2,7 @@
 import type { RemoteBinary } from '../../../../remote/src/index';
 import type { EvidenceArtifactResult } from '../../models/verification-evidence/DesktopEvidence.types';
 import { remoteBinary, unreadableMedia } from '../networking-security/remoteBinary';
+import { InvalidMediaTypeError } from './binaryArtifact.types';
 
 /**
  * An artifact that crossed a transport, as the page is given it: its bytes, decoded and checked
@@ -9,6 +10,6 @@ import { remoteBinary, unreadableMedia } from '../networking-security/remoteBina
  * and that hash. Bytes that are not exactly what was sent are refused.
  */
 export async function binaryArtifact(value: RemoteBinary): Promise<EvidenceArtifactResult> {
-	if (typeof value?.mediaType !== 'string') throw new Error(unreadableMedia);
+	if (typeof value?.mediaType !== 'string') throw new InvalidMediaTypeError(unreadableMedia);
 	return { bytes: await remoteBinary(value), mediaType: value.mediaType, sha256: value.sha256 };
 }

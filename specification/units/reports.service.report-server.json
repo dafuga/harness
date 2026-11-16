@@ -9,14 +9,16 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerService.ts"
+			"packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerService.ts",
+			"packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerService.types.ts"
 		],
 		"symbols": [
 			"reportServerEnvironment",
 			"ReportServerService",
 			"ReportServerService.constructor",
 			"ReportServerService.serve",
-			"ReportServerService.stop"
+			"ReportServerService.stop",
+			"ReportServerUnavailableError"
 		]
 	},
 	"contract": {

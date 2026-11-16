@@ -12,7 +12,16 @@
 			"packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.types.ts"
 		],
-		"symbols": ["desktopBridge", "BridgeContext"]
+		"symbols": [
+			"desktopBridge",
+			"PlanningArtifactsBusyError",
+			"DesktopSessionEndedError",
+			"RepositoryLeaseUnavailableError",
+			"UnknownEntityError",
+			"DraftSourceNotRegisteredError",
+			"HostedSignInNotConfiguredError",
+			"BridgeContext"
+		]
 	},
 	"contract": {
 		"origin": "declared",

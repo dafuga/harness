@@ -5,6 +5,7 @@ import type {
 } from '../../models/development-tooling/Deployment.types';
 import { deploymentEnvironments } from '../../models/development-tooling/Deployment.types';
 import type { ReviewedDeployment } from '../../services/development-tooling/DeploymentService';
+import { DeploymentSnapshotVerificationError } from './verifyDeploymentSnapshot.types';
 import { deploymentProof } from '../projects-sessions/deploymentProof';
 import { deploymentState } from '../projects-sessions/deploymentState';
 import { gitRead, gitRevision } from '../projects-sessions/gitRead';
@@ -13,7 +14,9 @@ async function configuration(root: string, reviewed: ReviewedDeployment, plugin:
 	const config = await plugin.discover(root);
 	if (!config.sourceBranch) config.sourceBranch = reviewed.plan.branch;
 	if (deploymentProof(config) !== reviewed.fingerprint)
-		throw new Error('Deployment configuration changed; review again.');
+		throw new DeploymentSnapshotVerificationError(
+			'Deployment configuration changed; review again.'
+		);
 	return config;
 }
 /** Captured lower receipts stay valid as a newer pipeline advances in another environment. */
@@ -31,7 +34,7 @@ export async function captureDeploymentTarget(
 			proof.commit !== reviewed.plan.commit ||
 			proof.configuration !== reviewed.fingerprint)
 	)
-		throw new Error(
+		throw new DeploymentSnapshotVerificationError(
 			`A verified ${previous} deployment of this exact source and configuration is required.`
 		);
 	const destination =
@@ -47,7 +50,7 @@ export async function captureDeploymentTarget(
 				reviewed.plan.commit
 			]);
 		} catch {
-			throw new Error(
+			throw new DeploymentSnapshotVerificationError(
 				'A deployment cannot move its destination backwards or across divergent history.'
 			);
 		}
@@ -65,7 +68,9 @@ export async function verifyDeploymentSnapshot(
 			(await gitRevision(root)) !== reviewed.plan.commit ||
 			(await gitRead(root, ['status', '--porcelain'])).trim()
 		)
-			throw new Error('The isolated deployment source changed during the build.');
+			throw new DeploymentSnapshotVerificationError(
+				'The isolated deployment source changed during the build.'
+			);
 	}
 	await configuration(root, reviewed, guard.plugin);
 	const destination =
@@ -73,7 +78,7 @@ export async function verifyDeploymentSnapshot(
 			(item) => item.environment === reviewed.plan.environment
 		) ?? null;
 	if (JSON.stringify(destination) !== JSON.stringify(guard.destination))
-		throw new Error(
+		throw new DeploymentSnapshotVerificationError(
 			'The deployment destination changed during deployment; inspect Cloudflare before retrying.'
 		);
 }
