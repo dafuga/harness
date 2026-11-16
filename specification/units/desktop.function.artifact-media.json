@@ -13,7 +13,14 @@
 			"packages/desktop/src/utils/artifact-answer/artifactMedia.types.ts",
 			"packages/desktop/src/utils/reports-media/artifactMedia.ts"
 		],
-		"symbols": ["artifactMedia", "Recorded", "Sign", "artifactLimit", "artifactMedia"]
+		"symbols": [
+			"artifactMedia",
+			"ArtifactMediaError",
+			"Recorded",
+			"Sign",
+			"artifactLimit",
+			"artifactMedia"
+		]
 	},
 	"contract": {
 		"origin": "declared",

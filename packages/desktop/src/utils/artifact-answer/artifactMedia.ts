@@ -1,4 +1,5 @@
 // @harness-uid u_2knliavbo7
+import { ArtifactMediaError } from './artifactMedia.types';
 import type { Sign, Recorded } from './artifactMedia.types';
 
 /** True when the bytes hold these values from an offset on; a string stands for its characters. */
@@ -39,16 +40,19 @@ const plain = 'text/plain; charset=utf-8';
 function screenshot(bytes: Uint8Array): string {
 	if (png(bytes)) return 'image/png';
 	if (jpeg(bytes)) return 'image/jpeg';
-	throw new Error(
+	throw new ArtifactMediaError(
 		'These bytes are not a PNG or JPEG image, so they are not served as a screenshot.'
 	);
 }
 
 function sound(recorded: string, bytes: Uint8Array): string {
 	const known = audio.find((item) => item.recorded.includes(recorded));
-	if (!known) throw new Error(`A capture recorded as ${recorded} is not served as audio.`);
+	if (!known)
+		throw new ArtifactMediaError(`A capture recorded as ${recorded} is not served as audio.`);
 	if (known.is(bytes)) return known.served;
-	throw new Error(`These bytes are not ${known.served} audio, so they are not served.`);
+	throw new ArtifactMediaError(
+		`These bytes are not ${known.served} audio, so they are not served.`
+	);
 }
 
 /** Text is read as text and never run: JSON when it was recorded as JSON and is JSON. */
@@ -59,7 +63,8 @@ function result(recorded: string, bytes: Uint8Array): string {
 	} catch {
 		text = '\0';
 	}
-	if (text.includes('\0')) throw new Error('This result is not text, so it is not served.');
+	if (text.includes('\0'))
+		throw new ArtifactMediaError('This result is not text, so it is not served.');
 	if (recorded.split(';')[0].trim() !== json) return plain;
 	try {
 		JSON.parse(text);
@@ -80,5 +85,5 @@ export function artifactMedia(capture: Recorded, bytes: Uint8Array): string {
 	if (capture.kind === 'screenshot') return screenshot(bytes);
 	if (capture.kind === 'audio') return sound(capture.mediaType, bytes);
 	if (results.includes(capture.kind)) return result(capture.mediaType, bytes);
-	throw new Error(`A capture of kind ${capture.kind} is not served.`);
+	throw new ArtifactMediaError(`A capture of kind ${capture.kind} is not served.`);
 }
