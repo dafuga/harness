@@ -23,8 +23,8 @@
 			},
 			{
 				"name": "gameViewFiles.dimension",
-				"type": "unknown",
-				"required": true,
+				"type": "PieceContext['dimension']",
+				"required": false,
 				"description": "The view dimension inserted into the config; a falsy value causes fail to throw ExpectedCliError. The failure message asks for harness.dimension of 2d or 3d, but the function only checks truthiness and does not whitelist those values.",
 				"examples": ["2d", "3d"]
 			},
@@ -109,8 +109,8 @@
 					},
 					{
 						"name": "gameViewFiles.dimension",
-						"type": "unknown",
-						"required": true,
+						"type": "PieceContext['dimension']",
+						"required": false,
 						"description": "The view dimension inserted into the config; a falsy value causes fail to throw ExpectedCliError. The failure message asks for harness.dimension of 2d or 3d, but the function only checks truthiness and does not whitelist those values.",
 						"examples": ["2d", "3d"]
 					}
