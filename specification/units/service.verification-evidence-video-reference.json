@@ -4,7 +4,7 @@
 	"uid": "u_alfe4qnget",
 	"kind": "service",
 	"title": "VideoReferenceService",
-	"responsibility": "Validates batch-backed parent captures and preserves their original attached clip lineage.",
+	"responsibility": "Resolve archived video references through exact owner and attached original-parent proof, preserving original capture identity and keeping current-input admission as a separate caller obligation.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"catalog": {
@@ -59,17 +59,21 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "VideoReferenceService.constructor.root",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "process.cwd()",
+				"description": "The optional snapshot/root binding for this operation. Its documented default is the source expression process.cwd(), evaluated at construction, not a literal path string."
 			},
 			{
 				"name": "VideoReferenceService.constructor.pinned",
 				"type": "VideoReferenceContext['pinned']",
-				"required": false
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "The optional snapshot/root binding for this operation. Omission reads current evidence and notes tips when the reference scope is established; explicit null snapshot bounds are never widened."
 			},
 			{
 				"name": "VideoReferenceService.constructor.trail",
@@ -96,7 +100,9 @@
 			{
 				"name": "VideoReferenceService.materialize.physical",
 				"type": "string[]",
-				"required": false
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "The optional snapshot/root binding for this operation. Omission derives physical capture paths from recordFiles(record); this list is only used to reject conflicts with virtual referenced media."
 			},
 			{
 				"name": "VideoReferenceService.candidates.selection",
@@ -282,7 +288,8 @@
 			},
 			{
 				"name": "safeReferencePath",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Returns a boolean from a string path without opening files."
 			},
 			{
 				"name": "bindReference",
@@ -314,7 +321,8 @@
 			},
 			{
 				"name": "createReferenceCache",
-				"type": "VideoReferenceMemo"
+				"type": "VideoReferenceMemo",
+				"description": "Allocates empty in-memory metadata caches without external work."
 			},
 			{
 				"name": "scopeKey",
@@ -322,7 +330,8 @@
 			},
 			{
 				"name": "originKey",
-				"type": "string"
+				"type": "string",
+				"description": "Hashes the declared string-based scope/trail/record identity without external work."
 			},
 			{
 				"name": "memoOrigin",
@@ -340,10 +349,46 @@
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation\u2019s explicit integrity checks."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+			},
+			{
+				"name": "Git/LFS collaborator rejection",
+				"type": "propagated",
+				"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+			},
+			{
+				"name": "Filesystem rejection",
+				"type": "propagated",
+				"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+			},
+			{
+				"name": "Loader rejection",
+				"type": "propagated",
+				"description": "The supplied loader may throw or reject. Its original failure propagates and failed work is not retained as successful memoized proof."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Memoization measures the loader result with JSON.stringify; a cyclic or unsupported runtime value cannot be measured and rejects the call."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "JSON.stringify may exceed the call stack on an excessively deep loader result."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "VideoReferenceService.run",
@@ -372,8 +417,34 @@
 						"type": "Promise<TrustedVideoReference>"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation\u2019s explicit integrity checks."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					},
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "VideoReferenceService.materialize",
@@ -386,7 +457,9 @@
 					{
 						"name": "VideoReferenceService.materialize.physical",
 						"type": "string[]",
-						"required": false
+						"required": false,
+						"default": "undefined (omitted)",
+						"description": "The optional snapshot/root binding for this operation. Omission derives physical capture paths from recordFiles(record); this list is only used to reject conflicts with virtual referenced media."
 					}
 				],
 				"outputs": [
@@ -395,8 +468,34 @@
 						"type": "Promise<Map<string, Buffer>>"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation\u2019s explicit integrity checks."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					},
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "VideoReferenceService.candidates",
@@ -413,8 +512,19 @@
 						"type": "Promise<VideoReferenceCandidate[]>"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation\u2019s explicit integrity checks."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "referencePaths",
@@ -434,10 +544,16 @@
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation\u2019s explicit integrity checks."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "This low-level helper requires a capture with video metadata; a runtime capture without that required metadata can fail property access before reference proof."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "safeReferencePath",
@@ -451,11 +567,12 @@
 				"outputs": [
 					{
 						"name": "safeReferencePath",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Returns a boolean from a string path without opening files."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "bindReference",
@@ -480,10 +597,21 @@
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation\u2019s explicit integrity checks."
+					},
+					{
+						"name": "TypeError",
+						"type": "propagated",
+						"description": "The existing JSON serializer rejects an unsupported runtime value such as BigInt; inputs are expected to conform to the declared JSON descriptor shape."
+					},
+					{
+						"name": "RangeError",
+						"type": "propagated",
+						"description": "The existing recursive canonical serializer can exhaust the stack for cyclic or excessively deep runtime input; inputs are expected to satisfy the declared descriptor shape."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "currentOwner",
@@ -508,10 +636,26 @@
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation\u2019s explicit integrity checks."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "This low-level helper requires a capture with video metadata; a runtime capture without that required metadata can fail property access before reference proof."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "videoReferenceCandidates",
@@ -538,8 +682,19 @@
 						"type": "Promise<VideoReferenceCandidate[]>"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation\u2019s explicit integrity checks."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "materializeVideoReferences",
@@ -566,8 +721,34 @@
 						"type": "Promise<Map<string, Buffer>>"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation\u2019s explicit integrity checks."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					},
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "referenceScope",
@@ -589,8 +770,14 @@
 						"type": "Promise<PinnedHistory>"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "proveOriginal",
@@ -620,10 +807,31 @@
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation\u2019s explicit integrity checks."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					},
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "createReferenceCache",
@@ -631,11 +839,12 @@
 				"outputs": [
 					{
 						"name": "createReferenceCache",
-						"type": "VideoReferenceMemo"
+						"type": "VideoReferenceMemo",
+						"description": "Allocates empty in-memory metadata caches without external work."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "scopeKey",
@@ -682,11 +891,12 @@
 				"outputs": [
 					{
 						"name": "originKey",
-						"type": "string"
+						"type": "string",
+						"description": "Hashes the declared string-based scope/trail/record identity without external work."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "memoOrigin",
@@ -713,8 +923,24 @@
 						"type": "Promise<VideoOriginProof>"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Loader rejection",
+						"type": "propagated",
+						"description": "The supplied loader may throw or reject. Its original failure propagates and failed work is not retained as successful memoized proof."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Memoization measures the loader result with JSON.stringify; a cyclic or unsupported runtime value cannot be measured and rejects the call."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "JSON.stringify may exceed the call stack on an excessively deep loader result."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "memoCatalog",
@@ -741,8 +967,24 @@
 						"type": "Promise<VideoReferenceCandidate[]>"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Loader rejection",
+						"type": "propagated",
+						"description": "The supplied loader may throw or reject. Its original failure propagates and failed work is not retained as successful memoized proof."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Memoization measures the loader result with JSON.stringify; a cyclic or unsupported runtime value cannot be measured and rejects the call."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "JSON.stringify may exceed the call stack on an excessively deep loader result."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "resolveVideoReference",
@@ -772,10 +1014,31 @@
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation\u2019s explicit integrity checks."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					},
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -785,12 +1048,16 @@
 					{
 						"name": "VideoReferenceService.constructor.root",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "process.cwd()",
+						"description": "The optional snapshot/root binding for this operation. Its documented default is the source expression process.cwd(), evaluated at construction, not a literal path string."
 					},
 					{
 						"name": "VideoReferenceService.constructor.pinned",
 						"type": "VideoReferenceContext['pinned']",
-						"required": false
+						"required": false,
+						"default": "undefined (omitted)",
+						"description": "The optional snapshot/root binding for this operation. Omission reads current evidence and notes tips when the reference scope is established; explicit null snapshot bounds are never widened."
 					},
 					{
 						"name": "VideoReferenceService.constructor.trail",

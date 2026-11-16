@@ -460,8 +460,14 @@
 						"type": "Promise<string[]>"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [

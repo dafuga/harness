@@ -64,7 +64,8 @@
 				"name": "RevisionDetailService.constructor.kept",
 				"type": "unknown",
 				"required": false,
-				"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map."
+				"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map. The documented default is the source expression revisionSources(root), evaluated at construction; it is not a literal collaborator value.",
+				"default": "revisionSources(root)"
 			},
 			{
 				"name": "RevisionDetailService.build.commit",
@@ -355,8 +356,14 @@
 						"type": "Promise<Map<string, ResolvedMedia>>"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Collaborator rejection",
+						"type": "propagated",
+						"description": "The supplied origin-record reader or MediaPlacer may reject, and revisionMedia forwards that failure. Missing source/media is passed to the placer as a gap rather than fabricated evidence."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -380,7 +387,8 @@
 						"name": "RevisionDetailService.constructor.kept",
 						"type": "unknown",
 						"required": false,
-						"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map."
+						"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map. The documented default is the source expression revisionSources(root), evaluated at construction; it is not a literal collaborator value.",
+						"default": "revisionSources(root)"
 					}
 				],
 				"outputs": [

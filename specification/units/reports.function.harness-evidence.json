@@ -399,7 +399,7 @@
 					[
 						{
 							"id": "c41f0e9a-evidence-grid-review-populated-desktop-0",
-							"title": "evidence-grid-review · populated",
+							"title": "evidence-grid-review \u00b7 populated",
 							"category": "evidence-grid-review",
 							"file": "a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f.png",
 							"status": "passed",
@@ -432,7 +432,7 @@
 						},
 						{
 							"id": "c41f0e9a-evidence-grid-review-populated-mobile-1",
-							"title": "evidence-grid-review · populated",
+							"title": "evidence-grid-review \u00b7 populated",
 							"category": "evidence-grid-review",
 							"file": "",
 							"status": "passed",
@@ -465,7 +465,7 @@
 						},
 						{
 							"id": "c41f0e9a-evidence-grid-review-populated-audio-2",
-							"title": "evidence-grid-review · populated",
+							"title": "evidence-grid-review \u00b7 populated",
 							"category": "evidence-grid-review",
 							"file": "2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39.wav",
 							"status": "passed",
@@ -497,7 +497,7 @@
 					[
 						{
 							"id": "e02b7d4c-evidence-grid-review-populated-desktop-0",
-							"title": "evidence-grid-review · populated",
+							"title": "evidence-grid-review \u00b7 populated",
 							"category": "evidence-grid-review",
 							"file": "7a1c4e903f8b5d26e0c9a7f16b2d8e54a9f03c7bd4e8b1a25c6f9e03b7d2a8c4.png",
 							"status": "not-proven",
@@ -578,11 +578,18 @@
 				"outputs": [
 					{
 						"name": "captureVideo",
-						"type": "EvidenceVideo | undefined"
+						"type": "EvidenceVideo | undefined",
+						"description": "Projects the typed video descriptor/original reference, or returns undefined for non-video; it performs no media decoding."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "A null or shape-invalid runtime gallery/capture/reference can fail property access or iteration. Typed valid non-video input returns undefined; this projection performs no media loading or admission."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "originalClipReference",
@@ -967,7 +974,7 @@
 							[
 								{
 									"id": "c41f0e9a-evidence-grid-review-populated-desktop-0",
-									"title": "evidence-grid-review · populated",
+									"title": "evidence-grid-review \u00b7 populated",
 									"category": "evidence-grid-review",
 									"file": "a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f.png",
 									"status": "passed",
@@ -1000,7 +1007,7 @@
 								},
 								{
 									"id": "c41f0e9a-evidence-grid-review-populated-mobile-1",
-									"title": "evidence-grid-review · populated",
+									"title": "evidence-grid-review \u00b7 populated",
 									"category": "evidence-grid-review",
 									"file": "",
 									"status": "passed",
@@ -1033,7 +1040,7 @@
 								},
 								{
 									"id": "c41f0e9a-evidence-grid-review-populated-audio-2",
-									"title": "evidence-grid-review · populated",
+									"title": "evidence-grid-review \u00b7 populated",
 									"category": "evidence-grid-review",
 									"file": "2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39.wav",
 									"status": "passed",
@@ -1065,7 +1072,7 @@
 							[
 								{
 									"id": "e02b7d4c-evidence-grid-review-populated-desktop-0",
-									"title": "evidence-grid-review · populated",
+									"title": "evidence-grid-review \u00b7 populated",
 									"category": "evidence-grid-review",
 									"file": "7a1c4e903f8b5d26e0c9a7f16b2d8e54a9f03c7bd4e8b1a25c6f9e03b7d2a8c4.png",
 									"status": "not-proven",

@@ -183,9 +183,7 @@
 				"required": false,
 				"default": [],
 				"description": "An initial trail of ancestor record IDs used to detect a cycle when it contains the current or a recursively visited record ID. Defaults to [].",
-				"examples": [
-					["fe161936b67b24b1a2ea4473a86fc891fbbf83928e5d0472a744ce2d3005c42b"]
-				]
+				"examples": [["fe161936b67b24b1a2ea4473a86fc891fbbf83928e5d0472a744ce2d3005c42b"]]
 			}
 		],
 		"outputs": [
@@ -193,14 +191,27 @@
 				"name": "recordLineage",
 				"type": "string[]",
 				"description": "Returns strings for detected base or referenced-scenario ancestry problems, including missing, mismatched, failed, unsound or cyclic records and differing scenario states. Returns [] when no checked lineage has a problem; referenced scenarios without referencedRecord are skipped.",
-				"examples": [
-					[],
-					["base record fe161936b67b is not available"]
-				]
+				"examples": [[], ["base record fe161936b67b is not available"]]
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "propagated",
+				"description": "The existing JSON serializer rejects an unsupported runtime value such as BigInt; inputs are expected to conform to the declared JSON descriptor shape."
+			},
+			{
+				"name": "RangeError",
+				"type": "propagated",
+				"description": "The existing recursive canonical serializer can exhaust the stack for cyclic or excessively deep runtime input; inputs are expected to satisfy the declared descriptor shape."
+			},
+			{
+				"name": "Lineage collaborator failure",
+				"type": "propagated",
+				"description": "The supplied source.find or sound callback may throw; videoLineage does not catch those collaborator failures. Missing or unsound ordinary records are returned as diagnostic strings."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "clipParentRecords",
@@ -215,11 +226,12 @@
 				"outputs": [
 					{
 						"name": "clipParentRecords",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Collects unique clip-parent record IDs from typed links; it does not read or validate external evidence."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "recordDependencies",
@@ -234,11 +246,12 @@
 				"outputs": [
 					{
 						"name": "recordDependencies",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Unions whole-record and clip-level dependency ID lists without I/O."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "wholeRecordDependencies",
@@ -253,11 +266,12 @@
 				"outputs": [
 					{
 						"name": "wholeRecordDependencies",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Collects whole-record inheritance IDs without granting clip dependencies a full verdict."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "videoRecordPassed",
@@ -278,11 +292,12 @@
 				"outputs": [
 					{
 						"name": "videoRecordPassed",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Returns a boolean from recorded owner/scope and successful-test fields without I/O."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "sameVideoCapture",
@@ -306,8 +321,19 @@
 						"type": "boolean"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "propagated",
+						"description": "The existing JSON serializer rejects an unsupported runtime value such as BigInt; inputs are expected to conform to the declared JSON descriptor shape."
+					},
+					{
+						"name": "RangeError",
+						"type": "propagated",
+						"description": "The existing recursive canonical serializer can exhaust the stack for cyclic or excessively deep runtime input; inputs are expected to satisfy the declared descriptor shape."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "originalVideoCapture",
@@ -328,11 +354,12 @@
 				"outputs": [
 					{
 						"name": "originalVideoCapture",
-						"type": "Capture | undefined"
+						"type": "Capture | undefined",
+						"description": "Returns one matching build-bound original capture or undefined; absence/ambiguity is a value, not an exception."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "videoLineage",
@@ -362,8 +389,14 @@
 						"type": "string[]"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Lineage collaborator failure",
+						"type": "propagated",
+						"description": "The supplied source.find or sound callback may throw; videoLineage does not catch those collaborator failures. Missing or unsound ordinary records are returned as diagnostic strings."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "recordLineage",
@@ -446,9 +479,7 @@
 						"required": false,
 						"default": [],
 						"description": "An initial trail of ancestor record IDs used to detect a cycle when it contains the current or a recursively visited record ID. Defaults to [].",
-						"examples": [
-							["fe161936b67b24b1a2ea4473a86fc891fbbf83928e5d0472a744ce2d3005c42b"]
-						]
+						"examples": [["fe161936b67b24b1a2ea4473a86fc891fbbf83928e5d0472a744ce2d3005c42b"]]
 					}
 				],
 				"outputs": [
@@ -456,10 +487,7 @@
 						"name": "recordLineage",
 						"type": "string[]",
 						"description": "Returns strings for detected base or referenced-scenario ancestry problems, including missing, mismatched, failed, unsound or cyclic records and differing scenario states. Returns [] when no checked lineage has a problem; referenced scenarios without referencedRecord are skipped.",
-						"examples": [
-							[],
-							["base record fe161936b67b is not available"]
-						]
+						"examples": [[], ["base record fe161936b67b is not available"]]
 					}
 				],
 				"errors": [],

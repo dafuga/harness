@@ -42,7 +42,7 @@
 				"type": "string | null",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional evidence commit that pins pointer validation to that commit’s history. Null rejects every pointer; when omitted, evidence is unpinned and each stored evidence commit can be followed.",
+				"description": "Optional evidence commit that pins pointer validation to that commit\u2019s history. Null rejects every pointer; when omitted, evidence is unpinned and each stored evidence commit can be followed.",
 				"examples": ["0123456789abcdef0123456789abcdef01234567", null]
 			},
 			{
@@ -82,7 +82,9 @@
 			{
 				"name": "recordDescriptor.within",
 				"type": "string | null",
-				"required": false
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "The optional snapshot/root binding for this operation. Omission leaves this low-level descriptor\u2019s ancestry unpinned; a commit string pins ancestry and null refuses unavailable evidence."
 			},
 			{
 				"name": "recordReferences.root",
@@ -107,8 +109,14 @@
 				"description": "Resolves to the attached record for the pointer, including the original pointer, a Map of readable file bytes keyed by file path, and any validation problems. The manifest and record are optional when their data is absent or invalid; each pointer key is read and hashed once per process."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Evidence reader rejection",
+				"type": "propagated",
+				"description": "An underlying Git/evidence-tree read can reject. Ordinary missing, malformed, mismatched or out-of-snapshot descriptor evidence is instead returned in problems; metadata discovery alone proves no media."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "AttachedRecordService.load",
@@ -152,8 +160,14 @@
 						"type": "Promise<AttachedRecordDescriptor>"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Evidence reader rejection",
+						"type": "propagated",
+						"description": "An underlying Git/evidence-tree read can reject. Ordinary missing, malformed, mismatched or out-of-snapshot descriptor evidence is instead returned in problems; metadata discovery alone proves no media."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "recordDescriptor",
@@ -171,7 +185,9 @@
 					{
 						"name": "recordDescriptor.within",
 						"type": "string | null",
-						"required": false
+						"required": false,
+						"default": "undefined (omitted)",
+						"description": "The optional snapshot/root binding for this operation. Omission leaves this low-level descriptor\u2019s ancestry unpinned; a commit string pins ancestry and null refuses unavailable evidence."
 					}
 				],
 				"outputs": [
@@ -180,8 +196,14 @@
 						"type": "Promise<AttachedRecordDescriptor>"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Evidence reader rejection",
+						"type": "propagated",
+						"description": "An underlying Git/evidence-tree read can reject. Ordinary missing, malformed, mismatched or out-of-snapshot descriptor evidence is instead returned in problems; metadata discovery alone proves no media."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "recordReferences",
@@ -205,11 +227,12 @@
 				"outputs": [
 					{
 						"name": "recordReferences",
-						"type": "Promise<AttachedRecord>"
+						"type": "Promise<AttachedRecord>",
+						"description": "Catches reference resolution failures into loaded.problems and returns the loaded record, clearing media when retainMedia is false."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -228,7 +251,7 @@
 						"type": "string | null",
 						"required": false,
 						"default": "undefined (omitted)",
-						"description": "Optional evidence commit that pins pointer validation to that commit’s history. Null rejects every pointer; when omitted, evidence is unpinned and each stored evidence commit can be followed.",
+						"description": "Optional evidence commit that pins pointer validation to that commit\u2019s history. Null rejects every pointer; when omitted, evidence is unpinned and each stored evidence commit can be followed.",
 						"examples": ["0123456789abcdef0123456789abcdef01234567", null]
 					},
 					{

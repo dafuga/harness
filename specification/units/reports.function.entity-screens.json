@@ -178,12 +178,12 @@
 								{
 									"id": "desktop",
 									"label": "Desktop",
-									"size": "1440 × 900"
+									"size": "1440 \u00d7 900"
 								},
 								{
 									"id": "mobile",
 									"label": "Mobile",
-									"size": "390 × 844"
+									"size": "390 \u00d7 844"
 								}
 							]
 						}
@@ -1052,7 +1052,7 @@
 			{
 				"name": "screenOptions",
 				"type": "ScreenOption[]",
-				"description": "One choice per scenario with at least one viewport, each with its title, its required states, and its viewports labeled by their capitalized id and sized as `width × height`.",
+				"description": "One choice per scenario with at least one viewport, each with its title, its required states, and its viewports labeled by their capitalized id and sized as `width \u00d7 height`.",
 				"examples": [
 					[
 						{
@@ -1063,12 +1063,12 @@
 								{
 									"id": "desktop",
 									"label": "Desktop",
-									"size": "1440 × 900"
+									"size": "1440 \u00d7 900"
 								},
 								{
 									"id": "mobile",
 									"label": "Mobile",
-									"size": "390 × 844"
+									"size": "390 \u00d7 844"
 								}
 							]
 						}
@@ -1097,7 +1097,7 @@
 					{
 						"after": {
 							"id": "current-9d2c4f0-evidence-grid-gallery-gallery-screen-desktop",
-							"title": "evidence-grid · gallery",
+							"title": "evidence-grid \u00b7 gallery",
 							"category": "evidence-grid",
 							"file": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png",
 							"status": "passed",
@@ -1135,7 +1135,7 @@
 					{
 						"before": {
 							"id": "before-5b1e8d0-evidence-grid-gallery-gallery-screen-desktop",
-							"title": "evidence-grid · gallery",
+							"title": "evidence-grid \u00b7 gallery",
 							"category": "evidence-grid",
 							"file": "2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9.png",
 							"status": "passed",
@@ -1170,7 +1170,7 @@
 						},
 						"after": {
 							"id": "after-9d2c4f0-evidence-grid-gallery-gallery-screen-desktop",
-							"title": "evidence-grid · gallery",
+							"title": "evidence-grid \u00b7 gallery",
 							"category": "evidence-grid",
 							"file": "2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9.png",
 							"status": "passed",
@@ -1213,7 +1213,7 @@
 					{
 						"after": {
 							"id": "current-gap-evidence-grid-gallery-desktop",
-							"title": "evidence-grid · gallery",
+							"title": "evidence-grid \u00b7 gallery",
 							"category": "evidence-grid",
 							"file": "",
 							"status": "not-proven",
@@ -1234,7 +1234,7 @@
 					[
 						{
 							"id": "before-5b1e8d0-evidence-grid-gallery-gallery-screen-desktop",
-							"title": "evidence-grid · gallery",
+							"title": "evidence-grid \u00b7 gallery",
 							"category": "evidence-grid",
 							"file": "2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9.png",
 							"status": "passed",
@@ -1270,7 +1270,7 @@
 						},
 						{
 							"id": "after-9d2c4f0-evidence-grid-gallery-gallery-screen-desktop",
-							"title": "evidence-grid · gallery",
+							"title": "evidence-grid \u00b7 gallery",
 							"category": "evidence-grid",
 							"file": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png",
 							"status": "passed",
@@ -1308,7 +1308,7 @@
 					[
 						{
 							"id": "current-9d2c4f0-evidence-grid-gallery-gallery-narration-audio",
-							"title": "evidence-grid · gallery",
+							"title": "evidence-grid \u00b7 gallery",
 							"category": "evidence-grid",
 							"file": "0e6b9d3a5c1f8e27b4d0a6c9e3f1b8d2a7c5e0f4b9d6a1c8e3f7b2d5a9c0e4f6.wav",
 							"status": "passed",
@@ -1352,7 +1352,7 @@
 				"examples": [
 					{
 						"id": "current-9d2c4f0-evidence-grid-gallery-gallery-screen-desktop",
-						"title": "evidence-grid · gallery",
+						"title": "evidence-grid \u00b7 gallery",
 						"category": "evidence-grid",
 						"file": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png",
 						"status": "passed",
@@ -1417,11 +1417,18 @@
 				"outputs": [
 					{
 						"name": "videoCapture",
-						"type": "EvidenceVideo | undefined"
+						"type": "EvidenceVideo | undefined",
+						"description": "Projects a typed gallery capture or returns undefined for a non-video capture. It performs no media loading or proof admission."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "A null or shape-invalid runtime gallery/capture/reference can fail property access or iteration. Typed valid non-video input returns undefined; this projection performs no media loading or admission."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "screenOptions",
@@ -1543,7 +1550,7 @@
 					{
 						"name": "screenOptions",
 						"type": "ScreenOption[]",
-						"description": "One choice per scenario with at least one viewport, each with its title, its required states, and its viewports labeled by their capitalized id and sized as `width × height`.",
+						"description": "One choice per scenario with at least one viewport, each with its title, its required states, and its viewports labeled by their capitalized id and sized as `width \u00d7 height`.",
 						"examples": [
 							[
 								{
@@ -1554,12 +1561,12 @@
 										{
 											"id": "desktop",
 											"label": "Desktop",
-											"size": "1440 × 900"
+											"size": "1440 \u00d7 900"
 										},
 										{
 											"id": "mobile",
 											"label": "Mobile",
-											"size": "390 × 844"
+											"size": "390 \u00d7 844"
 										}
 									]
 								}
@@ -1589,12 +1596,12 @@
 										{
 											"id": "desktop",
 											"label": "Desktop",
-											"size": "1440 × 900"
+											"size": "1440 \u00d7 900"
 										},
 										{
 											"id": "mobile",
 											"label": "Mobile",
-											"size": "390 × 844"
+											"size": "390 \u00d7 844"
 										}
 									]
 								}
@@ -1963,7 +1970,7 @@
 							{
 								"after": {
 									"id": "current-9d2c4f0-evidence-grid-gallery-gallery-screen-desktop",
-									"title": "evidence-grid · gallery",
+									"title": "evidence-grid \u00b7 gallery",
 									"category": "evidence-grid",
 									"file": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png",
 									"status": "passed",
@@ -2001,7 +2008,7 @@
 							{
 								"before": {
 									"id": "before-5b1e8d0-evidence-grid-gallery-gallery-screen-desktop",
-									"title": "evidence-grid · gallery",
+									"title": "evidence-grid \u00b7 gallery",
 									"category": "evidence-grid",
 									"file": "2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9.png",
 									"status": "passed",
@@ -2036,7 +2043,7 @@
 								},
 								"after": {
 									"id": "after-9d2c4f0-evidence-grid-gallery-gallery-screen-desktop",
-									"title": "evidence-grid · gallery",
+									"title": "evidence-grid \u00b7 gallery",
 									"category": "evidence-grid",
 									"file": "2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9.png",
 									"status": "passed",
@@ -2079,7 +2086,7 @@
 							{
 								"after": {
 									"id": "current-gap-evidence-grid-gallery-desktop",
-									"title": "evidence-grid · gallery",
+									"title": "evidence-grid \u00b7 gallery",
 									"category": "evidence-grid",
 									"file": "",
 									"status": "not-proven",
@@ -2337,7 +2344,7 @@
 						"examples": [
 							{
 								"id": "current-9d2c4f0-evidence-grid-gallery-gallery-screen-desktop",
-								"title": "evidence-grid · gallery",
+								"title": "evidence-grid \u00b7 gallery",
 								"category": "evidence-grid",
 								"file": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png",
 								"status": "passed",
@@ -2688,7 +2695,7 @@
 							[
 								{
 									"id": "before-5b1e8d0-evidence-grid-gallery-gallery-screen-desktop",
-									"title": "evidence-grid · gallery",
+									"title": "evidence-grid \u00b7 gallery",
 									"category": "evidence-grid",
 									"file": "2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9.png",
 									"status": "passed",
@@ -2724,7 +2731,7 @@
 								},
 								{
 									"id": "after-9d2c4f0-evidence-grid-gallery-gallery-screen-desktop",
-									"title": "evidence-grid · gallery",
+									"title": "evidence-grid \u00b7 gallery",
 									"category": "evidence-grid",
 									"file": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png",
 									"status": "passed",
@@ -2762,7 +2769,7 @@
 							[
 								{
 									"id": "current-9d2c4f0-evidence-grid-gallery-gallery-narration-audio",
-									"title": "evidence-grid · gallery",
+									"title": "evidence-grid \u00b7 gallery",
 									"category": "evidence-grid",
 									"file": "0e6b9d3a5c1f8e27b4d0a6c9e3f1b8d2a7c5e0f4b9d6a1c8e3f7b2d5a9c0e4f6.wav",
 									"status": "passed",
