@@ -34,7 +34,7 @@
 			},
 			{
 				"name": "desktopIpc.bootstrap",
-				"type": "(event: unknown) => LocalBootstrap | null",
+				"type": "(event: IpcMainInvokeEvent) => LocalBootstrap | null",
 				"required": true,
 				"description": "Called with the IPC event for each `transport:bootstrap` request and returns the local bootstrap for a trusted top frame or `null` otherwise. A falsy result makes the handler reject with `Error('Untrusted renderer.')`, and callback exceptions propagate."
 			}
@@ -72,7 +72,7 @@
 					},
 					{
 						"name": "desktopIpc.bootstrap",
-						"type": "(event: unknown) => LocalBootstrap | null",
+						"type": "(event: IpcMainInvokeEvent) => LocalBootstrap | null",
 						"required": true,
 						"description": "Called with the IPC event for each `transport:bootstrap` request and returns the local bootstrap for a trusted top frame or `null` otherwise. A falsy result makes the handler reject with `Error('Untrusted renderer.')`, and callback exceptions propagate."
 					}

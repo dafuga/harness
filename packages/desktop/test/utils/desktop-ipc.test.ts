@@ -1,14 +1,15 @@
-import type { Handler } from './desktop-ipc.test.types';
+import type { IpcMainInvokeEvent } from 'electron';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { bootstrapChannel } from '../../src/utils/agents-providers/desktopIpc';
 import { desktopIpc } from '../../src/lib/development-tooling/desktop-initialization/initialize-desktop/desktopIpc';
 import { trustedSender } from '../../src/lib/development-tooling/desktop-initialization/initialize-desktop/trustedSender';
 function port() {
-	const handlers = new Map<string, Handler>();
+	const handlers = new Map<string, (event: IpcMainInvokeEvent) => Promise<unknown>>();
 	return {
 		handlers,
-		handle: (channel: string, handler: Handler) => handlers.set(channel, handler),
+		handle: (channel: string, handler: (event: IpcMainInvokeEvent) => Promise<unknown>) =>
+			handlers.set(channel, handler),
 		removeHandler: (channel: string) => handlers.delete(channel)
 	};
 }
@@ -21,12 +22,16 @@ function window(url = 'harness://app/harness') {
 test('the main process answers one IPC channel: the ticket of the caller, or a refusal', async () => {
 	const ipc = port(),
 		answer = { port: 49152, ticket: 't'.repeat(43) },
-		trusted = { trusted: true },
+		trusted = { trusted: true } as unknown as IpcMainInvokeEvent,
 		release = desktopIpc(ipc, (event) => (event === trusted ? answer : null));
 	expect([...ipc.handlers.keys()]).toEqual([bootstrapChannel]);
-	const handler = ipc.handlers.get(bootstrapChannel) as Handler;
+	const handler = ipc.handlers.get(bootstrapChannel) as (
+		event: IpcMainInvokeEvent
+	) => Promise<unknown>;
 	expect(await handler(trusted)).toEqual(answer);
-	await expect(handler({ trusted: false })).rejects.toThrow('Untrusted renderer.');
+	await expect(handler({ trusted: false } as unknown as IpcMainInvokeEvent)).rejects.toThrow(
+		'Untrusted renderer.'
+	);
 	release();
 	expect(ipc.handlers.size).toBe(0);
 });
