@@ -12,14 +12,14 @@
 			"src/utils/development-tooling/stableJson.ts",
 			"src/utils/development-tooling/stableJson.types.ts"
 		],
-		"symbols": ["stableJson", "StableJsonInput", "Position"]
+		"symbols": ["stableJson", "Position"]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
 			{
 				"name": "stableJson.value",
-				"type": "StableJsonInput",
+				"type": "unknown",
 				"required": true,
 				"description": "The JSON-shaped value to render, which can be any JSON value including nested arrays and plain objects, and the output depends only on it. It matters when the data contains undefined fields, nullish array items, or non-JSON values: undefined object fields are omitted, nullish array items and top-level values become null, BigInt values and circular references throw, and functions or symbols have no JSON form and produce invalid text.",
 				"examples": [
@@ -69,7 +69,7 @@
 				"inputs": [
 					{
 						"name": "stableJson.value",
-						"type": "StableJsonInput",
+						"type": "unknown",
 						"required": true,
 						"description": "The JSON-shaped value to render, which can be any JSON value including nested arrays and plain objects, and the output depends only on it. It matters when the data contains undefined fields, nullish array items, or non-JSON values: undefined object fields are omitted, nullish array items and top-level values become null, BigInt values and circular references throw, and functions or symbols have no JSON form and produce invalid text.",
 						"examples": [
