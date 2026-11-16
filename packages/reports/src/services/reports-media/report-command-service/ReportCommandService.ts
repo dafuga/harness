@@ -6,6 +6,7 @@ import { ReportRetentionService } from './report-retention-service/ReportRetenti
 import { ReportStorageSyncService } from './ReportStorageSyncService';
 import { reportCli, inputData, required } from './reportCli';
 import type { BeginInput, RecordInput } from '../../../models/reports-media/Report.types';
+import { ExpectedCliError } from '../../../../../../src/core/errors';
 
 export class ReportCommandService {
 	constructor(private readonly repository = new ReportRepository()) {}
@@ -25,7 +26,7 @@ export class ReportCommandService {
 		if (operation === 'import') return this.import(flags);
 		if (operation === 'serve' || operation === 'stop') return this.server(operation, flags);
 		if (['cleanup', 'sync-storage'].includes(operation)) return this.storage(operation, flags);
-		throw new Error(
+		throw new ExpectedCliError(
 			'Usage: report <begin|record|finalize|import|serve|stop|cleanup|sync-storage> [options]'
 		);
 	}
@@ -66,7 +67,7 @@ export class ReportCommandService {
 			file = required(flags, 'file');
 		let id = flags.run ? String(flags.run) : '';
 		if (!id) {
-			if (format !== 'mira') throw new Error('--run is required for this import format');
+			if (format !== 'mira') throw new ExpectedCliError('--run is required for this import format');
 			const run = await this.repository.begin({
 				project: required(flags, 'project'),
 				title: String(flags.title || 'Mira production playthrough - historical'),
