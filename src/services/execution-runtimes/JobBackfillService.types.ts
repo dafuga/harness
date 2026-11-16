@@ -10,7 +10,7 @@ export interface HistoricalResult {
 	seconds?: number;
 	wall_minutes?: number;
 	tasks?: { seconds?: number }[];
-	tried?: { seconds?: number }[];
+	tried?: { seconds?: number; model?: string; ok?: boolean; status?: string }[];
 }
 export interface BackfillResult {
 	imported: number;

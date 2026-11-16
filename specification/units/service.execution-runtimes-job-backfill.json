@@ -4,7 +4,7 @@
 	"uid": "u_izz5miwhbq",
 	"kind": "service",
 	"title": "JobBackfillService",
-	"responsibility": "Import elapsed historical job durations once per result source and report duplicate, missing and invalid timing.",
+	"responsibility": "Import elapsed historical jobs once per source and attempt, preserving reverify models and reporting corrected aggregates, duplicates and missing timing.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -40,7 +40,7 @@
 			{
 				"name": "JobBackfillService.import",
 				"type": "BackfillResult",
-				"description": "Counts imported, duplicate and skipped records, plus per-file parse, validation or database errors. An unreadable result does not stop other imports."
+				"description": "Counts inserted or corrected attempts, duplicate attempts and skipped source files, plus per-file parse, validation or database errors. A malformed result does not stop other sources."
 			}
 		],
 		"errors": [],
@@ -60,7 +60,7 @@
 					{
 						"name": "JobBackfillService.import",
 						"type": "BackfillResult",
-						"description": "Counts imported, duplicate and skipped records, plus per-file parse, validation or database errors. An unreadable result does not stop other imports."
+						"description": "Counts inserted or corrected attempts, duplicate attempts and skipped source files, plus per-file parse, validation or database errors. A malformed result does not stop other sources."
 					}
 				],
 				"errors": [],

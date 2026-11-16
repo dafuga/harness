@@ -4,7 +4,7 @@
 	"uid": "u_6atknznspb",
 	"kind": "service",
 	"title": "historicalRecord",
-	"responsibility": "Normalize historical result identity and outcome while preserving unit IDs and distinguishing cancellation.",
+	"responsibility": "Normalize historical identities and outcomes, preserving individual reverify attempts with their original model and elapsed time.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -12,7 +12,12 @@
 			"src/services/execution-runtimes/job-backfill/historicalRecord.ts",
 			"src/services/execution-runtimes/job-backfill/historicalRecord.types.ts"
 		],
-		"symbols": ["historicalIdentity", "historicalOutcome", "HistoricalIdentity"]
+		"symbols": [
+			"historicalIdentity",
+			"historicalOutcome",
+			"historicalAttempts",
+			"HistoricalIdentity"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -35,6 +40,18 @@
 				"required": false,
 				"default": "undefined",
 				"description": "Defaults to undefined, which normalizes to fail because no passing or cancelled status was recorded."
+			},
+			{
+				"name": "historicalAttempts.record",
+				"type": "JobRecord",
+				"required": true,
+				"description": "Aggregate result record providing stable source identity, phase and the inferred final timestamp. Non-reverify records remain single jobs."
+			},
+			{
+				"name": "historicalAttempts.data",
+				"type": "HistoricalResult",
+				"required": true,
+				"description": "Parsed result with optional serial tried entries. Finite nonnegative attempt durations preserve each model and outcome; incomplete attempt timing retains the aggregate."
 			}
 		],
 		"outputs": [
@@ -98,11 +115,42 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "historicalAttempts",
+				"inputs": [
+					{
+						"name": "historicalAttempts.record",
+						"type": "JobRecord",
+						"required": true,
+						"description": "Aggregate result record providing stable source identity, phase and the inferred final timestamp. Non-reverify records remain single jobs."
+					},
+					{
+						"name": "historicalAttempts.data",
+						"type": "HistoricalResult",
+						"required": true,
+						"description": "Parsed result with optional serial tried entries. Finite nonnegative attempt durations preserve each model and outcome; incomplete attempt timing retains the aggregate."
+					}
+				],
+				"outputs": [
+					{
+						"name": "historicalAttempts",
+						"type": "JobRecord[]",
+						"description": "One record per timed reverify attempt, with sequential attempt IDs, original model/outcome, and contiguous inferred timestamps ending at the file mtime. Other phases retain their aggregate record."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "repository.execution-runtimes-job-history",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "service.execution-runtimes-job-backfill",
 			"via": "import",

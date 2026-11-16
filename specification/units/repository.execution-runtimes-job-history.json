@@ -69,7 +69,7 @@
 			{
 				"name": "JobHistoryRepository.import",
 				"type": "boolean",
-				"description": "True when a complete historical attempt is inserted, false when its source-job-attempt already exists."
+				"description": "True for an inserted record or a one-time correction of an earlier inferred reverify aggregate into its first attempt; false for duplicates. Completed runner-clock records are never overwritten."
 			},
 			{
 				"name": "JobHistoryRepository.all",
@@ -156,7 +156,7 @@
 					{
 						"name": "JobHistoryRepository.import",
 						"type": "boolean",
-						"description": "True when a complete historical attempt is inserted, false when its source-job-attempt already exists."
+						"description": "True for an inserted record or a one-time correction of an earlier inferred reverify aggregate into its first attempt; false for duplicates. Completed runner-clock records are never overwritten."
 					}
 				],
 				"errors": [

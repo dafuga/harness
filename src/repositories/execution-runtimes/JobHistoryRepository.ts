@@ -62,7 +62,9 @@ export class JobHistoryRepository {
 		return (
 			Number(
 				this.db
-					.prepare('INSERT OR IGNORE INTO job_history VALUES (?, ?)')
+					.prepare(
+						`INSERT INTO job_history VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET data=excluded.data WHERE json_extract(job_history.data, '$.timingSource')='file-mtime-minus-duration' AND json_extract(job_history.data, '$.type')='reverify' AND json_extract(excluded.data, '$.timingSource')='file-mtime-minus-attempt-durations' AND json_extract(excluded.data, '$.type')='reverify' AND json_extract(excluded.data, '$.source') LIKE 'backfill:%'`
+					)
 					.run(jobKey(record), JSON.stringify(record)).changes
 			) === 1
 		);
