@@ -45,7 +45,7 @@ test('VideoEvidence.svelte is generated', async () => {
 			'fetch',
 			async () => new Response('null', { headers: { 'Content-Type': 'application/json' } })
 		);
-		await expect(loadVideoFlags(videoItem.video, new AbortController().signal)).rejects.toThrow(
+		await expect(loadVideoFlags(videoItem.video!, new AbortController().signal)).rejects.toThrow(
 			'Frame feedback returned a non-object response.'
 		);
 	} finally {
