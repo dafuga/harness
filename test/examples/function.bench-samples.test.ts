@@ -53,3 +53,46 @@ test('Summarizes warmed runtime measurements', async () => {
 		]
 	);
 });
+
+test('Throws ExpectedCliError when runtime invocation fails', async () => {
+	const runtime: UnitRuntime = {
+		kind: 'module',
+		invoke: async () => ({
+			ok: false,
+			error: { code: 'sample-error', message: 'sample failed' }
+		}),
+		close: async () => {}
+	};
+	const request = { operation: 'run' };
+	let message = '';
+	try {
+		await timeCall(runtime, request);
+	} catch (error) {
+		if (error instanceof Error) message = error.message;
+	}
+
+	expect(message).toBe('module failed: sample failed');
+	const state = 'throws-expectedclierror-when-runtime-invocation-fails';
+	recordExampleCases(
+		{
+			unitId: 'function.bench-samples',
+			symbol: 'timeCall',
+			state,
+			evidence: 'examples-cases',
+			file: `${state}.json`
+		},
+		[
+			{
+				name: 'failed module response includes its runtime kind and message',
+				input: {
+					request,
+					response: {
+						ok: false,
+						error: { code: 'sample-error', message: 'sample failed' }
+					}
+				},
+				error: message
+			}
+		]
+	);
+});

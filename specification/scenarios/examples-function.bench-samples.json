@@ -10,6 +10,11 @@
 			"id": "summarizes-warmed-runtime-measurements",
 			"title": "Summarizes warmed runtime measurements",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-runtime-invocation-fails",
+			"title": "Throws ExpectedCliError when runtime invocation fails",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["summarizes-warmed-runtime-measurements"],
+			"states": [
+				"summarizes-warmed-runtime-measurements",
+				"throws-expectedclierror-when-runtime-invocation-fails"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["summarizes-warmed-runtime-measurements"],
+			"states": [
+				"summarizes-warmed-runtime-measurements",
+				"throws-expectedclierror-when-runtime-invocation-fails"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["summarizes-warmed-runtime-measurements"],
+			"states": [
+				"summarizes-warmed-runtime-measurements",
+				"throws-expectedclierror-when-runtime-invocation-fails"
+			],
 			"viewports": [],
 			"required": true
 		}
