@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.verification-types",
+	"title": "function.verification-types examples",
+	"kind": "headless",
+	"units": ["function.verification-types"],
+	"builds": [],
+	"states": [
+		{
+			"id": "capture-schema-accepts-a-clipped-screenshot",
+			"title": "Capture schema accepts a clipped screenshot",
+			"coverage": "required"
+		},
+		{
+			"id": "profile-and-component-schemas-accept-complete-identities",
+			"title": "Profile and component schemas accept complete identities",
+			"coverage": "required"
+		},
+		{
+			"id": "measurement-schema-accepts-an-unavailable-measurement",
+			"title": "Measurement schema accepts an unavailable measurement",
+			"coverage": "required"
+		},
+		{
+			"id": "budget-finding-schema-accepts-an-unavailable-metric",
+			"title": "Budget finding schema accepts an unavailable metric",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.verification-types.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"capture-schema-accepts-a-clipped-screenshot",
+				"profile-and-component-schemas-accept-complete-identities",
+				"measurement-schema-accepts-an-unavailable-measurement",
+				"budget-finding-schema-accepts-an-unavailable-metric"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"capture-schema-accepts-a-clipped-screenshot",
+				"profile-and-component-schemas-accept-complete-identities",
+				"measurement-schema-accepts-an-unavailable-measurement",
+				"budget-finding-schema-accepts-an-unavailable-metric"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"capture-schema-accepts-a-clipped-screenshot",
+				"profile-and-component-schemas-accept-complete-identities",
+				"measurement-schema-accepts-an-unavailable-measurement",
+				"budget-finding-schema-accepts-an-unavailable-metric"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
