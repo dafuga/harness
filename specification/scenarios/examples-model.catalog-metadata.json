@@ -30,6 +30,11 @@
 			"id": "deletes-a-catalog-metadata-row",
 			"title": "Deletes a catalog metadata row",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-persistence-failure-when-an-adapter-rejects",
+			"title": "Throws persistence failure when an adapter rejects",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -52,7 +57,8 @@
 				"finds-rows-matching-catalog-metadata-fields",
 				"creates-a-catalog-metadata-row",
 				"updates-a-catalog-metadata-row",
-				"deletes-a-catalog-metadata-row"
+				"deletes-a-catalog-metadata-row",
+				"throws-persistence-failure-when-an-adapter-rejects"
 			],
 			"viewports": [],
 			"required": true
@@ -65,7 +71,8 @@
 				"finds-rows-matching-catalog-metadata-fields",
 				"creates-a-catalog-metadata-row",
 				"updates-a-catalog-metadata-row",
-				"deletes-a-catalog-metadata-row"
+				"deletes-a-catalog-metadata-row",
+				"throws-persistence-failure-when-an-adapter-rejects"
 			],
 			"viewports": [],
 			"required": true
@@ -78,7 +85,8 @@
 				"finds-rows-matching-catalog-metadata-fields",
 				"creates-a-catalog-metadata-row",
 				"updates-a-catalog-metadata-row",
-				"deletes-a-catalog-metadata-row"
+				"deletes-a-catalog-metadata-row",
+				"throws-persistence-failure-when-an-adapter-rejects"
 			],
 			"viewports": [],
 			"required": true

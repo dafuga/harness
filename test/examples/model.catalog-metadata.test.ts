@@ -72,3 +72,14 @@ test('Deletes a catalog metadata row', async () => {
 		[{ name: 'delete returns adapter result', input: { id: row.id }, output: deleted }]
 	);
 });
+
+test('Throws persistence failure when an adapter rejects', async () => {
+	const failure = new Error('catalog metadata store unavailable');
+	const persistence = adapter({ find: async () => Promise.reject(failure) });
+	const result = CatalogMetadata.find(persistence, row.id);
+	await expect(result).rejects.toBe(failure);
+	recordExampleCases(
+		{ unitId: 'model.catalog-metadata', symbol: 'CatalogMetadata.find', state: 'throws-persistence-failure-when-an-adapter-rejects', evidence: 'examples-cases', file: 'throws-persistence-failure-when-an-adapter-rejects.json' },
+		[{ name: 'adapter rejection reaches caller', input: { id: row.id }, error: { name: failure.name, message: failure.message } }]
+	);
+});
