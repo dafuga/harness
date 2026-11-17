@@ -12,8 +12,23 @@
 			"coverage": "required"
 		},
 		{
+			"id": "throws-error-when-preflight-settings-are-unsupported",
+			"title": "Throws Error when preflight settings are unsupported.",
+			"coverage": "required"
+		},
+		{
 			"id": "run-parses-codex-completed-turn-events",
 			"title": "Run parses Codex completed-turn events.",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-codexrunerror-when-the-codex-process-fails",
+			"title": "Throws CodexRunError when the Codex process fails.",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-codexrunerror-when-codex-reports-a-different-model",
+			"title": "Throws CodexRunError when Codex reports a different model.",
 			"coverage": "required"
 		},
 		{
@@ -39,7 +54,10 @@
 			"kind": "output",
 			"states": [
 				"preflight-returns-the-codex-version",
+				"throws-error-when-preflight-settings-are-unsupported",
 				"run-parses-codex-completed-turn-events",
+				"throws-codexrunerror-when-the-codex-process-fails",
+				"throws-codexrunerror-when-codex-reports-a-different-model",
 				"command-builds-fresh-and-resumed-codex-argument-vectors"
 			],
 			"viewports": [],
@@ -50,7 +68,10 @@
 			"kind": "assertions",
 			"states": [
 				"preflight-returns-the-codex-version",
+				"throws-error-when-preflight-settings-are-unsupported",
 				"run-parses-codex-completed-turn-events",
+				"throws-codexrunerror-when-the-codex-process-fails",
+				"throws-codexrunerror-when-codex-reports-a-different-model",
 				"command-builds-fresh-and-resumed-codex-argument-vectors"
 			],
 			"viewports": [],
@@ -61,7 +82,10 @@
 			"kind": "trace",
 			"states": [
 				"preflight-returns-the-codex-version",
+				"throws-error-when-preflight-settings-are-unsupported",
 				"run-parses-codex-completed-turn-events",
+				"throws-codexrunerror-when-the-codex-process-fails",
+				"throws-codexrunerror-when-codex-reports-a-different-model",
 				"command-builds-fresh-and-resumed-codex-argument-vectors"
 			],
 			"viewports": [],
