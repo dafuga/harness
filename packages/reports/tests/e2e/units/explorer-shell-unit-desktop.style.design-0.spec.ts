@@ -2,6 +2,7 @@ import { expect, test } from '../../../../../test/support/browserTest';
 import { buildShellFixture, captureShell, removeShellFixture } from '../support/shellFixture';
 import { catalogViewports } from '../support/component-previews/catalogUnits';
 import { openPreview, readyPreview } from '../support/component-previews/previewPage';
+import { prepareCatalogState } from '../support/component-previews/catalogStateActions';
 
 /**
  * desktop.style.design-0 styles the entity layout, heading, tabs and thread column. The catalog
@@ -28,6 +29,8 @@ for (const viewport of catalogViewports) {
 			await page.setViewportSize({ width: viewport.width, height: viewport.height });
 			await openPreview(page, home, unit, state.variant);
 			const content = await readyPreview(page, unit, state.variant);
+			// Opens the conversation (default, at or below 850 px) or closes it (conversation-closed).
+			await prepareCatalogState(content, unit, state.variant);
 			const layout = content.locator('.entity-layout');
 			await expect(layout).toBeVisible();
 			// Only design-0.css sets the entity layout's grid display.
