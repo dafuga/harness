@@ -20,6 +20,11 @@
 			"id": "checks-whether-a-selected-project-is-outside-the-grant",
 			"title": "checks whether a selected project is outside the grant",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-a-required-status-or-authority-is-null",
+			"title": "Throws TypeError when a required status or authority is null",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +45,8 @@
 			"states": [
 				"identifies-the-remote-holder-and-serialized-grant",
 				"classifies-authority-changes-for-steady-and-changed-access",
-				"checks-whether-a-selected-project-is-outside-the-grant"
+				"checks-whether-a-selected-project-is-outside-the-grant",
+				"throws-typeerror-when-a-required-status-or-authority-is-null"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +57,8 @@
 			"states": [
 				"identifies-the-remote-holder-and-serialized-grant",
 				"classifies-authority-changes-for-steady-and-changed-access",
-				"checks-whether-a-selected-project-is-outside-the-grant"
+				"checks-whether-a-selected-project-is-outside-the-grant",
+				"throws-typeerror-when-a-required-status-or-authority-is-null"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +69,8 @@
 			"states": [
 				"identifies-the-remote-holder-and-serialized-grant",
 				"classifies-authority-changes-for-steady-and-changed-access",
-				"checks-whether-a-selected-project-is-outside-the-grant"
+				"checks-whether-a-selected-project-is-outside-the-grant",
+				"throws-typeerror-when-a-required-status-or-authority-is-null"
 			],
 			"viewports": [],
 			"required": true

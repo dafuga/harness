@@ -96,3 +96,25 @@ test('checks whether a selected project is outside the grant', () => {
 		]
 	);
 });
+
+test('Throws TypeError when a required status or authority is null', () => {
+	expect(() => remoteAuthority(null as never)).toThrow(TypeError);
+	expect(() => authorityChange(null as never, noAuthority, true)).toThrow(TypeError);
+	expect(() => authorityChange(noAuthority, null as never, false)).toThrow(TypeError);
+	expect(() => excludes(null as never, projectId)).toThrow(TypeError);
+	recordExampleCases(
+		{
+			unitId: 'desktop.function.remote-authority',
+			symbol: 'remoteAuthority, authorityChange, excludes',
+			state: 'throws-typeerror-when-a-required-status-or-authority-is-null',
+			evidence: 'examples-cases',
+			file: 'throws-typeerror-when-a-required-status-or-authority-is-null.json'
+		},
+		[
+			{ name: 'null remote status', input: { function: 'remoteAuthority', status: null }, error: 'TypeError' },
+			{ name: 'null known authority', input: { function: 'authorityChange', known: null, next: noAuthority, steady: true }, error: 'TypeError' },
+			{ name: 'null next authority', input: { function: 'authorityChange', known: noAuthority, next: null, steady: false }, error: 'TypeError' },
+			{ name: 'null status for selected project', input: { function: 'excludes', status: null, projectId }, error: 'TypeError' }
+		]
+	);
+});
