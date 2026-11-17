@@ -10,6 +10,11 @@
 			"id": "registers-the-kernel-command-tree-and-its-options",
 			"title": "Registers the kernel command tree and its options",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-parity-reports-problems",
+			"title": "Throws ExpectedCliError when parity reports problems",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["registers-the-kernel-command-tree-and-its-options"],
+			"states": [
+				"registers-the-kernel-command-tree-and-its-options",
+				"throws-expectedclierror-when-parity-reports-problems"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["registers-the-kernel-command-tree-and-its-options"],
+			"states": [
+				"registers-the-kernel-command-tree-and-its-options",
+				"throws-expectedclierror-when-parity-reports-problems"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["registers-the-kernel-command-tree-and-its-options"],
+			"states": [
+				"registers-the-kernel-command-tree-and-its-options",
+				"throws-expectedclierror-when-parity-reports-problems"
+			],
 			"viewports": [],
 			"required": true
 		}
