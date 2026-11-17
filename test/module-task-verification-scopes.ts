@@ -25,10 +25,14 @@ export const moduleTaskVerificationScopes: Record<string, VerificationScope> = {
 					'contract-admission',
 				'app projects include SvelteKit and specification files': 'contract-admission',
 				'library projects include Bun TypeScript test structure': 'contract-admission',
-				'generated app code and configuration obey their formatter settings': 'contract-admission',
-				'generated lib code and configuration obey their formatter settings': 'contract-admission'
+				'generated app code and testing foundations obey their formatter and lint settings':
+					'contract-admission',
+				'generated lib code and testing foundations obey their formatter and lint settings':
+					'contract-admission'
 			},
 			'test/adapters/agents-providers/module-task-runner.test.ts': {
+				'task limits use positive integers and fall back for invalid or unset values':
+					'assigned-worker',
 				'Claude and Codex launch exact models and intelligence without shell interpolation':
 					'assigned-worker',
 				'successful public Claude CLI events retain requested model and summary': 'assigned-worker',
@@ -38,11 +42,19 @@ export const moduleTaskVerificationScopes: Record<string, VerificationScope> = {
 				'a completed CLI run that reports another model is rejected': 'contract-admission',
 				'public claude usage is retained without guessing absent counters': 'usage-pricing',
 				'public codex usage is retained without guessing absent counters': 'usage-pricing',
-				'failed turns preserve available usage for cost attribution': 'usage-pricing'
+				'failed turns preserve available usage for cost attribution': 'usage-pricing',
+				'"Claude task failed" is a named ModuleTaskRunError': 'assigned-worker',
+				'"Claude quota exhausted." is a named ModuleTaskRunError': 'assigned-worker',
+				'"Claude was denied a required tool" is a named ModuleTaskRunError': 'assigned-worker',
+				'"Claude ran a different model." is a named ModuleTaskRunError': 'assigned-worker',
+				'"Codex task failed" is a named ModuleTaskRunError': 'assigned-worker',
+				'"Codex ran a different model." is a named ModuleTaskRunError': 'assigned-worker',
+				'the process executor seam is typed, never unknown or any': 'assigned-worker'
 			},
 			'test/adapters/agents-providers/module-task-worktree-adapter.test.ts': {
 				'submission checkpoint preserves source HEAD and both staged and unstaged work':
-					'contract-admission'
+					'contract-admission',
+				'a task worktree whose HEAD moved is refused with its named error': 'contract-admission'
 			},
 			'test/commands/agents-providers/module-task.test.ts': {
 				'module task commands retain the existing evidence-based task check': 'contract-admission'
