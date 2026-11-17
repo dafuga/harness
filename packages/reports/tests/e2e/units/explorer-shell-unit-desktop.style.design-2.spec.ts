@@ -3,8 +3,8 @@ import { buildShellFixture, captureShell, removeShellFixture } from '../support/
 import * as preview from '../support/component-previews/previewPage';
 import { catalogViewports } from '../support/component-previews/catalogUnits';
 
-const unit = 'desktop.page.root';
-const states = [{ id: 'default', variant: '' }];
+const unit = 'desktop.component.design-panel';
+const states = [{ id: 'default', variant: 'long' }];
 let home = '';
 
 test.beforeAll(() => {
@@ -19,16 +19,13 @@ for (const viewport of catalogViewports) {
 			await page.setViewportSize(viewport);
 			await preview.openPreview(page, home, unit, state.variant);
 			const content = await preview.readyPreview(page, unit, state.variant);
-			const route = content.locator('.app-route');
-			await expect(route).toBeVisible();
+			const options = content.locator('.design-options');
+			await expect(options).toBeVisible();
 			await expect
 				.poll(() =>
-					route.evaluate((node) => {
-						const style = getComputedStyle(node);
-						return style.color === style.getPropertyValue('--hx-color-text-muted').trim();
-					})
+					options.evaluate((node) => getComputedStyle(node).display)
 				)
-				.toBe(true);
+				.toBe('flex');
 			await captureShell(page, home, { state: state.id, viewport: viewport.id });
 		});
 	}
