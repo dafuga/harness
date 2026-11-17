@@ -1,7 +1,7 @@
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { withTempRepo } from '../support/temporary';
+import { withTempDir, withTempRepo } from '../support/temporary';
 import { unitShots } from '../../src/workflows/development-tooling/guide-units/unitShots';
 import type { UnitShots } from '../../src/workflows/development-tooling/guide-units/unitShots.types';
 
@@ -34,4 +34,30 @@ test('Reports no attached evidence when no Harness refs exist', async () => {
 			}))
 		);
 	}, 'unit-shots-');
+});
+
+test('Rejects when the root is not a Git repository', async () => {
+	await withTempDir('unit-shots-plain-', async (directory) => {
+		const error = await unitShots(directory, entities[0], commit).catch(
+			(caught: unknown) => caught
+		);
+
+		expect(error).toBeInstanceOf(Error);
+		recordExampleCases(
+			{
+				unitId: 'workflow.development-tooling-guide-units-unit-shots',
+				symbol: 'unitShots',
+				state: 'rejects-when-the-root-is-not-a-git-repository',
+				evidence: 'examples-cases',
+				file: 'rejects-when-the-root-is-not-a-git-repository.json'
+			},
+			[
+				{
+					name: 'plain directory without a Git repository',
+					input: { root: 'temporary plain directory', entity: entities[0], commit },
+					error: (error as Error).message
+				}
+			]
+		);
+	});
 });

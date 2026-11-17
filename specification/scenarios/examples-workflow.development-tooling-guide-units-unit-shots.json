@@ -10,6 +10,11 @@
 			"id": "reports-no-attached-evidence-when-no-harness-refs-exist",
 			"title": "Reports no attached evidence when no Harness refs exist",
 			"coverage": "required"
+		},
+		{
+			"id": "rejects-when-the-root-is-not-a-git-repository",
+			"title": "Rejects when the root is not a Git repository",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["reports-no-attached-evidence-when-no-harness-refs-exist"],
+			"states": [
+				"reports-no-attached-evidence-when-no-harness-refs-exist",
+				"rejects-when-the-root-is-not-a-git-repository"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["reports-no-attached-evidence-when-no-harness-refs-exist"],
+			"states": [
+				"reports-no-attached-evidence-when-no-harness-refs-exist",
+				"rejects-when-the-root-is-not-a-git-repository"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["reports-no-attached-evidence-when-no-harness-refs-exist"],
+			"states": [
+				"reports-no-attached-evidence-when-no-harness-refs-exist",
+				"rejects-when-the-root-is-not-a-git-repository"
+			],
 			"viewports": [],
 			"required": true
 		}
