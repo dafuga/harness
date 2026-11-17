@@ -10,6 +10,11 @@
 			"id": "lists-reports-without-caching-the-response",
 			"title": "Lists reports without caching the response",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-repository-list-rejection-when-it-fails",
+			"title": "Throws repository.list rejection when it fails",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["lists-reports-without-caching-the-response"],
+			"states": [
+				"lists-reports-without-caching-the-response",
+				"throws-repository-list-rejection-when-it-fails"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["lists-reports-without-caching-the-response"],
+			"states": [
+				"lists-reports-without-caching-the-response",
+				"throws-repository-list-rejection-when-it-fails"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["lists-reports-without-caching-the-response"],
+			"states": [
+				"lists-reports-without-caching-the-response",
+				"throws-repository-list-rejection-when-it-fails"
+			],
 			"viewports": [],
 			"required": true
 		}
