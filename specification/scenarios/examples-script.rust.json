@@ -10,6 +10,26 @@
 			"id": "selects-the-pinned-rust-compiler-toolchain",
 			"title": "Selects the pinned Rust compiler toolchain",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-tool-or-working-directory-is-invalid",
+			"title": "Throws Error when tool or working directory is invalid",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-pin-errors-for-missing-unreadable-or-invalid-toolchai",
+			"title": "Throws pin errors for missing, unreadable, or invalid toolchain files",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-bun-spawnsync-error-when-tool-execution-throws",
+			"title": "Throws Bun.spawnSync error when tool execution throws",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-rustup-selection-fails",
+			"title": "Throws Error when rustup selection fails",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +47,39 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["selects-the-pinned-rust-compiler-toolchain"],
+			"states": [
+				"selects-the-pinned-rust-compiler-toolchain",
+				"throws-error-when-tool-or-working-directory-is-invalid",
+				"throws-pin-errors-for-missing-unreadable-or-invalid-toolchai",
+				"throws-bun-spawnsync-error-when-tool-execution-throws",
+				"throws-error-when-rustup-selection-fails"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["selects-the-pinned-rust-compiler-toolchain"],
+			"states": [
+				"selects-the-pinned-rust-compiler-toolchain",
+				"throws-error-when-tool-or-working-directory-is-invalid",
+				"throws-pin-errors-for-missing-unreadable-or-invalid-toolchai",
+				"throws-bun-spawnsync-error-when-tool-execution-throws",
+				"throws-error-when-rustup-selection-fails"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["selects-the-pinned-rust-compiler-toolchain"],
+			"states": [
+				"selects-the-pinned-rust-compiler-toolchain",
+				"throws-error-when-tool-or-working-directory-is-invalid",
+				"throws-pin-errors-for-missing-unreadable-or-invalid-toolchai",
+				"throws-bun-spawnsync-error-when-tool-execution-throws",
+				"throws-error-when-rustup-selection-fails"
+			],
 			"viewports": [],
 			"required": true
 		}
