@@ -1,6 +1,14 @@
 import { render } from 'svelte/server';
 import { test, vi } from 'vitest';
 import Page from '../../src/routes/harness/branch/[branch]/[...at]/components/[entity]/details/+page.svelte';
+import { correctedLocation } from '../../src/utils/development-tooling/correctedLocation';
+import { explorerRoute } from '../../../../src/utils/explorer-ui/explorerRoute';
+import { harnessPage } from '../../src/utils/explorer-ui/harness-page/harnessPage';
+import {
+	HarnessDataLoadError
+} from '../../src/utils/explorer-ui/harnessClient.types';
+import { harnessClient } from '../../src/utils/explorer-ui/harnessClient';
+import { history, sha, summary } from '../explorerFixture';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
 
@@ -76,4 +84,101 @@ test('Renders the measurements and source tab addresses of a component without a
 	expect(source.title).toBe('Component details · Harness');
 	expect(measured.words).not.toContain('Measurements and frozen limits');
 	expect(source.words).not.toContain('src/routes/');
+});
+
+test('Reports not-in-history when the history lacks the address', () => {
+	// The page reads its address through harnessPage; a missing branch or commit is the notice.
+	const index = history({
+		branches: [
+			{ name: 'main', head: sha('c') },
+			{ name: 'feature/kept', head: sha('d') }
+		],
+		revisions: [
+			summary(sha('c'), { branches: ['main'] }),
+			summary(sha('d'), { branches: ['feature/kept'] })
+		]
+	});
+	const paths = [
+		`/branch/release/components/${entity}`,
+		`/branch/main/commit/${sha('e')}/components/${entity}`,
+		`/branch/feature%2Fkept/commit/${sha('c')}/components/${entity}`
+	];
+	const notices = paths.map((path) => {
+		const page = harnessPage(index, path);
+		return page.kind === 'missing' ? page.message : page.kind;
+	});
+	recordExampleCases(where('reports-not-in-history-when-the-history-lacks-the-address'), [
+		{
+			name: 'a branch the history does not hold',
+			input: { path: paths[0] },
+			output: { notice: notices[0] }
+		},
+		{
+			name: 'a commit the history does not hold',
+			input: { path: paths[1] },
+			output: { notice: notices[1] }
+		},
+		{
+			name: 'a branch that does not contain the commit',
+			input: { path: paths[2] },
+			output: { notice: notices[2] }
+		}
+	]);
+	expect(notices[0]).toBe('Branch release is not in this history.');
+	expect(notices[1]).toBe(`Commit ${sha('e').slice(0, 7)} is not in this history.`);
+	expect(notices[2]).toBe(
+		`Branch feature/kept does not contain commit ${sha('c').slice(0, 7)}.`
+	);
+});
+
+test('Redirects other-category to the category that lists it', () => {
+	// An address whose component is listed under another category is replaced by that category.
+	const address = explorerRoute(`/branch/main/functions/${entity}/details`, '?tab=source');
+	const listed = [{ id: entity, category: 'components' as const }];
+	const moved = address && correctedLocation(address, listed);
+	const kept = address && correctedLocation(address, [{ id: entity, category: 'functions' }]);
+	recordExampleCases(where('redirects-other-category-to-the-category-that-lists-it'), [
+		{
+			name: 'a functions address whose component is listed under components',
+			input: { entity, listedUnder: 'components', tab: 'source' },
+			output: { category: moved?.category ?? null, entity: moved?.entity ?? null, tab: moved?.tab ?? null }
+		},
+		{
+			name: 'the same address when the listed category is already right',
+			input: { entity, listedUnder: 'functions', tab: 'source' },
+			output: { redirect: kept ?? null }
+		}
+	]);
+	expect(moved).toMatchObject({ category: 'components', entity, tab: 'source' });
+	expect(kept).toBeNull();
+});
+
+test('Throws HarnessDataLoadError when a data request is not ok', async () => {
+	// A stub answers each request with the status; no network is reached.
+	const answer = (status: number) =>
+		(async () => new Response(null, { status })) as unknown as typeof fetch;
+	const index = await harnessClient('/harness', answer(404))
+		.index()
+		.catch((error: unknown) => error);
+	const revision = await harnessClient('/harness', answer(403))
+		.revision(sha('c'))
+		.catch((error: unknown) => error);
+	const described = (error: unknown) =>
+		error instanceof Error ? { name: error.name, message: error.message } : { name: 'none' };
+	recordExampleCases(where('throws-harnessdataloaderror-when-a-data-request-is-not-ok'), [
+		{
+			name: 'the index answered 404',
+			input: { path: 'index.json', status: 404 },
+			error: described(index)
+		},
+		{
+			name: 'a revision answered 403',
+			input: { path: `revisions/${sha('c')}.json`, status: 403 },
+			error: described(revision)
+		}
+	]);
+	expect(index).toBeInstanceOf(HarnessDataLoadError);
+	expect(revision).toBeInstanceOf(HarnessDataLoadError);
+	expect(described(index).message).toBe('index.json could not be loaded (404)');
+	expect(described(revision).message).toBe(`revisions/${sha('c')}.json could not be loaded (403)`);
 });

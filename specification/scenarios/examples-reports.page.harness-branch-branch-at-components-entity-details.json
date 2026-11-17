@@ -15,6 +15,21 @@
 			"id": "renders-the-measurements-and-source-tab-addresses-of-a-compo",
 			"title": "Renders the measurements and source tab addresses of a component without another revision content",
 			"coverage": "required"
+		},
+		{
+			"id": "reports-not-in-history-when-the-history-lacks-the-address",
+			"title": "Reports not-in-history when the history lacks the address",
+			"coverage": "required"
+		},
+		{
+			"id": "redirects-other-category-to-the-category-that-lists-it",
+			"title": "Redirects other-category to the category that lists it",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-harnessdataloaderror-when-a-data-request-is-not-ok",
+			"title": "Throws HarnessDataLoadError when a data request is not ok",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +49,10 @@
 			"kind": "output",
 			"states": [
 				"renders-the-component-details-page-with-the-document-title-c",
-				"renders-the-measurements-and-source-tab-addresses-of-a-compo"
+				"renders-the-measurements-and-source-tab-addresses-of-a-compo",
+				"reports-not-in-history-when-the-history-lacks-the-address",
+				"redirects-other-category-to-the-category-that-lists-it",
+				"throws-harnessdataloaderror-when-a-data-request-is-not-ok"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +62,10 @@
 			"kind": "assertions",
 			"states": [
 				"renders-the-component-details-page-with-the-document-title-c",
-				"renders-the-measurements-and-source-tab-addresses-of-a-compo"
+				"renders-the-measurements-and-source-tab-addresses-of-a-compo",
+				"reports-not-in-history-when-the-history-lacks-the-address",
+				"redirects-other-category-to-the-category-that-lists-it",
+				"throws-harnessdataloaderror-when-a-data-request-is-not-ok"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +75,10 @@
 			"kind": "trace",
 			"states": [
 				"renders-the-component-details-page-with-the-document-title-c",
-				"renders-the-measurements-and-source-tab-addresses-of-a-compo"
+				"renders-the-measurements-and-source-tab-addresses-of-a-compo",
+				"reports-not-in-history-when-the-history-lacks-the-address",
+				"redirects-other-category-to-the-category-that-lists-it",
+				"throws-harnessdataloaderror-when-a-data-request-is-not-ok"
 			],
 			"viewports": [],
 			"required": true
