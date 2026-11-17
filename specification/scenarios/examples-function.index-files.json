@@ -10,6 +10,16 @@
 			"id": "reads-regular-history-index-files-in-stable-path-order",
 			"title": "Reads regular history index files in stable path order",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-index-json-is-missing",
+			"title": "Throws ExpectedCliError when index.json is missing",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-a-listed-file-cannot-be-read",
+			"title": "Throws Error when a listed file cannot be read",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +37,33 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["reads-regular-history-index-files-in-stable-path-order"],
+			"states": [
+				"reads-regular-history-index-files-in-stable-path-order",
+				"throws-expectedclierror-when-index-json-is-missing",
+				"throws-error-when-a-listed-file-cannot-be-read"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["reads-regular-history-index-files-in-stable-path-order"],
+			"states": [
+				"reads-regular-history-index-files-in-stable-path-order",
+				"throws-expectedclierror-when-index-json-is-missing",
+				"throws-error-when-a-listed-file-cannot-be-read"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["reads-regular-history-index-files-in-stable-path-order"],
+			"states": [
+				"reads-regular-history-index-files-in-stable-path-order",
+				"throws-expectedclierror-when-index-json-is-missing",
+				"throws-error-when-a-listed-file-cannot-be-read"
+			],
 			"viewports": [],
 			"required": true
 		}
