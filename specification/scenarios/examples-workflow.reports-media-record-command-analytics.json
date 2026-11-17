@@ -15,6 +15,11 @@
 			"id": "skips-recording-lookup-only-arguments",
 			"title": "Skips recording lookup-only arguments",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-propagated-failure-when-the-recorder-rejects",
+			"title": "Throws Propagated failure when the recorder rejects",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +39,8 @@
 			"kind": "output",
 			"states": [
 				"records-a-command-event-through-the-supplied-recorder",
-				"skips-recording-lookup-only-arguments"
+				"skips-recording-lookup-only-arguments",
+				"throws-propagated-failure-when-the-recorder-rejects"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +50,8 @@
 			"kind": "assertions",
 			"states": [
 				"records-a-command-event-through-the-supplied-recorder",
-				"skips-recording-lookup-only-arguments"
+				"skips-recording-lookup-only-arguments",
+				"throws-propagated-failure-when-the-recorder-rejects"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +61,8 @@
 			"kind": "trace",
 			"states": [
 				"records-a-command-event-through-the-supplied-recorder",
-				"skips-recording-lookup-only-arguments"
+				"skips-recording-lookup-only-arguments",
+				"throws-propagated-failure-when-the-recorder-rejects"
 			],
 			"viewports": [],
 			"required": true

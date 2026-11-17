@@ -49,3 +49,28 @@ test('Skips recording lookup-only arguments', async () => {
 		[{ name: 'help does not invoke the recorder', input: { args: ['help'], exitCode: 0 }, output: { called } }]
 	);
 });
+
+test('Throws Propagated failure when the recorder rejects', async () => {
+	const failure = new Error('recorder failed');
+	const operation = recordCommandAnalytics(['analytics', 'summary'], Date.now(), 0, async () => {
+		throw failure;
+	});
+
+	await expect(operation).rejects.toBe(failure);
+	recordExampleCases(
+		{
+			unitId: 'workflow.reports-media-record-command-analytics',
+			symbol: 'recordCommandAnalytics',
+			state: 'throws-propagated-failure-when-the-recorder-rejects',
+			evidence: 'examples-cases',
+			file: 'throws-propagated-failure-when-the-recorder-rejects.json'
+		},
+		[
+			{
+				name: 'propagates a recorder rejection',
+				input: { args: ['analytics', 'summary'], exitCode: 0 },
+				error: { name: failure.name, message: failure.message }
+			}
+		]
+	);
+});
