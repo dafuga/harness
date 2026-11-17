@@ -10,6 +10,11 @@
 			"id": "seeds-the-analytics-fixture-store",
 			"title": "Seeds the analytics fixture store",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-nontemporaryanalyticsstoreerror-for-unsafe-analytics",
+			"title": "Throws NonTemporaryAnalyticsStoreError for unsafe analytics path",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["seeds-the-analytics-fixture-store"],
+			"states": [
+				"seeds-the-analytics-fixture-store",
+				"throws-nontemporaryanalyticsstoreerror-for-unsafe-analytics"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["seeds-the-analytics-fixture-store"],
+			"states": [
+				"seeds-the-analytics-fixture-store",
+				"throws-nontemporaryanalyticsstoreerror-for-unsafe-analytics"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["seeds-the-analytics-fixture-store"],
+			"states": [
+				"seeds-the-analytics-fixture-store",
+				"throws-nontemporaryanalyticsstoreerror-for-unsafe-analytics"
+			],
 			"viewports": [],
 			"required": true
 		}
