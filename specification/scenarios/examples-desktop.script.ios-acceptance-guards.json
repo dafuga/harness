@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.script.ios-acceptance-guards",
+	"title": "desktop.script.ios-acceptance-guards examples",
+	"kind": "headless",
+	"units": ["desktop.script.ios-acceptance-guards"],
+	"builds": [],
+	"states": [
+		{
+			"id": "allows-only-loopback-http-origins-with-a-port",
+			"title": "allows only loopback http origins with a port",
+			"coverage": "required"
+		},
+		{
+			"id": "redacts-pairing-codes-in-written-and-compact-forms",
+			"title": "redacts pairing codes in written and compact forms",
+			"coverage": "required"
+		},
+		{
+			"id": "ages-and-versions-synthetic-pairing-offers",
+			"title": "ages and versions synthetic pairing offers",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.script.ios-acceptance-guards.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"allows-only-loopback-http-origins-with-a-port",
+				"redacts-pairing-codes-in-written-and-compact-forms",
+				"ages-and-versions-synthetic-pairing-offers"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"allows-only-loopback-http-origins-with-a-port",
+				"redacts-pairing-codes-in-written-and-compact-forms",
+				"ages-and-versions-synthetic-pairing-offers"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"allows-only-loopback-http-origins-with-a-port",
+				"redacts-pairing-codes-in-written-and-compact-forms",
+				"ages-and-versions-synthetic-pairing-offers"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
