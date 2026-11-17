@@ -3,10 +3,12 @@ import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { NativePickerSwitchService } from '../../src/services/development-tooling/native-picker-bridge-service/NativePickerSwitchService';
+import { NativePickerSwitchError } from '../../src/services/development-tooling/native-picker-bridge-service/NativePickerSwitchService.types';
 
 function makeRpc() {
 	const calls: Array<{ method: string; params: Record<string, unknown> }> = [];
-	const rpc = async (method: string, params: Record<string, unknown>) => {
+	const rpc: (method: string, params: Record<string, unknown>) => Promise<Record<string, unknown>> =
+		async (method, params) => {
 		calls.push({ method, params });
 		if (method === 'thread/read') {
 			const switching = calls.some((call) => call.method === 'thread/resume');
@@ -26,7 +28,7 @@ function makeRpc() {
 		if (method === 'thread/loaded/list') return { data: [] };
 		if (method === 'thread/resume') return { id: 'thread-123', resumed: true };
 		return {};
-	};
+		};
 	return { rpc, calls };
 }
 
@@ -55,4 +57,33 @@ test('Switches an idle persisted chat to the selected provider', async () => {
 			]
 		);
 	});
+});
+
+test('Throws NativePickerSwitchError when threadId is missing', async () => {
+	const service = new NativePickerSwitchService(async () => ({}));
+	const input: Record<string, unknown> = { model: 'gpt-5', effort: 'high' };
+	let caught: unknown;
+	try {
+		await service.apply(input);
+	} catch (error) {
+		caught = error;
+	}
+	expect(caught).toBeInstanceOf(NativePickerSwitchError);
+	expect((caught as Error).message).toBe('Missing thread ID');
+	recordExampleCases(
+		{
+			unitId: 'service.native-picker-switch',
+			symbol: 'NativePickerSwitchService.apply',
+			state: 'throws-nativepickerswitcherror-when-threadid-is-missing',
+			evidence: 'examples-cases',
+			file: 'throws-nativepickerswitcherror-when-threadid-is-missing.json'
+		},
+		[
+			{
+				name: 'missing thread ID is rejected before RPC calls',
+				input,
+				error: { name: 'NativePickerSwitchError', message: 'Missing thread ID' }
+			}
+		]
+	);
 });

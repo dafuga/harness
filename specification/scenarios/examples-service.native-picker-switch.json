@@ -10,6 +10,11 @@
 			"id": "switches-an-idle-persisted-chat-to-the-selected-provider",
 			"title": "Switches an idle persisted chat to the selected provider",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-nativepickerswitcherror-when-threadid-is-missing",
+			"title": "Throws NativePickerSwitchError when threadId is missing",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["switches-an-idle-persisted-chat-to-the-selected-provider"],
+			"states": [
+				"switches-an-idle-persisted-chat-to-the-selected-provider",
+				"throws-nativepickerswitcherror-when-threadid-is-missing"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["switches-an-idle-persisted-chat-to-the-selected-provider"],
+			"states": [
+				"switches-an-idle-persisted-chat-to-the-selected-provider",
+				"throws-nativepickerswitcherror-when-threadid-is-missing"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["switches-an-idle-persisted-chat-to-the-selected-provider"],
+			"states": [
+				"switches-an-idle-persisted-chat-to-the-selected-provider",
+				"throws-nativepickerswitcherror-when-threadid-is-missing"
+			],
 			"viewports": [],
 			"required": true
 		}
