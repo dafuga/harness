@@ -78,6 +78,15 @@ function seedProject(root: string, events = [baselineEvent(unitId, 'verify-budge
 	}
 }
 
+async function thrownMessage(action: () => Promise<unknown>): Promise<string> {
+	try {
+		await action();
+	} catch (error) {
+		return error instanceof Error ? error.message : String(error);
+	}
+	return 'No error was thrown';
+}
+
 test('loads manifests, ledger events, and baselines', async () => {
 	await withTempDir('workflow-run-budget-', async (root) => {
 		const events = [
@@ -196,6 +205,22 @@ test('benchmarks a module workload and records a capture', async () => {
 		recordExampleCases(
 			{ unitId, symbol: 'budgetBench', state: 'benchmarks-a-module-workload-and-records-a-capture', evidence, file: 'benchmarks-a-module-workload-and-records-a-capture.json' },
 			[{ name: 'one round through the declared module handler', input: { ...input, root }, output }]
+		);
+	});
+});
+
+test('throws ExpectedCliError for invalid requests and ledger data', async () => {
+	await withTempDir('workflow-run-budget-', async (root) => {
+		seedProject(root);
+		writeFileSync(join(root, 'specification/budgets/ledger.ndjson'), '{bad json}\n');
+		const ledgerError = await thrownMessage(() => loadBudgets(root));
+		writeJson(root, 'specification/workloads/invalid.json', {});
+		const requestError = await thrownMessage(() => budgetBench({ unit: unitId, workload: 'specification/workloads/invalid.json' }, root));
+		expect(ledgerError).toContain('budget ledger line 1 is malformed');
+		expect(requestError).toContain('is not a workload');
+		recordExampleCases(
+			{ unitId, symbol: 'loadBudgets/budgetBench', state: 'throws-expectedclierror-for-invalid-requests-and-ledger-data', evidence, file: 'throws-expectedclierror-for-invalid-requests-and-ledger-data.json' },
+			[{ name: 'malformed ledger and invalid workload inputs', input: { root }, output: { ledgerError, requestError } }]
 		);
 	});
 });
