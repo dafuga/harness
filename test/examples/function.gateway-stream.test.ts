@@ -16,6 +16,13 @@ function createSession(): GatewaySession {
 	};
 }
 
+class ExpectedCliError extends Error {
+	constructor() {
+		super('Gateway cancellation failed');
+		this.name = 'ExpectedCliError';
+	}
+}
+
 test('Streams text events and captures a completed replay', async () => {
 	const session = createSession();
 	const repository = new CodexSessionRepository();
@@ -56,6 +63,35 @@ test('Streams text events and captures a completed replay', async () => {
 				name: 'text event followed by done stores the SSE transcript',
 				input: { sessionId: session.id, text: 'Hello from the gateway', replayKey: context.key },
 				output: result
+			}
+		]
+	);
+});
+
+test('Throws ExpectedCliError when client cancellation fails', async () => {
+	const session = createSession();
+	const failure = new ExpectedCliError();
+	const repository = new CodexSessionRepository();
+	repository.cancel = () => {
+		throw failure;
+	};
+	const response = gatewayStream(session, repository);
+	const reader = response.body?.getReader();
+	expect(reader).toBeDefined();
+	await expect(reader?.cancel()).rejects.toThrow(failure);
+	recordExampleCases(
+		{
+			unitId: 'function.gateway-stream',
+			symbol: 'gatewayStream',
+			state: 'throws-expectedclierror-when-client-cancellation-fails',
+			evidence: 'examples-cases',
+			file: 'throws-expectedclierror-when-client-cancellation-fails.json'
+		},
+		[
+			{
+				name: 'client cancellation failure propagates unchanged',
+				input: { sessionId: session.id, trigger: 'response body cancellation' },
+				error: { name: failure.name, message: failure.message }
 			}
 		]
 	);

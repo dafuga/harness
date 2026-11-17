@@ -10,6 +10,11 @@
 			"id": "streams-text-events-and-captures-a-completed-replay",
 			"title": "Streams text events and captures a completed replay",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-client-cancellation-fails",
+			"title": "Throws ExpectedCliError when client cancellation fails",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["streams-text-events-and-captures-a-completed-replay"],
+			"states": [
+				"streams-text-events-and-captures-a-completed-replay",
+				"throws-expectedclierror-when-client-cancellation-fails"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["streams-text-events-and-captures-a-completed-replay"],
+			"states": [
+				"streams-text-events-and-captures-a-completed-replay",
+				"throws-expectedclierror-when-client-cancellation-fails"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["streams-text-events-and-captures-a-completed-replay"],
+			"states": [
+				"streams-text-events-and-captures-a-completed-replay",
+				"throws-expectedclierror-when-client-cancellation-fails"
+			],
 			"viewports": [],
 			"required": true
 		}
