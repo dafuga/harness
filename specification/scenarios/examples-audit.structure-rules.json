@@ -20,6 +20,11 @@
 			"id": "reports-no-module-category-finding-without-a-config",
 			"title": "Reports no module category finding without a config",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-a-legacy-entry-source-file-is-missing",
+			"title": "Throws Error when a legacy entry source file is missing",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +45,8 @@
 			"states": [
 				"reports-a-folder-name-that-is-not-kebab-case",
 				"returns-no-findings-for-an-empty-snapshot",
-				"reports-no-module-category-finding-without-a-config"
+				"reports-no-module-category-finding-without-a-config",
+				"throws-error-when-a-legacy-entry-source-file-is-missing"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +57,8 @@
 			"states": [
 				"reports-a-folder-name-that-is-not-kebab-case",
 				"returns-no-findings-for-an-empty-snapshot",
-				"reports-no-module-category-finding-without-a-config"
+				"reports-no-module-category-finding-without-a-config",
+				"throws-error-when-a-legacy-entry-source-file-is-missing"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +69,8 @@
 			"states": [
 				"reports-a-folder-name-that-is-not-kebab-case",
 				"returns-no-findings-for-an-empty-snapshot",
-				"reports-no-module-category-finding-without-a-config"
+				"reports-no-module-category-finding-without-a-config",
+				"throws-error-when-a-legacy-entry-source-file-is-missing"
 			],
 			"viewports": [],
 			"required": true
