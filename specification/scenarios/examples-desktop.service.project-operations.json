@@ -25,6 +25,11 @@
 			"id": "lists-pending-comments-for-the-selected-project",
 			"title": "Lists pending comments for the selected project",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-comment-anchor-errors-for-invalid-discussion-image-an",
+			"title": "Throws comment anchor errors for invalid discussion, image, and thread",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -46,7 +51,8 @@
 				"lists-registered-local-projects",
 				"reports-local-project-capabilities",
 				"saves-a-project-discussion-comment-locally",
-				"lists-pending-comments-for-the-selected-project"
+				"lists-pending-comments-for-the-selected-project",
+				"throws-comment-anchor-errors-for-invalid-discussion-image-an"
 			],
 			"viewports": [],
 			"required": true
@@ -58,7 +64,8 @@
 				"lists-registered-local-projects",
 				"reports-local-project-capabilities",
 				"saves-a-project-discussion-comment-locally",
-				"lists-pending-comments-for-the-selected-project"
+				"lists-pending-comments-for-the-selected-project",
+				"throws-comment-anchor-errors-for-invalid-discussion-image-an"
 			],
 			"viewports": [],
 			"required": true
@@ -70,7 +77,8 @@
 				"lists-registered-local-projects",
 				"reports-local-project-capabilities",
 				"saves-a-project-discussion-comment-locally",
-				"lists-pending-comments-for-the-selected-project"
+				"lists-pending-comments-for-the-selected-project",
+				"throws-comment-anchor-errors-for-invalid-discussion-image-an"
 			],
 			"viewports": [],
 			"required": true

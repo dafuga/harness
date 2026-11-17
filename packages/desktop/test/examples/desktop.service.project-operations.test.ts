@@ -1,7 +1,10 @@
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
+import { InvalidProjectDiscussionAnchorError } from '../../src/lib/development-tooling/desktop-bridge/InvalidProjectDiscussionAnchorError';
 import { ProjectOperationsService } from '../../src/lib/development-tooling/desktop-bridge/ProjectOperationsService';
+import { UnknownCommentImageAnchorError } from '../../src/lib/development-tooling/desktop-bridge/UnknownCommentImageAnchorError';
+import { UnknownCommentThreadError } from '../../src/lib/development-tooling/desktop-bridge/UnknownCommentThreadError';
 
 const projectId = 'local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad';
 const commit = '4f3c2a1908b7e6d5c4a3928170605f4e3d2c1b0a';
@@ -70,5 +73,50 @@ test('Lists pending comments for the selected project', async () => {
 	recordExampleCases(
 		{ unitId: 'desktop.service.project-operations', symbol: 'pendingComments', state: 'lists-pending-comments-for-the-selected-project', evidence: 'examples-cases', file: 'lists-pending-comments-for-the-selected-project.json' },
 		[{ name: 'Returns locally pending drafts', input: { projectId }, output }]
+	);
+});
+
+function commentService(catalog: Record<string, unknown>) {
+	return service({
+		projectId,
+		assertProject: () => undefined,
+		requireProject: () => ({
+			source: { revision: async () => ({ commit }) },
+			catalog
+		}),
+		outbox: { save: async () => ({ kind: 'pending', projectId }) }
+	});
+}
+
+function anchoredComment(extra: Record<string, unknown>) {
+	return {
+		projectId,
+		requestId: 'de7a3f4d-a61a-4d15-8b68-55fbd24e3c17',
+		anchor: { branch: 'main', commit, entityId: 'entity-1', version: null, imageSha256: null, state: null, viewport: null, region: null, ...extra },
+		text: 'Review this project item.'
+	};
+}
+
+test('Throws comment anchor errors for invalid discussion, image, and thread', async () => {
+	const state = 'throws-comment-anchor-errors-for-invalid-discussion-image-an';
+	const input = {
+		...anchoredComment({ entityId: 'harness.project.discussion' }),
+		threadId: 'thread-1'
+	};
+	const discussionOperations = commentService({});
+	await expect(discussionOperations.addComment(input)).rejects.toThrow(InvalidProjectDiscussionAnchorError);
+	const imageInput = anchoredComment({ imageSha256: 'a'.repeat(64), version: '1', state: 'ready', viewport: 'desktop' });
+	const imageOperations = commentService({ entity: async () => ({ versions: [] }) });
+	await expect(imageOperations.addComment(imageInput)).rejects.toThrow(UnknownCommentImageAnchorError);
+	const threadInput = { ...anchoredComment({}), threadId: 'thread-1' };
+	const threadOperations = commentService({ entity: async () => ({ versions: [], threads: [] }) });
+	await expect(threadOperations.addComment(threadInput)).rejects.toThrow(UnknownCommentThreadError);
+	recordExampleCases(
+		{ unitId: 'desktop.service.project-operations', symbol: 'addComment', state, evidence: 'examples-cases', file: `${state}.json` },
+		[
+			{ name: 'Rejects a discussion anchor with a thread', input, error: { name: 'InvalidProjectDiscussionAnchorError', message: 'Invalid project discussion anchor.' } },
+			{ name: 'Rejects an unknown image anchor', input: imageInput, error: { name: 'UnknownCommentImageAnchorError', message: 'Unknown comment image anchor.' } },
+			{ name: 'Rejects an unknown discussion thread', input: threadInput, error: { name: 'UnknownCommentThreadError', message: 'Unknown comment thread.' } }
+		]
 	);
 });
