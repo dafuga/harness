@@ -10,6 +10,11 @@
 			"id": "email-stores-bind-conditional-queries-and-validate-rows",
 			"title": "Email stores bind conditional queries and validate rows",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-proof-row-violates-validator-constraints",
+			"title": "Throws Error when proof row violates validator constraints",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["email-stores-bind-conditional-queries-and-validate-rows"],
+			"states": [
+				"email-stores-bind-conditional-queries-and-validate-rows",
+				"throws-error-when-proof-row-violates-validator-constraints"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["email-stores-bind-conditional-queries-and-validate-rows"],
+			"states": [
+				"email-stores-bind-conditional-queries-and-validate-rows",
+				"throws-error-when-proof-row-violates-validator-constraints"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["email-stores-bind-conditional-queries-and-validate-rows"],
+			"states": [
+				"email-stores-bind-conditional-queries-and-validate-rows",
+				"throws-error-when-proof-row-violates-validator-constraints"
+			],
 			"viewports": [],
 			"required": true
 		}

@@ -8,7 +8,7 @@ import type { D1Like, D1Statement } from '../../src/routes/api/[...path]/d1-auth
 
 const state = 'email-stores-bind-conditional-queries-and-validate-rows';
 
-function database(): { db: D1Like; calls: Array<{ query: string; values: unknown[] }> } {
+function database(options: { returnProofOnLookup?: boolean } = {}): { db: D1Like; calls: Array<{ query: string; values: unknown[] }> } {
 	const calls: Array<{ query: string; values: unknown[] }> = [];
 	const db: D1Like = {
 		prepare(query) {
@@ -21,7 +21,7 @@ function database(): { db: D1Like; calls: Array<{ query: string; values: unknown
 				async first<T>() {
 					calls.push({ query, values });
 					let result: Record<string, unknown> | null = null;
-					if (query.includes('RETURNING')) {
+					if (query.includes('RETURNING') || (options.returnProofOnLookup && query.includes('SELECT * FROM auth_email_proofs'))) {
 						result = query.includes('auth_email_proofs')
 							? {
 								id_hash: 'proof-hash', actor_id: 'actor-1', actor_email: 'person@example.test',
@@ -68,5 +68,21 @@ test('Email stores bind conditional queries and validate rows', async () => {
 			{ name: 'send within cap is allowed and verified address is stored', input: { key: 'actor-1', day: 3, cap: 4 }, output: { allowed, writeCount: calls.filter((call) => call.query.startsWith('INSERT OR REPLACE')).length } },
 			{ name: 'purge statements cover all email records', input: { cutoff: 5000 }, output: EMAIL_PURGES }
 		]
+	);
+});
+
+const errorState = 'throws-error-when-proof-row-violates-validator-constraints';
+
+test('Throws Error when proof row violates validator constraints', async () => {
+	const { db } = database({ returnProofOnLookup: true });
+	const records = {
+		emailProof: () => { throw new Error('Hub auth record corrupt'); },
+		verifiedEmail: () => null
+	};
+	const stores = d1EmailStores(db, records as never);
+	await expect(stores.emailProofs.find('proof-hash')).rejects.toThrow('Hub auth record corrupt');
+	recordExampleCases(
+		{ unitId: 'hub.function.d1-email-stores', symbol: 'd1EmailStores', state: errorState, evidence: 'examples-cases', file: `${errorState}.json` },
+		[{ name: 'corrupt proof row is rejected', input: { idHash: 'proof-hash' }, error: { name: 'Error', message: 'Hub auth record corrupt' } }]
 	);
 });
