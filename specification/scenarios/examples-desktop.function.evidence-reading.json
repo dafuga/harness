@@ -15,6 +15,11 @@
 			"id": "does-not-call-the-artifact-reader-without-a-stored-capture",
 			"title": "Does not call the artifact reader without a stored capture",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-evidencereading-rejection-when-a-refusal-cannot-be-re",
+			"title": "Throws evidenceReading.rejection when a refusal cannot be read",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +39,8 @@
 			"kind": "output",
 			"states": [
 				"reads-a-result-with-no-stored-captures",
-				"does-not-call-the-artifact-reader-without-a-stored-capture"
+				"does-not-call-the-artifact-reader-without-a-stored-capture",
+				"throws-evidencereading-rejection-when-a-refusal-cannot-be-re"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +50,8 @@
 			"kind": "assertions",
 			"states": [
 				"reads-a-result-with-no-stored-captures",
-				"does-not-call-the-artifact-reader-without-a-stored-capture"
+				"does-not-call-the-artifact-reader-without-a-stored-capture",
+				"throws-evidencereading-rejection-when-a-refusal-cannot-be-re"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +61,8 @@
 			"kind": "trace",
 			"states": [
 				"reads-a-result-with-no-stored-captures",
-				"does-not-call-the-artifact-reader-without-a-stored-capture"
+				"does-not-call-the-artifact-reader-without-a-stored-capture",
+				"throws-evidencereading-rejection-when-a-refusal-cannot-be-re"
 			],
 			"viewports": [],
 			"required": true

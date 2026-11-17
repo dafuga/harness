@@ -67,6 +67,35 @@ function scopeQuery(): Scope {
 	return { projectId: evidenceAnswer().identity.projectId, entityId, commit, branch: 'main', mode: 'current' };
 }
 
+type Side = NonNullable<Result['evidence']['after']>;
+type Captured = Side['captures'][number];
+type Row = Result['behavior']['rows'][number];
+
+/** An answer whose `after` side lists one stored screenshot, which one behaviour row also names. */
+function storedCapture(): Result {
+	const answer = evidenceAnswer();
+	const captured = {
+		scenario: 'checkout',
+		state: 'shows-total',
+		capture: {
+			kind: 'screenshot',
+			media: 'media/total.png',
+			path: 'media/total.png',
+			sha256: 'b'.repeat(64),
+			viewport: 'desktop',
+			evidence: 'c'.repeat(40)
+		}
+	} as unknown as Captured;
+	const row = { before: null, after: captured.capture, change: 'differs' } as unknown as Row;
+	const record = { id: 'a'.repeat(64) } as unknown as Side['record'];
+	const after = { ...answer.evidence.after, record, captures: [captured] } as Side;
+	return {
+		...answer,
+		evidence: { ...answer.evidence, after },
+		behavior: { ...answer.behavior, rows: [row] }
+	};
+}
+
 test('Reads a result with no stored captures', async () => {
 	const result = evidenceAnswer();
 	const scope = scopeQuery();
@@ -123,6 +152,45 @@ test('Does not call the artifact reader without a stored capture', async () => {
 				name: 'artifact reader present but no capture listed on either side',
 				input: { bridgeHasArtifactReader: true, capturesOnAfterSide: 0 },
 				output: { artifactCalls: calls, refusals: read.refusals }
+			}
+		]
+	);
+});
+
+test('Throws evidenceReading.rejection when a refusal cannot be read', async () => {
+	const unprintable = new Proxy({} as Error, {
+		get: () => {
+			throw new Error('The refusal has no readable message.');
+		}
+	});
+	const bridge: Bridge = {
+		artifact: async () => {
+			throw unprintable;
+		}
+	};
+	let thrown: unknown;
+	try {
+		await evidenceReading(bridge, storedCapture(), scopeQuery());
+	} catch (error) {
+		thrown = error;
+	}
+
+	expect(thrown).toBeInstanceOf(Error);
+	if (!(thrown instanceof Error)) throw new Error('Expected evidenceReading to reject.');
+
+	recordExampleCases(
+		{
+			unitId: 'desktop.function.evidence-reading',
+			symbol: 'evidenceReading',
+			state: 'throws-evidencereading-rejection-when-a-refusal-cannot-be-re',
+			evidence: 'examples-cases',
+			file: 'throws-evidencereading-rejection-when-a-refusal-cannot-be-re.json'
+		},
+		[
+			{
+				name: 'refusal whose message cannot be converted',
+				input: { bridgeHasArtifactReader: true, capturesOnAfterSide: 1 },
+				error: { name: thrown.name, message: thrown.message }
 			}
 		]
 	);
