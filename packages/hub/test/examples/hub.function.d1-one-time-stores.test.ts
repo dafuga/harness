@@ -59,3 +59,32 @@ test('Native exchanges approve matching pending records and claim', async () => 
 		[{ name: 'matching approval and approved exchange claim', input: approval, output: { approved, claimed: { id: claimed?.id, status: claimed?.status, subject: claimed?.subject } } }]
 	);
 });
+
+test('Throws Error when a claimed challenge row fails validation', async () => {
+	const db = database([{ id_hash: '', nonce: 'nonce-1', csrf_hash: 'csrf-1', expires_at: 900 }]);
+	const stores = d1OneTimeStores(db, new AuthRecordValidator());
+	const error = await stores.challenges.claim('hash-1', 100).then(
+		() => 'no error',
+		(reason: unknown) => reason instanceof Error ? reason.message : String(reason)
+	);
+	expect(error).toBe('Hub auth record corrupt');
+	recordExampleCases(
+		{ unitId: 'hub.function.d1-one-time-stores', symbol: 'challenges.claim', state: 'throws-error-when-a-claimed-challenge-row-fails-validation', evidence: 'examples-cases', file: 'throws-error-when-a-claimed-challenge-row-fails-validation.json' },
+		[{ name: 'invalid challenge row', input: { idHash: 'hash-1', now: 100 }, error }]
+	);
+});
+
+test('Throws database rejection when a store operation fails', async () => {
+	const failure = new Error('database unavailable');
+	const db: D1Like = { prepare() { throw failure; } };
+	const stores = d1OneTimeStores(db, new AuthRecordValidator());
+	const error = await stores.challenges.claim('hash-1', 100).then(
+		() => 'no error',
+		(reason: unknown) => reason === failure ? failure.message : String(reason)
+	);
+	expect(error).toBe('database unavailable');
+	recordExampleCases(
+		{ unitId: 'hub.function.d1-one-time-stores', symbol: 'challenges.claim', state: 'throws-database-rejection-when-a-store-operation-fails', evidence: 'examples-cases', file: 'throws-database-rejection-when-a-store-operation-fails.json' },
+		[{ name: 'database prepare rejects', input: { idHash: 'hash-1', now: 100 }, error }]
+	);
+});

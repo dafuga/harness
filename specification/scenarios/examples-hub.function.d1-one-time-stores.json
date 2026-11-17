@@ -15,6 +15,16 @@
 			"id": "native-exchanges-approve-matching-pending-records-and-claim",
 			"title": "Native exchanges approve matching pending records and claim",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-a-claimed-challenge-row-fails-validation",
+			"title": "Throws Error when a claimed challenge row fails validation",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-database-rejection-when-a-store-operation-fails",
+			"title": "Throws database rejection when a store operation fails",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +44,9 @@
 			"kind": "output",
 			"states": [
 				"challenges-create-and-claim-an-unexpired-record-once",
-				"native-exchanges-approve-matching-pending-records-and-claim"
+				"native-exchanges-approve-matching-pending-records-and-claim",
+				"throws-error-when-a-claimed-challenge-row-fails-validation",
+				"throws-database-rejection-when-a-store-operation-fails"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +56,9 @@
 			"kind": "assertions",
 			"states": [
 				"challenges-create-and-claim-an-unexpired-record-once",
-				"native-exchanges-approve-matching-pending-records-and-claim"
+				"native-exchanges-approve-matching-pending-records-and-claim",
+				"throws-error-when-a-claimed-challenge-row-fails-validation",
+				"throws-database-rejection-when-a-store-operation-fails"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +68,9 @@
 			"kind": "trace",
 			"states": [
 				"challenges-create-and-claim-an-unexpired-record-once",
-				"native-exchanges-approve-matching-pending-records-and-claim"
+				"native-exchanges-approve-matching-pending-records-and-claim",
+				"throws-error-when-a-claimed-challenge-row-fails-validation",
+				"throws-database-rejection-when-a-store-operation-fails"
 			],
 			"viewports": [],
 			"required": true
