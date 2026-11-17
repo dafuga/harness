@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.component.shared-primitives-atoms-svg-fe-point-light",
+	"title": "reports.component.shared-primitives-atoms-svg-fe-point-light examples",
+	"kind": "headless",
+	"units": ["reports.component.shared-primitives-atoms-svg-fe-point-light"],
+	"builds": [],
+	"states": [
+		{
+			"id": "renders-one-native-fepointlight-without-wrapper",
+			"title": "renders one native fePointLight without wrapper",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.component.shared-primitives-atoms-svg-fe-point-light.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["renders-one-native-fepointlight-without-wrapper"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["renders-one-native-fepointlight-without-wrapper"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["renders-one-native-fepointlight-without-wrapper"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
