@@ -1,5 +1,5 @@
 // @harness-uid u_dp5dwz2v6j
-const objects = new Map<string, { bytes: Uint8Array; mime: string }>();
+const objects = new Map<string, { bytes: Uint8Array<ArrayBuffer>; mime: string }>();
 
 Bun.serve({
 	hostname: '127.0.0.1',
