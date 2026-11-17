@@ -1,4 +1,4 @@
-import { appendFileSync } from 'node:fs';
+import { appendFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'vitest';
 import {
@@ -111,6 +111,51 @@ test('Lists scratch reasons when the root is not a repository', async () => {
 				name: 'outside a Git repository all() returns the scratch-file reasons in file order',
 				input: { root: 'temporary directory', entries: [appended.symbol, added.symbol] },
 				output: all
+			}
+		]);
+	});
+});
+
+test('Throws TypeError when the constructor file is not a string', () => {
+	const build = () => new ExplanationRepository('/workspace/project', 42 as unknown as string);
+
+	expect(build).toThrow(TypeError);
+	record('throws-typeerror-when-the-constructor-file-is-not-a-string', 'ExplanationRepository.constructor', [
+		{
+			name: 'a numeric file name makes the constructor throw TypeError',
+			input: { root: '/workspace/project', file: 42 },
+			error: 'TypeError'
+		}
+	]);
+});
+
+test('Throws Error when the scratch file cannot be read', async () => {
+	await withTempDir('explanation-unreadable-scratch-', (directory) => {
+		mkdirSync(join(directory, explanationsFile), { recursive: true });
+		const repository = new ExplanationRepository(directory);
+
+		expect(() => repository.read()).toThrow(Error);
+		record('throws-error-when-the-scratch-file-cannot-be-read', 'ExplanationRepository.read', [
+			{
+				name: 'a scratch path that is a folder makes read throw Error',
+				input: { scratchPath: 'a folder' },
+				error: 'Error'
+			}
+		]);
+	});
+});
+
+test('Throws Error when the scratch folder cannot be created', async () => {
+	await withTempDir('explanation-blocked-folder-', async (directory) => {
+		writeFileSync(join(directory, 'blocker'), 'not a folder\n');
+		const repository = new ExplanationRepository(join(directory, 'blocker'));
+
+		await expect(repository.append([appended])).rejects.toThrow(Error);
+		record('throws-error-when-the-scratch-folder-cannot-be-created', 'ExplanationRepository.append', [
+			{
+				name: 'a root that is a file makes append reject with Error',
+				input: { root: 'a file', entries: [appended.symbol] },
+				error: 'Error'
 			}
 		]);
 	});

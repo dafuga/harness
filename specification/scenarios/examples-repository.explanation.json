@@ -20,6 +20,21 @@
 			"id": "lists-scratch-reasons-when-the-root-is-not-a-repository",
 			"title": "Lists scratch reasons when the root is not a repository",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-the-constructor-file-is-not-a-string",
+			"title": "Throws TypeError when the constructor file is not a string",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-scratch-file-cannot-be-read",
+			"title": "Throws Error when the scratch file cannot be read",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-scratch-folder-cannot-be-created",
+			"title": "Throws Error when the scratch folder cannot be created",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +55,10 @@
 			"states": [
 				"appends-entries-and-reads-them-back-in-file-order",
 				"skips-damaged-lines-when-reading-the-scratch-file",
-				"lists-scratch-reasons-when-the-root-is-not-a-repository"
+				"lists-scratch-reasons-when-the-root-is-not-a-repository",
+				"throws-typeerror-when-the-constructor-file-is-not-a-string",
+				"throws-error-when-the-scratch-file-cannot-be-read",
+				"throws-error-when-the-scratch-folder-cannot-be-created"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +69,10 @@
 			"states": [
 				"appends-entries-and-reads-them-back-in-file-order",
 				"skips-damaged-lines-when-reading-the-scratch-file",
-				"lists-scratch-reasons-when-the-root-is-not-a-repository"
+				"lists-scratch-reasons-when-the-root-is-not-a-repository",
+				"throws-typeerror-when-the-constructor-file-is-not-a-string",
+				"throws-error-when-the-scratch-file-cannot-be-read",
+				"throws-error-when-the-scratch-folder-cannot-be-created"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +83,10 @@
 			"states": [
 				"appends-entries-and-reads-them-back-in-file-order",
 				"skips-damaged-lines-when-reading-the-scratch-file",
-				"lists-scratch-reasons-when-the-root-is-not-a-repository"
+				"lists-scratch-reasons-when-the-root-is-not-a-repository",
+				"throws-typeerror-when-the-constructor-file-is-not-a-string",
+				"throws-error-when-the-scratch-file-cannot-be-read",
+				"throws-error-when-the-scratch-folder-cannot-be-created"
 			],
 			"viewports": [],
 			"required": true
