@@ -1,5 +1,6 @@
 import { chmodSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { withTempDir } from '../support/temporary';
 import { test, vi } from 'vitest';
 import { BenchmarkRepository } from '../../src/repositories/agents-providers/BenchmarkRepository';
 import { benchmarkSchedule, runBenchmark } from '../../src/cli/program/benchmark-service/runBenchmark';
@@ -195,5 +196,34 @@ test('Persists benchmark outcomes before returning', async () => {
 				output
 			}
 		]
+	);
+});
+
+test('Throws SyntaxError for invalid benchmark JSON', async () => {
+	const output = await withTempDir('benchmark-invalid-', async (directory) => {
+		const path = join(directory, 'benchmark.json');
+		writeFileSync(path, '{ invalid');
+		try {
+			await runBenchmark({
+				path,
+				runners: fixtureRunners(),
+				repository: new BenchmarkRepository(join(directory, 'runs')),
+				signal: new AbortController().signal
+			});
+			return { error: 'did not reject' };
+		} catch (error) {
+			return { error: error instanceof SyntaxError ? error.name : 'unexpected error' };
+		}
+	});
+	expect(output).toEqual({ error: 'SyntaxError' });
+	recordExampleCases(
+		{
+			unitId: 'workflow.run-benchmark',
+			symbol: 'runBenchmark',
+			state: 'throws-syntaxerror-for-invalid-benchmark-json',
+			evidence: 'examples-cases',
+			file: 'throws-syntaxerror-for-invalid-benchmark-json.json'
+		},
+		[{ name: 'Rejects malformed definition JSON before validation', input: { path: '<temporary invalid benchmark.json>' }, output }]
 	);
 });
