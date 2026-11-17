@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-workflow.run-response-check",
+	"title": "workflow.run-response-check examples",
+	"kind": "headless",
+	"units": ["workflow.run-response-check"],
+	"builds": [],
+	"states": [
+		{
+			"id": "checkresponse-returns-dry-run-assessed-and-incomplete-report",
+			"title": "checkResponse returns dry-run, assessed and incomplete reports without a model call",
+			"coverage": "required"
+		},
+		{
+			"id": "responsecheckexitcode-maps-the-report-status-and-mode-to-exi",
+			"title": "responseCheckExitCode maps the report status and mode to exit codes 0, 1 and 2",
+			"coverage": "required"
+		},
+		{
+			"id": "renderresponsecheck-renders-the-summary-with-the-fixed-asses",
+			"title": "renderResponseCheck renders the summary with the fixed assessment disclaimer",
+			"coverage": "required"
+		},
+		{
+			"id": "runresponsecheck-prints-the-report-and-sets-the-process-exit",
+			"title": "runResponseCheck prints the report and sets the process exit code",
+			"coverage": "required"
+		},
+		{
+			"id": "runresponsecheck-rejects-invalid-report-context-before-any-c",
+			"title": "runResponseCheck rejects invalid report context before any check runs",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/workflow.run-response-check.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"checkresponse-returns-dry-run-assessed-and-incomplete-report",
+				"responsecheckexitcode-maps-the-report-status-and-mode-to-exi",
+				"renderresponsecheck-renders-the-summary-with-the-fixed-asses",
+				"runresponsecheck-prints-the-report-and-sets-the-process-exit",
+				"runresponsecheck-rejects-invalid-report-context-before-any-c"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"checkresponse-returns-dry-run-assessed-and-incomplete-report",
+				"responsecheckexitcode-maps-the-report-status-and-mode-to-exi",
+				"renderresponsecheck-renders-the-summary-with-the-fixed-asses",
+				"runresponsecheck-prints-the-report-and-sets-the-process-exit",
+				"runresponsecheck-rejects-invalid-report-context-before-any-c"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"checkresponse-returns-dry-run-assessed-and-incomplete-report",
+				"responsecheckexitcode-maps-the-report-status-and-mode-to-exi",
+				"renderresponsecheck-renders-the-summary-with-the-fixed-asses",
+				"runresponsecheck-prints-the-report-and-sets-the-process-exit",
+				"runresponsecheck-rejects-invalid-report-context-before-any-c"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
