@@ -10,6 +10,16 @@
 			"id": "reads-catalog-and-required-states",
 			"title": "Reads catalog and required states",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-for-an-extra-required-state-file",
+			"title": "Throws ExpectedCliError for an extra required state file",
+			"coverage": "required"
+		},
+		{
+			"id": "propagates-tree-read-failures",
+			"title": "Propagates tree read failures",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +37,33 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["reads-catalog-and-required-states"],
+			"states": [
+				"reads-catalog-and-required-states",
+				"throws-expectedclierror-for-an-extra-required-state-file",
+				"propagates-tree-read-failures"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["reads-catalog-and-required-states"],
+			"states": [
+				"reads-catalog-and-required-states",
+				"throws-expectedclierror-for-an-extra-required-state-file",
+				"propagates-tree-read-failures"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["reads-catalog-and-required-states"],
+			"states": [
+				"reads-catalog-and-required-states",
+				"throws-expectedclierror-for-an-extra-required-state-file",
+				"propagates-tree-read-failures"
+			],
 			"viewports": [],
 			"required": true
 		}
