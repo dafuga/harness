@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-model.catalog-entity",
+	"title": "model.catalog-entity examples",
+	"kind": "headless",
+	"units": ["model.catalog-entity"],
+	"builds": [],
+	"states": [
+		{
+			"id": "finds-a-catalog-row-by-id",
+			"title": "Finds a catalog row by id",
+			"coverage": "required"
+		},
+		{
+			"id": "finds-rows-by-copied-filter-fields",
+			"title": "Finds rows by copied filter fields",
+			"coverage": "required"
+		},
+		{
+			"id": "creates-a-row-from-copied-input-fields",
+			"title": "Creates a row from copied input fields",
+			"coverage": "required"
+		},
+		{
+			"id": "updates-a-row-with-partial-fields",
+			"title": "Updates a row with partial fields",
+			"coverage": "required"
+		},
+		{
+			"id": "deletes-a-row-and-returns-the-adapter-result",
+			"title": "Deletes a row and returns the adapter result",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/model.catalog-entity.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"finds-a-catalog-row-by-id",
+				"finds-rows-by-copied-filter-fields",
+				"creates-a-row-from-copied-input-fields",
+				"updates-a-row-with-partial-fields",
+				"deletes-a-row-and-returns-the-adapter-result"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"finds-a-catalog-row-by-id",
+				"finds-rows-by-copied-filter-fields",
+				"creates-a-row-from-copied-input-fields",
+				"updates-a-row-with-partial-fields",
+				"deletes-a-row-and-returns-the-adapter-result"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"finds-a-catalog-row-by-id",
+				"finds-rows-by-copied-filter-fields",
+				"creates-a-row-from-copied-input-fields",
+				"updates-a-row-with-partial-fields",
+				"deletes-a-row-and-returns-the-adapter-result"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
