@@ -20,6 +20,16 @@
 			"id": "disconnects-and-clears-the-native-session",
 			"title": "Disconnects and clears the native session",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-nativesigninerror-when-os-encryption-is-unavailable",
+			"title": "Throws NativeSignInError when OS encryption is unavailable",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-nativesigninerror-when-a-native-handoff-is-refused",
+			"title": "Throws NativeSignInError when a native handoff is refused",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +50,9 @@
 			"states": [
 				"starts-a-native-handoff",
 				"reads-signed-out-status",
-				"disconnects-and-clears-the-native-session"
+				"disconnects-and-clears-the-native-session",
+				"throws-nativesigninerror-when-os-encryption-is-unavailable",
+				"throws-nativesigninerror-when-a-native-handoff-is-refused"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +63,9 @@
 			"states": [
 				"starts-a-native-handoff",
 				"reads-signed-out-status",
-				"disconnects-and-clears-the-native-session"
+				"disconnects-and-clears-the-native-session",
+				"throws-nativesigninerror-when-os-encryption-is-unavailable",
+				"throws-nativesigninerror-when-a-native-handoff-is-refused"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +76,9 @@
 			"states": [
 				"starts-a-native-handoff",
 				"reads-signed-out-status",
-				"disconnects-and-clears-the-native-session"
+				"disconnects-and-clears-the-native-session",
+				"throws-nativesigninerror-when-os-encryption-is-unavailable",
+				"throws-nativesigninerror-when-a-native-handoff-is-refused"
 			],
 			"viewports": [],
 			"required": true

@@ -5,6 +5,7 @@ import { afterEach, test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { NativeAuthService } from '../../src/lib/development-tooling/desktop-initialization/NativeAuthService';
+import { NativeSignInError } from '../../src/lib/development-tooling/desktop-initialization/NativeAuthService.types';
 import type { AuthOptions } from '../../src/lib/development-tooling/desktop-initialization/NativeAuthService.types';
 
 const directories: string[] = [];
@@ -98,5 +99,35 @@ test('Disconnects and clears the native session', async () => {
 	expect(events).toEqual(['disconnect', 'cache-cleared']);
 	recordExampleCases({ unitId: 'desktop.service.native-auth', symbol: 'disconnect', state: 'disconnects-and-clears-the-native-session', evidence: 'examples-cases', file: 'disconnects-and-clears-the-native-session.json' }, [
 		{ name: 'Posts logout and clears local session state', input: { credentialStored: true }, output }
+	]);
+});
+
+test('Throws NativeSignInError when OS encryption is unavailable', async () => {
+	tempDirectory();
+	const fixture = options();
+	fixture.config.store.available = () => false;
+	const service = new NativeAuthService(fixture.config);
+	const error = await service.connect().catch((caught: unknown) => caught);
+	expect(error).toBeInstanceOf(NativeSignInError);
+	expect((error as Error).message).toBe('OS encryption is required for hosted sessions.');
+	recordExampleCases({ unitId: 'desktop.service.native-auth', symbol: 'connect', state: 'throws-nativesigninerror-when-os-encryption-is-unavailable', evidence: 'examples-cases', file: 'throws-nativesigninerror-when-os-encryption-is-unavailable.json' }, [
+		{ name: 'Rejects when the session store cannot encrypt credentials', input: { storeAvailable: false }, error: { name: 'NativeSignInError', message: 'OS encryption is required for hosted sessions.' } }
+	]);
+});
+
+test('Throws NativeSignInError when a native handoff is refused', async () => {
+	tempDirectory();
+	const fixture = options();
+	let now = Date.parse('2026-11-15T12:00:00.000Z');
+	fixture.config.now = () => now;
+	const service = new NativeAuthService(fixture.config);
+	await service.connect();
+	now += 5000;
+	fixture.config.http.publicJson = async () => ({ status: 'refused' });
+	const error = await service.status().catch((caught: unknown) => caught);
+	expect(error).toBeInstanceOf(NativeSignInError);
+	expect((error as Error).message).toBe('Native handoff expired or was refused.');
+	recordExampleCases({ unitId: 'desktop.service.native-auth', symbol: 'status', state: 'throws-nativesigninerror-when-a-native-handoff-is-refused', evidence: 'examples-cases', file: 'throws-nativesigninerror-when-a-native-handoff-is-refused.json' }, [
+		{ name: 'Rejects when polling reports a refused handoff', input: { pollStatus: 'refused' }, error: { name: 'NativeSignInError', message: 'Native handoff expired or was refused.' } }
 	]);
 });
