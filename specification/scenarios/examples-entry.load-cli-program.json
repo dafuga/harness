@@ -10,6 +10,16 @@
 			"id": "registers-the-selected-family-with-root-help-placeholders",
 			"title": "Registers the selected family with root help placeholders",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-selected-command-registration-failure-when-the-loader",
+			"title": "Throws Selected command registration failure when the loader rejects",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-selected-command-registration-failure-when-registrati",
+			"title": "Throws Selected command registration failure when registration throws",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +37,33 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["registers-the-selected-family-with-root-help-placeholders"],
+			"states": [
+				"registers-the-selected-family-with-root-help-placeholders",
+				"throws-selected-command-registration-failure-when-the-loader",
+				"throws-selected-command-registration-failure-when-registrati"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["registers-the-selected-family-with-root-help-placeholders"],
+			"states": [
+				"registers-the-selected-family-with-root-help-placeholders",
+				"throws-selected-command-registration-failure-when-the-loader",
+				"throws-selected-command-registration-failure-when-registrati"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["registers-the-selected-family-with-root-help-placeholders"],
+			"states": [
+				"registers-the-selected-family-with-root-help-placeholders",
+				"throws-selected-command-registration-failure-when-the-loader",
+				"throws-selected-command-registration-failure-when-registrati"
+			],
 			"viewports": [],
 			"required": true
 		}
