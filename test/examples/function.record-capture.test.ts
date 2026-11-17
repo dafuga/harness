@@ -70,3 +70,41 @@ test('Requested captures write bytes and append their metadata', async () => {
 		);
 	});
 });
+
+test('Throws Error when capture file parent is missing', async () => {
+	await withTempDir('record-capture-error-', (directory) => {
+		const env = { HARNESS_EVIDENCE_DIR: directory, TAKE_SCREENSHOT: '1' };
+		const line = {
+			evidence: 'reports.component.evidence-grid',
+			kind: 'output' as const,
+			state: 'reports.capture-grid.ready',
+			file: 'missing/verification-output.txt',
+			mediaType: 'text/plain'
+		};
+		const bytes = 'Rendered verification output.\n';
+		let error: unknown;
+		try {
+			recordCapture(line, bytes, env);
+		} catch (caught) {
+			error = caught;
+		}
+		expect(error).toBeInstanceOf(Error);
+		const result = error instanceof Error ? { name: error.name, message: error.message } : null;
+		recordExampleCases(
+			{
+				unitId: 'function.record-capture',
+				symbol: 'recordCapture',
+				state: 'throws-error-when-capture-file-parent-is-missing',
+				evidence: 'examples-cases',
+				file: 'throws-error-when-capture-file-parent-is-missing.json'
+			},
+			[
+				{
+					name: 'capture write failure propagates',
+					input: { line, bytes, env },
+					error: result
+				}
+			]
+		);
+	});
+});

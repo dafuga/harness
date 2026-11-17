@@ -15,6 +15,11 @@
 			"id": "requested-captures-write-bytes-and-append-their-metadata",
 			"title": "Requested captures write bytes and append their metadata",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-capture-file-parent-is-missing",
+			"title": "Throws Error when capture file parent is missing",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +39,8 @@
 			"kind": "output",
 			"states": [
 				"evidence-recording-requires-both-opt-in-settings",
-				"requested-captures-write-bytes-and-append-their-metadata"
+				"requested-captures-write-bytes-and-append-their-metadata",
+				"throws-error-when-capture-file-parent-is-missing"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +50,8 @@
 			"kind": "assertions",
 			"states": [
 				"evidence-recording-requires-both-opt-in-settings",
-				"requested-captures-write-bytes-and-append-their-metadata"
+				"requested-captures-write-bytes-and-append-their-metadata",
+				"throws-error-when-capture-file-parent-is-missing"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +61,8 @@
 			"kind": "trace",
 			"states": [
 				"evidence-recording-requires-both-opt-in-settings",
-				"requested-captures-write-bytes-and-append-their-metadata"
+				"requested-captures-write-bytes-and-append-their-metadata",
+				"throws-error-when-capture-file-parent-is-missing"
 			],
 			"viewports": [],
 			"required": true
