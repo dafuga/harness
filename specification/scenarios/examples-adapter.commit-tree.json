@@ -20,6 +20,16 @@
 			"id": "reads-contents-from-the-selected-commit",
 			"title": "Reads contents from the selected commit",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-requested-path-is-absent-from-the-comm",
+			"title": "Throws Error when the requested path is absent from the commit tree",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-the-revision-expression-names-n",
+			"title": "Throws ExpectedCliError when the revision expression names no commit",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +50,9 @@
 			"states": [
 				"opens-a-revision-expression-as-a-commit",
 				"lists-blob-files-from-the-selected-commit",
-				"reads-contents-from-the-selected-commit"
+				"reads-contents-from-the-selected-commit",
+				"throws-error-when-the-requested-path-is-absent-from-the-comm",
+				"throws-expectedclierror-when-the-revision-expression-names-n"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +63,9 @@
 			"states": [
 				"opens-a-revision-expression-as-a-commit",
 				"lists-blob-files-from-the-selected-commit",
-				"reads-contents-from-the-selected-commit"
+				"reads-contents-from-the-selected-commit",
+				"throws-error-when-the-requested-path-is-absent-from-the-comm",
+				"throws-expectedclierror-when-the-revision-expression-names-n"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +76,9 @@
 			"states": [
 				"opens-a-revision-expression-as-a-commit",
 				"lists-blob-files-from-the-selected-commit",
-				"reads-contents-from-the-selected-commit"
+				"reads-contents-from-the-selected-commit",
+				"throws-error-when-the-requested-path-is-absent-from-the-comm",
+				"throws-expectedclierror-when-the-revision-expression-names-n"
 			],
 			"viewports": [],
 			"required": true

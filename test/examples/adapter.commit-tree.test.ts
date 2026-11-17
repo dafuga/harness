@@ -2,6 +2,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { test } from 'vitest';
 import { CommitTreeAdapter } from '../../src/adapters/git-source-history/CommitTreeAdapter';
+import { CommitFileNotFoundError } from '../../src/adapters/git-source-history/CommitTreeAdapter.types';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempRepo } from '../support/temporary';
 import type { TemporaryRepo } from '../support/temporary.types';
@@ -131,6 +132,66 @@ test('Reads contents from the selected commit', async () => {
 						name: (readError as Error).name,
 						message: (readError as Error).message
 					}
+				}
+			]
+		);
+	});
+});
+
+test('Throws Error when the requested path is absent from the commit tree', async () => {
+	await withTempRepo(async (repo) => {
+		commitFile(repo, 'docs/guide.md', 'Guide contents.\n');
+		const adapter = await CommitTreeAdapter.open(repo.root, 'HEAD');
+
+		let readError: unknown;
+		try {
+			await adapter.read('docs/missing.md');
+		} catch (error) {
+			readError = error;
+		}
+		expect(readError).toBeInstanceOf(CommitFileNotFoundError);
+		recordExampleCases(
+			{
+				unitId: 'adapter.commit-tree',
+				symbol: 'CommitTreeAdapter.read',
+				state: 'throws-error-when-the-requested-path-is-absent-from-the-comm',
+				evidence: 'examples-cases',
+				file: 'throws-error-when-the-requested-path-is-absent-from-the-comm.json'
+			},
+			[
+				{
+					name: 'Rejects a path absent from the selected commit',
+					input: { root: '<temporary Git repository>', reference: 'HEAD', path: 'docs/missing.md' },
+					error: { name: (readError as Error).name, message: (readError as Error).message }
+				}
+			]
+		);
+	});
+});
+
+test('Throws ExpectedCliError when the revision expression names no commit', async () => {
+	await withTempRepo(async (repo) => {
+		commitFile(repo, 'src/app.ts', 'export const version = 1;\n');
+		let openError: unknown;
+		try {
+			await CommitTreeAdapter.open(repo.root, 'missing-reference');
+		} catch (error) {
+			openError = error;
+		}
+		expect(openError).toMatchObject({ name: 'ExpectedCliError' });
+		recordExampleCases(
+			{
+				unitId: 'adapter.commit-tree',
+				symbol: 'CommitTreeAdapter.open',
+				state: 'throws-expectedclierror-when-the-revision-expression-names-n',
+				evidence: 'examples-cases',
+				file: 'throws-expectedclierror-when-the-revision-expression-names-n.json'
+			},
+			[
+				{
+					name: 'Rejects a revision expression without a commit',
+					input: { root: '<temporary Git repository>', reference: 'missing-reference' },
+					error: { name: (openError as Error).name, message: (openError as Error).message }
 				}
 			]
 		);
