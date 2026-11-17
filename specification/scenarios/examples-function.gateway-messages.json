@@ -10,6 +10,16 @@
 			"id": "yields-serialized-history-with-image-reference-guidance",
 			"title": "Yields serialized history with image reference guidance",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-gatewaycontenterror-when-history-contains-a-video-att",
+			"title": "Throws GatewayContentError when history contains a video attachment",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-prompt-history-contains-a-bigint",
+			"title": "Throws TypeError when prompt history contains a BigInt",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +37,33 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["yields-serialized-history-with-image-reference-guidance"],
+			"states": [
+				"yields-serialized-history-with-image-reference-guidance",
+				"throws-gatewaycontenterror-when-history-contains-a-video-att",
+				"throws-typeerror-when-prompt-history-contains-a-bigint"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["yields-serialized-history-with-image-reference-guidance"],
+			"states": [
+				"yields-serialized-history-with-image-reference-guidance",
+				"throws-gatewaycontenterror-when-history-contains-a-video-att",
+				"throws-typeerror-when-prompt-history-contains-a-bigint"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["yields-serialized-history-with-image-reference-guidance"],
+			"states": [
+				"yields-serialized-history-with-image-reference-guidance",
+				"throws-gatewaycontenterror-when-history-contains-a-video-att",
+				"throws-typeerror-when-prompt-history-contains-a-bigint"
+			],
 			"viewports": [],
 			"required": true
 		}

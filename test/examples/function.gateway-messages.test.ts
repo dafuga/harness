@@ -51,3 +51,67 @@ test('Yields serialized history with image reference guidance', async () => {
 		[{ name: 'text history becomes one SDK user message', input: request, output: summary }]
 	);
 });
+
+const unsupportedAttachmentRequest = {
+	...request,
+	input: [
+		{
+		type: 'message',
+			role: 'user',
+			content: [{ type: 'input_video', url: 'https://example.test/clip.mp4' }]
+		}
+	]
+};
+
+test('Throws GatewayContentError when history contains a video attachment', () => {
+	expect(() => gatewayMessages(unsupportedAttachmentRequest)).toThrow('Audio, video and file attachments are unsupported');
+	const state = 'throws-gatewaycontenterror-when-history-contains-a-video-att';
+	recordExampleCases(
+		{
+			unitId: 'function.gateway-messages',
+			symbol: 'gatewayMessages',
+			state,
+			evidence: 'examples-cases',
+			file: `${state}.json`
+		},
+		[
+			{
+				name: 'video attachment is rejected',
+				input: { attachment: 'input_video' },
+				error: 'GatewayContentError'
+			}
+		]
+	);
+});
+
+test('Throws TypeError when prompt history contains a BigInt', async () => {
+	const bigintRequest = {
+		...request,
+		input: [
+			{
+				type: 'message',
+				role: 'user',
+				metadata: { sequence: 1n },
+				content: [{ type: 'input_text', text: 'Summarize this note.' }]
+			}
+		]
+	};
+	await expect(gatewayMessages(bigintRequest).next()).rejects.toThrow(TypeError);
+	const state = 'throws-typeerror-when-prompt-history-contains-a-bigint';
+	recordExampleCases(
+		{
+			unitId: 'function.gateway-messages',
+			symbol: 'gatewayMessages',
+			state,
+			evidence: 'examples-cases',
+			file: `${state}.json`
+		},
+		[
+			{
+				name: 'BigInt prevents prompt JSON serialization',
+				input: { historyText: 'BigInt value 1' },
+				error: 'TypeError'
+			}
+		]
+	);
+});
