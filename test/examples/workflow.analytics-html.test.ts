@@ -106,3 +106,41 @@ test('Renders the full analytics snapshot as safe, sectioned HTML', () => {
 		sectionRenderer: true
 	});
 });
+
+function thrownName(input: unknown): string | undefined {
+	try {
+		analyticsHtml(input as Parameters<typeof analyticsHtml>[0]);
+	} catch (error) {
+		return error instanceof Error ? error.name : undefined;
+	}
+	return undefined;
+}
+
+test('Throws TypeError when the snapshot is null or serialization', () => {
+	const circular: { self?: unknown } = {};
+	circular.self = circular;
+	const examples = [
+		{ name: 'null snapshot', description: 'null', value: null },
+		{ name: 'undefined snapshot', description: 'undefined', value: undefined },
+		{ name: 'circular snapshot', description: 'self-referencing object', value: circular },
+		{ name: 'BigInt snapshot', description: 'object containing BigInt', value: { value: BigInt(1) } }
+	];
+	const cases = examples.map(({ name, description, value }) => ({
+		name,
+		input: { condition: description },
+		error: { name: thrownName(value) }
+	}));
+	recordExampleCases(
+		{
+			unitId: 'workflow.analytics-html',
+			symbol: 'analyticsHtml',
+			state: 'throws-typeerror-when-the-snapshot-is-null-or-serialization',
+			evidence: 'examples-cases',
+			file: 'throws-typeerror-when-the-snapshot-is-null-or-serialization.json'
+		},
+		cases
+	);
+	expect(cases.map((entry) => entry.error.name)).toEqual([
+		'TypeError', 'TypeError', 'TypeError', 'TypeError'
+	]);
+});

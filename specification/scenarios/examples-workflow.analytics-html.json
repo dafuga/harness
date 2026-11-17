@@ -10,6 +10,11 @@
 			"id": "renders-the-full-analytics-snapshot-as-safe-sectioned-html",
 			"title": "Renders the full analytics snapshot as safe, sectioned HTML",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-the-snapshot-is-null-or-serialization",
+			"title": "Throws TypeError when the snapshot is null or serialization",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["renders-the-full-analytics-snapshot-as-safe-sectioned-html"],
+			"states": [
+				"renders-the-full-analytics-snapshot-as-safe-sectioned-html",
+				"throws-typeerror-when-the-snapshot-is-null-or-serialization"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["renders-the-full-analytics-snapshot-as-safe-sectioned-html"],
+			"states": [
+				"renders-the-full-analytics-snapshot-as-safe-sectioned-html",
+				"throws-typeerror-when-the-snapshot-is-null-or-serialization"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["renders-the-full-analytics-snapshot-as-safe-sectioned-html"],
+			"states": [
+				"renders-the-full-analytics-snapshot-as-safe-sectioned-html",
+				"throws-typeerror-when-the-snapshot-is-null-or-serialization"
+			],
 			"viewports": [],
 			"required": true
 		}
