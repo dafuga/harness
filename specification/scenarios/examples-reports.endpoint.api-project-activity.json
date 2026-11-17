@@ -10,6 +10,11 @@
 			"id": "returns-repository-activity-as-a-no-store-json-response",
 			"title": "Returns repository activity as a no-store JSON response",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-site-activity-rejects",
+			"title": "Throws Error when site activity rejects",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["returns-repository-activity-as-a-no-store-json-response"],
+			"states": [
+				"returns-repository-activity-as-a-no-store-json-response",
+				"throws-error-when-site-activity-rejects"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["returns-repository-activity-as-a-no-store-json-response"],
+			"states": [
+				"returns-repository-activity-as-a-no-store-json-response",
+				"throws-error-when-site-activity-rejects"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["returns-repository-activity-as-a-no-store-json-response"],
+			"states": [
+				"returns-repository-activity-as-a-no-store-json-response",
+				"throws-error-when-site-activity-rejects"
+			],
 			"viewports": [],
 			"required": true
 		}
