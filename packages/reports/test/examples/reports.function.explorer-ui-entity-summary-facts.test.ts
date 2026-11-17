@@ -190,3 +190,24 @@ test('Measurement location joins target and profile or dashes', () => {
 		]
 	);
 });
+
+test('Throws TypeError when measure performance is missing', () => {
+	const measure = { size: [serverBundle] } as unknown as Measure;
+	expect(() => entitySummaryFacts(measure, false)).toThrow(TypeError);
+	recordExampleCases(
+		{
+			unitId: 'reports.function.explorer-ui-entity-summary-facts',
+			symbol: 'entitySummaryFacts',
+			state: 'throws-typeerror-when-measure-performance-is-missing',
+			evidence: 'examples-cases',
+			file: 'throws-typeerror-when-measure-performance-is-missing.json'
+		},
+		[
+			{
+				name: 'measure has a size list but no performance list',
+				input: { measure, compact: false },
+				error: 'TypeError'
+			}
+		]
+	);
+});

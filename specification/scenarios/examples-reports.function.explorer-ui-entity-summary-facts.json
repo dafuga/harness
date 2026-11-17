@@ -30,6 +30,11 @@
 			"id": "measurement-location-joins-target-and-profile-or-dashes",
 			"title": "Measurement location joins target and profile or dashes",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-measure-performance-is-missing",
+			"title": "Throws TypeError when measure performance is missing",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -52,7 +57,8 @@
 				"detailed-facts-describe-the-only-performance-row",
 				"empty-performance-adds-unmeasured-latency-and-memory",
 				"several-performance-rows-add-no-detailed-facts",
-				"measurement-location-joins-target-and-profile-or-dashes"
+				"measurement-location-joins-target-and-profile-or-dashes",
+				"throws-typeerror-when-measure-performance-is-missing"
 			],
 			"viewports": [],
 			"required": true
@@ -65,7 +71,8 @@
 				"detailed-facts-describe-the-only-performance-row",
 				"empty-performance-adds-unmeasured-latency-and-memory",
 				"several-performance-rows-add-no-detailed-facts",
-				"measurement-location-joins-target-and-profile-or-dashes"
+				"measurement-location-joins-target-and-profile-or-dashes",
+				"throws-typeerror-when-measure-performance-is-missing"
 			],
 			"viewports": [],
 			"required": true
@@ -78,7 +85,8 @@
 				"detailed-facts-describe-the-only-performance-row",
 				"empty-performance-adds-unmeasured-latency-and-memory",
 				"several-performance-rows-add-no-detailed-facts",
-				"measurement-location-joins-target-and-profile-or-dashes"
+				"measurement-location-joins-target-and-profile-or-dashes",
+				"throws-typeerror-when-measure-performance-is-missing"
 			],
 			"viewports": [],
 			"required": true
