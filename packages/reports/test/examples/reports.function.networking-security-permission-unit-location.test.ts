@@ -17,7 +17,7 @@ test('Links registered units in the shown revision only', () => {
 			category: 'functions',
 			entity: 'reports.function.networking-security-permission-unit-location'
 		}
-	} as Parameters<typeof permissionUnitLocation>[0];
+	} as unknown as Parameters<typeof permissionUnitLocation>[0];
 	const linked = permissionUnitLocation(host, 'reports.component.evidence-grid');
 	const absent = permissionUnitLocation(host, 'reports.model.explorer-types');
 
@@ -56,5 +56,45 @@ test('Links registered units in the shown revision only', () => {
 				output: absent
 			}
 		]
+	);
+});
+
+test('Throws TypeError when the host registry or route is invalid', () => {
+	const host = {
+		entities: [],
+		route: { branch: 'main', commit: 'commit' }
+	} as unknown as Parameters<typeof permissionUnitLocation>[0];
+	const invalidHosts = [
+		null,
+		{ entities: null, route: host.route },
+		{ entities: undefined, route: host.route },
+		{ entities: [], route: null },
+		{ entities: [], route: undefined },
+		{ entities: {}, route: host.route },
+		{ entities: [null], route: host.route }
+	] as unknown as Parameters<typeof permissionUnitLocation>[0][];
+	const cases = invalidHosts.map((invalidHost, index) => {
+		let error: unknown;
+		try {
+			permissionUnitLocation(invalidHost, 'reports.function.missing');
+		} catch (caught) {
+			error = caught;
+		}
+		expect(error).toBeInstanceOf(TypeError);
+		return {
+			name: `invalid host shape ${index + 1}`,
+			input: { entities: index === 0 ? 'null host' : 'invalid', route: 'shown route' },
+			error: { name: (error as Error).name, message: (error as Error).message }
+		};
+	});
+	recordExampleCases(
+		{
+			unitId: 'reports.function.networking-security-permission-unit-location',
+			symbol: 'permissionUnitLocation',
+			state: 'throws-typeerror-when-the-host-registry-or-route-is-invalid',
+			evidence: 'examples-cases',
+			file: 'throws-typeerror-when-the-host-registry-or-route-is-invalid.json'
+		},
+		cases
 	);
 });
