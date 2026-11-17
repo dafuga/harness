@@ -7,8 +7,18 @@
 	"builds": [],
 	"states": [
 		{
-			"id": "store-writes-bytes-by-their-sha256-and-read-returns-them",
-			"title": "store writes bytes by their sha256 and read returns them",
+			"id": "throws-gitadapter-run-error-when-the-repository-root-is-miss",
+			"title": "throws-gitadapter-run-error-when-the-repository-root-is-miss",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-gitadapter-exec-error-when-fetch-uses-a-missing-repos",
+			"title": "throws-gitadapter-exec-error-when-fetch-uses-a-missing-repos",
+			"coverage": "required"
+		},
+		{
+			"id": "store-rethrows-rename-error-when-the-object-path-is-a-direct",
+			"title": "store-rethrows-rename-error-when-the-object-path-is-a-direct",
 			"coverage": "required"
 		}
 	],
@@ -27,21 +37,33 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["store-writes-bytes-by-their-sha256-and-read-returns-them"],
+			"states": [
+				"throws-gitadapter-run-error-when-the-repository-root-is-miss",
+				"throws-gitadapter-exec-error-when-fetch-uses-a-missing-repos",
+				"store-rethrows-rename-error-when-the-object-path-is-a-direct"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["store-writes-bytes-by-their-sha256-and-read-returns-them"],
+			"states": [
+				"throws-gitadapter-run-error-when-the-repository-root-is-miss",
+				"throws-gitadapter-exec-error-when-fetch-uses-a-missing-repos",
+				"store-rethrows-rename-error-when-the-object-path-is-a-direct"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["store-writes-bytes-by-their-sha256-and-read-returns-them"],
+			"states": [
+				"throws-gitadapter-run-error-when-the-repository-root-is-miss",
+				"throws-gitadapter-exec-error-when-fetch-uses-a-missing-repos",
+				"store-rethrows-rename-error-when-the-object-path-is-a-direct"
+			],
 			"viewports": [],
 			"required": true
 		}

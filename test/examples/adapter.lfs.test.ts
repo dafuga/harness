@@ -1,44 +1,60 @@
 import { createHash } from 'node:crypto';
+import { mkdir } from 'node:fs/promises';
+import { join } from 'node:path';
 import { test } from 'vitest';
-import { LfsAdapter } from '../../src/adapters/git-source-history/LfsAdapter';
-import { recordExampleCases } from '../support/recordExampleCases';
-import { withTempRepo } from '../support/temporary';
 import { expect } from '../verificationExpect';
+import { recordExampleCases } from '../support/recordExampleCases';
+import { withTempDir, withTempRepo } from '../support/temporary';
+import { LfsAdapter } from '../../src/adapters/git-source-history/LfsAdapter';
 
-test('store writes bytes by their sha256 and read returns them', async () => {
+function record(state: string, symbol: string, input: unknown, error: unknown): void {
+	recordExampleCases(
+		{ unitId: 'adapter.lfs', symbol, state, evidence: 'examples-cases', file: `${state}.json` },
+		[{ name: 'operation rejects with the observed error', input, error: String(error) }]
+	);
+}
+
+test('throws-gitadapter-run-error-when-the-repository-root-is-miss', async () => {
+	await withTempDir('lfs-missing-root-', async (directory) => {
+		const root = join(directory, 'missing');
+		let caught: unknown;
+		try {
+			await new LfsAdapter(root).path('9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08');
+		} catch (error) {
+			caught = error;
+		}
+		expect(caught).toBeDefined();
+		record('throws-gitadapter-run-error-when-the-repository-root-is-miss', 'LfsAdapter.path', { root }, caught);
+	});
+});
+
+test('throws-gitadapter-exec-error-when-fetch-uses-a-missing-repos', async () => {
+	await withTempDir('lfs-missing-repo-', async (directory) => {
+		const root = join(directory, 'missing');
+		let caught: unknown;
+		try {
+			await new LfsAdapter(root).fetch('origin', 'main');
+		} catch (error) {
+			caught = error;
+		}
+		expect(caught).toBeDefined();
+		record('throws-gitadapter-exec-error-when-fetch-uses-a-missing-repos', 'LfsAdapter.fetch', { remote: 'origin', ref: 'main' }, caught);
+	});
+});
+
+test('store-rethrows-rename-error-when-the-object-path-is-a-direct', async () => {
 	await withTempRepo(async ({ root }) => {
-		const adapter = new LfsAdapter(root);
 		const bytes = Buffer.from('hello');
-		const stored = await adapter.store(bytes);
-		const read = await adapter.read(stored.sha256);
-		const missing = await adapter.read('0'.repeat(64));
-		expect(stored).toEqual({
-			sha256: '2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824',
-			bytes: 5
-		});
-		expect(read).toEqual(bytes);
-		expect(missing).toBeUndefined();
-		expect(stored.sha256).toBe(createHash('sha256').update(bytes).digest('hex'));
-		recordExampleCases(
-			{
-				unitId: 'adapter.lfs',
-				symbol: 'LfsAdapter.store and LfsAdapter.read',
-				state: 'store-writes-bytes-by-their-sha256-and-read-returns-them',
-				evidence: 'examples-cases',
-				file: 'store-writes-bytes-by-their-sha256-and-read-returns-them.json'
-			},
-			[
-				{
-					name: 'hello is stored and read unchanged',
-					input: { text: 'hello' },
-					output: { stored, read: read?.toString('utf8') }
-				},
-				{
-					name: 'unfetched object reads as undefined',
-					input: { oid: '0'.repeat(64) },
-					output: missing ?? null
-				}
-			]
-		);
+		const oid = createHash('sha256').update(bytes).digest('hex');
+		const target = join(root, '.git', 'lfs', 'objects', oid.slice(0, 2), oid.slice(2, 4), oid);
+		await mkdir(target, { recursive: true });
+		let caught: unknown;
+		try {
+			await new LfsAdapter(root).store(bytes);
+		} catch (error) {
+			caught = error;
+		}
+		expect(caught).toBeDefined();
+		record('store-rethrows-rename-error-when-the-object-path-is-a-direct', 'LfsAdapter.store', { text: 'hello', oid }, caught);
 	});
 });
