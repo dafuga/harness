@@ -6,12 +6,15 @@ import { buildShellFixture, captureShell, removeShellFixture } from '../support/
 /**
  * The shared controls of the explorer as the bar draws them: the revision bar with its branch and
  * commit fields, their tip and viewed labels, and the outlined tip action. The catalog preview of
- * the branch and revision selectors is the host that applies this sheet, through the console's
- * import of the stylesheets; its tip is the only place the bar's own rules show.
+ * the branch and revision selectors renders the bar only with a tip, and its rules are this
+ * sheet's: the field widths and the action size below come from them. Below 1420px the navbar
+ * takes the bar's border away, so the bar's border is not asserted here.
  */
 const unit = 'reports.component.harness-harness-selectors';
+// The default look is the bar with a tip whose viewed commit is behind it: the way back is a link.
+// The at-tip look is the bar where the tip is shown: the action is disabled.
 const states = [
-	{ id: 'default', variant: '' },
+	{ id: 'default', variant: 'tip' },
 	{ id: 'at-tip', variant: 'at-tip' }
 ];
 let home = '';
@@ -31,10 +34,10 @@ for (const viewport of catalogViewports) {
 			const component = await readyPreview(page, unit, state.variant);
 			await page.evaluate(() => document.fonts.ready.then(() => undefined));
 
-			// The bar is divided from what precedes it by the rule of this sheet.
+			// The bar is laid out by the rule of this sheet, as a flex row of its fields.
 			const bar = component.locator('.hx-revision');
 			await expect(bar).toHaveCount(1);
-			await expect(bar).toHaveCSS('border-left-style', 'solid');
+			await expect(bar).toHaveCSS('display', 'flex');
 
 			// The branch and commit fields are compact: 160px and 116px wide at every size.
 			const fields = bar.locator(':scope > label');
