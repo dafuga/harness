@@ -37,3 +37,32 @@ test('Copies a finished build into its run directory', async () => {
 		rmSync(root, { recursive: true, force: true });
 	}
 });
+
+test('Throws Error when the source directory contains no build', async () => {
+	const root = mkdtempSync(join(tmpdir(), 'freeze-build-empty-'));
+	try {
+		const source = join(root, 'empty-build');
+		const target = join(root, 'run-build');
+		mkdirSync(source);
+		const error = new Error(`${source} holds no build: build the reports package first.`);
+		await expect(frozenBuild(source, target)).rejects.toThrow(error.message);
+		recordExampleCases(
+			{
+				unitId: 'reports.script.freeze-build',
+				symbol: 'frozenBuild',
+				state: 'throws-error-when-the-source-directory-contains-no-build',
+				evidence: 'examples-cases',
+				file: 'throws-error-when-the-source-directory-contains-no-build.json'
+			},
+			[
+				{
+					name: 'rejects an empty source directory',
+					input: { source, target },
+					error: error.message
+				}
+			]
+		);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});

@@ -10,6 +10,11 @@
 			"id": "copies-a-finished-build-into-its-run-directory",
 			"title": "Copies a finished build into its run directory",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-source-directory-contains-no-build",
+			"title": "Throws Error when the source directory contains no build",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["copies-a-finished-build-into-its-run-directory"],
+			"states": [
+				"copies-a-finished-build-into-its-run-directory",
+				"throws-error-when-the-source-directory-contains-no-build"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["copies-a-finished-build-into-its-run-directory"],
+			"states": [
+				"copies-a-finished-build-into-its-run-directory",
+				"throws-error-when-the-source-directory-contains-no-build"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["copies-a-finished-build-into-its-run-directory"],
+			"states": [
+				"copies-a-finished-build-into-its-run-directory",
+				"throws-error-when-the-source-directory-contains-no-build"
+			],
 			"viewports": [],
 			"required": true
 		}
