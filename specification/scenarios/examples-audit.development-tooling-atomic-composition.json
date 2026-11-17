@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-audit.development-tooling-atomic-composition",
+	"title": "audit.development-tooling-atomic-composition examples",
+	"kind": "headless",
+	"units": ["audit.development-tooling-atomic-composition"],
+	"builds": [],
+	"states": [
+		{
+			"id": "ignores-files-outside-the-component-and-route-folders",
+			"title": "Ignores files outside the component and route folders",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-the-missing-tier-and-native-elements-in-a-component",
+			"title": "Reports the missing tier and native elements in a component",
+			"coverage": "required"
+		},
+		{
+			"id": "allows-shared-hx-elements-and-still-requires-a-tier",
+			"title": "Allows shared hx elements and still requires a tier",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/audit.development-tooling-atomic-composition.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"ignores-files-outside-the-component-and-route-folders",
+				"reports-the-missing-tier-and-native-elements-in-a-component",
+				"allows-shared-hx-elements-and-still-requires-a-tier"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"ignores-files-outside-the-component-and-route-folders",
+				"reports-the-missing-tier-and-native-elements-in-a-component",
+				"allows-shared-hx-elements-and-still-requires-a-tier"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"ignores-files-outside-the-component-and-route-folders",
+				"reports-the-missing-tier-and-native-elements-in-a-component",
+				"allows-shared-hx-elements-and-still-requires-a-tier"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
