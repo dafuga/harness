@@ -35,6 +35,15 @@ function recordingTransport(responses: Record<string, unknown>) {
 	return { client, calls };
 }
 
+function rejectingTransport(): GitHubTransport {
+	return {
+		async request() {
+			throw new Error('GitHub request failed');
+		},
+		async check() {}
+	};
+}
+
 function summarizedResult(sha: string, calls: RequestCall[]) {
 	return {
 		sha,
@@ -144,6 +153,19 @@ test('creates a child commit from its parent tree', async () => {
 				tree,
 				parents: [parent]
 			}
+		}
+	]);
+});
+
+test('Throws Error when a GitHub request rejects', async () => {
+	const input = { parent: null, path, records };
+	const client = rejectingTransport();
+	await expect(commitRecords(client, input)).rejects.toThrow('GitHub request failed');
+	recordExampleCases(evidence('throws-error-when-a-github-request-rejects'), [
+		{
+			name: 'a rejected blob request rejects commit creation',
+			input,
+			error: 'Error: GitHub request failed'
 		}
 	]);
 });

@@ -15,6 +15,11 @@
 			"id": "creates-a-child-commit-from-its-parent-tree",
 			"title": "creates a child commit from its parent tree",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-a-github-request-rejects",
+			"title": "Throws Error when a GitHub request rejects",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +39,8 @@
 			"kind": "output",
 			"states": [
 				"creates-a-root-commit-without-reading-a-parent",
-				"creates-a-child-commit-from-its-parent-tree"
+				"creates-a-child-commit-from-its-parent-tree",
+				"throws-error-when-a-github-request-rejects"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +50,8 @@
 			"kind": "assertions",
 			"states": [
 				"creates-a-root-commit-without-reading-a-parent",
-				"creates-a-child-commit-from-its-parent-tree"
+				"creates-a-child-commit-from-its-parent-tree",
+				"throws-error-when-a-github-request-rejects"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +61,8 @@
 			"kind": "trace",
 			"states": [
 				"creates-a-root-commit-without-reading-a-parent",
-				"creates-a-child-commit-from-its-parent-tree"
+				"creates-a-child-commit-from-its-parent-tree",
+				"throws-error-when-a-github-request-rejects"
 			],
 			"viewports": [],
 			"required": true
