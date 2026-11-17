@@ -10,6 +10,11 @@
 			"id": "plans-uid-assignments-without-writing",
 			"title": "Plans UID assignments without writing",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-loading-units-fails",
+			"title": "Throws Error when loading units fails",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,21 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["plans-uid-assignments-without-writing"],
+			"states": ["plans-uid-assignments-without-writing", "throws-error-when-loading-units-fails"],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["plans-uid-assignments-without-writing"],
+			"states": ["plans-uid-assignments-without-writing", "throws-error-when-loading-units-fails"],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["plans-uid-assignments-without-writing"],
+			"states": ["plans-uid-assignments-without-writing", "throws-error-when-loading-units-fails"],
 			"viewports": [],
 			"required": true
 		}

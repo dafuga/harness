@@ -1,6 +1,7 @@
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
+import { withTempDir } from '../support/temporary';
 import { backfillUids } from '../../src/workflows/development-tooling/backfill-uids/backfillUids';
 
 const unitId = 'workflow.development-tooling-backfill-uids-backfill-uids';
@@ -29,4 +30,30 @@ test('Plans UID assignments without writing', async () => {
 		},
 		[{ name: 'active repository units are planned without modification', input, output }]
 	);
+});
+
+const errorState = 'throws-error-when-loading-units-fails';
+
+test('Throws Error when loading units fails', async () => {
+	await withTempDir('backfill-uids-error-', async (directory) => {
+		const input = { root: `${directory}/missing-project` };
+		let failure: unknown;
+		try {
+			await backfillUids(input);
+		} catch (error) {
+			failure = error;
+		}
+		expect(failure).toBeInstanceOf(Error);
+		const error = failure instanceof Error ? { name: failure.name, message: failure.message } : {};
+		recordExampleCases(
+			{
+				unitId,
+				symbol: 'backfillUids',
+				state: errorState,
+				evidence: 'examples-cases',
+				file: `${errorState}.json`
+			},
+			[{ name: 'a missing project root propagates the load failure', input, error }]
+		);
+	});
 });
