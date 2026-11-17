@@ -83,3 +83,30 @@ test('Requires a nonblank value and preserves whitespace', () => {
 		]
 	);
 });
+
+test('Throws TypeError when argv is missing', () => {
+	let error: unknown;
+	try {
+		reportCli(undefined as unknown as string[]);
+	} catch (caught) {
+		error = caught;
+	}
+	expect(error).toBeInstanceOf(TypeError);
+	const captured = error as TypeError;
+	recordExampleCases(
+		{
+			unitId: 'reports.function.report-cli',
+			symbol: 'reportCli',
+			state: 'throws-typeerror-when-argv-is-missing',
+			evidence: 'examples-cases',
+			file: 'throws-typeerror-when-argv-is-missing.json'
+		},
+		[
+			{
+				name: 'missing argv',
+				input: null,
+				error: { name: captured.name, message: captured.message }
+			}
+		]
+	);
+});

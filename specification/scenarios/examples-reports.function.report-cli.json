@@ -20,6 +20,11 @@
 			"id": "requires-a-nonblank-value-and-preserves-whitespace",
 			"title": "Requires a nonblank value and preserves whitespace",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-argv-is-missing",
+			"title": "Throws TypeError when argv is missing",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +45,8 @@
 			"states": [
 				"parses-report-operations-flags-and-positionals",
 				"reads-inline-and-file-json-input",
-				"requires-a-nonblank-value-and-preserves-whitespace"
+				"requires-a-nonblank-value-and-preserves-whitespace",
+				"throws-typeerror-when-argv-is-missing"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +57,8 @@
 			"states": [
 				"parses-report-operations-flags-and-positionals",
 				"reads-inline-and-file-json-input",
-				"requires-a-nonblank-value-and-preserves-whitespace"
+				"requires-a-nonblank-value-and-preserves-whitespace",
+				"throws-typeerror-when-argv-is-missing"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +69,8 @@
 			"states": [
 				"parses-report-operations-flags-and-positionals",
 				"reads-inline-and-file-json-input",
-				"requires-a-nonblank-value-and-preserves-whitespace"
+				"requires-a-nonblank-value-and-preserves-whitespace",
+				"throws-typeerror-when-argv-is-missing"
 			],
 			"viewports": [],
 			"required": true
