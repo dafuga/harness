@@ -15,6 +15,11 @@
 			"id": "aggregates-response-check-statuses-by-severity",
 			"title": "Aggregates response check statuses by severity",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-credential-environment-variable-is-missing",
+			"title": "Throws Error when credential environment variable is missing",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +39,8 @@
 			"kind": "output",
 			"states": [
 				"assesses-a-response-with-the-supplied-evaluator",
-				"aggregates-response-check-statuses-by-severity"
+				"aggregates-response-check-statuses-by-severity",
+				"throws-error-when-credential-environment-variable-is-missing"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +50,8 @@
 			"kind": "assertions",
 			"states": [
 				"assesses-a-response-with-the-supplied-evaluator",
-				"aggregates-response-check-statuses-by-severity"
+				"aggregates-response-check-statuses-by-severity",
+				"throws-error-when-credential-environment-variable-is-missing"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +61,8 @@
 			"kind": "trace",
 			"states": [
 				"assesses-a-response-with-the-supplied-evaluator",
-				"aggregates-response-check-statuses-by-severity"
+				"aggregates-response-check-statuses-by-severity",
+				"throws-error-when-credential-environment-variable-is-missing"
 			],
 			"viewports": [],
 			"required": true

@@ -90,3 +90,35 @@ test('Aggregates response check statuses by severity', () => {
 		}))
 	);
 });
+
+test('Throws Error when credential environment variable is missing', async () => {
+	const error = await assessResponse(input, {
+		...settings,
+		apiKeyEnv: 'HARNESS_RESPONSE_CHECK_MISSING_CREDENTIAL'
+	}).catch((caught: unknown) => caught);
+
+	expect(error).toBeInstanceOf(Error);
+	expect(error).toHaveProperty(
+		'message',
+		'Missing project-owned JEV credential in the selected environment variable.'
+	);
+	recordExampleCases(
+		{
+			unitId: 'workflow.response-check-evaluate',
+			symbol: 'assessResponse',
+			state: 'throws-error-when-credential-environment-variable-is-missing',
+			evidence: 'examples-cases',
+			file: 'throws-error-when-credential-environment-variable-is-missing.json'
+		},
+		[
+			{
+				name: 'nonblank response requires selected environment credential',
+				input: { input, apiKeyEnv: 'HARNESS_RESPONSE_CHECK_MISSING_CREDENTIAL' },
+				error: {
+					name: (error as Error).name,
+					message: (error as Error).message
+				}
+			}
+		]
+	);
+});
