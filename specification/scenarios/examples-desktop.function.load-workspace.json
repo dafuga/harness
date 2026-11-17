@@ -15,6 +15,11 @@
 			"id": "loads-requested-revision-as-read-only-cached-snapshot",
 			"title": "loads requested revision as read-only cached snapshot",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-workspaceprojectmismatcherror-when-snapshot-belongs-t",
+			"title": "Throws WorkspaceProjectMismatchError when snapshot belongs to another project",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +39,8 @@
 			"kind": "output",
 			"states": [
 				"reuses-selected-snapshot-for-named-entity",
-				"loads-requested-revision-as-read-only-cached-snapshot"
+				"loads-requested-revision-as-read-only-cached-snapshot",
+				"throws-workspaceprojectmismatcherror-when-snapshot-belongs-t"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +50,8 @@
 			"kind": "assertions",
 			"states": [
 				"reuses-selected-snapshot-for-named-entity",
-				"loads-requested-revision-as-read-only-cached-snapshot"
+				"loads-requested-revision-as-read-only-cached-snapshot",
+				"throws-workspaceprojectmismatcherror-when-snapshot-belongs-t"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +61,8 @@
 			"kind": "trace",
 			"states": [
 				"reuses-selected-snapshot-for-named-entity",
-				"loads-requested-revision-as-read-only-cached-snapshot"
+				"loads-requested-revision-as-read-only-cached-snapshot",
+				"throws-workspaceprojectmismatcherror-when-snapshot-belongs-t"
 			],
 			"viewports": [],
 			"required": true
