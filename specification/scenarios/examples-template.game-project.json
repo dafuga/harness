@@ -10,6 +10,16 @@
 			"id": "generates-a-2d-game-project-scaffold",
 			"title": "Generates a 2D game project scaffold",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-syntaxerror-when-package-json-is-invalid",
+			"title": "Throws SyntaxError when package JSON is invalid",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-a-required-app-file-is-missing",
+			"title": "Throws TypeError when a required app file is missing",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +37,33 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["generates-a-2d-game-project-scaffold"],
+			"states": [
+				"generates-a-2d-game-project-scaffold",
+				"throws-syntaxerror-when-package-json-is-invalid",
+				"throws-typeerror-when-a-required-app-file-is-missing"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["generates-a-2d-game-project-scaffold"],
+			"states": [
+				"generates-a-2d-game-project-scaffold",
+				"throws-syntaxerror-when-package-json-is-invalid",
+				"throws-typeerror-when-a-required-app-file-is-missing"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["generates-a-2d-game-project-scaffold"],
+			"states": [
+				"generates-a-2d-game-project-scaffold",
+				"throws-syntaxerror-when-package-json-is-invalid",
+				"throws-typeerror-when-a-required-app-file-is-missing"
+			],
 			"viewports": [],
 			"required": true
 		}

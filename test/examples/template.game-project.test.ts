@@ -49,3 +49,58 @@ test('Generates a 2D game project scaffold', () => {
 		]
 	);
 });
+
+test('Throws SyntaxError when package JSON is invalid', () => {
+	const files = app();
+	files[0].contents = '{invalid';
+	let error: unknown;
+	try {
+		gameFiles({ name: 'maze-game', kind: 'game' }, files);
+	} catch (caught) {
+		error = caught;
+	}
+	expect(error).toBeInstanceOf(SyntaxError);
+	recordExampleCases(
+		{
+			unitId: 'template.game-project',
+			symbol: 'gameFiles',
+			state: 'throws-syntaxerror-when-package-json-is-invalid',
+			evidence: 'examples-cases',
+			file: 'throws-syntaxerror-when-package-json-is-invalid.json'
+		},
+		[
+			{
+				name: 'Invalid package JSON is rejected',
+				input: { project: { name: 'maze-game', kind: 'game' }, packageContents: '{invalid' },
+				error: { name: 'SyntaxError' }
+			}
+		]
+	);
+});
+
+test('Throws TypeError when a required app file is missing', () => {
+	const files = app().filter((file) => file.path !== '.prettierrc');
+	let error: unknown;
+	try {
+		gameFiles({ name: 'maze-game', kind: 'game' }, files);
+	} catch (caught) {
+		error = caught;
+	}
+	expect(error).toBeInstanceOf(TypeError);
+	recordExampleCases(
+		{
+			unitId: 'template.game-project',
+			symbol: 'gameFiles',
+			state: 'throws-typeerror-when-a-required-app-file-is-missing',
+			evidence: 'examples-cases',
+			file: 'throws-typeerror-when-a-required-app-file-is-missing.json'
+		},
+		[
+			{
+				name: 'Missing formatting config is rejected',
+				input: { project: { name: 'maze-game', kind: 'game' }, files: ['package.json', 'vite.config.ts'] },
+				error: { name: 'TypeError' }
+			}
+		]
+	);
+});
