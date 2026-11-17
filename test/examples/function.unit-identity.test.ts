@@ -41,3 +41,23 @@ test('Derives conventional identities from source and crate paths', () => {
 		cases
 	);
 });
+
+test('Throws TypeError when a root folder path omits its folder', () => {
+	const input = { path: 'scripts' };
+	expect(() => unitIdentity(input.path)).toThrow(TypeError);
+	const cases = [{
+		name: 'root folder without a child path throws TypeError',
+		input,
+		error: 'TypeError'
+	}];
+	recordExampleCases(
+		{
+			unitId: 'function.unit-identity',
+			symbol: 'unitIdentity',
+			state: 'throws-typeerror-when-a-root-folder-path-omits-its-folder',
+			evidence: 'examples-cases',
+			file: 'throws-typeerror-when-a-root-folder-path-omits-its-folder.json'
+		},
+		cases
+	);
+});

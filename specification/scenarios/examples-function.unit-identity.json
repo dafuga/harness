@@ -10,6 +10,11 @@
 			"id": "derives-conventional-identities-from-source-and-crate-paths",
 			"title": "Derives conventional identities from source and crate paths",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-a-root-folder-path-omits-its-folder",
+			"title": "Throws TypeError when a root folder path omits its folder",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["derives-conventional-identities-from-source-and-crate-paths"],
+			"states": [
+				"derives-conventional-identities-from-source-and-crate-paths",
+				"throws-typeerror-when-a-root-folder-path-omits-its-folder"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["derives-conventional-identities-from-source-and-crate-paths"],
+			"states": [
+				"derives-conventional-identities-from-source-and-crate-paths",
+				"throws-typeerror-when-a-root-folder-path-omits-its-folder"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["derives-conventional-identities-from-source-and-crate-paths"],
+			"states": [
+				"derives-conventional-identities-from-source-and-crate-paths",
+				"throws-typeerror-when-a-root-folder-path-omits-its-folder"
+			],
 			"viewports": [],
 			"required": true
 		}
