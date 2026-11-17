@@ -15,6 +15,16 @@
 			"id": "reads-an-empty-committed-contract-history",
 			"title": "Reads an empty committed contract history",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-last-finds-no-change",
+			"title": "Throws ExpectedCliError when last finds no change",
+			"coverage": "required"
+		},
+		{
+			"id": "propagates-git-errors-when-the-root-is-not-a-repository",
+			"title": "Propagates Git errors when the root is not a repository",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +44,9 @@
 			"kind": "output",
 			"states": [
 				"compares-an-empty-contract-snapshot",
-				"reads-an-empty-committed-contract-history"
+				"reads-an-empty-committed-contract-history",
+				"throws-expectedclierror-when-last-finds-no-change",
+				"propagates-git-errors-when-the-root-is-not-a-repository"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +56,9 @@
 			"kind": "assertions",
 			"states": [
 				"compares-an-empty-contract-snapshot",
-				"reads-an-empty-committed-contract-history"
+				"reads-an-empty-committed-contract-history",
+				"throws-expectedclierror-when-last-finds-no-change",
+				"propagates-git-errors-when-the-root-is-not-a-repository"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +68,9 @@
 			"kind": "trace",
 			"states": [
 				"compares-an-empty-contract-snapshot",
-				"reads-an-empty-committed-contract-history"
+				"reads-an-empty-committed-contract-history",
+				"throws-expectedclierror-when-last-finds-no-change",
+				"propagates-git-errors-when-the-root-is-not-a-repository"
 			],
 			"viewports": [],
 			"required": true
