@@ -54,3 +54,43 @@ test('Generates bundled and private bucket console host routes', () => {
 		cases
 	);
 });
+
+test('Throws Error when the configured bucket binding is absent', () => {
+	const files = consoleHostFiles(bucketOptions);
+	const server = files[0]?.contents ?? '';
+	const dataSource = server.match(
+		/function data\(event: ConsoleRequest\) \{([\s\S]*?)\n\}\n\n\/\/ What this deployment/
+	)?.[1] ?? '';
+	const executable = dataSource
+		.replace("(event.platform as { env?: Record<string, unknown> } | undefined)?.env", 'event.platform?.env')
+		.replace(" as ConsoleBucket | undefined", '');
+	const runData = new Function(
+		'event',
+		'consoleStore',
+		`return (function data(event) {${executable}\n})(event);`
+	);
+	let caught: unknown;
+	try {
+		runData({ platform: { env: {} } }, () => undefined);
+	} catch (error) {
+		caught = error;
+	}
+	expect(caught).toBeInstanceOf(Error);
+	expect((caught as Error).message).toBe('The CONSOLE_BUCKET binding is missing from this deployment.');
+	recordExampleCases(
+		{
+			unitId: 'function.console-host-files',
+			symbol: 'consoleHostFiles',
+			state: 'throws-error-when-the-configured-bucket-binding-is-absent',
+			evidence: 'examples-cases',
+			file: 'throws-error-when-the-configured-bucket-binding-is-absent.json'
+		},
+		[
+			{
+				name: 'missing private bucket binding raises its generated error',
+				input: { options: bucketOptions, event: { platform: { env: {} } } },
+				error: { name: (caught as Error).name, message: (caught as Error).message }
+			}
+		]
+	);
+});
