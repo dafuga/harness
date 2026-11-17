@@ -20,6 +20,21 @@
 			"id": "classifies-evidence-items-as-audio-or-image",
 			"title": "Classifies evidence items as audio or image",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-mediamime-receives-a-null-file",
+			"title": "Throws TypeError when mediaMime receives a null file",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-evidencemedia-receives-a-null-item",
+			"title": "Throws TypeError when evidenceMedia receives a null item",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-evidencemedia-gets-a-non-string-file",
+			"title": "Throws TypeError when evidenceMedia gets a non-string file",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +55,10 @@
 			"states": [
 				"formats-durations-as-minutes-and-hours",
 				"maps-evidence-file-names-to-mime-types",
-				"classifies-evidence-items-as-audio-or-image"
+				"classifies-evidence-items-as-audio-or-image",
+				"throws-typeerror-when-mediamime-receives-a-null-file",
+				"throws-typeerror-when-evidencemedia-receives-a-null-item",
+				"throws-typeerror-when-evidencemedia-gets-a-non-string-file"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +69,10 @@
 			"states": [
 				"formats-durations-as-minutes-and-hours",
 				"maps-evidence-file-names-to-mime-types",
-				"classifies-evidence-items-as-audio-or-image"
+				"classifies-evidence-items-as-audio-or-image",
+				"throws-typeerror-when-mediamime-receives-a-null-file",
+				"throws-typeerror-when-evidencemedia-receives-a-null-item",
+				"throws-typeerror-when-evidencemedia-gets-a-non-string-file"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +83,10 @@
 			"states": [
 				"formats-durations-as-minutes-and-hours",
 				"maps-evidence-file-names-to-mime-types",
-				"classifies-evidence-items-as-audio-or-image"
+				"classifies-evidence-items-as-audio-or-image",
+				"throws-typeerror-when-mediamime-receives-a-null-file",
+				"throws-typeerror-when-evidencemedia-receives-a-null-item",
+				"throws-typeerror-when-evidencemedia-gets-a-non-string-file"
 			],
 			"viewports": [],
 			"required": true

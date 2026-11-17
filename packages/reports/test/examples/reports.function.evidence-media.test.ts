@@ -74,3 +74,29 @@ test('Classifies evidence items as audio or image', () => {
 		{ name: 'pdf file without mediaType is image', input: { file: pdfFile }, output: outputs[3] }
 	]);
 });
+
+test('Throws TypeError when mediaMime receives a null file', () => {
+	expect(() => mediaMime(null as unknown as string)).toThrow(TypeError);
+	recordExampleCases(
+		caseMeta('mediaMime', 'throws-typeerror-when-mediamime-receives-a-null-file'),
+		[{ name: 'null file name throws TypeError', input: null, error: 'TypeError' }]
+	);
+});
+
+test('Throws TypeError when evidenceMedia receives a null item', () => {
+	const item = null as unknown as Parameters<typeof evidenceMedia>[0];
+	expect(() => evidenceMedia(item)).toThrow(TypeError);
+	recordExampleCases(
+		caseMeta('evidenceMedia', 'throws-typeerror-when-evidencemedia-receives-a-null-item'),
+		[{ name: 'null evidence item throws TypeError', input: null, error: 'TypeError' }]
+	);
+});
+
+test('Throws TypeError when evidenceMedia gets a non-string file', () => {
+	const item = { file: 42 as unknown as string };
+	expect(() => evidenceMedia(item)).toThrow(TypeError);
+	recordExampleCases(
+		caseMeta('evidenceMedia', 'throws-typeerror-when-evidencemedia-gets-a-non-string-file'),
+		[{ name: 'numeric file without mediaType throws TypeError', input: item, error: 'TypeError' }]
+	);
+});
