@@ -7,6 +7,8 @@ import { join, resolve } from 'node:path';
 import type { CaptureLine } from '../src/core/verifyTypes';
 import { captureLines } from './utils/verification-observations/captureLines';
 import { scenarioManifestSchema } from '../src/core/unitTypes';
+// Each case runs a whole Vitest process.
+const observationTimeout = 180_000;
 const root = resolve(import.meta.dirname, '..');
 const directories: string[] = [];
 afterEach(() => {
@@ -29,7 +31,7 @@ async function run(scenario: string, cwd: string, targets: string[]) {
 			{
 				cwd,
 				encoding: 'utf8',
-				timeout: 60000,
+				timeout: observationTimeout,
 				maxBuffer: 8_000_000,
 				env: {
 					...process.env,
@@ -176,35 +178,39 @@ test.each([
 			expect(entry.observations.every((value: { passed: boolean }) => value.passed)).toBe(true);
 		}
 	},
-	60000
+	observationTimeout
 );
-test('headless scenario commands record every actual test and required evidence state', async () => {
-	for (const id of ['git-evidence-read', 'upload-request-admission', 'unit-registry-ownership']) {
-		const scenario = scenarioManifestSchema.parse(
-			JSON.parse(readFileSync(join(root, 'specification/scenarios', id + '.json'), 'utf8'))
-		);
-		const all: CaptureLine[] = [];
-		for (const check of scenario.tests) {
-			const command = check.target.split(/\s+/);
-			const cwd = resolve(root, check.cwd ?? '.');
-			expect([command[0], command[2]]).toEqual(['bun', 'vitest']);
-			expect(resolve(cwd, command[1])).toBe(join(root, 'test/verification-output.ts'));
-			const { directory, result } = await run(scenario.id, cwd, command.slice(3));
-			expect(result.error).toBeUndefined();
-			expect(result.status, result.stdout + result.stderr).toBe(0);
-			all.push(...captureLines(directory));
+test(
+	'headless scenario commands record every actual test and required evidence state',
+	async () => {
+		for (const id of ['git-evidence-read', 'upload-request-admission', 'unit-registry-ownership']) {
+			const scenario = scenarioManifestSchema.parse(
+				JSON.parse(readFileSync(join(root, 'specification/scenarios', id + '.json'), 'utf8'))
+			);
+			const all: CaptureLine[] = [];
+			for (const check of scenario.tests) {
+				const command = check.target.split(/\s+/);
+				const cwd = resolve(root, check.cwd ?? '.');
+				expect([command[0], command[2]]).toEqual(['bun', 'vitest']);
+				expect(resolve(cwd, command[1])).toBe(join(root, 'test/verification-output.ts'));
+				const { directory, result } = await run(scenario.id, cwd, command.slice(3));
+				expect(result.error).toBeUndefined();
+				expect(result.status, result.stdout + result.stderr).toBe(0);
+				all.push(...captureLines(directory));
+			}
+			for (const evidence of scenario.evidence.filter((item) => item.required))
+				for (const state of evidence.states)
+					expect(
+						all.some(
+							(line) =>
+								line.evidence === evidence.id && line.state === state && line.kind === evidence.kind
+						),
+						`${evidence.id}:${state}`
+					).toBe(true);
 		}
-		for (const evidence of scenario.evidence.filter((item) => item.required))
-			for (const state of evidence.states)
-				expect(
-					all.some(
-						(line) =>
-							line.evidence === evidence.id && line.state === state && line.kind === evidence.kind
-					),
-					`${evidence.id}:${state}`
-				).toBe(true);
-	}
-}, 60000);
+	},
+	observationTimeout
+);
 
 test('an extra test target is rejected before any runner starts or evidence is recorded', async () => {
 	const { directory, result } = await run('git-evidence-read', root, [
