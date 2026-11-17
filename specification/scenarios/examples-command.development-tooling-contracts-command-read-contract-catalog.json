@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-command.development-tooling-contracts-command-read-contract-catalog",
+	"title": "command.development-tooling-contracts-command-read-contract-catalog examples",
+	"kind": "headless",
+	"units": ["command.development-tooling-contracts-command-read-contract-catalog"],
+	"builds": [],
+	"states": [
+		{
+			"id": "lists-nested-units",
+			"title": "Lists nested units",
+			"coverage": "required"
+		},
+		{
+			"id": "attaches-states",
+			"title": "Attaches states",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-duplicate-id",
+			"title": "Refuses duplicate id",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-invalid-unit",
+			"title": "Refuses invalid unit",
+			"coverage": "required"
+		},
+		{
+			"id": "missing-folder-empty",
+			"title": "Missing folder empty",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/command.development-tooling-contracts-command-read-contract-catalog.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"lists-nested-units",
+				"attaches-states",
+				"refuses-duplicate-id",
+				"refuses-invalid-unit",
+				"missing-folder-empty"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"lists-nested-units",
+				"attaches-states",
+				"refuses-duplicate-id",
+				"refuses-invalid-unit",
+				"missing-folder-empty"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"lists-nested-units",
+				"attaches-states",
+				"refuses-duplicate-id",
+				"refuses-invalid-unit",
+				"missing-folder-empty"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
