@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-template.audit-runner",
+	"title": "template.audit-runner examples",
+	"kind": "headless",
+	"units": ["template.audit-runner"],
+	"builds": [],
+	"states": [
+		{
+			"id": "plans-the-audit-script-for-an-app-project",
+			"title": "Plans the audit script for an app project",
+			"coverage": "required"
+		},
+		{
+			"id": "plans-the-audit-script-for-a-lib-project",
+			"title": "Plans the audit script for a lib project",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/template.audit-runner.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"plans-the-audit-script-for-an-app-project",
+				"plans-the-audit-script-for-a-lib-project"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"plans-the-audit-script-for-an-app-project",
+				"plans-the-audit-script-for-a-lib-project"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"plans-the-audit-script-for-an-app-project",
+				"plans-the-audit-script-for-a-lib-project"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
