@@ -56,6 +56,8 @@ function meta(state: string, symbol: string) {
 	return { unitId: UNIT, symbol, state, evidence: 'examples-cases', file: `${state}.json` };
 }
 
+function errorName(run: () => unknown): string { try { run(); return 'none'; } catch (error) { return error instanceof Error ? error.name : 'non-error'; } }
+
 function fakeTree(files: Record<string, string>, revision = 'rev-1'): SourceTree {
 	return {
 		revision,
@@ -128,7 +130,10 @@ test('Indexes readable files and omits ignored ones', async () => {
 	expect(index.revision).toBe('rev-7');
 	expect(paths).toEqual([GRID_PATH, 'src/lib/reports/evidence.ts']);
 	expect(index.files.has('docs/readme.md')).toBe(false);
+	const broken: SourceTree = { revision: 'rev-bad', list: async () => [{ path: 'src/lib/broken.ts', hash: 'h' }], read: async () => { throw new Error('read failed'); } };
+	await expect(new SourceIndexService().index(broken, units)).rejects.toThrow('read failed');
 	recordExampleCases(meta('indexes-readable-files-and-omits-ignored-ones', 'index'), [
+		{ name: 'a rejected read rejects index with no partial index', input: { revision: 'rev-bad', path: 'src/lib/broken.ts' }, error: 'read failed' },
 		{
 			name: 'readable non-ignored files are indexed at the snapshot revision',
 			input: { revision: 'rev-7', entries: Object.keys(files) },
@@ -142,27 +147,12 @@ test('Indexes readable files and omits ignored ones', async () => {
 	]);
 });
 
-test('Resolves default and named import bindings', () => {
+test('Resolves import bindings and selects props', () => {
 	const file = bindingFile();
-	expect(importedBinding(file, 'Grid')).toEqual({
-		name: 'default',
-		specifier: './EvidenceGrid.svelte'
-	});
-	expect(importedBinding(file, 'Row')).toEqual({
-		name: 'EvidenceRow',
-		specifier: '../reports/types'
-	});
+	expect(importedBinding(file, 'Grid')).toEqual({ name: 'default', specifier: './EvidenceGrid.svelte' });
+	expect(importedBinding(file, 'Row')).toEqual({ name: 'EvidenceRow', specifier: '../reports/types' });
 	expect(importedBinding(file, 'Props')).toEqual({ name: 'Props', specifier: './props' });
 	expect(importedBinding(file, 'Missing')).toBeUndefined();
-	recordExampleCases(meta('resolves-default-and-named-import-bindings', 'importedBinding'), [
-		bindingCase(file, 'Grid'),
-		bindingCase(file, 'Row'),
-		bindingCase(file, 'Props'),
-		bindingCase(file, 'Missing')
-	]);
-});
-
-test('Keeps picked, omitted and required props', () => {
 	const pick = selectedProps(PROPS, 'Pick', literalKey('rows'));
 	const omit = selectedProps(PROPS, 'Omit', literalKey('rows'));
 	const required = selectedProps(PROPS, 'Required', undefined);
@@ -170,26 +160,18 @@ test('Keeps picked, omitted and required props', () => {
 	expect(omit.map((item) => item.name)).toEqual(['density']);
 	expect(required.every((item) => item.required)).toBe(true);
 	expect(PROPS[1].required).toBe(false);
-	recordExampleCases(meta('keeps-picked-omitted-and-required-props', 'selectedProps'), [
-		{
-			name: 'Pick keeps the named prop',
-			input: { operator: 'Pick', keys: ['rows'] },
-			output: pick
-		},
-		{
-			name: 'Omit drops the named prop',
-			input: { operator: 'Omit', keys: ['rows'] },
-			output: omit
-		},
-		{
-			name: 'Required marks every prop required',
-			input: { operator: 'Required' },
-			output: required
-		}
+	recordExampleCases(meta('resolves-import-bindings-and-selects-props', 'importedBinding'), [
+		bindingCase(file, 'Grid'),
+		bindingCase(file, 'Row'),
+		bindingCase(file, 'Props'),
+		bindingCase(file, 'Missing'),
+		{ name: 'Pick keeps the named prop', input: { operator: 'Pick', keys: ['rows'] }, output: pick },
+		{ name: 'Omit drops the named prop', input: { operator: 'Omit', keys: ['rows'] }, output: omit },
+		{ name: 'Required marks every prop required', input: { operator: 'Required' }, output: required }
 	]);
 });
 
-test('Reads storage records from static definitions', () => {
+test('Reads storage records and classifies execution', () => {
 	const [record] = scanStorage(REPORT);
 	expect(record.name).toBe('Report');
 	expect(record.table).toBe('reports');
@@ -197,7 +179,12 @@ test('Reads storage records from static definitions', () => {
 	expect(record.fields.map((field) => field.name)).toEqual(['id', 'title']);
 	const none = scanStorage('export class Empty {}\n');
 	expect(none).toEqual([]);
-	recordExampleCases(meta('reads-storage-records-from-static-definitions', 'scanStorage'), [
+	const executions = EXECUTION_CASES.map(([name, code, language, path, expected]) => {
+		const output = sourceExecution(code, language, path);
+		expect(output).toBe(expected);
+		return { name: `sourceExecution: ${name}`, input: { code, language, path }, output };
+	});
+	recordExampleCases(meta('reads-storage-records-and-classifies-execution', 'scanStorage'), [
 		{
 			name: 'exported class with a static definition yields a storage record',
 			input: { code: REPORT },
@@ -212,15 +199,18 @@ test('Reads storage records from static definitions', () => {
 			name: 'exported class without a static definition yields no records',
 			input: { code: 'export class Empty {}\n' },
 			output: none
-		}
+		},
+		...executions
 	]);
 });
 
-test('Classifies TypeScript execution by its statements', () => {
-	const cases = EXECUTION_CASES.map(([name, code, language, path, expected]) => {
-		const output = sourceExecution(code, language, path);
-		expect(output).toBe(expected);
-		return { name, input: { code, language, path }, output };
-	});
-	recordExampleCases(meta('classifies-typescript-execution-by-its-statements', 'sourceExecution'), cases);
+test('Throws Source read or parse failure when read rejects', async () => {
+	await expect(new ComponentPropsResolver(fakeTree({}), new Map<string, SourceFile>()).inputs(GRID_PATH, 'EvidenceGrid')).rejects.toThrow('unreadable');
+	recordExampleCases(meta('throws-source-read-or-parse-failure-when-read-rejects', 'inputs'), [{ name: 'a rejected snapshot read rejects the call', input: { path: GRID_PATH, owner: 'EvidenceGrid' }, error: `unreadable: ${GRID_PATH}` }]);
+});
+
+test('Throws Source syntax access failure when text is undefined', () => {
+	const name = errorName(() => sourceExecution(undefined as unknown as string, 'ts', 'src/lib/x.ts'));
+	expect(name).not.toBe('none');
+	recordExampleCases(meta('throws-source-syntax-access-failure-when-text-is-undefined', 'sourceExecution'), [{ name: 'undefined source text throws from the parser', input: { code: 'undefined', language: 'ts', path: 'src/lib/x.ts' }, error: name }]);
 });

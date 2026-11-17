@@ -17,23 +17,23 @@
 			"coverage": "required"
 		},
 		{
-			"id": "resolves-default-and-named-import-bindings",
-			"title": "Resolves default and named import bindings",
+			"id": "resolves-import-bindings-and-selects-props",
+			"title": "Resolves import bindings and selects props",
 			"coverage": "required"
 		},
 		{
-			"id": "keeps-picked-omitted-and-required-props",
-			"title": "Keeps picked, omitted and required props",
+			"id": "reads-storage-records-and-classifies-execution",
+			"title": "Reads storage records and classifies execution",
 			"coverage": "required"
 		},
 		{
-			"id": "reads-storage-records-from-static-definitions",
-			"title": "Reads storage records from static definitions",
+			"id": "throws-source-read-or-parse-failure-when-read-rejects",
+			"title": "Throws Source read or parse failure when read rejects",
 			"coverage": "required"
 		},
 		{
-			"id": "classifies-typescript-execution-by-its-statements",
-			"title": "Classifies TypeScript execution by its statements",
+			"id": "throws-source-syntax-access-failure-when-text-is-undefined",
+			"title": "Throws Source syntax access failure when text is undefined",
 			"coverage": "required"
 		}
 	],
@@ -55,10 +55,10 @@
 			"states": [
 				"resolves-owner-prefixed-props-from-a-props-destructuring",
 				"indexes-readable-files-and-omits-ignored-ones",
-				"resolves-default-and-named-import-bindings",
-				"keeps-picked-omitted-and-required-props",
-				"reads-storage-records-from-static-definitions",
-				"classifies-typescript-execution-by-its-statements"
+				"resolves-import-bindings-and-selects-props",
+				"reads-storage-records-and-classifies-execution",
+				"throws-source-read-or-parse-failure-when-read-rejects",
+				"throws-source-syntax-access-failure-when-text-is-undefined"
 			],
 			"viewports": [],
 			"required": true
@@ -69,10 +69,10 @@
 			"states": [
 				"resolves-owner-prefixed-props-from-a-props-destructuring",
 				"indexes-readable-files-and-omits-ignored-ones",
-				"resolves-default-and-named-import-bindings",
-				"keeps-picked-omitted-and-required-props",
-				"reads-storage-records-from-static-definitions",
-				"classifies-typescript-execution-by-its-statements"
+				"resolves-import-bindings-and-selects-props",
+				"reads-storage-records-and-classifies-execution",
+				"throws-source-read-or-parse-failure-when-read-rejects",
+				"throws-source-syntax-access-failure-when-text-is-undefined"
 			],
 			"viewports": [],
 			"required": true
@@ -83,10 +83,10 @@
 			"states": [
 				"resolves-owner-prefixed-props-from-a-props-destructuring",
 				"indexes-readable-files-and-omits-ignored-ones",
-				"resolves-default-and-named-import-bindings",
-				"keeps-picked-omitted-and-required-props",
-				"reads-storage-records-from-static-definitions",
-				"classifies-typescript-execution-by-its-statements"
+				"resolves-import-bindings-and-selects-props",
+				"reads-storage-records-and-classifies-execution",
+				"throws-source-read-or-parse-failure-when-read-rejects",
+				"throws-source-syntax-access-failure-when-text-is-undefined"
 			],
 			"viewports": [],
 			"required": true
