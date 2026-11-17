@@ -15,6 +15,11 @@
 			"id": "returns-no-plans-for-an-empty-source",
 			"title": "Returns no plans for an empty source",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-hubfail-when-a-plan-path-disagrees-with-its-source-en",
+			"title": "Throws hubFail when a plan path disagrees with its source entry",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +39,8 @@
 			"kind": "output",
 			"states": [
 				"converts-a-plan-without-designs-into-a-draft-catalog-record",
-				"returns-no-plans-for-an-empty-source"
+				"returns-no-plans-for-an-empty-source",
+				"throws-hubfail-when-a-plan-path-disagrees-with-its-source-en"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +50,8 @@
 			"kind": "assertions",
 			"states": [
 				"converts-a-plan-without-designs-into-a-draft-catalog-record",
-				"returns-no-plans-for-an-empty-source"
+				"returns-no-plans-for-an-empty-source",
+				"throws-hubfail-when-a-plan-path-disagrees-with-its-source-en"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +61,8 @@
 			"kind": "trace",
 			"states": [
 				"converts-a-plan-without-designs-into-a-draft-catalog-record",
-				"returns-no-plans-for-an-empty-source"
+				"returns-no-plans-for-an-empty-source",
+				"throws-hubfail-when-a-plan-path-disagrees-with-its-source-en"
 			],
 			"viewports": [],
 			"required": true
