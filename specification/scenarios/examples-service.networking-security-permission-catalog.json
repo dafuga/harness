@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.networking-security-permission-catalog",
+	"title": "service.networking-security-permission-catalog examples",
+	"kind": "headless",
+	"units": ["service.networking-security-permission-catalog"],
+	"builds": [],
+	"states": [
+		{
+			"id": "loads-declared-profiles-and-reports-invalid-files",
+			"title": "Loads declared profiles and reports invalid files",
+			"coverage": "required"
+		},
+		{
+			"id": "reads-matching-source-paths-and-skips-unrelated-files",
+			"title": "Reads matching source paths and skips unrelated files",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-invalid-permission-profile-shapes",
+			"title": "Rejects invalid permission profile shapes",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.networking-security-permission-catalog.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"loads-declared-profiles-and-reports-invalid-files",
+				"reads-matching-source-paths-and-skips-unrelated-files",
+				"rejects-invalid-permission-profile-shapes"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"loads-declared-profiles-and-reports-invalid-files",
+				"reads-matching-source-paths-and-skips-unrelated-files",
+				"rejects-invalid-permission-profile-shapes"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"loads-declared-profiles-and-reports-invalid-files",
+				"reads-matching-source-paths-and-skips-unrelated-files",
+				"rejects-invalid-permission-profile-shapes"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
