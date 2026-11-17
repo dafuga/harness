@@ -3,6 +3,7 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { RemoteArtifactCacheService } from '../../src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService';
+import { InvalidKeptArtifactError } from '../../src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService.types';
 import type { Query, Media } from '../../src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService.types';
 
 const bytes = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]);
@@ -82,6 +83,43 @@ test('Reads and validates a pinned hosted artifact', async () => {
 				name: 'Reads PNG bytes for the requested project and capture',
 				input: { key: '/api/projects/project-alpha/artifact?screenshot-main', query, identity, media },
 				output: { mediaType: output.mediaType, sha256: output.sha256, bytes: [...output.bytes], calls }
+			}
+		]
+	);
+});
+
+test('Throws InvalidKeptArtifactError when cached data is invalid', async () => {
+	const reads = {
+		async read<T>(
+			_request: { key: string; projectId: string },
+			_load: () => Promise<{ value: T; principalId?: string }>,
+			validate: (value: unknown) => T
+		) {
+			return { value: validate({ mediaType: 'image/png', data: 12345 }) };
+		}
+	};
+	const service = new RemoteArtifactCacheService(reads as never);
+	let caught: unknown;
+	try {
+		await service.read({ key: '/artifact', query }, async () => ({ bytes, mediaType: 'image/png', principalId: '12345678901234567890' }));
+	} catch (error) {
+		caught = error;
+	}
+	expect(caught).toBeInstanceOf(InvalidKeptArtifactError);
+	expect((caught as Error).message).toBe('Invalid kept artifact or capture exceeds 11 MiB.');
+	recordExampleCases(
+		{
+			unitId: 'desktop.service.remote-artifact-cache',
+			symbol: 'read',
+			state: 'throws-invalidkeptartifacterror-when-cached-data-is-invalid',
+			evidence: 'examples-cases',
+			file: 'throws-invalidkeptartifacterror-when-cached-data-is-invalid.json'
+		},
+		[
+			{
+				name: 'Rejects cached data whose payload is not a string',
+				input: { key: '/artifact', query, cached: { mediaType: 'image/png', data: 12345 } },
+				error: { name: 'InvalidKeptArtifactError', message: 'Invalid kept artifact or capture exceeds 11 MiB.' }
 			}
 		]
 	);

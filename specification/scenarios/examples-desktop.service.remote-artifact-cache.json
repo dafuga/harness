@@ -10,6 +10,11 @@
 			"id": "reads-and-validates-a-pinned-hosted-artifact",
 			"title": "Reads and validates a pinned hosted artifact",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-invalidkeptartifacterror-when-cached-data-is-invalid",
+			"title": "Throws InvalidKeptArtifactError when cached data is invalid",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["reads-and-validates-a-pinned-hosted-artifact"],
+			"states": [
+				"reads-and-validates-a-pinned-hosted-artifact",
+				"throws-invalidkeptartifacterror-when-cached-data-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["reads-and-validates-a-pinned-hosted-artifact"],
+			"states": [
+				"reads-and-validates-a-pinned-hosted-artifact",
+				"throws-invalidkeptartifacterror-when-cached-data-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["reads-and-validates-a-pinned-hosted-artifact"],
+			"states": [
+				"reads-and-validates-a-pinned-hosted-artifact",
+				"throws-invalidkeptartifacterror-when-cached-data-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		}
