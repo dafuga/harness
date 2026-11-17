@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
+import { GameDocumentError } from '../../src/repositories/game-authoring/GameDocumentError';
 import { GameDocumentRepository } from '../../src/repositories/game-authoring/GameDocumentRepository';
 
 const document = {
@@ -71,6 +72,69 @@ test('Saves a document when its revision is current', async () => {
 					name: 'replaces the current document and returns its new revision',
 					input: { document, expectedRevision: current.revision },
 					output: { ...result, stored }
+				}
+			]
+		);
+	} finally {
+		rmSync(directory, { recursive: true, force: true });
+	}
+});
+
+test('Throws GameDocumentError for a malformed commit', async () => {
+	const directory = tempDirectory('game-document-bad-commit-');
+	try {
+		let caught: unknown;
+		try {
+			await new GameDocumentRepository(directory).read('not-a-full-commit');
+		} catch (error) {
+			caught = error;
+		}
+		expect(caught).toBeInstanceOf(GameDocumentError);
+		recordExampleCases(
+			{
+				unitId: 'game.repository.game-document',
+				symbol: 'read',
+				state: 'throws-gamedocumenterror-for-a-malformed-commit',
+				evidence: 'examples-cases',
+				file: 'throws-gamedocumenterror-for-a-malformed-commit.json'
+			},
+			[
+				{
+					name: 'rejects a commit that is not a full lowercase SHA',
+					input: { commit: 'not-a-full-commit' },
+					error: { name: 'GameDocumentError', message: 'A full commit is required.' }
+				}
+			]
+		);
+	} finally {
+		rmSync(directory, { recursive: true, force: true });
+	}
+});
+
+test('Throws SyntaxError for malformed game JSON', async () => {
+	const directory = tempDirectory('game-document-invalid-json-');
+	try {
+		writeFileSync(join(directory, 'game.json'), '{');
+		let caught: unknown;
+		try {
+			await new GameDocumentRepository(directory).read();
+		} catch (error) {
+			caught = error;
+		}
+		expect(caught).toBeInstanceOf(SyntaxError);
+		recordExampleCases(
+			{
+				unitId: 'game.repository.game-document',
+				symbol: 'read',
+				state: 'throws-syntaxerror-for-malformed-game-json',
+				evidence: 'examples-cases',
+				file: 'throws-syntaxerror-for-malformed-game-json.json'
+			},
+			[
+				{
+					name: 'rejects text that JSON.parse cannot read',
+					input: { text: '{' },
+					error: { name: 'SyntaxError' }
 				}
 			]
 		);

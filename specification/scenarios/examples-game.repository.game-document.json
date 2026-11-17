@@ -15,6 +15,16 @@
 			"id": "saves-a-document-when-its-revision-is-current",
 			"title": "Saves a document when its revision is current",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-gamedocumenterror-for-a-malformed-commit",
+			"title": "Throws GameDocumentError for a malformed commit",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-syntaxerror-for-malformed-game-json",
+			"title": "Throws SyntaxError for malformed game JSON",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +44,9 @@
 			"kind": "output",
 			"states": [
 				"reads-a-validated-game-document-and-its-revision",
-				"saves-a-document-when-its-revision-is-current"
+				"saves-a-document-when-its-revision-is-current",
+				"throws-gamedocumenterror-for-a-malformed-commit",
+				"throws-syntaxerror-for-malformed-game-json"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +56,9 @@
 			"kind": "assertions",
 			"states": [
 				"reads-a-validated-game-document-and-its-revision",
-				"saves-a-document-when-its-revision-is-current"
+				"saves-a-document-when-its-revision-is-current",
+				"throws-gamedocumenterror-for-a-malformed-commit",
+				"throws-syntaxerror-for-malformed-game-json"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +68,9 @@
 			"kind": "trace",
 			"states": [
 				"reads-a-validated-game-document-and-its-revision",
-				"saves-a-document-when-its-revision-is-current"
+				"saves-a-document-when-its-revision-is-current",
+				"throws-gamedocumenterror-for-a-malformed-commit",
+				"throws-syntaxerror-for-malformed-game-json"
 			],
 			"viewports": [],
 			"required": true
