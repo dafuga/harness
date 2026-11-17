@@ -10,6 +10,11 @@
 			"id": "exports-the-hubauth-protocol-constants",
 			"title": "Exports the HubAuth protocol constants",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-authfailure-when-repository-id-is-invalid",
+			"title": "Throws AuthFailure when repository id is invalid",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["exports-the-hubauth-protocol-constants"],
+			"states": [
+				"exports-the-hubauth-protocol-constants",
+				"throws-authfailure-when-repository-id-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["exports-the-hubauth-protocol-constants"],
+			"states": [
+				"exports-the-hubauth-protocol-constants",
+				"throws-authfailure-when-repository-id-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["exports-the-hubauth-protocol-constants"],
+			"states": [
+				"exports-the-hubauth-protocol-constants",
+				"throws-authfailure-when-repository-id-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		}
