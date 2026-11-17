@@ -10,6 +10,11 @@
 			"id": "declares-standard-internal-code-modules",
 			"title": "Declares standard internal code modules",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-unknownstandardscaffolderror-when-a-scaffold-kind-is",
+			"title": "Throws UnknownStandardScaffoldError when a scaffold kind is unavailable",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["declares-standard-internal-code-modules"],
+			"states": [
+				"declares-standard-internal-code-modules",
+				"throws-unknownstandardscaffolderror-when-a-scaffold-kind-is"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["declares-standard-internal-code-modules"],
+			"states": [
+				"declares-standard-internal-code-modules",
+				"throws-unknownstandardscaffolderror-when-a-scaffold-kind-is"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["declares-standard-internal-code-modules"],
+			"states": [
+				"declares-standard-internal-code-modules",
+				"throws-unknownstandardscaffolderror-when-a-scaffold-kind-is"
+			],
 			"viewports": [],
 			"required": true
 		}
