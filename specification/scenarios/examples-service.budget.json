@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.budget",
+	"title": "service.budget examples",
+	"kind": "headless",
+	"units": ["service.budget"],
+	"builds": [],
+	"states": [
+		{
+			"id": "folds-ledger-events-and-inherits-a-predecessor-baseline",
+			"title": "Folds ledger events and inherits a predecessor baseline",
+			"coverage": "required"
+		},
+		{
+			"id": "drops-a-frozen-limit-that-a-later-line-records-unmeasured",
+			"title": "Drops a frozen limit that a later line records unmeasured",
+			"coverage": "required"
+		},
+		{
+			"id": "evaluates-no-subjects-to-an-empty-report",
+			"title": "Evaluates no subjects to an empty report",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.budget.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"folds-ledger-events-and-inherits-a-predecessor-baseline",
+				"drops-a-frozen-limit-that-a-later-line-records-unmeasured",
+				"evaluates-no-subjects-to-an-empty-report"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"folds-ledger-events-and-inherits-a-predecessor-baseline",
+				"drops-a-frozen-limit-that-a-later-line-records-unmeasured",
+				"evaluates-no-subjects-to-an-empty-report"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"folds-ledger-events-and-inherits-a-predecessor-baseline",
+				"drops-a-frozen-limit-that-a-later-line-records-unmeasured",
+				"evaluates-no-subjects-to-an-empty-report"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
