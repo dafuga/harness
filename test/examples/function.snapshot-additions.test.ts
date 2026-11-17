@@ -42,3 +42,23 @@ test('Finds untracked files outside outputs and shared links', async () => {
 		);
 	});
 });
+
+test('Throws NodeJS.ErrnoException when the root is missing', async () => {
+	await withTempDir('snapshot-additions-missing-', async (directory) => {
+		let error: { code?: string } | undefined;
+		try {
+			await snapshotAdditions(join(directory, 'missing'), {
+				tracked: new Set(),
+				outputs: [],
+				links: new Set()
+			});
+		} catch (caught) {
+			error = caught as { code?: string };
+		}
+		expect(error?.code).toBe('ENOENT');
+		recordExampleCases(
+			{ unitId: 'function.snapshot-additions', symbol: 'snapshotAdditions', state: 'throws-nodejs-errnoexception-when-the-root-is-missing', evidence: 'examples-cases', file: 'throws-nodejs-errnoexception-when-the-root-is-missing.json' },
+			[{ name: 'rejects when the snapshot root does not exist', input: { root: 'missing' }, error: { code: error?.code } }]
+		);
+	});
+});

@@ -15,6 +15,11 @@
 			"id": "finds-untracked-files-outside-outputs-and-shared-links",
 			"title": "Finds untracked files outside outputs and shared links",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-nodejs-errnoexception-when-the-root-is-missing",
+			"title": "Throws NodeJS.ErrnoException when the root is missing",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +39,8 @@
 			"kind": "output",
 			"states": [
 				"matches-declared-output-files-and-folders",
-				"finds-untracked-files-outside-outputs-and-shared-links"
+				"finds-untracked-files-outside-outputs-and-shared-links",
+				"throws-nodejs-errnoexception-when-the-root-is-missing"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +50,8 @@
 			"kind": "assertions",
 			"states": [
 				"matches-declared-output-files-and-folders",
-				"finds-untracked-files-outside-outputs-and-shared-links"
+				"finds-untracked-files-outside-outputs-and-shared-links",
+				"throws-nodejs-errnoexception-when-the-root-is-missing"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +61,8 @@
 			"kind": "trace",
 			"states": [
 				"matches-declared-output-files-and-folders",
-				"finds-untracked-files-outside-outputs-and-shared-links"
+				"finds-untracked-files-outside-outputs-and-shared-links",
+				"throws-nodejs-errnoexception-when-the-root-is-missing"
 			],
 			"viewports": [],
 			"required": true
