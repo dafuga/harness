@@ -58,3 +58,29 @@ test('Preview options resolve checkout and hash settings', () => {
 		rmSync(root, { recursive: true, force: true });
 	}
 });
+
+test('Throws Error when an option value is missing', () => {
+	const root = mkdtempSync(join(tmpdir(), 'preview-arguments-'));
+	const args = [root, '--config'];
+	try {
+		expect(() => previewArguments(args, {})).toThrow('Missing value for --config.');
+		recordExampleCases(
+			{
+				unitId: 'reports.function.preview-arguments',
+				symbol: 'previewArguments',
+				state: 'throws-error-when-an-option-value-is-missing',
+				evidence: 'examples-cases',
+				file: 'throws-error-when-an-option-value-is-missing.json'
+			},
+			[
+				{
+					name: 'config option has no following token',
+					input: { args, env: {} },
+					error: 'Missing value for --config.'
+				}
+			]
+		);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});

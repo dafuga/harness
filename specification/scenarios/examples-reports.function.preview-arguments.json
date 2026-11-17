@@ -10,6 +10,11 @@
 			"id": "preview-options-resolve-checkout-and-hash-settings",
 			"title": "Preview options resolve checkout and hash settings",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-an-option-value-is-missing",
+			"title": "Throws Error when an option value is missing",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["preview-options-resolve-checkout-and-hash-settings"],
+			"states": [
+				"preview-options-resolve-checkout-and-hash-settings",
+				"throws-error-when-an-option-value-is-missing"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["preview-options-resolve-checkout-and-hash-settings"],
+			"states": [
+				"preview-options-resolve-checkout-and-hash-settings",
+				"throws-error-when-an-option-value-is-missing"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["preview-options-resolve-checkout-and-hash-settings"],
+			"states": [
+				"preview-options-resolve-checkout-and-hash-settings",
+				"throws-error-when-an-option-value-is-missing"
+			],
 			"viewports": [],
 			"required": true
 		}
