@@ -20,6 +20,16 @@
 			"id": "splits-query-fields-at-the-first-equals-sign",
 			"title": "Splits query fields at the first equals sign",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-inline-input-is-invalid-json",
+			"title": "Throws ExpectedCliError when inline input is invalid JSON",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-an-input-file-cannot-be-read",
+			"title": "Throws Error when an input file cannot be read",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +50,9 @@
 			"states": [
 				"parses-inline-json-objects",
 				"reads-json-objects-from-files",
-				"splits-query-fields-at-the-first-equals-sign"
+				"splits-query-fields-at-the-first-equals-sign",
+				"throws-expectedclierror-when-inline-input-is-invalid-json",
+				"throws-error-when-an-input-file-cannot-be-read"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +63,9 @@
 			"states": [
 				"parses-inline-json-objects",
 				"reads-json-objects-from-files",
-				"splits-query-fields-at-the-first-equals-sign"
+				"splits-query-fields-at-the-first-equals-sign",
+				"throws-expectedclierror-when-inline-input-is-invalid-json",
+				"throws-error-when-an-input-file-cannot-be-read"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +76,9 @@
 			"states": [
 				"parses-inline-json-objects",
 				"reads-json-objects-from-files",
-				"splits-query-fields-at-the-first-equals-sign"
+				"splits-query-fields-at-the-first-equals-sign",
+				"throws-expectedclierror-when-inline-input-is-invalid-json",
+				"throws-error-when-an-input-file-cannot-be-read"
 			],
 			"viewports": [],
 			"required": true

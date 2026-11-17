@@ -41,3 +41,37 @@ test('Splits query fields at the first equals sign', () => {
 		[{ name: 'repeated fields', input: { fields }, output }]
 	);
 });
+
+test('Throws ExpectedCliError when inline input is invalid JSON', async () => {
+	const input = '{invalid';
+	let error: unknown;
+	try {
+		await apiInput(input);
+	} catch (caught) {
+		error = caught;
+	}
+	expect(error).toBeInstanceOf(Error);
+	expect((error as Error).message).toContain('API input must be valid JSON.');
+	recordExampleCases(
+		{ unitId, symbol: 'apiInput', state: 'throws-expectedclierror-when-inline-input-is-invalid-json', evidence: 'examples-cases', file: 'throws-expectedclierror-when-inline-input-is-invalid-json.json' },
+		[{ name: 'invalid inline JSON', input: { input }, error: { name: (error as Error).name, message: (error as Error).message } }]
+	);
+});
+
+test('Throws Error when an input file cannot be read', async () => {
+	await withTempDir('api-input-missing-', async (directory) => {
+		const input = `@${join(directory, 'missing.json')}`;
+		let error: unknown;
+		try {
+			await apiInput(input);
+		} catch (caught) {
+			error = caught;
+		}
+		expect(error).toBeInstanceOf(Error);
+		expect((error as Error).message).toContain('missing.json');
+		recordExampleCases(
+			{ unitId, symbol: 'apiInput', state: 'throws-error-when-an-input-file-cannot-be-read', evidence: 'examples-cases', file: 'throws-error-when-an-input-file-cannot-be-read.json' },
+			[{ name: 'missing input file', input: { input }, error: { name: (error as Error).name, message: (error as Error).message } }]
+		);
+	});
+});
