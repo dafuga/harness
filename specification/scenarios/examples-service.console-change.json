@@ -20,6 +20,11 @@
 			"id": "writes-and-removes-files-while-recording-their-owner",
 			"title": "Writes and removes files while recording their owner",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-replacement-storage-cannot-be-created",
+			"title": "Throws Error when replacement storage cannot be created",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +45,8 @@
 			"states": [
 				"classifies-whether-a-console-write-is-safe",
 				"saves-replacements-and-restores-the-latest-saved-bytes",
-				"writes-and-removes-files-while-recording-their-owner"
+				"writes-and-removes-files-while-recording-their-owner",
+				"throws-error-when-replacement-storage-cannot-be-created"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +57,8 @@
 			"states": [
 				"classifies-whether-a-console-write-is-safe",
 				"saves-replacements-and-restores-the-latest-saved-bytes",
-				"writes-and-removes-files-while-recording-their-owner"
+				"writes-and-removes-files-while-recording-their-owner",
+				"throws-error-when-replacement-storage-cannot-be-created"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +69,8 @@
 			"states": [
 				"classifies-whether-a-console-write-is-safe",
 				"saves-replacements-and-restores-the-latest-saved-bytes",
-				"writes-and-removes-files-while-recording-their-owner"
+				"writes-and-removes-files-while-recording-their-owner",
+				"throws-error-when-replacement-storage-cannot-be-created"
 			],
 			"viewports": [],
 			"required": true

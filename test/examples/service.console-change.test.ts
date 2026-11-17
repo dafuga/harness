@@ -76,3 +76,25 @@ test('Writes and removes files while recording their owner', async () => {
 		);
 	});
 });
+
+test('Throws Error when replacement storage cannot be created', async () => {
+	await withTempDir('console-change-error-', async (host) => {
+		await writeFile(join(host, '.harness'), 'not a directory');
+		const service = new ConsoleChangeService(host, manifest());
+		const operation = service.replace('src/console.ts', 'replacement', {
+			action: 'replaced',
+			reason: 'console install updated the existing file'
+		});
+		await expect(operation).rejects.toMatchObject({ code: 'ENOTDIR' });
+		recordExampleCases(
+			{ unitId: 'service.console-change', symbol: 'replace', state: 'throws-error-when-replacement-storage-cannot-be-created', evidence: 'examples-cases', file: 'throws-error-when-replacement-storage-cannot-be-created.json' },
+			[
+				{
+					name: 'replacement storage parent is a file',
+					input: { path: 'src/console.ts', contents: 'replacement', action: 'replaced' },
+					error: { name: 'Error', code: 'ENOTDIR' }
+				}
+			]
+		);
+	});
+});
