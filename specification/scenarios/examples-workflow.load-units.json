@@ -10,6 +10,11 @@
 			"id": "builds-an-empty-graph-from-a-loaded-snapshot",
 			"title": "Builds an empty graph from a loaded snapshot",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-indexing-rejects",
+			"title": "Throws Error when indexing rejects",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["builds-an-empty-graph-from-a-loaded-snapshot"],
+			"states": [
+				"builds-an-empty-graph-from-a-loaded-snapshot",
+				"throws-error-when-indexing-rejects"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["builds-an-empty-graph-from-a-loaded-snapshot"],
+			"states": [
+				"builds-an-empty-graph-from-a-loaded-snapshot",
+				"throws-error-when-indexing-rejects"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["builds-an-empty-graph-from-a-loaded-snapshot"],
+			"states": [
+				"builds-an-empty-graph-from-a-loaded-snapshot",
+				"throws-error-when-indexing-rejects"
+			],
 			"viewports": [],
 			"required": true
 		}
