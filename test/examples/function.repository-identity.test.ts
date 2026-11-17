@@ -47,3 +47,37 @@ test('Repository and plain-site membership follow their identities', async () =>
 		cases
 	);
 });
+
+test('Throws TypeError when a file remote has a host', async () => {
+	await withTempRepo(async ({ root, git }) => {
+		git('config', 'remote.origin.url', 'file://server/repository');
+		expect(() => repositoryIdentity(root)).toThrow(TypeError);
+		recordExampleCases(
+			{
+				unitId: 'function.repository-identity',
+				symbol: 'repositoryIdentity',
+				state: 'throws-typeerror-when-a-file-remote-has-a-host',
+				evidence: 'examples-cases',
+				file: 'throws-typeerror-when-a-file-remote-has-a-host.json'
+			},
+			[{ name: 'file remote with host', input: { remote: 'file://server/repository' }, error: 'TypeError' }]
+		);
+	}, 'repository-identity-error-');
+});
+
+test('Throws URIError when a file remote has malformed encoding', async () => {
+	await withTempRepo(async ({ root, git }) => {
+		git('config', 'remote.origin.url', 'file:///tmp/repository%zz');
+		expect(() => repositoryIdentity(root)).toThrow(URIError);
+		recordExampleCases(
+			{
+				unitId: 'function.repository-identity',
+				symbol: 'repositoryIdentity',
+				state: 'throws-urierror-when-a-file-remote-has-malformed-encoding',
+				evidence: 'examples-cases',
+				file: 'throws-urierror-when-a-file-remote-has-malformed-encoding.json'
+			},
+			[{ name: 'malformed file URL escape', input: { remote: 'file:///tmp/repository%zz' }, error: 'URIError' }]
+		);
+	}, 'repository-identity-error-');
+});

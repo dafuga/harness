@@ -10,6 +10,16 @@
 			"id": "repository-and-plain-site-membership-follow-their-identities",
 			"title": "Repository and plain-site membership follow their identities",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-a-file-remote-has-a-host",
+			"title": "Throws TypeError when a file remote has a host",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-urierror-when-a-file-remote-has-malformed-encoding",
+			"title": "Throws URIError when a file remote has malformed encoding",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +37,33 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["repository-and-plain-site-membership-follow-their-identities"],
+			"states": [
+				"repository-and-plain-site-membership-follow-their-identities",
+				"throws-typeerror-when-a-file-remote-has-a-host",
+				"throws-urierror-when-a-file-remote-has-malformed-encoding"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["repository-and-plain-site-membership-follow-their-identities"],
+			"states": [
+				"repository-and-plain-site-membership-follow-their-identities",
+				"throws-typeerror-when-a-file-remote-has-a-host",
+				"throws-urierror-when-a-file-remote-has-malformed-encoding"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["repository-and-plain-site-membership-follow-their-identities"],
+			"states": [
+				"repository-and-plain-site-membership-follow-their-identities",
+				"throws-typeerror-when-a-file-remote-has-a-host",
+				"throws-urierror-when-a-file-remote-has-malformed-encoding"
+			],
 			"viewports": [],
 			"required": true
 		}
