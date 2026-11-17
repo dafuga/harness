@@ -10,6 +10,16 @@
 			"id": "regression-phases-and-views-validate-proof-history",
 			"title": "Regression phases and views validate proof history",
 			"coverage": "required"
+		},
+		{
+			"id": "rejects-invalid-proof-when-a-phase-is-not-declared",
+			"title": "Rejects Invalid proof when a phase is not declared",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-zoderror-when-parsing-an-undeclared-phase",
+			"title": "Throws ZodError when parsing an undeclared phase",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +37,33 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["regression-phases-and-views-validate-proof-history"],
+			"states": [
+				"regression-phases-and-views-validate-proof-history",
+				"rejects-invalid-proof-when-a-phase-is-not-declared",
+				"throws-zoderror-when-parsing-an-undeclared-phase"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["regression-phases-and-views-validate-proof-history"],
+			"states": [
+				"regression-phases-and-views-validate-proof-history",
+				"rejects-invalid-proof-when-a-phase-is-not-declared",
+				"throws-zoderror-when-parsing-an-undeclared-phase"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["regression-phases-and-views-validate-proof-history"],
+			"states": [
+				"regression-phases-and-views-validate-proof-history",
+				"rejects-invalid-proof-when-a-phase-is-not-declared",
+				"throws-zoderror-when-parsing-an-undeclared-phase"
+			],
 			"viewports": [],
 			"required": true
 		}

@@ -49,3 +49,40 @@ test('Regression phases and views validate proof history', () => {
 		]
 	);
 });
+
+test('Rejects Invalid proof when a phase is not declared', () => {
+	const input = 'yellow';
+	const result = regressionPhaseSchema.safeParse(input);
+	expect(result.success).toBe(false);
+	recordExampleCases(
+		{
+			unitId: 'function.regression-types',
+			symbol: 'regressionPhaseSchema',
+			state: 'rejects-invalid-proof-when-a-phase-is-not-declared',
+			evidence: 'examples-cases',
+			file: 'rejects-invalid-proof-when-a-phase-is-not-declared.json'
+		},
+		[{ name: 'unknown phase is rejected', input, output: { accepted: result.success } }]
+	);
+});
+
+test('Throws ZodError when parsing an undeclared phase', () => {
+	const input = 'yellow';
+	let errorName = '';
+	try {
+		regressionPhaseSchema.parse(input);
+	} catch (error) {
+		errorName = error instanceof Error ? error.name : 'unknown';
+	}
+	expect(errorName).toBe('ZodError');
+	recordExampleCases(
+		{
+			unitId: 'function.regression-types',
+			symbol: 'regressionPhaseSchema.parse',
+			state: 'throws-zoderror-when-parsing-an-undeclared-phase',
+			evidence: 'examples-cases',
+			file: 'throws-zoderror-when-parsing-an-undeclared-phase.json'
+		},
+		[{ name: 'parse preserves the validation error', input, error: { name: errorName } }]
+	);
+});
