@@ -10,6 +10,11 @@
 			"id": "parses-png-chunks-and-collects-image-data",
 			"title": "Parses PNG chunks and collects image data",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-a-png-chunk-checksum-is-invalid",
+			"title": "Throws Error when a PNG chunk checksum is invalid",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["parses-png-chunks-and-collects-image-data"],
+			"states": [
+				"parses-png-chunks-and-collects-image-data",
+				"throws-error-when-a-png-chunk-checksum-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["parses-png-chunks-and-collects-image-data"],
+			"states": [
+				"parses-png-chunks-and-collects-image-data",
+				"throws-error-when-a-png-chunk-checksum-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["parses-png-chunks-and-collects-image-data"],
+			"states": [
+				"parses-png-chunks-and-collects-image-data",
+				"throws-error-when-a-png-chunk-checksum-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		}

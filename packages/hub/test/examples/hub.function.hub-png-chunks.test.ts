@@ -92,3 +92,26 @@ test('Parses PNG chunks and collects image data', () => {
 		]
 	);
 });
+
+test('Throws Error when a PNG chunk checksum is invalid', () => {
+	const bytes = pngBytes();
+	bytes[bytes.length - 5] ^= 1;
+	let rejected: { name: string; code: string; message: string } | undefined;
+	try {
+		hubPngChunks(bytes);
+	} catch (error) {
+		const caught = error as Error & { code: string };
+		rejected = { name: caught.name, code: caught.code, message: caught.message };
+	}
+	expect(rejected).toEqual({ name: 'HarnessArtifactUnavailableError', code: 'artifact-corrupt', message: 'Harness artifact unavailable' });
+	recordExampleCases(
+		{
+			unitId: 'hub.function.hub-png-chunks',
+			symbol: 'hubPngChunks',
+			state: 'throws-error-when-a-png-chunk-checksum-is-invalid',
+			evidence: 'examples-cases',
+			file: 'throws-error-when-a-png-chunk-checksum-is-invalid.json'
+		},
+		[{ name: 'IDAT CRC mismatch', input: Array.from(bytes), error: rejected }]
+	);
+});
