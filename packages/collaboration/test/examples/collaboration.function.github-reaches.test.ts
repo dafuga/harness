@@ -86,3 +86,71 @@ test('Checks whether a candidate commit is reachable from the tip', async () => 
 		{ method: 'request', path: `/compare/${candidate}...${tip}`, statuses: [404] }
 	]);
 });
+
+test('Throws ZodError when a SHA does not match its schema', async () => {
+	const tip = '89abcdef0123456789abcdef0123456789abcdef';
+	const { client } = recordingTransport({ status: 200, data: null });
+	let thrown: unknown;
+	try {
+		await githubReaches(client, { tip, commit: 'not-a-sha' });
+	} catch (error) {
+		thrown = error;
+	}
+	expect(thrown).toMatchObject({ name: 'CollaborationInputError' });
+	recordExampleCases(
+		{
+			unitId: 'collaboration.function.github-reaches',
+			symbol: 'githubReaches',
+			state: 'throws-zoderror-when-a-sha-does-not-match-its-schema',
+			evidence: 'examples-cases',
+			file: 'throws-zoderror-when-a-sha-does-not-match-its-schema.json'
+		},
+		[
+			{
+				name: 'invalid candidate SHA rejects before transport access',
+				input: { tip, commit: 'not-a-sha' },
+				error: {
+					name: (thrown as { name: string }).name,
+					message: (thrown as Error).message
+				}
+			}
+		]
+	);
+});
+
+test('Throws Error when the transport check rejects', async () => {
+	const candidate = '0123456789abcdef0123456789abcdef01234567';
+	const tip = '89abcdef0123456789abcdef0123456789abcdef';
+	const failure = new Error('example transport failure');
+	const client: GitHubTransport = {
+		async check() {
+			throw failure;
+		},
+		async request() {
+			return { status: 200, data: null, hasNext: false };
+		}
+	};
+	let thrown: unknown;
+	try {
+		await githubReaches(client, { tip, commit: candidate });
+	} catch (error) {
+		thrown = error;
+	}
+	expect(thrown).toBe(failure);
+	recordExampleCases(
+		{
+			unitId: 'collaboration.function.github-reaches',
+			symbol: 'githubReaches',
+			state: 'throws-error-when-the-transport-check-rejects',
+			evidence: 'examples-cases',
+			file: 'throws-error-when-the-transport-check-rejects.json'
+		},
+		[
+			{
+				name: 'transport check rejection propagates',
+				input: { tip, commit: candidate, transport: 'check rejects' },
+				error: { name: failure.name, message: failure.message }
+			}
+		]
+	);
+});
