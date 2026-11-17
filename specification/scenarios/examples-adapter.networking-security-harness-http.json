@@ -10,6 +10,21 @@
 			"id": "returns-decoded-replies-with-their-exact-response-bytes",
 			"title": "Returns decoded replies with their exact response bytes",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-the-server-url-is-not-secure",
+			"title": "Throws ExpectedCliError when the server URL is not secure",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-timeouterror-when-the-response-body-exceeds-the-deadl",
+			"title": "Throws TimeoutError when the response body exceeds the deadline",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-a-request-body-cannot-be-serialized",
+			"title": "Throws TypeError when a request body cannot be serialized",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +42,36 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["returns-decoded-replies-with-their-exact-response-bytes"],
+			"states": [
+				"returns-decoded-replies-with-their-exact-response-bytes",
+				"throws-expectedclierror-when-the-server-url-is-not-secure",
+				"throws-timeouterror-when-the-response-body-exceeds-the-deadl",
+				"throws-typeerror-when-a-request-body-cannot-be-serialized"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["returns-decoded-replies-with-their-exact-response-bytes"],
+			"states": [
+				"returns-decoded-replies-with-their-exact-response-bytes",
+				"throws-expectedclierror-when-the-server-url-is-not-secure",
+				"throws-timeouterror-when-the-response-body-exceeds-the-deadl",
+				"throws-typeerror-when-a-request-body-cannot-be-serialized"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["returns-decoded-replies-with-their-exact-response-bytes"],
+			"states": [
+				"returns-decoded-replies-with-their-exact-response-bytes",
+				"throws-expectedclierror-when-the-server-url-is-not-secure",
+				"throws-timeouterror-when-the-response-body-exceeds-the-deadl",
+				"throws-typeerror-when-a-request-body-cannot-be-serialized"
+			],
 			"viewports": [],
 			"required": true
 		}
