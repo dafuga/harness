@@ -82,3 +82,24 @@ test('Finds scaffold naming violations and accepts a valid utility', () => {
 		cases
 	);
 });
+
+test('Throws TypeError for an inherited model adapter stem', () => {
+	const file = auditFile('src/models/adapters/constructor.ts', []);
+	expect(() => auditScaffoldTypeScriptNaming(file)).toThrow(TypeError);
+	recordExampleCases(
+		{
+			unitId: 'audit.scaffold-naming-rules',
+			symbol: 'auditScaffoldTypeScriptNaming',
+			state: 'throws-typeerror-for-an-inherited-model-adapter-stem',
+			evidence: 'examples-cases',
+			file: 'throws-typeerror-for-an-inherited-model-adapter-stem.json'
+		},
+		[
+			{
+				name: 'constructor is inherited from Object.prototype',
+				input: { relativePath: file.relativePath, structuralLines: file.structuralLines },
+				error: 'TypeError'
+			}
+		]
+	);
+});
