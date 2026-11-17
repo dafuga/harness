@@ -10,6 +10,11 @@
 			"id": "ignores-steps-that-do-not-require-regression-proof",
 			"title": "Ignores steps that do not require regression proof",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-required-red-proof-is-missing",
+			"title": "Throws ExpectedCliError when required red proof is missing",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["ignores-steps-that-do-not-require-regression-proof"],
+			"states": [
+				"ignores-steps-that-do-not-require-regression-proof",
+				"throws-expectedclierror-when-required-red-proof-is-missing"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["ignores-steps-that-do-not-require-regression-proof"],
+			"states": [
+				"ignores-steps-that-do-not-require-regression-proof",
+				"throws-expectedclierror-when-required-red-proof-is-missing"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["ignores-steps-that-do-not-require-regression-proof"],
+			"states": [
+				"ignores-steps-that-do-not-require-regression-proof",
+				"throws-expectedclierror-when-required-red-proof-is-missing"
+			],
 			"viewports": [],
 			"required": true
 		}
