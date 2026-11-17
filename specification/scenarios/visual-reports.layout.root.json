@@ -1,0 +1,53 @@
+{
+	"schemaVersion": 1,
+	"id": "visual-reports.layout.root",
+	"title": "reports.layout.root states",
+	"kind": "ui",
+	"units": ["reports.layout.root"],
+	"states": [
+		{
+			"id": "default",
+			"title": "Default",
+			"coverage": "required",
+			"units": ["reports.layout.root"]
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 920,
+			"height": 700
+		},
+		{
+			"id": "tablet",
+			"width": 768,
+			"height": 900
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "states",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts tests/e2e/units/explorer-shell-unit-reports.layout.root.spec.ts",
+			"cwd": "packages/reports"
+		}
+	],
+	"evidence": [
+		{
+			"id": "screens",
+			"kind": "screenshot",
+			"states": ["default"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"build": "shell-fixture",
+			"capture": "full-page",
+			"required": true
+		}
+	]
+}
