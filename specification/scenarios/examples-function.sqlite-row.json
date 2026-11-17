@@ -10,6 +10,11 @@
 			"id": "decodes-sqlite-rows-into-model-properties",
 			"title": "Decodes SQLite rows into model properties",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-syntaxerror-when-json-field-is-invalid",
+			"title": "Throws SyntaxError when JSON field is invalid",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["decodes-sqlite-rows-into-model-properties"],
+			"states": [
+				"decodes-sqlite-rows-into-model-properties",
+				"throws-syntaxerror-when-json-field-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["decodes-sqlite-rows-into-model-properties"],
+			"states": [
+				"decodes-sqlite-rows-into-model-properties",
+				"throws-syntaxerror-when-json-field-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["decodes-sqlite-rows-into-model-properties"],
+			"states": [
+				"decodes-sqlite-rows-into-model-properties",
+				"throws-syntaxerror-when-json-field-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		}

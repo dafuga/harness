@@ -47,3 +47,16 @@ test('Decodes SQLite rows into model properties', () => {
 	});
 	recordDecodeCases();
 });
+
+test('Throws SyntaxError when JSON field is invalid', () => {
+	const input = { contract: 'not-json' };
+	expect(() => sqliteRow(model, input)).toThrow(SyntaxError);
+	recordExampleCases(
+		{
+			unitId: 'function.sqlite-row', symbol: 'sqliteRow',
+			state: 'throws-syntaxerror-when-json-field-is-invalid',
+			evidence: 'examples-cases', file: 'throws-syntaxerror-when-json-field-is-invalid.json'
+		},
+		[{ name: 'invalid JSON text throws SyntaxError', input: { model, row: input }, error: 'SyntaxError' }]
+	);
+});
