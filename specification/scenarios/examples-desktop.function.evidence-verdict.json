@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.evidence-verdict",
+	"title": "desktop.function.evidence-verdict examples",
+	"kind": "headless",
+	"units": ["desktop.function.evidence-verdict"],
+	"builds": [],
+	"states": [
+		{
+			"id": "repeats-the-catalog-verdict-for-idle-and-planned-reads",
+			"title": "Repeats the catalog verdict for idle and planned reads",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-unavailable-and-failed-reads-as-unknown",
+			"title": "Reports unavailable and failed reads as unknown",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-to-judge-evidence-read-for-another-commit",
+			"title": "Refuses to judge evidence read for another commit",
+			"coverage": "required"
+		},
+		{
+			"id": "gives-unknown-when-the-side-does-not-hold-the-entity",
+			"title": "Gives unknown when the side does not hold the entity",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.evidence-verdict.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"repeats-the-catalog-verdict-for-idle-and-planned-reads",
+				"reports-unavailable-and-failed-reads-as-unknown",
+				"refuses-to-judge-evidence-read-for-another-commit",
+				"gives-unknown-when-the-side-does-not-hold-the-entity"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"repeats-the-catalog-verdict-for-idle-and-planned-reads",
+				"reports-unavailable-and-failed-reads-as-unknown",
+				"refuses-to-judge-evidence-read-for-another-commit",
+				"gives-unknown-when-the-side-does-not-hold-the-entity"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"repeats-the-catalog-verdict-for-idle-and-planned-reads",
+				"reports-unavailable-and-failed-reads-as-unknown",
+				"refuses-to-judge-evidence-read-for-another-commit",
+				"gives-unknown-when-the-side-does-not-hold-the-entity"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
