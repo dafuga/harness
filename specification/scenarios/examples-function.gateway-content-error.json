@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.gateway-content-error",
+	"title": "function.gateway-content-error examples",
+	"kind": "headless",
+	"units": ["function.gateway-content-error"],
+	"builds": [],
+	"states": [
+		{
+			"id": "creates-a-gatewaycontenterror-carrying-the-supplied-message",
+			"title": "Creates a GatewayContentError carrying the supplied message",
+			"coverage": "required"
+		},
+		{
+			"id": "returns-the-gateway-content-error-without-throwing-it",
+			"title": "Returns the gateway content error without throwing it",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.gateway-content-error.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"creates-a-gatewaycontenterror-carrying-the-supplied-message",
+				"returns-the-gateway-content-error-without-throwing-it"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"creates-a-gatewaycontenterror-carrying-the-supplied-message",
+				"returns-the-gateway-content-error-without-throwing-it"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"creates-a-gatewaycontenterror-carrying-the-supplied-message",
+				"returns-the-gateway-content-error-without-throwing-it"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
