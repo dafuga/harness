@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.validator.project-context",
+	"title": "desktop.validator.project-context examples",
+	"kind": "headless",
+	"units": ["desktop.validator.project-context"],
+	"builds": [],
+	"states": [
+		{
+			"id": "validates-project-context-across-operation-channels",
+			"title": "validates project context across operation channels",
+			"coverage": "required"
+		},
+		{
+			"id": "validates-draft-thread-comments-and-drops-unrelated-fields",
+			"title": "validates draft thread comments and drops unrelated fields",
+			"coverage": "required"
+		},
+		{
+			"id": "requires-an-explicit-project-for-project-selection",
+			"title": "requires an explicit project for project selection",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.validator.project-context.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"validates-project-context-across-operation-channels",
+				"validates-draft-thread-comments-and-drops-unrelated-fields",
+				"requires-an-explicit-project-for-project-selection"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"validates-project-context-across-operation-channels",
+				"validates-draft-thread-comments-and-drops-unrelated-fields",
+				"requires-an-explicit-project-for-project-selection"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"validates-project-context-across-operation-channels",
+				"validates-draft-thread-comments-and-drops-unrelated-fields",
+				"requires-an-explicit-project-for-project-selection"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
