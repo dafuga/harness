@@ -20,6 +20,21 @@
 			"id": "names-media-files-without-the-media-folder-prefix",
 			"title": "Names media files without the media folder prefix",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-a-media-name-is-not-a-string",
+			"title": "Throws TypeError when a media name is not a string",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-the-registry-has-no-scenarios",
+			"title": "Throws TypeError when the registry has no scenarios",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-the-record-has-no-scenarios",
+			"title": "Throws TypeError when the record has no scenarios",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +55,10 @@
 			"states": [
 				"projects-a-stored-video-clip-with-its-original-reference",
 				"lists-gallery-items-for-screenshot-and-audio-captures",
-				"names-media-files-without-the-media-folder-prefix"
+				"names-media-files-without-the-media-folder-prefix",
+				"throws-typeerror-when-a-media-name-is-not-a-string",
+				"throws-typeerror-when-the-registry-has-no-scenarios",
+				"throws-typeerror-when-the-record-has-no-scenarios"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +69,10 @@
 			"states": [
 				"projects-a-stored-video-clip-with-its-original-reference",
 				"lists-gallery-items-for-screenshot-and-audio-captures",
-				"names-media-files-without-the-media-folder-prefix"
+				"names-media-files-without-the-media-folder-prefix",
+				"throws-typeerror-when-a-media-name-is-not-a-string",
+				"throws-typeerror-when-the-registry-has-no-scenarios",
+				"throws-typeerror-when-the-record-has-no-scenarios"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +83,10 @@
 			"states": [
 				"projects-a-stored-video-clip-with-its-original-reference",
 				"lists-gallery-items-for-screenshot-and-audio-captures",
-				"names-media-files-without-the-media-folder-prefix"
+				"names-media-files-without-the-media-folder-prefix",
+				"throws-typeerror-when-a-media-name-is-not-a-string",
+				"throws-typeerror-when-the-registry-has-no-scenarios",
+				"throws-typeerror-when-the-record-has-no-scenarios"
 			],
 			"viewports": [],
 			"required": true
