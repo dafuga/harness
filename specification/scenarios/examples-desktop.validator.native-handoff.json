@@ -15,6 +15,11 @@
 			"id": "exchanges-a-correctly-bound-native-handoff-response",
 			"title": "exchanges a correctly bound native handoff response",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-exchange-response-is-null",
+			"title": "Throws Error when the exchange response is null",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +39,8 @@
 			"kind": "output",
 			"states": [
 				"accepts-a-valid-native-handoff-start-response",
-				"exchanges-a-correctly-bound-native-handoff-response"
+				"exchanges-a-correctly-bound-native-handoff-response",
+				"throws-error-when-the-exchange-response-is-null"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +50,8 @@
 			"kind": "assertions",
 			"states": [
 				"accepts-a-valid-native-handoff-start-response",
-				"exchanges-a-correctly-bound-native-handoff-response"
+				"exchanges-a-correctly-bound-native-handoff-response",
+				"throws-error-when-the-exchange-response-is-null"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +61,8 @@
 			"kind": "trace",
 			"states": [
 				"accepts-a-valid-native-handoff-start-response",
-				"exchanges-a-correctly-bound-native-handoff-response"
+				"exchanges-a-correctly-bound-native-handoff-response",
+				"throws-error-when-the-exchange-response-is-null"
 			],
 			"viewports": [],
 			"required": true

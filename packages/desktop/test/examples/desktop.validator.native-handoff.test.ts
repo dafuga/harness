@@ -85,3 +85,23 @@ test('exchanges a correctly bound native handoff response', () => {
 		[{ name: 'valid exchange response', input: { value, expected, now }, output }]
 	);
 });
+
+test('Throws Error when the exchange response is null', () => {
+	const expected = {
+		origin,
+		nonce: 'Qz8rT1mVb4xNs0KwLh7YcEaPdU2gJfRo',
+		resource: 'projects'
+	};
+	const error = { name: 'Error', message: 'Invalid hosted response.' };
+	expect(() => validator.exchange(null, expected, now)).toThrowError(error.message);
+	recordExampleCases(
+		{
+			unitId: 'desktop.validator.native-handoff',
+			symbol: 'NativeHandoffValidator.exchange',
+			state: 'throws-error-when-the-exchange-response-is-null',
+			evidence: 'examples-cases',
+			file: 'throws-error-when-the-exchange-response-is-null.json'
+		},
+		[{ name: 'null exchange response', input: { value: null, expected, now }, error }]
+	);
+});
