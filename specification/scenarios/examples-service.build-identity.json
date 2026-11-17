@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.build-identity",
+	"title": "service.build-identity examples",
+	"kind": "headless",
+	"units": ["service.build-identity"],
+	"builds": [],
+	"states": [
+		{
+			"id": "identifies-the-files-of-a-declared-build",
+			"title": "Identifies the files of a declared build",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-declared-builds-that-were-not-produced-or-lie-outsid",
+			"title": "Reports declared builds that were not produced or lie outside the root",
+			"coverage": "required"
+		},
+		{
+			"id": "stamps-the-build-identity-into-its-empty-stamp-slot",
+			"title": "Stamps the build identity into its empty stamp slot",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-builds-whose-identity-changed-since-they-were-identi",
+			"title": "Reports builds whose identity changed since they were identified",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.build-identity.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"identifies-the-files-of-a-declared-build",
+				"reports-declared-builds-that-were-not-produced-or-lie-outsid",
+				"stamps-the-build-identity-into-its-empty-stamp-slot",
+				"reports-builds-whose-identity-changed-since-they-were-identi"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"identifies-the-files-of-a-declared-build",
+				"reports-declared-builds-that-were-not-produced-or-lie-outsid",
+				"stamps-the-build-identity-into-its-empty-stamp-slot",
+				"reports-builds-whose-identity-changed-since-they-were-identi"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"identifies-the-files-of-a-declared-build",
+				"reports-declared-builds-that-were-not-produced-or-lie-outsid",
+				"stamps-the-build-identity-into-its-empty-stamp-slot",
+				"reports-builds-whose-identity-changed-since-they-were-identi"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
