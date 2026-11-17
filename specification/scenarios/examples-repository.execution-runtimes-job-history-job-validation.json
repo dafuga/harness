@@ -15,6 +15,16 @@
 			"id": "builds-stable-source-job-attempt-key",
 			"title": "Builds stable source job attempt key",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-rangeerror-for-incomplete-completion-timing",
+			"title": "Throws RangeError for incomplete completion timing",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-zoderror-for-malformed-job-identity",
+			"title": "Throws ZodError for malformed job identity",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +44,9 @@
 			"kind": "output",
 			"states": [
 				"validates-completed-job-lifecycle-timing",
-				"builds-stable-source-job-attempt-key"
+				"builds-stable-source-job-attempt-key",
+				"throws-rangeerror-for-incomplete-completion-timing",
+				"throws-zoderror-for-malformed-job-identity"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +56,9 @@
 			"kind": "assertions",
 			"states": [
 				"validates-completed-job-lifecycle-timing",
-				"builds-stable-source-job-attempt-key"
+				"builds-stable-source-job-attempt-key",
+				"throws-rangeerror-for-incomplete-completion-timing",
+				"throws-zoderror-for-malformed-job-identity"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +68,9 @@
 			"kind": "trace",
 			"states": [
 				"validates-completed-job-lifecycle-timing",
-				"builds-stable-source-job-attempt-key"
+				"builds-stable-source-job-attempt-key",
+				"throws-rangeerror-for-incomplete-completion-timing",
+				"throws-zoderror-for-malformed-job-identity"
 			],
 			"viewports": [],
 			"required": true
