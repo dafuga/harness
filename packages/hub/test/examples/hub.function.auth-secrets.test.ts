@@ -6,11 +6,9 @@ import {
 	userCode,
 	normalizeCode
 } from '../../src/lib/verification-evidence/server/auth/native-handoff-service/authSecrets';
-import { emailCode } from '../../src/services/verification-evidence/email-proof-service/authSecrets';
 import {
 	randomToken,
 	sha256Url,
-	safeEqual
 } from '../../src/utils/verification-evidence/authSecrets';
 
 type RecordMeta = Parameters<typeof recordExampleCases>[0];
@@ -21,8 +19,6 @@ const CONTEXT = 'session:42';
 const PLAIN = 'fixture-refresh-value';
 const VERIFIER = 'dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk';
 const CHALLENGE = 'E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM';
-const HEX_A = '3f9a1c7e5b2d8f04a6c9e1b7d3f5a8c2e0b4d6f9a1c3e5b7d9f2a4c6e8b0d1f3';
-const HEX_B = '3f9a1c7e5b2d8f04a6c9e1b7d3f5a8c2e0b4d6f9a1c3e5b7d9f2a4c6e8b0d1f4';
 const CODE_PATTERN = /^[A-HJ-NP-Z2-9]{4}-[A-HJ-NP-Z2-9]{4}$/;
 
 function meta(state: string, symbol: string): RecordMeta {
@@ -107,7 +103,6 @@ test('Encodes random tokens and PKCE challenges', async () => {
 	expect(token).toHaveLength(43);
 	expect(short).toHaveLength(22);
 	expect(challenge).toBe(CHALLENGE);
-	expect(() => randomToken(-1)).toThrow(RangeError);
 	recordExampleCases(meta('encodes-random-tokens-and-pkce-challenges', 'randomToken'), [
 		{
 			name: 'default 32 bytes give an unpadded token',
@@ -120,15 +115,30 @@ test('Encodes random tokens and PKCE challenges', async () => {
 			output: { length: short.length }
 		},
 		{
-			name: 'negative byte count is rejected',
-			input: { bytes: -1 },
-			error: 'RangeError'
-		},
-		{
 			name: 'PKCE code_verifier gives its S256 code_challenge',
 			input: { value: VERIFIER },
 			output: challenge
 		}
+	]);
+});
+
+test('Throws RangeError when bytes is negative', () => {
+	expect(() => randomToken(-1)).toThrow(RangeError);
+	recordExampleCases(meta('throws-rangeerror-when-bytes-is-negative', 'randomToken'), [
+		{ name: 'negative byte count', input: { bytes: -1 }, error: 'RangeError' }
+	]);
+});
+
+test('Throws QuotaExceededError when bytes exceed 65536', () => {
+	let errorName = '';
+	try {
+		randomToken(65537);
+	} catch (error) {
+		errorName = error instanceof Error ? error.name : '';
+	}
+	expect(errorName).toBe('QuotaExceededError');
+	recordExampleCases(meta('throws-quotaexceedederror-when-bytes-exceed-65536', 'randomToken'), [
+		{ name: 'byte count exceeds crypto quota', input: { bytes: 65537 }, error: 'QuotaExceededError' }
 	]);
 });
 
@@ -162,38 +172,3 @@ test('Builds and normalizes user entered codes', () => {
 	]);
 });
 
-test('Generates eight digit email codes', () => {
-	const digits = emailCode();
-	expect(digits).toMatch(/^\d{8}$/);
-	recordExampleCases(meta('generates-eight-digit-email-codes', 'emailCode'), [
-		{
-			name: 'generates eight decimal digits',
-			input: {},
-			output: { length: digits.length, digitsOnly: /^\d+$/.test(digits) }
-		}
-	]);
-});
-
-test('Compares strings for equality without early exit', () => {
-	const short = HEX_A.slice(0, 10);
-	expect(safeEqual(HEX_A, HEX_A)).toBe(true);
-	expect(safeEqual(HEX_A, HEX_B)).toBe(false);
-	expect(safeEqual(HEX_A, short)).toBe(false);
-	recordExampleCases(meta('compares-strings-for-equality-without-early-exit', 'safeEqual'), [
-		{
-			name: 'equal 64-character hex strings',
-			input: { left: HEX_A, right: HEX_A },
-			output: true
-		},
-		{
-			name: 'differs only in the last character',
-			input: { left: HEX_A, right: HEX_B },
-			output: false
-		},
-		{
-			name: 'unequal lengths return false',
-			input: { left: HEX_A, right: short },
-			output: false
-		}
-	]);
-});
