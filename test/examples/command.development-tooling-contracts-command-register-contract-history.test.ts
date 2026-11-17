@@ -1,7 +1,8 @@
-import { Command } from 'commander';
+import { Command, InvalidArgumentError } from 'commander';
 import { test } from 'vitest';
 import { registerContractHistory } from '../../src/commands/development-tooling/contracts-command/registerContractHistory';
 import { recordExampleCases } from '../support/recordExampleCases';
+import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
 
 const UNIT_ID = 'command.development-tooling-contracts-command-register-contract-history';
@@ -15,6 +16,7 @@ const HISTORY_OPTIONS = [
 	'--json'
 ];
 const LOG_OPTIONS = [...HISTORY_OPTIONS, '--since <revision>'];
+const INVALID_LIMITS = ['0', '007', '9007199254740993', '12a'];
 
 function describeCommand(command: Command) {
 	return {
@@ -121,4 +123,55 @@ test('Limit parser accepts positive integers only', () => {
 		},
 		cases
 	);
+});
+
+test('Throws InvalidArgumentError for invalid limit tokens', () => {
+	const contracts = new Command('contracts');
+	registerContractHistory(contracts);
+	const cases = INVALID_LIMITS.map((text) => limitCase(contracts, text));
+
+	for (const text of INVALID_LIMITS) {
+		expect(() => parseLimit(contracts, text)).toThrow(InvalidArgumentError);
+	}
+	expect(cases.every((item) => 'error' in item)).toBe(true);
+	recordExampleCases(
+		{
+			unitId: UNIT_ID,
+			symbol: 'registerContractHistory',
+			state: 'throws-invalidargumenterror-for-invalid-limit-tokens',
+			evidence: 'examples-cases',
+			file: 'throws-invalidargumenterror-for-invalid-limit-tokens.json'
+		},
+		cases
+	);
+});
+
+test('Throws Error when a log folder lies outside the repository', async () => {
+	await withTempDir('contract-history-outside-', async (directory) => {
+		const contracts = new Command('contracts');
+		registerContractHistory(contracts);
+		const argv = ['log', 'command.units', '--folder', `${directory}/outside`];
+		const failure = await contracts.parseAsync(argv, { from: 'user' }).then(
+			() => undefined,
+			(error: unknown) => error
+		);
+
+		expect(failure).toBeInstanceOf(Error);
+		recordExampleCases(
+			{
+				unitId: UNIT_ID,
+				symbol: 'registerContractHistory',
+				state: 'throws-error-when-a-log-folder-lies-outside-the-repository',
+				evidence: 'examples-cases',
+				file: 'throws-error-when-a-log-folder-lies-outside-the-repository.json'
+			},
+			[
+				{
+					name: 'log with a --folder outside the repository root',
+					input: { argv: ['log', 'command.units', '--folder', 'temporary-directory/outside'] },
+					error: (failure as Error).message
+				}
+			]
+		);
+	});
 });

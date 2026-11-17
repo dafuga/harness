@@ -15,6 +15,16 @@
 			"id": "limit-parser-accepts-positive-integers-only",
 			"title": "Limit parser accepts positive integers only",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-invalidargumenterror-for-invalid-limit-tokens",
+			"title": "Throws InvalidArgumentError for invalid limit tokens",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-a-log-folder-lies-outside-the-repository",
+			"title": "Throws Error when a log folder lies outside the repository",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +44,9 @@
 			"kind": "output",
 			"states": [
 				"registers-diff-log-and-last-under-contracts",
-				"limit-parser-accepts-positive-integers-only"
+				"limit-parser-accepts-positive-integers-only",
+				"throws-invalidargumenterror-for-invalid-limit-tokens",
+				"throws-error-when-a-log-folder-lies-outside-the-repository"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +56,9 @@
 			"kind": "assertions",
 			"states": [
 				"registers-diff-log-and-last-under-contracts",
-				"limit-parser-accepts-positive-integers-only"
+				"limit-parser-accepts-positive-integers-only",
+				"throws-invalidargumenterror-for-invalid-limit-tokens",
+				"throws-error-when-a-log-folder-lies-outside-the-repository"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +68,9 @@
 			"kind": "trace",
 			"states": [
 				"registers-diff-log-and-last-under-contracts",
-				"limit-parser-accepts-positive-integers-only"
+				"limit-parser-accepts-positive-integers-only",
+				"throws-invalidargumenterror-for-invalid-limit-tokens",
+				"throws-error-when-a-log-folder-lies-outside-the-repository"
 			],
 			"viewports": [],
 			"required": true
