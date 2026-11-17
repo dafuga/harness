@@ -10,6 +10,11 @@
 			"id": "redirects-former-report-hub-to-explorer",
 			"title": "Redirects former report hub to explorer",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-redirect-308-when-load-is-invoked",
+			"title": "Throws Redirect 308 when load is invoked",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["redirects-former-report-hub-to-explorer"],
+			"states": [
+				"redirects-former-report-hub-to-explorer",
+				"throws-redirect-308-when-load-is-invoked"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["redirects-former-report-hub-to-explorer"],
+			"states": [
+				"redirects-former-report-hub-to-explorer",
+				"throws-redirect-308-when-load-is-invoked"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["redirects-former-report-hub-to-explorer"],
+			"states": [
+				"redirects-former-report-hub-to-explorer",
+				"throws-redirect-308-when-load-is-invoked"
+			],
 			"viewports": [],
 			"required": true
 		}
