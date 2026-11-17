@@ -52,3 +52,36 @@ test('Seeds a report with check and coverage records', async () => {
 		rmSync(root, { recursive: true, force: true });
 	}
 });
+
+test('Throws Error when a report record is invalid', async () => {
+	const root = temporaryRoot();
+	try {
+		const repository = new ReportRepository(root);
+		const report = await repository.begin({
+			project: join(root, 'sites', 'alpha-project'),
+			title: 'Account settings review',
+			mode: 'feature',
+			environment: 'local fixture'
+		});
+		const invalidRecord = { kind: 'check', data: { id: '', title: '', status: 'unknown' } } as never;
+		await expect(repository.record(report.id, invalidRecord)).rejects.toThrow();
+		recordExampleCases(
+			{
+				unitId: 'reports.script.seed-e2e',
+				symbol: 'seed-e2e',
+				state: 'throws-error-when-a-report-record-is-invalid',
+				evidence: 'examples-cases',
+				file: 'throws-error-when-a-report-record-is-invalid.json'
+			},
+			[
+				{
+					name: 'rejects an invalid check record',
+					input: { record: { kind: 'check', data: { id: '', title: '', status: 'unknown' } } },
+					error: { name: 'Error', message: 'Invalid report record' }
+				}
+			]
+		);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
