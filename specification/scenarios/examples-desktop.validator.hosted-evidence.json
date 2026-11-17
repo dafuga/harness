@@ -10,6 +10,11 @@
 			"id": "accepts-a-current-answer-bound-to-the-requested-branch-tip",
 			"title": "accepts a current answer bound to the requested branch tip",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-hostedevidencevalidationerror-on-project-mismatch",
+			"title": "Throws HostedEvidenceValidationError on project mismatch",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["accepts-a-current-answer-bound-to-the-requested-branch-tip"],
+			"states": [
+				"accepts-a-current-answer-bound-to-the-requested-branch-tip",
+				"throws-hostedevidencevalidationerror-on-project-mismatch"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["accepts-a-current-answer-bound-to-the-requested-branch-tip"],
+			"states": [
+				"accepts-a-current-answer-bound-to-the-requested-branch-tip",
+				"throws-hostedevidencevalidationerror-on-project-mismatch"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["accepts-a-current-answer-bound-to-the-requested-branch-tip"],
+			"states": [
+				"accepts-a-current-answer-bound-to-the-requested-branch-tip",
+				"throws-hostedevidencevalidationerror-on-project-mismatch"
+			],
 			"viewports": [],
 			"required": true
 		}

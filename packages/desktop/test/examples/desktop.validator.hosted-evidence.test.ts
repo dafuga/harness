@@ -69,3 +69,32 @@ test('accepts a current answer bound to the requested branch tip', () => {
 		]
 	);
 });
+
+test('Throws HostedEvidenceValidationError on project mismatch', () => {
+	const validator = new HostedEvidenceValidator();
+	const valid = answer();
+	const mismatched = { ...valid, identity: { ...valid.identity, projectId: 'other-project' } };
+	let thrown: unknown;
+	try {
+		validator.evidence(mismatched, query);
+	} catch (error) {
+		thrown = error;
+	}
+
+	expect(thrown).toBeInstanceOf(HostedEvidenceValidationError);
+	if (!(thrown instanceof HostedEvidenceValidationError)) throw new Error('Expected a hosted evidence validation error.');
+	recordExampleCases(
+		{
+			unitId: 'desktop.validator.hosted-evidence', symbol: 'HostedEvidenceValidator.evidence',
+			state: 'throws-hostedevidencevalidationerror-on-project-mismatch',
+			evidence: 'examples-cases', file: 'throws-hostedevidencevalidationerror-on-project-mismatch.json'
+		},
+		[
+			{
+				name: 'reject evidence bound to another project',
+				input: { value: mismatched, query },
+				error: { name: thrown.name, message: thrown.message }
+			}
+		]
+	);
+});
