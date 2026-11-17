@@ -10,6 +10,11 @@
 			"id": "dispatches-native-handoff-route-requests",
 			"title": "Dispatches native handoff route requests",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-authfailure-when-a-native-route-receives-an-unsupport",
+			"title": "Throws AuthFailure when a native route receives an unsupported media type",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["dispatches-native-handoff-route-requests"],
+			"states": [
+				"dispatches-native-handoff-route-requests",
+				"throws-authfailure-when-a-native-route-receives-an-unsupport"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["dispatches-native-handoff-route-requests"],
+			"states": [
+				"dispatches-native-handoff-route-requests",
+				"throws-authfailure-when-a-native-route-receives-an-unsupport"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["dispatches-native-handoff-route-requests"],
+			"states": [
+				"dispatches-native-handoff-route-requests",
+				"throws-authfailure-when-a-native-route-receives-an-unsupport"
+			],
 			"viewports": [],
 			"required": true
 		}

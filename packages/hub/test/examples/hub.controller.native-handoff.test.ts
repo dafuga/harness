@@ -44,3 +44,21 @@ test('Dispatches native handoff route requests', async () => {
 		{ name: 'exchange delegates the validated proof bindings', input: exchangeInput, output: exchange }
 	]);
 });
+
+test('Throws AuthFailure when a native route receives an unsupported media type', async () => {
+	const options = {
+		handoff: {},
+		sessions: {}
+	} as unknown as NativeHandoffControllerOptions;
+	const route = new NativeHandoffController(options).routes()['POST /api/auth/native/start'];
+	const request = new Request('https://hub.example/api/auth/native/start', {
+		method: 'POST',
+		headers: { 'content-type': 'text/plain' },
+		body: '{}'
+	});
+	await expect(route(request)).rejects.toMatchObject({ code: 'invalid-request' });
+	const state = 'throws-authfailure-when-a-native-route-receives-an-unsupport';
+	recordExampleCases({ unitId: 'hub.controller.native-handoff', symbol: 'routes', state, evidence: 'examples-cases', file: `${state}.json` }, [
+		{ name: 'start rejects a non-JSON request body', input: { contentType: 'text/plain', body: '{}' }, error: { code: 'invalid-request' } }
+	]);
+});
