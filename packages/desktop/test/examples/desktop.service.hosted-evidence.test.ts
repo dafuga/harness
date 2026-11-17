@@ -60,3 +60,56 @@ test('Returns a verified hosted evidence artifact', async () => {
 		]
 	);
 });
+
+test('Throws Error when the artifact digest does not match', async () => {
+	const bytes = new Uint8Array([1, 2, 3]);
+	const requestedHash = '0'.repeat(64);
+	const query = {
+		projectId: 'project-alpha',
+		entityId: 'desktop.service.hosted-evidence',
+		commit: 'd34db33f9e1a42c5b71d08a6e4c32f9012345678',
+		branch: 'main',
+		mode: 'current' as const,
+		side: 'after' as const,
+		recordId: 'record-001',
+		scenarioId: 'checkout',
+		state: 'confirmed',
+		evidenceId: 'order-confirmation',
+		viewport: 'desktop-1440x900',
+		sha256: requestedHash,
+		notesRevision: null,
+		evidenceRevision: null
+	};
+	const service = new HostedEvidenceService(
+		{
+			path: (_operation, value) => `${value.projectId}/${value.entityId}`,
+			evidence: async () => ({}),
+			artifact: async () => ({ bytes, mediaType: 'image/png', principalId: 'principal-42' })
+		},
+		{
+			origin: 'https://hosted.example.test',
+			credentials: async () => ({
+				origin: 'https://hosted.example.test',
+				principalId: 'principal-42',
+				token: 'example-token'
+			})
+		}
+	);
+	await expect(service.artifact(query)).rejects.toThrow(Error);
+	recordExampleCases(
+		{
+			unitId: 'desktop.service.hosted-evidence',
+			symbol: 'artifact',
+			state: 'throws-error-when-the-artifact-digest-does-not-match',
+			evidence: 'examples-cases',
+			file: 'throws-error-when-the-artifact-digest-does-not-match.json'
+		},
+		[
+			{
+				name: 'Artifact bytes that do not match the requested digest are rejected',
+				input: { ...query, bytes: Array.from(bytes), actualSha256: createHash('sha256').update(bytes).digest('hex') },
+				error: 'Error: artifact digest does not match'
+			}
+		]
+	);
+});

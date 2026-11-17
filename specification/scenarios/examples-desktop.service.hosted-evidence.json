@@ -10,6 +10,11 @@
 			"id": "returns-a-verified-hosted-evidence-artifact",
 			"title": "Returns a verified hosted evidence artifact",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-artifact-digest-does-not-match",
+			"title": "Throws Error when the artifact digest does not match",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["returns-a-verified-hosted-evidence-artifact"],
+			"states": [
+				"returns-a-verified-hosted-evidence-artifact",
+				"throws-error-when-the-artifact-digest-does-not-match"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["returns-a-verified-hosted-evidence-artifact"],
+			"states": [
+				"returns-a-verified-hosted-evidence-artifact",
+				"throws-error-when-the-artifact-digest-does-not-match"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["returns-a-verified-hosted-evidence-artifact"],
+			"states": [
+				"returns-a-verified-hosted-evidence-artifact",
+				"throws-error-when-the-artifact-digest-does-not-match"
+			],
 			"viewports": [],
 			"required": true
 		}
