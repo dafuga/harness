@@ -10,6 +10,11 @@
 			"id": "exposes-the-alpha-and-foreign-fixture-roots",
 			"title": "Exposes the alpha and foreign fixture roots",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-a-filesystem-call-fails-during-setup",
+			"title": "Throws Error when a filesystem call fails during setup",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["exposes-the-alpha-and-foreign-fixture-roots"],
+			"states": [
+				"exposes-the-alpha-and-foreign-fixture-roots",
+				"throws-error-when-a-filesystem-call-fails-during-setup"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["exposes-the-alpha-and-foreign-fixture-roots"],
+			"states": [
+				"exposes-the-alpha-and-foreign-fixture-roots",
+				"throws-error-when-a-filesystem-call-fails-during-setup"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["exposes-the-alpha-and-foreign-fixture-roots"],
+			"states": [
+				"exposes-the-alpha-and-foreign-fixture-roots",
+				"throws-error-when-a-filesystem-call-fails-during-setup"
+			],
 			"viewports": [],
 			"required": true
 		}
