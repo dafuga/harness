@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.source-nesting",
+	"title": "function.source-nesting examples",
+	"kind": "headless",
+	"units": ["function.source-nesting"],
+	"builds": [],
+	"states": [
+		{
+			"id": "nesting-counts-curly-braces-and-groups-in-masked-source",
+			"title": "Nesting counts curly braces and groups in masked source",
+			"coverage": "required"
+		},
+		{
+			"id": "matching-brace-finds-the-close-of-an-opened-body",
+			"title": "Matching brace finds the close of an opened body",
+			"coverage": "required"
+		},
+		{
+			"id": "statement-end-stops-at-a-semicolon-or-statement-newline",
+			"title": "Statement end stops at a semicolon or statement newline",
+			"coverage": "required"
+		},
+		{
+			"id": "body-end-skips-return-types-and-stops-at-signatures",
+			"title": "Body end skips return types and stops at signatures",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.source-nesting.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"nesting-counts-curly-braces-and-groups-in-masked-source",
+				"matching-brace-finds-the-close-of-an-opened-body",
+				"statement-end-stops-at-a-semicolon-or-statement-newline",
+				"body-end-skips-return-types-and-stops-at-signatures"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"nesting-counts-curly-braces-and-groups-in-masked-source",
+				"matching-brace-finds-the-close-of-an-opened-body",
+				"statement-end-stops-at-a-semicolon-or-statement-newline",
+				"body-end-skips-return-types-and-stops-at-signatures"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"nesting-counts-curly-braces-and-groups-in-masked-source",
+				"matching-brace-finds-the-close-of-an-opened-body",
+				"statement-end-stops-at-a-semicolon-or-statement-newline",
+				"body-end-skips-return-types-and-stops-at-signatures"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
