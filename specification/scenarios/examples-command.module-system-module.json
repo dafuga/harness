@@ -10,6 +10,11 @@
 			"id": "registers-module-and-plugin-command-groups",
 			"title": "Registers module and plugin command groups",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-a-module-or-plugin-id-is-missing",
+			"title": "Throws Error when a module or plugin id is missing",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["registers-module-and-plugin-command-groups"],
+			"states": [
+				"registers-module-and-plugin-command-groups",
+				"throws-error-when-a-module-or-plugin-id-is-missing"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["registers-module-and-plugin-command-groups"],
+			"states": [
+				"registers-module-and-plugin-command-groups",
+				"throws-error-when-a-module-or-plugin-id-is-missing"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["registers-module-and-plugin-command-groups"],
+			"states": [
+				"registers-module-and-plugin-command-groups",
+				"throws-error-when-a-module-or-plugin-id-is-missing"
+			],
 			"viewports": [],
 			"required": true
 		}
