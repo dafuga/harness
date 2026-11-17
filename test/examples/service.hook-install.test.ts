@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, realpathSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { test } from 'vitest';
 import { HookInstallService } from '../../src/cli/program/hook-install-service/HookInstallService';
@@ -77,6 +77,27 @@ test('Uninstalls wrappers and restores the chained hook', async () => {
 				file: 'uninstalls-wrappers-and-restores-the-chained-hook.json'
 			},
 			[{ name: 'removing the last opt-in restores the prior hook byte for byte', input: { command: 'harness', existingHook: original }, output: summary(status) }]
+		);
+	});
+});
+
+test('Throws ExpectedCliError when hooks path is in the worktree', async () => {
+	await withTempRepo(async (repository) => {
+		const root = realpathSync(repository.root);
+		repository.git('config', 'core.hooksPath', join(root, 'tooling-hooks'));
+		const caught = await new HookInstallService(repository.root).status().catch((error: unknown) => error);
+		expect(caught).toBeInstanceOf(Error);
+		const message = (caught as Error).message;
+		expect(message).toContain('core.hooksPath points into the working tree');
+		recordExampleCases(
+			{
+				unitId: 'service.hook-install',
+				symbol: 'HookInstallService.status',
+				state: 'throws-expectedclierror-when-hooks-path-is-in-the-worktree',
+				evidence: 'examples-cases',
+				file: 'throws-expectedclierror-when-hooks-path-is-in-the-worktree.json'
+			},
+			[{ name: 'hooks path inside the working tree raises the expected error', input: { hooksPath: 'tooling-hooks inside the worktree' }, error: message }]
 		);
 	});
 });

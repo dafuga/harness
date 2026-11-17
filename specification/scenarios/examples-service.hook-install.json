@@ -20,6 +20,11 @@
 			"id": "uninstalls-wrappers-and-restores-the-chained-hook",
 			"title": "Uninstalls wrappers and restores the chained hook",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-hooks-path-is-in-the-worktree",
+			"title": "Throws ExpectedCliError when hooks path is in the worktree",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +45,8 @@
 			"states": [
 				"reports-the-current-hook-status",
 				"installs-wrappers-and-chains-an-existing-hook",
-				"uninstalls-wrappers-and-restores-the-chained-hook"
+				"uninstalls-wrappers-and-restores-the-chained-hook",
+				"throws-expectedclierror-when-hooks-path-is-in-the-worktree"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +57,8 @@
 			"states": [
 				"reports-the-current-hook-status",
 				"installs-wrappers-and-chains-an-existing-hook",
-				"uninstalls-wrappers-and-restores-the-chained-hook"
+				"uninstalls-wrappers-and-restores-the-chained-hook",
+				"throws-expectedclierror-when-hooks-path-is-in-the-worktree"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +69,8 @@
 			"states": [
 				"reports-the-current-hook-status",
 				"installs-wrappers-and-chains-an-existing-hook",
-				"uninstalls-wrappers-and-restores-the-chained-hook"
+				"uninstalls-wrappers-and-restores-the-chained-hook",
+				"throws-expectedclierror-when-hooks-path-is-in-the-worktree"
 			],
 			"viewports": [],
 			"required": true
