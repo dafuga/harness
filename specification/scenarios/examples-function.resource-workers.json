@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.resource-workers",
+	"title": "function.resource-workers examples",
+	"kind": "headless",
+	"units": ["function.resource-workers"],
+	"builds": [],
+	"states": [
+		{
+			"id": "caps-test-workers-at-the-reservation-and-partitions-memory",
+			"title": "Caps test workers at the reservation and partitions memory",
+			"coverage": "required"
+		},
+		{
+			"id": "returns-no-worker-limits-without-a-positive-cpu-reservation",
+			"title": "Returns no worker limits without a positive CPU reservation",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-worker-ceiling-below-one-when-cpus-are-reserved",
+			"title": "Rejects a worker ceiling below one when CPUs are reserved",
+			"coverage": "required"
+		},
+		{
+			"id": "caps-native-thread-variables-at-the-reservation-and-caller-v",
+			"title": "Caps native thread variables at the reservation and caller values",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.resource-workers.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"caps-test-workers-at-the-reservation-and-partitions-memory",
+				"returns-no-worker-limits-without-a-positive-cpu-reservation",
+				"rejects-a-worker-ceiling-below-one-when-cpus-are-reserved",
+				"caps-native-thread-variables-at-the-reservation-and-caller-v"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"caps-test-workers-at-the-reservation-and-partitions-memory",
+				"returns-no-worker-limits-without-a-positive-cpu-reservation",
+				"rejects-a-worker-ceiling-below-one-when-cpus-are-reserved",
+				"caps-native-thread-variables-at-the-reservation-and-caller-v"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"caps-test-workers-at-the-reservation-and-partitions-memory",
+				"returns-no-worker-limits-without-a-positive-cpu-reservation",
+				"rejects-a-worker-ceiling-below-one-when-cpus-are-reserved",
+				"caps-native-thread-variables-at-the-reservation-and-caller-v"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
