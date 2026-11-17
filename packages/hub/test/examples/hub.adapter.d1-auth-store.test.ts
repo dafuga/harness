@@ -48,3 +48,36 @@ test('purge binds the cutoff to each cleanup statement in order', async () => {
 		]
 	);
 }, 20_000);
+
+test('Throws Unspecified D1 error when prepare throws', async () => {
+	const failure = new Error('D1 prepare failed');
+	const db: D1Like = {
+		prepare(): D1Statement {
+			throw failure;
+		}
+	};
+	const store = new D1AuthStoreAdapter(db);
+	let caught: unknown;
+	try {
+		await store.purge(1760000000000);
+	} catch (error) {
+		caught = error;
+	}
+	expect(caught).toBe(failure);
+	recordExampleCases(
+		{
+			unitId: 'hub.adapter.d1-auth-store',
+			symbol: 'D1AuthStoreAdapter.purge',
+			state: 'throws-unspecified-d1-error-when-prepare-throws',
+			evidence: 'examples-cases',
+			file: 'throws-unspecified-d1-error-when-prepare-throws.json'
+		},
+		[
+			{
+				name: 'prepare exception escapes unchanged',
+				input: { now: 1760000000000 },
+				error: { name: failure.name, message: failure.message }
+			}
+		]
+	);
+}, 20_000);

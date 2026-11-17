@@ -10,6 +10,11 @@
 			"id": "purge-binds-the-cutoff-to-each-cleanup-statement-in-order",
 			"title": "purge binds the cutoff to each cleanup statement in order",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-unspecified-d1-error-when-prepare-throws",
+			"title": "Throws Unspecified D1 error when prepare throws",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["purge-binds-the-cutoff-to-each-cleanup-statement-in-order"],
+			"states": [
+				"purge-binds-the-cutoff-to-each-cleanup-statement-in-order",
+				"throws-unspecified-d1-error-when-prepare-throws"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["purge-binds-the-cutoff-to-each-cleanup-statement-in-order"],
+			"states": [
+				"purge-binds-the-cutoff-to-each-cleanup-statement-in-order",
+				"throws-unspecified-d1-error-when-prepare-throws"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["purge-binds-the-cutoff-to-each-cleanup-statement-in-order"],
+			"states": [
+				"purge-binds-the-cutoff-to-each-cleanup-statement-in-order",
+				"throws-unspecified-d1-error-when-prepare-throws"
+			],
 			"viewports": [],
 			"required": true
 		}
