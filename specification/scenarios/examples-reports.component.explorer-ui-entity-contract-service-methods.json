@@ -20,6 +20,21 @@
 			"id": "reports-an-empty-contract-when-no-method-is-discovered",
 			"title": "Reports an empty contract when no method is discovered",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-an-example-is-a-bigint-or-cyclic",
+			"title": "Throws TypeError when an example is a BigInt or cyclic",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-rangeerror-when-an-example-is-nested-too-deeply",
+			"title": "Throws RangeError when an example is nested too deeply",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-the-example-callback-error-when-a-getter-throws",
+			"title": "Throws the example callback error when a getter throws",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +55,10 @@
 			"states": [
 				"projects-a-recorded-service-class-into-crud-first-methods",
 				"projects-model-declarations-with-authored-parameter-metadata",
-				"reports-an-empty-contract-when-no-method-is-discovered"
+				"reports-an-empty-contract-when-no-method-is-discovered",
+				"throws-typeerror-when-an-example-is-a-bigint-or-cyclic",
+				"throws-rangeerror-when-an-example-is-nested-too-deeply",
+				"throws-the-example-callback-error-when-a-getter-throws"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +69,10 @@
 			"states": [
 				"projects-a-recorded-service-class-into-crud-first-methods",
 				"projects-model-declarations-with-authored-parameter-metadata",
-				"reports-an-empty-contract-when-no-method-is-discovered"
+				"reports-an-empty-contract-when-no-method-is-discovered",
+				"throws-typeerror-when-an-example-is-a-bigint-or-cyclic",
+				"throws-rangeerror-when-an-example-is-nested-too-deeply",
+				"throws-the-example-callback-error-when-a-getter-throws"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +83,10 @@
 			"states": [
 				"projects-a-recorded-service-class-into-crud-first-methods",
 				"projects-model-declarations-with-authored-parameter-metadata",
-				"reports-an-empty-contract-when-no-method-is-discovered"
+				"reports-an-empty-contract-when-no-method-is-discovered",
+				"throws-typeerror-when-an-example-is-a-bigint-or-cyclic",
+				"throws-rangeerror-when-an-example-is-nested-too-deeply",
+				"throws-the-example-callback-error-when-a-getter-throws"
 			],
 			"viewports": [],
 			"required": true
