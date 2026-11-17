@@ -20,6 +20,11 @@
 			"id": "drops-evidence-that-is-not-marked-required",
 			"title": "Drops evidence that is not marked required",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-the-manifest-has-no-states-array",
+			"title": "Throws TypeError when the manifest has no states array",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +45,8 @@
 			"states": [
 				"expands-required-evidence-per-state-and-viewport",
 				"emits-one-capture-per-state-when-no-viewports-are-named",
-				"drops-evidence-that-is-not-marked-required"
+				"drops-evidence-that-is-not-marked-required",
+				"throws-typeerror-when-the-manifest-has-no-states-array"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +57,8 @@
 			"states": [
 				"expands-required-evidence-per-state-and-viewport",
 				"emits-one-capture-per-state-when-no-viewports-are-named",
-				"drops-evidence-that-is-not-marked-required"
+				"drops-evidence-that-is-not-marked-required",
+				"throws-typeerror-when-the-manifest-has-no-states-array"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +69,8 @@
 			"states": [
 				"expands-required-evidence-per-state-and-viewport",
 				"emits-one-capture-per-state-when-no-viewports-are-named",
-				"drops-evidence-that-is-not-marked-required"
+				"drops-evidence-that-is-not-marked-required",
+				"throws-typeerror-when-the-manifest-has-no-states-array"
 			],
 			"viewports": [],
 			"required": true

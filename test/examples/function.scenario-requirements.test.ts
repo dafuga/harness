@@ -185,3 +185,25 @@ test('Drops evidence that is not marked required', () => {
 		]
 	);
 });
+
+test('Throws TypeError when the manifest has no states array', () => {
+	const broken = { ...functionExamples, states: null } as unknown as Manifest;
+
+	expect(() => scenarioRequirements(broken)).toThrow(TypeError);
+	recordExampleCases(
+		{
+			unitId: 'function.scenario-requirements',
+			symbol: 'scenarioRequirements',
+			state: 'throws-typeerror-when-the-manifest-has-no-states-array',
+			evidence: 'examples-cases',
+			file: 'throws-typeerror-when-the-manifest-has-no-states-array.json'
+		},
+		[
+			{
+				name: 'states is null instead of an array',
+				input: broken,
+				error: { name: 'TypeError' }
+			}
+		]
+	);
+});
