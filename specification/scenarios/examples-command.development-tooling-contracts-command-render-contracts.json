@@ -25,6 +25,16 @@
 			"id": "maps-contract-relationships-and-unresolved-ids",
 			"title": "Maps contract relationships and unresolved ids",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-show-receives-a-null-record",
+			"title": "Throws TypeError when show receives a null record",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-rangeerror-when-contract-fields-exceed-recursive-rend",
+			"title": "Throws RangeError when contract fields exceed recursive rendering depth",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -46,7 +56,9 @@
 				"lists-contract-summaries-compactly",
 				"shows-complete-stored-contract-fields",
 				"searches-ranked-contract-matches",
-				"maps-contract-relationships-and-unresolved-ids"
+				"maps-contract-relationships-and-unresolved-ids",
+				"throws-typeerror-when-show-receives-a-null-record",
+				"throws-rangeerror-when-contract-fields-exceed-recursive-rend"
 			],
 			"viewports": [],
 			"required": true
@@ -58,7 +70,9 @@
 				"lists-contract-summaries-compactly",
 				"shows-complete-stored-contract-fields",
 				"searches-ranked-contract-matches",
-				"maps-contract-relationships-and-unresolved-ids"
+				"maps-contract-relationships-and-unresolved-ids",
+				"throws-typeerror-when-show-receives-a-null-record",
+				"throws-rangeerror-when-contract-fields-exceed-recursive-rend"
 			],
 			"viewports": [],
 			"required": true
@@ -70,7 +84,9 @@
 				"lists-contract-summaries-compactly",
 				"shows-complete-stored-contract-fields",
 				"searches-ranked-contract-matches",
-				"maps-contract-relationships-and-unresolved-ids"
+				"maps-contract-relationships-and-unresolved-ids",
+				"throws-typeerror-when-show-receives-a-null-record",
+				"throws-rangeerror-when-contract-fields-exceed-recursive-rend"
 			],
 			"viewports": [],
 			"required": true

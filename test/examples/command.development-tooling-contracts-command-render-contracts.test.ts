@@ -14,6 +14,20 @@ const summary: ContractSummary = {
 	responsibility: 'Reads a sample contract.'
 };
 
+function deeplyNestedResult(): ContractEntry[] {
+	let value: Record<string, unknown> = {};
+	const root = value;
+	for (let depth = 0; depth < 12000; depth += 1) {
+		const child: Record<string, unknown> = {};
+		value.child = child;
+		value = child;
+	}
+	return [{ ...summary, manifest: {
+		status: 'active', owns: { source: [] }, contract: root,
+		helperContracts: {}, dependencies: [], scenarios: []
+	}, states: [] } as unknown as ContractEntry];
+}
+
 test('Lists contract summaries compactly', () => {
 	const result = [summary];
 	const output = renderContracts('list', result);
@@ -67,5 +81,23 @@ test('Maps contract relationships and unresolved ids', () => {
 	recordExampleCases(
 		{ unitId, symbol: 'renderContracts', state: 'maps-contract-relationships-and-unresolved-ids', evidence: 'examples-cases', file: 'maps-contract-relationships-and-unresolved-ids.json' },
 		[{ name: 'map with unresolved reference', input: { operation: 'map', result }, output }]
+	);
+});
+
+test('Throws TypeError when show receives a null record', () => {
+	const result = [null] as unknown as ContractSummary[];
+	expect(() => renderContracts('show', result)).toThrowError(TypeError);
+	recordExampleCases(
+		{ unitId, symbol: 'renderContracts', state: 'throws-typeerror-when-show-receives-a-null-record', evidence: 'examples-cases', file: 'throws-typeerror-when-show-receives-a-null-record.json' },
+		[{ name: 'null full record', input: { operation: 'show', result: [null] }, error: 'TypeError' }]
+	);
+});
+
+test('Throws RangeError when contract fields exceed recursive rendering depth', () => {
+	const result = deeplyNestedResult();
+	expect(() => renderContracts('show', result)).toThrowError(RangeError);
+	recordExampleCases(
+		{ unitId, symbol: 'renderContracts', state: 'throws-rangeerror-when-contract-fields-exceed-recursive-rend', evidence: 'examples-cases', file: 'throws-rangeerror-when-contract-fields-exceed-recursive-rend.json' },
+		[{ name: 'excessively nested contract fields', input: { operation: 'show', result: { nestingDepth: 12000 } }, error: 'RangeError' }]
 	);
 });
