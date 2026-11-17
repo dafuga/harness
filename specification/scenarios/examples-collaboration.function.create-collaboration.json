@@ -10,6 +10,11 @@
 			"id": "creates-the-nine-operation-api-without-calling-adapters",
 			"title": "Creates the nine-operation API without calling adapters",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-invalid-invitation-when-invitation-does-not-exist",
+			"title": "Throws invalid-invitation when invitation does not exist",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["creates-the-nine-operation-api-without-calling-adapters"],
+			"states": [
+				"creates-the-nine-operation-api-without-calling-adapters",
+				"throws-invalid-invitation-when-invitation-does-not-exist"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["creates-the-nine-operation-api-without-calling-adapters"],
+			"states": [
+				"creates-the-nine-operation-api-without-calling-adapters",
+				"throws-invalid-invitation-when-invitation-does-not-exist"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["creates-the-nine-operation-api-without-calling-adapters"],
+			"states": [
+				"creates-the-nine-operation-api-without-calling-adapters",
+				"throws-invalid-invitation-when-invitation-does-not-exist"
+			],
 			"viewports": [],
 			"required": true
 		}
