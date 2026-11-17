@@ -86,3 +86,31 @@ test('Schedules deployment activity and records its completion', async () => {
 		]
 	);
 });
+
+test('Throws Error when deployment capacity is exceeded', () => {
+	const service = new DeploymentActivityService();
+	let error: unknown;
+	try {
+		service.ensureCapacity(129);
+	} catch (caught) {
+		error = caught;
+	}
+	const output = error instanceof Error ? { name: error.name, message: error.message } : null;
+	expect(output?.message).toBe('Wait for queued deployments before starting more.');
+	recordExampleCases(
+		{
+			unitId: 'desktop.service.deployment-activity',
+			symbol: 'ensureCapacity',
+			state: 'throws-error-when-deployment-capacity-is-exceeded',
+			evidence: 'examples-cases',
+			file: 'throws-error-when-deployment-capacity-is-exceeded.json'
+		},
+		[
+			{
+				name: 'An additional 129 slots exceed the 128 deployment limit',
+				input: { unfinishedEntries: 0, count: 129 },
+				output
+			}
+		]
+	);
+});

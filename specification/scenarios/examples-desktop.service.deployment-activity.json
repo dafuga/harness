@@ -10,6 +10,11 @@
 			"id": "schedules-deployment-activity-and-records-its-completion",
 			"title": "Schedules deployment activity and records its completion",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-deployment-capacity-is-exceeded",
+			"title": "Throws Error when deployment capacity is exceeded",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["schedules-deployment-activity-and-records-its-completion"],
+			"states": [
+				"schedules-deployment-activity-and-records-its-completion",
+				"throws-error-when-deployment-capacity-is-exceeded"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["schedules-deployment-activity-and-records-its-completion"],
+			"states": [
+				"schedules-deployment-activity-and-records-its-completion",
+				"throws-error-when-deployment-capacity-is-exceeded"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["schedules-deployment-activity-and-records-its-completion"],
+			"states": [
+				"schedules-deployment-activity-and-records-its-completion",
+				"throws-error-when-deployment-capacity-is-exceeded"
+			],
 			"viewports": [],
 			"required": true
 		}
