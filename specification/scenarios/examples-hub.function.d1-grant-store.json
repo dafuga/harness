@@ -10,6 +10,21 @@
 			"id": "grant-operations-update-versioned-rows",
 			"title": "Grant operations update versioned rows",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-record-or-lease-arguments-are-null",
+			"title": "Throws TypeError when record or lease arguments are null",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-db-error-when-a-query-operation-fails",
+			"title": "Throws db error when a query operation fails",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-records-grantstate-error-when-an-existing-row-is-read",
+			"title": "Throws records grantState error when an existing row is read",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +42,36 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["grant-operations-update-versioned-rows"],
+			"states": [
+				"grant-operations-update-versioned-rows",
+				"throws-typeerror-when-record-or-lease-arguments-are-null",
+				"throws-db-error-when-a-query-operation-fails",
+				"throws-records-grantstate-error-when-an-existing-row-is-read"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["grant-operations-update-versioned-rows"],
+			"states": [
+				"grant-operations-update-versioned-rows",
+				"throws-typeerror-when-record-or-lease-arguments-are-null",
+				"throws-db-error-when-a-query-operation-fails",
+				"throws-records-grantstate-error-when-an-existing-row-is-read"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["grant-operations-update-versioned-rows"],
+			"states": [
+				"grant-operations-update-versioned-rows",
+				"throws-typeerror-when-record-or-lease-arguments-are-null",
+				"throws-db-error-when-a-query-operation-fails",
+				"throws-records-grantstate-error-when-an-existing-row-is-read"
+			],
 			"viewports": [],
 			"required": true
 		}
