@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-command.development-tooling-contracts-command-read-contract-history",
+	"title": "command.development-tooling-contracts-command-read-contract-history examples",
+	"kind": "headless",
+	"units": ["command.development-tooling-contracts-command-read-contract-history"],
+	"builds": [],
+	"states": [
+		{
+			"id": "compares-an-empty-contract-snapshot",
+			"title": "Compares an empty contract snapshot",
+			"coverage": "required"
+		},
+		{
+			"id": "reads-an-empty-committed-contract-history",
+			"title": "Reads an empty committed contract history",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/command.development-tooling-contracts-command-read-contract-history.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"compares-an-empty-contract-snapshot",
+				"reads-an-empty-committed-contract-history"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"compares-an-empty-contract-snapshot",
+				"reads-an-empty-committed-contract-history"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"compares-an-empty-contract-snapshot",
+				"reads-an-empty-committed-contract-history"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
