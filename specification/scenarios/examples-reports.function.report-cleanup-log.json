@@ -10,6 +10,21 @@
 			"id": "appends-cleanup-results-to-retention-history",
 			"title": "Appends cleanup results to retention history",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-nodejs-errnoexception-when-reading-history-fails-with",
+			"title": "Throws NodeJS.ErrnoException when reading history fails with a non-ENOENT error",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-writing-history-fails-because-the-root-is",
+			"title": "Throws Error when writing history fails because the root is missing",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-cleanup-result-cannot-be-serialized",
+			"title": "Throws TypeError when cleanup result cannot be serialized",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +42,36 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["appends-cleanup-results-to-retention-history"],
+			"states": [
+				"appends-cleanup-results-to-retention-history",
+				"throws-nodejs-errnoexception-when-reading-history-fails-with",
+				"throws-error-when-writing-history-fails-because-the-root-is",
+				"throws-typeerror-when-cleanup-result-cannot-be-serialized"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["appends-cleanup-results-to-retention-history"],
+			"states": [
+				"appends-cleanup-results-to-retention-history",
+				"throws-nodejs-errnoexception-when-reading-history-fails-with",
+				"throws-error-when-writing-history-fails-because-the-root-is",
+				"throws-typeerror-when-cleanup-result-cannot-be-serialized"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["appends-cleanup-results-to-retention-history"],
+			"states": [
+				"appends-cleanup-results-to-retention-history",
+				"throws-nodejs-errnoexception-when-reading-history-fails-with",
+				"throws-error-when-writing-history-fails-because-the-root-is",
+				"throws-typeerror-when-cleanup-result-cannot-be-serialized"
+			],
 			"viewports": [],
 			"required": true
 		}

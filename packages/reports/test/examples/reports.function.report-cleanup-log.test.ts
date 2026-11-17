@@ -1,4 +1,4 @@
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -53,6 +53,72 @@ test('Appends cleanup results to retention history', async () => {
 					output: { entries: 2, result: secondResult }
 				}
 			]
+		);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test('Throws NodeJS.ErrnoException when reading history fails with a non-ENOENT error', async () => {
+	const root = mkdtempSync(join(tmpdir(), 'report-cleanup-log-read-error-'));
+	try {
+		mkdirSync(join(root, 'retention-history.jsonl'));
+		let caught: unknown;
+		try {
+			await reportCleanupLog(root, result([], false));
+		} catch (error) {
+			caught = error;
+		}
+		expect(caught).toMatchObject({ code: 'EISDIR' });
+		recordExampleCases(
+			{
+				unitId: 'reports.function.report-cleanup-log',
+				symbol: 'reportCleanupLog',
+				state: 'throws-nodejs-errnoexception-when-reading-history-fails-with',
+				evidence: 'examples-cases',
+				file: 'throws-nodejs-errnoexception-when-reading-history-fails-with.json'
+			},
+			[{ name: 'history path is a directory', input: { root, result: result([], false) }, error: { code: 'EISDIR' } }]
+		);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test('Throws Error when writing history fails because the root is missing', async () => {
+	const parent = mkdtempSync(join(tmpdir(), 'report-cleanup-log-write-error-'));
+	const root = join(parent, 'missing-root');
+	try {
+		await expect(reportCleanupLog(root, result([], false))).rejects.toBeInstanceOf(Error);
+		recordExampleCases(
+			{
+				unitId: 'reports.function.report-cleanup-log',
+				symbol: 'reportCleanupLog',
+				state: 'throws-error-when-writing-history-fails-because-the-root-is',
+				evidence: 'examples-cases',
+				file: 'throws-error-when-writing-history-fails-because-the-root-is.json'
+			},
+			[{ name: 'root directory does not exist', input: { root, result: result([], false) }, error: { code: 'ENOENT' } }]
+		);
+	} finally {
+		rmSync(parent, { recursive: true, force: true });
+	}
+});
+
+test('Throws TypeError when cleanup result cannot be serialized', async () => {
+	const root = mkdtempSync(join(tmpdir(), 'report-cleanup-log-serialize-error-'));
+	try {
+		const invalidResult = { value: BigInt(1) };
+		await expect(reportCleanupLog(root, invalidResult as never)).rejects.toBeInstanceOf(TypeError);
+		recordExampleCases(
+			{
+				unitId: 'reports.function.report-cleanup-log',
+				symbol: 'reportCleanupLog',
+				state: 'throws-typeerror-when-cleanup-result-cannot-be-serialized',
+				evidence: 'examples-cases',
+				file: 'throws-typeerror-when-cleanup-result-cannot-be-serialized.json'
+			},
+			[{ name: 'result contains BigInt', input: { root: 'temporary-report-store', result: 'BigInt value' }, error: { name: 'TypeError' } }]
 		);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
