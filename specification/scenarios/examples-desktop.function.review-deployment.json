@@ -10,6 +10,26 @@
 			"id": "reviews-a-configured-development-deployment",
 			"title": "reviews a configured development deployment",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-the-plugin-discovery-error-unchanged",
+			"title": "Throws the plugin discovery error unchanged",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-an-error-when-the-project-is-not-a-git-repository",
+			"title": "Throws an error when the project is not a Git repository",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-a-syntaxerror-when-deployment-receipts-contain-invali",
+			"title": "Throws a SyntaxError when deployment receipts contain invalid JSON",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-a-zoderror-when-deployment-receipts-do-not-match-the",
+			"title": "Throws a ZodError when deployment receipts do not match the schema",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +47,39 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["reviews-a-configured-development-deployment"],
+			"states": [
+				"reviews-a-configured-development-deployment",
+				"throws-the-plugin-discovery-error-unchanged",
+				"throws-an-error-when-the-project-is-not-a-git-repository",
+				"throws-a-syntaxerror-when-deployment-receipts-contain-invali",
+				"throws-a-zoderror-when-deployment-receipts-do-not-match-the"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["reviews-a-configured-development-deployment"],
+			"states": [
+				"reviews-a-configured-development-deployment",
+				"throws-the-plugin-discovery-error-unchanged",
+				"throws-an-error-when-the-project-is-not-a-git-repository",
+				"throws-a-syntaxerror-when-deployment-receipts-contain-invali",
+				"throws-a-zoderror-when-deployment-receipts-do-not-match-the"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["reviews-a-configured-development-deployment"],
+			"states": [
+				"reviews-a-configured-development-deployment",
+				"throws-the-plugin-discovery-error-unchanged",
+				"throws-an-error-when-the-project-is-not-a-git-repository",
+				"throws-a-syntaxerror-when-deployment-receipts-contain-invali",
+				"throws-a-zoderror-when-deployment-receipts-do-not-match-the"
+			],
 			"viewports": [],
 			"required": true
 		}
