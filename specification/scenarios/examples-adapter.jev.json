@@ -10,6 +10,11 @@
 			"id": "evaluate-validates-a-jev-choice-response",
 			"title": "evaluate validates a Jev choice response",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-jevevaluationerror-when-the-signal-is-already-aborted",
+			"title": "Throws JevEvaluationError when the signal is already aborted",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["evaluate-validates-a-jev-choice-response"],
+			"states": [
+				"evaluate-validates-a-jev-choice-response",
+				"throws-jevevaluationerror-when-the-signal-is-already-aborted"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["evaluate-validates-a-jev-choice-response"],
+			"states": [
+				"evaluate-validates-a-jev-choice-response",
+				"throws-jevevaluationerror-when-the-signal-is-already-aborted"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["evaluate-validates-a-jev-choice-response"],
+			"states": [
+				"evaluate-validates-a-jev-choice-response",
+				"throws-jevevaluationerror-when-the-signal-is-already-aborted"
+			],
 			"viewports": [],
 			"required": true
 		}

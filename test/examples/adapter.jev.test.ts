@@ -45,3 +45,31 @@ test('evaluate validates a Jev choice response', async () => {
 		[{ name: 'choice question returns a validated answer and token usage', input: request, output }]
 	);
 });
+
+test('Throws JevEvaluationError when the signal is already aborted', async () => {
+	const adapter = new JevAdapter({
+		apiKey: 'typesafe-example-key',
+		model: 'jev-latest',
+		fetch: async () => new Response(JSON.stringify(response), { status: 200 })
+	});
+	const controller = new AbortController();
+	controller.abort();
+	const error = new Error('Jev review was cancelled or timed out.');
+	await expect(adapter.evaluate(request, controller.signal)).rejects.toThrow(error.message);
+	recordExampleCases(
+		{
+			unitId: 'adapter.jev',
+			symbol: 'JevAdapter.evaluate',
+			state: 'throws-jevevaluationerror-when-the-signal-is-already-aborted',
+			evidence: 'examples-cases',
+			file: 'throws-jevevaluationerror-when-the-signal-is-already-aborted.json'
+		},
+		[
+			{
+				name: 'already aborted evaluation rejects with the cancellation error',
+				input: { request, signal: 'aborted' },
+				error: { name: 'JevEvaluationError', message: error.message }
+			}
+		]
+	);
+});
