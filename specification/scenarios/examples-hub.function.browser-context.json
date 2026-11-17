@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.function.browser-context",
+	"title": "hub.function.browser-context examples",
+	"kind": "headless",
+	"units": ["hub.function.browser-context"],
+	"builds": [],
+	"states": [
+		{
+			"id": "context-key-is-a-symbol-described-as-hosted-browser",
+			"title": "Context key is a symbol described as hosted browser",
+			"coverage": "required"
+		},
+		{
+			"id": "provide-browser-outside-a-component-throws-the-svelte-error",
+			"title": "Provide browser outside a component throws the Svelte error",
+			"coverage": "required"
+		},
+		{
+			"id": "browser-context-outside-a-component-throws-the-svelte-error",
+			"title": "Browser context outside a component throws the Svelte error",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.function.browser-context.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"context-key-is-a-symbol-described-as-hosted-browser",
+				"provide-browser-outside-a-component-throws-the-svelte-error",
+				"browser-context-outside-a-component-throws-the-svelte-error"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"context-key-is-a-symbol-described-as-hosted-browser",
+				"provide-browser-outside-a-component-throws-the-svelte-error",
+				"browser-context-outside-a-component-throws-the-svelte-error"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"context-key-is-a-symbol-described-as-hosted-browser",
+				"provide-browser-outside-a-component-throws-the-svelte-error",
+				"browser-context-outside-a-component-throws-the-svelte-error"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
