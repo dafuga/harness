@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-command.generate",
+	"title": "command.generate examples",
+	"kind": "headless",
+	"units": ["command.generate"],
+	"builds": [],
+	"states": [
+		{
+			"id": "registers-the-generate-tree-and-its-g-alias-on-a-program",
+			"title": "Registers the generate tree and its g alias on a program",
+			"coverage": "required"
+		},
+		{
+			"id": "shows-help-and-refuses-bad-input-before-any-action",
+			"title": "Shows help and refuses bad input before any action",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-a-component-level-other-than-molecule-or-organism",
+			"title": "Refuses a component level other than molecule or organism",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/command.generate.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"registers-the-generate-tree-and-its-g-alias-on-a-program",
+				"shows-help-and-refuses-bad-input-before-any-action",
+				"refuses-a-component-level-other-than-molecule-or-organism"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"registers-the-generate-tree-and-its-g-alias-on-a-program",
+				"shows-help-and-refuses-bad-input-before-any-action",
+				"refuses-a-component-level-other-than-molecule-or-organism"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"registers-the-generate-tree-and-its-g-alias-on-a-program",
+				"shows-help-and-refuses-bad-input-before-any-action",
+				"refuses-a-component-level-other-than-molecule-or-organism"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
