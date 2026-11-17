@@ -13,7 +13,7 @@
 		},
 		{
 			"id": "reports-declared-builds-that-were-not-produced-or-lie-outsid",
-			"title": "Reports declared builds that were not produced or lie outside the root",
+			"title": "Reports declared builds that were not produced or lie outside the repository",
 			"coverage": "required"
 		},
 		{
@@ -24,6 +24,16 @@
 		{
 			"id": "reports-builds-whose-identity-changed-since-they-were-identi",
 			"title": "Reports builds whose identity changed since they were identified",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-stamp-finds-no-stamp-slot",
+			"title": "Throws ExpectedCliError when stamp finds no stamp slot",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-a-build-file-cannot-be-read",
+			"title": "Throws Error when a build file cannot be read",
 			"coverage": "required"
 		}
 	],
@@ -46,7 +56,9 @@
 				"identifies-the-files-of-a-declared-build",
 				"reports-declared-builds-that-were-not-produced-or-lie-outsid",
 				"stamps-the-build-identity-into-its-empty-stamp-slot",
-				"reports-builds-whose-identity-changed-since-they-were-identi"
+				"reports-builds-whose-identity-changed-since-they-were-identi",
+				"throws-expectedclierror-when-stamp-finds-no-stamp-slot",
+				"throws-error-when-a-build-file-cannot-be-read"
 			],
 			"viewports": [],
 			"required": true
@@ -58,7 +70,9 @@
 				"identifies-the-files-of-a-declared-build",
 				"reports-declared-builds-that-were-not-produced-or-lie-outsid",
 				"stamps-the-build-identity-into-its-empty-stamp-slot",
-				"reports-builds-whose-identity-changed-since-they-were-identi"
+				"reports-builds-whose-identity-changed-since-they-were-identi",
+				"throws-expectedclierror-when-stamp-finds-no-stamp-slot",
+				"throws-error-when-a-build-file-cannot-be-read"
 			],
 			"viewports": [],
 			"required": true
@@ -70,7 +84,9 @@
 				"identifies-the-files-of-a-declared-build",
 				"reports-declared-builds-that-were-not-produced-or-lie-outsid",
 				"stamps-the-build-identity-into-its-empty-stamp-slot",
-				"reports-builds-whose-identity-changed-since-they-were-identi"
+				"reports-builds-whose-identity-changed-since-they-were-identi",
+				"throws-expectedclierror-when-stamp-finds-no-stamp-slot",
+				"throws-error-when-a-build-file-cannot-be-read"
 			],
 			"viewports": [],
 			"required": true
