@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-validator.response-check-input",
+	"title": "validator.response-check-input examples",
+	"kind": "headless",
+	"units": ["validator.response-check-input"],
+	"builds": [],
+	"states": [
+		{
+			"id": "accepts-an-empty-criteria-array",
+			"title": "Accepts an empty criteria array",
+			"coverage": "required"
+		},
+		{
+			"id": "trims-ids-and-descriptions-and-drops-extra-properties",
+			"title": "Trims ids and descriptions and drops extra properties",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-non-array-malformed-blank-and-duplicate-criteria",
+			"title": "Rejects non-array, malformed, blank and duplicate criteria",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/validator.response-check-input.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"accepts-an-empty-criteria-array",
+				"trims-ids-and-descriptions-and-drops-extra-properties",
+				"rejects-non-array-malformed-blank-and-duplicate-criteria"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"accepts-an-empty-criteria-array",
+				"trims-ids-and-descriptions-and-drops-extra-properties",
+				"rejects-non-array-malformed-blank-and-duplicate-criteria"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"accepts-an-empty-criteria-array",
+				"trims-ids-and-descriptions-and-drops-extra-properties",
+				"rejects-non-array-malformed-blank-and-duplicate-criteria"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
