@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.binary-artifact",
+	"title": "desktop.function.binary-artifact examples",
+	"kind": "headless",
+	"units": ["desktop.function.binary-artifact"],
+	"builds": [],
+	"states": [
+		{
+			"id": "decodes-an-empty-transported-artifact",
+			"title": "Decodes an empty transported artifact",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-a-media-type-that-is-not-a-string",
+			"title": "Refuses a media type that is not a string",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-bytes-that-differ-from-the-sent-digest",
+			"title": "Refuses bytes that differ from the sent digest",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.binary-artifact.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"decodes-an-empty-transported-artifact",
+				"refuses-a-media-type-that-is-not-a-string",
+				"refuses-bytes-that-differ-from-the-sent-digest"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"decodes-an-empty-transported-artifact",
+				"refuses-a-media-type-that-is-not-a-string",
+				"refuses-bytes-that-differ-from-the-sent-digest"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"decodes-an-empty-transported-artifact",
+				"refuses-a-media-type-that-is-not-a-string",
+				"refuses-bytes-that-differ-from-the-sent-digest"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
