@@ -15,6 +15,11 @@
 			"id": "steps-a-ready-view",
 			"title": "Steps a ready view",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-gamesteprefusederror-when-level-is-unready",
+			"title": "Throws GameStepRefusedError when level is unready",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -32,21 +37,33 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["validates-game-documents", "steps-a-ready-view"],
+			"states": [
+				"validates-game-documents",
+				"steps-a-ready-view",
+				"throws-gamesteprefusederror-when-level-is-unready"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["validates-game-documents", "steps-a-ready-view"],
+			"states": [
+				"validates-game-documents",
+				"steps-a-ready-view",
+				"throws-gamesteprefusederror-when-level-is-unready"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["validates-game-documents", "steps-a-ready-view"],
+			"states": [
+				"validates-game-documents",
+				"steps-a-ready-view",
+				"throws-gamesteprefusederror-when-level-is-unready"
+			],
 			"viewports": [],
 			"required": true
 		}
