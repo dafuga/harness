@@ -17,6 +17,11 @@
 			"coverage": "required"
 		},
 		{
+			"id": "throws-error-when-an-existing-target-cannot-be-read",
+			"title": "Throws Error when an existing target cannot be read",
+			"coverage": "required"
+		},
+		{
 			"id": "returns-test-type-and-adapter-files-unchanged",
 			"title": "Returns test, type and adapter files unchanged",
 			"coverage": "required"
@@ -40,6 +45,7 @@
 			"states": [
 				"mints-a-uid-for-a-new-source-file",
 				"reuses-the-uid-already-on-disk",
+				"throws-error-when-an-existing-target-cannot-be-read",
 				"returns-test-type-and-adapter-files-unchanged"
 			],
 			"viewports": [],
@@ -51,6 +57,7 @@
 			"states": [
 				"mints-a-uid-for-a-new-source-file",
 				"reuses-the-uid-already-on-disk",
+				"throws-error-when-an-existing-target-cannot-be-read",
 				"returns-test-type-and-adapter-files-unchanged"
 			],
 			"viewports": [],
@@ -62,6 +69,7 @@
 			"states": [
 				"mints-a-uid-for-a-new-source-file",
 				"reuses-the-uid-already-on-disk",
+				"throws-error-when-an-existing-target-cannot-be-read",
 				"returns-test-type-and-adapter-files-unchanged"
 			],
 			"viewports": [],

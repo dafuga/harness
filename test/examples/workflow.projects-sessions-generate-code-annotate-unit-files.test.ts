@@ -15,6 +15,15 @@ function recordFor(state: string) {
 	return { unitId: UNIT_ID, symbol: 'annotateUnitFiles', state, evidence: 'examples-cases', file: `${state}.json` };
 }
 
+function thrownBy(run: () => unknown): Error & { code?: string } {
+	try {
+		run();
+	} catch (error) {
+		return error as Error & { code?: string };
+	}
+	throw new Error('expected the call to throw');
+}
+
 test('Mints a uid for a new source file', async () => {
 	await withTempDir('annotate-unit-files-new-', (root) => {
 		const input = [{ path: SOURCE_PATH, contents: SOURCE }];
@@ -46,6 +55,23 @@ test('Reuses the uid already on disk', async () => {
 				name: 'existing on-disk uid is kept when the file is generated again',
 				input,
 				output: [{ path: output[0].path, contents: output[0].contents }]
+			}
+		]);
+	});
+});
+
+test('Throws Error when an existing target cannot be read', async () => {
+	await withTempDir('annotate-unit-files-unreadable-', (root) => {
+		mkdirSync(join(root, SOURCE_PATH), { recursive: true });
+		const input = [{ path: SOURCE_PATH, contents: SOURCE }];
+		const error = thrownBy(() => annotateUnitFiles(input, root));
+		expect(error).toBeInstanceOf(Error);
+		expect(error.code).toBe('EISDIR');
+		recordExampleCases(recordFor('throws-error-when-an-existing-target-cannot-be-read'), [
+			{
+				name: 'a directory at the target path makes readFileSync fail',
+				input,
+				error: { name: error.name, code: error.code }
 			}
 		]);
 	});
