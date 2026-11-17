@@ -10,6 +10,16 @@
 			"id": "hashes-gateway-requests-by-serialized-identity",
 			"title": "Hashes gateway requests by serialized identity",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-request-data-is-cyclic",
+			"title": "Throws TypeError when request data is cyclic",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-request-data-contains-bigint",
+			"title": "Throws TypeError when request data contains BigInt",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +37,33 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["hashes-gateway-requests-by-serialized-identity"],
+			"states": [
+				"hashes-gateway-requests-by-serialized-identity",
+				"throws-typeerror-when-request-data-is-cyclic",
+				"throws-typeerror-when-request-data-contains-bigint"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["hashes-gateway-requests-by-serialized-identity"],
+			"states": [
+				"hashes-gateway-requests-by-serialized-identity",
+				"throws-typeerror-when-request-data-is-cyclic",
+				"throws-typeerror-when-request-data-contains-bigint"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["hashes-gateway-requests-by-serialized-identity"],
+			"states": [
+				"hashes-gateway-requests-by-serialized-identity",
+				"throws-typeerror-when-request-data-is-cyclic",
+				"throws-typeerror-when-request-data-contains-bigint"
+			],
 			"viewports": [],
 			"required": true
 		}

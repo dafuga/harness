@@ -37,3 +37,44 @@ test('Hashes gateway requests by serialized identity', () => {
 		cases
 	);
 });
+
+test('Throws TypeError when request data is cyclic', () => {
+	const request = {
+		model: 'gpt-4.1',
+		stream: true,
+		input: [] as GatewayRequest['input'],
+		tools: []
+	} satisfies GatewayRequest;
+	request.input.push({ role: 'user', content: request });
+	expect(() => gatewayReplay(request)).toThrow(TypeError);
+	recordExampleCases(
+		{
+			unitId: 'function.gateway-replay',
+			symbol: 'gatewayReplay',
+			state: 'throws-typeerror-when-request-data-is-cyclic',
+			evidence: 'examples-cases',
+			file: 'throws-typeerror-when-request-data-is-cyclic.json'
+		},
+		[{ name: 'cyclic request input', input: { model: 'gpt-4.1', input: '[cyclic]' }, error: 'TypeError' }]
+	);
+});
+
+test('Throws TypeError when request data contains BigInt', () => {
+	const request = {
+		model: 'gpt-4.1',
+		stream: true,
+		input: [{ role: 'user', content: 1n }],
+		tools: []
+	} satisfies GatewayRequest;
+	expect(() => gatewayReplay(request)).toThrow(TypeError);
+	recordExampleCases(
+		{
+			unitId: 'function.gateway-replay',
+			symbol: 'gatewayReplay',
+			state: 'throws-typeerror-when-request-data-contains-bigint',
+			evidence: 'examples-cases',
+			file: 'throws-typeerror-when-request-data-contains-bigint.json'
+		},
+		[{ name: 'BigInt nested in request input', input: { model: 'gpt-4.1', content: 'BigInt' }, error: 'TypeError' }]
+	);
+});
