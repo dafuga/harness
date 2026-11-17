@@ -20,6 +20,16 @@
 			"id": "exports-the-commit-and-runs-an-empty-check-plan",
 			"title": "Exports the commit and runs an empty check plan",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-commit-cannot-be-exported",
+			"title": "Throws Error when the commit cannot be exported",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-a-slot-exceeds-256-flags",
+			"title": "Throws ExpectedCliError when a slot exceeds 256 flags",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +50,9 @@
 			"states": [
 				"skips-the-capture-context-when-no-video-slots-exist",
 				"returns-no-pending-video-flags-for-unenrolled-scenarios",
-				"exports-the-commit-and-runs-an-empty-check-plan"
+				"exports-the-commit-and-runs-an-empty-check-plan",
+				"throws-error-when-the-commit-cannot-be-exported",
+				"throws-expectedclierror-when-a-slot-exceeds-256-flags"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +63,9 @@
 			"states": [
 				"skips-the-capture-context-when-no-video-slots-exist",
 				"returns-no-pending-video-flags-for-unenrolled-scenarios",
-				"exports-the-commit-and-runs-an-empty-check-plan"
+				"exports-the-commit-and-runs-an-empty-check-plan",
+				"throws-error-when-the-commit-cannot-be-exported",
+				"throws-expectedclierror-when-a-slot-exceeds-256-flags"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +76,9 @@
 			"states": [
 				"skips-the-capture-context-when-no-video-slots-exist",
 				"returns-no-pending-video-flags-for-unenrolled-scenarios",
-				"exports-the-commit-and-runs-an-empty-check-plan"
+				"exports-the-commit-and-runs-an-empty-check-plan",
+				"throws-error-when-the-commit-cannot-be-exported",
+				"throws-expectedclierror-when-a-slot-exceeds-256-flags"
 			],
 			"viewports": [],
 			"required": true

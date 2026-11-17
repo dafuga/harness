@@ -5,10 +5,12 @@ import { withTempDir, withTempRepo } from '../support/temporary';
 import { SnapshotRunService } from '../../src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService';
 import type { SnapshotRun } from '../../src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.types';
 import { snapshotCaptureContext } from '../../src/workflows/verification-evidence/run-verify/verification-service/snapshotCaptureContext';
-import { snapshotVideoFlags } from '../../src/workflows/verification-evidence/run-verify/verification-service/snapshotVideoFlags';
+import { snapshotVideoFlags, pendingVideoEnvironment } from '../../src/workflows/verification-evidence/run-verify/verification-service/snapshotVideoFlags';
 
 type Scenarios = Parameters<typeof snapshotVideoFlags>[1];
+type Requirements = Parameters<typeof pendingVideoEnvironment>[1];
 type Repository = { git: (...args: string[]) => string };
+type Failure = { name: string; message: string } | undefined;
 
 const COMMIT = '0123456789abcdef0123456789abcdef01234567';
 const TREE = '89abcdef0123456789abcdef0123456789abcdef';
@@ -48,6 +50,27 @@ function commitEmptyRepo(repository: Repository) {
 		commit: repository.git('rev-parse', 'HEAD').trim(),
 		tree: repository.git('rev-parse', 'HEAD^{tree}').trim()
 	};
+}
+
+async function failureOf(action: () => unknown): Promise<Failure> {
+	return Promise.resolve()
+		.then(action)
+		.then(
+			() => undefined,
+			(error: unknown) => ({ name: (error as Error).name, message: (error as Error).message })
+		);
+}
+
+function overflowRequirements(): Requirements {
+	const pending = Array.from({ length: 257 }, (_, index) => ({
+		id: `flag-${index}`,
+		unit: 'checkout',
+		clipId: 'clip-a',
+		viewport: 'desktop',
+		createdAt: '2026-11-16T00:00:00.000Z',
+		note: 'review'
+	}));
+	return { checkout: { known: [], pending } };
 }
 
 test('Skips the capture context when no video slots exist', async () => {
@@ -131,4 +154,54 @@ test('Exports the commit and runs an empty check plan', async () => {
 			);
 		});
 	});
+});
+
+test('Throws Error when the commit cannot be exported', async () => {
+	await withTempRepo(async (repository) => {
+		await withTempDir('snapshot-run-missing-commit-', async (directory) => {
+			const missing = '1'.repeat(40);
+			const run = exampleRun(repository.root, `${directory}/run`, missing, missing);
+			const failure = await failureOf(() => new SnapshotRunService(run).execute([], []));
+			expect(failure).toBeDefined();
+			expect(failure?.name).toContain('Error');
+			recordExampleCases(
+				{
+					unitId: 'service.snapshot-run',
+					symbol: 'SnapshotRunService.execute',
+					state: 'throws-error-when-the-commit-cannot-be-exported',
+					evidence: 'examples-cases',
+					file: 'throws-error-when-the-commit-cannot-be-exported.json'
+				},
+				[
+					{
+						name: 'a commit missing from the repository rejects the execution promise',
+						input: { commit: missing, plan: [] },
+						error: failure?.name ?? null
+					}
+				]
+			);
+		});
+	});
+});
+
+test('Throws ExpectedCliError when a slot exceeds 256 flags', async () => {
+	const requirements = overflowRequirements();
+	const failure = await failureOf(() => pendingVideoEnvironment({}, requirements));
+	expect(failure?.message).toContain('exceeds 256 pending frame flags');
+	recordExampleCases(
+		{
+			unitId: 'service.snapshot-run',
+			symbol: 'pendingVideoEnvironment',
+			state: 'throws-expectedclierror-when-a-slot-exceeds-256-flags',
+			evidence: 'examples-cases',
+			file: 'throws-expectedclierror-when-a-slot-exceeds-256-flags.json'
+		},
+		[
+			{
+				name: 'one slot with 257 pending flags is rejected',
+				input: { env: {}, pendingFlags: 257 },
+				error: failure?.message ?? null
+			}
+		]
+	);
 });
