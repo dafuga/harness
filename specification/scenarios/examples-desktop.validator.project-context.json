@@ -20,6 +20,11 @@
 			"id": "requires-an-explicit-project-for-project-selection",
 			"title": "requires an explicit project for project selection",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-project-context-is-not-an-object",
+			"title": "Throws Error when project context is not an object",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +45,8 @@
 			"states": [
 				"validates-project-context-across-operation-channels",
 				"validates-draft-thread-comments-and-drops-unrelated-fields",
-				"requires-an-explicit-project-for-project-selection"
+				"requires-an-explicit-project-for-project-selection",
+				"throws-error-when-project-context-is-not-an-object"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +57,8 @@
 			"states": [
 				"validates-project-context-across-operation-channels",
 				"validates-draft-thread-comments-and-drops-unrelated-fields",
-				"requires-an-explicit-project-for-project-selection"
+				"requires-an-explicit-project-for-project-selection",
+				"throws-error-when-project-context-is-not-an-object"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +69,8 @@
 			"states": [
 				"validates-project-context-across-operation-channels",
 				"validates-draft-thread-comments-and-drops-unrelated-fields",
-				"requires-an-explicit-project-for-project-selection"
+				"requires-an-explicit-project-for-project-selection",
+				"throws-error-when-project-context-is-not-an-object"
 			],
 			"viewports": [],
 			"required": true

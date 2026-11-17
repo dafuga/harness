@@ -86,3 +86,24 @@ test('requires an explicit project for project selection', () => {
 		[{ name: 'selection without project id', input: { channel: 'project:select', payload: {} }, error: { name: 'ExplicitProjectRequiredError', message: 'Select an explicit project.' } }]
 	);
 });
+
+test('Throws Error when project context is not an object', () => {
+	let thrown: unknown;
+	try {
+		validator.context(null);
+	} catch (error) {
+		thrown = error;
+	}
+
+	expect(thrown).toMatchObject({ name: 'IpcFieldError', message: 'Expected an object.' });
+	recordExampleCases(
+		{
+			unitId: 'desktop.validator.project-context',
+			symbol: 'context',
+			state: 'throws-error-when-project-context-is-not-an-object',
+			evidence: 'examples-cases',
+			file: 'throws-error-when-project-context-is-not-an-object.json'
+		},
+		[{ name: 'null project context', input: null, error: { name: 'IpcFieldError', message: 'Expected an object.' } }]
+	);
+});
