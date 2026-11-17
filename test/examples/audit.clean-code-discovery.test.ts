@@ -1,9 +1,9 @@
 import { test } from 'vitest';
-import { writeFileSync } from 'node:fs';
+import { chmodSync, writeFileSync } from 'node:fs';
 import { extname, join } from 'node:path';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { withTempRepo } from '../support/temporary';
+import { withTempDir, withTempRepo } from '../support/temporary';
 import {
 	discoverCleanCodeFiles,
 	matchesExclusion
@@ -107,4 +107,45 @@ test('Matches globs and directory prefix exclusions', () => {
 		},
 		outputs
 	);
+});
+
+test('Throws ExpectedCliError when the Git ignore probe times out', async () => {
+	await withTempDir('clean-code-timeout-', (directory) => {
+		const executable = join(directory, 'git');
+		writeFileSync(executable, '#!/bin/sh\nwhile :; do :; done\n');
+		chmodSync(executable, 0o755);
+		const previousPath = process.env.PATH;
+		process.env.PATH = `${directory}:/usr/bin:/bin`;
+		let error: unknown;
+		try {
+			discoverCleanCodeFiles(directory, { files: [], dirs: [], ignoredPaths: [] }, []);
+		} catch (caught) {
+			error = caught;
+		} finally {
+			if (previousPath === undefined) delete process.env.PATH;
+			else process.env.PATH = previousPath;
+		}
+		expect(error).toBeInstanceOf(Error);
+		const actual = error as Error & { name: string };
+		expect(actual.name).toBe('ExpectedCliError');
+		expect(actual.message).toBe(
+			'Cannot safely determine ignored files for clean code review.'
+		);
+		recordExampleCases(
+			{
+				unitId: 'audit.clean-code-discovery',
+				symbol: 'discoverCleanCodeFiles',
+				state: 'throws-expectedclierror-when-the-git-ignore-probe-times-out',
+				evidence: 'examples-cases',
+				file: 'throws-expectedclierror-when-the-git-ignore-probe-times-out.json'
+			},
+			[
+				{
+					name: 'Git ignore probe exceeds its synchronous deadline',
+					input: { files: [], ignoredPaths: [], exclusions: [] },
+					error: { name: actual.name, message: actual.message }
+				}
+			]
+		);
+	});
 });

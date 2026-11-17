@@ -15,6 +15,11 @@
 			"id": "matches-globs-and-directory-prefix-exclusions",
 			"title": "Matches globs and directory prefix exclusions",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-the-git-ignore-probe-times-out",
+			"title": "Throws ExpectedCliError when the Git ignore probe times out",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +39,8 @@
 			"kind": "output",
 			"states": [
 				"selects-source-files-and-separates-excluded-paths",
-				"matches-globs-and-directory-prefix-exclusions"
+				"matches-globs-and-directory-prefix-exclusions",
+				"throws-expectedclierror-when-the-git-ignore-probe-times-out"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +50,8 @@
 			"kind": "assertions",
 			"states": [
 				"selects-source-files-and-separates-excluded-paths",
-				"matches-globs-and-directory-prefix-exclusions"
+				"matches-globs-and-directory-prefix-exclusions",
+				"throws-expectedclierror-when-the-git-ignore-probe-times-out"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +61,8 @@
 			"kind": "trace",
 			"states": [
 				"selects-source-files-and-separates-excluded-paths",
-				"matches-globs-and-directory-prefix-exclusions"
+				"matches-globs-and-directory-prefix-exclusions",
+				"throws-expectedclierror-when-the-git-ignore-probe-times-out"
 			],
 			"viewports": [],
 			"required": true
