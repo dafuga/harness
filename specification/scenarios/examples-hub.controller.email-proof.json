@@ -15,6 +15,11 @@
 			"id": "verifies-an-email-code-and-issues-a-session",
 			"title": "Verifies an email code and issues a session",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-authfailure-when-request-carries-an-authorization-hea",
+			"title": "Throws AuthFailure when request carries an Authorization header",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +39,8 @@
 			"kind": "output",
 			"states": [
 				"starts-email-proof-for-a-browser-request",
-				"verifies-an-email-code-and-issues-a-session"
+				"verifies-an-email-code-and-issues-a-session",
+				"throws-authfailure-when-request-carries-an-authorization-hea"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +50,8 @@
 			"kind": "assertions",
 			"states": [
 				"starts-email-proof-for-a-browser-request",
-				"verifies-an-email-code-and-issues-a-session"
+				"verifies-an-email-code-and-issues-a-session",
+				"throws-authfailure-when-request-carries-an-authorization-hea"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +61,8 @@
 			"kind": "trace",
 			"states": [
 				"starts-email-proof-for-a-browser-request",
-				"verifies-an-email-code-and-issues-a-session"
+				"verifies-an-email-code-and-issues-a-session",
+				"throws-authfailure-when-request-carries-an-authorization-hea"
 			],
 			"viewports": [],
 			"required": true

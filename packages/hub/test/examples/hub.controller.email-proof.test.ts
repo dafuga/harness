@@ -42,3 +42,21 @@ test('Verifies an email code and issues a session', async () => {
 		[{ name: 'valid code exchanges pending proof for a session', input: { code: '12345678', cookie: 'pending-example' }, output: { status: response.status, body } }]
 	);
 });
+
+test('Throws AuthFailure when request carries an Authorization header', async () => {
+	const controller = new EmailProofController(options({ start: async () => ({ status: 'sent' }) }));
+	const request = new Request('https://example.test/api/auth/email/start', {
+		method: 'POST', headers: { authorization: 'Bearer example-token' }
+	});
+	let failure: unknown;
+	try {
+		await controller.routes()['POST /api/auth/email/start'](request);
+	} catch (error) {
+		failure = error;
+	}
+	expect(failure).toMatchObject({ code: 'email-proof-required', status: 401 });
+	recordExampleCases(
+		{ unitId: 'hub.controller.email-proof', symbol: 'start', state: 'throws-authfailure-when-request-carries-an-authorization-hea', evidence: 'examples-cases', file: 'throws-authfailure-when-request-carries-an-authorization-hea.json' },
+		[{ name: 'bearer authorization is rejected before starting proof', input: { method: 'POST', authorization: 'Bearer example-token' }, error: { code: 'email-proof-required', status: 401 } }]
+	);
+});
