@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.commit-message",
+	"title": "service.commit-message examples",
+	"kind": "headless",
+	"units": ["service.commit-message"],
+	"builds": [],
+	"states": [
+		{
+			"id": "passes-a-staged-message-of-an-unheld-index",
+			"title": "Passes a staged message of an unheld index",
+			"coverage": "required"
+		},
+		{
+			"id": "finds-no-stored-problem-in-undeclared-history",
+			"title": "Finds no stored problem in undeclared history",
+			"coverage": "required"
+		},
+		{
+			"id": "keeps-the-report-failures-of-undeclared-history",
+			"title": "Keeps the report failures of undeclared history",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.commit-message.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"passes-a-staged-message-of-an-unheld-index",
+				"finds-no-stored-problem-in-undeclared-history",
+				"keeps-the-report-failures-of-undeclared-history"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"passes-a-staged-message-of-an-unheld-index",
+				"finds-no-stored-problem-in-undeclared-history",
+				"keeps-the-report-failures-of-undeclared-history"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"passes-a-staged-message-of-an-unheld-index",
+				"finds-no-stored-problem-in-undeclared-history",
+				"keeps-the-report-failures-of-undeclared-history"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
