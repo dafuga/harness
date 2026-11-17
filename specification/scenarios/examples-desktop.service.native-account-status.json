@@ -10,6 +10,11 @@
 			"id": "rechecks-identity-and-preserves-sessions-during-outages",
 			"title": "Rechecks identity and preserves sessions during outages",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-hostedfailurevalidator-when-offline",
+			"title": "Throws HostedFailureValidator when offline",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["rechecks-identity-and-preserves-sessions-during-outages"],
+			"states": [
+				"rechecks-identity-and-preserves-sessions-during-outages",
+				"throws-hostedfailurevalidator-when-offline"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["rechecks-identity-and-preserves-sessions-during-outages"],
+			"states": [
+				"rechecks-identity-and-preserves-sessions-during-outages",
+				"throws-hostedfailurevalidator-when-offline"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["rechecks-identity-and-preserves-sessions-during-outages"],
+			"states": [
+				"rechecks-identity-and-preserves-sessions-during-outages",
+				"throws-hostedfailurevalidator-when-offline"
+			],
 			"viewports": [],
 			"required": true
 		}

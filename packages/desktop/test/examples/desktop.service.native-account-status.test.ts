@@ -3,6 +3,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { NativeAccountStatusService } from '../../src/lib/development-tooling/desktop-initialization/NativeAccountStatusService';
 import type { StatusOptions } from '../../src/lib/development-tooling/desktop-initialization/NativeAccountStatusService.types';
+import { HostedFailureValidator } from '../../src/validators/development-tooling/HostedFailureValidator';
 
 const credential = {
 	origin: 'https://hosted.example.com',
@@ -80,6 +81,35 @@ test('Rechecks identity and preserves sessions during outages', async () => {
 			{
 				name: 'A temporary request failure propagates without clearing the session',
 				input: { credential, requestError: errorSummary(outage) },
+				error: errorSummary(observedError)
+			}
+		]
+	);
+});
+
+test('Throws HostedFailureValidator when offline', async () => {
+	const outage = new HostedFailureValidator('offline');
+	const events: string[] = [];
+	let observedError: unknown;
+	try {
+		await serviceFor(null, events, outage).read(credential);
+	} catch (error) {
+		observedError = error;
+	}
+	expect(observedError).toBe(outage);
+	expect(events).toEqual(['request:/api/auth/status:principal_7f3a9c21']);
+	recordExampleCases(
+		{
+			unitId: 'desktop.service.native-account-status',
+			symbol: 'read',
+			state: 'throws-hostedfailurevalidator-when-offline',
+			evidence: 'examples-cases',
+			file: 'throws-hostedfailurevalidator-when-offline.json'
+		},
+		[
+			{
+				name: 'Offline status request propagates unchanged and preserves the saved session',
+				input: { credential, requestError: { name: outage.name, category: outage.category } },
 				error: errorSummary(observedError)
 			}
 		]
