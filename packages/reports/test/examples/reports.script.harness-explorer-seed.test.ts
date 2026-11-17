@@ -54,3 +54,38 @@ test('Seeds the explorer fixture and indexes its config', async () => {
 		}]
 	);
 });
+
+test('Throws VerifyRepo rejection when a repository write fails', async () => {
+	const calls: string[] = [];
+	const reason = new Error('fixture write failed');
+	const repo = {
+		write: async (path: string) => {
+			calls.push(`write:${path}`);
+			throw reason;
+		},
+		harness: async () => {
+			calls.push('harness');
+			return '';
+		},
+		json: async () => {
+			calls.push('json');
+			return {};
+		}
+	} as unknown as Parameters<typeof seedExplorer>[0];
+	await expect(seedExplorer(repo)).rejects.toBe(reason);
+	expect(calls).toEqual(['write:src/config/titlesConfig.ts']);
+	recordExampleCases(
+		{
+			unitId: 'reports.script.harness-explorer-seed',
+			symbol: 'seedExplorer',
+			state: 'throws-verifyrepo-rejection-when-a-repository-write-fails',
+			evidence: 'examples-cases',
+			file: 'throws-verifyrepo-rejection-when-a-repository-write-fails.json'
+		},
+		[{
+			name: 'the first repository write rejection is propagated',
+			input: { failingCall: 'write:src/config/titlesConfig.ts' },
+			error: { message: reason.message }
+		}]
+	);
+});

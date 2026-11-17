@@ -10,6 +10,11 @@
 			"id": "seeds-the-explorer-fixture-and-indexes-its-config",
 			"title": "Seeds the explorer fixture and indexes its config",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-verifyrepo-rejection-when-a-repository-write-fails",
+			"title": "Throws VerifyRepo rejection when a repository write fails",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["seeds-the-explorer-fixture-and-indexes-its-config"],
+			"states": [
+				"seeds-the-explorer-fixture-and-indexes-its-config",
+				"throws-verifyrepo-rejection-when-a-repository-write-fails"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["seeds-the-explorer-fixture-and-indexes-its-config"],
+			"states": [
+				"seeds-the-explorer-fixture-and-indexes-its-config",
+				"throws-verifyrepo-rejection-when-a-repository-write-fails"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["seeds-the-explorer-fixture-and-indexes-its-config"],
+			"states": [
+				"seeds-the-explorer-fixture-and-indexes-its-config",
+				"throws-verifyrepo-rejection-when-a-repository-write-fails"
+			],
 			"viewports": [],
 			"required": true
 		}
