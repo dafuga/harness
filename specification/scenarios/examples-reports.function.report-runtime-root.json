@@ -15,6 +15,16 @@
 			"id": "falls-back-to-the-packages-reports-folder-when-unset",
 			"title": "falls back to the packages reports folder when unset",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-the-fallback-url-cannot-be-resolved",
+			"title": "Throws TypeError when the fallback URL cannot be resolved",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-the-fallback-url-is-not-a-file-url",
+			"title": "Throws TypeError when the fallback URL is not a file URL",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +44,9 @@
 			"kind": "output",
 			"states": [
 				"reports-runtime-root-returns-the-override-exactly-when-set",
-				"falls-back-to-the-packages-reports-folder-when-unset"
+				"falls-back-to-the-packages-reports-folder-when-unset",
+				"throws-typeerror-when-the-fallback-url-cannot-be-resolved",
+				"throws-typeerror-when-the-fallback-url-is-not-a-file-url"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +56,9 @@
 			"kind": "assertions",
 			"states": [
 				"reports-runtime-root-returns-the-override-exactly-when-set",
-				"falls-back-to-the-packages-reports-folder-when-unset"
+				"falls-back-to-the-packages-reports-folder-when-unset",
+				"throws-typeerror-when-the-fallback-url-cannot-be-resolved",
+				"throws-typeerror-when-the-fallback-url-is-not-a-file-url"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +68,9 @@
 			"kind": "trace",
 			"states": [
 				"reports-runtime-root-returns-the-override-exactly-when-set",
-				"falls-back-to-the-packages-reports-folder-when-unset"
+				"falls-back-to-the-packages-reports-folder-when-unset",
+				"throws-typeerror-when-the-fallback-url-cannot-be-resolved",
+				"throws-typeerror-when-the-fallback-url-is-not-a-file-url"
 			],
 			"viewports": [],
 			"required": true

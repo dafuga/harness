@@ -4,6 +4,17 @@ import { recordExampleCases } from '../../../../test/support/recordExampleCases'
 import { reportRuntimeRoot } from '../../src/utils/reports-media/reportRuntimeRoot';
 
 const OVERRIDE = '/opt/harness/reports-runtime';
+const RealURL = URL;
+
+function ThrowingURL(): never {
+	throw new TypeError('Invalid URL');
+}
+
+class HttpURL extends RealURL {
+	constructor() {
+		super('http://example.test/a/b/c/d');
+	}
+}
 
 function rootWithEnv(value: string | undefined): string {
 	vi.stubEnv('HARNESS_REPORTS_RUNTIME_ROOT', 'unused');
@@ -17,6 +28,22 @@ function rootWithEnv(value: string | undefined): string {
 	} finally {
 		vi.unstubAllEnvs();
 	}
+}
+
+function errorWithUrl(urlStub: unknown): { name: string; message: string } {
+	vi.stubEnv('HARNESS_REPORTS_RUNTIME_ROOT', 'unused');
+	delete process.env.HARNESS_REPORTS_RUNTIME_ROOT;
+	vi.stubGlobal('URL', urlStub);
+	try {
+		reportRuntimeRoot();
+	} catch (error) {
+		const { name, message } = error as TypeError;
+		return { name, message };
+	} finally {
+		vi.unstubAllGlobals();
+		vi.unstubAllEnvs();
+	}
+	throw new Error('expected reportRuntimeRoot to throw');
 }
 
 function summariseFallback(root: string) {
@@ -76,6 +103,50 @@ test('falls back to the packages reports folder when unset', () => {
 				name: 'override variable unset resolves the packages reports folder',
 				input: {},
 				output: summary
+			}
+		]
+	);
+});
+
+test('Throws TypeError when the fallback URL cannot be resolved', () => {
+	const caught = errorWithUrl(ThrowingURL);
+
+	expect(caught.name).toBe('TypeError');
+	recordExampleCases(
+		{
+			unitId: 'reports.function.report-runtime-root',
+			symbol: 'reportRuntimeRoot',
+			state: 'throws-typeerror-when-the-fallback-url-cannot-be-resolved',
+			evidence: 'examples-cases',
+			file: 'throws-typeerror-when-the-fallback-url-cannot-be-resolved.json'
+		},
+		[
+			{
+				name: 'override unset and the URL constructor rejects the relative path',
+				input: { HARNESS_REPORTS_RUNTIME_ROOT: 'unset', relativePath: '../../..' },
+				error: caught
+			}
+		]
+	);
+});
+
+test('Throws TypeError when the fallback URL is not a file URL', () => {
+	const caught = errorWithUrl(HttpURL);
+
+	expect(caught.name).toBe('TypeError');
+	recordExampleCases(
+		{
+			unitId: 'reports.function.report-runtime-root',
+			symbol: 'reportRuntimeRoot',
+			state: 'throws-typeerror-when-the-fallback-url-is-not-a-file-url',
+			evidence: 'examples-cases',
+			file: 'throws-typeerror-when-the-fallback-url-is-not-a-file-url.json'
+		},
+		[
+			{
+				name: 'override unset and the module URL resolves to an http scheme',
+				input: { HARNESS_REPORTS_RUNTIME_ROOT: 'unset', moduleUrl: 'http://example.test/a/b/c/d' },
+				error: caught
 			}
 		]
 	);
