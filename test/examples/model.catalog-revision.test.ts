@@ -93,6 +93,23 @@ test('Creates a revision with its complete indexed data', async () => {
 	);
 });
 
+test('Throws Caller input getter exception when create reads input', () => {
+	const calls: unknown[] = [];
+	const input = {
+		...row,
+		get subject(): string {
+			throw new Error('caller getter failed');
+		}
+	};
+	const adapter = makeAdapter(row, calls);
+	expect(() => CatalogRevision.create(adapter, input)).toThrow('caller getter failed');
+	expect(calls).toEqual([]);
+	recordExampleCases(
+		{ unitId: 'model.catalog-revision', symbol: 'CatalogRevision.create', state: 'throws-caller-input-getter-exception-when-create-reads-input', evidence: 'examples-cases', file: 'throws-caller-input-getter-exception-when-create-reads-input.json' },
+		[{ name: 'a throwing subject getter prevents adapter invocation', input: { property: 'subject' }, error: 'caller getter failed' }]
+	);
+});
+
 test('Updates a revision with an optional patch', async () => {
 	const calls: unknown[] = [];
 	const patch: CatalogRevisionUpdateInput = { coverage: 'verified', registryAvailable: true };

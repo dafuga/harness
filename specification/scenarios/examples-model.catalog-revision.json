@@ -22,6 +22,11 @@
 			"coverage": "required"
 		},
 		{
+			"id": "throws-caller-input-getter-exception-when-create-reads-input",
+			"title": "Throws Caller input getter exception when create reads input",
+			"coverage": "required"
+		},
+		{
 			"id": "updates-a-revision-with-an-optional-patch",
 			"title": "Updates a revision with an optional patch",
 			"coverage": "required"
@@ -51,6 +56,7 @@
 				"finds-a-revision-by-its-commit-id",
 				"finds-revisions-by-copied-filter-fields",
 				"creates-a-revision-with-its-complete-indexed-data",
+				"throws-caller-input-getter-exception-when-create-reads-input",
 				"updates-a-revision-with-an-optional-patch",
 				"deletes-a-revision-by-its-commit-id"
 			],
@@ -64,6 +70,7 @@
 				"finds-a-revision-by-its-commit-id",
 				"finds-revisions-by-copied-filter-fields",
 				"creates-a-revision-with-its-complete-indexed-data",
+				"throws-caller-input-getter-exception-when-create-reads-input",
 				"updates-a-revision-with-an-optional-patch",
 				"deletes-a-revision-by-its-commit-id"
 			],
@@ -77,6 +84,7 @@
 				"finds-a-revision-by-its-commit-id",
 				"finds-revisions-by-copied-filter-fields",
 				"creates-a-revision-with-its-complete-indexed-data",
+				"throws-caller-input-getter-exception-when-create-reads-input",
 				"updates-a-revision-with-an-optional-patch",
 				"deletes-a-revision-by-its-commit-id"
 			],
