@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-template.development-tooling-atomic-syntax-d",
+	"title": "template.development-tooling-atomic-syntax-d examples",
+	"kind": "headless",
+	"units": ["template.development-tooling-atomic-syntax-d"],
+	"builds": [],
+	"states": [
+		{
+			"id": "reads-atomic-scaffold-metadata",
+			"title": "Reads atomic scaffold metadata",
+			"coverage": "required"
+		},
+		{
+			"id": "collects-matching-atomic-elements",
+			"title": "Collects matching atomic elements",
+			"coverage": "required"
+		},
+		{
+			"id": "walks-markup-nodes-in-order",
+			"title": "Walks markup nodes in order",
+			"coverage": "required"
+		},
+		{
+			"id": "ignores-excluded-markup-properties",
+			"title": "Ignores excluded markup properties",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-a-parse-error-for-invalid-svelte-source",
+			"title": "Throws a parse error for invalid Svelte source",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/template.development-tooling-atomic-syntax-d.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"reads-atomic-scaffold-metadata",
+				"collects-matching-atomic-elements",
+				"walks-markup-nodes-in-order",
+				"ignores-excluded-markup-properties",
+				"throws-a-parse-error-for-invalid-svelte-source"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"reads-atomic-scaffold-metadata",
+				"collects-matching-atomic-elements",
+				"walks-markup-nodes-in-order",
+				"ignores-excluded-markup-properties",
+				"throws-a-parse-error-for-invalid-svelte-source"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"reads-atomic-scaffold-metadata",
+				"collects-matching-atomic-elements",
+				"walks-markup-nodes-in-order",
+				"ignores-excluded-markup-properties",
+				"throws-a-parse-error-for-invalid-svelte-source"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
