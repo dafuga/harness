@@ -1,4 +1,4 @@
-import { test } from 'vitest';
+import { test, vi } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { builtinModules } from '../../src/templates/module-system/builtinModules';
@@ -53,5 +53,48 @@ test('Admits every bundled capability in order', () => {
 			file: 'admits-every-bundled-capability-in-order.json'
 		},
 		bundledCases()
+	);
+});
+
+interface EvaluationOutcome {
+	thrown: boolean;
+	message: string;
+}
+
+async function evaluateWithInvalidEmailEntry(): Promise<EvaluationOutcome> {
+	vi.resetModules();
+	vi.doMock('../../src/templates/module-system/emailModule', () => ({
+		emailModule: 'not-a-definition'
+	}));
+	try {
+		await import('../../src/templates/module-system/builtinModules');
+		return { thrown: false, message: '' };
+	} catch (error) {
+		return { thrown: true, message: error instanceof Error ? error.message : String(error) };
+	} finally {
+		vi.doUnmock('../../src/templates/module-system/emailModule');
+		vi.resetModules();
+	}
+}
+
+test('Throws moduleDefinitionSchema parse error on invalid entry', async () => {
+	const outcome = await evaluateWithInvalidEmailEntry();
+	expect(outcome.thrown).toBe(true);
+	expect(outcome.message.length).toBeGreaterThan(0);
+	recordExampleCases(
+		{
+			unitId: 'template.module-system-builtin-modules',
+			symbol: 'builtinModules',
+			state: 'throws-moduledefinitionschema-parse-error-on-invalid-entry',
+			evidence: 'examples-cases',
+			file: 'throws-moduledefinitionschema-parse-error-on-invalid-entry.json'
+		},
+		[
+			{
+				name: 'bundled emailModule entry is not an object',
+				input: { entry: 'emailModule', value: 'not-a-definition' },
+				error: outcome.message
+			}
+		]
 	);
 });

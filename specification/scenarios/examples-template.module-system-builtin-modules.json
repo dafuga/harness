@@ -10,6 +10,11 @@
 			"id": "admits-every-bundled-capability-in-order",
 			"title": "Admits every bundled capability in order",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-moduledefinitionschema-parse-error-on-invalid-entry",
+			"title": "Throws moduleDefinitionSchema parse error on invalid entry",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["admits-every-bundled-capability-in-order"],
+			"states": [
+				"admits-every-bundled-capability-in-order",
+				"throws-moduledefinitionschema-parse-error-on-invalid-entry"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["admits-every-bundled-capability-in-order"],
+			"states": [
+				"admits-every-bundled-capability-in-order",
+				"throws-moduledefinitionschema-parse-error-on-invalid-entry"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["admits-every-bundled-capability-in-order"],
+			"states": [
+				"admits-every-bundled-capability-in-order",
+				"throws-moduledefinitionschema-parse-error-on-invalid-entry"
+			],
 			"viewports": [],
 			"required": true
 		}
