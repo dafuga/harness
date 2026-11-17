@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-command.development-tooling-contracts-command-diff-contract-snapshots",
+	"title": "command.development-tooling-contracts-command-diff-contract-snapshots examples",
+	"kind": "headless",
+	"units": ["command.development-tooling-contracts-command-diff-contract-snapshots"],
+	"builds": [],
+	"states": [
+		{
+			"id": "keeps-uid-renames-separate-from-retired-id-tombstones",
+			"title": "Keeps uid renames separate from retired id tombstones",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/command.development-tooling-contracts-command-diff-contract-snapshots.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["keeps-uid-renames-separate-from-retired-id-tombstones"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["keeps-uid-renames-separate-from-retired-id-tombstones"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["keeps-uid-renames-separate-from-retired-id-tombstones"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
