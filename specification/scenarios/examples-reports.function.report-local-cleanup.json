@@ -10,6 +10,21 @@
 			"id": "removes-old-files-and-preserves-reserved-and-known-runs",
 			"title": "Removes old files and preserves reserved and known runs",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-invalidreportcleanuprooterror-when-cutoff-is-not-fini",
+			"title": "Throws InvalidReportCleanupRootError when cutoff is not finite",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-invalidreportcleanuprooterror-when-root-is-a-symlink",
+			"title": "Throws InvalidReportCleanupRootError when root is a symlink",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-invalidreportcleanuprooterror-when-runs-directory-is",
+			"title": "Throws InvalidReportCleanupRootError when runs directory is a symlink",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +42,36 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["removes-old-files-and-preserves-reserved-and-known-runs"],
+			"states": [
+				"removes-old-files-and-preserves-reserved-and-known-runs",
+				"throws-invalidreportcleanuprooterror-when-cutoff-is-not-fini",
+				"throws-invalidreportcleanuprooterror-when-root-is-a-symlink",
+				"throws-invalidreportcleanuprooterror-when-runs-directory-is"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["removes-old-files-and-preserves-reserved-and-known-runs"],
+			"states": [
+				"removes-old-files-and-preserves-reserved-and-known-runs",
+				"throws-invalidreportcleanuprooterror-when-cutoff-is-not-fini",
+				"throws-invalidreportcleanuprooterror-when-root-is-a-symlink",
+				"throws-invalidreportcleanuprooterror-when-runs-directory-is"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["removes-old-files-and-preserves-reserved-and-known-runs"],
+			"states": [
+				"removes-old-files-and-preserves-reserved-and-known-runs",
+				"throws-invalidreportcleanuprooterror-when-cutoff-is-not-fini",
+				"throws-invalidreportcleanuprooterror-when-root-is-a-symlink",
+				"throws-invalidreportcleanuprooterror-when-runs-directory-is"
+			],
 			"viewports": [],
 			"required": true
 		}
