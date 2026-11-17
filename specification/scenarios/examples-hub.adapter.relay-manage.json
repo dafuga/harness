@@ -25,6 +25,16 @@
 			"id": "unregister-returns-the-relay-acknowledgement",
 			"title": "unregister returns the relay acknowledgement",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-unavailable-when-the-relay-call-fails",
+			"title": "Throws unavailable when the relay call fails",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-relay-error-codes-for-http-400-403-and-404",
+			"title": "Throws relay error codes for HTTP 400, 403 and 404",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -46,7 +56,9 @@
 				"register-returns-the-relay-registration",
 				"summary-returns-the-relay-host-and-devices",
 				"revokedevice-returns-the-relay-acknowledgement",
-				"unregister-returns-the-relay-acknowledgement"
+				"unregister-returns-the-relay-acknowledgement",
+				"throws-unavailable-when-the-relay-call-fails",
+				"throws-relay-error-codes-for-http-400-403-and-404"
 			],
 			"viewports": [],
 			"required": true
@@ -58,7 +70,9 @@
 				"register-returns-the-relay-registration",
 				"summary-returns-the-relay-host-and-devices",
 				"revokedevice-returns-the-relay-acknowledgement",
-				"unregister-returns-the-relay-acknowledgement"
+				"unregister-returns-the-relay-acknowledgement",
+				"throws-unavailable-when-the-relay-call-fails",
+				"throws-relay-error-codes-for-http-400-403-and-404"
 			],
 			"viewports": [],
 			"required": true
@@ -70,7 +84,9 @@
 				"register-returns-the-relay-registration",
 				"summary-returns-the-relay-host-and-devices",
 				"revokedevice-returns-the-relay-acknowledgement",
-				"unregister-returns-the-relay-acknowledgement"
+				"unregister-returns-the-relay-acknowledgement",
+				"throws-unavailable-when-the-relay-call-fails",
+				"throws-relay-error-codes-for-http-400-403-and-404"
 			],
 			"viewports": [],
 			"required": true

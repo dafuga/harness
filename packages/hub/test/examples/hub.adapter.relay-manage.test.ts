@@ -21,6 +21,38 @@ function adapterFor(operation: Operation, payload: unknown): RelayManageAdapter 
 	return new RelayManageAdapter(config);
 }
 
+const unavailable = { code: 'unavailable', message: 'Harness artifact unavailable' };
+const offline = () => Promise.reject(new Error('relay offline'));
+const notJson = () => Promise.resolve(new Response('upstream gone'));
+const refusals = [
+	{ status: 400, error: 'invalid-input' },
+	{ status: 403, error: 'forbidden' },
+	{ status: 404, error: 'not-found' }
+];
+
+function adapterAnswering(respond: () => Promise<Response>): RelayManageAdapter {
+	const namespace = {
+		idFromName: (name: string) => name,
+		get: () => ({ fetch: respond })
+	} as unknown as DurableObjectNamespace;
+	const config: RelayManageAdapterConfig = { hosts: namespace };
+	return new RelayManageAdapter(config);
+}
+
+async function failureOf(call: Promise<unknown>): Promise<{ code: unknown; message: unknown }> {
+	try {
+		await call;
+	} catch (error) {
+		const { code, message } = error as { code: unknown; message: unknown };
+		return { code, message };
+	}
+	throw new Error('the call was expected to fail');
+}
+
+function summaryFailure(respond: () => Promise<Response>): Promise<{ code: unknown; message: unknown }> {
+	return failureOf(adapterAnswering(respond).summary(owner));
+}
+
 test('register returns the relay registration', async () => {
 	const input = {
 		...owner,
@@ -68,5 +100,32 @@ test('unregister returns the relay acknowledgement', async () => {
 	recordExampleCases(
 		{ unitId: 'hub.adapter.relay-manage', symbol: 'RelayManageAdapter.unregister', state: 'unregister-returns-the-relay-acknowledgement', evidence: 'examples-cases', file: 'unregister-returns-the-relay-acknowledgement.json' },
 		[{ name: 'relay confirms the host was unregistered', input: owner, output }]
+	);
+});
+
+test('Throws unavailable when the relay call fails', async () => {
+	const offlineFailure = await summaryFailure(offline);
+	const notJsonFailure = await summaryFailure(notJson);
+	expect(offlineFailure).toEqual(unavailable);
+	expect(notJsonFailure).toEqual(unavailable);
+	recordExampleCases(
+		{ unitId: 'hub.adapter.relay-manage', symbol: 'RelayManageAdapter.summary', state: 'throws-unavailable-when-the-relay-call-fails', evidence: 'examples-cases', file: 'throws-unavailable-when-the-relay-call-fails.json' },
+		[
+			{ name: 'the call to the host object throws', input: owner, error: offlineFailure },
+			{ name: 'the relay answer is not JSON', input: owner, error: notJsonFailure }
+		]
+	);
+});
+
+test('Throws relay error codes for HTTP 400, 403 and 404', async () => {
+	const failures = await Promise.all(
+		refusals.map((refusal) =>
+			summaryFailure(() => Promise.resolve(Response.json({ error: refusal.error }, { status: refusal.status })))
+		)
+	);
+	expect(failures).toEqual(refusals.map(({ error }) => ({ code: error, message: unavailable.message })));
+	recordExampleCases(
+		{ unitId: 'hub.adapter.relay-manage', symbol: 'RelayManageAdapter.summary', state: 'throws-relay-error-codes-for-http-400-403-and-404', evidence: 'examples-cases', file: 'throws-relay-error-codes-for-http-400-403-and-404.json' },
+		refusals.map((refusal, index) => ({ name: `relay answers HTTP ${refusal.status} ${refusal.error}`, input: refusal, error: failures[index] }))
 	);
 });
