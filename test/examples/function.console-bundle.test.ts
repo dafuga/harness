@@ -34,3 +34,37 @@ test('Lazily reads bundled JSON and media modules', async () => {
 	expect([jsonLoads, mediaLoads]).toEqual([1, 1]);
 	recordReadCases(json, media, missing);
 });
+
+test('Throws InvalidCharacterError when media contains invalid base64', async () => {
+	const reader = consoleBundle({
+		json: {},
+		media: { '/console/bad.ts': async () => ({ default: 'not base64!', type: 'image/example' }) }
+	});
+	let errorName = '';
+	try {
+		await reader.media('bad');
+	} catch (error) {
+		errorName = error instanceof Error ? error.name : '';
+	}
+	expect(errorName).toBe('InvalidCharacterError');
+	recordExampleCases(
+		{ unitId: 'function.console-bundle', symbol: 'consoleBundle.media', state: 'throws-invalidcharactererror-when-media-contains-invalid-bas', evidence: 'examples-cases', file: 'throws-invalidcharactererror-when-media-contains-invalid-bas.json' },
+		[{ name: 'Invalid base64 rejects media decoding', input: { method: 'media', name: 'bad', default: 'not base64!' }, error: { name: errorName } }]
+	);
+});
+
+test('Throws loader error when a JSON loader rejects', async () => {
+	const failure = { code: 'fixture-loader-failure' };
+	const reader = consoleBundle({ json: { '/console/index.ts': async () => { throw failure; } }, media: {} });
+	let received: unknown;
+	try {
+		await reader.json('index');
+	} catch (error) {
+		received = error;
+	}
+	expect(received).toBe(failure);
+	recordExampleCases(
+		{ unitId: 'function.console-bundle', symbol: 'consoleBundle.json', state: 'throws-loader-error-when-a-json-loader-rejects', evidence: 'examples-cases', file: 'throws-loader-error-when-a-json-loader-rejects.json' },
+		[{ name: 'JSON loader rejection propagates unchanged', input: { method: 'json', path: 'index', rejection: failure }, error: failure }]
+	);
+});
