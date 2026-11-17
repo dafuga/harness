@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-command.development-tooling-contracts-command-register-contract-history",
+	"title": "command.development-tooling-contracts-command-register-contract-history examples",
+	"kind": "headless",
+	"units": ["command.development-tooling-contracts-command-register-contract-history"],
+	"builds": [],
+	"states": [
+		{
+			"id": "registers-diff-log-and-last-under-contracts",
+			"title": "Registers diff, log and last under contracts",
+			"coverage": "required"
+		},
+		{
+			"id": "limit-parser-accepts-positive-integers-only",
+			"title": "Limit parser accepts positive integers only",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/command.development-tooling-contracts-command-register-contract-history.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"registers-diff-log-and-last-under-contracts",
+				"limit-parser-accepts-positive-integers-only"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"registers-diff-log-and-last-under-contracts",
+				"limit-parser-accepts-positive-integers-only"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"registers-diff-log-and-last-under-contracts",
+				"limit-parser-accepts-positive-integers-only"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
