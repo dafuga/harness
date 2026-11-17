@@ -10,6 +10,11 @@
 			"id": "returns-null-when-no-verification-record-exists",
 			"title": "Returns null when no verification record exists",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-starting-revision-is-invalid",
+			"title": "Throws Error when the starting revision is invalid",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["returns-null-when-no-verification-record-exists"],
+			"states": [
+				"returns-null-when-no-verification-record-exists",
+				"throws-error-when-the-starting-revision-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["returns-null-when-no-verification-record-exists"],
+			"states": [
+				"returns-null-when-no-verification-record-exists",
+				"throws-error-when-the-starting-revision-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["returns-null-when-no-verification-record-exists"],
+			"states": [
+				"returns-null-when-no-verification-record-exists",
+				"throws-error-when-the-starting-revision-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		}
