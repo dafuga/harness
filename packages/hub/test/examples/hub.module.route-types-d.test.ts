@@ -9,7 +9,7 @@ test('Resolves a dynamic route ID with its required parameter', () => {
 	const input = {
 		routeId: '/projects/[projectId]/members',
 		params: { projectId: 'project-example' }
-	};
+	} as const;
 	const output = resolve(input.routeId, input.params);
 
 	expect(output).toBe('/projects/project-example/members');
