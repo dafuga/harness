@@ -10,6 +10,11 @@
 			"id": "discovers-project-modules-and-installed-resources",
 			"title": "Discovers project modules and installed resources",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-modulecatalogvalidationerror-when-installation-state",
+			"title": "Throws ModuleCatalogValidationError when installation state is invalid",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["discovers-project-modules-and-installed-resources"],
+			"states": [
+				"discovers-project-modules-and-installed-resources",
+				"throws-modulecatalogvalidationerror-when-installation-state"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["discovers-project-modules-and-installed-resources"],
+			"states": [
+				"discovers-project-modules-and-installed-resources",
+				"throws-modulecatalogvalidationerror-when-installation-state"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["discovers-project-modules-and-installed-resources"],
+			"states": [
+				"discovers-project-modules-and-installed-resources",
+				"throws-modulecatalogvalidationerror-when-installation-state"
+			],
 			"viewports": [],
 			"required": true
 		}

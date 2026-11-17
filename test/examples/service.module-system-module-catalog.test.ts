@@ -83,3 +83,31 @@ test('Discovers project modules and installed resources', async () => {
 		]
 	);
 });
+
+test('Throws ModuleCatalogValidationError when installation state is invalid', async () => {
+	const service = new ModuleCatalogService();
+	const tree = { read: async () => '{"schemaVersion":2}' };
+	const result = service.state(tree).catch((error: unknown) => error);
+	const error = await result;
+
+	expect(error).toMatchObject({
+		name: 'ModuleCatalogValidationError',
+		message: 'Invalid module installation state.'
+	});
+	recordExampleCases(
+		{
+			unitId: 'service.module-system-module-catalog',
+			symbol: 'state',
+			state: 'throws-modulecatalogvalidationerror-when-installation-state',
+			evidence: 'examples-cases',
+			file: 'throws-modulecatalogvalidationerror-when-installation-state.json'
+		},
+		[
+			{
+				name: 'invalid installation state rejects when gaps are omitted',
+				input: { contents: '{"schemaVersion":2}', gaps: 'omitted' },
+				error: { name: 'ModuleCatalogValidationError', message: 'Invalid module installation state.' }
+			}
+		]
+	);
+});
