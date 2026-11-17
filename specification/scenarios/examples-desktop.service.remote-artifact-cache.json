@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.service.remote-artifact-cache",
+	"title": "desktop.service.remote-artifact-cache examples",
+	"kind": "headless",
+	"units": ["desktop.service.remote-artifact-cache"],
+	"builds": [],
+	"states": [
+		{
+			"id": "reads-and-validates-a-pinned-hosted-artifact",
+			"title": "Reads and validates a pinned hosted artifact",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.service.remote-artifact-cache.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["reads-and-validates-a-pinned-hosted-artifact"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["reads-and-validates-a-pinned-hosted-artifact"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["reads-and-validates-a-pinned-hosted-artifact"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
