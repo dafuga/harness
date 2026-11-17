@@ -10,6 +10,11 @@
 			"id": "returns-peak-resident-bytes-for-a-successful-command",
 			"title": "Returns peak resident bytes for a successful command",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-commandboundserror-when-the-timeout-is-invalid",
+			"title": "Throws CommandBoundsError when the timeout is invalid",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["returns-peak-resident-bytes-for-a-successful-command"],
+			"states": [
+				"returns-peak-resident-bytes-for-a-successful-command",
+				"throws-commandboundserror-when-the-timeout-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["returns-peak-resident-bytes-for-a-successful-command"],
+			"states": [
+				"returns-peak-resident-bytes-for-a-successful-command",
+				"throws-commandboundserror-when-the-timeout-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["returns-peak-resident-bytes-for-a-successful-command"],
+			"states": [
+				"returns-peak-resident-bytes-for-a-successful-command",
+				"throws-commandboundserror-when-the-timeout-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		}
