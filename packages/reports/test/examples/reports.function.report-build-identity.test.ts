@@ -56,3 +56,30 @@ test('Identifies and caches report builds', () => {
 		rmSync(root, { recursive: true, force: true });
 	}
 });
+
+test('Throws Error when the directory cannot be enumerated', () => {
+	const root = mkdtempSync(join(tmpdir(), 'report-build-error-'));
+	try {
+		const file = join(root, 'not-a-directory');
+		writeFileSync(file, 'content');
+		let message = '';
+		try {
+			reportBuildIdentity(file);
+		} catch (error) {
+			message = error instanceof Error ? error.message : String(error);
+		}
+		expect(message).toContain('ENOTDIR');
+		recordExampleCases(
+			{
+				unitId: 'reports.function.report-build-identity',
+				symbol: 'reportBuildIdentity',
+				state: 'throws-error-when-the-directory-cannot-be-enumerated',
+				evidence: 'examples-cases',
+				file: 'throws-error-when-the-directory-cannot-be-enumerated.json'
+			},
+			[{ name: 'a regular file cannot be enumerated as a directory', input: { directory: 'not-a-directory' }, error: message }]
+		);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
