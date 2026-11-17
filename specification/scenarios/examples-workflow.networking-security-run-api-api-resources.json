@@ -10,6 +10,11 @@
 			"id": "filters-a-catalog-from-the-selected-snapshot",
 			"title": "Filters a catalog from the selected snapshot",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-history-page-exceeds-the-limit",
+			"title": "Throws ExpectedCliError when history page exceeds the limit",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["filters-a-catalog-from-the-selected-snapshot"],
+			"states": [
+				"filters-a-catalog-from-the-selected-snapshot",
+				"throws-expectedclierror-when-history-page-exceeds-the-limit"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["filters-a-catalog-from-the-selected-snapshot"],
+			"states": [
+				"filters-a-catalog-from-the-selected-snapshot",
+				"throws-expectedclierror-when-history-page-exceeds-the-limit"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["filters-a-catalog-from-the-selected-snapshot"],
+			"states": [
+				"filters-a-catalog-from-the-selected-snapshot",
+				"throws-expectedclierror-when-history-page-exceeds-the-limit"
+			],
 			"viewports": [],
 			"required": true
 		}
