@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-command.networking-security-api",
+	"title": "command.networking-security-api examples",
+	"kind": "headless",
+	"units": ["command.networking-security-api"],
+	"builds": [],
+	"states": [
+		{
+			"id": "registers-the-api-command-tree",
+			"title": "Registers the API command tree",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/command.networking-security-api.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["registers-the-api-command-tree"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["registers-the-api-command-tree"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["registers-the-api-command-tree"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
