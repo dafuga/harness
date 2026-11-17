@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.emitted-sizes",
+	"title": "function.emitted-sizes examples",
+	"kind": "headless",
+	"units": ["function.emitted-sizes"],
+	"builds": [],
+	"states": [
+		{
+			"id": "keeps-only-frozen-per-target-artifact-sizes-in-order",
+			"title": "Keeps only frozen per-target artifact sizes in order",
+			"coverage": "required"
+		},
+		{
+			"id": "names-each-frozen-size-under-the-artifact-bytes-metric-key",
+			"title": "Names each frozen size under the artifact-bytes metric key",
+			"coverage": "required"
+		},
+		{
+			"id": "treats-empty-profile-and-workload-as-absent",
+			"title": "Treats empty profile and workload as absent",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.emitted-sizes.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"keeps-only-frozen-per-target-artifact-sizes-in-order",
+				"names-each-frozen-size-under-the-artifact-bytes-metric-key",
+				"treats-empty-profile-and-workload-as-absent"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"keeps-only-frozen-per-target-artifact-sizes-in-order",
+				"names-each-frozen-size-under-the-artifact-bytes-metric-key",
+				"treats-empty-profile-and-workload-as-absent"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"keeps-only-frozen-per-target-artifact-sizes-in-order",
+				"names-each-frozen-size-under-the-artifact-bytes-metric-key",
+				"treats-empty-profile-and-workload-as-absent"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
