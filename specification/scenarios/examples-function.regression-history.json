@@ -10,6 +10,31 @@
 			"id": "projects-matching-red-and-green-regression-checkpoints",
 			"title": "Projects matching red and green regression checkpoints",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-regression-evidence-is-missing",
+			"title": "Throws ExpectedCliError when regression evidence is missing",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-syntaxerror-when-the-manifest-is-invalid-json",
+			"title": "Throws SyntaxError when the manifest is invalid JSON",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-regressionrecordschema-parse-error-when-the-record-is",
+			"title": "Throws regressionRecordSchema parse error when the record is invalid",
+			"coverage": "required"
+		},
+		{
+			"id": "passes-through-read-callback-rejection",
+			"title": "Passes through read callback rejection",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-invalid-proof-when-a-regression-loader-rejects",
+			"title": "Reports Invalid proof when a regression loader rejects",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +52,42 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["projects-matching-red-and-green-regression-checkpoints"],
+			"states": [
+				"projects-matching-red-and-green-regression-checkpoints",
+				"throws-expectedclierror-when-regression-evidence-is-missing",
+				"throws-syntaxerror-when-the-manifest-is-invalid-json",
+				"throws-regressionrecordschema-parse-error-when-the-record-is",
+				"passes-through-read-callback-rejection",
+				"reports-invalid-proof-when-a-regression-loader-rejects"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["projects-matching-red-and-green-regression-checkpoints"],
+			"states": [
+				"projects-matching-red-and-green-regression-checkpoints",
+				"throws-expectedclierror-when-regression-evidence-is-missing",
+				"throws-syntaxerror-when-the-manifest-is-invalid-json",
+				"throws-regressionrecordschema-parse-error-when-the-record-is",
+				"passes-through-read-callback-rejection",
+				"reports-invalid-proof-when-a-regression-loader-rejects"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["projects-matching-red-and-green-regression-checkpoints"],
+			"states": [
+				"projects-matching-red-and-green-regression-checkpoints",
+				"throws-expectedclierror-when-regression-evidence-is-missing",
+				"throws-syntaxerror-when-the-manifest-is-invalid-json",
+				"throws-regressionrecordschema-parse-error-when-the-record-is",
+				"passes-through-read-callback-rejection",
+				"reports-invalid-proof-when-a-regression-loader-rejects"
+			],
 			"viewports": [],
 			"required": true
 		}
