@@ -73,3 +73,16 @@ test('Deletes a provider switch record', async () => {
 		{ name: 'reports successful deletion', input: { id: session }, output: result }
 	]);
 });
+
+test('Throws TypeError when the adapter is null', () => {
+	let error: unknown;
+	try {
+		void ProviderSwitch.find(null as unknown as PersistenceAdapter, session);
+	} catch (caught) {
+		error = caught;
+	}
+	expect(error).toBeInstanceOf(TypeError);
+	recordExampleCases({ unitId: 'model.provider-switch', symbol: 'ProviderSwitch.find', state: 'throws-typeerror-when-the-adapter-is-null', evidence: 'examples-cases', file: 'throws-typeerror-when-the-adapter-is-null.json' }, [
+		{ name: 'null adapter throws synchronously', input: { adapter: null, id: session }, error: { name: (error as Error).name, message: (error as Error).message } }
+	]);
+});
