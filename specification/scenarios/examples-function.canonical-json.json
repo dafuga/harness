@@ -10,6 +10,16 @@
 			"id": "sorts-nested-object-keys-and-preserves-array-order",
 			"title": "Sorts nested object keys and preserves array order",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-a-bigint-value-remains",
+			"title": "Throws TypeError when a BigInt value remains",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-rangeerror-when-a-cyclic-value-recurses",
+			"title": "Throws RangeError when a cyclic value recurses",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +37,33 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["sorts-nested-object-keys-and-preserves-array-order"],
+			"states": [
+				"sorts-nested-object-keys-and-preserves-array-order",
+				"throws-typeerror-when-a-bigint-value-remains",
+				"throws-rangeerror-when-a-cyclic-value-recurses"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["sorts-nested-object-keys-and-preserves-array-order"],
+			"states": [
+				"sorts-nested-object-keys-and-preserves-array-order",
+				"throws-typeerror-when-a-bigint-value-remains",
+				"throws-rangeerror-when-a-cyclic-value-recurses"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["sorts-nested-object-keys-and-preserves-array-order"],
+			"states": [
+				"sorts-nested-object-keys-and-preserves-array-order",
+				"throws-typeerror-when-a-bigint-value-remains",
+				"throws-rangeerror-when-a-cyclic-value-recurses"
+			],
 			"viewports": [],
 			"required": true
 		}

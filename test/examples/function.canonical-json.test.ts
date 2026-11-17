@@ -39,3 +39,52 @@ test('Sorts nested object keys and preserves array order', () => {
 		]
 	);
 });
+
+test('Throws TypeError when a BigInt value remains', () => {
+	const input = { count: BigInt(3) };
+	let error: unknown;
+	try {
+		canonicalJson(input);
+	} catch (caught) {
+		error = caught;
+	}
+	expect(error).toBeInstanceOf(TypeError);
+	recordExampleCases(
+		{
+			unitId: 'function.canonical-json',
+			symbol: 'canonicalJson',
+			state: 'throws-typeerror-when-a-bigint-value-remains',
+			evidence: 'examples-cases',
+			file: 'throws-typeerror-when-a-bigint-value-remains.json'
+		},
+		[
+			{
+				name: 'BigInt property cannot be serialized',
+				input: { count: 'BigInt(3)' },
+				error: 'TypeError'
+			}
+		]
+	);
+});
+
+test('Throws RangeError when a cyclic value recurses', () => {
+	const input: Record<string, unknown> = {};
+	input.self = input;
+	let error: unknown;
+	try {
+		canonicalJson(input);
+	} catch (caught) {
+		error = caught;
+	}
+	expect(error).toBeInstanceOf(RangeError);
+	recordExampleCases(
+		{
+			unitId: 'function.canonical-json',
+			symbol: 'canonicalJson',
+			state: 'throws-rangeerror-when-a-cyclic-value-recurses',
+			evidence: 'examples-cases',
+			file: 'throws-rangeerror-when-a-cyclic-value-recurses.json'
+		},
+		[{ name: 'Self reference exhausts recursive sorting', input: { self: '[Circular]' }, error: 'RangeError' }]
+	);
+});
