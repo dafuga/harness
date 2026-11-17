@@ -15,6 +15,11 @@
 			"id": "parses-impact-flags-before-running-the-action",
 			"title": "Parses impact flags before running the action",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-runimpact-rejection-when-base-is-missing",
+			"title": "Throws runImpact rejection when base is missing",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +39,8 @@
 			"kind": "output",
 			"states": [
 				"registers-the-impact-command-with-its-flags",
-				"parses-impact-flags-before-running-the-action"
+				"parses-impact-flags-before-running-the-action",
+				"throws-runimpact-rejection-when-base-is-missing"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +50,8 @@
 			"kind": "assertions",
 			"states": [
 				"registers-the-impact-command-with-its-flags",
-				"parses-impact-flags-before-running-the-action"
+				"parses-impact-flags-before-running-the-action",
+				"throws-runimpact-rejection-when-base-is-missing"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +61,8 @@
 			"kind": "trace",
 			"states": [
 				"registers-the-impact-command-with-its-flags",
-				"parses-impact-flags-before-running-the-action"
+				"parses-impact-flags-before-running-the-action",
+				"throws-runimpact-rejection-when-base-is-missing"
 			],
 			"viewports": [],
 			"required": true

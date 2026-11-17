@@ -2,10 +2,12 @@ import { Command } from 'commander';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
+import { withTempRepo } from '../support/temporary';
 import { registerImpactCommand } from '../../src/cli/program/ImpactCommand';
 
 const DESCRIPTION =
 	'Report the units, tests and scenarios a change affects, across base and head.';
+const MISSING_BASE = 'no-such-revision-for-impact';
 
 async function parseImpact(args: string[]): Promise<Record<string, unknown>> {
 	const program = new Command().name('harness');
@@ -17,6 +19,21 @@ async function parseImpact(args: string[]): Promise<Record<string, unknown>> {
 	});
 	await program.parseAsync(['node', 'harness', 'impact', ...args]).catch(() => undefined);
 	return parsed;
+}
+
+async function runImpactInRepo(root: string, args: string[]): Promise<unknown> {
+	const program = new Command().name('harness');
+	registerImpactCommand(program);
+	const previous = process.cwd();
+	process.chdir(root);
+	try {
+		await program.parseAsync(['node', 'harness', 'impact', ...args]);
+		return undefined;
+	} catch (failure) {
+		return failure;
+	} finally {
+		process.chdir(previous);
+	}
 }
 
 test('Registers the impact command with its flags', () => {
@@ -81,6 +98,29 @@ test('Parses impact flags before running the action', async () => {
 				name: 'no flags, so base defaults to HEAD',
 				input: { args: [] },
 				output: defaults
+			}
+		]
+	);
+});
+
+test('Throws runImpact rejection when base is missing', async () => {
+	const args = ['--base', MISSING_BASE];
+	const failure = await withTempRepo((repository) => runImpactInRepo(repository.root, args));
+
+	expect(failure).toBeInstanceOf(Error);
+	recordExampleCases(
+		{
+			unitId: 'command.impact',
+			symbol: 'registerImpactCommand',
+			state: 'throws-runimpact-rejection-when-base-is-missing',
+			evidence: 'examples-cases',
+			file: 'throws-runimpact-rejection-when-base-is-missing.json'
+		},
+		[
+			{
+				name: 'base revision that does not exist in a fresh repository',
+				input: { args },
+				error: { name: failure instanceof Error ? failure.name : typeof failure }
 			}
 		]
 	);
