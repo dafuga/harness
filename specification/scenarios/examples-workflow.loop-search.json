@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-workflow.loop-search",
+	"title": "workflow.loop-search examples",
+	"kind": "headless",
+	"units": ["workflow.loop-search"],
+	"builds": [],
+	"states": [
+		{
+			"id": "lists-built-in-templates-for-an-empty-project",
+			"title": "Lists built-in templates for an empty project",
+			"coverage": "required"
+		},
+		{
+			"id": "filters-rows-by-a-trimmed-case-insensitive-query",
+			"title": "Filters rows by a trimmed case-insensitive query",
+			"coverage": "required"
+		},
+		{
+			"id": "renders-result-rows-as-indented-text-blocks",
+			"title": "Renders result rows as indented text blocks",
+			"coverage": "required"
+		},
+		{
+			"id": "renders-the-no-match-message-for-no-results",
+			"title": "Renders the no-match message for no results",
+			"coverage": "required"
+		},
+		{
+			"id": "skips-loops-without-state-and-flags-malformed-json",
+			"title": "Skips loops without state and flags malformed JSON",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/workflow.loop-search.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"lists-built-in-templates-for-an-empty-project",
+				"filters-rows-by-a-trimmed-case-insensitive-query",
+				"renders-result-rows-as-indented-text-blocks",
+				"renders-the-no-match-message-for-no-results",
+				"skips-loops-without-state-and-flags-malformed-json"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"lists-built-in-templates-for-an-empty-project",
+				"filters-rows-by-a-trimmed-case-insensitive-query",
+				"renders-result-rows-as-indented-text-blocks",
+				"renders-the-no-match-message-for-no-results",
+				"skips-loops-without-state-and-flags-malformed-json"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"lists-built-in-templates-for-an-empty-project",
+				"filters-rows-by-a-trimmed-case-insensitive-query",
+				"renders-result-rows-as-indented-text-blocks",
+				"renders-the-no-match-message-for-no-results",
+				"skips-loops-without-state-and-flags-malformed-json"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
