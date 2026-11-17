@@ -15,6 +15,16 @@
 			"id": "creating-the-handler-leaves-the-runtime-untouched",
 			"title": "Creating the handler leaves the runtime untouched",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-runtime-invocation-fails",
+			"title": "Throws Error when the runtime invocation fails",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-the-reply-value-cannot-be-serialized",
+			"title": "Throws TypeError when the reply value cannot be serialized",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +44,9 @@
 			"kind": "output",
 			"states": [
 				"serves-a-runtime-reply-as-json-with-no-store-headers",
-				"creating-the-handler-leaves-the-runtime-untouched"
+				"creating-the-handler-leaves-the-runtime-untouched",
+				"throws-error-when-the-runtime-invocation-fails",
+				"throws-typeerror-when-the-reply-value-cannot-be-serialized"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +56,9 @@
 			"kind": "assertions",
 			"states": [
 				"serves-a-runtime-reply-as-json-with-no-store-headers",
-				"creating-the-handler-leaves-the-runtime-untouched"
+				"creating-the-handler-leaves-the-runtime-untouched",
+				"throws-error-when-the-runtime-invocation-fails",
+				"throws-typeerror-when-the-reply-value-cannot-be-serialized"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +68,9 @@
 			"kind": "trace",
 			"states": [
 				"serves-a-runtime-reply-as-json-with-no-store-headers",
-				"creating-the-handler-leaves-the-runtime-untouched"
+				"creating-the-handler-leaves-the-runtime-untouched",
+				"throws-error-when-the-runtime-invocation-fails",
+				"throws-typeerror-when-the-reply-value-cannot-be-serialized"
 			],
 			"viewports": [],
 			"required": true

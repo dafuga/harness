@@ -15,12 +15,31 @@ function fakeRuntime(calls: unknown[]): Runtime {
 	return { kind: 'fake', invoke, close: async () => undefined } as unknown as Runtime;
 }
 
+function runtimeWith(invoke: () => Promise<unknown>): Runtime {
+	return { kind: 'fake', invoke, close: async () => undefined } as unknown as Runtime;
+}
+
 function jsonRequest(body: string): Request {
 	return new Request('http://unit.example/run', {
 		method: 'POST',
 		body,
 		headers: { 'content-type': 'application/json' }
 	});
+}
+
+function describeError(error: unknown): { name: string; message: string } {
+	return error instanceof Error
+		? { name: error.name, message: error.message }
+		: { name: 'unknown', message: '' };
+}
+
+async function rejectionOf(promise: Promise<unknown>): Promise<unknown> {
+	try {
+		await promise;
+	} catch (error) {
+		return error;
+	}
+	return undefined;
 }
 
 test('Serves a runtime reply as JSON with no-store headers', async () => {
@@ -80,6 +99,55 @@ test('Creating the handler leaves the runtime untouched', async () => {
 				name: 'handler created, then one request is handled',
 				input: { requests: 1 },
 				output: { invocationsBeforeRequest, invocationsAfterRequest }
+			}
+		]
+	);
+});
+
+test('Throws Error when the runtime invocation fails', async () => {
+	const handler = runtimeFetch(
+		runtimeWith(() => Promise.reject(new Error('runtime offline')))
+	);
+	const thrown = await rejectionOf(handler(jsonRequest('{"n":1}')));
+	expect(thrown).toBeInstanceOf(Error);
+	expect(describeError(thrown)).toEqual({ name: 'Error', message: 'runtime offline' });
+	recordExampleCases(
+		{
+			unitId,
+			symbol: 'runtimeFetch',
+			state: 'throws-error-when-the-runtime-invocation-fails',
+			evidence: 'examples-cases',
+			file: 'throws-error-when-the-runtime-invocation-fails.json'
+		},
+		[
+			{
+				name: 'runtime invoke rejects while serving a JSON POST',
+				input: { method: 'POST', body: '{"n":1}' },
+				error: describeError(thrown)
+			}
+		]
+	);
+});
+
+test('Throws TypeError when the reply value cannot be serialized', async () => {
+	const handler = runtimeFetch(runtimeWith(() => Promise.resolve({ big: BigInt(1) })));
+	const thrown = await rejectionOf(handler(jsonRequest('{"n":1}')));
+	expect(thrown).toBeInstanceOf(TypeError);
+	expect(describeError(thrown).name).toBe('TypeError');
+	expect(describeError(thrown).message).toContain('BigInt');
+	recordExampleCases(
+		{
+			unitId,
+			symbol: 'runtimeFetch',
+			state: 'throws-typeerror-when-the-reply-value-cannot-be-serialized',
+			evidence: 'examples-cases',
+			file: 'throws-typeerror-when-the-reply-value-cannot-be-serialized.json'
+		},
+		[
+			{
+				name: 'runtime returns a BigInt that JSON.stringify cannot serialize',
+				input: { method: 'POST', body: '{"n":1}' },
+				error: describeError(thrown)
 			}
 		]
 	);
