@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-adapter.wasm-module-runtime",
+	"title": "adapter.wasm-module-runtime examples",
+	"kind": "headless",
+	"units": ["adapter.wasm-module-runtime"],
+	"builds": [],
+	"states": [
+		{
+			"id": "invoke-rejects-non-portable-json-before-loading-the-module",
+			"title": "invoke rejects non portable JSON before loading the module",
+			"coverage": "required"
+		},
+		{
+			"id": "wasmunavailable-names-the-supplied-load-failure",
+			"title": "wasmUnavailable names the supplied load failure",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/adapter.wasm-module-runtime.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"invoke-rejects-non-portable-json-before-loading-the-module",
+				"wasmunavailable-names-the-supplied-load-failure"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"invoke-rejects-non-portable-json-before-loading-the-module",
+				"wasmunavailable-names-the-supplied-load-failure"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"invoke-rejects-non-portable-json-before-loading-the-module",
+				"wasmunavailable-names-the-supplied-load-failure"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
