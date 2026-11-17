@@ -5,8 +5,9 @@ import * as preview from '../support/component-previews/previewPage';
 
 /**
  * The base of the explorer content (entity.css), rendered through the catalog unit whose frame
- * imports it. Each state is one look of that base: the missing-registry card and the platform
- * declarations, which lay out in the same `.ex-content` root.
+ * imports it. Each state is one look of that base, all under the `.ex-content` root: the default
+ * card (`.ex-card`, `.ex-content` grid) and the frame with no registry required, whose platform
+ * declarations lay out under their own heading.
  */
 const unit = 'reports.component.harness-explorer-frame';
 const states = [
@@ -31,8 +32,10 @@ for (const viewport of catalogViewports) {
 			await expect(root).toHaveCSS('display', 'grid');
 			await page.evaluate(() => document.fonts.ready.then(() => undefined));
 			if (state.id === 'default') {
-				await expect(content.getByText('No registry at this revision', { exact: true })).toBeVisible();
-				await expect(content.locator('.ex-content .ex-lead').first()).toBeVisible();
+				const card = content.locator('.ex-content .ex-card').first();
+				await expect(card.getByRole('heading', { name: 'Orders', exact: true })).toBeVisible();
+				await expect(card).toHaveCSS('display', 'grid');
+				await expect(card).toHaveCSS('align-content', 'start');
 			} else {
 				const website = page.getByRole('heading', { name: 'Website', exact: true });
 				await expect(website).toBeVisible();
