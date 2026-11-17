@@ -15,6 +15,21 @@
 			"id": "runs-an-admitted-resource-request-and-releases-its-lease",
 			"title": "Runs an admitted resource request and releases its lease",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-resourcequeueerror-when-the-wait-timeout-is-invalid",
+			"title": "Throws ResourceQueueError when the wait timeout is invalid",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-resourcequeueerror-when-the-inherited-lease-is-invali",
+			"title": "Throws ResourceQueueError when the inherited lease is invalid",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-resourcequeueerror-when-the-queue-is-full",
+			"title": "Throws ResourceQueueError when the queue is full",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +49,10 @@
 			"kind": "output",
 			"states": [
 				"returns-the-current-resource-snapshot",
-				"runs-an-admitted-resource-request-and-releases-its-lease"
+				"runs-an-admitted-resource-request-and-releases-its-lease",
+				"throws-resourcequeueerror-when-the-wait-timeout-is-invalid",
+				"throws-resourcequeueerror-when-the-inherited-lease-is-invali",
+				"throws-resourcequeueerror-when-the-queue-is-full"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +62,10 @@
 			"kind": "assertions",
 			"states": [
 				"returns-the-current-resource-snapshot",
-				"runs-an-admitted-resource-request-and-releases-its-lease"
+				"runs-an-admitted-resource-request-and-releases-its-lease",
+				"throws-resourcequeueerror-when-the-wait-timeout-is-invalid",
+				"throws-resourcequeueerror-when-the-inherited-lease-is-invali",
+				"throws-resourcequeueerror-when-the-queue-is-full"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +75,10 @@
 			"kind": "trace",
 			"states": [
 				"returns-the-current-resource-snapshot",
-				"runs-an-admitted-resource-request-and-releases-its-lease"
+				"runs-an-admitted-resource-request-and-releases-its-lease",
+				"throws-resourcequeueerror-when-the-wait-timeout-is-invalid",
+				"throws-resourcequeueerror-when-the-inherited-lease-is-invali",
+				"throws-resourcequeueerror-when-the-queue-is-full"
 			],
 			"viewports": [],
 			"required": true
