@@ -12,6 +12,11 @@
 			"coverage": "required"
 		},
 		{
+			"id": "throws-error-when-prefetched-git-blob-bytes-fail-verificatio",
+			"title": "Throws Error when prefetched Git blob bytes fail verification",
+			"coverage": "required"
+		},
+		{
 			"id": "hashes-ordinary-files-and-git-lfs-pointers",
 			"title": "Hashes ordinary files and Git LFS pointers",
 			"coverage": "required"
@@ -39,6 +44,7 @@
 			"kind": "output",
 			"states": [
 				"returns-verified-prefetched-git-blob-bytes",
+				"throws-error-when-prefetched-git-blob-bytes-fail-verificatio",
 				"hashes-ordinary-files-and-git-lfs-pointers",
 				"builds-a-path-scoped-raw-blob-cache-profile"
 			],
@@ -50,6 +56,7 @@
 			"kind": "assertions",
 			"states": [
 				"returns-verified-prefetched-git-blob-bytes",
+				"throws-error-when-prefetched-git-blob-bytes-fail-verificatio",
 				"hashes-ordinary-files-and-git-lfs-pointers",
 				"builds-a-path-scoped-raw-blob-cache-profile"
 			],
@@ -61,6 +68,7 @@
 			"kind": "trace",
 			"states": [
 				"returns-verified-prefetched-git-blob-bytes",
+				"throws-error-when-prefetched-git-blob-bytes-fail-verificatio",
 				"hashes-ordinary-files-and-git-lfs-pointers",
 				"builds-a-path-scoped-raw-blob-cache-profile"
 			],

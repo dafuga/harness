@@ -27,6 +27,34 @@ test('Returns verified prefetched Git blob bytes', async () => {
 	);
 });
 
+test('Throws Error when prefetched Git blob bytes fail verification', async () => {
+	const bytes = new TextEncoder().encode('wrong');
+	const entry = { path: 'README.md', sha: 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0' };
+	const error = await hubRaw(rawContext(bytes), entry as Parameters<typeof hubRaw>[1]).catch(
+		(reason: Error) => reason
+	);
+	expect(error).toMatchObject({ message: 'Harness artifact unavailable' });
+	recordExampleCases(
+		{
+			unitId: 'hub.function.hub-raw',
+			symbol: 'hubRaw',
+			state: 'throws-error-when-prefetched-git-blob-bytes-fail-verificatio',
+			evidence: 'examples-cases',
+			file: 'throws-error-when-prefetched-git-blob-bytes-fail-verificatio.json'
+		},
+		[
+			{
+				name: 'prefetched bytes have a different Git blob sha',
+				input: { path: entry.path, sha: entry.sha, text: 'wrong' },
+				error: {
+					name: error instanceof Error ? error.name : 'Error',
+					message: error instanceof Error ? error.message : String(error)
+				}
+			}
+		]
+	);
+});
+
 test('Hashes ordinary files and Git LFS pointers', async () => {
 	const ordinary = await hubMaterializedHash(new TextEncoder().encode('test'), null);
 	const pointer = new TextEncoder().encode(
