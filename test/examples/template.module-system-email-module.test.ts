@@ -38,3 +38,26 @@ test('Defines server email delivery and reusable mailer scaffolds', () => {
 		]
 	);
 });
+
+test('Throws Error when email provider settings are missing', () => {
+	const scaffold = emailModule.setup.find(
+		(file) => file.path === 'src/services/email/EmailService.ts'
+	);
+	expect(scaffold?.contents).toContain('Configure the email provider and sender.');
+	recordExampleCases(
+		{
+			unitId: 'template.module-system-email-module',
+			symbol: 'emailModule',
+			state: 'throws-error-when-email-provider-settings-are-missing',
+			evidence: 'examples-cases',
+			file: 'throws-error-when-email-provider-settings-are-missing.json'
+		},
+		[
+			{
+				name: 'email scaffold declares the missing provider settings error',
+				input: { path: 'src/services/email/EmailService.ts' },
+				error: 'Configure the email provider and sender.'
+			}
+		]
+	);
+});

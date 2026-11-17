@@ -10,6 +10,11 @@
 			"id": "defines-server-email-delivery-and-reusable-mailer-scaffolds",
 			"title": "Defines server email delivery and reusable mailer scaffolds",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-email-provider-settings-are-missing",
+			"title": "Throws Error when email provider settings are missing",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["defines-server-email-delivery-and-reusable-mailer-scaffolds"],
+			"states": [
+				"defines-server-email-delivery-and-reusable-mailer-scaffolds",
+				"throws-error-when-email-provider-settings-are-missing"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["defines-server-email-delivery-and-reusable-mailer-scaffolds"],
+			"states": [
+				"defines-server-email-delivery-and-reusable-mailer-scaffolds",
+				"throws-error-when-email-provider-settings-are-missing"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["defines-server-email-delivery-and-reusable-mailer-scaffolds"],
+			"states": [
+				"defines-server-email-delivery-and-reusable-mailer-scaffolds",
+				"throws-error-when-email-provider-settings-are-missing"
+			],
 			"viewports": [],
 			"required": true
 		}
