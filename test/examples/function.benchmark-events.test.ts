@@ -2,6 +2,7 @@ import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { benchmarkEvents, codexTurn, claudeTurn } from '../../src/cli/program/benchmark-service/benchmarkEvents';
+import { ZodError } from 'zod';
 
 test('Parses provider event streams in source order', () => {
 	const stdout = '{"type":"thread.started","thread_id":"thread-01JQ4Y6D4YH5"}\n{"type":"turn.completed","model":"codex-model","usage":{"input_tokens":120,"output_tokens":24,"cached_input_tokens":8}}';
@@ -75,5 +76,56 @@ test('Extracts a successful Claude turn with usage and cost', () => {
 			file: 'extracts-a-successful-claude-turn-with-usage-and-cost.json'
 		},
 		[{ name: 'successful Claude submission', input: events, output: turn }]
+	);
+});
+
+test('Throws SyntaxError when a retained line is invalid JSON', () => {
+	const stdout = '{"type":"thread.started"}\n{invalid}';
+	expect(() => benchmarkEvents(stdout)).toThrow(SyntaxError);
+	recordExampleCases(
+		{
+			unitId: 'function.benchmark-events',
+			symbol: 'benchmarkEvents',
+			state: 'throws-syntaxerror-when-a-retained-line-is-invalid-json',
+			evidence: 'examples-cases',
+			file: 'throws-syntaxerror-when-a-retained-line-is-invalid-json.json'
+		},
+		[{ name: 'malformed retained JSON line', input: stdout, error: { name: 'SyntaxError' } }]
+	);
+});
+
+test('Throws ZodError when an event violates the runner schema', () => {
+	const stdout = '{"type":"turn.completed","usage":{"input_tokens":-1}}';
+	let thrown: unknown;
+	try {
+		benchmarkEvents(stdout);
+	} catch (error) {
+		thrown = error;
+	}
+	expect(thrown).toBeInstanceOf(ZodError);
+	recordExampleCases(
+		{
+			unitId: 'function.benchmark-events',
+			symbol: 'benchmarkEvents',
+			state: 'throws-zoderror-when-an-event-violates-the-runner-schema',
+			evidence: 'examples-cases',
+			file: 'throws-zoderror-when-an-event-violates-the-runner-schema.json'
+		},
+		[{ name: 'negative usage count', input: stdout, error: { name: 'ZodError' } }]
+	);
+});
+
+test('Throws Error when Codex has no completed submission', () => {
+	const events = [{ type: 'thread.started', thread_id: 'thread-01JQ4Y6D4YH5' }];
+	expect(() => codexTurn(events)).toThrow('Codex did not complete a benchmark submission.');
+	recordExampleCases(
+		{
+			unitId: 'function.benchmark-events',
+			symbol: 'codexTurn',
+			state: 'throws-error-when-codex-has-no-completed-submission',
+			evidence: 'examples-cases',
+			file: 'throws-error-when-codex-has-no-completed-submission.json'
+		},
+		[{ name: 'started Codex session without completion', input: events, error: { name: 'Error', message: 'Codex did not complete a benchmark submission.' } }]
 	);
 });

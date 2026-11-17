@@ -20,6 +20,21 @@
 			"id": "extracts-a-successful-claude-turn-with-usage-and-cost",
 			"title": "Extracts a successful Claude turn with usage and cost",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-syntaxerror-when-a-retained-line-is-invalid-json",
+			"title": "Throws SyntaxError when a retained line is invalid JSON",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-zoderror-when-an-event-violates-the-runner-schema",
+			"title": "Throws ZodError when an event violates the runner schema",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-codex-has-no-completed-submission",
+			"title": "Throws Error when Codex has no completed submission",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +55,10 @@
 			"states": [
 				"parses-provider-event-streams-in-source-order",
 				"extracts-a-completed-codex-turn",
-				"extracts-a-successful-claude-turn-with-usage-and-cost"
+				"extracts-a-successful-claude-turn-with-usage-and-cost",
+				"throws-syntaxerror-when-a-retained-line-is-invalid-json",
+				"throws-zoderror-when-an-event-violates-the-runner-schema",
+				"throws-error-when-codex-has-no-completed-submission"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +69,10 @@
 			"states": [
 				"parses-provider-event-streams-in-source-order",
 				"extracts-a-completed-codex-turn",
-				"extracts-a-successful-claude-turn-with-usage-and-cost"
+				"extracts-a-successful-claude-turn-with-usage-and-cost",
+				"throws-syntaxerror-when-a-retained-line-is-invalid-json",
+				"throws-zoderror-when-an-event-violates-the-runner-schema",
+				"throws-error-when-codex-has-no-completed-submission"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +83,10 @@
 			"states": [
 				"parses-provider-event-streams-in-source-order",
 				"extracts-a-completed-codex-turn",
-				"extracts-a-successful-claude-turn-with-usage-and-cost"
+				"extracts-a-successful-claude-turn-with-usage-and-cost",
+				"throws-syntaxerror-when-a-retained-line-is-invalid-json",
+				"throws-zoderror-when-an-event-violates-the-runner-schema",
+				"throws-error-when-codex-has-no-completed-submission"
 			],
 			"viewports": [],
 			"required": true
