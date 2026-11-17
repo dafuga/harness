@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-game.function.key-door",
+	"title": "game.function.key-door examples",
+	"kind": "headless",
+	"units": ["game.function.key-door"],
+	"builds": [],
+	"states": [
+		{
+			"id": "keeps-the-player-behind-the-door-until-the-key-is-held",
+			"title": "Keeps the player behind the door until the key is held",
+			"coverage": "required"
+		},
+		{
+			"id": "lets-the-player-pass-the-door-once-the-key-is-held",
+			"title": "Lets the player pass the door once the key is held",
+			"coverage": "required"
+		},
+		{
+			"id": "clamps-movement-to-the-courtyard-bounds-and-rounds-it",
+			"title": "Clamps movement to the courtyard bounds and rounds it",
+			"coverage": "required"
+		},
+		{
+			"id": "keeps-the-previous-choice-unless-the-input-sets-one",
+			"title": "Keeps the previous choice unless the input sets one",
+			"coverage": "required"
+		},
+		{
+			"id": "builds-a-branching-courtyard-document-for-2d-or-3d",
+			"title": "Builds a branching courtyard document for 2d or 3d",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/game.function.key-door.test.ts",
+			"cwd": "packages/game",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"keeps-the-player-behind-the-door-until-the-key-is-held",
+				"lets-the-player-pass-the-door-once-the-key-is-held",
+				"clamps-movement-to-the-courtyard-bounds-and-rounds-it",
+				"keeps-the-previous-choice-unless-the-input-sets-one",
+				"builds-a-branching-courtyard-document-for-2d-or-3d"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"keeps-the-player-behind-the-door-until-the-key-is-held",
+				"lets-the-player-pass-the-door-once-the-key-is-held",
+				"clamps-movement-to-the-courtyard-bounds-and-rounds-it",
+				"keeps-the-previous-choice-unless-the-input-sets-one",
+				"builds-a-branching-courtyard-document-for-2d-or-3d"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"keeps-the-player-behind-the-door-until-the-key-is-held",
+				"lets-the-player-pass-the-door-once-the-key-is-held",
+				"clamps-movement-to-the-courtyard-bounds-and-rounds-it",
+				"keeps-the-previous-choice-unless-the-input-sets-one",
+				"builds-a-branching-courtyard-document-for-2d-or-3d"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
