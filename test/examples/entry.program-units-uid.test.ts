@@ -1,8 +1,17 @@
-import { test } from 'vitest';
+import { test, vi } from 'vitest';
 import type { Command } from 'commander';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { registerUnitsRename, registerUnitsUid } from '../../src/cli/program/unitsUid';
+import { backfillUids } from '../../src/workflows/development-tooling/backfill-uids/backfillUids';
+import { renameUnit } from '../../src/workflows/development-tooling/rename-unit/renameUnit';
+
+vi.mock('../../src/workflows/development-tooling/backfill-uids/backfillUids', () => ({
+	backfillUids: vi.fn()
+}));
+vi.mock('../../src/workflows/development-tooling/rename-unit/renameUnit', () => ({
+	renameUnit: vi.fn()
+}));
 
 type Action = (...args: unknown[]) => unknown;
 
@@ -103,5 +112,57 @@ test('Registers the rename subcommand with its arguments', () => {
 			file: 'registers-the-rename-subcommand-with-its-arguments.json'
 		},
 		[{ name: 'registers rename on a units command', input: 'units command', output: summary }]
+	);
+});
+
+function actionOf(registered: Registered[]): Action {
+	const action = registered[0]?.action;
+	if (!action) throw new Error('no action registered');
+	return action;
+}
+
+test('Throws backfillUids when the uid backfill rejects', async () => {
+	const { units, registered } = fakeUnits();
+	registerUnitsUid(units);
+	const failure = new Error('registry is locked');
+	vi.mocked(backfillUids).mockRejectedValueOnce(failure);
+	await expect(actionOf(registered)({ write: true })).rejects.toBe(failure);
+	expect(vi.mocked(backfillUids)).toHaveBeenLastCalledWith({ write: true });
+
+	recordExampleCases(
+		{
+			unitId: 'entry.program-units-uid',
+			symbol: 'registerUnitsUid',
+			state: 'throws-backfilluids-when-the-uid-backfill-rejects',
+			evidence: 'examples-cases',
+			file: 'throws-backfilluids-when-the-uid-backfill-rejects.json'
+		},
+		[{ name: 'uid-backfill action rejects', input: { write: true }, error: failure.message }]
+	);
+});
+
+test('Throws renameUnit when the rename rejects', async () => {
+	const { units, registered } = fakeUnits();
+	registerUnitsRename(units);
+	const failure = new Error('target id already exists');
+	vi.mocked(renameUnit).mockRejectedValueOnce(failure);
+	await expect(actionOf(registered)('unit.old', 'unit.new')).rejects.toBe(failure);
+	expect(vi.mocked(renameUnit)).toHaveBeenLastCalledWith('unit.old', 'unit.new');
+
+	recordExampleCases(
+		{
+			unitId: 'entry.program-units-uid',
+			symbol: 'registerUnitsRename',
+			state: 'throws-renameunit-when-the-rename-rejects',
+			evidence: 'examples-cases',
+			file: 'throws-renameunit-when-the-rename-rejects.json'
+		},
+		[
+			{
+				name: 'rename action rejects',
+				input: { id: 'unit.old', newId: 'unit.new' },
+				error: failure.message
+			}
+		]
 	);
 });

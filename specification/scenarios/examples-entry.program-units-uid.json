@@ -15,6 +15,16 @@
 			"id": "registers-the-rename-subcommand-with-its-arguments",
 			"title": "Registers the rename subcommand with its arguments",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-backfilluids-when-the-uid-backfill-rejects",
+			"title": "Throws backfillUids when the uid backfill rejects",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-renameunit-when-the-rename-rejects",
+			"title": "Throws renameUnit when the rename rejects",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +44,9 @@
 			"kind": "output",
 			"states": [
 				"registers-the-uid-backfill-subcommand-with-its-flags",
-				"registers-the-rename-subcommand-with-its-arguments"
+				"registers-the-rename-subcommand-with-its-arguments",
+				"throws-backfilluids-when-the-uid-backfill-rejects",
+				"throws-renameunit-when-the-rename-rejects"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +56,9 @@
 			"kind": "assertions",
 			"states": [
 				"registers-the-uid-backfill-subcommand-with-its-flags",
-				"registers-the-rename-subcommand-with-its-arguments"
+				"registers-the-rename-subcommand-with-its-arguments",
+				"throws-backfilluids-when-the-uid-backfill-rejects",
+				"throws-renameunit-when-the-rename-rejects"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +68,9 @@
 			"kind": "trace",
 			"states": [
 				"registers-the-uid-backfill-subcommand-with-its-flags",
-				"registers-the-rename-subcommand-with-its-arguments"
+				"registers-the-rename-subcommand-with-its-arguments",
+				"throws-backfilluids-when-the-uid-backfill-rejects",
+				"throws-renameunit-when-the-rename-rejects"
 			],
 			"viewports": [],
 			"required": true
