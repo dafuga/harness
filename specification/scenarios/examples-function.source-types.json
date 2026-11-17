@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.source-types",
+	"title": "function.source-types examples",
+	"kind": "headless",
+	"units": ["function.source-types"],
+	"builds": [],
+	"states": [
+		{
+			"id": "source-file-facts-describe-a-classified-typescript-file",
+			"title": "Source file facts describe a classified TypeScript file",
+			"coverage": "required"
+		},
+		{
+			"id": "source-graph-keeps-unresolved-imports-as-uncertain-nodes",
+			"title": "Source graph keeps unresolved imports as uncertain nodes",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.source-types.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"source-file-facts-describe-a-classified-typescript-file",
+				"source-graph-keeps-unresolved-imports-as-uncertain-nodes"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"source-file-facts-describe-a-classified-typescript-file",
+				"source-graph-keeps-unresolved-imports-as-uncertain-nodes"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"source-file-facts-describe-a-classified-typescript-file",
+				"source-graph-keeps-unresolved-imports-as-uncertain-nodes"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
