@@ -15,6 +15,16 @@
 			"id": "generate-reports-a-non-ok-provider-response",
 			"title": "generate reports a non-OK provider response",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-imagegenerationerror-when-the-provider-payload-is-inv",
+			"title": "Throws ImageGenerationError when the provider payload is invalid",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-the-request-resolves-without-a-respons",
+			"title": "Throws TypeError when the request resolves without a response",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +44,9 @@
 			"kind": "output",
 			"states": [
 				"generate-sends-request-and-decodes-png",
-				"generate-reports-a-non-ok-provider-response"
+				"generate-reports-a-non-ok-provider-response",
+				"throws-imagegenerationerror-when-the-provider-payload-is-inv",
+				"throws-typeerror-when-the-request-resolves-without-a-respons"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +56,9 @@
 			"kind": "assertions",
 			"states": [
 				"generate-sends-request-and-decodes-png",
-				"generate-reports-a-non-ok-provider-response"
+				"generate-reports-a-non-ok-provider-response",
+				"throws-imagegenerationerror-when-the-provider-payload-is-inv",
+				"throws-typeerror-when-the-request-resolves-without-a-respons"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +68,9 @@
 			"kind": "trace",
 			"states": [
 				"generate-sends-request-and-decodes-png",
-				"generate-reports-a-non-ok-provider-response"
+				"generate-reports-a-non-ok-provider-response",
+				"throws-imagegenerationerror-when-the-provider-payload-is-inv",
+				"throws-typeerror-when-the-request-resolves-without-a-respons"
 			],
 			"viewports": [],
 			"required": true

@@ -88,3 +88,58 @@ test('generate reports a non-OK provider response', async () => {
 		]
 	);
 });
+
+test('Throws ImageGenerationError when the provider payload is invalid', async () => {
+	const send: ImageFetch = async () => new Response('not-json', { status: 200 });
+	let caught: unknown;
+	try {
+		await new GptImageAdapter(send).generate(key, prompt);
+	} catch (error) {
+		caught = error;
+	}
+	expect(caught).toBeInstanceOf(ImageGenerationError);
+	expect((caught as Error).message).toBe('Provider did not return a PNG image.');
+	recordExampleCases(
+		{
+			unitId: 'game.adapter.gpt-image',
+			symbol: 'GptImageAdapter.generate',
+			state: 'throws-imagegenerationerror-when-the-provider-payload-is-inv',
+			evidence: 'examples-cases',
+			file: 'throws-imagegenerationerror-when-the-provider-payload-is-inv.json'
+		},
+		[
+			{
+				name: 'non-JSON provider response is rejected',
+				input: { key, prompt, body: 'not-json' },
+				error: { name: (caught as Error).name, message: (caught as Error).message }
+			}
+		]
+	);
+});
+
+test('Throws TypeError when the request resolves without a response', async () => {
+	const send: ImageFetch = async () => null as unknown as Response;
+	let caught: unknown;
+	try {
+		await new GptImageAdapter(send).generate(key, prompt);
+	} catch (error) {
+		caught = error;
+	}
+	expect(caught).toBeInstanceOf(TypeError);
+	recordExampleCases(
+		{
+			unitId: 'game.adapter.gpt-image',
+			symbol: 'GptImageAdapter.generate',
+			state: 'throws-typeerror-when-the-request-resolves-without-a-respons',
+			evidence: 'examples-cases',
+			file: 'throws-typeerror-when-the-request-resolves-without-a-respons.json'
+		},
+		[
+			{
+				name: 'null response causes the unguarded ok read to throw',
+				input: { key, prompt, response: null },
+				error: { name: (caught as Error).name, message: (caught as Error).message }
+			}
+		]
+	);
+});
