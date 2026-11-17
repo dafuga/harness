@@ -10,6 +10,11 @@
 			"id": "dispatches-shared-project-selection-and-capabilities",
 			"title": "Dispatches shared project selection and capabilities",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-selecting-a-project-during-an-active-opera",
+			"title": "Throws Error when selecting a project during an active operation",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["dispatches-shared-project-selection-and-capabilities"],
+			"states": [
+				"dispatches-shared-project-selection-and-capabilities",
+				"throws-error-when-selecting-a-project-during-an-active-opera"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["dispatches-shared-project-selection-and-capabilities"],
+			"states": [
+				"dispatches-shared-project-selection-and-capabilities",
+				"throws-error-when-selecting-a-project-during-an-active-opera"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["dispatches-shared-project-selection-and-capabilities"],
+			"states": [
+				"dispatches-shared-project-selection-and-capabilities",
+				"throws-error-when-selecting-a-project-during-an-active-opera"
+			],
 			"viewports": [],
 			"required": true
 		}

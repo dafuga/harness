@@ -39,6 +39,20 @@ function createHostedBridge() {
 	return { bridge: service.wrap(local), calls };
 }
 
+function createBusyBridge() {
+	const session = { projectId: 'local-project', busy: true, pending: 0 };
+	const local = {
+		async listProjects() { return []; },
+		async selectProject(input: { projectId: string }) { return input; },
+		async openProject() { return null; }
+	} as unknown as Bridge;
+	const service = new HostedProjectService(
+		session as ConstructorParameters<typeof HostedProjectService>[0],
+		{} as ConstructorParameters<typeof HostedProjectService>[1]
+	);
+	return service.wrap(local);
+}
+
 test('Dispatches shared project selection and capabilities', async () => {
 	const { bridge, calls } = createHostedBridge();
 	const listed = await bridge.listProjects!();
@@ -72,5 +86,27 @@ test('Dispatches shared project selection and capabilities', async () => {
 				output
 			}
 		]
+	);
+});
+
+test('Throws Error when selecting a project during an active operation', async () => {
+	const bridge = createBusyBridge();
+	await expect(bridge.selectProject!({ projectId: 'shared-project' })).rejects.toThrow(
+		'Wait for the active project operation.'
+	);
+	const cases = [{
+		name: 'Rejects shared project selection while the session is busy',
+		input: { projectId: 'shared-project', busy: true },
+		error: { name: 'Error', message: 'Wait for the active project operation.' }
+	}];
+	recordExampleCases(
+		{
+			unitId: 'desktop.service.hosted-project',
+			symbol: 'selectProject',
+			state: 'throws-error-when-selecting-a-project-during-an-active-opera',
+			evidence: 'examples-cases',
+			file: 'throws-error-when-selecting-a-project-during-an-active-opera.json'
+		},
+		cases
 	);
 });
