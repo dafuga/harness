@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.unit-lineage",
+	"title": "function.unit-lineage examples",
+	"kind": "headless",
+	"units": ["function.unit-lineage"],
+	"builds": [],
+	"states": [
+		{
+			"id": "finds-retired-predecessors-by-symbols-or-numeric-id-suffix",
+			"title": "Finds retired predecessors by symbols or numeric id suffix",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.unit-lineage.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["finds-retired-predecessors-by-symbols-or-numeric-id-suffix"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["finds-retired-predecessors-by-symbols-or-numeric-id-suffix"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["finds-retired-predecessors-by-symbols-or-numeric-id-suffix"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
