@@ -10,6 +10,26 @@
 			"id": "adds-completion-only-when-a-task-kind-is-requested",
 			"title": "Adds completion only when a task kind is requested",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-task-kind-is-invalid",
+			"title": "Throws ExpectedCliError when task kind is invalid",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-syntaxerror-when-project-template-json-is-malformed",
+			"title": "Throws SyntaxError when project template JSON is malformed",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-project-template-steps-have-the-wrong",
+			"title": "Throws TypeError when project template steps have the wrong type",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-project-template-directory-is-a-file",
+			"title": "Throws Error when project template directory is a file",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +47,39 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["adds-completion-only-when-a-task-kind-is-requested"],
+			"states": [
+				"adds-completion-only-when-a-task-kind-is-requested",
+				"throws-expectedclierror-when-task-kind-is-invalid",
+				"throws-syntaxerror-when-project-template-json-is-malformed",
+				"throws-typeerror-when-project-template-steps-have-the-wrong",
+				"throws-error-when-project-template-directory-is-a-file"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["adds-completion-only-when-a-task-kind-is-requested"],
+			"states": [
+				"adds-completion-only-when-a-task-kind-is-requested",
+				"throws-expectedclierror-when-task-kind-is-invalid",
+				"throws-syntaxerror-when-project-template-json-is-malformed",
+				"throws-typeerror-when-project-template-steps-have-the-wrong",
+				"throws-error-when-project-template-directory-is-a-file"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["adds-completion-only-when-a-task-kind-is-requested"],
+			"states": [
+				"adds-completion-only-when-a-task-kind-is-requested",
+				"throws-expectedclierror-when-task-kind-is-invalid",
+				"throws-syntaxerror-when-project-template-json-is-malformed",
+				"throws-typeerror-when-project-template-steps-have-the-wrong",
+				"throws-error-when-project-template-directory-is-a-file"
+			],
 			"viewports": [],
 			"required": true
 		}
