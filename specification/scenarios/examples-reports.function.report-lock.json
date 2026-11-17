@@ -10,6 +10,11 @@
 			"id": "returns-operation-result-and-releases-lock",
 			"title": "Returns operation result and releases lock",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-reportlockbusyerror-when-all-lock-attempts-are-occupi",
+			"title": "Throws ReportLockBusyError when all lock attempts are occupied",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["returns-operation-result-and-releases-lock"],
+			"states": [
+				"returns-operation-result-and-releases-lock",
+				"throws-reportlockbusyerror-when-all-lock-attempts-are-occupi"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["returns-operation-result-and-releases-lock"],
+			"states": [
+				"returns-operation-result-and-releases-lock",
+				"throws-reportlockbusyerror-when-all-lock-attempts-are-occupi"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["returns-operation-result-and-releases-lock"],
+			"states": [
+				"returns-operation-result-and-releases-lock",
+				"throws-reportlockbusyerror-when-all-lock-attempts-are-occupi"
+			],
 			"viewports": [],
 			"required": true
 		}
