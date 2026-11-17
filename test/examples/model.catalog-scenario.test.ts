@@ -77,3 +77,24 @@ test('Deletes a scenario row and returns the adapter result', async () => {
 		{ name: 'adapter confirms deletion', input: { id: row.id }, output: result }
 	]);
 });
+
+test('Throws persistence errors unchanged', async () => {
+	const persistenceError = new Error('persistence unavailable');
+	const rejected = await CatalogScenario.find(adapter({
+		find: async () => { throw persistenceError; }
+	}), row.id).catch((error: unknown) => error);
+	const getterFailure = new Error('title unavailable');
+	const input = Object.defineProperty({ ...row }, 'title', {
+		enumerable: true,
+		get: () => { throw getterFailure; }
+	});
+	const copied = await Promise.resolve()
+		.then(() => CatalogScenario.create(adapter(), input))
+		.catch((error: unknown) => error);
+	expect(rejected).toBe(persistenceError);
+	expect(copied).toBe(getterFailure);
+	recordExampleCases({ unitId: 'model.catalog-scenario', symbol: 'find/create', state: 'throws-persistence-errors-unchanged', evidence: 'examples-cases', file: 'throws-persistence-errors-unchanged.json' }, [
+		{ name: 'adapter rejection propagates unchanged', input: { id: row.id }, error: { message: 'persistence unavailable' } },
+		{ name: 'input getter failure propagates unchanged', input: { id: row.id, title: '[throwing getter]' }, error: { message: 'title unavailable' } }
+	]);
+});
