@@ -68,3 +68,43 @@ test('Imports completed records and lists attempts', async () => {
 		}
 	});
 });
+
+test('Throws RangeError when ending an unrecorded attempt', async () => {
+	await withTempDir('job-history-range-', (directory) => {
+		const repository = new JobHistoryRepository(directory);
+		const missing: JobEnd = { id: 'missing', source: 'workspace:alpha', attempt: 1, endedAt: 1_750, outcome: 'fail' };
+		try {
+			let error: unknown;
+			try {
+				repository.end(missing);
+			} catch (caught) {
+				error = caught;
+			}
+			expect(error).toBeInstanceOf(RangeError);
+			recordExampleCases(
+				{ unitId: 'repository.execution-runtimes-job-history', symbol: 'end', state: 'throws-rangeerror-when-ending-an-unrecorded-attempt', evidence: 'examples-cases', file: 'throws-rangeerror-when-ending-an-unrecorded-attempt.json' },
+				[{ name: 'ending missing attempt is rejected and rolled back', input: missing, error: { name: (error as Error).name, message: (error as Error).message } }]
+			);
+		} finally {
+			repository.close();
+		}
+	});
+});
+
+test('Throws SQLiteError when querying after the connection closes', async () => {
+	await withTempDir('job-history-sqlite-', (directory) => {
+		const repository = new JobHistoryRepository(directory);
+		repository.close();
+		let error: unknown;
+		try {
+			repository.all();
+		} catch (caught) {
+			error = caught;
+		}
+		expect(error).toBeDefined();
+		recordExampleCases(
+			{ unitId: 'repository.execution-runtimes-job-history', symbol: 'all', state: 'throws-sqliteerror-when-querying-after-the-connection-closes', evidence: 'examples-cases', file: 'throws-sqliteerror-when-querying-after-the-connection-closes.json' },
+			[{ name: 'closed connection error propagates', input: {}, error: { name: (error as Error).name, message: (error as Error).message } }]
+		);
+	});
+});

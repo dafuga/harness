@@ -20,6 +20,16 @@
 			"id": "imports-completed-records-and-lists-attempts",
 			"title": "Imports completed records and lists attempts",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-rangeerror-when-ending-an-unrecorded-attempt",
+			"title": "Throws RangeError when ending an unrecorded attempt",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-sqliteerror-when-querying-after-the-connection-closes",
+			"title": "Throws SQLiteError when querying after the connection closes",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +50,9 @@
 			"states": [
 				"keeps-the-first-start-for-a-repeated-attempt",
 				"completes-an-attempt-once-and-preserves-its-first-outcome",
-				"imports-completed-records-and-lists-attempts"
+				"imports-completed-records-and-lists-attempts",
+				"throws-rangeerror-when-ending-an-unrecorded-attempt",
+				"throws-sqliteerror-when-querying-after-the-connection-closes"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +63,9 @@
 			"states": [
 				"keeps-the-first-start-for-a-repeated-attempt",
 				"completes-an-attempt-once-and-preserves-its-first-outcome",
-				"imports-completed-records-and-lists-attempts"
+				"imports-completed-records-and-lists-attempts",
+				"throws-rangeerror-when-ending-an-unrecorded-attempt",
+				"throws-sqliteerror-when-querying-after-the-connection-closes"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +76,9 @@
 			"states": [
 				"keeps-the-first-start-for-a-repeated-attempt",
 				"completes-an-attempt-once-and-preserves-its-first-outcome",
-				"imports-completed-records-and-lists-attempts"
+				"imports-completed-records-and-lists-attempts",
+				"throws-rangeerror-when-ending-an-unrecorded-attempt",
+				"throws-sqliteerror-when-querying-after-the-connection-closes"
 			],
 			"viewports": [],
 			"required": true
