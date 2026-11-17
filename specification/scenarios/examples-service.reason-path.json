@@ -10,6 +10,16 @@
 			"id": "returns-a-clear-report-when-the-range-has-no-changes",
 			"title": "Returns a clear report when the range has no changes",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-sideloader-rejection-on-a-history-step",
+			"title": "Throws SideLoader rejection on a history step",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-boundedcommandfailure-when-git-fails",
+			"title": "Throws BoundedCommandFailure when git fails",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +37,33 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["returns-a-clear-report-when-the-range-has-no-changes"],
+			"states": [
+				"returns-a-clear-report-when-the-range-has-no-changes",
+				"throws-sideloader-rejection-on-a-history-step",
+				"throws-boundedcommandfailure-when-git-fails"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["returns-a-clear-report-when-the-range-has-no-changes"],
+			"states": [
+				"returns-a-clear-report-when-the-range-has-no-changes",
+				"throws-sideloader-rejection-on-a-history-step",
+				"throws-boundedcommandfailure-when-git-fails"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["returns-a-clear-report-when-the-range-has-no-changes"],
+			"states": [
+				"returns-a-clear-report-when-the-range-has-no-changes",
+				"throws-sideloader-rejection-on-a-history-step",
+				"throws-boundedcommandfailure-when-git-fails"
+			],
 			"viewports": [],
 			"required": true
 		}
