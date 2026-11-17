@@ -7,13 +7,8 @@
 	"builds": [],
 	"states": [
 		{
-			"id": "finds-a-catalog-row-by-id",
-			"title": "Finds a catalog row by id",
-			"coverage": "required"
-		},
-		{
-			"id": "finds-rows-by-copied-filter-fields",
-			"title": "Finds rows by copied filter fields",
+			"id": "finds-catalog-rows-by-id-and-copied-filters",
+			"title": "Finds catalog rows by id and copied filters",
 			"coverage": "required"
 		},
 		{
@@ -29,6 +24,16 @@
 		{
 			"id": "deletes-a-row-and-returns-the-adapter-result",
 			"title": "Deletes a row and returns the adapter result",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-caller-field-getter-exception-during-copy",
+			"title": "Throws Caller field getter exception during copy",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-the-adapter-lacks-find",
+			"title": "Throws TypeError when the adapter lacks find",
 			"coverage": "required"
 		}
 	],
@@ -48,11 +53,12 @@
 			"id": "examples-output",
 			"kind": "output",
 			"states": [
-				"finds-a-catalog-row-by-id",
-				"finds-rows-by-copied-filter-fields",
+				"finds-catalog-rows-by-id-and-copied-filters",
 				"creates-a-row-from-copied-input-fields",
 				"updates-a-row-with-partial-fields",
-				"deletes-a-row-and-returns-the-adapter-result"
+				"deletes-a-row-and-returns-the-adapter-result",
+				"throws-caller-field-getter-exception-during-copy",
+				"throws-typeerror-when-the-adapter-lacks-find"
 			],
 			"viewports": [],
 			"required": true
@@ -61,11 +67,12 @@
 			"id": "examples-assertions",
 			"kind": "assertions",
 			"states": [
-				"finds-a-catalog-row-by-id",
-				"finds-rows-by-copied-filter-fields",
+				"finds-catalog-rows-by-id-and-copied-filters",
 				"creates-a-row-from-copied-input-fields",
 				"updates-a-row-with-partial-fields",
-				"deletes-a-row-and-returns-the-adapter-result"
+				"deletes-a-row-and-returns-the-adapter-result",
+				"throws-caller-field-getter-exception-during-copy",
+				"throws-typeerror-when-the-adapter-lacks-find"
 			],
 			"viewports": [],
 			"required": true
@@ -74,11 +81,12 @@
 			"id": "examples-cases",
 			"kind": "trace",
 			"states": [
-				"finds-a-catalog-row-by-id",
-				"finds-rows-by-copied-filter-fields",
+				"finds-catalog-rows-by-id-and-copied-filters",
 				"creates-a-row-from-copied-input-fields",
 				"updates-a-row-with-partial-fields",
-				"deletes-a-row-and-returns-the-adapter-result"
+				"deletes-a-row-and-returns-the-adapter-result",
+				"throws-caller-field-getter-exception-during-copy",
+				"throws-typeerror-when-the-adapter-lacks-find"
 			],
 			"viewports": [],
 			"required": true

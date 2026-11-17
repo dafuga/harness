@@ -33,22 +33,22 @@ const record = (state: string, symbol: string, input: unknown, output: unknown) 
 		[{ name: state, input, output }]
 	);
 
-test('Finds a catalog row by id', async () => {
+test('Finds catalog rows by id and copied filters', async () => {
 	const result = await CatalogEntity.find(adapter(), row.id);
 	expect(result).toEqual(row);
-	record('finds-a-catalog-row-by-id', 'CatalogEntity.find', { id: row.id }, result);
-});
-
-test('Finds rows by copied filter fields', async () => {
+	const byId = { name: 'find by id', input: { id: row.id }, output: result };
 	let received: unknown;
 	const filter = { kind: 'model' };
-	const result = await CatalogEntity.findBy(adapter({ findBy: async <T>(_table: string, fields: Record<string, unknown>) => {
+	const filtered = await CatalogEntity.findBy(adapter({ findBy: async <T>(_table: string, fields: Record<string, unknown>) => {
 		received = fields;
 		return [row as T];
 	} }), filter);
-	expect(result).toEqual([row]);
+	expect(filtered).toEqual([row]);
 	expect(received).toEqual(filter);
-	record('finds-rows-by-copied-filter-fields', 'CatalogEntity.findBy', filter, result);
+	recordExampleCases(
+		{ unitId: 'model.catalog-entity', symbol: 'CatalogEntity.find', state: 'finds-catalog-rows-by-id-and-copied-filters', evidence: 'examples-cases', file: 'finds-catalog-rows-by-id-and-copied-filters.json' },
+		[byId, { name: 'find by filter', input: filter, output: filtered }]
+	);
 });
 
 test('Creates a row from copied input fields', async () => {
@@ -74,4 +74,34 @@ test('Deletes a row and returns the adapter result', async () => {
 	const result = await CatalogEntity.delete(adapter({ delete: async () => false }), row.id);
 	expect(result).toBe(false);
 	record('deletes-a-row-and-returns-the-adapter-result', 'CatalogEntity.delete', { id: row.id }, result);
+});
+
+test('Throws Caller field getter exception during copy', async () => {
+	const input = Object.defineProperty({}, 'kind', { enumerable: true, get() { throw new Error('field getter failed'); } });
+	let message = '';
+	try {
+		await CatalogEntity.findBy(adapter(), input);
+	} catch (error) {
+		message = (error as Error).message;
+	}
+	expect(message).toBe('field getter failed');
+	recordExampleCases(
+		{ unitId: 'model.catalog-entity', symbol: 'CatalogEntity.findBy', state: 'throws-caller-field-getter-exception-during-copy', evidence: 'examples-cases', file: 'throws-caller-field-getter-exception-during-copy.json' },
+		[{ name: 'throwing filter getter', input: { kind: '[throwing getter]' }, error: message }]
+	);
+});
+
+test('Throws TypeError when the adapter lacks find', async () => {
+	const invalidAdapter = {} as PersistenceAdapter;
+	let message = '';
+	try {
+		await CatalogEntity.find(invalidAdapter, row.id);
+	} catch (error) {
+		message = (error as Error).message;
+	}
+	expect(message).toContain('find');
+	recordExampleCases(
+		{ unitId: 'model.catalog-entity', symbol: 'CatalogEntity.find', state: 'throws-typeerror-when-the-adapter-lacks-find', evidence: 'examples-cases', file: 'throws-typeerror-when-the-adapter-lacks-find.json' },
+		[{ name: 'adapter without find', input: { id: row.id, adapter: {} }, error: message }]
+	);
 });
