@@ -8,8 +8,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/game/src/utils/game-authoring/gameStep.ts"],
-		"symbols": ["GameStepRefusedError", "createRun", "stepGame", "gameStep", "enterView"]
+		"source": [
+			"packages/game/src/utils/game-authoring/gameStep.ts",
+			"packages/game/src/utils/game-authoring/gameStep.types.ts"
+		],
+		"symbols": [
+			"GameStepRefusedError",
+			"createRun",
+			"stepGame",
+			"gameStep",
+			"enterView",
+			"GameStepRefusedError"
+		]
 	},
 	"contract": {
 		"origin": "declared",
