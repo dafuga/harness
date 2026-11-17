@@ -15,6 +15,26 @@
 			"id": "hands-its-console-the-shell-address-with-its-query",
 			"title": "Hands its console the shell address with its query",
 			"coverage": "required"
+		},
+		{
+			"id": "refuses-with-403-forbidden-when-the-owner-policy-denies",
+			"title": "Refuses with 403 Forbidden when the owner policy denies",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-harnessdataloaderror-when-the-index-request-fails",
+			"title": "Throws HarnessDataLoadError when the index request fails",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-harnessdataloaderror-when-a-revision-request-fails",
+			"title": "Throws HarnessDataLoadError when a revision request fails",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-not-in-history-when-a-commit-is-not-held",
+			"title": "Reports not-in-history when a commit is not held",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +54,11 @@
 			"kind": "output",
 			"states": [
 				"titles-every-shell-page-with-the-shell-title",
-				"hands-its-console-the-shell-address-with-its-query"
+				"hands-its-console-the-shell-address-with-its-query",
+				"refuses-with-403-forbidden-when-the-owner-policy-denies",
+				"throws-harnessdataloaderror-when-the-index-request-fails",
+				"throws-harnessdataloaderror-when-a-revision-request-fails",
+				"reports-not-in-history-when-a-commit-is-not-held"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +68,11 @@
 			"kind": "assertions",
 			"states": [
 				"titles-every-shell-page-with-the-shell-title",
-				"hands-its-console-the-shell-address-with-its-query"
+				"hands-its-console-the-shell-address-with-its-query",
+				"refuses-with-403-forbidden-when-the-owner-policy-denies",
+				"throws-harnessdataloaderror-when-the-index-request-fails",
+				"throws-harnessdataloaderror-when-a-revision-request-fails",
+				"reports-not-in-history-when-a-commit-is-not-held"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +82,11 @@
 			"kind": "trace",
 			"states": [
 				"titles-every-shell-page-with-the-shell-title",
-				"hands-its-console-the-shell-address-with-its-query"
+				"hands-its-console-the-shell-address-with-its-query",
+				"refuses-with-403-forbidden-when-the-owner-policy-denies",
+				"throws-harnessdataloaderror-when-the-index-request-fails",
+				"throws-harnessdataloaderror-when-a-revision-request-fails",
+				"reports-not-in-history-when-a-commit-is-not-held"
 			],
 			"viewports": [],
 			"required": true
