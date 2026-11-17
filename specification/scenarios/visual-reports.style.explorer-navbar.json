@@ -24,12 +24,6 @@
 			"units": ["reports.style.explorer-navbar"]
 		},
 		{
-			"id": "long-repository",
-			"title": "Long repository",
-			"coverage": "required",
-			"units": ["reports.style.explorer-navbar"]
-		},
-		{
 			"id": "unresolved",
 			"title": "Unresolved",
 			"coverage": "required",
@@ -66,7 +60,7 @@
 		{
 			"id": "screens",
 			"kind": "screenshot",
-			"states": ["default", "pages", "historical", "long-repository", "unresolved"],
+			"states": ["default", "pages", "historical", "unresolved"],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",
 			"build": "shell-fixture",

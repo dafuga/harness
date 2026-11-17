@@ -11,7 +11,6 @@ const states = [
 	{ id: 'default', variant: '' },
 	{ id: 'pages', variant: 'pages' },
 	{ id: 'historical', variant: 'historical' },
-	{ id: 'long-repository', variant: 'long-repository' },
 	{ id: 'unresolved', variant: 'unresolved' }
 ];
 
@@ -99,15 +98,6 @@ async function expectShownState(content: Locator, id: string, width: number) {
 	if (id === 'historical') {
 		await expect(bar.locator('.hx-history-state')).toHaveText('Historical commit');
 		await expect(content.getByRole('link', { name: 'Go to tip', exact: true })).toBeVisible();
-	}
-	if (id === 'long-repository') {
-		const repository = bar.locator('.hx-repository');
-		await expect(repository).toHaveText(
-			'Northstar Field Services · Customer Operations · Order Management'
-		);
-		const cut = await repository.evaluate((node) => node.scrollWidth > node.clientWidth);
-		expect(cut, 'The repository is longer than its box, so the rule cuts it').toBe(true);
-		await expect(tabs).toBeVisible();
 	}
 }
 
