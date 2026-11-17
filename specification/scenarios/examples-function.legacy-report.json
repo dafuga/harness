@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.legacy-report",
+	"title": "function.legacy-report examples",
+	"kind": "headless",
+	"units": ["function.legacy-report"],
+	"builds": [],
+	"states": [
+		{
+			"id": "normalizes-legacy-manifests-and-rejects-invalid-records",
+			"title": "Normalizes legacy manifests and rejects invalid records",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.legacy-report.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["normalizes-legacy-manifests-and-rejects-invalid-records"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["normalizes-legacy-manifests-and-rejects-invalid-records"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["normalizes-legacy-manifests-and-rejects-invalid-records"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
