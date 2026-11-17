@@ -62,3 +62,26 @@ test('Imports loop events and marks them non-historical', async () => {
 		);
 	});
 });
+
+test('Throws Error when history reconciliation fails', async () => {
+	await withTempDir('import-analytics-error-', async (directory) => {
+		const root = join(directory, 'project');
+		writeLoop(root);
+		repository.reconcileHistorical.mockRejectedValueOnce(new Error('history unavailable'));
+		repository.close.mockClear();
+		await expect(importAnalytics(root, false)).rejects.toThrow('history unavailable');
+		expect(repository.close).toHaveBeenCalledOnce();
+		recordExampleCases(
+			{
+				unitId: 'workflow.import-analytics', symbol: 'importAnalytics',
+				state: 'throws-error-when-history-reconciliation-fails',
+				evidence: 'examples-cases', file: 'throws-error-when-history-reconciliation-fails.json'
+			},
+			[{
+				name: 'rejects when historical analytics cannot be reconciled',
+				input: { root: '<temporary>/project', historical: false },
+				error: { name: 'Error', message: 'history unavailable' }
+			}]
+		);
+	});
+});

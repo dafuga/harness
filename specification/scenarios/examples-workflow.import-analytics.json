@@ -10,6 +10,11 @@
 			"id": "imports-loop-events-and-marks-them-non-historical",
 			"title": "Imports loop events and marks them non-historical",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-history-reconciliation-fails",
+			"title": "Throws Error when history reconciliation fails",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["imports-loop-events-and-marks-them-non-historical"],
+			"states": [
+				"imports-loop-events-and-marks-them-non-historical",
+				"throws-error-when-history-reconciliation-fails"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["imports-loop-events-and-marks-them-non-historical"],
+			"states": [
+				"imports-loop-events-and-marks-them-non-historical",
+				"throws-error-when-history-reconciliation-fails"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["imports-loop-events-and-marks-them-non-historical"],
+			"states": [
+				"imports-loop-events-and-marks-them-non-historical",
+				"throws-error-when-history-reconciliation-fails"
+			],
 			"viewports": [],
 			"required": true
 		}
