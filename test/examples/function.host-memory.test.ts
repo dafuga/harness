@@ -1,7 +1,17 @@
-import { test } from 'vitest';
+import { test, vi } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { linuxMemory, macMemory } from '../../src/services/execution-runtimes/resource-queue-service/resource-monitor-service/host-resources-adapter/hostMemory';
+import { hostMemory, linuxMemory, macMemory } from '../../src/services/execution-runtimes/resource-queue-service/resource-monitor-service/host-resources-adapter/hostMemory';
+
+let hostPlatform = 'linux';
+vi.mock('node:os', () => ({
+	platform: () => hostPlatform,
+	totalmem: () => 17179869184,
+	freemem: () => 8589934592
+}));
+vi.mock('node:fs/promises', () => ({
+	readFile: vi.fn(async () => 'MemTotal: 16384000 kB\nMemAvailable: 8192000 kB\n')
+}));
 
 const macText =
 	'Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free: 100.\nPages inactive: 200.\nPages speculative: 50.';
@@ -84,5 +94,72 @@ test('Parses Linux memory counters and pressure', () => {
 				output: critical
 			}
 		]
+	);
+});
+
+test('Throws Invalid memory counters for missing Linux counters', () => {
+	const input = 'MemTotal: 0 kB\n';
+	const error = () => linuxMemory(input);
+	expect(error).toThrow('Cannot read Linux available memory');
+	let message = '';
+	try {
+		linuxMemory(input);
+	} catch (caught) {
+		message = (caught as Error).message;
+	}
+	const state = 'throws-invalid-memory-counters-for-missing-linux-counters';
+	recordExampleCases(
+		{ unitId: 'function.host-memory', symbol: 'linuxMemory', state, evidence: 'examples-cases', file: `${state}.json` },
+		[{ name: 'missing available counter', input, error: message }]
+	);
+});
+
+test('Throws Unsupported resource platform for an unknown platform', async () => {
+	hostPlatform = 'freebsd';
+	await expect(hostMemory()).rejects.toThrow('Unsupported resource platform');
+	const state = 'throws-unsupported-resource-platform-for-an-unknown-platform';
+	let message = '';
+	try {
+		await hostMemory();
+	} catch (caught) {
+		message = (caught as Error).message;
+	}
+	recordExampleCases(
+		{ unitId: 'function.host-memory', symbol: 'hostMemory', state, evidence: 'examples-cases', file: `${state}.json` },
+		[{ name: 'unsupported platform', input: 'freebsd', error: message }]
+	);
+	hostPlatform = 'linux';
+});
+
+test('Throws Memory probe failure when Linux memory cannot be read', async () => {
+	const fs = await import('node:fs/promises');
+	vi.mocked(fs.readFile).mockRejectedValueOnce(new Error('probe failed'));
+	await expect(hostMemory()).rejects.toThrow('probe failed');
+	const state = 'throws-memory-probe-failure-when-linux-memory-cannot-be-read';
+	let message = '';
+	try {
+		await hostMemory();
+	} catch (caught) {
+		message = (caught as Error).message;
+	}
+	recordExampleCases(
+		{ unitId: 'function.host-memory', symbol: 'hostMemory', state, evidence: 'examples-cases', file: `${state}.json` },
+		[{ name: 'Linux probe rejection', input: '/proc/meminfo', error: message }]
+	);
+});
+
+test('Throws Error for invalid macOS memory counters', () => {
+	const input = 'Pages free: 10.\n';
+	expect(() => macMemory(input, '1', 1024)).toThrow('Cannot read macOS memory counters');
+	const state = 'throws-error-for-invalid-macos-memory-counters';
+	let message = '';
+	try {
+		macMemory(input, '1', 1024);
+	} catch (caught) {
+		message = (caught as Error).message;
+	}
+	recordExampleCases(
+		{ unitId: 'function.host-memory', symbol: 'macMemory', state, evidence: 'examples-cases', file: `${state}.json` },
+		[{ name: 'missing page size', input: { text: input, pressure: '1', total: 1024 }, error: message }]
 	);
 });

@@ -15,6 +15,26 @@
 			"id": "parses-linux-memory-counters-and-pressure",
 			"title": "Parses Linux memory counters and pressure",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-invalid-memory-counters-for-missing-linux-counters",
+			"title": "Throws Invalid memory counters for missing Linux counters",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-unsupported-resource-platform-for-an-unknown-platform",
+			"title": "Throws Unsupported resource platform for an unknown platform",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-memory-probe-failure-when-linux-memory-cannot-be-read",
+			"title": "Throws Memory probe failure when Linux memory cannot be read",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-for-invalid-macos-memory-counters",
+			"title": "Throws Error for invalid macOS memory counters",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +54,11 @@
 			"kind": "output",
 			"states": [
 				"parses-macos-memory-counters-and-pressure",
-				"parses-linux-memory-counters-and-pressure"
+				"parses-linux-memory-counters-and-pressure",
+				"throws-invalid-memory-counters-for-missing-linux-counters",
+				"throws-unsupported-resource-platform-for-an-unknown-platform",
+				"throws-memory-probe-failure-when-linux-memory-cannot-be-read",
+				"throws-error-for-invalid-macos-memory-counters"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +68,11 @@
 			"kind": "assertions",
 			"states": [
 				"parses-macos-memory-counters-and-pressure",
-				"parses-linux-memory-counters-and-pressure"
+				"parses-linux-memory-counters-and-pressure",
+				"throws-invalid-memory-counters-for-missing-linux-counters",
+				"throws-unsupported-resource-platform-for-an-unknown-platform",
+				"throws-memory-probe-failure-when-linux-memory-cannot-be-read",
+				"throws-error-for-invalid-macos-memory-counters"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +82,11 @@
 			"kind": "trace",
 			"states": [
 				"parses-macos-memory-counters-and-pressure",
-				"parses-linux-memory-counters-and-pressure"
+				"parses-linux-memory-counters-and-pressure",
+				"throws-invalid-memory-counters-for-missing-linux-counters",
+				"throws-unsupported-resource-platform-for-an-unknown-platform",
+				"throws-memory-probe-failure-when-linux-memory-cannot-be-read",
+				"throws-error-for-invalid-macos-memory-counters"
 			],
 			"viewports": [],
 			"required": true
