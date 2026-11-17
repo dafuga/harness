@@ -5,11 +5,49 @@ import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import {
+	installConsole,
 	consoleObjects,
+	uninstallConsole,
+	restoreConsoleFile,
 	renderConsoleChange,
 	renderConsoleInstall,
 	renderConsoleUninstall
 } from '../../src/cli/program/installConsole';
+
+test('Throws ExpectedCliError for invalid install and object inputs', async () => {
+	await withTempDir('install-console-invalid-host-', async (host) => {
+		const flags = {
+			host,
+			policy: '$lib/server/harnessPolicy',
+			policyExport: 'harnessPolicy',
+			base: '/harness'
+		};
+		await expect(installConsole(flags)).rejects.toThrow('is not a SvelteKit project');
+		await expect(consoleObjects(host, '../private')).rejects.toThrow('--prefix must be a plain path');
+			recordExampleCases(
+				{ unitId: 'workflow.install-console', symbol: 'installConsole and consoleObjects', state: 'throws-expectedclierror-for-invalid-install-and-object-input', evidence: 'examples-cases', file: 'throws-expectedclierror-for-invalid-install-and-object-input.json' },
+			[
+				{ name: 'rejects an unconfigured host', input: flags, error: `${host} is not a SvelteKit project: it needs svelte.config.js and src/routes.` },
+				{ name: 'rejects traversal in bucket prefix', input: { directory: host, prefix: '../private' }, error: '--prefix must be a plain path inside the bucket, such as history.' }
+			]
+		);
+	});
+});
+
+test('Throws ExpectedCliError for invalid uninstall and restore inputs', async () => {
+	const flags = { host: '/tmp/example-site', update: true, keep: true };
+	expect(() => uninstallConsole(flags)).toThrow('Choose --update or --keep, not both.');
+	await withTempDir('install-console-empty-restore-', async (directory) => {
+		await expect(restoreConsoleFile(directory, 'src/routes/harness/+server.ts')).rejects.toThrow('No replaced contents are recorded');
+		recordExampleCases(
+			{ unitId: 'workflow.install-console', symbol: 'uninstallConsole and restoreConsoleFile', state: 'throws-expectedclierror-for-invalid-uninstall-and-restore-in', evidence: 'examples-cases', file: 'throws-expectedclierror-for-invalid-uninstall-and-restore-in.json' },
+			[
+				{ name: 'rejects simultaneous update and keep', input: flags, error: 'Choose --update or --keep, not both.' },
+				{ name: 'rejects a path without a recorded saved copy', input: { host: directory, path: 'src/routes/harness/+server.ts' }, error: 'No replaced contents are recorded for src/routes/harness/+server.ts.' }
+			]
+		);
+	});
+});
 
 test('Lists indexed files under a bucket prefix', async () => {
 	await withTempDir('install-console-index-', async (directory) => {

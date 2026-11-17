@@ -7,6 +7,16 @@
 	"builds": [],
 	"states": [
 		{
+			"id": "throws-expectedclierror-for-invalid-install-and-object-input",
+			"title": "Throws ExpectedCliError for invalid install and object inputs",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-for-invalid-uninstall-and-restore-in",
+			"title": "Throws ExpectedCliError for invalid uninstall and restore inputs",
+			"coverage": "required"
+		},
+		{
 			"id": "lists-indexed-files-under-a-bucket-prefix",
 			"title": "Lists indexed files under a bucket prefix",
 			"coverage": "required"
@@ -43,6 +53,8 @@
 			"id": "examples-output",
 			"kind": "output",
 			"states": [
+				"throws-expectedclierror-for-invalid-install-and-object-input",
+				"throws-expectedclierror-for-invalid-uninstall-and-restore-in",
 				"lists-indexed-files-under-a-bucket-prefix",
 				"renders-a-removed-file-change",
 				"renders-a-clean-uninstall-result",
@@ -55,6 +67,8 @@
 			"id": "examples-assertions",
 			"kind": "assertions",
 			"states": [
+				"throws-expectedclierror-for-invalid-install-and-object-input",
+				"throws-expectedclierror-for-invalid-uninstall-and-restore-in",
 				"lists-indexed-files-under-a-bucket-prefix",
 				"renders-a-removed-file-change",
 				"renders-a-clean-uninstall-result",
@@ -67,6 +81,8 @@
 			"id": "examples-cases",
 			"kind": "trace",
 			"states": [
+				"throws-expectedclierror-for-invalid-install-and-object-input",
+				"throws-expectedclierror-for-invalid-uninstall-and-restore-in",
 				"lists-indexed-files-under-a-bucket-prefix",
 				"renders-a-removed-file-change",
 				"renders-a-clean-uninstall-result",
