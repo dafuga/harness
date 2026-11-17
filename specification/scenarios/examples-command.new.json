@@ -10,6 +10,11 @@
 			"id": "registers-the-new-command-tree",
 			"title": "Registers the new command tree",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-game-dimension-is-not-2d-or-3d",
+			"title": "Throws ExpectedCliError when game dimension is not 2d or 3d",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["registers-the-new-command-tree"],
+			"states": [
+				"registers-the-new-command-tree",
+				"throws-expectedclierror-when-game-dimension-is-not-2d-or-3d"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["registers-the-new-command-tree"],
+			"states": [
+				"registers-the-new-command-tree",
+				"throws-expectedclierror-when-game-dimension-is-not-2d-or-3d"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["registers-the-new-command-tree"],
+			"states": [
+				"registers-the-new-command-tree",
+				"throws-expectedclierror-when-game-dimension-is-not-2d-or-3d"
+			],
 			"viewports": [],
 			"required": true
 		}

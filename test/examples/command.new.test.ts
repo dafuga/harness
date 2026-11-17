@@ -39,6 +39,14 @@ const EXPECTED_SUBCOMMANDS = [
 	}
 ];
 
+const INVALID_DIMENSION_ARGV = ['new', 'game', 'arcade', '--dimension', '4d'];
+
+function runNewCommand(argv: string[]) {
+	const program = new Command().name('harness');
+	registerNewCommand(program);
+	return program.parseAsync(argv, { from: 'user' });
+}
+
 test('Registers the new command tree', () => {
 	const program = new Command().name('harness');
 	const returned = registerNewCommand(program);
@@ -67,6 +75,34 @@ test('Registers the new command tree', () => {
 					programCommands: ['new'],
 					subcommands
 				}
+			}
+		]
+	);
+});
+
+test('Throws ExpectedCliError when game dimension is not 2d or 3d', async () => {
+	const failure = await runNewCommand(INVALID_DIMENSION_ARGV).then(
+		() => null,
+		(error: unknown) => error
+	);
+	const message = failure instanceof Error ? failure.message : null;
+
+	expect(failure).toBeInstanceOf(Error);
+	expect(message).toBe('Dimension must be 2d or 3d.');
+
+	recordExampleCases(
+		{
+			unitId: 'command.new',
+			symbol: 'registerNewCommand',
+			state: 'throws-expectedclierror-when-game-dimension-is-not-2d-or-3d',
+			evidence: 'examples-cases',
+			file: 'throws-expectedclierror-when-game-dimension-is-not-2d-or-3d.json'
+		},
+		[
+			{
+				name: 'game command with --dimension 4d',
+				input: { argv: INVALID_DIMENSION_ARGV },
+				error: { message }
 			}
 		]
 	);
