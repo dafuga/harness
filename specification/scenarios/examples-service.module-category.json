@@ -15,6 +15,11 @@
 			"id": "reads-taxonomy-from-a-selected-source-tree",
 			"title": "Reads taxonomy from a selected source tree",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-the-project-taxonomy-is-invalid",
+			"title": "Throws ExpectedCliError when the project taxonomy is invalid JSON",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +39,8 @@
 			"kind": "output",
 			"states": [
 				"loads-the-nearest-project-taxonomy",
-				"reads-taxonomy-from-a-selected-source-tree"
+				"reads-taxonomy-from-a-selected-source-tree",
+				"throws-expectedclierror-when-the-project-taxonomy-is-invalid"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +50,8 @@
 			"kind": "assertions",
 			"states": [
 				"loads-the-nearest-project-taxonomy",
-				"reads-taxonomy-from-a-selected-source-tree"
+				"reads-taxonomy-from-a-selected-source-tree",
+				"throws-expectedclierror-when-the-project-taxonomy-is-invalid"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +61,8 @@
 			"kind": "trace",
 			"states": [
 				"loads-the-nearest-project-taxonomy",
-				"reads-taxonomy-from-a-selected-source-tree"
+				"reads-taxonomy-from-a-selected-source-tree",
+				"throws-expectedclierror-when-the-project-taxonomy-is-invalid"
 			],
 			"viewports": [],
 			"required": true

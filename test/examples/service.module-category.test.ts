@@ -54,3 +54,32 @@ test('Reads taxonomy from a selected source tree', async () => {
 		[{ name: 'reads and validates the selected revision taxonomy', input: { path: 'harness.groups.json' }, output: result }]
 	);
 });
+
+test('Throws ExpectedCliError when the project taxonomy is invalid JSON', async () => {
+	await withTempDir('module-category-invalid-', (directory) => {
+		writeFileSync(join(directory, 'harness.groups.json'), '{invalid');
+		let errorName = '';
+		try {
+			service.load(directory);
+		} catch (error) {
+			errorName = error instanceof Error ? error.name : 'unknown';
+		}
+		expect(errorName).toBe('ExpectedCliError');
+		recordExampleCases(
+			{
+				unitId: 'service.module-category',
+				symbol: 'ModuleCategoryService.load',
+				state: 'throws-expectedclierror-when-the-project-taxonomy-is-invalid',
+				evidence: 'examples-cases',
+				file: 'throws-expectedclierror-when-the-project-taxonomy-is-invalid.json'
+			},
+			[
+				{
+					name: 'rejects malformed taxonomy JSON',
+					input: { directory, text: '{invalid' },
+					error: { name: errorName }
+				}
+			]
+		);
+	});
+});
