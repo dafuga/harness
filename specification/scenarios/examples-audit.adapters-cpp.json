@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-audit.adapters-cpp",
+	"title": "audit.adapters-cpp examples",
+	"kind": "headless",
+	"units": ["audit.adapters-cpp"],
+	"builds": [],
+	"states": [
+		{
+			"id": "reports-a-c-file-longer-than-the-file-line-limit",
+			"title": "Reports a C++ file longer than the file line limit",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-c-functions-over-the-block-limits",
+			"title": "Reports C++ functions over the block limits",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-using-namespace-std-in-every-header-extension",
+			"title": "Reports using namespace std in every header extension",
+			"coverage": "required"
+		},
+		{
+			"id": "leaves-using-namespace-std-alone-in-a-source-file",
+			"title": "Leaves using namespace std alone in a source file",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-an-include-that-climbs-to-a-parent-folder",
+			"title": "Reports an include that climbs to a parent folder",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/audit.adapters-cpp.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"reports-a-c-file-longer-than-the-file-line-limit",
+				"reports-c-functions-over-the-block-limits",
+				"reports-using-namespace-std-in-every-header-extension",
+				"leaves-using-namespace-std-alone-in-a-source-file",
+				"reports-an-include-that-climbs-to-a-parent-folder"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"reports-a-c-file-longer-than-the-file-line-limit",
+				"reports-c-functions-over-the-block-limits",
+				"reports-using-namespace-std-in-every-header-extension",
+				"leaves-using-namespace-std-alone-in-a-source-file",
+				"reports-an-include-that-climbs-to-a-parent-folder"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"reports-a-c-file-longer-than-the-file-line-limit",
+				"reports-c-functions-over-the-block-limits",
+				"reports-using-namespace-std-in-every-header-extension",
+				"leaves-using-namespace-std-alone-in-a-source-file",
+				"reports-an-include-that-climbs-to-a-parent-folder"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
