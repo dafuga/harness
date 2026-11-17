@@ -93,6 +93,33 @@ test('builds a validated screenshot object key', () => {
 	);
 });
 
+test('Throws R2ScreenshotStoreError for an invalid filename', () => {
+	let error: unknown;
+	try {
+		r2ObjectKey('report-123', 'Screenshot.png');
+	} catch (caught) {
+		error = caught;
+	}
+	expect(error).toBeInstanceOf(R2ScreenshotStoreError);
+	expect(error).toMatchObject({ message: 'Invalid R2 image name' });
+	recordExampleCases(
+		{
+			unitId: 'reports.adapter.r2-screenshot-store',
+			symbol: 'r2ObjectKey',
+			state: 'throws-r2screenshotstoreerror-for-an-invalid-filename',
+			evidence: 'examples-cases',
+			file: 'throws-r2screenshotstoreerror-for-an-invalid-filename.json'
+		},
+		[
+			{
+				name: 'uppercase filename is rejected',
+				input: { reportId: 'report-123', file: 'Screenshot.png' },
+				error: { name: 'R2ScreenshotStoreError', message: 'Invalid R2 image name' }
+			}
+		]
+	);
+});
+
 test('stores and retrieves screenshot bytes through the client', async () => {
 	const directory = tempDirectory('r2-store-examples');
 	try {

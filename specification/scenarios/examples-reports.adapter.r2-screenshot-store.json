@@ -17,6 +17,11 @@
 			"coverage": "required"
 		},
 		{
+			"id": "throws-r2screenshotstoreerror-for-an-invalid-filename",
+			"title": "Throws R2ScreenshotStoreError for an invalid filename",
+			"coverage": "required"
+		},
+		{
 			"id": "stores-and-retrieves-screenshot-bytes-through-the-client",
 			"title": "stores and retrieves screenshot bytes through the client",
 			"coverage": "required"
@@ -40,6 +45,7 @@
 			"states": [
 				"resolves-process-settings-ahead-of-local-r2-values",
 				"builds-a-validated-screenshot-object-key",
+				"throws-r2screenshotstoreerror-for-an-invalid-filename",
 				"stores-and-retrieves-screenshot-bytes-through-the-client"
 			],
 			"viewports": [],
@@ -51,6 +57,7 @@
 			"states": [
 				"resolves-process-settings-ahead-of-local-r2-values",
 				"builds-a-validated-screenshot-object-key",
+				"throws-r2screenshotstoreerror-for-an-invalid-filename",
 				"stores-and-retrieves-screenshot-bytes-through-the-client"
 			],
 			"viewports": [],
@@ -62,6 +69,7 @@
 			"states": [
 				"resolves-process-settings-ahead-of-local-r2-values",
 				"builds-a-validated-screenshot-object-key",
+				"throws-r2screenshotstoreerror-for-an-invalid-filename",
 				"stores-and-retrieves-screenshot-bytes-through-the-client"
 			],
 			"viewports": [],
