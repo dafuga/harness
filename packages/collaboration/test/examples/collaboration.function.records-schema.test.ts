@@ -2,7 +2,6 @@ import { test } from 'vitest';
 import { projectSchema, recordsSchema } from '../../src/utils/development-tooling/recordsSchema';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
-
 const projectInput = {
 	id: '6f1c2d3e-4a5b-4c6d-8e7f-9a0b1c2d3e4f',
 	name: '  Quarterly launch review  ',
@@ -95,7 +94,6 @@ const unboundInput = {
 		}
 	]
 };
-
 function captureError(parse: () => unknown) {
 	try {
 		parse();
@@ -117,7 +115,6 @@ function captureError(parse: () => unknown) {
 		};
 	}
 }
-
 function summarizeRecords(records: ReturnType<typeof recordsSchema.parse>) {
 	return {
 		projects: records.projects.map(({ id, name }) => ({ id, name })),
@@ -132,13 +129,11 @@ function summarizeRecords(records: ReturnType<typeof recordsSchema.parse>) {
 		)
 	};
 }
-
 test('Parses a strict project record', () => {
 	const accepted = projectSchema.parse(projectInput);
 	const unknownField = { ...projectInput, visibility: 'team' };
 	const rejected = captureError(() => projectSchema.parse(unknownField));
 	const state = 'parses-a-strict-project-record';
-
 	recordExampleCases(
 		{
 			unitId: 'collaboration.function.records-schema',
@@ -156,19 +151,16 @@ test('Parses a strict project record', () => {
 			{ name: 'unknown project fields are rejected', input: unknownField, error: rejected }
 		]
 	);
-
 	expect(accepted).toMatchObject({ name: 'Quarterly launch review', ownerId: 'owner-0142' });
 	expect(rejected.name).toBe('ZodError');
 	expect(rejected.issues.map(({ code }) => code)).toContain('unrecognized_keys');
 });
-
 test('Validates snapshot ownership and record integrity', () => {
 	const accepted = recordsSchema.parse(snapshotInput);
 	const duplicateError = captureError(() => recordsSchema.parse(duplicateInput));
 	const unboundError = captureError(() => recordsSchema.parse(unboundInput));
 	const parsedSummary = summarizeRecords(accepted);
 	const state = 'validates-snapshot-ownership-and-record-integrity';
-
 	recordExampleCases(
 		{
 			unitId: 'collaboration.function.records-schema',
@@ -195,7 +187,6 @@ test('Validates snapshot ownership and record integrity', () => {
 			}
 		]
 	);
-
 	expect(parsedSummary.comments).toEqual([
 		{
 			threadId: thread.id,
@@ -212,4 +203,11 @@ test('Validates snapshot ownership and record integrity', () => {
 		'Missing owner',
 		'Duplicate request'
 	]);
+});
+test('Throws ZodError when records violate integrity rules', () => {
+	const error = captureError(() => recordsSchema.parse(duplicateInput));
+	const state = 'throws-zoderror-when-records-violate-integrity-rules';
+	expect(error.name).toBe('ZodError');
+	expect(error.issues.map(({ message }) => message)).toContain('Duplicate record identity');
+	recordExampleCases({ unitId: 'collaboration.function.records-schema', symbol: 'recordsSchema', state, evidence: 'examples-cases', file: `${state}.json` }, [{ name: 'duplicate project identities throw a validation error', input: duplicateInput, error }]);
 });

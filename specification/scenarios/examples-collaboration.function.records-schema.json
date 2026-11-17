@@ -15,6 +15,11 @@
 			"id": "validates-snapshot-ownership-and-record-integrity",
 			"title": "Validates snapshot ownership and record integrity",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-zoderror-when-records-violate-integrity-rules",
+			"title": "Throws ZodError when records violate integrity rules",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +39,8 @@
 			"kind": "output",
 			"states": [
 				"parses-a-strict-project-record",
-				"validates-snapshot-ownership-and-record-integrity"
+				"validates-snapshot-ownership-and-record-integrity",
+				"throws-zoderror-when-records-violate-integrity-rules"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +50,8 @@
 			"kind": "assertions",
 			"states": [
 				"parses-a-strict-project-record",
-				"validates-snapshot-ownership-and-record-integrity"
+				"validates-snapshot-ownership-and-record-integrity",
+				"throws-zoderror-when-records-violate-integrity-rules"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +61,8 @@
 			"kind": "trace",
 			"states": [
 				"parses-a-strict-project-record",
-				"validates-snapshot-ownership-and-record-integrity"
+				"validates-snapshot-ownership-and-record-integrity",
+				"throws-zoderror-when-records-violate-integrity-rules"
 			],
 			"viewports": [],
 			"required": true
