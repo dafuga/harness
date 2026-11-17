@@ -1,0 +1,97 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-workflow.verification-evidence-run-verify-verification-service-check-run-service-capture-limits",
+	"title": "workflow.verification-evidence-run-verify-verification-service-check-run-service-capture-limits examples",
+	"kind": "headless",
+	"units": [
+		"workflow.verification-evidence-run-verify-verification-service-check-run-service-capture-limits"
+	],
+	"builds": [],
+	"states": [
+		{
+			"id": "digests-a-capture-file-with-its-sha256-and-byte-count",
+			"title": "Digests a capture file with its sha256 and byte count",
+			"coverage": "required"
+		},
+		{
+			"id": "returns-the-capture-contents-only-when-retain-is-requested",
+			"title": "Returns the capture contents only when retain is requested",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-a-capture-read-past-its-byte-ceiling",
+			"title": "Refuses a capture read past its byte ceiling",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-a-capture-path-that-is-not-a-regular-file",
+			"title": "Refuses a capture path that is not a regular file",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-a-capture-over-maxcapturebytes-per-file",
+			"title": "Refuses a capture over maxCaptureBytes per file",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-a-record-admission-that-would-exceed-maxrecordbytes",
+			"title": "Refuses a record admission that would exceed maxRecordBytes",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/workflow.verification-evidence-run-verify-verification-service-check-run-service-capture-limits.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"digests-a-capture-file-with-its-sha256-and-byte-count",
+				"returns-the-capture-contents-only-when-retain-is-requested",
+				"refuses-a-capture-read-past-its-byte-ceiling",
+				"refuses-a-capture-path-that-is-not-a-regular-file",
+				"refuses-a-capture-over-maxcapturebytes-per-file",
+				"refuses-a-record-admission-that-would-exceed-maxrecordbytes"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"digests-a-capture-file-with-its-sha256-and-byte-count",
+				"returns-the-capture-contents-only-when-retain-is-requested",
+				"refuses-a-capture-read-past-its-byte-ceiling",
+				"refuses-a-capture-path-that-is-not-a-regular-file",
+				"refuses-a-capture-over-maxcapturebytes-per-file",
+				"refuses-a-record-admission-that-would-exceed-maxrecordbytes"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"digests-a-capture-file-with-its-sha256-and-byte-count",
+				"returns-the-capture-contents-only-when-retain-is-requested",
+				"refuses-a-capture-read-past-its-byte-ceiling",
+				"refuses-a-capture-path-that-is-not-a-regular-file",
+				"refuses-a-capture-over-maxcapturebytes-per-file",
+				"refuses-a-record-admission-that-would-exceed-maxrecordbytes"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
