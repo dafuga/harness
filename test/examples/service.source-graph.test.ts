@@ -51,6 +51,35 @@ const scenarioManifests = [
 	{ id: 'run-a', units: ['svc.a'], tests: [{ cwd: 'test', target: 'a.test.ts' }] }
 ];
 
+test('Throws Input access failure when a manifest getter throws', () => {
+	const failing = { id: 'svc.b', owns: { source: ['src/b.ts'] }, dependencies: [] };
+	Object.defineProperty(failing, 'status', {
+		enumerable: true,
+		get: () => {
+			throw new Error('status unreadable');
+		}
+	});
+
+	expect(() => build(indexFiles, [failing])).toThrow('status unreadable');
+
+	recordExampleCases(
+		{
+			unitId: 'service.source-graph',
+			symbol: 'build',
+			state: 'throws-input-access-failure-when-a-manifest-getter-throws',
+			evidence: 'examples-cases',
+			file: 'throws-input-access-failure-when-a-manifest-getter-throws.json'
+		},
+		[
+			{
+				name: 'manifest status getter throw propagates without wrapping',
+				input: { files: indexFiles, manifests: [{ id: 'svc.b', status: '<throwing getter>' }] },
+				error: 'status unreadable'
+			}
+		]
+	);
+});
+
 test('Links files, owned units and scenarios into one graph', () => {
 	const graph = build(indexFiles, unitManifests, scenarioManifests);
 	const ids = graph.nodes.map((node) => node.id);

@@ -7,6 +7,11 @@
 	"builds": [],
 	"states": [
 		{
+			"id": "throws-input-access-failure-when-a-manifest-getter-throws",
+			"title": "Throws Input access failure when a manifest getter throws",
+			"coverage": "required"
+		},
+		{
 			"id": "links-files-owned-units-and-scenarios-into-one-graph",
 			"title": "Links files, owned units and scenarios into one graph",
 			"coverage": "required"
@@ -38,6 +43,7 @@
 			"id": "examples-output",
 			"kind": "output",
 			"states": [
+				"throws-input-access-failure-when-a-manifest-getter-throws",
 				"links-files-owned-units-and-scenarios-into-one-graph",
 				"keeps-unresolved-references-as-uncertainty",
 				"prefixes-node-ids-without-changing-the-path"
@@ -49,6 +55,7 @@
 			"id": "examples-assertions",
 			"kind": "assertions",
 			"states": [
+				"throws-input-access-failure-when-a-manifest-getter-throws",
 				"links-files-owned-units-and-scenarios-into-one-graph",
 				"keeps-unresolved-references-as-uncertainty",
 				"prefixes-node-ids-without-changing-the-path"
@@ -60,6 +67,7 @@
 			"id": "examples-cases",
 			"kind": "trace",
 			"states": [
+				"throws-input-access-failure-when-a-manifest-getter-throws",
 				"links-files-owned-units-and-scenarios-into-one-graph",
 				"keeps-unresolved-references-as-uncertainty",
 				"prefixes-node-ids-without-changing-the-path"
