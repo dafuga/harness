@@ -15,6 +15,16 @@
 			"id": "leaves-inactive-units-without-archived-source",
 			"title": "Leaves inactive units without archived source",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-committed-tree-cannot-be-opened",
+			"title": "Throws Error when the committed tree cannot be opened",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-media-output-directory-cannot-be-creat",
+			"title": "Throws Error when the media output directory cannot be created",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +44,9 @@
 			"kind": "output",
 			"states": [
 				"archives-committed-source-and-its-direct-test-importer",
-				"leaves-inactive-units-without-archived-source"
+				"leaves-inactive-units-without-archived-source",
+				"throws-error-when-the-committed-tree-cannot-be-opened",
+				"throws-error-when-the-media-output-directory-cannot-be-creat"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +56,9 @@
 			"kind": "assertions",
 			"states": [
 				"archives-committed-source-and-its-direct-test-importer",
-				"leaves-inactive-units-without-archived-source"
+				"leaves-inactive-units-without-archived-source",
+				"throws-error-when-the-committed-tree-cannot-be-opened",
+				"throws-error-when-the-media-output-directory-cannot-be-creat"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +68,9 @@
 			"kind": "trace",
 			"states": [
 				"archives-committed-source-and-its-direct-test-importer",
-				"leaves-inactive-units-without-archived-source"
+				"leaves-inactive-units-without-archived-source",
+				"throws-error-when-the-committed-tree-cannot-be-opened",
+				"throws-error-when-the-media-output-directory-cannot-be-creat"
 			],
 			"viewports": [],
 			"required": true

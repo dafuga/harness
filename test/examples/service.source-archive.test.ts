@@ -76,3 +76,32 @@ test('Leaves inactive units without archived source', async () => {
 		);
 	});
 });
+
+test('Throws Error when the committed tree cannot be opened', async () => {
+	await withTempRepo(async ({ root }) => {
+		const service = new SourceArchiveService(root, join(root, 'history'));
+		const commit = '0000000000000000000000000000000000000000';
+		await expect(service.archive(commit, [exampleUnit()])).rejects.toThrow();
+		recordExampleCases(
+			{ unitId: 'service.source-archive', symbol: 'SourceArchiveService.archive', state: 'throws-error-when-the-committed-tree-cannot-be-opened', evidence: 'examples-cases', file: 'throws-error-when-the-committed-tree-cannot-be-opened.json' },
+			[{ name: 'missing immutable commit is rejected', input: { commit }, error: 'Error: committed tree cannot be opened' }]
+		);
+	});
+});
+
+test('Throws Error when the media output directory cannot be created', async () => {
+	await withTempRepo(async ({ root, git }) => {
+		writeFixtureFile(root, sourcePath, 'committed source');
+		git('add', sourcePath);
+		git('commit', '-m', 'fixture');
+		const commit = git('rev-parse', 'HEAD');
+		const out = join(root, 'history');
+		writeFileSync(out, 'occupied');
+		const service = new SourceArchiveService(root, out);
+		await expect(service.archive(commit, [exampleUnit()])).rejects.toThrow();
+		recordExampleCases(
+			{ unitId: 'service.source-archive', symbol: 'SourceArchiveService.archive', state: 'throws-error-when-the-media-output-directory-cannot-be-creat', evidence: 'examples-cases', file: 'throws-error-when-the-media-output-directory-cannot-be-creat.json' },
+			[{ name: 'media directory parent is a file', input: { commit, output: out }, error: 'Error: media output directory cannot be created' }]
+		);
+	});
+});
