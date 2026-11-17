@@ -15,6 +15,26 @@
 			"id": "lists-the-recorded-work-of-a-project-history",
 			"title": "Lists the recorded work of a project history",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-every-worktree-is-bare",
+			"title": "Throws TypeError when every worktree is bare",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-boundedcommandfailure-when-git-cannot-start",
+			"title": "Throws BoundedCommandFailure when git cannot start",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-a-git-read-exits-non-zero",
+			"title": "Throws Error when a git read exits non-zero",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-a-units-directory-is-not-a-directory",
+			"title": "Throws Error when a units directory is not a directory",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +54,11 @@
 			"kind": "output",
 			"states": [
 				"shows-a-checkout-that-has-no-commits-yet",
-				"lists-the-recorded-work-of-a-project-history"
+				"lists-the-recorded-work-of-a-project-history",
+				"throws-typeerror-when-every-worktree-is-bare",
+				"throws-boundedcommandfailure-when-git-cannot-start",
+				"throws-error-when-a-git-read-exits-non-zero",
+				"throws-error-when-a-units-directory-is-not-a-directory"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +68,11 @@
 			"kind": "assertions",
 			"states": [
 				"shows-a-checkout-that-has-no-commits-yet",
-				"lists-the-recorded-work-of-a-project-history"
+				"lists-the-recorded-work-of-a-project-history",
+				"throws-typeerror-when-every-worktree-is-bare",
+				"throws-boundedcommandfailure-when-git-cannot-start",
+				"throws-error-when-a-git-read-exits-non-zero",
+				"throws-error-when-a-units-directory-is-not-a-directory"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +82,11 @@
 			"kind": "trace",
 			"states": [
 				"shows-a-checkout-that-has-no-commits-yet",
-				"lists-the-recorded-work-of-a-project-history"
+				"lists-the-recorded-work-of-a-project-history",
+				"throws-typeerror-when-every-worktree-is-bare",
+				"throws-boundedcommandfailure-when-git-cannot-start",
+				"throws-error-when-a-git-read-exits-non-zero",
+				"throws-error-when-a-units-directory-is-not-a-directory"
 			],
 			"viewports": [],
 			"required": true

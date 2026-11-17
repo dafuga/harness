@@ -1,9 +1,10 @@
-import { writeFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { withTempRepo } from '../support/temporary';
+import { withTempDir, withTempRepo } from '../support/temporary';
 import { ProjectActivityService } from '../../src/services/projects-sessions/project-activity-service/ProjectActivityService';
 
 type Repository = { root: string; git: (...args: string[]) => string };
@@ -14,6 +15,7 @@ const unit = 'service.project-activity';
 const source = 'src/services/projects-sessions/project-activity-service/ProjectActivityService.ts';
 const subject = 'Show the agent roster in project activity';
 const behavior = 'Shows the registered agents of the repository in the live activity.';
+const none: History = { branches: [], revisions: [], truncated: false };
 
 /** Commits one file in the fixture repository and returns the new commit hash. */
 function commitFile(repository: Repository): string {
@@ -62,6 +64,21 @@ function detailsOf(commit: string): Details {
 		sourceImpact: { changed: [{ path: source, status: 'modified' }] }
 	};
 	return new Map([[commit, detail]]) as unknown as Details;
+}
+
+/** The error that `run` rejects with, or undefined when it resolves. */
+async function failureOf(run: () => Promise<unknown>): Promise<Error | undefined> {
+	try {
+		await run();
+		return undefined;
+	} catch (error) {
+		return error as Error;
+	}
+}
+
+/** The metadata that records a state's cases under this unit and symbol. */
+function meta(symbol: string, state: string) {
+	return { unitId: unit, symbol, state, evidence: 'examples-cases', file: `${state}.json` };
 }
 
 test('Shows a checkout that has no commits yet', async () => {
@@ -139,5 +156,80 @@ test('Lists the recorded work of a project history', async () => {
 				}
 			]
 		);
+	}, 'project-activity-');
+});
+
+test('Throws TypeError when every worktree is bare', async () => {
+	await withTempDir('project-activity-', async (directory) => {
+		execFileSync('git', ['init', '--bare', '-q', directory]);
+		const service = new ProjectActivityService(directory);
+		const failure = await failureOf(() => service.show(10));
+		const recordFailure = await failureOf(() => service.recorded(none, new Map() as Details));
+
+		expect(failure).toBeInstanceOf(TypeError);
+		expect(recordFailure).toBeInstanceOf(TypeError);
+
+		recordExampleCases(meta('show', 'throws-typeerror-when-every-worktree-is-bare'), [
+			{
+				name: 'bare repository leaves no checkout to show',
+				input: { root: directory, limit: 10 },
+				error: { name: failure?.name ?? null }
+			}
+		]);
+	});
+});
+
+test('Throws BoundedCommandFailure when git cannot start', async () => {
+	await withTempDir('project-activity-', async (directory) => {
+		const missing = join(directory, 'missing-checkout');
+		const failure = await failureOf(() => new ProjectActivityService(missing).show(10));
+
+		expect(failure?.name).toBe('BoundedCommandFailure');
+
+		recordExampleCases(meta('show', 'throws-boundedcommandfailure-when-git-cannot-start'), [
+			{
+				name: 'checkout directory that does not exist',
+				input: { root: missing, limit: 10 },
+				error: { name: failure?.name ?? null }
+			}
+		]);
+	});
+});
+
+test('Throws Error when a git read exits non-zero', async () => {
+	await withTempRepo(async (repository) => {
+		const commit = commitFile(repository);
+		rmSync(join(repository.root, '.git', 'objects', commit.slice(0, 2), commit.slice(2)));
+		const failure = await failureOf(() => new ProjectActivityService(repository.root).show(10));
+
+		expect(failure).toBeInstanceOf(Error);
+		expect(failure?.message).toContain('failed:');
+
+		recordExampleCases(meta('show', 'throws-error-when-a-git-read-exits-non-zero'), [
+			{
+				name: 'head commit object removed so the commit walk fails',
+				input: { root: repository.root, limit: 10 },
+				error: { name: failure?.name ?? null }
+			}
+		]);
+	}, 'project-activity-');
+});
+
+test('Throws Error when a units directory is not a directory', async () => {
+	await withTempRepo(async (repository) => {
+		mkdirSync(join(repository.root, 'specification'));
+		writeFileSync(join(repository.root, 'specification', 'units'), 'not a directory\n');
+		const failure = await failureOf(() => new ProjectActivityService(repository.root).show(10));
+
+		expect(failure?.name).toBe('Error');
+		expect(failure?.message).toContain('ENOTDIR');
+
+		recordExampleCases(meta('show', 'throws-error-when-a-units-directory-is-not-a-directory'), [
+			{
+				name: 'specification/units is a file, so the unit registry cannot be read',
+				input: { root: repository.root, limit: 10 },
+				error: { name: failure?.name ?? null }
+			}
+		]);
 	}, 'project-activity-');
 });
