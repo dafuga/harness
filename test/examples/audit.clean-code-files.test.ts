@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, symlink, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { test } from 'vitest';
 import {
@@ -131,6 +131,85 @@ test('reviewInputsCurrent compares saved hashes', async () => {
 					output: missing
 				}
 			]
+		);
+	});
+});
+
+test('Throws InvalidReviewInputError for outside paths', async () => {
+	await withTempDir('clean-code-review-outside-', async (directory) => {
+		const root = join(directory, 'project');
+		const path = '../outside.ts';
+		await mkdir(root);
+		await writeFile(join(directory, 'outside.ts'), 'outside');
+		let error: { name: string; message: string } | undefined;
+		try {
+			await readReviewInput(root, path);
+		} catch (caught) {
+			error = { name: (caught as Error).name, message: (caught as Error).message };
+		}
+		expect(error?.name).toBe('InvalidReviewInputError');
+		expect(error?.message).toBe('Review input is outside the project or is a symlink.');
+		recordExampleCases(
+			{
+				unitId: 'audit.clean-code-files',
+				symbol: 'readReviewInput',
+				state: 'throws-invalidreviewinputerror-for-outside-paths',
+				evidence: 'examples-cases',
+				file: 'throws-invalidreviewinputerror-for-outside-paths.json'
+			},
+			[{ name: 'outside file', input: { root, path }, error }]
+		);
+	});
+});
+
+test('Throws InvalidReviewInputError for symlinks', async () => {
+	await withTempDir('clean-code-review-symlink-', async (root) => {
+		const target = 'target.ts';
+		const path = 'linked.ts';
+		await writeFile(join(root, target), 'source');
+		await symlink(join(root, target), join(root, path));
+		let error: { name: string; message: string } | undefined;
+		try {
+			await readReviewInput(root, path);
+		} catch (caught) {
+			error = { name: (caught as Error).name, message: (caught as Error).message };
+		}
+		expect(error?.name).toBe('InvalidReviewInputError');
+		expect(error?.message).toBe('Review input is outside the project or is a symlink.');
+		recordExampleCases(
+			{
+				unitId: 'audit.clean-code-files',
+				symbol: 'readReviewInput',
+				state: 'throws-invalidreviewinputerror-for-symlinks',
+				evidence: 'examples-cases',
+				file: 'throws-invalidreviewinputerror-for-symlinks.json'
+			},
+			[{ name: 'symlink to contained file', input: { root, path }, error }]
+		);
+	});
+});
+
+test('Throws InvalidReviewInputError for files over 1 MiB', async () => {
+	await withTempDir('clean-code-review-size-', async (root) => {
+		const path = 'large.ts';
+		await writeFile(join(root, path), 'x'.repeat(1024 * 1024 + 1));
+		let error: { name: string; message: string } | undefined;
+		try {
+			await readReviewInput(root, path);
+		} catch (caught) {
+			error = { name: (caught as Error).name, message: (caught as Error).message };
+		}
+		expect(error?.name).toBe('InvalidReviewInputError');
+		expect(error?.message).toBe('Review input exceeds the supported size.');
+		recordExampleCases(
+			{
+				unitId: 'audit.clean-code-files',
+				symbol: 'readReviewInput',
+				state: 'throws-invalidreviewinputerror-for-files-over-1-mib',
+				evidence: 'examples-cases',
+				file: 'throws-invalidreviewinputerror-for-files-over-1-mib.json'
+			},
+			[{ name: 'file one byte over limit', input: { root, path }, error }]
 		);
 	});
 });

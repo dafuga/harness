@@ -20,6 +20,21 @@
 			"id": "reviewinputscurrent-compares-saved-hashes",
 			"title": "reviewInputsCurrent compares saved hashes",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-invalidreviewinputerror-for-outside-paths",
+			"title": "Throws InvalidReviewInputError for outside paths",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-invalidreviewinputerror-for-symlinks",
+			"title": "Throws InvalidReviewInputError for symlinks",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-invalidreviewinputerror-for-files-over-1-mib",
+			"title": "Throws InvalidReviewInputError for files over 1 MiB",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +55,10 @@
 			"states": [
 				"reviewhash-produces-sha-256-digests",
 				"readreviewinput-reads-a-contained-file",
-				"reviewinputscurrent-compares-saved-hashes"
+				"reviewinputscurrent-compares-saved-hashes",
+				"throws-invalidreviewinputerror-for-outside-paths",
+				"throws-invalidreviewinputerror-for-symlinks",
+				"throws-invalidreviewinputerror-for-files-over-1-mib"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +69,10 @@
 			"states": [
 				"reviewhash-produces-sha-256-digests",
 				"readreviewinput-reads-a-contained-file",
-				"reviewinputscurrent-compares-saved-hashes"
+				"reviewinputscurrent-compares-saved-hashes",
+				"throws-invalidreviewinputerror-for-outside-paths",
+				"throws-invalidreviewinputerror-for-symlinks",
+				"throws-invalidreviewinputerror-for-files-over-1-mib"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +83,10 @@
 			"states": [
 				"reviewhash-produces-sha-256-digests",
 				"readreviewinput-reads-a-contained-file",
-				"reviewinputscurrent-compares-saved-hashes"
+				"reviewinputscurrent-compares-saved-hashes",
+				"throws-invalidreviewinputerror-for-outside-paths",
+				"throws-invalidreviewinputerror-for-symlinks",
+				"throws-invalidreviewinputerror-for-files-over-1-mib"
 			],
 			"viewports": [],
 			"required": true
