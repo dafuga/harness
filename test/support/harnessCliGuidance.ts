@@ -1,6 +1,6 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { expect } from 'vitest';
+import { expect } from '../verificationExpect';
 import type { PlannedFile } from '../../src/core/development-tooling/files';
 import { findGuide } from '../../src/guides/development-tooling/guide';
 
