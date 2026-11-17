@@ -10,6 +10,11 @@
 			"id": "restores-nothing-when-history-has-no-attached-records",
 			"title": "Restores nothing when history has no attached records",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-history-note-read-rejects",
+			"title": "Throws Error when the history note read rejects",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["restores-nothing-when-history-has-no-attached-records"],
+			"states": [
+				"restores-nothing-when-history-has-no-attached-records",
+				"throws-error-when-the-history-note-read-rejects"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["restores-nothing-when-history-has-no-attached-records"],
+			"states": [
+				"restores-nothing-when-history-has-no-attached-records",
+				"throws-error-when-the-history-note-read-rejects"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["restores-nothing-when-history-has-no-attached-records"],
+			"states": [
+				"restores-nothing-when-history-has-no-attached-records",
+				"throws-error-when-the-history-note-read-rejects"
+			],
 			"viewports": [],
 			"required": true
 		}
