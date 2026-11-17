@@ -1,7 +1,7 @@
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { renderRoster, renderShown } from '../../src/workflows/projects-sessions/runActivity';
+import { renderRoster, renderShown, showActivity } from '../../src/workflows/projects-sessions/runActivity';
 import type { Shown } from '../../src/workflows/projects-sessions/runActivity.types';
 
 const roster = {
@@ -70,5 +70,20 @@ test('Renders repository activity and live checkout changes', () => {
 	recordExampleCases(
 		{ unitId: 'workflow.run-activity', symbol: 'renderShown', state: 'renders-repository-activity-and-live-checkout-changes', evidence: 'examples-cases', file: 'renders-repository-activity-and-live-checkout-changes.json' },
 		[{ name: 'repository with one recent change and registered reviewer', input: shown, output }]
+	);
+});
+
+test('Throws ExpectedCliError for an invalid activity limit', async () => {
+	let caught: unknown;
+	try {
+		await showActivity({ limit: '0' });
+	} catch (error) {
+		caught = error;
+	}
+	const detail = caught instanceof Error ? { name: caught.name, message: caught.message } : null;
+	expect(detail).toMatchObject({ name: 'ExpectedCliError', message: '--limit must be a whole number from 1 to 200.' });
+	recordExampleCases(
+		{ unitId: 'workflow.run-activity', symbol: 'showActivity', state: 'throws-expectedclierror-for-an-invalid-activity-limit', evidence: 'examples-cases', file: 'throws-expectedclierror-for-an-invalid-activity-limit.json' },
+		[{ name: 'zero activity limit', input: { limit: '0' }, error: detail }]
 	);
 });

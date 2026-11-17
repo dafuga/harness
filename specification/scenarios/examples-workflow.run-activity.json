@@ -15,6 +15,11 @@
 			"id": "renders-repository-activity-and-live-checkout-changes",
 			"title": "Renders repository activity and live checkout changes",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-for-an-invalid-activity-limit",
+			"title": "Throws ExpectedCliError for an invalid activity limit",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +39,8 @@
 			"kind": "output",
 			"states": [
 				"renders-registered-agents-and-an-unused-roster",
-				"renders-repository-activity-and-live-checkout-changes"
+				"renders-repository-activity-and-live-checkout-changes",
+				"throws-expectedclierror-for-an-invalid-activity-limit"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +50,8 @@
 			"kind": "assertions",
 			"states": [
 				"renders-registered-agents-and-an-unused-roster",
-				"renders-repository-activity-and-live-checkout-changes"
+				"renders-repository-activity-and-live-checkout-changes",
+				"throws-expectedclierror-for-an-invalid-activity-limit"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +61,8 @@
 			"kind": "trace",
 			"states": [
 				"renders-registered-agents-and-an-unused-roster",
-				"renders-repository-activity-and-live-checkout-changes"
+				"renders-repository-activity-and-live-checkout-changes",
+				"throws-expectedclierror-for-an-invalid-activity-limit"
 			],
 			"viewports": [],
 			"required": true
