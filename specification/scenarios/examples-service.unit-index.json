@@ -10,6 +10,21 @@
 			"id": "returns-an-empty-registry-for-an-empty-source-index",
 			"title": "Returns an empty registry for an empty source index",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-existing-is-not-an-array",
+			"title": "Throws TypeError when existing is not an array",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-a-record-has-no-dependencies-array",
+			"title": "Throws TypeError when a record has no dependencies array",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-index-has-no-files-map",
+			"title": "Throws TypeError when index has no files Map",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +42,36 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["returns-an-empty-registry-for-an-empty-source-index"],
+			"states": [
+				"returns-an-empty-registry-for-an-empty-source-index",
+				"throws-typeerror-when-existing-is-not-an-array",
+				"throws-typeerror-when-a-record-has-no-dependencies-array",
+				"throws-typeerror-when-index-has-no-files-map"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["returns-an-empty-registry-for-an-empty-source-index"],
+			"states": [
+				"returns-an-empty-registry-for-an-empty-source-index",
+				"throws-typeerror-when-existing-is-not-an-array",
+				"throws-typeerror-when-a-record-has-no-dependencies-array",
+				"throws-typeerror-when-index-has-no-files-map"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["returns-an-empty-registry-for-an-empty-source-index"],
+			"states": [
+				"returns-an-empty-registry-for-an-empty-source-index",
+				"throws-typeerror-when-existing-is-not-an-array",
+				"throws-typeerror-when-a-record-has-no-dependencies-array",
+				"throws-typeerror-when-index-has-no-files-map"
+			],
 			"viewports": [],
 			"required": true
 		}
