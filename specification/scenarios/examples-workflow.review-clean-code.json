@@ -10,6 +10,11 @@
 			"id": "returns-a-dry-run-report-without-evaluating-files",
 			"title": "Returns a dry-run report without evaluating files",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-root-contains-a-nul-character",
+			"title": "Throws Error when root contains a NUL character",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["returns-a-dry-run-report-without-evaluating-files"],
+			"states": [
+				"returns-a-dry-run-report-without-evaluating-files",
+				"throws-error-when-root-contains-a-nul-character"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["returns-a-dry-run-report-without-evaluating-files"],
+			"states": [
+				"returns-a-dry-run-report-without-evaluating-files",
+				"throws-error-when-root-contains-a-nul-character"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["returns-a-dry-run-report-without-evaluating-files"],
+			"states": [
+				"returns-a-dry-run-report-without-evaluating-files",
+				"throws-error-when-root-contains-a-nul-character"
+			],
 			"viewports": [],
 			"required": true
 		}

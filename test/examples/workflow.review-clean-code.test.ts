@@ -57,3 +57,25 @@ test('Returns a dry-run report without evaluating files', async () => {
 		);
 	});
 });
+
+test('Throws Error when root contains a NUL character', async () => {
+	const input: ReviewCleanCodeInput = { root: '\0', settings };
+	const operation = reviewCleanCode(input);
+	await expect(operation).rejects.toThrow();
+	recordExampleCases(
+		{
+			unitId: 'workflow.review-clean-code',
+			symbol: 'reviewCleanCode',
+			state: 'throws-error-when-root-contains-a-nul-character',
+			evidence: 'examples-cases',
+			file: 'throws-error-when-root-contains-a-nul-character.json'
+		},
+		[
+			{
+				name: 'root resolution rejects a NUL path',
+				input: { root: '\\0', settings },
+				error: { name: 'TypeError' }
+			}
+		]
+	);
+});
