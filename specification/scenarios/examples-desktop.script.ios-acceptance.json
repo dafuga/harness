@@ -10,6 +10,11 @@
 			"id": "declares-the-ios-acceptance-entry-point",
 			"title": "declares the iOS acceptance entry point",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-report-writing-fails",
+			"title": "Throws Error when report writing fails",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["declares-the-ios-acceptance-entry-point"],
+			"states": [
+				"declares-the-ios-acceptance-entry-point",
+				"throws-error-when-report-writing-fails"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["declares-the-ios-acceptance-entry-point"],
+			"states": [
+				"declares-the-ios-acceptance-entry-point",
+				"throws-error-when-report-writing-fails"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["declares-the-ios-acceptance-entry-point"],
+			"states": [
+				"declares-the-ios-acceptance-entry-point",
+				"throws-error-when-report-writing-fails"
+			],
 			"viewports": [],
 			"required": true
 		}

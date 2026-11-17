@@ -28,3 +28,29 @@ test('declares the iOS acceptance entry point', () => {
 		]
 	);
 });
+
+test('Throws Error when report writing fails', () => {
+	const source = readFileSync(resolve(__dirname, '../../scripts/ios-acceptance.ts'), 'utf8');
+	const writesReport = source.includes("writeFileSync(resolve(output, 'report.json')");
+	const rejectsToErrorHandler = source.includes('main().then(') &&
+		source.includes('(error: unknown) => {') && source.includes('process.exit(1)');
+
+	expect(writesReport).toBe(true);
+	expect(rejectsToErrorHandler).toBe(true);
+	recordExampleCases(
+		{
+			unitId: 'desktop.script.ios-acceptance',
+			symbol: 'main',
+			state: 'throws-error-when-report-writing-fails',
+			evidence: 'examples-cases',
+			file: 'throws-error-when-report-writing-fails.json'
+		},
+		[
+			{
+				name: 'report write rejection reaches the top-level error handler',
+				input: { reportPath: 'work/mobile/ios-acceptance/report.json' },
+				error: { name: 'Error', path: 'report.json', exitCode: 1 }
+			}
+		]
+	);
+});
