@@ -20,6 +20,21 @@
 			"id": "starts-a-preview-with-a-minted-token-and-request-metadata",
 			"title": "starts a preview with a minted token and request metadata",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-invalidpreviewrequesterror-when-the-model-is-unsuppor",
+			"title": "Throws InvalidPreviewRequestError when the model is unsupported",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-activepreviewleaseerror-when-a-preview-lease-is-alrea",
+			"title": "Throws ActivePreviewLeaseError when a preview lease is already active",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-decarttokencreationerror-when-token-creation-fails",
+			"title": "Throws DecartTokenCreationError when token creation fails",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +55,10 @@
 			"states": [
 				"prices-the-supported-decart-render-models",
 				"validates-preview-model-and-duration-requests",
-				"starts-a-preview-with-a-minted-token-and-request-metadata"
+				"starts-a-preview-with-a-minted-token-and-request-metadata",
+				"throws-invalidpreviewrequesterror-when-the-model-is-unsuppor",
+				"throws-activepreviewleaseerror-when-a-preview-lease-is-alrea",
+				"throws-decarttokencreationerror-when-token-creation-fails"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +69,10 @@
 			"states": [
 				"prices-the-supported-decart-render-models",
 				"validates-preview-model-and-duration-requests",
-				"starts-a-preview-with-a-minted-token-and-request-metadata"
+				"starts-a-preview-with-a-minted-token-and-request-metadata",
+				"throws-invalidpreviewrequesterror-when-the-model-is-unsuppor",
+				"throws-activepreviewleaseerror-when-a-preview-lease-is-alrea",
+				"throws-decarttokencreationerror-when-token-creation-fails"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +83,10 @@
 			"states": [
 				"prices-the-supported-decart-render-models",
 				"validates-preview-model-and-duration-requests",
-				"starts-a-preview-with-a-minted-token-and-request-metadata"
+				"starts-a-preview-with-a-minted-token-and-request-metadata",
+				"throws-invalidpreviewrequesterror-when-the-model-is-unsuppor",
+				"throws-activepreviewleaseerror-when-a-preview-lease-is-alrea",
+				"throws-decarttokencreationerror-when-token-creation-fails"
 			],
 			"viewports": [],
 			"required": true
