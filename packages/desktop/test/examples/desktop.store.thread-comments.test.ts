@@ -2,6 +2,7 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { createThreadCommentsStore } from '../../src/lib/stores/development-tooling/threadComments.svelte';
+import { ThreadCommentProjectMismatchError } from '../../src/lib/stores/development-tooling/threadComments.svelte.types';
 import type { CommentInput } from '../../src/lib/stores/development-tooling/threadComments.svelte.types';
 
 const input: CommentInput = {
@@ -43,5 +44,17 @@ test('posts a comment and exposes its pending acknowledgement', async () => {
 	expect(store.busy).toBe(false);
 	recordExampleCases({ unitId: 'desktop.store.thread-comments', symbol: 'post', state: 'posts-a-comment-and-exposes-its-pending-acknowledgement', evidence: 'examples-cases', file: 'posts-a-comment-and-exposes-its-pending-acknowledgement.json' }, [
 		{ name: 'post a comment while offline', input, output: { result, pending: store.pending, acknowledged: store.acknowledged, busy: store.busy } }
+	]);
+});
+
+test('Throws ThreadCommentProjectMismatchError when the bridge answers for another project', async () => {
+	const store = createThreadCommentsStore(workspace({ addComment: async () => ({ ...draft, projectId: 'project-2' }) }));
+	const result = await store.post(input);
+	const expectedError = String(new ThreadCommentProjectMismatchError('The bridge answered for another project.'));
+	expect(result).toBeNull();
+	expect(store.error).toBe(expectedError);
+	expect(store.busy).toBe(false);
+	recordExampleCases({ unitId: 'desktop.store.thread-comments', symbol: 'post', state: 'throws-threadcommentprojectmismatcherror-when-the-bridge-ans', evidence: 'examples-cases', file: 'throws-threadcommentprojectmismatcherror-when-the-bridge-ans.json' }, [
+		{ name: 'store the project mismatch raised by the bridge response', input: { projectId: 'project-1', responseProjectId: 'project-2', comment: input }, output: { result, error: store.error, busy: store.busy } }
 	]);
 });

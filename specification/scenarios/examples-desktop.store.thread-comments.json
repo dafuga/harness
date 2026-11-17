@@ -15,6 +15,11 @@
 			"id": "posts-a-comment-and-exposes-its-pending-acknowledgement",
 			"title": "posts a comment and exposes its pending acknowledgement",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-threadcommentprojectmismatcherror-when-the-bridge-ans",
+			"title": "Throws ThreadCommentProjectMismatchError when the bridge answers for another project",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +39,8 @@
 			"kind": "output",
 			"states": [
 				"loads-only-pending-drafts-from-the-current-project",
-				"posts-a-comment-and-exposes-its-pending-acknowledgement"
+				"posts-a-comment-and-exposes-its-pending-acknowledgement",
+				"throws-threadcommentprojectmismatcherror-when-the-bridge-ans"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +50,8 @@
 			"kind": "assertions",
 			"states": [
 				"loads-only-pending-drafts-from-the-current-project",
-				"posts-a-comment-and-exposes-its-pending-acknowledgement"
+				"posts-a-comment-and-exposes-its-pending-acknowledgement",
+				"throws-threadcommentprojectmismatcherror-when-the-bridge-ans"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +61,8 @@
 			"kind": "trace",
 			"states": [
 				"loads-only-pending-drafts-from-the-current-project",
-				"posts-a-comment-and-exposes-its-pending-acknowledgement"
+				"posts-a-comment-and-exposes-its-pending-acknowledgement",
+				"throws-threadcommentprojectmismatcherror-when-the-bridge-ans"
 			],
 			"viewports": [],
 			"required": true
