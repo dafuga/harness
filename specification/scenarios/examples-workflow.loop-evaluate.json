@@ -12,6 +12,21 @@
 			"coverage": "required"
 		},
 		{
+			"id": "throws-expectedclierror-when-the-loop-file-is-absent",
+			"title": "Throws ExpectedCliError when the loop file is absent",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-parsed-loop-state-fails-validat",
+			"title": "Throws ExpectedCliError when parsed loop state fails validation",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-the-loaded-loop-is-closed",
+			"title": "Throws ExpectedCliError when the loaded loop is closed",
+			"coverage": "required"
+		},
+		{
 			"id": "renders-skipped-and-completed-evaluations",
 			"title": "Renders skipped and completed evaluations",
 			"coverage": "required"
@@ -34,6 +49,9 @@
 			"kind": "output",
 			"states": [
 				"records-an-explicit-no-run-evaluation",
+				"throws-expectedclierror-when-the-loop-file-is-absent",
+				"throws-expectedclierror-when-parsed-loop-state-fails-validat",
+				"throws-expectedclierror-when-the-loaded-loop-is-closed",
 				"renders-skipped-and-completed-evaluations"
 			],
 			"viewports": [],
@@ -44,6 +62,9 @@
 			"kind": "assertions",
 			"states": [
 				"records-an-explicit-no-run-evaluation",
+				"throws-expectedclierror-when-the-loop-file-is-absent",
+				"throws-expectedclierror-when-parsed-loop-state-fails-validat",
+				"throws-expectedclierror-when-the-loaded-loop-is-closed",
 				"renders-skipped-and-completed-evaluations"
 			],
 			"viewports": [],
@@ -54,6 +75,9 @@
 			"kind": "trace",
 			"states": [
 				"records-an-explicit-no-run-evaluation",
+				"throws-expectedclierror-when-the-loop-file-is-absent",
+				"throws-expectedclierror-when-parsed-loop-state-fails-validat",
+				"throws-expectedclierror-when-the-loaded-loop-is-closed",
 				"renders-skipped-and-completed-evaluations"
 			],
 			"viewports": [],
