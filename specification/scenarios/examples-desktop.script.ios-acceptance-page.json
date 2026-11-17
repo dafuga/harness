@@ -10,6 +10,11 @@
 			"id": "resets-a-page-with-no-active-inspector",
 			"title": "resets a page with no active inspector",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-simulatorpageerror-when-wanted-text-misses-its-deadli",
+			"title": "Throws SimulatorPageError when wanted text misses its deadline",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["resets-a-page-with-no-active-inspector"],
+			"states": [
+				"resets-a-page-with-no-active-inspector",
+				"throws-simulatorpageerror-when-wanted-text-misses-its-deadli"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["resets-a-page-with-no-active-inspector"],
+			"states": [
+				"resets-a-page-with-no-active-inspector",
+				"throws-simulatorpageerror-when-wanted-text-misses-its-deadli"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["resets-a-page-with-no-active-inspector"],
+			"states": [
+				"resets-a-page-with-no-active-inspector",
+				"throws-simulatorpageerror-when-wanted-text-misses-its-deadli"
+			],
 			"viewports": [],
 			"required": true
 		}
