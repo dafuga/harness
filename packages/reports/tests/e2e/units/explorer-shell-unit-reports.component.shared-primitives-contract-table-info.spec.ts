@@ -29,9 +29,7 @@ for (const viewport of catalogViewports) {
 			if (state.id === 'touch') {
 				// A coarse pointer is what the unit's larger touch target is declared for.
 				const cdp = await page.context().newCDPSession(page);
-				await cdp.send('Emulation.setEmulatedMedia', {
-					features: [{ name: 'pointer', value: 'coarse' }]
-				});
+				await cdp.send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 1 });
 			}
 			await openPreview(page, home, host, state.variant);
 			const content = await readyPreview(page, host, state.variant);
