@@ -10,6 +10,11 @@
 			"id": "opens-relay-sockets-with-headers-and-forwards-lifecycle",
 			"title": "Opens relay sockets with headers and forwards lifecycle",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-relaysocketconnectionerror-when-socket-emits-an-error",
+			"title": "Throws RelaySocketConnectionError when socket emits an error",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["opens-relay-sockets-with-headers-and-forwards-lifecycle"],
+			"states": [
+				"opens-relay-sockets-with-headers-and-forwards-lifecycle",
+				"throws-relaysocketconnectionerror-when-socket-emits-an-error"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["opens-relay-sockets-with-headers-and-forwards-lifecycle"],
+			"states": [
+				"opens-relay-sockets-with-headers-and-forwards-lifecycle",
+				"throws-relaysocketconnectionerror-when-socket-emits-an-error"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["opens-relay-sockets-with-headers-and-forwards-lifecycle"],
+			"states": [
+				"opens-relay-sockets-with-headers-and-forwards-lifecycle",
+				"throws-relaysocketconnectionerror-when-socket-emits-an-error"
+			],
 			"viewports": [],
 			"required": true
 		}

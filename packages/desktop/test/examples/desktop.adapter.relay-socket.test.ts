@@ -6,6 +6,7 @@ import type {
 	HeaderSocket,
 	SocketEvent
 } from '../../src/adapters/networking-security/RelaySocketAdapter.types';
+import { RelaySocketConnectionError } from '../../src/adapters/networking-security/RelaySocketAdapter.types';
 
 class ExampleSocket implements HeaderSocket {
 	static instances: ExampleSocket[] = [];
@@ -143,5 +144,36 @@ test('Opens relay sockets with headers and forwards lifecycle', async () => {
 			file: 'opens-relay-sockets-with-headers-and-forwards-lifecycle.json'
 		},
 		exampleCases({ url, errorUrl, headers, output, failure })
+	);
+});
+
+test('Throws RelaySocketConnectionError when socket emits an error', async () => {
+	const adapter = new RelaySocketAdapter({ socket: ExampleSocket });
+	const url = 'wss://relay.example.test/unavailable';
+	const headers = { Authorization: 'Bearer example-relay-token' };
+	const socket = adapter.open(url, headers);
+	ExampleSocket.instances[0]!.fire('error');
+	const thrown = await socket.opened.then(() => null, (error: unknown) => error);
+	const failure = await summarizeFailure(socket.opened);
+	expect(thrown).toBeInstanceOf(RelaySocketConnectionError);
+	expect(failure).toEqual({
+		name: 'RelaySocketConnectionError',
+		message: 'The relay could not be reached.'
+	});
+	recordExampleCases(
+		{
+			unitId: 'desktop.adapter.relay-socket',
+			symbol: 'open',
+			state: 'throws-relaysocketconnectionerror-when-socket-emits-an-error',
+			evidence: 'examples-cases',
+			file: 'throws-relaysocketconnectionerror-when-socket-emits-an-error.json'
+		},
+		[
+			{
+				name: 'Socket error rejects the returned opened promise',
+				input: { url, headers, event: 'error' },
+				error: failure
+			}
+		]
 	);
 });
