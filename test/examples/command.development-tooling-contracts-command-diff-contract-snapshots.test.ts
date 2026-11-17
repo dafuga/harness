@@ -71,3 +71,24 @@ test('Keeps uid renames separate from retired id tombstones', () => {
 		]
 	);
 });
+
+test('Throws ExpectedCliError when field category is unsupported', () => {
+	const field = 'owner';
+	expect(() => validateHistoryFields(field)).toThrow('Unknown contract field filter');
+	recordExampleCases(
+		{
+			unitId,
+			symbol: 'validateHistoryFields',
+			state: 'throws-expectedclierror-when-field-category-is-unsupported',
+			evidence: 'examples-cases',
+			file: 'throws-expectedclierror-when-field-category-is-unsupported.json'
+		},
+		[
+			{
+				name: 'unsupported field category',
+				input: { field },
+				error: 'Unknown contract field filter; choose type, description, examples, errors or dependencies (comma-separated).'
+			}
+		]
+	);
+});

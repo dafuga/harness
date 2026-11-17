@@ -10,6 +10,11 @@
 			"id": "keeps-uid-renames-separate-from-retired-id-tombstones",
 			"title": "Keeps uid renames separate from retired id tombstones",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-field-category-is-unsupported",
+			"title": "Throws ExpectedCliError when field category is unsupported",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["keeps-uid-renames-separate-from-retired-id-tombstones"],
+			"states": [
+				"keeps-uid-renames-separate-from-retired-id-tombstones",
+				"throws-expectedclierror-when-field-category-is-unsupported"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["keeps-uid-renames-separate-from-retired-id-tombstones"],
+			"states": [
+				"keeps-uid-renames-separate-from-retired-id-tombstones",
+				"throws-expectedclierror-when-field-category-is-unsupported"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["keeps-uid-renames-separate-from-retired-id-tombstones"],
+			"states": [
+				"keeps-uid-renames-separate-from-retired-id-tombstones",
+				"throws-expectedclierror-when-field-category-is-unsupported"
+			],
 			"viewports": [],
 			"required": true
 		}
