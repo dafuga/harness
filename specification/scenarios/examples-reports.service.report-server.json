@@ -15,6 +15,11 @@
 			"id": "leaves-an-unrecorded-report-server-stopped",
 			"title": "Leaves an unrecorded report server stopped",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-no-free-port-is-found",
+			"title": "Throws Error when no free port is found",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +39,8 @@
 			"kind": "output",
 			"states": [
 				"builds-a-loopback-environment-from-inherited-values",
-				"leaves-an-unrecorded-report-server-stopped"
+				"leaves-an-unrecorded-report-server-stopped",
+				"throws-error-when-no-free-port-is-found"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +50,8 @@
 			"kind": "assertions",
 			"states": [
 				"builds-a-loopback-environment-from-inherited-values",
-				"leaves-an-unrecorded-report-server-stopped"
+				"leaves-an-unrecorded-report-server-stopped",
+				"throws-error-when-no-free-port-is-found"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +61,8 @@
 			"kind": "trace",
 			"states": [
 				"builds-a-loopback-environment-from-inherited-values",
-				"leaves-an-unrecorded-report-server-stopped"
+				"leaves-an-unrecorded-report-server-stopped",
+				"throws-error-when-no-free-port-is-found"
 			],
 			"viewports": [],
 			"required": true

@@ -1,4 +1,5 @@
 import { mkdtempSync, rmSync } from 'node:fs';
+import { createServer } from 'node:http';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -72,6 +73,40 @@ test('Leaves an unrecorded report server stopped', async () => {
 		]
 		);
 	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test('Throws Error when no free port is found', async () => {
+	const root = mkdtempSync(join(tmpdir(), 'report-server-error-'));
+	const servers = Array.from({ length: 30 }, () => createServer((_request, response) => response.end()));
+	try {
+		await Promise.all(
+			servers.map((server, index) => new Promise<void>((resolve, reject) => {
+				server.once('error', reject);
+				server.listen(5588 + index, '127.0.0.1', resolve);
+			}))
+		);
+		const service = new ReportServerService(new ReportRepository(root));
+		let caught: unknown;
+		try {
+			await service.serve(5588);
+		} catch (error) {
+			caught = error;
+		}
+		expect(caught).toBeInstanceOf(Error);
+		recordExampleCases(
+			{
+				unitId: 'reports.service.report-server',
+				symbol: 'ReportServerService.serve',
+				state: 'throws-error-when-no-free-port-is-found',
+				evidence: 'examples-cases',
+				file: 'throws-error-when-no-free-port-is-found.json'
+			},
+			[{ name: 'rejects after all thirty preferred ports are occupied', input: { preferred: 5588 }, error: { name: 'ReportServerUnavailableError', message: 'No available loopback port from preferred range' } }]
+		);
+	} finally {
+		await Promise.all(servers.map((server) => new Promise<void>((resolve) => server.close(() => resolve()))));
 		rmSync(root, { recursive: true, force: true });
 	}
 });
