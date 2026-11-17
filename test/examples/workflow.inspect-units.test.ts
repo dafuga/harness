@@ -1,7 +1,7 @@
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { unitSchema } from '../../src/cli/program/inspectUnits';
+import { unitSchema, showUnit } from '../../src/cli/program/inspectUnits';
 import { testAttribution } from '../../src/cli/program/testAttribution';
 
 test('Returns the requested scenario manifest schema', () => {
@@ -10,6 +10,22 @@ test('Returns the requested scenario manifest schema', () => {
 	recordExampleCases(
 		{ unitId: 'workflow.inspect-units', symbol: 'unitSchema', state: 'returns-the-requested-scenario-manifest-schema', evidence: 'examples-cases', file: 'returns-the-requested-scenario-manifest-schema.json' },
 		[{ name: 'scenario schema exposes states', input: { name: 'ScenarioManifest' }, output: { properties: Object.keys(schema.properties).sort() } }]
+	);
+});
+
+test('Throws ExpectedCliError when the schema name is unknown', () => {
+	expect(() => unitSchema('UnknownManifest')).toThrow('Unknown schema "UnknownManifest"');
+	recordExampleCases(
+		{ unitId: 'workflow.inspect-units', symbol: 'unitSchema', state: 'throws-expectedclierror-when-the-schema-name-is-unknown', evidence: 'examples-cases', file: 'throws-expectedclierror-when-the-schema-name-is-unknown.json' },
+		[{ name: 'unknown schema name', input: { name: 'UnknownManifest' }, error: 'ExpectedCliError: Unknown schema "UnknownManifest"' }]
+	);
+});
+
+test('Throws ExpectedCliError when the requested unit is unknown', async () => {
+	await expect(showUnit('workflow.inspect-units-missing')).rejects.toThrow('Unknown unit "workflow.inspect-units-missing"');
+	recordExampleCases(
+		{ unitId: 'workflow.inspect-units', symbol: 'showUnit', state: 'throws-expectedclierror-when-the-requested-unit-is-unknown', evidence: 'examples-cases', file: 'throws-expectedclierror-when-the-requested-unit-is-unknown.json' },
+		[{ name: 'unknown unit id', input: { id: 'workflow.inspect-units-missing' }, error: 'ExpectedCliError: Unknown unit "workflow.inspect-units-missing"' }]
 	);
 });
 

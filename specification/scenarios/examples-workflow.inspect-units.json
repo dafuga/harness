@@ -12,6 +12,16 @@
 			"coverage": "required"
 		},
 		{
+			"id": "throws-expectedclierror-when-the-schema-name-is-unknown",
+			"title": "Throws ExpectedCliError when the schema name is unknown",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-the-requested-unit-is-unknown",
+			"title": "Throws ExpectedCliError when the requested unit is unknown",
+			"coverage": "required"
+		},
+		{
 			"id": "attributes-a-direct-runtime-test-and-matching-scenario",
 			"title": "Attributes a direct runtime test and matching scenario",
 			"coverage": "required"
@@ -34,6 +44,8 @@
 			"kind": "output",
 			"states": [
 				"returns-the-requested-scenario-manifest-schema",
+				"throws-expectedclierror-when-the-schema-name-is-unknown",
+				"throws-expectedclierror-when-the-requested-unit-is-unknown",
 				"attributes-a-direct-runtime-test-and-matching-scenario"
 			],
 			"viewports": [],
@@ -44,6 +56,8 @@
 			"kind": "assertions",
 			"states": [
 				"returns-the-requested-scenario-manifest-schema",
+				"throws-expectedclierror-when-the-schema-name-is-unknown",
+				"throws-expectedclierror-when-the-requested-unit-is-unknown",
 				"attributes-a-direct-runtime-test-and-matching-scenario"
 			],
 			"viewports": [],
@@ -54,6 +68,8 @@
 			"kind": "trace",
 			"states": [
 				"returns-the-requested-scenario-manifest-schema",
+				"throws-expectedclierror-when-the-schema-name-is-unknown",
+				"throws-expectedclierror-when-the-requested-unit-is-unknown",
 				"attributes-a-direct-runtime-test-and-matching-scenario"
 			],
 			"viewports": [],
