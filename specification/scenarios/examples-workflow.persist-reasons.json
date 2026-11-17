@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-workflow.persist-reasons",
+	"title": "workflow.persist-reasons examples",
+	"kind": "headless",
+	"units": ["workflow.persist-reasons"],
+	"builds": [],
+	"states": [
+		{
+			"id": "renders-the-header-for-a-range-measured-from-a-base",
+			"title": "Renders the header for a range measured from a base",
+			"coverage": "required"
+		},
+		{
+			"id": "renders-an-empty-tree-base-with-each-missing-change",
+			"title": "Renders an empty tree base with each missing change",
+			"coverage": "required"
+		},
+		{
+			"id": "persists-no-reasons-for-a-commit-that-changes-nothing",
+			"title": "Persists no reasons for a commit that changes nothing",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/workflow.persist-reasons.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"renders-the-header-for-a-range-measured-from-a-base",
+				"renders-an-empty-tree-base-with-each-missing-change",
+				"persists-no-reasons-for-a-commit-that-changes-nothing"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"renders-the-header-for-a-range-measured-from-a-base",
+				"renders-an-empty-tree-base-with-each-missing-change",
+				"persists-no-reasons-for-a-commit-that-changes-nothing"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"renders-the-header-for-a-range-measured-from-a-base",
+				"renders-an-empty-tree-base-with-each-missing-change",
+				"persists-no-reasons-for-a-commit-that-changes-nothing"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
