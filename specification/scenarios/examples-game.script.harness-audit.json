@@ -20,6 +20,16 @@
 			"id": "passes-the-audit-exit-code-to-process-exit",
 			"title": "Passes the audit exit code to process exit",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-bun-cannot-be-started",
+			"title": "Throws Error when bun cannot be started",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-harness-cannot-be-started",
+			"title": "Throws Error when harness cannot be started",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +50,9 @@
 			"states": [
 				"runs-harness-audit-with-the-lib-profile",
 				"runs-the-bundled-cli-through-bun-when-set",
-				"passes-the-audit-exit-code-to-process-exit"
+				"passes-the-audit-exit-code-to-process-exit",
+				"throws-error-when-bun-cannot-be-started",
+				"throws-error-when-harness-cannot-be-started"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +63,9 @@
 			"states": [
 				"runs-harness-audit-with-the-lib-profile",
 				"runs-the-bundled-cli-through-bun-when-set",
-				"passes-the-audit-exit-code-to-process-exit"
+				"passes-the-audit-exit-code-to-process-exit",
+				"throws-error-when-bun-cannot-be-started",
+				"throws-error-when-harness-cannot-be-started"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +76,9 @@
 			"states": [
 				"runs-harness-audit-with-the-lib-profile",
 				"runs-the-bundled-cli-through-bun-when-set",
-				"passes-the-audit-exit-code-to-process-exit"
+				"passes-the-audit-exit-code-to-process-exit",
+				"throws-error-when-bun-cannot-be-started",
+				"throws-error-when-harness-cannot-be-started"
 			],
 			"viewports": [],
 			"required": true

@@ -36,6 +36,29 @@ async function runScript(cliPath: string, exitCode: number): Promise<ScriptRun> 
 	return { calls, exits };
 }
 
+async function runUnstartable(cliPath: string): Promise<{ command: string[]; error: unknown; exits: number[] }> {
+	const calls: SpawnCall[] = [];
+	const exits: number[] = [];
+	vi.stubEnv('HARNESS_CLI_PATH', cliPath);
+	vi.stubGlobal('Bun', {
+		spawnSync: (command: string[]) => {
+			calls.push({ command });
+			throw new Error(`Executable not found: ${command[0]}`);
+		}
+	});
+	vi.spyOn(globalThis.process, 'exit').mockImplementation(((code?: number) => {
+		exits.push(code ?? -1);
+	}) as never);
+	vi.resetModules();
+	let error: unknown;
+	try {
+		await import(scriptPath);
+	} catch (caught) {
+		error = caught;
+	}
+	return { command: calls[0]?.command ?? [], error, exits };
+}
+
 test('Runs harness audit with the lib profile', async () => {
 	const run = await runScript('', 0);
 	expect(run.calls).toEqual([{ command: ['harness', 'audit', '.', '--profile', 'lib'] }]);
@@ -85,5 +108,57 @@ test('Passes the audit exit code to process exit', async () => {
 			file: 'passes-the-audit-exit-code-to-process-exit.json'
 		},
 		[{ name: 'audit exits with code 3', input: { exitCode: 3 }, output: run }]
+	);
+});
+
+test('Throws Error when bun cannot be started', async () => {
+	const run = await runUnstartable(fakeCliPath);
+	expect(run.command).toEqual(['bun', fakeCliPath, 'audit', '.', '--profile', 'lib']);
+	expect(run.error).toBeInstanceOf(Error);
+	const actual = run.error as Error;
+	expect(actual.message).toBe('Executable not found: bun');
+	expect(run.exits).toEqual([]);
+
+	recordExampleCases(
+		{
+			unitId: 'game.script.harness-audit',
+			symbol: 'Bun.spawnSync',
+			state: 'throws-error-when-bun-cannot-be-started',
+			evidence: 'examples-cases',
+			file: 'throws-error-when-bun-cannot-be-started.json'
+		},
+		[
+			{
+				name: 'HARNESS_CLI_PATH set and bun not found',
+				input: { HARNESS_CLI_PATH: fakeCliPath },
+				error: { name: actual.name, message: actual.message }
+			}
+		]
+	);
+});
+
+test('Throws Error when harness cannot be started', async () => {
+	const run = await runUnstartable('');
+	expect(run.command).toEqual(['harness', 'audit', '.', '--profile', 'lib']);
+	expect(run.error).toBeInstanceOf(Error);
+	const actual = run.error as Error;
+	expect(actual.message).toBe('Executable not found: harness');
+	expect(run.exits).toEqual([]);
+
+	recordExampleCases(
+		{
+			unitId: 'game.script.harness-audit',
+			symbol: 'Bun.spawnSync',
+			state: 'throws-error-when-harness-cannot-be-started',
+			evidence: 'examples-cases',
+			file: 'throws-error-when-harness-cannot-be-started.json'
+		},
+		[
+			{
+				name: 'HARNESS_CLI_PATH unset and harness not found',
+				input: { HARNESS_CLI_PATH: '' },
+				error: { name: actual.name, message: actual.message }
+			}
+		]
 	);
 });
