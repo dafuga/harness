@@ -20,6 +20,16 @@
 			"id": "updates-edited-generated-files-by-recording-and-removing-the",
 			"title": "Updates edited generated files by recording and removing them",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-no-harness-owned-console-files",
+			"title": "Throws ExpectedCliError when no harness-owned console files are installed",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-edited-generated-files-have-no",
+			"title": "Throws ExpectedCliError when edited generated files have no handling option",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +50,9 @@
 			"states": [
 				"removes-unchanged-generated-files-and-clears-the-manifest",
 				"keeps-edited-generated-files-as-host-owned-when-requested",
-				"updates-edited-generated-files-by-recording-and-removing-the"
+				"updates-edited-generated-files-by-recording-and-removing-the",
+				"throws-expectedclierror-when-no-harness-owned-console-files",
+				"throws-expectedclierror-when-edited-generated-files-have-no"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +63,9 @@
 			"states": [
 				"removes-unchanged-generated-files-and-clears-the-manifest",
 				"keeps-edited-generated-files-as-host-owned-when-requested",
-				"updates-edited-generated-files-by-recording-and-removing-the"
+				"updates-edited-generated-files-by-recording-and-removing-the",
+				"throws-expectedclierror-when-no-harness-owned-console-files",
+				"throws-expectedclierror-when-edited-generated-files-have-no"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +76,9 @@
 			"states": [
 				"removes-unchanged-generated-files-and-clears-the-manifest",
 				"keeps-edited-generated-files-as-host-owned-when-requested",
-				"updates-edited-generated-files-by-recording-and-removing-the"
+				"updates-edited-generated-files-by-recording-and-removing-the",
+				"throws-expectedclierror-when-no-harness-owned-console-files",
+				"throws-expectedclierror-when-edited-generated-files-have-no"
 			],
 			"viewports": [],
 			"required": true

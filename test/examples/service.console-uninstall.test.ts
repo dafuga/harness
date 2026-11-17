@@ -69,3 +69,40 @@ test('Updates edited generated files by recording and removing them', async () =
 			{ host: '/workspace/project', removed: [path], restored: [], kept: [], changes: [{ path, action: 'removed', reason: 'edited since it was installed' }], clean: false });
 	});
 });
+
+test('Throws ExpectedCliError when no harness-owned console files are installed', async () => {
+	await withTempDir('console-uninstall-missing-', async (directory) => {
+		const input = { host: '/workspace/project' };
+		await expect(new ConsoleUninstallService().uninstall({ host: directory }))
+			.rejects.toThrow(`No console is installed in ${directory}.`);
+		recordExampleCases(
+			{
+				unitId: 'service.console-uninstall',
+				symbol: 'ConsoleUninstallService.uninstall',
+				state: 'throws-expectedclierror-when-no-harness-owned-console-files',
+				evidence: 'examples-cases',
+				file: 'throws-expectedclierror-when-no-harness-owned-console-files.json'
+			},
+			[{ name: 'No installed console', input, error: 'No harness-owned console files' }]
+		);
+	});
+});
+
+test('Throws ExpectedCliError when edited generated files have no handling option', async () => {
+	await withTempDir('console-uninstall-refuse-', async (directory) => {
+		await installedHost(directory, 'host edit');
+		const input = { host: '/workspace/project', update: false, keep: false };
+		await expect(new ConsoleUninstallService().uninstall({ host: directory }))
+			.rejects.toThrow('edited since it was installed');
+		recordExampleCases(
+			{
+				unitId: 'service.console-uninstall',
+				symbol: 'ConsoleUninstallService.uninstall',
+				state: 'throws-expectedclierror-when-edited-generated-files-have-no',
+				evidence: 'examples-cases',
+				file: 'throws-expectedclierror-when-edited-generated-files-have-no.json'
+			},
+			[{ name: 'Edited file refused', input, error: 'Edited generated files require --update or --keep' }]
+		);
+	});
+});
