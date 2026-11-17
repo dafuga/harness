@@ -50,3 +50,26 @@ test('Valid PNG exposes dimensions after scanline validation', async () => {
 		[{ name: 'valid one-pixel RGBA PNG', input, output }]
 	);
 });
+
+test('Throws Error when PNG chunk validation fails', async () => {
+	const state = 'throws-error-when-png-chunk-validation-fails';
+	const inputBytes = new Uint8Array();
+	const input = Array.from(inputBytes);
+	await expect(hubPng(inputBytes)).rejects.toThrow('Harness artifact unavailable');
+	recordExampleCases(
+		{
+			unitId: 'hub.function.hub-png',
+			symbol: 'hubPng',
+			state,
+			evidence: 'examples-cases',
+			file: `${state}.json`
+		},
+		[
+			{
+				name: 'invalid PNG bytes',
+				input,
+				error: { name: 'Error', message: 'Harness artifact unavailable', code: 'artifact-corrupt' }
+			}
+		]
+	);
+});

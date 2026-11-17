@@ -10,6 +10,11 @@
 			"id": "valid-png-exposes-dimensions-after-scanline-validation",
 			"title": "Valid PNG exposes dimensions after scanline validation",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-png-chunk-validation-fails",
+			"title": "Throws Error when PNG chunk validation fails",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["valid-png-exposes-dimensions-after-scanline-validation"],
+			"states": [
+				"valid-png-exposes-dimensions-after-scanline-validation",
+				"throws-error-when-png-chunk-validation-fails"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["valid-png-exposes-dimensions-after-scanline-validation"],
+			"states": [
+				"valid-png-exposes-dimensions-after-scanline-validation",
+				"throws-error-when-png-chunk-validation-fails"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["valid-png-exposes-dimensions-after-scanline-validation"],
+			"states": [
+				"valid-png-exposes-dimensions-after-scanline-validation",
+				"throws-error-when-png-chunk-validation-fails"
+			],
 			"viewports": [],
 			"required": true
 		}
