@@ -20,6 +20,16 @@
 			"id": "renders-file-statuses-in-input-order",
 			"title": "Renders file statuses in input order",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-differing-contents-are-not-forc",
+			"title": "Throws ExpectedCliError when differing contents are not forced",
+			"coverage": "required"
+		},
+		{
+			"id": "rethrows-filesystem-read-failures-unchanged",
+			"title": "Rethrows filesystem read failures unchanged",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +50,9 @@
 			"states": [
 				"writes-planned-files-with-create-skip-and-force-statuses",
 				"creates-distinct-parent-directories-without-writing-files",
-				"renders-file-statuses-in-input-order"
+				"renders-file-statuses-in-input-order",
+				"throws-expectedclierror-when-differing-contents-are-not-forc",
+				"rethrows-filesystem-read-failures-unchanged"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +63,9 @@
 			"states": [
 				"writes-planned-files-with-create-skip-and-force-statuses",
 				"creates-distinct-parent-directories-without-writing-files",
-				"renders-file-statuses-in-input-order"
+				"renders-file-statuses-in-input-order",
+				"throws-expectedclierror-when-differing-contents-are-not-forc",
+				"rethrows-filesystem-read-failures-unchanged"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +76,9 @@
 			"states": [
 				"writes-planned-files-with-create-skip-and-force-statuses",
 				"creates-distinct-parent-directories-without-writing-files",
-				"renders-file-statuses-in-input-order"
+				"renders-file-statuses-in-input-order",
+				"throws-expectedclierror-when-differing-contents-are-not-forc",
+				"rethrows-filesystem-read-failures-unchanged"
 			],
 			"viewports": [],
 			"required": true

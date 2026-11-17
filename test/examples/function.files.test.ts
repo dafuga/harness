@@ -60,3 +60,46 @@ test('Renders file statuses in input order', () => {
 		{ name: 'created skipped and overwritten results', input: results, output }
 	]);
 });
+
+test('Throws ExpectedCliError when differing contents are not forced', async () => {
+	await withTempDir('function-files-refusal-', async (root) => {
+		await ensureParents(root, [planned[0]]);
+		await writeFile(`${root}/${planned[0].path}`, planned[0].contents);
+		const replacement = { ...planned[0], contents: 'export const summary = false;\n' };
+		await expect(writePlannedFiles(root, [replacement])).rejects.toThrow(
+			`Refusing to overwrite ${planned[0].path}. Re-run with --force to replace it.`
+		);
+		let errorMessage = '';
+		try {
+			await writePlannedFiles(root, [replacement]);
+		} catch (error) {
+			errorMessage = error instanceof Error ? error.message : String(error);
+		}
+		expect(errorMessage).toContain('Refusing to overwrite');
+		const name = 'Throws ExpectedCliError when differing contents are not forced';
+		recordExampleCases({ unitId: 'function.files', symbol: 'writePlannedFiles', state: stateId(name), evidence: 'examples-cases', file: `${stateId(name)}.json` }, [
+			{ name: 'refuses differing existing text', input: { root: '/workspace/project', files: [replacement] }, error: { message: errorMessage } }
+		]);
+	});
+});
+
+test('Rethrows filesystem read failures unchanged', async () => {
+	await withTempDir('function-files-read-failure-', async (root) => {
+		await ensureParents(root, [planned[0]]);
+		await writeFile(`${root}/${planned[0].path}`, planned[0].contents);
+		const name = 'Rethrows filesystem read failures unchanged';
+		let failure: { code?: string; message: string } | undefined;
+		try {
+			await writePlannedFiles(root, [{ ...planned[0], path: 'src/generated' }]);
+		} catch (error) {
+			failure = {
+				code: error instanceof Error && 'code' in error ? String(error.code) : undefined,
+				message: error instanceof Error ? error.message : String(error)
+			};
+		}
+		expect(failure?.code).toBe('EISDIR');
+		recordExampleCases({ unitId: 'function.files', symbol: 'writePlannedFiles', state: stateId(name), evidence: 'examples-cases', file: `${stateId(name)}.json` }, [
+			{ name: 'directory target read failure is preserved', input: { root: '/workspace/project', files: [{ path: 'src/generated', contents: 'text' }] }, error: failure }
+		]);
+	});
+});
