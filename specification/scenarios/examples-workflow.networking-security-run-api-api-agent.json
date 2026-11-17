@@ -30,6 +30,11 @@
 			"id": "filters-events-and-replay-data-to-the-requested-run",
 			"title": "Filters events and replay data to the requested run",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-for-documented-invalid-inputs",
+			"title": "Throws ExpectedCliError for documented invalid inputs",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -52,7 +57,8 @@
 				"calls-the-selected-api-method-with-request-identity",
 				"starts-an-agent-run-with-a-retryable-request-id",
 				"parses-nonnegative-safe-event-cursors",
-				"filters-events-and-replay-data-to-the-requested-run"
+				"filters-events-and-replay-data-to-the-requested-run",
+				"throws-expectedclierror-for-documented-invalid-inputs"
 			],
 			"viewports": [],
 			"required": true
@@ -65,7 +71,8 @@
 				"calls-the-selected-api-method-with-request-identity",
 				"starts-an-agent-run-with-a-retryable-request-id",
 				"parses-nonnegative-safe-event-cursors",
-				"filters-events-and-replay-data-to-the-requested-run"
+				"filters-events-and-replay-data-to-the-requested-run",
+				"throws-expectedclierror-for-documented-invalid-inputs"
 			],
 			"viewports": [],
 			"required": true
@@ -78,7 +85,8 @@
 				"calls-the-selected-api-method-with-request-identity",
 				"starts-an-agent-run-with-a-retryable-request-id",
 				"parses-nonnegative-safe-event-cursors",
-				"filters-events-and-replay-data-to-the-requested-run"
+				"filters-events-and-replay-data-to-the-requested-run",
+				"throws-expectedclierror-for-documented-invalid-inputs"
 			],
 			"viewports": [],
 			"required": true

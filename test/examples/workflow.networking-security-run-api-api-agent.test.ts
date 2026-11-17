@@ -74,3 +74,21 @@ test('Filters events and replay data to the requested run', async () => {
 		{ name: 'other runs are omitted from events and replay', input: { runId, after: '3', events }, output: result }
 	]);
 });
+
+test('Throws ExpectedCliError for documented invalid inputs', async () => {
+	const defineInput = { category: 'security', title: 'Review API', goal: 'Document controls' };
+	const agentInput = { provider: 'example-provider', model: 'model-v2', prompt: 'Summarize controls' };
+	const cases = [
+		{ name: 'define without contract', input: defineInput, error: 'Define a plan with its category, title, goal and contract in --input.' },
+		{ name: 'agent without model', input: { provider: 'example-provider' }, error: 'Agent input must name the exact provider and model.' },
+		{ name: 'agent with invalid request id', input: { ...agentInput, requestId: 'retry-123' }, error: 'Agent request ids must be UUIDs.' },
+		{ name: 'negative cursor', input: { text: '-1' }, error: 'Event cursors must be nonnegative integers.' },
+		{ name: 'response without event list', input: { runId: 'run-123', events: null }, error: 'The API returned no run event list.' }
+	];
+	await expect(apiAgent(client(defineInput, {}).value, 'define')).rejects.toThrow('Define a plan');
+	await expect(apiAgent(client({ provider: 'example-provider' }, {}).value, 'run')).rejects.toThrow('Agent input must name');
+	await expect(apiAgent(client(agentInput, {}, { requestId: 'retry-123' }).value, 'run')).rejects.toThrow('Agent request ids must be UUIDs');
+	expect(() => apiEventCursor('-1')).toThrow('Event cursors must be nonnegative integers');
+	await expect(apiEvents(client({}, { events: null }).value, 'run-123')).rejects.toThrow('The API returned no run event list');
+	recordExampleCases({ unitId: 'workflow.networking-security-run-api-api-agent', symbol: 'ExpectedCliError', state: 'throws-expectedclierror-for-documented-invalid-inputs', evidence: 'examples-cases', file: 'throws-expectedclierror-for-documented-invalid-inputs.json' }, cases);
+});
