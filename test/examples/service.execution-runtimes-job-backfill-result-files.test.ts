@@ -46,3 +46,33 @@ test('Finds sorted result files in bounded result collections', async () => {
 		);
 	});
 });
+
+test('Throws when a results folder is unreadable', async () => {
+	await withTempDir('job-backfill-result-files-missing-', async (directory) => {
+		const missing = join(directory, 'missing-results');
+		let code = '';
+		try {
+			resultFiles(missing);
+		} catch (error) {
+			if (error instanceof Error && 'code' in error) code = String(error.code);
+		}
+		expect(() => resultFiles(missing)).toThrow();
+		expect(code).toBe('ENOENT');
+		recordExampleCases(
+			{
+				unitId: 'service.execution-runtimes-job-backfill-result-files',
+				symbol: 'resultFiles',
+				state: 'throws-when-a-results-folder-is-unreadable',
+				evidence: 'examples-cases',
+				file: 'throws-when-a-results-folder-is-unreadable.json'
+			},
+			[
+				{
+					name: 'propagates ENOENT when the historical results root is missing',
+					input: { root: 'temporary/missing-results' },
+					output: { code }
+				}
+			]
+		);
+	});
+});

@@ -10,6 +10,11 @@
 			"id": "finds-sorted-result-files-in-bounded-result-collections",
 			"title": "Finds sorted result files in bounded result collections",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-when-a-results-folder-is-unreadable",
+			"title": "Throws when a results folder is unreadable",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["finds-sorted-result-files-in-bounded-result-collections"],
+			"states": [
+				"finds-sorted-result-files-in-bounded-result-collections",
+				"throws-when-a-results-folder-is-unreadable"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["finds-sorted-result-files-in-bounded-result-collections"],
+			"states": [
+				"finds-sorted-result-files-in-bounded-result-collections",
+				"throws-when-a-results-folder-is-unreadable"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["finds-sorted-result-files-in-bounded-result-collections"],
+			"states": [
+				"finds-sorted-result-files-in-bounded-result-collections",
+				"throws-when-a-results-folder-is-unreadable"
+			],
 			"viewports": [],
 			"required": true
 		}
