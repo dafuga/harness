@@ -7,6 +7,26 @@
 	"builds": [],
 	"states": [
 		{
+			"id": "throws-expectedclierror-when-a-field-has-multiple-colons",
+			"title": "Throws ExpectedCliError when a field has multiple colons",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-a-field-name-is-invalid",
+			"title": "Throws ExpectedCliError when a field name is invalid",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-a-field-type-is-unsupported",
+			"title": "Throws ExpectedCliError when a field type is unsupported",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-field-names-duplicate-after-nor",
+			"title": "Throws ExpectedCliError when field names duplicate after normalization",
+			"coverage": "required"
+		},
+		{
 			"id": "parses-supported-field-specifications",
 			"title": "Parses supported field specifications",
 			"coverage": "required"
@@ -27,21 +47,39 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["parses-supported-field-specifications"],
+			"states": [
+				"throws-expectedclierror-when-a-field-has-multiple-colons",
+				"throws-expectedclierror-when-a-field-name-is-invalid",
+				"throws-expectedclierror-when-a-field-type-is-unsupported",
+				"throws-expectedclierror-when-field-names-duplicate-after-nor",
+				"parses-supported-field-specifications"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["parses-supported-field-specifications"],
+			"states": [
+				"throws-expectedclierror-when-a-field-has-multiple-colons",
+				"throws-expectedclierror-when-a-field-name-is-invalid",
+				"throws-expectedclierror-when-a-field-type-is-unsupported",
+				"throws-expectedclierror-when-field-names-duplicate-after-nor",
+				"parses-supported-field-specifications"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["parses-supported-field-specifications"],
+			"states": [
+				"throws-expectedclierror-when-a-field-has-multiple-colons",
+				"throws-expectedclierror-when-a-field-name-is-invalid",
+				"throws-expectedclierror-when-a-field-type-is-unsupported",
+				"throws-expectedclierror-when-field-names-duplicate-after-nor",
+				"parses-supported-field-specifications"
+			],
 			"viewports": [],
 			"required": true
 		}
