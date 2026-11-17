@@ -25,3 +25,24 @@ test('Wraps template expressions for helper analysis', () => {
 		]
 	);
 });
+
+test('Throws Svelte parser error when template source is invalid', () => {
+	const code = '<div>{#if}</div>';
+	expect(() => helperTemplates(code)).toThrow();
+	recordExampleCases(
+		{
+			unitId: 'function.helper-templates',
+			symbol: 'helperTemplates',
+			state: 'throws-svelte-parser-error-when-template-source-is-invalid',
+			evidence: 'examples-cases',
+			file: 'throws-svelte-parser-error-when-template-source-is-invalid.json'
+		},
+		[
+			{
+				name: 'invalid Svelte template source propagates the parser error',
+				input: { code },
+				error: 'Svelte parser error'
+			}
+		]
+	);
+});

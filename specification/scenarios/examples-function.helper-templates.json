@@ -10,6 +10,11 @@
 			"id": "wraps-template-expressions-for-helper-analysis",
 			"title": "Wraps template expressions for helper analysis",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-svelte-parser-error-when-template-source-is-invalid",
+			"title": "Throws Svelte parser error when template source is invalid",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["wraps-template-expressions-for-helper-analysis"],
+			"states": [
+				"wraps-template-expressions-for-helper-analysis",
+				"throws-svelte-parser-error-when-template-source-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["wraps-template-expressions-for-helper-analysis"],
+			"states": [
+				"wraps-template-expressions-for-helper-analysis",
+				"throws-svelte-parser-error-when-template-source-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["wraps-template-expressions-for-helper-analysis"],
+			"states": [
+				"wraps-template-expressions-for-helper-analysis",
+				"throws-svelte-parser-error-when-template-source-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		}
