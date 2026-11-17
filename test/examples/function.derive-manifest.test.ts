@@ -62,3 +62,28 @@ test('Derives an active manifest from owned source facts', () => {
 		output
 	}]);
 });
+
+test('Throws TypeError when there is no previous manifest and files are empty', () => {
+	const input = { ...sampleInput(), files: [] };
+	expect(() => deriveManifest(input)).toThrow(TypeError);
+	let error: unknown;
+	try { deriveManifest(input); } catch (caught) { error = caught; }
+	recordExampleCases({
+		unitId: 'function.derive-manifest', symbol: 'deriveManifest',
+		state: 'throws-typeerror-when-there-is-no-previous-manifest-and-file',
+		evidence: 'examples-cases', file: 'throws-typeerror-when-there-is-no-previous-manifest-and-file.json'
+	}, [{ name: 'empty source list without a previous manifest', input: { id: input.id, files: [] }, error: { name: (error as Error).name } }]);
+});
+
+test('Throws ZodError when the assembled contract fails schema validation', () => {
+	const input = sampleInput();
+	input.files[0].exports[0].inputs = [{ name: 'broken', type: '' }];
+	expect(() => deriveManifest(input)).toThrowError();
+	let error: unknown;
+	try { deriveManifest(input); } catch (caught) { error = caught; }
+	recordExampleCases({
+		unitId: 'function.derive-manifest', symbol: 'deriveManifest',
+		state: 'throws-zoderror-when-the-assembled-contract-fails-schema-val',
+		evidence: 'examples-cases', file: 'throws-zoderror-when-the-assembled-contract-fails-schema-val.json'
+	}, [{ name: 'source export has an invalid empty input type', input: { exportedInputType: '' }, error: { name: (error as Error).name } }]);
+});

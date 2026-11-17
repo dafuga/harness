@@ -10,6 +10,16 @@
 			"id": "derives-an-active-manifest-from-owned-source-facts",
 			"title": "Derives an active manifest from owned source facts",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-there-is-no-previous-manifest-and-file",
+			"title": "Throws TypeError when there is no previous manifest and files are empty",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-zoderror-when-the-assembled-contract-fails-schema-val",
+			"title": "Throws ZodError when the assembled contract fails schema validation",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +37,33 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["derives-an-active-manifest-from-owned-source-facts"],
+			"states": [
+				"derives-an-active-manifest-from-owned-source-facts",
+				"throws-typeerror-when-there-is-no-previous-manifest-and-file",
+				"throws-zoderror-when-the-assembled-contract-fails-schema-val"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["derives-an-active-manifest-from-owned-source-facts"],
+			"states": [
+				"derives-an-active-manifest-from-owned-source-facts",
+				"throws-typeerror-when-there-is-no-previous-manifest-and-file",
+				"throws-zoderror-when-the-assembled-contract-fails-schema-val"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["derives-an-active-manifest-from-owned-source-facts"],
+			"states": [
+				"derives-an-active-manifest-from-owned-source-facts",
+				"throws-typeerror-when-there-is-no-previous-manifest-and-file",
+				"throws-zoderror-when-the-assembled-contract-fails-schema-val"
+			],
 			"viewports": [],
 			"required": true
 		}
