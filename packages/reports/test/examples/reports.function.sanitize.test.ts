@@ -46,3 +46,25 @@ test('Clean data recursively redacts sensitive fields', () => {
 		[{ name: 'deployment event with nested authorization', input, output }]
 	);
 });
+
+test('Throws RangeError for a circular reference', () => {
+	const input: { self?: unknown } = {};
+	input.self = input;
+	expect(() => cleanData(input)).toThrow(RangeError);
+	recordExampleCases(
+		{
+			unitId: 'reports.function.sanitize',
+			symbol: 'cleanData',
+			state: 'throws-rangeerror-for-a-circular-reference',
+			evidence: 'examples-cases',
+			file: 'throws-rangeerror-for-a-circular-reference.json'
+		},
+		[
+			{
+				name: 'circular object reference',
+				input: { self: '[circular reference]' },
+				error: 'RangeError'
+			}
+		]
+	);
+});

@@ -15,6 +15,11 @@
 			"id": "clean-data-recursively-redacts-sensitive-fields",
 			"title": "Clean data recursively redacts sensitive fields",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-rangeerror-for-a-circular-reference",
+			"title": "Throws RangeError for a circular reference",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +39,8 @@
 			"kind": "output",
 			"states": [
 				"sanitize-redacts-credentials-and-url-details",
-				"clean-data-recursively-redacts-sensitive-fields"
+				"clean-data-recursively-redacts-sensitive-fields",
+				"throws-rangeerror-for-a-circular-reference"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +50,8 @@
 			"kind": "assertions",
 			"states": [
 				"sanitize-redacts-credentials-and-url-details",
-				"clean-data-recursively-redacts-sensitive-fields"
+				"clean-data-recursively-redacts-sensitive-fields",
+				"throws-rangeerror-for-a-circular-reference"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +61,8 @@
 			"kind": "trace",
 			"states": [
 				"sanitize-redacts-credentials-and-url-details",
-				"clean-data-recursively-redacts-sensitive-fields"
+				"clean-data-recursively-redacts-sensitive-fields",
+				"throws-rangeerror-for-a-circular-reference"
 			],
 			"viewports": [],
 			"required": true
