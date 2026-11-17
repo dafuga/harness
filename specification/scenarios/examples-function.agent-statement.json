@@ -10,6 +10,11 @@
 			"id": "normalizes-owner-supplied-agent-facts",
 			"title": "Normalizes owner supplied agent facts",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-the-supplied-id-is-invalid",
+			"title": "Throws ExpectedCliError when the supplied id is invalid",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["normalizes-owner-supplied-agent-facts"],
+			"states": [
+				"normalizes-owner-supplied-agent-facts",
+				"throws-expectedclierror-when-the-supplied-id-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["normalizes-owner-supplied-agent-facts"],
+			"states": [
+				"normalizes-owner-supplied-agent-facts",
+				"throws-expectedclierror-when-the-supplied-id-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["normalizes-owner-supplied-agent-facts"],
+			"states": [
+				"normalizes-owner-supplied-agent-facts",
+				"throws-expectedclierror-when-the-supplied-id-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		}

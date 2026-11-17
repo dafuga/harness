@@ -52,3 +52,19 @@ test('Normalizes owner supplied agent facts', () => {
 		]
 	);
 });
+
+test('Throws ExpectedCliError when the supplied id is invalid', () => {
+	const input = { id: 'agent with spaces' } satisfies AgentInput;
+	const error = '--id must be letters, digits, dots, dashes or underscores, 64 at most.';
+	expect(() => agentStatement(input)).toThrow(error);
+	recordExampleCases(
+		{
+			unitId: 'function.agent-statement',
+			symbol: 'agentStatement',
+			state: 'throws-expectedclierror-when-the-supplied-id-is-invalid',
+			evidence: 'examples-cases',
+			file: 'throws-expectedclierror-when-the-supplied-id-is-invalid.json'
+		},
+		[{ name: 'rejects an id containing spaces', input, error }]
+	);
+});
