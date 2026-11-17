@@ -63,3 +63,30 @@ test('Selection equality and session IDs are exact', () => {
 		]
 	);
 });
+
+test('Throws InvalidSessionIdError when session ID is invalid', () => {
+	let error: unknown;
+	try {
+		validateSessionId('bad session');
+	} catch (caught) {
+		error = caught;
+	}
+	expect(error).toBeInstanceOf(InvalidSessionIdError);
+	expect((error as Error).message).toBe('A valid explicit Codex session ID is required.');
+	recordExampleCases(
+		{
+			unitId: 'function.picker-model-types',
+			symbol: 'validateSessionId',
+			state: 'throws-invalidsessioniderror-when-session-id-is-invalid',
+			evidence: 'examples-cases',
+			file: 'throws-invalidsessioniderror-when-session-id-is-invalid.json'
+		},
+		[
+			{
+				name: 'rejects whitespace',
+				input: 'bad session',
+				error: { name: 'InvalidSessionIdError', message: (error as Error).message }
+			}
+		]
+	);
+});

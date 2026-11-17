@@ -10,6 +10,11 @@
 			"id": "selection-equality-and-session-ids-are-exact",
 			"title": "Selection equality and session IDs are exact",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-invalidsessioniderror-when-session-id-is-invalid",
+			"title": "Throws InvalidSessionIdError when session ID is invalid",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["selection-equality-and-session-ids-are-exact"],
+			"states": [
+				"selection-equality-and-session-ids-are-exact",
+				"throws-invalidsessioniderror-when-session-id-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["selection-equality-and-session-ids-are-exact"],
+			"states": [
+				"selection-equality-and-session-ids-are-exact",
+				"throws-invalidsessioniderror-when-session-id-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["selection-equality-and-session-ids-are-exact"],
+			"states": [
+				"selection-equality-and-session-ids-are-exact",
+				"throws-invalidsessioniderror-when-session-id-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		}
