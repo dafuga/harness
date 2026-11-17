@@ -64,3 +64,31 @@ test('Finds a declared state test', async () => {
 		]
 	);
 });
+
+test('Throws the guidance error unchanged when reading a declared test fails', async () => {
+	const context = contextFor();
+	context.testSyntax.clear();
+	const failure = new Error('fixture guidance read failed');
+	context.tree = { read: async () => Promise.reject(failure) } as unknown as GuidanceContext['tree'];
+	const input = { state: 'loading', headless: true, file: testFile };
+	const result = stateTests(context, { id: unitId } as ComponentManifest, input.state, {
+		headless: input.headless
+	});
+	await expect(result).rejects.toBe(failure);
+	recordExampleCases(
+		{
+			unitId: 'workflow.development-tooling-guide-units-state-tests',
+			symbol: 'stateTests',
+			state: 'throws-the-guidance-error-unchanged-when-reading-a-declared',
+			evidence: 'examples-cases',
+			file: 'throws-the-guidance-error-unchanged-when-reading-a-declared.json'
+		},
+		[
+			{
+				name: 'guidance read rejection propagates by identity',
+				input,
+				error: { name: failure.name, message: failure.message }
+			}
+		]
+	);
+});

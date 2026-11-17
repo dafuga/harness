@@ -10,6 +10,11 @@
 			"id": "finds-a-declared-state-test",
 			"title": "Finds a declared state test",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-the-guidance-error-unchanged-when-reading-a-declared",
+			"title": "Throws the guidance error unchanged when reading a declared test fails",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["finds-a-declared-state-test"],
+			"states": [
+				"finds-a-declared-state-test",
+				"throws-the-guidance-error-unchanged-when-reading-a-declared"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["finds-a-declared-state-test"],
+			"states": [
+				"finds-a-declared-state-test",
+				"throws-the-guidance-error-unchanged-when-reading-a-declared"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["finds-a-declared-state-test"],
+			"states": [
+				"finds-a-declared-state-test",
+				"throws-the-guidance-error-unchanged-when-reading-a-declared"
+			],
 			"viewports": [],
 			"required": true
 		}
