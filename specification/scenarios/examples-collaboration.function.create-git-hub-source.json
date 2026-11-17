@@ -8,17 +8,27 @@
 	"states": [
 		{
 			"id": "resolves-immutable-commit-trees-and-repository-history",
-			"title": "resolves immutable commit trees and repository history",
+			"title": "Resolves immutable commit trees and repository history",
 			"coverage": "required"
 		},
 		{
 			"id": "returns-verified-raw-bytes-and-independent-read-copies",
-			"title": "returns verified raw bytes and independent read copies",
+			"title": "Returns verified raw bytes and independent read copies",
 			"coverage": "required"
 		},
 		{
 			"id": "materializes-lfs-files-and-copies-cached-bytes",
-			"title": "materializes LFS files and copies cached bytes",
+			"title": "Materializes LFS files and copies cached bytes",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-collaborationinputerror-on-commit-mismatch",
+			"title": "Throws CollaborationInputError on commit mismatch",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-collaborationinputerror-on-blob-integrity-failure",
+			"title": "Throws CollaborationInputError on blob integrity failure",
 			"coverage": "required"
 		}
 	],
@@ -40,7 +50,9 @@
 			"states": [
 				"resolves-immutable-commit-trees-and-repository-history",
 				"returns-verified-raw-bytes-and-independent-read-copies",
-				"materializes-lfs-files-and-copies-cached-bytes"
+				"materializes-lfs-files-and-copies-cached-bytes",
+				"throws-collaborationinputerror-on-commit-mismatch",
+				"throws-collaborationinputerror-on-blob-integrity-failure"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +63,9 @@
 			"states": [
 				"resolves-immutable-commit-trees-and-repository-history",
 				"returns-verified-raw-bytes-and-independent-read-copies",
-				"materializes-lfs-files-and-copies-cached-bytes"
+				"materializes-lfs-files-and-copies-cached-bytes",
+				"throws-collaborationinputerror-on-commit-mismatch",
+				"throws-collaborationinputerror-on-blob-integrity-failure"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +76,9 @@
 			"states": [
 				"resolves-immutable-commit-trees-and-repository-history",
 				"returns-verified-raw-bytes-and-independent-read-copies",
-				"materializes-lfs-files-and-copies-cached-bytes"
+				"materializes-lfs-files-and-copies-cached-bytes",
+				"throws-collaborationinputerror-on-commit-mismatch",
+				"throws-collaborationinputerror-on-blob-integrity-failure"
 			],
 			"viewports": [],
 			"required": true
