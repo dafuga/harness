@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.page.harness-branch-branch-at-components-entity-details",
+	"title": "reports.page.harness-branch-branch-at-components-entity-details examples",
+	"kind": "headless",
+	"units": ["reports.page.harness-branch-branch-at-components-entity-details"],
+	"builds": [],
+	"states": [
+		{
+			"id": "renders-the-component-details-page-with-the-document-title-c",
+			"title": "Renders the component details page with the document title Component details \u00b7 Harness",
+			"coverage": "required"
+		},
+		{
+			"id": "renders-the-measurements-and-source-tab-addresses-of-a-compo",
+			"title": "Renders the measurements and source tab addresses of a component without another revision content",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.page.harness-branch-branch-at-components-entity-details.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"renders-the-component-details-page-with-the-document-title-c",
+				"renders-the-measurements-and-source-tab-addresses-of-a-compo"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"renders-the-component-details-page-with-the-document-title-c",
+				"renders-the-measurements-and-source-tab-addresses-of-a-compo"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"renders-the-component-details-page-with-the-document-title-c",
+				"renders-the-measurements-and-source-tab-addresses-of-a-compo"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
