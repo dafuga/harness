@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-guide.history",
+	"title": "guide.history examples",
+	"kind": "headless",
+	"units": ["guide.history"],
+	"builds": [],
+	"states": [
+		{
+			"id": "exposes-the-history-hooks-and-ci-guides",
+			"title": "Exposes the history hooks and CI guides",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/guide.history.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["exposes-the-history-hooks-and-ci-guides"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["exposes-the-history-hooks-and-ci-guides"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["exposes-the-history-hooks-and-ci-guides"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
