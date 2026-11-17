@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-audit.clean-code-config",
+	"title": "audit.clean-code-config examples",
+	"kind": "headless",
+	"units": ["audit.clean-code-config"],
+	"builds": [],
+	"states": [
+		{
+			"id": "resolves-default-and-configured-clean-code-settings",
+			"title": "Resolves default and configured clean-code settings",
+			"coverage": "required"
+		},
+		{
+			"id": "applies-cli-overrides-to-the-clean-code-mode",
+			"title": "Applies CLI overrides to the clean-code mode",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-malformed-clean-code-configuration",
+			"title": "Rejects malformed clean-code configuration",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/audit.clean-code-config.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"resolves-default-and-configured-clean-code-settings",
+				"applies-cli-overrides-to-the-clean-code-mode",
+				"rejects-malformed-clean-code-configuration"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"resolves-default-and-configured-clean-code-settings",
+				"applies-cli-overrides-to-the-clean-code-mode",
+				"rejects-malformed-clean-code-configuration"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"resolves-default-and-configured-clean-code-settings",
+				"applies-cli-overrides-to-the-clean-code-mode",
+				"rejects-malformed-clean-code-configuration"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
