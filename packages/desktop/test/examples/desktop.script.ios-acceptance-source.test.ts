@@ -1,10 +1,14 @@
 import { test } from 'vitest';
+import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import {
 	rendererSources,
 	nativeSources,
 	computerSources,
+	tree,
 	treeDigest,
 	missing,
 	moved,
@@ -84,4 +88,25 @@ test('finds changes across the three source readings', () => {
 		},
 		[{ name: 'renderer changed between reads', input: { before: 'one renderer, native, and fixture reading', after: 'same sets with a changed lockfile' }, output }]
 	);
+});
+
+test('Throws Error when a tree path is a file', () => {
+	const folder = mkdtempSync(join(tmpdir(), 'ios-source-'));
+	const file = join(folder, 'not-a-folder');
+	writeFileSync(file, 'example');
+	try {
+		expect(() => tree(file)).toThrow();
+		recordExampleCases(
+			{
+				unitId: 'desktop.script.ios-acceptance-source',
+				symbol: 'tree',
+				state: 'throws-error-when-a-tree-path-is-a-file',
+				evidence: 'examples-cases',
+				file: 'throws-error-when-a-tree-path-is-a-file.json'
+			},
+			[{ name: 'file supplied as tree folder', input: { folder: 'temporary regular file' }, error: 'Error' }]
+		);
+	} finally {
+		rmSync(folder, { recursive: true, force: true });
+	}
 });

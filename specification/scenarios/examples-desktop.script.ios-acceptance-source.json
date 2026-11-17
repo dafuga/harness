@@ -20,6 +20,11 @@
 			"id": "finds-changes-across-the-three-source-readings",
 			"title": "finds changes across the three source readings",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-a-tree-path-is-a-file",
+			"title": "Throws Error when a tree path is a file",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +45,8 @@
 			"states": [
 				"describes-the-renderer-native-and-fixture-source-sets",
 				"compares-source-maps-and-names-their-digest",
-				"finds-changes-across-the-three-source-readings"
+				"finds-changes-across-the-three-source-readings",
+				"throws-error-when-a-tree-path-is-a-file"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +57,8 @@
 			"states": [
 				"describes-the-renderer-native-and-fixture-source-sets",
 				"compares-source-maps-and-names-their-digest",
-				"finds-changes-across-the-three-source-readings"
+				"finds-changes-across-the-three-source-readings",
+				"throws-error-when-a-tree-path-is-a-file"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +69,8 @@
 			"states": [
 				"describes-the-renderer-native-and-fixture-source-sets",
 				"compares-source-maps-and-names-their-digest",
-				"finds-changes-across-the-three-source-readings"
+				"finds-changes-across-the-three-source-readings",
+				"throws-error-when-a-tree-path-is-a-file"
 			],
 			"viewports": [],
 			"required": true
