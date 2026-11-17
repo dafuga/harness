@@ -15,6 +15,26 @@
 			"id": "ingest-records-a-summary-when-no-assertions-are-supplied",
 			"title": "ingest records a summary when no assertions are supplied",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-report-file-cannot-be-read",
+			"title": "Throws Error when the report file cannot be read",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-syntaxerror-when-report-content-is-invalid-json",
+			"title": "Throws SyntaxError when report content is invalid JSON",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-parsed-report-root-is-null",
+			"title": "Throws TypeError when parsed report root is null",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-record-rejection-unchanged-when-repository-rejects",
+			"title": "Throws record rejection unchanged when repository rejects",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +54,11 @@
 			"kind": "output",
 			"states": [
 				"ingest-records-each-vitest-assertion-as-a-check",
-				"ingest-records-a-summary-when-no-assertions-are-supplied"
+				"ingest-records-a-summary-when-no-assertions-are-supplied",
+				"throws-error-when-the-report-file-cannot-be-read",
+				"throws-syntaxerror-when-report-content-is-invalid-json",
+				"throws-typeerror-when-parsed-report-root-is-null",
+				"throws-record-rejection-unchanged-when-repository-rejects"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +68,11 @@
 			"kind": "assertions",
 			"states": [
 				"ingest-records-each-vitest-assertion-as-a-check",
-				"ingest-records-a-summary-when-no-assertions-are-supplied"
+				"ingest-records-a-summary-when-no-assertions-are-supplied",
+				"throws-error-when-the-report-file-cannot-be-read",
+				"throws-syntaxerror-when-report-content-is-invalid-json",
+				"throws-typeerror-when-parsed-report-root-is-null",
+				"throws-record-rejection-unchanged-when-repository-rejects"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +82,11 @@
 			"kind": "trace",
 			"states": [
 				"ingest-records-each-vitest-assertion-as-a-check",
-				"ingest-records-a-summary-when-no-assertions-are-supplied"
+				"ingest-records-a-summary-when-no-assertions-are-supplied",
+				"throws-error-when-the-report-file-cannot-be-read",
+				"throws-syntaxerror-when-report-content-is-invalid-json",
+				"throws-typeerror-when-parsed-report-root-is-null",
+				"throws-record-rejection-unchanged-when-repository-rejects"
 			],
 			"viewports": [],
 			"required": true
