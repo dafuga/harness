@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.service.project-discovery",
+	"title": "desktop.service.project-discovery examples",
+	"kind": "headless",
+	"units": ["desktop.service.project-discovery"],
+	"builds": [],
+	"states": [
+		{
+			"id": "lists-owned-and-joined-hosted-projects",
+			"title": "Lists owned and joined hosted projects",
+			"coverage": "required"
+		},
+		{
+			"id": "returns-the-kept-copy-while-the-hub-is-away",
+			"title": "Returns the kept copy while the hub is away",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-discovery-when-the-hosted-credential-changes",
+			"title": "Rejects discovery when the hosted credential changes",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-discovery-when-no-hosted-credential-is-held",
+			"title": "Rejects discovery when no hosted credential is held",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.service.project-discovery.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"lists-owned-and-joined-hosted-projects",
+				"returns-the-kept-copy-while-the-hub-is-away",
+				"rejects-discovery-when-the-hosted-credential-changes",
+				"rejects-discovery-when-no-hosted-credential-is-held"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"lists-owned-and-joined-hosted-projects",
+				"returns-the-kept-copy-while-the-hub-is-away",
+				"rejects-discovery-when-the-hosted-credential-changes",
+				"rejects-discovery-when-no-hosted-credential-is-held"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"lists-owned-and-joined-hosted-projects",
+				"returns-the-kept-copy-while-the-hub-is-away",
+				"rejects-discovery-when-the-hosted-credential-changes",
+				"rejects-discovery-when-no-hosted-credential-is-held"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
