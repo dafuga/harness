@@ -10,6 +10,26 @@
 			"id": "reads-and-caches-verified-image-bytes",
 			"title": "Reads and caches verified image bytes",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-requested-project-is-not-selected",
+			"title": "Throws Error when requested project is not selected",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-no-project-is-open",
+			"title": "Throws Error when no project is open",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-unknownprojectimageerror-when-image-is-not-recorded",
+			"title": "Throws UnknownProjectImageError when image is not recorded",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-imagehashmismatcherror-when-fetched-bytes-do-not-matc",
+			"title": "Throws ImageHashMismatchError when fetched bytes do not match",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +47,39 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["reads-and-caches-verified-image-bytes"],
+			"states": [
+				"reads-and-caches-verified-image-bytes",
+				"throws-error-when-requested-project-is-not-selected",
+				"throws-error-when-no-project-is-open",
+				"throws-unknownprojectimageerror-when-image-is-not-recorded",
+				"throws-imagehashmismatcherror-when-fetched-bytes-do-not-matc"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["reads-and-caches-verified-image-bytes"],
+			"states": [
+				"reads-and-caches-verified-image-bytes",
+				"throws-error-when-requested-project-is-not-selected",
+				"throws-error-when-no-project-is-open",
+				"throws-unknownprojectimageerror-when-image-is-not-recorded",
+				"throws-imagehashmismatcherror-when-fetched-bytes-do-not-matc"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["reads-and-caches-verified-image-bytes"],
+			"states": [
+				"reads-and-caches-verified-image-bytes",
+				"throws-error-when-requested-project-is-not-selected",
+				"throws-error-when-no-project-is-open",
+				"throws-unknownprojectimageerror-when-image-is-not-recorded",
+				"throws-imagehashmismatcherror-when-fetched-bytes-do-not-matc"
+			],
 			"viewports": [],
 			"required": true
 		}
