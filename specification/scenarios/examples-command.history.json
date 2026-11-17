@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-command.history",
+	"title": "command.history examples",
+	"kind": "headless",
+	"units": ["command.history"],
+	"builds": [],
+	"states": [
+		{
+			"id": "adds-the-history-command-to-the-program-and-returns-it",
+			"title": "Adds the history command to the program and returns it",
+			"coverage": "required"
+		},
+		{
+			"id": "registers-the-nine-history-subcommands-in-order",
+			"title": "Registers the nine history subcommands in order",
+			"coverage": "required"
+		},
+		{
+			"id": "defaults-commit-to-head-and-limit-to-2000",
+			"title": "Defaults --commit to HEAD and --limit to 2000",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/command.history.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"adds-the-history-command-to-the-program-and-returns-it",
+				"registers-the-nine-history-subcommands-in-order",
+				"defaults-commit-to-head-and-limit-to-2000"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"adds-the-history-command-to-the-program-and-returns-it",
+				"registers-the-nine-history-subcommands-in-order",
+				"defaults-commit-to-head-and-limit-to-2000"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"adds-the-history-command-to-the-program-and-returns-it",
+				"registers-the-nine-history-subcommands-in-order",
+				"defaults-commit-to-head-and-limit-to-2000"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
