@@ -1,16 +1,6 @@
 import { test } from 'vitest';
-import {
-	createInvitation,
-	acceptInvitation
-} from '../../src/utils/projects-sessions/create-collaboration/createInvitation';
-import type {
-	Actor,
-	CollaborationDependencies,
-	CollaborationRecords,
-	CollaborationRepository,
-	Member,
-	StoredInvitation
-} from '../../src/models/planning-collaboration/Collaboration.types';
+import { createInvitation, acceptInvitation } from '../../src/utils/projects-sessions/create-collaboration/createInvitation';
+import type { Actor, CollaborationDependencies, CollaborationRecords, CollaborationRepository, Member, StoredInvitation } from '../../src/models/planning-collaboration/Collaboration.types';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
 
@@ -53,7 +43,7 @@ const samMember = member(sam, 'commenter');
 const writerMember = member(writer, 'writer');
 const revision = (n: number) => n.toString(16).padStart(40, '0');
 
-function recordsBranch(members: Member[] = [ownerMember], invitations: StoredInvitation[] = []) {
+function recordsBranch(members: Member[] = [ownerMember], invitations: StoredInvitation[] = [], conflict = false) {
 	let currentRevision = 1;
 	let records: CollaborationRecords = {
 		schemaVersion: 1,
@@ -67,6 +57,7 @@ function recordsBranch(members: Member[] = [ownerMember], invitations: StoredInv
 			return { revision: revision(currentRevision), records };
 		},
 		async compareAndSwap(expected, next) {
+			if (conflict) return null;
 			if (expected !== revision(currentRevision)) return null;
 			records = next;
 			currentRevision++;
@@ -75,12 +66,7 @@ function recordsBranch(members: Member[] = [ownerMember], invitations: StoredInv
 	};
 	const deps: CollaborationDependencies = {
 		repository,
-		source: {
-			resolve: async () => ({ commit: 'a'.repeat(40), tree: 'b'.repeat(40) }),
-			tree: async () => [],
-			read: async () => new Uint8Array(),
-			validateAnchor: async () => {}
-		},
+			source: { resolve: async () => ({ commit: 'a'.repeat(40), tree: 'b'.repeat(40) }), tree: async () => [], read: async () => new Uint8Array(), validateAnchor: async () => {} },
 		cache: { get: async () => null, put: async () => {}, delete: async () => {} },
 		authorizeRepository: async () => repositoryIdentity,
 		now: () => new Date(now)
@@ -128,21 +114,10 @@ test('creates a hashed one-day invitation for an owner', async () => {
 		{
 			name: 'project owner invites Sam with a mixed-case email',
 			input: { actor: owner, input, now },
-			output: {
-				invitation: issued,
-				stored: {
-					id: stored.id,
-					email: stored.email,
-					role: stored.role,
-					expiresAt: stored.expiresAt,
-					codeHash: stored.codeHash,
-					acceptedBy: stored.acceptedBy
-				}
-			}
+			output: { invitation: issued, stored: { id: stored.id, email: stored.email, role: stored.role, expiresAt: stored.expiresAt, codeHash: stored.codeHash, acceptedBy: stored.acceptedBy } }
 		},
 		{
-			name: 'project writer cannot issue another invitation',
-			input: { actor: writer, input: refusalInput, now },
+			name: 'project writer cannot issue another invitation', input: { actor: writer, input: refusalInput, now },
 			...refused
 		}
 	]);
@@ -190,20 +165,11 @@ test('accepts an invitation and retains an existing member role', async () => {
 		{
 			name: 'verified invitee becomes a writer member',
 			input: { actor: sam, input: { projectId, invitationId, code }, now },
-			output: {
-				project: { id: added.id, name: added.name, role: added.role },
-				member: newMember,
-				acceptedBy: newMemberStore.records().invitations[0].acceptedBy
-			}
+			output: { project: { id: added.id, name: added.name, role: added.role }, member: newMember, acceptedBy: newMemberStore.records().invitations[0].acceptedBy }
 		},
 		{
-			name: 'existing commenter keeps that role after accepting a writer invitation',
-			input: { actor: sam, input: { projectId, invitationId: acceptedInvitationId, code }, now },
-			output: {
-				project: { id: retained.id, name: retained.name, role: retained.role },
-				member: existingMember,
-				acceptedBy: existingMemberStore.records().invitations[0].acceptedBy
-			}
+			name: 'existing commenter keeps that role after accepting a writer invitation', input: { actor: sam, input: { projectId, invitationId: acceptedInvitationId, code }, now },
+			output: { project: { id: retained.id, name: retained.name, role: retained.role }, member: existingMember, acceptedBy: existingMemberStore.records().invitations[0].acceptedBy }
 		}
 	]);
 	expect(added).toMatchObject({ id: projectId, name: 'Launch planning', role: 'writer' });
@@ -213,4 +179,40 @@ test('accepts an invitation and retains an existing member role', async () => {
 	expect(retained.role).toBe('commenter');
 	expect(existingMember?.role).toBe('commenter');
 	expect(existingMemberStore.records().invitations[0].acceptedBy).toBe(sam.id);
+});
+
+test('Throws Error when invitation input is invalid', async () => {
+	const store = recordsBranch();
+	const input = { projectId: 'bad', email: 'nope', role: 'owner' as const };
+	const result = await capture(createInvitation(store.deps, owner, input as never));
+	const state = 'throws-error-when-invitation-input-is-invalid';
+	recordExampleCases(evidence('createInvitation', state), [{ name: 'reject malformed invitation fields', input, ...result }]);
+	expect(result.error).toEqual({ code: 'invalid-input', message: 'Collaboration invalid-input' });
+});
+
+test('Throws Error when invitation creation is forbidden', async () => {
+	const store = recordsBranch([ownerMember, writerMember]);
+	const input = { projectId, email: 'lee@example.org', role: 'viewer' as const };
+	const result = await capture(createInvitation(store.deps, writer, input));
+	const state = 'throws-error-when-invitation-creation-is-forbidden';
+	recordExampleCases(evidence('createInvitation', state), [{ name: 'writer attempts to invite', input: { actor: writer, input }, ...result }]);
+	expect(result.error).toEqual({ code: 'forbidden', message: 'Collaboration forbidden' });
+});
+
+test('Throws Error when invitation cannot be accepted', async () => {
+	const store = recordsBranch();
+	const input = { projectId, invitationId, code: '4f8a2c1d9e7b3a605c4d8f2a1b6e9c073a5d1f8b2e4c6a901d3f5b7e8a2c4d6f' };
+	const result = await capture(acceptInvitation(store.deps, sam, input));
+	const state = 'throws-error-when-invitation-cannot-be-accepted';
+	recordExampleCases(evidence('acceptInvitation', state), [{ name: 'unknown invitation id is rejected', input, ...result }]);
+	expect(result.error).toEqual({ code: 'invalid-invitation', message: 'Collaboration invalid-invitation' });
+});
+
+test('Throws Error when invitation transaction conflicts repeatedly', async () => {
+	const store = recordsBranch([ownerMember], [], true);
+	const input = { projectId, email: 'sam@example.com', role: 'writer' as const };
+	const result = await capture(createInvitation(store.deps, owner, input));
+	const state = 'throws-error-when-invitation-transaction-conflicts-repeatedl';
+	recordExampleCases(evidence('createInvitation', state), [{ name: 'five compare-and-swap attempts fail', input, ...result }]);
+	expect(result.error).toEqual({ code: 'conflict', message: 'Collaboration conflict' });
 });

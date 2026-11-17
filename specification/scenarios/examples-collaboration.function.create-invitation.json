@@ -15,6 +15,26 @@
 			"id": "accepts-an-invitation-and-retains-an-existing-member-role",
 			"title": "accepts an invitation and retains an existing member role",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-invitation-input-is-invalid",
+			"title": "Throws Error when invitation input is invalid",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-invitation-creation-is-forbidden",
+			"title": "Throws Error when invitation creation is forbidden",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-invitation-cannot-be-accepted",
+			"title": "Throws Error when invitation cannot be accepted",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-invitation-transaction-conflicts-repeatedl",
+			"title": "Throws Error when invitation transaction conflicts repeatedly",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +54,11 @@
 			"kind": "output",
 			"states": [
 				"creates-a-hashed-one-day-invitation-for-an-owner",
-				"accepts-an-invitation-and-retains-an-existing-member-role"
+				"accepts-an-invitation-and-retains-an-existing-member-role",
+				"throws-error-when-invitation-input-is-invalid",
+				"throws-error-when-invitation-creation-is-forbidden",
+				"throws-error-when-invitation-cannot-be-accepted",
+				"throws-error-when-invitation-transaction-conflicts-repeatedl"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +68,11 @@
 			"kind": "assertions",
 			"states": [
 				"creates-a-hashed-one-day-invitation-for-an-owner",
-				"accepts-an-invitation-and-retains-an-existing-member-role"
+				"accepts-an-invitation-and-retains-an-existing-member-role",
+				"throws-error-when-invitation-input-is-invalid",
+				"throws-error-when-invitation-creation-is-forbidden",
+				"throws-error-when-invitation-cannot-be-accepted",
+				"throws-error-when-invitation-transaction-conflicts-repeatedl"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +82,11 @@
 			"kind": "trace",
 			"states": [
 				"creates-a-hashed-one-day-invitation-for-an-owner",
-				"accepts-an-invitation-and-retains-an-existing-member-role"
+				"accepts-an-invitation-and-retains-an-existing-member-role",
+				"throws-error-when-invitation-input-is-invalid",
+				"throws-error-when-invitation-creation-is-forbidden",
+				"throws-error-when-invitation-cannot-be-accepted",
+				"throws-error-when-invitation-transaction-conflicts-repeatedl"
 			],
 			"viewports": [],
 			"required": true
