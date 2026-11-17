@@ -49,3 +49,47 @@ test('Writes a replacement catalog database', async () => {
 		);
 	});
 });
+
+test('Throws TypeError when directory is not a string', async () => {
+	const directory = 42 as unknown as string;
+	let error: unknown;
+	try {
+		await new CatalogIndexService().write(directory, emptyIndex, []);
+	} catch (caught) {
+		error = caught;
+	}
+	expect(error).toBeInstanceOf(TypeError);
+	recordExampleCases(
+		{
+			unitId: 'service.catalog-index',
+			symbol: 'CatalogIndexService.write',
+			state: 'throws-typeerror-when-directory-is-not-a-string',
+			evidence: 'examples-cases',
+			file: 'throws-typeerror-when-directory-is-not-a-string.json'
+		},
+		[{ name: 'number directory is rejected by path.join', input: { directory, index: emptyIndex, snapshots: [] }, error: 'TypeError' }]
+	);
+});
+
+test('Throws Error when temporary directory cannot be created', async () => {
+	await withTempDir('catalog-index-missing-parent-', async (directory) => {
+		const missing = join(directory, 'missing');
+		let error: unknown;
+		try {
+			await new CatalogIndexService().write(missing, emptyIndex, []);
+		} catch (caught) {
+			error = caught;
+		}
+		expect(error).toBeInstanceOf(Error);
+		recordExampleCases(
+			{
+				unitId: 'service.catalog-index',
+				symbol: 'CatalogIndexService.write',
+				state: 'throws-error-when-temporary-directory-cannot-be-created',
+				evidence: 'examples-cases',
+				file: 'throws-error-when-temporary-directory-cannot-be-created.json'
+			},
+			[{ name: 'missing destination directory prevents temporary creation', input: { directory: '<missing-directory>', index: emptyIndex, snapshots: [] }, error: 'Error' }]
+		);
+	});
+});

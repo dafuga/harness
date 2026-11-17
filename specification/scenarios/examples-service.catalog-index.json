@@ -10,6 +10,16 @@
 			"id": "writes-a-replacement-catalog-database",
 			"title": "Writes a replacement catalog database",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-directory-is-not-a-string",
+			"title": "Throws TypeError when directory is not a string",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-temporary-directory-cannot-be-created",
+			"title": "Throws Error when temporary directory cannot be created",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +37,33 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["writes-a-replacement-catalog-database"],
+			"states": [
+				"writes-a-replacement-catalog-database",
+				"throws-typeerror-when-directory-is-not-a-string",
+				"throws-error-when-temporary-directory-cannot-be-created"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["writes-a-replacement-catalog-database"],
+			"states": [
+				"writes-a-replacement-catalog-database",
+				"throws-typeerror-when-directory-is-not-a-string",
+				"throws-error-when-temporary-directory-cannot-be-created"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["writes-a-replacement-catalog-database"],
+			"states": [
+				"writes-a-replacement-catalog-database",
+				"throws-typeerror-when-directory-is-not-a-string",
+				"throws-error-when-temporary-directory-cannot-be-created"
+			],
 			"viewports": [],
 			"required": true
 		}
