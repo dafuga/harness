@@ -1,0 +1,54 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-guide.units",
+	"title": "guide.units examples",
+	"kind": "headless",
+	"units": ["guide.units"],
+	"builds": [],
+	"states": [
+		{
+			"id": "finds-the-unit-topic-guide",
+			"title": "Finds the unit topic guide",
+			"coverage": "required"
+		},
+		{
+			"id": "returns-no-guide-for-an-unknown-topic",
+			"title": "Returns no guide for an unknown topic",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/guide.units.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["finds-the-unit-topic-guide", "returns-no-guide-for-an-unknown-topic"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["finds-the-unit-topic-guide", "returns-no-guide-for-an-unknown-topic"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["finds-the-unit-topic-guide", "returns-no-guide-for-an-unknown-topic"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
