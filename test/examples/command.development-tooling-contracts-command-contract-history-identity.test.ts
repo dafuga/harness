@@ -97,6 +97,37 @@ async function seedStableIdentityExample(repo: TemporaryRepo): Promise<void> {
 
 test('Tracks uid aliases and excludes reused ids', () => withTempRepo(trackIdentityAliasesExample));
 
+test('Throws Error when the committed snapshot read fails', () =>
+	withTempRepo(snapshotReadFailureExample));
+
+async function snapshotReadFailureExample(repo: TemporaryRepo): Promise<void> {
+	commitContract(repo, 'command.example-contract', 'u_examplecontract');
+	const reader = await createContractHistoryReader(repo.root);
+	const diagnostic = 'snapshot unavailable';
+	reader.read = async () => {
+		throw new Error(diagnostic);
+	};
+	await expect(currentContractIdentity(reader, 'command.example-contract')).rejects.toThrow(
+		diagnostic
+	);
+	recordExampleCases(
+		{
+			unitId,
+			symbol: 'currentContractIdentity',
+			state: 'throws-error-when-the-committed-snapshot-read-fails',
+			evidence: 'examples-cases',
+			file: 'throws-error-when-the-committed-snapshot-read-fails.json'
+		},
+		[
+			{
+				name: 'Propagates the committed snapshot diagnostic',
+				input: { unit: 'command.example-contract', failure: diagnostic },
+				error: { name: 'Error', message: diagnostic }
+			}
+		]
+	);
+}
+
 async function trackIdentityAliasesExample(repo: TemporaryRepo): Promise<void> {
 	const uid = 'u_selectedcontract';
 	commitContract(repo, 'command.new-contract-id', uid);

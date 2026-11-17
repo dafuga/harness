@@ -15,6 +15,11 @@
 			"id": "tracks-uid-aliases-and-excludes-reused-ids",
 			"title": "Tracks uid aliases and excludes reused ids",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-committed-snapshot-read-fails",
+			"title": "Throws Error when the committed snapshot read fails",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +39,8 @@
 			"kind": "output",
 			"states": [
 				"seeds-stable-identity-from-committed-head",
-				"tracks-uid-aliases-and-excludes-reused-ids"
+				"tracks-uid-aliases-and-excludes-reused-ids",
+				"throws-error-when-the-committed-snapshot-read-fails"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +50,8 @@
 			"kind": "assertions",
 			"states": [
 				"seeds-stable-identity-from-committed-head",
-				"tracks-uid-aliases-and-excludes-reused-ids"
+				"tracks-uid-aliases-and-excludes-reused-ids",
+				"throws-error-when-the-committed-snapshot-read-fails"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +61,8 @@
 			"kind": "trace",
 			"states": [
 				"seeds-stable-identity-from-committed-head",
-				"tracks-uid-aliases-and-excludes-reused-ids"
+				"tracks-uid-aliases-and-excludes-reused-ids",
+				"throws-error-when-the-committed-snapshot-read-fails"
 			],
 			"viewports": [],
 			"required": true
