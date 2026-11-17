@@ -42,13 +42,22 @@ test('Returns the current resource snapshot', async () => {
 test('Runs an admitted resource request and releases its lease', async () => {
 	await withTempDir('resource-queue-run-', async (home) => {
 		const service = new ResourceQueueService({ home, monitor: { sample: async () => sample() } });
-		const input = { priority: 'coding' as const, cpus: 2, memoryMiB: 4096, label: 'Unit test worker' };
+		const input = {
+			priority: 'coding' as const,
+			cpus: 2,
+			memoryMiB: 4096,
+			label: 'Unit test worker'
+		};
 		try {
-			const output = await service.run(input, async (context) => ({
-				status: 'done',
-				hasLease: context.env.HARNESS_RESOURCE_LEASE === context.id,
-				hasResourceHome: context.env.HARNESS_RESOURCES_HOME === home
-			}));
+			const output = await service.run(
+				input,
+				async (context) => ({
+					status: 'done',
+					hasLease: context.env.HARNESS_RESOURCE_LEASE === context.id,
+					hasResourceHome: context.env.HARNESS_RESOURCES_HOME === home
+				}),
+				{ env: {} }
+			);
 			expect(output).toEqual({ status: 'done', hasLease: true, hasResourceHome: true });
 			expect(service.queue.all()).toHaveLength(0);
 			recordExampleCases(
@@ -59,7 +68,13 @@ test('Runs an admitted resource request and releases its lease', async () => {
 					evidence: 'examples-cases',
 					file: 'runs-an-admitted-resource-request-and-releases-its-lease.json'
 				},
-				[{ name: 'runs the action under its resource context and removes its queue entry', input, output }]
+				[
+					{
+						name: 'runs the action under its resource context and removes its queue entry',
+						input,
+						output
+					}
+				]
 			);
 		} finally {
 			service.close();
