@@ -10,6 +10,11 @@
 			"id": "accepts-a-reachable-discussion-anchor",
 			"title": "Accepts a reachable discussion anchor",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-collaborationinputerror-when-anchor-input-is-invalid",
+			"title": "Throws CollaborationInputError when anchor input is invalid",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["accepts-a-reachable-discussion-anchor"],
+			"states": [
+				"accepts-a-reachable-discussion-anchor",
+				"throws-collaborationinputerror-when-anchor-input-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["accepts-a-reachable-discussion-anchor"],
+			"states": [
+				"accepts-a-reachable-discussion-anchor",
+				"throws-collaborationinputerror-when-anchor-input-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["accepts-a-reachable-discussion-anchor"],
+			"states": [
+				"accepts-a-reachable-discussion-anchor",
+				"throws-collaborationinputerror-when-anchor-input-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		}

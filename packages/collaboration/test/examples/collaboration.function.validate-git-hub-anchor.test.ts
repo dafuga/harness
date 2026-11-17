@@ -64,3 +64,51 @@ test('Accepts a reachable discussion anchor', async () => {
 		]
 	);
 });
+
+const errorState = 'throws-collaborationinputerror-when-anchor-input-is-invalid';
+
+test('Throws CollaborationInputError when anchor input is invalid', async () => {
+	const calls: string[] = [];
+	const deps = {
+		adapter: {
+			resolve: async () => {
+				calls.push('resolve');
+				return { commit };
+			},
+			tree: async () => [],
+			read: async () => new Uint8Array(),
+			validateAnchor: async () => undefined
+		},
+		client: { request: async () => ({}) }
+	} as unknown as Parameters<typeof validateGitHubAnchor>[0];
+	const input = {
+		branch: 'invalid branch name',
+		commit,
+		entityId: 'harness.project.discussion',
+		version: null,
+		imageSha256: null,
+		state: null,
+		viewport: null,
+		region: null
+	};
+	const error = { name: 'CollaborationInputError', code: 'invalid-input', message: 'Collaboration invalid-input' };
+
+	await expect(validateGitHubAnchor(deps, repository, input)).rejects.toMatchObject(error);
+	expect(calls).toEqual([]);
+	recordExampleCases(
+		{
+			unitId: 'collaboration.function.validate-git-hub-anchor',
+			symbol: 'validateGitHubAnchor',
+			state: errorState,
+			evidence: 'examples-cases',
+			file: `${errorState}.json`
+		},
+		[
+			{
+				name: 'reject malformed branch input before making source calls',
+				input: { repository, anchor: input },
+				error
+			}
+		]
+	);
+});
