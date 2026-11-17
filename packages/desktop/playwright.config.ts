@@ -6,13 +6,14 @@ const verifying = process.env.HARNESS_VERIFY === '1';
  * An ordinary run owns an isolated Vite fixture, outside the app-managed preview slot, and never takes
  * a server that is already there. HARNESS_DESKTOP_TEST_PORT names another free port.
  */
-function previewPort(): number {
-	const named = process.env.HARNESS_DESKTOP_TEST_PORT ?? '5796';
+function previewPort(fallback: string): number {
+	const named = process.env.HARNESS_DESKTOP_TEST_PORT ?? fallback;
 	const port = /^\d+$/.test(named) ? Number(named) : NaN;
 	if (port >= 1024 && port <= 65535) return port;
 	throw new Error(`HARNESS_DESKTOP_TEST_PORT must be a port from 1024 to 65535, not "${named}".`);
 }
-const port = verifying ? 5797 : previewPort();
+// Verify mode serves the built renderer on 5797 unless HARNESS_DESKTOP_TEST_PORT names another port.
+const port = previewPort(verifying ? '5797' : '5796');
 const url = `http://127.0.0.1:${port}`;
 // The Electron acceptances launch the built app themselves; only `test:native` names their project.
 const native = /[\\/](native-desktop|game-native)\.spec\.ts$/;

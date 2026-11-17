@@ -24,7 +24,7 @@ The normal Desktop browser run tests the web renderer in headless Chromium and l
 - A spec named by its file without a project, as `harness.verify.json` and the scenario targets name them, runs once, in the one project that matches it.
 - Outside a verification, `playwright.config.ts` starts the normal `dev` script on `127.0.0.1:5796` and does not reuse a server. Something already answering there ends the run before any test, with the port named.
 - `HARNESS_DESKTOP_TEST_PORT` names another port. A value that is not a whole port from 1024 to 65535 is refused by name; nothing falls back to a default.
-- Under `HARNESS_VERIFY=1` the configuration resolves to exactly what it did: the static server of the built renderer on `5797`, not reused. The override is not read there.
+- Under `HARNESS_VERIFY=1` the configuration resolves to exactly what it did: the static server of the built renderer on `5797`, not reused. `HARNESS_DESKTOP_TEST_PORT` is read there too, defaulting to `5797`.
 - `test/test-preview-refusal.test.ts` runs the real configuration against a server of its own: no browser reaches that server, and the run says why it stopped.
 - The entity view, its default section, the hosted tests, every product source and every spec and assertion of `tests/e2e` are unchanged; none is skipped.
 
