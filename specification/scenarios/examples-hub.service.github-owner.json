@@ -15,6 +15,11 @@
 			"id": "lists-repositories-administered-by-the-actor",
 			"title": "lists repositories administered by the actor",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-authfailure-when-authorization-is-denied",
+			"title": "throws AuthFailure when authorization is denied",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +39,8 @@
 			"kind": "output",
 			"states": [
 				"authorizes-an-administered-repository",
-				"lists-repositories-administered-by-the-actor"
+				"lists-repositories-administered-by-the-actor",
+				"throws-authfailure-when-authorization-is-denied"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +50,8 @@
 			"kind": "assertions",
 			"states": [
 				"authorizes-an-administered-repository",
-				"lists-repositories-administered-by-the-actor"
+				"lists-repositories-administered-by-the-actor",
+				"throws-authfailure-when-authorization-is-denied"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +61,8 @@
 			"kind": "trace",
 			"states": [
 				"authorizes-an-administered-repository",
-				"lists-repositories-administered-by-the-actor"
+				"lists-repositories-administered-by-the-actor",
+				"throws-authfailure-when-authorization-is-denied"
 			],
 			"viewports": [],
 			"required": true
