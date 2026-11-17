@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.component.shared-primitives-atoms-svg-fe-diffuse-lighting",
+	"title": "reports.component.shared-primitives-atoms-svg-fe-diffuse-lighting examples",
+	"kind": "headless",
+	"units": ["reports.component.shared-primitives-atoms-svg-fe-diffuse-lighting"],
+	"builds": [],
+	"states": [
+		{
+			"id": "renders-a-bare-fediffuselighting-with-its-attributes",
+			"title": "Renders a bare feDiffuseLighting with its attributes",
+			"coverage": "required"
+		},
+		{
+			"id": "renders-the-children-snippet-inside-the-fediffuselighting",
+			"title": "Renders the children snippet inside the feDiffuseLighting",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.component.shared-primitives-atoms-svg-fe-diffuse-lighting.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"renders-a-bare-fediffuselighting-with-its-attributes",
+				"renders-the-children-snippet-inside-the-fediffuselighting"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"renders-a-bare-fediffuselighting-with-its-attributes",
+				"renders-the-children-snippet-inside-the-fediffuselighting"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"renders-a-bare-fediffuselighting-with-its-attributes",
+				"renders-the-children-snippet-inside-the-fediffuselighting"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
