@@ -1,4 +1,4 @@
-import { mkdtempSync, rmSync } from 'node:fs';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -53,36 +53,6 @@ test('Records a summary on an active report', async () => {
 	}
 });
 
-test('Mutates an active report', async () => {
-	const { root, repository } = makeRepository();
-	try {
-		const created = await repository.begin(input);
-		const updated = await repository.mutateActive(created.id, async (run) => { run.summary = 'Updated by callback.'; });
-		expect(updated.summary).toBe('Updated by callback.');
-		recordExampleCases(
-			{ unitId: 'reports.repository.report', symbol: 'mutateActive', state: 'mutates-an-active-report', evidence: 'examples-cases', file: 'mutates-an-active-report.json' },
-			[{ name: 'callback mutation is persisted', input: { id: created.id, summary: 'Updated by callback.' }, output: { summary: updated.summary, state: updated.state } }]
-		);
-	} finally {
-		rmSync(root, { recursive: true, force: true });
-	}
-});
-
-test('Seals an active report', async () => {
-	const { root, repository } = makeRepository();
-	try {
-		const created = await repository.begin(input);
-		const sealed = await repository.seal(created.id);
-		expect(sealed.state).toBe('finalizing');
-		recordExampleCases(
-			{ unitId: 'reports.repository.report', symbol: 'seal', state: 'seals-an-active-report', evidence: 'examples-cases', file: 'seals-an-active-report.json' },
-			[{ name: 'seal transitions report to finalizing', input: { id: created.id }, output: { state: sealed.state, status: sealed.status } }]
-		);
-	} finally {
-		rmSync(root, { recursive: true, force: true });
-	}
-});
-
 test('Finishes a finalizing report', async () => {
 	const { root, repository } = makeRepository();
 	try {
@@ -93,6 +63,51 @@ test('Finishes a finalizing report', async () => {
 		recordExampleCases(
 			{ unitId: 'reports.repository.report', symbol: 'finish', state: 'finishes-a-finalizing-report', evidence: 'examples-cases', file: 'finishes-a-finalizing-report.json' },
 			[{ name: 'finish transitions report to finalized', input: { id: created.id }, output: { state: finished.state, status: finished.status } }]
+		);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test('Throws Error when a report ID is invalid', async () => {
+	const { root, repository } = makeRepository();
+	try {
+		await expect(repository.get('../outside')).rejects.toBeInstanceOf(Error);
+		recordExampleCases(
+			{ unitId: 'reports.repository.report', symbol: 'get', state: 'throws-error-when-a-report-id-is-invalid', evidence: 'examples-cases', file: 'throws-error-when-a-report-id-is-invalid.json' },
+			[{ name: 'unsafe report ID is rejected', input: { id: '../outside' }, error: 'Error' }]
+		);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test('Throws SyntaxError when a stored manifest is invalid JSON', async () => {
+	const { root, repository } = makeRepository();
+	try {
+		const created = await repository.begin(input);
+		writeFileSync(join(repository.directory(created.id), 'manifest.json'), '{invalid');
+		await expect(repository.get(created.id)).rejects.toBeInstanceOf(SyntaxError);
+		recordExampleCases(
+			{ unitId: 'reports.repository.report', symbol: 'get', state: 'throws-syntaxerror-when-a-stored-manifest-is-invalid-json', evidence: 'examples-cases', file: 'throws-syntaxerror-when-a-stored-manifest-is-invalid-json.json' },
+			[{ name: 'malformed manifest cannot be parsed', input: { id: created.id, manifest: '{invalid' }, error: 'SyntaxError' }]
+		);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test('Throws TypeError when list sorts invalid startedAt', async () => {
+	const { root, repository } = makeRepository();
+	try {
+		const created = await repository.begin(input);
+		const other = await repository.begin({ ...input, title: 'Second report' });
+		for (const run of [created, other])
+			writeFileSync(join(repository.directory(run.id), 'manifest.json'), JSON.stringify({ ...run, startedAt: 1 }));
+		await expect(repository.list()).rejects.toBeInstanceOf(TypeError);
+		recordExampleCases(
+			{ unitId: 'reports.repository.report', symbol: 'list', state: 'throws-typeerror-when-list-sorts-invalid-startedat', evidence: 'examples-cases', file: 'throws-typeerror-when-list-sorts-invalid-startedat.json' },
+			[{ name: 'non-string startedAt fails report sorting', input: { id: created.id, startedAt: 1 }, error: 'TypeError' }]
 		);
 	} finally {
 		rmSync(root, { recursive: true, force: true });

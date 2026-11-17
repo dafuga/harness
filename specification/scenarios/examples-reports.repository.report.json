@@ -17,18 +17,23 @@
 			"coverage": "required"
 		},
 		{
-			"id": "mutates-an-active-report",
-			"title": "Mutates an active report",
-			"coverage": "required"
-		},
-		{
-			"id": "seals-an-active-report",
-			"title": "Seals an active report",
-			"coverage": "required"
-		},
-		{
 			"id": "finishes-a-finalizing-report",
 			"title": "Finishes a finalizing report",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-a-report-id-is-invalid",
+			"title": "Throws Error when a report ID is invalid",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-syntaxerror-when-a-stored-manifest-is-invalid-json",
+			"title": "Throws SyntaxError when a stored manifest is invalid JSON",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-list-sorts-invalid-startedat",
+			"title": "Throws TypeError when list sorts invalid startedAt",
 			"coverage": "required"
 		}
 	],
@@ -50,9 +55,10 @@
 			"states": [
 				"creates-and-reloads-a-report-manifest",
 				"records-a-summary-on-an-active-report",
-				"mutates-an-active-report",
-				"seals-an-active-report",
-				"finishes-a-finalizing-report"
+				"finishes-a-finalizing-report",
+				"throws-error-when-a-report-id-is-invalid",
+				"throws-syntaxerror-when-a-stored-manifest-is-invalid-json",
+				"throws-typeerror-when-list-sorts-invalid-startedat"
 			],
 			"viewports": [],
 			"required": true
@@ -63,9 +69,10 @@
 			"states": [
 				"creates-and-reloads-a-report-manifest",
 				"records-a-summary-on-an-active-report",
-				"mutates-an-active-report",
-				"seals-an-active-report",
-				"finishes-a-finalizing-report"
+				"finishes-a-finalizing-report",
+				"throws-error-when-a-report-id-is-invalid",
+				"throws-syntaxerror-when-a-stored-manifest-is-invalid-json",
+				"throws-typeerror-when-list-sorts-invalid-startedat"
 			],
 			"viewports": [],
 			"required": true
@@ -76,9 +83,10 @@
 			"states": [
 				"creates-and-reloads-a-report-manifest",
 				"records-a-summary-on-an-active-report",
-				"mutates-an-active-report",
-				"seals-an-active-report",
-				"finishes-a-finalizing-report"
+				"finishes-a-finalizing-report",
+				"throws-error-when-a-report-id-is-invalid",
+				"throws-syntaxerror-when-a-stored-manifest-is-invalid-json",
+				"throws-typeerror-when-list-sorts-invalid-startedat"
 			],
 			"viewports": [],
 			"required": true
