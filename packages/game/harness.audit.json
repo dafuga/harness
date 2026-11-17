@@ -9,7 +9,12 @@
 		"maxComplexity": 10,
 		"maxClassesPerFile": 1
 	},
-	"ignore": [],
+	"ignore": [
+		{
+			"path": "test/examples/",
+			"reason": "Phase 4 recorded contract example tests; their layout is set by the example recorder, not the game library scaffold."
+		}
+	],
 	"cleanCode": {
 		"mode": "off",
 		"model": "jev-1.13.0",
