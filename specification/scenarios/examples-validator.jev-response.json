@@ -10,6 +10,11 @@
 			"id": "validates-jev-choices-and-usage",
 			"title": "Validates Jev choices and usage",
 			"coverage": "required"
+		},
+		{
+			"id": "rejects-invalid-jev-responses-and-values",
+			"title": "Rejects invalid Jev responses and values",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,21 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["validates-jev-choices-and-usage"],
+			"states": ["validates-jev-choices-and-usage", "rejects-invalid-jev-responses-and-values"],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["validates-jev-choices-and-usage"],
+			"states": ["validates-jev-choices-and-usage", "rejects-invalid-jev-responses-and-values"],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["validates-jev-choices-and-usage"],
+			"states": ["validates-jev-choices-and-usage", "rejects-invalid-jev-responses-and-values"],
 			"viewports": [],
 			"required": true
 		}

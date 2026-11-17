@@ -2,6 +2,8 @@ import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { JevResponseValidator } from '../../src/validators/agents-providers/JevResponseValidator';
+import { InvalidJevResponseError } from '../../src/validators/agents-providers/JevResponseValidator.types';
+import { InvalidJevValueError } from '../../src/validators/development-tooling/cleanCodeValue.types';
 
 const questions = {
 	tone: {
@@ -60,5 +62,34 @@ test('Validates Jev choices and usage', () => {
 			file: 'validates-jev-choices-and-usage.json'
 		},
 		cases
+	);
+});
+
+test('Rejects invalid Jev responses and values', () => {
+	const validator = new JevResponseValidator();
+	const cases = [
+		{ name: 'Invalid Jev model', input: { ...responses[0], model: 'bad-model' }, error: InvalidJevResponseError },
+		{ name: 'Missing Jev answers', input: { ...responses[0], answers: { tone: responses[0].answers.tone } }, error: InvalidJevResponseError },
+		{ name: 'Invalid Jev choice', input: { ...responses[0], answers: { ...responses[0].answers, tone: { ...responses[0].answers.tone, choice: 'other' } } }, error: InvalidJevResponseError },
+		{ name: 'Invalid Jev options', input: { ...responses[0], answers: { ...responses[0].answers, tone: { ...responses[0].answers.tone, probabilities: { formal: 1 } } } }, error: InvalidJevResponseError },
+		{ name: 'Invalid Jev distribution', input: { ...responses[0], answers: { ...responses[0].answers, tone: { ...responses[0].answers.tone, probabilities: { formal: 0.5, casual: 0.2 } } } }, error: InvalidJevResponseError },
+		{ name: 'Inconsistent Jev choice', input: { ...responses[0], answers: { ...responses[0].answers, tone: { ...responses[0].answers.tone, probabilities: { formal: 0.2, casual: 0.8 } } } }, error: InvalidJevResponseError },
+		{ name: 'Invalid Jev response', input: { ...responses[0], answers: null }, error: InvalidJevValueError },
+		{ name: 'Invalid Jev probability', input: { ...responses[0], answers: { ...responses[0].answers, tone: { ...responses[0].answers.tone, confidence: 2 } } }, error: InvalidJevValueError },
+		{ name: 'Invalid Jev usage', input: { ...responses[0], usage: { input_tokens: -1, output_tokens: 48 } }, error: InvalidJevValueError }
+	];
+	const recorded = cases.map(({ name, input, error }) => {
+		expect(() => validator.validate(input, questions)).toThrow(error);
+		return { name, input, error: error.name };
+	});
+	recordExampleCases(
+		{
+			unitId: 'validator.jev-response',
+			symbol: 'JevResponseValidator.validate',
+			state: 'rejects-invalid-jev-responses-and-values',
+			evidence: 'examples-cases',
+			file: 'rejects-invalid-jev-responses-and-values.json'
+		},
+		recorded
 	);
 });
