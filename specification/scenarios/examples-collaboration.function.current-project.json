@@ -20,6 +20,16 @@
 			"id": "retries-record-changes-against-the-current-revision",
 			"title": "Retries record changes against the current revision",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-repository-records-fail-validation",
+			"title": "Throws Error when repository records fail validation",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-after-five-unsuccessful-compare-and-swap-writes",
+			"title": "Throws Error after five unsuccessful compare-and-swap writes",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +50,9 @@
 			"states": [
 				"reads-and-validates-a-repository-snapshot",
 				"resolves-project-membership-and-enforces-allowed-roles",
-				"retries-record-changes-against-the-current-revision"
+				"retries-record-changes-against-the-current-revision",
+				"throws-error-when-repository-records-fail-validation",
+				"throws-error-after-five-unsuccessful-compare-and-swap-writes"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +63,9 @@
 			"states": [
 				"reads-and-validates-a-repository-snapshot",
 				"resolves-project-membership-and-enforces-allowed-roles",
-				"retries-record-changes-against-the-current-revision"
+				"retries-record-changes-against-the-current-revision",
+				"throws-error-when-repository-records-fail-validation",
+				"throws-error-after-five-unsuccessful-compare-and-swap-writes"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +76,9 @@
 			"states": [
 				"reads-and-validates-a-repository-snapshot",
 				"resolves-project-membership-and-enforces-allowed-roles",
-				"retries-record-changes-against-the-current-revision"
+				"retries-record-changes-against-the-current-revision",
+				"throws-error-when-repository-records-fail-validation",
+				"throws-error-after-five-unsuccessful-compare-and-swap-writes"
 			],
 			"viewports": [],
 			"required": true

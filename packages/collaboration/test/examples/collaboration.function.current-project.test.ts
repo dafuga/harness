@@ -1,15 +1,9 @@
 import { test } from 'vitest';
 import { readRecords } from '../../src/utils/projects-sessions/create-collaboration/readRecords';
 import { currentProject, transaction } from '../../src/utils/projects-sessions/currentProject';
-import type {
-	Actor,
-	CollaborationDependencies,
-	CollaborationRecords,
-	CollaborationRepository
-} from '../../src/models/planning-collaboration/Collaboration.types';
+import type { Actor, CollaborationDependencies, CollaborationRecords, CollaborationRepository } from '../../src/models/planning-collaboration/Collaboration.types';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
-
 const projectId = '7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6';
 const owner: Actor = {
 	id: 'google-110418263957201846395',
@@ -23,23 +17,11 @@ const writer: Actor = {
 	name: 'Jonas Reyes',
 	emailVerified: true
 };
-const sourceRepository = {
-	id: 612088341,
-	owner: 'acme-design',
-	name: 'design-system',
-	private: true,
-	installationId: 48213907
-};
+const sourceRepository = { id: 612088341, owner: 'acme-design', name: 'design-system', private: true, installationId: 48213907 };
 const records: CollaborationRecords = {
 	schemaVersion: 1,
 	projects: [
-		{
-			id: projectId,
-			name: 'Design system audit',
-			sourceRepository,
-			createdAt: '2026-09-08T16:42:10.000Z',
-			ownerId: owner.id
-		}
+		{ id: projectId, name: 'Design system audit', sourceRepository, createdAt: '2026-09-08T16:42:10.000Z', ownerId: owner.id }
 	],
 	members: [
 		{ projectId, actorId: owner.id, email: owner.email, name: owner.name, role: 'owner' },
@@ -48,23 +30,12 @@ const records: CollaborationRecords = {
 	invitations: [],
 	threads: []
 };
-
-function summarizeRecords(value: CollaborationRecords) {
-	return { project: value.projects[0]?.name, roles: value.members.map((member) => member.role) };
-}
-function summarizeProject(value: ReturnType<typeof currentProject>) {
-	return { id: value.id, name: value.name, ownerId: value.ownerId, role: value.role };
-}
-
+function summarizeRecords(value: CollaborationRecords) { return { project: value.projects[0]?.name, roles: value.members.map((member) => member.role) }; }
+function summarizeProject(value: ReturnType<typeof currentProject>) { return { id: value.id, name: value.name, ownerId: value.ownerId, role: value.role }; }
 function dependencies(repository: CollaborationRepository): CollaborationDependencies {
 	return { repository } as CollaborationDependencies;
 }
-
-function errorSummary(error: unknown) {
-	if (!(error instanceof Error) || !('code' in error)) throw error;
-	return { name: error.name, message: error.message, code: String(error.code) };
-}
-
+function errorSummary(error: unknown) { if (!(error instanceof Error) || !('code' in error)) throw error; return { name: error.name, message: error.message, code: String(error.code) }; }
 async function retryTransaction() {
 	const latestRecords: CollaborationRecords = {
 		...records,
@@ -73,19 +44,13 @@ async function retryTransaction() {
 			name: 'Design system audit (remote rename)'
 		}))
 	};
-	const snapshots = [
-		{ revision: '1'.repeat(40), records },
-		{ revision: '2'.repeat(40), records: latestRecords }
-	];
+	const snapshots = [{ revision: '1'.repeat(40), records }, { revision: '2'.repeat(40), records: latestRecords }];
 	const writes: Array<{ expected: string; projectName: string }> = [];
 	let reads = 0;
 	let attempts = 0;
 	const repository: CollaborationRepository = {
 		read: async () => snapshots[reads++] ?? snapshots[1]!,
-		compareAndSwap: async (expected, next) => {
-			writes.push({ expected, projectName: next.projects[0]?.name ?? '' });
-			return writes.length === 1 ? null : '3'.repeat(40);
-		}
+		compareAndSwap: async (expected, next) => { writes.push({ expected, projectName: next.projects[0]?.name ?? '' }); return writes.length === 1 ? null : '3'.repeat(40); }
 	};
 	const result = await transaction(dependencies(repository), async (current) => {
 		attempts++;
@@ -95,14 +60,10 @@ async function retryTransaction() {
 		return project.name;
 	});
 	return {
-		snapshots: snapshots.map(({ revision, records: value }) => ({
-			revision,
-			records: summarizeRecords(value)
-		})),
+		snapshots: snapshots.map(({ revision, records: value }) => ({ revision, records: summarizeRecords(value) })),
 		output: { value: result.value, revision: result.revision, attempts, reads, writes }
 	};
 }
-
 test('Reads and validates a repository snapshot', async () => {
 	const snapshot = { revision: '4'.repeat(40), records };
 	const repository: CollaborationRepository = {
@@ -129,7 +90,6 @@ test('Reads and validates a repository snapshot', async () => {
 	);
 	expect(output).toEqual(summarizeRecords(records));
 });
-
 test('Resolves project membership and enforces allowed roles', () => {
 	const ownerProject = currentProject(records, owner, projectId);
 	const writerProject = currentProject(records, writer, projectId, ['owner', 'writer']);
@@ -181,7 +141,6 @@ test('Resolves project membership and enforces allowed roles', () => {
 		code: 'forbidden'
 	});
 });
-
 test('Retries record changes against the current revision', async () => {
 	const { snapshots, output } = await retryTransaction();
 	recordExampleCases(
@@ -210,4 +169,39 @@ test('Retries record changes against the current revision', async () => {
 			{ expected: '2'.repeat(40), projectName: 'Design system audit (remote rename) — reviewed' }
 		]
 	});
+});
+test('Throws Error when repository records fail validation', async () => {
+	const repository: CollaborationRepository = {
+		read: async () => ({ revision: '4'.repeat(40), records: {} as CollaborationRecords }),
+		compareAndSwap: async () => null
+	};
+	let failure: ReturnType<typeof errorSummary> | undefined;
+	try {
+		await readRecords(dependencies(repository));
+	} catch (error) {
+		failure = errorSummary(error);
+	}
+	expect(failure?.code).toBe('invalid-input');
+	recordExampleCases({ unitId: 'collaboration.function.current-project', symbol: 'readRecords', state: 'throws-error-when-repository-records-fail-validation', evidence: 'examples-cases', file: 'throws-error-when-repository-records-fail-validation.json' }, [
+		{ name: 'rejects a repository snapshot with missing record collections', input: { revision: '4'.repeat(40), records: {} }, error: failure }
+	]);
+});
+test('Throws Error after five unsuccessful compare-and-swap writes', async () => {
+	const repository: CollaborationRepository = {
+		read: async () => ({ revision: '5'.repeat(40), records }),
+		compareAndSwap: async () => null
+	};
+	let failure: ReturnType<typeof errorSummary> | undefined;
+	try {
+		await transaction(dependencies(repository), async (current) => {
+			current.projects[0]!.name += ' reviewed';
+			return current.projects[0]!.name;
+		});
+	} catch (error) {
+		failure = errorSummary(error);
+	}
+	expect(failure?.code).toBe('conflict');
+	recordExampleCases({ unitId: 'collaboration.function.current-project', symbol: 'transaction', state: 'throws-error-after-five-unsuccessful-compare-and-swap-writes', evidence: 'examples-cases', file: 'throws-error-after-five-unsuccessful-compare-and-swap-writes.json' }, [
+		{ name: 'reports conflict after every write loses the revision race', input: { revision: '5'.repeat(40), writeAttempts: 5 }, error: failure }
+	]);
 });
