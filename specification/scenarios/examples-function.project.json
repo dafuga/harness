@@ -15,6 +15,11 @@
 			"id": "game-dimension-accepts-only-supported-declarations",
 			"title": "Game dimension accepts only supported declarations",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-check-script-includes-is-not-callable",
+			"title": "Throws TypeError when check script includes is not callable",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +39,8 @@
 			"kind": "output",
 			"states": [
 				"project-kind-detection-follows-manifest-and-file-evidence",
-				"game-dimension-accepts-only-supported-declarations"
+				"game-dimension-accepts-only-supported-declarations",
+				"throws-typeerror-when-check-script-includes-is-not-callable"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +50,8 @@
 			"kind": "assertions",
 			"states": [
 				"project-kind-detection-follows-manifest-and-file-evidence",
-				"game-dimension-accepts-only-supported-declarations"
+				"game-dimension-accepts-only-supported-declarations",
+				"throws-typeerror-when-check-script-includes-is-not-callable"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +61,8 @@
 			"kind": "trace",
 			"states": [
 				"project-kind-detection-follows-manifest-and-file-evidence",
-				"game-dimension-accepts-only-supported-declarations"
+				"game-dimension-accepts-only-supported-declarations",
+				"throws-typeerror-when-check-script-includes-is-not-callable"
 			],
 			"viewports": [],
 			"required": true

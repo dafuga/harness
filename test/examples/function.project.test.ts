@@ -73,3 +73,25 @@ test('Game dimension accepts only supported declarations', async () => {
 		cases
 	);
 });
+
+test('Throws TypeError when check script includes is not callable', async () => {
+	const cases = await withTempDir('project-kind-type-error-', async (root) => {
+		await makeProject(root, '{"scripts":{"check":42}}');
+		let error: unknown;
+		try {
+			await detectProjectKind(root);
+		} catch (caught) {
+			error = caught;
+		}
+		expect(error).toBeInstanceOf(TypeError);
+		return [{
+			name: 'truthy check script without callable includes rejects',
+			input: { manifest: '{"scripts":{"check":42}}' },
+			error: { name: error instanceof Error ? error.name : 'unknown' }
+		}];
+	});
+	recordExampleCases(
+		{ unitId: 'function.project', symbol: 'detectProjectKind', state: 'throws-typeerror-when-check-script-includes-is-not-callable', evidence: 'examples-cases', file: 'throws-typeerror-when-check-script-includes-is-not-callable.json' },
+		cases
+	);
+});
