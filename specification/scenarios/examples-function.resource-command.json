@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.resource-command",
+	"title": "function.resource-command examples",
+	"kind": "headless",
+	"units": ["function.resource-command"],
+	"builds": [],
+	"states": [
+		{
+			"id": "runs-a-managed-command-and-resolves-its-exit-status",
+			"title": "Runs a managed command and resolves its exit status",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-empty-commands-and-invalid-timeouts-before-starting",
+			"title": "Rejects empty commands and invalid timeouts before starting",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-an-already-aborted-signal-before-starting",
+			"title": "Rejects an already aborted signal before starting",
+			"coverage": "required"
+		},
+		{
+			"id": "resolves-1-when-tracking-the-spawned-process-throws",
+			"title": "Resolves 1 when tracking the spawned process throws",
+			"coverage": "required"
+		},
+		{
+			"id": "stops-a-command-that-outlives-its-timeout",
+			"title": "Stops a command that outlives its timeout",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.resource-command.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"runs-a-managed-command-and-resolves-its-exit-status",
+				"rejects-empty-commands-and-invalid-timeouts-before-starting",
+				"rejects-an-already-aborted-signal-before-starting",
+				"resolves-1-when-tracking-the-spawned-process-throws",
+				"stops-a-command-that-outlives-its-timeout"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"runs-a-managed-command-and-resolves-its-exit-status",
+				"rejects-empty-commands-and-invalid-timeouts-before-starting",
+				"rejects-an-already-aborted-signal-before-starting",
+				"resolves-1-when-tracking-the-spawned-process-throws",
+				"stops-a-command-that-outlives-its-timeout"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"runs-a-managed-command-and-resolves-its-exit-status",
+				"rejects-empty-commands-and-invalid-timeouts-before-starting",
+				"rejects-an-already-aborted-signal-before-starting",
+				"resolves-1-when-tracking-the-spawned-process-throws",
+				"stops-a-command-that-outlives-its-timeout"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
