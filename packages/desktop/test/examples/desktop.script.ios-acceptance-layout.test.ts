@@ -44,3 +44,36 @@ test('checks the scrolled status bar layout', async () => {
 		[{ name: 'scrolled narrow status bar', input: { inset: 47, scroll: 620, beneath: 2, facts: 4 }, output: { checks: example.recorded } }]
 	);
 });
+
+test('throws TypeError when the run is missing', async () => {
+	await expect(topLayout(null as unknown as Parameters<typeof topLayout>[0])).rejects.toThrow(TypeError);
+	recordExampleCases(
+		{ unitId: 'desktop.script.ios-acceptance-layout', symbol: 'topLayout', state: 'throws-typeerror-when-the-run-is-missing', evidence: 'examples-cases', file: 'throws-typeerror-when-the-run-is-missing.json' },
+		[{ name: 'missing acceptance run', input: { run: null }, error: { name: 'TypeError' } }]
+	);
+});
+
+test('throws SyntaxError when page measurement is not JSON', async () => {
+	const run = {
+		page: { evaluate: async (script: string) => script.includes('scrollTo(0, 0)') ? 'ok' : 'not json' },
+		record: { check: () => undefined }
+	} as unknown as Parameters<typeof topLayout>[0];
+	await expect(topLayout(run)).rejects.toThrow(SyntaxError);
+	recordExampleCases(
+		{ unitId: 'desktop.script.ios-acceptance-layout', symbol: 'topLayout', state: 'throws-syntaxerror-when-page-measurement-is-not-json', evidence: 'examples-cases', file: 'throws-syntaxerror-when-page-measurement-is-not-json.json' },
+		[{ name: 'invalid measured JSON', input: { evaluation: 'not json' }, error: { name: 'SyntaxError' } }]
+	);
+});
+
+test('throws Error when page evaluation rejects', async () => {
+	const failure = new Error('page evaluation failed');
+	const run = {
+		page: { evaluate: async () => { throw failure; } },
+		record: { check: () => undefined }
+	} as unknown as Parameters<typeof topLayout>[0];
+	await expect(topLayout(run)).rejects.toThrow(failure);
+	recordExampleCases(
+		{ unitId: 'desktop.script.ios-acceptance-layout', symbol: 'topLayout', state: 'throws-error-when-page-evaluation-rejects', evidence: 'examples-cases', file: 'throws-error-when-page-evaluation-rejects.json' },
+		[{ name: 'evaluation rejection', input: { evaluation: 'rejects' }, error: { name: 'Error', message: failure.message } }]
+	);
+});

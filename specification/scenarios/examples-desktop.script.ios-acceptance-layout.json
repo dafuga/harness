@@ -15,6 +15,21 @@
 			"id": "checks-the-scrolled-status-bar-layout",
 			"title": "checks the scrolled status bar layout",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-the-run-is-missing",
+			"title": "throws TypeError when the run is missing",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-syntaxerror-when-page-measurement-is-not-json",
+			"title": "throws SyntaxError when page measurement is not JSON",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-page-evaluation-rejects",
+			"title": "throws Error when page evaluation rejects",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +49,10 @@
 			"kind": "output",
 			"states": [
 				"measures-the-connected-page-at-the-top-safe-area",
-				"checks-the-scrolled-status-bar-layout"
+				"checks-the-scrolled-status-bar-layout",
+				"throws-typeerror-when-the-run-is-missing",
+				"throws-syntaxerror-when-page-measurement-is-not-json",
+				"throws-error-when-page-evaluation-rejects"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +62,10 @@
 			"kind": "assertions",
 			"states": [
 				"measures-the-connected-page-at-the-top-safe-area",
-				"checks-the-scrolled-status-bar-layout"
+				"checks-the-scrolled-status-bar-layout",
+				"throws-typeerror-when-the-run-is-missing",
+				"throws-syntaxerror-when-page-measurement-is-not-json",
+				"throws-error-when-page-evaluation-rejects"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +75,10 @@
 			"kind": "trace",
 			"states": [
 				"measures-the-connected-page-at-the-top-safe-area",
-				"checks-the-scrolled-status-bar-layout"
+				"checks-the-scrolled-status-bar-layout",
+				"throws-typeerror-when-the-run-is-missing",
+				"throws-syntaxerror-when-page-measurement-is-not-json",
+				"throws-error-when-page-evaluation-rejects"
 			],
 			"viewports": [],
 			"required": true
