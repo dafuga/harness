@@ -20,6 +20,11 @@
 			"id": "scenario-manifests-require-state-coverage-and-a-test",
 			"title": "Scenario manifests require state coverage and a test",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-zoderror-when-contract-items-contain-undeclared-keys",
+			"title": "Throws ZodError when contract items contain undeclared keys",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +45,8 @@
 			"states": [
 				"contract-items-and-source-facts-validate-strictly",
 				"dependency-and-runtime-schemas-enforce-their-declared-vocab",
-				"scenario-manifests-require-state-coverage-and-a-test"
+				"scenario-manifests-require-state-coverage-and-a-test",
+				"throws-zoderror-when-contract-items-contain-undeclared-keys"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +57,8 @@
 			"states": [
 				"contract-items-and-source-facts-validate-strictly",
 				"dependency-and-runtime-schemas-enforce-their-declared-vocab",
-				"scenario-manifests-require-state-coverage-and-a-test"
+				"scenario-manifests-require-state-coverage-and-a-test",
+				"throws-zoderror-when-contract-items-contain-undeclared-keys"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +69,8 @@
 			"states": [
 				"contract-items-and-source-facts-validate-strictly",
 				"dependency-and-runtime-schemas-enforce-their-declared-vocab",
-				"scenario-manifests-require-state-coverage-and-a-test"
+				"scenario-manifests-require-state-coverage-and-a-test",
+				"throws-zoderror-when-contract-items-contain-undeclared-keys"
 			],
 			"viewports": [],
 			"required": true

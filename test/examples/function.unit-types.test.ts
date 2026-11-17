@@ -74,3 +74,17 @@ test('Scenario manifests require state coverage and a test', () => {
 		{ name: 'scenario without states or tests is rejected', input: { states: [], tests: [] }, output: { missingStateAccepted: missingState, missingTestAccepted: missingTest } }
 	]);
 });
+
+test('Throws ZodError when contract items contain undeclared keys', () => {
+	const invalidItem = { ...item, extra: true };
+	let errorName = '';
+	try {
+		contractItemSchema.parse(invalidItem);
+	} catch (error) {
+		errorName = error instanceof Error ? error.name : 'unknown';
+	}
+	expect(errorName).toBe('ZodError');
+	recordExampleCases({ unitId: 'function.unit-types', symbol: 'contractItemSchema', state: 'throws-zoderror-when-contract-items-contain-undeclared-keys', evidence: 'examples-cases', file: 'throws-zoderror-when-contract-items-contain-undeclared-keys.json' }, [
+		{ name: 'strict contract item rejects an undeclared key', input: invalidItem, error: { name: errorName } }
+	]);
+});
