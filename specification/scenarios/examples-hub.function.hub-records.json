@@ -10,6 +10,11 @@
 			"id": "returns-no-manifests-when-no-unit-entries-are-listed",
 			"title": "Returns no manifests when no unit entries are listed",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-hubfail-when-a-unit-manifest-fails-schema-parsing",
+			"title": "Throws hubFail when a unit manifest fails schema parsing",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["returns-no-manifests-when-no-unit-entries-are-listed"],
+			"states": [
+				"returns-no-manifests-when-no-unit-entries-are-listed",
+				"throws-hubfail-when-a-unit-manifest-fails-schema-parsing"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["returns-no-manifests-when-no-unit-entries-are-listed"],
+			"states": [
+				"returns-no-manifests-when-no-unit-entries-are-listed",
+				"throws-hubfail-when-a-unit-manifest-fails-schema-parsing"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["returns-no-manifests-when-no-unit-entries-are-listed"],
+			"states": [
+				"returns-no-manifests-when-no-unit-entries-are-listed",
+				"throws-hubfail-when-a-unit-manifest-fails-schema-parsing"
+			],
 			"viewports": [],
 			"required": true
 		}
