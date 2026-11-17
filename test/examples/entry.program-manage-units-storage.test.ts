@@ -47,3 +47,28 @@ test('Reports unit and budget storage totals', async () => {
 		);
 	});
 });
+
+test('Throws Error when ledger stream fails', async () => {
+	await withTempDir('manage-units-storage-error-', async (root) => {
+		const ledger = join(root, 'specification', 'budgets', 'ledger.ndjson');
+		mkdirSync(ledger, { recursive: true });
+		const report = specificationStorageReport(root);
+		await expect(report).rejects.toThrow();
+		recordExampleCases(
+			{
+				unitId: 'entry.program-manage-units-storage',
+				symbol: 'specificationStorageReport',
+				state: 'throws-error-when-ledger-stream-fails',
+				evidence: 'examples-cases',
+				file: 'throws-error-when-ledger-stream-fails.json'
+			},
+			[
+				{
+					name: 'rejects when ledger is a directory',
+					input: { root: '/workspace/project' },
+					error: 'Error: ledger stream failed for directory ledger.ndjson'
+				}
+			]
+		);
+	});
+});

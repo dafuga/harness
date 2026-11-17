@@ -10,6 +10,11 @@
 			"id": "reports-unit-and-budget-storage-totals",
 			"title": "Reports unit and budget storage totals",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-ledger-stream-fails",
+			"title": "Throws Error when ledger stream fails",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,21 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["reports-unit-and-budget-storage-totals"],
+			"states": ["reports-unit-and-budget-storage-totals", "throws-error-when-ledger-stream-fails"],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["reports-unit-and-budget-storage-totals"],
+			"states": ["reports-unit-and-budget-storage-totals", "throws-error-when-ledger-stream-fails"],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["reports-unit-and-budget-storage-totals"],
+			"states": ["reports-unit-and-budget-storage-totals", "throws-error-when-ledger-stream-fails"],
 			"viewports": [],
 			"required": true
 		}
