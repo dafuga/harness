@@ -4,7 +4,7 @@ import { catalogViewports } from '../support/component-previews/catalogUnits';
 import { openPreview, readyPreview } from '../support/component-previews/previewPage';
 
 const states = [{ id: 'default', variant: '' }];
-const host = 'reports.page.harness-branch-branch-at-styles';
+const host = 'reports.component.evidence-card';
 let home = '';
 
 test.beforeAll(() => {
@@ -19,9 +19,13 @@ for (const viewport of catalogViewports) {
 			await page.setViewportSize({ width: viewport.width, height: viewport.height });
 			await openPreview(page, home, host, state.variant);
 			const preview = await readyPreview(page, host, state.variant);
-			const panel = preview.locator('.panel').first();
-			await expect(panel).toBeVisible();
-			await expect(panel).toHaveCSS('border-radius', '24px');
+			const badge = preview.locator('.badge').first();
+			await expect(badge).toBeVisible();
+			await expect(badge).toHaveCSS('border-top-left-radius', '999px');
+			await expect(badge).toHaveCSS('border-top-width', '1px');
+			await expect(badge).toHaveCSS('font-size', '11px');
+			await expect(badge).toHaveCSS('font-weight', '600');
+			await expect(badge).toHaveCSS('white-space', 'nowrap');
 			await captureShell(page, home, { state: state.id, viewport: viewport.id });
 		});
 	}
