@@ -15,6 +15,26 @@
 			"id": "keeps-the-document-in-memory-when-no-file-is-set",
 			"title": "Keeps the document in memory when no file is set",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-datacloneerror-when-memory-change-adds-a-function",
+			"title": "Throws DataCloneError when memory change adds a function",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-errnoexception-when-the-document-path-is-a-folder",
+			"title": "Throws ErrnoException when the document path is a folder",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-syntaxerror-when-the-document-file-is-not-json",
+			"title": "Throws SyntaxError when the document file is not JSON",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-the-document-is-circular",
+			"title": "Throws TypeError when the document is circular",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +54,11 @@
 			"kind": "output",
 			"states": [
 				"reads-and-updates-a-document-file-under-a-new-folder",
-				"keeps-the-document-in-memory-when-no-file-is-set"
+				"keeps-the-document-in-memory-when-no-file-is-set",
+				"throws-datacloneerror-when-memory-change-adds-a-function",
+				"throws-errnoexception-when-the-document-path-is-a-folder",
+				"throws-syntaxerror-when-the-document-file-is-not-json",
+				"throws-typeerror-when-the-document-is-circular"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +68,11 @@
 			"kind": "assertions",
 			"states": [
 				"reads-and-updates-a-document-file-under-a-new-folder",
-				"keeps-the-document-in-memory-when-no-file-is-set"
+				"keeps-the-document-in-memory-when-no-file-is-set",
+				"throws-datacloneerror-when-memory-change-adds-a-function",
+				"throws-errnoexception-when-the-document-path-is-a-folder",
+				"throws-syntaxerror-when-the-document-file-is-not-json",
+				"throws-typeerror-when-the-document-is-circular"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +82,11 @@
 			"kind": "trace",
 			"states": [
 				"reads-and-updates-a-document-file-under-a-new-folder",
-				"keeps-the-document-in-memory-when-no-file-is-set"
+				"keeps-the-document-in-memory-when-no-file-is-set",
+				"throws-datacloneerror-when-memory-change-adds-a-function",
+				"throws-errnoexception-when-the-document-path-is-a-folder",
+				"throws-syntaxerror-when-the-document-file-is-not-json",
+				"throws-typeerror-when-the-document-is-circular"
 			],
 			"viewports": [],
 			"required": true

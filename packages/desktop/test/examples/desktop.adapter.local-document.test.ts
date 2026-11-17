@@ -1,5 +1,5 @@
 import { afterEach, test } from 'vitest';
-import { mkdtempSync, rmSync } from 'node:fs';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect } from '../../../../test/verificationExpect';
@@ -37,6 +37,23 @@ function summarizeFailure(
 
 function newDocumentAdapter(file: string | undefined) {
 	return new LocalDocumentAdapter<Document>(file, () => ({ items: [] }));
+}
+
+function failureOf(promise: Promise<unknown>): Promise<{ name: string; code: unknown } | null> {
+	return promise.then(
+		() => null,
+		(error: { name?: unknown; code?: unknown }) => ({
+			name: String(error.name),
+			code: error.code ?? null
+		})
+	);
+}
+
+function recordCases(symbol: string, state: string, cases: Parameters<typeof recordExampleCases>[1]) {
+	recordExampleCases(
+		{ unitId: 'desktop.adapter.local-document', symbol, state, evidence: 'examples-cases', file: `${state}.json` },
+		cases
+	);
 }
 
 test('Reads and updates a document file under a new folder', async () => {
@@ -128,4 +145,57 @@ test('Keeps the document in memory when no file is set', async () => {
 			}
 		]
 	);
+});
+
+test('Throws DataCloneError when memory change adds a function', async () => {
+	const adapter = newDocumentAdapter(undefined);
+	const failure = await failureOf(
+		adapter.update((document) => {
+			(document as Record<string, unknown>).hook = () => undefined;
+			return 'never';
+		})
+	);
+	const after = await adapter.read();
+	expect(failure?.name).toBe('DataCloneError');
+	expect(after).toEqual({ items: [] });
+	recordCases('update', 'throws-datacloneerror-when-memory-change-adds-a-function', [
+		{ name: 'Change adds a function to the memory copy', input: { file: null, addField: 'function' }, error: failure },
+		{ name: 'Memory copy stays empty after the rejection', input: { file: null, operation: 'read' }, output: after }
+	]);
+});
+
+test('Throws ErrnoException when the document path is a folder', async () => {
+	const adapter = newDocumentAdapter(makeDirectory());
+	const failure = await failureOf(adapter.update((document) => document.items.length));
+	expect(failure).toEqual({ name: 'Error', code: 'EISDIR' });
+	recordCases('update', 'throws-errnoexception-when-the-document-path-is-a-folder', [
+		{ name: 'Reading a folder as the document file fails', input: { file: 'temporary folder' }, error: failure }
+	]);
+});
+
+test('Throws SyntaxError when the document file is not JSON', async () => {
+	const file = join(makeDirectory(), 'document.json');
+	writeFileSync(file, '{"items": [');
+	const failure = await failureOf(newDocumentAdapter(file).read());
+	expect(failure?.name).toBe('SyntaxError');
+	recordCases('read', 'throws-syntaxerror-when-the-document-file-is-not-json', [
+		{ name: 'Truncated JSON file rejects the read', input: { file: 'document.json', contents: '{"items": [' }, error: failure }
+	]);
+});
+
+test('Throws TypeError when the document is circular', async () => {
+	const adapter = newDocumentAdapter(join(makeDirectory(), 'nested', 'document.json'));
+	const failure = await failureOf(
+		adapter.update((document) => {
+			(document as Record<string, unknown>).self = document;
+			return 'never';
+		})
+	);
+	const after = await adapter.read();
+	expect(failure?.name).toBe('TypeError');
+	expect(after).toEqual({ items: [] });
+	recordCases('update', 'throws-typeerror-when-the-document-is-circular', [
+		{ name: 'Circular change cannot be written as JSON', input: { file: 'nested/document.json', addField: 'self' }, error: failure },
+		{ name: 'Document file is not replaced', input: { file: 'nested/document.json', operation: 'read' }, output: after }
+	]);
 });
