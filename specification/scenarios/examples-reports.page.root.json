@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.page.root",
+	"title": "reports.page.root examples",
+	"kind": "headless",
+	"units": ["reports.page.root"],
+	"builds": [],
+	"states": [
+		{
+			"id": "load-called-for-the-root-throws-a-308-redirect-to-harness",
+			"title": "load called for the root throws a 308 redirect to /harness",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.page.root.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["load-called-for-the-root-throws-a-308-redirect-to-harness"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["load-called-for-the-root-throws-a-308-redirect-to-harness"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["load-called-for-the-root-throws-a-308-redirect-to-harness"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
