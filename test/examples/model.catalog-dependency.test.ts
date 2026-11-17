@@ -79,3 +79,21 @@ test('Deletes a catalog dependency by id', async () => {
 	expect(calls).toEqual([['delete', 'catalog_dependencies', row.id]]);
 	record({ symbol: 'CatalogDependency.delete', state: 'deletes-a-catalog-dependency-by-id', name: 'reports successful deletion', input: { id: row.id }, output: true });
 });
+
+test('Throws Persistence operation failure when adapter rejects', async () => {
+	const failure = new Error('adapter unavailable');
+	const adapter = {
+		find: async () => { throw failure; }
+	} as unknown as Parameters<typeof CatalogDependency.find>[0];
+	await expect(CatalogDependency.find(adapter, row.id)).rejects.toBe(failure);
+	recordExampleCases(
+		{
+			unitId: 'model.catalog-dependency',
+			symbol: 'CatalogDependency.find',
+			state: 'throws-persistence-operation-failure-when-adapter-rejects',
+			evidence: 'examples-cases',
+			file: 'throws-persistence-operation-failure-when-adapter-rejects.json'
+		},
+		[{ name: 'preserves adapter rejection', input: { id: row.id }, error: { name: failure.name, message: failure.message } }]
+	);
+});

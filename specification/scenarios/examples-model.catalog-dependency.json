@@ -30,6 +30,11 @@
 			"id": "deletes-a-catalog-dependency-by-id",
 			"title": "Deletes a catalog dependency by id",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-persistence-operation-failure-when-adapter-rejects",
+			"title": "Throws Persistence operation failure when adapter rejects",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -52,7 +57,8 @@
 				"finds-catalog-dependencies-by-partial-fields",
 				"creates-a-catalog-dependency-row",
 				"updates-a-catalog-dependency-row",
-				"deletes-a-catalog-dependency-by-id"
+				"deletes-a-catalog-dependency-by-id",
+				"throws-persistence-operation-failure-when-adapter-rejects"
 			],
 			"viewports": [],
 			"required": true
@@ -65,7 +71,8 @@
 				"finds-catalog-dependencies-by-partial-fields",
 				"creates-a-catalog-dependency-row",
 				"updates-a-catalog-dependency-row",
-				"deletes-a-catalog-dependency-by-id"
+				"deletes-a-catalog-dependency-by-id",
+				"throws-persistence-operation-failure-when-adapter-rejects"
 			],
 			"viewports": [],
 			"required": true
@@ -78,7 +85,8 @@
 				"finds-catalog-dependencies-by-partial-fields",
 				"creates-a-catalog-dependency-row",
 				"updates-a-catalog-dependency-row",
-				"deletes-a-catalog-dependency-by-id"
+				"deletes-a-catalog-dependency-by-id",
+				"throws-persistence-operation-failure-when-adapter-rejects"
 			],
 			"viewports": [],
 			"required": true
