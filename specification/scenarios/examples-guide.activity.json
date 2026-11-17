@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-guide.activity",
+	"title": "guide.activity examples",
+	"kind": "headless",
+	"units": ["guide.activity"],
+	"builds": [],
+	"states": [
+		{
+			"id": "provides-activity-guidance",
+			"title": "Provides activity guidance",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/guide.activity.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["provides-activity-guidance"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["provides-activity-guidance"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["provides-activity-guidance"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
