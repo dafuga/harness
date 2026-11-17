@@ -1,4 +1,6 @@
 import { test } from 'vitest';
+import { expect } from '../../../../test/verificationExpect';
+import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { githubRawMany } from '../../src/utils/git-source-history/create-git-hub-source/githubRawMany';
 import type { Context } from '../../src/utils/git-source-history/create-git-hub-source/githubRawMany.types';
 import type {
@@ -6,208 +8,154 @@ import type {
 	SourceAdapter,
 	SourceEntry
 } from '../../src/models/planning-collaboration/Collaboration.types';
-import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import { expect } from '../../../../test/verificationExpect';
 
-async function gitBlobSha(text: string): Promise<string> {
-	const content = new TextEncoder().encode(text);
-	const header = new TextEncoder().encode(`blob ${content.length}\0`);
-	const blob = new Uint8Array(header.length + content.length);
-	blob.set(header);
-	blob.set(content, header.length);
-	const digest = await crypto.subtle.digest('SHA-1', blob);
-	return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, '0')).join('');
+const repository: RepositoryIdentity = {
+	id: 7,
+	owner: 'example-org',
+	name: 'example-repo',
+	private: false,
+	installationId: 3
+};
+const commit = 'a1b2c3d4e5f60718293a4b5c6d7e8f9012345678';
+const decoder = new TextDecoder();
+
+async function unused(): Promise<never> {
+	throw new Error('not used by githubRawMany');
 }
 
-function recordingFetch(input: {
-	repository: RepositoryIdentity;
-	commit: string;
-	fetchedPath: string;
-	fetchedText: string;
-	fetchedSha: string;
-	requests: unknown[];
-}): NonNullable<Context['options']['fetch']> {
-	const { repository, commit, fetchedPath, fetchedText, fetchedSha, requests } = input;
-	return async (input, init) => {
-		const body = JSON.parse(String(init?.body)) as { variables: Record<string, string> };
-		const prefix = `${commit}:`;
-		const paths = Object.values(body.variables)
-			.filter((value) => value.startsWith(prefix))
-			.map((value) => value.slice(prefix.length));
-		requests.push({
-			url: String(input),
-			method: init?.method,
-			authorization: new Headers(init?.headers).get('Authorization'),
-			paths
-		});
-		const data: Record<string, unknown> = { databaseId: repository.id };
-		for (const [index, path] of paths.entries()) {
-			if (path !== fetchedPath) throw new Error('unexpected GraphQL path');
-			data[`b${index}`] = {
-				__typename: 'Blob',
-				oid: fetchedSha,
-				text: fetchedText,
-				isBinary: false,
-				isTruncated: false,
-				byteSize: new TextEncoder().encode(fetchedText).length
-			};
-		}
-		return new Response(JSON.stringify({ data: { repository: data } }), { status: 200 });
+function blob(path: string, mode = '100644'): SourceEntry {
+	return { path, sha: 'b'.repeat(40), type: 'blob', mode };
+}
+
+/** A context whose tree comes from `entries` and whose GitHub fetch always fails offline. */
+function makeContext(entries: SourceEntry[]) {
+	const requests: string[] = [];
+	const adapter: SourceAdapter = {
+		resolve: unused,
+		read: unused,
+		validateAnchor: unused,
+		tree: async () => entries
 	};
-}
-
-function createContext(input: {
-	repository: RepositoryIdentity;
-	commit: string;
-	entries: SourceEntry[];
-	cachedPath: string;
-	cachedBytes: Uint8Array;
-	fetchedPath: string;
-	fetchedText: string;
-	fetchedSha: string;
-}) {
-	const { repository, commit, cachedPath, cachedBytes } = input;
-	const treeCommits: string[] = [];
-	const tokenRequests: unknown[] = [];
-	const graphqlRequests: unknown[] = [];
-	const key = (_repo: RepositoryIdentity, ref: string) => `fixture:${ref}`;
-	const cache = new Map<string, Promise<Uint8Array>>([
-		[key(repository, `${commit}:${cachedPath}`), Promise.resolve(cachedBytes)]
-	]);
-	const adapter = {
-		async tree(_repository: RepositoryIdentity, requestedCommit: string) {
-			treeCommits.push(requestedCommit);
-			return input.entries;
-		}
-	} as SourceAdapter;
 	const context: Context = {
 		adapter,
-		cache,
-		key,
 		options: {
-			async token(request) {
-				tokenRequests.push(request);
-				return 'example-token';
-			},
-			fetch: recordingFetch({
-				repository,
-				commit,
-				fetchedPath: input.fetchedPath,
-				fetchedText: input.fetchedText,
-				fetchedSha: input.fetchedSha,
-				requests: graphqlRequests
-			})
-		}
-	};
-	return { context, cache, key, treeCommits, tokenRequests, graphqlRequests };
-}
-
-async function createSample() {
-	const commit = 'a'.repeat(40);
-	const repository: RepositoryIdentity = {
-		id: 42,
-		owner: 'example-org',
-		name: 'sample-project',
-		private: true,
-		installationId: 73
-	};
-	const cachedPath = 'README.md';
-	const fetchedPath = 'src/index.ts';
-	const cachedText = '# Sample project\n';
-	const fetchedText = 'export const answer = 42;\n';
-	const [cachedSha, fetchedSha] = await Promise.all([
-		gitBlobSha(cachedText),
-		gitBlobSha(fetchedText)
-	]);
-	const entries: SourceEntry[] = [
-		{ path: cachedPath, sha: cachedSha, type: 'blob', mode: '100644', size: cachedText.length },
-		{ path: fetchedPath, sha: fetchedSha, type: 'blob', mode: '100755', size: fetchedText.length }
-	];
-	const cachedBytes = new TextEncoder().encode(cachedText);
-	const { context, cache, key, treeCommits, tokenRequests, graphqlRequests } = createContext({
-		repository,
-		commit,
-		entries,
-		cachedPath,
-		cachedBytes,
-		fetchedPath,
-		fetchedText,
-		fetchedSha
-	});
-	const input = { commit, paths: [cachedPath, fetchedPath, cachedPath] };
-	const result = await githubRawMany(context)(repository, input);
-	const files = Array.from(result, ([path, bytes]) => ({
-		path,
-		text: new TextDecoder().decode(bytes)
-	}));
-	return {
-		repository,
-		input,
-		files,
-		treeCommits,
-		tokenRequests,
-		graphqlRequests,
-		cachedBytes,
-		cachedValue: result.get(cachedPath)!,
-		fetchedValue: result.get(fetchedPath)!,
-		storedFetchedValue: (await cache.get(key(repository, `${commit}:${fetchedPath}`)))!
-	};
-}
-
-function sampleCases(sample: Awaited<ReturnType<typeof createSample>>) {
-	return [
-		{
-			name: 'a duplicate path reuses cached bytes and fetches the remaining safe blob',
-			input: {
-				repository: {
-					id: sample.repository.id,
-					owner: sample.repository.owner,
-					name: sample.repository.name
-				},
-				...sample.input,
-				preloadedCachePaths: ['README.md']
-			},
-			output: {
-				files: sample.files,
-				treeCommits: sample.treeCommits,
-				tokenRequests: sample.tokenRequests,
-				graphqlRequests: sample.graphqlRequests,
-				returnedBytesAreCopies: {
-					cached: sample.cachedValue !== sample.cachedBytes,
-					fetched: sample.fetchedValue !== sample.storedFetchedValue
-				}
+			token: async () => 'example-token',
+			fetch: async () => {
+				requests.push('fetch');
+				throw new Error('offline example');
 			}
-		}
-	];
+		},
+		cache: new Map(),
+		key: (repo, ref) => `${repo.id}:${ref}`
+	};
+	return { context, requests };
 }
 
-test('reads distinct paths from tree while reusing cached bytes', async () => {
-	const sample = await createSample();
-	const state = 'reads-distinct-paths-from-tree-while-reusing-cached-bytes';
-	recordExampleCases(
-		{
-			unitId: 'collaboration.function.github-raw-many',
-			symbol: 'githubRawMany',
-			state,
-			evidence: 'examples-cases',
-			file: `${state}.json`
-		},
-		sampleCases(sample)
+/** Puts already-settled raw bytes for `path` into the shared cache and returns the stored bytes. */
+function seed(context: Context, path: string, text: string) {
+	const bytes = new TextEncoder().encode(text);
+	context.cache.set(context.key(repository, `${commit}:${path}`), Promise.resolve(bytes));
+	return bytes;
+}
+
+function describeError(error: unknown) {
+	const { code = 'none', name = 'unknown' } = (error ?? {}) as { code?: string; name?: string };
+	return { name, code };
+}
+
+function failureOf(promise: Promise<unknown>) {
+	return promise.then(
+		() => undefined,
+		(error: unknown) => error
 	);
-	expect(sample.files).toEqual([
-		{ path: 'README.md', text: '# Sample project\n' },
-		{ path: 'src/index.ts', text: 'export const answer = 42;\n' }
+}
+
+function meta(state: string) {
+	return {
+		unitId: 'collaboration.function.github-raw-many',
+		symbol: 'githubRawMany',
+		state,
+		evidence: 'examples-cases',
+		file: `${state}.json`
+	};
+}
+
+test('Reads cached bytes for each path without a GitHub request', async () => {
+	const paths = ['docs/readme.md', 'src/index.ts'];
+	const { context, requests } = makeContext([blob(paths[0]), blob(paths[1])]);
+	const readme = seed(context, paths[0], '# Readme');
+	seed(context, paths[1], 'export {};');
+	const result = await githubRawMany(context)(repository, { commit, paths });
+	const summary = Object.fromEntries(
+		[...result].map(([path, bytes]) => [path, decoder.decode(bytes)])
+	);
+
+	expect(requests).toEqual([]);
+	expect(summary).toEqual({ 'docs/readme.md': '# Readme', 'src/index.ts': 'export {};' });
+	result.get(paths[0])?.fill(0);
+	expect(decoder.decode(readme)).toBe('# Readme');
+	recordExampleCases(meta('reads-cached-bytes-for-each-path-without-a-github-request'), [
+		{ name: 'read two paths that are already cached', input: { commit, paths }, output: summary }
 	]);
-	expect(sample.tokenRequests).toEqual([
-		{ installationId: 73, repositoryIds: [42], permissions: { contents: 'read' } }
+});
+
+test('Rejects a commit that is not a lowercase 40-char sha', async () => {
+	const paths = ['docs/readme.md'];
+	const { context, requests } = makeContext([blob(paths[0])]);
+	const read = githubRawMany(context);
+	const inputs = [
+		{ commit: commit.toUpperCase(), paths },
+		{ commit: 'a1b2c3', paths }
+	];
+	const failures = await Promise.all(inputs.map((input) => failureOf(read(repository, input))));
+
+	expect(failures).toMatchObject([{ code: 'invalid-input' }, { code: 'invalid-input' }]);
+	expect(requests).toEqual([]);
+	recordExampleCases(meta('rejects-a-commit-that-is-not-a-lowercase-40-char-sha'), [
+		{ name: 'uppercase form of a valid sha', input: inputs[0], error: describeError(failures[0]) },
+		{ name: 'six-character abbreviated sha', input: inputs[1], error: describeError(failures[1]) }
 	]);
-	expect(sample.graphqlRequests).toMatchObject([
-		{
-			url: 'https://api.github.com/graphql',
-			method: 'POST',
-			authorization: 'Bearer example-token',
-			paths: ['src/index.ts']
-		}
+});
+
+test('Rejects a path that is absent from the tree as not-found', async () => {
+	const { context, requests } = makeContext([blob('docs/readme.md'), blob('link.md', '120000')]);
+	const read = githubRawMany(context);
+	const absent = { commit, paths: ['src/index.ts'] };
+	const symlink = { commit, paths: ['link.md'] };
+	const [a, b] = await Promise.all(
+		[absent, symlink].map((input) => failureOf(read(repository, input)))
+	);
+
+	expect([a, b]).toMatchObject([{ code: 'not-found' }, { code: 'not-found' }]);
+	expect(requests).toEqual([]);
+	recordExampleCases(meta('rejects-a-path-that-is-absent-from-the-tree-as-not-found'), [
+		{ name: 'path missing from the tree', input: absent, error: describeError(a) },
+		{ name: 'path is a symlink (mode 120000)', input: symlink, error: describeError(b) }
 	]);
-	expect(sample.fetchedValue === sample.storedFetchedValue).toBe(false);
+});
+
+test('Drops rejected cache entries when a batch request fails', async () => {
+	const paths = ['docs/readme.md'];
+	const { context, requests } = makeContext([blob(paths[0])]);
+	const key = context.key(repository, `${commit}:${paths[0]}`);
+	const failure = await failureOf(githubRawMany(context)(repository, { commit, paths }));
+
+	expect(failure).toMatchObject({ code: 'github-unavailable' });
+	expect(context.cache.has(key)).toBe(false);
+	expect(requests).toHaveLength(1);
+	recordExampleCases(meta('drops-rejected-cache-entries-when-a-batch-request-fails'), [
+		{ name: 'request one uncached path while GitHub is offline', input: { commit, paths }, error: describeError(failure) },
+		{ name: 'cache entry after the rejected batch', input: { key }, output: { cached: context.cache.has(key) } }
+	]);
+});
+
+test('Returns an empty map for an empty paths list', async () => {
+	const { context, requests } = makeContext([]);
+	const result = await githubRawMany(context)(repository, { commit, paths: [] });
+
+	expect(result.size).toBe(0);
+	expect(requests).toEqual([]);
+	recordExampleCases(meta('returns-an-empty-map-for-an-empty-paths-list'), [
+		{ name: 'read no paths', input: { commit, paths: [] }, output: { size: result.size } }
+	]);
 });

@@ -7,8 +7,28 @@
 	"builds": [],
 	"states": [
 		{
-			"id": "reads-distinct-paths-from-tree-while-reusing-cached-bytes",
-			"title": "reads distinct paths from tree while reusing cached bytes",
+			"id": "reads-cached-bytes-for-each-path-without-a-github-request",
+			"title": "Reads cached bytes for each path without a GitHub request",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-commit-that-is-not-a-lowercase-40-char-sha",
+			"title": "Rejects a commit that is not a lowercase 40-char sha",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-path-that-is-absent-from-the-tree-as-not-found",
+			"title": "Rejects a path that is absent from the tree as not-found",
+			"coverage": "required"
+		},
+		{
+			"id": "drops-rejected-cache-entries-when-a-batch-request-fails",
+			"title": "Drops rejected cache entries when a batch request fails",
+			"coverage": "required"
+		},
+		{
+			"id": "returns-an-empty-map-for-an-empty-paths-list",
+			"title": "Returns an empty map for an empty paths list",
 			"coverage": "required"
 		}
 	],
@@ -27,21 +47,39 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["reads-distinct-paths-from-tree-while-reusing-cached-bytes"],
+			"states": [
+				"reads-cached-bytes-for-each-path-without-a-github-request",
+				"rejects-a-commit-that-is-not-a-lowercase-40-char-sha",
+				"rejects-a-path-that-is-absent-from-the-tree-as-not-found",
+				"drops-rejected-cache-entries-when-a-batch-request-fails",
+				"returns-an-empty-map-for-an-empty-paths-list"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["reads-distinct-paths-from-tree-while-reusing-cached-bytes"],
+			"states": [
+				"reads-cached-bytes-for-each-path-without-a-github-request",
+				"rejects-a-commit-that-is-not-a-lowercase-40-char-sha",
+				"rejects-a-path-that-is-absent-from-the-tree-as-not-found",
+				"drops-rejected-cache-entries-when-a-batch-request-fails",
+				"returns-an-empty-map-for-an-empty-paths-list"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["reads-distinct-paths-from-tree-while-reusing-cached-bytes"],
+			"states": [
+				"reads-cached-bytes-for-each-path-without-a-github-request",
+				"rejects-a-commit-that-is-not-a-lowercase-40-char-sha",
+				"rejects-a-path-that-is-absent-from-the-tree-as-not-found",
+				"drops-rejected-cache-entries-when-a-batch-request-fails",
+				"returns-an-empty-map-for-an-empty-paths-list"
+			],
 			"viewports": [],
 			"required": true
 		}
