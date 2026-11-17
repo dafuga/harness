@@ -42,3 +42,31 @@ test('finds literal scanner markers in product files', () => {
 		rmSync(missed, { recursive: true, force: true });
 	}
 });
+
+test('Throws Error when product files cannot be read', () => {
+	const product = mkdtempSync(join(tmpdir(), 'ios-scan-fixture-error-'));
+	rmSync(product, { recursive: true, force: true });
+	let error: unknown;
+	try {
+		holds(product, 'SyntheticScanner');
+	} catch (caught) {
+		error = caught;
+	}
+	expect(error).toBeInstanceOf(Error);
+	recordExampleCases(
+		{
+			unitId: 'desktop.script.ios-scan-fixture',
+			symbol: 'holds',
+			state: 'throws-error-when-product-files-cannot-be-read',
+			evidence: 'examples-cases',
+			file: 'throws-error-when-product-files-cannot-be-read.json'
+		},
+		[
+			{
+				name: 'missing product directory propagates the read error',
+				input: { product, words: 'SyntheticScanner' },
+				error: { name: 'Error' }
+			}
+		]
+	);
+});
