@@ -15,6 +15,16 @@
 			"id": "stopping-without-a-record-reports-absence",
 			"title": "Stopping without a record reports absence",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-syntaxerror-when-a-server-record-contains-malformed-j",
+			"title": "Throws SyntaxError when a server record contains malformed JSON",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-writing-a-record-cannot-create-its-directo",
+			"title": "Throws Error when writing a record cannot create its directory",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +44,9 @@
 			"kind": "output",
 			"states": [
 				"report-server-record-round-trips-a-server-identity",
-				"stopping-without-a-record-reports-absence"
+				"stopping-without-a-record-reports-absence",
+				"throws-syntaxerror-when-a-server-record-contains-malformed-j",
+				"throws-error-when-writing-a-record-cannot-create-its-directo"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +56,9 @@
 			"kind": "assertions",
 			"states": [
 				"report-server-record-round-trips-a-server-identity",
-				"stopping-without-a-record-reports-absence"
+				"stopping-without-a-record-reports-absence",
+				"throws-syntaxerror-when-a-server-record-contains-malformed-j",
+				"throws-error-when-writing-a-record-cannot-create-its-directo"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +68,9 @@
 			"kind": "trace",
 			"states": [
 				"report-server-record-round-trips-a-server-identity",
-				"stopping-without-a-record-reports-absence"
+				"stopping-without-a-record-reports-absence",
+				"throws-syntaxerror-when-a-server-record-contains-malformed-j",
+				"throws-error-when-writing-a-record-cannot-create-its-directo"
 			],
 			"viewports": [],
 			"required": true

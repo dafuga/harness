@@ -4,7 +4,7 @@ import { recordExampleCases } from '../../../../test/support/recordExampleCases'
 import { stopReportServer } from '../../src/services/reports-media/report-command-service/report-server-service/reportServerRecord';
 import { reportServerRecord } from '../../src/utils/reports-media/reportServerRecord';
 import type { ServerRecord } from '../../src/utils/reports-media/reportServerRecord.types';
-import { mkdtempSync, rmSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -84,6 +84,41 @@ test('Stopping without a record reports absence', async () => {
 					output
 				}
 			]
+		);
+	} finally {
+		removeRoot(root);
+	}
+});
+
+test('Throws SyntaxError when a server record contains malformed JSON', async () => {
+	const root = temporaryRoot();
+	const state = 'throws-syntaxerror-when-a-server-record-contains-malformed-j';
+	try {
+		const record = reportServerRecord(root, 4173);
+		mkdirSync(join(root, 'servers'));
+		writeFileSync(record.file, '{malformed');
+		await expect(record.read()).rejects.toThrow(SyntaxError);
+		recordExampleCases(
+			{ unitId: 'reports.function.report-server-record', symbol: 'reportServerRecord.read', state, evidence: 'examples-cases', file: `${state}.json` },
+			[{ name: 'malformed record JSON rejects reading', input: { root: '<temporary-root>', port: 4173, contents: '{malformed' }, error: { name: 'SyntaxError' } }]
+		);
+	} finally {
+		removeRoot(root);
+	}
+});
+
+test('Throws Error when writing a record cannot create its directory', async () => {
+	const root = temporaryRoot();
+	const state = 'throws-error-when-writing-a-record-cannot-create-its-directo';
+	try {
+		const blockedRoot = join(root, 'blocked');
+		writeFileSync(blockedRoot, 'file prevents directory creation');
+		const record = reportServerRecord(join(blockedRoot, 'child'), 4173);
+		const server: ServerRecord = { pid: 28411, port: 4173, started: 'Mon Jun 15 09:23:48 2026', buildId: 'reports-build-example' };
+		await expect(record.write(server)).rejects.toThrow(Error);
+		recordExampleCases(
+			{ unitId: 'reports.function.report-server-record', symbol: 'reportServerRecord.write', state, evidence: 'examples-cases', file: `${state}.json` },
+			[{ name: 'filesystem rejects parent directory creation', input: { root: '<temporary-root>/blocked/child', port: 4173, record: server }, error: { name: 'Error' } }]
 		);
 	} finally {
 		removeRoot(root);
