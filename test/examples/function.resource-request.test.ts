@@ -64,3 +64,36 @@ test('Resolves automatic, explicit, and inherited resource requests', async () =
 		);
 	});
 });
+
+test('Throws ZodError when priority is unsupported', async () => {
+	await withTempDir('resource-request-error-', async (home) => {
+		const service = {
+			home,
+			snapshot: async () => snapshot,
+			queue: { all: () => [] }
+		};
+		let error: unknown;
+		try {
+			await resourceRequest({ priority: 'urgent', cpus: '2', memoryMib: '1280' }, service, {});
+		} catch (caught) {
+			error = caught;
+		}
+		expect(error).toMatchObject({ name: 'ZodError' });
+		recordExampleCases(
+			{
+				unitId: 'function.resource-request',
+				symbol: 'resourceRequest',
+				state: 'throws-zoderror-when-priority-is-unsupported',
+				evidence: 'examples-cases',
+				file: 'throws-zoderror-when-priority-is-unsupported.json'
+			},
+			[
+				{
+					name: 'rejects an unsupported priority',
+					input: { priority: 'urgent', cpus: '2', memoryMib: '1280' },
+					error: { name: 'ZodError' }
+				}
+			]
+		);
+	});
+});

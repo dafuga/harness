@@ -10,6 +10,11 @@
 			"id": "resolves-automatic-explicit-and-inherited-resource-requests",
 			"title": "Resolves automatic, explicit, and inherited resource requests",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-zoderror-when-priority-is-unsupported",
+			"title": "Throws ZodError when priority is unsupported",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["resolves-automatic-explicit-and-inherited-resource-requests"],
+			"states": [
+				"resolves-automatic-explicit-and-inherited-resource-requests",
+				"throws-zoderror-when-priority-is-unsupported"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["resolves-automatic-explicit-and-inherited-resource-requests"],
+			"states": [
+				"resolves-automatic-explicit-and-inherited-resource-requests",
+				"throws-zoderror-when-priority-is-unsupported"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["resolves-automatic-explicit-and-inherited-resource-requests"],
+			"states": [
+				"resolves-automatic-explicit-and-inherited-resource-requests",
+				"throws-zoderror-when-priority-is-unsupported"
+			],
 			"viewports": [],
 			"required": true
 		}
