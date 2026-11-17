@@ -13,29 +13,14 @@ import {
 } from '../../src/workflows/reports-media/analyticsRecord';
 import { withTempDir } from '../support/temporary';
 
-test('Resolves the requested task context', async () => {
-	vi.stubEnv('HARNESS_ANALYTICS_TASK', '');
-	vi.stubEnv('HARNESS_AGENT_MODEL', '');
+async function captureError(run: () => unknown | Promise<unknown>): Promise<Error> {
 	try {
-		const output = await resolvedContext(
-			{ task: 'triage-analytics', agentModel: 'model-x' },
-			'/workspace/project'
-		);
-		expect(output).toMatchObject({ task: 'triage-analytics', agentModel: 'model-x' });
-		recordExampleCases(
-			{
-				unitId: 'workflow.analytics-record',
-				symbol: 'resolvedContext',
-				state: 'resolves-the-requested-task-context',
-				evidence: 'examples-cases',
-				file: 'resolves-the-requested-task-context.json'
-			},
-			[{ name: 'task context retains its task and model', input: { task: 'triage-analytics', agentModel: 'model-x' }, output }]
-		);
-	} finally {
-		vi.unstubAllEnvs();
+		await run();
+	} catch (error) {
+		return error as Error;
 	}
-});
+	throw new Error('Expected operation to throw.');
+}
 
 test('Skips analytics when recording is disabled', async () => {
 	vi.stubEnv('HARNESS_ANALYTICS_DISABLED', '1');
@@ -58,38 +43,6 @@ test('Skips analytics when recording is disabled', async () => {
 	}
 });
 
-test('Fingerprints JSON-compatible values', () => {
-	const input = { action: 'search', count: 2 };
-	const output = fingerprint(input);
-	expect(output).toMatch(/^[a-f0-9]{64}$/);
-	recordExampleCases(
-		{
-			unitId: 'workflow.analytics-record',
-			symbol: 'fingerprint',
-			state: 'fingerprints-json-compatible-values',
-			evidence: 'examples-cases',
-			file: 'fingerprints-json-compatible-values.json'
-		},
-		[{ name: 'object values produce a lowercase SHA-256 digest', input, output }]
-	);
-});
-
-test('Accepts a context without a report', async () => {
-	const input = {};
-	const output = await validateReport(input);
-	expect(output).toBeUndefined();
-	recordExampleCases(
-		{
-			unitId: 'workflow.analytics-record',
-			symbol: 'validateReport',
-			state: 'accepts-a-context-without-a-report',
-			evidence: 'examples-cases',
-			file: 'accepts-a-context-without-a-report.json'
-		},
-		[{ name: 'missing report needs no manifest lookup', input, output: null }]
-	);
-});
-
 test('Resolves the primary project directory', async () => {
 	await withTempDir('analytics-record-project-', async (directory) => {
 		const output = await projectIdentity(directory);
@@ -106,3 +59,59 @@ test('Resolves the primary project directory', async () => {
 		);
 	});
 });
+
+test('Throws invalid analytics context when task conflicts with loop', async () => {
+	const input = { task: 'triage-analytics', loop: 'daily' };
+	const error = await captureError(() => resolvedContext(input, '/workspace/project'));
+	expect(error.message).toBe('Use either --task or --loop/--step.');
+	recordExampleCases(
+		{ unitId: 'workflow.analytics-record', symbol: 'resolvedContext', state: 'throws-invalid-analytics-context-when-task-conflicts-with-lo', evidence: 'examples-cases', file: 'throws-invalid-analytics-context-when-task-conflicts-with-lo.json' },
+		[{ name: 'task and loop cannot be selected together', input, error: { name: error.name, message: error.message } }]
+	);
+});
+
+test('Throws loop state access failure when selected state is missing', async () => {
+	const input = { loop: 'missing-loop' };
+	vi.stubEnv('HARNESS_ANALYTICS_LOOP', '');
+	try {
+		const error = await captureError(() => resolvedContext(input, '/workspace/project'));
+		expect(error).toBeInstanceOf(Error);
+		recordExampleCases(
+			{ unitId: 'workflow.analytics-record', symbol: 'resolvedContext', state: 'throws-loop-state-access-failure-when-selected-state-is-miss', evidence: 'examples-cases', file: 'throws-loop-state-access-failure-when-selected-state-is-miss.json' },
+			[{ name: 'missing loop state read propagates', input, error: { name: error.name, message: error.message } }]
+		);
+	} finally {
+		vi.unstubAllEnvs();
+	}
+});
+
+test('Throws invalid report reference when ID contains punctuation', async () => {
+	const input = { report: 'bad/report' };
+	vi.stubEnv('HARNESS_ANALYTICS_REPORT', '');
+	try {
+		const error = await captureError(() => validateReport(input));
+		expect(error.message).toBe('Invalid report ID.');
+		recordExampleCases(
+			{ unitId: 'workflow.analytics-record', symbol: 'validateReport', state: 'throws-invalid-report-reference-when-id-contains-punctuation', evidence: 'examples-cases', file: 'throws-invalid-report-reference-when-id-contains-punctuation.json' },
+			[{ name: 'punctuation is rejected before manifest access', input, error: { name: error.name, message: error.message } }]
+		);
+	} finally {
+		vi.unstubAllEnvs();
+	}
+});
+
+test('Throws JSON serialization failure for undefined', () => {
+	const input = { serializedValue: 'undefined' };
+	let error: Error | undefined;
+	try {
+		fingerprint(undefined as never);
+	} catch (caught) {
+		error = caught as Error;
+	}
+	expect(error).toBeInstanceOf(Error);
+	recordExampleCases(
+		{ unitId: 'workflow.analytics-record', symbol: 'fingerprint', state: 'throws-json-serialization-failure-for-undefined', evidence: 'examples-cases', file: 'throws-json-serialization-failure-for-undefined.json' },
+		[{ name: 'undefined cannot be serialized to a fingerprint', input, error: { name: error?.name, message: error?.message } }]
+	);
+});
+

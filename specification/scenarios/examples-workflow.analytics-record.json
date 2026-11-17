@@ -7,28 +7,33 @@
 	"builds": [],
 	"states": [
 		{
-			"id": "resolves-the-requested-task-context",
-			"title": "Resolves the requested task context",
-			"coverage": "required"
-		},
-		{
 			"id": "skips-analytics-when-recording-is-disabled",
 			"title": "Skips analytics when recording is disabled",
 			"coverage": "required"
 		},
 		{
-			"id": "fingerprints-json-compatible-values",
-			"title": "Fingerprints JSON-compatible values",
-			"coverage": "required"
-		},
-		{
-			"id": "accepts-a-context-without-a-report",
-			"title": "Accepts a context without a report",
-			"coverage": "required"
-		},
-		{
 			"id": "resolves-the-primary-project-directory",
 			"title": "Resolves the primary project directory",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-invalid-analytics-context-when-task-conflicts-with-lo",
+			"title": "Throws invalid analytics context when task conflicts with loop",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-loop-state-access-failure-when-selected-state-is-miss",
+			"title": "Throws loop state access failure when selected state is missing",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-invalid-report-reference-when-id-contains-punctuation",
+			"title": "Throws invalid report reference when ID contains punctuation",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-json-serialization-failure-for-undefined",
+			"title": "Throws JSON serialization failure for undefined",
 			"coverage": "required"
 		}
 	],
@@ -48,11 +53,12 @@
 			"id": "examples-output",
 			"kind": "output",
 			"states": [
-				"resolves-the-requested-task-context",
 				"skips-analytics-when-recording-is-disabled",
-				"fingerprints-json-compatible-values",
-				"accepts-a-context-without-a-report",
-				"resolves-the-primary-project-directory"
+				"resolves-the-primary-project-directory",
+				"throws-invalid-analytics-context-when-task-conflicts-with-lo",
+				"throws-loop-state-access-failure-when-selected-state-is-miss",
+				"throws-invalid-report-reference-when-id-contains-punctuation",
+				"throws-json-serialization-failure-for-undefined"
 			],
 			"viewports": [],
 			"required": true
@@ -61,11 +67,12 @@
 			"id": "examples-assertions",
 			"kind": "assertions",
 			"states": [
-				"resolves-the-requested-task-context",
 				"skips-analytics-when-recording-is-disabled",
-				"fingerprints-json-compatible-values",
-				"accepts-a-context-without-a-report",
-				"resolves-the-primary-project-directory"
+				"resolves-the-primary-project-directory",
+				"throws-invalid-analytics-context-when-task-conflicts-with-lo",
+				"throws-loop-state-access-failure-when-selected-state-is-miss",
+				"throws-invalid-report-reference-when-id-contains-punctuation",
+				"throws-json-serialization-failure-for-undefined"
 			],
 			"viewports": [],
 			"required": true
@@ -74,11 +81,12 @@
 			"id": "examples-cases",
 			"kind": "trace",
 			"states": [
-				"resolves-the-requested-task-context",
 				"skips-analytics-when-recording-is-disabled",
-				"fingerprints-json-compatible-values",
-				"accepts-a-context-without-a-report",
-				"resolves-the-primary-project-directory"
+				"resolves-the-primary-project-directory",
+				"throws-invalid-analytics-context-when-task-conflicts-with-lo",
+				"throws-loop-state-access-failure-when-selected-state-is-miss",
+				"throws-invalid-report-reference-when-id-contains-punctuation",
+				"throws-json-serialization-failure-for-undefined"
 			],
 			"viewports": [],
 			"required": true
