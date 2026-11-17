@@ -15,6 +15,21 @@
 			"id": "imports-command-outcomes-as-checks",
 			"title": "Imports command outcomes as checks",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-import-format-is-unsupported",
+			"title": "Throws Error when the import format is unsupported",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-syntaxerror-when-the-import-file-is-invalid-json",
+			"title": "Throws SyntaxError when the import file is invalid JSON",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-command-data-is-null",
+			"title": "Throws TypeError when command data is null",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +49,10 @@
 			"kind": "output",
 			"states": [
 				"imports-manual-records-and-resolves-evidence-paths",
-				"imports-command-outcomes-as-checks"
+				"imports-command-outcomes-as-checks",
+				"throws-error-when-the-import-format-is-unsupported",
+				"throws-syntaxerror-when-the-import-file-is-invalid-json",
+				"throws-typeerror-when-command-data-is-null"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +62,10 @@
 			"kind": "assertions",
 			"states": [
 				"imports-manual-records-and-resolves-evidence-paths",
-				"imports-command-outcomes-as-checks"
+				"imports-command-outcomes-as-checks",
+				"throws-error-when-the-import-format-is-unsupported",
+				"throws-syntaxerror-when-the-import-file-is-invalid-json",
+				"throws-typeerror-when-command-data-is-null"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +75,10 @@
 			"kind": "trace",
 			"states": [
 				"imports-manual-records-and-resolves-evidence-paths",
-				"imports-command-outcomes-as-checks"
+				"imports-command-outcomes-as-checks",
+				"throws-error-when-the-import-format-is-unsupported",
+				"throws-syntaxerror-when-the-import-file-is-invalid-json",
+				"throws-typeerror-when-command-data-is-null"
 			],
 			"viewports": [],
 			"required": true
