@@ -17,6 +17,11 @@
 			"coverage": "required"
 		},
 		{
+			"id": "throws-authfailure-when-the-state-is-unknown",
+			"title": "Throws AuthFailure when the state is unknown",
+			"coverage": "required"
+		},
+		{
 			"id": "reports-connected-only-while-a-live-grant-exists",
 			"title": "Reports connected only while a live grant exists",
 			"coverage": "required"
@@ -50,6 +55,7 @@
 			"states": [
 				"begins-a-flow-with-a-hashed-state-and-an-s256-challenge",
 				"completes-a-flow-once-and-stores-the-grant-for-its-session",
+				"throws-authfailure-when-the-state-is-unknown",
 				"reports-connected-only-while-a-live-grant-exists",
 				"erases-the-grant-and-leaves-a-tombstone",
 				"returns-a-live-user-token-and-rotates-an-expired-one"
@@ -63,6 +69,7 @@
 			"states": [
 				"begins-a-flow-with-a-hashed-state-and-an-s256-challenge",
 				"completes-a-flow-once-and-stores-the-grant-for-its-session",
+				"throws-authfailure-when-the-state-is-unknown",
 				"reports-connected-only-while-a-live-grant-exists",
 				"erases-the-grant-and-leaves-a-tombstone",
 				"returns-a-live-user-token-and-rotates-an-expired-one"
@@ -76,6 +83,7 @@
 			"states": [
 				"begins-a-flow-with-a-hashed-state-and-an-s256-challenge",
 				"completes-a-flow-once-and-stores-the-grant-for-its-session",
+				"throws-authfailure-when-the-state-is-unknown",
 				"reports-connected-only-while-a-live-grant-exists",
 				"erases-the-grant-and-leaves-a-tombstone",
 				"returns-a-live-user-token-and-rotates-an-expired-one"

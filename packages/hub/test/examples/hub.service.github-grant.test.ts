@@ -122,9 +122,6 @@ test('Completes a flow once and stores the grant for its session', async () => {
 	const bound = await hub.start(mariaSession);
 	const boundInput = { ...given, session: junSession };
 	expect(await ask('a state begun by another session is refused', boundInput, () => hub.service.complete(junSession, bound))).toEqual(refused);
-	const missing = { code: '7f3a9c2e1b8d4f60a5c7', state: UNKNOWN_STATE };
-	const missingInput = { session: mariaSession, ...missing };
-	expect(await ask('a state that was never issued is refused', missingInput, () => hub.service.complete(mariaSession, missing))).toEqual(refused);
 	const moved = await hub.start(mariaSession);
 	await hub.service.disconnect(maria);
 	expect(await ask('the grant changed after the flow began', given, () => hub.service.complete(mariaSession, moved))).toEqual(refused);
@@ -132,6 +129,14 @@ test('Completes a flow once and stores the grant for its session', async () => {
 	hub.github.state.outage = true;
 	expect(await ask('GitHub is down during the code exchange', given, () => hub.service.complete(mariaSession, late))).toEqual(unavailable);
 	recordExampleCases(where('complete', 'completes-a-flow-once-and-stores-the-grant-for-its-session'), observed);
+});
+
+test('Throws AuthFailure when the state is unknown', async () => {
+	const observed: Observed = [];
+	const hub = await fixture();
+	const missing = { code: '7f3a9c2e1b8d4f60a5c7', state: UNKNOWN_STATE };
+	expect(await attempt(observed, 'a state that was never issued is refused', { session: mariaSession, ...missing }, () => hub.service.complete(mariaSession, missing))).toEqual(refused);
+	recordExampleCases(where('complete', 'throws-authfailure-when-the-state-is-unknown'), observed);
 });
 
 test('Reports connected only while a live grant exists', async () => {
