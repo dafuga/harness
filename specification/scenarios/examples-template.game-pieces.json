@@ -20,6 +20,11 @@
 			"id": "generates-a-checkpoint-config",
 			"title": "Generates a checkpoint config",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-dimension-is-missing",
+			"title": "Throws ExpectedCliError when dimension is missing",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -40,7 +45,8 @@
 			"states": [
 				"generates-a-game-view-config",
 				"generates-a-mechanic-utility-and-test",
-				"generates-a-checkpoint-config"
+				"generates-a-checkpoint-config",
+				"throws-expectedclierror-when-dimension-is-missing"
 			],
 			"viewports": [],
 			"required": true
@@ -51,7 +57,8 @@
 			"states": [
 				"generates-a-game-view-config",
 				"generates-a-mechanic-utility-and-test",
-				"generates-a-checkpoint-config"
+				"generates-a-checkpoint-config",
+				"throws-expectedclierror-when-dimension-is-missing"
 			],
 			"viewports": [],
 			"required": true
@@ -62,7 +69,8 @@
 			"states": [
 				"generates-a-game-view-config",
 				"generates-a-mechanic-utility-and-test",
-				"generates-a-checkpoint-config"
+				"generates-a-checkpoint-config",
+				"throws-expectedclierror-when-dimension-is-missing"
 			],
 			"viewports": [],
 			"required": true

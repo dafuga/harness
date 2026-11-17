@@ -50,3 +50,24 @@ test('Generates a checkpoint config', () => {
 		[{ name: 'spawn checkpoint', input: { name: 'spawn' }, output }]
 	);
 });
+
+test('Throws ExpectedCliError when dimension is missing', () => {
+	const message = 'A game view needs harness.dimension 2d or 3d in package.json.';
+	expect(() => gameViewFiles('inventory', {})).toThrow(message);
+	recordExampleCases(
+		{
+			unitId: 'template.game-pieces',
+			symbol: 'gameViewFiles',
+			state: 'throws-expectedclierror-when-dimension-is-missing',
+			evidence: 'examples-cases',
+			file: 'throws-expectedclierror-when-dimension-is-missing.json'
+		},
+		[
+			{
+				name: 'view without dimension',
+				input: { name: 'inventory', dimension: undefined },
+				error: { name: 'ExpectedCliError', message }
+			}
+		]
+	);
+});
