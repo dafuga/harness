@@ -70,3 +70,65 @@ test('Reads console history JSON and media from its directory', async () => {
 		rmSync(root, { recursive: true, force: true });
 	}
 });
+
+test('Throws SyntaxError when matching revision JSON is malformed', async () => {
+	const root = temporaryDirectory();
+	const path = `revisions/${'a'.repeat(40)}.json`;
+	try {
+		mkdirSync(join(root, 'revisions'));
+		writeFileSync(join(root, 'revisions', `${'a'.repeat(40)}.json`), '{broken');
+		vi.stubEnv('HARNESS_CONSOLE_DATA', root);
+		vi.stubEnv('HARNESS_SITE_ROOT', root);
+		let caught: unknown;
+		try {
+			await consoleData.json(path);
+		} catch (error) {
+			caught = error;
+		}
+		expect(caught).toBeInstanceOf(SyntaxError);
+		recordExampleCases(
+			{
+				unitId: 'reports.function.console-server',
+				symbol: 'consoleData.json',
+				state: 'throws-syntaxerror-when-matching-revision-json-is-malformed',
+				evidence: 'examples-cases',
+				file: 'throws-syntaxerror-when-matching-revision-json-is-malformed.json'
+			},
+			[{ name: 'malformed matching revision', input: { path, json: '{broken' }, error: 'SyntaxError' }]
+		);
+	} finally {
+		vi.unstubAllEnvs();
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test('Throws TypeError when matching revision JSON has a null root', async () => {
+	const root = temporaryDirectory();
+	const path = `revisions/${'b'.repeat(40)}.json`;
+	try {
+		mkdirSync(join(root, 'revisions'));
+		writeFileSync(join(root, 'revisions', `${'b'.repeat(40)}.json`), 'null');
+		vi.stubEnv('HARNESS_CONSOLE_DATA', root);
+		vi.stubEnv('HARNESS_SITE_ROOT', root);
+		let caught: unknown;
+		try {
+			await consoleData.json(path);
+		} catch (error) {
+			caught = error;
+		}
+		expect(caught).toBeInstanceOf(TypeError);
+		recordExampleCases(
+			{
+				unitId: 'reports.function.console-server',
+				symbol: 'consoleData.json',
+				state: 'throws-typeerror-when-matching-revision-json-has-a-null-root',
+				evidence: 'examples-cases',
+				file: 'throws-typeerror-when-matching-revision-json-has-a-null-root.json'
+			},
+			[{ name: 'null revision root', input: { path, json: 'null' }, error: 'TypeError' }]
+		);
+	} finally {
+		vi.unstubAllEnvs();
+		rmSync(root, { recursive: true, force: true });
+	}
+});

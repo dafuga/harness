@@ -15,6 +15,16 @@
 			"id": "reads-console-history-json-and-media-from-its-directory",
 			"title": "Reads console history JSON and media from its directory",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-syntaxerror-when-matching-revision-json-is-malformed",
+			"title": "Throws SyntaxError when matching revision JSON is malformed",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-matching-revision-json-has-a-null-root",
+			"title": "Throws TypeError when matching revision JSON has a null root",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -34,7 +44,9 @@
 			"kind": "output",
 			"states": [
 				"resolves-the-configured-console-history-directory",
-				"reads-console-history-json-and-media-from-its-directory"
+				"reads-console-history-json-and-media-from-its-directory",
+				"throws-syntaxerror-when-matching-revision-json-is-malformed",
+				"throws-typeerror-when-matching-revision-json-has-a-null-root"
 			],
 			"viewports": [],
 			"required": true
@@ -44,7 +56,9 @@
 			"kind": "assertions",
 			"states": [
 				"resolves-the-configured-console-history-directory",
-				"reads-console-history-json-and-media-from-its-directory"
+				"reads-console-history-json-and-media-from-its-directory",
+				"throws-syntaxerror-when-matching-revision-json-is-malformed",
+				"throws-typeerror-when-matching-revision-json-has-a-null-root"
 			],
 			"viewports": [],
 			"required": true
@@ -54,7 +68,9 @@
 			"kind": "trace",
 			"states": [
 				"resolves-the-configured-console-history-directory",
-				"reads-console-history-json-and-media-from-its-directory"
+				"reads-console-history-json-and-media-from-its-directory",
+				"throws-syntaxerror-when-matching-revision-json-is-malformed",
+				"throws-typeerror-when-matching-revision-json-has-a-null-root"
 			],
 			"viewports": [],
 			"required": true
