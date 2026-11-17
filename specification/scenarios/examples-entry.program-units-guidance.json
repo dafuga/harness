@@ -10,6 +10,11 @@
 			"id": "registers-guide-and-contract-review-commands",
 			"title": "Registers guide and contract review commands",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-guide-dependency-fails",
+			"title": "Throws Error when the guide dependency fails",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["registers-guide-and-contract-review-commands"],
+			"states": [
+				"registers-guide-and-contract-review-commands",
+				"throws-error-when-the-guide-dependency-fails"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["registers-guide-and-contract-review-commands"],
+			"states": [
+				"registers-guide-and-contract-review-commands",
+				"throws-error-when-the-guide-dependency-fails"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["registers-guide-and-contract-review-commands"],
+			"states": [
+				"registers-guide-and-contract-review-commands",
+				"throws-error-when-the-guide-dependency-fails"
+			],
 			"viewports": [],
 			"required": true
 		}
