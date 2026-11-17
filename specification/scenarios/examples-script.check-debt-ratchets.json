@@ -25,6 +25,11 @@
 			"id": "flags-a-grown-test-file-and-an-over-limit-shared-helper",
 			"title": "Flags a grown test file and an over-limit shared helper",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-debt-baseline-inspection-failure-when-an-inventory-ca",
+			"title": "Throws Debt baseline inspection failure when an inventory cannot be read",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -46,7 +51,8 @@
 				"lists-layer-edges-that-are-new-since-the-base",
 				"reports-reuse-findings-that-grew-and-counts-that-dropped",
 				"counts-only-imported-mkdtemp-and-mkdtempsync-calls",
-				"flags-a-grown-test-file-and-an-over-limit-shared-helper"
+				"flags-a-grown-test-file-and-an-over-limit-shared-helper",
+				"throws-debt-baseline-inspection-failure-when-an-inventory-ca"
 			],
 			"viewports": [],
 			"required": true
@@ -58,7 +64,8 @@
 				"lists-layer-edges-that-are-new-since-the-base",
 				"reports-reuse-findings-that-grew-and-counts-that-dropped",
 				"counts-only-imported-mkdtemp-and-mkdtempsync-calls",
-				"flags-a-grown-test-file-and-an-over-limit-shared-helper"
+				"flags-a-grown-test-file-and-an-over-limit-shared-helper",
+				"throws-debt-baseline-inspection-failure-when-an-inventory-ca"
 			],
 			"viewports": [],
 			"required": true
@@ -70,7 +77,8 @@
 				"lists-layer-edges-that-are-new-since-the-base",
 				"reports-reuse-findings-that-grew-and-counts-that-dropped",
 				"counts-only-imported-mkdtemp-and-mkdtempsync-calls",
-				"flags-a-grown-test-file-and-an-over-limit-shared-helper"
+				"flags-a-grown-test-file-and-an-over-limit-shared-helper",
+				"throws-debt-baseline-inspection-failure-when-an-inventory-ca"
 			],
 			"viewports": [],
 			"required": true

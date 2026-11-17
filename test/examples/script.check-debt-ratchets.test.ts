@@ -1,48 +1,24 @@
 import { test } from 'vitest';
+import { spawnSync } from 'node:child_process';
+import { writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-import {
-	layerRatchet,
-	reuseRatchet,
-	mkdtempCallCount,
-	temporaryCallRatchet
-} from '../../scripts/check-debt-ratchets';
-import type {
-	LayerEdge,
-	ReuseBaseline,
-	TemporaryCallBaseline
-} from '../../scripts/check-debt-ratchets.types';
+import { withTempRepo } from '../support/temporary';
+import { layerRatchet, reuseRatchet, mkdtempCallCount, temporaryCallRatchet } from '../../scripts/check-debt-ratchets';
+import type { LayerEdge, ReuseBaseline, TemporaryCallBaseline } from '../../scripts/check-debt-ratchets.types';
 
-const reportsEdge: LayerEdge = {
-	from: 'src/domain/reports',
-	to: 'src/ui/components',
-	todo: 'Route the report summary through the view model.'
-};
-const dbEdge: LayerEdge = {
-	from: 'src/server/db',
-	to: 'src/ui/format',
-	todo: 'Move the date formatter into src/core.'
-};
+const reportsEdge: LayerEdge = { from: 'src/domain/reports', to: 'src/ui/components', todo: 'Route the report summary through the view model.' };
+const dbEdge: LayerEdge = { from: 'src/server/db', to: 'src/ui/format', todo: 'Move the date formatter into src/core.' };
 const billingEdge: LayerEdge = {
 	from: 'src/domain/billing',
 	to: 'src/ui/components',
 	todo: 'Split the invoice table out of the domain layer.'
 };
 
-const importsMkdtemp = `import { mkdtemp } from 'node:fs/promises';
-
-export async function scratchDir() {
-	return mkdtemp('/tmp/case-');
-}
-`;
-const namespaceMkdtemp = `import * as fs from 'node:fs';
-
-const dir = fs.mkdtempSync('/tmp/case-');
-`;
-const readOnly = `import { readFile } from 'node:fs/promises';
-
-export const label = 'mkdtemp is only text here';
-`;
+const importsMkdtemp = `import { mkdtemp } from 'node:fs/promises';\nexport async function scratchDir() { return mkdtemp('/tmp/case-'); }`;
+const namespaceMkdtemp = `import * as fs from 'node:fs';\nconst dir = fs.mkdtempSync('/tmp/case-');`;
+const readOnly = `import { readFile } from 'node:fs/promises';\nexport const label = 'mkdtemp is only text here';`;
 
 test('Lists layer edges that are new since the base', () => {
 	const grown = layerRatchet([reportsEdge, dbEdge], [dbEdge, billingEdge]);
@@ -182,6 +158,41 @@ test('Flags a grown test file and an over-limit shared helper', () => {
 				name: 'shared helper has two direct calls',
 				input: { before: { 'test/support/temporary.ts': 1 } },
 				output: helper
+			}
+		]
+	);
+});
+
+test('Throws Debt baseline inspection failure when an inventory cannot be read', async () => {
+	const result = await withTempRepo(async ({ root, git }) => {
+		for (const [file, body] of [
+			['eslint.layer-allowlist.json', '{"edges":[]}'],
+			['eslint.reuse-baseline.json', '{}']
+		]) writeFileSync(resolve(root, file), body);
+		git('add', '.');
+		git('commit', '-m', 'chore: add ratchet fixture');
+		writeFileSync(resolve(root, 'eslint.layer-allowlist.json'), '{');
+		return spawnSync(
+			'env',
+			['HARNESS_DEBT_RATCHET_BASE=HEAD', 'bun', resolve('scripts/check-debt-ratchets.ts')],
+			{ cwd: root, encoding: 'utf8' }
+		);
+	});
+	expect(result.status).not.toBe(0);
+	expect(result.stderr).toContain('SyntaxError');
+	recordExampleCases(
+		{
+			unitId: 'script.check-debt-ratchets',
+			symbol: 'layerRatchet',
+			state: 'throws-debt-baseline-inspection-failure-when-an-inventory-ca',
+			evidence: 'examples-cases',
+			file: 'throws-debt-baseline-inspection-failure-when-an-inventory-ca.json'
+		},
+		[
+			{
+				name: 'current allowlist is invalid JSON',
+				input: { file: 'eslint.layer-allowlist.json', contents: '{' },
+				error: 'SyntaxError'
 			}
 		]
 	);
