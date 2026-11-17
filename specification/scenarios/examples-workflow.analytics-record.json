@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-workflow.analytics-record",
+	"title": "workflow.analytics-record examples",
+	"kind": "headless",
+	"units": ["workflow.analytics-record"],
+	"builds": [],
+	"states": [
+		{
+			"id": "resolves-the-requested-task-context",
+			"title": "Resolves the requested task context",
+			"coverage": "required"
+		},
+		{
+			"id": "skips-analytics-when-recording-is-disabled",
+			"title": "Skips analytics when recording is disabled",
+			"coverage": "required"
+		},
+		{
+			"id": "fingerprints-json-compatible-values",
+			"title": "Fingerprints JSON-compatible values",
+			"coverage": "required"
+		},
+		{
+			"id": "accepts-a-context-without-a-report",
+			"title": "Accepts a context without a report",
+			"coverage": "required"
+		},
+		{
+			"id": "resolves-the-primary-project-directory",
+			"title": "Resolves the primary project directory",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/workflow.analytics-record.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"resolves-the-requested-task-context",
+				"skips-analytics-when-recording-is-disabled",
+				"fingerprints-json-compatible-values",
+				"accepts-a-context-without-a-report",
+				"resolves-the-primary-project-directory"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"resolves-the-requested-task-context",
+				"skips-analytics-when-recording-is-disabled",
+				"fingerprints-json-compatible-values",
+				"accepts-a-context-without-a-report",
+				"resolves-the-primary-project-directory"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"resolves-the-requested-task-context",
+				"skips-analytics-when-recording-is-disabled",
+				"fingerprints-json-compatible-values",
+				"accepts-a-context-without-a-report",
+				"resolves-the-primary-project-directory"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
