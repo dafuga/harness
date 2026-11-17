@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-game.function.software3d",
+	"title": "game.function.software3d examples",
+	"kind": "headless",
+	"units": ["game.function.software3d"],
+	"builds": [],
+	"states": [
+		{
+			"id": "throws-when-the-canvas-has-no-2d-context",
+			"title": "Throws when the canvas has no 2D context",
+			"coverage": "required"
+		},
+		{
+			"id": "paints-the-built-in-scene-with-a-key-and-a-door",
+			"title": "Paints the built-in scene with a key and a door",
+			"coverage": "required"
+		},
+		{
+			"id": "renders-a-level-world-and-marks-the-canvas-as-3d",
+			"title": "Renders a level world and marks the canvas as 3d",
+			"coverage": "required"
+		},
+		{
+			"id": "hides-boxes-whose-visible-flag-is-exactly-false",
+			"title": "Hides boxes whose visible flag is exactly false",
+			"coverage": "required"
+		},
+		{
+			"id": "dispose-clears-the-canvas-and-allows-another-render",
+			"title": "Dispose clears the canvas and allows another render",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/game.function.software3d.test.ts",
+			"cwd": "packages/game",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"throws-when-the-canvas-has-no-2d-context",
+				"paints-the-built-in-scene-with-a-key-and-a-door",
+				"renders-a-level-world-and-marks-the-canvas-as-3d",
+				"hides-boxes-whose-visible-flag-is-exactly-false",
+				"dispose-clears-the-canvas-and-allows-another-render"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"throws-when-the-canvas-has-no-2d-context",
+				"paints-the-built-in-scene-with-a-key-and-a-door",
+				"renders-a-level-world-and-marks-the-canvas-as-3d",
+				"hides-boxes-whose-visible-flag-is-exactly-false",
+				"dispose-clears-the-canvas-and-allows-another-render"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"throws-when-the-canvas-has-no-2d-context",
+				"paints-the-built-in-scene-with-a-key-and-a-door",
+				"renders-a-level-world-and-marks-the-canvas-as-3d",
+				"hides-boxes-whose-visible-flag-is-exactly-false",
+				"dispose-clears-the-canvas-and-allows-another-render"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
