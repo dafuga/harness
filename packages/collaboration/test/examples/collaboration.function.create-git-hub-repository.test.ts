@@ -171,3 +171,53 @@ test('Reads records and compare-and-swaps a private branch', async () => {
 		message: 'Collaboration private-storage-required'
 	});
 });
+
+test('Throws Error when repository configuration is invalid', () => {
+	const invalidConfigurations = [
+		{
+			name: 'a public repository cannot store collaboration records',
+			input: {
+				...githubFixture().options,
+				repository: { ...githubFixture().repository, private: false }
+			}
+		},
+		{
+			name: 'a non-branch ref cannot store collaboration records',
+			input: { ...githubFixture().options, ref: 'refs/tags/v1' }
+		},
+		{
+			name: 'a traversal path cannot select collaboration records',
+			input: { ...githubFixture().options, path: '../records.json' }
+		}
+	];
+	const errors = invalidConfigurations.map(({ input }) => {
+		try {
+			createGitHubRepository(input);
+			return { code: 'no-error', message: '' };
+		} catch (error) {
+			return error instanceof Error && 'code' in error
+				? { code: String(error.code), message: error.message }
+				: { code: 'untyped-error', message: String(error) };
+		}
+	});
+	const stateId = 'throws-error-when-repository-configuration-is-invalid';
+	expect(errors.map(({ code }) => code)).toEqual([
+		'private-storage-required',
+		'private-storage-required',
+		'invalid-path'
+	]);
+	recordExampleCases(
+		{
+			unitId: 'collaboration.function.create-git-hub-repository',
+			symbol: 'createGitHubRepository',
+			state: stateId,
+			evidence: 'examples-cases',
+			file: `${stateId}.json`
+		},
+		invalidConfigurations.map(({ name, input }, index) => ({
+			name,
+			input: { repository: input.repository, ref: input.ref, path: input.path },
+			error: errors[index]
+		}))
+	);
+});

@@ -10,6 +10,11 @@
 			"id": "reads-records-and-compare-and-swaps-a-private-branch",
 			"title": "Reads records and compare-and-swaps a private branch",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-repository-configuration-is-invalid",
+			"title": "Throws Error when repository configuration is invalid",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["reads-records-and-compare-and-swaps-a-private-branch"],
+			"states": [
+				"reads-records-and-compare-and-swaps-a-private-branch",
+				"throws-error-when-repository-configuration-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["reads-records-and-compare-and-swaps-a-private-branch"],
+			"states": [
+				"reads-records-and-compare-and-swaps-a-private-branch",
+				"throws-error-when-repository-configuration-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["reads-records-and-compare-and-swaps-a-private-branch"],
+			"states": [
+				"reads-records-and-compare-and-swaps-a-private-branch",
+				"throws-error-when-repository-configuration-is-invalid"
+			],
 			"viewports": [],
 			"required": true
 		}
