@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-model.provider-switch",
+	"title": "model.provider-switch examples",
+	"kind": "headless",
+	"units": ["model.provider-switch"],
+	"builds": [],
+	"states": [
+		{
+			"id": "finds-a-provider-switch-by-session",
+			"title": "Finds a provider switch by session",
+			"coverage": "required"
+		},
+		{
+			"id": "finds-provider-switches-by-fields",
+			"title": "Finds provider switches by fields",
+			"coverage": "required"
+		},
+		{
+			"id": "creates-a-provider-switch-record",
+			"title": "Creates a provider switch record",
+			"coverage": "required"
+		},
+		{
+			"id": "updates-a-provider-switch-record",
+			"title": "Updates a provider switch record",
+			"coverage": "required"
+		},
+		{
+			"id": "deletes-a-provider-switch-record",
+			"title": "Deletes a provider switch record",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/model.provider-switch.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"finds-a-provider-switch-by-session",
+				"finds-provider-switches-by-fields",
+				"creates-a-provider-switch-record",
+				"updates-a-provider-switch-record",
+				"deletes-a-provider-switch-record"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"finds-a-provider-switch-by-session",
+				"finds-provider-switches-by-fields",
+				"creates-a-provider-switch-record",
+				"updates-a-provider-switch-record",
+				"deletes-a-provider-switch-record"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"finds-a-provider-switch-by-session",
+				"finds-provider-switches-by-fields",
+				"creates-a-provider-switch-record",
+				"updates-a-provider-switch-record",
+				"deletes-a-provider-switch-record"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
