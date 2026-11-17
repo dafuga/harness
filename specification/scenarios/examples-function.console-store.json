@@ -10,6 +10,11 @@
 			"id": "reads-prefixed-console-json-and-media-types",
 			"title": "Reads prefixed console JSON and media types",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-storage-error-when-bucket-lookup-rejects",
+			"title": "Throws storage error when bucket lookup rejects",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +32,30 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["reads-prefixed-console-json-and-media-types"],
+			"states": [
+				"reads-prefixed-console-json-and-media-types",
+				"throws-storage-error-when-bucket-lookup-rejects"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["reads-prefixed-console-json-and-media-types"],
+			"states": [
+				"reads-prefixed-console-json-and-media-types",
+				"throws-storage-error-when-bucket-lookup-rejects"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["reads-prefixed-console-json-and-media-types"],
+			"states": [
+				"reads-prefixed-console-json-and-media-types",
+				"throws-storage-error-when-bucket-lookup-rejects"
+			],
 			"viewports": [],
 			"required": true
 		}

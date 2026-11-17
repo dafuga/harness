@@ -52,3 +52,29 @@ test('Reads prefixed console JSON and media types', async () => {
 		]
 	);
 });
+
+test('Throws storage error when bucket lookup rejects', async () => {
+	const failure = new Error('storage unavailable');
+	const storage: ConsoleBucket = {
+		get: async () => Promise.reject(failure)
+	};
+	const store = consoleStore(storage, 'console/history');
+
+	await expect(store.json('index.json')).rejects.toThrow('storage unavailable');
+	recordExampleCases(
+		{
+			unitId: 'function.console-store',
+			symbol: 'consoleStore',
+			state: 'throws-storage-error-when-bucket-lookup-rejects',
+			evidence: 'examples-cases',
+			file: 'throws-storage-error-when-bucket-lookup-rejects.json'
+		},
+		[
+			{
+				name: 'propagates a rejected object lookup',
+				input: { prefix: 'console/history', path: 'index.json', rejection: 'storage unavailable' },
+				error: { message: failure.message }
+			}
+		]
+	);
+});
