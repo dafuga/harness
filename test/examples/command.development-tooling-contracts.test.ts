@@ -103,3 +103,76 @@ test('Registers contracts commands and runs a read-only list', async () => {
 		recordCases({ returned, subcommands, output, limitError, depthError });
 	});
 });
+
+test('Throws InvalidArgumentError for invalid limit and depth tokens', async () => {
+	const limitError = await parserError(['contracts', 'list', '--limit', '01']);
+	const depthError = await parserError(['contracts', 'map', 'src', '--depth', '11']);
+	expect(summarizeError(limitError)).toMatchObject({
+		name: 'CommanderError',
+		message: expect.stringMatching(/positive integer/i)
+	});
+	expect(summarizeError(depthError)).toMatchObject({
+		name: 'CommanderError',
+		message: expect.stringMatching(/integer from 0 to 10/i)
+	});
+	recordExampleCases(
+		{
+			unitId: 'command.development-tooling-contracts',
+			symbol: 'ContractsCommand.register',
+			state: 'throws-invalidargumenterror-for-invalid-limit-and-depth-toke',
+			evidence: 'examples-cases',
+			file: 'throws-invalidargumenterror-for-invalid-limit-and-depth-toke.json'
+		},
+		[
+			{
+				name: 'a leading-zero limit is rejected',
+				input: { argv: ['contracts', 'list', '--limit', '01'] },
+				error: summarizeError(limitError)
+			},
+			{
+				name: 'a depth above ten is rejected',
+				input: { argv: ['contracts', 'map', 'src', '--depth', '11'] },
+				error: summarizeError(depthError)
+			}
+		]
+	);
+});
+
+test('Throws ExpectedCliError when a read-only query has no matching target', async () => {
+	await withTempDir('harness-contracts-missing-target-', async (root) => {
+		await mkdir(join(root, 'specification', 'units'), { recursive: true });
+		const program = new Command().name('harness').exitOverride();
+		register(program);
+		let caught: unknown;
+		try {
+			await program.parseAsync(
+				['contracts', 'show', 'missing.unit', '--root', root],
+				{ from: 'user' }
+			);
+		} catch (error) {
+			caught = error;
+		}
+		expect(summarizeError(caught)).toMatchObject({
+			name: 'ExpectedCliError',
+			message: expect.stringContaining('No contracts match')
+		});
+		recordExampleCases(
+			{
+				unitId: 'command.development-tooling-contracts',
+				symbol: 'ContractsCommand.register',
+			state: 'throws-expectedclierror-when-a-read-only-query-has-no-matchi',
+				evidence: 'examples-cases',
+			file: 'throws-expectedclierror-when-a-read-only-query-has-no-matchi.json'
+			},
+			[
+				{
+					name: 'show reports a missing unit from an empty stored catalog',
+					input: {
+						argv: ['contracts', 'show', 'missing.unit', '--root', '<temporary-root>']
+					},
+					error: summarizeError(caught)
+				}
+			]
+		);
+	});
+});

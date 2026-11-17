@@ -10,6 +10,16 @@
 			"id": "registers-contracts-commands-and-runs-a-read-only-list",
 			"title": "Registers contracts commands and runs a read-only list",
 			"coverage": "required"
+		},
+		{
+			"id": "throws-invalidargumenterror-for-invalid-limit-and-depth-toke",
+			"title": "Throws InvalidArgumentError for invalid limit and depth tokens",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-a-read-only-query-has-no-matchi",
+			"title": "Throws ExpectedCliError when a read-only query has no matching target",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -27,21 +37,33 @@
 		{
 			"id": "examples-output",
 			"kind": "output",
-			"states": ["registers-contracts-commands-and-runs-a-read-only-list"],
+			"states": [
+				"registers-contracts-commands-and-runs-a-read-only-list",
+				"throws-invalidargumenterror-for-invalid-limit-and-depth-toke",
+				"throws-expectedclierror-when-a-read-only-query-has-no-matchi"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-assertions",
 			"kind": "assertions",
-			"states": ["registers-contracts-commands-and-runs-a-read-only-list"],
+			"states": [
+				"registers-contracts-commands-and-runs-a-read-only-list",
+				"throws-invalidargumenterror-for-invalid-limit-and-depth-toke",
+				"throws-expectedclierror-when-a-read-only-query-has-no-matchi"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "examples-cases",
 			"kind": "trace",
-			"states": ["registers-contracts-commands-and-runs-a-read-only-list"],
+			"states": [
+				"registers-contracts-commands-and-runs-a-read-only-list",
+				"throws-invalidargumenterror-for-invalid-limit-and-depth-toke",
+				"throws-expectedclierror-when-a-read-only-query-has-no-matchi"
+			],
 			"viewports": [],
 			"required": true
 		}
