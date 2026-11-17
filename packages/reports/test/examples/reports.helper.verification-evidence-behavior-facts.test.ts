@@ -33,3 +33,32 @@ test('Formats paired scenario outcomes and highlighted duration', () => {
 		]
 	);
 });
+
+test('Throws Input access error when reading a scenario title', () => {
+	const scenario = {
+		id: 'checkout',
+		get title(): string {
+			throw new Error('title access failed');
+		},
+		before: null,
+		after: 'failed'
+	} as BehaviorScenario;
+	const input = { duration: '1s', scenarios: [scenario], paired: false };
+	expect(() => behaviorFacts(input.duration, input.scenarios, input.paired)).toThrow('title access failed');
+	recordExampleCases(
+		{
+			unitId: 'reports.helper.verification-evidence-behavior-facts',
+			symbol: 'behaviorFacts',
+			state: 'throws-input-access-error-when-reading-a-scenario-title',
+			evidence: 'examples-cases',
+			file: 'throws-input-access-error-when-reading-a-scenario-title.json'
+		},
+		[
+			{
+				name: 'propagates an exception from the scenario title getter',
+				input: { duration: '1s', scenarios: [{ id: 'checkout', title: '[throws]', before: null, after: 'failed' }], paired: false },
+				error: 'title access failed'
+			}
+		]
+	);
+});
