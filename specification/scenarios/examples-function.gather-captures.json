@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.gather-captures",
+	"title": "function.gather-captures examples",
+	"kind": "headless",
+	"units": ["function.gather-captures"],
+	"builds": [],
+	"states": [
+		{
+			"id": "gathers-a-declared-benchmark-file-into-a-record-ready-entry",
+			"title": "Gathers a declared benchmark file into a record-ready entry",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-a-declared-capture-file-that-was-never-written",
+			"title": "Reports a declared capture file that was never written",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-a-capture-file-over-the-maxcapturebytes-limit",
+			"title": "Refuses a capture file over the maxCaptureBytes limit",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-an-index-that-is-a-symlink",
+			"title": "Refuses an index that is a symlink",
+			"coverage": "required"
+		},
+		{
+			"id": "returns-no-captures-when-the-evidence-index-is-missing",
+			"title": "Returns no captures when the evidence index is missing",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.gather-captures.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"gathers-a-declared-benchmark-file-into-a-record-ready-entry",
+				"reports-a-declared-capture-file-that-was-never-written",
+				"refuses-a-capture-file-over-the-maxcapturebytes-limit",
+				"refuses-an-index-that-is-a-symlink",
+				"returns-no-captures-when-the-evidence-index-is-missing"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"gathers-a-declared-benchmark-file-into-a-record-ready-entry",
+				"reports-a-declared-capture-file-that-was-never-written",
+				"refuses-a-capture-file-over-the-maxcapturebytes-limit",
+				"refuses-an-index-that-is-a-symlink",
+				"returns-no-captures-when-the-evidence-index-is-missing"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"gathers-a-declared-benchmark-file-into-a-record-ready-entry",
+				"reports-a-declared-capture-file-that-was-never-written",
+				"refuses-a-capture-file-over-the-maxcapturebytes-limit",
+				"refuses-an-index-that-is-a-symlink",
+				"returns-no-captures-when-the-evidence-index-is-missing"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
