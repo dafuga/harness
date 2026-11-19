@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-removed",
+	"symbol": "entityRemoved",
+	"cases": [
+		{
+			"name": "no parent side yields no removals",
+			"input": {
+				"before": null,
+				"after": [
+					{
+						"scenario": "orders-page",
+						"states": [
+							"default",
+							"empty",
+							"denied"
+						]
+					},
+					{
+						"scenario": "checkout",
+						"states": [
+							"pay",
+							"receipt"
+						]
+					}
+				]
+			},
+			"output": []
+		}
+	]
+}

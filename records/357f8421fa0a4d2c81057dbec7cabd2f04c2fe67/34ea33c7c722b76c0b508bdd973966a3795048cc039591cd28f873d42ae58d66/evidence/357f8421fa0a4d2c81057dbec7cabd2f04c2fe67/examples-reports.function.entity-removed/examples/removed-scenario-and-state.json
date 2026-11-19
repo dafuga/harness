@@ -1,0 +1,119 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-removed",
+	"symbol": "entityRemoved",
+	"cases": [
+		{
+			"name": "two states of a kept scenario dropped",
+			"input": {
+				"before": [
+					{
+						"scenario": "orders-page",
+						"states": [
+							"default",
+							"empty",
+							"denied"
+						]
+					},
+					{
+						"scenario": "checkout",
+						"states": [
+							"pay",
+							"receipt"
+						]
+					}
+				],
+				"after": [
+					{
+						"scenario": "orders-page",
+						"states": [
+							"default"
+						]
+					},
+					{
+						"scenario": "checkout",
+						"states": [
+							"pay",
+							"receipt"
+						]
+					}
+				]
+			},
+			"output": [
+				"Orders page over synthetic orders: the state empty.",
+				"Orders page over synthetic orders: the state denied."
+			]
+		},
+		{
+			"name": "a whole scenario dropped with its states",
+			"input": {
+				"before": [
+					{
+						"scenario": "orders-page",
+						"states": [
+							"default",
+							"empty",
+							"denied"
+						]
+					},
+					{
+						"scenario": "checkout",
+						"states": [
+							"pay",
+							"receipt"
+						]
+					}
+				],
+				"after": [
+					{
+						"scenario": "orders-page",
+						"states": [
+							"default",
+							"empty",
+							"denied"
+						]
+					}
+				]
+			},
+			"output": [
+				"Checkout over synthetic orders: the scenario, with its states pay, receipt."
+			]
+		},
+		{
+			"name": "a scenario and states dropped together",
+			"input": {
+				"before": [
+					{
+						"scenario": "orders-page",
+						"states": [
+							"default",
+							"empty",
+							"denied"
+						]
+					},
+					{
+						"scenario": "checkout",
+						"states": [
+							"pay",
+							"receipt"
+						]
+					}
+				],
+				"after": [
+					{
+						"scenario": "orders-page",
+						"states": [
+							"default"
+						]
+					}
+				]
+			},
+			"output": [
+				"Orders page over synthetic orders: the state empty.",
+				"Orders page over synthetic orders: the state denied.",
+				"Checkout over synthetic orders: the scenario, with its states pay, receipt."
+			]
+		}
+	]
+}
