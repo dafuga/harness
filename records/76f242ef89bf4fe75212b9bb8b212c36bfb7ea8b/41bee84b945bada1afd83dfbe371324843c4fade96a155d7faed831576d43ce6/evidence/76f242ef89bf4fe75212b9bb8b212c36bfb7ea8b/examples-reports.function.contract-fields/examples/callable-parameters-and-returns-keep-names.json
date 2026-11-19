@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.contract-fields",
+	"symbol": "callableContracts",
+	"cases": [
+		{
+			"name": "slug",
+			"input": "slug",
+			"output": {
+				"signature": "slug(text: string): string",
+				"parameter": {
+					"name": "text",
+					"type": "string",
+					"required": true,
+					"source": "declared",
+					"examples": [
+						{
+							"form": "literal",
+							"value": "Hello World",
+							"text": "\"Hello World\""
+						}
+					]
+				},
+				"returned": {
+					"name": "value",
+					"type": "string",
+					"source": "declared",
+					"examples": [
+						{
+							"form": "literal",
+							"value": "hello-world",
+							"text": "\"hello-world\""
+						}
+					]
+				}
+			}
+		}
+	]
+}

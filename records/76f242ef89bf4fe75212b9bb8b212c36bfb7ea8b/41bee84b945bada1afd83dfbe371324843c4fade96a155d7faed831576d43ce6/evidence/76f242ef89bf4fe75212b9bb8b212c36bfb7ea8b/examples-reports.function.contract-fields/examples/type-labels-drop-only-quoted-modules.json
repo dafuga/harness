@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.contract-fields",
+	"symbol": "typeLabel",
+	"cases": [
+		{
+			"name": "import('../x/Harness.types').HarnessUnit",
+			"input": "import('../x/Harness.types').HarnessUnit",
+			"output": "HarnessUnit"
+		},
+		{
+			"name": "import(\"./Item.types\").Item[]",
+			"input": "import(\"./Item.types\").Item[]",
+			"output": "Item[]"
+		},
+		{
+			"name": "Item  |\n\tundefined",
+			"input": "Item  |\n\tundefined",
+			"output": "Item | undefined"
+		},
+		{
+			"name": "import('./only.types')",
+			"input": "import('./only.types')",
+			"output": "module"
+		},
+		{
+			"name": "import(./unquoted).Kept",
+			"input": "import(./unquoted).Kept",
+			"output": "import(./unquoted).Kept"
+		}
+	]
+}
