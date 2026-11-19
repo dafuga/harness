@@ -1,0 +1,82 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-usage",
+	"symbol": "usageGroups",
+	"cases": [
+		{
+			"name": "repeats once, platforms left out, navigation order",
+			"input": {
+				"items": [
+					{
+						"id": "page.a",
+						"category": "pages"
+					},
+					{
+						"id": "component.c",
+						"category": "components"
+					},
+					{
+						"id": "component.c",
+						"category": "components"
+					},
+					{
+						"id": "platform.p",
+						"category": "platforms"
+					},
+					{
+						"id": "function.f",
+						"category": "functions"
+					},
+					{
+						"id": "component.d",
+						"category": "components"
+					}
+				]
+			},
+			"output": [
+				{
+					"title": "Pages",
+					"icon": "pages",
+					"items": [
+						{
+							"id": "page.a",
+							"category": "pages"
+						}
+					]
+				},
+				{
+					"title": "Components",
+					"icon": "components",
+					"items": [
+						{
+							"id": "component.c",
+							"category": "components"
+						},
+						{
+							"id": "component.d",
+							"category": "components"
+						}
+					]
+				},
+				{
+					"title": "Functions",
+					"icon": "functions",
+					"items": [
+						{
+							"id": "function.f",
+							"category": "functions"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "no consumers gives no groups",
+			"input": {
+				"items": []
+			},
+			"output": []
+		}
+	]
+}
