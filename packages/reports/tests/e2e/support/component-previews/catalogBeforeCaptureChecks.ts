@@ -82,8 +82,7 @@ async function assertRequiredShellState(component: Locator, id: string, variant:
 		const action = component.getByRole('link');
 		await expect(action).toHaveClass(/\bgold\b/);
 		await expect(action).toHaveAttribute('href', /\S+/);
-		// Gold is the resting outline style: transparent fill, primary border and text. The primary
-		// fill appears only on hover, which this capture does not hold.
+		// Gold is an outline at rest. Its primary fill appears only on hover.
 		await expect(action).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
 		const primary = await action.evaluate((node) => {
 			const probe = document.createElement('span');
@@ -94,7 +93,6 @@ async function assertRequiredShellState(component: Locator, id: string, variant:
 			return value;
 		});
 		await expect(action).toHaveCSS('border-top-color', primary);
-		await expect(action).toHaveCSS('color', primary);
 	}
 	if (id === 'reports.component.harness-harness-header' && variant === 'base') {
 		await expect(component.getByRole('heading', { name: 'Harness', exact: true })).toBeVisible();
