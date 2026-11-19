@@ -10,7 +10,9 @@
 	"owns": {
 		"source": [
 			"src/services/agents-providers/module-task-analytics-service/model-analytics.d.ts",
-			"src/services/agents-providers/module-task-analytics-service/model-analytics.js"
+			"src/services/agents-providers/module-task-analytics-service/model-analytics.js",
+			"src/services/agents-providers/module-task-analytics-service/model-pricing.js",
+			"src/services/agents-providers/module-task-analytics-service/model-run-record.js"
 		],
 		"symbols": [
 			"estimateApiCost",
@@ -30,19 +32,58 @@
 			"RunRecord",
 			"ModelRunSummaryRow",
 			"ModelRunSummary",
+			"estimateApiCost",
+			"RATE_CARD",
+			"classifyTaskType",
+			"createRunRecord",
+			"difficultyForFiles",
 			"RUN_SCHEMA_VERSION",
+			"summarizeModelRuns",
+			"recommendModels",
 			"RATE_CARD",
 			"estimateApiCost",
+			"RUN_SCHEMA_VERSION",
 			"classifyTaskType",
 			"difficultyForFiles",
-			"createRunRecord",
-			"summarizeModelRuns",
-			"recommendModels"
+			"createRunRecord"
 		]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "summarizeModelRuns.records",
+				"type": "RunRecord[]",
+				"required": true,
+				"description": "Run records to deduplicate by ID before calculating summaries and weekly trends."
+			},
+			{
+				"name": "recommendModels.records",
+				"type": "RunRecord[]",
+				"required": true,
+				"description": "Run records from which to rank priced first attempts with observable outcomes."
+			},
+			{
+				"name": "recommendModels.minSamples",
+				"type": "number",
+				"required": false,
+				"default": 5,
+				"description": "Minimum number of priced first attempts required to qualify a model and effort."
+			},
+			{
+				"name": "recommendModels.reliability",
+				"type": "number",
+				"required": false,
+				"default": 0.8,
+				"description": "Minimum fraction of successful first attempts required to qualify."
+			},
+			{
+				"name": "recommendModels.allCandidates",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "When true, include every qualifying configuration in cost order."
+			},
 			{
 				"name": "estimateApiCost.model",
 				"type": "string",
@@ -85,39 +126,6 @@
 				"type": "RunRecordInput",
 				"required": true,
 				"description": "Source identity, task metadata, timing, outcome, difficulty, token usage and attributable costs for one run."
-			},
-			{
-				"name": "summarizeModelRuns.records",
-				"type": "RunRecord[]",
-				"required": true,
-				"description": "Run records to deduplicate by ID before calculating summaries and weekly trends."
-			},
-			{
-				"name": "recommendModels.records",
-				"type": "RunRecord[]",
-				"required": true,
-				"description": "Run records from which to rank priced first attempts with observable outcomes."
-			},
-			{
-				"name": "recommendModels.minSamples",
-				"type": "number",
-				"required": false,
-				"default": 5,
-				"description": "Minimum number of priced first attempts required to qualify a model and effort."
-			},
-			{
-				"name": "recommendModels.reliability",
-				"type": "number",
-				"required": false,
-				"default": 0.8,
-				"description": "Minimum fraction of successful first attempts required to qualify."
-			},
-			{
-				"name": "recommendModels.allCandidates",
-				"type": "boolean",
-				"required": false,
-				"default": false,
-				"description": "When true, include every qualifying configuration in cost order."
 			}
 		],
 		"outputs": [
@@ -165,6 +173,67 @@
 		"errors": [],
 		"errorStatus": "declared",
 		"operations": [
+			{
+				"name": "summarizeModelRuns",
+				"inputs": [
+					{
+						"name": "summarizeModelRuns.records",
+						"type": "RunRecord[]",
+						"required": true,
+						"description": "Run records to deduplicate by ID before calculating summaries and weekly trends."
+					}
+				],
+				"outputs": [
+					{
+						"name": "summarizeModelRuns",
+						"type": "ReturnType<typeof summarizeModelRuns>",
+						"description": "Model and effort rows, task type totals, weekly rows and first-attempt recommendations."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "recommendModels",
+				"inputs": [
+					{
+						"name": "recommendModels.records",
+						"type": "RunRecord[]",
+						"required": true,
+						"description": "Run records from which to rank priced first attempts with observable outcomes."
+					},
+					{
+						"name": "recommendModels.minSamples",
+						"type": "number",
+						"required": false,
+						"default": 5,
+						"description": "Minimum number of priced first attempts required to qualify a model and effort."
+					},
+					{
+						"name": "recommendModels.reliability",
+						"type": "number",
+						"required": false,
+						"default": 0.8,
+						"description": "Minimum fraction of successful first attempts required to qualify."
+					},
+					{
+						"name": "recommendModels.allCandidates",
+						"type": "boolean",
+						"required": false,
+						"default": false,
+						"description": "When true, include every qualifying configuration in cost order."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recommendModels",
+						"type": "ReturnType<typeof recommendModels>",
+						"description": "Qualifying model and effort rows ranked by the upper API-equivalent cost per successful task."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
 			{
 				"name": "estimateApiCost",
 				"inputs": [
@@ -259,67 +328,6 @@
 						"name": "createRunRecord",
 						"type": "RunRecord",
 						"description": "A versioned run record with normalized usage, API cost bounds and any independently attributable charges."
-					}
-				],
-				"errors": [],
-				"errorStatus": "declared"
-			},
-			{
-				"name": "summarizeModelRuns",
-				"inputs": [
-					{
-						"name": "summarizeModelRuns.records",
-						"type": "RunRecord[]",
-						"required": true,
-						"description": "Run records to deduplicate by ID before calculating summaries and weekly trends."
-					}
-				],
-				"outputs": [
-					{
-						"name": "summarizeModelRuns",
-						"type": "ReturnType<typeof summarizeModelRuns>",
-						"description": "Model and effort rows, task type totals, weekly rows and first-attempt recommendations."
-					}
-				],
-				"errors": [],
-				"errorStatus": "declared"
-			},
-			{
-				"name": "recommendModels",
-				"inputs": [
-					{
-						"name": "recommendModels.records",
-						"type": "RunRecord[]",
-						"required": true,
-						"description": "Run records from which to rank priced first attempts with observable outcomes."
-					},
-					{
-						"name": "recommendModels.minSamples",
-						"type": "number",
-						"required": false,
-						"default": 5,
-						"description": "Minimum number of priced first attempts required to qualify a model and effort."
-					},
-					{
-						"name": "recommendModels.reliability",
-						"type": "number",
-						"required": false,
-						"default": 0.8,
-						"description": "Minimum fraction of successful first attempts required to qualify."
-					},
-					{
-						"name": "recommendModels.allCandidates",
-						"type": "boolean",
-						"required": false,
-						"default": false,
-						"description": "When true, include every qualifying configuration in cost order."
-					}
-				],
-				"outputs": [
-					{
-						"name": "recommendModels",
-						"type": "ReturnType<typeof recommendModels>",
-						"description": "Qualifying model and effort rows ranked by the upper API-equivalent cost per successful task."
 					}
 				],
 				"errors": [],
