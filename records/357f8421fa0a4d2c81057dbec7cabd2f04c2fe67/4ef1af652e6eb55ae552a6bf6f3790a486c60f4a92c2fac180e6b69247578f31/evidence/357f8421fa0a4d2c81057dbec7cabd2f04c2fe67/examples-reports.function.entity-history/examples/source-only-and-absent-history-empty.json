@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-history",
+	"symbol": "entityHistory",
+	"cases": [
+		{
+			"name": "source-only unit (list) has no timings",
+			"input": {
+				"unit": "app.component.order-list",
+				"rows": [
+					"8b41d0720e252681deac809969b3faf8181dac30",
+					"3f9c2a180ce54b0df3f6cadf02d1192568f6d7c6"
+				]
+			},
+			"output": []
+		},
+		{
+			"name": "unit with no benchmark (search) has no timings",
+			"input": {
+				"unit": "app.component.search-box",
+				"rows": [
+					"8b41d0720e252681deac809969b3faf8181dac30",
+					"3f9c2a180ce54b0df3f6cadf02d1192568f6d7c6"
+				]
+			},
+			"output": []
+		}
+	]
+}
