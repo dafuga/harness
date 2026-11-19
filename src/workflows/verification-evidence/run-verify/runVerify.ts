@@ -96,6 +96,7 @@ async function verifyFull(git: GitAdapter, commit: string, options: VerifyOption
 		sourceHashes,
 		impact,
 		config,
+		verificationProfile: options.profile,
 		requirePerformance: requiresPerformance(options, config),
 		testTimeoutMs: options.testTimeout ? Number(options.testTimeout) : undefined,
 		entity: options.entity,
@@ -203,13 +204,21 @@ export function renderVerify(stored: VerifyResult): string {
 			]
 		: [];
 	return [
-		`Verification ${record.status} for ${record.source.commit}.`,
+		`${record.lite ? 'Lite verification' : 'Verification'} ${record.lite?.status ?? record.status} for ${record.source.commit}.`,
 		...widened,
 		`Tests: ${record.tests.length} run. Scenarios: ${ran} verified, ${record.scenarios.length - ran} referenced.`,
+		...renderPending(record.lite),
 		...record.failures.map((failure) => `  ${failure}`),
 		`Record ${record.id.slice(0, 12)} in ${stored.directory}`,
 		...renderAttachment(stored.attachment)
 	].join('\n');
+}
+
+function renderPending(lite: VerifyResult['record']['lite']): string[] {
+	if (!lite) return [];
+	return [
+		`Pending full verification: ${lite.pendingChecks.length} checks, ${lite.pendingEvidence.length} evidence slots, ${lite.pendingSetup.length} setup steps, ${lite.pendingTools.length} tools.`
+	];
 }
 
 function requiresPerformance(options: VerifyOptions, config: VerifyConfig): boolean {

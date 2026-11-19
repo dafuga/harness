@@ -33,7 +33,8 @@ export function resourcePressure(
 export function memoryReserve(sample: ResourceSnapshot, config: ResourceConfig): number {
 	return Math.max(
 		(sample.memoryTotalBytes * config.memoryReservePercent) / 100,
-		config.minMemoryReserveMiB * mib
+		// The absolute floor must leave working memory on small machines and cgroups.
+		Math.min(config.minMemoryReserveMiB * mib, sample.memoryTotalBytes / 2)
 	);
 }
 export function impossibleRequest(

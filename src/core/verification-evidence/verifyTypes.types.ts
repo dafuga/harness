@@ -1,6 +1,11 @@
 // @harness-uid u_wwu3xgisul
 import type { z } from 'zod';
-import type { verifyConfigSchema, captureLineSchema, workloadSchema } from './verifyTypes';
+import type {
+	verifyConfigSchema,
+	captureLineSchema,
+	workloadSchema,
+	verificationModes
+} from './verifyTypes';
 
 type ParsedVerifyConfig = z.infer<typeof verifyConfigSchema>;
 
@@ -15,3 +20,4 @@ export type VerifyConfig = Omit<ParsedVerifyConfig, 'profiles'> &
 export type CaptureLine = z.infer<typeof captureLineSchema>;
 
 export type Workload = z.infer<typeof workloadSchema>;
+export type VerificationMode = (typeof verificationModes)[number];

@@ -10,7 +10,8 @@ export interface PlannedCheck {
 	/** Short name used in messages. */
 	name: string;
 	kind: 'unit' | 'integration' | 'e2e';
-	runner: 'vitest' | 'playwright' | 'command';
+	runner: ScenarioManifest['tests'][number]['runner'];
+	fullOnly?: true;
 	target: string;
 	/** Directory inside the snapshot the command runs in. */
 	cwd: string;

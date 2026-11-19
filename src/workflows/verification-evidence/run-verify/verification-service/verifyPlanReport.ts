@@ -8,7 +8,8 @@ export type { VerifyPlanReport } from './verifyPlanReport.types';
 /** Reports compatible command shapes without changing, reordering, or executing planned checks. */
 export function verifyPlanReport(
 	plan: PlannedCheck[],
-	source: VerifyPlanReport['source']
+	source: VerifyPlanReport['source'],
+	pendingChecks: PlannedCheck[] = []
 ): VerifyPlanReport {
 	const grouped = compatibleGroups(plan);
 	const { candidates, candidateByCheck } = candidateGroups(grouped);
@@ -22,6 +23,7 @@ export function verifyPlanReport(
 			'Does not restore evidence or run planned checks; impact analysis may invoke the selected local kernel.',
 		source,
 		plannedChecks: plan.length,
+		...(pendingChecks.length ? { pendingChecks: pendingChecks.map((check) => check.id) } : {}),
 		candidateGroups: candidates.length,
 		candidateChecks,
 		singletons: checks.filter((check) => check.decision === 'singleton').length,

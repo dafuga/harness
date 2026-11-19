@@ -40,7 +40,7 @@ export const captureSchema = z.strictObject({
 
 export const scenarioResultSchema = z.strictObject({
 	id: identifier,
-	status: z.enum(['passed', 'failed', 'referenced']),
+	status: z.enum(['passed', 'failed', 'referenced', 'pending']),
 	/** Revision whose code produced the captures; differs from the source only when referenced. */
 	testedRevision: commit,
 	referencedRecord: text.optional(),
@@ -130,7 +130,7 @@ export const measurementSchema = z.strictObject({
 	artifacts: z.array(artifactSchema)
 });
 
-export const verificationRecordSchema = z.strictObject({
+const verificationRecordObject = z.strictObject({
 	schemaVersion: z.literal(1),
 	/** Source-rederived component contracts; absent legacy formats come from the source registry. */
 	componentSchemaVersion: z.literal(2).optional(),
@@ -152,6 +152,23 @@ export const verificationRecordSchema = z.strictObject({
 	startedAt: text,
 	finishedAt: text,
 	status: outcome,
+	/** Lite receipts carry their own outcome while the whole-commit status remains failed. */
+	lite: z
+		.strictObject({
+			status: outcome,
+			pendingChecks: z.array(text),
+			pendingSetup: z.array(text),
+			pendingTools: z.array(identifier),
+			pendingEvidence: z.array(
+				z.strictObject({
+					scenario: identifier,
+					evidence: identifier,
+					state: identifier,
+					viewport: identifier.optional()
+				})
+			)
+		})
+		.optional(),
 	components: z.array(componentVersionSchema),
 	measurements: z.array(measurementSchema),
 	impact: z.strictObject({
@@ -170,7 +187,7 @@ export const verificationRecordSchema = z.strictObject({
 		z.strictObject({
 			id: text,
 			kind: z.enum(['unit', 'integration', 'e2e']),
-			runner: z.enum(['vitest', 'playwright', 'command']),
+			runner: z.enum(['vitest', 'playwright', 'command', 'godot']),
 			target: text,
 			status: outcome,
 			durationMs: z.number().nonnegative(),
@@ -211,6 +228,14 @@ export const verificationRecordSchema = z.strictObject({
 	gates: z.record(z.string(), outcome).optional(),
 	failures: z.array(text)
 });
+
+export const verificationRecordSchema = verificationRecordObject.refine(
+	(record) => !record.lite || record.status === 'failed',
+	{
+		path: ['status'],
+		message: 'Lite verification cannot prove a full commit.'
+	}
+);
 
 export type {
 	Capture,

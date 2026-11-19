@@ -2,6 +2,7 @@
 import type { ImpactReport } from '../../../../../core/development-tooling/impactTypes';
 import type {
 	ScenarioResult,
+	VerificationRecord,
 	VerificationProfile
 } from '../../../../../core/verification-evidence/verificationTypes';
 import type { VerificationStoreRepository } from '../../../../../repositories/verification-evidence/VerificationStoreRepository';
@@ -31,6 +32,11 @@ export interface AssemblyContext {
 export interface AssemblyInput {
 	startedAt: string;
 	executed: Executed;
-	scenarios: Array<{ result: ScenarioResult; failures: string[] }>;
+	scenarios: Array<{
+		result: ScenarioResult;
+		failures: string[];
+		pending?: NonNullable<VerificationRecord['lite']>['pendingEvidence'];
+	}>;
 	referenced: ScenarioResult[];
+	lite?: Omit<NonNullable<VerificationRecord['lite']>, 'status' | 'pendingEvidence'>;
 }

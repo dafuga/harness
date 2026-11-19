@@ -190,7 +190,8 @@ export const scenarioManifestSchema = z.strictObject({
 			z.strictObject({
 				id: identifier,
 				kind: z.enum(['unit', 'integration', 'e2e']),
-				runner: z.enum(['vitest', 'playwright', 'command']),
+				runner: z.enum(['vitest', 'playwright', 'command', 'godot']),
+				fullOnly: z.literal(true).optional(),
 				target: text,
 				cwd: z.string().optional(),
 				/** Hard limit for this check; the configured default applies when omitted. */
