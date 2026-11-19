@@ -1,0 +1,491 @@
+{
+	"id": "0b6a7d5242e8c632cca8a18c752b2facf0b09b59a6bc3e647985a8da52a05c14",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/Users/danielfugere/projects/harness-z5jp8p",
+	"source": {
+		"commit": "8303ae615135c6d42a71738328e3f3df413bde8e",
+		"tree": "b4633f6170933255193f3e77bb7d3f5d5b280e9a",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-19T21:30:23.483Z",
+	"finishedAt": "2026-11-19T21:32:03.313Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "service.unit-runtime",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "6d86e8c2b679f43596a952e9854e4f809d9382c888dd4f158c462fc6f812e3d2",
+			"source": "b37f2b0e44e0e87e8d07417299f49897be7c5e6672558efca0b39e79e6ba9145",
+			"contract": "1facd76f0ef0f6b6180e0886f3626be78330a3565fc9013f11542c611e5eefe4",
+			"runtime": "33ee14b4c4975be629f16921ee9e2be044a43ece55b09790eacbab0fa9658f4b",
+			"files": [
+				{
+					"path": "src/services/execution-runtimes/UnitRuntimeService.ts",
+					"hash": "705652f56a756204f6d22e288b2978ad9a78ccbd"
+				},
+				{
+					"path": "src/services/execution-runtimes/UnitRuntimeService.types.ts",
+					"hash": "af12a32184887433c06b504f37dca9c6027821fe"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "service.unit-runtime",
+			"metric": "latency-floor-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.5686670000000049,
+			"method": "Fastest of 5 rounds of 50 end-to-end calls through the module runtime, including request validation, serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "module",
+			"samples": 250,
+			"comparison": {
+				"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 50
+				}
+			},
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.6141455000000633,
+			"method": "Median of the round medians over 5 rounds of 50 end-to-end calls through the module runtime, including request validation, serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "module",
+			"samples": 250,
+			"comparison": {
+				"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 50
+				}
+			},
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"metric": "throughput-ops",
+			"unitOfMeasure": "ops/s",
+			"value": 1628.2786408105196,
+			"method": "Calls per second at the median over 5 rounds of 50 end-to-end calls through the module runtime, including request validation, serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "module",
+			"samples": 250,
+			"comparison": {
+				"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 50
+				}
+			},
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"metric": "latency-floor-ms",
+			"unitOfMeasure": "ms",
+			"value": 1.1220420000000786,
+			"method": "Fastest of 5 rounds of 50 end-to-end calls through the wasm runtime, including request validation, serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "wasm",
+			"samples": 250,
+			"comparison": {
+				"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 50
+				}
+			},
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 1.1650210000000243,
+			"method": "Median of the round medians over 5 rounds of 50 end-to-end calls through the wasm runtime, including request validation, serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "wasm",
+			"samples": 250,
+			"comparison": {
+				"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 50
+				}
+			},
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"metric": "throughput-ops",
+			"unitOfMeasure": "ops/s",
+			"value": 858.3536262436293,
+			"method": "Calls per second at the median over 5 rounds of 50 end-to-end calls through the wasm runtime, including request validation, serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "wasm",
+			"samples": 250,
+			"comparison": {
+				"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 50
+				}
+			},
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"metric": "latency-floor-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.9545829999999569,
+			"method": "Fastest of 5 rounds of 50 end-to-end calls through the process runtime, including request validation, serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "process",
+			"samples": 250,
+			"comparison": {
+				"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 50
+				}
+			},
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 1.0341039999999566,
+			"method": "Median of the round medians over 5 rounds of 50 end-to-end calls through the process runtime, including request validation, serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "process",
+			"samples": 250,
+			"comparison": {
+				"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 50
+				}
+			},
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"metric": "throughput-ops",
+			"unitOfMeasure": "ops/s",
+			"value": 967.0207251882229,
+			"method": "Calls per second at the median over 5 rounds of 50 end-to-end calls through the process runtime, including request validation, serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "process",
+			"samples": 250,
+			"comparison": {
+				"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 50
+				}
+			},
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "invocation-boundary:boundary",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun run src/index.ts kernel bench --boundary",
+			"status": "passed",
+			"durationMs": 1608,
+			"log": {
+				"path": "logs/invocation-boundary-boundary.log",
+				"bytes": 6412,
+				"sha256": "b41501332efce64ae508c8b9d2eafd2289fe05be0c60363a71b42e36de791416"
+			}
+		},
+		{
+			"id": "invocation-boundary:runtime",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/unit-runtime.test.ts",
+			"status": "passed",
+			"durationMs": 1990,
+			"log": {
+				"path": "logs/invocation-boundary-runtime.log",
+				"bytes": 440,
+				"sha256": "5bd196c02da35c47b867aa5e0cc051b5e22e59dad11309bedd28d171bae1fed6"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "invocation-boundary",
+			"status": "passed",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"states": [
+				{
+					"id": "module",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "boundary",
+							"kind": "benchmark",
+							"state": "module",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/8303ae615135c6d42a71738328e3f3df413bde8e/invocation-boundary/boundary/boundary-module.json",
+							"sha256": "7e6fe98fec6fe92276f492885376368b7fee59d2cdc9caa9b11d980286110cc7",
+							"bytes": 1677,
+							"capturedAt": "2026-11-19T21:31:58.286Z"
+						},
+						{
+							"evidence": "runtime-assertions",
+							"kind": "assertions",
+							"state": "module",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/8303ae615135c6d42a71738328e3f3df413bde8e/invocation-boundary/runtime/test-services-unit-runtime.test.ts-module.json",
+							"sha256": "cbb975e0768378d5d7f77b121c28a21a888e498ab7893bc41120b782ab119833",
+							"bytes": 4430,
+							"capturedAt": "2026-11-19T21:32:01.203Z"
+						}
+					]
+				},
+				{
+					"id": "wasm",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "boundary",
+							"kind": "benchmark",
+							"state": "wasm",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/8303ae615135c6d42a71738328e3f3df413bde8e/invocation-boundary/boundary/boundary-wasm.json",
+							"sha256": "dd9fa019ac474ad5cefae114376860edf3b6553ea571c94bdefd5f851354cd68",
+							"bytes": 1662,
+							"capturedAt": "2026-11-19T21:31:58.286Z"
+						},
+						{
+							"evidence": "runtime-assertions",
+							"kind": "assertions",
+							"state": "wasm",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/8303ae615135c6d42a71738328e3f3df413bde8e/invocation-boundary/runtime/test-services-unit-runtime.test.ts-wasm.json",
+							"sha256": "61e33f8f3b9674bfc7b07b32671784667f085fcfe435ffc7c1cc211a1e27f7a4",
+							"bytes": 1421,
+							"capturedAt": "2026-11-19T21:32:01.203Z"
+						}
+					]
+				},
+				{
+					"id": "process",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "boundary",
+							"kind": "benchmark",
+							"state": "process",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/8303ae615135c6d42a71738328e3f3df413bde8e/invocation-boundary/boundary/boundary-process.json",
+							"sha256": "8a01013c57ec6daabe155567d0f71d482fd298865b5552725a3596c16c453414",
+							"bytes": 1683,
+							"capturedAt": "2026-11-19T21:31:58.287Z"
+						},
+						{
+							"evidence": "runtime-assertions",
+							"kind": "assertions",
+							"state": "process",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/8303ae615135c6d42a71738328e3f3df413bde8e/invocation-boundary/runtime/test-services-unit-runtime.test.ts-process.json",
+							"sha256": "fb34ccf63b7d608c04511809e183919d1eac79b0094509ca783ec0b914e04e8c",
+							"bytes": 1524,
+							"capturedAt": "2026-11-19T21:32:01.203Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"builds": [
+		{
+			"id": "reports",
+			"directory": "packages/reports/build",
+			"buildId": "622f9961f9a803bc092a12650eba808713b5764710f431f738eb2440ea43747d",
+			"files": 722
+		},
+		{
+			"id": "planning",
+			"directory": "packages/planning/dist",
+			"buildId": "3951462177d60662ff0994b9ffa492c7d6f5747544972d2077a6ce80b4a0f3cc",
+			"files": 1
+		},
+		{
+			"id": "desktop-renderer",
+			"directory": "packages/desktop/build",
+			"buildId": "a54488fcc3d380ea7bf701898ab9ee1fc37c50342b811b0da9fdfbbefc3635bb",
+			"files": 33
+		},
+		{
+			"id": "desktop-main",
+			"directory": "packages/desktop/dist",
+			"buildId": "fb659134ddc52afdf3c5f8bc1aef65089eb8399ea6eccf99e1c2272de30b9948",
+			"files": 4
+		},
+		{
+			"id": "shell-fixture",
+			"directory": "packages/reports/output/shell-fixture",
+			"buildId": "39a1c0d73aeb1ab36ea4d7d3c7b20008e23b88880730f55c30b86fcebd2c7119",
+			"files": 11
+		},
+		{
+			"id": "entity-preview",
+			"directory": "packages/reports/output/entity-preview",
+			"buildId": "9cef88f31c171cf106b134a29ab77a5bac358162db75cb19a2b824ffb28e25c7",
+			"files": 504
+		}
+	],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to service.unit-runtime: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}
