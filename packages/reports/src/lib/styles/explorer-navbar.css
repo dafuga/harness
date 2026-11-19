@@ -164,13 +164,18 @@
 		padding: var(--hx-space-8) 0;
 		border: 0;
 	}
-	/* The fields stay compact; their separator spans the full wrapped navbar row. */
+	/* The bar is the container the divider measures: its content width leaves out both gutters, and
+	   the rule adds them back, so the line spans the header whatever the scrollbar or parent width. */
+	.hx-nav {
+		container-type: inline-size;
+	}
+	/* The fields stay compact; their separator spans the bar edge to edge, inside any scrollbar. */
 	.hx-nav .hx-revision::before {
 		content: '';
 		position: absolute;
 		top: 0;
 		left: calc(-1 * var(--hx-gutter));
-		width: 100vw;
+		width: calc(100cqi + 2 * var(--hx-gutter));
 		height: 1px;
 		background: var(--hx-color-border);
 		pointer-events: none;
