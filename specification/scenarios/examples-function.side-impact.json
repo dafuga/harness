@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.side-impact",
+	"title": "function.side-impact examples",
+	"kind": "headless",
+	"units": ["function.side-impact"],
+	"builds": [],
+	"states": [
+		{
+			"id": "side-impact-no-history-side",
+			"title": "a head with no earlier side reports its source file as added",
+			"coverage": "required"
+		},
+		{
+			"id": "side-impact-stored-sides-modified",
+			"title": "a changed file hash between two stored sides reports it as modified",
+			"coverage": "required"
+		},
+		{
+			"id": "side-impact-dangling-edge-rejects",
+			"title": "an edge whose target is not a listed node rejects with a TypeError",
+			"coverage": "required"
+		},
+		{
+			"id": "stored-side-omits-missing-edges",
+			"title": "storedSide keeps edges between listed nodes and omits the rest",
+			"coverage": "required"
+		},
+		{
+			"id": "impact-view-keeps-affected-scenarios",
+			"title": "impactView keeps only affected scenarios and copies the base",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.side-impact.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"side-impact-no-history-side",
+				"side-impact-stored-sides-modified",
+				"side-impact-dangling-edge-rejects",
+				"stored-side-omits-missing-edges",
+				"impact-view-keeps-affected-scenarios"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"side-impact-no-history-side",
+				"side-impact-stored-sides-modified",
+				"side-impact-dangling-edge-rejects",
+				"stored-side-omits-missing-edges",
+				"impact-view-keeps-affected-scenarios"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"side-impact-no-history-side",
+				"side-impact-stored-sides-modified",
+				"side-impact-dangling-edge-rejects",
+				"stored-side-omits-missing-edges",
+				"impact-view-keeps-affected-scenarios"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
