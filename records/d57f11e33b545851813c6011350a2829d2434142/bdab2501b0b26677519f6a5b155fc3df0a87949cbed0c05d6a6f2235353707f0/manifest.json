@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"record": "bdab2501b0b26677519f6a5b155fc3df0a87949cbed0c05d6a6f2235353707f0",
+	"source": {
+		"commit": "d57f11e33b545851813c6011350a2829d2434142",
+		"tree": "58273b86eb48595e226e4c69e97c760cb1796a0e"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "26bd74030d4e8e31b62606f2f1b8cef742d6d18d9b5437a8b0be1d6d1d178050",
+			"bytes": 15453,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/d57f11e33b545851813c6011350a2829d2434142/kernel-build/kernel-cli/benchmark-native.json",
+			"sha256": "edc3e1fed493655c48b3bdb4e27664b51af7c880513179df31aa065b8c2ec1c7",
+			"bytes": 3353,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/d57f11e33b545851813c6011350a2829d2434142/kernel-build/parity/parity-native.json",
+			"sha256": "467ec75b8d694ef394f7520a27f5d691df4cabcd071ebd39d221776e5eb4460a",
+			"bytes": 201,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/d57f11e33b545851813c6011350a2829d2434142/kernel-build/kernel-cli/benchmark-wasm.json",
+			"sha256": "c7c579e0b09908115263f5810b30eceadf2a070aa7ade5e2836d08063d882756",
+			"bytes": 3323,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/d57f11e33b545851813c6011350a2829d2434142/kernel-build/parity/parity-wasm.json",
+			"sha256": "d18357397e0c291596c1b06916d71146504deb8b5c1a61fd90d7ebc82439376d",
+			"bytes": 199,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/kernel-build-cargo.log",
+			"sha256": "9a275247847aa0ce2cd4f64c7e9dd9a09b8f2fd721a31348151eb8f2076ccdb8",
+			"bytes": 1927,
+			"storage": "git"
+		},
+		{
+			"path": "logs/kernel-build-kernel-cli.log",
+			"sha256": "27820362d65a0f411dd8196c47275da5277596d4b3e430d86c9ab8df4808e791",
+			"bytes": 566,
+			"storage": "git"
+		},
+		{
+			"path": "logs/kernel-build-parity.log",
+			"sha256": "ac78cd13cc9e283bde0c1762e46d37104fe15321c2c75cb3397b4c577b2de2c0",
+			"bytes": 314,
+			"storage": "git"
+		}
+	]
+}
