@@ -89,6 +89,7 @@ name="macOS"
 platform="macOS"
 runnable=true
 export_filter="all_resources"
+include_filter=""
 exclude_filter="tests/*"
 export_path="build/native/game.zip"
 
@@ -102,6 +103,7 @@ name="Web"
 platform="Web"
 runnable=true
 export_filter="all_resources"
+include_filter=""
 exclude_filter="tests/*"
 export_path="build/web/index.html"
 
@@ -154,7 +156,6 @@ if (mode === 'test') {
 	if (mode !== 'native' && mode !== 'web') throw new Error('Choose test, native, or web.');
 	const { preset, output } = configs[mode];
 	mkdirSync(dirname(output), { recursive: true });
-	run(['--editor', '--import', '--quit']);
 	run(['--export-release', preset, output]);
 }
 `;
