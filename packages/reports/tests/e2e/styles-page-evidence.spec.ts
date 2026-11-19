@@ -22,8 +22,18 @@ function expectCapturedMeasurements(state: string, viewport: string): void {
 	);
 	expect(screenshot?.server).toMatchObject({ revision: process.env.HARNESS_VERIFY_REVISION });
 	expect(screenshot?.evidence).toBe(`${state}-screen`);
+	// The scenario's measurements slot is filled only by a benchmark row naming this state and viewport.
+	const row = lines.find(
+		(line) =>
+			line.kind === 'benchmark' &&
+			line.evidence === `${state}-measurements` &&
+			line.state === state &&
+			line.viewport === viewport
+	);
+	expect(row, `${state} measurements index row at ${viewport}`).toBeDefined();
+	expect(row?.file).toBe(`${state}-${viewport}-benchmark.json`);
 	const benchmark = benchmarkCaptureSchema.parse(
-		JSON.parse(readFileSync(join(directory, `${state}-${viewport}-benchmark.json`), 'utf8'))
+		JSON.parse(readFileSync(join(directory, String(row?.file)), 'utf8'))
 	);
 	for (const unit of [
 		pageUnit,
@@ -64,7 +74,8 @@ for (const viewport of viewports) {
 		const state = `catalog-${viewport.id}`;
 		await captureScreen(page, state, viewport, {
 			directory: evidenceDirectory,
-			evidence: `${state}-screen`
+			evidence: `${state}-screen`,
+			benchmark: `${state}-measurements`
 		});
 		await expectColorRoles(page.locator('main'));
 		expectCapturedMeasurements(state, viewport.id);

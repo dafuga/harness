@@ -56,8 +56,20 @@ export function expectPageMeasurements(
 					`${unit} ${metric} ${viewport.width}x${viewport.height}`
 				).toBe(true);
 }
+/** A scenario evidence slot a benchmark fills; absent, the capture keeps the generic page evidence. */
+export interface BenchmarkSlot {
+	evidence: string;
+	state: string;
+	viewport: string;
+}
+
 /** Runtime observations of the real route, never of a later client-side destination. */
-export async function pageBenchmark(page: Page, state: string, unit?: string): Promise<void> {
+export async function pageBenchmark(
+	page: Page,
+	state: string,
+	unit?: string,
+	slot?: BenchmarkSlot
+): Promise<void> {
 	if (!unit) return;
 	const server = await servedBuild(page);
 	if (!server || server.revision !== process.env.HARNESS_VERIFY_REVISION) return;
@@ -96,19 +108,24 @@ export async function pageBenchmark(page: Page, state: string, unit?: string): P
 				'Chromium Runtime.getHeapUsage after fonts and images settled; whole page JavaScript heap including shared code, not isolated unit memory or browser-process RSS.'
 		}
 	];
+	const rows = (await includedUnits(page, unit)).flatMap((item) =>
+		measurements.map((measurement) => ({ ...measurement, unit: item }))
+	);
+	recordBenchmark(state, rows, slot);
+}
+
+/** Writes the benchmark file and its index line; a slot names the scenario evidence it fills. */
+function recordBenchmark(state: string, rows: unknown[], slot?: BenchmarkSlot): void {
 	recordCapture(
 		{
 			evidence: 'page-benchmarks',
 			state,
 			kind: 'benchmark',
 			file: `${state}-benchmark.json`,
-			mediaType: 'application/json'
+			mediaType: 'application/json',
+			...slot
 		},
-		JSON.stringify({
-			measurements: (await includedUnits(page, unit)).flatMap((unit) =>
-				measurements.map((measurement) => ({ ...measurement, unit }))
-			)
-		})
+		JSON.stringify({ measurements: rows })
 	);
 }
 
