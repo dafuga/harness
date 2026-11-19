@@ -79,6 +79,7 @@ const verifyGuide: Guide = {
 		'harness.verify.json configures setup commands, shared paths, outputs, runners and time limits; a test file that needs a command of its own, such as another configuration of its runner, is listed under checks.',
 		'Lite skips Playwright and E2E checks. Mark custom browser commands fullOnly in scenario tests, setup, tools or checks. Keep type checks, lint and builds shared by both profiles.',
 		'Lite JSON records contain lite.status and pending check, setup, tool and capture identifiers. They cannot satisfy verify check or approve a budget baseline.',
+		'Use verify capture for a single page PNG with Chrome Headless Shell. Attach registered scenario screenshots with a full verification run.',
 		'A compiled build whose server cannot read its own files, such as a Worker, is stamped after its last build step with harness verify stamp; the server reports the stamp and harness verify identity confirms it belongs to exactly those files.'
 	],
 	antiPatterns: [
@@ -90,6 +91,7 @@ const verifyGuide: Guide = {
 		'harness verify run',
 		'harness verify plan --profile lite --json',
 		'harness verify run --profile lite --commit HEAD',
+		'harness verify capture http://127.0.0.1:4173/ --output page.png',
 		'harness verify run --priority agent-test --entity <id>',
 		'harness verify run --commit HEAD~1 --test-timeout 120000',
 		'harness verify run --base none',

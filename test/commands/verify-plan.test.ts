@@ -62,7 +62,8 @@ test('verification plan registration exposes a report-only plan subcommand', () 
 		'plan',
 		'check',
 		'identity',
-		'stamp'
+		'stamp',
+		'capture'
 	]);
 	for (const name of ['run', 'plan'])
 		expect(commands.find((command) => command.name() === name)?.helpInformation()).toContain(

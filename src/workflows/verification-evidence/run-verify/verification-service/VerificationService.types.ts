@@ -7,6 +7,12 @@ import type {
 import type { ReasonReport } from '../../../../services/development-tooling/ExplanationService';
 import type { RevisionSide } from '../../../development-tooling/loadRevisions';
 import type { VerificationSourceHashes } from './record-assembly-service/sealRecord.types';
+import type { PlannedCheck } from '../../../../utils/verification-evidence/verifyPlan';
+
+export interface ProfiledPlan {
+	plan: PlannedCheck[];
+	pendingChecks: PlannedCheck[];
+}
 
 export interface VerifyContext {
 	verificationProfile?: VerificationMode;

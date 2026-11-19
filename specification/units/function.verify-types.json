@@ -22,15 +22,18 @@
 			"verificationsDirectory",
 			"snapshotsDirectory",
 			"captureIndex",
+			"verificationModes",
 			"verifyConfigSchema",
 			"defaultVerifyConfig",
 			"captureLineSchema",
 			"VerifyConfig",
 			"CaptureLine",
 			"Workload",
+			"VerificationMode",
 			"VerifyConfig",
 			"CaptureLine",
 			"Workload",
+			"VerificationMode",
 			"verifyConfigFile",
 			"verificationsDirectory",
 			"snapshotsDirectory",
@@ -79,7 +82,7 @@
 			{
 				"name": "defaultVerifyConfig",
 				"type": "VerifyConfig",
-				"description": "The default VerifyConfig: empty setup, link, outputs, builds, tools, profiles and checks lists, the runner templates `bun x vitest run {target}` for vitest and `bun x playwright test {target}` for playwright, and a test timeout of 600000 in `timeouts.test`. Each template's `{target}` is replaced by the test file.",
+				"description": "The default VerifyConfig: empty setup, link, outputs, builds, tools, profiles and checks lists, the runner templates `bun x vitest run {target}` for vitest and `bun x playwright test {target}` for Playwright, a headless Godot runner for scripts and scenes, and a test timeout of 600000 in `timeouts.test`. Each template's `{target}` is replaced by the test file.",
 				"examples": [
 					{
 						"schemaVersion": 1,

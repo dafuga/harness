@@ -1,5 +1,5 @@
 // @harness-uid u_k23ebybqw2
-import type { VerifyContext } from './VerificationService.types';
+import type { ProfiledPlan, VerifyContext } from './VerificationService.types';
 export type { VerifyContext } from './VerificationService.types';
 
 import type { ScenarioResult } from '../../../../core/verification-evidence/verificationTypes';
@@ -60,7 +60,7 @@ export class VerificationService {
 	}
 
 	/** Plans the runnable checks and lists the work deferred by Lite. */
-	planWithPending() {
+	planWithPending(): ProfiledPlan {
 		const { plan, pendingChecks } = this.selection();
 		return { plan, pendingChecks };
 	}

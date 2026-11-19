@@ -18,7 +18,7 @@
 				"name": "registerVerifyCommand.program",
 				"type": "Command",
 				"required": true,
-				"description": "The Commander program that receives the verify command and its run, plan, check, identity, and stamp subcommands. It must be a Command instance."
+				"description": "The Commander program that receives the verify command and its run, plan, check, identity, stamp, and capture subcommands. It must be a Command instance."
 			}
 		],
 		"outputs": [
@@ -44,7 +44,7 @@
 						"name": "registerVerifyCommand.program",
 						"type": "Command",
 						"required": true,
-						"description": "The Commander program that receives the verify command and its run, plan, check, identity, and stamp subcommands. It must be a Command instance."
+						"description": "The Commander program that receives the verify command and its run, plan, check, identity, stamp, and capture subcommands. It must be a Command instance."
 					}
 				],
 				"outputs": [
@@ -63,6 +63,11 @@
 	"dependencies": [
 		{
 			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verify-types",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -20,6 +20,8 @@
 			"VerificationService.constructor",
 			"VerificationService.run",
 			"VerificationService.plan",
+			"VerificationService.planWithPending",
+			"ProfiledPlan",
 			"VerifyContext"
 		]
 	},
@@ -263,6 +265,19 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "VerificationService.planWithPending",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "VerificationService.planWithPending",
+						"type": "ProfiledPlan",
+						"description": "Runnable checks and deferred checks in plan order."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -311,11 +326,6 @@
 		},
 		{
 			"unit": "function.unit-measurements",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.unit-types",
 			"via": "import",
 			"origin": "derived"
 		},

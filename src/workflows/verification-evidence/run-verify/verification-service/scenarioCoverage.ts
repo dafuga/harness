@@ -1,7 +1,8 @@
 // @harness-uid u_lnqhwcablp
 import type {
 	CoverageInput,
-	CoverageResult
+	CoverageResult,
+	ScenarioJudgement
 } from '../../../../utils/verification-evidence/scenarioCoverage.types';
 import { problem } from './captureProblem';
 import type { Gathered } from '../../../../utils/verification-evidence/gatherCaptures';
@@ -74,7 +75,7 @@ export function judgeScenario(
 	scenario: ScenarioManifest,
 	executed: Executed,
 	pendingChecks: PlannedCheck[]
-) {
+): ScenarioJudgement {
 	const own = executed.outcomes.filter((outcome) => outcome.check.scenario === scenario.id);
 	const lite = context.verificationProfile === 'lite';
 	const deferred = pendingChecks.filter((check) => check.scenario === scenario.id).length;

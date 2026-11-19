@@ -4,6 +4,7 @@ import type { Command } from 'commander';
 import { Option } from 'commander';
 import { fail } from '../../core/development-tooling/errors';
 import { verificationModes } from '../../core/verification-evidence/verifyTypes';
+import { capturePage } from '../../workflows/verification-evidence/run-verify/capturePage';
 import {
 	renderVerify,
 	verifyCheck,
@@ -62,6 +63,19 @@ export function registerVerifyCommand(program: Command): void {
 				console.log(`Commit ${report.commit} is verified by ${report.record.slice(0, 12)}.`);
 		});
 	registerIdentity(verify);
+	registerCapture(verify);
+}
+
+function registerCapture(verify: Command): void {
+	verify
+		.command('capture <url>')
+		.requiredOption('--output <file>', 'Destination for one PNG.')
+		.option('--browser <path>', 'Chrome Headless Shell executable.', 'chrome-headless-shell')
+		.option('--viewport <size>', 'Width and height in pixels.', '1280x720')
+		.description('Capture one page in an isolated browser profile.')
+		.action(async (url: string, options: Parameters<typeof capturePage>[1]) => {
+			console.log(await capturePage(url, options));
+		});
 }
 
 function registerPlan(verify: Command): void {

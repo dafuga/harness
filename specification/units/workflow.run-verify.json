@@ -10,6 +10,8 @@
 	"owns": {
 		"source": [
 			"src/workflows/run-verify/runVerify.ts",
+			"src/workflows/verification-evidence/run-verify/capturePage.ts",
+			"src/workflows/verification-evidence/run-verify/capturePage.types.ts",
 			"src/workflows/verification-evidence/run-verify/runVerify.ts",
 			"src/workflows/verification-evidence/run-verify/runVerify.types.ts"
 		],
@@ -19,6 +21,8 @@
 			"verifyIdentity",
 			"verifyStamp",
 			"renderVerify",
+			"capturePage",
+			"PageCaptureOptions",
 			"VerifyOptions",
 			"VerifyPlanReport",
 			"verifyPlan",
@@ -34,6 +38,18 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "capturePage.address",
+				"type": "string",
+				"required": true,
+				"description": "HTTP or HTTPS page URL without embedded credentials."
+			},
+			{
+				"name": "capturePage.options",
+				"type": "PageCaptureOptions",
+				"required": true,
+				"description": "Browser executable, output file and viewport dimensions."
+			},
 			{
 				"name": "verifyRun.options",
 				"type": "VerifyOptions",
@@ -789,6 +805,38 @@
 		"errorStatus": "declared",
 		"operations": [
 			{
+				"name": "capturePage",
+				"inputs": [
+					{
+						"name": "capturePage.address",
+						"type": "string",
+						"required": true,
+						"description": "HTTP or HTTPS page URL without embedded credentials."
+					},
+					{
+						"name": "capturePage.options",
+						"type": "PageCaptureOptions",
+						"required": true,
+						"description": "Browser executable, output file and viewport dimensions."
+					}
+				],
+				"outputs": [
+					{
+						"name": "capturePage",
+						"type": "Promise<string>",
+						"description": "Absolute path to the PNG created by the isolated browser."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid URL or viewport, missing browser, failed capture or output file error."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
 				"name": "verifyRun",
 				"inputs": [
 					{
@@ -1524,6 +1572,21 @@
 		},
 		{
 			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.media-facts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.run-isolated",
 			"via": "import",
 			"origin": "derived"
 		},

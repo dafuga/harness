@@ -10,6 +10,7 @@ import type { ReasonReport } from '../../../../../services/development-tooling/E
 import type { RevisionSide } from '../../../../development-tooling/loadRevisions';
 import type { Executed } from '../SnapshotRunService';
 import type { VerificationSourceHashes } from './sealRecord.types';
+import type { ScenarioJudgement } from '../../../../../utils/verification-evidence/scenarioCoverage.types';
 
 export interface AssemblyContext {
 	requirePerformance?: boolean;
@@ -32,11 +33,7 @@ export interface AssemblyContext {
 export interface AssemblyInput {
 	startedAt: string;
 	executed: Executed;
-	scenarios: Array<{
-		result: ScenarioResult;
-		failures: string[];
-		pending?: NonNullable<VerificationRecord['lite']>['pendingEvidence'];
-	}>;
+	scenarios: ScenarioJudgement[];
 	referenced: ScenarioResult[];
 	lite?: Omit<NonNullable<VerificationRecord['lite']>, 'status' | 'pendingEvidence'>;
 }
