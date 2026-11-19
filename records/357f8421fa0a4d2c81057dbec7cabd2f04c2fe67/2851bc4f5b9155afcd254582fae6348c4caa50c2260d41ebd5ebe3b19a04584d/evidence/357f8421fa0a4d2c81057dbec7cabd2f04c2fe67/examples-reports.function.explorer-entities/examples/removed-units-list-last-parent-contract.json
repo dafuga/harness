@@ -1,0 +1,118 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-entities",
+	"symbol": "explorerEntities",
+	"cases": [
+		{
+			"name": "removals of a kept, stale, unlisted and categorized parent unit",
+			"input": {
+				"removed": [
+					"reports.service.gone",
+					"reports.page.kept",
+					"reports.page.stale",
+					"reports.rule.notes",
+					"reports.function.kebab"
+				]
+			},
+			"output": [
+				{
+					"id": "reports.page.kept",
+					"category": "pages",
+					"role": "Page",
+					"name": "Kept",
+					"change": "removed",
+					"appRoute": "/kept",
+					"lastAt": null,
+					"verdict": {
+						"passed": false,
+						"label": "Evidence missing",
+						"reasons": [
+							"No verification record is attached to this commit."
+						]
+					}
+				},
+				{
+					"id": "reports.page.new",
+					"category": "pages",
+					"role": "Page",
+					"name": "New",
+					"change": null,
+					"appRoute": "/new",
+					"lastAt": null,
+					"verdict": {
+						"passed": false,
+						"label": "Evidence missing",
+						"reasons": [
+							"No verification record is attached to this commit."
+						]
+					}
+				},
+				{
+					"id": "reports.function.kebab",
+					"category": "functions",
+					"role": "Helper",
+					"name": "toKebabCase",
+					"change": "removed",
+					"appRoute": null,
+					"lastAt": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"verdict": {
+						"passed": false,
+						"label": "Removed at this commit",
+						"reasons": [
+							"This commit removed it; its contract is shown as it last was, at bbbbbbb."
+						]
+					}
+				},
+				{
+					"id": "reports.service.refunds",
+					"category": "services",
+					"role": "Service",
+					"name": "Refund service",
+					"change": null,
+					"appRoute": null,
+					"lastAt": null,
+					"verdict": {
+						"passed": false,
+						"label": "Evidence missing",
+						"reasons": [
+							"No verification record is attached to this commit."
+						]
+					}
+				},
+				{
+					"id": "reports.page.loader",
+					"category": "services",
+					"role": "Route loader",
+					"name": "Loader",
+					"change": null,
+					"appRoute": null,
+					"lastAt": null,
+					"verdict": {
+						"passed": false,
+						"label": "Evidence missing",
+						"reasons": [
+							"No verification record is attached to this commit."
+						]
+					}
+				},
+				{
+					"id": "reports.service.gone",
+					"category": "services",
+					"role": "Service",
+					"name": "Gone service",
+					"change": "removed",
+					"appRoute": null,
+					"lastAt": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"verdict": {
+						"passed": false,
+						"label": "Removed at this commit",
+						"reasons": [
+							"This commit removed it; its contract is shown as it last was, at bbbbbbb."
+						]
+					}
+				}
+			]
+		}
+	]
+}

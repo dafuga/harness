@@ -1,0 +1,106 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-entities",
+	"symbol": "explorerEntities",
+	"cases": [
+		{
+			"name": "roster with unshared, bare, retired and rule units",
+			"input": {
+				"units": [
+					"reports.service.refunds",
+					"reports.function.kebab",
+					"reports.function.unshared",
+					"reports.layout.bare",
+					"reports.layout.frame",
+					"reports.layout.config",
+					"reports.page.titles",
+					"reports.page.retired",
+					"reports.rule.lint"
+				]
+			},
+			"output": [
+				{
+					"id": "reports.page.titles",
+					"category": "pages",
+					"role": "Page",
+					"name": "Titles",
+					"change": null,
+					"appRoute": "/titles",
+					"lastAt": null,
+					"verdict": {
+						"passed": false,
+						"label": "Evidence missing",
+						"reasons": [
+							"No verification record is attached to this commit."
+						]
+					}
+				},
+				{
+					"id": "reports.layout.frame",
+					"category": "layouts",
+					"role": "Layout",
+					"name": "Frame",
+					"change": null,
+					"appRoute": null,
+					"lastAt": null,
+					"verdict": {
+						"passed": false,
+						"label": "Evidence missing",
+						"reasons": [
+							"No verification record is attached to this commit."
+						]
+					}
+				},
+				{
+					"id": "reports.function.kebab",
+					"category": "functions",
+					"role": "Helper",
+					"name": "toKebabCase",
+					"change": null,
+					"appRoute": null,
+					"lastAt": null,
+					"verdict": {
+						"passed": false,
+						"label": "Evidence missing",
+						"reasons": [
+							"No verification record is attached to this commit."
+						]
+					}
+				},
+				{
+					"id": "reports.layout.config",
+					"category": "configs",
+					"role": "Route configuration",
+					"name": "Config layout",
+					"change": null,
+					"appRoute": null,
+					"lastAt": null,
+					"verdict": {
+						"passed": false,
+						"label": "Evidence missing",
+						"reasons": [
+							"No verification record is attached to this commit."
+						]
+					}
+				},
+				{
+					"id": "reports.service.refunds",
+					"category": "services",
+					"role": "Service",
+					"name": "Refund service",
+					"change": null,
+					"appRoute": null,
+					"lastAt": null,
+					"verdict": {
+						"passed": false,
+						"label": "Evidence missing",
+						"reasons": [
+							"No verification record is attached to this commit."
+						]
+					}
+				}
+			]
+		}
+	]
+}
