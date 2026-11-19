@@ -69,15 +69,18 @@ export function estimateApiCost(model: string, usage?: TaskUsage): TaskApiCost {
 		maximumUsd: null,
 		basis: 'unavailable' as const
 	};
-	if (!rate || usage?.inputTokens == null || usage.outputTokens == null) {
+	if (!rate || !hasTokenTotals(usage)) {
 		return {
 			...unavailable,
 			note: rate ? 'Incomplete token usage.' : 'No verified price for this model.'
 		};
 	}
-	const complete = { ...usage, inputTokens: usage.inputTokens, outputTokens: usage.outputTokens };
-	if (!validTokenCounts(complete)) return { ...unavailable, note: 'Inconsistent token usage.' };
-	return { ...base, ...estimateFromRates(rate, complete) };
+	if (!validTokenCounts(usage)) return { ...unavailable, note: 'Inconsistent token usage.' };
+	return { ...base, ...estimateFromRates(rate, usage) };
+}
+
+function hasTokenTotals(usage?: TaskUsage): usage is PricedUsage {
+	return usage?.inputTokens != null && usage.outputTokens != null;
 }
 
 function validReportedCost(cost: number | null | undefined): cost is number {
