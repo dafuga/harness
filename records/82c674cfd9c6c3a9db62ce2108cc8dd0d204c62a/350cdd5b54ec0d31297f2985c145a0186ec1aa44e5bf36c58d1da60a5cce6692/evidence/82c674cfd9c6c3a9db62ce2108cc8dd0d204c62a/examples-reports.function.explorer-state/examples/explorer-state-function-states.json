@@ -1,0 +1,425 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-state",
+	"symbol": "scenarioFor",
+	"cases": [
+		{
+			"name": "function used by a page",
+			"input": {
+				"unit": "function.route",
+				"units": [
+					{
+						"id": "page.functions",
+						"kind": "page",
+						"status": "active",
+						"title": "functions",
+						"responsibility": "What page.functions is for.",
+						"dependencies": [],
+						"scenarios": [],
+						"owns": {
+							"source": [
+								"src/page.functions.ts"
+							],
+							"symbols": []
+						},
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": []
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "v1"
+					},
+					{
+						"id": "page.function",
+						"kind": "page",
+						"status": "active",
+						"title": "function",
+						"responsibility": "What page.function is for.",
+						"dependencies": [
+							{
+								"unit": "function.route",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": [
+								"src/page.function.ts"
+							],
+							"symbols": []
+						},
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": []
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "v1"
+					},
+					{
+						"id": "function.route",
+						"kind": "function",
+						"status": "active",
+						"title": "route",
+						"responsibility": "What function.route is for.",
+						"dependencies": [],
+						"scenarios": [],
+						"owns": {
+							"source": [
+								"src/function.route.ts"
+							],
+							"symbols": []
+						},
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": []
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "v1",
+						"helpers": [
+							{
+								"name": "route",
+								"source": "src/function.route.ts",
+								"inputs": [],
+								"pure": true,
+								"consumers": [
+									{
+										"unit": "component.first"
+									},
+									{
+										"unit": "component.second"
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			"output": {
+				"id": "explorer",
+				"title": "Explorer",
+				"kind": "ui",
+				"units": [
+					"page.functions",
+					"page.function",
+					"function.route"
+				],
+				"states": [
+					{
+						"id": "entity",
+						"coverage": "required",
+						"units": [
+							"page.function"
+						]
+					}
+				],
+				"viewports": [
+					{
+						"id": "desktop",
+						"width": 1440,
+						"height": 900
+					},
+					{
+						"id": "mobile",
+						"width": 390,
+						"height": 844
+					}
+				],
+				"tests": [
+					{
+						"id": "page",
+						"kind": "e2e",
+						"runner": "playwright"
+					}
+				],
+				"evidence": [
+					{
+						"id": "screens",
+						"kind": "screenshot",
+						"states": [
+							"catalog"
+						],
+						"viewports": [
+							"desktop"
+						]
+					}
+				]
+			}
+		},
+		{
+			"name": "function no unit uses",
+			"input": {
+				"unit": "function.orphan",
+				"units": [
+					{
+						"id": "page.functions",
+						"kind": "page",
+						"status": "active",
+						"title": "functions",
+						"responsibility": "What page.functions is for.",
+						"dependencies": [],
+						"scenarios": [],
+						"owns": {
+							"source": [
+								"src/page.functions.ts"
+							],
+							"symbols": []
+						},
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": []
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "v1"
+					},
+					{
+						"id": "page.function",
+						"kind": "page",
+						"status": "active",
+						"title": "function",
+						"responsibility": "What page.function is for.",
+						"dependencies": [
+							{
+								"unit": "function.route",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": [
+								"src/page.function.ts"
+							],
+							"symbols": []
+						},
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": []
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "v1"
+					},
+					{
+						"id": "function.route",
+						"kind": "function",
+						"status": "active",
+						"title": "route",
+						"responsibility": "What function.route is for.",
+						"dependencies": [],
+						"scenarios": [],
+						"owns": {
+							"source": [
+								"src/function.route.ts"
+							],
+							"symbols": []
+						},
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": []
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "v1",
+						"helpers": [
+							{
+								"name": "route",
+								"source": "src/function.route.ts",
+								"inputs": [],
+								"pure": true,
+								"consumers": [
+									{
+										"unit": "component.first"
+									},
+									{
+										"unit": "component.second"
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			"output": {
+				"id": "explorer",
+				"title": "Explorer",
+				"kind": "ui",
+				"units": [
+					"page.functions",
+					"page.function",
+					"function.route"
+				],
+				"states": [
+					{
+						"id": "catalog",
+						"coverage": "required",
+						"units": [
+							"page.functions"
+						]
+					},
+					{
+						"id": "entity",
+						"coverage": "required",
+						"units": [
+							"page.function"
+						]
+					},
+					{
+						"id": "shared",
+						"coverage": "required"
+					}
+				],
+				"viewports": [
+					{
+						"id": "desktop",
+						"width": 1440,
+						"height": 900
+					},
+					{
+						"id": "mobile",
+						"width": 390,
+						"height": 844
+					}
+				],
+				"tests": [
+					{
+						"id": "page",
+						"kind": "e2e",
+						"runner": "playwright"
+					}
+				],
+				"evidence": [
+					{
+						"id": "screens",
+						"kind": "screenshot",
+						"states": [
+							"catalog"
+						],
+						"viewports": [
+							"desktop"
+						]
+					}
+				]
+			}
+		},
+		{
+			"name": "function without a registry",
+			"input": {
+				"unit": "function.route",
+				"units": []
+			},
+			"output": {
+				"id": "explorer",
+				"title": "Explorer",
+				"kind": "ui",
+				"units": [
+					"page.functions",
+					"page.function",
+					"function.route"
+				],
+				"states": [
+					{
+						"id": "catalog",
+						"coverage": "required",
+						"units": [
+							"page.functions"
+						]
+					},
+					{
+						"id": "entity",
+						"coverage": "required",
+						"units": [
+							"page.function"
+						]
+					},
+					{
+						"id": "shared",
+						"coverage": "required"
+					}
+				],
+				"viewports": [
+					{
+						"id": "desktop",
+						"width": 1440,
+						"height": 900
+					},
+					{
+						"id": "mobile",
+						"width": 390,
+						"height": 844
+					}
+				],
+				"tests": [
+					{
+						"id": "page",
+						"kind": "e2e",
+						"runner": "playwright"
+					}
+				],
+				"evidence": [
+					{
+						"id": "screens",
+						"kind": "screenshot",
+						"states": [
+							"catalog"
+						],
+						"viewports": [
+							"desktop"
+						]
+					}
+				]
+			}
+		}
+	]
+}
