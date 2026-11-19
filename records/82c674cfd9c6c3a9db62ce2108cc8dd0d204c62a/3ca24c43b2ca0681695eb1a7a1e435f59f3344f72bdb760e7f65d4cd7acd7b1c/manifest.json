@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"record": "3ca24c43b2ca0681695eb1a7a1e435f59f3344f72bdb760e7f65d4cd7acd7b1c",
+	"source": {
+		"commit": "82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a",
+		"tree": "ae3b340e875a03f1e7b7535ee9d40e95f540a55f"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "170e5991f76e3ea466868b55a4b9faeb49cd66f397816a6066595af8183db2bf",
+			"bytes": 31976,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.entry.hooks-server/examples/admits-the-local-owner-and-gives-an-unheaded-page-private-no-store.json",
+			"sha256": "58816003c674e49de3d86514269b06b372ed1a2779a02c200013053d6ac79bca",
+			"bytes": 502,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.entry.hooks-server/examples/test-examples-reports.entry.hooks-server.test.ts-admits-the-local-owner-and-gives-an-unheaded-page-private-no-store.txt",
+			"sha256": "70ba9caa3c75d6391adf5331e1860b9f2ff8a51c500f7cad564bfa620fc79fdf",
+			"bytes": 470,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.entry.hooks-server/examples/test-examples-reports.entry.hooks-server.test.ts-admits-the-local-owner-and-gives-an-unheaded-page-private-no-store.json",
+			"sha256": "db7daf8f638b7f44577eef1fa372975721c9c93e9d4b9797d707f4e6a27e9ab7",
+			"bytes": 742,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.entry.hooks-server/examples/keeps-a-cache-control-the-page-already-set-for-the-local-owner.json",
+			"sha256": "51436213843293ef76f9caa16b481bf7ddaeda617448ca5721a1d255f9b63e11",
+			"bytes": 439,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.entry.hooks-server/examples/test-examples-reports.entry.hooks-server.test.ts-keeps-a-cache-control-the-page-already-set-for-the-local-owner.txt",
+			"sha256": "70ba9caa3c75d6391adf5331e1860b9f2ff8a51c500f7cad564bfa620fc79fdf",
+			"bytes": 470,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.entry.hooks-server/examples/test-examples-reports.entry.hooks-server.test.ts-keeps-a-cache-control-the-page-already-set-for-the-local-owner.json",
+			"sha256": "9a599e4cfa5f5754d08b9bbc960b19baf2e1a27a8424f9d304b221c4e0aa3920",
+			"bytes": 726,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.entry.hooks-server/examples/denies-an-unowned-request-with-403-before-any-page-handler-runs.json",
+			"sha256": "4fe0f7d9ec76952cb070b5a6f188cb8a988ff0346c9af56988f5be73db5a48ce",
+			"bytes": 503,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.entry.hooks-server/examples/test-examples-reports.entry.hooks-server.test.ts-denies-an-unowned-request-with-403-before-any-page-handler-runs.txt",
+			"sha256": "70ba9caa3c75d6391adf5331e1860b9f2ff8a51c500f7cad564bfa620fc79fdf",
+			"bytes": 470,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.entry.hooks-server/examples/test-examples-reports.entry.hooks-server.test.ts-denies-an-unowned-request-with-403-before-any-page-handler-runs.json",
+			"sha256": "ace0f9c4a2c544aa305fe812d600a60ef471104ee7ace6407a0ca71c9cbaaa4e",
+			"bytes": 748,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-reports.entry.hooks-server-examples.log",
+			"sha256": "70ba9caa3c75d6391adf5331e1860b9f2ff8a51c500f7cad564bfa620fc79fdf",
+			"bytes": 470,
+			"storage": "git"
+		}
+	]
+}
