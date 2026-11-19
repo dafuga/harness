@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-lens",
+	"symbol": "entityLens",
+	"cases": [
+		{
+			"name": "other entity drops section and tab",
+			"input": "to another entity",
+			"output": {
+				"branch": "feature/orders",
+				"commit": "8b41d0720e252681deac809969b3faf8181dac30",
+				"category": "pages",
+				"entity": "app.component.order-list"
+			}
+		},
+		{
+			"name": "same entity drops section and tab",
+			"input": "to the same entity",
+			"output": {
+				"branch": "feature/orders",
+				"commit": "8b41d0720e252681deac809969b3faf8181dac30",
+				"category": "pages",
+				"entity": "app.page.orders"
+			}
+		},
+		{
+			"name": "link names its own section and tab",
+			"input": "to section and tab",
+			"output": {
+				"branch": "feature/orders",
+				"commit": "8b41d0720e252681deac809969b3faf8181dac30",
+				"category": "pages",
+				"entity": "app.page.orders",
+				"section": "details",
+				"tab": "tests"
+			}
+		},
+		{
+			"name": "collection keeps no entity",
+			"input": "to category only",
+			"output": {
+				"branch": "feature/orders",
+				"commit": "8b41d0720e252681deac809969b3faf8181dac30",
+				"category": "services"
+			}
+		}
+	]
+}
