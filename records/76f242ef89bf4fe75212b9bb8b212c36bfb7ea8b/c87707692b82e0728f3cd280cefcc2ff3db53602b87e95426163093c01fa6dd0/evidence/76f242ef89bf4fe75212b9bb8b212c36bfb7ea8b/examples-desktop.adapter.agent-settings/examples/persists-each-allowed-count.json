@@ -1,0 +1,29 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.adapter.agent-settings",
+	"symbol": "write",
+	"cases": [
+		{
+			"name": "write and read 1",
+			"input": {
+				"designOptions": 1
+			},
+			"output": 1
+		},
+		{
+			"name": "write and read 3",
+			"input": {
+				"designOptions": 3
+			},
+			"output": 3
+		},
+		{
+			"name": "write and read 10",
+			"input": {
+				"designOptions": 10
+			},
+			"output": 10
+		}
+	]
+}

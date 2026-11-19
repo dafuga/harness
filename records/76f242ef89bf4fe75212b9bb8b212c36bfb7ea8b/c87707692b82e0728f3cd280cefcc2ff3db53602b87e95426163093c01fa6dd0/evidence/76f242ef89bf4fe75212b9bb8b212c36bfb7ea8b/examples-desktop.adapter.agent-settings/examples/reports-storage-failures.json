@@ -1,0 +1,22 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.adapter.agent-settings",
+	"symbol": "read",
+	"cases": [
+		{
+			"name": "read with denied storage",
+			"input": {
+				"storage": "denied"
+			},
+			"output": 3
+		},
+		{
+			"name": "write 2 with quota failure",
+			"input": {
+				"designOptions": 2
+			},
+			"output": false
+		}
+	]
+}

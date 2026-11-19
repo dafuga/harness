@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.adapter.agent-settings",
+	"symbol": "read",
+	"cases": [
+		{
+			"name": "read stored broken",
+			"input": {
+				"stored": "broken"
+			},
+			"output": 3
+		},
+		{
+			"name": "read stored null",
+			"input": {
+				"stored": "null"
+			},
+			"output": 3
+		},
+		{
+			"name": "read stored []",
+			"input": {
+				"stored": "[]"
+			},
+			"output": 3
+		},
+		{
+			"name": "read stored {}",
+			"input": {
+				"stored": "{}"
+			},
+			"output": 3
+		},
+		{
+			"name": "read stored {\"designOptions\":0}",
+			"input": {
+				"stored": "{\"designOptions\":0}"
+			},
+			"output": 3
+		},
+		{
+			"name": "read stored {\"designOptions\":11}",
+			"input": {
+				"stored": "{\"designOptions\":11}"
+			},
+			"output": 3
+		},
+		{
+			"name": "read stored {\"designOptions\":\"2\"}",
+			"input": {
+				"stored": "{\"designOptions\":\"2\"}"
+			},
+			"output": 3
+		}
+	]
+}
