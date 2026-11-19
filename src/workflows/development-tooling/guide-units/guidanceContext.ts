@@ -134,6 +134,24 @@ export function headlessOnly(
 	);
 }
 
+/** Whether a scenario lists this unit on its default state with the coverage; inapplicable needs a reason. */
+function declaresDefault(
+	scenario: ScenarioManifest,
+	unitId: string,
+	coverage: 'required' | 'inapplicable'
+): boolean {
+	return (
+		scenario.units.includes(unitId) &&
+		scenario.states.some(
+			(state) =>
+				state.coverage === coverage &&
+				state.units?.includes(unitId) === true &&
+				unitStateName(unitId, state.id) === 'default' &&
+				(coverage === 'required' || Boolean(state.reason?.trim()))
+		)
+	);
+}
+
 export function namedUnitStates(context: GuidanceContext, unit: ComponentManifest): UnitState[] {
 	const states = context.registries
 		.filter((row) => row.entity === unit.id)
@@ -151,10 +169,18 @@ export function namedUnitStates(context: GuidanceContext, unit: ComponentManifes
 				origin: 'REQUIRED',
 				reasons: [`specification/scenarios/${scenario.id}.json#${state.id}`]
 			});
-	return mergeUnitStates([
-		[{ name: 'default', origin: 'REQUIRED', reasons: ['Default presentation.'] }],
-		states
-	]);
+	// A UI scenario's explicit inapplicable default stands in for the generated one, unless a required default exists.
+	const scenarios = context.loaded.scenarios;
+	const declaredNone =
+		scenarios.some(
+			(scenario) => scenario.kind === 'ui' && declaresDefault(scenario, unit.id, 'inapplicable')
+		) &&
+		!states.some((state) => state.name === 'default') &&
+		!scenarios.some((scenario) => declaresDefault(scenario, unit.id, 'required'));
+	const generated: UnitState[] = declaredNone
+		? []
+		: [{ name: 'default', origin: 'REQUIRED', reasons: ['Default presentation.'] }];
+	return mergeUnitStates([generated, states]);
 }
 
 /** Source branch literals are hints: importing a dependency never establishes rendered proof. */
