@@ -1,0 +1,75 @@
+{
+	"schemaVersion": 1,
+	"record": "89c55bce62f8fde044bc27ee705bcfc2cf02a161d46908cd05a34acb01582916",
+	"source": {
+		"commit": "b1ef963097568efffc75b53a19ae9ec91020cefd",
+		"tree": "232557cfb27514c4a10ef5a2495789666c67b967"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "4c1add13c7e6b71d8245b2f3e89e685e1b08d9918d7871716c7e557126dc0758",
+			"bytes": 322838,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b1ef963097568efffc75b53a19ae9ec91020cefd/design-options/option-runs/test-design-options-run.test.ts-option-plan-runs.txt",
+			"sha256": "456d5cf63aeea36facb9ca36f6c6abb4b87d06884e71855c9ffc3f96dbcb9d53",
+			"bytes": 822,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b1ef963097568efffc75b53a19ae9ec91020cefd/design-options/option-runs/test-design-options-run.test.ts-option-plan-runs.json",
+			"sha256": "928443b7a076f0672576cae27dfdcf0a055a793dcb80e9a50f04d13fbfd6e715",
+			"bytes": 6670,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b1ef963097568efffc75b53a19ae9ec91020cefd/design-options/option-directions/test-utils-design-directions.test.ts-option-plan-runs.txt",
+			"sha256": "6514d85bef901a06b66a4dc0add2c6a402cdd0b15e52d211066141978040bffe",
+			"bytes": 409,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b1ef963097568efffc75b53a19ae9ec91020cefd/design-options/option-directions/test-utils-design-directions.test.ts-option-plan-runs.json",
+			"sha256": "a6156b394577711482173363ad68ae665b7db1e631afbc0402c16b2949c1daee",
+			"bytes": 3894,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/design-options-option-creation.log",
+			"sha256": "8776e58e1d1d6adc8fde18e7dce447d34689b559947fd358fb31bc8b19cfc3ab",
+			"bytes": 769,
+			"storage": "git"
+		},
+		{
+			"path": "logs/design-options-option-runs.log",
+			"sha256": "456d5cf63aeea36facb9ca36f6c6abb4b87d06884e71855c9ffc3f96dbcb9d53",
+			"bytes": 822,
+			"storage": "git"
+		},
+		{
+			"path": "logs/design-options-option-validation.log",
+			"sha256": "a241f86d633c83d3d30d35937718ee5dd5a8c399498e8b2a24c3b7eaab2c8c7e",
+			"bytes": 415,
+			"storage": "git"
+		},
+		{
+			"path": "logs/design-options-option-count.log",
+			"sha256": "f6388a1adf82b1f964ffba04f836e17d0dfccbcaabd7cf53664813f4a2670975",
+			"bytes": 405,
+			"storage": "git"
+		},
+		{
+			"path": "logs/design-options-option-directions.log",
+			"sha256": "6514d85bef901a06b66a4dc0add2c6a402cdd0b15e52d211066141978040bffe",
+			"bytes": 409,
+			"storage": "git"
+		}
+	]
+}
