@@ -47,7 +47,11 @@ const request: RuntimeRequest = { operation: 'version' };
 const manifest: ComponentManifest = componentManifestSchema.parse(JSON.parse(process.argv[2]));
 const scenario: ScenarioManifest | undefined = scenarioManifestSchema.safeParse({}).data;
 const record: VerificationRecord | undefined = verificationRecordSchema.safeParse({}).data;
-const errors: string[] = new ComponentManifestValidator().validate(manifest, manifest.id + '.json').errors;
+const validator = new ComponentManifestValidator();
+const invalid = {
+	...manifest,
+	contract: { ...manifest.contract, inputs: [{ name: 'unsupported', type: 'unknown', required: true }] }
+};
 const wasm: ExecutionTarget = { kind: 'wasm', entry: kernelArtifacts().wasm ?? '' };
 const service = new UnitRuntimeService(process.cwd());
 const served = await new RuntimeServerService().serve(service.forTarget(wasm), { port: 0 });
@@ -64,7 +68,8 @@ await served.close();
 console.log(JSON.stringify({
 	resources: { request: resourceRequest.priority, reserve: resourceConfigSchema.parse({}).cpuReservePercent },
 	id: manifest.id,
-	errors,
+	errors: validator.validate(manifest, manifest.id + '.json').errors,
+	invalidErrors: validator.validate(invalid, manifest.id + '.json').errors,
 	scenario: scenario === undefined,
 	record: record === undefined,
 	tolerance: performanceTolerance,
@@ -177,10 +182,7 @@ test('a packed consumer imports typed contracts and calls real adapters without 
 	await withPackedConsumer(async (project) => {
 		await expectTypes(project);
 		await expectPackagedSqlite(project);
-		const manifest = await readFile(
-			resolve('specification/units/function.stable-json.json'),
-			'utf8'
-		);
+		const manifest = await readFile('specification/units/function.commit-identity.json', 'utf8');
 		const native = kernelArtifacts().native ?? '';
 		const expected = { ok: true, output: { contract: 'impact-kernel/1' } };
 		const printed: Record<string, unknown> = {};
@@ -199,8 +201,9 @@ test('a packed consumer imports typed contracts and calls real adapters without 
 			printed[runner] = result;
 			expect(result, runner).toMatchObject({
 				resources: { request: 'agent-test', reserve: 10 },
-				id: 'function.stable-json',
+				id: 'function.commit-identity',
 				errors: [],
+				invalidErrors: ['function.commit-identity: contract input unsupported has unknown type'],
 				scenario: true,
 				record: true,
 				tolerance: 0.05,
