@@ -1,0 +1,25 @@
+
+Running 18 tests using 1 worker
+
+(node:33451) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.floating-chat at desktop (1.1s)
+  ✓   2 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.floating-chat:closed at desktop (870ms)
+  ✓   3 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.floating-chat:notice at desktop (891ms)
+  ✓   4 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.floating-chat:navigation at desktop (926ms)
+  ✓   5 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.floating-chat:following at desktop (911ms)
+  ✓   6 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.floating-chat:not-following at desktop (912ms)
+  ✓   7 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.floating-chat at tablet (573ms)
+  ✓   8 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.floating-chat:closed at tablet (573ms)
+  ✓   9 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.floating-chat:notice at tablet (577ms)
+  ✓  10 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.floating-chat:navigation at tablet (592ms)
+  ✓  11 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.floating-chat:following at tablet (568ms)
+  ✓  12 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.floating-chat:not-following at tablet (603ms)
+  ✓  13 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.floating-chat at mobile (553ms)
+  ✓  14 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.floating-chat:closed at mobile (556ms)
+  ✓  15 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.floating-chat:notice at mobile (570ms)
+  ✓  16 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.floating-chat:navigation at mobile (587ms)
+  ✓  17 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.floating-chat:following at mobile (572ms)
+  ✓  18 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.floating-chat:not-following at mobile (611ms)
+
+  18 passed (15.3s)
