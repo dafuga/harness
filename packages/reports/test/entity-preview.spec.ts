@@ -1,5 +1,7 @@
 import { reviewHelperSource } from './entityPreviewFunctions';
 import { reviewApis } from './entityPreviewApis';
+import { validateApiScreens } from './entityPreviewApiEvidence';
+import { evidenceRequested } from '../../../src/utils/reports-media/record-capture/recordCapture';
 import { expect, test } from '../../../test/support/browserTest';
 import { capture, fits, open, viewports, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
@@ -174,3 +176,11 @@ for (const [name, size] of Object.entries(viewports)) {
 		}
 	});
 }
+// Runs after the three APIs tests above, in the same single worker, once their captures exist.
+test('APIs catalog screenshot evidence has every declared slot at its viewport size', () => {
+	test.skip(
+		!evidenceRequested() || process.env.HARNESS_SCENARIO !== 'explorer-apis',
+		'api-screens evidence is requested only by the explorer-apis scenario.'
+	);
+	validateApiScreens();
+});

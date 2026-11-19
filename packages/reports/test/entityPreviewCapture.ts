@@ -7,6 +7,7 @@ import { recordCapture } from '../../../src/utils/reports-media/record-capture/r
 import { unitIdPattern } from '../../../src/core/unitTypes';
 import { previewHome } from './entityPreviewSetup';
 import { capturePlatformEvidence } from './entityPreviewPlatformEvidence';
+import { recordApiScreen } from './entityPreviewApiEvidence';
 import { withoutViewportSuffix } from '../src/utils/explorer-ui/explorer-evidence/focusedCaptures';
 
 /** The compiled fixture files served by entityPreviewPage, independently of its synthetic history. */
@@ -66,6 +67,8 @@ export async function capture(
 /** Explicit units are the real UI exercised by the caller, never the synthetic entities pictured. */
 async function retain(page: Page, capture: { name: string; units: string[]; pixels: Buffer }) {
 	if (!process.env.HARNESS_EVIDENCE_DIR) return;
+	const scenario = process.env.HARNESS_SCENARIO ?? '';
+	const ownsScreenshots = ['explorer-apis', 'explorer-platforms'].includes(scenario);
 	const server = await page.evaluate(
 		() =>
 			(window as unknown as { previewBuild?: { buildId: string; revision: string } }).previewBuild
@@ -80,20 +83,24 @@ async function retain(page: Page, capture: { name: string; units: string[]; pixe
 	if (size.width <= 480) viewport = 'mobile';
 	const state = withoutViewportSuffix(namedState, viewport);
 	const measurements = await observations(page, `${state}-${size.width}x${size.height}`);
+	// Scenarios that own their screenshot rows get no per-unit screenshots: the same pixels are
+	// retained once as api-screens, or the platform evidence writes its named captures itself.
+	if (scenario === 'explorer-apis') recordApiScreen(state, viewport, server, capture.pixels);
 	for (const unit of new Set(capture.units)) {
 		assertVisualUnit(unit);
 		const line = { evidence: unit, state, viewport, server };
-		recordCapture(
-			{
-				...line,
-				kind: 'screenshot',
-				file: `${unit}-${state}-${viewport}.png`,
-				mediaType: 'image/png',
-				provenance: 'actual-capture',
-				note: 'Real shared UI over a synthetic history; not a capture of the fictional entity.'
-			},
-			capture.pixels
-		);
+		if (!ownsScreenshots)
+			recordCapture(
+				{
+					...line,
+					kind: 'screenshot',
+					file: `${unit}-${state}-${viewport}.png`,
+					mediaType: 'image/png',
+					provenance: 'actual-capture',
+					note: 'Real shared UI over a synthetic history; not a capture of the fictional entity.'
+				},
+				capture.pixels
+			);
 		recordCapture(
 			{
 				...line,
