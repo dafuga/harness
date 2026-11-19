@@ -1,0 +1,96 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-emitted",
+	"symbol": "harnessEmitted",
+	"cases": [
+		{
+			"name": "Absent record reads as not measured for each target",
+			"input": {
+				"unit": {
+					"id": "kernel.impact",
+					"runtime": {
+						"kind": "process",
+						"targets": [
+							{
+								"kind": "process",
+								"entry": "target/process"
+							},
+							{
+								"kind": "wasm",
+								"entry": "target/wasm"
+							}
+						]
+					},
+					"emitted": {
+						"limits": {
+							"process": 3,
+							"wasm": 1
+						},
+						"unmeasured": {}
+					}
+				},
+				"record": null
+			},
+			"output": [
+				{
+					"target": "process",
+					"label": "process (native)",
+					"value": "not measured at this revision",
+					"limit": "frozen at 3 bytes"
+				},
+				{
+					"target": "wasm",
+					"label": "Wasm",
+					"value": "not measured at this revision",
+					"limit": "frozen at 1 byte"
+				}
+			]
+		},
+		{
+			"name": "Unit without process or Wasm output reads one none row",
+			"input": {
+				"unit": {
+					"id": "kernel.impact",
+					"runtime": {
+						"kind": "process",
+						"targets": [
+							{
+								"kind": "module",
+								"entry": "target/module"
+							}
+						]
+					},
+					"emitted": {
+						"limits": {},
+						"unmeasured": {}
+					}
+				},
+				"record": {
+					"measurements": [
+						{
+							"unit": "kernel.impact",
+							"metric": "artifact-bytes",
+							"unitOfMeasure": "bytes",
+							"value": null,
+							"workload": null,
+							"profile": null,
+							"unavailable": "A module unit emits no separate artifact."
+						}
+					],
+					"budgets": {
+						"findings": []
+					}
+				}
+			},
+			"output": [
+				{
+					"target": "none",
+					"label": "",
+					"value": "none: A module unit emits no separate artifact.",
+					"limit": "no limit applies"
+				}
+			]
+		}
+	]
+}
