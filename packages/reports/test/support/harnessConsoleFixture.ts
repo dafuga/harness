@@ -1,10 +1,6 @@
 import { mkdir, rm } from 'node:fs/promises';
-import {
-	baselineRepo,
-	reviewer,
-	type VerifyOutcome,
-	type VerifyRepo
-} from '../../../../test/support/verifyRepo';
+import { baselineRepo, reviewer, type VerifyRepo } from '../../../../test/support/verifyRepo';
+import type { ConsoleSeed, Verified } from './harnessConsoleFixture.types';
 import { seedEmitted } from '../../scripts/harness-emitted-seed';
 import { seedExplorer } from '../../scripts/harness-explorer-seed';
 import { SeedAttacher } from '../../scripts/harness-seed-attacher';
@@ -13,22 +9,6 @@ import { SeedAttacher } from '../../scripts/harness-seed-attacher';
 export const keptBranch = 'feature/kept#1';
 const tone = { FIXTURE_TRANSCRIPT: 'Synthetic test tone. No speech.' };
 const head = (repo: VerifyRepo) => repo.git(['rev-parse', 'HEAD']);
-
-/** Verifies the repository and attaches the record to the commit it ran on. */
-export type Verified = (
-	repo: VerifyRepo,
-	env?: Record<string, string>,
-	args?: string[]
-) => Promise<VerifyOutcome>;
-
-/** The state one seeding run threads through its phases. */
-export interface ConsoleSeed {
-	root: string;
-	repo: VerifyRepo;
-	attacher: SeedAttacher;
-	commits: Record<string, string>;
-	verified: Verified;
-}
 
 /** Records the reason for every required change with the same behavior text. */
 export const explain = (repo: VerifyRepo, behavior: string) =>

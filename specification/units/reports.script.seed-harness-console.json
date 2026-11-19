@@ -9,25 +9,52 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/scripts/seed-harness-console.ts"],
-		"symbols": []
+		"symbols": ["seedHarnessConsole"]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [],
-		"outputs": [],
-		"errors": [],
-		"errorStatus": "none-found",
-		"operations": [],
+		"outputs": [
+			{
+				"name": "seedHarnessConsole",
+				"type": "Promise<void>",
+				"description": "Resolves after the synthetic Git history, indexed reports, scale data and metadata are written to the current browser run’s console fixture directory."
+			}
+		],
+		"errors": [
+			{
+				"name": "E2eRootNotSetError",
+				"type": "E2eRootNotSetError",
+				"description": "The explicit call rejects before seeding if HARNESS_E2E_ROOT is missing. Importing the module does not require a browser run."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "seedHarnessConsole",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "seedHarnessConsole",
+						"type": "Promise<void>",
+						"description": "Resolves after the synthetic Git history, indexed reports, scale data and metadata are written to the current browser run’s console fixture directory."
+					}
+				],
+				"errors": [
+					{
+						"name": "E2eRootNotSetError",
+						"type": "E2eRootNotSetError",
+						"description": "The explicit call rejects before seeding if HARNESS_E2E_ROOT is missing. Importing the module does not require a browser run."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
 		"initialization": []
 	},
 	"dependencies": [
 		{
 			"unit": "reports.function.e2e-fixtures",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.script.harness-emitted-seed",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -38,11 +65,6 @@
 		},
 		{
 			"unit": "reports.script.harness-scale-data",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.script.harness-seed-attacher",
 			"via": "import",
 			"origin": "derived"
 		},

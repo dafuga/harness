@@ -14,6 +14,7 @@ import { e2eFixtures } from '../src/utils/development-tooling/e2e-fixtures/e2eFi
 import { explorerBranch, explorerUnits } from './harness-explorer-seed';
 import { writeScaleData } from './harness-scale-data';
 import { seedShells } from './harness-shells-seed';
+import type { ConsoleSeed } from '../test/support/harnessConsoleFixture.types';
 import {
 	explain,
 	keptBranch,
@@ -23,8 +24,7 @@ import {
 	seedLoaderUnit,
 	seedNativeCounters,
 	seedShoutChange,
-	seedTitlesPage,
-	type ConsoleSeed
+	seedTitlesPage
 } from '../test/support/harnessConsoleFixture';
 
 /** Phase 8: a reordered change verified under several environments and argument sets. */

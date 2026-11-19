@@ -78,6 +78,12 @@ test('Importing the console seeder without a run root does not throw', async () 
 		const seeder = await import('../scripts/seed-harness-console');
 
 		expect(Object.keys(seeder)).toEqual(['seedHarnessConsole']);
+		const seeding = seeder.seedHarnessConsole();
+		await expect(seeding).rejects.toMatchObject({ name: 'E2eRootNotSetError' });
+		const failure = await seeding.catch((error: Error) => ({
+			name: error.name,
+			message: error.message
+		}));
 		recordExampleCases(
 			{
 				unitId,
@@ -91,6 +97,11 @@ test('Importing the console seeder without a run root does not throw', async () 
 					name: 'import the seeder with no run root in the environment',
 					input: { module: 'packages/reports/scripts/seed-harness-console.ts' },
 					output: { exports: Object.keys(seeder) }
+				},
+				{
+					name: 'explicitly run the seeder with no run root',
+					input: { HARNESS_E2E_ROOT: null },
+					error: failure
 				}
 			]
 		);
