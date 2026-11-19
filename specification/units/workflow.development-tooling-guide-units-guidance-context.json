@@ -777,7 +777,7 @@
 			{
 				"name": "namedUnitStates",
 				"type": "UnitState[]",
-				"description": "The 'default' state followed by states from registry rows (catalog or required-states) whose entity equals this unit's id and from scenario states of scenarios that include this unit, each with origin REQUIRED and merged by name. Scenario states marked inapplicable are excluded; when any scenario state names this unit explicitly only those are kept, and in a multi-unit scenario only states whose id is the dashed unit id or starts with it followed by a dash are kept.",
+				"description": "The 'default' state followed by states from registry rows (catalog or required-states) whose entity equals this unit's id and from scenario states of scenarios that include this unit, each with origin REQUIRED and merged by name. Inapplicable states are excluded. A viewport-free headless scenario uses this unit's explicit states if present. Otherwise it uses unowned states with its dashed unit prefix, or unowned shared states without another listed unit's prefix when none are named for this unit. Other scenarios keep the named-unit attribution rule.",
 				"examples": [
 					[
 						{
@@ -1304,10 +1304,7 @@
 						"name": "headlessStateNames",
 						"type": "string[]",
 						"description": "Unique normalized names of required states from viewport-free headless scenarios, excluding names already declared by UI scenarios or registry rows for this unit.",
-						"examples": [
-							["ready"],
-							[]
-						]
+						"examples": [["ready"], []]
 					}
 				],
 				"errors": [],
@@ -1567,7 +1564,7 @@
 					{
 						"name": "namedUnitStates",
 						"type": "UnitState[]",
-						"description": "The 'default' state followed by states from registry rows (catalog or required-states) whose entity equals this unit's id and from scenario states of scenarios that include this unit, each with origin REQUIRED and merged by name. Scenario states marked inapplicable are excluded; when any scenario state names this unit explicitly only those are kept, and in a multi-unit scenario only states whose id is the dashed unit id or starts with it followed by a dash are kept.",
+						"description": "The 'default' state followed by states from registry rows (catalog or required-states) whose entity equals this unit's id and from scenario states of scenarios that include this unit, each with origin REQUIRED and merged by name. Inapplicable states are excluded. A viewport-free headless scenario uses this unit's explicit states if present. Otherwise it uses unowned states with its dashed unit prefix, or unowned shared states without another listed unit's prefix when none are named for this unit. Other scenarios keep the named-unit attribution rule.",
 						"examples": [
 							[
 								{
