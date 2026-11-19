@@ -90,11 +90,11 @@ export async function recordGameState(page: Page, state: string) {
 	const cdp = await page.context().newCDPSession(page);
 	const heap = await cdp.send('Runtime.getHeapUsage');
 	await cdp.detach();
-	const units = [...declared.units];
+	const units = new Set<string>(declared.units);
 	if (!state.endsWith('-creation') && !state.endsWith('-catalog'))
-		units.push('desktop.component.game-navigation-guard');
-	if (state.endsWith('-play')) units.push('desktop.function.game-render-options');
-	const measurements = units.flatMap((unit) => {
+		units.add('desktop.component.game-navigation-guard');
+	if (state.endsWith('-play')) units.add('desktop.function.game-render-options');
+	const measurements = [...units].flatMap((unit) => {
 		const common = {
 			unit,
 			workload: 'native-authoring-' + state + '-' + viewport,

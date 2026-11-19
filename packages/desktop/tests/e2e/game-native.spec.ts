@@ -65,6 +65,8 @@ async function author(page: Page, dimension: string) {
 	await page.getByText('Collect the key', { exact: true }).first().click();
 	await approveCheckpointImage(page);
 	await keepNativeNavigation(page);
+	// The guard's own state is shared by both dimensions; capture it once per viewport.
+	if (dimension === '2d') await capture(page, 'desktop-component-game-navigation-guard-unsaved');
 	await page.getByRole('button', { name: 'Save', exact: true }).click();
 	await expect(page.getByText('Unsaved changes', { exact: true })).toHaveCount(0);
 }
