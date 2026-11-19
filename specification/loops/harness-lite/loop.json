@@ -2,11 +2,9 @@
 	"name": "harness-lite",
 	"goal": "Verify SvelteKit and Godot logic in a browser-free 1 GB and 0.5 vCPU run, then add visual proof for the same commit in full mode.",
 	"createdAt": "2026-11-19T09:27:30.631Z",
-	"updatedAt": "2026-11-19T10:00:16.283Z",
+	"updatedAt": "2026-11-19T10:13:12.843Z",
 	"template": "feature",
-	"templateLineage": [
-		"feature"
-	],
+	"templateLineage": ["feature"],
 	"enforceOrder": false,
 	"steps": [
 		{
@@ -26,7 +24,9 @@
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-19T10:13:12.843Z",
+			"evidence": "At 71e223d767, 168 focused tests and five verification E2Es passed. Source ownership reviews and typechecking passed. Both real fixtures passed under the capped worker and gained exact-commit full screenshots."
 		},
 		{
 			"id": "verify",
