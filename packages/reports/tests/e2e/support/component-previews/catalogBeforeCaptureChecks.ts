@@ -82,11 +82,26 @@ async function assertRequiredShellState(component: Locator, id: string, variant:
 		const action = component.getByRole('link');
 		await expect(action).toHaveClass(/\bgold\b/);
 		await expect(action).toHaveAttribute('href', /\S+/);
-		await expect(action).not.toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+		// Gold is the resting outline style: transparent fill, primary border and text. The primary
+		// fill appears only on hover, which this capture does not hold.
+		await expect(action).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+		const primary = await action.evaluate((node) => {
+			const probe = document.createElement('span');
+			probe.style.color = 'var(--hx-color-primary)';
+			node.append(probe);
+			const value = getComputedStyle(probe).color;
+			probe.remove();
+			return value;
+		});
+		await expect(action).toHaveCSS('border-top-color', primary);
+		await expect(action).toHaveCSS('color', primary);
 	}
 	if (id === 'reports.component.harness-harness-header' && variant === 'base') {
 		await expect(component.getByRole('heading', { name: 'Harness', exact: true })).toBeVisible();
-		await expect(component.getByRole('navigation', { name: 'Other views' })).toBeVisible();
+		// The legacy nav is drawn with no links here; it is present in the DOM but has no box to show.
+		const nav = component.getByRole('navigation', { name: 'Other views' });
+		await expect(nav).toHaveCount(1);
+		await expect(nav.getByRole('link')).toHaveCount(0);
 		await expect(component.locator('.hx-navbar')).toHaveCount(0);
 	}
 	if (id === 'reports.component.harness-harness-verdict' && variant === 'verdict') {

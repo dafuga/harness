@@ -15,7 +15,7 @@ export async function prepareConsoleChatState(component: Locator, variant: strin
 	}
 	if (variant === 'connection-error') {
 		await expect(
-			component.getByText('Chat unavailable: Error: Project connection unavailable.')
+			component.getByText('Chat unavailable: ConsoleBridgeError: Project connection unavailable.')
 		).toBeVisible();
 		return expect(message).toBeDisabled();
 	}
