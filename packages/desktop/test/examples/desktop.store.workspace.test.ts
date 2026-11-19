@@ -127,7 +127,13 @@ test('loads the shown project once connect supplies a bridge', async () => {
 		pushed: pushState.mock.calls.length
 	};
 
-	expect(loaded).toEqual({ calls: ['snapshot'], projectId: 'project-7', busy: false, error: '', pushed: 1 });
+	expect(loaded).toEqual({
+		calls: ['snapshot'],
+		projectId: 'project-7',
+		busy: false,
+		error: '',
+		pushed: 1
+	});
 	recordExampleCases(
 		{
 			unitId: 'desktop.store.workspace',

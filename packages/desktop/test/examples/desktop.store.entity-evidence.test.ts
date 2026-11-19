@@ -6,12 +6,7 @@ import {
 	createEntityEvidenceStore,
 	type EntityEvidence
 } from '../../src/lib/stores/explorer-ui/entityEvidence.svelte';
-import {
-	commits,
-	evidenceBridge,
-	ids,
-	scopeOf
-} from '../evidence-fixture';
+import { commits, evidenceBridge, ids, scopeOf } from '../evidence-fixture';
 
 const target = (entity: string, commit: string | null = null) => ({
 	scope: scopeOf(entity, commit),
@@ -148,7 +143,11 @@ test('show reads again only for a changed target or bridge, and resets first', a
 	await settled(store);
 	expect(other.calls.filter((call) => call.op === 'evidence')).toHaveLength(1);
 	recordCases('createEntityEvidenceStore', 'show-resets-on-changed-target-or-bridge', [
-		{ name: 'reads when the same target is shown again', input: {}, output: calls.length - readsBefore },
+		{
+			name: 'reads when the same target is shown again',
+			input: {},
+			output: calls.length - readsBefore
+		},
 		{ name: 'reads after the target changes', input: {}, output: readsAfterTarget - readsBefore },
 		{ name: 'reads after the bridge changes', input: {}, output: other.calls.length },
 		{ name: 'URL revoked on target change', input: {}, output: revoked.mock.calls.length }

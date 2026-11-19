@@ -1,5 +1,8 @@
 import { test } from 'vitest';
-import type { DesignImage, DesignVersion } from '../../src/models/development-tooling/Desktop.types';
+import type {
+	DesignImage,
+	DesignVersion
+} from '../../src/models/development-tooling/Desktop.types';
 import { versionOption } from '../../src/components/explorer-ui/entity-view/threadAnchor';
 import { entityTarget, imageTarget } from '../../src/utils/explorer-ui/threadAnchor';
 import { expect } from '../../../../test/verificationExpect';
@@ -71,7 +74,12 @@ function versionCase(name: string, input: DesignVersion[], version: string, expe
 test('Selects the exact version and its current option', () => {
 	const cases = [
 		versionCase('use the current approved option of the exact version', versions, 'v12', 'o2'),
-		versionCase('use the first option when the version has no current approval', versions, 'v11', 'o1'),
+		versionCase(
+			'use the first option when the version has no current approval',
+			versions,
+			'v11',
+			'o1'
+		),
 		versionCase('return the empty string for a version without options', versions, 'v13', ''),
 		versionCase('match the version exactly and not by prefix', versions, 'v1', ''),
 		versionCase('use only the first duplicate of a version', [duplicateV12, v12], 'v12', 'o1')
@@ -105,21 +113,46 @@ test('Builds the entity-wide target with null fields', () => {
 			evidence: 'examples-cases',
 			file: 'builds-the-entity-wide-target-with-null-fields.json'
 		},
-		[{ name: 'entity-wide target has null version, hash, state, viewport and region', input: {}, output: entityTarget }]
+		[
+			{
+				name: 'entity-wide target has null version, hash, state, viewport and region',
+				input: {},
+				output: entityTarget
+			}
+		]
 	);
 });
 
 test('Builds image targets with an option only when it is truthy', () => {
 	const region = { x: 0.1, y: 0.2, width: 0.5, height: 0.4 };
-	const optioned: DesignImage = { state: 'approved', viewport: 'desktop', sha256: hashA, bytes: 184320, option: 'o2' };
+	const optioned: DesignImage = {
+		state: 'approved',
+		viewport: 'desktop',
+		sha256: hashA,
+		bytes: 184320,
+		option: 'o2'
+	};
 	const plain: DesignImage = { state: 'draft', viewport: 'mobile', sha256: hashB, bytes: 1200 };
 	const emptyOption: DesignImage = { ...plain, option: '' };
 	const withOption = imageTarget('v12', optioned, region);
 	const withoutOption = imageTarget('v13', plain, null);
 	const withEmptyOption = imageTarget('v13', emptyOption, null);
 
-	expect(withOption).toEqual({ version: 'v12', imageSha256: hashA, state: 'approved', viewport: 'desktop', region, option: 'o2' });
-	expect(withoutOption).toEqual({ version: 'v13', imageSha256: hashB, state: 'draft', viewport: 'mobile', region: null });
+	expect(withOption).toEqual({
+		version: 'v12',
+		imageSha256: hashA,
+		state: 'approved',
+		viewport: 'desktop',
+		region,
+		option: 'o2'
+	});
+	expect(withoutOption).toEqual({
+		version: 'v13',
+		imageSha256: hashB,
+		state: 'draft',
+		viewport: 'mobile',
+		region: null
+	});
 	expect(withoutOption).not.toHaveProperty('option');
 	expect(withEmptyOption).not.toHaveProperty('option');
 	recordExampleCases(
@@ -131,9 +164,21 @@ test('Builds image targets with an option only when it is truthy', () => {
 			file: 'builds-image-targets-with-an-option-only-when-truthy.json'
 		},
 		[
-			{ name: 'include the truthy image option with the supplied region', input: { version: 'v12', image: optioned, region }, output: withOption },
-			{ name: 'omit the option key when the image has none', input: { version: 'v13', image: plain, region: null }, output: withoutOption },
-			{ name: 'omit the option key when the image option is empty', input: { version: 'v13', image: emptyOption, region: null }, output: withEmptyOption }
+			{
+				name: 'include the truthy image option with the supplied region',
+				input: { version: 'v12', image: optioned, region },
+				output: withOption
+			},
+			{
+				name: 'omit the option key when the image has none',
+				input: { version: 'v13', image: plain, region: null },
+				output: withoutOption
+			},
+			{
+				name: 'omit the option key when the image option is empty',
+				input: { version: 'v13', image: emptyOption, region: null },
+				output: withEmptyOption
+			}
 		]
 	);
 });
