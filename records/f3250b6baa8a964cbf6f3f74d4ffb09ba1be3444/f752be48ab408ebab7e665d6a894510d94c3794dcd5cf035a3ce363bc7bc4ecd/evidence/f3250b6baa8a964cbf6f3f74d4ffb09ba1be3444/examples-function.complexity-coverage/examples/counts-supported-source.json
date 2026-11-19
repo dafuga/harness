@@ -1,0 +1,58 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.complexity-coverage",
+	"symbol": "complexityCoverage",
+	"cases": [
+		{
+			"name": "a TypeScript module",
+			"input": {
+				"path": "src/utils/development-tooling/pick.ts"
+			},
+			"output": "counted"
+		},
+		{
+			"name": "a TSX component",
+			"input": {
+				"path": "packages/desk/src/components/Button.tsx"
+			},
+			"output": "counted"
+		},
+		{
+			"name": "an ES module script",
+			"input": {
+				"path": "scripts/release.mjs"
+			},
+			"output": "counted"
+		},
+		{
+			"name": "a CommonJS script",
+			"input": {
+				"path": "scripts/legacy.cjs"
+			},
+			"output": "counted"
+		},
+		{
+			"name": "a JavaScript file with an upper-case extension",
+			"input": {
+				"path": "src/LegacyView.JS"
+			},
+			"output": "counted"
+		},
+		{
+			"name": "a Svelte component",
+			"input": {
+				"path": "src/routes/+page.svelte"
+			},
+			"output": "counted"
+		},
+		{
+			"name": "a TypeScript module flagged as scripted",
+			"input": {
+				"path": "src/utils/development-tooling/pick.ts",
+				"scripted": true
+			},
+			"output": "counted"
+		}
+	]
+}
