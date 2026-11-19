@@ -1,0 +1,27 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-behavior",
+	"symbol": "behaviorDuration",
+	"cases": [
+		{
+			"name": "one named scenario job",
+			"input": {
+				"scenarios": [
+					"order-filter"
+				]
+			},
+			"output": "40 ms"
+		},
+		{
+			"name": "two named scenario jobs",
+			"input": {
+				"scenarios": [
+					"orders-page",
+					"order-filter"
+				]
+			},
+			"output": "940 ms"
+		}
+	]
+}
