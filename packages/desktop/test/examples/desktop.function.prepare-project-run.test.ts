@@ -125,7 +125,7 @@ test('resolves a create Plan after the project and runner are checked, with a fr
 
 test('refuses a request that is not a create Plan before anything is asked', async () => {
 	const { preparation, calls } = fakePreparation();
-	const change = { ...request, mode: 'change' } as ProjectRunRequest;
+	const change = { ...request, mode: 'change' } as unknown as ProjectRunRequest;
 	const ask = { ...request, intent: 'ask' } as unknown as ProjectRunRequest;
 	const errors = [
 		await thrownFrom(prepareProjectRun(preparation, change, new AbortController())),

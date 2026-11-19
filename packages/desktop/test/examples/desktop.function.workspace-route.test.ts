@@ -24,7 +24,7 @@ const routeOf = (over: Record<string, unknown>) => ({
 	projectId: null,
 	branch: null,
 	commit: null,
-	category: 'pages',
+	category: 'pages' as const,
 	entityId: null,
 	suffix: null,
 	...over
