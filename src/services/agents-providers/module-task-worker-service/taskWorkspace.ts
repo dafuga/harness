@@ -31,4 +31,32 @@ export async function snapshotTaskWork(
 		source,
 		paths: result.changedFiles
 	});
+	result.changedLines = await checkpointChangedLines(
+		new GitAdapter(root),
+		source,
+		result.checkpointCommit
+	);
+}
+
+async function checkpointChangedLines(git: GitAdapter, source: string, checkpoint: string) {
+	const stats = await git
+		.attempt([
+			'diff',
+			'--numstat',
+			'-z',
+			'--no-renames',
+			'--no-ext-diff',
+			'--no-textconv',
+			source,
+			checkpoint
+		])
+		.catch(() => undefined);
+	if (stats === undefined) return undefined;
+	let lines = 0;
+	for (const row of stats.split('\0').filter(Boolean)) {
+		const [added, removed] = row.split('\t', 2);
+		if (!/^\d+$/.test(added) || !/^\d+$/.test(removed)) return undefined;
+		lines += Number(added) + Number(removed);
+	}
+	return lines;
 }

@@ -1,6 +1,7 @@
 // @harness-uid u_b4uzqkb2i6
 import { randomUUID } from 'node:crypto';
 import type { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
+import { TaskWorktreeChangedError } from '../../../adapters/agents-providers/ModuleTaskWorktreeAdapter.types';
 import type {
 	ModuleTask,
 	ModuleTaskQueue,
@@ -62,13 +63,15 @@ export function finishTask(
 }
 export async function taskWrites(git: GitAdapter, task: ModuleTask): Promise<string[]> {
 	if ((await git.run(['rev-parse', 'HEAD'])) !== task.sourceCommit)
-		throw new Error('Worker changed its source commit; review the preserved worktree.');
+		throw new TaskWorktreeChangedError(
+			'Worker changed its source commit; review the preserved worktree.'
+		);
 	const tracked = await git.run(['diff', '--name-only', '-z', 'HEAD']),
 		untracked = await git.run(['ls-files', '--others', '--exclude-standard', '-z']);
 	const paths = [...new Set((tracked + '\0' + untracked).split('\0').filter(Boolean))];
 	const outside = paths.filter((path) => !task.module.files.includes(path));
 	if (outside.length)
-		throw new Error(
+		throw new TaskWorktreeChangedError(
 			`Worker wrote outside the assigned module: ${outside.join(', ')}. Worktree preserved.`
 		);
 	return paths;

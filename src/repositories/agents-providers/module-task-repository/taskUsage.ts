@@ -1,6 +1,15 @@
 // @harness-uid u_tjumni44tf
 import { z } from 'zod';
 const count = z.number().finite().nonnegative().nullable();
+const reviewCause = z.enum([
+	'contract',
+	'verification',
+	'scope',
+	'quality',
+	'user-correction',
+	'other'
+]);
+export const executionFailureCause = z.enum(['quota', 'timeout', 'cancelled', 'provider-error']);
 export const taskUsageSchema = z.strictObject({
 	inputTokens: count,
 	outputTokens: count,
@@ -27,6 +36,7 @@ export const taskExecutionSchema = z.strictObject({
 	usage: taskUsageSchema.optional(),
 	apiCost: taskCostSchema,
 	status: z.enum(['succeeded', 'failed']),
+	failureCause: executionFailureCause.optional(),
 	startedAt: z.iso.datetime(),
 	finishedAt: z.iso.datetime()
 });
@@ -34,16 +44,22 @@ export const reviewInputSchema = z
 	.strictObject({
 		attempt: z.uuid(),
 		verdict: z.enum(['accepted', 'incomplete']),
+		cause: reviewCause.optional(),
 		reviewer: z.string().trim().min(1).max(150).default('unattributed'),
 		feedback: z.string().trim().max(16000).default('')
 	})
 	.refine(
 		(value) => value.verdict === 'accepted' || value.feedback.length > 0,
 		'Incomplete review requires feedback.'
+	)
+	.refine(
+		(value) => value.verdict === 'incomplete' || value.cause === undefined,
+		'Only incomplete reviews can specify a rejection cause.'
 	);
 export const taskReviewSchema = z.strictObject({
 	attempt: z.uuid(),
 	verdict: z.enum(['accepted', 'incomplete']),
+	cause: reviewCause.optional(),
 	reviewer: z.string(),
 	feedback: z.string(),
 	at: z.iso.datetime(),

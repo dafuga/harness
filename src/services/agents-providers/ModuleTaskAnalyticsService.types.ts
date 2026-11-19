@@ -6,6 +6,11 @@ import type {
 import type { AnalyticsRepository } from '../../repositories/reports-media/AnalyticsRepository';
 export type TaskAnalyticsStore = Pick<AnalyticsRepository, 'recordImported' | 'close'>;
 export type TaskAnalyticsStoreFactory = () => TaskAnalyticsStore | Promise<TaskAnalyticsStore>;
+export interface TaskRunPosition {
+	attemptNumber: number;
+	priorEscalations: number;
+	startedAt?: string;
+}
 export interface TaskAnalyticsDetail {
 	attempt: string;
 	feature: string;
@@ -16,10 +21,16 @@ export interface TaskAnalyticsDetail {
 	reportedModel: string | null;
 	usage?: TaskUsage;
 	apiCost?: TaskApiCost;
-}
-export interface TaskPriceRates {
-	threshold: number;
-	source: string;
-	short: [number, number, number, number, number];
-	long: [number, number, number, number, number];
+	run?: {
+		taskType: string;
+		estimatedDifficulty: 'small' | 'medium' | 'large' | null;
+		attemptNumber: number;
+		executionNumber: number;
+		priorEscalations: number;
+		startedAt: string | null;
+		filesTouched: number | null;
+		linesChanged: number | null;
+		failureCause: string | null;
+	};
+	rejectionCause?: string;
 }

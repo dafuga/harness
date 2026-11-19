@@ -30,6 +30,8 @@ export const taskInputSchema = z.strictObject({
 		.optional(),
 	instructions: text,
 	wantedContract: wantedContractSchema,
+	taskType: id.optional(),
+	estimatedDifficulty: z.enum(['small', 'medium', 'large']).optional(),
 	model: z.string().trim().min(1).max(150).default('auto'),
 	provider: z.enum(['claude', 'codex']).optional(),
 	intelligence: z.enum(['low', 'medium', 'high', 'xhigh', 'max', 'ultra']).optional(),
@@ -43,7 +45,9 @@ const result = z.strictObject({
 	text: z.string(),
 	worktree: z.string(),
 	changedFiles: z.array(path),
+	changedLines: z.number().int().nonnegative().optional(),
 	error: z.string().optional(),
+	failureCause: z.enum(['scope', 'workspace-error']).optional(),
 	fallback: z.boolean(),
 	finishedAt: z.iso.datetime(),
 	attempt: z.uuid().optional(),
@@ -56,6 +60,7 @@ const claim = z.strictObject({
 	worker: id,
 	token: z.uuid(),
 	startedAt: z.iso.datetime(),
+	recoveredAt: z.iso.datetime().optional(),
 	owner: z.strictObject({ workspace: z.uuid(), pid: z.number().int().positive(), startedAt: text })
 });
 export const storedTaskSchema = taskInputSchema.omit({ module: true, feature: true }).extend({

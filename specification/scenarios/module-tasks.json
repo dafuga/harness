@@ -26,7 +26,11 @@
 		"repository.agents-providers-module-task-repository-task-usage",
 		"service.agents-providers-module-task-analytics-service-task-events",
 		"adapter.source-profile",
-		"service.agents-providers-module-task-worker-service-dispatch-task-attempt"
+		"service.agents-providers-module-task-worker-service-dispatch-task-attempt",
+		"service.agents-providers-module-task-analytics-service-model-run-record",
+		"service.agents-providers-module-task-analytics-service-model-run-pricing",
+		"service.agents-providers-module-task-analytics-service-task-run-records",
+		"service.agents-providers-module-task-analytics-service-task-run-report"
 	],
 	"states": [
 		{
@@ -57,6 +61,11 @@
 		{
 			"id": "reviewed-repairs",
 			"title": "Incomplete reviews retain work and requeue once before acceptance",
+			"coverage": "required"
+		},
+		{
+			"id": "run-records",
+			"title": "Shared run records and cost-aware model recommendations",
 			"coverage": "required"
 		}
 	],
@@ -150,7 +159,8 @@
 				"quota-fallback",
 				"owner-recovery",
 				"usage-pricing",
-				"reviewed-repairs"
+				"reviewed-repairs",
+				"run-records"
 			],
 			"viewports": [],
 			"required": true
@@ -164,7 +174,8 @@
 				"quota-fallback",
 				"owner-recovery",
 				"usage-pricing",
-				"reviewed-repairs"
+				"reviewed-repairs",
+				"run-records"
 			],
 			"viewports": [],
 			"required": true

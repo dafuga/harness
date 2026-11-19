@@ -5,7 +5,7 @@ export const analyticsGuide: Guide = {
 	summary: 'Durable local cross-project loop and Jev usage analytics.',
 	steps: [
 		'Import historical loops from a selected root.',
-		'Query summary, loops, jev, models or events.',
+		'Query summary, loops, jev, models, tasks or events.',
 		'Supply author and stable task or loop-step identity on Jev checks.',
 		'Serve the bundled report website to explore Analytics.'
 	],
@@ -23,6 +23,7 @@ export const analyticsGuide: Guide = {
 	exampleCommands: [
 		'harness analytics import --root /Users/danielfugere/projects',
 		'harness analytics jev --json',
+		'harness analytics tasks --project /path/to/project --json',
 		'harness response-check --request request.txt --response answer.txt --task answer-1 --agent-model gpt-6.1-sol',
 		'harness analytics export --project /path/to/project --output analytics.html'
 	]

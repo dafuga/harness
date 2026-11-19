@@ -54,6 +54,8 @@ export const moduleTaskVerificationScopes: Record<string, VerificationScope> = {
 			'test/services/agents-providers/module-task-analytics-service.test.ts': {
 				'committed task history emits stable IDs and excludes raw prompt text':
 					'contract-admission',
+				'model choice ranks complete first-attempt samples inside each estimated difficulty':
+					'run-records',
 				'missing Codex cache-write counts produce a priced range rather than a guessed bill':
 					'usage-pricing'
 			},

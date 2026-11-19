@@ -1,0 +1,93 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-module-task-analytics-service-model-run-pricing",
+	"uid": "u_yatjr7fj3t",
+	"kind": "service",
+	"title": "model-run-pricing",
+	"responsibility": "Estimate standard API-equivalent token costs with a versioned price card.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/module-task-analytics-service/modelRunPricing.ts",
+			"src/services/agents-providers/module-task-analytics-service/modelRunPricing.types.ts"
+		],
+		"symbols": ["RATE_CARD", "estimateApiCost", "StandardRates", "PricedUsage"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "estimateApiCost.model",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "estimateApiCost.usage",
+				"type": "TaskUsage",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "RATE_CARD",
+				"type": "string"
+			},
+			{
+				"name": "estimateApiCost",
+				"type": "TaskApiCost"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "estimateApiCost",
+				"inputs": [
+					{
+						"name": "estimateApiCost.model",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "estimateApiCost.usage",
+						"type": "TaskUsage",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "estimateApiCost",
+						"type": "TaskApiCost"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/module-task-analytics-service/modelRunPricing.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/module-task-analytics-service/modelRunPricing.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

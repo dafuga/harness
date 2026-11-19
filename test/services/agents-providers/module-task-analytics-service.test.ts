@@ -7,6 +7,9 @@ import type { AnalyticsEvent } from '../../../src/core/reports-media/analyticsTy
 import { moduleTaskFixture } from '../../support/moduleTaskFixture';
 import { observedTaskOperation } from '../../support/taskProfiles';
 import { readFile } from 'node:fs/promises';
+import { createRunRecord } from '../../../src/services/agents-providers/module-task-analytics-service/modelRunRecord';
+import { taskRunRecords } from '../../../src/services/agents-providers/module-task-analytics-service/taskRunRecords';
+import { taskRunReport } from '../../../src/services/agents-providers/module-task-analytics-service/taskRunReport';
 
 afterEach(() => vi.unstubAllEnvs());
 
@@ -53,6 +56,7 @@ test('committed task history emits stable IDs and excludes raw prompt text', asy
 			bounceRate: null
 		});
 		expect(JSON.stringify(selected)).not.toContain('Implement the wanted contract');
+		expectPendingRunRecords(selected);
 		vi.stubEnv('HARNESS_ANALYTICS_DISABLED', '1');
 		seen.clear();
 		expect(await analytics.sync(f.root)).toBe(0);
@@ -61,6 +65,94 @@ test('committed task history emits stable IDs and excludes raw prompt text', asy
 		await f.dispose();
 	}
 });
+
+function expectPendingRunRecords(selected: AnalyticsEvent[]) {
+	expect(taskRunRecords(selected, selected)).toMatchObject([
+		{
+			taskType: 'module',
+			outcome: 'pending_review',
+			attempt: 1,
+			firstTry: false,
+			wallTimeMs: expect.any(Number)
+		}
+	]);
+	const legacy = selected.map((event) => ({
+		...event,
+		moduleTask: { ...event.moduleTask!, run: undefined }
+	}));
+	expect(taskRunRecords(legacy, legacy)).toMatchObject([
+		{ attempt: null, retries: null, estimatedDifficulty: null, wallTimeMs: null }
+	]);
+}
+
+test('model choice ranks complete first-attempt samples inside each estimated difficulty', () => {
+	const records = [
+		...pricedModelRuns('claude-haiku-5-5', 'small', 5, 0.002),
+		...pricedModelRuns('claude-opus-5-5', 'small', 5, 0.015),
+		...pricedModelRuns('claude-opus-5-5', 'large', 5, 0.008),
+		...pricedModelRuns('gpt-6.2-sol', 'small', 4, 0.001),
+		...pricedModelRuns('unknown-model', 'small', 5, null)
+	];
+	const report = taskRunReport(records);
+	expect(report.recommendations).toMatchObject([
+		{
+			taskType: 'phase-4',
+			model: 'claude-haiku-5-5',
+			estimatedDifficulty: 'small',
+			firstTryRate: 0.8
+		},
+		{
+			taskType: 'phase-4',
+			model: 'claude-opus-5-5',
+			estimatedDifficulty: 'large',
+			firstTryRate: 0.8
+		}
+	]);
+	expect(report.byModelTaskDifficulty).toContainEqual(
+		expect.objectContaining({
+			model: 'claude-haiku-5-5',
+			estimatedDifficulty: 'small',
+			measuredDifficulty: 'medium',
+			outcomes: { done: 4, rejected: 1 },
+			rejectionsByCause: { verification: 1 }
+		})
+	);
+});
+
+function pricedModelRuns(
+	model: string,
+	estimatedDifficulty: 'small' | 'large',
+	samples: number,
+	cost: number | null
+) {
+	return Array.from({ length: samples }, (_, index) => {
+		const id = `${model}-${estimatedDifficulty}-${index}`;
+		return createRunRecord({
+			source: 'harness',
+			id,
+			taskId: id,
+			chainId: id,
+			taskType: 'phase-4',
+			project: '/fixture',
+			provider: model.startsWith('claude') ? 'claude' : 'codex',
+			model,
+			effort: 'medium',
+			finishedAt: '2026-11-19T12:00:00Z',
+			outcome: index === 0 ? 'rejected' : 'done',
+			attempt: 1,
+			estimatedDifficulty,
+			filesTouched: 4,
+			rejectionCause: index === 0 ? 'verification' : null,
+			usage: {
+				inputTokens: null,
+				outputTokens: null,
+				cacheReadTokens: null,
+				cacheWriteTokens: null,
+				reportedCostUsd: cost
+			}
+		});
+	});
+}
 test('missing Codex cache-write counts produce a priced range rather than a guessed bill', () => {
 	const cost = new ModuleTaskAnalyticsService().quote('gpt-6-luna', {
 		inputTokens: 100,
@@ -72,7 +164,7 @@ test('missing Codex cache-write counts produce a priced range rather than a gues
 	expect(cost).toMatchObject({
 		usd: null,
 		basis: 'standard-api-estimate',
-		rateCard: 'standard-global-2026-10-25'
+		rateCard: 'standard-global-2026-11-19'
 	});
 	expect(cost.minimumUsd).toBeCloseTo(0.0000173, 10);
 	expect(cost.maximumUsd).toBeCloseTo(0.0000278, 10);

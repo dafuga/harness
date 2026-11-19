@@ -16,6 +16,7 @@ import { z } from 'zod';
 import { retryableTask } from './module-task-service/retryableTask';
 import { reviewModuleTask } from './module-task-service/reviewModuleTask';
 import { queuedTask } from './module-task-service/queuedTask';
+import { ModuleTaskAnalyticsService } from './ModuleTaskAnalyticsService';
 /** Admit immutable feature context and wanted contracts before work is eligible for pickup. */
 export class ModuleTaskService {
 	readonly repository: ModuleTaskRepository;
@@ -82,21 +83,32 @@ export class ModuleTaskService {
 	}
 	async retry(id: string) {
 		const owner = await this.repository.owner();
-		return this.repository.update((queue) => {
-			const task = queue.tasks.find((t) => t.id === id);
-			if (!task || !retryableTask(task, owner.workspace))
-				throw new Error(
-					'Task cannot be retried while its owner is active, unknown or in another clone.'
-				);
-			if (task.result) task.attempts.push(task.result);
-			if (task.claim) task.claimHistory.push(task.claim);
-			delete task.result;
-			delete task.claim;
-			task.status = 'queued';
-			return task;
-		});
+		const result = await this.repository.update((queue) =>
+			recoverTask(
+				queue.tasks.find((t) => t.id === id),
+				owner.workspace
+			)
+		);
+		await new ModuleTaskAnalyticsService().sync(this.root);
+		return result;
 	}
 	review(id: string, input: unknown) {
 		return reviewModuleTask(this.root, this.repository, id, input);
 	}
+}
+
+function recoverTask(task: ModuleTask | undefined, workspace: string): ModuleTask {
+	if (!task || !retryableTask(task, workspace))
+		throw new Error(
+			'Task cannot be retried while its owner is active, unknown or in another clone.'
+		);
+	if (task.result) task.attempts.push(task.result);
+	if (task.claim) {
+		const recoveredAt = task.status === 'running' ? new Date().toISOString() : undefined;
+		task.claimHistory.push({ ...task.claim, recoveredAt });
+	}
+	delete task.result;
+	delete task.claim;
+	task.status = 'queued';
+	return task;
 }

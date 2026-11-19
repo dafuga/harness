@@ -6,8 +6,14 @@ import type {
 } from '../../core/reports-media/analyticsTypes';
 import { jevMetrics } from './analyticsJevMetrics';
 import { ModuleTaskAnalyticsService } from '../../services/agents-providers/ModuleTaskAnalyticsService';
+import { taskRunRecords } from '../../services/agents-providers/module-task-analytics-service/taskRunRecords';
+import { taskRunReport } from '../../services/agents-providers/module-task-analytics-service/taskRunReport';
 
-export function analyticsSnapshot(events: AnalyticsEvent[], filter: AnalyticsFilter = {}) {
+export function analyticsSnapshot(
+	events: AnalyticsEvent[],
+	filter: AnalyticsFilter = {},
+	includeTaskRuns = false
+) {
 	const selected = events.filter((event) => matches(event, filter));
 	const loops = loopMetrics(selected);
 	const tasks = new ModuleTaskAnalyticsService().metrics(selected);
@@ -38,7 +44,9 @@ export function analyticsSnapshot(events: AnalyticsEvent[], filter: AnalyticsFil
 			cleanCode: jevMetrics(assessmentScope, 'clean-code', undefined, filter.model)
 		},
 		models: { ...modelMetrics(assessmentScope, filter.model), taskWorkers: tasks.byModel },
-		tasks,
+		tasks: includeTaskRuns
+			? { ...tasks, ...taskRunReport(taskRunRecords(events, selected)) }
+			: tasks,
 		benchmarks: selected.filter((event) => event.kind === 'benchmark'),
 		events: selected
 	};
