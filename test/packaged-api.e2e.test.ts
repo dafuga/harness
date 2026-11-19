@@ -6,6 +6,7 @@ import { kernelArtifacts } from '../src/utils/kernelArtifacts';
 import { recordCapture } from '../src/utils/reports-media/record-capture/recordCapture';
 import { runCommand } from './support/cli';
 import { measureProcess } from './support/cli-measurement/measureProcess';
+import { seedConsumerLock } from './support/packagedConsumerLock';
 import { expectPackagedSqlite } from './support/packagedSqliteConsumer';
 
 const consumer = `
@@ -87,29 +88,36 @@ const tsconfig = {
 	include: ['consumer.ts']
 };
 
-/** Packs Harness and installs the tarball into an empty consumer project. */
-async function packedConsumer(): Promise<{ root: string; project: string }> {
+/**
+ * Packs Harness and installs the tarball into an empty consumer project, then runs `use` with it.
+ * The temp root is removed on every outcome, including a failed pack or install.
+ */
+async function withPackedConsumer(use: (project: string) => Promise<void>): Promise<void> {
 	const root = await mkdtemp(join(tmpdir(), 'harness-api-'));
-	const tarball = join(root, 'harness.tgz');
-	await runCommand(['bun', 'pm', 'pack', '--ignore-scripts', '--filename', tarball], process.cwd());
-	const project = join(root, 'consumer');
-	await mkdir(project);
-	const dependencies = { '@dafuga01/harness': `file:${tarball}` };
-	const devDependencies = { typescript: '^5.8.3', '@types/node': '^22.15.3' };
-	await writeFile(
-		join(project, 'package.json'),
-		JSON.stringify({
+	try {
+		const tarball = join(root, 'harness.tgz');
+		await runCommand(
+			['bun', 'pm', 'pack', '--ignore-scripts', '--filename', tarball],
+			process.cwd()
+		);
+		const project = join(root, 'consumer');
+		await mkdir(project);
+		const manifest = {
 			name: 'consumer',
 			private: true,
 			type: 'module',
-			dependencies,
-			devDependencies
-		})
-	);
-	await writeFile(join(project, 'tsconfig.json'), JSON.stringify(tsconfig));
-	await writeFile(join(project, 'consumer.ts'), consumer);
-	await runCommand(['bun', 'install'], project);
-	return { root, project };
+			dependencies: { '@dafuga01/harness': `file:${tarball}` },
+			devDependencies: { typescript: '^5.8.3', '@types/node': '^22.15.3' }
+		};
+		await writeFile(join(project, 'package.json'), JSON.stringify(manifest));
+		await writeFile(join(project, 'tsconfig.json'), JSON.stringify(tsconfig));
+		await writeFile(join(project, 'consumer.ts'), consumer);
+		await seedConsumerLock({ project, tarball, consumer: manifest });
+		await runCommand(['bun', 'install', '--prefer-offline'], project);
+		await use(project);
+	} finally {
+		await rm(root, { recursive: true, force: true });
+	}
 }
 
 async function expectTypes(project: string): Promise<void> {
@@ -166,53 +174,56 @@ test('public API type build retains configured entry paths across owned workspac
 }, 60000);
 
 test('a packed consumer imports typed contracts and calls real adapters without the CLI', async () => {
-	const { root, project } = await packedConsumer();
-	await expectTypes(project);
-	await expectPackagedSqlite(project);
-	const manifest = await readFile(resolve('specification/units/function.stable-json.json'), 'utf8');
-	const native = kernelArtifacts().native ?? '';
-	const expected = { ok: true, output: { contract: 'impact-kernel/1' } };
-	const printed: Record<string, unknown> = {};
-	for (const runner of ['bun', 'node']) {
-		const run = await measureProcess(
+	await withPackedConsumer(async (project) => {
+		await expectTypes(project);
+		await expectPackagedSqlite(project);
+		const manifest = await readFile(
+			resolve('specification/units/function.stable-json.json'),
+			'utf8'
+		);
+		const native = kernelArtifacts().native ?? '';
+		const expected = { ok: true, output: { contract: 'impact-kernel/1' } };
+		const printed: Record<string, unknown> = {};
+		for (const runner of ['bun', 'node']) {
+			const run = await measureProcess(
+				{
+					units: ['module.index', 'module.resources', 'module.verification'],
+					workload: `cold-${runner}-packed-sdk`,
+					target: 'module',
+					command: [runner, 'consumer.ts', manifest, native],
+					cwd: project
+				},
+				runCommand
+			);
+			const result = JSON.parse(run.stdout) as Record<string, unknown>;
+			printed[runner] = result;
+			expect(result, runner).toMatchObject({
+				resources: { request: 'agent-test', reserve: 10 },
+				id: 'function.stable-json',
+				errors: [],
+				scenario: true,
+				record: true,
+				tolerance: 0.05,
+				kinds: ['module', 'wasm', 'process', 'http'],
+				responses: [expected, expected, expected, expected],
+				cli: 'undefined'
+			});
+			expect(result.rootExports).toEqual(
+				expect.arrayContaining(['componentManifestSchema', 'impactKernel'])
+			);
+			expect(run.stdout).not.toContain('Usage: harness');
+		}
+		// Under verification, what the consumer printed is the evidence of the packed state.
+		recordCapture(
 			{
-				units: ['module.index', 'module.resources', 'module.verification'],
-				workload: `cold-${runner}-packed-sdk`,
-				target: 'module',
-				command: [runner, 'consumer.ts', manifest, native],
-				cwd: project
+				evidence: 'consumer-output',
+				kind: 'output',
+				state: 'packed',
+				file: 'consumer-output.json',
+				mediaType: 'application/json',
+				note: 'Printed by the consumer project under each runtime after it installed the packed tarball.'
 			},
-			runCommand
+			JSON.stringify(printed, null, 2)
 		);
-		const result = JSON.parse(run.stdout) as Record<string, unknown>;
-		printed[runner] = result;
-		expect(result, runner).toMatchObject({
-			resources: { request: 'agent-test', reserve: 10 },
-			id: 'function.stable-json',
-			errors: [],
-			scenario: true,
-			record: true,
-			tolerance: 0.05,
-			kinds: ['module', 'wasm', 'process', 'http'],
-			responses: [expected, expected, expected, expected],
-			cli: 'undefined'
-		});
-		expect(result.rootExports).toEqual(
-			expect.arrayContaining(['componentManifestSchema', 'impactKernel'])
-		);
-		expect(run.stdout).not.toContain('Usage: harness');
-	}
-	// Under verification, what the consumer printed is the evidence of the packed state.
-	recordCapture(
-		{
-			evidence: 'consumer-output',
-			kind: 'output',
-			state: 'packed',
-			file: 'consumer-output.json',
-			mediaType: 'application/json',
-			note: 'Printed by the consumer project under each runtime after it installed the packed tarball.'
-		},
-		JSON.stringify(printed, null, 2)
-	);
-	await rm(root, { recursive: true, force: true });
+	});
 }, 240_000);
