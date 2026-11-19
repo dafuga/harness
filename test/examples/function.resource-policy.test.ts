@@ -99,11 +99,36 @@ test('Pressure reports stale telemetry and exhausted reserves', () => {
 			file: 'pressure-reports-stale-telemetry-and-exhausted-reserves.json'
 		},
 		[
-			{ name: 'healthy host leaves admissions open', input: { ageMs: 0, cpuAvailableCores: 6, memoryAvailableMiB: 8192 }, output: null },
-			{ name: 'sample older than staleSampleMs', input: { ageMs: 6000, cpuAvailableCores: 6, memoryAvailableMiB: 8192 }, output: 'Resource telemetry is unavailable or stale' },
-			{ name: 'CPU below the 0.8-core reserve', input: { ageMs: 0, cpuAvailableCores: 0.5, memoryAvailableMiB: 8192 }, output: 'CPU reserve is exhausted' },
-			{ name: 'memory below the 2048 MiB floor', input: { ageMs: 0, cpuAvailableCores: 6, memoryAvailableMiB: 1024 }, output: 'Memory reserve is exhausted' },
-			{ name: 'memory warning pauses new admissions', input: { ageMs: 0, cpuAvailableCores: 6, memoryAvailableMiB: 8192, memoryPressure: 'warning' }, output: resourcePressure(warning, config, now) }
+			{
+				name: 'healthy host leaves admissions open',
+				input: { ageMs: 0, cpuAvailableCores: 6, memoryAvailableMiB: 8192 },
+				output: null
+			},
+			{
+				name: 'sample older than staleSampleMs',
+				input: { ageMs: 6000, cpuAvailableCores: 6, memoryAvailableMiB: 8192 },
+				output: 'Resource telemetry is unavailable or stale'
+			},
+			{
+				name: 'CPU below the 0.8-core reserve',
+				input: { ageMs: 0, cpuAvailableCores: 0.5, memoryAvailableMiB: 8192 },
+				output: 'CPU reserve is exhausted'
+			},
+			{
+				name: 'memory below the 2048 MiB floor',
+				input: { ageMs: 0, cpuAvailableCores: 6, memoryAvailableMiB: 1024 },
+				output: 'Memory reserve is exhausted'
+			},
+			{
+				name: 'memory warning pauses new admissions',
+				input: {
+					ageMs: 0,
+					cpuAvailableCores: 6,
+					memoryAvailableMiB: 8192,
+					memoryPressure: 'warning'
+				},
+				output: resourcePressure(warning, config, now)
+			}
 		]
 	);
 });
@@ -121,8 +146,16 @@ test('Memory reserve keeps the larger of percent and floor', () => {
 			file: 'memory-reserve-keeps-the-larger-of-percent-and-floor.json'
 		},
 		[
-			{ name: 'floor wins on a 16 GiB host', input: { memoryTotalMiB: 16384, memoryReservePercent: 10, minMemoryReserveMiB: 2048 }, output: 2147483648 },
-			{ name: 'percentage wins on a 40 GiB host', input: { memoryTotalMiB: 40960, memoryReservePercent: 10, minMemoryReserveMiB: 2048 }, output: 4294967296 }
+			{
+				name: 'floor wins on a 16 GiB host',
+				input: { memoryTotalMiB: 16384, memoryReservePercent: 10, minMemoryReserveMiB: 2048 },
+				output: 2147483648
+			},
+			{
+				name: 'percentage wins on a 40 GiB host',
+				input: { memoryTotalMiB: 40960, memoryReservePercent: 10, minMemoryReserveMiB: 2048 },
+				output: 4294967296
+			}
 		]
 	);
 });
@@ -142,10 +175,26 @@ test('Impossible requests exceed capacity after reserves', () => {
 			file: 'impossible-requests-exceed-capacity-after-reserves.json'
 		},
 		[
-			{ name: 'fits within 7.2 cores and 14336 MiB', input: { cpus: 4, memoryMiB: 4096, status: 'available' }, output: false },
-			{ name: 'needs 8 cores of 7.2 usable', input: { cpus: 8, memoryMiB: 1024, status: 'available' }, output: true },
-			{ name: 'needs 15000 MiB of 14336 usable', input: { cpus: 1, memoryMiB: 15000, status: 'available' }, output: true },
-			{ name: 'unavailable telemetry is not judged', input: { cpus: 8, memoryMiB: 1024, status: 'unavailable' }, output: false }
+			{
+				name: 'fits within 7.2 cores and 14336 MiB',
+				input: { cpus: 4, memoryMiB: 4096, status: 'available' },
+				output: false
+			},
+			{
+				name: 'needs 8 cores of 7.2 usable',
+				input: { cpus: 8, memoryMiB: 1024, status: 'available' },
+				output: true
+			},
+			{
+				name: 'needs 15000 MiB of 14336 usable',
+				input: { cpus: 1, memoryMiB: 15000, status: 'available' },
+				output: true
+			},
+			{
+				name: 'unavailable telemetry is not judged',
+				input: { cpus: 8, memoryMiB: 1024, status: 'unavailable' },
+				output: false
+			}
 		]
 	);
 });

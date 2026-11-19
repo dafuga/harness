@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.report-destination",
+	"title": "reports.function.report-destination examples",
+	"kind": "headless",
+	"units": ["reports.function.report-destination"],
+	"builds": [],
+	"states": [
+		{
+			"id": "report-destination-empty-or-absent-history-is-empty-string",
+			"title": "an empty or missing history answers with an empty destination",
+			"coverage": "required"
+		},
+		{
+			"id": "report-destination-recorded-revision-opens-its-commit",
+			"title": "a recorded revision the history holds opens Pages at its commit on a preferred branch",
+			"coverage": "required"
+		},
+		{
+			"id": "report-destination-legacy-link-used-when-revision-not-held",
+			"title": "an imported legacy linkage is used when the recorded revision is not held",
+			"coverage": "required"
+		},
+		{
+			"id": "report-destination-unknown-report-opens-explorer-home",
+			"title": "a report that names nothing the history holds opens the explorer home",
+			"coverage": "required"
+		},
+		{
+			"id": "report-destination-unpaired-surrogate-branch-throws-uri-error",
+			"title": "a branch name with an unpaired surrogate throws URIError from the route address",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.report-destination.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"report-destination-empty-or-absent-history-is-empty-string",
+				"report-destination-recorded-revision-opens-its-commit",
+				"report-destination-legacy-link-used-when-revision-not-held",
+				"report-destination-unknown-report-opens-explorer-home",
+				"report-destination-unpaired-surrogate-branch-throws-uri-error"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"report-destination-empty-or-absent-history-is-empty-string",
+				"report-destination-recorded-revision-opens-its-commit",
+				"report-destination-legacy-link-used-when-revision-not-held",
+				"report-destination-unknown-report-opens-explorer-home",
+				"report-destination-unpaired-surrogate-branch-throws-uri-error"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"report-destination-empty-or-absent-history-is-empty-string",
+				"report-destination-recorded-revision-opens-its-commit",
+				"report-destination-legacy-link-used-when-revision-not-held",
+				"report-destination-unknown-report-opens-explorer-home",
+				"report-destination-unpaired-surrogate-branch-throws-uri-error"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
