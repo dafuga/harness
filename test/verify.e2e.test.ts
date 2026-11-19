@@ -1,26 +1,14 @@
-import type { Capture } from './verify.e2e.test.types';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
-import { baselineRepo, cloneRepo, type VerifyOutcome, type VerifyRepo } from './support/verifyRepo';
-import type { ScenarioManifest } from '../src/core/development-tooling/unitTypes';
+import { baselineRepo, cloneRepo, declareLitePageLogic, scenarioOf } from './support/verifyRepo';
+import type { VerifyOutcome, VerifyRepo } from './support/verifyRepo';
 
 let baseline: VerifyRepo;
 beforeAll(async () => {
 	baseline = await baselineRepo();
 }, 120_000);
 afterAll(() => baseline.dispose());
-
-const scenarioOf = (record: { scenarios: Array<{ id: string }> }, id: string) => {
-	const found = record.scenarios.find((scenario) => scenario.id === id);
-	if (!found) throw new Error(`scenario ${id} missing from record`);
-	return found as (typeof record.scenarios)[number] & {
-		status: string;
-		testedRevision: string;
-		referencedRecord?: string;
-		states: Array<{ id: string; coverage: string; reason?: string; captures: Capture[] }>;
-	};
-};
 
 test('the fixture baseline verifies clean on an exact commit and tree', async () => {
 	const repo = await cloneRepo(baseline);
@@ -193,18 +181,7 @@ test('scenario contracts list their states, viewports, tests and evidence', asyn
 test('Lite runs logic and leaves the same committed scenario ready for full screenshots', async () => {
 	const repo = await cloneRepo(baseline);
 	try {
-		const path = 'specification/scenarios/titles-page.json';
-		const scenario = await repo.json<ScenarioManifest>(path);
-		const command =
-			'test "$TAKE_SCREENSHOT" = "$(if [ "$HARNESS_VERIFY_MODE" = lite ]; then echo 0; else echo 1; fi)"';
-		scenario.tests.unshift({
-			id: 'logic',
-			kind: 'integration',
-			runner: 'command',
-			target: command
-		});
-		await repo.write(path, JSON.stringify(scenario));
-		const revision = await repo.commit('feat: declare a mixed page scenario');
+		const revision = await declareLitePageLogic(repo);
 		const scope = ['--entity', 'page.titles', '--commit', revision];
 		const plan = await repo.run(['verify', 'plan', ...scope, '--profile', 'lite', '--json']);
 		expect(JSON.parse(plan.stdout)).toMatchObject({
