@@ -1,0 +1,47 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.unit-links",
+	"symbol": "unitLinks",
+	"cases": [
+		{
+			"name": "busy workspace",
+			"input": {
+				"busy": true
+			},
+			"output": null
+		},
+		{
+			"name": "workspace idle again",
+			"input": {
+				"busy": false
+			},
+			"output": {
+				"to": "/projects/local-alpha/harness/branch/feat%2Falpha/layouts/app.shell.order-frame",
+				"name": "Order frame",
+				"category": "layouts"
+			}
+		},
+		{
+			"name": "project changed",
+			"input": {
+				"project": "local-beta"
+			},
+			"output": null
+		},
+		{
+			"name": "commit changed",
+			"input": {
+				"commit": "dddddddddddddddddddddddddddddddddddddddd"
+			},
+			"output": null
+		},
+		{
+			"name": "pin state changed",
+			"input": {
+				"pinned": true
+			},
+			"output": null
+		}
+	]
+}

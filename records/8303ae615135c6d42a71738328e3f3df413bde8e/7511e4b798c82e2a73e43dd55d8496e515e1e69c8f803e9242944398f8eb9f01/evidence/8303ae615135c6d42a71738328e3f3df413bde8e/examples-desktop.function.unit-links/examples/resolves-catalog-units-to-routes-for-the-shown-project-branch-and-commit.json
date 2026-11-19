@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.unit-links",
+	"symbol": "unitLinks",
+	"cases": [
+		{
+			"name": "tip shell resolves under layouts",
+			"input": {
+				"id": "app.shell.order-frame",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+			},
+			"output": {
+				"to": "/projects/local-alpha/harness/branch/feat%2Falpha/layouts/app.shell.order-frame",
+				"name": "Order frame",
+				"category": "layouts"
+			}
+		},
+		{
+			"name": "pinned function keeps its commit",
+			"input": {
+				"id": "app.function.format-time",
+				"commit": "cccccccccccccccccccccccccccccccccccccccc"
+			},
+			"output": {
+				"to": "/projects/local-alpha/harness/branch/feat%2Falpha/commit/cccccccccccccccccccccccccccccccccccccccc/functions/app.function.format-time",
+				"name": "Format time",
+				"category": "functions"
+			}
+		}
+	]
+}

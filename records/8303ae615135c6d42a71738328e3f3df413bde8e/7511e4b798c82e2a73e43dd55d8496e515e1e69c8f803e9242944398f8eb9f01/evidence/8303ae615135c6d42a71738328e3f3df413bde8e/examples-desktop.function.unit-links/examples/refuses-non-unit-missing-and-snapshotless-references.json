@@ -1,0 +1,29 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.unit-links",
+	"symbol": "unitLinks",
+	"cases": [
+		{
+			"name": "non-unit id in catalog",
+			"input": {
+				"id": "page:activity"
+			},
+			"output": null
+		},
+		{
+			"name": "id missing from catalog",
+			"input": {
+				"id": "app.page.missing"
+			},
+			"output": null
+		},
+		{
+			"name": "no snapshot loaded",
+			"input": {
+				"id": "app.function.format-time"
+			},
+			"output": null
+		}
+	]
+}
