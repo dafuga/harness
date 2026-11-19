@@ -1,0 +1,331 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.budget-findings",
+	"symbol": "budgetFindings",
+	"cases": [
+		{
+			"name": "reviewed unavailable size keeps its reason",
+			"input": {
+				"unit": "function.budget-findings",
+				"profile": "linux-x64-ci",
+				"defaultTarget": "module",
+				"budgets": [
+					{
+						"workload": "parse one ledger line",
+						"metric": "latency-warm-ms",
+						"tolerance": 0.05
+					}
+				],
+				"measurements": [
+					{
+						"unit": "function.budget-findings",
+						"workload": null,
+						"profile": null,
+						"unitOfMeasure": "bytes",
+						"metric": "source-bytes",
+						"value": null,
+						"unavailable": "Not measured: src/parser/grammar.ts was not read."
+					},
+					{
+						"unit": "function.budget-findings",
+						"workload": null,
+						"profile": null,
+						"unitOfMeasure": "bytes",
+						"metric": "complexity",
+						"value": 37
+					},
+					{
+						"unit": "function.budget-findings",
+						"workload": null,
+						"profile": null,
+						"unitOfMeasure": "bytes",
+						"metric": "dependencies",
+						"value": 6
+					},
+					{
+						"unit": "function.budget-findings",
+						"workload": null,
+						"profile": null,
+						"unitOfMeasure": "bytes",
+						"metric": "artifact-bytes",
+						"value": 19000,
+						"target": "module"
+					},
+					{
+						"workload": "parse one ledger line",
+						"target": "module",
+						"profile": "linux-x64-ci",
+						"method": "Median of timed rounds.",
+						"comparison": {
+							"request": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+							"boundary": "public-invocation",
+							"protocol": "harness-rounds/1",
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 20
+							}
+						},
+						"unit": "function.budget-findings",
+						"metric": "latency-warm-ms",
+						"value": 10,
+						"unitOfMeasure": "ms"
+					}
+				],
+				"baseline": {
+					"metrics": {
+						"source-bytes": 18432,
+						"complexity": 37,
+						"dependencies": 6,
+						"artifact-bytes:module": 19000
+					},
+					"performance": [
+						{
+							"workload": "parse one ledger line",
+							"target": "module",
+							"profile": "linux-x64-ci",
+							"method": "Median of timed rounds.",
+							"comparison": {
+								"request": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+								"boundary": "public-invocation",
+								"protocol": "harness-rounds/1",
+								"sampling": {
+									"warmup": 3,
+									"rounds": 5,
+									"iterations": 20
+								}
+							},
+							"metric": "latency-warm-ms",
+							"value": 10,
+							"unitOfMeasure": "ms"
+						},
+						{
+							"workload": "parse one ledger line",
+							"target": "module",
+							"profile": "linux-x64-ci",
+							"method": "Median of timed rounds.",
+							"comparison": {
+								"request": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+								"boundary": "public-invocation",
+								"protocol": "harness-rounds/1",
+								"sampling": {
+									"warmup": 3,
+									"rounds": 5,
+									"iterations": 20
+								}
+							},
+							"metric": "throughput-ops",
+							"value": 100,
+							"unitOfMeasure": "ops/s"
+						}
+					],
+					"unmeasured": {
+						"source-bytes": "Not measured: src/parser/grammar.ts was not read."
+					}
+				},
+				"checkSize": true
+			},
+			"output": [
+				{
+					"unit": "function.budget-findings",
+					"metric": "source-bytes",
+					"baseline": 18432,
+					"measured": null,
+					"status": "unavailable",
+					"detail": "Not measured: src/parser/grammar.ts was not read."
+				},
+				{
+					"unit": "function.budget-findings",
+					"metric": "complexity",
+					"baseline": 37,
+					"measured": 37,
+					"status": "passed"
+				},
+				{
+					"unit": "function.budget-findings",
+					"metric": "dependencies",
+					"baseline": 6,
+					"measured": 6,
+					"status": "passed"
+				},
+				{
+					"unit": "function.budget-findings",
+					"metric": "artifact-bytes",
+					"baseline": 19000,
+					"measured": 19000,
+					"target": "module",
+					"status": "passed"
+				},
+				{
+					"unit": "function.budget-findings",
+					"metric": "latency-warm-ms",
+					"baseline": 10,
+					"measured": 10,
+					"detail": "parse one ledger line on the module target",
+					"status": "passed"
+				}
+			]
+		},
+		{
+			"name": "unreviewed gap is a missing measurement",
+			"input": {
+				"unit": "function.budget-findings",
+				"profile": "linux-x64-ci",
+				"defaultTarget": "module",
+				"budgets": [
+					{
+						"workload": "parse one ledger line",
+						"metric": "latency-warm-ms",
+						"tolerance": 0.05
+					}
+				],
+				"measurements": [
+					{
+						"unit": "function.budget-findings",
+						"workload": null,
+						"profile": null,
+						"unitOfMeasure": "bytes",
+						"metric": "source-bytes",
+						"value": null,
+						"unavailable": "Not measured: src/parser/grammar.ts was not read."
+					},
+					{
+						"unit": "function.budget-findings",
+						"workload": null,
+						"profile": null,
+						"unitOfMeasure": "bytes",
+						"metric": "complexity",
+						"value": 37
+					},
+					{
+						"unit": "function.budget-findings",
+						"workload": null,
+						"profile": null,
+						"unitOfMeasure": "bytes",
+						"metric": "dependencies",
+						"value": 6
+					},
+					{
+						"unit": "function.budget-findings",
+						"workload": null,
+						"profile": null,
+						"unitOfMeasure": "bytes",
+						"metric": "artifact-bytes",
+						"value": 19000,
+						"target": "module"
+					},
+					{
+						"workload": "parse one ledger line",
+						"target": "module",
+						"profile": "linux-x64-ci",
+						"method": "Median of timed rounds.",
+						"comparison": {
+							"request": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+							"boundary": "public-invocation",
+							"protocol": "harness-rounds/1",
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 20
+							}
+						},
+						"unit": "function.budget-findings",
+						"metric": "latency-warm-ms",
+						"value": 10,
+						"unitOfMeasure": "ms"
+					}
+				],
+				"baseline": {
+					"metrics": {
+						"source-bytes": 18432,
+						"complexity": 37,
+						"dependencies": 6,
+						"artifact-bytes:module": 19000
+					},
+					"performance": [
+						{
+							"workload": "parse one ledger line",
+							"target": "module",
+							"profile": "linux-x64-ci",
+							"method": "Median of timed rounds.",
+							"comparison": {
+								"request": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+								"boundary": "public-invocation",
+								"protocol": "harness-rounds/1",
+								"sampling": {
+									"warmup": 3,
+									"rounds": 5,
+									"iterations": 20
+								}
+							},
+							"metric": "latency-warm-ms",
+							"value": 10,
+							"unitOfMeasure": "ms"
+						},
+						{
+							"workload": "parse one ledger line",
+							"target": "module",
+							"profile": "linux-x64-ci",
+							"method": "Median of timed rounds.",
+							"comparison": {
+								"request": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+								"boundary": "public-invocation",
+								"protocol": "harness-rounds/1",
+								"sampling": {
+									"warmup": 3,
+									"rounds": 5,
+									"iterations": 20
+								}
+							},
+							"metric": "throughput-ops",
+							"value": 100,
+							"unitOfMeasure": "ops/s"
+						}
+					]
+				},
+				"checkSize": true
+			},
+			"output": [
+				{
+					"unit": "function.budget-findings",
+					"metric": "source-bytes",
+					"baseline": 18432,
+					"measured": null,
+					"status": "missing-measurement",
+					"detail": "Not measured: src/parser/grammar.ts was not read."
+				},
+				{
+					"unit": "function.budget-findings",
+					"metric": "complexity",
+					"baseline": 37,
+					"measured": 37,
+					"status": "passed"
+				},
+				{
+					"unit": "function.budget-findings",
+					"metric": "dependencies",
+					"baseline": 6,
+					"measured": 6,
+					"status": "passed"
+				},
+				{
+					"unit": "function.budget-findings",
+					"metric": "artifact-bytes",
+					"baseline": 19000,
+					"measured": 19000,
+					"target": "module",
+					"status": "passed"
+				},
+				{
+					"unit": "function.budget-findings",
+					"metric": "latency-warm-ms",
+					"baseline": 10,
+					"measured": 10,
+					"detail": "parse one ledger line on the module target",
+					"status": "passed"
+				}
+			]
+		}
+	]
+}

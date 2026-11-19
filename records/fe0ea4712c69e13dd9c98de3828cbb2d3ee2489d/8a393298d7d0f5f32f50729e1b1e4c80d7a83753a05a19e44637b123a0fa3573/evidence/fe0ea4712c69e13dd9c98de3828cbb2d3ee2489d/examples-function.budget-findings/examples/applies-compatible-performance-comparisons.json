@@ -1,0 +1,299 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.budget-findings",
+	"symbol": "budgetFindings",
+	"cases": [
+		{
+			"name": "latency beyond tolerance is exceeded",
+			"input": {
+				"unit": "function.budget-findings",
+				"profile": "linux-x64-ci",
+				"defaultTarget": "module",
+				"budgets": [
+					{
+						"workload": "parse one ledger line",
+						"metric": "latency-warm-ms",
+						"tolerance": 0.05
+					}
+				],
+				"measurements": [
+					{
+						"workload": "parse one ledger line",
+						"target": "module",
+						"profile": "linux-x64-ci",
+						"method": "Median of timed rounds.",
+						"comparison": {
+							"request": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+							"boundary": "public-invocation",
+							"protocol": "harness-rounds/1",
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 20
+							}
+						},
+						"unit": "function.budget-findings",
+						"metric": "latency-warm-ms",
+						"value": 10.6,
+						"unitOfMeasure": "ms"
+					}
+				],
+				"baseline": {
+					"metrics": {
+						"source-bytes": 18432,
+						"complexity": 37,
+						"dependencies": 6,
+						"artifact-bytes:module": 19000
+					},
+					"performance": [
+						{
+							"workload": "parse one ledger line",
+							"target": "module",
+							"profile": "linux-x64-ci",
+							"method": "Median of timed rounds.",
+							"comparison": {
+								"request": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+								"boundary": "public-invocation",
+								"protocol": "harness-rounds/1",
+								"sampling": {
+									"warmup": 3,
+									"rounds": 5,
+									"iterations": 20
+								}
+							},
+							"metric": "latency-warm-ms",
+							"value": 10,
+							"unitOfMeasure": "ms"
+						},
+						{
+							"workload": "parse one ledger line",
+							"target": "module",
+							"profile": "linux-x64-ci",
+							"method": "Median of timed rounds.",
+							"comparison": {
+								"request": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+								"boundary": "public-invocation",
+								"protocol": "harness-rounds/1",
+								"sampling": {
+									"warmup": 3,
+									"rounds": 5,
+									"iterations": 20
+								}
+							},
+							"metric": "throughput-ops",
+							"value": 100,
+							"unitOfMeasure": "ops/s"
+						}
+					]
+				},
+				"checkSize": false
+			},
+			"output": [
+				{
+					"unit": "function.budget-findings",
+					"metric": "latency-warm-ms",
+					"baseline": 10,
+					"measured": 10.6,
+					"detail": "parse one ledger line on the module target",
+					"status": "exceeded"
+				}
+			]
+		},
+		{
+			"name": "throughput below its limit is exceeded",
+			"input": {
+				"unit": "function.budget-findings",
+				"profile": "linux-x64-ci",
+				"defaultTarget": "module",
+				"budgets": [
+					{
+						"workload": "parse one ledger line",
+						"metric": "throughput-ops",
+						"tolerance": 0.05
+					}
+				],
+				"measurements": [
+					{
+						"workload": "parse one ledger line",
+						"target": "module",
+						"profile": "linux-x64-ci",
+						"method": "Median of timed rounds.",
+						"comparison": {
+							"request": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+							"boundary": "public-invocation",
+							"protocol": "harness-rounds/1",
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 20
+							}
+						},
+						"unit": "function.budget-findings",
+						"metric": "throughput-ops",
+						"value": 94,
+						"unitOfMeasure": "ops/s"
+					}
+				],
+				"baseline": {
+					"metrics": {
+						"source-bytes": 18432,
+						"complexity": 37,
+						"dependencies": 6,
+						"artifact-bytes:module": 19000
+					},
+					"performance": [
+						{
+							"workload": "parse one ledger line",
+							"target": "module",
+							"profile": "linux-x64-ci",
+							"method": "Median of timed rounds.",
+							"comparison": {
+								"request": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+								"boundary": "public-invocation",
+								"protocol": "harness-rounds/1",
+								"sampling": {
+									"warmup": 3,
+									"rounds": 5,
+									"iterations": 20
+								}
+							},
+							"metric": "latency-warm-ms",
+							"value": 10,
+							"unitOfMeasure": "ms"
+						},
+						{
+							"workload": "parse one ledger line",
+							"target": "module",
+							"profile": "linux-x64-ci",
+							"method": "Median of timed rounds.",
+							"comparison": {
+								"request": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+								"boundary": "public-invocation",
+								"protocol": "harness-rounds/1",
+								"sampling": {
+									"warmup": 3,
+									"rounds": 5,
+									"iterations": 20
+								}
+							},
+							"metric": "throughput-ops",
+							"value": 100,
+							"unitOfMeasure": "ops/s"
+						}
+					]
+				},
+				"checkSize": false
+			},
+			"output": [
+				{
+					"unit": "function.budget-findings",
+					"metric": "throughput-ops",
+					"baseline": 100,
+					"measured": 94,
+					"detail": "parse one ledger line on the module target",
+					"status": "exceeded"
+				}
+			]
+		},
+		{
+			"name": "different method is incompatible",
+			"input": {
+				"unit": "function.budget-findings",
+				"profile": "linux-x64-ci",
+				"defaultTarget": "module",
+				"budgets": [
+					{
+						"workload": "parse one ledger line",
+						"metric": "latency-warm-ms",
+						"tolerance": 0.05
+					}
+				],
+				"measurements": [
+					{
+						"workload": "parse one ledger line",
+						"target": "module",
+						"profile": "linux-x64-ci",
+						"method": "Single timed call.",
+						"comparison": {
+							"request": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+							"boundary": "public-invocation",
+							"protocol": "harness-rounds/1",
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 20
+							}
+						},
+						"unit": "function.budget-findings",
+						"metric": "latency-warm-ms",
+						"value": 10,
+						"unitOfMeasure": "ms"
+					}
+				],
+				"baseline": {
+					"metrics": {
+						"source-bytes": 18432,
+						"complexity": 37,
+						"dependencies": 6,
+						"artifact-bytes:module": 19000
+					},
+					"performance": [
+						{
+							"workload": "parse one ledger line",
+							"target": "module",
+							"profile": "linux-x64-ci",
+							"method": "Median of timed rounds.",
+							"comparison": {
+								"request": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+								"boundary": "public-invocation",
+								"protocol": "harness-rounds/1",
+								"sampling": {
+									"warmup": 3,
+									"rounds": 5,
+									"iterations": 20
+								}
+							},
+							"metric": "latency-warm-ms",
+							"value": 10,
+							"unitOfMeasure": "ms"
+						},
+						{
+							"workload": "parse one ledger line",
+							"target": "module",
+							"profile": "linux-x64-ci",
+							"method": "Median of timed rounds.",
+							"comparison": {
+								"request": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+								"boundary": "public-invocation",
+								"protocol": "harness-rounds/1",
+								"sampling": {
+									"warmup": 3,
+									"rounds": 5,
+									"iterations": 20
+								}
+							},
+							"metric": "throughput-ops",
+							"value": 100,
+							"unitOfMeasure": "ops/s"
+						}
+					]
+				},
+				"checkSize": false
+			},
+			"output": [
+				{
+					"unit": "function.budget-findings",
+					"metric": "latency-warm-ms",
+					"baseline": null,
+					"measured": 10,
+					"detail": "parse one ledger line on the module target",
+					"status": "incompatible",
+					"differences": [
+						"method description differs from the baseline"
+					]
+				}
+			]
+		}
+	]
+}
