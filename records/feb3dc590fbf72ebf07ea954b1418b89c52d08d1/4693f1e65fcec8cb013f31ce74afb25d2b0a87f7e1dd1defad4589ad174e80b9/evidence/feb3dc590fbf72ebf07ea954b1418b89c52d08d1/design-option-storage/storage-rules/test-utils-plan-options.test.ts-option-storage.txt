@@ -1,0 +1,17 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.kelzTi/tmp/harness-snapshot-G36MB6/packages/planning
+
+ ✓ test/utils/plan-options.test.ts (13 tests) 3175ms
+   ✓ design option runtime cold-imports src/utils/planOptions.ts and calls planOptions  571ms
+   ✓ design option runtime cold-imports src/lib/planning-collaboration/planning/planning-service/planOptions.ts and calls planOptions  520ms
+   ✓ design option runtime cold-imports src/utils/planOptions.ts and calls checkOptions  524ms
+   ✓ design option runtime cold-imports src/utils/planning-collaboration/plan-read/checkOptions.ts and calls checkOptions  518ms
+   ✓ design option runtime cold-imports src/utils/planOptions.ts and calls heldBy  506ms
+   ✓ design option runtime cold-imports src/utils/planning-collaboration/plan-design/heldBy.ts and calls heldBy  525ms
+
+ Test Files  1 passed (1)
+      Tests  13 passed (13)
+   Start at  22:58:05
+   Duration  3.61s (transform 123ms, setup 135ms, collect 52ms, tests 3.18s, environment 0ms, prepare 34ms)
+
+JSON report written to /tmp/z5jp8p-hl.kelzTi/tmp/harness-runner-u01hgP/report.json
