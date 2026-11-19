@@ -4,6 +4,7 @@
 	"title": "Typed public API imported from the packed package",
 	"kind": "headless",
 	"units": ["module.contracts", "module.runtime", "module.index", "script.build-api"],
+	"builds": ["reports"],
 	"states": [
 		{
 			"id": "packed",
