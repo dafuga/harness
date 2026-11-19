@@ -1,0 +1,594 @@
+{
+	"id": "4ad4a2f9e67111455b0f7bdc67262ac40b1c422775fc3402f6c8549daad5ce8b",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/Users/danielfugere/projects/harness-z5jp8p",
+	"source": {
+		"commit": "d123c7b89a85aeec9a7655c8b96e88c57c82d4c9",
+		"tree": "e9f6dad7ff76ccba2eb63cb0599cfc0455e715da",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-19T18:09:34.891Z",
+	"finishedAt": "2026-11-19T18:09:46.480Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "function.explorer-route",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "47fbc800b71d2208789ffa9f631d132d76aded36c57cc93fe9e0bdb9601575d2",
+			"source": "8d65e622aee72265d4ef9def98ed3f1b72118e7d519d9b0b7e4246003a4b513b",
+			"contract": "57466b332297d84cf22c40c7777ed07973496afceaa43b079959f1569479f648",
+			"runtime": "12e9111821c48eb3a38da5d040d27e65754f2470650b6d557a3c5badb85e7436",
+			"files": [
+				{
+					"path": "src/utils/development-tooling/explorer-route/explorerTabs.ts",
+					"hash": "89c13c52daf93fe678cec990b47c3eec24d633d7"
+				},
+				{
+					"path": "src/utils/development-tooling/explorer-route/explorerTabs.types.ts",
+					"hash": "ace2ed1f10e5d220dd37a3ada287ecd0ef8a0ac2"
+				},
+				{
+					"path": "src/utils/explorer-ui/explorerRoute.ts",
+					"hash": "786238edd2591a7ecfea2ab2e9402217e829eef0"
+				},
+				{
+					"path": "src/utils/explorer-ui/explorerRoute.types.ts",
+					"hash": "2bc8ee112d0664bf92ffc3681ab9e4fd72345a3d"
+				},
+				{
+					"path": "src/utils/explorerRoute.ts",
+					"hash": "98aaeb42bd71af3fa52f58dc576868c9a28f54bc"
+				}
+			]
+		},
+		{
+			"unit": "function.record-capture",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41e40bb7a2b44b7fa1da3881ebf1a687d3d8471d42fd0a7c44d584361255ff42",
+			"source": "142bfa1513b076860925e3bac72e4361c1edd5901abe0b7061ebac711646346a",
+			"contract": "025908d6c17bb9a51a22fa8f85c40b9ea26bb9161a5d016c554aa7e340c15a52",
+			"runtime": "a289759bf06513632380a5baa8ac1f6a9a916c1d1905e0de6a7be531f7936431",
+			"files": [
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.ts",
+					"hash": "316c75b906d532b1a5b376f345b7de8e00da1f4d"
+				},
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.types.ts",
+					"hash": "8e36a063513222284548df76d240d4a45f6626a9"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cfb49b515cacc084047d75cdf10a295ab3790ecaf878e2b75e06463793f628bf",
+			"source": "cbf5fb170c4db458f39bcc4ba18996e377a782371040baa39d1667f04bf87635",
+			"contract": "6f2e8a598fb220dd111fe8085fb28c645ee24019cc4b1f25315b141a569962d7",
+			"runtime": "ec246a1eb80a7c06e7ccbd8601bab05e75d00122b0ad9d09eec95bbe94f31c19",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts",
+					"hash": "36741c54d766dd2689e542099ca02135cd07760b"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.types.ts",
+					"hash": "758395e715dd7c7d824deb57b07849f373ef164e"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/artifactCases.ts",
+					"hash": "f5a0a857433ab39a3aa86c795bab10681a76db3f"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.012082999999989852,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "d123c7b89a85aeec9a7655c8b96e88c57c82d4c9",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90226688,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "d123c7b89a85aeec9a7655c8b96e88c57c82d4c9",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.004224800000002915,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "d123c7b89a85aeec9a7655c8b96e88c57c82d4c9",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90669056,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "d123c7b89a85aeec9a7655c8b96e88c57c82d4c9",
+			"artifacts": []
+		},
+		{
+			"unit": "function.explorer-route",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.010516799999999193,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-018b89a0083fa23f-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "d123c7b89a85aeec9a7655c8b96e88c57c82d4c9",
+			"artifacts": []
+		},
+		{
+			"unit": "function.explorer-route",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90603520,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-018b89a0083fa23f-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "d123c7b89a85aeec9a7655c8b96e88c57c82d4c9",
+			"artifacts": []
+		},
+		{
+			"unit": "function.explorer-route",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.05130839999999921,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-4a13170c88992f27-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "d123c7b89a85aeec9a7655c8b96e88c57c82d4c9",
+			"artifacts": []
+		},
+		{
+			"unit": "function.explorer-route",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90603520,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-4a13170c88992f27-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "d123c7b89a85aeec9a7655c8b96e88c57c82d4c9",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.16469999999998208,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "d123c7b89a85aeec9a7655c8b96e88c57c82d4c9",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90669056,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "d123c7b89a85aeec9a7655c8b96e88c57c82d4c9",
+			"artifacts": []
+		},
+		{
+			"unit": "function.explorer-route",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0033335000000060213,
+			"method": "Arithmetic mean of 6 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-70db21044774ba7a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "d123c7b89a85aeec9a7655c8b96e88c57c82d4c9",
+			"artifacts": []
+		},
+		{
+			"unit": "function.explorer-route",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90669056,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-70db21044774ba7a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "d123c7b89a85aeec9a7655c8b96e88c57c82d4c9",
+			"artifacts": []
+		},
+		{
+			"unit": "function.explorer-route",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.02396640000000616,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-ba0fd22513aa1d70-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "d123c7b89a85aeec9a7655c8b96e88c57c82d4c9",
+			"artifacts": []
+		},
+		{
+			"unit": "function.explorer-route",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90669056,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-ba0fd22513aa1d70-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "d123c7b89a85aeec9a7655c8b96e88c57c82d4c9",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "examples-function.explorer-route:examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.explorer-route.test.ts",
+			"status": "passed",
+			"durationMs": 1526,
+			"log": {
+				"path": "logs/examples-function.explorer-route-examples.log",
+				"bytes": 425,
+				"sha256": "70608ae1a26070c90e29cdb9cbd344670a8ec7234c06c5e85b8e7b76d0166678"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "examples-function.explorer-route",
+			"status": "passed",
+			"testedRevision": "d123c7b89a85aeec9a7655c8b96e88c57c82d4c9",
+			"states": [
+				{
+					"id": "explorer-route-parse-scopes",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "explorer-route-parse-scopes",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/d123c7b89a85aeec9a7655c8b96e88c57c82d4c9/examples-function.explorer-route/examples/explorer-route-parse-scopes.json",
+							"sha256": "515448ce8c3afcddc928c4cc71e789fc9d4929b68ddba8d5c2574cc81fd9bc0b",
+							"bytes": 1488,
+							"capturedAt": "2026-11-19T18:09:44.890Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "explorer-route-parse-scopes",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/function.explorer-route.test.ts.",
+							"status": "passed",
+							"path": "evidence/d123c7b89a85aeec9a7655c8b96e88c57c82d4c9/examples-function.explorer-route/examples/test-examples-function.explorer-route.test.ts-explorer-route-parse-scopes.txt",
+							"sha256": "70608ae1a26070c90e29cdb9cbd344670a8ec7234c06c5e85b8e7b76d0166678",
+							"bytes": 425,
+							"capturedAt": "2026-11-19T18:09:44.891Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "explorer-route-parse-scopes",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/d123c7b89a85aeec9a7655c8b96e88c57c82d4c9/examples-function.explorer-route/examples/test-examples-function.explorer-route.test.ts-explorer-route-parse-scopes.json",
+							"sha256": "4d23031dfd29cb738a0b98b8fdb5dda297af0d9ec944a9327747ca139731025d",
+							"bytes": 1579,
+							"capturedAt": "2026-11-19T18:09:44.891Z"
+						}
+					]
+				},
+				{
+					"id": "explorer-route-retain-query-tabs",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "explorer-route-retain-query-tabs",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/d123c7b89a85aeec9a7655c8b96e88c57c82d4c9/examples-function.explorer-route/examples/explorer-route-retain-query-tabs.json",
+							"sha256": "4ce5ae57cac6ebdf30ede91af0bd8ecd9daff7be14fcb6506690fda103e31701",
+							"bytes": 2889,
+							"capturedAt": "2026-11-19T18:09:44.890Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "explorer-route-retain-query-tabs",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/function.explorer-route.test.ts.",
+							"status": "passed",
+							"path": "evidence/d123c7b89a85aeec9a7655c8b96e88c57c82d4c9/examples-function.explorer-route/examples/test-examples-function.explorer-route.test.ts-explorer-route-retain-query-tabs.txt",
+							"sha256": "70608ae1a26070c90e29cdb9cbd344670a8ec7234c06c5e85b8e7b76d0166678",
+							"bytes": 425,
+							"capturedAt": "2026-11-19T18:09:44.891Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "explorer-route-retain-query-tabs",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/d123c7b89a85aeec9a7655c8b96e88c57c82d4c9/examples-function.explorer-route/examples/test-examples-function.explorer-route.test.ts-explorer-route-retain-query-tabs.json",
+							"sha256": "8c93be248efbf2c98bd220b416dd28051ad796df9b0b9295e958a1c9f0375820",
+							"bytes": 2411,
+							"capturedAt": "2026-11-19T18:09:44.891Z"
+						}
+					]
+				},
+				{
+					"id": "explorer-route-helper-child-paths",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "explorer-route-helper-child-paths",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/d123c7b89a85aeec9a7655c8b96e88c57c82d4c9/examples-function.explorer-route/examples/explorer-route-helper-child-paths.json",
+							"sha256": "648fa45d04dbeaa0c3ef8f959dc46604e66d6a5228339d8a8395a0ad69f14a80",
+							"bytes": 1166,
+							"capturedAt": "2026-11-19T18:09:44.890Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "explorer-route-helper-child-paths",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/function.explorer-route.test.ts.",
+							"status": "passed",
+							"path": "evidence/d123c7b89a85aeec9a7655c8b96e88c57c82d4c9/examples-function.explorer-route/examples/test-examples-function.explorer-route.test.ts-explorer-route-helper-child-paths.txt",
+							"sha256": "70608ae1a26070c90e29cdb9cbd344670a8ec7234c06c5e85b8e7b76d0166678",
+							"bytes": 425,
+							"capturedAt": "2026-11-19T18:09:44.891Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "explorer-route-helper-child-paths",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/d123c7b89a85aeec9a7655c8b96e88c57c82d4c9/examples-function.explorer-route/examples/test-examples-function.explorer-route.test.ts-explorer-route-helper-child-paths.json",
+							"sha256": "5deb7f1107fffaf9dedc3cd441874d4d2986d637915a079e6d1a07c4c48c08aa",
+							"bytes": 1377,
+							"capturedAt": "2026-11-19T18:09:44.891Z"
+						}
+					]
+				},
+				{
+					"id": "explorer-route-reject-malformed",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "explorer-route-reject-malformed",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/d123c7b89a85aeec9a7655c8b96e88c57c82d4c9/examples-function.explorer-route/examples/explorer-route-reject-malformed.json",
+							"sha256": "a15ac369bc55009618f8c3c4de0799dbe8002e6fefb59f7c81cf37faac878ad5",
+							"bytes": 2040,
+							"capturedAt": "2026-11-19T18:09:44.890Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "explorer-route-reject-malformed",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/function.explorer-route.test.ts.",
+							"status": "passed",
+							"path": "evidence/d123c7b89a85aeec9a7655c8b96e88c57c82d4c9/examples-function.explorer-route/examples/test-examples-function.explorer-route.test.ts-explorer-route-reject-malformed.txt",
+							"sha256": "70608ae1a26070c90e29cdb9cbd344670a8ec7234c06c5e85b8e7b76d0166678",
+							"bytes": 425,
+							"capturedAt": "2026-11-19T18:09:44.891Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "explorer-route-reject-malformed",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/d123c7b89a85aeec9a7655c8b96e88c57c82d4c9/examples-function.explorer-route/examples/test-examples-function.explorer-route.test.ts-explorer-route-reject-malformed.json",
+							"sha256": "43a5535d9a1359b52ad85e4f11a0cec46d2c84142688bf1cf53cb6146ab4a29b",
+							"bytes": 1307,
+							"capturedAt": "2026-11-19T18:09:44.891Z"
+						}
+					]
+				},
+				{
+					"id": "explorer-route-serialize-canonical",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "explorer-route-serialize-canonical",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/d123c7b89a85aeec9a7655c8b96e88c57c82d4c9/examples-function.explorer-route/examples/explorer-route-serialize-canonical.json",
+							"sha256": "91f3928b435bd4a195456440734aec206f57ec8bb66da8cac4e3796aee9ea78d",
+							"bytes": 1865,
+							"capturedAt": "2026-11-19T18:09:44.890Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "explorer-route-serialize-canonical",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/function.explorer-route.test.ts.",
+							"status": "passed",
+							"path": "evidence/d123c7b89a85aeec9a7655c8b96e88c57c82d4c9/examples-function.explorer-route/examples/test-examples-function.explorer-route.test.ts-explorer-route-serialize-canonical.txt",
+							"sha256": "70608ae1a26070c90e29cdb9cbd344670a8ec7234c06c5e85b8e7b76d0166678",
+							"bytes": 425,
+							"capturedAt": "2026-11-19T18:09:44.891Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "explorer-route-serialize-canonical",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/d123c7b89a85aeec9a7655c8b96e88c57c82d4c9/examples-function.explorer-route/examples/test-examples-function.explorer-route.test.ts-explorer-route-serialize-canonical.json",
+							"sha256": "62d2efe515663b8e13f70c2e8b1894f30de6cfc9fc8726246f2f40646b6a8358",
+							"bytes": 1395,
+							"capturedAt": "2026-11-19T18:09:44.891Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"shell-fixture",
+		"entity-preview"
+	],
+	"builds": [],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to function.explorer-route: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}
