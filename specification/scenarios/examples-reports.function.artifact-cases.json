@@ -1,0 +1,103 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.artifact-cases",
+	"title": "reports.function.artifact-cases examples",
+	"kind": "headless",
+	"units": ["reports.function.artifact-cases"],
+	"builds": [],
+	"states": [
+		{
+			"id": "case-form-sets-the-recorded-format",
+			"title": "The recorded-call format sets version 1, the function-invocations kind, 64 calls and 160-character names",
+			"coverage": "required"
+		},
+		{
+			"id": "recorded-calls-give-one-row-per-call",
+			"title": "Valid recorded calls give one row per call, marking thrown calls as failed",
+			"coverage": "required"
+		},
+		{
+			"id": "other-unit-is-a-gap-and-no-filter-keeps-rows",
+			"title": "A recorded document of another unit is a gap, and omitting the unit keeps valid calls",
+			"coverage": "required"
+		},
+		{
+			"id": "malformed-recorded-documents-are-gaps",
+			"title": "A recorded document outside the form limits or shape is a gap, and one bad call spoils the list",
+			"coverage": "required"
+		},
+		{
+			"id": "falsy-and-null-values-are-kept",
+			"title": "Zero, false, null and empty values are recorded rows rather than dropped",
+			"coverage": "required"
+		},
+		{
+			"id": "legacy-observation-uses-first-present-alias",
+			"title": "A legacy observation takes its input and output from the first alias present and gaps without both",
+			"coverage": "required"
+		},
+		{
+			"id": "non-object-documents-give-no-cases",
+			"title": "Null, primitive and array documents give the no-input-and-output gap",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.artifact-cases.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"case-form-sets-the-recorded-format",
+				"recorded-calls-give-one-row-per-call",
+				"other-unit-is-a-gap-and-no-filter-keeps-rows",
+				"malformed-recorded-documents-are-gaps",
+				"falsy-and-null-values-are-kept",
+				"legacy-observation-uses-first-present-alias",
+				"non-object-documents-give-no-cases"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"case-form-sets-the-recorded-format",
+				"recorded-calls-give-one-row-per-call",
+				"other-unit-is-a-gap-and-no-filter-keeps-rows",
+				"malformed-recorded-documents-are-gaps",
+				"falsy-and-null-values-are-kept",
+				"legacy-observation-uses-first-present-alias",
+				"non-object-documents-give-no-cases"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"case-form-sets-the-recorded-format",
+				"recorded-calls-give-one-row-per-call",
+				"other-unit-is-a-gap-and-no-filter-keeps-rows",
+				"malformed-recorded-documents-are-gaps",
+				"falsy-and-null-values-are-kept",
+				"legacy-observation-uses-first-present-alias",
+				"non-object-documents-give-no-cases"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
