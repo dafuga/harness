@@ -196,7 +196,10 @@ export async function verifyStamp(
 
 export function renderVerify(stored: VerifyResult): string {
 	const { record } = stored;
-	const ran = record.scenarios.filter((scenario) => scenario.status !== 'referenced').length;
+	const referenced = record.scenarios.filter((scenario) => scenario.status === 'referenced').length;
+	const pending = record.scenarios.filter((scenario) => scenario.status === 'pending').length;
+	const ran = record.scenarios.length - referenced - pending;
+	const unresolved = record.lite ? `, ${pending} pending` : '';
 	const { base, requestedBase } = record.source;
 	const widened = requestedBase
 		? [
@@ -206,7 +209,7 @@ export function renderVerify(stored: VerifyResult): string {
 	return [
 		`${record.lite ? 'Lite verification' : 'Verification'} ${record.lite?.status ?? record.status} for ${record.source.commit}.`,
 		...widened,
-		`Tests: ${record.tests.length} run. Scenarios: ${ran} verified, ${record.scenarios.length - ran} referenced.`,
+		`Tests: ${record.tests.length} run. Scenarios: ${ran} verified, ${referenced} referenced${unresolved}.`,
 		...renderPending(record.lite),
 		...record.failures.map((failure) => `  ${failure}`),
 		`Record ${record.id.slice(0, 12)} in ${stored.directory}`,
