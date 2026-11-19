@@ -41,23 +41,30 @@ async function loadShellConfig(environment: Partial<Record<FixtureVariable, stri
 	return module.default();
 }
 
+/**
+ * Plugin objects in a nested plugin list, skipping the empty entries that conditions leave out.
+ * Walks the list as unknown so TypeScript never flattens the recursive PluginOption type.
+ */
+function collectPlugins(entries: unknown, found: Plugin[] = []): Plugin[] {
+	if (Array.isArray(entries)) {
+		for (const entry of entries) collectPlugins(entry, found);
+	} else if (typeof entries === 'object' && entries !== null) {
+		found.push(entries as Plugin);
+	}
+	return found;
+}
+
 /** Names of the plugins the config lists, with the empty entries that its conditions leave out. */
 function pluginNames(config: UserConfig): string[] {
-	return (config.plugins ?? [])
-		.flat(Infinity)
-		.filter((plugin): plugin is Plugin => typeof plugin === 'object' && plugin !== null)
-		.map((plugin) => plugin.name);
+	return collectPlugins(config.plugins).map((plugin) => plugin.name);
 }
 
 /** Runs the media plugin's bundle hook against a stand-in context and returns what it emitted. */
 function mediaEmissions(config: UserConfig): unknown[] {
 	const emitted: unknown[] = [];
-	const media = (config.plugins ?? [])
-		.flat(Infinity)
-		.find(
-			(plugin): plugin is Plugin =>
-				typeof plugin === 'object' && plugin?.name === 'catalog-fixture-media'
-		);
+	const media = collectPlugins(config.plugins).find(
+		(plugin) => plugin.name === 'catalog-fixture-media'
+	);
 	const generate = media?.generateBundle as unknown as (this: unknown) => void;
 	generate.call({ emitFile: (file: unknown) => emitted.push(file) });
 	return emitted;
