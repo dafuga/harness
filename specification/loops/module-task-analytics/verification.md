@@ -29,7 +29,7 @@ Bounce rate is incomplete reviews divided by accepted plus incomplete reviews. A
 
 ## Price provenance
 
-New estimates use `standard-global-2026-11-19` from the shared `model-analytics.mjs` module, vendored from Tracker. The module defines the portable run record and computes comparable estimates. Existing records keep their original rate card. Exact known model rates come from the [OpenAI pricing reference](https://developers.openai.com/api/docs/pricing) and [Claude pricing reference](https://platform.claude.com/docs/en/about-claude/pricing). CLI-reported API-equivalent estimates retain a separate basis.
+New estimates use `standard-global-2026-11-19` from the shared `model-analytics.js` module, vendored from Tracker. The module defines the portable run record and computes comparable estimates. Existing records keep their original rate card. Exact known model rates come from the [OpenAI pricing reference](https://developers.openai.com/api/docs/pricing) and [Claude pricing reference](https://platform.claude.com/docs/en/about-claude/pricing). CLI-reported API-equivalent estimates retain a separate basis.
 
 Canonical input tokens include cached tokens. Claude reports cache reads/writes separately from raw input; Codex includes cached input in its input total. Missing counters, cache durations and per-request context tiers remain explicit unknown values or price ranges. Unknown model prices are unavailable. See the [provider cost-accounting boundary](https://code.claude.com/docs/en/agent-sdk/cost-tracking).
 

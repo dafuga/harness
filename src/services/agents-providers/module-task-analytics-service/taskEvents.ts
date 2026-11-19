@@ -3,7 +3,7 @@ import type { ModuleTask } from '../../../repositories/agents-providers/ModuleTa
 import type { AnalyticsEvent } from '../../../core/reports-media/analyticsTypes';
 import { fingerprint } from '../../../workflows/reports-media/analyticsRecord';
 import { taskApiCost } from './taskPricing';
-import { classifyTaskType, createRunRecord, difficultyForFiles } from './model-analytics.mjs';
+import { classifyTaskType, createRunRecord, difficultyForFiles } from './model-analytics.js';
 import type {
 	TaskAnalyticsExecution,
 	TaskAnalyticsReview,

@@ -9,10 +9,27 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/services/agents-providers/module-task-analytics-service/model-analytics.d.mts",
-			"src/services/agents-providers/module-task-analytics-service/model-analytics.mjs"
+			"src/services/agents-providers/module-task-analytics-service/model-analytics.d.ts",
+			"src/services/agents-providers/module-task-analytics-service/model-analytics.js"
 		],
 		"symbols": [
+			"estimateApiCost",
+			"classifyTaskType",
+			"difficultyForFiles",
+			"createRunRecord",
+			"summarizeModelRuns",
+			"recommendModels",
+			"RUN_SCHEMA_VERSION",
+			"RATE_CARD",
+			"TokenUsage",
+			"ApiEquivalentCost",
+			"RunSource",
+			"RunOutcome",
+			"Difficulty",
+			"RunRecordInput",
+			"RunRecord",
+			"ModelRunSummaryRow",
+			"ModelRunSummary",
 			"RUN_SCHEMA_VERSION",
 			"RATE_CARD",
 			"estimateApiCost",
@@ -314,11 +331,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/agents-providers/module-task-analytics-service/model-analytics.mjs",
+		"entry": "src/services/agents-providers/module-task-analytics-service/model-analytics.js",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/agents-providers/module-task-analytics-service/model-analytics.mjs"
+				"entry": "src/services/agents-providers/module-task-analytics-service/model-analytics.js"
 			}
 		]
 	},

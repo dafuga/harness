@@ -3,7 +3,7 @@ import type {
 	TaskUsage,
 	TaskApiCost
 } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
-import { estimateApiCost } from './model-analytics.mjs';
+import { estimateApiCost } from './model-analytics.js';
 
 /** Quote standard global API-equivalent costs from the shared model rate card. */
 export function taskApiCost(model: string, usage?: TaskUsage): TaskApiCost {

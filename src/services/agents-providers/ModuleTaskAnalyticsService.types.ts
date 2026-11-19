@@ -6,7 +6,7 @@ import type {
 	ModuleTask
 } from '../../repositories/agents-providers/ModuleTaskRepository.types';
 import type { AnalyticsRepository } from '../../repositories/reports-media/AnalyticsRepository';
-import type { RunRecord } from './module-task-analytics-service/model-analytics.mjs';
+import type { RunRecord } from './module-task-analytics-service/model-analytics.js';
 export type TaskAnalyticsStore = Pick<AnalyticsRepository, 'recordImported' | 'close'>;
 export type TaskAnalyticsStoreFactory = () => TaskAnalyticsStore | Promise<TaskAnalyticsStore>;
 export interface TaskAnalyticsDetail {

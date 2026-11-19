@@ -1,6 +1,6 @@
 // @harness-uid u_nlvnkjdcje
 import type { AnalyticsEvent } from '../../../core/reports-media/analyticsTypes';
-import { createRunRecord, summarizeModelRuns } from './model-analytics.mjs';
+import { createRunRecord, summarizeModelRuns } from './model-analytics.js';
 
 export function taskMetrics(events: AnalyticsEvent[]) {
 	const unique = [

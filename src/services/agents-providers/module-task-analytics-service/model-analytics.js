@@ -236,7 +236,17 @@ export function createRunRecord(input) {
 }
 
 /** @typedef {ReturnType<typeof createRunRecord>} RunRecord */
-/** @param {RunRecord[]} records */
+/** @typedef {{
+ * taskType: string, model: string|null, effort: string|null, week: string|null, runs: number,
+ * successes: number, successfulTasks: number, failures: number, successRate: number|null,
+ * firstTry: number, retryRuns: number, escalationRuns: number, rejected: number, reworked: number,
+ * danielCorrections: number, averageInputTokens: number|null, averageOutputTokens: number|null,
+ * averageWallTimeMs: number|null, pricedRuns: number, costPerSuccessfulTaskMinUsd: number|null,
+ * costPerSuccessfulTaskMaxUsd: number|null, actualUsd: {total: number|null, knownRuns: number},
+ * codexCredits: {total: number|null, knownRuns: number}
+ * }} ModelRunSummaryRow */
+/** @typedef {{rows: ModelRunSummaryRow[], trend: ModelRunSummaryRow[], byTaskType: ModelRunSummaryRow[], recommendations: ModelRunSummaryRow[]}} ModelRunSummary */
+/** @param {RunRecord[]} records @returns {ModelRunSummary} */
 export function summarizeModelRuns(records) {
 	const unique = [...new Map(records.map((run) => [run.id, run])).values()];
 	return {
@@ -247,7 +257,8 @@ export function summarizeModelRuns(records) {
 	};
 }
 
-/** @param {RunRecord[]} runs @param {{weekly?: boolean, byTaskType?: boolean, firstTryOnly?: boolean}} [options] */
+/** @param {RunRecord[]} runs @param {{weekly?: boolean, byTaskType?: boolean, firstTryOnly?: boolean}} [options]
+ * @returns {ModelRunSummaryRow[]} */
 function groupRuns(runs, { weekly = false, byTaskType = false, firstTryOnly = false } = {}) {
 	/** @type {Map<string, RunRecord[]>} */
 	const groups = new Map();
@@ -338,6 +349,7 @@ function knownTotal(group, field) {
  * Rank independently observed first attempts. Retried successes do not count
  * as first-try success for either model. The conservative upper cost is used.
  * @param {RunRecord[]} records @param {{minSamples?: number, reliability?: number, allCandidates?: boolean}} [options]
+ * @returns {ModelRunSummaryRow[]}
  */
 export function recommendModels(
 	records,
