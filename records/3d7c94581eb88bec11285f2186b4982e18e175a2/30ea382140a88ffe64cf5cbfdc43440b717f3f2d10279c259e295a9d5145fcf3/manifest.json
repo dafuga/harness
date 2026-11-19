@@ -1,0 +1,50 @@
+{
+	"schemaVersion": 1,
+	"record": "30ea382140a88ffe64cf5cbfdc43440b717f3f2d10279c259e295a9d5145fcf3",
+	"source": {
+		"commit": "3d7c94581eb88bec11285f2186b4982e18e175a2",
+		"tree": "f860006614807fd82cd1d9fa26fcd4921628eb08"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "306ca346879e1bac9f7a6cf517cb80d36ef9436e0230131f2bc712541daafa4d",
+			"bytes": 26397,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/3d7c94581eb88bec11285f2186b4982e18e175a2/git-evidence-read/metadata/metadata-read.json",
+			"sha256": "31b371a126f152a757fb95e4d0e5a35efd5c1ee584aaaebf2e682560b6f4ebf7",
+			"bytes": 234,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/3d7c94581eb88bec11285f2186b4982e18e175a2/git-evidence-read/metadata/test-utils-read-tree-texts.test.ts-metadata-read.txt",
+			"sha256": "25f5931abe1af815a0ef945eba09afd3fc6c93102522bbf2f8560a189d3388b7",
+			"bytes": 391,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/3d7c94581eb88bec11285f2186b4982e18e175a2/git-evidence-read/metadata/test-utils-read-tree-texts.test.ts-metadata-read.json",
+			"sha256": "0fdd548afee4eb22642c914124a1b945e8bf75d67fd3f1172b831eaf3366207d",
+			"bytes": 5283,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/git-evidence-read-batch.log",
+			"sha256": "12b06e3e96fd78135e2632cc0275b4658de53e5414b25145cde843696034bd1e",
+			"bytes": 389,
+			"storage": "git"
+		},
+		{
+			"path": "logs/git-evidence-read-metadata.log",
+			"sha256": "25f5931abe1af815a0ef945eba09afd3fc6c93102522bbf2f8560a189d3388b7",
+			"bytes": 391,
+			"storage": "git"
+		}
+	]
+}
