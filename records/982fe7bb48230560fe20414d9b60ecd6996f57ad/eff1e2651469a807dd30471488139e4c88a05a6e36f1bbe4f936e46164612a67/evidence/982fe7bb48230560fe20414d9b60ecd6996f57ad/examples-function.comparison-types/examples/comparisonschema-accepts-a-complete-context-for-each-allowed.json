@@ -1,0 +1,60 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.comparison-types",
+	"symbol": "comparisonSchema",
+	"cases": [
+		{
+			"name": "complete context timed as public-invocation over 5 rounds of 10 iterations",
+			"input": {
+				"request": "10ab7097012b0fbce547679da3ab226bee437a8b00bd910ab431edab57896c53",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 10
+				}
+			},
+			"output": {
+				"success": true,
+				"data": {
+					"request": "10ab7097012b0fbce547679da3ab226bee437a8b00bd910ab431edab57896c53",
+					"boundary": "public-invocation",
+					"protocol": "harness-rounds/1",
+					"sampling": {
+						"warmup": 3,
+						"rounds": 5,
+						"iterations": 10
+					}
+				}
+			}
+		},
+		{
+			"name": "complete context timed as fixture over 5 rounds of 10 iterations",
+			"input": {
+				"request": "10ab7097012b0fbce547679da3ab226bee437a8b00bd910ab431edab57896c53",
+				"boundary": "fixture",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 10
+				}
+			},
+			"output": {
+				"success": true,
+				"data": {
+					"request": "10ab7097012b0fbce547679da3ab226bee437a8b00bd910ab431edab57896c53",
+					"boundary": "fixture",
+					"protocol": "harness-rounds/1",
+					"sampling": {
+						"warmup": 3,
+						"rounds": 5,
+						"iterations": 10
+					}
+				}
+			}
+		}
+	]
+}
