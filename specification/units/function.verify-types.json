@@ -9,11 +9,16 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/core/verification-evidence/verifyCaptureTypes.ts",
 			"src/core/verification-evidence/verifyTypes.ts",
 			"src/core/verification-evidence/verifyTypes.types.ts",
 			"src/core/verifyTypes.ts"
 		],
 		"symbols": [
+			"captureLineSchema",
+			"reportedMeasurementSchema",
+			"benchmarkCaptureSchema",
+			"workloadSchema",
 			"verifyConfigFile",
 			"verificationsDirectory",
 			"snapshotsDirectory",

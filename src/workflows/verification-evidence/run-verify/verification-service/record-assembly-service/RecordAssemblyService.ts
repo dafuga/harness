@@ -28,9 +28,7 @@ import { recordedBuilds } from './recordedBuilds';
 import { benchmarkMeasurements, recordComponents } from './sealRecord';
 import { unmeasured } from './unmeasured';
 import { ledgerGate, registryGate } from './VerificationGates';
-function outcome(failures: string[]): 'passed' | 'failed' {
-	return failures.length === 0 ? 'passed' : 'failed';
-}
+import { outcome, recordedOutcome } from './recordedOutcome';
 /** Turns what a run observed into one sealed record, with every gate judged. */
 export class RecordAssemblyService {
 	constructor(private readonly context: AssemblyContext) {}
@@ -41,8 +39,6 @@ export class RecordAssemblyService {
 		const budgets = await this.budgets(measurements);
 		const reasons = await context.explained();
 		const gates = this.gates(input, { budgets, reasons, measurements });
-		const failures = Object.values(gates).flat();
-		const lite = liteReceipt(input, failures);
 		return sealRecord({
 			schemaVersion: 1,
 			componentSchemaVersion: 2,
@@ -52,8 +48,7 @@ export class RecordAssemblyService {
 			tools: [{ id: 'harness', version: sdkPackage.version }, ...input.executed.tools],
 			startedAt: input.startedAt,
 			finishedAt: new Date().toISOString(),
-			status: lite ? 'failed' : outcome(failures),
-			...(lite ? { lite } : {}),
+			...recordedOutcome(input, gates),
 			components: recordComponents(
 				context.impact,
 				recordSides(context),
@@ -61,18 +56,13 @@ export class RecordAssemblyService {
 			),
 			measurements,
 			impact: recordedImpact(context.impact),
-			tests: input.executed.outcomes
-				.filter((item) => !item.check.id.startsWith('setup-'))
-				.map((item) => item.entry),
-			scenarios: judgedScenarios(input),
 			// Only a run that skipped a declared build names one; every other record is unchanged.
 			...recordedBuilds(
 				input.executed.builds,
 				input.executed.skippedBuilds?.length ? input.executed.skippedBuilds : undefined
 			),
 			budgets: { status: outcome(budgets.report.failures), findings: budgets.report.findings },
-			reasons: recordedReasons(reasons),
-			...recordedGates(gates, failures, Boolean(lite))
+			reasons: recordedReasons(reasons)
 		});
 	}
 
@@ -152,15 +142,6 @@ export class RecordAssemblyService {
 	}
 }
 
-function liteReceipt(input: AssemblyInput, failures: string[]): VerificationRecord['lite'] {
-	if (!input.lite) return undefined;
-	return {
-		...input.lite,
-		status: outcome(failures),
-		pendingEvidence: input.scenarios.flatMap(({ pending }) => pending ?? [])
-	};
-}
-
 function recordSides(context: AssemblyContext) {
 	const { base, head, sourceHashes } = context;
 	if (!sourceHashes) return { base, head };
@@ -171,11 +152,6 @@ function recordSides(context: AssemblyContext) {
 }
 
 /** The snapshot must stay the exact commit: nothing changed, nothing removed, nothing added. */
-/** Scenarios that ran and scenarios whose evidence is inherited, in one order. */
-function judgedScenarios(input: AssemblyInput): VerificationRecord['scenarios'] {
-	const all = [...input.scenarios.map((scenario) => scenario.result), ...input.referenced];
-	return all.sort((left, right) => (left.id < right.id ? -1 : 1));
-}
 
 function snapshotFailures(executed: Executed): string[] {
 	const changed = executed.mutated.map((path) => `snapshot mutated during verification: ${path}`);
@@ -219,18 +195,4 @@ function profileFailures(context: AssemblyContext, measurements: Measurement[]):
 		commit,
 		profile: profile.id
 	});
-}
-
-function recordedGates(gates: Record<string, string[]>, failures: string[], lite: boolean) {
-	const outcomes = Object.fromEntries(
-		Object.entries(gates).map(([gate, list]) => [gate, outcome(list)])
-	);
-	if (!lite) return { gates: outcomes, failures };
-	return {
-		gates: { ...outcomes, 'full-profile': 'failed' as const },
-		failures: [
-			...failures,
-			'Lite verification is partial. Run the full profile to verify this commit.'
-		]
-	};
 }
