@@ -1,0 +1,18 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.changed-units",
+	"symbol": "changedUnits",
+	"cases": [
+		{
+			"name": "two paths share one owner",
+			"input": {
+				"paths": [
+					"src/b.ts",
+					"src/a.ts"
+				]
+			},
+			"output": "Units changed: [[unit:app.function.alpha]], [[unit:app.function.beta]]."
+		}
+	]
+}
