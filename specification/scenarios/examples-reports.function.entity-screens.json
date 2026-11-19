@@ -1,0 +1,111 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.entity-screens",
+	"title": "reports.function.entity-screens examples",
+	"kind": "headless",
+	"units": ["reports.function.entity-screens"],
+	"builds": [],
+	"states": [
+		{
+			"id": "entity-screens-options-required-states-and-sized-viewports",
+			"title": "a visual scenario offers only its required states and sized viewports; a function offers none",
+			"coverage": "required"
+		},
+		{
+			"id": "entity-screens-pick-exact-and-first-choice-fallback",
+			"title": "a wanted scenario, state and viewport are picked exactly; an unavailable one falls back to the first choice",
+			"coverage": "required"
+		},
+		{
+			"id": "entity-screens-tip-exact-state-and-viewport-capture",
+			"title": "the branch tip shows exactly the picked state and viewport as its own fresh capture",
+			"coverage": "required"
+		},
+		{
+			"id": "entity-screens-commit-without-parent-gap-names-initial",
+			"title": "a first commit has no parent pane, so its before side is a gap noted with the initial commit",
+			"coverage": "required"
+		},
+		{
+			"id": "entity-screens-function-without-scenario-has-no-screenshot",
+			"title": "a function names no scenario: its gap says so, and no screenshot is fabricated for it",
+			"coverage": "required"
+		},
+		{
+			"id": "entity-screens-missing-media-stays-a-gap-not-a-substitute",
+			"title": "a screenshot without media is missing and is never replaced by a sibling picture",
+			"coverage": "required"
+		},
+		{
+			"id": "entity-screens-catalog-preview-exact-or-explicit-focused-fallback",
+			"title": "a catalog preview shows its exact choice; focused captures appear only through the explicit fallback",
+			"coverage": "required"
+		},
+		{
+			"id": "entity-screens-gallery-before-then-after-with-order",
+			"title": "the gallery lists every screenshot of both commit sides, before first, with its own order",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.entity-screens.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"entity-screens-options-required-states-and-sized-viewports",
+				"entity-screens-pick-exact-and-first-choice-fallback",
+				"entity-screens-tip-exact-state-and-viewport-capture",
+				"entity-screens-commit-without-parent-gap-names-initial",
+				"entity-screens-function-without-scenario-has-no-screenshot",
+				"entity-screens-missing-media-stays-a-gap-not-a-substitute",
+				"entity-screens-catalog-preview-exact-or-explicit-focused-fallback",
+				"entity-screens-gallery-before-then-after-with-order"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"entity-screens-options-required-states-and-sized-viewports",
+				"entity-screens-pick-exact-and-first-choice-fallback",
+				"entity-screens-tip-exact-state-and-viewport-capture",
+				"entity-screens-commit-without-parent-gap-names-initial",
+				"entity-screens-function-without-scenario-has-no-screenshot",
+				"entity-screens-missing-media-stays-a-gap-not-a-substitute",
+				"entity-screens-catalog-preview-exact-or-explicit-focused-fallback",
+				"entity-screens-gallery-before-then-after-with-order"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"entity-screens-options-required-states-and-sized-viewports",
+				"entity-screens-pick-exact-and-first-choice-fallback",
+				"entity-screens-tip-exact-state-and-viewport-capture",
+				"entity-screens-commit-without-parent-gap-names-initial",
+				"entity-screens-function-without-scenario-has-no-screenshot",
+				"entity-screens-missing-media-stays-a-gap-not-a-substitute",
+				"entity-screens-catalog-preview-exact-or-explicit-focused-fallback",
+				"entity-screens-gallery-before-then-after-with-order"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

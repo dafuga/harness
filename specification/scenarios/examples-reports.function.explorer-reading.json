@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.explorer-reading",
+	"title": "reports.function.explorer-reading examples",
+	"kind": "headless",
+	"units": ["reports.function.explorer-reading"],
+	"builds": [],
+	"states": [
+		{
+			"id": "explorer-reading-commit-declared-runs-unchanged",
+			"title": "scoped commit reads of runs differing only in their declared metadata are unchanged",
+			"coverage": "required"
+		},
+		{
+			"id": "explorer-reading-commit-different-answer-changed",
+			"title": "scoped commit reads of a different answer are changed and name the path that differs",
+			"coverage": "required"
+		},
+		{
+			"id": "explorer-reading-current-read-uncompared",
+			"title": "actual current reads are shown with their output but are not compared",
+			"coverage": "required"
+		},
+		{
+			"id": "explorer-reading-appeared-and-removed-results",
+			"title": "a result that appeared or was removed keeps its standing, with the missing side null",
+			"coverage": "required"
+		},
+		{
+			"id": "explorer-reading-unreadable-tampered-and-unstored-results",
+			"title": "loading, tampered and unstored results stay unknown, and a stored hash is fetched once",
+			"coverage": "required"
+		},
+		{
+			"id": "explorer-reading-artifact-differences-declared-metadata",
+			"title": "artifact differences set aside only supported declared metadata and name other paths",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.explorer-reading.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"explorer-reading-commit-declared-runs-unchanged",
+				"explorer-reading-commit-different-answer-changed",
+				"explorer-reading-current-read-uncompared",
+				"explorer-reading-appeared-and-removed-results",
+				"explorer-reading-unreadable-tampered-and-unstored-results",
+				"explorer-reading-artifact-differences-declared-metadata"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"explorer-reading-commit-declared-runs-unchanged",
+				"explorer-reading-commit-different-answer-changed",
+				"explorer-reading-current-read-uncompared",
+				"explorer-reading-appeared-and-removed-results",
+				"explorer-reading-unreadable-tampered-and-unstored-results",
+				"explorer-reading-artifact-differences-declared-metadata"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"explorer-reading-commit-declared-runs-unchanged",
+				"explorer-reading-commit-different-answer-changed",
+				"explorer-reading-current-read-uncompared",
+				"explorer-reading-appeared-and-removed-results",
+				"explorer-reading-unreadable-tampered-and-unstored-results",
+				"explorer-reading-artifact-differences-declared-metadata"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.explorer-scope",
+	"title": "reports.function.explorer-scope examples",
+	"kind": "headless",
+	"units": ["reports.function.explorer-scope"],
+	"builds": [],
+	"states": [
+		{
+			"id": "explorer-scope-branch-tip-default",
+			"title": "a branch address without a commit shows the recorded head of that branch",
+			"coverage": "required"
+		},
+		{
+			"id": "explorer-scope-selected-historical-commit",
+			"title": "a selected historical commit stays selected, with the branch tip beside it",
+			"coverage": "required"
+		},
+		{
+			"id": "explorer-scope-unbranched-commit-without-tip",
+			"title": "a stored commit that no branch reaches has no branch and no tip",
+			"coverage": "required"
+		},
+		{
+			"id": "explorer-scope-absent-branch-or-revision-missing",
+			"title": "an absent branch, tip, commit or pairing is reported and no other revision is shown",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.explorer-scope.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"explorer-scope-branch-tip-default",
+				"explorer-scope-selected-historical-commit",
+				"explorer-scope-unbranched-commit-without-tip",
+				"explorer-scope-absent-branch-or-revision-missing"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"explorer-scope-branch-tip-default",
+				"explorer-scope-selected-historical-commit",
+				"explorer-scope-unbranched-commit-without-tip",
+				"explorer-scope-absent-branch-or-revision-missing"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"explorer-scope-branch-tip-default",
+				"explorer-scope-selected-historical-commit",
+				"explorer-scope-unbranched-commit-without-tip",
+				"explorer-scope-absent-branch-or-revision-missing"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
