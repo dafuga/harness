@@ -1,0 +1,25 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-reasons",
+	"symbol": "reasonsTried",
+	"cases": [
+		{
+			"name": "a row with no recorded reasons has no tried text",
+			"input": {
+				"reasons": []
+			},
+			"output": []
+		},
+		{
+			"name": "blank attempts are left out of the tried list",
+			"input": {
+				"attempts": [
+					"  ",
+					""
+				]
+			},
+			"output": []
+		}
+	]
+}
