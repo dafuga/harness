@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.endpoint.harness-media-file",
+	"symbol": "GET",
+	"cases": [
+		{
+			"name": "absent stored name is not found",
+			"input": {
+				"file": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.png"
+			},
+			"output": {
+				"status": 404,
+				"contentType": "text/plain",
+				"length": 9,
+				"body": "Tm90IGZvdW5k"
+			}
+		},
+		{
+			"name": "missing file parameter is not found",
+			"input": {},
+			"output": {
+				"status": 404,
+				"contentType": "text/plain",
+				"length": 9,
+				"body": "Tm90IGZvdW5k"
+			}
+		}
+	]
+}

@@ -1,0 +1,21 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.endpoint.harness-media-file",
+	"symbol": "GET",
+	"cases": [
+		{
+			"name": "stored png is returned in full",
+			"input": {
+				"file": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png",
+				"address": "127.0.0.1"
+			},
+			"output": {
+				"status": 200,
+				"contentType": "image/png",
+				"length": 12,
+				"body": "iVBORw0KGgoBAgME"
+			}
+		}
+	]
+}

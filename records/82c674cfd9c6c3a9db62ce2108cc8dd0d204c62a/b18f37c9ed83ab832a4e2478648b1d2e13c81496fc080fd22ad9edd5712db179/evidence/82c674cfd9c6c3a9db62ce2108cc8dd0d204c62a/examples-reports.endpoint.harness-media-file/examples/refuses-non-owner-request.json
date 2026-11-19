@@ -1,0 +1,21 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.endpoint.harness-media-file",
+	"symbol": "GET",
+	"cases": [
+		{
+			"name": "non-loopback peer is forbidden even for a stored file",
+			"input": {
+				"file": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png",
+				"address": "203.0.113.7"
+			},
+			"output": {
+				"status": 403,
+				"contentType": "text/plain",
+				"length": 9,
+				"body": "Rm9yYmlkZGVu"
+			}
+		}
+	]
+}
