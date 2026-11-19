@@ -35,13 +35,7 @@ export class CheckRunService {
 		const leaf = check.scenario ? check.name : slug;
 		const evidencePath = `evidence/${commit}/${check.scenario ?? 'checks'}/${leaf}`;
 		const result = await this.execute(check, evidencePath, slug);
-		// Nothing a stopped check wrote is trusted: a timeout yields no captures at all.
-		const captures = result.timedOut
-			? { gathered: [], failures: [] }
-			: gatherCaptures(join(directory, evidencePath), evidencePath, this.context.limits, {
-					budget: this.budget,
-					root: directory
-				});
+		const captures = this.captures(result, evidencePath);
 		const prefix = check.scenario ? `${check.scenario}: ` : '';
 		const written = captures.failures.map((failure) => `${prefix}check ${check.name} ${failure}`);
 		const diagnostics =
@@ -63,6 +57,21 @@ export class CheckRunService {
 		};
 	}
 
+	private captures(result: IsolatedResult, evidencePath: string) {
+		if (result.timedOut) return { gathered: [], failures: [] };
+		const { directory, limits, lite } = this.context;
+		const captures = gatherCaptures(join(directory, evidencePath), evidencePath, limits, {
+			budget: this.budget,
+			root: directory
+		});
+		if (!lite || !captures.gathered.some((item) => item.line.kind === 'screenshot'))
+			return captures;
+		return {
+			gathered: captures.gathered.filter((item) => item.line.kind !== 'screenshot'),
+			failures: [...captures.failures, 'captured screenshots in Lite; declare it fullOnly.']
+		};
+	}
+
 	private execute(
 		check: PlannedCheck,
 		evidencePath: string,
@@ -74,6 +83,7 @@ export class CheckRunService {
 				priority: resourcePriority.parse(
 					this.context.env.HARNESS_RESOURCE_PRIORITY ?? 'environment'
 				),
+				...(this.context.lite ? { cpus: 0.25, memoryMiB: 256 } : {}),
 				...(this.context.env.HARNESS_VERIFY_ENTITY ? { label: scopedVerificationLabel } : {})
 			},
 			(context) =>
@@ -101,7 +111,7 @@ export class CheckRunService {
 			command: 'sh',
 			args: ['-c', tool.command],
 			cwd: this.context.snapshot,
-			env: { ...this.context.env },
+			env: { ...this.context.env, ...(this.context.lite ? this.captureEnvironment() : {}) },
 			timeoutMs: 60_000,
 			log,
 			maxLogBytes
@@ -111,12 +121,12 @@ export class CheckRunService {
 		return firstPrintedLine(printed);
 	}
 
-	/** `harness verify` always requests captures; ordinary suites opt in with TAKE_SCREENSHOT. */
+	/** Full requests all evidence; Lite only requests nonvisual evidence. */
 	private environment(check: PlannedCheck, evidence: string): Record<string, string | undefined> {
 		return {
 			...this.context.env,
+			...this.captureEnvironment(),
 			HARNESS_VERIFY: '1',
-			TAKE_SCREENSHOT: '1',
 			HARNESS_EVIDENCE_DIR: evidence,
 			HARNESS_VERIFY_REVISION: this.context.commit,
 			HARNESS_VERIFY_TREE: this.context.tree,
@@ -124,6 +134,12 @@ export class CheckRunService {
 			HARNESS_SCENARIO: check.scenario ?? '',
 			HARNESS_ANALYTICS_DISABLED: '1'
 		};
+	}
+
+	private captureEnvironment() {
+		return this.context.lite
+			? { HARNESS_VERIFY_MODE: 'lite', TAKE_SCREENSHOT: '0' }
+			: { HARNESS_VERIFY_MODE: undefined, TAKE_SCREENSHOT: '1' };
 	}
 }
 

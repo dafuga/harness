@@ -8,6 +8,7 @@ import { BuildIdentityService } from '../../../../services/verification-evidence
 import { CheckRunService, type CheckOutcome } from './check-run-service/CheckRunService';
 import type { CaptureLimits } from './check-run-service/captureLimits.types';
 import { scopedSetup } from './buildScope';
+import { deferredInLite } from './verifyPlan';
 
 /**
  * Exports the commit and runs setup and every check inside the export. The export is compared
@@ -20,7 +21,8 @@ export class SnapshotRunService {
 	constructor(private readonly run: SnapshotRun) {}
 
 	async execute(plan: PlannedCheck[], artifactPaths: string[] = []): Promise<Executed> {
-		const { root, config, context, needed = 'all' } = this.run;
+		const { root, config, context } = this.run;
+		const needed = this.buildsToIdentify(this.run.needed ?? 'all');
 		const snapshot = await SnapshotAdapter.create(root, context.commit, config.outputs);
 		const seen = { mutated: new Set<string>(), added: new Set<string>() };
 		const observe = async (): Promise<void> => {
@@ -46,13 +48,26 @@ export class SnapshotRunService {
 			const artifacts = await built(snapshot, artifactPaths);
 			const [mutated, added] = [[...seen.mutated].sort(), [...seen.added].sort()];
 			const moved = await this.identities.changed(snapshot.directory, compiled.found);
-			const builds = config.builds.length > 0 ? { builds: compiled.found } : {};
 			const buildFailures = [...compiled.failures, ...moved];
 			const observed = { outcomes, mutated, added, setupFailures, tools, artifacts };
-			return { ...observed, ...builds, ...skippedBuilds(config, needed), buildFailures };
+			return { ...observed, ...recordedBuilds(config, needed, compiled.found), buildFailures };
 		} finally {
 			await snapshot.remove();
 		}
+	}
+
+	private buildsToIdentify(needed: ReadonlySet<string> | 'all'): ReadonlySet<string> | 'all' {
+		const { config, context } = this.run;
+		if (!context.lite) return needed;
+		const deferred = new Set(
+			config.setup.filter(deferredInLite).flatMap((step) => step.builds ?? [])
+		);
+		if (deferred.size === 0) return needed;
+		return new Set(
+			config.builds
+				.map((build) => build.id)
+				.filter((id) => (needed === 'all' || needed.has(id)) && !deferred.has(id))
+		);
 	}
 
 	/** A declared tool that cannot say what it is counts as failed setup: nothing runs after it. */
@@ -62,6 +77,7 @@ export class SnapshotRunService {
 	): Promise<Array<{ id: string; version: string }>> {
 		const found: Array<{ id: string; version: string }> = [];
 		for (const tool of this.run.config.tools) {
+			if (this.run.context.lite && deferredInLite(tool)) continue;
 			const version = await runner.version(tool);
 			if (version) found.push({ id: tool.id, version });
 			else failures.push(`tool ${tool.id} did not report a version: ${tool.command}`);
@@ -78,6 +94,7 @@ export class SnapshotRunService {
 		const kept = new Set(scopedSetup(this.run.config.setup, needed));
 		for (const [index, step] of this.run.config.setup.entries()) {
 			if (!kept.has(step)) continue;
+			if (this.run.context.lite && deferredInLite(step)) continue;
 			const outcome = await runner.run({
 				id: `setup-${index + 1}`,
 				name: step.command,
@@ -104,12 +121,16 @@ function captureLimits(config: SnapshotRun['config']): CaptureLimits {
 }
 
 /** The declared builds a scoped run did not need, by id. A run that is not scoped skips none. */
-function skippedBuilds(
+function recordedBuilds(
 	config: SnapshotRun['config'],
-	needed: ReadonlySet<string> | 'all'
-): { skippedBuilds?: string[] } {
+	needed: ReadonlySet<string> | 'all',
+	found: NonNullable<Executed['builds']>
+): Pick<Executed, 'builds' | 'skippedBuilds'> {
 	const skipped = config.builds.filter((build) => needed !== 'all' && !needed.has(build.id));
-	return needed === 'all' ? {} : { skippedBuilds: skipped.map((build) => build.id) };
+	return {
+		...(config.builds.length > 0 ? { builds: found } : {}),
+		...(needed === 'all' ? {} : { skippedBuilds: skipped.map((build) => build.id) })
+	};
 }
 
 /** An output declaration that covers tracked files would hide source, so nothing runs. */

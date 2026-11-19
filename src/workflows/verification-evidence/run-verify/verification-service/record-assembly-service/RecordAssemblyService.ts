@@ -49,6 +49,7 @@ export class RecordAssemblyService {
 		const reasons = await context.explained();
 		const gates = this.gates(input, { budgets, reasons, measurements });
 		const failures = Object.values(gates).flat();
+		const lite = liteReceipt(input, failures);
 		return sealRecord({
 			schemaVersion: 1,
 			componentSchemaVersion: 2,
@@ -58,7 +59,8 @@ export class RecordAssemblyService {
 			tools: [{ id: 'harness', version: sdkPackage.version }, ...input.executed.tools],
 			startedAt: input.startedAt,
 			finishedAt: new Date().toISOString(),
-			status: outcome(failures),
+			status: lite ? 'failed' : outcome(failures),
+			...(lite ? { lite } : {}),
 			components: componentSnapshots(context, measurements),
 			measurements,
 			impact: recordedImpact(context.impact),
@@ -73,8 +75,7 @@ export class RecordAssemblyService {
 			),
 			budgets: { status: outcome(budgets.report.failures), findings: budgets.report.findings },
 			reasons: recordedReasons(reasons),
-			gates: Object.fromEntries(Object.entries(gates).map(([gate, list]) => [gate, outcome(list)])),
-			failures
+			...recordedGates(gates, failures, Boolean(lite))
 		});
 	}
 
@@ -154,6 +155,15 @@ export class RecordAssemblyService {
 	}
 }
 
+function liteReceipt(input: AssemblyInput, failures: string[]): VerificationRecord['lite'] {
+	if (!input.lite) return undefined;
+	return {
+		...input.lite,
+		status: outcome(failures),
+		pendingEvidence: input.scenarios.flatMap(({ pending }) => pending ?? [])
+	};
+}
+
 function recordSides(context: AssemblyContext) {
 	const { base, head, sourceHashes } = context;
 	if (!sourceHashes) return { base, head };
@@ -212,4 +222,18 @@ function profileFailures(context: AssemblyContext, measurements: Measurement[]):
 		commit,
 		profile: profile.id
 	});
+}
+
+function recordedGates(gates: Record<string, string[]>, failures: string[], lite: boolean) {
+	const outcomes = Object.fromEntries(
+		Object.entries(gates).map(([gate, list]) => [gate, outcome(list)])
+	);
+	if (!lite) return { gates: outcomes, failures };
+	return {
+		gates: { ...outcomes, 'full-profile': 'failed' as const },
+		failures: [
+			...failures,
+			'Lite verification is partial. Run the full profile to verify this commit.'
+		]
+	};
 }

@@ -10,6 +10,7 @@ export const verifyConfigFile = 'harness.verify.json';
 export const verificationsDirectory = '.cache/harness/verifications';
 export const snapshotsDirectory = '.cache/harness/snapshots';
 export const captureIndex = 'captures.ndjson';
+export const verificationModes = ['full', 'lite'] as const;
 
 const text = z.string().min(1);
 const identifier = z.string().regex(unitIdPattern);
@@ -19,6 +20,7 @@ const checkProfileSchema = z.strictObject({
 });
 const checkSchema = z.strictObject({
 	path: text,
+	fullOnly: z.literal(true).optional(),
 	profile: text.min(1).optional(),
 	command: text.optional(),
 	timeoutMs: z.number().int().positive().optional()
@@ -42,6 +44,7 @@ const verifyConfigInputSchema = z.strictObject({
 	setup: z.array(
 		z.strictObject({
 			command: text,
+			fullOnly: z.literal(true).optional(),
 			timeoutMs: z.number().int().positive().optional(),
 			builds: z.array(text).optional()
 		})
@@ -63,7 +66,9 @@ const verifyConfigInputSchema = z.strictObject({
 	 * Tools the checks depend on. Each command runs in the snapshot after setup and the first
 	 * line it prints is recorded, so a record says which versions produced it.
 	 */
-	tools: z.array(z.strictObject({ id: identifier, command: text })).default([]),
+	tools: z
+		.array(z.strictObject({ id: identifier, command: text, fullOnly: z.literal(true).optional() }))
+		.default([]),
 	/** Command templates per runner; `{target}` is replaced by the test file. */
 	runners: z.record(z.string(), text),
 	/**
@@ -192,7 +197,8 @@ export const defaultVerifyConfig: VerifyConfig = {
 	checks: [],
 	runners: {
 		vitest: 'bun x vitest run {target}',
-		playwright: 'bun x playwright test {target}'
+		playwright: 'bun x playwright test {target}',
+		godot: 'godot --headless --path . {target}'
 	},
 	timeouts: { test: 600_000 }
 };
@@ -215,4 +221,4 @@ export const captureLineSchema = z.strictObject({
 });
 
 export * from './benchmarkCaptureSchemas';
-export type { VerifyConfig, CaptureLine, Workload } from './verifyTypes.types';
+export type { VerifyConfig, CaptureLine, Workload, VerificationMode } from './verifyTypes.types';

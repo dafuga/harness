@@ -12,6 +12,7 @@ export interface RunContext {
 	commit: string;
 	tree: string;
 	profile: string;
+	lite?: boolean;
 	env: Record<string, string | undefined>;
 	/** Byte caps on what the checks may capture; none when absent. */
 	limits?: CaptureLimits;

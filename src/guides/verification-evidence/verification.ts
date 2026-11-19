@@ -26,7 +26,8 @@ const scenarioGuide: Guide = {
 			'An old bundle relabelled with the current revision is rejected.',
 		'harness verify identity <directory> prints that identity; a server reports the identity ' +
 			'of the files it was started from, read once at start.',
-		'Checks capture only when TAKE_SCREENSHOT is 1; harness verify always sets it.'
+		'Full verification requests all captures with TAKE_SCREENSHOT=1. Lite requests nonvisual evidence with HARNESS_VERIFY_MODE=lite and TAKE_SCREENSHOT=0.',
+		'Declare a headless Godot check as kind integration and runner godot. Its target is a .gd script or .tscn scene relative to the Godot project cwd. Exit nonzero on failed assertions.'
 	],
 	antiPatterns: [
 		'Do not relabel an unproven state as inapplicable.',
@@ -46,6 +47,7 @@ const verifyGuide: Guide = {
 		'Commit the change; uncommitted work is never part of a verification.',
 		'For entity screenshots, write and commit standard Playwright tests, then run harness verify run --priority agent-test --entity <id>; complete passing checks attach every declared state/viewport automatically.',
 		'Run harness verify run to export the commit, run its affected checks and judge every gate.',
+		'On small workers, run harness verify run --profile lite. Then run the full profile on the same commit to complete pending visual checks.',
 		'Read the failures; each names the unit, scenario or file it concerns.',
 		'Run harness verify check to confirm a stored record proves the commit.'
 	],
@@ -75,6 +77,8 @@ const verifyGuide: Guide = {
 		'Complete passing entity checks automatically attach screenshots and their record link as Git evidence. Failed or incomplete entity runs attach nothing. Repeated identical proof at one commit reuses the attached record. Full verification records remain drafts until explicitly attached.',
 		'Entity verification exits successfully when its screenshots attach, while its sealed record remains scoped and never proves a whole-commit pass. Output lists entity, states, viewports and attached record id.',
 		'harness.verify.json configures setup commands, shared paths, outputs, runners and time limits; a test file that needs a command of its own, such as another configuration of its runner, is listed under checks.',
+		'Lite skips Playwright and E2E checks. Mark custom browser commands fullOnly in scenario tests, setup, tools or checks. Keep type checks, lint and builds shared by both profiles.',
+		'Lite JSON records contain lite.status and pending check, setup, tool and capture identifiers. They cannot satisfy verify check or approve a budget baseline.',
 		'A compiled build whose server cannot read its own files, such as a Worker, is stamped after its last build step with harness verify stamp; the server reports the stamp and harness verify identity confirms it belongs to exactly those files.'
 	],
 	antiPatterns: [
@@ -84,6 +88,8 @@ const verifyGuide: Guide = {
 	],
 	exampleCommands: [
 		'harness verify run',
+		'harness verify plan --profile lite --json',
+		'harness verify run --profile lite --commit HEAD',
 		'harness verify run --priority agent-test --entity <id>',
 		'harness verify run --commit HEAD~1 --test-timeout 120000',
 		'harness verify run --base none',

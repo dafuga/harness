@@ -17,6 +17,7 @@ export interface VerifyPlanReport {
 		selectionNote: string;
 	};
 	plannedChecks: number;
+	pendingChecks?: string[];
 	candidateGroups: number;
 	candidateChecks: number;
 	singletons: number;

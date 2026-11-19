@@ -45,6 +45,7 @@ export class TrustedBaseService {
 			{ id: string; startedAt: string; status: string; path: string }
 		>();
 		for (const { record, directory } of store.records()) {
+			if (record.lite) continue;
 			const known = latest.get(record.source.commit);
 			if (!known || known.startedAt < record.startedAt) {
 				latest.set(record.source.commit, {
