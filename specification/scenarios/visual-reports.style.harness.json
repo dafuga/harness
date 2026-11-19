@@ -16,6 +16,13 @@
 			"title": "Missing",
 			"coverage": "required",
 			"units": ["reports.style.harness"]
+		},
+		{
+			"id": "default",
+			"title": "Default",
+			"coverage": "inapplicable",
+			"reason": "The default console draws no notice, so the notice rules of this stylesheet do not occur in it.",
+			"units": ["reports.style.harness"]
 		}
 	],
 	"viewports": [

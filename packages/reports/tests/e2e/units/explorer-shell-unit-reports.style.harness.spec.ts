@@ -18,6 +18,19 @@ test.beforeAll(() => {
 });
 test.afterAll(() => removeShellFixture(home));
 
+// The default host is the real fixture opened without a variant. It must draw no notice, and it
+// is never captured, so the inapplicable default in the scenario needs no screenshot.
+for (const viewport of catalogViewports) {
+	test(`reports.style.harness: default host draws no notice at ${viewport.id}`, async ({
+		page
+	}) => {
+		await page.setViewportSize({ width: viewport.width, height: viewport.height });
+		await openPreview(page, home, host);
+		await readyPreview(page, host);
+		await expect(page.locator('.hc-notice')).toHaveCount(0);
+	});
+}
+
 for (const viewport of catalogViewports) {
 	for (const state of states) {
 		test(`reports.style.harness:${state.id} at ${viewport.id}`, async ({ page }) => {
