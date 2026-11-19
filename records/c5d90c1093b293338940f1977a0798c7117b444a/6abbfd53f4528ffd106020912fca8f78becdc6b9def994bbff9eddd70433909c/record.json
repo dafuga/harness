@@ -1,0 +1,2812 @@
+{
+	"id": "6abbfd53f4528ffd106020912fca8f78becdc6b9def994bbff9eddd70433909c",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/Users/danielfugere/projects/harness-z5jp8p",
+	"source": {
+		"commit": "c5d90c1093b293338940f1977a0798c7117b444a",
+		"tree": "7b91fc961c4f56a1ce7c1d3ccd0d26669a4a642b",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-19T17:55:39.650Z",
+	"finishedAt": "2026-11-19T17:58:24.062Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "0caed629f3043f934a73c512701bcd0c0fae9095c30c6a187885110dea899737",
+			"source": "892462d92508c508fc102b074d3a51b66a07592c180a06e7a30051f19f219f71",
+			"contract": "9469b9a14ddb76143c738f5345225fa6be5d4849f0cd8e9d2baa982f421a47a3",
+			"runtime": "fff7c42e7a4e7ed2a1f4ddce4ff9f9fb2278c5f0ac792176dd8eb141fc8794f3",
+			"files": [
+				{
+					"path": "src/adapters/execution-runtimes/BoundedCommandAdapter.ts",
+					"hash": "9534e053da7a22f9f89e8c64aebc227629083a89"
+				},
+				{
+					"path": "src/adapters/execution-runtimes/BoundedCommandAdapter.types.ts",
+					"hash": "cdea30279adf96aba2d808eb95c52feb16ad5f8f"
+				},
+				{
+					"path": "src/adapters/execution-runtimes/CommandAbortedError.ts",
+					"hash": "a614b5eab74e0d32c6ebd757c1f65ef022a911bc"
+				},
+				{
+					"path": "src/adapters/execution-runtimes/CommandBoundsError.ts",
+					"hash": "e597fb902acbf276f54bcda1d9dc21c4e2f6cb7d"
+				},
+				{
+					"path": "src/adapters/execution-runtimes/CommandOutputLimitError.ts",
+					"hash": "f46c615106a55f662b83a51c29af515146043cbb"
+				},
+				{
+					"path": "src/adapters/execution-runtimes/DirectProbeRestrictionError.ts",
+					"hash": "9437d007cda65f4de838259bf3268bcb842c4207"
+				},
+				{
+					"path": "src/adapters/execution-runtimes/bounded-command-adapter/commandDeadlines.ts",
+					"hash": "07fff823bb131ea05c7273c1d35e314afd1bf57b"
+				},
+				{
+					"path": "src/adapters/execution-runtimes/bounded-command-adapter/commandFailure.ts",
+					"hash": "0d2385553e16573b81f7131294cffdc46637cea0"
+				},
+				{
+					"path": "src/adapters/execution-runtimes/bounded-command-adapter/commandFailure.types.ts",
+					"hash": "d683eab8b08f44dc5eea2e87b978e61330bab67a"
+				},
+				{
+					"path": "src/adapters/execution-runtimes/bounded-command-adapter/commandOutput.ts",
+					"hash": "a7d92a695df99246391c5fa25b06a2c8e18643cd"
+				}
+			]
+		},
+		{
+			"unit": "command.generate",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "5c572334ca8ced48d88689bf0e57678b206add865bac78cff6cb1daac3c1940d",
+			"source": "2d36b7234998dd88478e66f27f1d3b6aa307b541e3623c79a37c51f56adf521d",
+			"contract": "2182f91cf43a56f3eb8df33ea0f5b463f533916a091b0b09c890e53f9b667a8d",
+			"runtime": "67bae49e83d7e379b972110e6e99db6c4f7475b3b1b91e114b991e5d04e43453",
+			"files": [
+				{
+					"path": "src/cli/program/generate.ts",
+					"hash": "868f7f425b26bdeec36cf69fe89c6c93f996eea3"
+				},
+				{
+					"path": "src/cli/program/generate.types.ts",
+					"hash": "f49a96d45e6ba5d37cd99a2b3571656eba7bad89"
+				}
+			]
+		},
+		{
+			"unit": "config.desktop-patch",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "bdb46f1b30f115a9a839e605f51a3c7c7e643d2f3ff17d886c8b9c235925c82c",
+			"source": "26bb0bec0c40d9d5e829fba8fb88e4473da5e1fb916b30b0bc028273fa7415bb",
+			"contract": "f57f355922df38f0b9f37c64551dba1ef549306c8ee8699922af7f87ab91acba",
+			"runtime": "c4af0ee52aa982af3b4830f376a9f96826ac8e706e869de49e32be988c875cce",
+			"files": [
+				{
+					"path": "src/configs/development-tooling/desktopPatchConfig.ts",
+					"hash": "7e2f43d4407deb4ac3b7bb805eefbaf68c19b550"
+				}
+			]
+		},
+		{
+			"unit": "entry.command-help",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "a051c8de28c955e03462a50f73902405aed8c4ef64dd3c77dff4b57866d02dd0",
+			"source": "6a8f73174d8edc5a47739cff39c6d1f697d0a9a2f839a3d5eb21c254ef978caf",
+			"contract": "22a7708171b638fecb67115575fde01a7e48b71742104e5a2b09799c7c91d8af",
+			"runtime": "6e646974ca7ad712827c3ccfcc109d70454cbb24ac9791fa276f7834c6b92d49",
+			"files": [
+				{
+					"path": "src/cli/commandHelp.ts",
+					"hash": "a034d63bc75366b27f2d940767060bcee45ca836"
+				}
+			]
+		},
+		{
+			"unit": "entry.load-cli-program",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "173ede17d8107d36d7895237c73c82d384fdcb50ca29606c17811ab35274793d",
+			"source": "c0a0b9290870eac29ccbb1eb2af56cde2ad7492875983bcc2fbd8b546ae24f63",
+			"contract": "a8bdb0e6c1bc57dcf78b24005bd2fb18483391dcb5ccf1989286813013d061f8",
+			"runtime": "ffb6f828768101159f75cb6f89e892228a60950e73fa7420fda4037cafd9ce19",
+			"files": [
+				{
+					"path": "src/cli/loadCliProgram.ts",
+					"hash": "f0ba7e1263c03c01b34148e6026444b8f50fb3aa"
+				}
+			]
+		},
+		{
+			"unit": "entry.run-cli",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "0026793e2f26fcdb7d3cac012f347cadf8a8b4baf50449b22550bc7569ad7ceb",
+			"source": "9b6c0fcc7aae2856258f7b0deff76e973daa9c4cc9350220c2b5c1552b8df866",
+			"contract": "3c668587bd61df99c30377217123feefa9edba7518c8fcdd8e592eb80542bd92",
+			"runtime": "f6a5ec2c0f1f8029a9596ca793a68e20713e4d4cf00c92424a0f214d19e0f1c2",
+			"files": [
+				{
+					"path": "src/cli/runCli.ts",
+					"hash": "9f3977efb2760303339325417f9bcde0a9593de5"
+				}
+			]
+		},
+		{
+			"unit": "function.case",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "c3356db6c822b38efd4499fb4f25f96073a5954d3c304e63285dec4d80a609d7",
+			"source": "0a6d12ab8134dba994dc11398f60fdfa15182cdb3da24b98308d658c9d8d8e67",
+			"contract": "07f183395dd725f279dd194cf23d453ba83239dd7ded3cd8e201c5b2e20d8d42",
+			"runtime": "f4cd56e031217e2a0f64a9a1a3ca649aa7e7d4e7030a7e0104201728870be60a",
+			"files": [
+				{
+					"path": "src/core/case.ts",
+					"hash": "ed44d3a43426702be33ad31bf75144fb5fc9fd54"
+				},
+				{
+					"path": "src/helpers/strings/case.ts",
+					"hash": "bce97a9d40367bd4d492eb35f68f9b325d526d31"
+				}
+			]
+		},
+		{
+			"unit": "function.command-action",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "a0f1f74bbe005a2a37b09b06531b1ededfde20d5899169240b4504c78efdbf8b",
+			"source": "ffcb568a75cd4eb3a26a7b885f5bfe73839ce75a48adf9e68e2f0fa722a570d1",
+			"contract": "345390fd666853d79771f14fd7d9a1c1b3ff99b2ef3dc4b1a2d68a6aec96fc15",
+			"runtime": "d87e08e9e3fefbc44ed6d0ab46d239f0fe26ec94ba85de635663f75ce5844b90",
+			"files": [
+				{
+					"path": "src/utils/development-tooling/commandAction.ts",
+					"hash": "1d829eadf0b793ae5a4c97168ba6920e4ebd1e56"
+				}
+			]
+		},
+		{
+			"unit": "function.development-tooling-stale-build",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "78d4ab2faab22e688b7a9abbeb48c1027b102b5c7e977b1c939283c3d305e197",
+			"source": "ba8a451eca94ba9f05f729d40eced309c193e36dd4a0a189014e9fc70a35c099",
+			"contract": "1a07ecec87a0c1250c0bf3409a0c33f3ed1f19d666977fce09bea0c0d5ad4a30",
+			"runtime": "c8dd2bc71b817963c5d2c57f6a3a3adad9bd3ecad940a9eb832da076e282f975",
+			"files": [
+				{
+					"path": "src/utils/development-tooling/staleBuild.ts",
+					"hash": "173909ca02aea525f75211cad50411749afd0d39"
+				}
+			]
+		},
+		{
+			"unit": "function.development-tooling-unit-uid",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "20fd70b98d876cdb1b716d8e2854d3267f23043c71929c788acbed711ddeff4f",
+			"source": "e245878c6b7f931f98560716f5696b41fcdd4e8f9bff926108a27a31394110af",
+			"contract": "e1f5fd27c3997f4554291e9d5e84c4bcbb40fd537c7451c76e456e982652ad87",
+			"runtime": "101dda1ef8e619c6310033d3288e8566141b78f69e8989eabf14a90b2a5b0c78",
+			"files": [
+				{
+					"path": "src/utils/development-tooling/unitUid.ts",
+					"hash": "ce8abd0a37c3f5d98f671aae29daf9a5a221c990"
+				}
+			]
+		},
+		{
+			"unit": "function.fields",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "fed5b7be1d0dbf5a2fd57f75d0cd910ab3a7d9f186b95a848f600f9a9890908f",
+			"source": "aa15b540aad99d7f51d4dbdcc36c4d5238cb13e4122efa5b9c5f9f47c48880bd",
+			"contract": "13e30ad9734b8bbc4b614b3a0be9ebc16949c5f3ac29c2a189a65768acdd91b8",
+			"runtime": "e97b53444c5d2e75d2723379110db4012608720abd0abd86e14c70c800973a73",
+			"files": [
+				{
+					"path": "src/core/development-tooling/fields/fields.ts",
+					"hash": "3c19db1d1572549f53a401a83f83b57c118e5a93"
+				},
+				{
+					"path": "src/core/development-tooling/fields/fields.types.ts",
+					"hash": "ef0b1a39a336f86a4e3db72fa641aea5966321f3"
+				}
+			]
+		},
+		{
+			"unit": "function.files",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "153a1a2cd99b34b038793a2cc3a7ffc513f148a7a07d8999f7151ce08ac9fc97",
+			"source": "5e8748f338a4977f38813e40b19a2edbbf57189636c47f7349800ab670bec97b",
+			"contract": "e6f5cecb80acc72135ea2b31b5c1c19f63a7d2578412a083d59fa8b578783229",
+			"runtime": "acff484a05be711701805d37651eeace1970ebeeb7513751157c6da1d945a774",
+			"files": [
+				{
+					"path": "src/adapters/development-tooling/planned-files/writePlannedFiles.ts",
+					"hash": "a1eecb151da06d6001206a8c91068dd7b7386d35"
+				},
+				{
+					"path": "src/core/development-tooling/files.ts",
+					"hash": "09041efed9ecb7c802ed004e0e794fcb8d0696db"
+				},
+				{
+					"path": "src/core/development-tooling/files.types.ts",
+					"hash": "9bed557244b5f4986d410969bd3667be199ac82d"
+				},
+				{
+					"path": "src/core/development-tooling/renderFileList.ts",
+					"hash": "b1d4ab303a59fe03c9e2e6a0e15e3f25c22e3908"
+				}
+			]
+		},
+		{
+			"unit": "function.kernel-artifacts",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "9a313ad29197f9c0b198c7792c7342d7db3e5fda2794e00f11159ed16d4a135b",
+			"source": "474db815430cffe93e6699d9ba5b62efcbd74c0ae99fb9e66e5850746b2ff99d",
+			"contract": "d6c43626fac0e58b730a0ce8b8281bae94123c4bc718a9dd16300accdd1c7aec",
+			"runtime": "5207d87ef63413a71fcc73ec47dbe66b0c5448d0dba5b1733a3826fbd585ebe0",
+			"files": [
+				{
+					"path": "src/utils/execution-runtimes/kernelArtifacts.ts",
+					"hash": "d7212408ce8b16257adcbbb048fe75fcb425e809"
+				},
+				{
+					"path": "src/utils/execution-runtimes/kernelArtifacts.types.ts",
+					"hash": "2de5c646a8c4371b1cb53fa5457960c723b664e5"
+				},
+				{
+					"path": "src/utils/kernelArtifacts.ts",
+					"hash": "3a0b213d2c30994cfbc7c18afb6a8850c32177dd"
+				}
+			]
+		},
+		{
+			"unit": "function.piped-output",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "7283a6490012d18ace25eba8fb495bb857b35434736e7d2ed1ef88bdb377956b",
+			"source": "93b146c037cdbc032de185b967b505188ee09ff27ab60e46977dc2f171efe08b",
+			"contract": "88fbb7974daeaf6d2b85b2b8ab10813aec4753f03c880609f38352ff01504840",
+			"runtime": "5fdb96c5d4e76058866988c98471b6154a27a49fefe1f9689dcf83a9872d1368",
+			"files": [
+				{
+					"path": "src/utils/development-tooling/pipedOutput.ts",
+					"hash": "1c6e237fd82061a43ac7682d5874b3bd6e7f7d04"
+				}
+			]
+		},
+		{
+			"unit": "function.project",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "3bd84854ec2945f1639de9e2029e2f7ddf5118df4cad72adb3793ea74f52713f",
+			"source": "69111dc3566802413b0173dc75798d55068735f9fa6868c588b10ce7324bf6ac",
+			"contract": "a87830125a4b93a0ca48b811cfca36806f337fe6e53829979653dca6e526cf98",
+			"runtime": "14cf27305a5f9bb8ce2b270b9988a956210d2359b57cca2face677c17ac0f7a1",
+			"files": [
+				{
+					"path": "src/core/projects-sessions/project.ts",
+					"hash": "0b44631a37633050398d96a4b505019eb38c4002"
+				},
+				{
+					"path": "src/workflows/projects-sessions/generate-code/project.ts",
+					"hash": "4fd20e101b4488530a91f03573cd6143b7abc36e"
+				},
+				{
+					"path": "src/workflows/projects-sessions/generate-code/project.types.ts",
+					"hash": "dd52fde32b56c9e15c5861fe7c80de586baa4fe7"
+				}
+			]
+		},
+		{
+			"unit": "function.record-capture",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41e40bb7a2b44b7fa1da3881ebf1a687d3d8471d42fd0a7c44d584361255ff42",
+			"source": "142bfa1513b076860925e3bac72e4361c1edd5901abe0b7061ebac711646346a",
+			"contract": "025908d6c17bb9a51a22fa8f85c40b9ea26bb9161a5d016c554aa7e340c15a52",
+			"runtime": "a289759bf06513632380a5baa8ac1f6a9a916c1d1905e0de6a7be531f7936431",
+			"files": [
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.ts",
+					"hash": "316c75b906d532b1a5b376f345b7de8e00da1f4d"
+				},
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.types.ts",
+					"hash": "8e36a063513222284548df76d240d4a45f6626a9"
+				}
+			]
+		},
+		{
+			"unit": "function.sqlite-table-sql",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "ac4d8cc6dfbf18c51733df4ac58486661bef5f702d437613940537cae5b2481a",
+			"source": "7369583d0852b7efa37dfd71081e5fee7f4735f801466e8d8d53c9275281375b",
+			"contract": "1b17630f5e3caffaf6c678fb13540b25e436747b45a6fb77444f64827694d44e",
+			"runtime": "97ea8d42aaa5963b8520ba4b8a3ba74963469d71c8a0205e917289fc2ba77e4b",
+			"files": [
+				{
+					"path": "src/utils/development-tooling/sqliteTableSql.ts",
+					"hash": "7478efaf3e70323cc34bf0b2e4bc5a306327a839"
+				},
+				{
+					"path": "src/utils/development-tooling/sqliteTableSql.types.ts",
+					"hash": "579c751db0c6933a487c0acaefb0732591794216"
+				}
+			]
+		},
+		{
+			"unit": "function.validation",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "4e405862372c352f506945269779ca4bd6b689a9353769810b6e4640e897db2d",
+			"source": "0de824cee3f5b24b5dfb5d3f06fd6c81ab599571973e92866340542c351c3c00",
+			"contract": "0e3144a2531793aafd4912f5c6f77f0af4fccdbf851efaf175dfc2a9807e0d37",
+			"runtime": "bbd637efdfdc32966e6733d6ca042069047eb78c203219bcc72c602394e517fe",
+			"files": [
+				{
+					"path": "src/cli/program/create-project/validation.ts",
+					"hash": "b39853680f4174627a8d7cd0464411d385ed14fc"
+				},
+				{
+					"path": "src/core/development-tooling/fields/validateName.ts",
+					"hash": "eba3350f29162d27b789502d0d92933a40a89525"
+				},
+				{
+					"path": "src/core/development-tooling/fields/validation.ts",
+					"hash": "abcee12916d1bf1fee3b4f6a844d5929f250c42b"
+				},
+				{
+					"path": "src/core/development-tooling/validation.ts",
+					"hash": "b1f6f68b147de9d135d1f0e72c3fe891cde6151a"
+				},
+				{
+					"path": "src/core/validation.ts",
+					"hash": "acb7effb2a45d7437a279e368990b0352c649fb2"
+				},
+				{
+					"path": "src/workflows/development-tooling/loop-state/validation.ts",
+					"hash": "036ab4d10ae0396ab5de089a7a17cab1c06a228c"
+				}
+			]
+		},
+		{
+			"unit": "module.index",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "f1ede91de43d0d2147e5b44488619a75ec713cb3a3364b192cb161518644b5cb",
+			"source": "0b474609acb30c7bd67045e137815b4cd3d39291fb209333fbe773b684a952b6",
+			"contract": "41da4ae92ec0121090574f1f1f23f29dfa3679814b0a26abc2abfb6b10afd775",
+			"runtime": "0aab508eaaf904488f00407f929006c1320137bc7219c776d234fafa92bb5bec",
+			"files": [
+				{
+					"path": "src/lib/index.ts",
+					"hash": "4889d5842e1c153eed07a8958185c7b142bb6eba"
+				}
+			]
+		},
+		{
+			"unit": "module.resources",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "813698a8b2f6764a8451d552e7c4aa850b91d5b2f2cd721b0ab1de2c515dddde",
+			"source": "543ed23e80ebfb0fb3313756b8bb655b87c64f685419dae446410bcbe94e807d",
+			"contract": "41da4ae92ec0121090574f1f1f23f29dfa3679814b0a26abc2abfb6b10afd775",
+			"runtime": "909dcebe7ef60b80c0ffc65ef7335d77f3c55fc3efee91d9b98bd29943170339",
+			"files": [
+				{
+					"path": "src/lib/execution-runtimes/resources.ts",
+					"hash": "d349ba310895ed931a744173328b2fbadbba9659"
+				}
+			]
+		},
+		{
+			"unit": "module.verification",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "176fae09d0f674d8d8fef2f7e3d3b0cd141411f43642108b3acb1c0b3e46449b",
+			"source": "e50ef06f381809c61cac7e4130685c271e9461a78938e93e951f1179245dc32f",
+			"contract": "41da4ae92ec0121090574f1f1f23f29dfa3679814b0a26abc2abfb6b10afd775",
+			"runtime": "53232898f0a262fbd2b8b546ca85d1fa8e63de691cd4df6a279210b884e84648",
+			"files": [
+				{
+					"path": "src/lib/verification.ts",
+					"hash": "b42f0a7dbfdc2780bd657abecf605f0aa2c3ce6f"
+				}
+			]
+		},
+		{
+			"unit": "repository.analytics",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "d99b8eb4d5115fec9d9e85e2272d7366d0e6a125e6dd70bf97a89f714afe82ed",
+			"source": "c00096a7c5281948118bf08102ed2b94a4edbe2c221748de54fd5920390f4816",
+			"contract": "12b44a672e3553ee7c6dfc330dbed833c95177b8692faf0109ccb982e852ce70",
+			"runtime": "eb0b7ac1384ec1bb44da546713aed12e7a63dd01c8cbd42c8e1ade3febe31a5a",
+			"files": [
+				{
+					"path": "src/repositories/reports-media/AnalyticsInitializationTimeoutError.ts",
+					"hash": "3f65beee127f1a9d6da592f78dd754f3e50ffd19"
+				},
+				{
+					"path": "src/repositories/reports-media/AnalyticsRepository.ts",
+					"hash": "20a5d567388aa64ea2e0dee8378eb27c83c895a4"
+				},
+				{
+					"path": "src/repositories/reports-media/InvalidRetentionCutoffError.ts",
+					"hash": "1c7410ed21ecb74a871bafdceab8b2f08a44ff8a"
+				},
+				{
+					"path": "src/repositories/reports-media/UnsupportedAnalyticsSchemaVersionError.ts",
+					"hash": "5f7e16cfa5200d9bb53f14d3ed992515c70f88a1"
+				}
+			]
+		},
+		{
+			"unit": "script.build-api",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "9a16527e9cce8351089875b5a0a5e5a7386e79f24a29be37c8034642dbfc4260",
+			"source": "1d2c09c47f6668bae8c6abc512f9aa4181078247ae75e4d2fe73c07150c6fb15",
+			"contract": "869a1839732e77413439561fcd35066a812a3ad0b9bc4846807d545dc0f89fdc",
+			"runtime": "623ecd7c91b5b68163898b1289b178b9a223f05af20e98687a482b3af1e2cc25",
+			"files": [
+				{
+					"path": "scripts/ApiDeclarationBuildError.ts",
+					"hash": "c4ca771b4b01e7465474a3e6a9633883d8c178cb"
+				},
+				{
+					"path": "scripts/EdgeBundleBuildError.ts",
+					"hash": "908ae07ff08bed324b7736e72d495b8cfe8ea3f6"
+				},
+				{
+					"path": "scripts/EdgeBundlePortabilityError.ts",
+					"hash": "dc6d9c70275526b0118adc75f4b153b635b26e78"
+				},
+				{
+					"path": "scripts/PublicApiBundleBuildError.ts",
+					"hash": "15acaa1218605c54d09d022539f1add7f6cbf751"
+				},
+				{
+					"path": "scripts/build-api.ts",
+					"hash": "9134a2c0870c74f538c0f7242ca08ae0c2f190b3"
+				}
+			]
+		},
+		{
+			"unit": "service.model-dependency",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "eb662ca0390901e6d9e82a60d738f036bbeb2981d523af282564c407099c938e",
+			"source": "e23f124f20ca5582cbb98cef93b31e316571308f04bd81601c465750c18f7f3a",
+			"contract": "1b9826f8bd75deb86f9d58cabe81a56b8d348fa0d171e8cfb2e5851089d8b923",
+			"runtime": "8575a71f89b5c6d8a43aab152d27b773977418f94f6f2e1aaf1d568509cdcb48",
+			"files": [
+				{
+					"path": "src/services/development-tooling/ModelDependencyService.ts",
+					"hash": "49fbcd576801d6e1366bef4d0d4a701e421dead0"
+				}
+			]
+		},
+		{
+			"unit": "service.module-category",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "45acb07cebf3f9433a11102f7e21da14b561354acb0719a11b302289e21db559",
+			"source": "7d1c4bd6aa72ecb5433aee25708c6beadc331c382a65485985af531acdbaef53",
+			"contract": "42f1ecb6f740c04ebfe32893ec239fddf4eb97e978266404fdd97ce6129281b5",
+			"runtime": "a73477a847a02ae3a5049063745e5c45beaf8d9dba9708a16e6c376818bd62e8",
+			"files": [
+				{
+					"path": "src/services/development-tooling/ModuleCategoryService.ts",
+					"hash": "07bb523a2773d6db6b73f6644acea726923ada46"
+				}
+			]
+		},
+		{
+			"unit": "template.adapter-types",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "f35c2429b9ec35a23764bae50417ae574566db26202af5682a4aab5f60572fd1",
+			"source": "89d4ae74268b0b9ed7a2f6777d2c6b0e80125d556daba845b68a7fc6aa22c0ad",
+			"contract": "5884b42d2c41f0b073d1e85e9f962319503c0fbd106ba1c5b4e657fba4d31f5b",
+			"runtime": "20278fb74c6c2fc901f139a5d236d7d0baf59c8fce165f5bfd7b2c8f6e7b5f65",
+			"files": [
+				{
+					"path": "src/templates/development-tooling/adapterTypes.ts",
+					"hash": "b2c311d9629e0b935e5cc26451a1c5daf961571c"
+				}
+			]
+		},
+		{
+			"unit": "template.browser-test",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "324008e762bbcb74e03248b5acc18b1e2d4d35a2f30bd0b0b50309b5b5da191f",
+			"source": "73e531be64e1f42138e3e8f4e2efd8ff16c05031a6f6dbefd5887a49ed07094f",
+			"contract": "2160d371de5b894f4957ffbfc18a2ae033c29c6e82698b7413f7d9912d8722a2",
+			"runtime": "d9fc8f2984c4b068ba389bcf2daa42004874483b52183ea288951e464a2a1321",
+			"files": [
+				{
+					"path": "src/templates/development-tooling/browserTest.ts",
+					"hash": "0c0de6bb282b3cd74d0d72dd10137c474f9176a7"
+				}
+			]
+		},
+		{
+			"unit": "template.development-tooling-atomic-runtime-sources",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "4df77c0b93bd5f0f9f4ba7ba5cd0fb57766fcd77356be1b51b259c9245d48960",
+			"source": "943408a8c373ed6abf0e22a30d2fb78ccb8cba3068332a1052ccd32e2caa194d",
+			"contract": "a7f0dea0abe21a560941645225921c59529fe6837f609f964e42c10fd162177e",
+			"runtime": "acad980c177291db1c6b6f8b70482c9f9940cc0de4bd90a08efa9cac52af4285",
+			"files": [
+				{
+					"path": "src/templates/development-tooling/atomicRuntimeSources.ts",
+					"hash": "83caa34c5ceb8e975d137e277437afdbabaa3d22"
+				}
+			]
+		},
+		{
+			"unit": "template.development-tooling-html-elements",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "e7c6e9e589bcf4c374d40a17d48d85bbd1e8a2cf86ad6775b473fefb8a3cebe3",
+			"source": "3ea7b57ce307064d81b35e303e2b7485212e07bc47a6c9aabcc47713f39f9b9d",
+			"contract": "c013bf845a0ab34bf2cf81fed51bbfb9ca9207d7f4f28b1173a9333e3918484f",
+			"runtime": "f99ec30a5e66fdfbb1047faf25d49d4d0039d740d77e15d610369c3c5cda343e",
+			"files": [
+				{
+					"path": "src/templates/development-tooling/htmlElements.js",
+					"hash": "8d45aa1eae837b11abbb16b6e62b292e7aaddf53"
+				}
+			]
+		},
+		{
+			"unit": "template.development-tooling-separate-type-declarations",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "9b079179ff3dca4236e80f53df4f68870d9324b80a6634fe5cc6e34420feb8ec",
+			"source": "540e798d9e424803340af167357ff6cedd0926e59cf58f7f7ddfcc70f7612978",
+			"contract": "ff49205d99ca4337df64811f908a7ed91a159aec4862316b1a71efd8a8f03866",
+			"runtime": "80b99e93910737486c1b658310c4269c2e88c68277f89ae171777a0a17bf0da5",
+			"files": [
+				{
+					"path": "src/templates/development-tooling/separateTypeDeclarations.ts",
+					"hash": "b81891b8a365b82bd661ee93a1500a3d965dda9c"
+				}
+			]
+		},
+		{
+			"unit": "template.model",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "5b8e71606ec814c0a9cb14923598d44376db2d6df17232a9569264945ad6c2aa",
+			"source": "9995f0944d7e66f6d3c5991dd8544e363cc83cc201c24875ab94fdbc64fbf4d3",
+			"contract": "6c7b0b64cc81e53727ed50cf87011899ef879d4b71f90081326d7d13780703b6",
+			"runtime": "9d1a56c3ed536edba5f24fe15b4940f64a4ebbda2a033fcf5a32e005ed8ce9c9",
+			"files": [
+				{
+					"path": "src/templates/development-tooling/model.ts",
+					"hash": "0fc356b57171f498a2beaa17770655467bbf1161"
+				},
+				{
+					"path": "src/templates/development-tooling/model.types.ts",
+					"hash": "b40914b8cf43abe555f128ecc22d855ec34849c5"
+				}
+			]
+		},
+		{
+			"unit": "template.module-system-email-module",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "833cf57879e0a93ff81469ec769a5b92d4a621c53b024f9f9ae452ff1989397d",
+			"source": "18067e27f0f9ddb307df69b3b95e3ce1d07974ce55eb369675dc157060c15bb2",
+			"contract": "80502840ab985634dea90cce194374d1eb114d15d9ebd26d1786917abdf85082",
+			"runtime": "71447f1b9ce5b2a1b84d10a44edcff3840c6075d2df32c7e6cc72bcdf778e6a7",
+			"files": [
+				{
+					"path": "src/templates/module-system/emailModule.ts",
+					"hash": "9f3cfd2e6080f9031c7e589ade55146143abb0d5"
+				}
+			]
+		},
+		{
+			"unit": "template.module-system-offline-module",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "d0b8d09a1bb841429b482e2975f24eff251f2a92d2f39c36b533cbc1753f1a6b",
+			"source": "9baf1e44a578fdd8b66e7ee3c5dde0be409f5b0d6518dfb7ae6b064909fcd5ca",
+			"contract": "b0445fd4a51ce094f94ad1327f2a62c46cbc8221a67bc1474152017df5a935cc",
+			"runtime": "34ca5126d23149c9c4e581572f5c52a634c22ec2bbcedda2177fa3d5157c0ef4",
+			"files": [
+				{
+					"path": "src/templates/module-system/offlineModule.ts",
+					"hash": "5be7fdcabd9c8270fe656c953e73cfd5b6aa591d"
+				}
+			]
+		},
+		{
+			"unit": "template.module-system-rust-backend-module",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "b848099a2adc3dc17e93fd1f88dfef17e4226c37e6ba777b16fd81454de59a66",
+			"source": "5b1b1fb1d92a3807bfccdd4029a92e51a3b2487b4a6285feda03f5e5eb69d4c0",
+			"contract": "7dffd221b89ad54b6cc316bdbb0cab163eb6c26e11be7e40ed96ea60d537f59f",
+			"runtime": "705d8649767fd68f64d77038d08ea167cd01fb9bc1e5e5115a53cdd0068e441a",
+			"files": [
+				{
+					"path": "src/templates/module-system/rustBackendModule.ts",
+					"hash": "d380dce03ed46d4019b1d6d2730fc40aa9dae48d"
+				}
+			]
+		},
+		{
+			"unit": "template.module-system-rust-wasm-module",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "a1821dc818b073522083dccd8a11405804fb43be14f4852974960ad9cabfc70c",
+			"source": "547d54896d0540c07b744c46ea9283c70a9dd180b8e2942ecfa0e11104f6f1ae",
+			"contract": "f74a1c1bac8edd4c682e7036f2dbb4eb7f3843e306b4eb12f1ab1530d00afcc2",
+			"runtime": "814ac734b552260fe1e398e449c6be639c069f12585db36186c13c2f1c0b8ef8",
+			"files": [
+				{
+					"path": "src/templates/module-system/rustWasmModule.ts",
+					"hash": "0e712958e94bc95af4383ae95cb832eae6b76f53"
+				}
+			]
+		},
+		{
+			"unit": "template.sqlite-model",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "9691dc9b7b65adf7b4d7bc418bd597878ba3d038cee2ae203e2dcb55df97ddb1",
+			"source": "154250897d813a69fcfa462329cc6dd6a865c6afacb0b5171911e12d253464b3",
+			"contract": "869fde9d5d45548e6b4574e71b2453d4e0236a7a13a365d735cf665a996cb314",
+			"runtime": "a11cf5311cfba571fa49601979b1168501a755bbc78228bbc745ce51bacddb7f",
+			"files": [
+				{
+					"path": "src/templates/development-tooling/sqliteModel.ts",
+					"hash": "a1bd7790d2aeec8b7831253d72408083b1a15b7b"
+				}
+			]
+		},
+		{
+			"unit": "workflow.analytics-record",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "008ed69c3e0b9686f1259e62f96dbd45b789e5410b54520fcf4de30c903f6f28",
+			"source": "1627a0878399b19def71dd1df217a2db0c12dd58fd94375aa8a35e2b30cfe57a",
+			"contract": "42d8234ea5b34657d7c38ad45ef3ea737a4bfa13ee2c8125955d121f49a80de8",
+			"runtime": "33ad87098fae805a3e188da9373af3c7aaff59b0f266bc72500991040358f22a",
+			"files": [
+				{
+					"path": "src/workflows/analyticsRecord.ts",
+					"hash": "1de17e20327176df0d7225af07b763d800225b94"
+				},
+				{
+					"path": "src/workflows/reports-media/analyticsRecord.ts",
+					"hash": "f1a48d86771b2be28a473c753c2cdd1632deaf6b"
+				}
+			]
+		},
+		{
+			"unit": "workflow.development-tooling-backfill-uids-mint-uid",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "38fd54ee45d6939e2037ff404a1c1a426629fdc685d99fd58759b9af5c15cd01",
+			"source": "a64746241b0ebbd86c340540d84be1cfc61618af7a5d02d05c90759d7ba7b7c0",
+			"contract": "f36c78d35f898850981b5e5d45ce86cb94eeb2c7540222ebe75bea625318eb9a",
+			"runtime": "23ab12ee3dd4806c34c71571bbaa682299a6067c8f425750b5b7f34146169df2",
+			"files": [
+				{
+					"path": "src/workflows/development-tooling/backfill-uids/mintUid.ts",
+					"hash": "07f00f7555c4f55a0108d6b38c1401f32b515f96"
+				}
+			]
+		},
+		{
+			"unit": "workflow.export-plans",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "8275abc7610e14abae5364aa7ec8405aafa7acfc06f7111ab265afc2620be274",
+			"source": "cf2edcd587b89aa001e0ecee1bb8c9cd70a2c2adcbc6e31b6505d97c1644a459",
+			"contract": "1db713a8dfd5548fff7c0d968da9474fb77d7d342988b0c7c462706338e62bcc",
+			"runtime": "017b375ef0e0267e44e2ff418b5e185b5c9c76daa5c9e04a63730325e487ae15",
+			"files": [
+				{
+					"path": "src/workflows/generate-code/exportPlans.ts",
+					"hash": "1acb6ba481f48b9bc12472ef1498133a3498af2b"
+				},
+				{
+					"path": "src/workflows/projects-sessions/generate-code/exportPlans.ts",
+					"hash": "59ffae89bfda2c7a21dc7bebc0984e861aeb6f7a"
+				}
+			]
+		},
+		{
+			"unit": "workflow.generate-code",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "2f765e3fd562720295cc4788e26fed436c72ae082057cbc2e40b88c7ed1e0a39",
+			"source": "9b4592e015d84e72c63acf44a3432382d195ad4db2e83ea387733ebf4bea2336",
+			"contract": "19c9a8a5b1a495c4b0e03f5061e41ae7c12231901e47adf28d813f2f37293e33",
+			"runtime": "721b9421d64d1cb08a35e5e764af9a7b914dfb4547dcf924766072249df85aec",
+			"files": [
+				{
+					"path": "src/workflows/generate-code/generateCode.ts",
+					"hash": "16c58113873f26a3fd99f055f309a2617f808bff"
+				},
+				{
+					"path": "src/workflows/generate-code/generationGroup.ts",
+					"hash": "d2655911e1b84b8b3239e4a491b098eea07ac2ec"
+				},
+				{
+					"path": "src/workflows/generate-code/groupedImports.ts",
+					"hash": "ded561aa531c4ca20973f52998cac37b1d247f69"
+				},
+				{
+					"path": "src/workflows/projects-sessions/generate-code/generateCode.ts",
+					"hash": "beedeeea4c11073502c88e348cf8d7dcc589c07a"
+				},
+				{
+					"path": "src/workflows/projects-sessions/generate-code/generateCode.types.ts",
+					"hash": "6d79f6722f89e4ebfb4fb7cc7516ef3b45e646c3"
+				},
+				{
+					"path": "src/workflows/projects-sessions/generate-code/generationGroup.ts",
+					"hash": "b8375e6e69c88880241f58305af46ae030e62b79"
+				},
+				{
+					"path": "src/workflows/projects-sessions/generate-code/generationGroup.types.ts",
+					"hash": "fdffb6c1aa70fb152cf84be4455c97e310978ebe"
+				},
+				{
+					"path": "src/workflows/projects-sessions/generate-code/groupedFiles.ts",
+					"hash": "6d0a28762bab9a5944fccce1ac3c90adfe007199"
+				},
+				{
+					"path": "src/workflows/projects-sessions/generate-code/groupedImports.ts",
+					"hash": "0d8a7434d80a453fa5efee57346c096a5e12aaac"
+				}
+			]
+		},
+		{
+			"unit": "workflow.projects-sessions-generate-code-annotate-unit-files",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "90da071959d5890a041c5660ade268edaead93d4e70e5403816ab96c97e1fc16",
+			"source": "ea87aed14bbcac072e54e7350684a27a6456a5f65e29cd33c4def12aea7f0987",
+			"contract": "19e6d9cb2ae852eb8dd8a4dc5f7e4945b3f7b2fccb603c20a1745c10988669f4",
+			"runtime": "3eec9c79d1037a657a2f124f161455cf5b6ec712a08a0c7aaa6ce247d3769b4f",
+			"files": [
+				{
+					"path": "src/workflows/projects-sessions/generate-code/annotateUnitFiles.ts",
+					"hash": "e3a941a8d9ff4c1745347d092f219487bb19aa1a"
+				}
+			]
+		},
+		{
+			"unit": "workflow.reports-media-record-command-analytics",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "4356842a1664bc3a3c5d17aacbc2508488933eef854930caebe286a2f8fe0e9e",
+			"source": "f2ef14db979cde58dcd7b3701930f055e1b03416c07e4742957badf744e9c773",
+			"contract": "1c79f5b27534d157308bf440c7416e37b5d9c209583bc1627acbd04fd44911d0",
+			"runtime": "9e6ba1b4f3bb1dfd2131c05e3a720f655148acc1477d9570d2085a2bb065f477",
+			"files": [
+				{
+					"path": "src/workflows/reports-media/recordCommandAnalytics.ts",
+					"hash": "c87799a5bd4fe2b5028dec539346b446ec6416a4"
+				}
+			]
+		},
+		{
+			"unit": "workflow.reports-media-skips-analytics",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "9665c1c7032685700a56c55b121b11d0014458287404dd1b0f02f8012d13e28b",
+			"source": "5680cb8410b512a61fd3c76058650d5924cab6d05e57b8c05a03ee5982b00f56",
+			"contract": "58d025dc654fdf042b531e8d7155004fa6f3f2cc0ffad9629c28bf1dcd429f15",
+			"runtime": "653f72aa9917a968072c2cbf71d77ef2dfa7d384742ca2a5660467ed3a61f297",
+			"files": [
+				{
+					"path": "src/workflows/reports-media/skipsAnalytics.ts",
+					"hash": "b33d149a47f21849dd23fc29af47e39c78b4d7a7"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "script.build-api",
+			"metric": "latency-cli-ms",
+			"unitOfMeasure": "ms",
+			"value": 1975.7536249999998,
+			"method": "Wall time of one cold child-process workload including startup and shared code; no isolated-unit attribution or warmup.",
+			"workload": "public-api-declaration-build",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "script.build-api",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 453951488,
+			"method": "OS-reported peak RSS for the actual child process workload, including runtime and OS child accounting; excludes the parent test runner. Not isolated unit memory or a summed process-tree peak.",
+			"workload": "public-api-declaration-build",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "entry.command-help",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.02645899999993162,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-bun-1.2.18-1e1f0df2d244b9bf-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "entry.command-help",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 338935808,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-bun-1.2.18-1e1f0df2d244b9bf-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "config.desktop-patch",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0029159999999137654,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-bun-1.2.18-b76f100ad2025e63-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "config.desktop-patch",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 345899008,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-bun-1.2.18-b76f100ad2025e63-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.development-tooling-html-elements",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.007208400000013171,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-1c4e31b94086eac8-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.development-tooling-html-elements",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 350846976,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-1c4e31b94086eac8-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.browser-test",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.009124999999926331,
+			"method": "Arithmetic mean of 2 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-c4a4d49604ef2b5b-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 2,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.browser-test",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 351698944,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-c4a4d49604ef2b5b-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 2,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.module-system-rust-wasm-module",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0072079999999914435,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-bun-1.2.18-43745118636d632d-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.module-system-rust-wasm-module",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 351731712,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-bun-1.2.18-43745118636d632d-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.module-system-rust-backend-module",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0038329999999859865,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-bun-1.2.18-1a932a8d0b38a81c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.module-system-rust-backend-module",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 351731712,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-bun-1.2.18-1a932a8d0b38a81c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.module-system-email-module",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0029159999999137654,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-bun-1.2.18-58fa18ab96c4cd5b-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.module-system-email-module",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 351731712,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-bun-1.2.18-58fa18ab96c4cd5b-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.module-system-offline-module",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.004083000000036918,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-bun-1.2.18-d394dcb153f62674-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.module-system-offline-module",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 351731712,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-bun-1.2.18-d394dcb153f62674-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.development-tooling-atomic-runtime-sources",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.002499999999827196,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-bun-1.2.18-169205c242c14838-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.development-tooling-atomic-runtime-sources",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 352501760,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-bun-1.2.18-169205c242c14838-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.piped-output",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.01554100000021208,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-f30c1cb0abe865b8-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.piped-output",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 353026048,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-f30c1cb0abe865b8-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.development-tooling-stale-build",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.032083999999940715,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-2bf071d9c0c38a75-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.development-tooling-stale-build",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 353026048,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-2bf071d9c0c38a75-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "command.generate",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 2.1866670000001704,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-ce428b5627c0ea18-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "command.generate",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 354648064,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-ce428b5627c0ea18-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "entry.load-cli-program",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 44.7875419999998,
+			"method": "Arithmetic mean of 1 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-b8a10377fe9ccfaa-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "entry.load-cli-program",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 354648064,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-b8a10377fe9ccfaa-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.validation",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.007541399999990972,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-da6bbfa77b1246ea-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.validation",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 354664448,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-da6bbfa77b1246ea-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.validation",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0502080000001115,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-c6cc702800fe1b91-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.validation",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 354664448,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-c6cc702800fe1b91-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "service.module-category",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.101917000000185,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-4cb0bf98506bc5f1-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "service.module-category",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 354664448,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-4cb0bf98506bc5f1-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.generate-code",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.1730840000000171,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-90bad1092f802d92-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.generate-code",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 354664448,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-90bad1092f802d92-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.adapter-types",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.01125000000001819,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-0e895ae96763d601-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.adapter-types",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 354664448,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-0e895ae96763d601-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.validation",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.008656499999915468,
+			"method": "Arithmetic mean of 4 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-e3beef9a79b5c484-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.validation",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 354664448,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-e3beef9a79b5c484-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.case",
+			"callable": "toPascalCase",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.014678571428638472,
+			"method": "Arithmetic mean of 7 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-0f29588c943ca58e-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 7,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.case",
+			"callable": "toPascalCase",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 355303424,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-0f29588c943ca58e-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 7,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.case",
+			"callable": "toCamelCase",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.028291500000023007,
+			"method": "Arithmetic mean of 4 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-5aad7d1d1ac5fbce-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.case",
+			"callable": "toCamelCase",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 354664448,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-5aad7d1d1ac5fbce-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.case",
+			"callable": "toSnakeCase",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.003637399999979607,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-c5d0d6b2be3af18f-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.case",
+			"callable": "toSnakeCase",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 355762176,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-c5d0d6b2be3af18f-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.fields",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.34404200000017227,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-17409ade89fb18ca-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.fields",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 354664448,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-17409ade89fb18ca-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.case",
+			"callable": "toKebabCase",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.009833000000071479,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-20907795eb5789de-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.case",
+			"callable": "toKebabCase",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 354664448,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-20907795eb5789de-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.sqlite-model",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.02433399999995345,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-f578f9af4e7f5cca-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.sqlite-model",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 354664448,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-f578f9af4e7f5cca-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.development-tooling-separate-type-declarations",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.5733750000001692,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-8ba99019f5f8b6fe-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.development-tooling-separate-type-declarations",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 354664448,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-8ba99019f5f8b6fe-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.model",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.821999999999889,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-eea447a30729bd2e-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "template.model",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 354664448,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-eea447a30729bd2e-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.development-tooling-backfill-uids-mint-uid",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.12108400000010988,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-c446aa1fcc9d67a5-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.development-tooling-backfill-uids-mint-uid",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 354680832,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-c446aa1fcc9d67a5-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.development-tooling-unit-uid",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.05058299999996052,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-3b39763a5d9fc3c3-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.development-tooling-unit-uid",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 354697216,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-3b39763a5d9fc3c3-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.development-tooling-unit-uid",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.032000000000152795,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-670ad403a3b2f54b-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.development-tooling-unit-uid",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 354697216,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-670ad403a3b2f54b-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.development-tooling-unit-uid",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.1444170000002032,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-8967c46d52d98cc5-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.development-tooling-unit-uid",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 354697216,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-8967c46d52d98cc5-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.projects-sessions-generate-code-annotate-unit-files",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.5080829999999423,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-b7b5b5681be4ba26-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.projects-sessions-generate-code-annotate-unit-files",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 354697216,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-b7b5b5681be4ba26-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.generate-code",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.05537499999991269,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-d82a9529726dce6e-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.generate-code",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 354697216,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-d82a9529726dce6e-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.generate-code",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.054333000000042375,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-f8ff2e6283d18a3b-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.generate-code",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 354697216,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-f8ff2e6283d18a3b-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.files",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 3.1868749999998727,
+			"method": "Arithmetic mean of 1 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-e11bda98b5ba76f6-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.files",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 355057664,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-e11bda98b5ba76f6-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.files",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 4.560624999999845,
+			"method": "Arithmetic mean of 1 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-694ad2e66e67eff1-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.files",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 355287040,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-694ad2e66e67eff1-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.generate-code",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.1914999999999054,
+			"method": "Arithmetic mean of 1 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-9974f24354b87c8a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.generate-code",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 355287040,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-9974f24354b87c8a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "service.model-dependency",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.21241599999984828,
+			"method": "Arithmetic mean of 1 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-2396c08eb70a7203-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "service.model-dependency",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 355303424,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-2396c08eb70a7203-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.export-plans",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.08075000000008004,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-99fa89b4894a1f27-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.export-plans",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 355303424,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-99fa89b4894a1f27-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.export-plans",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.03241699999989578,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-b714e030e3c8ff18-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.export-plans",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 355303424,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-b714e030e3c8ff18-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.generate-code",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.03205533333327063,
+			"method": "Arithmetic mean of 3 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-a529967d45010b4a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.generate-code",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 355303424,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-a529967d45010b4a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.generate-code",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.13354200000003402,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-484c7a082c9c1597-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.generate-code",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 355303424,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-484c7a082c9c1597-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.project",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.27404100000012477,
+			"method": "Arithmetic mean of 1 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-9c784ca6334dc554-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.project",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 355368960,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-9c784ca6334dc554-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.generate-code",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 11.130874999999833,
+			"method": "Arithmetic mean of 1 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-e18b79857049d982-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.generate-code",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 355368960,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-e18b79857049d982-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.files",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.02845800000000054,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-62ae50ec9e3714d3-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.files",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 355368960,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-62ae50ec9e3714d3-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.generate-code",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.05875000000014552,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-31d1ad685920e66b-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.generate-code",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 355368960,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-31d1ad685920e66b-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.reports-media-skips-analytics",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.014604500000018561,
+			"method": "Arithmetic mean of 2 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-1c0275b2720d5236-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 2,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.reports-media-skips-analytics",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 355450880,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-1c0275b2720d5236-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 2,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.command-action",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.02183300000001509,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-be22f0c7a6edfdcb-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.command-action",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 355450880,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-be22f0c7a6edfdcb-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.sqlite-table-sql",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.010659499999936392,
+			"method": "Arithmetic mean of 6 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-6791d2bfebd5be3d-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.sqlite-table-sql",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 355762176,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-6791d2bfebd5be3d-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.sqlite-table-sql",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.012510249999991174,
+			"method": "Arithmetic mean of 4 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-f34aa4809b94723c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.sqlite-table-sql",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 355762176,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-f34aa4809b94723c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.sqlite-table-sql",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.28262500000005275,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-c9cca372e86d368e-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.sqlite-table-sql",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 355762176,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-c9cca372e86d368e-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "repository.analytics",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 11.556125000000065,
+			"method": "Arithmetic mean of 1 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-569560cebad35305-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "repository.analytics",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 355844096,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-569560cebad35305-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.05404199999998127,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-b1351d4859eb5f4e-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 355860480,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-b1351d4859eb5f4e-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.015832999999929598,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-533dac913ce3e600-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 356155392,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-533dac913ce3e600-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.analytics-record",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 11.516583999999966,
+			"method": "Arithmetic mean of 1 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-2a706ddb943d8a61-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.analytics-record",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 356597760,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-2a706ddb943d8a61-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "repository.analytics",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.20229100000005928,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-9a3a2150aa5af485-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "repository.analytics",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 356597760,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-9a3a2150aa5af485-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "repository.analytics",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 3.987124999999878,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-972eed4dcda2ddb0-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "repository.analytics",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 356614144,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-972eed4dcda2ddb0-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.analytics-record",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 27.524584000000004,
+			"method": "Arithmetic mean of 1 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-54b2f4ef2c054cde-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.analytics-record",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 356614144,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-54b2f4ef2c054cde-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.reports-media-record-command-analytics",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 27.653958999999986,
+			"method": "Arithmetic mean of 1 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-ae18e33ef121e39a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.reports-media-record-command-analytics",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 356614144,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-ae18e33ef121e39a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "entry.run-cli",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 86.79387500000007,
+			"method": "Arithmetic mean of 1 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-bun-1.2.18-6063eecf1a451e30-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "entry.run-cli",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 356614144,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-bun-1.2.18-6063eecf1a451e30-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "module.index",
+			"metric": "latency-process-ms",
+			"unitOfMeasure": "ms",
+			"value": 656.0417500000003,
+			"method": "Wall time of one cold child-process workload including startup and shared code; no isolated-unit attribution or warmup.",
+			"workload": "cold-bun-packed-sdk",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "module.index",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 129236992,
+			"method": "OS-reported peak RSS for the actual child process workload, including runtime and OS child accounting; excludes the parent test runner. Not isolated unit memory or a summed process-tree peak.",
+			"workload": "cold-bun-packed-sdk",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "module.resources",
+			"metric": "latency-process-ms",
+			"unitOfMeasure": "ms",
+			"value": 656.0417500000003,
+			"method": "Wall time of one cold child-process workload including startup and shared code; no isolated-unit attribution or warmup.",
+			"workload": "cold-bun-packed-sdk",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "module.resources",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 129236992,
+			"method": "OS-reported peak RSS for the actual child process workload, including runtime and OS child accounting; excludes the parent test runner. Not isolated unit memory or a summed process-tree peak.",
+			"workload": "cold-bun-packed-sdk",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "module.verification",
+			"metric": "latency-process-ms",
+			"unitOfMeasure": "ms",
+			"value": 656.0417500000003,
+			"method": "Wall time of one cold child-process workload including startup and shared code; no isolated-unit attribution or warmup.",
+			"workload": "cold-bun-packed-sdk",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "module.verification",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 129236992,
+			"method": "OS-reported peak RSS for the actual child process workload, including runtime and OS child accounting; excludes the parent test runner. Not isolated unit memory or a summed process-tree peak.",
+			"workload": "cold-bun-packed-sdk",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "module.index",
+			"metric": "latency-process-ms",
+			"unitOfMeasure": "ms",
+			"value": 324.9997910000002,
+			"method": "Wall time of one cold child-process workload including startup and shared code; no isolated-unit attribution or warmup.",
+			"workload": "cold-node-packed-sdk",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "module.index",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 132808704,
+			"method": "OS-reported peak RSS for the actual child process workload, including runtime and OS child accounting; excludes the parent test runner. Not isolated unit memory or a summed process-tree peak.",
+			"workload": "cold-node-packed-sdk",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "module.resources",
+			"metric": "latency-process-ms",
+			"unitOfMeasure": "ms",
+			"value": 324.9997910000002,
+			"method": "Wall time of one cold child-process workload including startup and shared code; no isolated-unit attribution or warmup.",
+			"workload": "cold-node-packed-sdk",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "module.resources",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 132808704,
+			"method": "OS-reported peak RSS for the actual child process workload, including runtime and OS child accounting; excludes the parent test runner. Not isolated unit memory or a summed process-tree peak.",
+			"workload": "cold-node-packed-sdk",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "module.verification",
+			"metric": "latency-process-ms",
+			"unitOfMeasure": "ms",
+			"value": 324.9997910000002,
+			"method": "Wall time of one cold child-process workload including startup and shared code; no isolated-unit attribution or warmup.",
+			"workload": "cold-node-packed-sdk",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "module.verification",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 132808704,
+			"method": "OS-reported peak RSS for the actual child process workload, including runtime and OS child accounting; excludes the parent test runner. Not isolated unit memory or a summed process-tree peak.",
+			"workload": "cold-node-packed-sdk",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.010079000000035875,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 176226304,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.3761562500000082,
+			"method": "Arithmetic mean of 4 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 176226304,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.kernel-artifacts",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.46266600000126346,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-9ce04235129a87b9-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.kernel-artifacts",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 176062464,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-9ce04235129a87b9-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "package-api:packed-consumer",
+			"kind": "e2e",
+			"runner": "vitest",
+			"target": "test/packaged-api.e2e.test.ts",
+			"status": "passed",
+			"durationMs": 17587,
+			"log": {
+				"path": "logs/package-api-packed-consumer.log",
+				"bytes": 514,
+				"sha256": "e42aa210cd638e4787153bf4a91b01fb600f75ce224c8d7a1f8303201892c3a3"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "package-api",
+			"status": "passed",
+			"testedRevision": "c5d90c1093b293338940f1977a0798c7117b444a",
+			"states": [
+				{
+					"id": "packed",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "consumer-output",
+							"kind": "output",
+							"state": "packed",
+							"mediaType": "application/json",
+							"note": "Printed by the consumer project under each runtime after it installed the packed tarball.",
+							"status": "passed",
+							"path": "evidence/c5d90c1093b293338940f1977a0798c7117b444a/package-api/packed-consumer/consumer-output.json",
+							"sha256": "719d39cac6da90a838d6bacb3af92733fe524008c7c36efe5121c4576a11b87c",
+							"bytes": 8583,
+							"capturedAt": "2026-11-19T17:58:22.057Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"shell-fixture",
+		"entity-preview"
+	],
+	"builds": [
+		{
+			"id": "reports",
+			"directory": "packages/reports/build",
+			"buildId": "6a6c882efaf2a9620dcd0cc948459ea30582a74dbdd779ddc44297a05396c422",
+			"files": 722
+		}
+	],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to module.index: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}
