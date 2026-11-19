@@ -1,0 +1,97 @@
+{
+	"schemaVersion": 1,
+	"record": "48958b65e83deea5d1bbb9e979b4c3f4bb31414fe89171c95f5be4c6da30bb22",
+	"source": {
+		"commit": "b1ef963097568efffc75b53a19ae9ec91020cefd",
+		"tree": "232557cfb27514c4a10ef5a2495789666c67b967"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "9a93766649c5837f336dc05ed8f5d12d6bb5cbf46323ba177e4538d072e65966",
+			"bytes": 138584,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b1ef963097568efffc75b53a19ae9ec91020cefd/local-project-chat/console-workspace/test-console-workspace.test.ts-history-navigation.txt",
+			"sha256": "d831ae104b73661741c71206fa0223f580b4ab22e69d466fc2dc79b0507e5eb6",
+			"bytes": 408,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b1ef963097568efffc75b53a19ae9ec91020cefd/local-project-chat/console-workspace/test-console-workspace.test.ts-history-navigation.json",
+			"sha256": "932aeab82c31840c7c0c7f3843647f5fcb19aa9530f6f4d225688de0ed591826",
+			"bytes": 14853,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b1ef963097568efffc75b53a19ae9ec91020cefd/local-project-chat/console-bridge/test-console-bridge.test.ts-transport-recovery.txt",
+			"sha256": "b79de6680610027f0dff453798431d77b7a55faab240a8cd62dc78994ae15f1d",
+			"bytes": 404,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b1ef963097568efffc75b53a19ae9ec91020cefd/local-project-chat/console-bridge/test-console-bridge.test.ts-transport-recovery.json",
+			"sha256": "362c59b093d0a079e444268dbd7d9342088ec808121af0c391f39c192f567d60",
+			"bytes": 3816,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b1ef963097568efffc75b53a19ae9ec91020cefd/local-project-chat/console-agent/test-console-agent.test.ts-owner-boundary.txt",
+			"sha256": "fb42ab6e377e4775a5317b172573fdf93c0f0698d9a479acc00729fde37e0ea3",
+			"bytes": 403,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b1ef963097568efffc75b53a19ae9ec91020cefd/local-project-chat/console-agent/test-console-agent.test.ts-owner-boundary.json",
+			"sha256": "12a71d1f49c5159468d28eb413bd8a4c3ae72852813ac38570fa059978577e59",
+			"bytes": 5113,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b1ef963097568efffc75b53a19ae9ec91020cefd/local-project-chat/preview-lifecycle/test-preview-lifecycle.test.ts-route-runtime.txt",
+			"sha256": "9db3c7db1eb73e47ea3b75a7d6b9192b2c9155c5cd5ac8cbde3458ad8fb9f2f0",
+			"bytes": 1299,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b1ef963097568efffc75b53a19ae9ec91020cefd/local-project-chat/preview-lifecycle/test-preview-lifecycle.test.ts-route-runtime.json",
+			"sha256": "f5f07f2513e99b056ec9d232b06a5b6f33c65a76b4aa9496da255c1fece76e8e",
+			"bytes": 28706,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/local-project-chat-console-agent.log",
+			"sha256": "fb42ab6e377e4775a5317b172573fdf93c0f0698d9a479acc00729fde37e0ea3",
+			"bytes": 403,
+			"storage": "git"
+		},
+		{
+			"path": "logs/local-project-chat-console-bridge.log",
+			"sha256": "b79de6680610027f0dff453798431d77b7a55faab240a8cd62dc78994ae15f1d",
+			"bytes": 404,
+			"storage": "git"
+		},
+		{
+			"path": "logs/local-project-chat-console-workspace.log",
+			"sha256": "d831ae104b73661741c71206fa0223f580b4ab22e69d466fc2dc79b0507e5eb6",
+			"bytes": 408,
+			"storage": "git"
+		},
+		{
+			"path": "logs/local-project-chat-preview-lifecycle.log",
+			"sha256": "9db3c7db1eb73e47ea3b75a7d6b9192b2c9155c5cd5ac8cbde3458ad8fb9f2f0",
+			"bytes": 1299,
+			"storage": "git"
+		}
+	]
+}
