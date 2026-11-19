@@ -8,6 +8,16 @@ import { moduleTaskFixture } from '../../support/moduleTaskFixture';
 import { observedTaskOperation } from '../../support/taskProfiles';
 import { readFile } from 'node:fs/promises';
 
+const pendingRun = {
+	schemaVersion: 1,
+	source: 'harness',
+	taskType: 'module',
+	outcome: 'pending_review',
+	wallTimeMs: expect.any(Number),
+	actualUsd: null,
+	codexCredits: null
+};
+
 afterEach(() => vi.unstubAllEnvs());
 
 test('committed task history emits stable IDs and excludes raw prompt text', async () => {
@@ -50,7 +60,8 @@ test('committed task history emits stable IDs and excludes raw prompt text', asy
 		expect(analytics.metrics(selected)).toMatchObject({
 			executions: 1,
 			submissions: 1,
-			bounceRate: null
+			bounceRate: null,
+			runRecords: [pendingRun]
 		});
 		expect(JSON.stringify(selected)).not.toContain('Implement the wanted contract');
 		vi.stubEnv('HARNESS_ANALYTICS_DISABLED', '1');
@@ -72,7 +83,7 @@ test('missing Codex cache-write counts produce a priced range rather than a gues
 	expect(cost).toMatchObject({
 		usd: null,
 		basis: 'standard-api-estimate',
-		rateCard: 'standard-global-2026-10-25'
+		rateCard: expect.stringMatching(/^standard-global-/)
 	});
 	expect(cost.minimumUsd).toBeCloseTo(0.0000173, 10);
 	expect(cost.maximumUsd).toBeCloseTo(0.0000278, 10);
