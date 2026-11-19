@@ -1,0 +1,133 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.unit-measurements",
+	"symbol": "unitMeasurements",
+	"cases": [
+		{
+			"name": "unread binary, a missing path and one unresolved import",
+			"input": {
+				"unit": {
+					"id": "function.mixed",
+					"owns": {
+						"source": [
+							"src/a.ts",
+							"src/data.bin",
+							"src/missing.ts"
+						],
+						"symbols": []
+					},
+					"dependencies": [],
+					"runtime": {
+						"targets": [
+							{
+								"kind": "module",
+								"entry": "src/index.ts"
+							}
+						]
+					}
+				},
+				"files": [
+					{
+						"path": "src/a.ts",
+						"references": [
+							{
+								"via": "import",
+								"typeOnly": false,
+								"uncertain": {
+									"reason": "unresolved-import",
+									"detail": "./gone"
+								}
+							}
+						],
+						"blocks": [
+							{
+								"name": "run",
+								"kind": "function",
+								"complexity": 3
+							}
+						],
+						"bytes": 40,
+						"lines": 3,
+						"language": "ts",
+						"read": true,
+						"decisions": "counted"
+					},
+					{
+						"path": "src/data.bin",
+						"references": [],
+						"blocks": [],
+						"bytes": 100,
+						"lines": 10,
+						"language": "other",
+						"read": false,
+						"decisions": "unsupported"
+					}
+				],
+				"testedRevision": "0123456789abcdef0123456789abcdef01234567"
+			},
+			"output": [
+				{
+					"unit": "function.mixed",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "source-bytes",
+					"unitOfMeasure": "bytes",
+					"value": null,
+					"unavailable": "Not measured: src/data.bin was not read.",
+					"method": "Sum of the byte sizes of the owned source files.",
+					"artifacts": []
+				},
+				{
+					"unit": "function.mixed",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "source-lines",
+					"unitOfMeasure": "lines",
+					"value": null,
+					"unavailable": "Not measured: src/data.bin was not read.",
+					"method": "Sum of the line counts of the owned source files.",
+					"artifacts": []
+				},
+				{
+					"unit": "function.mixed",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "complexity",
+					"unitOfMeasure": "points",
+					"method": "Decision points in owned source, plus one per function or method.",
+					"value": 3,
+					"partial": "Counted in 1 of 2 code files. Decision points are not counted in .bin files: src/data.bin.",
+					"artifacts": []
+				},
+				{
+					"unit": "function.mixed",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "dependencies",
+					"unitOfMeasure": "count",
+					"method": "Unit dependencies plus distinct external modules referenced.",
+					"value": 0,
+					"partial": "References are not read in .bin files: src/data.bin. 1 reference could not be resolved in src/a.ts.",
+					"artifacts": []
+				},
+				{
+					"unit": "function.mixed",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "artifact-bytes",
+					"unitOfMeasure": "bytes",
+					"value": null,
+					"unavailable": "A module unit emits no separate artifact.",
+					"method": "Not applicable.",
+					"artifacts": []
+				}
+			]
+		}
+	]
+}
