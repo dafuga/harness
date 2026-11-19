@@ -78,8 +78,10 @@ test.each([
 	{ cpuAvailableCores: NaN },
 	{ cpuUsedPercent: NaN },
 	{ cpuUsedPercent: null },
-	{ memoryAvailableBytes: NaN }
-	// TODO: memory pressure cases return when its check is re-enabled (disabled 2026-10-29).
+	{ memoryAvailableBytes: NaN },
+	{ memoryPressure: 'warning' as const },
+	{ memoryPressure: 'critical' as const },
+	{ memoryPressure: 'unknown' as const }
 ])('unknown, stale and pressured telemetry holds new work: %j', (changes) => {
 	expect(resourcePolicy([job()], snapshot(changes), config).granted).toEqual([]);
 });
@@ -135,8 +137,7 @@ test.each([2, 3, 5])(
 		);
 	}
 );
-// TODO: memory pressure is temporarily disabled 2026-10-29; re-enable with it.
-test.skip('memory pressure still admits scoped verification checks, and only them', () => {
+test('memory pressure still admits scoped verification checks, and only them', () => {
 	const full = job({ id: 'full', sequence: 1 });
 	const scoped = job({ id: 'scoped', sequence: 2, label: scopedVerificationLabel });
 	const warning = resourcePolicy([full, scoped], snapshot({ memoryPressure: 'warning' }), config);

@@ -84,10 +84,12 @@ test('Pressure reports stale telemetry and exhausted reserves', () => {
 	const stale: Snapshot = { ...healthy, sampledAt: now - 6000 };
 	const starvedCpu: Snapshot = { ...healthy, cpuAvailableCores: 0.5 };
 	const starvedMemory: Snapshot = { ...healthy, memoryAvailableBytes: 1024 * MIB };
+	const warning: Snapshot = { ...healthy, memoryPressure: 'warning' };
 	expect(resourcePressure(healthy, config, now)).toBeNull();
 	expect(resourcePressure(stale, config, now)).toBe('Resource telemetry is unavailable or stale');
 	expect(resourcePressure(starvedCpu, config, now)).toBe('CPU reserve is exhausted');
 	expect(resourcePressure(starvedMemory, config, now)).toBe('Memory reserve is exhausted');
+	expect(resourcePressure(warning, config, now)).toBe('Memory pressure is warning');
 	recordExampleCases(
 		{
 			unitId,
@@ -100,7 +102,8 @@ test('Pressure reports stale telemetry and exhausted reserves', () => {
 			{ name: 'healthy host leaves admissions open', input: { ageMs: 0, cpuAvailableCores: 6, memoryAvailableMiB: 8192 }, output: null },
 			{ name: 'sample older than staleSampleMs', input: { ageMs: 6000, cpuAvailableCores: 6, memoryAvailableMiB: 8192 }, output: 'Resource telemetry is unavailable or stale' },
 			{ name: 'CPU below the 0.8-core reserve', input: { ageMs: 0, cpuAvailableCores: 0.5, memoryAvailableMiB: 8192 }, output: 'CPU reserve is exhausted' },
-			{ name: 'memory below the 2048 MiB floor', input: { ageMs: 0, cpuAvailableCores: 6, memoryAvailableMiB: 1024 }, output: 'Memory reserve is exhausted' }
+			{ name: 'memory below the 2048 MiB floor', input: { ageMs: 0, cpuAvailableCores: 6, memoryAvailableMiB: 1024 }, output: 'Memory reserve is exhausted' },
+			{ name: 'memory warning pauses new admissions', input: { ageMs: 0, cpuAvailableCores: 6, memoryAvailableMiB: 8192, memoryPressure: 'warning' }, output: resourcePressure(warning, config, now) }
 		]
 	);
 });
