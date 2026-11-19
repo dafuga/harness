@@ -1,0 +1,22 @@
+{
+	"name": "harbor-godot-gmv7nk",
+	"goal": "Prove Harness can create, check, and export a Godot game and compare the same Lottery fixture with SvelteKit canvas.",
+	"createdAt": "2026-11-19T09:22:21.812Z",
+	"updatedAt": "2026-11-19T09:35:46.877Z",
+	"steps": [
+		{
+			"id": "scaffold",
+			"title": "Generate a Godot game and pass headless scene checks and release exports",
+			"status": "complete",
+			"completedAt": "2026-11-19T09:35:45.360Z",
+			"evidence": "9a944657ba test/game-project.test.ts test/audit-adapters.test.ts; MB2 generated check+build+check; Project Reports 5c983868-31ff-4d02-9782-09d67c789060"
+		},
+		{
+			"id": "comparison",
+			"title": "Run the same Lottery fixture in the native, web, and canvas outputs",
+			"status": "complete",
+			"completedAt": "2026-11-19T09:35:46.877Z",
+			"evidence": "Native and two Chromium releases passed real two-ticket fixture; raw measurements at ~/.codex/project-reports/operational-evidence/gmv7nk-lottery-engine/measurements.json; Project Reports 5c983868-31ff-4d02-9782-09d67c789060"
+		}
+	]
+}
