@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.09s2B0/tmp/harness-snapshot-kF2bRf/packages/planning
+
+ ✓ test/utils/plan-reads.test.ts (2 tests) 6255ms
+   ✓ one operation runs each pinned read once and answers as reads made one by one  2292ms
+   ✓ each operation reads again: it sees an approval, a new commit and a branch that moved  3955ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  22:40:34
+   Duration  6.85s (transform 229ms, setup 144ms, collect 212ms, tests 6.25s, environment 0ms, prepare 34ms)
+
+JSON report written to /tmp/z5jp8p-hl.09s2B0/tmp/harness-runner-6si8nT/report.json

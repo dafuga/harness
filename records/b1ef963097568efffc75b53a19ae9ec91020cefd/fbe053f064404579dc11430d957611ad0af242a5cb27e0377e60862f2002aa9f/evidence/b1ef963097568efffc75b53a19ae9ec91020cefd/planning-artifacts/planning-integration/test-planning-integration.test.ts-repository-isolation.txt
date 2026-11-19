@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.09s2B0/tmp/harness-snapshot-kF2bRf/packages/planning
+
+ ✓ test/planning-integration.test.ts (3 tests) 5515ms
+   ✓ headless versions preserve staged work and invalidate exact approvals without active manifests  2937ms
+   ✓ serializes concurrent writes and rejects traversal and dirty artifact collisions  1377ms
+   ✓ rejects committed immutable tampering and symlink destinations  1176ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  22:39:47
+   Duration  6.12s (transform 237ms, setup 138ms, collect 229ms, tests 5.51s, environment 0ms, prepare 35ms)
+
+JSON report written to /tmp/z5jp8p-hl.09s2B0/tmp/harness-runner-3AvjMK/report.json
