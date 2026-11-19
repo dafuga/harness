@@ -19,9 +19,7 @@
 				"type": "AnalyticsEvent[]",
 				"required": true,
 				"description": "The analytics events considered for the snapshot, with event fields supplying the project, loop and task identities, timestamp, kind, action, statuses and model or token data where present. The filter selects among these events; an empty array produces zero counts and empty event collections.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "analyticsSnapshot.filter",
@@ -48,10 +46,7 @@
 				"type": "T[]",
 				"required": true,
 				"description": "The items whose string keys are counted, with one key callback invocation per item. An empty array produces an empty record.",
-				"examples": [
-					[],
-					["run", "run", "test"]
-				]
+				"examples": [[], ["run", "run", "test"]]
 			},
 			{
 				"name": "counts.key",
@@ -125,9 +120,7 @@
 						"type": "AnalyticsEvent[]",
 						"required": true,
 						"description": "The analytics events considered for the snapshot, with event fields supplying the project, loop and task identities, timestamp, kind, action, statuses and model or token data where present. The filter selects among these events; an empty array produces zero counts and empty event collections.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					},
 					{
 						"name": "analyticsSnapshot.filter",
@@ -204,10 +197,7 @@
 						"type": "T[]",
 						"required": true,
 						"description": "The items whose string keys are counted, with one key callback invocation per item. An empty array produces an empty record.",
-						"examples": [
-							[],
-							["run", "run", "test"]
-						]
+						"examples": [[], ["run", "run", "test"]]
 					},
 					{
 						"name": "counts.key",
