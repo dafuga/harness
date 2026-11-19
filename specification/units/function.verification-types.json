@@ -9,11 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/core/verification-evidence/verificationCaptures.ts",
 			"src/core/verification-evidence/verificationTypes.ts",
 			"src/core/verification-evidence/verificationTypes.types.ts",
 			"src/core/verificationTypes.ts"
 		],
 		"symbols": [
+			"captureRegionSchema",
+			"captureSchema",
+			"scenarioResultSchema",
 			"captureRegionSchema",
 			"captureSchema",
 			"scenarioResultSchema",
