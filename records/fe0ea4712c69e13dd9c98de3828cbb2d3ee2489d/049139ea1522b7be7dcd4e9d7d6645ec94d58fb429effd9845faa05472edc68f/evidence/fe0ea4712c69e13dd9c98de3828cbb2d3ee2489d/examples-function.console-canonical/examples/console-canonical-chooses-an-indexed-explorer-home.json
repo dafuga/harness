@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.console-canonical",
+	"symbol": "explorerHome",
+	"cases": [
+		{
+			"name": "main branch tip is indexed",
+			"input": {
+				"index": "main and feature heads"
+			},
+			"output": {
+				"branch": "main",
+				"commit": null,
+				"category": "pages"
+			}
+		},
+		{
+			"name": "only a feature branch tip is indexed",
+			"input": {
+				"index": "feature head and main missing"
+			},
+			"output": {
+				"branch": "feature/kept#1",
+				"commit": null,
+				"category": "pages"
+			}
+		},
+		{
+			"name": "only retained commits are indexed",
+			"input": {
+				"index": "retained commit"
+			},
+			"output": {
+				"branch": null,
+				"commit": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+				"category": "pages"
+			}
+		}
+	]
+}
