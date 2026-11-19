@@ -29,17 +29,19 @@ export async function capturePage(address: string, options: PageCaptureOptions):
 			`--screenshot=${screenshot}`,
 			url.href
 		];
-		const result = await resourceWork({ label: 'Page screenshot' }, (worker) =>
-			runIsolated({
-				command: browser,
-				args,
-				cwd: directory,
-				env: process.env,
-				timeoutMs: 30_000,
-				log: join(directory, 'browser.log'),
-				maxLogBytes: 32_000,
-				onSpawn: worker.track
-			})
+		const result = await resourceWork(
+			{ label: 'Page screenshot', cpus: 0.25, memoryMiB: 256 },
+			(worker) =>
+				runIsolated({
+					command: browser,
+					args,
+					cwd: directory,
+					env: process.env,
+					timeoutMs: 30_000,
+					log: join(directory, 'browser.log'),
+					maxLogBytes: 32_000,
+					onSpawn: worker.track
+				})
 		);
 		if (result.status !== 'passed') return fail(`Page capture ${result.status}.`);
 		const image = await readFile(screenshot).catch(() => fail('Browser did not produce a PNG.'));
