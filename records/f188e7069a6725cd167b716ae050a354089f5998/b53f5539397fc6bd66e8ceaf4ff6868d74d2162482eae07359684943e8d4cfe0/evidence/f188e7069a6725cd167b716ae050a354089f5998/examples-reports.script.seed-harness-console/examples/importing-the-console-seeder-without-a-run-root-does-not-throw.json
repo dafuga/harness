@@ -1,0 +1,29 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.script.seed-harness-console",
+	"symbol": "seedHarnessConsole",
+	"cases": [
+		{
+			"name": "import the seeder with no run root in the environment",
+			"input": {
+				"module": "packages/reports/scripts/seed-harness-console.ts"
+			},
+			"output": {
+				"exports": [
+					"seedHarnessConsole"
+				]
+			}
+		},
+		{
+			"name": "explicitly run the seeder with no run root",
+			"input": {
+				"HARNESS_E2E_ROOT": null
+			},
+			"error": {
+				"name": "E2eRootNotSetError",
+				"message": "This process belongs to no browser run: HARNESS_E2E_ROOT is not set. The Playwright configuration makes one directory per run; a script started by hand must be given one."
+			}
+		}
+	]
+}
