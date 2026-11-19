@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.corrected-location",
+	"title": "reports.function.corrected-location examples",
+	"kind": "headless",
+	"units": ["reports.function.corrected-location"],
+	"builds": [],
+	"states": [
+		{
+			"id": "shell-category-corrected",
+			"title": "A shell addressed under Components is led to its listed category with the rest of the address kept",
+			"coverage": "required"
+		},
+		{
+			"id": "helper-owner-added-only-for-sole-owner",
+			"title": "A helper address gains its owner only when exactly one listed function unit owns the name",
+			"coverage": "required"
+		},
+		{
+			"id": "platforms-absent-and-correct-addresses-stay-null",
+			"title": "Platforms, absent entities and correctly categorized addresses get no correction",
+			"coverage": "required"
+		},
+		{
+			"id": "compact-drops-only-the-sole-current-owner",
+			"title": "Compaction drops the entity only when it is the sole current owner of the helper",
+			"coverage": "required"
+		},
+		{
+			"id": "compact-keeps-ambiguous-and-foreign-addresses",
+			"title": "Compaction returns ambiguous, foreign, incomplete and non-function addresses unchanged",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.corrected-location.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"shell-category-corrected",
+				"helper-owner-added-only-for-sole-owner",
+				"platforms-absent-and-correct-addresses-stay-null",
+				"compact-drops-only-the-sole-current-owner",
+				"compact-keeps-ambiguous-and-foreign-addresses"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"shell-category-corrected",
+				"helper-owner-added-only-for-sole-owner",
+				"platforms-absent-and-correct-addresses-stay-null",
+				"compact-drops-only-the-sole-current-owner",
+				"compact-keeps-ambiguous-and-foreign-addresses"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"shell-category-corrected",
+				"helper-owner-added-only-for-sole-owner",
+				"platforms-absent-and-correct-addresses-stay-null",
+				"compact-drops-only-the-sole-current-owner",
+				"compact-keeps-ambiguous-and-foreign-addresses"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
