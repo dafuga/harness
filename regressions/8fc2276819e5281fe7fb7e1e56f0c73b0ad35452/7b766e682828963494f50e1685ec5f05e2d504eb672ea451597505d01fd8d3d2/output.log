@@ -1,0 +1,41 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-mxmTpG
+
+ ❯ test/units-guide-visual-applicability.test.ts (6 tests | 1 failed) 10ms
+   × a UI scenario that lists this unit with a reason suppresses only the generated default 5ms
+     → expected [ 'default', 'problem' ] to deeply equal [ 'problem' ]
+   ✓ an inapplicable default outside a UI scenario or without a reason keeps the generated default 0ms
+   ✓ an inapplicable default must explicitly list this unit 0ms
+   ✓ a registry default wins over an inapplicable default 0ms
+   ✓ a unit-qualified default state wins over an inapplicable default 0ms
+   ✓ a shared UI scenario that lists this unit on a required generic default wins 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/units-guide-visual-applicability.test.ts > a UI scenario that lists this unit with a reason suppresses only the generated default
+AssertionError: expected [ 'default', 'problem' ] to deeply equal [ 'problem' ]
+
+- Expected
++ Received
+
+  [
++   "default",
+    "problem",
+  ]
+
+ ❯ test/units-guide-visual-applicability.test.ts:49:68
+     47| 
+     48| test('a UI scenario that lists this unit with a reason suppresses only…
+     49|  expect(names([scenario({ states: [declaredDefault, problem] })])).toE…
+       |                                                                    ^
+     50| });
+     51| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  20:49:54
+   Duration  5.25s (transform 475ms, setup 168ms, collect 839ms, tests 10ms, environment 0ms, prepare 49ms)
+
