@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.entity-removed",
+	"title": "reports.function.entity-removed examples",
+	"kind": "headless",
+	"units": ["reports.function.entity-removed"],
+	"builds": [],
+	"states": [
+		{
+			"id": "removed-scenario-and-state",
+			"title": "a dropped scenario or dropped states are told as gone, in coverage and state order",
+			"coverage": "required"
+		},
+		{
+			"id": "present-entity-adds-nothing",
+			"title": "a state, scenario or capture the commit keeps or adds is never told as gone",
+			"coverage": "required"
+		},
+		{
+			"id": "scenario-matched-by-id",
+			"title": "a scenario is matched by its id, so a new id with the same title is a removal",
+			"coverage": "required"
+		},
+		{
+			"id": "no-parent-revision",
+			"title": "a first commit with no parent side has nothing removed",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.entity-removed.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"removed-scenario-and-state",
+				"present-entity-adds-nothing",
+				"scenario-matched-by-id",
+				"no-parent-revision"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"removed-scenario-and-state",
+				"present-entity-adds-nothing",
+				"scenario-matched-by-id",
+				"no-parent-revision"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"removed-scenario-and-state",
+				"present-entity-adds-nothing",
+				"scenario-matched-by-id",
+				"no-parent-revision"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
