@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.jtbbur/tmp/harness-snapshot-VB4zfs
+
+ ✓ test/analytics-attribution.e2e.test.ts (3 tests) 24562ms
+   ✓ failed commands and incomplete checks are recorded without supplied text  4084ms
+   ✓ analytics write failures do not change the dry-run result  1281ms
+   ✓ module task CLI reviews preserve one bounce and reconcile token costs idempotently  19194ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  23:14:12
+   Duration  25.06s (transform 133ms, setup 138ms, collect 68ms, tests 24.56s, environment 0ms, prepare 38ms)
+
+JSON report written to /tmp/z5jp8p-hl.jtbbur/tmp/harness-runner-wl2FtR/report.json
