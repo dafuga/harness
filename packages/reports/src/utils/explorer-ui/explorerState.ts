@@ -53,13 +53,37 @@ const visualKinds = new Set(['page', 'shell', 'component', 'layout', 'partial'])
 const drawsVisual = (state: HarnessScenario['states'][number], unit: string) =>
 	!state.units?.length || state.units.includes(unit);
 
+const hasUnitPrefix = (stateId: string, unit: string) => {
+	const prefix = unit.replaceAll('.', '-');
+	return stateId === prefix || stateId.startsWith(`${prefix}-`);
+};
+
 /**
- * A scenario as it applies to one unit: with the states that show that unit. A visual module is shown only by the states that name it and by those that name nothing, which stand
- * for the whole scenario. A state that names only what it is drawn in does not show it was drawn:
- * what imports it lends it no capture. Any other unit is shown by the states that name it; one no
- * state names, by the states that name something made of it in the registry of the revision;
- * and one that nothing named is made of, as an endpoint behind every screen is, stays under every
- * state.
+ * The states a headless scenario without viewports attributes to one of its units, as the guide
+ * does: the states that name it; else the unnamed states that carry its prefix; else the unnamed
+ * states no other unit of the scenario prefixes. A unit the scenario does not list has none.
+ */
+function headlessStates(declared: HarnessScenario, unit: string): HarnessScenario['states'] {
+	if (!declared.units.includes(unit)) return [];
+	const owned = declared.states.filter((state) => state.units?.includes(unit));
+	if (owned.length > 0) return owned;
+	const unowned = declared.states.filter((state) => !state.units?.length);
+	if (declared.units.length === 1) return unowned;
+	const named = unowned.filter((state) => hasUnitPrefix(state.id, unit));
+	if (named.length > 0) return named;
+	const others = declared.units.filter((other) => other !== unit);
+	return unowned.filter((state) => !others.some((item) => hasUnitPrefix(state.id, item)));
+}
+
+/**
+ * A scenario as it applies to one unit: with the states that show that unit. A visual module is
+ * shown only by the states that name it and by those that name nothing, which stand for the whole
+ * scenario. A state that names only what it is drawn in does not show it was drawn: what imports
+ * it lends it no capture. A headless scenario without viewports attributes its states as the guide
+ * does, so a dependency keeps the shared states its dependants do not own. Any other unit is shown
+ * by the states that name it; one no state names, by the states that name something made of it in
+ * the registry of the revision; and one that nothing named is made of, as an endpoint behind every
+ * screen is, stays under every state.
  */
 export function scenarioFor(
 	declared: HarnessScenario,
@@ -69,6 +93,10 @@ export function scenarioFor(
 	const kind = units.find((item) => item.id === unit)?.kind ?? '';
 	if (visualKinds.has(kind)) {
 		return { ...declared, states: declared.states.filter((state) => drawsVisual(state, unit)) };
+	}
+	if (declared.kind === 'headless' && declared.viewports.length === 0) {
+		const headless = headlessStates(declared, unit);
+		if (headless.length > 0) return { ...declared, states: headless };
 	}
 	const own = declared.states.filter((state) => state.units?.includes(unit));
 	if (own.length > 0) return { ...declared, states: own };
