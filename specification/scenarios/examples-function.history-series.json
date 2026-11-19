@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.history-series",
+	"title": "function.history-series examples",
+	"kind": "headless",
+	"units": ["function.history-series"],
+	"builds": [],
+	"states": [
+		{
+			"id": "orders-unit-growth",
+			"title": "Orders unit growth points and keeps the first record of a commit",
+			"coverage": "required"
+		},
+		{
+			"id": "notes-missing-growth-metrics",
+			"title": "Keeps missing growth metrics as notes and attaches only supplied reviews",
+			"coverage": "required"
+		},
+		{
+			"id": "groups-compatible-timings",
+			"title": "Groups compatible timings into one benchmark line",
+			"coverage": "required"
+		},
+		{
+			"id": "separates-incomparable-timings",
+			"title": "Separates incomparable timings and omits unmeasured ones",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.history-series.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"orders-unit-growth",
+				"notes-missing-growth-metrics",
+				"groups-compatible-timings",
+				"separates-incomparable-timings"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"orders-unit-growth",
+				"notes-missing-growth-metrics",
+				"groups-compatible-timings",
+				"separates-incomparable-timings"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"orders-unit-growth",
+				"notes-missing-growth-metrics",
+				"groups-compatible-timings",
+				"separates-incomparable-timings"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

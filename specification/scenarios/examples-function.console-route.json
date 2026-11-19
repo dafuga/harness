@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.console-route",
+	"title": "function.console-route examples",
+	"kind": "headless",
+	"units": ["function.console-route"],
+	"builds": [],
+	"states": [
+		{
+			"id": "console-route-round-trips-a-legacy-branch-path",
+			"title": "Round-trips a legacy branch and revision path",
+			"coverage": "required"
+		},
+		{
+			"id": "console-route-refuses-an-unpaired-surrogate",
+			"title": "Refuses to write a branch with an unpaired surrogate",
+			"coverage": "required"
+		},
+		{
+			"id": "console-route-preserves-view-and-selection",
+			"title": "Preserves the view and selection of a page",
+			"coverage": "required"
+		},
+		{
+			"id": "console-route-reads-no-unrecognized-route",
+			"title": "Reads no path that names no legacy page",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.console-route.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"console-route-round-trips-a-legacy-branch-path",
+				"console-route-refuses-an-unpaired-surrogate",
+				"console-route-preserves-view-and-selection",
+				"console-route-reads-no-unrecognized-route"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"console-route-round-trips-a-legacy-branch-path",
+				"console-route-refuses-an-unpaired-surrogate",
+				"console-route-preserves-view-and-selection",
+				"console-route-reads-no-unrecognized-route"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"console-route-round-trips-a-legacy-branch-path",
+				"console-route-refuses-an-unpaired-surrogate",
+				"console-route-preserves-view-and-selection",
+				"console-route-reads-no-unrecognized-route"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
