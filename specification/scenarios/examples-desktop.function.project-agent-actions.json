@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.project-agent-actions",
+	"title": "desktop.function.project-agent-actions examples",
+	"kind": "headless",
+	"units": ["desktop.function.project-agent-actions"],
+	"builds": [],
+	"states": [
+		{
+			"id": "refuses-to-start-when-busy-disallowed-or-no-project",
+			"title": "Refuses to start when the agent is busy, disallowed or has no project",
+			"coverage": "required"
+		},
+		{
+			"id": "starts-a-plan-with-design-options-only-when-supplied",
+			"title": "Starts a plan as a create intent with design options only when supplied",
+			"coverage": "required"
+		},
+		{
+			"id": "sends-a-change-with-the-last-twenty-messages-truncated",
+			"title": "Sends a change at the current revision with the last twenty messages truncated",
+			"coverage": "required"
+		},
+		{
+			"id": "keeps-the-request-when-start-fails",
+			"title": "Keeps the request and the bridge error when starting the run fails",
+			"coverage": "required"
+		},
+		{
+			"id": "saves-a-comment-as-shared-or-device-only",
+			"title": "Saves a comment as shared or device-only and refuses without a capability",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.project-agent-actions.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"refuses-to-start-when-busy-disallowed-or-no-project",
+				"starts-a-plan-with-design-options-only-when-supplied",
+				"sends-a-change-with-the-last-twenty-messages-truncated",
+				"keeps-the-request-when-start-fails",
+				"saves-a-comment-as-shared-or-device-only"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"refuses-to-start-when-busy-disallowed-or-no-project",
+				"starts-a-plan-with-design-options-only-when-supplied",
+				"sends-a-change-with-the-last-twenty-messages-truncated",
+				"keeps-the-request-when-start-fails",
+				"saves-a-comment-as-shared-or-device-only"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"refuses-to-start-when-busy-disallowed-or-no-project",
+				"starts-a-plan-with-design-options-only-when-supplied",
+				"sends-a-change-with-the-last-twenty-messages-truncated",
+				"keeps-the-request-when-start-fails",
+				"saves-a-comment-as-shared-or-device-only"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
