@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.complexity-coverage",
+	"symbol": "complexityCoverage",
+	"cases": [
+		{
+			"name": "a package manifest",
+			"input": {
+				"path": "package.json"
+			},
+			"output": "declarative"
+		},
+		{
+			"name": "a Cargo manifest",
+			"input": {
+				"path": "crates/counter/Cargo.toml"
+			},
+			"output": "declarative"
+		},
+		{
+			"name": "a CI workflow",
+			"input": {
+				"path": ".github/workflows/ci.yml"
+			},
+			"output": "declarative"
+		},
+		{
+			"name": "a YAML config",
+			"input": {
+				"path": "config/deploy.yaml"
+			},
+			"output": "declarative"
+		},
+		{
+			"name": "a Markdown guide",
+			"input": {
+				"path": "docs/architecture.md"
+			},
+			"output": "declarative"
+		},
+		{
+			"name": "a plain text note",
+			"input": {
+				"path": "notes/todo.txt"
+			},
+			"output": "declarative"
+		},
+		{
+			"name": "a stylesheet",
+			"input": {
+				"path": "src/app.css"
+			},
+			"output": "declarative"
+		},
+		{
+			"name": "an SVG icon",
+			"input": {
+				"path": "assets/logo.svg"
+			},
+			"output": "declarative"
+		},
+		{
+			"name": "a lockfile",
+			"input": {
+				"path": "bun.lock"
+			},
+			"output": "declarative"
+		},
+		{
+			"name": "a plain HTML page",
+			"input": {
+				"path": "public/index.html",
+				"scripted": false
+			},
+			"output": "declarative"
+		},
+		{
+			"name": "a plain HTML page with the flag left out",
+			"input": {
+				"path": "public/index.html"
+			},
+			"output": "declarative"
+		}
+	]
+}
