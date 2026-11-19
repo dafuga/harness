@@ -1,0 +1,44 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-name",
+	"symbol": "explorerName",
+	"cases": [
+		{
+			"name": "page file title falls back to the final id segment",
+			"input": {
+				"id": "page.titles",
+				"kind": "page",
+				"title": "+page"
+			},
+			"output": "Titles"
+		},
+		{
+			"name": "dotted title falls back to the final id segment",
+			"input": {
+				"id": "function.slugify",
+				"kind": "function",
+				"title": "function.slugify"
+			},
+			"output": "Slugify"
+		},
+		{
+			"name": "style file title splits its id words",
+			"input": {
+				"id": "reports.style.base-2",
+				"kind": "style",
+				"title": "base-2.css"
+			},
+			"output": "Base 2"
+		},
+		{
+			"name": "empty title and id give Unnamed",
+			"input": {
+				"id": "",
+				"kind": "function",
+				"title": ""
+			},
+			"output": "Unnamed"
+		}
+	]
+}
