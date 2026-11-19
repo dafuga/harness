@@ -46,7 +46,7 @@ export const referenceVerificationScopes: Record<string, VerificationScope> = {
 					'reference-functions'
 			},
 			'test/utils/unit-links.test.ts': {
-				'a shell leads under Shells and a pinned commit is kept in the address':
+				'a shell leads under Layouts and a pinned commit is kept in the address':
 					'reference-functions',
 				'a resolver made for one project and commit resolves nothing once another is shown':
 					'reference-functions',
