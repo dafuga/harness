@@ -1865,13 +1865,13 @@
 			"unit": "service.analytics",
 			"from": "src/services/AnalyticsService.ts",
 			"to": "src/cli/program/AnalyticsService.ts",
-			"definition": "f802cac7b431bf473de8afb3cd8f471f5d02f5eecb01e4447b317fd3b9f99578",
+			"definition": "ac38e5a7bad6d23461a544b32c77c7a19a0218e97dd1add14e42637f11d0d21b",
 			"relocationDefinition": "1a76ce9bc1eb2d33dcb0f216fd0f9861ee67e8a243fc3e8964142c3cb50fb086",
 			"review": {
-				"commit": "9c62f93cf019176ee612459c00c250c0db3fc9ff",
+				"commit": "106cce18c1586a977ebf54dca9e42c52901937b3",
 				"path": "src/cli/program/AnalyticsService.ts",
-				"definition": "f802cac7b431bf473de8afb3cd8f471f5d02f5eecb01e4447b317fd3b9f99578",
-				"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				"definition": "ac38e5a7bad6d23461a544b32c77c7a19a0218e97dd1add14e42637f11d0d21b",
+				"reason": "Limit shared run records and recommendations to the task analytics command."
 			},
 			"previousReviews": [
 				{
@@ -1897,6 +1897,12 @@
 					"path": "src/cli/program/AnalyticsService.ts",
 					"definition": "d53b668186ed7645abfef355d77dc8a8dd7b19cb46cc423cecc631646c4584e0",
 					"reason": "Retain committed task usage, explicit review outcomes and additive analytics queries without changing existing analytics ownership."
+				},
+				{
+					"commit": "9c62f93cf019176ee612459c00c250c0db3fc9ff",
+					"path": "src/cli/program/AnalyticsService.ts",
+					"definition": "f802cac7b431bf473de8afb3cd8f471f5d02f5eecb01e4447b317fd3b9f99578",
+					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
 				}
 			]
 		},
@@ -1904,7 +1910,7 @@
 			"unit": "workflow.analytics-metrics",
 			"from": "src/workflows/analyticsMetrics.ts",
 			"to": "src/cli/program/analyticsMetrics.ts",
-			"definition": "f92c88037b94e173af02733113239e8c7a3128617f8c47ff96835df0f1f9a0d0",
+			"definition": "f92d3831ea48a7773152fb293f66f0365d51d7b35749870b09044dc4926bb983",
 			"previousReviews": [
 				{
 					"commit": "9425223b3263c3adbfd268eb67d49a2e01ad2f46",
@@ -1917,13 +1923,19 @@
 					"path": "src/cli/program/analyticsMetrics.ts",
 					"definition": "e85c70c0d468b0abd38a1535394a9045e14fb55c242096ebedafef7878fa59b5",
 					"reason": "Retain additive benchmark registration, aggregation and rendering alongside current sibling type companions."
+				},
+				{
+					"commit": "344f3f46efa5cd8b7279d3e374ebdcf53bedc02f",
+					"path": "src/cli/program/analyticsMetrics.ts",
+					"definition": "f92c88037b94e173af02733113239e8c7a3128617f8c47ff96835df0f1f9a0d0",
+					"reason": "Retain committed task usage, explicit review outcomes and additive analytics queries without changing existing analytics ownership."
 				}
 			],
 			"review": {
-				"commit": "344f3f46efa5cd8b7279d3e374ebdcf53bedc02f",
+				"commit": "106cce18c1586a977ebf54dca9e42c52901937b3",
 				"path": "src/cli/program/analyticsMetrics.ts",
-				"definition": "f92c88037b94e173af02733113239e8c7a3128617f8c47ff96835df0f1f9a0d0",
-				"reason": "Retain committed task usage, explicit review outcomes and additive analytics queries without changing existing analytics ownership."
+				"definition": "f92d3831ea48a7773152fb293f66f0365d51d7b35749870b09044dc4926bb983",
+				"reason": "Join reviews to provider runs and add task difficulty, cost and model-choice metrics."
 			},
 			"relocationDefinition": "ec2621dc9a41ead5584d56839f61c0d5c65a534d0c6e915a8b59c4b2f2d9d044"
 		},
