@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-contract",
+	"symbol": "humanize",
+	"cases": [
+		{
+			"name": "identifier pageSize",
+			"input": {
+				"name": "pageSize"
+			},
+			"output": "page size"
+		},
+		{
+			"name": "identifier HTTPServer",
+			"input": {
+				"name": "HTTPServer"
+			},
+			"output": "http server"
+		},
+		{
+			"name": "identifier orderID",
+			"input": {
+				"name": "orderID"
+			},
+			"output": "order id"
+		},
+		{
+			"name": "identifier order_item.total",
+			"input": {
+				"name": "order_item.total"
+			},
+			"output": "order item total"
+		},
+		{
+			"name": "identifier  order-item_count.total ",
+			"input": {
+				"name": " order-item_count.total "
+			},
+			"output": "order item count total"
+		},
+		{
+			"name": "identifier search  text",
+			"input": {
+				"name": "search  text"
+			},
+			"output": "search  text"
+		},
+		{
+			"name": "identifier ",
+			"input": {
+				"name": ""
+			},
+			"output": ""
+		}
+	]
+}

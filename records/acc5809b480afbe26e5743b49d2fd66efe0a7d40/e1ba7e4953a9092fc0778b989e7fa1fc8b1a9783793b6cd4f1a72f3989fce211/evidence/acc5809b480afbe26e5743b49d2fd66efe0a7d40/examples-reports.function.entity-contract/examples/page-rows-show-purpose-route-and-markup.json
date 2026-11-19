@@ -1,0 +1,84 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-contract",
+	"symbol": "entityContract",
+	"cases": [
+		{
+			"name": "page rows: described and undescribed inputs, no files or types",
+			"input": {
+				"unit": "app.page.orders",
+				"facts": {
+					"category": "pages",
+					"appRoute": "/orders"
+				}
+			},
+			"output": [
+				{
+					"label": "Purpose",
+					"value": "Lists the orders of an account."
+				},
+				{
+					"label": "App route",
+					"value": "/orders"
+				},
+				{
+					"label": "Inputs",
+					"value": "account id, status",
+					"items": [
+						{
+							"name": "account id",
+							"text": "The account to list."
+						},
+						{
+							"name": "status",
+							"text": "No description recorded."
+						}
+					]
+				},
+				{
+					"label": "Output",
+					"value": "rendered markup"
+				}
+			]
+		},
+		{
+			"name": "null route reads Not recorded",
+			"input": {
+				"unit": "app.page.orders",
+				"facts": {
+					"category": "pages",
+					"appRoute": null
+				}
+			},
+			"output": [
+				{
+					"label": "Purpose",
+					"value": "Lists the orders of an account."
+				},
+				{
+					"label": "App route",
+					"value": "Not recorded"
+				},
+				{
+					"label": "Inputs",
+					"value": "account id, status",
+					"items": [
+						{
+							"name": "account id",
+							"text": "The account to list."
+						},
+						{
+							"name": "status",
+							"text": "No description recorded."
+						}
+					]
+				},
+				{
+					"label": "Output",
+					"value": "rendered markup"
+				}
+			]
+		}
+	]
+}
