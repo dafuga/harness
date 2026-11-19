@@ -137,11 +137,11 @@ test('Identifies uncounted code', () => {
 	recordExampleCases(
 		{
 			unitId: 'function.complexity-coverage',
-			symbol: 'complexityCoverage',
+			symbol: 'uncountedLanguage',
 			state: 'identifies-uncounted-code',
 			evidence: 'examples-cases',
 			file: 'identifies-uncounted-code.json'
 		},
-		cases
+		cases.map(({ name, input, output }) => ({ name, input: input.path, output: output.language }))
 	);
 });
