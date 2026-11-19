@@ -1,0 +1,103 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.explorer-state",
+	"title": "reports.function.explorer-state examples",
+	"kind": "headless",
+	"units": ["reports.function.explorer-state"],
+	"builds": [],
+	"states": [
+		{
+			"id": "explorer-state-page-states",
+			"title": "a page is shown by the states that name it and by the state that names no unit",
+			"coverage": "required"
+		},
+		{
+			"id": "explorer-state-function-states",
+			"title": "a function is shown by the page that uses it, and by every state when none does",
+			"coverage": "required"
+		},
+		{
+			"id": "explorer-state-worst-standing",
+			"title": "the worst standing wins in the fixed order, and inapplicable is never worst",
+			"coverage": "required"
+		},
+		{
+			"id": "explorer-state-reason-text",
+			"title": "a reason drops a located phrase and turns any other file path into a file",
+			"coverage": "required"
+		},
+		{
+			"id": "explorer-state-capture-binding",
+			"title": "a capture is unbound by another build, or by no build where one is needed",
+			"coverage": "required"
+		},
+		{
+			"id": "explorer-state-fallbacks",
+			"title": "a state without a judged result takes its fallback, never its discarded reason",
+			"coverage": "required"
+		},
+		{
+			"id": "explorer-state-slot-binding",
+			"title": "a required state passes only with passed, stored, bound captures in every slot",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.explorer-state.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"explorer-state-page-states",
+				"explorer-state-function-states",
+				"explorer-state-worst-standing",
+				"explorer-state-reason-text",
+				"explorer-state-capture-binding",
+				"explorer-state-fallbacks",
+				"explorer-state-slot-binding"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"explorer-state-page-states",
+				"explorer-state-function-states",
+				"explorer-state-worst-standing",
+				"explorer-state-reason-text",
+				"explorer-state-capture-binding",
+				"explorer-state-fallbacks",
+				"explorer-state-slot-binding"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"explorer-state-page-states",
+				"explorer-state-function-states",
+				"explorer-state-worst-standing",
+				"explorer-state-reason-text",
+				"explorer-state-capture-binding",
+				"explorer-state-fallbacks",
+				"explorer-state-slot-binding"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

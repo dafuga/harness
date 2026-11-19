@@ -1,0 +1,127 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.harness-budget",
+	"title": "reports.function.harness-budget examples",
+	"kind": "headless",
+	"units": ["reports.function.harness-budget"],
+	"builds": [],
+	"states": [
+		{
+			"id": "an-unavailable-size-is-shown-as-unavailable-and-not-frozen-never-zero",
+			"title": "an unavailable size is shown as unavailable and not frozen, never as a zero",
+			"coverage": "required"
+		},
+		{
+			"id": "a-counted-zero-keeps-its-value-and-its-baseline-limit",
+			"title": "a counted zero keeps its value and its baseline limit, distinct from unavailable",
+			"coverage": "required"
+		},
+		{
+			"id": "a-partial-size-adds-a-note-that-says-what-it-leaves-out",
+			"title": "a partial size adds a note that says what it leaves out",
+			"coverage": "required"
+		},
+		{
+			"id": "a-finding-baseline-takes-priority-over-the-ledger-limit",
+			"title": "a finding baseline takes priority over the ledger limit",
+			"coverage": "required"
+		},
+		{
+			"id": "a-ledger-limit-applies-when-this-revision-has-no-measurement",
+			"title": "a ledger limit applies when this revision has no measurement",
+			"coverage": "required"
+		},
+		{
+			"id": "a-missing-measurement-is-shown-as-not-measured-never-as-zero",
+			"title": "a missing measurement is shown as not measured, never as zero",
+			"coverage": "required"
+		},
+		{
+			"id": "a-declared-freeze-without-a-reviewed-number-states-that-no-limit-is-recorded",
+			"title": "a declared freeze without a reviewed number states that no limit is recorded",
+			"coverage": "required"
+		},
+		{
+			"id": "an-exceeded-size-adds-a-growth-note-only-when-its-baseline-is-present",
+			"title": "an exceeded size adds a growth note only when its baseline is present",
+			"coverage": "required"
+		},
+		{
+			"id": "an-unmeasured-ledger-marker-says-the-size-is-not-frozen-while-keeping-its-value",
+			"title": "an unmeasured ledger marker says the size is not frozen while keeping its value",
+			"coverage": "required"
+		},
+		{
+			"id": "a-null-value-without-a-reason-is-unavailable-and-not-frozen-not-zero",
+			"title": "a null value without a reason is unavailable and not frozen, not zero",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.harness-budget.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"an-unavailable-size-is-shown-as-unavailable-and-not-frozen-never-zero",
+				"a-counted-zero-keeps-its-value-and-its-baseline-limit",
+				"a-partial-size-adds-a-note-that-says-what-it-leaves-out",
+				"a-finding-baseline-takes-priority-over-the-ledger-limit",
+				"a-ledger-limit-applies-when-this-revision-has-no-measurement",
+				"a-missing-measurement-is-shown-as-not-measured-never-as-zero",
+				"a-declared-freeze-without-a-reviewed-number-states-that-no-limit-is-recorded",
+				"an-exceeded-size-adds-a-growth-note-only-when-its-baseline-is-present",
+				"an-unmeasured-ledger-marker-says-the-size-is-not-frozen-while-keeping-its-value",
+				"a-null-value-without-a-reason-is-unavailable-and-not-frozen-not-zero"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"an-unavailable-size-is-shown-as-unavailable-and-not-frozen-never-zero",
+				"a-counted-zero-keeps-its-value-and-its-baseline-limit",
+				"a-partial-size-adds-a-note-that-says-what-it-leaves-out",
+				"a-finding-baseline-takes-priority-over-the-ledger-limit",
+				"a-ledger-limit-applies-when-this-revision-has-no-measurement",
+				"a-missing-measurement-is-shown-as-not-measured-never-as-zero",
+				"a-declared-freeze-without-a-reviewed-number-states-that-no-limit-is-recorded",
+				"an-exceeded-size-adds-a-growth-note-only-when-its-baseline-is-present",
+				"an-unmeasured-ledger-marker-says-the-size-is-not-frozen-while-keeping-its-value",
+				"a-null-value-without-a-reason-is-unavailable-and-not-frozen-not-zero"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"an-unavailable-size-is-shown-as-unavailable-and-not-frozen-never-zero",
+				"a-counted-zero-keeps-its-value-and-its-baseline-limit",
+				"a-partial-size-adds-a-note-that-says-what-it-leaves-out",
+				"a-finding-baseline-takes-priority-over-the-ledger-limit",
+				"a-ledger-limit-applies-when-this-revision-has-no-measurement",
+				"a-missing-measurement-is-shown-as-not-measured-never-as-zero",
+				"a-declared-freeze-without-a-reviewed-number-states-that-no-limit-is-recorded",
+				"an-exceeded-size-adds-a-growth-note-only-when-its-baseline-is-present",
+				"an-unmeasured-ledger-marker-says-the-size-is-not-frozen-while-keeping-its-value",
+				"a-null-value-without-a-reason-is-unavailable-and-not-frozen-not-zero"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
