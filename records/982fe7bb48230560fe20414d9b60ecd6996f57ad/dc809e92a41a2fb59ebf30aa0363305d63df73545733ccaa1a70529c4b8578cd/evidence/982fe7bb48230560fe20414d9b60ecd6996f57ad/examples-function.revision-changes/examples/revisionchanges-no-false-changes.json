@@ -1,0 +1,139 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.revision-changes",
+	"symbol": "revisionChanges",
+	"cases": [
+		{
+			"name": "unchanged units under an impact that names one as indirect report nothing",
+			"input": {
+				"impact": {
+					"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"units": {
+						"direct": [],
+						"indirect": [
+							"service.title"
+						],
+						"added": [],
+						"removed": []
+					}
+				},
+				"registry": {
+					"available": true,
+					"units": [
+						{
+							"id": "function.a",
+							"version": "a1"
+						},
+						{
+							"id": "service.title",
+							"version": "v1"
+						}
+					]
+				},
+				"parent": {
+					"available": true,
+					"units": [
+						{
+							"id": "function.a",
+							"version": "a1"
+						},
+						{
+							"id": "service.title",
+							"version": "v1"
+						}
+					]
+				}
+			},
+			"output": {
+				"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				"direct": [],
+				"added": [],
+				"removed": []
+			}
+		},
+		{
+			"name": "unchanged registries and no impact report nothing",
+			"input": {
+				"impact": null,
+				"registry": {
+					"available": true,
+					"units": [
+						{
+							"id": "function.a",
+							"version": "a1"
+						},
+						{
+							"id": "function.b",
+							"version": "b1"
+						},
+						{
+							"id": "config.c",
+							"version": "c1"
+						}
+					]
+				},
+				"parent": {
+					"available": true,
+					"units": [
+						{
+							"id": "function.a",
+							"version": "a1"
+						},
+						{
+							"id": "function.b",
+							"version": "b1"
+						},
+						{
+							"id": "config.c",
+							"version": "c1"
+						}
+					]
+				},
+				"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+			},
+			"output": {
+				"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				"direct": [],
+				"added": [],
+				"removed": []
+			}
+		},
+		{
+			"name": "no impact and the parent registry not held gives null",
+			"input": {
+				"impact": null,
+				"registry": {
+					"available": true,
+					"units": [
+						{
+							"id": "function.a",
+							"version": "a1"
+						}
+					]
+				}
+			},
+			"output": null
+		},
+		{
+			"name": "no impact and an unavailable commit registry gives null",
+			"input": {
+				"impact": null,
+				"registry": {
+					"available": false,
+					"units": []
+				},
+				"parent": {
+					"available": true,
+					"units": [
+						{
+							"id": "function.a",
+							"version": "a1"
+						}
+					]
+				}
+			},
+			"output": null
+		}
+	]
+}
