@@ -65,12 +65,16 @@ export class ModuleTaskCommand {
 			.requiredOption('--attempt <token>', 'Submitted claim token being reviewed.')
 			.requiredOption('--verdict <verdict>', 'accepted or incomplete.')
 			.option('--feedback <text>', 'Required repair instructions for an incomplete review.')
+			.option(
+				'--cause <cause>',
+				'Rejection cause: contract, verification, scope, quality, user-correction or other.'
+			)
 			.option('--reviewer <id>', 'Reviewer attribution, otherwise unattributed.')
 			.option('--json')
 			.description('Accept a submission or preserve its work and requeue it with repair feedback.')
 			.action(async (id, flags) => {
-				const { attempt, verdict, feedback, reviewer } = flags;
-				print(await this.service.review(id, { attempt, verdict, feedback, reviewer }));
+				const { attempt, verdict, feedback, reviewer, cause } = flags;
+				print(await this.service.review(id, { attempt, verdict, feedback, reviewer, cause }));
 			});
 	}
 	private operations(task: Command): void {

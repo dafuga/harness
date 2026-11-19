@@ -1,0 +1,96 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-module-task-analytics-service-task-run-records",
+	"uid": "u_kmgnftmwsz",
+	"kind": "service",
+	"title": "taskRunRecords",
+	"responsibility": "Owns the taskRunRecords service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/module-task-analytics-service/taskRunRecords.ts"],
+		"symbols": ["taskRunRecords"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "taskRunRecords.history",
+				"type": "AnalyticsEvent[]",
+				"required": true
+			},
+			{
+				"name": "taskRunRecords.selected",
+				"type": "AnalyticsEvent[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "taskRunRecords",
+				"type": "RunRecord[]"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "taskRunRecords",
+				"inputs": [
+					{
+						"name": "taskRunRecords.history",
+						"type": "AnalyticsEvent[]",
+						"required": true
+					},
+					{
+						"name": "taskRunRecords.selected",
+						"type": "AnalyticsEvent[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "taskRunRecords",
+						"type": "RunRecord[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.analytics-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-analytics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-analytics-service-model-run-record",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/module-task-analytics-service/taskRunRecords.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/module-task-analytics-service/taskRunRecords.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

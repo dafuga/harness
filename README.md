@@ -1003,13 +1003,25 @@ harness response-check --request request.txt --response answer.txt --loop delive
 harness audit . --clean-code --loop delivery --step implement --agent-model claude-opus-5-5
 ```
 
-Module task analytics group executions, submissions, accepted reviews, token usage
-and API-equivalent cost by model and intelligence. Missing provider usage and
-unverified prices remain unknown; saved price provenance distinguishes CLI reports
-from standard API estimates and ranges. These are not subscription invoices.
+Module task analytics retain the execution and review summary. The JSON report
+also includes versioned `runRecords` shared with Tracker and
+`byModelTaskDifficulty` rows for task type, model, effort, and both difficulty
+labels. A module task input can set `taskType` and `estimatedDifficulty`
+(`small`, `medium`, or `large`). Without an estimate, Harness uses the number of
+assigned files. Measured difficulty uses the number of changed files, and run
+records also retain edited lines, retry count, and escalations when available.
+
+For Phase 4 dispatch, read `tasks.recommendations` for the task type and estimated
+difficulty, then pass the chosen `model` and `effort` as `--model` and
+`--intelligence` to `harness task add`. Each choice requires five settled first
+attempts, at least 80% first-try acceptance, and complete price bounds. Harness
+ranks eligible choices by the upper API-equivalent cost per acceptance. Unknown
+counters and charges are null. The price basis distinguishes a CLI-reported
+equivalent from a standard-rate estimate.
 
 Review a submitted claim with `harness task review TASK --attempt CLAIM_TOKEN
---verdict accepted`, or use `--verdict incomplete --feedback 'Repair needed'`.
+--verdict accepted`, or use `--verdict incomplete --cause verification
+--feedback 'Repair needed'`.
 An incomplete review commits the submitted work as the next attempt's repair base.
 Bounce rate is incomplete reviews divided by all accepted and incomplete reviews;
 execution failures count separately. Stale or duplicate reviews are refused.

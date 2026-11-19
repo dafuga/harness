@@ -1,6 +1,7 @@
 // @harness-uid u_b4uzqkb2i6
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import { ModuleTaskRunnerAdapter } from '../../adapters/agents-providers/ModuleTaskRunnerAdapter';
+import { TaskWorktreeChangedError } from '../../adapters/agents-providers/ModuleTaskWorktreeAdapter.types';
 import { ModuleTaskAnalyticsService } from './ModuleTaskAnalyticsService';
 import { dispatchTaskAttempt } from './module-task-worker-service/dispatchTaskAttempt';
 import { taskWorkspace, snapshotTaskWork } from './module-task-worker-service/taskWorkspace';
@@ -50,6 +51,9 @@ export class ModuleTaskWorkerService {
 			await snapshotTaskWork(this.root, task, result);
 		} catch (error) {
 			result.error = error instanceof Error ? error.message : 'Task worker failed.';
+			if (result.executions.at(-1)?.status !== 'failed')
+				result.failureCause =
+					error instanceof TaskWorktreeChangedError ? 'scope' : 'workspace-error';
 		}
 		result.finishedAt = new Date().toISOString();
 		await this.repository.update(

@@ -1,0 +1,123 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-module-task-analytics-service-model-run-record",
+	"uid": "u_hxkpkiert2",
+	"kind": "service",
+	"title": "model-run-record",
+	"responsibility": "Build a versioned run record with explicit unknown values and outcome provenance.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/module-task-analytics-service/modelRunRecord.ts",
+			"src/services/agents-providers/module-task-analytics-service/modelRunRecord.types.ts"
+		],
+		"symbols": [
+			"RUN_SCHEMA_VERSION",
+			"difficultyForFiles",
+			"createRunRecord",
+			"Difficulty",
+			"RunOutcome",
+			"RunRecord",
+			"RunRecordInput"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "difficultyForFiles.files",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "createRunRecord.input",
+				"type": "RunRecordInput",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "RUN_SCHEMA_VERSION",
+				"type": "number"
+			},
+			{
+				"name": "difficultyForFiles",
+				"type": "Difficulty"
+			},
+			{
+				"name": "createRunRecord",
+				"type": "RunRecord"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "difficultyForFiles",
+				"inputs": [
+					{
+						"name": "difficultyForFiles.files",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "difficultyForFiles",
+						"type": "Difficulty"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "createRunRecord",
+				"inputs": [
+					{
+						"name": "createRunRecord.input",
+						"type": "RunRecordInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createRunRecord",
+						"type": "RunRecord"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-analytics-service-model-run-pricing",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/module-task-analytics-service/modelRunRecord.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/module-task-analytics-service/modelRunRecord.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

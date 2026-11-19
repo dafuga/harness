@@ -32,15 +32,25 @@ export async function dispatchTaskAttempt(
 		});
 		return result;
 	} catch (error) {
-		const failure = error as { usage?: TaskUsage; reportedModel?: string | null };
+		const failure = error as {
+			usage?: TaskUsage;
+			reportedModel?: string | null;
+			quotaRejected?: boolean;
+		} | null;
 		executions.push({
 			...base,
 			reportedModel: failure?.reportedModel ?? null,
 			usage: failure?.usage,
 			apiCost: analytics.quote(failure?.reportedModel ?? input.model, failure?.usage),
 			status: 'failed',
+			failureCause: rejectionCause(input.signal, failure?.quotaRejected === true),
 			finishedAt: new Date().toISOString()
 		});
 		throw error;
 	}
+}
+
+function rejectionCause(signal: AbortSignal, quota: boolean): TaskExecution['failureCause'] {
+	if (signal.aborted) return signal.reason?.name === 'TimeoutError' ? 'timeout' : 'cancelled';
+	return quota ? 'quota' : 'provider-error';
 }

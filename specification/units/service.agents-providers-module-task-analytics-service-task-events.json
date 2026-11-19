@@ -764,6 +764,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-analytics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.agents-providers-module-task-analytics-service-task-pricing",
 			"via": "import",
 			"origin": "derived"
