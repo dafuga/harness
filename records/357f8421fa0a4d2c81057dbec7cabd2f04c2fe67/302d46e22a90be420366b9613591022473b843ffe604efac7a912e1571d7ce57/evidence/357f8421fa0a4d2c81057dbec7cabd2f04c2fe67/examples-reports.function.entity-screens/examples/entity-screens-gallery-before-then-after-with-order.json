@@ -1,0 +1,94 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-screens",
+	"symbol": "galleryItems",
+	"cases": [
+		{
+			"name": "head against base",
+			"input": {
+				"parent": "3f9c2a180ce54b0df3f6cadf02d1192568f6d7c6"
+			},
+			"output": [
+				{
+					"category": "orders-page",
+					"state": "default",
+					"viewport": "desktop",
+					"file": "3f9c2a1-default-desktop.png",
+					"phase": "before",
+					"order": 0,
+					"missing": false,
+					"status": "passed",
+					"source": "3f9c2a180ce54b0df3f6cadf02d1192568f6d7c6",
+					"standing": "Fresh capture",
+					"note": "Captured from build build-1 of revision 3f9c2a180ce54b0df3f6cadf02d1192568f6d7c6. Tested at 3f9c2a1 by passing record f3f6cadf02d1."
+				},
+				{
+					"category": "orders-page",
+					"state": "default",
+					"viewport": "mobile",
+					"file": "3f9c2a1-default-mobile.png",
+					"phase": "before",
+					"order": 1,
+					"missing": false,
+					"status": "passed",
+					"source": "3f9c2a180ce54b0df3f6cadf02d1192568f6d7c6",
+					"standing": "Fresh capture",
+					"note": "Captured from build build-1 of revision 3f9c2a180ce54b0df3f6cadf02d1192568f6d7c6. Tested at 3f9c2a1 by passing record f3f6cadf02d1."
+				},
+				{
+					"category": "orders-page",
+					"state": "default",
+					"viewport": "desktop",
+					"file": "8b41d07-default-desktop.png",
+					"phase": "after",
+					"order": 2,
+					"missing": false,
+					"status": "passed",
+					"source": "8b41d0720e252681deac809969b3faf8181dac30",
+					"standing": "Fresh capture",
+					"note": "Captured from build build-1 of revision 8b41d0720e252681deac809969b3faf8181dac30. Tested at 8b41d07 by passing record deac809969b3."
+				},
+				{
+					"category": "orders-page",
+					"state": "default",
+					"viewport": "mobile",
+					"file": "8b41d07-default-mobile.png",
+					"phase": "after",
+					"order": 3,
+					"missing": false,
+					"status": "passed",
+					"source": "8b41d0720e252681deac809969b3faf8181dac30",
+					"standing": "Fresh capture",
+					"note": "Captured from build build-1 of revision 8b41d0720e252681deac809969b3faf8181dac30. Tested at 8b41d07 by passing record deac809969b3."
+				},
+				{
+					"category": "orders-page",
+					"state": "empty",
+					"viewport": "desktop",
+					"file": "8b41d07-empty-desktop.png",
+					"phase": "after",
+					"order": 4,
+					"missing": false,
+					"status": "passed",
+					"source": "8b41d0720e252681deac809969b3faf8181dac30",
+					"standing": "Fresh capture",
+					"note": "Captured from build build-1 of revision 8b41d0720e252681deac809969b3faf8181dac30. Tested at 8b41d07 by passing record deac809969b3."
+				},
+				{
+					"category": "orders-page",
+					"state": "empty",
+					"viewport": "mobile",
+					"file": "8b41d07-empty-mobile.png",
+					"phase": "after",
+					"order": 5,
+					"missing": false,
+					"status": "passed",
+					"source": "8b41d0720e252681deac809969b3faf8181dac30",
+					"standing": "Fresh capture",
+					"note": "Captured from build build-1 of revision 8b41d0720e252681deac809969b3faf8181dac30. Tested at 8b41d07 by passing record deac809969b3."
+				}
+			]
+		}
+	]
+}

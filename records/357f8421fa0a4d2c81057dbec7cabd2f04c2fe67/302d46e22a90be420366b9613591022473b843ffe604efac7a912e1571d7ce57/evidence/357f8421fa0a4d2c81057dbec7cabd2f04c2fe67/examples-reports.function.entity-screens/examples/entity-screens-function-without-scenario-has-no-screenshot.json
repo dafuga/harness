@@ -1,0 +1,22 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-screens",
+	"symbol": "entityScreens",
+	"cases": [
+		{
+			"name": "no picked scenario",
+			"input": {
+				"pick": null
+			},
+			"output": {
+				"category": "",
+				"file": "",
+				"phase": "current",
+				"missing": true,
+				"status": "not-proven",
+				"note": "No scenario with a viewport names this entity, so no screenshot of it is recorded at c725e93."
+			}
+		}
+	]
+}
