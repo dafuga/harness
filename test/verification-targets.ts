@@ -91,6 +91,24 @@ const scopes: Record<string, VerificationScope> = {
 				'completed image returns PNG bytes and transmits its original local image reference':
 					'cli-boundaries',
 				'Claude uses requested model, project cwd, stdin and subscription-only environment':
+					'cli-boundaries',
+				'codex-text waits under memory pressure and queued cancellation launches no provider':
+					'cli-boundaries',
+				'claude-text waits under memory pressure and queued cancellation launches no provider':
+					'cli-boundaries',
+				"'bun' 'cli' retains fast child results during a +0 ms resource observer": 'cli-boundaries',
+				"'bun' 'cli' retains fast child results during a 150 ms resource observer":
+					'cli-boundaries',
+				"'bun' 'rpc' retains fast child results during a +0 ms resource observer": 'cli-boundaries',
+				"'bun' 'rpc' retains fast child results during a 150 ms resource observer":
+					'cli-boundaries',
+				"'node' 'cli' retains fast child results during a +0 ms resource observer":
+					'cli-boundaries',
+				"'node' 'cli' retains fast child results during a 150 ms resource observer":
+					'cli-boundaries',
+				"'node' 'rpc' retains fast child results during a +0 ms resource observer":
+					'cli-boundaries',
+				"'node' 'rpc' retains fast child results during a 150 ms resource observer":
 					'cli-boundaries'
 			},
 			'test/catalog-listing.test.ts': {
