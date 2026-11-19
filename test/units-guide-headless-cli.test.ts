@@ -14,6 +14,40 @@ import {
 	writeGuidanceFile
 } from './support/unitsGuidanceProject';
 
+const recordedScenario = {
+	schemaVersion: 1,
+	id: 'widget-recorded',
+	title: 'Widget recorded assertions',
+	kind: 'headless',
+	units: [entity],
+	states: [
+		{
+			id: 'component-widget-recorded',
+			title: 'Recorded',
+			coverage: 'required',
+			units: [entity]
+		}
+	],
+	viewports: [],
+	tests: [
+		{
+			id: 'recorded',
+			kind: 'unit',
+			runner: 'command',
+			target: 'bun test/verification-output.ts vitest test/recorded.test.ts'
+		}
+	],
+	evidence: [
+		{
+			id: 'assertions',
+			kind: 'assertions',
+			states: ['component-widget-recorded'],
+			viewports: [],
+			required: true
+		}
+	]
+};
+
 const roots: string[] = [];
 afterEach(async () => {
 	for (const root of roots.splice(0)) await rm(root, { recursive: true, force: true });
@@ -56,39 +90,7 @@ test('guide CLI gives a headless state no devices and keeps devices on UI states
 	await writeGuidanceFile(
 		root,
 		'specification/scenarios/widget-recorded.json',
-		JSON.stringify({
-			schemaVersion: 1,
-			id: 'widget-recorded',
-			title: 'Widget recorded assertions',
-			kind: 'headless',
-			units: [entity],
-			states: [
-				{
-					id: 'component-widget-recorded',
-					title: 'Recorded',
-					coverage: 'required',
-					units: [entity]
-				}
-			],
-			viewports: [],
-			tests: [
-				{
-					id: 'recorded',
-					kind: 'unit',
-					runner: 'command',
-					target: 'bun test/verification-output.ts vitest test/recorded.test.ts'
-				}
-			],
-			evidence: [
-				{
-					id: 'assertions',
-					kind: 'assertions',
-					states: ['component-widget-recorded'],
-					viewports: [],
-					required: true
-				}
-			]
-		})
+		JSON.stringify(recordedScenario)
 	);
 	await writeGuidanceFile(
 		root,

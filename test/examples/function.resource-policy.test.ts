@@ -80,6 +80,17 @@ function policyCase(name: string, jobs: Job[], sample: Snapshot) {
 	};
 }
 
+function recordCases(
+	symbol: string,
+	state: string,
+	cases: Parameters<typeof recordExampleCases>[1]
+) {
+	recordExampleCases(
+		{ unitId, symbol, state, evidence: 'examples-cases', file: `${state}.json` },
+		cases
+	);
+}
+
 test('Pressure reports stale telemetry and exhausted reserves', () => {
 	const stale: Snapshot = { ...healthy, sampledAt: now - 6000 };
 	const starvedCpu: Snapshot = { ...healthy, cpuAvailableCores: 0.5 };
@@ -90,74 +101,56 @@ test('Pressure reports stale telemetry and exhausted reserves', () => {
 	expect(resourcePressure(starvedCpu, config, now)).toBe('CPU reserve is exhausted');
 	expect(resourcePressure(starvedMemory, config, now)).toBe('Memory reserve is exhausted');
 	expect(resourcePressure(warning, config, now)).toBe('Memory pressure is warning');
-	recordExampleCases(
+	recordCases('resourcePressure', 'pressure-reports-stale-telemetry-and-exhausted-reserves', [
 		{
-			unitId,
-			symbol: 'resourcePressure',
-			state: 'pressure-reports-stale-telemetry-and-exhausted-reserves',
-			evidence: 'examples-cases',
-			file: 'pressure-reports-stale-telemetry-and-exhausted-reserves.json'
+			name: 'healthy host leaves admissions open',
+			input: { ageMs: 0, cpuAvailableCores: 6, memoryAvailableMiB: 8192 },
+			output: null
 		},
-		[
-			{
-				name: 'healthy host leaves admissions open',
-				input: { ageMs: 0, cpuAvailableCores: 6, memoryAvailableMiB: 8192 },
-				output: null
+		{
+			name: 'sample older than staleSampleMs',
+			input: { ageMs: 6000, cpuAvailableCores: 6, memoryAvailableMiB: 8192 },
+			output: 'Resource telemetry is unavailable or stale'
+		},
+		{
+			name: 'CPU below the 0.8-core reserve',
+			input: { ageMs: 0, cpuAvailableCores: 0.5, memoryAvailableMiB: 8192 },
+			output: 'CPU reserve is exhausted'
+		},
+		{
+			name: 'memory below the 2048 MiB floor',
+			input: { ageMs: 0, cpuAvailableCores: 6, memoryAvailableMiB: 1024 },
+			output: 'Memory reserve is exhausted'
+		},
+		{
+			name: 'memory warning pauses new admissions',
+			input: {
+				ageMs: 0,
+				cpuAvailableCores: 6,
+				memoryAvailableMiB: 8192,
+				memoryPressure: 'warning'
 			},
-			{
-				name: 'sample older than staleSampleMs',
-				input: { ageMs: 6000, cpuAvailableCores: 6, memoryAvailableMiB: 8192 },
-				output: 'Resource telemetry is unavailable or stale'
-			},
-			{
-				name: 'CPU below the 0.8-core reserve',
-				input: { ageMs: 0, cpuAvailableCores: 0.5, memoryAvailableMiB: 8192 },
-				output: 'CPU reserve is exhausted'
-			},
-			{
-				name: 'memory below the 2048 MiB floor',
-				input: { ageMs: 0, cpuAvailableCores: 6, memoryAvailableMiB: 1024 },
-				output: 'Memory reserve is exhausted'
-			},
-			{
-				name: 'memory warning pauses new admissions',
-				input: {
-					ageMs: 0,
-					cpuAvailableCores: 6,
-					memoryAvailableMiB: 8192,
-					memoryPressure: 'warning'
-				},
-				output: resourcePressure(warning, config, now)
-			}
-		]
-	);
+			output: resourcePressure(warning, config, now)
+		}
+	]);
 });
 
 test('Memory reserve keeps the larger of percent and floor', () => {
 	const large: Snapshot = { ...healthy, memoryTotalBytes: 40960 * MIB };
 	expect(memoryReserve(healthy, config)).toBe(2147483648);
 	expect(memoryReserve(large, config)).toBe(4294967296);
-	recordExampleCases(
+	recordCases('memoryReserve', 'memory-reserve-keeps-the-larger-of-percent-and-floor', [
 		{
-			unitId,
-			symbol: 'memoryReserve',
-			state: 'memory-reserve-keeps-the-larger-of-percent-and-floor',
-			evidence: 'examples-cases',
-			file: 'memory-reserve-keeps-the-larger-of-percent-and-floor.json'
+			name: 'floor wins on a 16 GiB host',
+			input: { memoryTotalMiB: 16384, memoryReservePercent: 10, minMemoryReserveMiB: 2048 },
+			output: 2147483648
 		},
-		[
-			{
-				name: 'floor wins on a 16 GiB host',
-				input: { memoryTotalMiB: 16384, memoryReservePercent: 10, minMemoryReserveMiB: 2048 },
-				output: 2147483648
-			},
-			{
-				name: 'percentage wins on a 40 GiB host',
-				input: { memoryTotalMiB: 40960, memoryReservePercent: 10, minMemoryReserveMiB: 2048 },
-				output: 4294967296
-			}
-		]
-	);
+		{
+			name: 'percentage wins on a 40 GiB host',
+			input: { memoryTotalMiB: 40960, memoryReservePercent: 10, minMemoryReserveMiB: 2048 },
+			output: 4294967296
+		}
+	]);
 });
 
 test('Impossible requests exceed capacity after reserves', () => {
@@ -166,37 +159,28 @@ test('Impossible requests exceed capacity after reserves', () => {
 	expect(impossibleRequest(requestOf(8, 1024), healthy, config)).toBe(true);
 	expect(impossibleRequest(requestOf(1, 15000), healthy, config)).toBe(true);
 	expect(impossibleRequest(requestOf(8, 1024), unavailable, config)).toBe(false);
-	recordExampleCases(
+	recordCases('impossibleRequest', 'impossible-requests-exceed-capacity-after-reserves', [
 		{
-			unitId,
-			symbol: 'impossibleRequest',
-			state: 'impossible-requests-exceed-capacity-after-reserves',
-			evidence: 'examples-cases',
-			file: 'impossible-requests-exceed-capacity-after-reserves.json'
+			name: 'fits within 7.2 cores and 14336 MiB',
+			input: { cpus: 4, memoryMiB: 4096, status: 'available' },
+			output: false
 		},
-		[
-			{
-				name: 'fits within 7.2 cores and 14336 MiB',
-				input: { cpus: 4, memoryMiB: 4096, status: 'available' },
-				output: false
-			},
-			{
-				name: 'needs 8 cores of 7.2 usable',
-				input: { cpus: 8, memoryMiB: 1024, status: 'available' },
-				output: true
-			},
-			{
-				name: 'needs 15000 MiB of 14336 usable',
-				input: { cpus: 1, memoryMiB: 15000, status: 'available' },
-				output: true
-			},
-			{
-				name: 'unavailable telemetry is not judged',
-				input: { cpus: 8, memoryMiB: 1024, status: 'unavailable' },
-				output: false
-			}
-		]
-	);
+		{
+			name: 'needs 8 cores of 7.2 usable',
+			input: { cpus: 8, memoryMiB: 1024, status: 'available' },
+			output: true
+		},
+		{
+			name: 'needs 15000 MiB of 14336 usable',
+			input: { cpus: 1, memoryMiB: 15000, status: 'available' },
+			output: true
+		},
+		{
+			name: 'unavailable telemetry is not judged',
+			input: { cpus: 8, memoryMiB: 1024, status: 'unavailable' },
+			output: false
+		}
+	]);
 });
 
 test('Priority queue grants roots and children within budgets', () => {
@@ -222,19 +206,10 @@ test('Priority queue grants roots and children within budgets', () => {
 		reason: 'CPU reserve is exhausted'
 	});
 	expect(resourcePolicy(nested, healthy, config, now)).toEqual({ granted: ['c1'], reason: null });
-	recordExampleCases(
-		{
-			unitId,
-			symbol: 'resourcePolicy',
-			state: 'priority-queue-grants-roots-and-children-within-budgets',
-			evidence: 'examples-cases',
-			file: 'priority-queue-grants-roots-and-children-within-budgets.json'
-		},
-		[
-			policyCase('agent-test first; coding then blocked by remaining CPU', roots, healthy),
-			policyCase('queued root fits beside a running root', busy, healthy),
-			policyCase('CPU reserve exhausted admits nothing', busy, starvedCpu),
-			policyCase('child fits parent budget; sibling exceeds it', nested, healthy)
-		]
-	);
+	recordCases('resourcePolicy', 'priority-queue-grants-roots-and-children-within-budgets', [
+		policyCase('agent-test first; coding then blocked by remaining CPU', roots, healthy),
+		policyCase('queued root fits beside a running root', busy, healthy),
+		policyCase('CPU reserve exhausted admits nothing', busy, starvedCpu),
+		policyCase('child fits parent budget; sibling exceeds it', nested, healthy)
+	]);
 });

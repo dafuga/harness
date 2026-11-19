@@ -117,7 +117,7 @@ test('a state, scenario or capture the commit keeps or adds is never told as gon
 			state: 'default',
 			status: 'passed',
 			path: 'default.json',
-			media: undefined,
+			media: null,
 			sha256: 'a'.repeat(64),
 			mediaType: 'application/json',
 			capturedAt: '2026-10-09T09:00:00.000Z'

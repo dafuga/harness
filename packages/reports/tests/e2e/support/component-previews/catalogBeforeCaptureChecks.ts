@@ -74,11 +74,12 @@ async function assertCatalogNames(component: Locator, id: string, variant: strin
 
 /** Each required prop state joins the normal desktop/tablet/mobile catalog test matrix. */
 async function assertRequiredShellState(component: Locator, id: string, variant: string) {
-	if (id === 'reports.component.harness-entity-relations' && variant === 'both') {
+	const state = `${id}:${variant}`;
+	if (state === 'reports.component.harness-entity-relations:both') {
 		await expect(component.getByRole('region', { name: 'Used In', exact: true })).toBeVisible();
 		await expect(component.getByRole('region', { name: 'Uses', exact: true })).toBeVisible();
 	}
-	if (id === 'reports.component.harness-harness-action' && variant === 'gold') {
+	if (state === 'reports.component.harness-harness-action:gold') {
 		const action = component.getByRole('link');
 		await expect(action).toHaveClass(/\bgold\b/);
 		await expect(action).toHaveAttribute('href', /\S+/);
@@ -94,7 +95,7 @@ async function assertRequiredShellState(component: Locator, id: string, variant:
 		});
 		await expect(action).toHaveCSS('border-top-color', primary);
 	}
-	if (id === 'reports.component.harness-harness-header' && variant === 'base') {
+	if (state === 'reports.component.harness-harness-header:base') {
 		await expect(component.getByRole('heading', { name: 'Harness', exact: true })).toBeVisible();
 		// The legacy nav is drawn with no links here; it is present in the DOM but has no box to show.
 		const nav = component.getByRole('navigation', { name: 'Other views' });
@@ -102,13 +103,13 @@ async function assertRequiredShellState(component: Locator, id: string, variant:
 		await expect(nav.getByRole('link')).toHaveCount(0);
 		await expect(component.locator('.hx-navbar')).toHaveCount(0);
 	}
-	if (id === 'reports.component.harness-harness-verdict' && variant === 'verdict') {
+	if (state === 'reports.component.harness-harness-verdict:verdict') {
 		const mark = component.locator('.hx-verdict');
 		await expect(mark).toHaveClass(/\bpassed\b/);
 		await expect(mark.getByRole('button')).toHaveAttribute('aria-expanded', 'false');
 		await expect(component.locator('.badge')).toHaveCount(0);
 	}
-	if (id === 'reports.component.harness-harness-verdict' && variant === 'badge') {
+	if (state === 'reports.component.harness-harness-verdict:badge') {
 		await expect(component.locator('.badge')).toHaveClass(/\bpassed\b/);
 		await expect(component.locator('.badge')).toContainText('Passed');
 		await expect(component.locator('.badge [aria-hidden="true"]')).toHaveText('●');
