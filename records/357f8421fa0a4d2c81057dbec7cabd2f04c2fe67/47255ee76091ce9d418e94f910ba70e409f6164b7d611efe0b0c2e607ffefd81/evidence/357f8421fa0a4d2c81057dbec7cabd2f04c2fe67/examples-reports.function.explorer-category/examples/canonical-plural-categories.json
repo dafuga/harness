@@ -1,0 +1,118 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-category",
+	"symbol": "explorerCategory",
+	"cases": [
+		{
+			"name": "rendered page",
+			"input": {
+				"kind": "page",
+				"source": [
+					"src/routes/titles/+page.svelte"
+				]
+			},
+			"output": "pages"
+		},
+		{
+			"name": "endpoint",
+			"input": {
+				"kind": "endpoint",
+				"source": []
+			},
+			"output": "apis"
+		},
+		{
+			"name": "layout that frames pages",
+			"input": {
+				"kind": "layout",
+				"source": [
+					"src/routes/+layout.svelte"
+				]
+			},
+			"output": "layouts"
+		},
+		{
+			"name": "component",
+			"input": {
+				"kind": "component",
+				"source": []
+			},
+			"output": "components"
+		},
+		{
+			"name": "shared function",
+			"input": {
+				"kind": "function",
+				"source": [],
+				"helpers": [
+					{
+						"name": "case",
+						"source": "src/function.case.ts",
+						"inputs": [],
+						"pure": true,
+						"consumers": [
+							{
+								"unit": "component.first"
+							},
+							{
+								"unit": "component.second"
+							}
+						]
+					}
+				]
+			},
+			"output": "functions"
+		},
+		{
+			"name": "configuration",
+			"input": {
+				"kind": "config",
+				"source": []
+			},
+			"output": "configs"
+		},
+		{
+			"name": "service",
+			"input": {
+				"kind": "service",
+				"source": []
+			},
+			"output": "services"
+		},
+		{
+			"name": "stored model",
+			"input": {
+				"kind": "model",
+				"source": [
+					"src/models/Order.ts"
+				],
+				"models": [
+					{
+						"name": "case",
+						"source": "src/models/Order.ts",
+						"stored": true
+					}
+				]
+			},
+			"output": "models"
+		},
+		{
+			"name": "type declarations",
+			"input": {
+				"kind": "model",
+				"source": [
+					"src/models/Order.types.ts"
+				],
+				"models": [
+					{
+						"name": "case",
+						"source": "src/models/Order.types.ts",
+						"stored": false
+					}
+				]
+			},
+			"output": "types"
+		}
+	]
+}

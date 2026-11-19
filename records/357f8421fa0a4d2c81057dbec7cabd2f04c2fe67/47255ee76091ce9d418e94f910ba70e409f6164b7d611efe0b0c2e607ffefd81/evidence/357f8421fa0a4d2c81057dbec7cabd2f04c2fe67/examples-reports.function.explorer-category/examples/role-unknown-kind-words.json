@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-category",
+	"symbol": "explorerRole",
+	"cases": [
+		{
+			"name": "unmapped kind",
+			"input": {
+				"kind": "never-heard-of",
+				"source": []
+			},
+			"output": "Never heard of"
+		},
+		{
+			"name": "separators become spaces",
+			"input": {
+				"kind": "Snake_case kind",
+				"source": []
+			},
+			"output": "Snake case kind"
+		},
+		{
+			"name": "hyphenated words",
+			"input": {
+				"kind": "Tool-Kit",
+				"source": []
+			},
+			"output": "Tool kit"
+		},
+		{
+			"name": "empty kind",
+			"input": {
+				"kind": "",
+				"source": []
+			},
+			"output": "Unit"
+		}
+	]
+}

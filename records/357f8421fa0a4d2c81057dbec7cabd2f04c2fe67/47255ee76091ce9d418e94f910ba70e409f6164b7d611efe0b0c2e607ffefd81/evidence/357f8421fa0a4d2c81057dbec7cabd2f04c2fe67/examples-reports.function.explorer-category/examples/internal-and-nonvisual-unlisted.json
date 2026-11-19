@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-category",
+	"symbol": "explorerCategory",
+	"cases": [
+		{
+			"name": "internal page",
+			"input": {
+				"kind": "page",
+				"source": [
+					"src/routes/hidden/+page.svelte"
+				],
+				"catalog": {
+					"visibility": "internal"
+				}
+			},
+			"output": null
+		},
+		{
+			"name": "internal function with shared proof",
+			"input": {
+				"kind": "function",
+				"source": [],
+				"catalog": {
+					"visibility": "internal"
+				},
+				"helpers": [
+					{
+						"name": "case",
+						"source": "src/function.case.ts",
+						"inputs": [],
+						"pure": true,
+						"consumers": [
+							{
+								"unit": "component.first"
+							},
+							{
+								"unit": "component.second"
+							}
+						]
+					}
+				]
+			},
+			"output": null
+		},
+		{
+			"name": "layout module that frames nothing",
+			"input": {
+				"kind": "layout",
+				"source": [
+					"src/shared/frame.ts"
+				]
+			},
+			"output": null
+		},
+		{
+			"name": "layout without owned source",
+			"input": {
+				"kind": "layout",
+				"source": []
+			},
+			"output": null
+		}
+	]
+}

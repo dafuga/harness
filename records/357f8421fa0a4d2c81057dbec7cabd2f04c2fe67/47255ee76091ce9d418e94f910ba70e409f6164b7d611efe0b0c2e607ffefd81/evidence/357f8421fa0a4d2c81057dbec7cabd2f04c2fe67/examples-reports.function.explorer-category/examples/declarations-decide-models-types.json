@@ -1,0 +1,129 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-category",
+	"symbol": "explorerCategory",
+	"cases": [
+		{
+			"name": "stored class with a table",
+			"input": {
+				"kind": "model",
+				"source": [
+					"src/models/Order.ts"
+				],
+				"models": [
+					{
+						"name": "case",
+						"source": "src/models/Order.ts",
+						"stored": true
+					}
+				]
+			},
+			"output": "models"
+		},
+		{
+			"name": "interfaces only",
+			"input": {
+				"kind": "model",
+				"source": [
+					"src/models/Order.types.ts"
+				],
+				"models": [
+					{
+						"name": "case",
+						"source": "src/models/Order.types.ts",
+						"stored": false
+					}
+				]
+			},
+			"output": "types"
+		},
+		{
+			"name": "interfaces beside a stored class",
+			"input": {
+				"kind": "model",
+				"source": [
+					"src/models/Order.types.ts",
+					"src/models/Order.ts"
+				],
+				"models": [
+					{
+						"name": "case",
+						"source": "src/models/Order.ts",
+						"stored": true
+					}
+				]
+			},
+			"output": "models"
+		},
+		{
+			"name": "interfaces beside runtime constants",
+			"input": {
+				"kind": "model",
+				"source": [
+					"src/models/Input.types.ts",
+					"src/models/InputValues.ts"
+				],
+				"models": [
+					{
+						"name": "case",
+						"source": "src/models/Input.types.ts",
+						"stored": false
+					}
+				]
+			},
+			"output": "types"
+		},
+		{
+			"name": "runtime class without a table",
+			"input": {
+				"kind": "model",
+				"source": [
+					"src/model.client.ts"
+				],
+				"models": [
+					{
+						"name": "Client",
+						"source": "src/model.client.ts",
+						"stored": false
+					}
+				]
+			},
+			"output": null
+		},
+		{
+			"name": "declarations from another source",
+			"input": {
+				"kind": "model",
+				"source": [
+					"src/a.ts"
+				],
+				"models": [
+					{
+						"name": "Other",
+						"source": "src/b.ts",
+						"stored": true
+					}
+				]
+			},
+			"output": null
+		},
+		{
+			"name": "no model declarations",
+			"input": {
+				"kind": "model",
+				"source": []
+			},
+			"output": null
+		},
+		{
+			"name": "empty declaration list",
+			"input": {
+				"kind": "model",
+				"source": [],
+				"models": []
+			},
+			"output": null
+		}
+	]
+}
