@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-relations",
+	"symbol": "explorerRelations",
+	"cases": [
+		{
+			"name": "removed user is absent",
+			"input": {
+				"id": "app.component.order-card"
+			},
+			"output": [
+				"app.component.order-list"
+			]
+		},
+		{
+			"name": "removed id has no rows",
+			"input": {
+				"id": "app.component.retired"
+			},
+			"output": {
+				"pages": [],
+				"layouts": [],
+				"components": [],
+				"functions": [],
+				"configs": [],
+				"services": [],
+				"types": [],
+				"apis": [],
+				"models": [],
+				"usedBy": [],
+				"support": []
+			}
+		},
+		{
+			"name": "unknown id has no rows",
+			"input": {
+				"id": "app.component.missing"
+			},
+			"output": {
+				"pages": [],
+				"layouts": [],
+				"components": [],
+				"functions": [],
+				"configs": [],
+				"services": [],
+				"types": [],
+				"apis": [],
+				"models": [],
+				"usedBy": [],
+				"support": []
+			}
+		},
+		{
+			"name": "empty id has no rows",
+			"input": {
+				"id": ""
+			},
+			"output": {
+				"pages": [],
+				"layouts": [],
+				"components": [],
+				"functions": [],
+				"configs": [],
+				"services": [],
+				"types": [],
+				"apis": [],
+				"models": [],
+				"usedBy": [],
+				"support": []
+			}
+		}
+	]
+}

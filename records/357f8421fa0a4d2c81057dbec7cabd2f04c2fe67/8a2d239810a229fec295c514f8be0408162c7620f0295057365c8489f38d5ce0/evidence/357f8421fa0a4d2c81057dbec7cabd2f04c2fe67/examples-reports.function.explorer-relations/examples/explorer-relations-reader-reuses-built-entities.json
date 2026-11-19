@@ -1,0 +1,54 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-relations",
+	"symbol": "explorerRelationsReader",
+	"cases": [
+		{
+			"name": "same id gives same answer",
+			"input": {
+				"id": "app.page.orders"
+			},
+			"output": {
+				"pages": [],
+				"layouts": [],
+				"components": [
+					"app.component.order-list",
+					"app.component.search-box"
+				],
+				"functions": [],
+				"configs": [
+					"app.config.order-settings"
+				],
+				"services": [],
+				"types": [],
+				"apis": [],
+				"models": [],
+				"usedBy": [],
+				"support": []
+			}
+		},
+		{
+			"name": "built entity handed out as is",
+			"input": {
+				"id": "app.page.orders",
+				"built": "app.component.order-list"
+			},
+			"output": [
+				"app.component.order-list",
+				"app.component.search-box"
+			]
+		},
+		{
+			"name": "stale parent entity worked out again",
+			"input": {
+				"id": "app.page.orders",
+				"lastAt": "3f9c2a180ce54b0df3f6cadf02d1192568f6d7c6"
+			},
+			"output": [
+				"app.component.order-list",
+				"app.component.search-box"
+			]
+		}
+	]
+}
