@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-reading",
+	"symbol": "explorerReading",
+	"cases": [
+		{
+			"name": "added result",
+			"input": {
+				"before": null
+			},
+			"output": {
+				"summary": "changed",
+				"reason": null,
+				"change": "added",
+				"differences": [],
+				"beforeRead": {
+					"output": null,
+					"verified": null,
+					"problem": null
+				},
+				"afterRead": {
+					"output": [
+						"a"
+					],
+					"verified": true,
+					"problem": null
+				}
+			}
+		},
+		{
+			"name": "removed result",
+			"input": {
+				"after": null
+			},
+			"output": {
+				"summary": "changed",
+				"reason": null,
+				"change": "removed",
+				"differences": [],
+				"beforeRead": {
+					"output": [
+						"a"
+					],
+					"verified": true,
+					"problem": null
+				},
+				"afterRead": {
+					"output": null,
+					"verified": null,
+					"problem": null
+				}
+			}
+		}
+	]
+}
