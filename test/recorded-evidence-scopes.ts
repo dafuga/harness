@@ -25,6 +25,22 @@ export const recordedEvidenceScopes: Record<string, VerificationScope> = {
 		},
 		playwright: {}
 	},
+	'invocation-boundary': {
+		package: 'root',
+		vitest: {
+			'test/services/unit-runtime.test.ts': {
+				'a manifest with a handler and four targets is a valid unit': 'module',
+				'the module target answers the version call through the module adapter': 'module',
+				'the wasm target answers the version call through the Wasm adapter': 'wasm',
+				'the process target answers the version call through the persistent process adapter':
+					'process',
+				'the http target answers the version call through the served module kernel': 'module',
+				'an undeclared target is refused instead of guessed': 'module',
+				'the kernel default follows recorded measurements and http needs a served unit': 'module'
+			}
+		},
+		playwright: {}
+	},
 	'git-evidence-read': {
 		package: 'root',
 		vitest: {
