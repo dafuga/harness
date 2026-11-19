@@ -1,0 +1,42 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-client",
+	"symbol": "harnessClient",
+	"cases": [
+		{
+			"name": "the index answered 503 and rejects",
+			"input": {
+				"path": "index.json"
+			},
+			"error": {
+				"name": "HarnessDataLoadError",
+				"message": "index.json could not be loaded (503)"
+			}
+		},
+		{
+			"name": "the index retried, then cached once fulfilled",
+			"input": {
+				"path": "index.json"
+			},
+			"output": {
+				"retried": {
+					"index": true
+				},
+				"cached": {
+					"index": true
+				}
+			}
+		},
+		{
+			"name": "a side answered 404 and rejects",
+			"input": {
+				"path": "sides/gone.json"
+			},
+			"error": {
+				"name": "HarnessDataLoadError",
+				"message": "sides/gone.json could not be loaded (404)"
+			}
+		}
+	]
+}

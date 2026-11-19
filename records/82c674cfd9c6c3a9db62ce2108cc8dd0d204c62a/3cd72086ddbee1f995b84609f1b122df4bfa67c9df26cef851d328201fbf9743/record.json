@@ -1,0 +1,504 @@
+{
+	"id": "3cd72086ddbee1f995b84609f1b122df4bfa67c9df26cef851d328201fbf9743",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/Users/danielfugere/projects/harness-z5jp8p",
+	"source": {
+		"commit": "82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a",
+		"tree": "ae3b340e875a03f1e7b7535ee9d40e95f540a55f",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-19T19:00:28.738Z",
+	"finishedAt": "2026-11-19T19:00:40.724Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "function.record-capture",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41e40bb7a2b44b7fa1da3881ebf1a687d3d8471d42fd0a7c44d584361255ff42",
+			"source": "142bfa1513b076860925e3bac72e4361c1edd5901abe0b7061ebac711646346a",
+			"contract": "025908d6c17bb9a51a22fa8f85c40b9ea26bb9161a5d016c554aa7e340c15a52",
+			"runtime": "a289759bf06513632380a5baa8ac1f6a9a916c1d1905e0de6a7be531f7936431",
+			"files": [
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.ts",
+					"hash": "316c75b906d532b1a5b376f345b7de8e00da1f4d"
+				},
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.types.ts",
+					"hash": "8e36a063513222284548df76d240d4a45f6626a9"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cfb49b515cacc084047d75cdf10a295ab3790ecaf878e2b75e06463793f628bf",
+			"source": "cbf5fb170c4db458f39bcc4ba18996e377a782371040baa39d1667f04bf87635",
+			"contract": "6f2e8a598fb220dd111fe8085fb28c645ee24019cc4b1f25315b141a569962d7",
+			"runtime": "ec246a1eb80a7c06e7ccbd8601bab05e75d00122b0ad9d09eec95bbe94f31c19",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts",
+					"hash": "36741c54d766dd2689e542099ca02135cd07760b"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.types.ts",
+					"hash": "758395e715dd7c7d824deb57b07849f373ef164e"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/artifactCases.ts",
+					"hash": "f5a0a857433ab39a3aa86c795bab10681a76db3f"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.harness-client",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "7926279ee1870d9cb615ebd4a07715274d0c591c6de3cbe906b816a7cf145e25",
+			"source": "d82c8e635701aaed013e13b149e129c07a6c96ccf2026514b38e765018cb5f03",
+			"contract": "8b3cdbae5dbff49b2df6488d9c75f600d5661996baea3f80fbcecd34851c4b9a",
+			"runtime": "c44d235ad5352f590a606a50b952c605043f6a65869e15fe0d28237d597e7c8a",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/harnessClient.ts",
+					"hash": "041b104948aebbf72870784af051a0e66adc18be"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/harnessClient.types.ts",
+					"hash": "0d2f021d8881ee7043f5bb8a0b7b50504d9b48bd"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.012999999999976808,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90472448,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.harness-client",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.006383399999992889,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-482e12ea39632a8c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.harness-client",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91176960,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-482e12ea39632a8c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0039749999999912685,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91258880,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.25925000000002,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91258880,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "examples-reports.function.harness-client:examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.harness-client.test.ts",
+			"status": "passed",
+			"durationMs": 1838,
+			"log": {
+				"path": "logs/examples-reports.function.harness-client-examples.log",
+				"bytes": 476,
+				"sha256": "35bc973f404e4eb0badd3aa862acba77bf4a133e62210292ab99acdbd461fa43"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "examples-reports.function.harness-client",
+			"status": "passed",
+			"testedRevision": "82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a",
+			"states": [
+				{
+					"id": "fetches-console-resources-on-demand",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "fetches-console-resources-on-demand",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/fetches-console-resources-on-demand.json",
+							"sha256": "4ac63f0b9bde70afeed101a847c68afcf41eaafbe3de11ad40d4b80d1fe6b147",
+							"bytes": 1048,
+							"capturedAt": "2026-11-19T19:00:39.091Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "fetches-console-resources-on-demand",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.harness-client.test.ts.",
+							"status": "passed",
+							"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/test-examples-reports.function.harness-client.test.ts-fetches-console-resources-on-demand.txt",
+							"sha256": "35bc973f404e4eb0badd3aa862acba77bf4a133e62210292ab99acdbd461fa43",
+							"bytes": 476,
+							"capturedAt": "2026-11-19T19:00:39.092Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "fetches-console-resources-on-demand",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/test-examples-reports.function.harness-client.test.ts-fetches-console-resources-on-demand.json",
+							"sha256": "266e0becc72d7a3cfde2bff52909147855e5f1b7cdc1ee161f4e9ae7b99d2cf0",
+							"bytes": 1596,
+							"capturedAt": "2026-11-19T19:00:39.092Z"
+						}
+					]
+				},
+				{
+					"id": "shared-client-caches-each-path",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "shared-client-caches-each-path",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/shared-client-caches-each-path.json",
+							"sha256": "20e3f5bbf0966ea8e518f631961f2b7090de21e6f2589ee54446e51d78e80a0d",
+							"bytes": 739,
+							"capturedAt": "2026-11-19T19:00:39.091Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "shared-client-caches-each-path",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.harness-client.test.ts.",
+							"status": "passed",
+							"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/test-examples-reports.function.harness-client.test.ts-shared-client-caches-each-path.txt",
+							"sha256": "35bc973f404e4eb0badd3aa862acba77bf4a133e62210292ab99acdbd461fa43",
+							"bytes": 476,
+							"capturedAt": "2026-11-19T19:00:39.092Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "shared-client-caches-each-path",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/test-examples-reports.function.harness-client.test.ts-shared-client-caches-each-path.json",
+							"sha256": "28ca3ad504a7a7caf2a83b9bbbf49741a08a1a2721e443afa870a310b7d446a2",
+							"bytes": 1690,
+							"capturedAt": "2026-11-19T19:00:39.092Z"
+						}
+					]
+				},
+				{
+					"id": "injected-fetcher-uses-separate-client",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "injected-fetcher-uses-separate-client",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/injected-fetcher-uses-separate-client.json",
+							"sha256": "2892c676ead8eb3f987e5a8a916068d4939189fd8a175f016fc5253ea18cf88f",
+							"bytes": 816,
+							"capturedAt": "2026-11-19T19:00:39.091Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "injected-fetcher-uses-separate-client",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.harness-client.test.ts.",
+							"status": "passed",
+							"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/test-examples-reports.function.harness-client.test.ts-injected-fetcher-uses-separate-client.txt",
+							"sha256": "35bc973f404e4eb0badd3aa862acba77bf4a133e62210292ab99acdbd461fa43",
+							"bytes": 476,
+							"capturedAt": "2026-11-19T19:00:39.092Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "injected-fetcher-uses-separate-client",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/test-examples-reports.function.harness-client.test.ts-injected-fetcher-uses-separate-client.json",
+							"sha256": "35ddced58c5098a03374dffbe1460aedb920f2633cb629815ad2437dbaaa8deb",
+							"bytes": 1987,
+							"capturedAt": "2026-11-19T19:00:39.092Z"
+						}
+					]
+				},
+				{
+					"id": "failed-response-retries-request",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "failed-response-retries-request",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/failed-response-retries-request.json",
+							"sha256": "3c3bc58ee45bab504b0823bd5f9b5f95fefd47d23125c88ecb7e364305d1445e",
+							"bytes": 794,
+							"capturedAt": "2026-11-19T19:00:39.091Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "failed-response-retries-request",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.harness-client.test.ts.",
+							"status": "passed",
+							"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/test-examples-reports.function.harness-client.test.ts-failed-response-retries-request.txt",
+							"sha256": "35bc973f404e4eb0badd3aa862acba77bf4a133e62210292ab99acdbd461fa43",
+							"bytes": 476,
+							"capturedAt": "2026-11-19T19:00:39.092Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "failed-response-retries-request",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/test-examples-reports.function.harness-client.test.ts-failed-response-retries-request.json",
+							"sha256": "4f3073aacf7bc79725a5ce1d34d8ba75b47070f3a418c8a6c866511d08babf16",
+							"bytes": 2251,
+							"capturedAt": "2026-11-19T19:00:39.092Z"
+						}
+					]
+				},
+				{
+					"id": "fetch-and-json-rejections-evict-request",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "fetch-and-json-rejections-evict-request",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/fetch-and-json-rejections-evict-request.json",
+							"sha256": "fc563c4567d3aa5276028ade5a74d5294956fbeab4100d0ebb047e4924543e46",
+							"bytes": 711,
+							"capturedAt": "2026-11-19T19:00:39.091Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "fetch-and-json-rejections-evict-request",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.harness-client.test.ts.",
+							"status": "passed",
+							"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/test-examples-reports.function.harness-client.test.ts-fetch-and-json-rejections-evict-request.txt",
+							"sha256": "35bc973f404e4eb0badd3aa862acba77bf4a133e62210292ab99acdbd461fa43",
+							"bytes": 476,
+							"capturedAt": "2026-11-19T19:00:39.092Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "fetch-and-json-rejections-evict-request",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/test-examples-reports.function.harness-client.test.ts-fetch-and-json-rejections-evict-request.json",
+							"sha256": "03d4dd492b12dd6e30909a6256a77828390cf85a16e2bb693886d18f428f8ea9",
+							"bytes": 1293,
+							"capturedAt": "2026-11-19T19:00:39.092Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"shell-fixture",
+		"entity-preview"
+	],
+	"builds": [],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to reports.function.harness-client: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}
