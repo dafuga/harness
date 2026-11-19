@@ -15,22 +15,15 @@ const commit = 'a'.repeat(40);
 const other = 'b'.repeat(40);
 
 /** An entry as a caller passes it: a category may be unknown, the way a stale host sends one. */
-function entry(
-	id: string,
-	category: string,
-	name: string,
-	purpose: string,
-	terms: string[] = [],
-	at = commit
-): SearchEntry {
-	return { id, category, name, purpose, terms, commit: at } as unknown as SearchEntry;
+function entry(id: string, category: string, name: string, purpose: string): SearchEntry {
+	return { id, category, name, purpose, terms: [], commit } as unknown as SearchEntry;
 }
 const ids = (found: SearchEntry[]) => found.map((item) => item.id);
 const error = (thrown: unknown) => String(thrown);
 
 test('Name and id matches rank above id parts, name words, substrings, purposes and terms', () => {
 	const tiers = [
-		entry('app.tax.rules', 'functions', 'Tax', 'Tax math.', ['order.total']),
+		{ ...entry('app.tax.rules', 'functions', 'Tax', 'Tax math.'), terms: ['order.total'] },
 		entry('app.component.reorder-tool', 'components', 'Reorder tool', 'Moves rows.'),
 		entry('app.page.order', 'pages', 'Order', 'Lists rows.'),
 		entry('app.shell.order-frame', 'layouts', 'Order frame', 'Frames pages.'),
@@ -78,10 +71,11 @@ test('Matching ignores letter case, mixed case in terms and extra whitespace', (
 		entry('app.component.order-table', 'components', 'Table of rows', 'Shows the order list.')
 	];
 	const spaced = entitySearch(pair, ' \tORDER   List\n');
-	const termed = entitySearch(
-		[entry('app.function.tax', 'functions', 'Tax', 'Tax math.', ['Order.Total'])],
-		'ORDER.total'
-	);
+	const tax = {
+		...entry('app.function.tax', 'functions', 'Tax', 'Tax math.'),
+		terms: ['Order.Total']
+	};
+	const termed = entitySearch([tax], 'ORDER.total');
 	expect(ids(spaced)).toEqual(['app.component.order-list', 'app.component.order-table']);
 	expect(ids(termed)).toEqual(['app.function.tax']);
 	record('matching-ignores-case-and-extra-whitespace', [
@@ -132,8 +126,11 @@ test('A blank query returns an empty array without reading any entry', () => {
 
 test('Results are the same objects that were passed in and the input is not changed', () => {
 	const entries = [
-		entry('app.page.order', 'pages', 'Order', 'Lists rows.', [], commit),
-		entry('app.component.order-list', 'components', 'Order list', 'Lists rows.', [], other)
+		entry('app.page.order', 'pages', 'Order', 'Lists rows.'),
+		{
+			...entry('app.component.order-list', 'components', 'Order list', 'Lists rows.'),
+			commit: other
+		}
 	];
 	const before = structuredClone(entries);
 	const found = entitySearch(entries, 'order');

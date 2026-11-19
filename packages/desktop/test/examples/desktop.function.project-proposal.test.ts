@@ -23,6 +23,70 @@ const answer = (change: Record<string, unknown> = {}) => JSON.stringify({ ...val
 const contractWith = (change: Record<string, unknown>) =>
 	answer({ contract: { ...valid.contract, ...change } });
 
+type Refusal = [name: string, text: string, message: string];
+
+/** Paths, source notes and out-of-bounds entries, each with the refusal it must produce. */
+const boundsRefusals: Refusal[] = [
+	['a parent path', answer({ title: '../outside' }), `${PREFIX}its title reads as a path.`],
+	['a hidden name', answer({ title: '.env' }), `${PREFIX}its title reads as a path.`],
+	['a Windows path', answer({ title: 'src\\elapsed' }), `${PREFIX}its title reads as a path.`],
+	[
+		'a long title',
+		answer({ title: 'x'.repeat(161) }),
+		`${PREFIX}its title is empty, too long or not text.`
+	],
+	[
+		'a long goal',
+		answer({ goal: 'x'.repeat(601) }),
+		`${PREFIX}its goal is empty, too long or not text.`
+	],
+	[
+		'notes with source',
+		answer({ proposal: '```ts\nexport const a = 1;\n```' }),
+		`${PREFIX}its notes hold source code.`
+	],
+	[
+		'long notes',
+		answer({ proposal: 'x'.repeat(6001) }),
+		`${PREFIX}its proposal is empty, too long or not text.`
+	],
+	[
+		'a repeated error',
+		contractWith({ errors: ['Failed', 'Failed'] }),
+		`${PREFIX}its contract repeats an error.`
+	],
+	[
+		'more than 24 outputs',
+		contractWith({ outputs: Array.from({ length: 25 }, () => ({ name: 'a', type: 'b' })) }),
+		`${PREFIX}its contract outputs are not a list of at most 24.`
+	],
+	[
+		'a long field type',
+		contractWith({ inputs: [{ name: 'a', type: 'x'.repeat(161) }] }),
+		`${PREFIX}a contract type is empty, too long or not text.`
+	],
+	[
+		'a blank error',
+		contractWith({ errors: [' '] }),
+		`${PREFIX}a contract error is empty, too long or not text.`
+	],
+	[
+		'a field with a path',
+		contractWith({ inputs: [{ name: 'a', type: 'b', path: 'src/a.ts' }] }),
+		`${PREFIX}a contract field has the unknown field path.`
+	],
+	[
+		'a contract with states',
+		contractWith({ states: ['default'] }),
+		`${PREFIX}its contract has the unknown field states.`
+	],
+	[
+		'a contract without errors',
+		answer({ contract: { inputs: [], outputs: [] } }),
+		`${PREFIX}its contract errors are not a list of at most 24.`
+	]
+];
+
 /** The refusal message of an answer; the test fails if the answer is accepted. */
 function refusal(text: string): string {
 	try {
@@ -95,67 +159,7 @@ test('Refuses answers that are too long, not one object, or hold unknown fields 
 
 test('Refuses paths, source notes and out-of-bounds contract entries', () => {
 	const cases: Parameters<typeof recordCases>[2] = [];
-	const refused: Array<[string, string, string]> = [
-		['a parent path', answer({ title: '../outside' }), `${PREFIX}its title reads as a path.`],
-		['a hidden name', answer({ title: '.env' }), `${PREFIX}its title reads as a path.`],
-		['a Windows path', answer({ title: 'src\\elapsed' }), `${PREFIX}its title reads as a path.`],
-		[
-			'a long title',
-			answer({ title: 'x'.repeat(161) }),
-			`${PREFIX}its title is empty, too long or not text.`
-		],
-		[
-			'a long goal',
-			answer({ goal: 'x'.repeat(601) }),
-			`${PREFIX}its goal is empty, too long or not text.`
-		],
-		[
-			'notes with source',
-			answer({ proposal: '```ts\nexport const a = 1;\n```' }),
-			`${PREFIX}its notes hold source code.`
-		],
-		[
-			'long notes',
-			answer({ proposal: 'x'.repeat(6001) }),
-			`${PREFIX}its proposal is empty, too long or not text.`
-		],
-		[
-			'a repeated error',
-			contractWith({ errors: ['Failed', 'Failed'] }),
-			`${PREFIX}its contract repeats an error.`
-		],
-		[
-			'more than 24 outputs',
-			contractWith({ outputs: Array.from({ length: 25 }, () => ({ name: 'a', type: 'b' })) }),
-			`${PREFIX}its contract outputs are not a list of at most 24.`
-		],
-		[
-			'a long field type',
-			contractWith({ inputs: [{ name: 'a', type: 'x'.repeat(161) }] }),
-			`${PREFIX}a contract type is empty, too long or not text.`
-		],
-		[
-			'a blank error',
-			contractWith({ errors: [' '] }),
-			`${PREFIX}a contract error is empty, too long or not text.`
-		],
-		[
-			'a field with a path',
-			contractWith({ inputs: [{ name: 'a', type: 'b', path: 'src/a.ts' }] }),
-			`${PREFIX}a contract field has the unknown field path.`
-		],
-		[
-			'a contract with states',
-			contractWith({ states: ['default'] }),
-			`${PREFIX}its contract has the unknown field states.`
-		],
-		[
-			'a contract without errors',
-			answer({ contract: { inputs: [], outputs: [] } }),
-			`${PREFIX}its contract errors are not a list of at most 24.`
-		]
-	];
-	for (const [name, text, message] of refused) {
+	for (const [name, text, message] of boundsRefusals) {
 		expect(refusal(text)).toBe(message);
 		cases.push({ name, input: { answer: name }, error: message });
 	}

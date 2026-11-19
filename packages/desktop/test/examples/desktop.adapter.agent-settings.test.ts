@@ -3,8 +3,6 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { AgentSettingsAdapter } from '../../src/lib/agents-providers/agent-settings/AgentSettingsAdapter';
 
-const KEY = 'harness.agent-settings.v1';
-
 function memoryStorage(initial: string | null = null) {
 	let raw = initial;
 	return {

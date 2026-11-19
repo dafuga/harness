@@ -65,6 +65,17 @@ const v13: DesignVersion = {
 const duplicateV12: DesignVersion = { ...v12, options: [option('o1')], approval: null };
 const versions = [v11, v12, v13];
 
+const region = { x: 0.1, y: 0.2, width: 0.5, height: 0.4 };
+const optioned: DesignImage = {
+	state: 'approved',
+	viewport: 'desktop',
+	sha256: hashA,
+	bytes: 184320,
+	option: 'o2'
+};
+const plain: DesignImage = { state: 'draft', viewport: 'mobile', sha256: hashB, bytes: 1200 };
+const emptyOption: DesignImage = { ...plain, option: '' };
+
 function versionCase(name: string, input: DesignVersion[], version: string, expected: string) {
 	const output = versionOption(input, version);
 	expect(output).toBe(expected);
@@ -124,16 +135,6 @@ test('Builds the entity-wide target with null fields', () => {
 });
 
 test('Builds image targets with an option only when it is truthy', () => {
-	const region = { x: 0.1, y: 0.2, width: 0.5, height: 0.4 };
-	const optioned: DesignImage = {
-		state: 'approved',
-		viewport: 'desktop',
-		sha256: hashA,
-		bytes: 184320,
-		option: 'o2'
-	};
-	const plain: DesignImage = { state: 'draft', viewport: 'mobile', sha256: hashB, bytes: 1200 };
-	const emptyOption: DesignImage = { ...plain, option: '' };
 	const withOption = imageTarget('v12', optioned, region);
 	const withoutOption = imageTarget('v13', plain, null);
 	const withEmptyOption = imageTarget('v13', emptyOption, null);

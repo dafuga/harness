@@ -11,6 +11,9 @@ import {
 import type { RunDraft } from '../../src/utils/explorer-ui/composeModes.types';
 
 type Cases = Parameters<typeof recordExampleCases>[1];
+type Fixture = ReturnType<typeof fixture>;
+
+const unitId = 'desktop.function.project-agent-actions';
 
 const planDraft: RunDraft = {
 	mode: 'plan',
@@ -57,24 +60,22 @@ function fixture(change: Record<string, unknown> = {}) {
 	return { agent, bridge, finish };
 }
 
-/** Polls without matchers: a retry that is not yet started must not count as a failed assertion. */
-async function started(agent: ReturnType<typeof fixture>['agent']) {
+/**
+ * Starts the action, then finishes its run once it is registered. The wait polls without matchers:
+ * a retry that is not yet started must not count as a failed assertion.
+ */
+async function runToFinish(f: Fixture, draft: RunDraft) {
+	const sent = projectAgentActions(f.agent, draft);
 	await vi.waitFor(() => {
-		if (agent.runId !== 'run-1') throw new Error('Run not started yet');
+		if (f.agent.runId !== 'run-1') throw new Error('Run not started yet');
 	});
+	f.finish();
+	return sent;
 }
 
 function recordCases(symbol: string, state: string, cases: Cases) {
-	recordExampleCases(
-		{
-			unitId: 'desktop.function.project-agent-actions',
-			symbol,
-			state,
-			evidence: 'examples-cases',
-			file: `${state}.json`
-		},
-		cases
-	);
+	const file = `${state}.json`;
+	recordExampleCases({ unitId, symbol, state, evidence: 'examples-cases', file }, cases);
 }
 
 test('Refuses to start when the agent is busy, disallowed or has no project', async () => {
@@ -103,14 +104,9 @@ test('Refuses to start when the agent is busy, disallowed or has no project', as
 
 test('Starts a plan as a create intent with design options only when supplied', async () => {
 	const f = fixture();
-	const plain = projectAgentActions(f.agent, planDraft);
-	await started(f.agent);
-	f.finish();
-	const settledPlain = await plain;
-	const withOptions = projectAgentActions(f.agent, { ...planDraft, designOptions: 2 });
-	await started(f.agent);
-	f.finish();
-	expect([settledPlain, await withOptions]).toEqual([true, true]);
+	const settledPlain = await runToFinish(f, planDraft);
+	const withOptions = await runToFinish(f, { ...planDraft, designOptions: 2 });
+	expect([settledPlain, withOptions]).toEqual([true, true]);
 	const [first, second] = f.bridge.startRun.mock.calls.map(
 		([request]) => request as Record<string, unknown>
 	);
@@ -135,10 +131,7 @@ test('Sends a change at the current revision with the last twenty messages trunc
 		author: index % 2 ? ('agent' as const) : ('user' as const),
 		text: index === 24 ? 'x'.repeat(5000) : `message ${index}`
 	}));
-	const sent = projectAgentActions(f.agent, changeDraft);
-	await started(f.agent);
-	f.finish();
-	await sent;
+	await runToFinish(f, changeDraft);
 	const request = f.bridge.startRun.mock.calls[0]![0] as {
 		intent: string;
 		mode: string;

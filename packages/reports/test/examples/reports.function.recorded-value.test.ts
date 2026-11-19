@@ -28,7 +28,7 @@ test('Scalars keep their types and absent or empty values say so', () => {
 	record(
 		'recordedValue',
 		'scalars-and-missing-values-keep-types',
-		pairs.map(([name, input], index) => ({ name, input: String(name), output: outputs[index] }))
+		pairs.map(([name], index) => ({ name, input: String(name), output: outputs[index] }))
 	);
 });
 

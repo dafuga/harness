@@ -18,6 +18,8 @@ const request = {
 	designOptions: 3
 } as ProjectRunRequest;
 
+const uuidV4 = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+
 /** A fake preparation that records each call in order, so the tests can prove what was asked. */
 function fakePreparation({
 	open = projectId,
@@ -50,47 +52,8 @@ function fakePreparation({
 	return { preparation, calls, runner };
 }
 
-async function thrownFrom(promise: Promise<unknown>): Promise<unknown> {
-	try {
-		await promise;
-	} catch (error) {
-		return error;
-	}
-	throw new Error('Expected the call to throw.');
-}
-
-test('resolves a create Plan after the project and runner are checked, with a fresh id', async () => {
-	const { preparation, calls, runner } = fakePreparation();
-	const controller = new AbortController();
-	const context = await prepareProjectRun(preparation, request, controller);
-
-	expect(calls).toEqual([
-		`assertProject:${projectId}`,
-		'mutable',
-		'select:codex:gpt-5.1-codex:medium'
-	]);
-	const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
-	expect(context.id).toMatch(uuid);
-	expect({
-		root: context.root,
-		revision: context.revision,
-		planning: context.planning,
-		project: context.project,
-		runner: context.runner,
-		request: context.request,
-		signal: context.signal,
-		preparation: context.preparation
-	}).toEqual({
-		root: 'project-root-fixture',
-		revision: 'rev-fixture',
-		planning: 'plan-fixture',
-		project: { root: 'project-root-fixture', revision: 'rev-fixture', planning: 'plan-fixture' },
-		runner,
-		request,
-		signal: controller.signal,
-		preparation
-	});
-
+type RunContext = Awaited<ReturnType<typeof prepareProjectRun>>;
+function recordCreatePlanCase(calls: string[], context: RunContext) {
 	recordExampleCases(
 		{
 			unitId: 'desktop.function.prepare-project-run',
@@ -115,12 +78,53 @@ test('resolves a create Plan after the project and runner are checked, with a fr
 					root: context.root,
 					revision: context.revision,
 					planning: context.planning,
-					idIsUuidV4: uuid.test(context.id),
+					idIsUuidV4: uuidV4.test(context.id),
 					signalAborted: context.signal.aborted
 				}
 			}
 		]
 	);
+}
+
+async function thrownFrom(promise: Promise<unknown>): Promise<unknown> {
+	try {
+		await promise;
+	} catch (error) {
+		return error;
+	}
+	throw new Error('Expected the call to throw.');
+}
+
+test('resolves a create Plan after the project and runner are checked, with a fresh id', async () => {
+	const { preparation, calls, runner } = fakePreparation();
+	const controller = new AbortController();
+	const context = await prepareProjectRun(preparation, request, controller);
+	expect(calls).toEqual([
+		`assertProject:${projectId}`,
+		'mutable',
+		'select:codex:gpt-5.1-codex:medium'
+	]);
+	expect(context.id).toMatch(uuidV4);
+	expect({
+		root: context.root,
+		revision: context.revision,
+		planning: context.planning,
+		project: context.project,
+		runner: context.runner,
+		request: context.request,
+		signal: context.signal,
+		preparation: context.preparation
+	}).toEqual({
+		root: 'project-root-fixture',
+		revision: 'rev-fixture',
+		planning: 'plan-fixture',
+		project: { root: 'project-root-fixture', revision: 'rev-fixture', planning: 'plan-fixture' },
+		runner,
+		request,
+		signal: controller.signal,
+		preparation
+	});
+	recordCreatePlanCase(calls, context);
 });
 
 test('refuses a request that is not a create Plan before anything is asked', async () => {

@@ -26,17 +26,25 @@ function control(): RemoteDesktopControl {
 	) as unknown as RemoteDesktopControl;
 }
 
+/** Labels which bridge, if any, the selected environment exposes. */
+function bridgeLabel(
+	environment: ReturnType<typeof selectEnvironment>,
+	host: EnvironmentHost
+): string | null {
+	if (environment.bridge === undefined) {
+		return null;
+	}
+	if (environment.bridge === host.harness) {
+		return 'preload-bridge';
+	}
+	return 'adapter-bridge';
+}
+
 /** Names the selected environment's fields without serializing live bridge objects. */
 function summarize(environment: ReturnType<typeof selectEnvironment>, host: EnvironmentHost) {
-	const bridge =
-		environment.bridge === undefined
-			? null
-			: environment.bridge === host.harness
-				? 'preload-bridge'
-				: 'adapter-bridge';
 	return {
 		kind: environment.kind,
-		bridge,
+		bridge: bridgeLabel(environment, host),
 		local: environment.local,
 		host: environment.host === undefined ? null : 'desktop-control',
 		phone: environment.phone === undefined ? null : 'phone-control',
