@@ -37,6 +37,16 @@ test('memory admission retains both the percentage reserve and the absolute floo
 			config
 		).granted
 	).toEqual([]);
+	const constrained = snapshot({
+		usableCores: 0.5,
+		cpuAvailableCores: 0.5,
+		cpuUsedPercent: 0,
+		memoryTotalBytes: 1024 * mib,
+		memoryAvailableBytes: 800 * mib
+	});
+	const lite = job({ cpus: 0.25, memoryMiB: 256 });
+	expect(impossibleRequest(lite, constrained, config)).toBe(false);
+	expect(resourcePolicy([lite], constrained, config).granted).toEqual([lite.id]);
 });
 test('agent tests precede coding and environment checks, with FIFO within each priority', () => {
 	const environment = job({ priority: 'environment', sequence: 1 }),
