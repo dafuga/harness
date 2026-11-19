@@ -1,0 +1,68 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.console-route",
+	"symbol": "consoleRoute",
+	"cases": [
+		{
+			"name": "a comparison keeps its base and selected unit",
+			"input": {
+				"path": "/branch/main/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/compare/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/unit/page.titles"
+			},
+			"output": {
+				"branch": "main",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"view": "compare",
+				"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				"unit": "page.titles"
+			}
+		},
+		{
+			"name": "a history view keeps its record and selected unit",
+			"input": {
+				"path": "/branch/main/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/history/record/r1/unit/service.title"
+			},
+			"output": {
+				"branch": "main",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"view": "history",
+				"record": "r1",
+				"unit": "service.title"
+			}
+		},
+		{
+			"name": "a map drops a base and a record it does not show",
+			"input": {
+				"path": "/branch/main/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/map/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/record/x"
+			},
+			"output": {
+				"branch": "main",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"view": "map"
+			}
+		},
+		{
+			"name": "a growth view on no branch keeps its unit",
+			"input": {
+				"path": "/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/growth/unit/function.slugify"
+			},
+			"output": {
+				"branch": null,
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"view": "growth",
+				"unit": "function.slugify"
+			}
+		},
+		{
+			"name": "a comparison with a non-hex base keeps no base",
+			"input": {
+				"path": "/branch/main/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/compare/not-a-commit/"
+			},
+			"output": {
+				"branch": "main",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"view": "compare"
+			}
+		}
+	]
+}
