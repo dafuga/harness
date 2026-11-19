@@ -58,7 +58,10 @@ for (const [viewport, size] of Object.entries(viewports)) {
 		await page.getByRole('combobox', { name: 'Commit', exact: true }).selectOption(commits.first);
 		await page.getByRole('link', { name: 'View Web configuration', exact: true }).click();
 		await expect(page.getByRole('main')).toContainText(
-			'No platform configuration is recorded at this revision.'
+			'No platform catalog is indexed at this revision.'
+		);
+		await expect(page.getByRole('main')).toContainText(
+			'Nothing from another revision is shown in its place.'
 		);
 		await expect(page.getByRole('main')).not.toContainText('orders-web');
 		await capture(page, `platforms-missing-${viewport}`);
