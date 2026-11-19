@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-budget",
+	"symbol": "harnessBudget",
+	"cases": [
+		{
+			"name": "declared freeze, no number",
+			"input": {
+				"found": {
+					"unit": "reports.function.harness-budget",
+					"metric": "size",
+					"unitOfMeasure": "bytes",
+					"value": 2048,
+					"workload": null,
+					"profile": null
+				}
+			},
+			"output": {
+				"value": "2048 bytes",
+				"limit": "freeze declared; no reviewed limit is recorded at this revision"
+			}
+		},
+		{
+			"name": "undeclared freeze, no number",
+			"input": {
+				"found": {
+					"unit": "reports.function.harness-budget",
+					"metric": "size",
+					"unitOfMeasure": "bytes",
+					"value": 2048,
+					"workload": null,
+					"profile": null
+				},
+				"known": {
+					"declared": false
+				}
+			},
+			"output": {
+				"value": "2048 bytes",
+				"limit": "no limit is recorded at this revision"
+			}
+		},
+		{
+			"name": "missing baseline finding",
+			"input": {
+				"found": {
+					"unit": "reports.function.harness-budget",
+					"metric": "size",
+					"unitOfMeasure": "bytes",
+					"value": 2048,
+					"workload": null,
+					"profile": null
+				},
+				"status": "missing-baseline"
+			},
+			"output": {
+				"value": "2048 bytes",
+				"limit": "freeze declared; no reviewed limit is recorded at this revision"
+			}
+		}
+	]
+}

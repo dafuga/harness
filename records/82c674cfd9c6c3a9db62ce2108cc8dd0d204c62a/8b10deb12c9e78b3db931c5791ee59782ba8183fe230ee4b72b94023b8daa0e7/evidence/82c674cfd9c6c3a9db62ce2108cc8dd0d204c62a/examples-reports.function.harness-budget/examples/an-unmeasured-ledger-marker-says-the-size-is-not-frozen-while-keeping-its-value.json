@@ -1,0 +1,29 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-budget",
+	"symbol": "harnessBudget",
+	"cases": [
+		{
+			"name": "unmeasured ledger marker with value",
+			"input": {
+				"found": {
+					"unit": "reports.function.harness-budget",
+					"metric": "size",
+					"unitOfMeasure": "bytes",
+					"value": 7,
+					"workload": null,
+					"profile": null
+				},
+				"known": {
+					"declared": true,
+					"unmeasured": "metric could not be measured"
+				}
+			},
+			"output": {
+				"value": "7 bytes",
+				"limit": "not frozen: reviewed as not measurable"
+			}
+		}
+	]
+}
