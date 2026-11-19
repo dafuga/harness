@@ -1,0 +1,109 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-JVJZKt
+
+ ❯ test/utils/resource-policy.test.ts (23 tests | 4 failed) 13ms
+   ✓ CPU is a fraction of overall usable capacity and admission retains ten percent 3ms
+   ✓ memory admission retains both the percentage reserve and the absolute floor 0ms
+   ✓ agent tests precede coding and environment checks, with FIFO within each priority 0ms
+   ✓ existing reservations account for work which has not reached its peak yet 0ms
+   ✓ unknown, stale and pressured telemetry holds new work: {"status":"unavailable"} 0ms
+   ✓ unknown, stale and pressured telemetry holds new work: {"sampledAt":1795108555013} 0ms
+   ✓ unknown, stale and pressured telemetry holds new work: {"sampledAt":1795108615013} 0ms
+   ✓ unknown, stale and pressured telemetry holds new work: {"sampledAt":null} 0ms
+   ✓ unknown, stale and pressured telemetry holds new work: {"cpuAvailableCores":null} 0ms
+   ✓ unknown, stale and pressured telemetry holds new work: {"cpuUsedPercent":null} 0ms
+   ✓ unknown, stale and pressured telemetry holds new work: {"cpuUsedPercent":null} 0ms
+   ✓ unknown, stale and pressured telemetry holds new work: {"memoryAvailableBytes":null} 0ms
+   × unknown, stale and pressured telemetry holds new work: {"memoryPressure":"warning"} 4ms
+     → expected [ Array(1) ] to deeply equal []
+   × unknown, stale and pressured telemetry holds new work: {"memoryPressure":"critical"} 0ms
+     → expected [ Array(1) ] to deeply equal []
+   × unknown, stale and pressured telemetry holds new work: {"memoryPressure":"unknown"} 0ms
+     → expected [ Array(1) ] to deeply equal []
+   ✓ requests which can never fit fail instead of waiting forever 0ms
+   ✓ nested admissions preserve live system headroom as well as the parent budget: {"cpuAvailableCores":2.5,"cpuUsedPercent":75} 0ms
+   ✓ nested admissions preserve live system headroom as well as the parent budget: {"memoryAvailableBytes":2684354560} 0ms
+   ✓ nested agent tests precede environment checks across different active parents 0ms
+   ✓ eligible descendants can finish when an older sibling waits behind 2 occupied ancestor pools 0ms
+   ✓ eligible descendants can finish when an older sibling waits behind 3 occupied ancestor pools 0ms
+   ✓ eligible descendants can finish when an older sibling waits behind 5 occupied ancestor pools 0ms
+   × memory pressure still admits scoped verification checks, and only them 0ms
+     → expected [ 'full', 'scoped' ] to deeply equal [ 'scoped' ]
+ ❯ test/examples/function.resource-policy.test.ts (4 tests | 1 failed) 10ms
+   × Pressure reports stale telemetry and exhausted reserves 5ms
+     → expected null to be 'Memory pressure is warning' // Object.is equality
+   ✓ Memory reserve keeps the larger of percent and floor 1ms
+   ✓ Impossible requests exceed capacity after reserves 0ms
+   ✓ Priority queue grants roots and children within budgets 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/resource-policy.test.ts > unknown, stale and pressured telemetry holds new work: {"memoryPressure":"warning"}
+ FAIL  test/utils/resource-policy.test.ts > unknown, stale and pressured telemetry holds new work: {"memoryPressure":"critical"}
+ FAIL  test/utils/resource-policy.test.ts > unknown, stale and pressured telemetry holds new work: {"memoryPressure":"unknown"}
+AssertionError: expected [ Array(1) ] to deeply equal []
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [][39m
+[31m+ [[39m
+[31m+   "8dafe60a-424f-487a-804b-3af891461edb",[39m
+[31m+ ][39m
+
+ ❯ test/utils/resource-policy.test.ts:86:69
+     84|  { memoryPressure: 'unknown' as const }
+     85| ])('unknown, stale and pressured telemetry holds new work: %j', (chang…
+     86|  expect(resourcePolicy([job()], snapshot(changes), config).granted).to…
+       |                                                                     ^
+     87| });
+     88| test('requests which can never fit fail instead of waiting forever', (…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  test/utils/resource-policy.test.ts > memory pressure still admits scoped verification checks, and only them
+AssertionError: expected [ 'full', 'scoped' ] to deeply equal [ 'scoped' ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[31m+   "full",[39m
+[2m    "scoped",[22m
+[2m  ][22m
+
+ ❯ test/utils/resource-policy.test.ts:144:26
+    142|  const scoped = job({ id: 'scoped', sequence: 2, label: scopedVerifica…
+    143|  const warning = resourcePolicy([full, scoped], snapshot({ memoryPress…
+    144|  expect(warning.granted).toEqual(['scoped']);
+       |                          ^
+    145|  expect(resourcePolicy([full], snapshot({ memoryPressure: 'warning' })…
+    146|   granted: [],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  test/examples/function.resource-policy.test.ts > Pressure reports stale telemetry and exhausted reserves
+AssertionError: expected null to be 'Memory pressure is warning' // Object.is equality
+
+[32m- Expected:[39m 
+"Memory pressure is warning"
+
+[31m+ Received:[39m 
+null
+
+ ❯ test/examples/function.resource-policy.test.ts:92:49
+     90|  expect(resourcePressure(starvedCpu, config, now)).toBe('CPU reserve i…
+     91|  expect(resourcePressure(starvedMemory, config, now)).toBe('Memory res…
+     92|  expect(resourcePressure(warning, config, now)).toBe('Memory pressure …
+       |                                                 ^
+     93|  recordExampleCases(
+     94|   {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  5 failed | 22 passed (27)
+   Start at  17:16:21
+   Duration  4.12s (transform 219ms, setup 209ms, collect 193ms, tests 23ms, environment 0ms, prepare 70ms)
+
