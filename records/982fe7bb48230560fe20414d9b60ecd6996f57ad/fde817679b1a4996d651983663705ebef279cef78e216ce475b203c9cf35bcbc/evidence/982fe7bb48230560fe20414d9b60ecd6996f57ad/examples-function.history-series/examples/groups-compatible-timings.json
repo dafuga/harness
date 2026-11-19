@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.history-series",
+	"symbol": "historySeries",
+	"cases": [
+		{
+			"name": "identical definitions form one line",
+			"input": {
+				"records": [
+					{
+						"id": "r-1",
+						"measurements": [
+							{
+								"unitOfMeasure": "ms",
+								"method": "Median of timed rounds.",
+								"workload": "render 1k",
+								"profile": "linux-x64-ci",
+								"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"artifacts": [],
+								"unit": "function.alpha",
+								"metric": "latency-warm-ms",
+								"value": 12
+							}
+						]
+					},
+					{
+						"id": "r-2",
+						"measurements": [
+							{
+								"unitOfMeasure": "ms",
+								"method": "Median of timed rounds.",
+								"workload": "render 1k",
+								"profile": "linux-x64-ci",
+								"testedRevision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"artifacts": [],
+								"unit": "function.alpha",
+								"metric": "latency-warm-ms",
+								"value": 10
+							}
+						]
+					}
+				]
+			},
+			"output": [
+				{
+					"unit": "function.alpha",
+					"workload": "render 1k",
+					"metric": "latency-warm-ms",
+					"target": null,
+					"incompatible": false,
+					"series": [
+						{
+							"profile": "linux-x64-ci",
+							"unitOfMeasure": "ms",
+							"method": "Median of timed rounds.",
+							"comparison": null,
+							"points": [
+								{
+									"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"record": "r-1",
+									"value": 12
+								},
+								{
+									"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+									"record": "r-2",
+									"value": 10
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
