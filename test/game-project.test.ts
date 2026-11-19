@@ -154,3 +154,19 @@ test('game build scripts retain engine bytes and audit through the project CLI',
 function observeScript(unit: string, command: string[], cwd: string) {
 	return gameCommand(command, cwd, { units: [unit], workload: unit + '.normal-script' });
 }
+
+test('Godot game scaffolds expose headless tests and native and web builds', () => {
+	const files = projectFiles({ kind: 'game', name: 'godot-proof', dimension: '2d', engine: 'godot' });
+	const contents = new Map(files.map((file) => [file.path, file.contents]));
+	const manifest = JSON.parse(contents.get('package.json')!);
+	expect(manifest.harness).toMatchObject({ kind: 'game', engine: 'godot', dimension: '2d' });
+	expect(manifest.scripts.check).toContain('harness audit');
+	expect(manifest.scripts.test).toContain('godot.ts test');
+	expect(manifest.scripts['build:web']).toContain('godot.ts web');
+	expect(manifest.scripts['build:native']).toContain('godot.ts native');
+	expect(contents.get('project.godot')).toContain('res://game.tscn');
+	expect(contents.get('game.tscn')).toContain('type="Node2D"');
+	expect(contents.get('export_presets.cfg')).toContain('platform="Web"');
+	expect(contents.get('export_presets.cfg')).toContain('platform="macOS"');
+	expect(contents.get('scripts/godot.ts')).toContain('--headless');
+});
