@@ -1,0 +1,50 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.console-policy",
+	"symbol": "consolePolicy",
+	"cases": [
+		{
+			"name": "an owner with no mode",
+			"input": {
+				"owner": {},
+				"peer": "127.0.0.1"
+			},
+			"output": false
+		},
+		{
+			"name": "mode on instead of loopback",
+			"input": {
+				"owner": {
+					"mode": "on",
+					"bind": "127.0.0.1"
+				},
+				"peer": "127.0.0.1"
+			},
+			"output": false
+		},
+		{
+			"name": "mode Loopback with a different case",
+			"input": {
+				"owner": {
+					"mode": "Loopback",
+					"bind": "127.0.0.1"
+				},
+				"peer": "127.0.0.1"
+			},
+			"output": false
+		},
+		{
+			"name": "a nonblank address header",
+			"input": {
+				"owner": {
+					"mode": "loopback",
+					"bind": "127.0.0.1",
+					"addressHeader": "X-Forwarded-For"
+				},
+				"peer": "127.0.0.1"
+			},
+			"output": false
+		}
+	]
+}
