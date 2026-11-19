@@ -1,0 +1,113 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.explorer-legacy",
+	"symbol": "explorerLegacy",
+	"cases": [
+		{
+			"name": "component id",
+			"input": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"view": "map",
+				"unit": "reports.component.harness-harness-map"
+			},
+			"output": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"category": "components",
+				"entity": "reports.component.harness-harness-map"
+			}
+		},
+		{
+			"name": "function id",
+			"input": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"view": "map",
+				"unit": "function.slugify"
+			},
+			"output": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"category": "functions",
+				"entity": "function.slugify"
+			}
+		},
+		{
+			"name": "page id",
+			"input": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"view": "map",
+				"unit": "page.titles"
+			},
+			"output": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"category": "pages",
+				"entity": "page.titles"
+			}
+		},
+		{
+			"name": "config id",
+			"input": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"view": "map",
+				"unit": "reports.config.report-vite"
+			},
+			"output": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"category": "configs",
+				"entity": "reports.config.report-vite"
+			}
+		},
+		{
+			"name": "service id",
+			"input": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"view": "map",
+				"unit": "service.title"
+			},
+			"output": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"category": "services",
+				"entity": "service.title"
+			}
+		},
+		{
+			"name": "audit kind, unknown to the explorer",
+			"input": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"view": "map",
+				"unit": "reports.audit.clean-check"
+			},
+			"output": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"category": "functions",
+				"entity": "reports.audit.clean-check"
+			}
+		},
+		{
+			"name": "an id with no kind segment",
+			"input": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"view": "map",
+				"unit": "something-else"
+			},
+			"output": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"category": "functions",
+				"entity": "something-else"
+			}
+		}
+	]
+}
