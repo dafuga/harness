@@ -60,6 +60,9 @@ if (variant === 'groups')
 	for (const commit of Object.keys(stored)) stored[commit] = withGroups(stored[commit]);
 if (variant === 'measurements')
 	for (const commit of Object.keys(stored)) stored[commit] = withMeasurements(stored[commit]);
+// The selected commit was never verified: its registry still declares the targets, but nothing is recorded.
+if (variant === 'unrecorded-measures')
+	stored[commits.middle] = { ...stored[commits.middle], records: [] };
 if (variant === 'focused')
 	for (const commit of Object.keys(stored)) stored[commit] = withFocused(stored[commit]);
 if (variant === 'viewport-states')
