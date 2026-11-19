@@ -156,7 +156,12 @@ function observeScript(unit: string, command: string[], cwd: string) {
 }
 
 test('Godot game scaffolds expose headless tests and native and web builds', () => {
-	const files = projectFiles({ kind: 'game', name: 'godot-proof', dimension: '2d', engine: 'godot' });
+	const files = projectFiles({
+		kind: 'game',
+		name: 'godot-proof',
+		dimension: '2d',
+		engine: 'godot'
+	});
 	const contents = new Map(files.map((file) => [file.path, file.contents]));
 	const manifest = JSON.parse(contents.get('package.json')!);
 	expect(manifest.harness).toMatchObject({ kind: 'game', engine: 'godot', dimension: '2d' });

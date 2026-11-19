@@ -7,6 +7,7 @@ import { join } from 'node:path';
 const ignoredDirs = new Set([
 	'.cache',
 	'.git',
+	'.godot',
 	'.gradle',
 	'.svelte-kit',
 	'.wrangler',

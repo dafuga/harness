@@ -1,7 +1,10 @@
 // @harness-uid u_vv2ogthipg
 import type { Command } from 'commander';
 import { createProject, renderCreateProject } from './create-project/createProject';
+import type { CreateProjectInput } from './create-project/createProject.types';
 import type { ProjectKind } from './create-project/createProject';
+
+type NewProjectOptions = Pick<CreateProjectInput, 'force' | 'dimension' | 'engine'>;
 
 export function registerNewCommand(program: Command): void {
 	const command = program.command('new').description('Create a new Harness project.');
@@ -16,10 +19,9 @@ export function registerNewCommand(program: Command): void {
 		.command('game <name>')
 		.option('--force', 'Overwrite existing files.')
 		.option('--dimension <dimension>', '2d or 3d.', '2d')
+		.option('--engine <engine>', 'sveltekit or godot.', 'sveltekit')
 		.description('Create a game with independent views, mechanics and checkpoints.')
-		.action((name: string, options: { force?: boolean; dimension: '2d' | '3d' }) =>
-			runCreateProject('game', name, options)
-		);
+		.action((name: string, options: NewProjectOptions) => runCreateProject('game', name, options));
 
 	command
 		.command('lib <name>')
@@ -31,13 +33,14 @@ export function registerNewCommand(program: Command): void {
 async function runCreateProject(
 	kind: ProjectKind,
 	name: string,
-	options: { force?: boolean; dimension?: '2d' | '3d' }
+	options: NewProjectOptions
 ): Promise<void> {
 	const result = await createProject({
 		kind,
 		name,
 		force: options.force,
-		dimension: options.dimension
+		dimension: options.dimension,
+		engine: options.engine
 	});
 	console.log(renderCreateProject(result));
 }

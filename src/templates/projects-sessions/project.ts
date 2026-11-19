@@ -9,11 +9,13 @@ import { formatConfigFiles } from '../development-tooling/formatConfig';
 import { lintConfigFiles } from '../development-tooling/lintConfig';
 import { agentRules, skillRules } from './projectGuidance';
 import { gameFiles } from '../game-authoring/gameProject';
+import { godotProjectFiles } from '../game-authoring/godotProject';
 import { atomicComponentFiles } from '../development-tooling/atomicComponents';
 import { atomicProjectFiles } from '../development-tooling/atomicMarkup';
 
 export function projectFiles(input: ProjectTemplateInput): PlannedFile[] {
 	if (input.kind === 'lib') return separateTypeDeclarations(libFiles(input.name));
+	if (input.kind === 'game' && input.engine === 'godot') return godotProjectFiles(input);
 	const app = appFiles(input.name);
 	const files = input.kind === 'game' ? gameFiles(input, app) : app;
 	return separateTypeDeclarations(atomicProjectFiles(files));

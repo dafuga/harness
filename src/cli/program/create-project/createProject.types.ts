@@ -1,5 +1,5 @@
 // @harness-uid u_7u5aguih6c
-import type { ProjectKind } from '../../../templates/projects-sessions/project';
+import type { GameEngine, ProjectKind } from '../../../templates/projects-sessions/project.types';
 import type { FileWriteResult } from '../../../core/development-tooling/files';
 
 export interface CreateProjectInput {
@@ -8,6 +8,7 @@ export interface CreateProjectInput {
 	force?: boolean;
 	parent?: string;
 	dimension?: '2d' | '3d';
+	engine?: GameEngine;
 }
 
 export interface CreateProjectResult {

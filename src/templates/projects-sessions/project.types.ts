@@ -1,8 +1,11 @@
 // @harness-uid u_v4r6unildz
 export type ProjectKind = 'app' | 'lib' | 'game';
 
+export type GameEngine = 'sveltekit' | 'godot';
+
 export interface ProjectTemplateInput {
 	name: string;
 	kind: ProjectKind;
 	dimension?: '2d' | '3d';
+	engine?: GameEngine;
 }

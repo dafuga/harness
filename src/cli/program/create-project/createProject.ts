@@ -15,7 +15,14 @@ export async function createProject(input: CreateProjectInput): Promise<CreatePr
 	const name = validateProjectName(input.name);
 	if (input.dimension && !['2d', '3d'].includes(input.dimension))
 		throw new Error('Dimension must be 2d or 3d.');
-	const files = projectFiles({ kind: input.kind, name, dimension: input.dimension });
+	if (input.engine && !['sveltekit', 'godot'].includes(input.engine))
+		throw new Error('Engine must be sveltekit or godot.');
+	const files = projectFiles({
+		kind: input.kind,
+		name,
+		dimension: input.dimension,
+		engine: input.engine
+	});
 
 	const directory = input.parent ? join(input.parent, name) : name;
 	await ensureParents(directory, files);
