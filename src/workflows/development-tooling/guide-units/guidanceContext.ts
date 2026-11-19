@@ -63,6 +63,38 @@ export function scenarioStatesFor(
 	);
 }
 
+function hasUnitPrefix(stateId: string, unitId: string): boolean {
+	const prefix = unitId.replaceAll('.', '-');
+	return stateId === prefix || stateId.startsWith(`${prefix}-`);
+}
+
+/** @pure Headless viewport-free states: explicit owners win, then this unit's prefix, then shared unowned states. */
+function headlessScenarioStates(
+	scenario: ScenarioManifest,
+	unitId: string
+): ScenarioManifest['states'] {
+	if (!scenario.units.includes(unitId)) return [];
+	const active = scenario.states.filter((state) => state.coverage !== 'inapplicable');
+	if (scenario.states.some((state) => state.units?.includes(unitId)))
+		return active.filter((state) => state.units?.includes(unitId));
+	const unowned = active.filter((state) => !state.units?.length);
+	if (scenario.units.length === 1) return unowned;
+	const named = unowned.filter((state) => hasUnitPrefix(state.id, unitId));
+	if (named.length) return named;
+	const others = scenario.units.filter((unit) => unit !== unitId);
+	return unowned.filter((state) => !others.some((other) => hasUnitPrefix(state.id, other)));
+}
+
+/** @pure Headless viewport-free scenarios use the headless rule; all other scenarios keep the guide rule. */
+function namedScenarioStates(
+	scenario: ScenarioManifest,
+	unitId: string
+): ScenarioManifest['states'] {
+	return scenario.kind === 'headless' && scenario.viewports.length === 0
+		? headlessScenarioStates(scenario, unitId)
+		: scenarioStatesFor(scenario, unitId);
+}
+
 /** @pure Required headless states not also declared by UI scenarios or state registries. */
 export function headlessStateNames(
 	scenarios: ScenarioManifest[],
@@ -81,7 +113,7 @@ export function headlessStateNames(
 	for (const scenario of scenarios.filter(
 		(item) => item.kind === 'headless' && item.viewports.length === 0
 	))
-		for (const state of scenarioStatesFor(scenario, unitId)) {
+		for (const state of headlessScenarioStates(scenario, unitId)) {
 			const name = unitStateName(unitId, state.id);
 			if (state.coverage === 'required' && !excluded.has(name)) names.add(name);
 		}
@@ -94,11 +126,12 @@ export function headlessOnly(
 	unitId: string,
 	registryStates: StateRegistry[] = []
 ): boolean {
-	return headlessStateNames(scenarios, unitId, registryStates).length > 0 &&
+	return (
+		headlessStateNames(scenarios, unitId, registryStates).length > 0 &&
 		!scenarios.some(
-			(scenario) =>
-				scenario.kind === 'ui' && scenarioStatesFor(scenario, unitId).length > 0
-		);
+			(scenario) => scenario.kind === 'ui' && scenarioStatesFor(scenario, unitId).length > 0
+		)
+	);
 }
 
 export function namedUnitStates(context: GuidanceContext, unit: ComponentManifest): UnitState[] {
@@ -112,7 +145,7 @@ export function namedUnitStates(context: GuidanceContext, unit: ComponentManifes
 			}))
 		);
 	for (const scenario of context.loaded.scenarios)
-		for (const state of scenarioStatesFor(scenario, unit.id))
+		for (const state of namedScenarioStates(scenario, unit.id))
 			states.push({
 				name: unitStateName(unit.id, state.id),
 				origin: 'REQUIRED',
