@@ -21,7 +21,9 @@
 			"TaskAnalyticsStore",
 			"TaskAnalyticsStoreFactory",
 			"TaskAnalyticsDetail",
-			"TaskPriceRates"
+			"TaskRunProgress",
+			"TaskAnalyticsExecution",
+			"TaskAnalyticsReview"
 		]
 	},
 	"contract": {
@@ -703,6 +705,11 @@
 		},
 		{
 			"unit": "repository.analytics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-analytics-service-model-analytics",
 			"via": "import",
 			"origin": "derived"
 		},

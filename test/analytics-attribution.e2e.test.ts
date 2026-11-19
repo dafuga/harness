@@ -93,6 +93,7 @@ test('module task CLI reviews preserve one bounce and reconcile token costs idem
 				}
 			]
 		});
+		assertRunOutcomes(first.tasks);
 		const events = JSON.parse(
 			(await runHarness(['analytics', 'events', '--project', f.root, '--json'], f.root)).stdout
 		);
@@ -104,6 +105,56 @@ test('module task CLI reviews preserve one bounce and reconcile token costs idem
 		await f.dispose();
 	}
 }, 60000);
+
+function assertRunOutcomes(tasks: unknown) {
+	expect(tasks).toMatchObject({
+		runRecords: [
+			{
+				schemaVersion: 1,
+				source: 'harness',
+				model: 'claude-haiku-5-5',
+				taskType: 'module',
+				outcome: 'rejected',
+				attempt: 1,
+				retries: 0,
+				escalations: 0,
+				firstTry: false,
+				reworked: false,
+				danielCorrections: 1,
+				inputTokens: 100,
+				outputTokens: 20,
+				apiEquivalentUsd: 0.002,
+				actualUsd: null,
+				codexCredits: null,
+				filesTouched: 1,
+				estimatedDifficulty: 'small'
+			},
+			{
+				outcome: 'done',
+				attempt: 2,
+				retries: 1,
+				escalations: 0,
+				firstTry: false,
+				reworked: true,
+				danielCorrections: 0
+			}
+		],
+		runAnalytics: {
+			rows: [
+				{
+					runs: 2,
+					successes: 1,
+					successRate: 0.5,
+					rejected: 1,
+					reworked: 1,
+					retryRuns: 1,
+					danielCorrections: 1,
+					costPerSuccessfulTaskMaxUsd: 0.004
+				}
+			]
+		}
+	});
+}
 
 async function reviewedTask(f: Awaited<ReturnType<typeof moduleTaskFixture>>) {
 	await f.feature();
@@ -121,6 +172,8 @@ async function reviewedTask(f: Awaited<ReturnType<typeof moduleTaskFixture>>) {
 		task.claim.token,
 		'--verdict',
 		'incomplete',
+		'--reviewer',
+		'Daniel',
 		'--feedback',
 		'Private repair note marker'
 	];

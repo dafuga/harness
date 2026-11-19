@@ -1,5 +1,7 @@
 // @harness-uid u_nlvnkjdcje
 import type { AnalyticsEvent } from '../../../core/reports-media/analyticsTypes';
+import { createRunRecord, summarizeModelRuns } from './model-analytics.js';
+
 export function taskMetrics(events: AnalyticsEvent[]) {
 	const unique = [
 		...new Map(
@@ -17,8 +19,11 @@ export function taskMetrics(events: AnalyticsEvent[]) {
 		]);
 		groups.set(key, [...(groups.get(key) ?? []), event]);
 	}
+	const runRecords = reviewedRuns(unique);
 	return {
 		...summary(unique),
+		runRecords,
+		runAnalytics: summarizeModelRuns(runRecords),
 		byModel: [...groups.values()]
 			.map((group) => {
 				const detail = group[0].moduleTask!;
@@ -34,6 +39,45 @@ export function taskMetrics(events: AnalyticsEvent[]) {
 				(a, b) => a.model.localeCompare(b.model) || a.intelligence.localeCompare(b.intelligence)
 			)
 	};
+}
+function reviewedRuns(events: AnalyticsEvent[]) {
+	const reviews = new Map(
+		events
+			.filter((e) => ['accepted', 'incomplete'].includes(e.action))
+			.map((e) => [attemptKey(e), e.action])
+	);
+	return events
+		.filter((e) => e.action === 'executed')
+		.map((event) => event.moduleTask?.modelRun ?? legacyRun(event, reviews.get(attemptKey(event))));
+}
+function attemptKey(event: AnalyticsEvent) {
+	return JSON.stringify([event.project, event.task, event.moduleTask?.attempt]);
+}
+function legacyRun(event: AnalyticsEvent, review?: string) {
+	const detail = event.moduleTask!;
+	return createRunRecord({
+		source: 'harness',
+		id: `harness:${event.id}`,
+		taskId: event.task ?? event.id,
+		chainId: event.task ?? event.id,
+		taskType: 'module',
+		project: event.project,
+		provider: detail.provider,
+		model: detail.reportedModel ?? detail.model,
+		effort: detail.intelligence,
+		finishedAt: event.timestamp,
+		outcome: legacyOutcome(event.status, review),
+		attempt: null,
+		usage: detail.usage,
+		cost: detail.apiCost,
+		actualUsd: detail.usage?.actualUsd,
+		codexCredits: detail.usage?.codexCredits
+	});
+}
+function legacyOutcome(status?: string, review?: string) {
+	if (status === 'failed') return 'failed';
+	if (review === 'accepted') return 'done';
+	return review === 'incomplete' ? 'rejected' : 'pending_review';
 }
 function summary(events: AnalyticsEvent[]) {
 	const executions = events.filter((e) => e.action === 'executed');

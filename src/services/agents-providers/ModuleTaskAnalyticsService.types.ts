@@ -1,9 +1,12 @@
 // @harness-uid u_66fcrvj52i
 import type {
 	TaskUsage,
-	TaskApiCost
+	TaskApiCost,
+	TaskExecution,
+	ModuleTask
 } from '../../repositories/agents-providers/ModuleTaskRepository.types';
 import type { AnalyticsRepository } from '../../repositories/reports-media/AnalyticsRepository';
+import type { RunRecord } from './module-task-analytics-service/model-analytics.js';
 export type TaskAnalyticsStore = Pick<AnalyticsRepository, 'recordImported' | 'close'>;
 export type TaskAnalyticsStoreFactory = () => TaskAnalyticsStore | Promise<TaskAnalyticsStore>;
 export interface TaskAnalyticsDetail {
@@ -16,10 +19,13 @@ export interface TaskAnalyticsDetail {
 	reportedModel: string | null;
 	usage?: TaskUsage;
 	apiCost?: TaskApiCost;
+	modelRun?: RunRecord;
 }
-export interface TaskPriceRates {
-	threshold: number;
-	source: string;
-	short: [number, number, number, number, number];
-	long: [number, number, number, number, number];
+export interface TaskRunProgress {
+	attempt: number;
+	escalations: number;
+	previous: string | null;
+	rejectedBefore: boolean;
 }
+export type TaskAnalyticsExecution = Omit<TaskExecution, 'startedAt'> & { startedAt?: string };
+export type TaskAnalyticsReview = ModuleTask['reviews'][number];

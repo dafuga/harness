@@ -21,11 +21,15 @@ Successful execution enters review. An accepted review completes the submission.
 
 Every provider execution is retained, including a failed Claude execution before fallback. Analytics groups requested and reported model identity separately with provider and intelligence. It reports executions, submissions, accepted reviews, incomplete reviews, execution failures, input/output/cache tokens and API-equivalent cost. Unknown data stays null.
 
+`harness analytics tasks --json` also includes `runRecords` and `runAnalytics`. The v1 records share Tracker's model, effort, task type, project, tokens, costs, timestamps, difficulty and outcome fields. An execution becomes a success when its submission is accepted. An incomplete review marks that execution rejected, and a later provider call is a retry. Daniel's named incomplete reviews count as corrections. Estimated difficulty derives from the module's declared paths and measured difficulty from the submitted changes. Earlier provider failures can have usage and wall time without a measured file count.
+
+The analytics includes cost per successful task by model, effort and task type, average input and output, weekly UTC trends and cost-ranked first-try recommendations. Actual USD and Codex credits remain unknown unless a runner provides an attributable amount. Tracker wall time spans a launched session, including any configured verification. Harness wall time measures each provider execution.
+
 Bounce rate is incomplete reviews divided by accepted plus incomplete reviews. A task with no reviews has a null rate. Execution errors are counted separately.
 
 ## Price provenance
 
-The versioned rate card is `standard-global-2026-10-25`. Exact known model rates come from the [OpenAI pricing reference](https://developers.openai.com/api/docs/pricing) and [Claude pricing reference](https://platform.claude.com/docs/en/about-claude/pricing). CLI-reported API-equivalent estimates retain a separate basis. Neither source establishes subscription charges or authoritative invoices.
+New estimates use `standard-global-2026-11-19` from the shared `model-analytics.js` module, vendored from Tracker. The module defines the portable run record and computes comparable estimates. Existing records keep their original rate card. Exact known model rates come from the [OpenAI pricing reference](https://developers.openai.com/api/docs/pricing) and [Claude pricing reference](https://platform.claude.com/docs/en/about-claude/pricing). CLI-reported API-equivalent estimates retain a separate basis.
 
 Canonical input tokens include cached tokens. Claude reports cache reads/writes separately from raw input; Codex includes cached input in its input total. Missing counters, cache durations and per-request context tiers remain explicit unknown values or price ranges. Unknown model prices are unavailable. See the [provider cost-accounting boundary](https://code.claude.com/docs/en/agent-sdk/cost-tracking).
 

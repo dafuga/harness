@@ -1,0 +1,356 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-module-task-analytics-service-model-analytics",
+	"uid": "u_sak3l4rbdc",
+	"kind": "service",
+	"title": "Model run analytics",
+	"responsibility": "Defines the versioned Tracker and Harness run record, estimates standard API token cost and compares run reliability and cost.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/module-task-analytics-service/model-analytics.d.ts",
+			"src/services/agents-providers/module-task-analytics-service/model-analytics.js",
+			"src/services/agents-providers/module-task-analytics-service/model-pricing.js",
+			"src/services/agents-providers/module-task-analytics-service/model-run-record.js"
+		],
+		"symbols": [
+			"estimateApiCost",
+			"classifyTaskType",
+			"difficultyForFiles",
+			"createRunRecord",
+			"summarizeModelRuns",
+			"recommendModels",
+			"RUN_SCHEMA_VERSION",
+			"RATE_CARD",
+			"TokenUsage",
+			"ApiEquivalentCost",
+			"RunSource",
+			"RunOutcome",
+			"Difficulty",
+			"RunRecordInput",
+			"RunRecord",
+			"ModelRunSummaryRow",
+			"ModelRunSummary",
+			"estimateApiCost",
+			"RATE_CARD",
+			"classifyTaskType",
+			"createRunRecord",
+			"difficultyForFiles",
+			"RUN_SCHEMA_VERSION",
+			"summarizeModelRuns",
+			"recommendModels",
+			"RATE_CARD",
+			"estimateApiCost",
+			"RUN_SCHEMA_VERSION",
+			"classifyTaskType",
+			"difficultyForFiles",
+			"createRunRecord"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "summarizeModelRuns.records",
+				"type": "RunRecord[]",
+				"required": true,
+				"description": "Run records to deduplicate by ID before calculating summaries and weekly trends."
+			},
+			{
+				"name": "recommendModels.records",
+				"type": "RunRecord[]",
+				"required": true,
+				"description": "Run records from which to rank priced first attempts with observable outcomes."
+			},
+			{
+				"name": "recommendModels.minSamples",
+				"type": "number",
+				"required": false,
+				"default": 5,
+				"description": "Minimum number of priced first attempts required to qualify a model and effort."
+			},
+			{
+				"name": "recommendModels.reliability",
+				"type": "number",
+				"required": false,
+				"default": 0.8,
+				"description": "Minimum fraction of successful first attempts required to qualify."
+			},
+			{
+				"name": "recommendModels.allCandidates",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "When true, include every qualifying configuration in cost order."
+			},
+			{
+				"name": "estimateApiCost.model",
+				"type": "string",
+				"required": true,
+				"description": "The exact provider model ID, used to look up published standard global token rates."
+			},
+			{
+				"name": "estimateApiCost.usage",
+				"type": "TokenUsage",
+				"required": true,
+				"description": "Canonical input and output counts, known cache read and write counts, and any CLI-reported API-equivalent estimate."
+			},
+			{
+				"name": "classifyTaskType.title",
+				"type": "string",
+				"required": true,
+				"description": "Task title matched against shared task type patterns before looking at task notes."
+			},
+			{
+				"name": "classifyTaskType.notes",
+				"type": "string",
+				"required": true,
+				"description": "Optional task notes examined when no pattern matches the title."
+			},
+			{
+				"name": "classifyTaskType.fallback",
+				"type": "string",
+				"required": false,
+				"default": "feature",
+				"description": "Task type used when neither the title nor the notes match a pattern."
+			},
+			{
+				"name": "difficultyForFiles.files",
+				"type": "number | null",
+				"required": true,
+				"description": "Count of declared or changed paths, or null when the count could not be observed."
+			},
+			{
+				"name": "createRunRecord.input",
+				"type": "RunRecordInput",
+				"required": true,
+				"description": "Source identity, task metadata, timing, outcome, difficulty, token usage and attributable costs for one run."
+			}
+		],
+		"outputs": [
+			{
+				"name": "RUN_SCHEMA_VERSION",
+				"type": "number",
+				"description": "Version attached to the portable run record."
+			},
+			{
+				"name": "RATE_CARD",
+				"type": "string",
+				"description": "Version of the published rate card used for a new estimate."
+			},
+			{
+				"name": "estimateApiCost",
+				"type": "ApiEquivalentCost",
+				"description": "Exact amount or range in USD with its pricing source and basis. Amounts remain null for unavailable pricing."
+			},
+			{
+				"name": "classifyTaskType",
+				"type": "string",
+				"description": "First recognized task type or the caller’s fallback."
+			},
+			{
+				"name": "difficultyForFiles",
+				"type": "Difficulty | null",
+				"description": "Small for at most two paths, medium for three to eight, large above eight, and null when the count is missing."
+			},
+			{
+				"name": "createRunRecord",
+				"type": "RunRecord",
+				"description": "A versioned run record with normalized usage, API cost bounds and any independently attributable charges."
+			},
+			{
+				"name": "summarizeModelRuns",
+				"type": "ReturnType<typeof summarizeModelRuns>",
+				"description": "Model and effort rows, task type totals, weekly rows and first-attempt recommendations."
+			},
+			{
+				"name": "recommendModels",
+				"type": "ReturnType<typeof recommendModels>",
+				"description": "Qualifying model and effort rows ranked by the upper API-equivalent cost per successful task."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "summarizeModelRuns",
+				"inputs": [
+					{
+						"name": "summarizeModelRuns.records",
+						"type": "RunRecord[]",
+						"required": true,
+						"description": "Run records to deduplicate by ID before calculating summaries and weekly trends."
+					}
+				],
+				"outputs": [
+					{
+						"name": "summarizeModelRuns",
+						"type": "ReturnType<typeof summarizeModelRuns>",
+						"description": "Model and effort rows, task type totals, weekly rows and first-attempt recommendations."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "recommendModels",
+				"inputs": [
+					{
+						"name": "recommendModels.records",
+						"type": "RunRecord[]",
+						"required": true,
+						"description": "Run records from which to rank priced first attempts with observable outcomes."
+					},
+					{
+						"name": "recommendModels.minSamples",
+						"type": "number",
+						"required": false,
+						"default": 5,
+						"description": "Minimum number of priced first attempts required to qualify a model and effort."
+					},
+					{
+						"name": "recommendModels.reliability",
+						"type": "number",
+						"required": false,
+						"default": 0.8,
+						"description": "Minimum fraction of successful first attempts required to qualify."
+					},
+					{
+						"name": "recommendModels.allCandidates",
+						"type": "boolean",
+						"required": false,
+						"default": false,
+						"description": "When true, include every qualifying configuration in cost order."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recommendModels",
+						"type": "ReturnType<typeof recommendModels>",
+						"description": "Qualifying model and effort rows ranked by the upper API-equivalent cost per successful task."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "estimateApiCost",
+				"inputs": [
+					{
+						"name": "estimateApiCost.model",
+						"type": "string",
+						"required": true,
+						"description": "The exact provider model ID, used to look up published standard global token rates."
+					},
+					{
+						"name": "estimateApiCost.usage",
+						"type": "TokenUsage",
+						"required": true,
+						"description": "Canonical input and output counts, known cache read and write counts, and any CLI-reported API-equivalent estimate."
+					}
+				],
+				"outputs": [
+					{
+						"name": "estimateApiCost",
+						"type": "ApiEquivalentCost",
+						"description": "Exact amount or range in USD with its pricing source and basis. Amounts remain null for unavailable pricing."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "classifyTaskType",
+				"inputs": [
+					{
+						"name": "classifyTaskType.title",
+						"type": "string",
+						"required": true,
+						"description": "Task title matched against shared task type patterns before looking at task notes."
+					},
+					{
+						"name": "classifyTaskType.notes",
+						"type": "string",
+						"required": true,
+						"description": "Optional task notes examined when no pattern matches the title."
+					},
+					{
+						"name": "classifyTaskType.fallback",
+						"type": "string",
+						"required": false,
+						"default": "feature",
+						"description": "Task type used when neither the title nor the notes match a pattern."
+					}
+				],
+				"outputs": [
+					{
+						"name": "classifyTaskType",
+						"type": "string",
+						"description": "First recognized task type or the caller’s fallback."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "difficultyForFiles",
+				"inputs": [
+					{
+						"name": "difficultyForFiles.files",
+						"type": "number | null",
+						"required": true,
+						"description": "Count of declared or changed paths, or null when the count could not be observed."
+					}
+				],
+				"outputs": [
+					{
+						"name": "difficultyForFiles",
+						"type": "Difficulty | null",
+						"description": "Small for at most two paths, medium for three to eight, large above eight, and null when the count is missing."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "createRunRecord",
+				"inputs": [
+					{
+						"name": "createRunRecord.input",
+						"type": "RunRecordInput",
+						"required": true,
+						"description": "Source identity, task metadata, timing, outcome, difficulty, token usage and attributable costs for one run."
+					}
+				],
+				"outputs": [
+					{
+						"name": "createRunRecord",
+						"type": "RunRecord",
+						"description": "A versioned run record with normalized usage, API cost bounds and any independently attributable charges."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/module-task-analytics-service/model-analytics.js",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/module-task-analytics-service/model-analytics.js"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
