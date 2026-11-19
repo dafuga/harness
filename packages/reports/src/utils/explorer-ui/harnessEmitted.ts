@@ -55,11 +55,16 @@ function limited(unit: HarnessUnit, target: string): string {
 	return 'no limit is recorded at this revision';
 }
 
-/** What the record said when it held the size against its limit; nothing for a size that passed. */
-function judged(record: HarnessRecord | null, unit: string, target: string): string | undefined {
-	const finding = record?.budgets.findings.find(
+/** The record's finding for a target; a record with no budgets, such as a measurements-only one, has none. */
+function findingOf(record: HarnessRecord | null, unit: string, target: string) {
+	return record?.budgets?.findings.find(
 		(item) => item.unit === unit && item.metric === metric && item.target === target
 	);
+}
+
+/** What the record said when it held the size against its limit; nothing for a size that passed. */
+function judged(record: HarnessRecord | null, unit: string, target: string): string | undefined {
+	const finding = findingOf(record, unit, target);
 	if (finding?.status === 'exceeded') {
 		return `Grew from ${finding.baseline} to ${emittedBytes(finding.measured ?? 0)} without a recorded approval.`;
 	}
