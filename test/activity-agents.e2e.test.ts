@@ -4,9 +4,10 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { afterAll, beforeAll, expect, test } from 'vitest';
+import { afterAll, beforeAll, test } from 'vitest';
 import { AgentRegistryRepository } from '../src/services/agents-providers/agent-activity-service/AgentRegistryRepository';
 import { runHarness } from './support/cli';
+import { expect } from './verificationExpect';
 /** What a live agent allows between heartbeats here, in seconds: far longer than a case runs. */
 const allowed = 600;
 let scratch: string;

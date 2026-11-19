@@ -8,8 +8,7 @@
 		{
 			"id": "lifecycle",
 			"title": "Register, update, finish and list agents",
-			"coverage": "missing",
-			"reason": "The integration test exercises this lifecycle; a retained scenario assertion artifact has not been recorded."
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -17,9 +16,27 @@
 		{
 			"id": "lifecycle",
 			"kind": "integration",
-			"runner": "vitest",
-			"target": "test/activity-agents.e2e.test.ts"
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/activity-agents.e2e.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
 		}
 	],
-	"evidence": []
+	"evidence": [
+		{
+			"id": "lifecycle-output",
+			"kind": "output",
+			"states": ["lifecycle"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "lifecycle-assertions",
+			"kind": "assertions",
+			"states": ["lifecycle"],
+			"viewports": [],
+			"required": true
+		}
+	],
+	"builds": []
 }
