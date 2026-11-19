@@ -8,77 +8,7 @@ import { runCommand } from './support/cli';
 import { measureProcess } from './support/cli-measurement/measureProcess';
 import { seedConsumerLock } from './support/packagedConsumerLock';
 import { expectPackagedSqlite } from './support/packagedSqliteConsumer';
-
-const consumer = `
-import {
-	componentManifestSchema,
-	scenarioManifestSchema,
-	verificationRecordSchema,
-	performanceTolerance,
-	ComponentManifestValidator,
-	type ComponentManifest,
-	type ScenarioManifest,
-	type VerificationRecord
-} from '@dafuga01/harness/contracts';
-import {
-	HttpRuntimeAdapter,
-	ModuleRuntimeAdapter,
-	ProcessRuntimeAdapter,
-	WasmRuntimeAdapter,
-	UnitRuntimeService,
-	RuntimeServerService,
-	impactKernel,
-	kernelArtifacts,
-	type RuntimeRequest,
-	type RuntimeResponse,
-	type UnitRuntime,
-	type ExecutionTarget
-} from '@dafuga01/harness/runtime';
-import { resourceConfigSchema, resourceRequestSchema, type ResourceRequest } from '@dafuga01/harness/resources';
-import * as root from '@dafuga01/harness';
-import { consolePolicy, consoleAccess, consoleRoutePath } from '@dafuga01/harness/console';
-const sdkPolicy = consolePolicy({ mode: 'loopback', bind: '127.0.0.1' });
-const sdkAccess = consoleAccess({ policy: sdkPolicy, data: { json: async () => undefined, media: async () => undefined } });
-const sdkRoute: string = consoleRoutePath({ branch: null, commit: 'a', view: 'map' });
-void [sdkAccess, sdkRoute];
-const resourceRequest: ResourceRequest = resourceRequestSchema.parse({ priority: 'agent-test' });
-
-const request: RuntimeRequest = { operation: 'version' };
-const manifest: ComponentManifest = componentManifestSchema.parse(JSON.parse(process.argv[2]));
-const scenario: ScenarioManifest | undefined = scenarioManifestSchema.safeParse({}).data;
-const record: VerificationRecord | undefined = verificationRecordSchema.safeParse({}).data;
-const validator = new ComponentManifestValidator();
-const invalid = {
-	...manifest,
-	contract: { ...manifest.contract, inputs: [{ name: 'unsupported', type: 'unknown', required: true }] }
-};
-const wasm: ExecutionTarget = { kind: 'wasm', entry: kernelArtifacts().wasm ?? '' };
-const service = new UnitRuntimeService(process.cwd());
-const served = await new RuntimeServerService().serve(service.forTarget(wasm), { port: 0 });
-const runtimes: UnitRuntime[] = [
-	new ModuleRuntimeAdapter(impactKernel),
-	new WasmRuntimeAdapter(wasm.entry),
-	new ProcessRuntimeAdapter({ command: process.argv[3] }),
-	new HttpRuntimeAdapter(served.url)
-];
-const responses: RuntimeResponse[] = [];
-for (const runtime of runtimes) responses.push(await runtime.invoke(request));
-await Promise.all(runtimes.map((runtime) => runtime.close()));
-await served.close();
-console.log(JSON.stringify({
-	resources: { request: resourceRequest.priority, reserve: resourceConfigSchema.parse({}).cpuReservePercent },
-	id: manifest.id,
-	errors: validator.validate(manifest, manifest.id + '.json').errors,
-	invalidErrors: validator.validate(invalid, manifest.id + '.json').errors,
-	scenario: scenario === undefined,
-	record: record === undefined,
-	tolerance: performanceTolerance,
-	kinds: runtimes.map((runtime) => runtime.kind),
-	responses,
-	rootExports: Object.keys(root).sort(),
-	cli: typeof (globalThis as { harnessCliRan?: boolean }).harnessCliRan
-}));
-`;
+import { packagedConsumerSource } from './support/packagedConsumerSource';
 
 const tsconfig = {
 	compilerOptions: {
@@ -116,7 +46,7 @@ async function withPackedConsumer(use: (project: string) => Promise<void>): Prom
 		};
 		await writeFile(join(project, 'package.json'), JSON.stringify(manifest));
 		await writeFile(join(project, 'tsconfig.json'), JSON.stringify(tsconfig));
-		await writeFile(join(project, 'consumer.ts'), consumer);
+		await writeFile(join(project, 'consumer.ts'), packagedConsumerSource);
 		await seedConsumerLock({ project, tarball, consumer: manifest });
 		await runCommand(['bun', 'install', '--prefer-offline'], project);
 		await use(project);
@@ -125,7 +55,11 @@ async function withPackedConsumer(use: (project: string) => Promise<void>): Prom
 	}
 }
 
-async function expectTypes(project: string): Promise<void> {
+/** Runs both tsc invocations and returns what they reported, after every assertion has passed. */
+async function expectTypes(project: string): Promise<{
+	clean: { exitCode: number; output: string };
+	invalid: { exitCode: number; diagnostic: string | undefined };
+}> {
 	const typecheck = await runCommand(['bun', 'x', 'tsc', '-p', '.'], project, false);
 	expect(typecheck.stdout + typecheck.stderr).toBe('');
 	expect(typecheck.exitCode).toBe(0);
@@ -137,6 +71,40 @@ async function expectTypes(project: string): Promise<void> {
 	const bad = await runCommand(['bun', 'x', 'tsc', ...options, 'bad.ts'], project, false);
 	expect(bad.exitCode).not.toBe(0);
 	expect(bad.stdout).toContain('TS2');
+	return {
+		clean: { exitCode: typecheck.exitCode, output: typecheck.stdout + typecheck.stderr },
+		invalid: { exitCode: bad.exitCode, diagnostic: bad.stdout.match(/TS\d+/)?.[0] }
+	};
+}
+
+/**
+ * Records the values the packed checks observed. Called only after every assertion above has passed,
+ * so the capture never claims a pass that did not happen.
+ */
+function recordPackedAssertions(
+	types: Awaited<ReturnType<typeof expectTypes>>,
+	printed: Record<string, unknown>
+): void {
+	const runners = Object.entries(printed).map(([runner, value]) => {
+		const result = value as Record<string, unknown>;
+		return {
+			runner,
+			kinds: result.kinds,
+			invalidErrors: result.invalidErrors,
+			responses: result.responses
+		};
+	});
+	recordCapture(
+		{
+			evidence: 'packed-assertions',
+			kind: 'assertions',
+			state: 'packed',
+			file: 'packed-assertions.json',
+			mediaType: 'application/json',
+			note: 'Observed values that passed the packed consumer assertions under Bun and Node, with the tsc results.'
+		},
+		JSON.stringify({ typeCheck: types, runners }, null, 2)
+	);
 }
 
 test('public API type build retains configured entry paths across owned workspaces', async () => {
@@ -180,7 +148,7 @@ test('public API type build retains configured entry paths across owned workspac
 
 test('a packed consumer imports typed contracts and calls real adapters without the CLI', async () => {
 	await withPackedConsumer(async (project) => {
-		await expectTypes(project);
+		const types = await expectTypes(project);
 		await expectPackagedSqlite(project);
 		const manifest = await readFile('specification/units/function.commit-identity.json', 'utf8');
 		const native = kernelArtifacts().native ?? '';
@@ -228,5 +196,6 @@ test('a packed consumer imports typed contracts and calls real adapters without 
 			},
 			JSON.stringify(printed, null, 2)
 		);
+		recordPackedAssertions(types, printed);
 	});
 }, 240_000);

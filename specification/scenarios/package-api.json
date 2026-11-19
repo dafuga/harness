@@ -28,6 +28,13 @@
 			"states": ["packed"],
 			"viewports": [],
 			"required": true
+		},
+		{
+			"id": "packed-assertions",
+			"kind": "assertions",
+			"states": ["packed"],
+			"viewports": [],
+			"required": true
 		}
 	]
 }
