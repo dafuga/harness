@@ -34,7 +34,7 @@ export function memoryReserve(sample: ResourceSnapshot, config: ResourceConfig):
 	return Math.max(
 		(sample.memoryTotalBytes * config.memoryReservePercent) / 100,
 		// The absolute floor must leave working memory on small machines and cgroups.
-		Math.min(config.minMemoryReserveMiB * mib, sample.memoryTotalBytes / 2)
+		Math.min(config.minMemoryReserveMiB * mib, sample.memoryTotalBytes / 4)
 	);
 }
 export function impossibleRequest(
