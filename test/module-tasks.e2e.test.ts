@@ -166,6 +166,10 @@ test('competing workers claim once and writes outside the module require review 
 		const task = JSON.parse((await f.cli(['show', 'orders-validation', '--json'])).stdout).task;
 		expect(task.status).toBe('failed');
 		expect(task.result.error).toContain('outside');
+		const report = JSON.parse(
+			(await runHarness(['analytics', 'tasks', '--project', f.root, '--json'], f.root)).stdout
+		);
+		expect(report.tasks.runRecords).toMatchObject([{ outcome: 'failed', rejectionCause: 'scope' }]);
 	} finally {
 		await f.dispose();
 	}

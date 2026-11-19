@@ -90,6 +90,7 @@ test('incomplete review commits a repair base, requeues once, and keeps prior wo
 			attempt: first.claim!.token,
 			verdict: 'incomplete',
 			reviewer: 'tester',
+			cause: 'verification',
 			feedback: 'Keep the implementation and address review feedback.'
 		};
 		await service.review(first.id, review);
@@ -98,7 +99,7 @@ test('incomplete review commits a repair base, requeues once, and keeps prior wo
 		expect(queued).toMatchObject({
 			status: 'queued',
 			contractHash: first.contractHash,
-			reviews: [{ verdict: 'incomplete', attempt: first.claim!.token }]
+			reviews: [{ verdict: 'incomplete', cause: 'verification', attempt: first.claim!.token }]
 		});
 		expect(await f.git.run(['show', `${queued.repairCommit}:src/orders.ts`])).toContain(
 			'orders = 2'
@@ -114,6 +115,8 @@ test('incomplete review commits a repair base, requeues once, and keeps prior wo
 		expect(accepted.status).toBe('accepted');
 		expect(accepted.reviews).toHaveLength(2);
 		expect(accepted.attempts).toHaveLength(1);
+		expect(accepted.attempts[0].changedLines).toBe(2);
+		expect(accepted.result?.changedLines).toBe(1);
 		expect(accepted.result?.executions?.[0]).toMatchObject({
 			model: 'gpt-6-luna',
 			intelligence: 'max',

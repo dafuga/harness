@@ -81,6 +81,7 @@ test('retry preserves abandoned claims and refuses to steal an active owner', as
 		expect(task.status).toBe('queued');
 		expect(task.claim).toBeUndefined();
 		expect(task.claimHistory[0].token).toBe(token);
+		expect(task.claimHistory[0].recoveredAt).toEqual(expect.any(String));
 	} finally {
 		await f.dispose();
 	}
