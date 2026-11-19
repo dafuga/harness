@@ -1,0 +1,91 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-scope",
+	"symbol": "explorerScope",
+	"cases": [
+		{
+			"name": "main shows its recorded head",
+			"input": {
+				"branch": "main",
+				"commit": null,
+				"category": "functions"
+			},
+			"output": {
+				"kind": "scope",
+				"scope": {
+					"location": {
+						"branch": "main",
+						"commit": null,
+						"category": "functions"
+					},
+					"mode": "current",
+					"branch": "main",
+					"tip": "cccccccccccccccccccccccccccccccccccccccc",
+					"commit": "cccccccccccccccccccccccccccccccccccccccc",
+					"atTip": true,
+					"parent": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"summary": {
+						"commit": "cccccccccccccccccccccccccccccccccccccccc",
+						"parents": [
+							"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"dddddddddddddddddddddddddddddddddddddddd"
+						],
+						"subject": "commit c",
+						"author": "Synthetic",
+						"committedAt": "2026-10-10T18:00:00+00:00",
+						"branches": [
+							"main"
+						],
+						"retained": false,
+						"coverage": "verified",
+						"gaps": [],
+						"records": [],
+						"legacy": []
+					}
+				}
+			}
+		},
+		{
+			"name": "feature branch shows its own head",
+			"input": {
+				"branch": "feature/x",
+				"commit": null,
+				"category": "functions"
+			},
+			"output": {
+				"kind": "scope",
+				"scope": {
+					"location": {
+						"branch": "feature/x",
+						"commit": null,
+						"category": "functions"
+					},
+					"mode": "current",
+					"branch": "feature/x",
+					"tip": "dddddddddddddddddddddddddddddddddddddddd",
+					"commit": "dddddddddddddddddddddddddddddddddddddddd",
+					"atTip": true,
+					"parent": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"summary": {
+						"commit": "dddddddddddddddddddddddddddddddddddddddd",
+						"parents": [
+							"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+						],
+						"subject": "commit d",
+						"author": "Synthetic",
+						"committedAt": "2026-10-10T18:00:00+00:00",
+						"branches": [
+							"feature/x"
+						],
+						"retained": false,
+						"coverage": "verified",
+						"gaps": [],
+						"records": [],
+						"legacy": []
+					}
+				}
+			}
+		}
+	]
+}
