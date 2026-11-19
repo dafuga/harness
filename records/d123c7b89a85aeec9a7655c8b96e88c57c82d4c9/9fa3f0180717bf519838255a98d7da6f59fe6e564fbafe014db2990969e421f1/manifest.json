@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"record": "9fa3f0180717bf519838255a98d7da6f59fe6e564fbafe014db2990969e421f1",
+	"source": {
+		"commit": "d123c7b89a85aeec9a7655c8b96e88c57c82d4c9",
+		"tree": "e9f6dad7ff76ccba2eb63cb0599cfc0455e715da"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "1a050441d871904c38310248237c039d75f20006f9a6cd83009e316afad01005",
+			"bytes": 110124,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/d123c7b89a85aeec9a7655c8b96e88c57c82d4c9/package-api/packed-consumer/consumer-output.json",
+			"sha256": "719d39cac6da90a838d6bacb3af92733fe524008c7c36efe5121c4576a11b87c",
+			"bytes": 8583,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/package-api-packed-consumer.log",
+			"sha256": "b0aa3d3f73e0b9239000f46e079e04b6b422db4cce9c6708e1ece80ea013c3ce",
+			"bytes": 514,
+			"storage": "git"
+		}
+	]
+}
