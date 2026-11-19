@@ -1,0 +1,113 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-removed",
+	"symbol": "entityRemoved",
+	"cases": [
+		{
+			"name": "same declarations on both sides",
+			"input": {
+				"before": [
+					{
+						"scenario": "orders-page",
+						"states": [
+							"default",
+							"empty",
+							"denied"
+						]
+					},
+					{
+						"scenario": "checkout",
+						"states": [
+							"pay",
+							"receipt"
+						]
+					}
+				],
+				"after": [
+					{
+						"scenario": "orders-page",
+						"states": [
+							"default",
+							"empty",
+							"denied"
+						]
+					},
+					{
+						"scenario": "checkout",
+						"states": [
+							"pay",
+							"receipt"
+						]
+					}
+				]
+			},
+			"output": []
+		},
+		{
+			"name": "a scenario only the commit adds",
+			"input": {
+				"before": [
+					{
+						"scenario": "orders-page",
+						"states": [
+							"default",
+							"empty",
+							"denied"
+						]
+					}
+				],
+				"after": [
+					{
+						"scenario": "orders-page",
+						"states": [
+							"default",
+							"empty",
+							"denied"
+						]
+					},
+					{
+						"scenario": "checkout",
+						"states": [
+							"pay",
+							"receipt"
+						]
+					},
+					{
+						"scenario": "filter",
+						"states": [
+							"match"
+						]
+					}
+				]
+			},
+			"output": []
+		},
+		{
+			"name": "a capture on the selected commit is ignored",
+			"input": {
+				"before": [
+					{
+						"scenario": "orders-page",
+						"states": [
+							"default",
+							"empty",
+							"denied"
+						]
+					}
+				],
+				"after": [
+					{
+						"scenario": "orders-page",
+						"states": [
+							"default",
+							"empty",
+							"denied"
+						]
+					}
+				]
+			},
+			"output": []
+		}
+	]
+}
