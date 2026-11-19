@@ -8,6 +8,8 @@ export const taskUsageSchema = z.strictObject({
 	cacheWriteTokens: count,
 	cacheWriteLongTokens: count.optional(),
 	reportedCostUsd: count,
+	actualUsd: count.optional(),
+	codexCredits: count.optional(),
 	reasoningTokens: count.optional()
 });
 export const taskCostSchema = z.strictObject({

@@ -18,7 +18,7 @@
 				"name": "taskApiCost.model",
 				"type": "string",
 				"required": true,
-				"description": "The model id matched exactly and case-sensitively against the built-in rate table (claude-haiku-5-5, claude-opus-5-5, claude-sonnet-5-5, gpt-6-luna, gpt-6.1-sol, gpt-6-astra), which supplies the token rates and the source URL. Any other string has no rate, so source is null, and without a valid reportedCostUsd the basis is 'unavailable'.",
+				"description": "The model id matched exactly and case-sensitively against the built-in rate table (claude-haiku-5-5, claude-opus-5-5, claude-sonnet-5-5, gpt-6-luna, gpt-6.1-sol, gpt-6.2-sol, gpt-6.1-terra, gpt-6-astra, gpt-6.2-astra, claude-fable-5-2), which supplies the token rates and the source URL. Any other string has no rate, so source is null, and without a valid reportedCostUsd the basis is 'unavailable'.",
 				"examples": ["claude-sonnet-5-5", "gpt-6.1-sol", "claude-haiku-5-5"]
 			},
 			{
@@ -59,34 +59,34 @@
 			{
 				"name": "taskApiCost",
 				"type": "TaskApiCost",
-				"description": "The synchronous API-equivalent cost of one task at standard global rates, never a subscription invoice, with rateCard always 'standard-global-2026-10-25' and source set to the model's pricing page URL or null when the model has no rate. usd is set for a CLI-reported cost or when minimumUsd and maximumUsd agree within 1e-12, otherwise usd is null and the two bounds give the range; basis is 'cli-reported', 'standard-api-estimate' or 'unavailable', and every amount is null when unavailable.",
+				"description": "The synchronous API-equivalent cost of one task at standard global rates, never a subscription invoice, with rateCard always 'standard-global-2026-11-19' and source set to the model's pricing page URL or null when the model has no rate. usd is set for a CLI-reported cost or when minimumUsd and maximumUsd agree within 1e-12, otherwise usd is null and the two bounds give the range; basis is 'cli-reported', 'standard-api-estimate' or 'unavailable', and every amount is null when unavailable.",
 				"examples": [
 					{
-						"rateCard": "standard-global-2026-10-25",
+						"rateCard": "standard-global-2026-11-19",
 						"source": "https://platform.claude.com/docs/en/about-claude/pricing",
 						"usd": 0.0412,
 						"minimumUsd": 0.0412,
 						"maximumUsd": 0.0412,
 						"basis": "cli-reported",
-						"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+						"note": "CLI-reported API-equivalent cost."
 					},
 					{
-						"rateCard": "standard-global-2026-10-25",
+						"rateCard": "standard-global-2026-11-19",
 						"source": "https://platform.claude.com/docs/en/about-claude/pricing",
 						"usd": null,
 						"minimumUsd": 0.04738,
 						"maximumUsd": 0.07206,
 						"basis": "standard-api-estimate",
-						"note": "Standard global token rates, excluding tools, regional and fast-tier surcharges. Ranges preserve missing cache-write duration and per-request context tiers."
+						"note": "Standard global token rates. Ranges reflect unknown cache and request context tiers."
 					},
 					{
-						"rateCard": "standard-global-2026-10-25",
+						"rateCard": "standard-global-2026-11-19",
 						"source": null,
 						"usd": null,
 						"minimumUsd": null,
 						"maximumUsd": null,
 						"basis": "unavailable",
-						"note": "No verified rates for this exact model."
+						"note": "No verified price for this model."
 					}
 				]
 			}
@@ -107,7 +107,7 @@
 						"name": "taskApiCost.model",
 						"type": "string",
 						"required": true,
-						"description": "The model id matched exactly and case-sensitively against the built-in rate table (claude-haiku-5-5, claude-opus-5-5, claude-sonnet-5-5, gpt-6-luna, gpt-6.1-sol, gpt-6-astra), which supplies the token rates and the source URL. Any other string has no rate, so source is null, and without a valid reportedCostUsd the basis is 'unavailable'.",
+						"description": "The model id matched exactly and case-sensitively against the built-in rate table (claude-haiku-5-5, claude-opus-5-5, claude-sonnet-5-5, gpt-6-luna, gpt-6.1-sol, gpt-6.2-sol, gpt-6.1-terra, gpt-6-astra, gpt-6.2-astra, claude-fable-5-2), which supplies the token rates and the source URL. Any other string has no rate, so source is null, and without a valid reportedCostUsd the basis is 'unavailable'.",
 						"examples": ["claude-sonnet-5-5", "gpt-6.1-sol", "claude-haiku-5-5"]
 					},
 					{
@@ -148,34 +148,34 @@
 					{
 						"name": "taskApiCost",
 						"type": "TaskApiCost",
-						"description": "The synchronous API-equivalent cost of one task at standard global rates, never a subscription invoice, with rateCard always 'standard-global-2026-10-25' and source set to the model's pricing page URL or null when the model has no rate. usd is set for a CLI-reported cost or when minimumUsd and maximumUsd agree within 1e-12, otherwise usd is null and the two bounds give the range; basis is 'cli-reported', 'standard-api-estimate' or 'unavailable', and every amount is null when unavailable.",
+						"description": "The synchronous API-equivalent cost of one task at standard global rates, never a subscription invoice, with rateCard always 'standard-global-2026-11-19' and source set to the model's pricing page URL or null when the model has no rate. usd is set for a CLI-reported cost or when minimumUsd and maximumUsd agree within 1e-12, otherwise usd is null and the two bounds give the range; basis is 'cli-reported', 'standard-api-estimate' or 'unavailable', and every amount is null when unavailable.",
 						"examples": [
 							{
-								"rateCard": "standard-global-2026-10-25",
+								"rateCard": "standard-global-2026-11-19",
 								"source": "https://platform.claude.com/docs/en/about-claude/pricing",
 								"usd": 0.0412,
 								"minimumUsd": 0.0412,
 								"maximumUsd": 0.0412,
 								"basis": "cli-reported",
-								"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+								"note": "CLI-reported API-equivalent cost."
 							},
 							{
-								"rateCard": "standard-global-2026-10-25",
+								"rateCard": "standard-global-2026-11-19",
 								"source": "https://platform.claude.com/docs/en/about-claude/pricing",
 								"usd": null,
 								"minimumUsd": 0.04738,
 								"maximumUsd": 0.07206,
 								"basis": "standard-api-estimate",
-								"note": "Standard global token rates, excluding tools, regional and fast-tier surcharges. Ranges preserve missing cache-write duration and per-request context tiers."
+								"note": "Standard global token rates. Ranges reflect unknown cache and request context tiers."
 							},
 							{
-								"rateCard": "standard-global-2026-10-25",
+								"rateCard": "standard-global-2026-11-19",
 								"source": null,
 								"usd": null,
 								"minimumUsd": null,
 								"maximumUsd": null,
 								"basis": "unavailable",
-								"note": "No verified rates for this exact model."
+								"note": "No verified price for this model."
 							}
 						]
 					}
@@ -199,7 +199,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "service.agents-providers-module-task-analytics",
+			"unit": "service.agents-providers-module-task-analytics-service-model-analytics",
 			"via": "import",
 			"origin": "derived"
 		}
