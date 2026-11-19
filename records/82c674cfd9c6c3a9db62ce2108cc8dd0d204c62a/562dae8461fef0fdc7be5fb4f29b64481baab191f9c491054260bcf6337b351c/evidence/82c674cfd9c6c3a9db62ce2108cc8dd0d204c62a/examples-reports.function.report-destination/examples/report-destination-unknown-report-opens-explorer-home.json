@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.report-destination",
+	"symbol": "reportDestination",
+	"cases": [
+		{
+			"name": "unknown revision opens the tip",
+			"input": {
+				"revision": "ffffffffffffffffffffffffffffffffffffffff"
+			},
+			"output": "/branch/main/pages"
+		},
+		{
+			"name": "malformed revision opens the tip",
+			"input": {
+				"revision": "not a commit"
+			},
+			"output": "/branch/main/pages"
+		},
+		{
+			"name": "null report opens the tip",
+			"input": {
+				"report": null
+			},
+			"output": "/branch/main/pages"
+		},
+		{
+			"name": "no branch gives the first commit",
+			"input": {
+				"branches": []
+			},
+			"output": "/commit/kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk/pages"
+		}
+	]
+}
