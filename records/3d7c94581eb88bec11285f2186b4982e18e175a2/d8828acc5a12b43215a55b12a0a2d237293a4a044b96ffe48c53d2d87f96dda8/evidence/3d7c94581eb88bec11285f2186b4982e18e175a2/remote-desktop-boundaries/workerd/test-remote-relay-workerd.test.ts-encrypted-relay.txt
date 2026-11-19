@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.SuYNuD/tmp/harness-snapshot-N1aBoe/packages/desktop
+
+ ✓ test/remote-relay-workerd.test.ts (2 tests) 7610ms
+   ✓ a phone pairs, reads, runs and is revoked through the relay, which never holds plaintext  3254ms
+   ✓ suspension is offline at the relay; waking resumes the same session over a new channel  1414ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  23:27:54
+   Duration  11.59s (transform 2.10s, setup 143ms, collect 3.61s, tests 7.61s, environment 0ms, prepare 37ms)
+
+JSON report written to /tmp/z5jp8p-hl.SuYNuD/tmp/harness-runner-u0lilE/report.json
