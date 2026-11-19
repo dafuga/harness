@@ -1,0 +1,119 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.comparison-types",
+	"symbol": "comparisonSchema",
+	"cases": [
+		{
+			"name": "context without its request digest",
+			"input": {
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 10
+				}
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					{
+						"path": "request",
+						"message": "Invalid input: expected string, received undefined"
+					}
+				]
+			}
+		},
+		{
+			"name": "context without its boundary",
+			"input": {
+				"request": "10ab7097012b0fbce547679da3ab226bee437a8b00bd910ab431edab57896c53",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 10
+				}
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					{
+						"path": "boundary",
+						"message": "Invalid option: expected one of \"public-invocation\"|\"fixture\""
+					}
+				]
+			}
+		},
+		{
+			"name": "context without its protocol",
+			"input": {
+				"request": "10ab7097012b0fbce547679da3ab226bee437a8b00bd910ab431edab57896c53",
+				"boundary": "public-invocation",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 10
+				}
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					{
+						"path": "protocol",
+						"message": "Invalid input: expected string, received undefined"
+					}
+				]
+			}
+		},
+		{
+			"name": "context without its sampling",
+			"input": {
+				"request": "10ab7097012b0fbce547679da3ab226bee437a8b00bd910ab431edab57896c53",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1"
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					{
+						"path": "sampling",
+						"message": "Invalid input: expected object, received undefined"
+					}
+				]
+			}
+		},
+		{
+			"name": "workload name alone",
+			"input": {
+				"workload": "sum"
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					{
+						"path": "request",
+						"message": "Invalid input: expected string, received undefined"
+					},
+					{
+						"path": "boundary",
+						"message": "Invalid option: expected one of \"public-invocation\"|\"fixture\""
+					},
+					{
+						"path": "protocol",
+						"message": "Invalid input: expected string, received undefined"
+					},
+					{
+						"path": "sampling",
+						"message": "Invalid input: expected object, received undefined"
+					},
+					{
+						"path": "",
+						"message": "Unrecognized key: \"workload\""
+					}
+				]
+			}
+		}
+	]
+}
