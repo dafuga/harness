@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.09s2B0/tmp/harness-snapshot-ydpcXu/packages/desktop
+
+ ✓ test/services/recorded-evidence.test.ts (6 tests) 44732ms
+   ✓ the tip of a branch is shown alone, with what it was read at  1057ms
+   ✓ a commit is compared with its exact first parent, also when it is the tip  662ms
+   ✓ a commit without a record answers with its gap, and a first commit has no parent  681ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  22:21:51
+   Duration  47.98s (transform 1.76s, setup 150ms, collect 2.86s, tests 44.73s, environment 0ms, prepare 38ms)
+
+JSON report written to /tmp/z5jp8p-hl.09s2B0/tmp/harness-runner-sDnpc4/report.json
