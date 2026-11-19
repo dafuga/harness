@@ -1,0 +1,16 @@
+
+Running 9 tests using 1 worker
+
+(node:82424) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/units/explorer-shell-unit-reports.style.harness.spec.ts:24:2 › reports.style.harness: default host draws no notice at desktop (679ms)
+  ✓  2 tests/e2e/units/explorer-shell-unit-reports.style.harness.spec.ts:24:2 › reports.style.harness: default host draws no notice at tablet (630ms)
+  ✓  3 tests/e2e/units/explorer-shell-unit-reports.style.harness.spec.ts:24:2 › reports.style.harness: default host draws no notice at mobile (624ms)
+  ✓  4 tests/e2e/units/explorer-shell-unit-reports.style.harness.spec.ts:36:3 › reports.style.harness:problem at desktop (589ms)
+  ✓  5 tests/e2e/units/explorer-shell-unit-reports.style.harness.spec.ts:36:3 › reports.style.harness:missing at desktop (591ms)
+  ✓  6 tests/e2e/units/explorer-shell-unit-reports.style.harness.spec.ts:36:3 › reports.style.harness:problem at tablet (572ms)
+  ✓  7 tests/e2e/units/explorer-shell-unit-reports.style.harness.spec.ts:36:3 › reports.style.harness:missing at tablet (574ms)
+  ✓  8 tests/e2e/units/explorer-shell-unit-reports.style.harness.spec.ts:36:3 › reports.style.harness:problem at mobile (573ms)
+  ✓  9 tests/e2e/units/explorer-shell-unit-reports.style.harness.spec.ts:36:3 › reports.style.harness:missing at mobile (569ms)
+
+  9 passed (7.0s)
