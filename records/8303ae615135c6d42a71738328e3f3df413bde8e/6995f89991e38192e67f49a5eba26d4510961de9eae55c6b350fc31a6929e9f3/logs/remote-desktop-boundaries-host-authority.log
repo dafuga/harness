@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.NEqxeh/tmp/harness-snapshot-lQvefo/packages/desktop
+
+ ✓ test/remote-enable-lifecycle.test.ts (2 tests) 2492ms
+   ✓ disabling during registration cannot enable or start the host later  1263ms
+   ✓ quitting during registration cannot persist or start the host later  1209ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  23:08:25
+   Duration  6.26s (transform 1.85s, setup 147ms, collect 3.35s, tests 2.49s, environment 0ms, prepare 57ms)
+
+JSON report written to /tmp/z5jp8p-hl.NEqxeh/tmp/harness-runner-nm0MhH/report.json
