@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "planning.function.plan-reads",
+	"symbol": "planReads",
+	"cases": [
+		{
+			"name": "rev-parse --verify bdce5809b18aab8ed80f8187f8f3dd382dcb24a2^{commit}",
+			"input": {
+				"args": [
+					"rev-parse",
+					"--verify",
+					"bdce5809b18aab8ed80f8187f8f3dd382dcb24a2^{commit}"
+				]
+			},
+			"output": {
+				"answer": "bdce5809b18aab8ed80f8187f8f3dd382dcb24a2",
+				"reachedGit": 1
+			}
+		},
+		{
+			"name": "rev-parse --verify bdce5809b18aab8ed80f8187f8f3dd382dcb24a2^{commit}",
+			"input": {
+				"args": [
+					"rev-parse",
+					"--verify",
+					"bdce5809b18aab8ed80f8187f8f3dd382dcb24a2^{commit}"
+				]
+			},
+			"output": {
+				"answer": "bdce5809b18aab8ed80f8187f8f3dd382dcb24a2",
+				"reachedGit": 2
+			}
+		}
+	]
+}
