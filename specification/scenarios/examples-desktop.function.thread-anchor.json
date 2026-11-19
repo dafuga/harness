@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.thread-anchor",
+	"title": "desktop.function.thread-anchor examples",
+	"kind": "headless",
+	"units": ["desktop.function.thread-anchor"],
+	"builds": [],
+	"states": [
+		{
+			"id": "selects-the-exact-version-and-its-current-option",
+			"title": "Selects the exact version and its current option",
+			"coverage": "required"
+		},
+		{
+			"id": "builds-the-entity-wide-target-with-null-fields",
+			"title": "Builds the entity-wide target with null fields",
+			"coverage": "required"
+		},
+		{
+			"id": "builds-image-targets-with-an-option-only-when-truthy",
+			"title": "Builds image targets with an option only when it is truthy",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.thread-anchor.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"selects-the-exact-version-and-its-current-option",
+				"builds-the-entity-wide-target-with-null-fields",
+				"builds-image-targets-with-an-option-only-when-truthy"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"selects-the-exact-version-and-its-current-option",
+				"builds-the-entity-wide-target-with-null-fields",
+				"builds-image-targets-with-an-option-only-when-truthy"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"selects-the-exact-version-and-its-current-option",
+				"builds-the-entity-wide-target-with-null-fields",
+				"builds-image-targets-with-an-option-only-when-truthy"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
