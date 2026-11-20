@@ -1,0 +1,128 @@
+{
+	"schemaVersion": 1,
+	"record": "62938b55d00bc24b190ce0d0af0197e829ac660ab4c72ac9d65885337d4c22f5",
+	"source": {
+		"commit": "ecb91a0508a98c91876158586472ee870eb311f9",
+		"tree": "abd6c5656cfb7f28ed60d2f15dc92ec62db8e02b"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "d39e471f119e58c14d40d711486cc3898f6848f323025099e40a46ac4c02d7da",
+			"bytes": 17906,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.comparison-types/examples/roundsprotocol-warmupcalls-measurementboundaries-and-metricu.json",
+			"sha256": "40a628e7f3e3e869bf8939a38d534e8f4946ccdf73a8244e4f5f269f2a9b64cb",
+			"bytes": 895,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.comparison-types/examples/test-examples-function.comparison-types.test.ts-roundsprotocol-warmupcalls-measurementboundaries-and-metricu.txt",
+			"sha256": "898d2f9e8090d5a0602630d539b0fdcc7f798e3f1f73a6dc3900d4bd79155c06",
+			"bytes": 407,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.comparison-types/examples/test-examples-function.comparison-types.test.ts-roundsprotocol-warmupcalls-measurementboundaries-and-metricu.json",
+			"sha256": "a97d4952b8b9c54e2bfb503fd49747fa2195c917385f48e81a3b5802944a5b3e",
+			"bytes": 2200,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.comparison-types/examples/comparisonschema-accepts-a-complete-context-for-each-allowed.json",
+			"sha256": "68f22af014916edeb89c9257281a314cfbdbd6eaf37b3fd6a4a22713542f6902",
+			"bytes": 1438,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.comparison-types/examples/test-examples-function.comparison-types.test.ts-comparisonschema-accepts-a-complete-context-for-each-allowed.txt",
+			"sha256": "898d2f9e8090d5a0602630d539b0fdcc7f798e3f1f73a6dc3900d4bd79155c06",
+			"bytes": 407,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.comparison-types/examples/test-examples-function.comparison-types.test.ts-comparisonschema-accepts-a-complete-context-for-each-allowed.json",
+			"sha256": "909ba7b792be664c34d56c401b08bd32c5a454ddbdfd9748944d6cfc532711e4",
+			"bytes": 1726,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.comparison-types/examples/comparisonschema-refuses-an-incomplete-context-and-reports-e.json",
+			"sha256": "7727f56419b61e51405746896947d8d3803a75a2d940d7a4a29c1db713e95b6c",
+			"bytes": 2548,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.comparison-types/examples/test-examples-function.comparison-types.test.ts-comparisonschema-refuses-an-incomplete-context-and-reports-e.txt",
+			"sha256": "898d2f9e8090d5a0602630d539b0fdcc7f798e3f1f73a6dc3900d4bd79155c06",
+			"bytes": 407,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.comparison-types/examples/test-examples-function.comparison-types.test.ts-comparisonschema-refuses-an-incomplete-context-and-reports-e.json",
+			"sha256": "97ced1cb3418dca83e2741d4ce3105b3ccc48835352f24db19581f360637420f",
+			"bytes": 2959,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.comparison-types/examples/comparisonschema-refuses-a-malformed-value-in-each-field.json",
+			"sha256": "c7269c2d984cf0047a3480e2d7a10a0ac5d62aed15846df3357996adcf1a4ecc",
+			"bytes": 3920,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.comparison-types/examples/test-examples-function.comparison-types.test.ts-comparisonschema-refuses-a-malformed-value-in-each-field.txt",
+			"sha256": "898d2f9e8090d5a0602630d539b0fdcc7f798e3f1f73a6dc3900d4bd79155c06",
+			"bytes": 407,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.comparison-types/examples/test-examples-function.comparison-types.test.ts-comparisonschema-refuses-a-malformed-value-in-each-field.json",
+			"sha256": "50623508b21890a921be15c4204a636b3f4244aa8fe9c95722b85b1071f5cc2d",
+			"bytes": 2255,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.comparison-types/examples/comparisonschema-rejects-unknown-keys-at-the-top-level-and-i.json",
+			"sha256": "027da4b026e774b830387201fe888d01be1de3e5f9daa202f4ba399ecf2a4c53",
+			"bytes": 1102,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.comparison-types/examples/test-examples-function.comparison-types.test.ts-comparisonschema-rejects-unknown-keys-at-the-top-level-and-i.txt",
+			"sha256": "898d2f9e8090d5a0602630d539b0fdcc7f798e3f1f73a6dc3900d4bd79155c06",
+			"bytes": 407,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.comparison-types/examples/test-examples-function.comparison-types.test.ts-comparisonschema-rejects-unknown-keys-at-the-top-level-and-i.json",
+			"sha256": "67ac2a0b91a18c968f75379a1e04c872afa291ebe6f7d5926dca0d9c33d41792",
+			"bytes": 883,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-function.comparison-types-examples.log",
+			"sha256": "898d2f9e8090d5a0602630d539b0fdcc7f798e3f1f73a6dc3900d4bd79155c06",
+			"bytes": 407,
+			"storage": "git"
+		}
+	]
+}
