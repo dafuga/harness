@@ -1,0 +1,131 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.explorer-route",
+	"symbol": "explorerRoute",
+	"cases": [
+		{
+			"name": "function examples tab from query",
+			"input": {
+				"path": "/branch/main/functions/function.slugify",
+				"search": "?tab=examples"
+			},
+			"output": {
+				"branch": "main",
+				"commit": null,
+				"category": "functions",
+				"entity": "function.slugify",
+				"tab": "examples"
+			}
+		},
+		{
+			"name": "pinned details source tab is kept",
+			"input": {
+				"path": "/branch/main/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/functions/function.slugify/details",
+				"search": "?tab=source"
+			},
+			"output": {
+				"branch": "main",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"category": "functions",
+				"entity": "function.slugify",
+				"section": "details",
+				"tab": "source"
+			}
+		},
+		{
+			"name": "models tab is dropped on a function",
+			"input": {
+				"path": "/branch/main/functions/function.slugify",
+				"search": "?tab=models"
+			},
+			"output": {
+				"branch": "main",
+				"commit": null,
+				"category": "functions",
+				"entity": "function.slugify"
+			}
+		},
+		{
+			"name": "states tab is dropped on a function",
+			"input": {
+				"path": "/branch/main/functions/function.slugify",
+				"search": "?tab=states"
+			},
+			"output": {
+				"branch": "main",
+				"commit": null,
+				"category": "functions",
+				"entity": "function.slugify"
+			}
+		},
+		{
+			"name": "states tab is kept on a component",
+			"input": {
+				"path": "/branch/main/components/card",
+				"search": "?tab=states"
+			},
+			"output": {
+				"branch": "main",
+				"commit": null,
+				"category": "components",
+				"entity": "card",
+				"tab": "states"
+			}
+		},
+		{
+			"name": "category index with trailing slash keeps no tab",
+			"input": {
+				"path": "/branch/main/functions/",
+				"search": "?tab=examples"
+			},
+			"output": {
+				"branch": "main",
+				"commit": null,
+				"category": "functions"
+			}
+		},
+		{
+			"name": "legacy page contract opens models",
+			"input": {
+				"path": "/branch/main/pages/page.orders",
+				"search": "?tab=contract"
+			},
+			"output": {
+				"branch": "main",
+				"commit": null,
+				"category": "pages",
+				"entity": "page.orders",
+				"tab": "models"
+			}
+		},
+		{
+			"name": "helper and tab selected by query",
+			"input": {
+				"path": "/branch/main/functions/function.slugify",
+				"search": "?helper=toKebabCase&tab=examples"
+			},
+			"output": {
+				"branch": "main",
+				"commit": null,
+				"category": "functions",
+				"entity": "function.slugify",
+				"helper": "toKebabCase",
+				"tab": "examples"
+			}
+		},
+		{
+			"name": "helper query is ignored on a component",
+			"input": {
+				"path": "/branch/main/components/card",
+				"search": "?helper=wrong"
+			},
+			"output": {
+				"branch": "main",
+				"commit": null,
+				"category": "components",
+				"entity": "card"
+			}
+		}
+	]
+}
