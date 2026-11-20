@@ -67,6 +67,20 @@ export async function fitEveryCheckpoint(page: Page, checkpoints: number) {
 	await page.setViewportSize(viewport);
 	await fit.click();
 }
+/** Electron's classic 15 px scrollbar is hidden for this one shot, so the PNG keeps the declared width. */
+async function declaredFullPage(page: Page, options: Parameters<Page['screenshot']>[0]) {
+	const style = await page.addStyleTag({ content: ':root{scrollbar-width:none!important}' });
+	try {
+		return await page.screenshot({ ...options, fullPage: true });
+	} finally {
+		await style.evaluate((node) => (node as Element).remove());
+	}
+}
+function expectDeclaredPng(bytes: Buffer, size: { width: number; height: number }) {
+	expect(bytes.toString('latin1', 1, 4) + bytes.toString('latin1', 12, 16)).toBe('PNGIHDR');
+	expect(bytes.readUInt32BE(16), 'PNG IHDR width').toBe(size.width);
+	expect(bytes.readUInt32BE(20), 'PNG IHDR height').toBeGreaterThanOrEqual(size.height);
+}
 export async function capture(page: Page, state: string) {
 	if (process.env.TAKE_SCREENSHOT !== 'true' && !process.env.HARNESS_EVIDENCE_DIR) return;
 	await page.evaluate(async () => {
@@ -88,6 +102,8 @@ export async function capture(page: Page, state: string) {
 			throw new Error(
 				'Game evidence needs a declared state, viewport and compiled build identity.'
 			);
+		const png = await declaredFullPage(page, { animations: 'disabled', caret: 'hide' });
+		expectDeclaredPng(png, size!);
 		recordCapture(
 			{
 				evidence: 'game-native-screens',
@@ -100,13 +116,12 @@ export async function capture(page: Page, state: string) {
 				server: { buildId, revision },
 				note: 'Real compiled Electron renderer and IPC; controlled GPT Image response in a disposable project; no live provider request.'
 			},
-			await page.screenshot({ fullPage: true, animations: 'disabled', caret: 'hide' })
+			png
 		);
 	}
 	if (process.env.TAKE_SCREENSHOT === 'true')
-		await page.screenshot({
-			path: `test-results/game-native-${state}-${page.viewportSize()?.width}.png`,
-			fullPage: true
+		await declaredFullPage(page, {
+			path: `test-results/game-native-${state}-${page.viewportSize()?.width}.png`
 		});
 }
 export async function launch(profile: string) {
