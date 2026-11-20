@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-ui.E7GO8J/tmp/harness-snapshot-21Ffzb/packages/desktop
+
+ ✓ test/shells-planning.test.ts (2 tests) 7636ms
+   ✓ a shell plan is visual: it is planned for the desktop viewport under Shells  1715ms
+   ✓ an agent asked from Shells proposes a shell, and it is planned with an image  5901ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  12:09:43
+   Duration  8.80s (transform 595ms, setup 153ms, collect 774ms, tests 7.64s, environment 0ms, prepare 40ms)
+
+JSON report written to /tmp/z5jp8p-ui.E7GO8J/tmp/harness-runner-LBxfxe/report.json
