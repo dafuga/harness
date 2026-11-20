@@ -1,0 +1,21 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "service.check-run",
+	"symbol": "CheckRunService.run",
+	"cases": [
+		{
+			"name": "exit 4 yields a failed entry and the exit code as its only failure",
+			"input": {
+				"command": "exit 4"
+			},
+			"output": {
+				"passed": false,
+				"failures": [
+					"test CheckRunService failed with exit code 4"
+				],
+				"status": "failed"
+			}
+		}
+	]
+}

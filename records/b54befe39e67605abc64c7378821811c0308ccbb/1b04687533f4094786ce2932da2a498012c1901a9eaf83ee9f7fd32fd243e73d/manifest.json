@@ -1,0 +1,207 @@
+{
+	"schemaVersion": 1,
+	"record": "1b04687533f4094786ce2932da2a498012c1901a9eaf83ee9f7fd32fd243e73d",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "26337c0aa3fc7d20ffb78b15b294e3b5029a508e3c61195b7f2af20a33f5e133",
+			"bytes": 554734,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/browser-error-evidence/desktop/browser-errors-desktop-desktop.png",
+			"sha256": "39833f82c58fdb65cf763c5a06053a5ef149668b571ea9ff902ad104e3da62e6",
+			"bytes": 1915484,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/browser-error-evidence/desktop/browser-errors-desktop-mobile.png",
+			"sha256": "9947d084b275a759667454f640ada8cf2283dc830ba0ef67fec51a20dc2137b5",
+			"bytes": 1057058,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/browser-error-evidence/console/browser-errors-console-desktop.png",
+			"sha256": "b0ed2c6afa802028238c1aa8c5bbfbe9a7cd766826f81036edf7e84df0502ca6",
+			"bytes": 101678,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/browser-error-evidence/console/browser-errors-console-mobile.png",
+			"sha256": "7135c6ac665440c4884550773961b2ac3917eee4b5d32ddaedf5c4cb57a2c571",
+			"bytes": 91225,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-service.check-run/examples/runs-a-passing-check-and-records-its-log-entry.json",
+			"sha256": "f2b5310e2cdd665ab4adea74061ce941a09295d1b7038e9231de5fe471accad4",
+			"bytes": 776,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-service.check-run/examples/test-examples-service.check-run.test.ts-runs-a-passing-check-and-records-its-log-entry.txt",
+			"sha256": "e93a4696ee04fce8e55e03fa4269dd885a0bc37bad1797dfc9905346b74461a2",
+			"bytes": 602,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-service.check-run/examples/test-examples-service.check-run.test.ts-runs-a-passing-check-and-records-its-log-entry.json",
+			"sha256": "5df1c78e406d9dd67b25447ac2a304d3bd763d90d81bef4690a98c0752f41cc4",
+			"bytes": 1606,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-service.check-run/examples/fails-a-check-that-exits-nonzero-with-its-exit-code.json",
+			"sha256": "3628f9c4829d68f0567dfcdc694ef3e65304eaa63b954eca2ea9e0b85aad13df",
+			"bytes": 412,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-service.check-run/examples/test-examples-service.check-run.test.ts-fails-a-check-that-exits-nonzero-with-its-exit-code.txt",
+			"sha256": "e93a4696ee04fce8e55e03fa4269dd885a0bc37bad1797dfc9905346b74461a2",
+			"bytes": 602,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-service.check-run/examples/test-examples-service.check-run.test.ts-fails-a-check-that-exits-nonzero-with-its-exit-code.json",
+			"sha256": "96aa469836e57b159c89ab780238e360d8e096c153665b5e5f390059ee827fa2",
+			"bytes": 1201,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-service.check-run/examples/scopes-evidence-to-the-scenario-and-prefixes-its-failures.json",
+			"sha256": "6fa67351091df5a8fc3a7c0bd64a807f385a8d68a9a46f794308f1d59806597a",
+			"bytes": 680,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-service.check-run/examples/test-examples-service.check-run.test.ts-scopes-evidence-to-the-scenario-and-prefixes-its-failures.txt",
+			"sha256": "e93a4696ee04fce8e55e03fa4269dd885a0bc37bad1797dfc9905346b74461a2",
+			"bytes": 602,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-service.check-run/examples/test-examples-service.check-run.test.ts-scopes-evidence-to-the-scenario-and-prefixes-its-failures.json",
+			"sha256": "8cfe0b7177639031c51922e8cca90d04517d9511493f848978305f6c83bc2e27",
+			"bytes": 1265,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-service.check-run/examples/returns-the-first-printed-line-of-a-passing-tool.json",
+			"sha256": "33f9a5f2f91fc507634a9ff8509db36da7650e6b24749b7493da14918a7cfeae",
+			"bytes": 350,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-service.check-run/examples/test-examples-service.check-run.test.ts-returns-the-first-printed-line-of-a-passing-tool.txt",
+			"sha256": "e93a4696ee04fce8e55e03fa4269dd885a0bc37bad1797dfc9905346b74461a2",
+			"bytes": 602,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-service.check-run/examples/test-examples-service.check-run.test.ts-returns-the-first-printed-line-of-a-passing-tool.json",
+			"sha256": "93350f7f5990636d500711ab4b30e677b8fcab8fa6bc5942cfdcd152e133c917",
+			"bytes": 552,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-service.check-run/examples/returns-undefined-for-a-tool-command-that-fails.json",
+			"sha256": "f2eb4eef2fd71ffbafbdd32040a72d5fa8134c4a3d5f4d0e32b710074b4cd617",
+			"bytes": 305,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-service.check-run/examples/test-examples-service.check-run.test.ts-returns-undefined-for-a-tool-command-that-fails.txt",
+			"sha256": "e93a4696ee04fce8e55e03fa4269dd885a0bc37bad1797dfc9905346b74461a2",
+			"bytes": 602,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-service.check-run/examples/test-examples-service.check-run.test.ts-returns-undefined-for-a-tool-command-that-fails.json",
+			"sha256": "d9079a69cd9ddf82043b3b9843c99ebf60f199b9a0558ace8262bd0807468a34",
+			"bytes": 557,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-service.check-run/examples/rejects-a-resource-priority-outside-the-known-values-with-zoderror.json",
+			"sha256": "61c0fb3ec3f2b4cfa8df4e307aa4b34b9519e3ea07ad70fe3429bb1917098513",
+			"bytes": 314,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-service.check-run/examples/test-examples-service.check-run.test.ts-rejects-a-resource-priority-outside-the-known-values-with-zoderror.txt",
+			"sha256": "e93a4696ee04fce8e55e03fa4269dd885a0bc37bad1797dfc9905346b74461a2",
+			"bytes": 602,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-service.check-run/examples/test-examples-service.check-run.test.ts-rejects-a-resource-priority-outside-the-known-values-with-zoderror.json",
+			"sha256": "bab30b0357847930321e78abefdc2667dfe5a447c67aa134c1599d5ac1ffeb41",
+			"bytes": 624,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-service.check-run-examples.log",
+			"sha256": "e93a4696ee04fce8e55e03fa4269dd885a0bc37bad1797dfc9905346b74461a2",
+			"bytes": 602,
+			"storage": "git"
+		},
+		{
+			"path": "logs/browser-error-evidence-console.log",
+			"sha256": "d162787e587a192c2c87a75d71845c8faec44c428fdc9d3a310edd83c8a41a19",
+			"bytes": 497,
+			"storage": "git"
+		},
+		{
+			"path": "logs/browser-error-evidence-persistence.log",
+			"sha256": "69f8d81b0ab3f5fff156d3d9dd223b33250dd3c7ce7ae9a863f2fb8b39bc7c2f",
+			"bytes": 958,
+			"storage": "git"
+		},
+		{
+			"path": "logs/browser-error-evidence-classification.log",
+			"sha256": "35bf616908c3b01162707d21d185b96c6a5ef929c948fa57b81947f98839e85b",
+			"bytes": 389,
+			"storage": "git"
+		},
+		{
+			"path": "logs/browser-error-evidence-hosted.log",
+			"sha256": "78fc6b020823722960289b25cb63cb12085b7f68d346888b05c85369a59ef5a8",
+			"bytes": 452,
+			"storage": "git"
+		},
+		{
+			"path": "logs/browser-error-evidence-desktop.log",
+			"sha256": "a04e2deb1ea375157e27140f84aa30d3e18c2ff5410400f9e24539862acf7d0f",
+			"bytes": 219,
+			"storage": "git"
+		}
+	]
+}
