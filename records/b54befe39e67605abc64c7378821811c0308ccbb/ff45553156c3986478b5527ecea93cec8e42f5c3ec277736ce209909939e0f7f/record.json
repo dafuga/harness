@@ -1,0 +1,1124 @@
+{
+	"id": "ff45553156c3986478b5527ecea93cec8e42f5c3ec277736ce209909939e0f7f",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/private/tmp/z5jp8p-hl.mtGXPD/source",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-20T14:16:29.922Z",
+	"finishedAt": "2026-11-20T14:16:44.605Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "function.explorer-route",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "47fbc800b71d2208789ffa9f631d132d76aded36c57cc93fe9e0bdb9601575d2",
+			"source": "8d65e622aee72265d4ef9def98ed3f1b72118e7d519d9b0b7e4246003a4b513b",
+			"contract": "57466b332297d84cf22c40c7777ed07973496afceaa43b079959f1569479f648",
+			"runtime": "12e9111821c48eb3a38da5d040d27e65754f2470650b6d557a3c5badb85e7436",
+			"files": [
+				{
+					"path": "src/utils/development-tooling/explorer-route/explorerTabs.ts",
+					"hash": "89c13c52daf93fe678cec990b47c3eec24d633d7"
+				},
+				{
+					"path": "src/utils/development-tooling/explorer-route/explorerTabs.types.ts",
+					"hash": "ace2ed1f10e5d220dd37a3ada287ecd0ef8a0ac2"
+				},
+				{
+					"path": "src/utils/explorer-ui/explorerRoute.ts",
+					"hash": "786238edd2591a7ecfea2ab2e9402217e829eef0"
+				},
+				{
+					"path": "src/utils/explorer-ui/explorerRoute.types.ts",
+					"hash": "2bc8ee112d0664bf92ffc3681ab9e4fd72345a3d"
+				},
+				{
+					"path": "src/utils/explorerRoute.ts",
+					"hash": "98aaeb42bd71af3fa52f58dc576868c9a28f54bc"
+				}
+			]
+		},
+		{
+			"unit": "function.helper-contract",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "9c353a3972ec236943987a1d0769a7c7057762aa315feedfbc7b20fabf241831",
+			"source": "4a833a512bdd432cd85c6c888464323161276b4446a0efe885e501f16fce3749",
+			"contract": "2960793a3428b77d27064ffba8f91ebc3eea9b76da8c706d55d6fa1b71a9f52e",
+			"runtime": "17895a19324628dbd39f109fcbe937e914f606aaab3c99a57d26c9e59e3cc989",
+			"files": [
+				{
+					"path": "src/utils/development-tooling/helperContract.ts",
+					"hash": "4326ac0d8bb3f5bda928f9ef2e7a1ba552ad3d00"
+				},
+				{
+					"path": "src/utils/development-tooling/helperContract.types.ts",
+					"hash": "a84a3b8a7d5a3f787bb746a17a2c51af73f595bc"
+				}
+			]
+		},
+		{
+			"unit": "function.record-capture",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41e40bb7a2b44b7fa1da3881ebf1a687d3d8471d42fd0a7c44d584361255ff42",
+			"source": "142bfa1513b076860925e3bac72e4361c1edd5901abe0b7061ebac711646346a",
+			"contract": "025908d6c17bb9a51a22fa8f85c40b9ea26bb9161a5d016c554aa7e340c15a52",
+			"runtime": "a289759bf06513632380a5baa8ac1f6a9a916c1d1905e0de6a7be531f7936431",
+			"files": [
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.ts",
+					"hash": "316c75b906d532b1a5b376f345b7de8e00da1f4d"
+				},
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.types.ts",
+					"hash": "8e36a063513222284548df76d240d4a45f6626a9"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cfb49b515cacc084047d75cdf10a295ab3790ecaf878e2b75e06463793f628bf",
+			"source": "cbf5fb170c4db458f39bcc4ba18996e377a782371040baa39d1667f04bf87635",
+			"contract": "6f2e8a598fb220dd111fe8085fb28c645ee24019cc4b1f25315b141a569962d7",
+			"runtime": "ec246a1eb80a7c06e7ccbd8601bab05e75d00122b0ad9d09eec95bbe94f31c19",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts",
+					"hash": "36741c54d766dd2689e542099ca02135cd07760b"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.types.ts",
+					"hash": "758395e715dd7c7d824deb57b07849f373ef164e"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/artifactCases.ts",
+					"hash": "f5a0a857433ab39a3aa86c795bab10681a76db3f"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.explorer-category",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "c1d12813d5997b437d30ab04a40365004b3c425d529edaf1828157b1628c1287",
+			"source": "352514a38ce60d414bea4a67f50d6120aa254f803cd21e1f685ed45e069bd88f",
+			"contract": "58f08fd1bf4733342372a0ff9d799e6cd5afe3d10c59d63af69f724bca5fe419",
+			"runtime": "49dcc49fa56ea7ce66d844b1e764eccb56a1e5703b94cdd605f39f0a6a4b52ff",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorerCategory.ts",
+					"hash": "6950f939659f196d5a325505b948a9e9907a1711"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorerCategory.types.ts",
+					"hash": "5dbe668dea3626a50c649cf3d6abce5f667acd83"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.explorer-coverage",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "c83d72df5ce0965459699cd176a0da19ab5957b5eceefeb85b96d46736c9d97c",
+			"source": "146c28c0feb14f08feeea484b8addfe7863da1082e3358c37afeefb6ee7725a8",
+			"contract": "1e381640853d9aca11fd05e819f72b69e49fa0babce343a0c04e86e9793dfb27",
+			"runtime": "5289fe7981a5020b0c3576f25cc86df15fa25ff901d9d71d40e6ea3ece0cc107",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorer-verdict/explorerCoverage.ts",
+					"hash": "5f02f8bc50c426805fc0169bb0534ceeaa87771f"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorer-verdict/explorerCoverage.types.ts",
+					"hash": "2baa95d3d2957a9a3aeb5c3d38294dab825ade29"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-verdict/explorerCoverage.ts",
+					"hash": "9cd855916e64a965941faeb95235b47ec4c3ccd2"
+				},
+				{
+					"path": "packages/reports/src/utils/explorerCoverage.ts",
+					"hash": "350157c7c631223b662f07a5bf5e195db5e36e1d"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.explorer-entities",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "af2787ca683cf1423773a502226ee095494d0e111c0ecf86dc906a2272f7e67c",
+			"source": "e67ce0a966f51d177427c5810924db01d1c7af7ce281a0523bc8ffa13f507077",
+			"contract": "6c55b1cf06c8ff21ba8ba013fe2b8f032d9eb28b6f0610957c21102e0dda3342",
+			"runtime": "daa68b71c82554ab33270533b1948fa35d78fdd73274acedd3e1079803bfd522",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorerEntities.ts",
+					"hash": "54e651426e90e37c60031c377e6ffbebd18c84ef"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.explorer-name",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "c4fab09433602bf710b316a893e37b122eeac84b8f8f11f636a6cea19ac38fb5",
+			"source": "f07aca4c2373ce76c7aa1ce91087938c1c8c7593aaf9cc40b7baa9327e3a059c",
+			"contract": "f32577deb9df76347b3bfa0b1885e5170158f9492995aa9de4fa09796e363b7c",
+			"runtime": "78ccc1d2268be406436ffb357b669fbd984b3d9ce5d6f387f214923ce79494a7",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorerName.ts",
+					"hash": "bd7b37345d70e4fcfb26c9300e5424e36b37fd76"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorerName.types.ts",
+					"hash": "1b8037a61659a535543cb4027396a443cf8644c1"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.explorer-relations",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "665354d09970150736f249fee03327589befe8a7575ffaa8b9e54cacbb89befc",
+			"source": "25e9fe22f3c2e692c106a75c5a667d60ce2c5bca55936d0bc7508607979a2ea7",
+			"contract": "f0277066e5753edb425045818ef62fdf36c08f89769269b0c9d6c29cd4b22672",
+			"runtime": "4851cb32d0d526053870a0f47866ab591ecb7e3af83a8e3e4a518c3021353d4f",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorerRelations.ts",
+					"hash": "89275b751269d5b55cc3793978ba02f8b81db3ad"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorerRelations.types.ts",
+					"hash": "bffb23dd21a159d6f88dd23a459bb03268371447"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "5ecb2ee243b76d84ceb997b0bc613ff298231da730e97d4435f31d7e5c5b033b",
+			"source": "810e7745cfec8ff3eed5aa0ea21113b6f16175d164bbaaef42e653a002177f55",
+			"contract": "bee8cb08deaeb7c692d978ae59f4ba386f51e596e179ba302f6b8336bb5826c0",
+			"runtime": "9236f6349c738026696a775d464d099a0d53ba556ffb8040cd3b2e11cdfd3c5b",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorer-verdict/explorerState.ts",
+					"hash": "b554483bc75a303595d7175881d62a576bd66e81"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorerState.ts",
+					"hash": "9d4b5cca6280d994b62f3662b1cfcfd6fee9c0d9"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorerState.types.ts",
+					"hash": "cdb817e6f218eb1f4d90b5187dad8bd3e621f376"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.explorer-verdict",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "25e0f609b594eac45f4250833062a125cbba27d1287c88c9de044f4cdc44323e",
+			"source": "d9bfcd525e02c51518c8fa612c0173df5480207d4d09d3899b0676aa2318277a",
+			"contract": "74204875e824a79a6b3d8ee98456c4520ff2612104d9a3e819e13168e344dc0a",
+			"runtime": "109530ae8418ff4d2e933914b9a609af2a06ee6c88aab0488306c8c2defb07cf",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.ts",
+					"hash": "002b9c7fb90249f69dab3640274293d9f636abcc"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.types.ts",
+					"hash": "d6897cdffe9f87d2ec10fc7a9f53664666fff7d9"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-verdict/explorerVerdict.ts",
+					"hash": "791c97936f722f90b7aedae9a48fb5a67ea86ce7"
+				},
+				{
+					"path": "packages/reports/src/utils/explorerVerdict.ts",
+					"hash": "53994b169759b025eb1e7d4a7b6bf204735be39f"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.017499999999984084,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91013120,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-relations",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.006762400000008028,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-410631ebfca51283-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-relations",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91783168,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-410631ebfca51283-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.explorer-route",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0015376000000117073,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-c49513febc6b4e5a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.explorer-route",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91389952,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-c49513febc6b4e5a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-category",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.03013740000000098,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-b492e86fdf5c6e6c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-category",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91406336,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-b492e86fdf5c6e6c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-category",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.011599899999998798,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-8cc79dbab4824f2c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-category",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91635712,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-8cc79dbab4824f2c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-name",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.05743330000000242,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-11e5501ebb3ba5e9-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-name",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91635712,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-11e5501ebb3ba5e9-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-verdict",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0028708999999992103,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-4fb89cbbfd62a26c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-verdict",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91439104,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-4fb89cbbfd62a26c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-coverage",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0036665999999968336,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-35e2904dabde7ca4-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-coverage",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91635712,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-35e2904dabde7ca4-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.008220699999992576,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-09c51f9cd840e85f-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91717632,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-09c51f9cd840e85f-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-coverage",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0037418000000002394,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-d778bb1721985d21-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-coverage",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91717632,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-d778bb1721985d21-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0018250000000080036,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-b54eed54ca79a158-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91439104,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-b54eed54ca79a158-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0021376000000088878,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-d3c3237f76c0a976-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91439104,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-d3c3237f76c0a976-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.03314570000000572,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-e9c78def319d17ea-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91439104,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-e9c78def319d17ea-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-verdict",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.11311249999999973,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-86aeba88e5eb698f-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-verdict",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91652096,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-86aeba88e5eb698f-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-verdict",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.1656959000000029,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-99b64bb2e3c53273-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-verdict",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91652096,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-99b64bb2e3c53273-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-entities",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0032332000000110384,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-c588b6b6fabecb62-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-entities",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91652096,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-c588b6b6fabecb62-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-name",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.009470599999997376,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-6ad9ef1d4ba3ef95-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-name",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91652096,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-6ad9ef1d4ba3ef95-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-entities",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.28854570000000307,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-920c1a08b124e614-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-entities",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91652096,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-920c1a08b124e614-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.03702100000000996,
+			"method": "Arithmetic mean of 4 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-4c5854387dc8afb1-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91783168,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-4c5854387dc8afb1-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.helper-contract",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.005527499999999463,
+			"method": "Arithmetic mean of 6 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-2a22fb5636bcbced-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.helper-contract",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91783168,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-2a22fb5636bcbced-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-relations",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.4618886666666653,
+			"method": "Arithmetic mean of 9 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-55db7b77b2bcebf5-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 9,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-relations",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91783168,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-55db7b77b2bcebf5-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 9,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.005347333333361348,
+			"method": "Arithmetic mean of 3 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91799552,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.23599966666667646,
+			"method": "Arithmetic mean of 3 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91799552,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-entities",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.390041999999994,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-f8e06404040a00d3-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-entities",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91717632,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-f8e06404040a00d3-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "examples-reports.function.explorer-relations:examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.explorer-relations.test.ts",
+			"status": "passed",
+			"durationMs": 2280,
+			"log": {
+				"path": "logs/examples-reports.function.explorer-relations-examples.log",
+				"bytes": 435,
+				"sha256": "9c4a05298cbb829b02c4943bfb5e4596541e8777572b5d186d33702112d6ce29"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "examples-reports.function.explorer-relations",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "explorer-relations-uses-and-owners",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "explorer-relations-uses-and-owners",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-relations/examples/explorer-relations-uses-and-owners.json",
+							"sha256": "2029c2f89ac5d3556ad874b1e5d3f49de589c95ce271299d4e1d96ce0c52859f",
+							"bytes": 1426,
+							"capturedAt": "2026-11-20T14:16:42.948Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "explorer-relations-uses-and-owners",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.explorer-relations.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-relations/examples/test-examples-reports.function.explorer-relations.test.ts-explorer-relations-uses-and-owners.txt",
+							"sha256": "9c4a05298cbb829b02c4943bfb5e4596541e8777572b5d186d33702112d6ce29",
+							"bytes": 435,
+							"capturedAt": "2026-11-20T14:16:42.949Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "explorer-relations-uses-and-owners",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-relations/examples/test-examples-reports.function.explorer-relations.test.ts-explorer-relations-uses-and-owners.json",
+							"sha256": "ade732ffcd99da0f05d9771267a9f78fb141bf69507b099daa8790b0ebf193e2",
+							"bytes": 3489,
+							"capturedAt": "2026-11-20T14:16:42.949Z"
+						}
+					]
+				},
+				{
+					"id": "explorer-relations-scope-and-absent-rows",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "explorer-relations-scope-and-absent-rows",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-relations/examples/explorer-relations-scope-and-absent-rows.json",
+							"sha256": "58222a21689f4e3cdcb180b12611424c015cf84419f4d37c3bdd2cbf1de9a56b",
+							"bytes": 1259,
+							"capturedAt": "2026-11-20T14:16:42.948Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "explorer-relations-scope-and-absent-rows",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.explorer-relations.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-relations/examples/test-examples-reports.function.explorer-relations.test.ts-explorer-relations-scope-and-absent-rows.txt",
+							"sha256": "9c4a05298cbb829b02c4943bfb5e4596541e8777572b5d186d33702112d6ce29",
+							"bytes": 435,
+							"capturedAt": "2026-11-20T14:16:42.949Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "explorer-relations-scope-and-absent-rows",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-relations/examples/test-examples-reports.function.explorer-relations.test.ts-explorer-relations-scope-and-absent-rows.json",
+							"sha256": "07409f3d15218eda30b32f183007269727de0871956a40f5417089c9a030659e",
+							"bytes": 2637,
+							"capturedAt": "2026-11-20T14:16:42.949Z"
+						}
+					]
+				},
+				{
+					"id": "explorer-relations-reader-reuses-built-entities",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "explorer-relations-reader-reuses-built-entities",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-relations/examples/explorer-relations-reader-reuses-built-entities.json",
+							"sha256": "1aa8421042e6cbc1a7ef09cc3f5c2218a60cb308252c334ab1a1ff4fc450046e",
+							"bytes": 1063,
+							"capturedAt": "2026-11-20T14:16:42.948Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "explorer-relations-reader-reuses-built-entities",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.explorer-relations.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-relations/examples/test-examples-reports.function.explorer-relations.test.ts-explorer-relations-reader-reuses-built-entities.txt",
+							"sha256": "9c4a05298cbb829b02c4943bfb5e4596541e8777572b5d186d33702112d6ce29",
+							"bytes": 435,
+							"capturedAt": "2026-11-20T14:16:42.949Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "explorer-relations-reader-reuses-built-entities",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-relations/examples/test-examples-reports.function.explorer-relations.test.ts-explorer-relations-reader-reuses-built-entities.json",
+							"sha256": "d1cbf0d7c0035ba4d5677b8a5c636da36ad6d1ad61c340382ba555ad9bf42e2a",
+							"bytes": 13394,
+							"capturedAt": "2026-11-20T14:16:42.949Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"shell-fixture",
+		"entity-preview"
+	],
+	"builds": [],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to reports.function.explorer-relations: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}
