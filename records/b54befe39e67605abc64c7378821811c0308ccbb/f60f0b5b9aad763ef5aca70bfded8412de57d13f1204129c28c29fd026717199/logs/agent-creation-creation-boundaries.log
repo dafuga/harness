@@ -1,0 +1,18 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-VSg5iy/packages/desktop[39m
+
+ [32m✓[39m test/project-conversation-boundaries.test.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 2546[2mms[22m[39m
+   [33m[2m✓[22m[39m a pinned commit rejects project creation before any CLI or plan write [33m 386[2mms[22m[39m
+   [33m[2m✓[22m[39m an unlisted model and the wrong project reject before creation [33m 315[2mms[22m[39m
+   [33m[2m✓[22m[39m unexpected source writes during proposal generation remain recoverable and create no plan [33m 408[2mms[22m[39m
+   [33m[2m✓[22m[39m only the owning run may cancel, and a cancelled proposal writes no plan [33m 373[2mms[22m[39m
+   [33m[2m✓[22m[39m a branch changed during the read-only proposal cannot receive its plan [33m 379[2mms[22m[39m
+   [33m[2m✓[22m[39m a source revision advanced during proposal generation receives no new plan [33m 422[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m7 passed[39m[22m[90m (7)[39m
+[2m   Start at [22m 11:27:07
+[2m   Duration [22m 4.40s[2m (transform 1.18s, setup 289ms, collect 1.38s, tests 2.55s, environment 0ms, prepare 51ms)[22m
+
+JSON report written to /tmp/harness-runner-tv6ViB/report.json
+Switched to a new branch 'another-branch'

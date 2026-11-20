@@ -1,0 +1,16 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-VSg5iy/packages/desktop[39m
+
+ [32m✓[39m test/design-options-run.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 5636[2mms[22m[39m
+   [33m[2m✓[22m[39m a page Plan generates three separately directed options and commits them once [33m 1543[2mms[22m[39m
+   [33m[2m✓[22m[39m a Plan that asks for two options generates two [33m 1327[2mms[22m[39m
+   [33m[2m✓[22m[39m a failed option leaves no version and no design commit [33m 738[2mms[22m[39m
+   [33m[2m✓[22m[39m a Plan cancelled during an option leaves no version and no design commit [33m 696[2mms[22m[39m
+   [33m[2m✓[22m[39m a headless Plan keeps notes and generates no image, whatever count it is given [33m 1324[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+[2m   Start at [22m 11:26:52
+[2m   Duration [22m 7.65s[2m (transform 1.28s, setup 319ms, collect 1.52s, tests 5.64s, environment 0ms, prepare 58ms)[22m
+
+JSON report written to /tmp/harness-runner-hd4HcA/report.json
