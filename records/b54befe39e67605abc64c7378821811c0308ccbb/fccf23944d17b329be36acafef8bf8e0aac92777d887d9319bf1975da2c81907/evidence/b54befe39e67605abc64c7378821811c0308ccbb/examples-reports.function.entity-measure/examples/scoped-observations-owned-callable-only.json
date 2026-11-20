@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-measure",
+	"symbol": "entityMeasure",
+	"cases": [
+		{
+			"name": "other unit and unowned callable dropped",
+			"input": {
+				"observations": 4
+			},
+			"output": {
+				"size": [
+					{
+						"label": "Source size",
+						"value": "1.5 KB",
+						"rawValue": 1500,
+						"unitOfMeasure": "bytes"
+					},
+					{
+						"label": "Emitted size",
+						"target": "none",
+						"value": "Not measured",
+						"rawValue": null,
+						"unitOfMeasure": "bytes",
+						"note": "This unit declares no process or Wasm output."
+					},
+					{
+						"label": "Complexity",
+						"value": "7",
+						"rawValue": 7
+					}
+				],
+				"performance": []
+			}
+		}
+	]
+}

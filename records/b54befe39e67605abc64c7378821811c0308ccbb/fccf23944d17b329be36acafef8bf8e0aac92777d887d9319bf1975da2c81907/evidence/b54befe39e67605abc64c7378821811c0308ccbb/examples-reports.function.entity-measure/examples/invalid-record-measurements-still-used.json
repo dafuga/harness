@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-measure",
+	"symbol": "entityMeasure",
+	"cases": [
+		{
+			"name": "failed and invalid record kept",
+			"input": {
+				"record": "invalid"
+			},
+			"output": {
+				"size": [
+					{
+						"label": "Source size",
+						"value": "Not measured",
+						"rawValue": null,
+						"unitOfMeasure": "bytes"
+					},
+					{
+						"label": "Emitted size · Wasm",
+						"target": "wasm",
+						"value": "18 KB",
+						"rawValue": 18000,
+						"unitOfMeasure": "bytes"
+					},
+					{
+						"label": "Complexity",
+						"value": "11",
+						"rawValue": 11
+					}
+				],
+				"performance": []
+			}
+		}
+	]
+}

@@ -1,0 +1,72 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-measure",
+	"symbol": "entityMeasure",
+	"cases": [
+		{
+			"name": "tolerance 0.04",
+			"input": {
+				"tolerance": 0.04
+			},
+			"output": {
+				"workload": "thousand orders",
+				"metric": "p95 ms",
+				"target": "",
+				"profile": "",
+				"value": "Not measured",
+				"rawValue": null,
+				"tolerance": "4%",
+				"over": false
+			}
+		},
+		{
+			"name": "tolerance 0.05",
+			"input": {
+				"tolerance": 0.05
+			},
+			"output": {
+				"workload": "thousand orders",
+				"metric": "p95 ms",
+				"target": "",
+				"profile": "",
+				"value": "Not measured",
+				"rawValue": null,
+				"tolerance": "5%",
+				"over": false
+			}
+		},
+		{
+			"name": "tolerance 0.051",
+			"input": {
+				"tolerance": 0.051
+			},
+			"output": {
+				"workload": "thousand orders",
+				"metric": "p95 ms",
+				"target": "",
+				"profile": "",
+				"value": "Not measured",
+				"rawValue": null,
+				"tolerance": "5%",
+				"over": true
+			}
+		},
+		{
+			"name": "tolerance 0.2",
+			"input": {
+				"tolerance": 0.2
+			},
+			"output": {
+				"workload": "thousand orders",
+				"metric": "p95 ms",
+				"target": "",
+				"profile": "",
+				"value": "Not measured",
+				"rawValue": null,
+				"tolerance": "20%",
+				"over": true
+			}
+		}
+	]
+}
