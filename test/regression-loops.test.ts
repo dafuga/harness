@@ -25,8 +25,8 @@ test('regression profiles ignore volatile macOS launcher identity while retainin
 });
 
 const orders = {
-	'bug-fix': ['spec', 'coverage', 'red', 'implement', 'green', 'verify'],
-	fix: ['spec', 'coverage', 'red', 'implement', 'green', 'verify'],
+	'bug-fix': ['spec', 'coverage', 'red', 'implement', 'green', 'siblings', 'verify'],
+	fix: ['spec', 'coverage', 'red', 'implement', 'green', 'siblings', 'verify'],
 	'regression-prevention': [
 		'spec',
 		'coverage',
