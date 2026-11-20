@@ -1,0 +1,140 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-coverage",
+	"symbol": "explorerCoverage",
+	"cases": [
+		{
+			"name": "impact lists the unit at the origin base",
+			"input": "impacted(b, [page.titles])",
+			"output": {
+				"scenario": "titles-page",
+				"title": "Titles page",
+				"kind": "ui",
+				"standing": "stale",
+				"reasons": [
+					"Titles page was inherited from bbbbbbb, but this commit affects it."
+				],
+				"tests": [
+					{
+						"id": "page",
+						"status": "passed"
+					}
+				],
+				"inheritedFrom": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				"states": [
+					{
+						"state": "empty",
+						"declared": "required",
+						"standing": "stale",
+						"reasons": [],
+						"slots": []
+					}
+				]
+			}
+		},
+		{
+			"name": "no impact recorded",
+			"input": "sourceImpact null",
+			"output": {
+				"scenario": "titles-page",
+				"title": "Titles page",
+				"kind": "ui",
+				"standing": "stale",
+				"reasons": [
+					"Titles page is inherited from bbbbbbb, and the history does not record what changed since."
+				],
+				"tests": [
+					{
+						"id": "page",
+						"status": "passed"
+					}
+				],
+				"inheritedFrom": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				"states": [
+					{
+						"state": "empty",
+						"declared": "required",
+						"standing": "stale",
+						"reasons": [],
+						"slots": []
+					}
+				]
+			}
+		},
+		{
+			"name": "impact leaves the unit alone",
+			"input": "impacted(b, [])",
+			"output": {
+				"scenario": "titles-page",
+				"title": "Titles page",
+				"kind": "ui",
+				"standing": "passed",
+				"reasons": [],
+				"tests": [
+					{
+						"id": "page",
+						"status": "passed"
+					}
+				],
+				"inheritedFrom": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				"states": [
+					{
+						"state": "empty",
+						"declared": "required",
+						"standing": "passed",
+						"reasons": [],
+						"slots": [
+							{
+								"evidence": "screens",
+								"kind": "screenshot",
+								"viewport": "desktop",
+								"capture": {
+									"evidence": "screens",
+									"kind": "screenshot",
+									"state": "empty",
+									"viewport": "desktop",
+									"status": "passed",
+									"path": "evidence/empty-desktop.png",
+									"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+									"mediaType": "image/png",
+									"capturedAt": "2026-10-10T18:00:00.000Z",
+									"server": {
+										"buildId": "build-0",
+										"revision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+									},
+									"media": "media/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+								},
+								"standing": "passed",
+								"reason": null
+							},
+							{
+								"evidence": "screens",
+								"kind": "screenshot",
+								"viewport": "mobile",
+								"capture": {
+									"evidence": "screens",
+									"kind": "screenshot",
+									"state": "empty",
+									"viewport": "mobile",
+									"status": "passed",
+									"path": "evidence/empty-desktop.png",
+									"sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+									"mediaType": "image/png",
+									"capturedAt": "2026-10-10T18:00:00.000Z",
+									"server": {
+										"buildId": "build-0",
+										"revision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+									},
+									"media": "media/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+								},
+								"standing": "passed",
+								"reason": null
+							}
+						]
+					}
+				]
+			}
+		}
+	]
+}

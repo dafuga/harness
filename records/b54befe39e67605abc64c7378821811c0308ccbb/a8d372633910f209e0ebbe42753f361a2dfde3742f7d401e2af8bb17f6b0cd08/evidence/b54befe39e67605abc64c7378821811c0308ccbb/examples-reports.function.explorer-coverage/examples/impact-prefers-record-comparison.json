@@ -1,0 +1,23 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-coverage",
+	"symbol": "coverageAffected",
+	"cases": [
+		{
+			"name": "own comparison lists the unit; source impact omits it",
+			"input": "comparison r1 lists page.titles",
+			"output": true
+		},
+		{
+			"name": "own comparison omits the unit; source impact lists it",
+			"input": "comparison r1 omits page.titles",
+			"output": false
+		},
+		{
+			"name": "another record's comparison is ignored, so source impact decides",
+			"input": "comparison r9 omits page.titles",
+			"output": true
+		}
+	]
+}

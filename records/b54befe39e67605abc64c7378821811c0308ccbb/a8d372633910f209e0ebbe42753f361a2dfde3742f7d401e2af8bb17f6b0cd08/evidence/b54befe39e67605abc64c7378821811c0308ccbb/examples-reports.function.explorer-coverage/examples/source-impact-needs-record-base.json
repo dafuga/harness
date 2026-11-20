@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-coverage",
+	"symbol": "coverageAffected",
+	"cases": [
+		{
+			"name": "source impact on the record base lists the unit",
+			"input": "source base equals record base",
+			"output": true
+		},
+		{
+			"name": "source impact on another base is not applied",
+			"input": "source base differs from record base",
+			"output": null
+		},
+		{
+			"name": "no comparison and no source impact",
+			"input": "neither present",
+			"output": null
+		},
+		{
+			"name": "own comparison without unit lists",
+			"input": "comparison r1 with units missing",
+			"output": null
+		},
+		{
+			"name": "record without a source",
+			"input": "record.source is undefined",
+			"error": "TypeError"
+		}
+	]
+}
