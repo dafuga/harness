@@ -1,0 +1,43 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-behavior",
+	"symbol": "behaviorDuration",
+	"cases": [
+		{
+			"name": "null record has no duration",
+			"input": {
+				"record": null
+			},
+			"output": null
+		},
+		{
+			"name": "empty list matches nothing",
+			"input": {
+				"scenarios": []
+			},
+			"output": null
+		},
+		{
+			"name": "prefix without colon matches nothing",
+			"input": {
+				"id": "order"
+			},
+			"output": null
+		},
+		{
+			"name": "bare id is not a scenario job",
+			"input": {
+				"id": "order-filter"
+			},
+			"output": null
+		},
+		{
+			"name": "unit test is not an e2e job",
+			"input": {
+				"kind": "unit"
+			},
+			"output": null
+		}
+	]
+}

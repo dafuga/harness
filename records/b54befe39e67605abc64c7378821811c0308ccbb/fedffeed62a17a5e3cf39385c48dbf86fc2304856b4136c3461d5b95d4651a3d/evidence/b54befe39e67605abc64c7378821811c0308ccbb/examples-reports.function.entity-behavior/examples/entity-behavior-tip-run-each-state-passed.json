@@ -1,0 +1,45 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-behavior",
+	"symbol": "entityBehavior",
+	"cases": [
+		{
+			"name": "tip run lists both states",
+			"input": {
+				"mode": "current"
+			},
+			"output": {
+				"label": "Current behavior",
+				"recorded": true,
+				"passed": true,
+				"unknown": false,
+				"groups": [
+					[
+						"order-filter",
+						"match",
+						"missing",
+						"passed"
+					],
+					[
+						"order-filter",
+						"no-match",
+						"missing",
+						"passed"
+					]
+				],
+				"reasons": []
+			}
+		},
+		{
+			"name": "match state lines",
+			"input": {
+				"state": "match"
+			},
+			"output": [
+				"assertions",
+				"output"
+			]
+		}
+	]
+}

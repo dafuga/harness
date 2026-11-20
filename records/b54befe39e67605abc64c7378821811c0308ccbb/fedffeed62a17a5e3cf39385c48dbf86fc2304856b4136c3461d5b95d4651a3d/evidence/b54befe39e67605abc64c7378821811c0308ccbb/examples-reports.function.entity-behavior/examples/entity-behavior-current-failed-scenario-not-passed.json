@@ -1,0 +1,42 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-behavior",
+	"symbol": "entityBehavior",
+	"cases": [
+		{
+			"name": "failed scenario is not passed",
+			"input": {
+				"scenario": "order-filter"
+			},
+			"output": {
+				"label": "No end-to-end result is recorded",
+				"recorded": false,
+				"passed": false,
+				"unknown": true,
+				"groups": [
+					[
+						"order-filter",
+						"match",
+						"missing",
+						"missing"
+					],
+					[
+						"order-filter",
+						"no-match",
+						"missing",
+						"missing"
+					]
+				],
+				"reasons": []
+			}
+		},
+		{
+			"name": "scenario after status",
+			"input": {
+				"field": "after"
+			},
+			"output": "failed"
+		}
+	]
+}

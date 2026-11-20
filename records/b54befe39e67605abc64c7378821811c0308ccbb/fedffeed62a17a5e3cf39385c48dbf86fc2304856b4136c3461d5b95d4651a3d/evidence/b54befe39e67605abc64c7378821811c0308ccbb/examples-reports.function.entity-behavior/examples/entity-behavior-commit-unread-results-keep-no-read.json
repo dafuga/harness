@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-behavior",
+	"symbol": "entityBehavior",
+	"cases": [
+		{
+			"name": "unread differing bytes stay unknown",
+			"input": {
+				"mode": "commit"
+			},
+			"output": {
+				"label": "Recorded results differ",
+				"recorded": true,
+				"passed": true,
+				"unknown": true,
+				"groups": [
+					[
+						"order-filter",
+						"match",
+						"passed",
+						"passed"
+					],
+					[
+						"order-filter",
+						"no-match",
+						"passed",
+						"passed"
+					]
+				],
+				"reasons": [
+					"The recorded results differ in bytes; reading them says whether the behaviour does."
+				]
+			}
+		},
+		{
+			"name": "unread cell has no read",
+			"input": {
+				"side": "after"
+			},
+			"output": {
+				"read": false
+			}
+		}
+	]
+}
