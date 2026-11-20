@@ -1,0 +1,1080 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-state",
+	"symbol": "explorerState",
+	"cases": [
+		{
+			"name": "bound passed capture",
+			"input": {
+				"judged": {
+					"declared": {
+						"id": "explorer",
+						"title": "Explorer",
+						"kind": "ui",
+						"units": [
+							"page.functions"
+						],
+						"states": [
+							{
+								"id": "catalog",
+								"coverage": "required",
+								"units": [
+									"page.functions"
+								]
+							},
+							{
+								"id": "pending",
+								"coverage": "required"
+							},
+							{
+								"id": "skipped",
+								"coverage": "inapplicable",
+								"reason": "Never shown."
+							},
+							{
+								"id": "partial",
+								"coverage": "partial",
+								"reason": "Only desktop is kept."
+							}
+						],
+						"viewports": [
+							{
+								"id": "desktop",
+								"width": 1440,
+								"height": 900
+							},
+							{
+								"id": "mobile",
+								"width": 390,
+								"height": 844
+							}
+						],
+						"tests": [
+							{
+								"id": "page",
+								"kind": "e2e",
+								"runner": "playwright"
+							}
+						],
+						"evidence": [
+							{
+								"id": "screens",
+								"kind": "screenshot",
+								"states": [
+									"catalog"
+								],
+								"viewports": [
+									"desktop"
+								]
+							}
+						]
+					},
+					"result": {
+						"id": "titles-page",
+						"status": "passed",
+						"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"inherited": false,
+						"origin": {
+							"record": "r1",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						},
+						"states": [
+							{
+								"id": "catalog",
+								"coverage": "required",
+								"captures": [
+									{
+										"evidence": "screens",
+										"kind": "screenshot",
+										"state": "empty",
+										"viewport": "desktop",
+										"status": "passed",
+										"path": "evidence/empty-desktop.png",
+										"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+										"mediaType": "image/png",
+										"capturedAt": "2026-10-10T18:00:00.000Z",
+										"server": {
+											"buildId": "build-1",
+											"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+										},
+										"media": "media/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+									}
+								]
+							}
+						]
+					},
+					"record": {
+						"id": "r1",
+						"status": "passed",
+						"valid": true,
+						"problems": [],
+						"source": {
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+						},
+						"profile": "p1",
+						"startedAt": "2026-10-10T18:00:00.000Z",
+						"finishedAt": "2026-10-10T18:00:01.000Z",
+						"gates": {
+							"snapshot": "passed",
+							"registry": "passed",
+							"tests": "passed",
+							"scenarios": "passed"
+						},
+						"failures": [],
+						"tests": [
+							{
+								"id": "t1",
+								"kind": "unit",
+								"target": "t1",
+								"status": "passed",
+								"durationMs": 1
+							},
+							{
+								"id": "titles-page:page",
+								"kind": "e2e",
+								"target": "page",
+								"status": "passed",
+								"durationMs": 1
+							}
+						],
+						"scenarios": [
+							{
+								"id": "titles-page",
+								"status": "passed",
+								"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"inherited": false,
+								"origin": {
+									"record": "r1",
+									"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+								},
+								"states": [
+									{
+										"id": "catalog",
+										"coverage": "required",
+										"captures": [
+											{
+												"evidence": "screens",
+												"kind": "screenshot",
+												"state": "empty",
+												"viewport": "desktop",
+												"status": "passed",
+												"path": "evidence/empty-desktop.png",
+												"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+												"mediaType": "image/png",
+												"capturedAt": "2026-10-10T18:00:00.000Z",
+												"server": {
+													"buildId": "build-1",
+													"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+												},
+												"media": "media/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+											}
+										]
+									}
+								]
+							}
+						],
+						"measurements": [],
+						"budgets": {
+							"findings": []
+						}
+					},
+					"bound": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				},
+				"declared": {
+					"id": "catalog",
+					"coverage": "required",
+					"units": [
+						"page.functions"
+					]
+				},
+				"absent": [
+					"incomplete",
+					""
+				]
+			},
+			"output": {
+				"state": "catalog",
+				"declared": "required",
+				"standing": "passed",
+				"reasons": [],
+				"slots": [
+					{
+						"evidence": "screens",
+						"kind": "screenshot",
+						"viewport": "desktop",
+						"capture": {
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "empty",
+							"viewport": "desktop",
+							"status": "passed",
+							"path": "evidence/empty-desktop.png",
+							"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+							"mediaType": "image/png",
+							"capturedAt": "2026-10-10T18:00:00.000Z",
+							"server": {
+								"buildId": "build-1",
+								"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							},
+							"media": "media/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+						},
+						"standing": "passed",
+						"reason": null
+					}
+				]
+			}
+		},
+		{
+			"name": "other build is stale",
+			"input": {
+				"judged": {
+					"declared": {
+						"id": "explorer",
+						"title": "Explorer",
+						"kind": "ui",
+						"units": [
+							"page.functions"
+						],
+						"states": [
+							{
+								"id": "catalog",
+								"coverage": "required",
+								"units": [
+									"page.functions"
+								]
+							},
+							{
+								"id": "pending",
+								"coverage": "required"
+							},
+							{
+								"id": "skipped",
+								"coverage": "inapplicable",
+								"reason": "Never shown."
+							},
+							{
+								"id": "partial",
+								"coverage": "partial",
+								"reason": "Only desktop is kept."
+							}
+						],
+						"viewports": [
+							{
+								"id": "desktop",
+								"width": 1440,
+								"height": 900
+							},
+							{
+								"id": "mobile",
+								"width": 390,
+								"height": 844
+							}
+						],
+						"tests": [
+							{
+								"id": "page",
+								"kind": "e2e",
+								"runner": "playwright"
+							}
+						],
+						"evidence": [
+							{
+								"id": "screens",
+								"kind": "screenshot",
+								"states": [
+									"catalog"
+								],
+								"viewports": [
+									"desktop"
+								]
+							}
+						]
+					},
+					"result": {
+						"id": "titles-page",
+						"status": "passed",
+						"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"inherited": false,
+						"origin": {
+							"record": "r1",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						},
+						"states": [
+							{
+								"id": "catalog",
+								"coverage": "required",
+								"captures": [
+									{
+										"evidence": "screens",
+										"kind": "screenshot",
+										"state": "empty",
+										"viewport": "desktop",
+										"status": "passed",
+										"path": "evidence/empty-desktop.png",
+										"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+										"mediaType": "image/png",
+										"capturedAt": "2026-10-10T18:00:00.000Z",
+										"server": {
+											"buildId": "build-2",
+											"revision": "cccccccccccccccccccccccccccccccccccccccc"
+										},
+										"media": "media/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+									}
+								]
+							}
+						]
+					},
+					"record": {
+						"id": "r1",
+						"status": "passed",
+						"valid": true,
+						"problems": [],
+						"source": {
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+						},
+						"profile": "p1",
+						"startedAt": "2026-10-10T18:00:00.000Z",
+						"finishedAt": "2026-10-10T18:00:01.000Z",
+						"gates": {
+							"snapshot": "passed",
+							"registry": "passed",
+							"tests": "passed",
+							"scenarios": "passed"
+						},
+						"failures": [],
+						"tests": [
+							{
+								"id": "t1",
+								"kind": "unit",
+								"target": "t1",
+								"status": "passed",
+								"durationMs": 1
+							},
+							{
+								"id": "titles-page:page",
+								"kind": "e2e",
+								"target": "page",
+								"status": "passed",
+								"durationMs": 1
+							}
+						],
+						"scenarios": [
+							{
+								"id": "titles-page",
+								"status": "passed",
+								"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"inherited": false,
+								"origin": {
+									"record": "r1",
+									"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+								},
+								"states": [
+									{
+										"id": "catalog",
+										"coverage": "required",
+										"captures": [
+											{
+												"evidence": "screens",
+												"kind": "screenshot",
+												"state": "empty",
+												"viewport": "desktop",
+												"status": "passed",
+												"path": "evidence/empty-desktop.png",
+												"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+												"mediaType": "image/png",
+												"capturedAt": "2026-10-10T18:00:00.000Z",
+												"server": {
+													"buildId": "build-2",
+													"revision": "cccccccccccccccccccccccccccccccccccccccc"
+												},
+												"media": "media/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+											}
+										]
+									}
+								]
+							}
+						],
+						"measurements": [],
+						"budgets": {
+							"findings": []
+						}
+					},
+					"bound": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				},
+				"declared": {
+					"id": "catalog",
+					"coverage": "required",
+					"units": [
+						"page.functions"
+					]
+				},
+				"absent": [
+					"incomplete",
+					""
+				]
+			},
+			"output": {
+				"state": "catalog",
+				"declared": "required",
+				"standing": "stale",
+				"reasons": [
+					"The capture of Explorer: catalog at desktop is of a build of ccccccc, not of aaaaaaa."
+				],
+				"slots": [
+					{
+						"evidence": "screens",
+						"kind": "screenshot",
+						"viewport": "desktop",
+						"capture": {
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "empty",
+							"viewport": "desktop",
+							"status": "passed",
+							"path": "evidence/empty-desktop.png",
+							"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+							"mediaType": "image/png",
+							"capturedAt": "2026-10-10T18:00:00.000Z",
+							"server": {
+								"buildId": "build-2",
+								"revision": "cccccccccccccccccccccccccccccccccccccccc"
+							},
+							"media": "media/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+						},
+						"standing": "stale",
+						"reason": "The capture of Explorer: catalog at desktop is of a build of ccccccc, not of aaaaaaa."
+					}
+				]
+			}
+		},
+		{
+			"name": "rejected capture",
+			"input": {
+				"judged": {
+					"declared": {
+						"id": "explorer",
+						"title": "Explorer",
+						"kind": "ui",
+						"units": [
+							"page.functions"
+						],
+						"states": [
+							{
+								"id": "catalog",
+								"coverage": "required",
+								"units": [
+									"page.functions"
+								]
+							},
+							{
+								"id": "pending",
+								"coverage": "required"
+							},
+							{
+								"id": "skipped",
+								"coverage": "inapplicable",
+								"reason": "Never shown."
+							},
+							{
+								"id": "partial",
+								"coverage": "partial",
+								"reason": "Only desktop is kept."
+							}
+						],
+						"viewports": [
+							{
+								"id": "desktop",
+								"width": 1440,
+								"height": 900
+							},
+							{
+								"id": "mobile",
+								"width": 390,
+								"height": 844
+							}
+						],
+						"tests": [
+							{
+								"id": "page",
+								"kind": "e2e",
+								"runner": "playwright"
+							}
+						],
+						"evidence": [
+							{
+								"id": "screens",
+								"kind": "screenshot",
+								"states": [
+									"catalog"
+								],
+								"viewports": [
+									"desktop"
+								]
+							}
+						]
+					},
+					"result": {
+						"id": "titles-page",
+						"status": "passed",
+						"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"inherited": false,
+						"origin": {
+							"record": "r1",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						},
+						"states": [
+							{
+								"id": "catalog",
+								"coverage": "required",
+								"captures": [
+									{
+										"evidence": "screens",
+										"kind": "screenshot",
+										"state": "empty",
+										"viewport": "desktop",
+										"status": "failed",
+										"path": "evidence/empty-desktop.png",
+										"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+										"mediaType": "image/png",
+										"capturedAt": "2026-10-10T18:00:00.000Z",
+										"server": {
+											"buildId": "build-1",
+											"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+										},
+										"media": "media/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+									}
+								]
+							}
+						]
+					},
+					"record": {
+						"id": "r1",
+						"status": "passed",
+						"valid": true,
+						"problems": [],
+						"source": {
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+						},
+						"profile": "p1",
+						"startedAt": "2026-10-10T18:00:00.000Z",
+						"finishedAt": "2026-10-10T18:00:01.000Z",
+						"gates": {
+							"snapshot": "passed",
+							"registry": "passed",
+							"tests": "passed",
+							"scenarios": "passed"
+						},
+						"failures": [],
+						"tests": [
+							{
+								"id": "t1",
+								"kind": "unit",
+								"target": "t1",
+								"status": "passed",
+								"durationMs": 1
+							},
+							{
+								"id": "titles-page:page",
+								"kind": "e2e",
+								"target": "page",
+								"status": "passed",
+								"durationMs": 1
+							}
+						],
+						"scenarios": [
+							{
+								"id": "titles-page",
+								"status": "passed",
+								"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"inherited": false,
+								"origin": {
+									"record": "r1",
+									"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+								},
+								"states": [
+									{
+										"id": "catalog",
+										"coverage": "required",
+										"captures": [
+											{
+												"evidence": "screens",
+												"kind": "screenshot",
+												"state": "empty",
+												"viewport": "desktop",
+												"status": "failed",
+												"path": "evidence/empty-desktop.png",
+												"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+												"mediaType": "image/png",
+												"capturedAt": "2026-10-10T18:00:00.000Z",
+												"server": {
+													"buildId": "build-1",
+													"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+												},
+												"media": "media/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+											}
+										]
+									}
+								]
+							}
+						],
+						"measurements": [],
+						"budgets": {
+							"findings": []
+						}
+					},
+					"bound": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				},
+				"declared": {
+					"id": "catalog",
+					"coverage": "required",
+					"units": [
+						"page.functions"
+					]
+				},
+				"absent": [
+					"incomplete",
+					""
+				]
+			},
+			"output": {
+				"state": "catalog",
+				"declared": "required",
+				"standing": "failed",
+				"reasons": [
+					"The capture of Explorer: catalog at desktop was rejected."
+				],
+				"slots": [
+					{
+						"evidence": "screens",
+						"kind": "screenshot",
+						"viewport": "desktop",
+						"capture": {
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "empty",
+							"viewport": "desktop",
+							"status": "failed",
+							"path": "evidence/empty-desktop.png",
+							"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+							"mediaType": "image/png",
+							"capturedAt": "2026-10-10T18:00:00.000Z",
+							"server": {
+								"buildId": "build-1",
+								"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							},
+							"media": "media/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+						},
+						"standing": "failed",
+						"reason": "The capture of Explorer: catalog at desktop was rejected."
+					}
+				]
+			}
+		},
+		{
+			"name": "unstored capture",
+			"input": {
+				"judged": {
+					"declared": {
+						"id": "explorer",
+						"title": "Explorer",
+						"kind": "ui",
+						"units": [
+							"page.functions"
+						],
+						"states": [
+							{
+								"id": "catalog",
+								"coverage": "required",
+								"units": [
+									"page.functions"
+								]
+							},
+							{
+								"id": "pending",
+								"coverage": "required"
+							},
+							{
+								"id": "skipped",
+								"coverage": "inapplicable",
+								"reason": "Never shown."
+							},
+							{
+								"id": "partial",
+								"coverage": "partial",
+								"reason": "Only desktop is kept."
+							}
+						],
+						"viewports": [
+							{
+								"id": "desktop",
+								"width": 1440,
+								"height": 900
+							},
+							{
+								"id": "mobile",
+								"width": 390,
+								"height": 844
+							}
+						],
+						"tests": [
+							{
+								"id": "page",
+								"kind": "e2e",
+								"runner": "playwright"
+							}
+						],
+						"evidence": [
+							{
+								"id": "screens",
+								"kind": "screenshot",
+								"states": [
+									"catalog"
+								],
+								"viewports": [
+									"desktop"
+								]
+							}
+						]
+					},
+					"result": {
+						"id": "titles-page",
+						"status": "passed",
+						"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"inherited": false,
+						"origin": {
+							"record": "r1",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						},
+						"states": [
+							{
+								"id": "catalog",
+								"coverage": "required",
+								"captures": [
+									{
+										"evidence": "screens",
+										"kind": "screenshot",
+										"state": "empty",
+										"viewport": "desktop",
+										"status": "passed",
+										"path": "evidence/empty-desktop.png",
+										"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+										"mediaType": "image/png",
+										"capturedAt": "2026-10-10T18:00:00.000Z",
+										"server": {
+											"buildId": "build-1",
+											"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+										},
+										"media": null,
+										"gap": "no bytes"
+									}
+								]
+							}
+						]
+					},
+					"record": {
+						"id": "r1",
+						"status": "passed",
+						"valid": true,
+						"problems": [],
+						"source": {
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+						},
+						"profile": "p1",
+						"startedAt": "2026-10-10T18:00:00.000Z",
+						"finishedAt": "2026-10-10T18:00:01.000Z",
+						"gates": {
+							"snapshot": "passed",
+							"registry": "passed",
+							"tests": "passed",
+							"scenarios": "passed"
+						},
+						"failures": [],
+						"tests": [
+							{
+								"id": "t1",
+								"kind": "unit",
+								"target": "t1",
+								"status": "passed",
+								"durationMs": 1
+							},
+							{
+								"id": "titles-page:page",
+								"kind": "e2e",
+								"target": "page",
+								"status": "passed",
+								"durationMs": 1
+							}
+						],
+						"scenarios": [
+							{
+								"id": "titles-page",
+								"status": "passed",
+								"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"inherited": false,
+								"origin": {
+									"record": "r1",
+									"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+								},
+								"states": [
+									{
+										"id": "catalog",
+										"coverage": "required",
+										"captures": [
+											{
+												"evidence": "screens",
+												"kind": "screenshot",
+												"state": "empty",
+												"viewport": "desktop",
+												"status": "passed",
+												"path": "evidence/empty-desktop.png",
+												"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+												"mediaType": "image/png",
+												"capturedAt": "2026-10-10T18:00:00.000Z",
+												"server": {
+													"buildId": "build-1",
+													"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+												},
+												"media": null,
+												"gap": "no bytes"
+											}
+										]
+									}
+								]
+							}
+						],
+						"measurements": [],
+						"budgets": {
+							"findings": []
+						}
+					},
+					"bound": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				},
+				"declared": {
+					"id": "catalog",
+					"coverage": "required",
+					"units": [
+						"page.functions"
+					]
+				},
+				"absent": [
+					"incomplete",
+					""
+				]
+			},
+			"output": {
+				"state": "catalog",
+				"declared": "required",
+				"standing": "missing",
+				"reasons": [
+					"The capture of Explorer: catalog at desktop is not stored: no bytes."
+				],
+				"slots": [
+					{
+						"evidence": "screens",
+						"kind": "screenshot",
+						"viewport": "desktop",
+						"capture": {
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "empty",
+							"viewport": "desktop",
+							"status": "passed",
+							"path": "evidence/empty-desktop.png",
+							"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+							"mediaType": "image/png",
+							"capturedAt": "2026-10-10T18:00:00.000Z",
+							"server": {
+								"buildId": "build-1",
+								"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							},
+							"media": null,
+							"gap": "no bytes"
+						},
+						"standing": "missing",
+						"reason": "The capture of Explorer: catalog at desktop is not stored: no bytes."
+					}
+				]
+			}
+		},
+		{
+			"name": "no capture for a slot",
+			"input": {
+				"judged": {
+					"declared": {
+						"id": "explorer",
+						"title": "Explorer",
+						"kind": "ui",
+						"units": [
+							"page.functions"
+						],
+						"states": [
+							{
+								"id": "catalog",
+								"coverage": "required",
+								"units": [
+									"page.functions"
+								]
+							},
+							{
+								"id": "pending",
+								"coverage": "required"
+							},
+							{
+								"id": "skipped",
+								"coverage": "inapplicable",
+								"reason": "Never shown."
+							},
+							{
+								"id": "partial",
+								"coverage": "partial",
+								"reason": "Only desktop is kept."
+							}
+						],
+						"viewports": [
+							{
+								"id": "desktop",
+								"width": 1440,
+								"height": 900
+							},
+							{
+								"id": "mobile",
+								"width": 390,
+								"height": 844
+							}
+						],
+						"tests": [
+							{
+								"id": "page",
+								"kind": "e2e",
+								"runner": "playwright"
+							}
+						],
+						"evidence": [
+							{
+								"id": "screens",
+								"kind": "screenshot",
+								"states": [
+									"catalog"
+								],
+								"viewports": [
+									"desktop"
+								]
+							}
+						]
+					},
+					"result": {
+						"id": "titles-page",
+						"status": "passed",
+						"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"inherited": false,
+						"origin": {
+							"record": "r1",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						},
+						"states": [
+							{
+								"id": "catalog",
+								"coverage": "required",
+								"captures": []
+							}
+						]
+					},
+					"record": {
+						"id": "r1",
+						"status": "passed",
+						"valid": true,
+						"problems": [],
+						"source": {
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+						},
+						"profile": "p1",
+						"startedAt": "2026-10-10T18:00:00.000Z",
+						"finishedAt": "2026-10-10T18:00:01.000Z",
+						"gates": {
+							"snapshot": "passed",
+							"registry": "passed",
+							"tests": "passed",
+							"scenarios": "passed"
+						},
+						"failures": [],
+						"tests": [
+							{
+								"id": "t1",
+								"kind": "unit",
+								"target": "t1",
+								"status": "passed",
+								"durationMs": 1
+							},
+							{
+								"id": "titles-page:page",
+								"kind": "e2e",
+								"target": "page",
+								"status": "passed",
+								"durationMs": 1
+							}
+						],
+						"scenarios": [
+							{
+								"id": "titles-page",
+								"status": "passed",
+								"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"inherited": false,
+								"origin": {
+									"record": "r1",
+									"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+								},
+								"states": [
+									{
+										"id": "catalog",
+										"coverage": "required",
+										"captures": []
+									}
+								]
+							}
+						],
+						"measurements": [],
+						"budgets": {
+							"findings": []
+						}
+					},
+					"bound": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				},
+				"declared": {
+					"id": "catalog",
+					"coverage": "required",
+					"units": [
+						"page.functions"
+					]
+				},
+				"absent": [
+					"incomplete",
+					""
+				]
+			},
+			"output": {
+				"state": "catalog",
+				"declared": "required",
+				"standing": "incomplete",
+				"reasons": [
+					"No capture of Explorer: catalog at desktop."
+				],
+				"slots": [
+					{
+						"evidence": "screens",
+						"kind": "screenshot",
+						"viewport": "desktop",
+						"capture": null,
+						"standing": "incomplete",
+						"reason": "No capture of Explorer: catalog at desktop."
+					}
+				]
+			}
+		}
+	]
+}
