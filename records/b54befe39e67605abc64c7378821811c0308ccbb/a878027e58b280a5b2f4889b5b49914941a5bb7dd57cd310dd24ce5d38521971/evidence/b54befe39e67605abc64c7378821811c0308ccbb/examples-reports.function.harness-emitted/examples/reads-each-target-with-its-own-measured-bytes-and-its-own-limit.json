@@ -1,0 +1,84 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-emitted",
+	"symbol": "harnessEmitted",
+	"cases": [
+		{
+			"name": "Process and Wasm sizes are read separately with their own limits",
+			"input": {
+				"unit": {
+					"id": "kernel.impact",
+					"runtime": {
+						"kind": "process",
+						"targets": [
+							{
+								"kind": "process",
+								"entry": "target/process"
+							},
+							{
+								"kind": "wasm",
+								"entry": "target/wasm"
+							}
+						]
+					},
+					"emitted": {
+						"limits": {
+							"process": 402048,
+							"wasm": 150000
+						},
+						"unmeasured": {}
+					}
+				},
+				"record": {
+					"measurements": [
+						{
+							"unit": "kernel.impact",
+							"metric": "artifact-bytes",
+							"unitOfMeasure": "bytes",
+							"value": 402048,
+							"workload": null,
+							"profile": null,
+							"target": "process"
+						},
+						{
+							"unit": "kernel.impact",
+							"metric": "artifact-bytes",
+							"unitOfMeasure": "bytes",
+							"value": 143132,
+							"workload": null,
+							"profile": null,
+							"target": "wasm"
+						},
+						{
+							"unit": "kernel.impact",
+							"metric": "artifact-bytes",
+							"unitOfMeasure": "bytes",
+							"value": 1,
+							"workload": null,
+							"profile": "machine",
+							"target": "process"
+						}
+					],
+					"budgets": {
+						"findings": []
+					}
+				}
+			},
+			"output": [
+				{
+					"target": "process",
+					"label": "process (native)",
+					"value": "402048 bytes",
+					"limit": "frozen at 402048 bytes"
+				},
+				{
+					"target": "wasm",
+					"label": "Wasm",
+					"value": "143132 bytes",
+					"limit": "frozen at 150000 bytes"
+				}
+			]
+		}
+	]
+}

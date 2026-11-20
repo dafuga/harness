@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"record": "a878027e58b280a5b2f4889b5b49914941a5bb7dd57cd310dd24ce5d38521971",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "17c8cf632f83447f89ec10a18d772ac117846fdb90e4e107dd8acf898c796ae4",
+			"bytes": 20917,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-emitted/examples/reads-each-target-with-its-own-measured-bytes-and-its-own-limit.json",
+			"sha256": "b21eab3f184e4ac1bcc79bae60651b6c767c3639264f98aaf715ff1e0ffb7dd2",
+			"bytes": 1692,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-emitted/examples/test-examples-reports.function.harness-emitted.test.ts-reads-each-target-with-its-own-measured-bytes-and-its-own-limit.txt",
+			"sha256": "79f683501b85a84975bfb36f348cf59ce2964496cf95f3b0ecc289783b07eb94",
+			"bytes": 429,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-emitted/examples/test-examples-reports.function.harness-emitted.test.ts-reads-each-target-with-its-own-measured-bytes-and-its-own-limit.json",
+			"sha256": "161d3162abbeb7aba954120bb5eef14c5ca5aeca501de479134b4818502876a4",
+			"bytes": 1090,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-emitted/examples/reads-an-unbuilt-target-as-an-explicit-row-with-its-own-note-never-as-zero.json",
+			"sha256": "9372657da9791729bef64f9672eb0eea55d9a845c3d13fdcd6b81e14626c28a4",
+			"bytes": 2105,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-emitted/examples/test-examples-reports.function.harness-emitted.test.ts-reads-an-unbuilt-target-as-an-explicit-row-with-its-own-note-never-as-zero.txt",
+			"sha256": "79f683501b85a84975bfb36f348cf59ce2964496cf95f3b0ecc289783b07eb94",
+			"bytes": 429,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-emitted/examples/test-examples-reports.function.harness-emitted.test.ts-reads-an-unbuilt-target-as-an-explicit-row-with-its-own-note-never-as-zero.json",
+			"sha256": "e22c980a4327cad6a262320f502471a4d5b5805fa6734eb11d77098e425ea5dd",
+			"bytes": 1464,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-emitted/examples/reads-an-absent-record-and-a-unit-with-no-output-as-explicit-rows.json",
+			"sha256": "893d142506a9fd44207848f04a123d0181c50cc4bfb7267dffff9d554533ece9",
+			"bytes": 1858,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-emitted/examples/test-examples-reports.function.harness-emitted.test.ts-reads-an-absent-record-and-a-unit-with-no-output-as-explicit-rows.txt",
+			"sha256": "79f683501b85a84975bfb36f348cf59ce2964496cf95f3b0ecc289783b07eb94",
+			"bytes": 429,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-emitted/examples/test-examples-reports.function.harness-emitted.test.ts-reads-an-absent-record-and-a-unit-with-no-output-as-explicit-rows.json",
+			"sha256": "7b8a5f04436be627c34b70c768c074d27b99f006e028f300943c3939ae566d82",
+			"bytes": 1395,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-reports.function.harness-emitted-examples.log",
+			"sha256": "79f683501b85a84975bfb36f348cf59ce2964496cf95f3b0ecc289783b07eb94",
+			"bytes": 429,
+			"storage": "git"
+		}
+	]
+}
