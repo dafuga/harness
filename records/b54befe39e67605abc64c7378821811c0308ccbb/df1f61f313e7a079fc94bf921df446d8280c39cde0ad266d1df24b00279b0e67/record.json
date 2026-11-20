@@ -1,0 +1,780 @@
+{
+	"id": "df1f61f313e7a079fc94bf921df446d8280c39cde0ad266d1df24b00279b0e67",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/private/tmp/z5jp8p-hl.xwaYHF/source",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-20T14:53:08.449Z",
+	"finishedAt": "2026-11-20T14:53:28.609Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "function.derive-manifest",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "3b84bb72913305e9b44a987d0121acb9ef5a8830e6ff6b66ef488301387b3701",
+			"source": "fd05916f90144e628f8dae26b40fee2116a671ebdac0ac61a0bc308ca29aa355",
+			"contract": "7b717d852b5f2817a8f5a5e025d55bde78764ff471ea778fdd9a3ab1f937e792",
+			"runtime": "08fa6f142699d4844bb9dcfee47f947e3b49795b8d0d91466d93b0eefc97e3e9",
+			"files": [
+				{
+					"path": "src/utils/development-tooling/deriveManifest.ts",
+					"hash": "b9df112ef0837b145681f2f70728248d73af3420"
+				},
+				{
+					"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveContract.ts",
+					"hash": "40083646d0c1da3ede32911f62b4436a3c511206"
+				},
+				{
+					"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
+					"hash": "15e36bc7d31d4d2f329dae6520d75c3307ca1404"
+				},
+				{
+					"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.types.ts",
+					"hash": "36d4b53a3be0e655bb2900d861fc3dc714193d3d"
+				}
+			]
+		},
+		{
+			"unit": "function.development-tooling-composition",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "c90d471e4e3befbd52e28cca14c8cbd0509e2b57dbc93bc2444f27c5b5d08852",
+			"source": "adcaa9d1a744f9aa8ea979ca75761b5fa5d442344c905c9435e69a2d62e30499",
+			"contract": "9626176f17b469a3b385e616b810324e21ccc05ada6bf47cd2f0646f7090c3f6",
+			"runtime": "45fc48e45cb565e39232d7f4f6bbb9097091af61449b30b117e5c13e1454dcea",
+			"files": [
+				{
+					"path": "src/core/development-tooling/composition.ts",
+					"hash": "c52074a02c9aeea953af81202cc62be74ea1902e"
+				}
+			]
+		},
+		{
+			"unit": "function.scan-component",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "e7ef9627ea843c10c5e73b8a6d96ca53c15ea1b5a67f999769e4206e02b86d7f",
+			"source": "45ebdf14bd5ac50bf29700725e2a4c7b38a45a167288f44bb3f40c99039e9bcc",
+			"contract": "9d3bf95eafa23cca325ba09a692d43c3b14569078d69eba1a2aa1a33143480f8",
+			"runtime": "fbf21446ba0ee2534d01ada24e1191eccf1859883287d3754f5d8be56fca7b91",
+			"files": [
+				{
+					"path": "src/services/development-tooling/source-index-service/componentSyntax.ts",
+					"hash": "c21ddc42c602704fb8a4b7ffb635de16f787f91b"
+				},
+				{
+					"path": "src/services/development-tooling/source-index-service/scanComponent.ts",
+					"hash": "568ea65ac9bb8761d2a7df2a0af743f05534f8fc"
+				}
+			]
+		},
+		{
+			"unit": "function.unit-types",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "286611950b3a88b558ecded93d6215b950dd04826c460894f3e70472801e7ba5",
+			"source": "4c8573ffe55656162fe165a45cb66c3f5dc6793bf57d9478e395a75398ff3954",
+			"contract": "c9d38e4fb356bb0cc4dfa8c3f149bdffecccc418577997c2353b8e8b9bb7bc0c",
+			"runtime": "d980232234b63282500fca62a7a7f4203b16692d4c47934ed591d8e394c73c0f",
+			"files": [
+				{
+					"path": "src/core/development-tooling/contractSchemas.ts",
+					"hash": "c4de019e7ee9269ba88e1d009c05a9f4da215fc8"
+				},
+				{
+					"path": "src/core/development-tooling/unitTypes.ts",
+					"hash": "96f1390c6dae6f7a85e0da4915afb42c40d259f2"
+				},
+				{
+					"path": "src/core/development-tooling/unitTypes.types.ts",
+					"hash": "79a19bfa2240deed10af08992bc18af36b5dabf2"
+				},
+				{
+					"path": "src/core/unitTypes.ts",
+					"hash": "45ffe997a7eb3482483950b988b7781859518a18"
+				}
+			]
+		},
+		{
+			"unit": "service.source-graph",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "960dd0f737eea45f0a86c2b9f92c2165fd5fd7d4609295ea4d695a449d748ebc",
+			"source": "ff5cb5e4adccb0fd1f745b19c7686461fb4ae8dcefdd695a509a0ecffbdbdfdf",
+			"contract": "a2ad9e254609462c94e4c200cf952451f37e4ca5dfb3a8ddc065ee7c96d00514",
+			"runtime": "37f9d8e8c06fa9cfc785a788c82045472a26dbd7586955f0fbab876adfe01a09",
+			"files": [
+				{
+					"path": "src/services/SourceGraphService.ts",
+					"hash": "09cda81ae7ba36169506eec379768745cb126ec5"
+				},
+				{
+					"path": "src/services/development-tooling/SourceGraphService.ts",
+					"hash": "2af2e4bf26d9361daadef00768a5d4b8ed2ed262"
+				}
+			]
+		},
+		{
+			"unit": "service.source-index",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "81d2a907d15e0379cde768396a6a275217a142304096334f11fea14aa2ef3d5a",
+			"source": "696fb0b3e6122bf27fb42e55edade9f05f0507f58f93b904deac331b652fdb86",
+			"contract": "812b09d7c38a17b52bf68e7d3c3f64fbc3847342e88cf13aeaf2b6b6e9335508",
+			"runtime": "13f1c707b50ecbe9d191da2ff47b615571861b63910875572ef3915f09779883",
+			"files": [
+				{
+					"path": "src/services/development-tooling/source-index-service/ComponentPropsResolver.ts",
+					"hash": "e43051cd13b23006b8c53696f45e6d93cb04cb17"
+				},
+				{
+					"path": "src/services/development-tooling/source-index-service/SourceIndexService.ts",
+					"hash": "5fc604f23e18d65c2811ed64019ef1dc93423dc3"
+				},
+				{
+					"path": "src/services/development-tooling/source-index-service/SourceIndexService.types.ts",
+					"hash": "3633db90774f0ac7753cf88c034140b8e3645019"
+				},
+				{
+					"path": "src/services/development-tooling/source-index-service/componentTypeBindings.ts",
+					"hash": "a64c5543345c5c568971dac2c6d33c63b4e1b12b"
+				},
+				{
+					"path": "src/services/development-tooling/source-index-service/scanStorage.ts",
+					"hash": "9ddd928ef0788ee2e30a9b2defe933f833d86005"
+				},
+				{
+					"path": "src/services/development-tooling/source-index-service/sourceExecution.ts",
+					"hash": "a5f4592c8e2503295ba38a726f2dd70be4195314"
+				}
+			]
+		},
+		{
+			"unit": "service.unit-index",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "6869e324720742be286eefb92ca0a7ac83f54daa6a747453740c001a63442af2",
+			"source": "6f81f5c1cccff98d52bc56f11f53067bd44e17e428181d57f1ae9d8de931d522",
+			"contract": "4fade4d5d22c00e9472d8351014ead9ec84ab6a91bec65f061cd33468c751801",
+			"runtime": "11ea1b5d490259d06063008e89c0a5273b25ee3f088bda1ea2213208eb9c01c3",
+			"files": [
+				{
+					"path": "src/services/unit-index-service/UnitIndexService.ts",
+					"hash": "9eafd072d712bed7207f7215c0ed2dcc878a744b"
+				},
+				{
+					"path": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.ts",
+					"hash": "19cf6c582d3f6c6ae497027a06022545310db130"
+				},
+				{
+					"path": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.types.ts",
+					"hash": "29b0eb6f0f5a040a9c9cff33a8ca3573d4bdd06c"
+				},
+				{
+					"path": "src/workflows/development-tooling/load-units/unit-index-service/modelCompanions.ts",
+					"hash": "518e14c2d6343b258e0ca9af595c8f25d8171dc1"
+				}
+			]
+		},
+		{
+			"unit": "validator.development-tooling-atomic-composition",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "11eabdd8dc5c4ece642fa7435fa72c3d836c4fe613ce2bb7de351a37ecadc305",
+			"source": "b5bccd89b57cfc7a5ddec962c90ce9dc93bdc3d30b243906a8ef5a6c90918901",
+			"contract": "c864572650cd3b7ed3c199433e4d976a816685231da57a4777cac7647fab7a54",
+			"runtime": "a70d1404aa6a715c8962736fa1d3b9dc6088dfbfec3e8f0fa23ac792573eb19d",
+			"files": [
+				{
+					"path": "src/validators/development-tooling/atomicComposition.ts",
+					"hash": "3560cb8e019151118ddab77031dbe5b6ef8784fd"
+				}
+			]
+		},
+		{
+			"unit": "validator.unit-registry",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cd167ff2fcd577792fbbd5b34a0548a419571b0ea7c311ad4951151acad5adfe",
+			"source": "8dd0c0a06def8d81912ea17cd1b7b379a42c624bbb6cc22e4298a7b4d169f69e",
+			"contract": "dc38e654d68ed63a0e19ea94889750e8e440c6e4156cbafb1928efb048048226",
+			"runtime": "a3938808b8d126c3eefb7fc756e294b11924babd526114033992886b448def6e",
+			"files": [
+				{
+					"path": "src/validators/UnitRegistryValidator.ts",
+					"hash": "23f62a6740eb56b01615772eacfed5a535d33a5c"
+				},
+				{
+					"path": "src/validators/development-tooling/UnitRegistryValidator.ts",
+					"hash": "231ca18310c82c2596576cc21793566c69778879"
+				},
+				{
+					"path": "src/validators/development-tooling/unit-registry-validator/registryOwnershipFindings.ts",
+					"hash": "c9a7d87c20f31c0cd34eeb42084f0587a4471bf8"
+				}
+			]
+		},
+		{
+			"unit": "workflow.manage-units",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "c8b4695b210ef107ec2ac4ba870b54dfad7749fe780ffc8dee9ed84206568676",
+			"source": "8034826fa20e67e0be8b4134406ef044577b92046fe6b6a71b3cc1b07d0243bb",
+			"contract": "557614604636e68aa8a27df0016c1abec71e9e04445412f34047666a187fa027",
+			"runtime": "4186189f82526ddeca5a7bc745e7456760c3c89bb6ac36163355ffe8cf994d47",
+			"files": [
+				{
+					"path": "src/cli/program/manageUnits.ts",
+					"hash": "367d57de2d2a586dede533eaf8137b251aba984e"
+				},
+				{
+					"path": "src/cli/program/manageUnits.types.ts",
+					"hash": "9e590075f12257f65481a67ca485ab08d22b3d94"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "function.unit-types",
+			"metric": "behavior-case-duration-ms",
+			"unitOfMeasure": "ms",
+			"value": 35.46866699999987,
+			"method": "Wall time of the normal behavior case in v26.13.0, including shared code, fixtures and assertions; no isolated-unit attribution or warmup.",
+			"workload": "composition.ts-normal-behavior",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.unit-types",
+			"metric": "worker-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 166615488,
+			"method": "Whole Vitest worker resident set after the behavior case, including shared runtime and fixtures; not isolated unit memory or peak RSS.",
+			"workload": "composition.ts-normal-behavior",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "validator.development-tooling-atomic-composition",
+			"metric": "behavior-case-duration-ms",
+			"unitOfMeasure": "ms",
+			"value": 37.051083999999946,
+			"method": "Wall time of the normal behavior case in v26.13.0, including shared code, fixtures and assertions; no isolated-unit attribution or warmup.",
+			"workload": "composition.ts-normal-behavior",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "validator.development-tooling-atomic-composition",
+			"metric": "worker-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 166992448,
+			"method": "Whole Vitest worker resident set after the behavior case, including shared runtime and fixtures; not isolated unit memory or peak RSS.",
+			"workload": "composition.ts-normal-behavior",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.development-tooling-composition",
+			"metric": "behavior-case-duration-ms",
+			"unitOfMeasure": "ms",
+			"value": 37.27141699999993,
+			"method": "Wall time of the normal behavior case in v26.13.0, including shared code, fixtures and assertions; no isolated-unit attribution or warmup.",
+			"workload": "composition.ts-normal-behavior",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.development-tooling-composition",
+			"metric": "worker-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 167008832,
+			"method": "Whole Vitest worker resident set after the behavior case, including shared runtime and fixtures; not isolated unit memory or peak RSS.",
+			"workload": "composition.ts-normal-behavior",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "validator.unit-registry",
+			"metric": "behavior-case-duration-ms",
+			"unitOfMeasure": "ms",
+			"value": 37.64879199999996,
+			"method": "Wall time of the normal behavior case in v26.13.0, including shared code, fixtures and assertions; no isolated-unit attribution or warmup.",
+			"workload": "composition.ts-normal-behavior",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "validator.unit-registry",
+			"metric": "worker-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 167025216,
+			"method": "Whole Vitest worker resident set after the behavior case, including shared runtime and fixtures; not isolated unit memory or peak RSS.",
+			"workload": "composition.ts-normal-behavior",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "service.source-index",
+			"metric": "behavior-case-duration-ms",
+			"unitOfMeasure": "ms",
+			"value": 5.7000000000000455,
+			"method": "Wall time of the normal behavior case in v26.13.0, including shared code, fixtures and assertions; no isolated-unit attribution or warmup.",
+			"workload": "index-http-endpoint-usage",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "service.source-index",
+			"metric": "worker-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 168565760,
+			"method": "Whole Vitest worker resident set after the behavior case, including shared runtime and fixtures; not isolated unit memory or peak RSS.",
+			"workload": "index-http-endpoint-usage",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.scan-component",
+			"metric": "behavior-case-duration-ms",
+			"unitOfMeasure": "ms",
+			"value": 8.546957999999904,
+			"method": "Wall time of the normal behavior case in v26.13.0, including shared code, fixtures and assertions; no isolated-unit attribution or warmup.",
+			"workload": "required-and-optional-bindable-props",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.scan-component",
+			"metric": "worker-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 173892288,
+			"method": "Whole Vitest worker resident set after the behavior case, including shared runtime and fixtures; not isolated unit memory or peak RSS.",
+			"workload": "required-and-optional-bindable-props",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "service.source-index",
+			"metric": "behavior-case-duration-ms",
+			"unitOfMeasure": "ms",
+			"value": 8.970125000000053,
+			"method": "Wall time of the normal behavior case in v26.13.0, including shared code, fixtures and assertions; no isolated-unit attribution or warmup.",
+			"workload": "derive-contract-states",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "service.source-index",
+			"metric": "worker-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 173908672,
+			"method": "Whole Vitest worker resident set after the behavior case, including shared runtime and fixtures; not isolated unit memory or peak RSS.",
+			"workload": "derive-contract-states",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.derive-manifest",
+			"metric": "behavior-case-duration-ms",
+			"unitOfMeasure": "ms",
+			"value": 5.151458999999932,
+			"method": "Wall time of the normal behavior case in v26.13.0, including shared code, fixtures and assertions; no isolated-unit attribution or warmup.",
+			"workload": "retain-authored-method-and-constructor-contracts",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.derive-manifest",
+			"metric": "worker-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 178743488,
+			"method": "Whole Vitest worker resident set after the behavior case, including shared runtime and fixtures; not isolated unit memory or peak RSS.",
+			"workload": "retain-authored-method-and-constructor-contracts",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "service.source-index",
+			"metric": "behavior-case-duration-ms",
+			"unitOfMeasure": "ms",
+			"value": 23.221250000000055,
+			"method": "Wall time of the normal behavior case in v26.13.0, including shared code, fixtures and assertions; no isolated-unit attribution or warmup.",
+			"workload": "index-many-source-files",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "service.source-index",
+			"metric": "worker-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 197263232,
+			"method": "Whole Vitest worker resident set after the behavior case, including shared runtime and fixtures; not isolated unit memory or peak RSS.",
+			"workload": "index-many-source-files",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "service.source-index",
+			"metric": "behavior-case-duration-ms",
+			"unitOfMeasure": "ms",
+			"value": 5.097791000000143,
+			"method": "Wall time of the normal behavior case in v26.13.0, including shared code, fixtures and assertions; no isolated-unit attribution or warmup.",
+			"workload": "index-32-revisions",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "service.source-index",
+			"metric": "worker-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 213767744,
+			"method": "Whole Vitest worker resident set after the behavior case, including shared runtime and fixtures; not isolated unit memory or peak RSS.",
+			"workload": "index-32-revisions",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "service.source-graph",
+			"metric": "behavior-case-duration-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.33725000000004,
+			"method": "Wall time of the normal behavior case in v26.13.0, including shared code, fixtures and assertions; no isolated-unit attribution or warmup.",
+			"workload": "build-contract-dependency-graph",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "service.source-graph",
+			"metric": "worker-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 223206592,
+			"method": "Whole Vitest worker resident set after the behavior case, including shared runtime and fixtures; not isolated unit memory or peak RSS.",
+			"workload": "build-contract-dependency-graph",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-index",
+			"metric": "latency-cold-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.29504100000008293,
+			"method": "Wall time to scan and reconcile the standard three-file implementation and companion fixture.",
+			"workload": "companion-unit-ownership",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-index",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 223272128,
+			"method": "Whole Vitest process RSS after in-memory source scanning and registry reconciliation; includes runner overhead.",
+			"workload": "companion-unit-ownership",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.manage-units",
+			"metric": "behavior-case-duration-ms",
+			"unitOfMeasure": "ms",
+			"value": 7.835833999999977,
+			"method": "Wall time of the normal behavior case in v26.13.0, including shared code, fixtures and assertions; no isolated-unit attribution or warmup.",
+			"workload": "registry-ownership",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "workflow.manage-units",
+			"metric": "worker-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 223452352,
+			"method": "Whole Vitest worker resident set after the behavior case, including shared runtime and fixtures; not isolated unit memory or peak RSS.",
+			"workload": "registry-ownership",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "validator.unit-registry",
+			"metric": "behavior-case-duration-ms",
+			"unitOfMeasure": "ms",
+			"value": 8.113916999999901,
+			"method": "Wall time of the normal behavior case in v26.13.0, including shared code, fixtures and assertions; no isolated-unit attribution or warmup.",
+			"workload": "registry-ownership",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "validator.unit-registry",
+			"metric": "worker-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 223452352,
+			"method": "Whole Vitest worker resident set after the behavior case, including shared runtime and fixtures; not isolated unit memory or peak RSS.",
+			"workload": "registry-ownership",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "unit-registry-ownership:ownership",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/unit-index.test.ts",
+			"status": "passed",
+			"durationMs": 7818,
+			"log": {
+				"path": "logs/unit-registry-ownership-ownership.log",
+				"bytes": 499,
+				"sha256": "d965cb69a63427d5e2d8b449806034953af3185033df676e69b9da334f15eae5"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "unit-registry-ownership",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "registry-ownership",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "behavior-benchmarks",
+							"kind": "benchmark",
+							"state": "registry-ownership",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/unit-registry-ownership/ownership/behavior-7aae2dbf-d0e1-4b4f-bd42-5c25ccb39804.json",
+							"sha256": "f5d5cf1f3bb2e59c38d1e9374084fa9d2ae7cee60cab0fd4f3c15b43ff4924c7",
+							"bytes": 660,
+							"capturedAt": "2026-11-20T14:53:26.978Z"
+						},
+						{
+							"evidence": "behavior-benchmarks",
+							"kind": "benchmark",
+							"state": "registry-ownership",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/unit-registry-ownership/ownership/behavior-d5da1e7f-6538-4326-876d-36cb29206a5a.json",
+							"sha256": "9d89472019bcefe35d84688b8d9c5f94322b0ecd089fd13a26535b452348634c",
+							"bytes": 664,
+							"capturedAt": "2026-11-20T14:53:26.978Z"
+						},
+						{
+							"evidence": "ownership-output",
+							"kind": "output",
+							"state": "registry-ownership",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/services/unit-index.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/unit-registry-ownership/ownership/test-services-unit-index.test.ts-registry-ownership.txt",
+							"sha256": "d965cb69a63427d5e2d8b449806034953af3185033df676e69b9da334f15eae5",
+							"bytes": 499,
+							"capturedAt": "2026-11-20T14:53:26.978Z"
+						},
+						{
+							"evidence": "ownership-assertions",
+							"kind": "assertions",
+							"state": "registry-ownership",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/unit-registry-ownership/ownership/test-services-unit-index.test.ts-registry-ownership.json",
+							"sha256": "c2b3d9a50072b3f4cabcce24f42434d24faafb5fb25fbb66f0e1b7bbd15bb2da",
+							"bytes": 362717,
+							"capturedAt": "2026-11-20T14:53:26.978Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"shell-fixture",
+		"entity-preview"
+	],
+	"builds": [],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to workflow.manage-units: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}
