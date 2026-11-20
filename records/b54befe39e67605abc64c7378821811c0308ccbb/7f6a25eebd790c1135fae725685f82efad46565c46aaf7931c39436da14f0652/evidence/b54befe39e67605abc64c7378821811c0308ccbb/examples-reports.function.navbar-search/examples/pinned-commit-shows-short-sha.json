@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.navbar-search",
+	"symbol": "navbarSearch",
+	"cases": [
+		{
+			"name": "pinned commit with a held result",
+			"input": {
+				"scope": "0303030303030303030303030303030303030303"
+			},
+			"output": {
+				"entries": [
+					{
+						"id": "app.shell.order-frame",
+						"category": "layouts",
+						"name": "Order frame",
+						"purpose": "",
+						"terms": [],
+						"commit": "0303030303030303030303030303030303030303"
+					}
+				],
+				"scope": {
+					"label": "At commit 0303030",
+					"pinned": "0303030"
+				},
+				"at": [
+					{
+						"branch": "feature/shell#1",
+						"commit": "0303030303030303030303030303030303030303",
+						"category": "layouts",
+						"entity": "app.shell.order-frame"
+					}
+				]
+			}
+		}
+	]
+}

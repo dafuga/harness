@@ -1,0 +1,69 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.navbar-search",
+	"symbol": "navbarSearch",
+	"cases": [
+		{
+			"name": "same commit, other category",
+			"input": {
+				"probe": {
+					"id": "app.shell.order-frame",
+					"category": "functions",
+					"name": "Order frame",
+					"purpose": "",
+					"terms": [],
+					"commit": "0303030303030303030303030303030303030303"
+				}
+			},
+			"output": null
+		},
+		{
+			"name": "same commit, other id",
+			"input": {
+				"probe": {
+					"id": "app.shell.other-frame",
+					"category": "layouts",
+					"name": "Order frame",
+					"purpose": "",
+					"terms": [],
+					"commit": "0303030303030303030303030303030303030303"
+				}
+			},
+			"output": null
+		},
+		{
+			"name": "other commit",
+			"input": {
+				"probe": {
+					"id": "app.shell.order-frame",
+					"category": "layouts",
+					"name": "Order frame",
+					"purpose": "",
+					"terms": [],
+					"commit": "0505050505050505050505050505050505050505"
+				}
+			},
+			"output": null
+		},
+		{
+			"name": "held key",
+			"input": {
+				"probe": {
+					"id": "app.shell.order-frame",
+					"category": "layouts",
+					"name": "Order frame",
+					"purpose": "",
+					"terms": [],
+					"commit": "0303030303030303030303030303030303030303"
+				}
+			},
+			"output": {
+				"branch": "feature/shell#1",
+				"commit": "0303030303030303030303030303030303030303",
+				"category": "layouts",
+				"entity": "app.shell.order-frame"
+			}
+		}
+	]
+}

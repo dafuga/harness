@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.navbar-search",
+	"symbol": "navbarSearch",
+	"cases": [
+		{
+			"name": "null entries",
+			"input": {
+				"given": null
+			},
+			"output": {
+				"entries": null,
+				"scope": {
+					"label": "At commit 0303030",
+					"pinned": "0303030"
+				},
+				"at": [
+					null
+				]
+			}
+		},
+		{
+			"name": "undefined entries",
+			"input": {},
+			"output": {
+				"entries": null,
+				"scope": {
+					"label": "At commit 0303030",
+					"pinned": "0303030"
+				},
+				"at": [
+					null
+				]
+			}
+		}
+	]
+}

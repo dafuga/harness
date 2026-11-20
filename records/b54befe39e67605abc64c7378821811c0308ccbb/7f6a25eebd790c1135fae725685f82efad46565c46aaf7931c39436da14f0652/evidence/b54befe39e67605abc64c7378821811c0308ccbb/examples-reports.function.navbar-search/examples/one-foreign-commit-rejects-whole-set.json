@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.navbar-search",
+	"symbol": "navbarSearch",
+	"cases": [
+		{
+			"name": "one mismatch in two entries",
+			"input": {
+				"given": [
+					{
+						"id": "app.shell.order-frame",
+						"category": "layouts",
+						"name": "Order frame",
+						"purpose": "",
+						"terms": [],
+						"commit": "0303030303030303030303030303030303030303"
+					},
+					{
+						"id": "app.shell.side-frame",
+						"category": "layouts",
+						"name": "Order frame",
+						"purpose": "",
+						"terms": [],
+						"commit": "0505050505050505050505050505050505050505"
+					}
+				]
+			},
+			"output": {
+				"entries": null,
+				"scope": {
+					"label": "At commit 0303030",
+					"pinned": "0303030"
+				},
+				"at": [
+					null
+				]
+			}
+		}
+	]
+}
