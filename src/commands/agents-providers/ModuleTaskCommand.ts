@@ -5,6 +5,7 @@ import type { Command } from 'commander';
 import { ModuleTaskService } from '../../services/agents-providers/ModuleTaskService';
 import { ModuleTaskWorkerService } from '../../services/agents-providers/ModuleTaskWorkerService';
 import type { WorkerFlags } from './ModuleTaskCommand.types';
+import { validateTrackerId } from '../../adapters/agents-providers/module-task-runner-adapter/trackerHandoff';
 /** Task admission, discovery and foreground worker wiring; task check keeps its completion gate. */
 export class ModuleTaskCommand {
 	constructor(private readonly service = new ModuleTaskService()) {}
@@ -93,6 +94,7 @@ export class ModuleTaskCommand {
 		task
 			.command('worker')
 			.requiredOption('--worker <id>')
+			.option('--tracker <id>', 'Record worker context handoffs on this Tracker item.')
 			.option('--modules <ids>')
 			.option('--once')
 			.option('--watch')
@@ -108,12 +110,14 @@ function print(value: unknown): void {
 }
 async function worker(flags: WorkerFlags): Promise<void> {
 	if (flags.once && flags.watch) throw new Error('Choose --once or --watch.');
+	const tracker = flags.tracker ?? process.env.HARNESS_ORCHESTRATION_TRACKER;
+	if (tracker !== undefined) validateTrackerId(tracker);
 	const controller = new AbortController(),
 		stop = () => controller.abort(new Error('Task worker interrupted.'));
 	process.once('SIGINT', stop);
 	process.once('SIGTERM', stop);
 	try {
-		const service = new ModuleTaskWorkerService();
+		const service = new ModuleTaskWorkerService(undefined, undefined, tracker);
 		do {
 			const result = await service.once(
 				flags.worker,

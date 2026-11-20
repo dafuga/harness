@@ -8,7 +8,11 @@ import type {
 import type { TaskProcessExecutor, TaskPublicEvent } from './ModuleTaskRunnerAdapter.types';
 import { ModuleTaskRunError } from './ModuleTaskRunnerAdapter.types';
 import { taskProcess } from './module-task-runner-adapter/taskProcess';
-import { taskUsage } from './module-task-runner-adapter/taskUsage';
+import { managedTaskSessions } from './module-task-runner-adapter/managedTaskSessions';
+import {
+	hardContextTokens,
+	providerCompactionTokens
+} from './module-task-runner-adapter/sessionPolicy';
 /** Run the installed CLIs with saved login, exact model/effort and public output only. */
 export class ModuleTaskRunnerAdapter implements TaskRunner {
 	constructor(private readonly execute: TaskProcessExecutor = taskProcess) {}
@@ -18,7 +22,6 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 			'codex',
 			'exec',
 			'--json',
-			'--ephemeral',
 			'--sandbox',
 			'workspace-write',
 			'-m',
@@ -29,31 +32,24 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 			'model_provider="openai"',
 			'-c',
 			'approval_policy="never"',
+			'-c',
+			`model_context_window=${hardContextTokens}`,
+			'-c',
+			`model_auto_compact_token_limit=${providerCompactionTokens}`,
+			'-c',
+			'tool_output_token_limit=12000',
 			'-'
 		];
 	}
 	async run(input: TaskRunInput): Promise<TaskRunResult> {
-		const process = await this.execute(this.command(input), input);
-		const events = process.stdout
-			.trim()
-			.split('\n')
-			.filter(Boolean)
-			.map((line) => JSON.parse(line) as TaskPublicEvent);
-		const usage = taskUsage(input.provider, events);
-		try {
-			const result =
-				input.provider === 'claude'
-					? this.claude(events, process.code, input)
-					: this.codex(events, process.code, input);
-			return { ...result, usage };
-		} catch (error) {
-			const reportedModel =
-				events.find((e) => e.type === 'system' && e.subtype === 'init')?.model ?? null;
-			throw Object.assign(
-				error instanceof Error ? error : new ModuleTaskRunError('Task execution failed.'),
-				{ usage, reportedModel }
-			);
-		}
+		return managedTaskSessions(
+			input,
+			(current) => this.execute(this.command(current), current),
+			(events, code, current) =>
+				current.provider === 'claude'
+					? this.claude(events, code, current)
+					: this.codex(events, code, current)
+		);
 	}
 	private claude(events: TaskPublicEvent[], code: number, input: TaskRunInput): TaskRunResult {
 		const result = [...events].reverse().find((e) => e.type === 'result');
@@ -98,6 +94,7 @@ function claudeTaskCommand(selection: TaskSelection): string[] {
 		'--verbose',
 		'--output-format',
 		'stream-json',
+		'--include-partial-messages',
 		'--model',
 		selection.model,
 		'--effort',

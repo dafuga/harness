@@ -28,12 +28,22 @@ export const taskCostSchema = z.strictObject({
 	source: z.string().nullable(),
 	note: z.string()
 });
+export const taskSessionMetricSchema = z.strictObject({
+	status: z.enum(['rotated', 'hard-limit', 'succeeded', 'failed', 'interrupted']),
+	sessionId: z.string().nullable(),
+	peakContextTokens: z.number().int().nonnegative().nullable(),
+	usage: taskUsageSchema.optional(),
+	apiCost: taskCostSchema,
+	startedAt: z.iso.datetime(),
+	finishedAt: z.iso.datetime()
+});
 export const taskExecutionSchema = z.strictObject({
 	provider: z.enum(['claude', 'codex']),
 	model: z.string(),
 	intelligence: z.string(),
 	reportedModel: z.string().nullable(),
 	usage: taskUsageSchema.optional(),
+	sessions: z.array(taskSessionMetricSchema).optional(),
 	apiCost: taskCostSchema,
 	status: z.enum(['succeeded', 'failed']),
 	failureCause: executionFailureCause.optional(),

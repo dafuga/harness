@@ -1026,6 +1026,36 @@ An incomplete review commits the submitted work as the next attempt's repair bas
 Bounce rate is incomplete reviews divided by all accepted and incomplete reviews;
 execution failures count separately. Stale or duplicate reviews are refused.
 
+Run a Phase 4 orchestration brief from its assigned worktree with Harness:
+
+```sh
+harness task orchestrate --tracker z5jp8p --brief phase4-handoff.md \
+  --model gpt-6.2-sol --intelligence high
+harness task worker --worker phase4-haiku --tracker z5jp8p --watch
+```
+
+Use the existing worker assignments and evidence review gates in the brief. Run
+workers as independent Harness processes on their assigned machines. Both the
+orchestrator and module workers rotate after observing 150,000 active input
+tokens. Harness configures provider compaction headroom and stops the run if it
+observes 190,000 tokens. Provider counters arrive during or after requests, so a
+single large request can cross an observation threshold before its usage arrives.
+`--context-tokens` lowers the orchestrator threshold for a controlled trial.
+
+Keep the current state, branch, verified evidence, and next steps in the
+checkpoint file named in the agent prompt. Harness saves a Tracker handoff and
+starts a fresh provider session in the same worktree. The Tracker note carries
+the checkpoint location and Git revision. The checkpoint text stays local and
+is capped at 4 KiB. Ctrl+C stops the orchestrator. Run the same command in the
+same worktree to continue. A second invocation for that item in the same Git
+repository cannot acquire the lock while the first invocation is active.
+
+Orchestrator reports live under `.cache/harness/orchestration/<tracker-item>/`.
+`harness task show <id>` shows worker session metrics on each execution. Both
+include peak active context, cumulative tokens and the cost basis for each
+session. Cost is CLI-reported or estimated at standard API rates. Unknown
+measurements are null. Codex uses its local rollout for live telemetry.
+
 For standalone checks, use `--task <stable-id>` instead of `--loop`/`--step`.
 Revisions keep their task identity; new tasks use new IDs. `--agent-model` overrides
 `HARNESS_AGENT_MODEL` and a loop's stored default. Jev's evaluator model is separate.

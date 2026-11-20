@@ -1,8 +1,11 @@
 // @harness-uid u_rw64iex44n
 import type { TaskRunInput } from '../../repositories/agents-providers/ModuleTaskRepository.types';
+import type { SessionObservation } from './ProviderSessionAdapter.types';
 export interface TaskProcessResult {
 	code: number;
 	stdout: string;
+	observation?: SessionObservation;
+	stop?: 'rotated' | 'hard-limit' | 'meter-unavailable' | 'interrupted' | 'timeout';
 }
 /** Runs one task CLI command for a run input and resolves its captured exit code and stdout. */
 export type TaskProcessExecutor = (

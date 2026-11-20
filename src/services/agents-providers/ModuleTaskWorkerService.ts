@@ -11,6 +11,8 @@ import type {
 	TaskSelection,
 	TaskExecution
 } from '../../repositories/agents-providers/ModuleTaskRepository.types';
+import type { TaskRunInput } from '../../repositories/agents-providers/ModuleTaskRepository.types';
+import { trackerHandoff } from '../../adapters/agents-providers/module-task-runner-adapter/trackerHandoff';
 import { ModuleTaskRepository } from '../../repositories/agents-providers/ModuleTaskRepository';
 import { ModuleTaskService } from './ModuleTaskService';
 import { claimedTask, finishTask } from './module-task-worker-service/taskClaim';
@@ -19,7 +21,8 @@ export class ModuleTaskWorkerService {
 	private readonly repository: ModuleTaskRepository;
 	constructor(
 		private readonly root = process.cwd(),
-		private readonly runner: TaskRunner = new ModuleTaskRunnerAdapter()
+		private readonly runner: TaskRunner = new ModuleTaskRunnerAdapter(),
+		private readonly tracker?: string
 	) {
 		this.repository = new ModuleTaskRepository(root);
 	}
@@ -41,7 +44,7 @@ export class ModuleTaskWorkerService {
 			await new GitAdapter(this.root).run(['worktree', 'add', '--detach', worktree, sourceCommit]);
 			const execution = await this.run(
 				task,
-				{ ...selection, cwd: worktree, prompt, signal },
+				{ ...selection, cwd: worktree, prompt, signal, onRotation: this.handoff(task, worktree) },
 				(choice) => {
 					result = { ...result, ...choice, fallback: true };
 				},
@@ -67,9 +70,24 @@ export class ModuleTaskWorkerService {
 			result
 		};
 	}
+	private handoff(task: ModuleTask, cwd: string): TaskRunInput['onRotation'] {
+		const tracker = this.tracker;
+		if (tracker)
+			return (checkpoint, session) =>
+				trackerHandoff(
+					cwd,
+					{
+						tracker,
+						checkpoint,
+						role: 'module worker',
+						evidence: `harness task show ${task.id}`
+					},
+					session
+				);
+	}
 	private async run(
 		task: ModuleTask,
-		input: TaskSelection & { cwd: string; prompt: string; signal: AbortSignal },
+		input: TaskRunInput,
 		onFallback: (selection: TaskSelection) => void,
 		executions: TaskExecution[]
 	) {

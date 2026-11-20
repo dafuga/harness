@@ -3,6 +3,7 @@ import type {
 	TaskExecution,
 	TaskRunInput,
 	TaskRunner,
+	TaskSessionMetric,
 	TaskUsage
 } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import { ModuleTaskAnalyticsService } from '../ModuleTaskAnalyticsService';
@@ -26,6 +27,7 @@ export async function dispatchTaskAttempt(
 			...base,
 			reportedModel: result.reportedModel,
 			usage: result.usage,
+			sessions: result.sessions,
 			apiCost: analytics.quote(result.reportedModel ?? input.model, result.usage),
 			status: 'succeeded',
 			finishedAt: new Date().toISOString()
@@ -34,6 +36,7 @@ export async function dispatchTaskAttempt(
 	} catch (error) {
 		const failure = error as {
 			usage?: TaskUsage;
+			sessions?: TaskSessionMetric[];
 			reportedModel?: string | null;
 			quotaRejected?: boolean;
 		} | null;
@@ -41,6 +44,7 @@ export async function dispatchTaskAttempt(
 			...base,
 			reportedModel: failure?.reportedModel ?? null,
 			usage: failure?.usage,
+			sessions: failure?.sessions,
 			apiCost: analytics.quote(failure?.reportedModel ?? input.model, failure?.usage),
 			status: 'failed',
 			failureCause: rejectionCause(input.signal, failure?.quotaRejected === true),
