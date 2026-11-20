@@ -1,0 +1,804 @@
+{
+	"id": "03cd079ee2410aeb1eca98cab16884add9639023bc2ed37feaac5c453e4cd1ea",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/private/tmp/z5jp8p-ui.oODCDK/source",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-20T13:25:55.859Z",
+	"finishedAt": "2026-11-20T13:27:14.038Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "function.record-capture",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41e40bb7a2b44b7fa1da3881ebf1a687d3d8471d42fd0a7c44d584361255ff42",
+			"source": "142bfa1513b076860925e3bac72e4361c1edd5901abe0b7061ebac711646346a",
+			"contract": "025908d6c17bb9a51a22fa8f85c40b9ea26bb9161a5d016c554aa7e340c15a52",
+			"runtime": "a289759bf06513632380a5baa8ac1f6a9a916c1d1905e0de6a7be531f7936431",
+			"files": [
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.ts",
+					"hash": "316c75b906d532b1a5b376f345b7de8e00da1f4d"
+				},
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.types.ts",
+					"hash": "8e36a063513222284548df76d240d4a45f6626a9"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cfb49b515cacc084047d75cdf10a295ab3790ecaf878e2b75e06463793f628bf",
+			"source": "cbf5fb170c4db458f39bcc4ba18996e377a782371040baa39d1667f04bf87635",
+			"contract": "6f2e8a598fb220dd111fe8085fb28c645ee24019cc4b1f25315b141a569962d7",
+			"runtime": "ec246a1eb80a7c06e7ccbd8601bab05e75d00122b0ad9d09eec95bbe94f31c19",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts",
+					"hash": "36741c54d766dd2689e542099ca02135cd07760b"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.types.ts",
+					"hash": "758395e715dd7c7d824deb57b07849f373ef164e"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/artifactCases.ts",
+					"hash": "f5a0a857433ab39a3aa86c795bab10681a76db3f"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.01412500000003547,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90750976,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.007729500000095868,
+			"method": "Arithmetic mean of 2 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 2,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 137822208,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 2,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.266666999999984,
+			"method": "Arithmetic mean of 2 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 2,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 137822208,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 2,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "examples-reports.config.shell-vite:examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.config.shell-vite.test.ts",
+			"status": "passed",
+			"durationMs": 3290,
+			"log": {
+				"path": "logs/examples-reports.config.shell-vite-examples.log",
+				"bytes": 426,
+				"sha256": "2564af9803d26a163315a6cc6e57bc66a80f7c32cb29f66f192c6d12fe1c6006"
+			}
+		},
+		{
+			"id": "explorer-shell:pieces",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts tests/e2e/explorer-shell-pieces.spec.ts",
+			"status": "passed",
+			"durationMs": 6901,
+			"log": {
+				"path": "logs/explorer-shell-pieces.log",
+				"bytes": 1572,
+				"sha256": "c12ff75bbf271a042facf4ef5db9050d75ead2c8f56964c0e24615840044749c"
+			}
+		},
+		{
+			"id": "explorer-shell:search",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts tests/e2e/explorer-shell-search.spec.ts",
+			"status": "passed",
+			"durationMs": 3513,
+			"log": {
+				"path": "logs/explorer-shell-search.log",
+				"bytes": 1093,
+				"sha256": "4602ae1b719db24f832ce753547f0d84e4b7bbfa739994e50c85f1d5af426107"
+			}
+		},
+		{
+			"id": "explorer-shell:verdict",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts tests/e2e/explorer-shell-verdict.spec.ts",
+			"status": "passed",
+			"durationMs": 5160,
+			"log": {
+				"path": "logs/explorer-shell-verdict.log",
+				"bytes": 1160,
+				"sha256": "32d08831331e5d1e1fba0be4f9712c873f4a990def7b6094b7f0bde86acd0c09"
+			}
+		},
+		{
+			"id": "explorer-shell:bar",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts tests/e2e/explorer-shell.spec.ts",
+			"status": "passed",
+			"durationMs": 7991,
+			"log": {
+				"path": "logs/explorer-shell-bar.log",
+				"bytes": 1820,
+				"sha256": "bc7673873ee5b9740e70c6ed3cb1a52ca0eee6c2f595d7ae111d41a1f79bfeec"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "examples-reports.config.shell-vite",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "resolves-the-default-navbar-fixture",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "resolves-the-default-navbar-fixture",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.config.shell-vite/examples/resolves-the-default-navbar-fixture.json",
+							"sha256": "49e7f9c791147fe3c18efad0d0db77aa7b00b1a53512046858b9f629dd145b58",
+							"bytes": 944,
+							"capturedAt": "2026-11-20T13:26:43.143Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "resolves-the-default-navbar-fixture",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.config.shell-vite.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.config.shell-vite/examples/test-examples-reports.config.shell-vite.test.ts-resolves-the-default-navbar-fixture.txt",
+							"sha256": "2564af9803d26a163315a6cc6e57bc66a80f7c32cb29f66f192c6d12fe1c6006",
+							"bytes": 426,
+							"capturedAt": "2026-11-20T13:26:43.143Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "resolves-the-default-navbar-fixture",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.config.shell-vite/examples/test-examples-reports.config.shell-vite.test.ts-resolves-the-default-navbar-fixture.json",
+							"sha256": "475a0294130cdf324510f44cd604267ef527414474fd4d37ffd6c844a5a24453",
+							"bytes": 2791,
+							"capturedAt": "2026-11-20T13:26:43.143Z"
+						}
+					]
+				},
+				{
+					"id": "resolves-the-selected-fixture-page-and-output",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "resolves-the-selected-fixture-page-and-output",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.config.shell-vite/examples/resolves-the-selected-fixture-page-and-output.json",
+							"sha256": "f1b0abd7ae2e2edc5e08c9b7fe9a26cdcf2b583c5eee7a2bd6c0403d113d260f",
+							"bytes": 1295,
+							"capturedAt": "2026-11-20T13:26:43.143Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "resolves-the-selected-fixture-page-and-output",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.config.shell-vite.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.config.shell-vite/examples/test-examples-reports.config.shell-vite.test.ts-resolves-the-selected-fixture-page-and-output.txt",
+							"sha256": "2564af9803d26a163315a6cc6e57bc66a80f7c32cb29f66f192c6d12fe1c6006",
+							"bytes": 426,
+							"capturedAt": "2026-11-20T13:26:43.143Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "resolves-the-selected-fixture-page-and-output",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.config.shell-vite/examples/test-examples-reports.config.shell-vite.test.ts-resolves-the-selected-fixture-page-and-output.json",
+							"sha256": "8ae4fc754ee197e80ae3534ca745b3b6a35da5ee248cb7867c486a071ad9e43d",
+							"bytes": 2404,
+							"capturedAt": "2026-11-20T13:26:43.143Z"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "explorer-shell",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "current",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "current",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/bar/current-desktop.png",
+							"sha256": "5f8bdf102a6c8185c9d67937a8fb5795190081fb4e9a0ec4c877b5f870e051b8",
+							"bytes": 52285,
+							"capturedAt": "2026-11-20T13:27:12.112Z",
+							"server": {
+								"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "current",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/bar/current-tablet.png",
+							"sha256": "ea4a25d649d357d48934b53d550fd81d75ad1f94093d2b89ea74ed605b39d225",
+							"bytes": 46887,
+							"capturedAt": "2026-11-20T13:27:12.129Z",
+							"server": {
+								"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "current",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/bar/current-mobile.png",
+							"sha256": "c0b64ef7f7648b59d06b567dfac3bfaa8825996565819921f97425d191e749ac",
+							"bytes": 41367,
+							"capturedAt": "2026-11-20T13:27:12.140Z",
+							"server": {
+								"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "historical",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "historical",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/bar/historical-desktop.png",
+							"sha256": "f2019f787f49095ab59df8cbb9f684d9769c8e4997483f62fab93a4f3d635050",
+							"bytes": 68838,
+							"capturedAt": "2026-11-20T13:27:12.120Z",
+							"server": {
+								"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "historical",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/bar/historical-tablet.png",
+							"sha256": "2efdb486839294d09ce197115c4f1843ba3fa2b65081a89284dd4cc7a5e02c9c",
+							"bytes": 63143,
+							"capturedAt": "2026-11-20T13:27:12.134Z",
+							"server": {
+								"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "historical",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/bar/historical-mobile.png",
+							"sha256": "1dfbe4d309dd7298ef5133958ae06ae01610fd7ce3ab0e350dff6cbb73bec7ed",
+							"bytes": 54247,
+							"capturedAt": "2026-11-20T13:27:12.143Z",
+							"server": {
+								"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "returned",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "returned",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/bar/returned-desktop.png",
+							"sha256": "c54629548e2eec625348e384ab33bfa7608059323d3bb99a97a708def9929509",
+							"bytes": 61506,
+							"capturedAt": "2026-11-20T13:27:12.122Z",
+							"server": {
+								"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "returned",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/bar/returned-tablet.png",
+							"sha256": "6c3ddc7f0928b7139bfdf6493003ec908c65f0a74ba87d7e11f0d4359f322c8d",
+							"bytes": 56011,
+							"capturedAt": "2026-11-20T13:27:12.136Z",
+							"server": {
+								"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "returned",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/bar/returned-mobile.png",
+							"sha256": "023cafc0492561c14500d5f8d5f225a3a807e28698c8fa0bdf4d88317dc45001",
+							"bytes": 46144,
+							"capturedAt": "2026-11-20T13:27:12.144Z",
+							"server": {
+								"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "pieces",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/pieces/pieces-desktop.png",
+							"sha256": "c72cdb2e497158393b3825392237b09db85853104c5cd7bd434bd7c8de8dd910",
+							"bytes": 190152,
+							"capturedAt": "2026-11-20T13:26:51.366Z",
+							"server": {
+								"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/pieces/pieces-tablet.png",
+							"sha256": "df8ad217d86eb71c7974c45072550b48f96b033678ed50facca11f7a49c84867",
+							"bytes": 188701,
+							"capturedAt": "2026-11-20T13:26:51.382Z",
+							"server": {
+								"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/pieces/pieces-mobile.png",
+							"sha256": "ffa40e8a433424f7d167cdaa39d7d5ca473d5365f3d806b51dcf456908be4a80",
+							"bytes": 192315,
+							"capturedAt": "2026-11-20T13:26:51.399Z",
+							"server": {
+								"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "pieces-verdict",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces-verdict",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/verdict/pieces-verdict-desktop.png",
+							"sha256": "c71a3e49a869657a9b08f23d31b2f79d679e7ba91c16432d5817c9f121dfc544",
+							"bytes": 197242,
+							"capturedAt": "2026-11-20T13:27:02.698Z",
+							"server": {
+								"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces-verdict",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/verdict/pieces-verdict-tablet.png",
+							"sha256": "79a71903da4b96c9a759db384ed4b0689780d0cabb62a06124293703009bf7b5",
+							"bytes": 195257,
+							"capturedAt": "2026-11-20T13:27:02.703Z",
+							"server": {
+								"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces-verdict",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/verdict/pieces-verdict-mobile.png",
+							"sha256": "e9a809f37d99869e1ef91f1216baf88ce8091e9376e03bd91c0e8730bed9f397",
+							"bytes": 200779,
+							"capturedAt": "2026-11-20T13:27:02.707Z",
+							"server": {
+								"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "pieces-used",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces-used",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/pieces/pieces-used-desktop.png",
+							"sha256": "ac6982f99cfd74b897f12cd577abe67faa33ebacc218dfad5937fa003ca3d481",
+							"bytes": 193711,
+							"capturedAt": "2026-11-20T13:26:51.377Z",
+							"server": {
+								"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces-used",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/pieces/pieces-used-tablet.png",
+							"sha256": "bba1f78b741b04e690bb3208340a53b3e4b74a134f97f99e439f080ee7ac2f92",
+							"bytes": 194298,
+							"capturedAt": "2026-11-20T13:26:51.393Z",
+							"server": {
+								"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces-used",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/pieces/pieces-used-mobile.png",
+							"sha256": "f80369d26f0145fdba532cb781254769b909033f9e4b42f3c5860c905da5f583",
+							"bytes": 195232,
+							"capturedAt": "2026-11-20T13:26:51.407Z",
+							"server": {
+								"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "pieces-tabs",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces-tabs",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/pieces/pieces-tabs-desktop.png",
+							"sha256": "e221e2f6eccb632bdaf200c906b825df67a01267e3770b2e22f4fe46d36dc55b",
+							"bytes": 190682,
+							"capturedAt": "2026-11-20T13:26:51.372Z",
+							"server": {
+								"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces-tabs",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/pieces/pieces-tabs-tablet.png",
+							"sha256": "cda10da19284bb642f0eca3c7d1e5d537934777a95f8d036ebbc004b67e6fd72",
+							"bytes": 188667,
+							"capturedAt": "2026-11-20T13:26:51.386Z",
+							"server": {
+								"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces-tabs",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/pieces/pieces-tabs-mobile.png",
+							"sha256": "9a701b9962f8eb2d86f3fd17ad5902dc4d0f1c3a0ff6b6537bfe8edbe632c351",
+							"bytes": 192435,
+							"capturedAt": "2026-11-20T13:26:51.403Z",
+							"server": {
+								"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"entity-preview"
+	],
+	"builds": [
+		{
+			"id": "shell-fixture",
+			"directory": "packages/reports/output/shell-fixture",
+			"buildId": "621c2671bb00943d366ac28bc3b4fc183d83675e43d902491c6d7c5b1eaeedd6",
+			"files": 11
+		}
+	],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to reports.config.shell-vite: only its scenario states ran, so this record is partial and never a full pass.",
+		"Scoped to reports.config.shell-vite: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}
