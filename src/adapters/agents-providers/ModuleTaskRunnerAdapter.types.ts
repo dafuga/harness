@@ -5,6 +5,7 @@ export interface TaskProcessResult {
 	code: number;
 	stdout: string;
 	observation?: SessionObservation;
+	preRequestEstimateTokens?: number;
 	stop?: 'rotated' | 'hard-limit' | 'meter-unavailable' | 'interrupted' | 'timeout';
 }
 /** Runs one task CLI command for a run input and resolves its captured exit code and stdout. */

@@ -71,6 +71,7 @@ function completedGeneration(
 			status: outcome.status,
 			sessionId,
 			peakContextTokens,
+			preRequestEstimateTokens: process.preRequestEstimateTokens,
 			usage,
 			apiCost: estimateApiCost(
 				outcome.result?.reportedModel ?? reportedModel ?? input.model,

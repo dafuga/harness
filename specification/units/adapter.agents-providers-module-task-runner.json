@@ -12,9 +12,15 @@
 			"src/adapters/agents-providers/ModuleTaskRunnerAdapter.ts",
 			"src/adapters/agents-providers/ModuleTaskRunnerAdapter.types.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/ModuleTaskRunError.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/ProviderRequestGate.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/TaskOutputOverflowError.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/managedTaskSessions.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/managedTaskSessions.types.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/provider-request-gate/providerDestination.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/provider-request-gate/providerUsageStream.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/provider-request-gate/providerUsageStream.types.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/provider-request-gate/requestContext.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/provider-request-gate/requestContext.types.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/sessionPolicy.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/taskGeneration.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/taskProcess.ts",
@@ -32,11 +38,26 @@
 			"TaskPublicEvent",
 			"ModuleTaskRunError",
 			"ModuleTaskRunError",
+			"ProviderRequestGate",
+			"ProviderRequestGate.constructor",
+			"ProviderRequestGate.origin",
+			"ProviderRequestGate.close",
 			"TaskOutputOverflowError",
 			"managedTaskSessions",
 			"LaunchGeneration",
 			"CompleteGeneration",
 			"GenerationResult",
+			"providerDestination",
+			"guardedProviderCommand",
+			"relayHeaders",
+			"measureResponse",
+			"ProviderUsageFrame",
+			"requestContext",
+			"pendingInputTokens",
+			"inputTokenCounter",
+			"InputPart",
+			"RequestContext",
+			"CountInputTokens",
 			"defaultContextTokens",
 			"hardContextTokens",
 			"providerCompactionTokens",
@@ -72,6 +93,21 @@
 				"required": true
 			},
 			{
+				"name": "ProviderRequestGate.constructor.provider",
+				"type": "TaskSelection['provider']",
+				"required": true
+			},
+			{
+				"name": "ProviderRequestGate.constructor.observation",
+				"type": "() => number | null",
+				"required": true
+			},
+			{
+				"name": "ProviderRequestGate.constructor.forward",
+				"type": "typeof globalThis.fetch",
+				"required": false
+			},
+			{
 				"name": "managedTaskSessions.input",
 				"type": "TaskRunInput",
 				"required": true
@@ -85,6 +121,76 @@
 				"name": "managedTaskSessions.complete",
 				"type": "CompleteGeneration",
 				"required": true
+			},
+			{
+				"name": "providerDestination.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "providerDestination.provider",
+				"type": "TaskSelection['provider']",
+				"required": true
+			},
+			{
+				"name": "guardedProviderCommand.command",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "guardedProviderCommand.provider",
+				"type": "TaskSelection['provider']",
+				"required": true
+			},
+			{
+				"name": "guardedProviderCommand.origin",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "relayHeaders.original",
+				"type": "Headers",
+				"required": true
+			},
+			{
+				"name": "measureResponse.response",
+				"type": "Response",
+				"required": true
+			},
+			{
+				"name": "measureResponse.provider",
+				"type": "TaskSelection['provider']",
+				"required": true
+			},
+			{
+				"name": "measureResponse.observed",
+				"type": "(tokens: number) => void",
+				"required": true
+			},
+			{
+				"name": "requestContext.body",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "requestContext.prior",
+				"type": "RequestContext | undefined",
+				"required": true
+			},
+			{
+				"name": "requestContext.count",
+				"type": "CountInputTokens",
+				"required": true
+			},
+			{
+				"name": "pendingInputTokens.next",
+				"type": "RequestContext",
+				"required": true
+			},
+			{
+				"name": "pendingInputTokens.prior",
+				"type": "RequestContext",
+				"required": false
 			},
 			{
 				"name": "contextThreshold.value",
@@ -157,8 +263,44 @@
 				"type": "Promise<TaskRunResult>"
 			},
 			{
+				"name": "ProviderRequestGate.origin",
+				"type": "unknown"
+			},
+			{
+				"name": "ProviderRequestGate.close",
+				"type": "unknown"
+			},
+			{
 				"name": "managedTaskSessions",
 				"type": "unknown"
+			},
+			{
+				"name": "providerDestination",
+				"type": "URL | undefined"
+			},
+			{
+				"name": "guardedProviderCommand",
+				"type": "unknown"
+			},
+			{
+				"name": "relayHeaders",
+				"type": "Headers"
+			},
+			{
+				"name": "measureResponse",
+				"type": "unknown"
+			},
+			{
+				"name": "requestContext",
+				"type": "RequestContext | undefined"
+			},
+			{
+				"name": "pendingInputTokens",
+				"type": "number"
+			},
+			{
+				"name": "inputTokenCounter",
+				"type": "Promise<CountInputTokens>"
 			},
 			{
 				"name": "defaultContextTokens",
@@ -250,6 +392,30 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "ProviderRequestGate.origin",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProviderRequestGate.origin",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProviderRequestGate.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProviderRequestGate.close",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "managedTaskSessions",
 				"inputs": [
 					{
@@ -272,6 +438,166 @@
 					{
 						"name": "managedTaskSessions",
 						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "providerDestination",
+				"inputs": [
+					{
+						"name": "providerDestination.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "providerDestination.provider",
+						"type": "TaskSelection['provider']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "providerDestination",
+						"type": "URL | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "guardedProviderCommand",
+				"inputs": [
+					{
+						"name": "guardedProviderCommand.command",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "guardedProviderCommand.provider",
+						"type": "TaskSelection['provider']",
+						"required": true
+					},
+					{
+						"name": "guardedProviderCommand.origin",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "guardedProviderCommand",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "relayHeaders",
+				"inputs": [
+					{
+						"name": "relayHeaders.original",
+						"type": "Headers",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "relayHeaders",
+						"type": "Headers"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "measureResponse",
+				"inputs": [
+					{
+						"name": "measureResponse.response",
+						"type": "Response",
+						"required": true
+					},
+					{
+						"name": "measureResponse.provider",
+						"type": "TaskSelection['provider']",
+						"required": true
+					},
+					{
+						"name": "measureResponse.observed",
+						"type": "(tokens: number) => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "measureResponse",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "requestContext",
+				"inputs": [
+					{
+						"name": "requestContext.body",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "requestContext.prior",
+						"type": "RequestContext | undefined",
+						"required": true
+					},
+					{
+						"name": "requestContext.count",
+						"type": "CountInputTokens",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "requestContext",
+						"type": "RequestContext | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "pendingInputTokens",
+				"inputs": [
+					{
+						"name": "pendingInputTokens.next",
+						"type": "RequestContext",
+						"required": true
+					},
+					{
+						"name": "pendingInputTokens.prior",
+						"type": "RequestContext",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "pendingInputTokens",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "inputTokenCounter",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "inputTokenCounter",
+						"type": "Promise<CountInputTokens>"
 					}
 				],
 				"errors": [],
@@ -449,6 +775,34 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "ProviderRequestGate.constructor",
+				"inputs": [
+					{
+						"name": "ProviderRequestGate.constructor.provider",
+						"type": "TaskSelection['provider']",
+						"required": true
+					},
+					{
+						"name": "ProviderRequestGate.constructor.observation",
+						"type": "() => number | null",
+						"required": true
+					},
+					{
+						"name": "ProviderRequestGate.constructor.forward",
+						"type": "typeof globalThis.fetch",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProviderRequestGate.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		]
 	},

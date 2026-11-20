@@ -12,6 +12,8 @@ import { ProviderSessionAdapter } from '../ProviderSessionAdapter';
 import { TaskOutputOverflowError, type TaskChild } from './taskProcess.types';
 import { resourceWork } from '../../../utils/execution-runtimes/resourceWork';
 import type { ResourceContext } from '../../../core/execution-runtimes/resourceTypes';
+import { ProviderRequestGate } from './ProviderRequestGate';
+import { guardedProviderCommand } from './provider-request-gate/providerDestination';
 import {
 	contextPollMs,
 	contextStop,
@@ -31,27 +33,35 @@ export function taskProcess(command: string[], input: TaskRunInput): Promise<Tas
 	);
 }
 
-function runTaskProcess(command: string[], input: TaskRunInput, resources: ResourceContext) {
+async function runTaskProcess(command: string[], input: TaskRunInput, resources: ResourceContext) {
 	input.signal.throwIfAborted();
 	const env = taskEnvironment(resources);
 	if (input.supervision) env.HARNESS_ORCHESTRATION_TRACKER = input.supervision.tracker;
-	const child = spawn(command[0], command.slice(1), {
-		cwd: input.cwd,
-		env,
-		stdio: 'pipe',
-		detached: process.platform !== 'win32'
-	});
-	if (child.pid) resources.track(child.pid);
 	const meter = new ProviderSessionAdapter(input.provider, join(env.HOME ?? homedir(), '.codex'));
-	return collectTaskProcess(child, input, meter);
+	const gate = new ProviderRequestGate(input.provider, () => meter.sample().peakContextTokens);
+	try {
+		if (input.provider === 'claude') env.ANTHROPIC_BASE_URL = gate.origin;
+		const guarded = guardedProviderCommand(command, input.provider, gate.origin);
+		const child = spawn(guarded[0], guarded.slice(1), {
+			cwd: input.cwd,
+			env,
+			stdio: 'pipe',
+			detached: process.platform !== 'win32'
+		});
+		if (child.pid) resources.track(child.pid);
+		return await collectTaskProcess(child, input, meter, gate);
+	} finally {
+		await gate.close();
+	}
 }
 
 function collectTaskProcess(
 	child: TaskChild,
 	input: TaskRunInput,
-	meter: ProviderSessionAdapter
+	meter: ProviderSessionAdapter,
+	gate: ProviderRequestGate
 ): Promise<TaskProcessResult> {
-	const controller = processMonitor(child, input, meter);
+	const controller = processMonitor(child, input, meter, gate);
 	const lines = createInterface({ input: child.stdout, crlfDelay: Infinity });
 	lines.on('line', (line) => {
 		meter.event(line);
@@ -80,6 +90,7 @@ function collectTaskProcess(
 					code: code ?? 1,
 					stdout: stdout + decoder.end(),
 					observation: meter.summary(),
+					preRequestEstimateTokens: gate.blockedEstimate,
 					stop
 				});
 		});
@@ -87,7 +98,12 @@ function collectTaskProcess(
 	});
 }
 
-function processMonitor(child: TaskChild, input: TaskRunInput, meter: ProviderSessionAdapter) {
+function processMonitor(
+	child: TaskChild,
+	input: TaskRunInput,
+	meter: ProviderSessionAdapter,
+	gate: ProviderRequestGate
+) {
 	const threshold = input.supervision?.contextTokens ?? defaultContextTokens;
 	const startedAt = Date.now();
 	let exited = false;
@@ -100,7 +116,9 @@ function processMonitor(child: TaskChild, input: TaskRunInput, meter: ProviderSe
 		try {
 			const peak = meter.sample().peakContextTokens;
 			const reason = contextStop(peak, threshold);
-			if (reason === 'hard-limit' || (!exited && reason === 'rotated')) halt(reason);
+			if (reason === 'hard-limit') halt(reason);
+			else if (gate.blockedEstimate !== undefined || (!exited && reason === 'rotated'))
+				halt('rotated');
 			else if (!exited && peak === null && Date.now() - startedAt >= telemetryTimeoutMs)
 				halt('meter-unavailable');
 		} catch {
@@ -149,6 +167,7 @@ function taskEnvironment(resources: ResourceContext): Record<string, string | un
 		'TEMP',
 		'LANG',
 		'TZ',
+		'TERM',
 		'SYSTEMROOT'
 	])
 		env[key] = process.env[key];

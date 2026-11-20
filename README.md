@@ -1037,9 +1037,14 @@ harness task worker --worker phase4-haiku --tracker "$TRACKER_ITEM" --watch
 Use the existing worker assignments and evidence review gates in the brief. Run
 workers as independent Harness processes on their assigned machines. Both the
 orchestrator and module workers rotate after observing 150,000 active input
-tokens. Harness configures provider compaction headroom and stops the run if it
-observes 190,000 tokens. Provider counters arrive during or after requests, so a
-single large request can cross an observation threshold before its usage arrives.
+tokens. Before sending an inference request, Harness adds a conservative estimate
+of newly supplied input to the preceding provider count and rotates if the
+estimate reaches 190,000 tokens. Request estimates are stored separately from
+provider counts, which describe requests already sent. Harness also configures
+provider compaction headroom and stops the run on an observed 190,000-token reading.
+The request gate uses a local tokenizer and framing allowance. It passes requests
+to the selected provider using the CLI's existing login. Harness coding sessions
+disable Codex Apps so their model traffic stays on the supervised transport.
 `--context-tokens` lowers the orchestrator threshold for a controlled trial.
 Harness declines an initial provider prompt larger than 96 KiB.
 

@@ -32,6 +32,7 @@ export const taskSessionMetricSchema = z.strictObject({
 	status: z.enum(['rotated', 'hard-limit', 'succeeded', 'failed', 'interrupted']),
 	sessionId: z.string().nullable(),
 	peakContextTokens: z.number().int().nonnegative().nullable(),
+	preRequestEstimateTokens: z.number().int().nonnegative().optional(),
 	usage: taskUsageSchema.optional(),
 	apiCost: taskCostSchema,
 	startedAt: z.iso.datetime(),

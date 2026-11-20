@@ -30,6 +30,9 @@ export async function trackerHandoff(
 		`stopped: Harness ${report.role} ${session.status} at ${session.peakContextTokens ?? 'unknown'} active tokens`,
 		`resume from: ${hostname()} ${root} on branch ${branch} at ${commit}.`,
 		`Evidence and next steps: ${report.checkpoint}. Session metrics: ${report.evidence}.`,
+		session.preRequestEstimateTokens === undefined
+			? ''
+			: `Refused provider request estimated at ${session.preRequestEstimateTokens} tokens before dispatch.`,
 		next
 	].join(' ');
 	try {
