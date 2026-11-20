@@ -1,0 +1,25 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.project-agent-actions",
+	"symbol": "projectAgentActions",
+	"cases": [
+		{
+			"name": "startRun rejects with a bridge error",
+			"input": {
+				"mode": "plan",
+				"provider": "codex",
+				"model": "synthetic-model",
+				"effort": null,
+				"text": "Plan a settings panel"
+			},
+			"output": {
+				"result": false,
+				"error": "Error: bridge offline",
+				"asked": "Plan a settings panel",
+				"runId": "",
+				"starting": false
+			}
+		}
+	]
+}

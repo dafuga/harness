@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.project-agent-actions",
+	"symbol": "projectAgentComment",
+	"cases": [
+		{
+			"name": "comment capability withheld",
+			"input": {
+				"text": "Looks good"
+			},
+			"output": {
+				"result": false,
+				"calls": 0
+			}
+		},
+		{
+			"name": "shared to GitHub",
+			"input": {
+				"text": "Looks good"
+			},
+			"output": {
+				"result": true,
+				"status": "Comment saved to GitHub.",
+				"messages": 1
+			}
+		},
+		{
+			"name": "saved on this device only",
+			"input": {
+				"text": "Looks good"
+			},
+			"output": {
+				"result": true,
+				"status": "Comment saved on this device; not shared yet."
+			}
+		},
+		{
+			"name": "bridge save rejects",
+			"input": {
+				"text": "Looks good"
+			},
+			"output": {
+				"result": false,
+				"error": "Error: offline"
+			}
+		}
+	]
+}
