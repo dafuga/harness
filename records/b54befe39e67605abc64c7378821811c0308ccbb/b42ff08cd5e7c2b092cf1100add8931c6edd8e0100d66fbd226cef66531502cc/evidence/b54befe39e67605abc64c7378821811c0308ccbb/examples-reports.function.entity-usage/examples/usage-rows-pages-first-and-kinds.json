@@ -1,0 +1,158 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-usage",
+	"symbol": "entityUsage",
+	"cases": [
+		{
+			"name": "pages, usedBy, kinds and support with repeats",
+			"input": {
+				"relations": {
+					"pages": [
+						{
+							"id": "page.a",
+							"category": "pages"
+						},
+						{
+							"id": "page.b",
+							"category": "pages"
+						}
+					],
+					"layouts": [],
+					"components": [],
+					"functions": [
+						{
+							"id": "function.f",
+							"category": "functions"
+						},
+						{
+							"id": "function.f",
+							"category": "functions"
+						}
+					],
+					"configs": [],
+					"services": [
+						{
+							"id": "service.s",
+							"category": "services"
+						}
+					],
+					"usedBy": [
+						{
+							"id": "component.c",
+							"category": "components"
+						},
+						{
+							"id": "page.a",
+							"category": "pages"
+						},
+						{
+							"id": "component.c",
+							"category": "components"
+						}
+					],
+					"support": [
+						{
+							"id": "model.m",
+							"role": "Model",
+							"name": "model.m"
+						},
+						{
+							"id": "model.m",
+							"role": "Model",
+							"name": "model.m"
+						}
+					],
+					"apis": [
+						{
+							"id": "api.x",
+							"category": "apis"
+						}
+					]
+				}
+			},
+			"output": {
+				"usedIn": [
+					{
+						"id": "page.a",
+						"category": "pages"
+					},
+					{
+						"id": "page.b",
+						"category": "pages"
+					},
+					{
+						"id": "component.c",
+						"category": "components"
+					}
+				],
+				"usedInGroups": [
+					{
+						"title": "Pages",
+						"icon": "pages",
+						"items": [
+							{
+								"id": "page.a",
+								"category": "pages"
+							},
+							{
+								"id": "page.b",
+								"category": "pages"
+							}
+						]
+					},
+					{
+						"title": "Components",
+						"icon": "components",
+						"items": [
+							{
+								"id": "component.c",
+								"category": "components"
+							}
+						]
+					}
+				],
+				"uses": [
+					{
+						"title": "APIs",
+						"icon": "route",
+						"items": [
+							{
+								"id": "api.x",
+								"category": "apis"
+							}
+						]
+					},
+					{
+						"title": "Functions",
+						"icon": "functions",
+						"items": [
+							{
+								"id": "function.f",
+								"category": "functions"
+							}
+						]
+					},
+					{
+						"title": "Services",
+						"icon": "services",
+						"items": [
+							{
+								"id": "service.s",
+								"category": "services"
+							}
+						]
+					}
+				],
+				"other": [
+					{
+						"id": "model.m",
+						"role": "Model",
+						"name": "model.m"
+					}
+				],
+				"count": 4
+			}
+		}
+	]
+}
