@@ -1,0 +1,286 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.unit-measurements",
+	"symbol": "unitMeasurements",
+	"cases": [
+		{
+			"name": "owned files counted, an unowned file ignored, one external import",
+			"input": {
+				"unit": {
+					"id": "function.pick",
+					"owns": {
+						"source": [
+							"src/pick.ts",
+							"src/constants.ts"
+						],
+						"symbols": []
+					},
+					"dependencies": [
+						{
+							"unit": "function.types",
+							"via": "import",
+							"origin": "derived"
+						}
+					],
+					"runtime": {
+						"targets": [
+							{
+								"kind": "module",
+								"entry": "src/index.ts"
+							}
+						]
+					}
+				},
+				"files": [
+					{
+						"path": "src/pick.ts",
+						"references": [
+							{
+								"via": "import",
+								"typeOnly": false,
+								"external": "zod"
+							}
+						],
+						"blocks": [
+							{
+								"name": "run",
+								"kind": "function",
+								"complexity": 2
+							}
+						],
+						"bytes": 120,
+						"lines": 4,
+						"language": "ts",
+						"read": true,
+						"decisions": "counted"
+					},
+					{
+						"path": "src/constants.ts",
+						"references": [],
+						"blocks": [],
+						"bytes": 30,
+						"lines": 1,
+						"language": "ts",
+						"read": true,
+						"decisions": "counted"
+					},
+					{
+						"path": "src/other.ts",
+						"references": [],
+						"blocks": [
+							{
+								"name": "run",
+								"kind": "function",
+								"complexity": 7
+							}
+						],
+						"bytes": 999,
+						"lines": 40,
+						"language": "ts",
+						"read": true,
+						"decisions": "counted"
+					}
+				],
+				"testedRevision": "0123456789abcdef0123456789abcdef01234567"
+			},
+			"output": [
+				{
+					"unit": "function.pick",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "source-bytes",
+					"unitOfMeasure": "bytes",
+					"value": 150,
+					"method": "Sum of the byte sizes of the owned source files.",
+					"artifacts": []
+				},
+				{
+					"unit": "function.pick",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "source-lines",
+					"unitOfMeasure": "lines",
+					"value": 5,
+					"method": "Sum of the line counts of the owned source files.",
+					"artifacts": []
+				},
+				{
+					"unit": "function.pick",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "complexity",
+					"unitOfMeasure": "points",
+					"method": "Decision points in owned source, plus one per function or method.",
+					"value": 2,
+					"artifacts": []
+				},
+				{
+					"unit": "function.pick",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "dependencies",
+					"unitOfMeasure": "count",
+					"method": "Unit dependencies plus distinct external modules referenced.",
+					"value": 2,
+					"artifacts": []
+				},
+				{
+					"unit": "function.pick",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "artifact-bytes",
+					"unitOfMeasure": "bytes",
+					"value": null,
+					"unavailable": "A module unit emits no separate artifact.",
+					"method": "Not applicable.",
+					"artifacts": []
+				}
+			]
+		},
+		{
+			"name": "a revision that is not a commit hash is copied unchecked",
+			"input": {
+				"unit": {
+					"id": "function.pick",
+					"owns": {
+						"source": [
+							"src/pick.ts",
+							"src/constants.ts"
+						],
+						"symbols": []
+					},
+					"dependencies": [
+						{
+							"unit": "function.types",
+							"via": "import",
+							"origin": "derived"
+						}
+					],
+					"runtime": {
+						"targets": [
+							{
+								"kind": "module",
+								"entry": "src/index.ts"
+							}
+						]
+					}
+				},
+				"files": [
+					{
+						"path": "src/pick.ts",
+						"references": [
+							{
+								"via": "import",
+								"typeOnly": false,
+								"external": "zod"
+							}
+						],
+						"blocks": [
+							{
+								"name": "run",
+								"kind": "function",
+								"complexity": 2
+							}
+						],
+						"bytes": 120,
+						"lines": 4,
+						"language": "ts",
+						"read": true,
+						"decisions": "counted"
+					},
+					{
+						"path": "src/constants.ts",
+						"references": [],
+						"blocks": [],
+						"bytes": 30,
+						"lines": 1,
+						"language": "ts",
+						"read": true,
+						"decisions": "counted"
+					},
+					{
+						"path": "src/other.ts",
+						"references": [],
+						"blocks": [
+							{
+								"name": "run",
+								"kind": "function",
+								"complexity": 7
+							}
+						],
+						"bytes": 999,
+						"lines": 40,
+						"language": "ts",
+						"read": true,
+						"decisions": "counted"
+					}
+				],
+				"testedRevision": "not-a-commit"
+			},
+			"output": [
+				{
+					"unit": "function.pick",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "not-a-commit",
+					"metric": "source-bytes",
+					"unitOfMeasure": "bytes",
+					"value": 150,
+					"method": "Sum of the byte sizes of the owned source files.",
+					"artifacts": []
+				},
+				{
+					"unit": "function.pick",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "not-a-commit",
+					"metric": "source-lines",
+					"unitOfMeasure": "lines",
+					"value": 5,
+					"method": "Sum of the line counts of the owned source files.",
+					"artifacts": []
+				},
+				{
+					"unit": "function.pick",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "not-a-commit",
+					"metric": "complexity",
+					"unitOfMeasure": "points",
+					"method": "Decision points in owned source, plus one per function or method.",
+					"value": 2,
+					"artifacts": []
+				},
+				{
+					"unit": "function.pick",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "not-a-commit",
+					"metric": "dependencies",
+					"unitOfMeasure": "count",
+					"method": "Unit dependencies plus distinct external modules referenced.",
+					"value": 2,
+					"artifacts": []
+				},
+				{
+					"unit": "function.pick",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "not-a-commit",
+					"metric": "artifact-bytes",
+					"unitOfMeasure": "bytes",
+					"value": null,
+					"unavailable": "A module unit emits no separate artifact.",
+					"method": "Not applicable.",
+					"artifacts": []
+				}
+			]
+		}
+	]
+}

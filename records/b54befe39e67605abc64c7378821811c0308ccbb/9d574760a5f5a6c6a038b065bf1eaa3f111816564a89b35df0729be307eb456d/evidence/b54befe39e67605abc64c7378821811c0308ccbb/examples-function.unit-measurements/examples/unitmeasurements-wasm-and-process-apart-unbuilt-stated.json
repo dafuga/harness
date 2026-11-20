@@ -1,0 +1,204 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.unit-measurements",
+	"symbol": "unitMeasurements",
+	"cases": [
+		{
+			"name": "wasm built, process missing one of its distinct artifacts",
+			"input": {
+				"unit": {
+					"id": "kernel.impact",
+					"owns": {
+						"source": [],
+						"symbols": []
+					},
+					"dependencies": [],
+					"runtime": {
+						"targets": [
+							{
+								"kind": "wasm",
+								"entry": "target/kernel.wasm"
+							},
+							{
+								"kind": "module",
+								"entry": "src/index.ts"
+							},
+							{
+								"kind": "process",
+								"entry": "target/kernel"
+							},
+							{
+								"kind": "process",
+								"entry": "target/kernel"
+							},
+							{
+								"kind": "process",
+								"entry": "target/tools"
+							}
+						]
+					}
+				},
+				"files": [],
+				"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+				"artifacts": {
+					"target/kernel.wasm": {
+						"bytes": 143132,
+						"sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+					},
+					"target/kernel": {
+						"bytes": 402048,
+						"sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+					}
+				}
+			},
+			"output": [
+				{
+					"unit": "kernel.impact",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "artifact-bytes",
+					"unitOfMeasure": "bytes",
+					"value": 143132,
+					"method": "Byte size of the artifact as built in the verified snapshot.",
+					"artifacts": [
+						{
+							"path": "target/kernel.wasm",
+							"bytes": 143132,
+							"sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+						}
+					],
+					"target": "wasm"
+				},
+				{
+					"unit": "kernel.impact",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "artifact-bytes",
+					"unitOfMeasure": "bytes",
+					"value": null,
+					"unavailable": "target/tools was not built in the verified snapshot.",
+					"method": "Sum of the byte sizes of the 2 artifacts of this target as built in the verified snapshot.",
+					"artifacts": [
+						{
+							"path": "target/kernel",
+							"bytes": 402048,
+							"sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+						}
+					],
+					"target": "process"
+				}
+			]
+		},
+		{
+			"name": "no artifacts supplied, so every target size is unavailable",
+			"input": {
+				"unit": {
+					"id": "kernel.impact",
+					"owns": {
+						"source": [],
+						"symbols": []
+					},
+					"dependencies": [],
+					"runtime": {
+						"targets": [
+							{
+								"kind": "wasm",
+								"entry": "target/kernel.wasm"
+							},
+							{
+								"kind": "module",
+								"entry": "src/index.ts"
+							},
+							{
+								"kind": "process",
+								"entry": "target/kernel"
+							},
+							{
+								"kind": "process",
+								"entry": "target/kernel"
+							},
+							{
+								"kind": "process",
+								"entry": "target/tools"
+							}
+						]
+					}
+				},
+				"files": [],
+				"testedRevision": "0123456789abcdef0123456789abcdef01234567"
+			},
+			"output": [
+				{
+					"unit": "kernel.impact",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "artifact-bytes",
+					"unitOfMeasure": "bytes",
+					"value": null,
+					"unavailable": "target/kernel.wasm was not built in the verified snapshot.",
+					"method": "Byte size of the artifact as built in the verified snapshot.",
+					"artifacts": [],
+					"target": "wasm"
+				},
+				{
+					"unit": "kernel.impact",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "artifact-bytes",
+					"unitOfMeasure": "bytes",
+					"value": null,
+					"unavailable": "target/kernel, target/tools were not built in the verified snapshot.",
+					"method": "Sum of the byte sizes of the 2 artifacts of this target as built in the verified snapshot.",
+					"artifacts": [],
+					"target": "process"
+				}
+			]
+		},
+		{
+			"name": "module and http targets only give one artifact with no target",
+			"input": {
+				"unit": {
+					"id": "function.pick",
+					"owns": {
+						"source": [],
+						"symbols": []
+					},
+					"dependencies": [],
+					"runtime": {
+						"targets": [
+							{
+								"kind": "module",
+								"entry": "src/index.ts"
+							},
+							{
+								"kind": "http",
+								"entry": "src/routes.ts"
+							}
+						]
+					}
+				},
+				"files": [],
+				"testedRevision": "0123456789abcdef0123456789abcdef01234567"
+			},
+			"output": [
+				{
+					"unit": "function.pick",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "artifact-bytes",
+					"unitOfMeasure": "bytes",
+					"value": null,
+					"unavailable": "A module unit emits no separate artifact.",
+					"method": "Not applicable.",
+					"artifacts": []
+				}
+			]
+		}
+	]
+}
