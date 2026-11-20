@@ -1,0 +1,701 @@
+{
+	"schemaVersion": 1,
+	"record": "d342a7339668d5d615e0a3da957e1e3ca197648cc927a6998ce23bd93f16fa29",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "3394b78080747fba55267587071d7524adbdcebe7677c3531c2e53a04e68a350",
+			"bytes": 190785,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-desktop.png",
+			"sha256": "73e56983bd324fd8ccf87280f603bcb1c38415f7580a56d7222db46412dc4338",
+			"bytes": 50697,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-profile.json",
+			"sha256": "184a5eba1043e46c592e31cbc696316f3d8cc5e611f5de46bc585b7f1c371a10",
+			"bytes": 799,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-tablet.png",
+			"sha256": "353552e8cf81c3b4f220bbb97cfd4a087b642fa8ca24ee331ee04482b06c8c71",
+			"bytes": 51912,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-mobile.png",
+			"sha256": "e9d1ea000de99269049b969c81e4713f73c285ef243aaebb3ace21c0900ccc01",
+			"bytes": 49692,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-desktop.png",
+			"sha256": "24553bb0bfa9af2f91169b40f0d8b23dc5f4b5f8c8e0d7039f46b6a2eb29339f",
+			"bytes": 32986,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-profile.json",
+			"sha256": "cb989f21f0de5d799114d2724083201b82df93ff26ccaec477214df295df8a63",
+			"bytes": 812,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-tablet.png",
+			"sha256": "4b5a2442b77cd71206f73e81249230fb62afd723a8f870cbc32d28cdb2c4113d",
+			"bytes": 31855,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-mobile.png",
+			"sha256": "3a9174bc476a447e2f370ba7cb27463c98662ed959697e598c6ad9b9be2d017c",
+			"bytes": 31762,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-guest-desktop.png",
+			"sha256": "096d950dead524169e6c0c992d840a0e8d67a225746e0065ee0919c3a488b31e",
+			"bytes": 41138,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-guest-profile.json",
+			"sha256": "75f67802ecfbb33d9eb1a2a6da23161c9cd2f0bdca84fec343116838ec2daef2",
+			"bytes": 812,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-guest-tablet.png",
+			"sha256": "33181cf64259773d63b5fbab7273423e3e84a3d77b2050f0ce458276d773804b",
+			"bytes": 46110,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-guest-mobile.png",
+			"sha256": "453fbe90f27e11159f08f1c4f88913ee593743dc5af89168e8b5f649065e68d5",
+			"bytes": 40354,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-admin-desktop.png",
+			"sha256": "3193b4a75efea80fa93771f219e8ff8aeff9513bc5f97e836d0f1bbb35fa767b",
+			"bytes": 60805,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-admin-profile.json",
+			"sha256": "85b2753f09753689dc711f74963375c23bdec376953f5d4dbcdd2a22ab617b4c",
+			"bytes": 812,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-admin-tablet.png",
+			"sha256": "340495747a366891fedd77c6d7dd2607c6732ba9809acff5103be23db93c36ef",
+			"bytes": 60732,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-admin-mobile.png",
+			"sha256": "3f0cd91253c53f461db10bf5acd5aca145534a1978100bf72b60b4f9b528061b",
+			"bytes": 60868,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-empty-desktop.png",
+			"sha256": "1ee1f88b0c9754f969f0f17a093ac4ed8d37272a277e19086761510c15ecb1c3",
+			"bytes": 29707,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-empty-profile.json",
+			"sha256": "152ab92c79fdf4a8cfa8e225be3d10877eb2dfcb48a1efa7b6dde48cd519ecda",
+			"bytes": 810,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-empty-tablet.png",
+			"sha256": "170288d7657cc779a63c514a1deba1f4cf311399ff2b254ba4616dba3b54f8b1",
+			"bytes": 29247,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-empty-mobile.png",
+			"sha256": "5377693f6ef7850d2dc9cf031189bf811e2da527887099ed9975f1b1d105403c",
+			"bytes": 28475,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-unindexed-desktop.png",
+			"sha256": "0b6445def9bd1b552612dcba6014342f4f636926eb8cfba07572cee82d28c6a3",
+			"bytes": 30359,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-unindexed-profile.json",
+			"sha256": "41533c9a6577470d155b4d63331046f35cac0e12520d25218289cb1ca29074be",
+			"bytes": 819,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-unindexed-tablet.png",
+			"sha256": "29de2d1fc63ba4f05880c6a9baae210f57b8f91e69be0c70eaa3bad2cef7e262",
+			"bytes": 29898,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-unindexed-mobile.png",
+			"sha256": "ec576f67d8e4c29c268f45953b02a2d362e1a8fb666d6c29963a2047f61653fd",
+			"bytes": 30226,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-not-found-desktop.png",
+			"sha256": "58ce1a8795c32d435d16f46255bdc1cbfd38c705a6dddebe57a19c576d58071c",
+			"bytes": 16020,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-not-found-profile.json",
+			"sha256": "95036a58df87e45536a91c21a938e4159d1ef8dd15601f4307afc8864ba0bd0a",
+			"bytes": 819,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-not-found-tablet.png",
+			"sha256": "3c34a2037812f62b8b0febdfa369184c41f708e0da21d5f4b039dcd49c05d19b",
+			"bytes": 16407,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-not-found-mobile.png",
+			"sha256": "e6848a1eb845443fd0a60406cc1c31d7363ae588b1e370258fcc8368ecc56260",
+			"bytes": 14679,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-gap-desktop.png",
+			"sha256": "fb14ae344d6b16b37cf68bef52842e39281dbaf48b9802d73bb2735e356bfc04",
+			"bytes": 56676,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-gap-profile.json",
+			"sha256": "1d6f676f17e3cba7856690d26ca7594574bb09a60c7e20c5457e5386f545d2d1",
+			"bytes": 808,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-gap-tablet.png",
+			"sha256": "378f759d77445c80a0ee860561fb8dd0dc7856a7d6a1009b98e9d4565487aa84",
+			"bytes": 57519,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-gap-mobile.png",
+			"sha256": "f568c23bfe72bb24f0ea2016d5d924db84d27580c24d7929cb1cc82372c34ea9",
+			"bytes": 55689,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-empty-data-desktop.png",
+			"sha256": "b9825b85e2c3e25aa9a4b01b6f9ee8f1e57c37157986bfe330792fea7cfa615e",
+			"bytes": 45069,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-empty-data-profile.json",
+			"sha256": "5aafdb4bddd9662a7fbebbcfd4df654aeed6abe920517cd0cb8edbb4897552d2",
+			"bytes": 822,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-empty-data-tablet.png",
+			"sha256": "a34cb641eec0d65799138d8de5086f305907feafcb9bcac97695b8d67b512bea",
+			"bytes": 48324,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-empty-data-mobile.png",
+			"sha256": "d1aa442dcaaa78edb6a3b9fb6ec74ca8453bf9be11c8ac31e98fb3fe41321c0f",
+			"bytes": 43053,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-desktop.png",
+			"sha256": "54b0f6faa10352061bb4eb370565fe75bca2993f46e517f7a921058b84fee3ae",
+			"bytes": 33876,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-profile.json",
+			"sha256": "5b4f4c10e6c7cff6d32320d7a8ce5bcb9350d396ae0b0d7672cf6667a752971d",
+			"bytes": 817,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-tablet.png",
+			"sha256": "e072a9c738a7f007f552640b79273dcdf0f585b5bb0aa27b0626b3ed92312311",
+			"bytes": 32950,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-mobile.png",
+			"sha256": "5ea378432e37ad1e9be82a016cfe8637b034f328730a0a13b51a07e7581ed1d6",
+			"bytes": 35032,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-empty-desktop.png",
+			"sha256": "4ec7142b6ea202b0fa5b702e5ad8f55c615751f6345cc6b60c41216afc9ab32b",
+			"bytes": 13035,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-empty-profile.json",
+			"sha256": "eb256f8d17129ca9f854462ac02dd4a610b6c907caf2ccc30192123b678a2f22",
+			"bytes": 829,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-empty-tablet.png",
+			"sha256": "4cf0dd84060e8a6432f792dc2d51df5bbb576fb51329731294d6650e21b640c8",
+			"bytes": 14589,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-empty-mobile.png",
+			"sha256": "114f3e858b2a9a108b3bd5395ec186058b506650c1a12d678824e566a5299338",
+			"bytes": 14109,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-unindexed-desktop.png",
+			"sha256": "308ac4fa19952c66745887ec0b1e3d1250012413af8f41262e3002504ae245b5",
+			"bytes": 12894,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-unindexed-profile.json",
+			"sha256": "38eb95529431fe044b2e2851e504448dc45013524d17d67ab983085c7739585b",
+			"bytes": 837,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-unindexed-tablet.png",
+			"sha256": "7978aca7f35e056311f87f7d03c17a36393f69de3720c99bc476cbcc08911653",
+			"bytes": 14442,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-unindexed-mobile.png",
+			"sha256": "4fa41b329b2f9cad2d0885d16d62cc924019d89ad432fb3a4d1bf105c329a045",
+			"bytes": 13369,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-link-focused-desktop.png",
+			"sha256": "d09d4802b4221d7a1e3d2fa2b6edc01f82ccd6062e91a22bf8eba3e8a7e347b8",
+			"bytes": 33071,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-link-focused-profile.json",
+			"sha256": "95b4e3c5719688425df9580ec22522b8a74739afeefd18247a442e6945084bc3",
+			"bytes": 837,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-link-focused-tablet.png",
+			"sha256": "46d8e527a6074fc923ee725ba6ff7f6991732780bb2cd7ae38e7fbf8932552ec",
+			"bytes": 31942,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-link-focused-mobile.png",
+			"sha256": "c2ca64512e4f0c7ba488d26872673a5f1d7d58fb11c20233ef126b8c32fbf8a0",
+			"bytes": 31843,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-link-hovered-desktop.png",
+			"sha256": "06ceb99d9c75021fc3183952753e756d45345549d8ff1e2d31c9b45c0291125d",
+			"bytes": 32965,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-link-hovered-profile.json",
+			"sha256": "c3a6ff913336b7cbb7953c8a7054ef8ed29eb0388690e0102dfdf7c8bdc854e6",
+			"bytes": 838,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-link-hovered-tablet.png",
+			"sha256": "af02f92320204f571638dc083365c6ee22b761e46c73c3ff45613233423fdb77",
+			"bytes": 31832,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-link-hovered-mobile.png",
+			"sha256": "11540bf2f17c95491d94fb1fb19c0191bdfed1e55136245c86a45af97c5593c6",
+			"bytes": 31754,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-data-focused-desktop.png",
+			"sha256": "b5bfd8c17001af22994cc35d4ea79117b44efa29a3034286773e5f868762acd5",
+			"bytes": 50827,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-data-focused-profile.json",
+			"sha256": "9307b660951624d3572fbb5c412ade49292de7dfba29a0b928ada5363041b757",
+			"bytes": 826,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-data-focused-tablet.png",
+			"sha256": "2ad2a63adc614b1ad67304e1d093ea537bc3d7c67c4b23712f067c105bc30b02",
+			"bytes": 51991,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-data-focused-mobile.png",
+			"sha256": "cb94b7b82864afc8f90f56ca8bffd99714c813e4fd9f392a217307af9334c60a",
+			"bytes": 49762,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profiles-desktop.png",
+			"sha256": "ce113ae371b72d6cc4677af6862a5e1eadce67053fe1d1234d16c500bf98fe69",
+			"bytes": 69061,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profiles-desktop.json",
+			"sha256": "9c57bd5c476d6b60acaa1930d7115506b255f19d2285d1ee3f971b2a837ef66f",
+			"bytes": 713,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profiles-tablet.png",
+			"sha256": "be4ad6f25f71d2c5c48ca9a1724e03e3505e93be253c3a3e18f7c76f2bf49d7d",
+			"bytes": 65728,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profiles-tablet.json",
+			"sha256": "beda47e77e282e6c55d648b9d1746ff7e1494740ef567e7b9fc2bda695466029",
+			"bytes": 713,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profiles-mobile.png",
+			"sha256": "279a403bbf1a1ce536b8f01bb49ed14cc79c0b9eecadb3e6a60b93542c606c7e",
+			"bytes": 54827,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profiles-mobile.json",
+			"sha256": "01d08ab593c693555f22110dca6a73585570cceb51e026497a3b73ad14eda025",
+			"bytes": 698,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-guest-desktop.png",
+			"sha256": "768cc2a024d329545848db2af4bcc49eb56fec9f37f21841cc41133a0b6a919e",
+			"bytes": 84732,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-guest-desktop.json",
+			"sha256": "7cc7d86f0e8ef9fdac2f02148df267fc2832cd763820c7a68ddb210c271230e4",
+			"bytes": 710,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-guest-tablet.png",
+			"sha256": "9bfbcd5971c6c7d32e01a5ae2b6df9e8a5be944a812332802361887d84c2ac28",
+			"bytes": 75454,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-guest-tablet.json",
+			"sha256": "54ba518ec4900542d0f155501eed10441b063b836b2e285a3139c706ee01f782",
+			"bytes": 723,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-guest-mobile.png",
+			"sha256": "075ee25afd7178674616f82c261c0fac681170a3a828f0823836f19934eb85c4",
+			"bytes": 63443,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-guest-mobile.json",
+			"sha256": "56068db4fbba25592edc4be67bdc9b1ea42e9f6a2d746e6ad7ca8bef97ecf8e3",
+			"bytes": 722,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-member-desktop.png",
+			"sha256": "d359120ca3408e230b831f9776a2cb09cad8ec8f36d6bd9a19f9128a67d17f71",
+			"bytes": 88379,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-member-desktop.json",
+			"sha256": "903e29e636046cb3682e461798c3ac74dfde291a6c1c4622c525d1f3233897e6",
+			"bytes": 710,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-member-tablet.png",
+			"sha256": "101db9eec47bf56d90bf02737b6de0915a3e3404f07f7f941427d319c4780c8b",
+			"bytes": 83268,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-member-tablet.json",
+			"sha256": "2a3cfd90e375ff9a53924476525f59fe9ad9a6b01f598dbf541e8238869c04e6",
+			"bytes": 726,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-member-mobile.png",
+			"sha256": "5c38a37985051a23d66809182be155c34d10dd0849780bb21dc06c72f1aa0c58",
+			"bytes": 72665,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-member-mobile.json",
+			"sha256": "bf18085ab1acbc3f7783ca427d62ff0e50610b26ded8b815d65a0cb7fe6e0c2b",
+			"bytes": 723,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-admin-desktop.png",
+			"sha256": "31d8a16d5c615a27359adcce0258ec8bb4306f8011a7445ff5c6b43bab605d7c",
+			"bytes": 99363,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-admin-desktop.json",
+			"sha256": "86116c1281689fdae1f72dabdce59fc90e08e1aade573bb2eae0e035d8fce636",
+			"bytes": 723,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-admin-tablet.png",
+			"sha256": "3d65e7fc39a34a591a626d42444e4969fcda4d7aec723a792af9b8922fcc1260",
+			"bytes": 91704,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-admin-tablet.json",
+			"sha256": "7b618c844270c1d2e1c4ea63b9817c469147b602de577ef564bbcad992a139c2",
+			"bytes": 723,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-admin-mobile.png",
+			"sha256": "a5b61b21c9aab4f610b666df38b022b32efcbe713aa2aca182a732148b74f7a4",
+			"bytes": 83746,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-admin-mobile.json",
+			"sha256": "3f0fa63670ca9ff56791f8fd0d29a4c69ae6ae75124a3b20c7d1d8204b55149c",
+			"bytes": 708,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-missing-desktop.png",
+			"sha256": "dd903c1b17e4a6575cd361ab33d09dcde522d6e4722623a452874af857db3eab",
+			"bytes": 57201,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-missing-desktop.json",
+			"sha256": "d94fdfe02a8b611e34b968bec79a4e16f376be00776a716a2a038f62dacb935c",
+			"bytes": 714,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-missing-tablet.png",
+			"sha256": "663bf5e92d9e96aefcc69934a9c204e5205362e73f4d20e253d3d36a136680ed",
+			"bytes": 49707,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-missing-tablet.json",
+			"sha256": "366b186afac19876153ff41ac2610ae7c70a981256cb9e35e2f8d0126072e28e",
+			"bytes": 727,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-missing-mobile.png",
+			"sha256": "ed83edf0973da0a26982894beafa2864b9fd51118ae045b169d5fbe806a63bd3",
+			"bytes": 40961,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-missing-mobile.json",
+			"sha256": "e64bfb9a69a8052358c009318cdbdd97969efa5123853e567b58252722ddafff",
+			"bytes": 725,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profiles-empty-desktop.png",
+			"sha256": "fec740b95a5b9e27fd56c402d2b5cd1276320088ff4859fc8ce1f4f389f6ded5",
+			"bytes": 70849,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profiles-empty-desktop.json",
+			"sha256": "4e5ed623b326ac77c0b8ae4883adb56fe9c1b5fc56634ec4d06109861e9eeab9",
+			"bytes": 712,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profiles-empty-tablet.png",
+			"sha256": "fa5520dedf4d68f8bc0b939a2f29b6055aca11ddca28922771eee99a22831bb8",
+			"bytes": 63854,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profiles-empty-tablet.json",
+			"sha256": "a59e0666f7176dddb0cfa164e9b09437dc7f2b878e9f4e414694d90bc2872437",
+			"bytes": 725,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profiles-empty-mobile.png",
+			"sha256": "bc9f41ba2a06d4538552dcc5bddcc0641bacd482cb9e56e7c7c67bf9087799ca",
+			"bytes": 53676,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profiles-empty-mobile.json",
+			"sha256": "5e7e73a8529d4f218c2fa6fe3cac0a031c8aad0f2457df689f68ae2876ed6593",
+			"bytes": 722,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/explorer-apis-apis.log",
+			"sha256": "0c455b6f36b66e66c9d280dd8ba5e5ac65d4cdc33d396800f5de3d7aea88644e",
+			"bytes": 41287,
+			"storage": "git"
+		},
+		{
+			"path": "logs/component-catalog-previews-previews.log",
+			"sha256": "33f18fc44a2a9d59ba6cb9a6794013763105b5e5aa7ebdff5aae8c523a38b8cf",
+			"bytes": 7622,
+			"storage": "git"
+		}
+	]
+}
