@@ -1,0 +1,25 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.project-agent-events",
+	"symbol": "projectAgentEvents",
+	"cases": [
+		{
+			"name": "reply after replay and text",
+			"input": " more",
+			"output": "Old more"
+		},
+		{
+			"name": "status after replay",
+			"input": "replay",
+			"output": "Replayed"
+		},
+		{
+			"name": "recorded messages",
+			"input": "recording status",
+			"output": [
+				"Saving"
+			]
+		}
+	]
+}

@@ -1,0 +1,28 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.project-agent-events",
+	"symbol": "projectAgentEvents",
+	"cases": [
+		{
+			"name": "status from summary",
+			"input": "finished event",
+			"output": "Done"
+		},
+		{
+			"name": "navigated thread path",
+			"input": {
+				"category": "function",
+				"entityId": "function.format-time",
+				"threadId": "thread-1",
+				"requestSaved": true
+			},
+			"output": "/function/function.format-time"
+		},
+		{
+			"name": "settled as planned",
+			"input": "finished event",
+			"output": true
+		}
+	]
+}
