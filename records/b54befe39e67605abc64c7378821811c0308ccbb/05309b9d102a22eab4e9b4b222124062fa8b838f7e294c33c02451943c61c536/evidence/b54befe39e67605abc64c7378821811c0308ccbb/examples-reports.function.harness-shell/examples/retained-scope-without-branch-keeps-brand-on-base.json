@@ -1,0 +1,280 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-shell",
+	"symbol": "harnessShell",
+	"cases": [
+		{
+			"name": "retained commit",
+			"input": {
+				"scope": {
+					"location": {
+						"branch": null,
+						"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"category": "pages"
+					},
+					"mode": "commit",
+					"branch": null,
+					"tip": null,
+					"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"atTip": false,
+					"parent": null,
+					"summary": {
+						"parents": [],
+						"subject": "Synthetic change",
+						"author": "Synthetic author",
+						"committedAt": "2026-01-01T00:00:00.000Z",
+						"coverage": "verified",
+						"gaps": [],
+						"records": [],
+						"legacy": [],
+						"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"branches": [],
+						"retained": true
+					}
+				}
+			},
+			"output": {
+				"home": {
+					"href": "/reports",
+					"to": null
+				},
+				"categories": [
+					{
+						"id": "pages",
+						"label": "Pages",
+						"icon": "pages",
+						"active": true,
+						"href": "/reports/retained/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages",
+						"to": {
+							"branch": null,
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"category": "pages"
+						}
+					},
+					{
+						"id": "modules",
+						"label": "Code",
+						"icon": "layers",
+						"active": false,
+						"href": "/reports/retained/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/components",
+						"to": {
+							"branch": null,
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"category": "components"
+						}
+					},
+					{
+						"id": "translations",
+						"label": "Translations",
+						"icon": "web",
+						"active": false,
+						"href": "/reports/retained/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/translations",
+						"to": {
+							"branch": null,
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"category": "pages",
+							"screen": "translations"
+						}
+					},
+					{
+						"id": "platforms",
+						"label": "Platforms",
+						"icon": "platforms",
+						"active": false,
+						"href": "/reports/retained/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/platforms",
+						"to": {
+							"branch": null,
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"category": "platforms"
+						}
+					}
+				],
+				"modules": [
+					{
+						"id": "apis",
+						"label": "APIs",
+						"icon": "route",
+						"active": false,
+						"href": "/reports/retained/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/apis",
+						"to": {
+							"branch": null,
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"category": "apis"
+						},
+						"primary": false
+					},
+					{
+						"id": "layouts",
+						"label": "Layouts",
+						"icon": "layouts",
+						"active": false,
+						"href": "/reports/retained/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/layouts",
+						"to": {
+							"branch": null,
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"category": "layouts"
+						},
+						"primary": false
+					},
+					{
+						"id": "components",
+						"label": "Components",
+						"icon": "components",
+						"active": false,
+						"href": "/reports/retained/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/components",
+						"to": {
+							"branch": null,
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"category": "components"
+						},
+						"primary": true
+					},
+					{
+						"id": "models",
+						"label": "Models",
+						"icon": "database",
+						"active": false,
+						"href": "/reports/retained/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/models",
+						"to": {
+							"branch": null,
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"category": "models"
+						},
+						"primary": false
+					},
+					{
+						"id": "services",
+						"label": "Services",
+						"icon": "services",
+						"active": false,
+						"href": "/reports/retained/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/services",
+						"to": {
+							"branch": null,
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"category": "services"
+						},
+						"primary": false
+					},
+					{
+						"id": "functions",
+						"label": "Helpers",
+						"icon": "functions",
+						"active": false,
+						"href": "/reports/retained/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/functions",
+						"to": {
+							"branch": null,
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"category": "functions"
+						},
+						"primary": false
+					},
+					{
+						"id": "types",
+						"label": "Types",
+						"icon": "code",
+						"active": false,
+						"href": "/reports/retained/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/types",
+						"to": {
+							"branch": null,
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"category": "types"
+						},
+						"primary": false
+					},
+					{
+						"id": "configs",
+						"label": "Configs",
+						"icon": "configs",
+						"active": false,
+						"href": "/reports/retained/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/configs",
+						"to": {
+							"branch": null,
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"category": "configs"
+						},
+						"primary": false
+					},
+					{
+						"id": "styles",
+						"label": "Styles",
+						"icon": "styles",
+						"active": false,
+						"href": "/reports/retained/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/styles",
+						"to": {
+							"branch": null,
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"category": "pages",
+							"screen": "styles"
+						},
+						"primary": false
+					},
+					{
+						"id": "dependencies",
+						"label": "Dependencies",
+						"icon": "code",
+						"active": false,
+						"href": "/reports/retained/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/dependencies",
+						"to": {
+							"branch": null,
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"category": "pages",
+							"screen": "dependencies"
+						},
+						"primary": false
+					},
+					{
+						"id": "permissions",
+						"label": "Users & Permissions",
+						"icon": "shield",
+						"active": false,
+						"href": "/reports/retained/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/permissions",
+						"to": {
+							"branch": null,
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"category": "pages",
+							"screen": "permissions"
+						},
+						"primary": false
+					},
+					{
+						"id": "module-library",
+						"label": "Plugins",
+						"icon": "layers",
+						"active": false,
+						"href": "/reports/retained/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/modules",
+						"to": {
+							"branch": null,
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"category": "pages",
+							"screen": "modules"
+						},
+						"primary": false
+					}
+				],
+				"revision": {
+					"branch": "Retained commits",
+					"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"commits": [
+						{
+							"parents": [],
+							"subject": "Synthetic change",
+							"author": "Synthetic author",
+							"committedAt": "2026-01-01T00:00:00.000Z",
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": [],
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"branches": [],
+							"retained": true
+						}
+					],
+					"note": "No branch tip",
+					"viewed": "Retained commit",
+					"tip": null
+				}
+			}
+		}
+	]
+}

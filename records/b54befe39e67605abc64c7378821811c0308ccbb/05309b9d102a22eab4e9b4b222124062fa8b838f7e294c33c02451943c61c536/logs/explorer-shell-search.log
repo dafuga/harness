@@ -1,0 +1,13 @@
+
+Running 6 tests using 1 worker
+
+(node:81312) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/explorer-shell-search.spec.ts:60:1 › every category of the revision is found, and the keyboard opens a shell under Shells (718ms)
+  ✓  2 tests/e2e/explorer-shell-search.spec.ts:83:1 › Escape closes the list then clears the field; nothing found is said; a click opens (436ms)
+  ✓  3 tests/e2e/explorer-shell-search.spec.ts:102:1 › with a commit selected only that commit is searched, and the result keeps the commit (424ms)
+  ✓  4 tests/e2e/explorer-shell-search.spec.ts:121:1 › at a wide desktop the search shares the one row of the bar, overlapping nothing (280ms)
+  ✓  5 tests/e2e/explorer-shell-search.spec.ts:147:2 › the search is in the bar at tablet width and its results fit the screen (382ms)
+  ✓  6 tests/e2e/explorer-shell-search.spec.ts:147:2 › the search is in the bar at mobile width and its results fit the screen (309ms)
+
+  6 passed (3.3s)

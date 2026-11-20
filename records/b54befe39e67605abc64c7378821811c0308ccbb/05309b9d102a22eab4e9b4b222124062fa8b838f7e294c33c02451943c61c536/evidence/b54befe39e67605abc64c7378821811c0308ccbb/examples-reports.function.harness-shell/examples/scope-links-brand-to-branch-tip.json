@@ -1,0 +1,295 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-shell",
+	"symbol": "harnessShell",
+	"cases": [
+		{
+			"name": "branch scope at its tip",
+			"input": {
+				"scope": {
+					"location": {
+						"branch": "main",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "pages"
+					},
+					"mode": "commit",
+					"branch": "main",
+					"tip": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"atTip": true,
+					"parent": null,
+					"summary": {
+						"parents": [],
+						"subject": "Synthetic change",
+						"author": "Synthetic author",
+						"committedAt": "2026-01-01T00:00:00.000Z",
+						"coverage": "verified",
+						"gaps": [],
+						"records": [],
+						"legacy": [],
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"branches": [
+							"main"
+						],
+						"retained": false
+					}
+				}
+			},
+			"output": {
+				"home": {
+					"href": "/reports/main/tip/pages",
+					"to": {
+						"branch": "main",
+						"commit": null,
+						"category": "pages"
+					}
+				},
+				"categories": [
+					{
+						"id": "pages",
+						"label": "Pages",
+						"icon": "pages",
+						"active": true,
+						"href": "/reports/main/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/pages",
+						"to": {
+							"branch": "main",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"category": "pages"
+						}
+					},
+					{
+						"id": "modules",
+						"label": "Code",
+						"icon": "layers",
+						"active": false,
+						"href": "/reports/main/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/components",
+						"to": {
+							"branch": "main",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"category": "components"
+						}
+					},
+					{
+						"id": "translations",
+						"label": "Translations",
+						"icon": "web",
+						"active": false,
+						"href": "/reports/main/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/pages/translations",
+						"to": {
+							"branch": "main",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"category": "pages",
+							"screen": "translations"
+						}
+					},
+					{
+						"id": "platforms",
+						"label": "Platforms",
+						"icon": "platforms",
+						"active": false,
+						"href": "/reports/main/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/platforms",
+						"to": {
+							"branch": "main",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"category": "platforms"
+						}
+					}
+				],
+				"modules": [
+					{
+						"id": "apis",
+						"label": "APIs",
+						"icon": "route",
+						"active": false,
+						"href": "/reports/main/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/apis",
+						"to": {
+							"branch": "main",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"category": "apis"
+						},
+						"primary": false
+					},
+					{
+						"id": "layouts",
+						"label": "Layouts",
+						"icon": "layouts",
+						"active": false,
+						"href": "/reports/main/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/layouts",
+						"to": {
+							"branch": "main",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"category": "layouts"
+						},
+						"primary": false
+					},
+					{
+						"id": "components",
+						"label": "Components",
+						"icon": "components",
+						"active": false,
+						"href": "/reports/main/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/components",
+						"to": {
+							"branch": "main",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"category": "components"
+						},
+						"primary": true
+					},
+					{
+						"id": "models",
+						"label": "Models",
+						"icon": "database",
+						"active": false,
+						"href": "/reports/main/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/models",
+						"to": {
+							"branch": "main",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"category": "models"
+						},
+						"primary": false
+					},
+					{
+						"id": "services",
+						"label": "Services",
+						"icon": "services",
+						"active": false,
+						"href": "/reports/main/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/services",
+						"to": {
+							"branch": "main",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"category": "services"
+						},
+						"primary": false
+					},
+					{
+						"id": "functions",
+						"label": "Helpers",
+						"icon": "functions",
+						"active": false,
+						"href": "/reports/main/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/functions",
+						"to": {
+							"branch": "main",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"category": "functions"
+						},
+						"primary": false
+					},
+					{
+						"id": "types",
+						"label": "Types",
+						"icon": "code",
+						"active": false,
+						"href": "/reports/main/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/types",
+						"to": {
+							"branch": "main",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"category": "types"
+						},
+						"primary": false
+					},
+					{
+						"id": "configs",
+						"label": "Configs",
+						"icon": "configs",
+						"active": false,
+						"href": "/reports/main/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/configs",
+						"to": {
+							"branch": "main",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"category": "configs"
+						},
+						"primary": false
+					},
+					{
+						"id": "styles",
+						"label": "Styles",
+						"icon": "styles",
+						"active": false,
+						"href": "/reports/main/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/pages/styles",
+						"to": {
+							"branch": "main",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"category": "pages",
+							"screen": "styles"
+						},
+						"primary": false
+					},
+					{
+						"id": "dependencies",
+						"label": "Dependencies",
+						"icon": "code",
+						"active": false,
+						"href": "/reports/main/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/pages/dependencies",
+						"to": {
+							"branch": "main",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"category": "pages",
+							"screen": "dependencies"
+						},
+						"primary": false
+					},
+					{
+						"id": "permissions",
+						"label": "Users & Permissions",
+						"icon": "shield",
+						"active": false,
+						"href": "/reports/main/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/pages/permissions",
+						"to": {
+							"branch": "main",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"category": "pages",
+							"screen": "permissions"
+						},
+						"primary": false
+					},
+					{
+						"id": "module-library",
+						"label": "Plugins",
+						"icon": "layers",
+						"active": false,
+						"href": "/reports/main/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/pages/modules",
+						"to": {
+							"branch": "main",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"category": "pages",
+							"screen": "modules"
+						},
+						"primary": false
+					}
+				],
+				"revision": {
+					"branch": "main",
+					"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"commits": [
+						{
+							"parents": [],
+							"subject": "Synthetic change",
+							"author": "Synthetic author",
+							"committedAt": "2026-01-01T00:00:00.000Z",
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": [],
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"branches": [
+								"main"
+							],
+							"retained": false
+						}
+					],
+					"note": "Tip · aaaaaaa",
+					"viewed": "Selected commit · branch tip",
+					"tip": {
+						"href": "/reports/main/tip/pages",
+						"to": {
+							"branch": "main",
+							"commit": null,
+							"category": "pages"
+						}
+					}
+				}
+			}
+		}
+	]
+}
