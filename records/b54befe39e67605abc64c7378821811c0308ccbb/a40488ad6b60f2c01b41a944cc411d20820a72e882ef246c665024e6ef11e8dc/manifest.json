@@ -1,0 +1,1330 @@
+{
+	"schemaVersion": 1,
+	"record": "a40488ad6b60f2c01b41a944cc411d20820a72e882ef246c665024e6ef11e8dc",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "652b6edc30be22f110ab0cbebd550880c03f8a671cff3bca50f01e7a8b92dd63",
+			"bytes": 1116905,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/compact-agent-ui/compact-agent-functions-1440-desktop.png",
+			"sha256": "6bb94686a6052b8be9b9d6cddaf00d57b1192c5c3e0a6a9bd99e651377446dd5",
+			"bytes": 322002,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/compact-agent-ui/compact-agent-functions-390-agent-phone.png",
+			"sha256": "ffa052f9600471708d7c919ba1641789dc7ac106b7ba650f582cff832d68720b",
+			"bytes": 113095,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/compact-agent-ui/tests-e2e-compact-agent.spec.ts-compact-agent-functions.txt",
+			"sha256": "28bfe7ef1f113c4bd31733ea410c5ff52ad9a96b8454a43ae2e11291089c76a6",
+			"bytes": 233,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/compact-agent-ui/compact-agent-components-1440-desktop.png",
+			"sha256": "0ba7008804b831fb1b8d3ff427b212d88c077fd1ebb7adde1efbfe862d40c118",
+			"bytes": 301122,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/compact-agent-ui/compact-agent-components-390-agent-phone.png",
+			"sha256": "b512dbe450d58b20a09520a6a4d8d8d4ea30154458263d166266550dd866b7f6",
+			"bytes": 118574,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/compact-agent-ui/tests-e2e-compact-agent.spec.ts-compact-agent-components.txt",
+			"sha256": "28bfe7ef1f113c4bd31733ea410c5ff52ad9a96b8454a43ae2e11291089c76a6",
+			"bytes": 233,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/compact-agent-ui/chat-agents-1440-desktop.png",
+			"sha256": "499e1f6246cce30488319daad580b1a03909845b66f3b141dbbf8c2ab2202dc4",
+			"bytes": 313986,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/compact-agent-ui/chat-agents-920-agents-tablet.png",
+			"sha256": "691413c2198238033b68a847d8b1ae6296e95598d78b0907239a871b94980aa2",
+			"bytes": 220770,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/compact-agent-ui/chat-agents-390-agent-phone.png",
+			"sha256": "53779b22ceb6d905e00ca7a5e9bcbb5c7d9bdeaaac8c7f4894704ff50971b645",
+			"bytes": 101759,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/creation-ui/chat-agents-many-long-roster-desktop.png",
+			"sha256": "326b342e1ea0130f1c2d7f987751d02f890cb8b9a62b30257872401650afbe5e",
+			"bytes": 313527,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-text/test-components-reference-text.test.ts-reference-functions.txt",
+			"sha256": "35541e9b79a09b3913c69eeecc3a50809f8a7f607216f67fecd3f7c0b622eeb6",
+			"bytes": 416,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-text/test-components-reference-text.test.ts-reference-functions.json",
+			"sha256": "41d671b4b0b393c466bfec668e869c057e39ea1849c51a045c42dc3b580a75be",
+			"bytes": 3112,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-parsing/test-entity-references.test.ts-reference-functions.txt",
+			"sha256": "6d99ab516bf361df478f1f7895c75ec41655e2fb15dccf633bf7d34a193182b9",
+			"bytes": 408,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-parsing/test-entity-references.test.ts-reference-functions.json",
+			"sha256": "0b774fbd9ae87100ce2306b9a2b641a33e8ac92c8678bc59ba291459a43a6721",
+			"bytes": 9701,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/message-references/test-message-references.test.ts-reference-functions.txt",
+			"sha256": "4930af1351c23e1669b7886e1a25207777bf32c34960f8e557aaff799d7ccf5f",
+			"bytes": 412,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/message-references/test-message-references.test.ts-reference-functions.json",
+			"sha256": "6adf3c9fe6ae15314380d65fc165f222e12ad85ce0ec06699f8f7fb01598483e",
+			"bytes": 10281,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/run-context-references/test-run-context-references.test.ts-reference-functions.txt",
+			"sha256": "29df4bedbc5db964be94e8f0ef0565bf4f6baa138b6a93922fe220d473c81c93",
+			"bytes": 410,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/run-context-references/test-run-context-references.test.ts-reference-functions.json",
+			"sha256": "52d177021bfff4ff890278d771712ab5dda401e30b5dfe072785af66d264f50c",
+			"bytes": 40596,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/project-task/test-services-project-task.test.ts-reference-functions.txt",
+			"sha256": "56463bb9e88f2c22474c633cb9591c3b59c2d9d5051964a2fce8c7e75149778c",
+			"bytes": 902,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/project-task/test-services-project-task.test.ts-reference-functions.json",
+			"sha256": "d5fa7301849bfc7c1af5a3140c50cc02d43b2b8cfa9b822a124a0ea7ce76c0a5",
+			"bytes": 14682,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-grammar/test-utils-entity-references.test.ts-reference-functions.txt",
+			"sha256": "9d54f0e6349d0a43eccc68d91615678255b52a0fc83d2a32a92c2543b85f502c",
+			"bytes": 413,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-grammar/test-utils-entity-references.test.ts-reference-functions.json",
+			"sha256": "06464fb109aa72601f4a9e8872006227269a92b9065336fd7cde028b315a7eda",
+			"bytes": 4854,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/proposal-units/test-utils-proposal-units.test.ts-reference-functions.txt",
+			"sha256": "b4e9013f927c22ecad836ecf109caacab0bc1e89b9133ae7c5235d61bd34e59f",
+			"bytes": 408,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/proposal-units/test-utils-proposal-units.test.ts-reference-functions.json",
+			"sha256": "da5d14d7af70734e8247961dcb7478c1d73764a940f12e474c803ec4233fce56",
+			"bytes": 6410,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-prompt/test-utils-reference-prompt.test.ts-reference-functions.txt",
+			"sha256": "0a7b2a4dce6b847454a835e86404a29dfdd2f0a36c8085ca6c09389b6e6c2775",
+			"bytes": 410,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-prompt/test-utils-reference-prompt.test.ts-reference-functions.json",
+			"sha256": "3de01c753f95a787b85d38cac7f8763ecbcb7f2434dce555a1d9b6461182be85",
+			"bytes": 3375,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-links/test-utils-unit-links.test.ts-reference-functions.txt",
+			"sha256": "012ab5221d3bff5a791faa9a88cb44e7650417f829b9aefbcb1805b5832bd0d9",
+			"bytes": 407,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-links/test-utils-unit-links.test.ts-reference-functions.json",
+			"sha256": "5d86699ea7a7ffef20774c80f041b8100412da3f32f6caa4973f21dbd9c1394f",
+			"bytes": 6468,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/change-owners/test-change-owners.test.ts-change-notice.txt",
+			"sha256": "36c51df2fe39e2c5d48f0715c0fcc0a59a4c4e3dcff653ccd657e8d7e2861851",
+			"bytes": 510,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/change-owners/test-change-owners.test.ts-change-notice.json",
+			"sha256": "7d04f53c2037124263761e185e50074d9af42dd0124ebf53d6f3214b38cb3b8e",
+			"bytes": 2337,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/change-reply/test-change-reply.test.ts-change-notice.txt",
+			"sha256": "0b39742b89440950c7e4c83ac748fd866540fb00e7e601dca9bb2ce53743a587",
+			"bytes": 737,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/change-reply/test-change-reply.test.ts-change-notice.json",
+			"sha256": "ff577f6e00827aad11ff497979d30058c5bde6941c3918c3909cc54896e9d88f",
+			"bytes": 6226,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/changed-units/test-utils-changed-units.test.ts-change-notice.txt",
+			"sha256": "d9ebeb72cabff476b53aae0fea3f691ddb2fae79994aabc67aa10c2ee8bd2057",
+			"bytes": 408,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/changed-units/test-utils-changed-units.test.ts-change-notice.json",
+			"sha256": "8c8d5dd5bbf8be68c2507d70492bf3c8ae64c0e749395eff38e982b239563640",
+			"bytes": 3693,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/project-agent-said/test-project-agent-said.test.ts-creation-reply.txt",
+			"sha256": "15dcb7ca1335dd02e0f844a6772fa24503f67158ac93119ec30699628c5d0084",
+			"bytes": 410,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/project-agent-said/test-project-agent-said.test.ts-creation-reply.json",
+			"sha256": "ffb958dc0ae0ff6f38ff305f0a36bbcc6a7d3525e0c6291ccc262018f6b52118",
+			"bytes": 3150,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/creation-reply/test-project-run-references.test.ts-creation-reply.txt",
+			"sha256": "f1591dedc1f689517f5e02b444e0dd172a9e56a05df78b877a561b1283c7a68b",
+			"bytes": 673,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/creation-reply/test-project-run-references.test.ts-creation-reply.json",
+			"sha256": "598ce51f0d727fa77b36213abe1aad996f559447e4040e651eea787eb3d68dc2",
+			"bytes": 7209,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-views/references-question-desktop.png",
+			"sha256": "bb3d771c4ff35e847d30cc631be3b39b9daf2913c11163c40f3fbe58be8818e4",
+			"bytes": 403386,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-views/references-question-tablet.png",
+			"sha256": "6a3a23e9a0a4b0c2c9fd1d8c9a190e38f7b7a2c94b6382ca828d88f9dfedde84",
+			"bytes": 136672,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-views/references-question-mobile.png",
+			"sha256": "0c9eb7f53c870fcf87847e4a30e3e6afd71e2ab12ee7ec0747eaa5b62e636a92",
+			"bytes": 99885,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-views/tests-e2e-reference-views.spec.ts-question.txt",
+			"sha256": "82e62fc2edf4c9563349e5f266bad6fbcdfc45dcd46e9e0de048e6a048bf9ae4",
+			"bytes": 231,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/references-ui/tests-e2e-ui-references.spec.ts-question.txt",
+			"sha256": "6c32bfd2fe4905e89221ce9b096cb15de1f09456201455e322d899ec2e587e5e",
+			"bytes": 231,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-views/references-stream-desktop.png",
+			"sha256": "344be8003e860e9ee6317db00549822cf90243e04bd1e327a36c4bd4fc8202eb",
+			"bytes": 396184,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-views/tests-e2e-reference-views.spec.ts-stream.txt",
+			"sha256": "82e62fc2edf4c9563349e5f266bad6fbcdfc45dcd46e9e0de048e6a048bf9ae4",
+			"bytes": 231,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/references-ui/tests-e2e-ui-references.spec.ts-stream.txt",
+			"sha256": "6c32bfd2fe4905e89221ce9b096cb15de1f09456201455e322d899ec2e587e5e",
+			"bytes": 231,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-views/references-pinned-desktop.png",
+			"sha256": "372db3ff863ad6fdfe939a6be690314d7ec1d30deec00cd4eaf3a6bf744e5335",
+			"bytes": 406686,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-views/tests-e2e-reference-views.spec.ts-pinned.txt",
+			"sha256": "82e62fc2edf4c9563349e5f266bad6fbcdfc45dcd46e9e0de048e6a048bf9ae4",
+			"bytes": 231,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/references-ui/tests-e2e-ui-references.spec.ts-pinned.txt",
+			"sha256": "6c32bfd2fe4905e89221ce9b096cb15de1f09456201455e322d899ec2e587e5e",
+			"bytes": 231,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-views/references-hosted-comment-desktop.png",
+			"sha256": "6583a0a4bd1278b677b9e383a2be14fb5e2528d341373e94b4122957abf9a394",
+			"bytes": 375585,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-views/tests-e2e-reference-views.spec.ts-hosted-comment.txt",
+			"sha256": "82e62fc2edf4c9563349e5f266bad6fbcdfc45dcd46e9e0de048e6a048bf9ae4",
+			"bytes": 231,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/references-ui/tests-e2e-ui-references.spec.ts-hosted-comment.txt",
+			"sha256": "6c32bfd2fe4905e89221ce9b096cb15de1f09456201455e322d899ec2e587e5e",
+			"bytes": 231,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-views/references-agent-reply-desktop.png",
+			"sha256": "57dfd4aa15e900debf091260447cf2197fdc18ce809a44d463c7a6c3e738f534",
+			"bytes": 319498,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/reference-views/tests-e2e-reference-views.spec.ts-agent-reply.txt",
+			"sha256": "82e62fc2edf4c9563349e5f266bad6fbcdfc45dcd46e9e0de048e6a048bf9ae4",
+			"bytes": 231,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/references-ui/tests-e2e-ui-references.spec.ts-agent-reply.txt",
+			"sha256": "6c32bfd2fe4905e89221ce9b096cb15de1f09456201455e322d899ec2e587e5e",
+			"bytes": 231,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-desktop.png",
+			"sha256": "19825ae6836ac0c94c34a6c2cadf66e7219e7a1ee82c7f621937d89676cdc1f8",
+			"bytes": 27124,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-profile.json",
+			"sha256": "fe39ed6666cd3e60b866d3a5d55ce3e55441655599b97cef1faff35c655e42f1",
+			"bytes": 731,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-tablet.png",
+			"sha256": "19825ae6836ac0c94c34a6c2cadf66e7219e7a1ee82c7f621937d89676cdc1f8",
+			"bytes": 27124,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-mobile.png",
+			"sha256": "30e428b6fd06fbefa160c98bcd116b2858ee64d128d0f1e41d5203b1e6523b81",
+			"bytes": 26823,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-closed-desktop.png",
+			"sha256": "68d911e21b1f4e0b636da10b1453d5934e473c4b251d09a62f4244f57708a149",
+			"bytes": 4673,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-closed-profile.json",
+			"sha256": "d38b3cc084c89a34a059026d96ca819cd206964fc0d587c7fac1cdb5a0c220f0",
+			"bytes": 746,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-closed-tablet.png",
+			"sha256": "68d911e21b1f4e0b636da10b1453d5934e473c4b251d09a62f4244f57708a149",
+			"bytes": 4673,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-closed-mobile.png",
+			"sha256": "731f364aae508c62f6c07fa964066a9c48d92ce06d95e00e6a7901a8f08d26ee",
+			"bytes": 4702,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-read-only-desktop.png",
+			"sha256": "ea6953743d9dc95d297fa69e332aef51c86b11a742efce1bdd304d8c27b0ddf4",
+			"bytes": 47385,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-read-only-profile.json",
+			"sha256": "29447968efef4241479d20b4ed405a0d4268b65ce243cf8890382f3ad4a99739",
+			"bytes": 752,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-read-only-tablet.png",
+			"sha256": "ea6953743d9dc95d297fa69e332aef51c86b11a742efce1bdd304d8c27b0ddf4",
+			"bytes": 47385,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-read-only-mobile.png",
+			"sha256": "0ed0302de4fd36cd3189dcde75f7b3467e23d070a34819d2e81cade9d835b94d",
+			"bytes": 47620,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-local-comment-desktop.png",
+			"sha256": "8a45dca22e0550750950889eecbede19d5cb6a29e4f576ea9da026dd85b6ac53",
+			"bytes": 29047,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-local-comment-profile.json",
+			"sha256": "b7625a5d999b0541df40809774cf5771a5f2be3a98e965580cfcc6495c68215b",
+			"bytes": 760,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-local-comment-tablet.png",
+			"sha256": "8a45dca22e0550750950889eecbede19d5cb6a29e4f576ea9da026dd85b6ac53",
+			"bytes": 29047,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-local-comment-mobile.png",
+			"sha256": "b94435f084a4e6f8184a65a529f37403294a4de60717b021989fb208dab1f6eb",
+			"bytes": 29113,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-hosted-comment-desktop.png",
+			"sha256": "033794dd8905bf94cb4c0b130431535136f85eb94fcf326e9b2ec9eb3275a37d",
+			"bytes": 28089,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-hosted-comment-profile.json",
+			"sha256": "0e6c58b92f920af59792332e4e75690afccb778dfdb3a882a07fb9e4f10d9d58",
+			"bytes": 761,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-hosted-comment-tablet.png",
+			"sha256": "033794dd8905bf94cb4c0b130431535136f85eb94fcf326e9b2ec9eb3275a37d",
+			"bytes": 28089,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-hosted-comment-mobile.png",
+			"sha256": "cecbf070621adb7d0c451f337ca22968efb029b62523cccb3b2a2285413de5a8",
+			"bytes": 27945,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-comment-retry-desktop.png",
+			"sha256": "05e143370a6b47729c7549935c0f09df6c0869307d75850e073075326acd45c1",
+			"bytes": 29829,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-comment-retry-profile.json",
+			"sha256": "8eefab25d7b6cfa0c69b4caddbbb52ad3ee41179c7ff4ae2c2b72b16db20822f",
+			"bytes": 758,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-comment-retry-tablet.png",
+			"sha256": "05e143370a6b47729c7549935c0f09df6c0869307d75850e073075326acd45c1",
+			"bytes": 29829,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-comment-retry-mobile.png",
+			"sha256": "2474c6d948f759fa8ee88f4e72a95782fb46a68b04426473e8636c6ee445d463",
+			"bytes": 29252,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-conversation-desktop.png",
+			"sha256": "d7e61f5d918e4bc6123a204e8b4dd0f53c43d57653f2b46ddf7e6c6ec632947c",
+			"bytes": 56925,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-conversation-profile.json",
+			"sha256": "6bfcd14c254873e93b171baec741b7a8b3ada024e97fbb2575cdff951443937e",
+			"bytes": 757,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-conversation-tablet.png",
+			"sha256": "d7e61f5d918e4bc6123a204e8b4dd0f53c43d57653f2b46ddf7e6c6ec632947c",
+			"bytes": 56925,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-conversation-mobile.png",
+			"sha256": "b5175e4d08c9a68519716eb63e928fd0a3e9e085553ce6aa7669e11eb84612c6",
+			"bytes": 57483,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-historical-desktop.png",
+			"sha256": "3af946ce549b4e755b1cf7ad0feadae45bd76dfa96405576c352e9101e3910e1",
+			"bytes": 50349,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-historical-profile.json",
+			"sha256": "f08f2a3e1ed43c05ae584cef15761b5d2e6ee976dafb8ecc7c3a6a6f1ef31559",
+			"bytes": 753,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-historical-tablet.png",
+			"sha256": "3af946ce549b4e755b1cf7ad0feadae45bd76dfa96405576c352e9101e3910e1",
+			"bytes": 50349,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-historical-mobile.png",
+			"sha256": "e04413a341cb628ad773a18e5769d3b48366e0323836862501aed6a64c49b78b",
+			"bytes": 50339,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-ask-desktop.png",
+			"sha256": "e2b8d54ef530cba6c56a901973dceb60a0b18959c01c5abe2481d84adf925abe",
+			"bytes": 53074,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-ask-profile.json",
+			"sha256": "c9e098001968e54574d1fdf6a188f310005ef72ef30f66bb07eb6275b15522b9",
+			"bytes": 740,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-ask-tablet.png",
+			"sha256": "e2b8d54ef530cba6c56a901973dceb60a0b18959c01c5abe2481d84adf925abe",
+			"bytes": 53074,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-ask-mobile.png",
+			"sha256": "163d299051acacd9cd6761eedb993bce34d78883f04c492b02fcfce4cc3c4748",
+			"bytes": 53117,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-plan-desktop.png",
+			"sha256": "f64f2bb56c2cd39f976e5dde13d05ac81d74388495c8a76c0ca4a10e0fa4973b",
+			"bytes": 54336,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-plan-profile.json",
+			"sha256": "894ad4648128ddd8bab0bedca9fe7649ec2d1ec630c023c34bb195b2caf44fef",
+			"bytes": 742,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-plan-tablet.png",
+			"sha256": "f64f2bb56c2cd39f976e5dde13d05ac81d74388495c8a76c0ca4a10e0fa4973b",
+			"bytes": 54336,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-plan-mobile.png",
+			"sha256": "dc39eb4738f5161ff1cac799d6c3591b2b4719b22e980f84f642bf254df18c05",
+			"bytes": 54295,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-visual-plan-desktop.png",
+			"sha256": "a6c3d2c814115e6a61e9f3d639036e047eeb2b152437242db296e6e1bff883f1",
+			"bytes": 56812,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-visual-plan-profile.json",
+			"sha256": "15067ec763bc0db14e6626037c8f78ac881280e0ea85d75985228c4be070ed1c",
+			"bytes": 756,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-visual-plan-tablet.png",
+			"sha256": "a6c3d2c814115e6a61e9f3d639036e047eeb2b152437242db296e6e1bff883f1",
+			"bytes": 56812,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-visual-plan-mobile.png",
+			"sha256": "54e0c880f4f72fde326c5a82a00223065c276dea29283f766de9e6831447044a",
+			"bytes": 57408,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-change-desktop.png",
+			"sha256": "5b918d24da0e8911181ad49f796da7d66c969692085e8a7d7af25436480b8cb8",
+			"bytes": 54457,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-change-profile.json",
+			"sha256": "31410b7402c06002a8ad577867aac7454a97f1d056ed21ee3fed210ddbee781d",
+			"bytes": 746,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-change-tablet.png",
+			"sha256": "5b918d24da0e8911181ad49f796da7d66c969692085e8a7d7af25436480b8cb8",
+			"bytes": 54457,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-change-mobile.png",
+			"sha256": "e0da875b05728449d92dd83c95d6afbecadd95204cc10e25222863504c735d9e",
+			"bytes": 54645,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-no-provider-desktop.png",
+			"sha256": "5a3aa93eb56c00ad9a4899c28aa577ae33278b7524018739941358ff9d3e1f88",
+			"bytes": 33416,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-no-provider-profile.json",
+			"sha256": "73dc36e89e069044e6b6b5f855552a22f3c8da70f4fb2c6baff17a424eda02e7",
+			"bytes": 756,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-no-provider-tablet.png",
+			"sha256": "5a3aa93eb56c00ad9a4899c28aa577ae33278b7524018739941358ff9d3e1f88",
+			"bytes": 33416,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-no-provider-mobile.png",
+			"sha256": "d22ccca4386c7a8047b2c25d4aab223c501d3a0ff8fb4b494984d80ef83ce0ed",
+			"bytes": 33559,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-running-desktop.png",
+			"sha256": "81c0ecb3d9b69e306601e90c3623879f2d17a343823eda48d6603aea35e80cc7",
+			"bytes": 57495,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-running-profile.json",
+			"sha256": "c5d74ccbe02194f6d71c55cbb383d68652e3c78f742d1ec6c95a03e6afcce7bd",
+			"bytes": 748,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-running-tablet.png",
+			"sha256": "81c0ecb3d9b69e306601e90c3623879f2d17a343823eda48d6603aea35e80cc7",
+			"bytes": 57495,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-running-mobile.png",
+			"sha256": "560cdfccce781101c6a279f0b8ff2da478477f31b07e072a68862ee47a7b9fc1",
+			"bytes": 56798,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-saved-plan-desktop.png",
+			"sha256": "0938f4f909606bba2d81dbea5088c4b9e0e06b583a901aa3221be44a4cf5747a",
+			"bytes": 52965,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-saved-plan-profile.json",
+			"sha256": "463e342cb79b8f3b955173b68ba455d56fb36c74e81b0ae1063c6f25c45e7593",
+			"bytes": 754,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-saved-plan-tablet.png",
+			"sha256": "0938f4f909606bba2d81dbea5088c4b9e0e06b583a901aa3221be44a4cf5747a",
+			"bytes": 52965,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-saved-plan-mobile.png",
+			"sha256": "9abfe0ee59c49504cebc8b9570aecf1d2756b5a1be69ae78488965950d4261e6",
+			"bytes": 53013,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-failure-desktop.png",
+			"sha256": "360641bbc7e9ae89f3017c5982173245fe2e8a81c77496890f6833d3903a7d45",
+			"bytes": 58249,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-failure-profile.json",
+			"sha256": "9569d7d2f365cffd5ed36e2198d711054dba61e8e0627e52b0fa6b7a1e444649",
+			"bytes": 747,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-failure-tablet.png",
+			"sha256": "360641bbc7e9ae89f3017c5982173245fe2e8a81c77496890f6833d3903a7d45",
+			"bytes": 58249,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-failure-mobile.png",
+			"sha256": "d371b474fa6b50ce51e5cf850e78b7f182204d2245fff01a8167f75000d9dfe5",
+			"bytes": 58093,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-agents-empty-desktop.png",
+			"sha256": "8fd755756552a2834f65d5b51171e6d2e127b9f701c091bc91b0af06f65ed2c3",
+			"bytes": 32063,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-agents-empty-profile.json",
+			"sha256": "2877fa509eb1fa5aed65255d7454ce7e8de771386c05c6a87487a48af95feffb",
+			"bytes": 757,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-agents-empty-tablet.png",
+			"sha256": "8fd755756552a2834f65d5b51171e6d2e127b9f701c091bc91b0af06f65ed2c3",
+			"bytes": 32063,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-agents-empty-mobile.png",
+			"sha256": "106ef1c15d1feeed38b6f44fbdf4586cf1dfa102fde2b8ea1b3817bc8ac79316",
+			"bytes": 31993,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-agents-active-desktop.png",
+			"sha256": "5e6e56cdc25fbdb1d03fdac3a57155492fdd37e196639fe43b4625d34ebe2c89",
+			"bytes": 40659,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-agents-active-profile.json",
+			"sha256": "c72df5744cd8214178ce9482d7822e204f7c9afe9842e8f524651ec43e0857ee",
+			"bytes": 760,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-agents-active-tablet.png",
+			"sha256": "5e6e56cdc25fbdb1d03fdac3a57155492fdd37e196639fe43b4625d34ebe2c89",
+			"bytes": 40659,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-agents-active-mobile.png",
+			"sha256": "b471d1cd11e06912ec7b19684de9c69d309701664358b7314f4597d63a0b28b5",
+			"bytes": 40771,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-agents-unknown-desktop.png",
+			"sha256": "3cb014feac55d0db298e170f93ca681bcde7da9c944d4f6ee4098d3b031e3c68",
+			"bytes": 18719,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-agents-unknown-profile.json",
+			"sha256": "a2bcdb782324caf0e7764495779474f639493757ad3053ddc5dc7b867ece2a9d",
+			"bytes": 762,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-agents-unknown-tablet.png",
+			"sha256": "3cb014feac55d0db298e170f93ca681bcde7da9c944d4f6ee4098d3b031e3c68",
+			"bytes": 18719,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-agents-unknown-mobile.png",
+			"sha256": "fcdfa04b79fd7583250d9d0a6a2bd5452c4ae6328caaf46d73518116ff26b97c",
+			"bytes": 18978,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-agents-stale-desktop.png",
+			"sha256": "464745e2ff2cea1c432b43af416c3ac783590a8385718d6d36163db8fe03fa73",
+			"bytes": 38846,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-agents-stale-profile.json",
+			"sha256": "7b4e4f0128e6d51e89891d06cebfd8006c02a23b21310218fb29783ac173039c",
+			"bytes": 758,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-agents-stale-tablet.png",
+			"sha256": "464745e2ff2cea1c432b43af416c3ac783590a8385718d6d36163db8fe03fa73",
+			"bytes": 38846,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-agents-stale-mobile.png",
+			"sha256": "1729eed84ca0a667dabbac8812089ba348febfd96b78dd379416848e00f2d9d5",
+			"bytes": 38919,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-agents-many-desktop.png",
+			"sha256": "289168174c51b7dd748fa756de3f79ba9d720a8fd863711c7dba03d9ac3782e0",
+			"bytes": 62164,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-agents-many-profile.json",
+			"sha256": "87cd11a0f2d581e729a599f976fd8a2d7844ef0dbc3bad1402e167aacde8ae76",
+			"bytes": 756,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-agents-many-tablet.png",
+			"sha256": "ff3532a6b57add07452725a18e6a11aa3ef471af9d4715284f72fbd2a2ae3969",
+			"bytes": 62321,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/desktop-component-project-agent-agents-many-mobile.png",
+			"sha256": "5985cfd48cdf5dc7b3309bfefee8e7549073db804480bc2c0608c605b27019ba",
+			"bytes": 63476,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/design-options-thread-count-desktop.png",
+			"sha256": "1395ec7fa32019a853127acc402d42445b7da31861090c1d9c95ab37537647dd",
+			"bytes": 397816,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/tests-e2e-ui-design-options.spec.ts-thread-count.txt",
+			"sha256": "f4396fa886090d109635b9d9c3ddc96bac16ffe36b665b2d0c7acafabe8df043",
+			"bytes": 233,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/design-options-thread-default-desktop.png",
+			"sha256": "444dae10166b362e556483af03ff010547ca8916b768387fdd109e7b52a10b01",
+			"bytes": 397841,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/tests-e2e-ui-design-options.spec.ts-thread-default.txt",
+			"sha256": "f4396fa886090d109635b9d9c3ddc96bac16ffe36b665b2d0c7acafabe8df043",
+			"bytes": 233,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/design-options-comment-count-desktop.png",
+			"sha256": "3f39b9b1d4635ed49bd512bddcbfda5636431f654ec470efddcde93928805fb3",
+			"bytes": 396345,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/tests-e2e-ui-design-options.spec.ts-comment-count.txt",
+			"sha256": "f4396fa886090d109635b9d9c3ddc96bac16ffe36b665b2d0c7acafabe8df043",
+			"bytes": 233,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/design-options-creation-count-desktop.png",
+			"sha256": "c1a30317779cff45f45cb4d27a8ac78890176c247e1f22aab0403a5923cf0aac",
+			"bytes": 314085,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/tests-e2e-ui-design-options.spec.ts-creation-count.txt",
+			"sha256": "f4396fa886090d109635b9d9c3ddc96bac16ffe36b665b2d0c7acafabe8df043",
+			"bytes": 233,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/design-options-headless-count-desktop.png",
+			"sha256": "6db41066f8ea3f17a473cb51fbaa968c4c91b2bb6dc3ff376afa3d5ad943bd72",
+			"bytes": 329608,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/tests-e2e-ui-design-options.spec.ts-headless-count.txt",
+			"sha256": "f4396fa886090d109635b9d9c3ddc96bac16ffe36b665b2d0c7acafabe8df043",
+			"bytes": 233,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/design-options-legacy-desktop.png",
+			"sha256": "33e117d7d5eb6624f78fdc7611f4c25ca3a8b199acf47d98566df5211b20df91",
+			"bytes": 502799,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/tests-e2e-ui-design-options.spec.ts-legacy.txt",
+			"sha256": "f4396fa886090d109635b9d9c3ddc96bac16ffe36b665b2d0c7acafabe8df043",
+			"bytes": 233,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/design-options-option-fit-desktop.png",
+			"sha256": "262571af307ba4f925d1dafeae728fa5db33efb5b69442a458b0dea544983103",
+			"bytes": 397034,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/design-options-option-fit-tablet.png",
+			"sha256": "cac8a8175d12880b0f5a1ed35cfbcf7e232a4015382750bd2cd8a79295e2cdf8",
+			"bytes": 253012,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/design-options-option-fit-phone.png",
+			"sha256": "bc0470c8fb18e5323127d75c02156d2b103414e7d0e3c3de8e2a2512da84e6fd",
+			"bytes": 194582,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/tests-e2e-ui-design-options.spec.ts-option-fit.txt",
+			"sha256": "f4396fa886090d109635b9d9c3ddc96bac16ffe36b665b2d0c7acafabe8df043",
+			"bytes": 233,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/design-options-options-desktop.png",
+			"sha256": "3f39b9b1d4635ed49bd512bddcbfda5636431f654ec470efddcde93928805fb3",
+			"bytes": 396345,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/tests-e2e-ui-design-options-review.spec.ts-options.txt",
+			"sha256": "9b8afd685c5707bd81bcbdd524c894e04252ce31a9af597cf496eb65cdee32df",
+			"bytes": 225,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/design-options-selected-option-desktop.png",
+			"sha256": "530f24f6224c5bf8a290cdb43ab1c4d16aa2969b0d0412e5b63c44aa1be0e7ae",
+			"bytes": 395610,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/tests-e2e-ui-design-options-review.spec.ts-selected-option.txt",
+			"sha256": "9b8afd685c5707bd81bcbdd524c894e04252ce31a9af597cf496eb65cdee32df",
+			"bytes": 225,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/design-options-approve-desktop.png",
+			"sha256": "3c0cd422b6a24bf803ee0f604b9e13f88f07246672cc6edccfd445b8fde065da",
+			"bytes": 399045,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/tests-e2e-ui-design-options-review.spec.ts-approve.txt",
+			"sha256": "9b8afd685c5707bd81bcbdd524c894e04252ce31a9af597cf496eb65cdee32df",
+			"bytes": 225,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/design-options-option-thread-desktop.png",
+			"sha256": "bd8535d92c0ebd75a90236db7d553d505402684c429b3206a48e8894020785b5",
+			"bytes": 398262,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/tests-e2e-ui-design-options-review.spec.ts-option-thread.txt",
+			"sha256": "9b8afd685c5707bd81bcbdd524c894e04252ce31a9af597cf496eb65cdee32df",
+			"bytes": 225,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/design-options-pinned-desktop.png",
+			"sha256": "e8936f83023bf79dc20e53b0c1ed6ee0fb868af4aa23943cb1d6b22921476353",
+			"bytes": 394929,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/tests-e2e-ui-design-options-review.spec.ts-pinned.txt",
+			"sha256": "9b8afd685c5707bd81bcbdd524c894e04252ce31a9af597cf496eb65cdee32df",
+			"bytes": 225,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/design-options-shared-desktop.png",
+			"sha256": "e8d79084fab7ac927e95819b4a979ce231f08470e54c3990a690d0f7667b898c",
+			"bytes": 382992,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/tests-e2e-ui-design-options-review.spec.ts-shared.txt",
+			"sha256": "9b8afd685c5707bd81bcbdd524c894e04252ce31a9af597cf496eb65cdee32df",
+			"bytes": 225,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-creation-compact-agent-ui.log",
+			"sha256": "28bfe7ef1f113c4bd31733ea410c5ff52ad9a96b8454a43ae2e11291089c76a6",
+			"bytes": 233,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-reference-views.log",
+			"sha256": "82e62fc2edf4c9563349e5f266bad6fbcdfc45dcd46e9e0de048e6a048bf9ae4",
+			"bytes": 231,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-creation-creation-ui.log",
+			"sha256": "76a722eb8f63fcbe0b690d8f9088f3bff410590369582b2321d078bf3fe64fd2",
+			"bytes": 231,
+			"storage": "git"
+		},
+		{
+			"path": "logs/design-options-ui-design-options-review-ui.log",
+			"sha256": "9b8afd685c5707bd81bcbdd524c894e04252ce31a9af597cf496eb65cdee32df",
+			"bytes": 225,
+			"storage": "git"
+		},
+		{
+			"path": "logs/design-options-ui-design-options-count-ui.log",
+			"sha256": "f4396fa886090d109635b9d9c3ddc96bac16ffe36b665b2d0c7acafabe8df043",
+			"bytes": 233,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-references-ui.log",
+			"sha256": "6c32bfd2fe4905e89221ce9b096cb15de1f09456201455e322d899ec2e587e5e",
+			"bytes": 231,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-change-owners.log",
+			"sha256": "36c51df2fe39e2c5d48f0715c0fcc0a59a4c4e3dcff653ccd657e8d7e2861851",
+			"bytes": 510,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-change-reply.log",
+			"sha256": "0b39742b89440950c7e4c83ac748fd866540fb00e7e601dca9bb2ce53743a587",
+			"bytes": 737,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-reference-text.log",
+			"sha256": "35541e9b79a09b3913c69eeecc3a50809f8a7f607216f67fecd3f7c0b622eeb6",
+			"bytes": 416,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-reference-parsing.log",
+			"sha256": "6d99ab516bf361df478f1f7895c75ec41655e2fb15dccf633bf7d34a193182b9",
+			"bytes": 408,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-message-references.log",
+			"sha256": "4930af1351c23e1669b7886e1a25207777bf32c34960f8e557aaff799d7ccf5f",
+			"bytes": 412,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-project-agent-said.log",
+			"sha256": "15dcb7ca1335dd02e0f844a6772fa24503f67158ac93119ec30699628c5d0084",
+			"bytes": 410,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-creation-creation-boundaries.log",
+			"sha256": "d626f2a05f56e37bbae0501f81f42bd68d8a5059d3f9946e6e336f7434a463e2",
+			"bytes": 1076,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-creation-creation-ownership.log",
+			"sha256": "b424084d195939ded2025fc803df0239b2502a1ff11c6a6c56049d45e54cc881",
+			"bytes": 606,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-creation-creation-persistence.log",
+			"sha256": "44e03653a4f4dc2b9f3188a3a9b43625e1f7571247f7f4a2f9a924de003266f0",
+			"bytes": 596,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-creation-reply.log",
+			"sha256": "f1591dedc1f689517f5e02b444e0dd172a9e56a05df78b877a561b1283c7a68b",
+			"bytes": 673,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-run-context-references.log",
+			"sha256": "29df4bedbc5db964be94e8f0ef0565bf4f6baa138b6a93922fe220d473c81c93",
+			"bytes": 410,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-project-task.log",
+			"sha256": "56463bb9e88f2c22474c633cb9591c3b59c2d9d5051964a2fce8c7e75149778c",
+			"bytes": 902,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-changed-units.log",
+			"sha256": "d9ebeb72cabff476b53aae0fea3f691ddb2fae79994aabc67aa10c2ee8bd2057",
+			"bytes": 408,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-reference-grammar.log",
+			"sha256": "9d54f0e6349d0a43eccc68d91615678255b52a0fc83d2a32a92c2543b85f502c",
+			"bytes": 413,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-proposal-units.log",
+			"sha256": "b4e9013f927c22ecad836ecf109caacab0bc1e89b9133ae7c5235d61bd34e59f",
+			"bytes": 408,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-reference-prompt.log",
+			"sha256": "0a7b2a4dce6b847454a835e86404a29dfdd2f0a36c8085ca6c09389b6e6c2775",
+			"bytes": 410,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-reference-links.log",
+			"sha256": "012ab5221d3bff5a791faa9a88cb44e7650417f829b9aefbcb1805b5832bd0d9",
+			"bytes": 407,
+			"storage": "git"
+		},
+		{
+			"path": "logs/component-catalog-previews-previews.log",
+			"sha256": "81eda836bbc26b2aa6fbb59f330270b6cbaec6a7b8ac73f6f3b5ebbc9c2461b0",
+			"bytes": 8432,
+			"storage": "git"
+		}
+	]
+}
