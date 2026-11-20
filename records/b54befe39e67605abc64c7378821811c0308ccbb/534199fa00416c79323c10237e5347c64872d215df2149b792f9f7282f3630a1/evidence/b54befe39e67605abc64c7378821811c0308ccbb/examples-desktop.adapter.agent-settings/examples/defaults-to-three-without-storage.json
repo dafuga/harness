@@ -1,0 +1,20 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.adapter.agent-settings",
+	"symbol": "read",
+	"cases": [
+		{
+			"name": "read with no global storage",
+			"input": {},
+			"output": 3
+		},
+		{
+			"name": "write 2 with no global storage",
+			"input": {
+				"designOptions": 2
+			},
+			"output": false
+		}
+	]
+}
