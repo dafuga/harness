@@ -1,0 +1,100 @@
+
+ RUN  v3.2.4 /Users/danielfugere/harness-z5jp8p-evidence/supervised-hheapr/resume-run5/tmp/harness-snapshot-3kLwDt
+
+ ❯ test/units-guide.test.ts (5 tests | 1 failed) 12538ms
+   ✓ guide distinguishes named states and heuristic prop boundaries  1493ms
+   × guide counts verified shots per state and viewport and reaches DONE 10ms
+     → a display-only poster URL must not block the projected video slot: expected [] to have a length of 2 but got +0
+   ✓ guide rejects partial, stale and uncommitted coverage  5346ms
+   ✓ a registry string alone is not a committed test, even with retained shots  4285ms
+   ✓ guide rejects unknown identities with a useful diagnostic  1399ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/units-guide.test.ts > guide counts verified shots per state and viewport and reaches DONE
+AssertionError: a display-only poster URL must not block the projected video slot: expected [] to have a length of 2 but got +0
+
+- Expected
++ Received
+
+- 2
++ 0
+
+ ❯ assertVideoGuideBoundaries test/support/videoGuideBoundaries.ts:21:4
+     19|   unitVideoShots([projected, screenshot], [scenario], entity).captures,
+     20|   'a display-only poster URL must not block the projected video slot'
+     21|  ).toHaveLength(2);
+       |    ^
+     22|  const incompatible = {
+     23|   ...item,
+ ❯ test/units-guide.test.ts:108:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  23:03:03
+   Duration  16.26s (transform 199ms, setup 136ms, collect 171ms, tests 12.54s, environment 0ms, prepare 35ms)
+
+
+ RUN  v3.2.4 /Users/danielfugere/harness-z5jp8p-evidence/supervised-hheapr/resume-run5/tmp/harness-snapshot-3kLwDt/packages/reports
+
+ ❯ test/examples/reports.function.explorer-state.test.ts (7 tests | 1 failed) 12ms
+   ✓ a page is shown by the states that name it and by the state that names no unit 2ms
+   ✓ a function is shown by the page that uses it, and by every state when none does 1ms
+   ✓ the worst standing wins in the fixed order, and inapplicable is never worst 0ms
+   ✓ a reason drops a located phrase and turns any other file path into a file 0ms
+   ✓ a capture is unbound by another build, or by no build where one is needed 1ms
+   ✓ a state without a judged result takes its fallback, never its discarded reason 1ms
+   × a required state passes only with passed, stored, bound captures in every slot 5ms
+     → expected [ [ 'passed', [] ], …(7) ] to deeply equal [ [ 'passed', [] ], …(7) ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/examples/reports.function.explorer-state.test.ts > a required state passes only with passed, stored, bound captures in every slot
+AssertionError: expected [ [ 'passed', [] ], …(7) ] to deeply equal [ [ 'passed', [] ], …(7) ]
+
+- Expected
++ Received
+
+@@ -30,17 +30,13 @@
+    [
+      "passed",
+      [],
+    ],
+    [
+-     "incomplete",
+-     [
+-       "No capture of Explorer: catalog at desktop.",
+-     ],
++     "passed",
++     [],
+    ],
+-   [
+-     "failed",
+    [
+-       "The capture of Explorer: catalog at desktop was rejected.",
+-     ],
++     "passed",
++     [],
+    ],
+  ]
+
+ ❯ judging test/examples/reports.function.explorer-state.test.ts:159:14
+    157|  }));
+    158|  const got = cases.map(({ output }) => [output.standing, output.reason…
+    159|  expect(got).toEqual(rows.map((row) => [row[3], row[4] ?? []]));
+       |              ^
+    160|  recording('explorerState', state, cases);
+    161| }
+ ❯ test/examples/reports.function.explorer-state.test.ts:194:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  23:03:20
+   Duration  354ms (transform 109ms, setup 121ms, collect 54ms, tests 12ms, environment 0ms, prepare 33ms)
+
