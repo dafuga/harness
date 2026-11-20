@@ -166,9 +166,7 @@
 						"type": "ExplorerEntity[]",
 						"required": true,
 						"description": "Entities passed with the selected revision to its relationship reader. The list is used when resolving relationships for the selected revision.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"outputs": [
@@ -298,9 +296,7 @@
 						"type": "ExplorerEntity[]",
 						"required": true,
 						"description": "Entities belonging to the selected revision context. They are used to correct the scope location before returning the view.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					},
 					{
 						"name": "consoleView.relations",
