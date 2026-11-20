@@ -6,6 +6,8 @@ export const moduleTaskVerificationScopes: Record<string, VerificationScope> = {
 		package: 'root',
 		vitest: {
 			'test/adapters/agents-providers/provider-session.test.ts': {
+				'pre-request refusal sends no upstream call and preserves scoped authentication':
+					'context-rotation',
 				'an emergency context reading stops the run instead of rotating again': 'context-rotation',
 				'a malformed completed stream fails while retaining available token usage':
 					'context-rotation',

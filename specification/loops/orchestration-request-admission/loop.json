@@ -2,11 +2,9 @@
 	"name": "orchestration-request-admission",
 	"goal": "Refuse provider calls that could cross 190000 active context tokens before issuing the request, then preserve checkpoint handoff and fresh restart.",
 	"createdAt": "2026-11-20T15:04:06.216Z",
-	"updatedAt": "2026-11-20T15:04:49.008Z",
+	"updatedAt": "2026-11-20T15:17:44.532Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-20T15:17:27.156Z",
+			"evidence": "Frozen no-gate fixture failed the checkpoint resume assertion before code changes."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-20T15:17:27.751Z",
+			"evidence": "Both provider CLIs route model inputs through the local admission boundary; estimates are stored separately from observed usage."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-20T15:17:44.532Z",
+			"evidence": "Unchanged normal-entry regression refused the oversized pending request and completed in a fresh session."
 		},
 		{
 			"id": "verify",

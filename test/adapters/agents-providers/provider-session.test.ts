@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { withTempDir } from '../../support/temporary';
+import { runCommand } from '../../support/cli';
 import { ProviderSessionAdapter } from '../../../src/adapters/agents-providers/ProviderSessionAdapter';
 import { ModuleTaskRunnerAdapter } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter';
 import {
@@ -97,6 +98,46 @@ test('Claude measures cache-inclusive context at message start and counts a stre
 		usage: { inputTokens: 9500, outputTokens: 9 }
 	});
 });
+
+test('pre-request refusal sends no upstream call and preserves scoped authentication', async () => {
+	const operation = await runCommand(['bun', '-e', relayProbe], process.cwd());
+	expect(JSON.parse(operation.stdout.trim())).toEqual([
+		{ provider: 'codex', admitted: 200, refused: 400, otherRoute: 404, forwarded: 1, scoped: true },
+		{ provider: 'claude', admitted: 200, refused: 400, otherRoute: 404, forwarded: 1, scoped: true }
+	]);
+});
+
+const relayProbe = `
+import { ProviderRequestGate } from './src/adapters/agents-providers/module-task-runner-adapter/ProviderRequestGate';
+const results = [];
+for (const provider of ['codex','claude']) {
+  const codex = provider === 'codex';
+  const path = codex ? '/codex/responses' : '/v1/messages';
+  const field = codex ? 'input' : 'messages';
+  const event = codex
+    ? {type:'response.completed',response:{usage:{input_tokens:137000,output_tokens:1000}}}
+    : {type:'message_start',message:{usage:{input_tokens:30000,cache_read_input_tokens:100000,cache_creation_input_tokens:8000}}};
+  let forwarded = 0, scoped = false;
+  const gate = new ProviderRequestGate(provider, () => null, async (destination, options) => {
+    forwarded++;
+    scoped = destination.origin === (codex ? 'https://chatgpt.com' : 'https://api.anthropic.com') &&
+      options.headers.get('authorization') === 'Bearer fixture-auth' && !options.headers.has('cookie') &&
+      !destination.href.includes('fixture-auth') && options.redirect === 'error';
+    return new Response('data: ' + JSON.stringify(event) + '\\n\\n',{headers:{'content-type':'text/event-stream'}});
+  });
+  try {
+    const headers = {authorization:'Bearer fixture-auth','chatgpt-account-id':'fixture-account',cookie:'store=fixture', 'content-type':'application/json'};
+    const first = {role:'user',content:'A small first request.'};
+    const message = (items) => fetch(gate.origin+path,{method:'POST',headers,body:JSON.stringify({[field]:items})});
+    const otherRoute = await fetch(gate.origin+'/unexpected',{method:'POST',headers,body:'{}'});
+    const admitted = await message([first]);
+    await admitted.text();
+    const refused = await message([first,{role:'user',content:'aA9!+'.repeat(12000)}]);
+    results.push({provider,admitted:admitted.status,refused:refused.status,otherRoute:otherRoute.status,forwarded,scoped});
+  } finally { await gate.close(); }
+}
+console.log(JSON.stringify(results));
+`;
 
 function counter(context: number, total: number): string {
 	return JSON.stringify({
