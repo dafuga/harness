@@ -1,0 +1,123 @@
+{
+	"schemaVersion": 1,
+	"record": "66bcdac350c5f618b196e20b3e9fdda90c1881c09d45f3943eb2231dd4a50fe3",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "82e3d27d0d3ea4de7878eee12685aab916cc58399df9e51d00fe5874aab6997c",
+			"bytes": 493451,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/browser-error-evidence/desktop/browser-errors-desktop-desktop.png",
+			"sha256": "39833f82c58fdb65cf763c5a06053a5ef149668b571ea9ff902ad104e3da62e6",
+			"bytes": 1915484,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/browser-error-evidence/desktop/browser-errors-desktop-mobile.png",
+			"sha256": "9947d084b275a759667454f640ada8cf2283dc830ba0ef67fec51a20dc2137b5",
+			"bytes": 1057058,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/browser-error-evidence/console/browser-errors-console-desktop.png",
+			"sha256": "b0ed2c6afa802028238c1aa8c5bbfbe9a7cd766826f81036edf7e84df0502ca6",
+			"bytes": 101678,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/browser-error-evidence/console/browser-errors-console-mobile.png",
+			"sha256": "bb7452ed0d4af0ed9e32b61066c4af2051489dcfc96abb02d594ab9ad8fb76fa",
+			"bytes": 91232,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.browser-diagnostics/examples/accepts-recorded-attempts.json",
+			"sha256": "83b9154118a5bbe146e281b7e6b73302d5f1837490a1472496fda8f7deed20f8",
+			"bytes": 3091,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.browser-diagnostics/examples/test-examples-function.browser-diagnostics.test.ts-accepts-recorded-attempts.txt",
+			"sha256": "112f0d966264575660702209b6321143a479428906b027cfcb22f64de7bd4ef9",
+			"bytes": 410,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.browser-diagnostics/examples/test-examples-function.browser-diagnostics.test.ts-accepts-recorded-attempts.json",
+			"sha256": "d6a66d47b1d04aeb86a115a9bf688bb305ca3f656c9c7fe40159dd7b137ad7d9",
+			"bytes": 4003,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.browser-diagnostics/examples/refuses-malformed-attempts.json",
+			"sha256": "89c067afcf92364d91afdc77c7099d03805c8f8949bbf9c8822642a75c6de12d",
+			"bytes": 8134,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.browser-diagnostics/examples/test-examples-function.browser-diagnostics.test.ts-refuses-malformed-attempts.txt",
+			"sha256": "112f0d966264575660702209b6321143a479428906b027cfcb22f64de7bd4ef9",
+			"bytes": 410,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.browser-diagnostics/examples/test-examples-function.browser-diagnostics.test.ts-refuses-malformed-attempts.json",
+			"sha256": "d57ca1bc688b1490e98955555b77ed406e8c3c972f0db01b9bf3a2eaea7e25ce",
+			"bytes": 6893,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-function.browser-diagnostics-examples.log",
+			"sha256": "112f0d966264575660702209b6321143a479428906b027cfcb22f64de7bd4ef9",
+			"bytes": 410,
+			"storage": "git"
+		},
+		{
+			"path": "logs/browser-error-evidence-console.log",
+			"sha256": "6a96573c333503490409568579d171c42fb95b1e1aacf8cf7f80e2d4f3e6ecec",
+			"bytes": 496,
+			"storage": "git"
+		},
+		{
+			"path": "logs/browser-error-evidence-persistence.log",
+			"sha256": "bec597d7086c5a67b767eab409c4a736d1d2da72fc9aecc540e77ddfb38f7dfe",
+			"bytes": 957,
+			"storage": "git"
+		},
+		{
+			"path": "logs/browser-error-evidence-classification.log",
+			"sha256": "dfc0b34969679c5cec49bb68e561a90f4549153e341c4cc49920a1054808a5ee",
+			"bytes": 389,
+			"storage": "git"
+		},
+		{
+			"path": "logs/browser-error-evidence-hosted.log",
+			"sha256": "2642dd18a1102ee1d27889a0dce91ed840c7781a5b3606d537cb739076fb5457",
+			"bytes": 452,
+			"storage": "git"
+		},
+		{
+			"path": "logs/browser-error-evidence-desktop.log",
+			"sha256": "e62c1bf33601ba94cb8e5a8f0bd8f360589869bdb077405948b2648acf75c007",
+			"bytes": 219,
+			"storage": "git"
+		}
+	]
+}

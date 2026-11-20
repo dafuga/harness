@@ -1,0 +1,129 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.browser-diagnostics",
+	"symbol": "browserDiagnosticSchema",
+	"cases": [
+		{
+			"name": "complete attempt with console and pageerror entries and a declared expectation",
+			"input": {
+				"test": "Shows the dashboard with its recorded browser errors",
+				"file": "test/e2e/dashboard.spec.ts",
+				"project": "desktop",
+				"retry": 0,
+				"browser": "chromium",
+				"errors": [
+					{
+						"type": "console",
+						"message": "Failed to load resource: 503",
+						"page": "/dashboard",
+						"source": "https://localhost/api/items",
+						"line": 0,
+						"column": 0
+					},
+					{
+						"type": "pageerror",
+						"message": "ResizeObserver loop limit exceeded",
+						"page": "/dashboard",
+						"source": "app.js",
+						"line": 12,
+						"column": 4,
+						"stack": "Error: ResizeObserver loop limit exceeded\n    at app.js:12:4"
+					}
+				],
+				"expected": [
+					{
+						"type": "pageerror",
+						"message": "ResizeObserver loop limit exceeded",
+						"reason": "Benign browser notice declared by this test.",
+						"source": "app.js"
+					}
+				]
+			},
+			"output": {
+				"test": "Shows the dashboard with its recorded browser errors",
+				"file": "test/e2e/dashboard.spec.ts",
+				"project": "desktop",
+				"retry": 0,
+				"browser": "chromium",
+				"errors": [
+					{
+						"type": "console",
+						"message": "Failed to load resource: 503",
+						"page": "/dashboard",
+						"source": "https://localhost/api/items",
+						"line": 0,
+						"column": 0
+					},
+					{
+						"type": "pageerror",
+						"message": "ResizeObserver loop limit exceeded",
+						"page": "/dashboard",
+						"source": "app.js",
+						"line": 12,
+						"column": 4,
+						"stack": "Error: ResizeObserver loop limit exceeded\n    at app.js:12:4"
+					}
+				],
+				"expected": [
+					{
+						"type": "pageerror",
+						"message": "ResizeObserver loop limit exceeded",
+						"reason": "Benign browser notice declared by this test.",
+						"source": "app.js"
+					}
+				]
+			}
+		},
+		{
+			"name": "empty file, project, errors and expected",
+			"input": {
+				"test": "Loads a page without recorded errors",
+				"file": "",
+				"project": "",
+				"retry": 1,
+				"errors": [],
+				"expected": []
+			},
+			"output": {
+				"test": "Loads a page without recorded errors",
+				"file": "",
+				"project": "",
+				"retry": 1,
+				"errors": [],
+				"expected": []
+			}
+		},
+		{
+			"name": "observed entry whose message and page are empty strings",
+			"input": {
+				"test": "Keeps an observed entry whose message and page are empty",
+				"file": "test/e2e/blank.spec.ts",
+				"project": "desktop",
+				"retry": 0,
+				"errors": [
+					{
+						"type": "console",
+						"message": "",
+						"page": ""
+					}
+				],
+				"expected": []
+			},
+			"output": {
+				"test": "Keeps an observed entry whose message and page are empty",
+				"file": "test/e2e/blank.spec.ts",
+				"project": "desktop",
+				"retry": 0,
+				"errors": [
+					{
+						"type": "console",
+						"message": "",
+						"page": ""
+					}
+				],
+				"expected": []
+			}
+		}
+	]
+}

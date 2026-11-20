@@ -1,0 +1,18 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-ui.aUz8v3/tmp/harness-snapshot-s6QOb6
+
+ ✓ test/browser-console-expected.e2e.test.ts (2 tests) 9827ms
+   ✓ intentional errors retain diagnostics and cannot hide missing, duplicate or unrelated errors  6322ms
+   ✓ API-only checks do not require a browser executable  3503ms
+ ✓ test/browser-error-evidence.test.ts (4 tests) 4008ms
+   ✓ verification retains browser diagnostics when the runner exits 0  711ms
+   ✓ verification retains browser diagnostics when the runner exits 1  372ms
+   ✓ verification refuses malformed diagnostics even after a runner wrote them  408ms
+   ✓ verification refuses timeout diagnostics even after a runner wrote them  2506ms
+ ✓ test/utils/read-browser-diagnostics.test.ts (5 tests) 11ms
+
+ Test Files  3 passed (3)
+      Tests  11 passed (11)
+   Start at  10:55:42
+   Duration  15.37s (transform 455ms, setup 282ms, collect 528ms, tests 13.85s, environment 0ms, prepare 114ms)
+
