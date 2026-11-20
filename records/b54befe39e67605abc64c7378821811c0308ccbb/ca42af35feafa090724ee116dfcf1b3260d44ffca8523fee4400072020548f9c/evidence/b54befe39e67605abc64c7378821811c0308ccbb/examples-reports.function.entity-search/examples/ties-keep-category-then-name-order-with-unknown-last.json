@@ -1,0 +1,28 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-search",
+	"symbol": "entitySearch",
+	"cases": [
+		{
+			"name": "tool",
+			"input": {
+				"query": "tool",
+				"entries": [
+					"app.function.zed",
+					"app.service.able",
+					"app.page.bcd",
+					"app.page.able",
+					"app.other.aaa"
+				]
+			},
+			"output": [
+				"app.page.able",
+				"app.page.bcd",
+				"app.function.zed",
+				"app.service.able",
+				"app.other.aaa"
+			]
+		}
+	]
+}

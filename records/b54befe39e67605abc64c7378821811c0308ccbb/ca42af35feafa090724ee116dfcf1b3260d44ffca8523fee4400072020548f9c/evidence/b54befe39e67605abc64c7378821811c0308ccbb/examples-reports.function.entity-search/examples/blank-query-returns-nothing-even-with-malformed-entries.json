@@ -1,0 +1,28 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-search",
+	"symbol": "entitySearch",
+	"cases": [
+		{
+			"name": "empty text",
+			"input": "",
+			"output": []
+		},
+		{
+			"name": "spaces only",
+			"input": "   ",
+			"output": []
+		},
+		{
+			"name": "tab and newline only",
+			"input": "\t\n",
+			"output": []
+		},
+		{
+			"name": "spaces with malformed entries",
+			"input": "   ",
+			"output": []
+		}
+	]
+}

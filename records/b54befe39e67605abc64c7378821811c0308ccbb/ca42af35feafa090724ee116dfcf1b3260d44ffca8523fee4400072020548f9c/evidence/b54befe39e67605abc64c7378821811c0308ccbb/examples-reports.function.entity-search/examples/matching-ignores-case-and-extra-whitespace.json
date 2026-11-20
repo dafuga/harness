@@ -1,0 +1,23 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-search",
+	"symbol": "entitySearch",
+	"cases": [
+		{
+			"name": "mixed case with tabs and newlines",
+			"input": " \tORDER   List\n",
+			"output": [
+				"app.component.order-list",
+				"app.component.order-table"
+			]
+		},
+		{
+			"name": "mixed-case term",
+			"input": "ORDER.total",
+			"output": [
+				"app.function.tax"
+			]
+		}
+	]
+}

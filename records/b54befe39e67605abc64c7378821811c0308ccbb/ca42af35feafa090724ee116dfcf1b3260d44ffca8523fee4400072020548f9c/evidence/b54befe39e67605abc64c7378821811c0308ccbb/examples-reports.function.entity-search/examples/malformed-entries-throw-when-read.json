@@ -1,0 +1,28 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-search",
+	"symbol": "entitySearch",
+	"cases": [
+		{
+			"name": "missing terms",
+			"input": "terms undefined",
+			"error": "TypeError: Cannot read properties of undefined (reading 'map')"
+		},
+		{
+			"name": "null name",
+			"input": "name null",
+			"error": "TypeError: Cannot read properties of null (reading 'toLowerCase')"
+		},
+		{
+			"name": "missing purpose",
+			"input": "purpose undefined",
+			"error": "TypeError: Cannot read properties of undefined (reading 'toLowerCase')"
+		},
+		{
+			"name": "number term",
+			"input": "terms [7]",
+			"error": "TypeError: term.toLowerCase is not a function"
+		}
+	]
+}
