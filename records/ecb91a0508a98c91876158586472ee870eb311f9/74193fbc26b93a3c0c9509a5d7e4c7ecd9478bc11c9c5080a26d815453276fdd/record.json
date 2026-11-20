@@ -1,0 +1,524 @@
+{
+	"id": "74193fbc26b93a3c0c9509a5d7e4c7ecd9478bc11c9c5080a26d815453276fdd",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/private/tmp/z5jp8p-hl.nO8NRG/source",
+	"source": {
+		"commit": "ecb91a0508a98c91876158586472ee870eb311f9",
+		"tree": "abd6c5656cfb7f28ed60d2f15dc92ec62db8e02b",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-20T00:27:32.872Z",
+	"finishedAt": "2026-11-20T00:29:20.861Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "kernel.impact-kernel",
+			"change": "unchanged",
+			"target": "process",
+			"manifest": "9102cc6a42e0cbd617a213ebea42902de3d20dc37be1617bc01d3381ec57c5cf",
+			"source": "26fb9fbf77cb3780e9d76679612494ff8adf74bbf3902ac94ffd86ecc9238f73",
+			"contract": "6959139aa040d16672a312bf04cdb5e214d1fc060d920c4911d2c4d6bd62ed6a",
+			"runtime": "6dace6a964d2f8b18a49f71acc592bb549c89d9364e15314a87da085b71dd257",
+			"files": [
+				{
+					"path": "crates/impact-kernel/Cargo.toml",
+					"hash": "ba8a1ca32a737366900ba00ba4853e0b8954f0dd"
+				},
+				{
+					"path": "crates/impact-kernel/src/abi.rs",
+					"hash": "de99b72bb316754ec7291c1088453608a587b8d2"
+				},
+				{
+					"path": "crates/impact-kernel/src/impact.rs",
+					"hash": "096b7f0681a3a66434d6fc8e7c2ead3d16692978"
+				},
+				{
+					"path": "crates/impact-kernel/src/lib.rs",
+					"hash": "30515655bcce8f5e0c5a435b1c4c67ced0178461"
+				},
+				{
+					"path": "crates/impact-kernel/src/main.rs",
+					"hash": "0342f4d1033d6f0e3bb6056096680ae23c9ce14e"
+				},
+				{
+					"path": "crates/impact-kernel/src/request.rs",
+					"hash": "b268a3791be581caa62040b7d76d591f41dc56eb"
+				},
+				{
+					"path": "crates/impact-kernel/tests/vectors.json",
+					"hash": "c7d37c08c83329df3beaec0e367e51864af7503f"
+				},
+				{
+					"path": "crates/impact-kernel/tests/vectors.rs",
+					"hash": "efe45f81749c86ae5b3d547b7ff689a97fbcf43e"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 402080,
+			"method": "Byte size recorded by the kernel build.",
+			"workload": null,
+			"target": "process",
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16559,
+			"method": "Byte size recorded by the kernel build.",
+			"workload": null,
+			"target": "process",
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "latency-cold-ms",
+			"unitOfMeasure": "ms",
+			"value": 4.446167000000003,
+			"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+			"workload": "graph-100",
+			"target": "process",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.2085415000001376,
+			"method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+			"workload": "graph-100",
+			"target": "process",
+			"samples": 30,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "throughput-ops",
+			"unitOfMeasure": "ops/s",
+			"value": 4181.207978861237,
+			"method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+			"workload": "graph-100",
+			"target": "process",
+			"samples": 30,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 1720320,
+			"method": "Peak resident set size of one native process run, from /usr/bin/time.",
+			"workload": "graph-100",
+			"target": "process",
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "latency-cold-ms",
+			"unitOfMeasure": "ms",
+			"value": 6.650333999999987,
+			"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+			"workload": "graph-1k",
+			"target": "process",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 1.0996460000005754,
+			"method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "process",
+			"samples": 30,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "throughput-ops",
+			"unitOfMeasure": "ops/s",
+			"value": 828.8638233101123,
+			"method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "process",
+			"samples": 30,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 2408448,
+			"method": "Peak resident set size of one native process run, from /usr/bin/time.",
+			"workload": "graph-1k",
+			"target": "process",
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 161296,
+			"method": "Byte size recorded by the kernel build.",
+			"workload": null,
+			"target": "wasm",
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16559,
+			"method": "Byte size recorded by the kernel build.",
+			"workload": null,
+			"target": "wasm",
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "latency-cold-ms",
+			"unitOfMeasure": "ms",
+			"value": 4.885749999999973,
+			"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+			"workload": "graph-100",
+			"target": "wasm",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.2053124999999909,
+			"method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+			"workload": "graph-100",
+			"target": "wasm",
+			"samples": 30,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "throughput-ops",
+			"unitOfMeasure": "ops/s",
+			"value": 1393.3884368917775,
+			"method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+			"workload": "graph-100",
+			"target": "wasm",
+			"samples": 30,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 1179648,
+			"method": "Linear memory size of the instantiated module after the warm loop.",
+			"workload": "graph-100",
+			"target": "wasm",
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "latency-cold-ms",
+			"unitOfMeasure": "ms",
+			"value": 9.740415999999982,
+			"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+			"workload": "graph-1k",
+			"target": "wasm",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 1.2836035000000265,
+			"method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "wasm",
+			"samples": 30,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "throughput-ops",
+			"unitOfMeasure": "ops/s",
+			"value": 704.059402336678,
+			"method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "wasm",
+			"samples": 30,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 1769472,
+			"method": "Linear memory size of the instantiated module after the warm loop.",
+			"workload": "graph-1k",
+			"target": "wasm",
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "kernel-build:cargo",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun run check:kernel",
+			"status": "passed",
+			"durationMs": 15318,
+			"log": {
+				"path": "logs/kernel-build-cargo.log",
+				"bytes": 1927,
+				"sha256": "4d0ffacb89e589cf1bc2b474714e2c56e63693a086ccc85ea2924cfd350db8c7"
+			}
+		},
+		{
+			"id": "kernel-build:kernel-cli",
+			"kind": "e2e",
+			"runner": "vitest",
+			"target": "test/kernel.e2e.test.ts",
+			"status": "passed",
+			"durationMs": 16259,
+			"log": {
+				"path": "logs/kernel-build-kernel-cli.log",
+				"bytes": 565,
+				"sha256": "f7278fdfb2793f29923e72ee623f5c20df31b6c5fb594686aef27230ee01f88a"
+			}
+		},
+		{
+			"id": "kernel-build:parity",
+			"kind": "integration",
+			"runner": "vitest",
+			"target": "test/services/kernel-parity.test.ts",
+			"status": "passed",
+			"durationMs": 1885,
+			"log": {
+				"path": "logs/kernel-build-parity.log",
+				"bytes": 313,
+				"sha256": "15e18d13af1a8bbb70f9afdbc33807bda90b16b4f1daead31fe0cf0dbcc96592"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "kernel-build",
+			"status": "passed",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"states": [
+				{
+					"id": "native",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "benchmark",
+							"kind": "benchmark",
+							"state": "native",
+							"mediaType": "application/json",
+							"note": "kernel bench --quick on this machine; not a controlled comparison.",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/kernel-build/kernel-cli/benchmark-native.json",
+							"sha256": "800682a08dee457fdbe13a1bd916970ef1caa10ae80246b9a024cda64690d07e",
+							"bytes": 3361,
+							"capturedAt": "2026-11-20T00:29:15.838Z"
+						},
+						{
+							"evidence": "parity",
+							"kind": "assertions",
+							"state": "native",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/kernel-build/parity/parity-native.json",
+							"sha256": "467ec75b8d694ef394f7520a27f5d691df4cabcd071ebd39d221776e5eb4460a",
+							"bytes": 201,
+							"capturedAt": "2026-11-20T00:29:18.794Z"
+						}
+					]
+				},
+				{
+					"id": "wasm",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "benchmark",
+							"kind": "benchmark",
+							"state": "wasm",
+							"mediaType": "application/json",
+							"note": "kernel bench --quick on this machine; not a controlled comparison.",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/kernel-build/kernel-cli/benchmark-wasm.json",
+							"sha256": "6b2f7cb7da72a536cc15acc0560f1c67dad29076b032143988caf2dd308696f6",
+							"bytes": 3322,
+							"capturedAt": "2026-11-20T00:29:15.838Z"
+						},
+						{
+							"evidence": "parity",
+							"kind": "assertions",
+							"state": "wasm",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/kernel-build/parity/parity-wasm.json",
+							"sha256": "d18357397e0c291596c1b06916d71146504deb8b5c1a61fd90d7ebc82439376d",
+							"bytes": 199,
+							"capturedAt": "2026-11-20T00:29:18.794Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"shell-fixture",
+		"entity-preview"
+	],
+	"builds": [
+		{
+			"id": "reports",
+			"directory": "packages/reports/build",
+			"buildId": "555c3f86246d46d0a95c3773d0176312e74374ea56bcf5da12c485466a0b7580",
+			"files": 722
+		}
+	],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to script.build-kernel: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}
