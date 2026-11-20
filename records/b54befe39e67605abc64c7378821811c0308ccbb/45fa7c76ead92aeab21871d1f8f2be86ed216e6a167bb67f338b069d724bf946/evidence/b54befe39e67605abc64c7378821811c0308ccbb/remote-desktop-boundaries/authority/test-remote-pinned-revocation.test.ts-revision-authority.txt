@@ -1,0 +1,14 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-2jXXmW/packages/desktop[39m
+
+ [32m✓[39m test/remote-pinned-revocation.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 1552[2mms[22m[39m
+   [33m[2m✓[22m[39m an explicitly pinned current-tip snapshot cannot authorize a mutation [33m 551[2mms[22m[39m
+   [33m[2m✓[22m[39m revoking a session during project opening prevents the deferred write [33m 397[2mms[22m[39m
+   [33m[2m✓[22m[39m revoking during provider preparation cannot append a request or start a CLI [33m 595[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 11:33:07
+[2m   Duration [22m 7.34s[2m (transform 3.44s, setup 277ms, collect 5.32s, tests 1.55s, environment 0ms, prepare 50ms)[22m
+
+JSON report written to /tmp/harness-runner-mHXFw1/report.json
