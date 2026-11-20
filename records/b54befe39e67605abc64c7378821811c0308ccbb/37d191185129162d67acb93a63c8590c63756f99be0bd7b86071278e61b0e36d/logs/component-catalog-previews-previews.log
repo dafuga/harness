@@ -1,0 +1,31 @@
+
+Running 24 tests using 1 worker
+
+(node:76617) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action at desktop (949ms)
+  ✓   2 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action:gold at desktop (889ms)
+  ✓   3 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action:button at desktop (874ms)
+  ✓   4 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action:disabled at desktop (888ms)
+  ✓   5 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action:plain at desktop (878ms)
+  ✓   6 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action:trailing-icon at desktop (870ms)
+  ✓   7 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action:long at desktop (874ms)
+  ✓   8 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action:focused at desktop (959ms)
+  ✓   9 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action at tablet (595ms)
+  ✓  10 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action:gold at tablet (600ms)
+  ✓  11 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action:button at tablet (636ms)
+  ✓  12 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action:disabled at tablet (592ms)
+  ✓  13 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action:plain at tablet (640ms)
+  ✓  14 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action:trailing-icon at tablet (639ms)
+  ✓  15 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action:long at tablet (636ms)
+  ✓  16 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action:focused at tablet (743ms)
+  ✓  17 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action at mobile (608ms)
+  ✓  18 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action:gold at mobile (627ms)
+  ✓  19 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action:button at mobile (606ms)
+  ✓  20 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action:disabled at mobile (587ms)
+  ✓  21 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action:plain at mobile (604ms)
+  ✓  22 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action:trailing-icon at mobile (641ms)
+  ✓  23 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action:long at mobile (608ms)
+  ✓  24 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-harness-action:focused at mobile (650ms)
+
+  24 passed (20.0s)
