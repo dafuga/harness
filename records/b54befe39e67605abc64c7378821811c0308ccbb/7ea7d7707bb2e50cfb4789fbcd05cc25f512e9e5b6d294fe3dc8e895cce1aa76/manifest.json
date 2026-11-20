@@ -1,0 +1,235 @@
+{
+	"schemaVersion": 1,
+	"record": "7ea7d7707bb2e50cfb4789fbcd05cc25f512e9e5b6d294fe3dc8e895cce1aa76",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "a66bdf347c4090ec7fac23cf1b09611ed16e149cfc949dc80f56f6687ed2414d",
+			"bytes": 398913,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/creation-boundaries/test-project-conversation-boundaries.test.ts-boundary-tests.txt",
+			"sha256": "b93da27c1c288712e9e1c26113bd749e5fd9a1b01d657f74840c241fa697553e",
+			"bytes": 1076,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/creation-boundaries/test-project-conversation-boundaries.test.ts-boundary-tests.json",
+			"sha256": "d546909150183e5c260cd836bdf67c118384a18118b43fd493d1071a2d3ad66c",
+			"bytes": 12861,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/creation-ownership/test-project-conversation-ownership.test.ts-boundary-tests.txt",
+			"sha256": "aa3e15e6d6f9ad6c4449fd39248cf9bc0e8cfbf16c394a0fa58d54f9468a75fd",
+			"bytes": 606,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/creation-ownership/test-project-conversation-ownership.test.ts-boundary-tests.json",
+			"sha256": "33878723388fc1778f85fc27a0fc01f12baafa327169deeb61e8ca37f7f0cdad",
+			"bytes": 8584,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/creation-persistence/test-project-conversation.test.ts-boundary-tests.txt",
+			"sha256": "cda206ef1163e78f4c33c9609aa97a388fa69b9577b01bde0243c7571016c8e6",
+			"bytes": 596,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/creation-persistence/test-project-conversation.test.ts-boundary-tests.json",
+			"sha256": "1dfe6fc17a3e74ecf7d04a742b473aa9107440a9d7d635cf96750afe9fca316f",
+			"bytes": 16147,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/creation-ui/creation-catalog-components-are-added-through-the-bottom-right-agent-rather-than-a-creation-form-desktop.png",
+			"sha256": "213b3224aeec115306856fdad50535f5f592bcc7687ef938ba509e7aecf9a84b",
+			"bytes": 356565,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/creation-ui/creation-catalog-functions-are-added-through-the-bottom-right-agent-rather-than-a-creation-form-desktop.png",
+			"sha256": "96eeaa70bbd4804cace7d7e1c00c657e352a93f1611870e1efc7a387693911af",
+			"bytes": 336682,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/creation-ui/tests-e2e-ui-agent-creation.spec.ts-catalog.txt",
+			"sha256": "aa08990a0b7df136215ab56aa990471d73ad90480c2aefcb0cb323ad52bfb8ae",
+			"bytes": 231,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/creation-ui/creation-request-conversation-sends-the-creation-prompt-with-the-selected-model-and-project-desktop.png",
+			"sha256": "71728a32f9a442d72a848bb8cbe5a7a4f3e2c4b7e7e3310ace5b0279b3e2d6ec",
+			"bytes": 349887,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/creation-ui/tests-e2e-ui-agent-creation.spec.ts-request.txt",
+			"sha256": "aa08990a0b7df136215ab56aa990471d73ad90480c2aefcb0cb323ad52bfb8ae",
+			"bytes": 231,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/creation-ui/creation-conversation-agent-conversation-stays-within-768px-viewport-tablet.png",
+			"sha256": "22ff60550b5c06a24c43506e4103636a5741a7cacdc578738f782e65b6ff0d15",
+			"bytes": 244734,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/creation-ui/creation-conversation-agent-conversation-stays-within-390px-viewport-mobile.png",
+			"sha256": "2b8616091c52a8687c16efe2c880231c808d8c7f2944cb618e6c8482378f06c6",
+			"bytes": 130305,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-creation/creation-ui/tests-e2e-ui-agent-creation.spec.ts-conversation.txt",
+			"sha256": "aa08990a0b7df136215ab56aa990471d73ad90480c2aefcb0cb323ad52bfb8ae",
+			"bytes": 231,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.prepare-project-run/examples/resolves-a-create-plan-after-project-and-runner-checks.json",
+			"sha256": "2dd8cfed3ec2c6798833b9a1e6a01876101233b8b7be492d268f3f44a14f0758",
+			"bytes": 717,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.prepare-project-run/examples/test-examples-desktop.function.prepare-project-run.test.ts-resolves-a-create-plan-after-project-and-runner-checks.txt",
+			"sha256": "4c659c3c48e0d9b2afda3b50362b1869489758b59df327cdb885253fd17b0180",
+			"bytes": 433,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.prepare-project-run/examples/test-examples-desktop.function.prepare-project-run.test.ts-resolves-a-create-plan-after-project-and-runner-checks.json",
+			"sha256": "5dbdbca51cb2428c74961d11510420b4e921f0d27ceeb986379cf2832d773047",
+			"bytes": 2959,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.prepare-project-run/examples/refuses-a-request-that-is-not-a-create-plan.json",
+			"sha256": "42b4c2e2b9932f66120700eda45f7aeb0cb223e1207266109a9592acadc915f8",
+			"bytes": 608,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.prepare-project-run/examples/test-examples-desktop.function.prepare-project-run.test.ts-refuses-a-request-that-is-not-a-create-plan.txt",
+			"sha256": "4c659c3c48e0d9b2afda3b50362b1869489758b59df327cdb885253fd17b0180",
+			"bytes": 433,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.prepare-project-run/examples/test-examples-desktop.function.prepare-project-run.test.ts-refuses-a-request-that-is-not-a-create-plan.json",
+			"sha256": "6aab91abca408ee9c473940a9434e972489f84855fe93a4781820ceb91a5699a",
+			"bytes": 1806,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.prepare-project-run/examples/refuses-a-request-for-an-unselected-project.json",
+			"sha256": "cbca982c02a969c6e1d15c2162ecf3ba8df7e5d66e2243cb3667834ce9138afc",
+			"bytes": 375,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.prepare-project-run/examples/test-examples-desktop.function.prepare-project-run.test.ts-refuses-a-request-for-an-unselected-project.txt",
+			"sha256": "4c659c3c48e0d9b2afda3b50362b1869489758b59df327cdb885253fd17b0180",
+			"bytes": 433,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.prepare-project-run/examples/test-examples-desktop.function.prepare-project-run.test.ts-refuses-a-request-for-an-unselected-project.json",
+			"sha256": "9abb7d444cda38dea6272007f814e3266ee7a0a2afb7724e128311be05849238",
+			"bytes": 1172,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.prepare-project-run/examples/stops-a-run-cancelled-before-the-context-is-returned.json",
+			"sha256": "3d7b1bebd8add24b19ad5cb45e28ccb9ffb93123be9b94dd38c6ae6b011bb532",
+			"bytes": 448,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.prepare-project-run/examples/test-examples-desktop.function.prepare-project-run.test.ts-stops-a-run-cancelled-before-the-context-is-returned.txt",
+			"sha256": "4c659c3c48e0d9b2afda3b50362b1869489758b59df327cdb885253fd17b0180",
+			"bytes": 433,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.prepare-project-run/examples/test-examples-desktop.function.prepare-project-run.test.ts-stops-a-run-cancelled-before-the-context-is-returned.json",
+			"sha256": "7142da9c06a0ab57490e38f88082c3394e81e08ae7bff9be8d6e789d5733684c",
+			"bytes": 1251,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-creation-compact-agent-ui.log",
+			"sha256": "f94b51ae34d58a3f68b8ecfb2e077b65f259b1202b052b5b13ff1fd967a2dfad",
+			"bytes": 232,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-creation-creation-ui.log",
+			"sha256": "aa08990a0b7df136215ab56aa990471d73ad90480c2aefcb0cb323ad52bfb8ae",
+			"bytes": 231,
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-desktop.function.prepare-project-run-examples.log",
+			"sha256": "4c659c3c48e0d9b2afda3b50362b1869489758b59df327cdb885253fd17b0180",
+			"bytes": 433,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-creation-creation-boundaries.log",
+			"sha256": "b93da27c1c288712e9e1c26113bd749e5fd9a1b01d657f74840c241fa697553e",
+			"bytes": 1076,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-creation-creation-ownership.log",
+			"sha256": "aa3e15e6d6f9ad6c4449fd39248cf9bc0e8cfbf16c394a0fa58d54f9468a75fd",
+			"bytes": 606,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-creation-creation-persistence.log",
+			"sha256": "cda206ef1163e78f4c33c9609aa97a388fa69b9577b01bde0243c7571016c8e6",
+			"bytes": 596,
+			"storage": "git"
+		}
+	]
+}

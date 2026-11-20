@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.prepare-project-run",
+	"symbol": "prepareProjectRun",
+	"cases": [
+		{
+			"name": "change mode is refused",
+			"input": {
+				"intent": "create",
+				"mode": "change"
+			},
+			"error": {
+				"name": "InvalidProjectRunRequestError",
+				"message": "Something new is asked for as a Plan."
+			}
+		},
+		{
+			"name": "ask intent is refused",
+			"input": {
+				"intent": "ask",
+				"mode": "plan"
+			},
+			"error": {
+				"name": "InvalidProjectRunRequestError",
+				"message": "Something new is asked for as a Plan."
+			}
+		}
+	]
+}

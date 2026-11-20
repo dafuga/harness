@@ -1,0 +1,21 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.prepare-project-run",
+	"symbol": "prepareProjectRun",
+	"cases": [
+		{
+			"name": "abort after runner selection",
+			"input": {
+				"projectId": "9f2c7a61-b4e3-4a8d-9f01-2c6b5a7d8e90",
+				"provider": "codex",
+				"model": "gpt-5.1-codex",
+				"effort": "medium"
+			},
+			"error": {
+				"name": "RunCancelled",
+				"message": "The run was cancelled."
+			}
+		}
+	]
+}
