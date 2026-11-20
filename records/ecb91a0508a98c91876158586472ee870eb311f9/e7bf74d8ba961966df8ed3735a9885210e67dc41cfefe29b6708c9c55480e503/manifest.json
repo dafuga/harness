@@ -1,0 +1,51 @@
+{
+	"schemaVersion": 1,
+	"record": "e7bf74d8ba961966df8ed3735a9885210e67dc41cfefe29b6708c9c55480e503",
+	"source": {
+		"commit": "ecb91a0508a98c91876158586472ee870eb311f9",
+		"tree": "abd6c5656cfb7f28ed60d2f15dc92ec62db8e02b"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "9311e7db9a90417e9420b295295cac16bf15e42aea243dafba2b262a5cdd3e41",
+			"bytes": 27682,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/unit-registry-ownership/ownership/behavior-1745b19b-697b-4192-b1cc-8aea7d2752ce.json",
+			"sha256": "5b6dbc87c7385437900e1d1ad6fb178a2f3764eeda34fd8bb368c670d6c5301a",
+			"bytes": 660,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/unit-registry-ownership/ownership/behavior-a6f4d18d-1705-4477-9d88-d602661612e2.json",
+			"sha256": "2fe014e4b238438768c0bd4ab25ed2e832965c951798681ae18c4f421e0141c7",
+			"bytes": 662,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/unit-registry-ownership/ownership/test-services-unit-index.test.ts-registry-ownership.txt",
+			"sha256": "20e2f555760202640679ad9070589b6eacc41cc5043672012578a9284fc13c2f",
+			"bytes": 498,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/unit-registry-ownership/ownership/test-services-unit-index.test.ts-registry-ownership.json",
+			"sha256": "93f7a0c6549f58504a216def62fe937e1ab813d35bd90f952546d4fd01e423e1",
+			"bytes": 362717,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/unit-registry-ownership-ownership.log",
+			"sha256": "20e2f555760202640679ad9070589b6eacc41cc5043672012578a9284fc13c2f",
+			"bytes": 498,
+			"storage": "git"
+		}
+	]
+}
