@@ -1,0 +1,327 @@
+{
+	"schemaVersion": 1,
+	"record": "863af9420c12562eb92f1c249d1a37a99769b6c86ea8e53513b881f678775dcd",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "2172c50ec64830f727edebe3003b86343bb1de5c64e86edfc805ecaa1c57cf5b",
+			"bytes": 1449083,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/hosted-design-options/reader-options/test-utils-hub-design-options.test.ts-selected-approval.txt",
+			"sha256": "6e98658a384c44ae21463bd66b8bf95c1b7fd11543a8c10a766b651ecb757f3a",
+			"bytes": 1225,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/hosted-design-options/reader-options/test-utils-hub-design-options.test.ts-selected-approval.json",
+			"sha256": "2efd0b3a90252df05097340b342da1528dda2412a9658bdfd0733269ccef2d30",
+			"bytes": 2928,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/hosted-design-options/reader-options/test-utils-hub-design-options.test.ts-legacy.txt",
+			"sha256": "6e98658a384c44ae21463bd66b8bf95c1b7fd11543a8c10a766b651ecb757f3a",
+			"bytes": 1225,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/hosted-design-options/reader-options/test-utils-hub-design-options.test.ts-legacy.json",
+			"sha256": "a2fda53cfae000b795b0abb2cfca757367bdceb0ca528919fe8ee8afc01cf270",
+			"bytes": 2109,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/hosted-design-options/reader-headless/test-utils-hub-design-headless.test.ts-headless.txt",
+			"sha256": "8c50bd1eb5d890acba5e50ba68549c978b03aca36e7f5104c78cf09b018c5cf1",
+			"bytes": 577,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/hosted-design-options/reader-headless/test-utils-hub-design-headless.test.ts-headless.json",
+			"sha256": "7298c6e71f97fedfec6dbae1e24ef4b9cdb6a5317ece812d6d4f67a24edcdb0b",
+			"bytes": 3126,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/planning-change/test-planning-change.test.ts-immutable-history.txt",
+			"sha256": "246aea6548a6430023bd8d0f66010646825ede04e465b4043688e5cab0278518",
+			"bytes": 504,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/planning-change/test-planning-change.test.ts-immutable-history.json",
+			"sha256": "8564474d9d9e514e756dfeed7f41ed0be00b1516afd48e43a00f0f816b0ce3e7",
+			"bytes": 1530,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/planning-history/test-planning-history.test.ts-immutable-history.txt",
+			"sha256": "a08ab3df1c7c42f92a6890690e22d59e0b4172b8157c10acc8f1bf9a31e08a12",
+			"bytes": 682,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/planning-history/test-planning-history.test.ts-immutable-history.json",
+			"sha256": "a57663e869de804f18c2832897b4ed461f51017babade96cd4b5eef1a671b000",
+			"bytes": 3832,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/planning-images/test-planning-images.test.ts-immutable-history.txt",
+			"sha256": "f5b1d86650a0ed32d4cc7fd359a4684bf57914e52a4dd4b1a8daa6425aee392c",
+			"bytes": 509,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/planning-images/test-planning-images.test.ts-immutable-history.json",
+			"sha256": "dad6d7ea85803193b55ebe663003a47dec0217750111faefc7ecba37ce5d6955",
+			"bytes": 4239,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/planning-integration/test-planning-integration.test.ts-immutable-history.txt",
+			"sha256": "73e5bf1fc3fbd4b23829fc28d3277fa7ee63b15bc9ec5a32797e8c06e07cb27a",
+			"bytes": 699,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/planning-integration/test-planning-integration.test.ts-immutable-history.json",
+			"sha256": "b01370d1b393cd591b2ef00d568a193e8d016eed87cc9fa4cd86243ba2fc6c10",
+			"bytes": 6053,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/plan-image-codec/test-utils-plan-image-codec.test.ts-immutable-history.txt",
+			"sha256": "1d0ae229e9335e8c56c643601af42e74b569a4eec6cb548d74463db08a320ea6",
+			"bytes": 410,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/plan-image-codec/test-utils-plan-image-codec.test.ts-immutable-history.json",
+			"sha256": "b2fa3f7df18c1808d3d0857ebd8359ce68787569bab3a56de01b02ea79eb8f82",
+			"bytes": 1165,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/planning-canonical/test-planning-canonical.test.ts-repository-isolation.txt",
+			"sha256": "3a4c00387a2ded64d1bfce82770628a004bf51d36b9a7f6712c5ef7d63df1f6e",
+			"bytes": 578,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/planning-canonical/test-planning-canonical.test.ts-repository-isolation.json",
+			"sha256": "823a90b24f05b4985b1d8f20739a502ddd0d1e938ae8fd809ab84c9ae1609d92",
+			"bytes": 4731,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/planning-conflicts/test-planning-conflicts.test.ts-repository-isolation.txt",
+			"sha256": "6e79ed5a3a5f25affe50aee5b25cdddd55de5bdb6135e6ecf288ff156fd911d7",
+			"bytes": 613,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/planning-conflicts/test-planning-conflicts.test.ts-repository-isolation.json",
+			"sha256": "4f311ff35a1caeb9248e80ffa05fff09ed49c6c5a6c5de1ffcac7577a9e5b843",
+			"bytes": 7989,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/planning-integration/test-planning-integration.test.ts-repository-isolation.txt",
+			"sha256": "73e5bf1fc3fbd4b23829fc28d3277fa7ee63b15bc9ec5a32797e8c06e07cb27a",
+			"bytes": 699,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/planning-integration/test-planning-integration.test.ts-repository-isolation.json",
+			"sha256": "5f20df37194d560d6b24a7dc0625f638b80940809c0dc8e6a72a10e0c3a99968",
+			"bytes": 3254,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/planning-registry/test-planning-registry.test.ts-repository-isolation.txt",
+			"sha256": "0bdd972573a16e4b037d0fcfb43e51cc1212813ddbf2bb57263f89fd26cb6538",
+			"bytes": 786,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/planning-registry/test-planning-registry.test.ts-repository-isolation.json",
+			"sha256": "5cf764bba5b0e66a35d4257c6e3889037a731d80f86f5c99ba9eed82e42504ec",
+			"bytes": 27132,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/plan-data/test-utils-plan-data.test.ts-repository-isolation.txt",
+			"sha256": "89688582ca078d1a10aa2b52740e41e2b1ea4f10952db50119fe5c5896cedd4a",
+			"bytes": 405,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/plan-data/test-utils-plan-data.test.ts-repository-isolation.json",
+			"sha256": "09f1242439fc95dffe4a43497b4d5e2017c8f56bdde079de2f6a39a19ffdb40b",
+			"bytes": 906,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/plan-validate/test-utils-plan-validate.test.ts-repository-isolation.txt",
+			"sha256": "0e0f8f941433bc369dbef12f1e0ee0eb0c27f7b093e401d3854a2e991f6f7ad0",
+			"bytes": 407,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/planning-artifacts/plan-validate/test-utils-plan-validate.test.ts-repository-isolation.json",
+			"sha256": "d957806d100df48e3e7fab1d9edbafe57c059074029d36353a30980eeb9664ce",
+			"bytes": 1450,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/planning-artifacts-plan-reads-format.log",
+			"sha256": "64e2b169559c00088809644c3ab90cbb60b2364f2e40e0bf188f2f466690b252",
+			"bytes": 410,
+			"storage": "git"
+		},
+		{
+			"path": "logs/planning-artifacts-plan-reads-port.log",
+			"sha256": "de81f128fc93c97ac09fd55cb8bcf05c375fe8124f9a2ae69ecd46c20f76743a",
+			"bytes": 405,
+			"storage": "git"
+		},
+		{
+			"path": "logs/planning-artifacts-planning-canonical.log",
+			"sha256": "3a4c00387a2ded64d1bfce82770628a004bf51d36b9a7f6712c5ef7d63df1f6e",
+			"bytes": 578,
+			"storage": "git"
+		},
+		{
+			"path": "logs/planning-artifacts-planning-change.log",
+			"sha256": "246aea6548a6430023bd8d0f66010646825ede04e465b4043688e5cab0278518",
+			"bytes": 504,
+			"storage": "git"
+		},
+		{
+			"path": "logs/planning-artifacts-planning-conflicts.log",
+			"sha256": "6e79ed5a3a5f25affe50aee5b25cdddd55de5bdb6135e6ecf288ff156fd911d7",
+			"bytes": 613,
+			"storage": "git"
+		},
+		{
+			"path": "logs/planning-artifacts-planning-history.log",
+			"sha256": "a08ab3df1c7c42f92a6890690e22d59e0b4172b8157c10acc8f1bf9a31e08a12",
+			"bytes": 682,
+			"storage": "git"
+		},
+		{
+			"path": "logs/planning-artifacts-planning-images.log",
+			"sha256": "f5b1d86650a0ed32d4cc7fd359a4684bf57914e52a4dd4b1a8daa6425aee392c",
+			"bytes": 509,
+			"storage": "git"
+		},
+		{
+			"path": "logs/planning-artifacts-planning-integration.log",
+			"sha256": "73e5bf1fc3fbd4b23829fc28d3277fa7ee63b15bc9ec5a32797e8c06e07cb27a",
+			"bytes": 699,
+			"storage": "git"
+		},
+		{
+			"path": "logs/planning-artifacts-planning-registry.log",
+			"sha256": "0bdd972573a16e4b037d0fcfb43e51cc1212813ddbf2bb57263f89fd26cb6538",
+			"bytes": 786,
+			"storage": "git"
+		},
+		{
+			"path": "logs/hosted-design-options-reader-headless.log",
+			"sha256": "8c50bd1eb5d890acba5e50ba68549c978b03aca36e7f5104c78cf09b018c5cf1",
+			"bytes": 577,
+			"storage": "git"
+		},
+		{
+			"path": "logs/hosted-design-options-reader-corrupt.log",
+			"sha256": "a1dab32af52171a050165dddde859736b6c4c49d71152ef2987d0f89da68149f",
+			"bytes": 670,
+			"storage": "git"
+		},
+		{
+			"path": "logs/hosted-design-options-reader-flat.log",
+			"sha256": "9f0500c643d567a9b27a4236381454839b68d9135a78cdb74148371bc2b5c7e7",
+			"bytes": 494,
+			"storage": "git"
+		},
+		{
+			"path": "logs/hosted-design-options-reader-options.log",
+			"sha256": "6e98658a384c44ae21463bd66b8bf95c1b7fd11543a8c10a766b651ecb757f3a",
+			"bytes": 1225,
+			"storage": "git"
+		},
+		{
+			"path": "logs/hosted-design-options-reader-region.log",
+			"sha256": "c48744ff39658197d94cb0efe5e0b680b7b4c87e0b2bd638aac20760aa33b73a",
+			"bytes": 784,
+			"storage": "git"
+		},
+		{
+			"path": "logs/hosted-design-options-options-controls.log",
+			"sha256": "92c96925f05e4fd8ec6a47fd57a7bbf169171e48c9b61c8606e8fc8e6053ea4f",
+			"bytes": 402,
+			"storage": "git"
+		},
+		{
+			"path": "logs/planning-artifacts-plan-data.log",
+			"sha256": "89688582ca078d1a10aa2b52740e41e2b1ea4f10952db50119fe5c5896cedd4a",
+			"bytes": 405,
+			"storage": "git"
+		},
+		{
+			"path": "logs/planning-artifacts-plan-image-codec.log",
+			"sha256": "1d0ae229e9335e8c56c643601af42e74b569a4eec6cb548d74463db08a320ea6",
+			"bytes": 410,
+			"storage": "git"
+		},
+		{
+			"path": "logs/planning-artifacts-plan-reads.log",
+			"sha256": "7fd11cf6fdca9bddf4ca57e79330f3f4c0a37488fbf5d67b3a0618bf4a32dc62",
+			"bytes": 605,
+			"storage": "git"
+		},
+		{
+			"path": "logs/planning-artifacts-plan-validate.log",
+			"sha256": "0e0f8f941433bc369dbef12f1e0ee0eb0c27f7b093e401d3854a2e991f6f7ad0",
+			"bytes": 407,
+			"storage": "git"
+		}
+	]
+}
