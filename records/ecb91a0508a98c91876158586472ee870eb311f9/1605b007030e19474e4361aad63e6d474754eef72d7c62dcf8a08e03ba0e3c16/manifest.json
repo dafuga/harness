@@ -1,0 +1,105 @@
+{
+	"schemaVersion": 1,
+	"record": "1605b007030e19474e4361aad63e6d474754eef72d7c62dcf8a08e03ba0e3c16",
+	"source": {
+		"commit": "ecb91a0508a98c91876158586472ee870eb311f9",
+		"tree": "abd6c5656cfb7f28ed60d2f15dc92ec62db8e02b"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "f1d319845675b74de84854461760d64ce9561a5f5d8f956da7b507080b0b2574",
+			"bytes": 339532,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/component-catalog-previews/previews/reports-component-explorer-ui-harness-explorer-styles-screen-desktop.png",
+			"sha256": "53bcc44f31e3c4d15099ceb8fd858954297ee9060c61bca48d8cf55a50245d6e",
+			"bytes": 1349890,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/component-catalog-previews/previews/reports-component-explorer-ui-harness-explorer-styles-screen-profile.json",
+			"sha256": "d484e01891787d51d76d88c0427f6df0606e54397493ac77b0bcacf06d7f6fb5",
+			"bytes": 789,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/component-catalog-previews/previews/reports-component-explorer-ui-harness-explorer-styles-screen-tablet.png",
+			"sha256": "84c399f41c33c01f351376e4027a1aed2b3a4e4cecca242161c7a8c7f83c602d",
+			"bytes": 1256255,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/component-catalog-previews/previews/reports-component-explorer-ui-harness-explorer-styles-screen-mobile.png",
+			"sha256": "67877969623a0b129c7bf1cd6537d30c9bb453354c105e21006a180d55b4d32e",
+			"bytes": 1489165,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/harness-styles/captured-catalog-and-measurements/catalog-desktop-desktop.png",
+			"sha256": "32ea8b227e4a694519205e040f24f8915884e658c61b78ff1a0ebe5019279e19",
+			"bytes": 186503,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/harness-styles/captured-catalog-and-measurements/catalog-desktop-desktop-benchmark.json",
+			"sha256": "e27c7d0e0050387e6941c0a8a372c063909d7379172836d43c0896e0cba08a88",
+			"bytes": 19390,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/harness-styles/captured-catalog-and-measurements/catalog-tablet-tablet.png",
+			"sha256": "a82b6e36ad472d49e63e651f3fbd12d622d884be6018d01ef389d458e699fe27",
+			"bytes": 116133,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/harness-styles/captured-catalog-and-measurements/catalog-tablet-tablet-benchmark.json",
+			"sha256": "b0b11c92d1ad62ca128b258a29f8c8709dcf01fbb9eed9a5adfcb91a1b457554",
+			"bytes": 18865,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/harness-styles/captured-catalog-and-measurements/catalog-mobile-mobile.png",
+			"sha256": "085fb6d3562857ae238a86781b5a60ced342b726d5ecc4b818bd195a7009d453",
+			"bytes": 77322,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/harness-styles/captured-catalog-and-measurements/catalog-mobile-mobile-benchmark.json",
+			"sha256": "547b564826406cbcb23cf981b2dd2dd4c50a18c17f8f781954ad63b81637f397",
+			"bytes": 19190,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/component-catalog-previews-previews.log",
+			"sha256": "eb3a828a5f97b7b4454c30df4ef2f04a572a74fc7f2b2c9b770a8f04d1cb4009",
+			"bytes": 658,
+			"storage": "git"
+		},
+		{
+			"path": "logs/harness-styles-captured-catalog-and-measurements.log",
+			"sha256": "4c548405d010e21529fab6fade775d1ad4723322dbdeca0fd576b66ee1839f8d",
+			"bytes": 3613,
+			"storage": "git"
+		},
+		{
+			"path": "logs/harness-styles-navigation-and-catalog.log",
+			"sha256": "2092af3c916618802ed4625c3ae4d01cd7d9a07230a0706358e32eb15fb50d8f",
+			"bytes": 3699,
+			"storage": "git"
+		}
+	]
+}
