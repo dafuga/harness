@@ -1,0 +1,19 @@
+
+Running 12 tests using 1 worker
+
+(node:85597) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.shared-primitives-loading-state at desktop (941ms)
+  ✓   2 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.shared-primitives-loading-state:default-label at desktop (874ms)
+  ✓   3 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.shared-primitives-loading-state:long at desktop (894ms)
+  ✓   4 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.shared-primitives-loading-state:inline at desktop (885ms)
+  ✓   5 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.shared-primitives-loading-state at tablet (566ms)
+  ✓   6 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.shared-primitives-loading-state:default-label at tablet (565ms)
+  ✓   7 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.shared-primitives-loading-state:long at tablet (565ms)
+  ✓   8 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.shared-primitives-loading-state:inline at tablet (569ms)
+  ✓   9 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.shared-primitives-loading-state at mobile (565ms)
+  ✓  10 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.shared-primitives-loading-state:default-label at mobile (562ms)
+  ✓  11 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.shared-primitives-loading-state:long at mobile (562ms)
+  ✓  12 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.shared-primitives-loading-state:inline at mobile (564ms)
+
+  12 passed (10.3s)
