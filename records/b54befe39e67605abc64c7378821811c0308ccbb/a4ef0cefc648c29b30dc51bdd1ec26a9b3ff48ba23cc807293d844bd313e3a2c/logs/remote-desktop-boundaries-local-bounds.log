@@ -1,0 +1,16 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.xwaYHF/tmp/harness-snapshot-S5262Y/packages/desktop
+
+ ✓ test/local-transport-bounds.test.ts (5 tests) 7598ms
+   ✓ a socket opens only with a fresh ticket, from the app page, on the transport path  1329ms
+   ✓ a ticket is short-lived, and the number of sockets is bounded  1370ms
+   ✓ frames that break the bounds close the socket and reach no operation  1665ms
+   ✓ a request that never completes is never performed  1714ms
+   ✓ the app page may send more than a phone request, up to the local bound, and is answered  1498ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  13:48:47
+   Duration  11.45s (transform 2.11s, setup 163ms, collect 3.42s, tests 7.60s, environment 0ms, prepare 44ms)
+
+JSON report written to /tmp/z5jp8p-hl.xwaYHF/tmp/harness-runner-DZMIc2/report.json
