@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.entity-references",
+	"symbol": "entityReferences",
+	"cases": [
+		{
+			"name": "two complete markers between words",
+			"input": "Use [[unit:app.page.orders]] and [[unit:app.shell.order-frame]].",
+			"output": [
+				{
+					"kind": "text",
+					"text": "Use "
+				},
+				{
+					"kind": "reference",
+					"id": "app.page.orders",
+					"text": "[[unit:app.page.orders]]"
+				},
+				{
+					"kind": "text",
+					"text": " and "
+				},
+				{
+					"kind": "reference",
+					"id": "app.shell.order-frame",
+					"text": "[[unit:app.shell.order-frame]]"
+				},
+				{
+					"kind": "text",
+					"text": "."
+				}
+			]
+		},
+		{
+			"name": "two adjacent markers with no text between",
+			"input": "[[unit:a.b]][[unit:c.d-e2]]",
+			"output": [
+				{
+					"kind": "reference",
+					"id": "a.b",
+					"text": "[[unit:a.b]]"
+				},
+				{
+					"kind": "reference",
+					"id": "c.d-e2",
+					"text": "[[unit:c.d-e2]]"
+				}
+			]
+		},
+		{
+			"name": "empty input",
+			"input": "",
+			"output": []
+		}
+	]
+}

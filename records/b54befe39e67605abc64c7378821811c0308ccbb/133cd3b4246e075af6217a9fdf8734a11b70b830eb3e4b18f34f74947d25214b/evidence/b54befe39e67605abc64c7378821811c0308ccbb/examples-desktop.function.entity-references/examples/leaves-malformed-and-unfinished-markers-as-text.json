@@ -1,0 +1,127 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.entity-references",
+	"symbol": "entityReferences",
+	"cases": [
+		{
+			"name": "malformed: [[unit:orders]]",
+			"input": "[[unit:orders]]",
+			"output": [
+				{
+					"kind": "text",
+					"text": "[[unit:orders]]"
+				}
+			]
+		},
+		{
+			"name": "malformed: [[unit:App.Page.Orders]]",
+			"input": "[[unit:App.Page.Orders]]",
+			"output": [
+				{
+					"kind": "text",
+					"text": "[[unit:App.Page.Orders]]"
+				}
+			]
+		},
+		{
+			"name": "malformed: [[unit:app..orders]]",
+			"input": "[[unit:app..orders]]",
+			"output": [
+				{
+					"kind": "text",
+					"text": "[[unit:app..orders]]"
+				}
+			]
+		},
+		{
+			"name": "malformed: [[unit:app.page.orders.]]",
+			"input": "[[unit:app.page.orders.]]",
+			"output": [
+				{
+					"kind": "text",
+					"text": "[[unit:app.page.orders.]]"
+				}
+			]
+		},
+		{
+			"name": "malformed: [[unit:https://evil.example/x]]",
+			"input": "[[unit:https://evil.example/x]]",
+			"output": [
+				{
+					"kind": "text",
+					"text": "[[unit:https://evil.example/x]]"
+				}
+			]
+		},
+		{
+			"name": "malformed: [[unit:javascript:alert(1)]]",
+			"input": "[[unit:javascript:alert(1)]]",
+			"output": [
+				{
+					"kind": "text",
+					"text": "[[unit:javascript:alert(1)]]"
+				}
+			]
+		},
+		{
+			"name": "malformed: [[unit:../../etc/passwd]]",
+			"input": "[[unit:../../etc/passwd]]",
+			"output": [
+				{
+					"kind": "text",
+					"text": "[[unit:../../etc/passwd]]"
+				}
+			]
+		},
+		{
+			"name": "malformed: [[unit: app.page.orders]]",
+			"input": "[[unit: app.page.orders]]",
+			"output": [
+				{
+					"kind": "text",
+					"text": "[[unit: app.page.orders]]"
+				}
+			]
+		},
+		{
+			"name": "malformed: [[unit:app.page.orders]",
+			"input": "[[unit:app.page.orders]",
+			"output": [
+				{
+					"kind": "text",
+					"text": "[[unit:app.page.orders]"
+				}
+			]
+		},
+		{
+			"name": "malformed: [[page:app.page.orders]]",
+			"input": "[[page:app.page.orders]]",
+			"output": [
+				{
+					"kind": "text",
+					"text": "[[page:app.page.orders]]"
+				}
+			]
+		},
+		{
+			"name": "broken marker before a complete one",
+			"input": "See [[unit:half [[unit:app.page.orders]] now",
+			"output": [
+				{
+					"kind": "text",
+					"text": "See [[unit:half "
+				},
+				{
+					"kind": "reference",
+					"id": "app.page.orders",
+					"text": "[[unit:app.page.orders]]"
+				},
+				{
+					"kind": "text",
+					"text": " now"
+				}
+			]
+		}
+	]
+}
