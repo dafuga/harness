@@ -1,0 +1,704 @@
+{
+	"id": "ca158a77cb9badf2298dbf6df8fd50acafa14d13c27982c0f1e1ebd5ff32a6b7",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/private/tmp/z5jp8p-hl.mtGXPD/source",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-20T14:19:54.004Z",
+	"finishedAt": "2026-11-20T14:20:08.584Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "function.record-capture",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41e40bb7a2b44b7fa1da3881ebf1a687d3d8471d42fd0a7c44d584361255ff42",
+			"source": "142bfa1513b076860925e3bac72e4361c1edd5901abe0b7061ebac711646346a",
+			"contract": "025908d6c17bb9a51a22fa8f85c40b9ea26bb9161a5d016c554aa7e340c15a52",
+			"runtime": "a289759bf06513632380a5baa8ac1f6a9a916c1d1905e0de6a7be531f7936431",
+			"files": [
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.ts",
+					"hash": "316c75b906d532b1a5b376f345b7de8e00da1f4d"
+				},
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.types.ts",
+					"hash": "8e36a063513222284548df76d240d4a45f6626a9"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cfb49b515cacc084047d75cdf10a295ab3790ecaf878e2b75e06463793f628bf",
+			"source": "cbf5fb170c4db458f39bcc4ba18996e377a782371040baa39d1667f04bf87635",
+			"contract": "6f2e8a598fb220dd111fe8085fb28c645ee24019cc4b1f25315b141a569962d7",
+			"runtime": "ec246a1eb80a7c06e7ccbd8601bab05e75d00122b0ad9d09eec95bbe94f31c19",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts",
+					"hash": "36741c54d766dd2689e542099ca02135cd07760b"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.types.ts",
+					"hash": "758395e715dd7c7d824deb57b07849f373ef164e"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/artifactCases.ts",
+					"hash": "f5a0a857433ab39a3aa86c795bab10681a76db3f"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.harness-budget",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "7f0d0d590993dedb9ae7204f05c8849d9847d4b4b8bb65861d397e39d870dca3",
+			"source": "01168d9ac5902561045b52ed57f47ebb803be6f9ae8fbaca301dacaa21c338ea",
+			"contract": "77bdca320df15d71ac1bab23692c810255b3ae922f708f96c05031f53829b68c",
+			"runtime": "87a6b62f5c767ead10e7ce7b37246e39a1317e3f7d77bb481ad938b267df2851",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/harnessBudget.ts",
+					"hash": "05c0f85bba30cd5c163abebb829ca23e7140fb8b"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/harnessBudget.types.ts",
+					"hash": "8deebb9190f4e15d40c0818106cc2837da42adbb"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.01362499999999045,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90636288,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.harness-budget",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.009849899999994704,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-ec0a18cfcd0b0c21-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.harness-budget",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91045888,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-ec0a18cfcd0b0c21-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.003045999999989135,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91127808,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.2009211000000107,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91127808,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "examples-reports.function.harness-budget:examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.harness-budget.test.ts",
+			"status": "passed",
+			"durationMs": 2307,
+			"log": {
+				"path": "logs/examples-reports.function.harness-budget-examples.log",
+				"bytes": 433,
+				"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "examples-reports.function.harness-budget",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "an-unavailable-size-is-shown-as-unavailable-and-not-frozen-never-zero",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "an-unavailable-size-is-shown-as-unavailable-and-not-frozen-never-zero",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/an-unavailable-size-is-shown-as-unavailable-and-not-frozen-never-zero.json",
+							"sha256": "8c614a9c11044aed17cdae531ce35dcb952d06e22782f7cda609d13450955b16",
+							"bytes": 1059,
+							"capturedAt": "2026-11-20T14:20:06.665Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "an-unavailable-size-is-shown-as-unavailable-and-not-frozen-never-zero",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.harness-budget.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-an-unavailable-size-is-shown-as-unavailable-and-not-frozen-never-zero.txt",
+							"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0",
+							"bytes": 433,
+							"capturedAt": "2026-11-20T14:20:06.666Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "an-unavailable-size-is-shown-as-unavailable-and-not-frozen-never-zero",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-an-unavailable-size-is-shown-as-unavailable-and-not-frozen-never-zero.json",
+							"sha256": "08a13630228adb0f3303da7020f8944976d281ee79c82dc424acfe4f0aa50bf6",
+							"bytes": 1632,
+							"capturedAt": "2026-11-20T14:20:06.667Z"
+						}
+					]
+				},
+				{
+					"id": "a-counted-zero-keeps-its-value-and-its-baseline-limit",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "a-counted-zero-keeps-its-value-and-its-baseline-limit",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/a-counted-zero-keeps-its-value-and-its-baseline-limit.json",
+							"sha256": "f218da2d6ba505ee1decc1aa34efe5ade012138f423498ea16720832c56c578b",
+							"bytes": 857,
+							"capturedAt": "2026-11-20T14:20:06.666Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "a-counted-zero-keeps-its-value-and-its-baseline-limit",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.harness-budget.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-counted-zero-keeps-its-value-and-its-baseline-limit.txt",
+							"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0",
+							"bytes": 433,
+							"capturedAt": "2026-11-20T14:20:06.666Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "a-counted-zero-keeps-its-value-and-its-baseline-limit",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-counted-zero-keeps-its-value-and-its-baseline-limit.json",
+							"sha256": "3f8232ce08325e9c526292850559ae0c47f78ba5258bfba949a2b3477fc0acd0",
+							"bytes": 1147,
+							"capturedAt": "2026-11-20T14:20:06.667Z"
+						}
+					]
+				},
+				{
+					"id": "a-partial-size-adds-a-note-that-says-what-it-leaves-out",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "a-partial-size-adds-a-note-that-says-what-it-leaves-out",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/a-partial-size-adds-a-note-that-says-what-it-leaves-out.json",
+							"sha256": "0b7d979786c2e0bf318a2248aa4843829ba86d4744a8253b5fd3b6aaa57679e8",
+							"bytes": 596,
+							"capturedAt": "2026-11-20T14:20:06.666Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "a-partial-size-adds-a-note-that-says-what-it-leaves-out",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.harness-budget.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-partial-size-adds-a-note-that-says-what-it-leaves-out.txt",
+							"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0",
+							"bytes": 433,
+							"capturedAt": "2026-11-20T14:20:06.666Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "a-partial-size-adds-a-note-that-says-what-it-leaves-out",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-partial-size-adds-a-note-that-says-what-it-leaves-out.json",
+							"sha256": "36929319b21becab058f2aa2a780f50a4bf4bd119be58710aae475237ca86617",
+							"bytes": 751,
+							"capturedAt": "2026-11-20T14:20:06.667Z"
+						}
+					]
+				},
+				{
+					"id": "a-finding-baseline-takes-priority-over-the-ledger-limit",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "a-finding-baseline-takes-priority-over-the-ledger-limit",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/a-finding-baseline-takes-priority-over-the-ledger-limit.json",
+							"sha256": "c21bc6605fb19930ccbd131f4e4c15ef3c27bbd1bc92969e080c2c57da044033",
+							"bytes": 980,
+							"capturedAt": "2026-11-20T14:20:06.666Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "a-finding-baseline-takes-priority-over-the-ledger-limit",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.harness-budget.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-finding-baseline-takes-priority-over-the-ledger-limit.txt",
+							"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0",
+							"bytes": 433,
+							"capturedAt": "2026-11-20T14:20:06.666Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "a-finding-baseline-takes-priority-over-the-ledger-limit",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-finding-baseline-takes-priority-over-the-ledger-limit.json",
+							"sha256": "f3971bcd87b301233c86e077b2f8c6caa5315690f12ea4390d0d937f3343b887",
+							"bytes": 866,
+							"capturedAt": "2026-11-20T14:20:06.667Z"
+						}
+					]
+				},
+				{
+					"id": "a-ledger-limit-applies-when-this-revision-has-no-measurement",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "a-ledger-limit-applies-when-this-revision-has-no-measurement",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/a-ledger-limit-applies-when-this-revision-has-no-measurement.json",
+							"sha256": "3f0589ee2e60e8fc23cd81de2557b2fc4eb696bff420eebef2efd7cfa10aa4df",
+							"bytes": 385,
+							"capturedAt": "2026-11-20T14:20:06.666Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "a-ledger-limit-applies-when-this-revision-has-no-measurement",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.harness-budget.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-ledger-limit-applies-when-this-revision-has-no-measurement.txt",
+							"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0",
+							"bytes": 433,
+							"capturedAt": "2026-11-20T14:20:06.667Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "a-ledger-limit-applies-when-this-revision-has-no-measurement",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-ledger-limit-applies-when-this-revision-has-no-measurement.json",
+							"sha256": "99bf293a151ed21dd0b368f1e92f55f006e1b9a52848bf3518248321cf5668c6",
+							"bytes": 729,
+							"capturedAt": "2026-11-20T14:20:06.667Z"
+						}
+					]
+				},
+				{
+					"id": "a-missing-measurement-is-shown-as-not-measured-never-as-zero",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "a-missing-measurement-is-shown-as-not-measured-never-as-zero",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/a-missing-measurement-is-shown-as-not-measured-never-as-zero.json",
+							"sha256": "be858b3afb711495f809611ea86a7c9cca24712d73d6870855e5b9b9d0f2706a",
+							"bytes": 597,
+							"capturedAt": "2026-11-20T14:20:06.666Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "a-missing-measurement-is-shown-as-not-measured-never-as-zero",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.harness-budget.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-missing-measurement-is-shown-as-not-measured-never-as-zero.txt",
+							"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0",
+							"bytes": 433,
+							"capturedAt": "2026-11-20T14:20:06.667Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "a-missing-measurement-is-shown-as-not-measured-never-as-zero",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-missing-measurement-is-shown-as-not-measured-never-as-zero.json",
+							"sha256": "f8078db50642f74465a14f259c858a563a4f7357db2acf5690afd0d760ea89f9",
+							"bytes": 1558,
+							"capturedAt": "2026-11-20T14:20:06.667Z"
+						}
+					]
+				},
+				{
+					"id": "a-declared-freeze-without-a-reviewed-number-states-that-no-limit-is-recorded",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "a-declared-freeze-without-a-reviewed-number-states-that-no-limit-is-recorded",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/a-declared-freeze-without-a-reviewed-number-states-that-no-limit-is-recorded.json",
+							"sha256": "239657f5255746c85c58a71490a0da21b21bec724aac60b65acf5bbdf7d6bc85",
+							"bytes": 1347,
+							"capturedAt": "2026-11-20T14:20:06.666Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "a-declared-freeze-without-a-reviewed-number-states-that-no-limit-is-recorded",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.harness-budget.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-declared-freeze-without-a-reviewed-number-states-that-no-limit-is-recorded.txt",
+							"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0",
+							"bytes": 433,
+							"capturedAt": "2026-11-20T14:20:06.667Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "a-declared-freeze-without-a-reviewed-number-states-that-no-limit-is-recorded",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-declared-freeze-without-a-reviewed-number-states-that-no-limit-is-recorded.json",
+							"sha256": "d6916960bef62f6d2b8c1dcb4c045f0ed5c88d18236e7c10134b5b128036b5fe",
+							"bytes": 1559,
+							"capturedAt": "2026-11-20T14:20:06.667Z"
+						}
+					]
+				},
+				{
+					"id": "an-exceeded-size-adds-a-growth-note-only-when-its-baseline-is-present",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "an-exceeded-size-adds-a-growth-note-only-when-its-baseline-is-present",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/an-exceeded-size-adds-a-growth-note-only-when-its-baseline-is-present.json",
+							"sha256": "96a48b42d94c2019bac0e2f58fd083b29061cfd0f091b855491b597f85c4ba59",
+							"bytes": 968,
+							"capturedAt": "2026-11-20T14:20:06.666Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "an-exceeded-size-adds-a-growth-note-only-when-its-baseline-is-present",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.harness-budget.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-an-exceeded-size-adds-a-growth-note-only-when-its-baseline-is-present.txt",
+							"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0",
+							"bytes": 433,
+							"capturedAt": "2026-11-20T14:20:06.667Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "an-exceeded-size-adds-a-growth-note-only-when-its-baseline-is-present",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-an-exceeded-size-adds-a-growth-note-only-when-its-baseline-is-present.json",
+							"sha256": "2317b8b1cb357d76110017cef0ba243f34df3fa64dea7094514e43485b56ace7",
+							"bytes": 1538,
+							"capturedAt": "2026-11-20T14:20:06.667Z"
+						}
+					]
+				},
+				{
+					"id": "an-unmeasured-ledger-marker-says-the-size-is-not-frozen-while-keeping-its-value",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "an-unmeasured-ledger-marker-says-the-size-is-not-frozen-while-keeping-its-value",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/an-unmeasured-ledger-marker-says-the-size-is-not-frozen-while-keeping-its-value.json",
+							"sha256": "a8ee25d67be9de7ecb0caf1219ab7a2a71f00d6bfbfa9d2ec7cea4442c4895e1",
+							"bytes": 601,
+							"capturedAt": "2026-11-20T14:20:06.666Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "an-unmeasured-ledger-marker-says-the-size-is-not-frozen-while-keeping-its-value",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.harness-budget.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-an-unmeasured-ledger-marker-says-the-size-is-not-frozen-while-keeping-its-value.txt",
+							"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0",
+							"bytes": 433,
+							"capturedAt": "2026-11-20T14:20:06.667Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "an-unmeasured-ledger-marker-says-the-size-is-not-frozen-while-keeping-its-value",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-an-unmeasured-ledger-marker-says-the-size-is-not-frozen-while-keeping-its-value.json",
+							"sha256": "6e4742a294293368190bd50ef9de41198bcc74c7d53c24e877467b5563475cd2",
+							"bytes": 809,
+							"capturedAt": "2026-11-20T14:20:06.667Z"
+						}
+					]
+				},
+				{
+					"id": "a-null-value-without-a-reason-is-unavailable-and-not-frozen-not-zero",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "a-null-value-without-a-reason-is-unavailable-and-not-frozen-not-zero",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/a-null-value-without-a-reason-is-unavailable-and-not-frozen-not-zero.json",
+							"sha256": "4ff61a9728bc7b06748105061af3b4dc0fba0356d98f4524ca3e3eb3bc2b7812",
+							"bytes": 515,
+							"capturedAt": "2026-11-20T14:20:06.666Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "a-null-value-without-a-reason-is-unavailable-and-not-frozen-not-zero",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.harness-budget.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-null-value-without-a-reason-is-unavailable-and-not-frozen-not-zero.txt",
+							"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0",
+							"bytes": 433,
+							"capturedAt": "2026-11-20T14:20:06.667Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "a-null-value-without-a-reason-is-unavailable-and-not-frozen-not-zero",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-null-value-without-a-reason-is-unavailable-and-not-frozen-not-zero.json",
+							"sha256": "858ce7224e653802b6ddf94df1f3235790fcacdc6795cdb223ea549e50000c55",
+							"bytes": 1088,
+							"capturedAt": "2026-11-20T14:20:06.667Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"shell-fixture",
+		"entity-preview"
+	],
+	"builds": [],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to reports.function.harness-budget: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}

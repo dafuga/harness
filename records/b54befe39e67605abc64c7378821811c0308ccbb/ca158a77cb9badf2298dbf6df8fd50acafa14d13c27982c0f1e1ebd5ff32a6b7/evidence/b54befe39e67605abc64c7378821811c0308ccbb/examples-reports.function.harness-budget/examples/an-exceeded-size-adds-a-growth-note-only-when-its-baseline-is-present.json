@@ -1,0 +1,45 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-budget",
+	"symbol": "harnessBudget",
+	"cases": [
+		{
+			"name": "exceeded with baseline",
+			"input": {
+				"found": {
+					"unit": "reports.function.harness-budget",
+					"metric": "size",
+					"unitOfMeasure": "bytes",
+					"value": 2048,
+					"workload": null,
+					"profile": null
+				},
+				"baseline": 1024
+			},
+			"output": {
+				"value": "2048 bytes",
+				"limit": "frozen at 1024",
+				"note": "Grew from 1024 to 2048 without a recorded approval."
+			}
+		},
+		{
+			"name": "exceeded without baseline",
+			"input": {
+				"found": {
+					"unit": "reports.function.harness-budget",
+					"metric": "size",
+					"unitOfMeasure": "bytes",
+					"value": 2048,
+					"workload": null,
+					"profile": null
+				},
+				"baseline": null
+			},
+			"output": {
+				"value": "2048 bytes",
+				"limit": "freeze declared; no reviewed limit is recorded at this revision"
+			}
+		}
+	]
+}

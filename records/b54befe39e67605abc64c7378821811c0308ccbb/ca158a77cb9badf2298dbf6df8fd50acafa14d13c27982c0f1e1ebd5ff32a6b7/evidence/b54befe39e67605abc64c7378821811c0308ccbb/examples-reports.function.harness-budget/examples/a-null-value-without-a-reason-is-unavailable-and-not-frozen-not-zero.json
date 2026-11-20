@@ -1,0 +1,25 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-budget",
+	"symbol": "harnessBudget",
+	"cases": [
+		{
+			"name": "null value without reason",
+			"input": {
+				"found": {
+					"unit": "reports.function.harness-budget",
+					"metric": "size",
+					"unitOfMeasure": "bytes",
+					"value": null,
+					"workload": null,
+					"profile": null
+				}
+			},
+			"output": {
+				"value": "unavailable: no reason recorded",
+				"limit": "not frozen: no value to freeze"
+			}
+		}
+	]
+}

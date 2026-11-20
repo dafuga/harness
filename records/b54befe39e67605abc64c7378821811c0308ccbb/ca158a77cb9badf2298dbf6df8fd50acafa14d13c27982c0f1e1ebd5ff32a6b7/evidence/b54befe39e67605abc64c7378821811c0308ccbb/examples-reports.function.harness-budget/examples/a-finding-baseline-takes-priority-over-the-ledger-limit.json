@@ -1,0 +1,51 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-budget",
+	"symbol": "harnessBudget",
+	"cases": [
+		{
+			"name": "finding baseline beats ledger limit",
+			"input": {
+				"found": {
+					"unit": "reports.function.harness-budget",
+					"metric": "size",
+					"unitOfMeasure": "bytes",
+					"value": 1500,
+					"workload": null,
+					"profile": null
+				},
+				"known": {
+					"declared": true,
+					"limit": 2048
+				},
+				"baseline": 1024
+			},
+			"output": {
+				"value": "1500 bytes",
+				"limit": "frozen at 1024"
+			}
+		},
+		{
+			"name": "ledger limit alone without finding",
+			"input": {
+				"found": {
+					"unit": "reports.function.harness-budget",
+					"metric": "size",
+					"unitOfMeasure": "bytes",
+					"value": 1500,
+					"workload": null,
+					"profile": null
+				},
+				"known": {
+					"declared": true,
+					"limit": 2048
+				}
+			},
+			"output": {
+				"value": "1500 bytes",
+				"limit": "frozen at 2048"
+			}
+		}
+	]
+}
