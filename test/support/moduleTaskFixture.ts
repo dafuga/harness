@@ -21,6 +21,15 @@ export async function moduleTaskFixture() {
 		await writeFile(file, fakeRunner(root, provider));
 		await chmod(file, 0o755);
 	}
+	const tracker = join(bin, 'tracker');
+	await writeFile(
+		tracker,
+		`#!/usr/bin/env bun
+import {appendFileSync} from 'node:fs';
+appendFileSync(${JSON.stringify(join(root, 'tracker.ndjson'))}, JSON.stringify(process.argv.slice(2))+'\\n');
+`
+	);
+	await chmod(tracker, 0o755);
 	const cli = (args: string[], success = true) =>
 		runHarness(['task', ...args], root, success, { PATH: `${bin}:${process.env.PATH}` });
 	const input = (extra: Record<string, unknown> = {}) => taskInput(root, extra);
@@ -55,6 +64,18 @@ const prompt=await Bun.stdin.text();
 const args=process.argv.slice(2), model=args[args.indexOf(provider==='claude'?'--model':'-m')+1];
 appendFileSync(root+'/calls.ndjson',JSON.stringify({provider,args,prompt,cwd:process.cwd()})+'\\n');
 const mode=existsSync(root+'/mode')?readFileSync(root+'/mode','utf8'):'';
+if (mode.startsWith('context-')) {
+  const checkpoint=prompt.match(/^Checkpoint file: (.+)$/m)?.[1];
+  if (!checkpoint || !existsSync(checkpoint)) {
+    if (checkpoint) writeFileSync(checkpoint,'Verified orders fixture. Next: update orders.');
+    const input=mode==='context-worker'?154000:900;
+    console.log(JSON.stringify({type:'assistant',message:{id:'first',usage:{input_tokens:input,cache_read_input_tokens:1000,cache_creation_input_tokens:0,output_tokens:10}}}));
+    await Bun.sleep(3500);
+    process.exit(7);
+  }
+  if (!prompt.includes('Verified orders fixture. Next: update orders.')) process.exit(8);
+  if (mode==='context-orchestrator' && !existsSync(root+'/tracker.ndjson')) process.exit(9);
+}
 if(provider==='claude'&&mode==='quota') { console.log(JSON.stringify({type:'rate_limit_event',rate_limit_info:{status:'rejected',resetsAt:2000000000}})); console.log(JSON.stringify({type:'result',is_error:true,result:'Quota exhausted'})); process.exit(1); }
 if(provider==='claude'&&mode==='auth') {console.log(JSON.stringify({type:'result',is_error:true,result:'Authentication required'}));process.exit(1);}
 if(mode==='outside') writeFileSync('outside.txt','outside requested module');

@@ -7,6 +7,43 @@ import { moduleTaskFixture } from './support/moduleTaskFixture';
 import { runHarness } from './support/cli';
 import { GitAdapter } from '../src/adapters/git-source-history/GitAdapter';
 
+test('Harness owns and rotates the orchestrator before a fresh session resumes its checkpoint', async () => {
+	const f = await moduleTaskFixture();
+	try {
+		const brief = join(f.root, 'brief.md');
+		await writeFile(brief, 'Verify this disposable Phase 4 orders fixture.');
+		await writeFile(join(f.root, 'mode'), 'context-orchestrator');
+		const result = await f.cli(
+			[
+				'orchestrate',
+				'--tracker=pilot1',
+				`--brief=${brief}`,
+				'--model=claude-haiku-5-5',
+				'--context-tokens=1500'
+			],
+			false
+		);
+		expect(result.exitCode, 'Harness-owned orchestrator resumes a terminated session').toBe(0);
+		const report = JSON.parse(result.stdout);
+		expect(report.sessions).toMatchObject([
+			{
+				status: 'rotated',
+				peakContextTokens: 1900,
+				usage: { inputTokens: 1900, outputTokens: 10 }
+			},
+			{ status: 'succeeded', usage: { inputTokens: 100, reportedCostUsd: 0.002 } }
+		]);
+		expect(report.sessions[0].apiCost).toMatchObject({ basis: 'standard-api-estimate' });
+		const notes = await readFile(join(f.root, 'tracker.ndjson'), 'utf8');
+		expect(notes).toContain(f.source);
+		expect(notes).toContain('resume from');
+		expect(notes).not.toContain('Verified orders fixture');
+		expect(await readFile(join(f.root, 'src/orders.ts'), 'utf8')).toContain('orders = 2');
+	} finally {
+		await f.dispose();
+	}
+}, 30000);
+
 test('module task creation requires a wanted contract and leaves source HEAD and edits intact', async () => {
 	const f = await moduleTaskFixture();
 	try {
@@ -73,6 +110,7 @@ test.each([
 			expect(
 				JSON.parse((await f.cli(['show', 'orders-validation', '--json'])).stdout).task.status
 			).toBe('queued');
+			if (provider === 'claude') await writeFile(join(f.root, 'mode'), 'context-worker');
 			await f.cli(['worker', '--worker', 'owner', '--once', '--json']);
 			const shown = JSON.parse((await f.cli(['show', 'orders-validation', '--json'])).stdout).task;
 			expect(shown.status).toBe('review');
@@ -81,7 +119,14 @@ test.each([
 				.trim()
 				.split('\n')
 				.map((x) => JSON.parse(x));
-			expect(calls).toHaveLength(1);
+			expect(calls).toHaveLength(provider === 'claude' ? 2 : 1);
+			if (provider === 'claude') {
+				expect(calls[1].cwd).toBe(calls[0].cwd);
+				expect(shown.result.executions[0].sessions).toMatchObject([
+					{ status: 'rotated', peakContextTokens: 155000 },
+					{ status: 'succeeded' }
+				]);
+			}
 			expect(calls[0].provider).toBe(provider);
 			expect(calls[0].args).toContain(model);
 			expect(calls[0].args.join(' ')).toContain(intelligence);
