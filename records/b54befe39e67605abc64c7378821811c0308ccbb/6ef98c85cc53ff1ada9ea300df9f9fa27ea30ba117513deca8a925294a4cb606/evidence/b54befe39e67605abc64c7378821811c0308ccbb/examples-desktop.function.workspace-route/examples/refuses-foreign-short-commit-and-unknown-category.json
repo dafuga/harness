@@ -1,0 +1,58 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.workspace-route",
+	"symbol": "workspaceRoute",
+	"cases": [
+		{
+			"name": "non-workspace project section",
+			"input": {
+				"path": "/projects/p/members"
+			},
+			"error": {
+				"name": "WorkspaceAddressError",
+				"message": "Not a workspace address"
+			}
+		},
+		{
+			"name": "empty project segment",
+			"input": {
+				"path": "/projects//harness/pages"
+			},
+			"error": {
+				"name": "WorkspaceAddressError",
+				"message": "Not a workspace address"
+			}
+		},
+		{
+			"name": "abbreviated commit",
+			"input": {
+				"path": "/projects/p/harness/branch/main/commit/abc1234/pages"
+			},
+			"error": {
+				"name": "WorkspaceAddressError",
+				"message": "A commit link needs the full commit hash"
+			}
+		},
+		{
+			"name": "uppercase commit hash",
+			"input": {
+				"path": "/projects/p/harness/commit/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/pages"
+			},
+			"error": {
+				"name": "WorkspaceAddressError",
+				"message": "A commit link needs the full commit hash"
+			}
+		},
+		{
+			"name": "unknown catalog category",
+			"input": {
+				"path": "/projects/p/harness/branch/main/reports"
+			},
+			"error": {
+				"name": "WorkspaceAddressError",
+				"message": "Unknown catalog category"
+			}
+		}
+	]
+}

@@ -1,0 +1,83 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.workspace-route",
+	"symbol": "workspacePath",
+	"cases": [
+		{
+			"name": "encodes project, branch and entity",
+			"input": {
+				"target": {
+					"projectId": "6f1d2c3b-4a59-4e68-9f70-8a1b2c3d4e5f",
+					"branch": "release/1.0",
+					"commit": null,
+					"category": "pages",
+					"entityId": "page:a/b",
+					"suffix": "source"
+				}
+			},
+			"output": "/projects/6f1d2c3b-4a59-4e68-9f70-8a1b2c3d4e5f/harness/branch/release%2F1.0/pages/page%3Aa%2Fb/source"
+		},
+		{
+			"name": "built link reads back to the same route",
+			"input": {
+				"path": "/projects/6f1d2c3b-4a59-4e68-9f70-8a1b2c3d4e5f/harness/branch/release%2F1.0/pages/page%3Aa%2Fb/source"
+			},
+			"output": {
+				"projectId": "6f1d2c3b-4a59-4e68-9f70-8a1b2c3d4e5f",
+				"branch": "release/1.0",
+				"commit": null,
+				"category": "pages",
+				"entityId": "page:a/b",
+				"suffix": "source"
+			}
+		},
+		{
+			"name": "section is dropped without an entity",
+			"input": {
+				"target": {
+					"branch": "main",
+					"category": "pages",
+					"suffix": "history"
+				}
+			},
+			"output": "/harness/branch/main/pages"
+		},
+		{
+			"name": "builder does not validate a supplied commit",
+			"input": {
+				"target": {
+					"commit": "ABC123",
+					"category": "pages"
+				}
+			},
+			"output": "/harness/commit/ABC123/pages"
+		},
+		{
+			"name": "unpaired surrogate in branch",
+			"input": {
+				"target": {
+					"branch": "bad\ud800",
+					"category": "pages"
+				}
+			},
+			"error": {
+				"name": "URIError",
+				"message": "URI malformed"
+			}
+		},
+		{
+			"name": "unpaired surrogate in entity",
+			"input": {
+				"target": {
+					"entityId": "page:\udc00",
+					"category": "pages"
+				}
+			},
+			"error": {
+				"name": "URIError",
+				"message": "URI malformed"
+			}
+		}
+	]
+}

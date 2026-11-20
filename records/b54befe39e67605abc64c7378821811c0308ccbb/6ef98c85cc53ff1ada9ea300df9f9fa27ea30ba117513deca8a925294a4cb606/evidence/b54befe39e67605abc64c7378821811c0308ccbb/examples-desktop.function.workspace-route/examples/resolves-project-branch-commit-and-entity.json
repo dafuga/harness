@@ -1,0 +1,92 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.workspace-route",
+	"symbol": "workspaceRoute",
+	"cases": [
+		{
+			"name": "full address with encoded branch, commit, entity and history",
+			"input": {
+				"path": "/projects/local-1/harness/branch/feat%2Factivity/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/pages/page%3Aactivity/history"
+			},
+			"output": {
+				"projectId": "local-1",
+				"branch": "feat/activity",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"category": "pages",
+				"entityId": "page:activity",
+				"suffix": "history"
+			}
+		},
+		{
+			"name": "branch address keeps commit null and details reads as source",
+			"input": {
+				"path": "/projects/p/harness/branch/main/services/service.mail/details"
+			},
+			"output": {
+				"projectId": "p",
+				"branch": "main",
+				"commit": null,
+				"category": "services",
+				"entityId": "service.mail",
+				"suffix": "source"
+			}
+		},
+		{
+			"name": "shells category reads as layouts",
+			"input": {
+				"path": "/projects/p/harness/branch/main/shells"
+			},
+			"output": {
+				"projectId": "p",
+				"branch": "main",
+				"commit": null,
+				"category": "layouts",
+				"entityId": null,
+				"suffix": null
+			}
+		},
+		{
+			"name": "relationships remains an accepted older section",
+			"input": {
+				"path": "/projects/p/harness/pages/page%3Ax/relationships"
+			},
+			"output": {
+				"projectId": "p",
+				"branch": null,
+				"commit": null,
+				"category": "pages",
+				"entityId": "page:x",
+				"suffix": "relationships"
+			}
+		},
+		{
+			"name": "unknown section reads as no section",
+			"input": {
+				"path": "/projects/p/harness/pages/page%3Ax/contract"
+			},
+			"output": {
+				"projectId": "p",
+				"branch": null,
+				"commit": null,
+				"category": "pages",
+				"entityId": "page:x",
+				"suffix": null
+			}
+		},
+		{
+			"name": "project address with no selection defaults to pages",
+			"input": {
+				"path": "/projects/p/harness"
+			},
+			"output": {
+				"projectId": "p",
+				"branch": null,
+				"commit": null,
+				"category": "pages",
+				"entityId": null,
+				"suffix": null
+			}
+		}
+	]
+}
