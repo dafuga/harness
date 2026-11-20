@@ -1,0 +1,64 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-evidence",
+	"symbol": "explorerEvidence",
+	"cases": [
+		{
+			"name": "parent not yet read",
+			"input": {
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"parent": "undefined"
+			},
+			"output": {
+				"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				"gap": "Revision bbbbbbb is not available here; no other revision is shown in its place.",
+				"captures": 0
+			}
+		},
+		{
+			"name": "parent of another commit",
+			"input": {
+				"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				"parent": "cccccccccccccccccccccccccccccccccccccccc"
+			},
+			"output": {
+				"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				"gap": "Revision bbbbbbb is not available here; no other revision is shown in its place.",
+				"captures": 0
+			}
+		},
+		{
+			"name": "first commit has no parent",
+			"input": {
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"parent": null
+			},
+			"output": "This is the first commit of its history: there is no parent to compare with."
+		},
+		{
+			"name": "head of another commit",
+			"input": {
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"head": "cccccccccccccccccccccccccccccccccccccccc"
+			},
+			"output": {
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"gap": "Revision aaaaaaa is not available here; no other revision is shown in its place.",
+				"captures": 0
+			}
+		},
+		{
+			"name": "head with no record",
+			"input": {
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"record": null
+			},
+			"output": {
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"gap": "No verification record is attached to this commit.",
+				"captures": 0
+			}
+		}
+	]
+}

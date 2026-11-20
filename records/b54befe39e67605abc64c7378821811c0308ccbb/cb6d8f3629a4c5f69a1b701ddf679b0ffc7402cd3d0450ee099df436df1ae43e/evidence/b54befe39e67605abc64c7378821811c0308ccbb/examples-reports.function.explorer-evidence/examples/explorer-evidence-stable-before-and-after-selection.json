@@ -1,0 +1,78 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-evidence",
+	"symbol": "explorerEvidence",
+	"cases": [
+		{
+			"name": "same request twice",
+			"input": {
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"mode": "commit"
+			},
+			"output": [
+				{
+					"scenario": "titles-page",
+					"state": "empty",
+					"viewport": "desktop",
+					"standing": "fresh",
+					"usable": true,
+					"current": true,
+					"inheritedFrom": null
+				},
+				{
+					"scenario": "titles-page",
+					"state": "empty",
+					"viewport": "mobile",
+					"standing": "fresh",
+					"usable": true,
+					"current": true,
+					"inheritedFrom": null
+				}
+			]
+		},
+		{
+			"name": "before side is its own commit",
+			"input": {
+				"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+			},
+			"output": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+		},
+		{
+			"name": "tip has no before",
+			"input": {
+				"mode": "current"
+			},
+			"output": {
+				"before": null,
+				"initial": null
+			}
+		},
+		{
+			"name": "tip after matches pinned after",
+			"input": {
+				"mode": "current"
+			},
+			"output": [
+				{
+					"scenario": "titles-page",
+					"state": "empty",
+					"viewport": "desktop",
+					"standing": "fresh",
+					"usable": true,
+					"current": true,
+					"inheritedFrom": null
+				},
+				{
+					"scenario": "titles-page",
+					"state": "empty",
+					"viewport": "mobile",
+					"standing": "fresh",
+					"usable": true,
+					"current": true,
+					"inheritedFrom": null
+				}
+			]
+		}
+	]
+}
