@@ -20,7 +20,7 @@ const electronBinary = createRequire(import.meta.url)('electron') as string;
 /** BrowserWindow.minWidth is 800, so the native canonical viewports are desktop and tablet. */
 const viewports = [
 	{ name: 'desktop', width: 1440, height: 900 },
-	{ name: 'tablet', width: 834, height: 1112 }
+	{ name: 'tablet', width: 920, height: 800 }
 ];
 const stateLabels = ['Needs you', 'Blocked', 'Active', 'Quiet', 'Done'];
 const cardAgents = [

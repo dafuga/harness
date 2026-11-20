@@ -1,10 +1,13 @@
 import { expect, test } from '../../../../test/support/browserTest';
 import { captureOverview, fakeOverviewBridge } from './support/projectOverviewNativeFixture';
+import { scenarioCapture } from './scenario-capture';
+import scenario from '../../../../specification/scenarios/project-overview-desktop.json';
+import type { ScenarioManifest } from '../../../../src/core/unitTypes';
 import type { OverviewBridge } from './support/projectOverviewNativeFixture.types';
 
 const viewports = [
 	{ name: 'desktop', width: 1440, height: 900 },
-	{ name: 'tablet', width: 834, height: 1112 },
+	{ name: 'tablet', width: 920, height: 800 },
 	{ name: 'mobile', width: 390, height: 844 }
 ];
 
@@ -40,6 +43,11 @@ for (const viewport of viewports) {
 		expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 			viewport.width
 		);
+		await scenarioCapture(page, scenario as ScenarioManifest, {
+			state: 'overview',
+			name: 'projects',
+			note: 'Synthetic tracker projects through the renderer bridge.'
+		});
 		await captureOverview(page, viewport.name);
 	});
 }
@@ -53,6 +61,7 @@ for (const mode of ['web', 'absent', 'refused'] as OverviewBridge[]) {
 		await expect(page).toHaveTitle('Projects · Harness');
 		await expect(page.getByText('fixture-needs', { exact: true })).toHaveCount(0);
 		await expect(page.getByText('fixture-blocked', { exact: true })).toHaveCount(0);
+		await expect(page.getByRole('alert')).toContainText('The tracker could not be reached');
 	});
 }
 
