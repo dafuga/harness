@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.adapter.electron-environment",
+	"symbol": "connect",
+	"cases": [
+		{
+			"name": "connect with a bridge and all nine remote-control members",
+			"input": {
+				"harness": "fixture-bridge",
+				"harnessRemote": "nine functions"
+			},
+			"output": {
+				"kind": "electron",
+				"local": true,
+				"bridge": {
+					"label": "fixture-bridge"
+				},
+				"host": [
+					"approvePairing",
+					"closePairing",
+					"createPairing",
+					"denyPairing",
+					"disable",
+					"enable",
+					"onStatus",
+					"revokeDevice",
+					"status"
+				]
+			}
+		}
+	]
+}
