@@ -1,3 +1,4 @@
+/* @harness-uid u_7uantpuqf2 */
 .po-card {
 	--po-accent: var(--hx-color-text-muted);
 	--po-wash: var(--hx-color-surface-raised);
@@ -17,7 +18,7 @@
 	border-color: var(--hx-color-primary-line);
 }
 .po-card.po-blocked {
-	--po-accent: var(--hx-color-error);
+	--po-accent: var(--po-error-text);
 	--po-wash: var(--hx-color-error-soft);
 }
 .po-card.po-active {
@@ -150,7 +151,7 @@
 	line-height: var(--hx-space-20);
 }
 .po-note-lead {
-	color: var(--hx-color-error);
+	color: var(--po-error-text);
 	font-weight: var(--hx-style-weight-semibold);
 }
 .po-milestone {

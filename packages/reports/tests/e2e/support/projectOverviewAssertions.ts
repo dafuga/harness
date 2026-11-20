@@ -113,3 +113,43 @@ export async function expectNoMatch(page: Page): Promise<void> {
 	await page.getByRole('button', { name: /^Done / }).click();
 	await expect(page.getByRole('status')).toHaveText('No projects are in the Done state.');
 }
+
+/** Measures text against the blended backgrounds the browser paints under it. */
+export async function expectOverviewContrast(page: Page): Promise<void> {
+	const levels = await page
+		.locator('.po-state, .po-callout-label, .po-callout-id, .po-eta, .po-chip-count, .po-label')
+		.evaluateAll((nodes) => {
+			const canvas = document.createElement('canvas');
+			canvas.width = canvas.height = 1;
+			const painter = canvas.getContext('2d')!;
+			const luminance = () => {
+				const [r, g, b] = [...painter.getImageData(0, 0, 1, 1).data].slice(0, 3).map((channel) => {
+					const value = channel / 255;
+					return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+				});
+				return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+			};
+			const paint = (color: string) => {
+				painter.fillStyle = color;
+				painter.fillRect(0, 0, 1, 1);
+			};
+			return nodes
+				.filter((node) => node.getClientRects().length > 0)
+				.map((node) => {
+					painter.clearRect(0, 0, 1, 1);
+					const layers = [];
+					for (let layer: Element | null = node; layer; layer = layer.parentElement)
+						layers.unshift(getComputedStyle(layer).backgroundColor);
+					for (const layer of layers) paint(layer);
+					const background = luminance();
+					paint(getComputedStyle(node).color);
+					const text = luminance();
+					return {
+						label: node.textContent?.trim(),
+						contrast: (Math.max(background, text) + 0.05) / (Math.min(background, text) + 0.05)
+					};
+				});
+		});
+	expect(levels.length).toBeGreaterThan(0);
+	for (const { label, contrast } of levels) expect(contrast, label).toBeGreaterThanOrEqual(4.5);
+}

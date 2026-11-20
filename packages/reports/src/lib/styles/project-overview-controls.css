@@ -1,3 +1,4 @@
+/* @harness-uid u_i4nkfngx7d */
 .po-chip {
 	display: inline-flex;
 	align-items: center;
@@ -110,5 +111,5 @@
 .po-eta[data-tone='overdue'] {
 	border-color: var(--hx-color-error-line);
 	background: var(--hx-color-error-soft);
-	color: var(--hx-color-error);
+	color: var(--po-error-text);
 }

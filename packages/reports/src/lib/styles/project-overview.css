@@ -1,5 +1,7 @@
+/* @harness-uid u_5gpcsudtle */
 /* Project Overview: dark, read-only, built only from the shared app tokens (Styles → Colors). */
 .po-page {
+	--po-error-text: color-mix(in srgb, var(--hx-color-error) 82%, var(--hx-color-text));
 	box-sizing: border-box;
 	max-width: 1520px;
 	margin: 0 auto;

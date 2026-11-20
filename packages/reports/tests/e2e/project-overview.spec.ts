@@ -16,6 +16,7 @@ import {
 	expectFilter,
 	expectNoHorizontalScroll,
 	expectNoMatch,
+	expectOverviewContrast,
 	expectPhoneTargets,
 	expectPhoneTrimmed,
 	expectReadyHeader,
@@ -62,6 +63,7 @@ for (const viewport of viewports) {
 			await expectEveryStateShown(page);
 			await expectCallouts(page);
 			await expectEtaWords(page);
+			await expectOverviewContrast(page);
 			await expectDetailRoundTrip(page);
 			await expectFilter(page, 'Quiet', ['Delta']);
 			await page.getByRole('button', { name: /^All / }).click();
