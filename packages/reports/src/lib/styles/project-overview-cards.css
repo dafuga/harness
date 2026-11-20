@@ -63,11 +63,15 @@
 	box-shadow: 0 0 0 var(--hx-space-3) var(--hx-color-info-soft);
 }
 .po-state {
+	display: inline-flex;
+	align-items: center;
+	box-sizing: border-box;
 	flex: none;
 	gap: var(--hx-space-7);
 	height: var(--hx-space-26);
 	padding: 0 var(--hx-space-10);
-	border-color: var(--po-accent);
+	border: var(--hx-border-thin) solid var(--po-accent);
+	border-radius: var(--hx-radius-pill);
 	background: var(--po-wash);
 	color: var(--po-accent);
 	font-size: var(--hx-type-size-xs);

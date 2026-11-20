@@ -76,32 +76,27 @@
 
 	{#if compact}
 		<hx-p class="po-counts">{countsText(card.counts)}</hx-p>
-	{:else}
+	{:else if working.length}
 		<hx-div class="po-work">
 			<hx-h4 class="po-label">In progress</hx-h4>
-			{#if working.length}
-				<hx-ul class="po-items" aria-label="In progress items of {card.agent}">
-					{#each working.slice(0, shownItems) as item, position (item.id)}
-						<ProjectOverviewItem {item} {now} {onOpen} extra={position > 0} />
-					{/each}
-				</hx-ul>
-				{#if working.length > shownItems}
-					<hx-p class="po-more">{working.length - shownItems} more in progress</hx-p>
-				{/if}
-			{:else}
-				<hx-p class="po-none">Nothing in progress.</hx-p>
+			<hx-ul class="po-items" aria-label="In progress items of {card.agent}">
+				{#each working.slice(0, shownItems) as item, position (item.id)}
+					<ProjectOverviewItem {item} {now} {onOpen} extra={position > 0} />
+				{/each}
+			</hx-ul>
+			{#if working.length > shownItems}
+				<hx-p class="po-more">{working.length - shownItems} more in progress</hx-p>
 			{/if}
 		</hx-div>
 	{/if}
 
-	<hx-div class="po-milestone">
-		<hx-div class="po-milestone-head">
-			<hx-span class="po-label">Last milestone</hx-span>
-			{#if card.milestone}<hx-span class="po-milestone-at">{formatWhen(card.milestone.at)}</hx-span
-				>{/if}
+	{#if card.milestone}
+		<hx-div class="po-milestone">
+			<hx-div class="po-milestone-head">
+				<hx-span class="po-label">Last milestone</hx-span>
+				<hx-span class="po-milestone-at">{formatWhen(card.milestone.at)}</hx-span>
+			</hx-div>
+			<hx-p class="po-milestone-text">{card.milestone.text}</hx-p>
 		</hx-div>
-		<hx-p class="po-milestone-text"
-			>{card.milestone ? card.milestone.text : 'No milestone recorded.'}</hx-p
-		>
-	</hx-div>
+	{/if}
 </Card>

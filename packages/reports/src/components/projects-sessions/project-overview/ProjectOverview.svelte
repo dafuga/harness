@@ -3,6 +3,7 @@
 <!-- @harness-uid u_n72w2an74r -->
 <script lang="ts">
 	import { tick } from 'svelte';
+	import BrandMark from '../../shared-primitives/BrandMark.svelte';
 	import EmptyState from '../../explorer-ui/explorer-kit/EmptyState.svelte';
 	import Notice from '../../explorer-ui/explorer-kit/Notice.svelte';
 	import Pill from '../../explorer-ui/explorer-kit/Pill.svelte';
@@ -69,7 +70,9 @@
 {#snippet page()}
 	<hx-header class="po-head">
 		{#if standalone}
-			<hx-a class="po-home" href={homeHref} aria-label="Back to Harness">Harness</hx-a>
+			<hx-a class="po-home" href={homeHref} aria-label="Back to Harness"
+				><BrandMark size={24} />Harness</hx-a
+			>
 		{/if}
 		<hx-p class="po-kicker">Projects</hx-p>
 		{#if ready}

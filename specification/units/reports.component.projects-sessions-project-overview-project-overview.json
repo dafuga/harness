@@ -10,6 +10,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.brand-mark",
 			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.explorer-ui-explorer-kit-pill",
@@ -136,6 +137,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.brand-mark",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
 			"via": "import",

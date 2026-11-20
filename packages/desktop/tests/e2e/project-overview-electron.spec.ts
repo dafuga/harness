@@ -112,6 +112,9 @@ test('the built app opens the overview from its landing link and reads the fixed
 		for (const label of stateLabels) {
 			await expect(page.getByText(label, { exact: true }).first()).toBeVisible();
 		}
+		const badge = page.locator('.po-state[data-state="needs-you"]');
+		await expect(badge).toHaveCSS('display', 'inline-flex');
+		await expect(badge.locator('.po-mark')).toHaveCSS('width', '8px');
 		for (const title of excludedTitles) {
 			await expect(page.getByText(title, { exact: true })).toHaveCount(0);
 		}

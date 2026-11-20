@@ -16,7 +16,6 @@
 	gap: var(--hx-space-14);
 	margin-bottom: var(--hx-space-28);
 }
-.po-home,
 .po-kicker {
 	margin: 0;
 	color: var(--hx-color-primary);
@@ -24,6 +23,18 @@
 	font-weight: var(--hx-style-weight-semibold);
 	letter-spacing: var(--hx-style-tracking-caps);
 	text-transform: uppercase;
+	text-decoration: none;
+}
+.po-home {
+	display: inline-flex;
+	align-items: center;
+	align-self: flex-start;
+	gap: var(--hx-space-8);
+	min-height: var(--hx-space-44, 44px);
+	margin: 0;
+	color: var(--hx-color-text);
+	font-size: var(--hx-type-size-lg);
+	font-weight: var(--hx-style-weight-semibold);
 	text-decoration: none;
 }
 .po-title {
@@ -37,7 +48,6 @@
 .po-totals,
 .po-counts,
 .po-more,
-.po-none,
 .po-milestone-at,
 .po-callout-meta,
 .po-sessions,
