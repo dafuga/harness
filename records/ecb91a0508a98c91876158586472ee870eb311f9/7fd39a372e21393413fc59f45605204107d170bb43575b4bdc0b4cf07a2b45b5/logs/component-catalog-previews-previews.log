@@ -1,0 +1,25 @@
+
+Running 18 tests using 1 worker
+
+(node:79085) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-index at desktop (1.1s)
+  ✓   2 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-index:empty at desktop (1.1s)
+  ✓   3 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-index:search at desktop (929ms)
+  ✓   4 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-index:no-matches at desktop (934ms)
+  ✓   5 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-index:layouts at desktop (932ms)
+  ✓   6 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-index:configs at desktop (930ms)
+  ✓   7 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-index at tablet (611ms)
+  ✓   8 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-index:empty at tablet (559ms)
+  ✓   9 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-index:search at tablet (560ms)
+  ✓  10 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-index:no-matches at tablet (574ms)
+  ✓  11 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-index:layouts at tablet (589ms)
+  ✓  12 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-index:configs at tablet (598ms)
+  ✓  13 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-index at mobile (621ms)
+  ✓  14 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-index:empty at mobile (590ms)
+  ✓  15 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-index:search at mobile (574ms)
+  ✓  16 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-index:no-matches at mobile (555ms)
+  ✓  17 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-index:layouts at mobile (588ms)
+  ✓  18 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-index:configs at mobile (574ms)
+
+  18 passed (15.4s)
