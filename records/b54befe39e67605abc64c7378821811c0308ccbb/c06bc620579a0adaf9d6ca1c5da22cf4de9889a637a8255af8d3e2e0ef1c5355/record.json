@@ -1,0 +1,523 @@
+{
+	"id": "c06bc620579a0adaf9d6ca1c5da22cf4de9889a637a8255af8d3e2e0ef1c5355",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/private/tmp/z5jp8p-hl.zEACWb/source",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-20T13:07:01.279Z",
+	"finishedAt": "2026-11-20T13:07:24.535Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "desktop.function.brand-icon",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "a9571d757f0ab808442c0a8532f5fb055fd9dc94c7a71bfe415161f1a61e84b1",
+			"source": "23a8b437bd8148a574b1aba9cb0890755efb8a6d4c1e4c37d5c5351fa91d2522",
+			"contract": "69182283d9e9798bcbcdb342a7d9f9a70f4a3add34b76360cbec561e603725c4",
+			"runtime": "622f84c58fd7d0908bfcc99db9d3ea14910cbd131f9ed362f4d931d7e412bf0d",
+			"files": [
+				{
+					"path": "packages/desktop/scripts/mac-icon/brandIcon.ts",
+					"hash": "5cb68922d75a2246d76777d119bc7cd6d314557c"
+				},
+				{
+					"path": "packages/desktop/scripts/mac-icon/brandIcon.types.ts",
+					"hash": "c2cb033115388dab87e81b99307e45367327b08c"
+				},
+				{
+					"path": "packages/desktop/src/utils/reports-media/brandIcon.ts",
+					"hash": "9126e98cf61ad5f4a7116013c942e974229276ab"
+				}
+			]
+		},
+		{
+			"unit": "desktop.script.mac-icon",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "283e5cd6633b8de2aecafe68052f34aeac4e5022dca267ff12a44356b9f07cca",
+			"source": "a3e087ab32948f135531b0de79581e0c461be7a3050dc07c8af459788c8308e9",
+			"contract": "79c629d1504c703ee1c7ffbd2f8849d8adba3f7865791c9aede635ff10cc642d",
+			"runtime": "6cfd74965f1f5a2b5b946f16292a3f2f9243067b0e9a9be5f677c22de8fa9798",
+			"files": [
+				{
+					"path": "packages/desktop/scripts/mac-icon/mac-icon.ts",
+					"hash": "4e86be69aa5ffe1bc05c46b4390e9897e8165d8c"
+				}
+			]
+		},
+		{
+			"unit": "function.record-capture",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41e40bb7a2b44b7fa1da3881ebf1a687d3d8471d42fd0a7c44d584361255ff42",
+			"source": "142bfa1513b076860925e3bac72e4361c1edd5901abe0b7061ebac711646346a",
+			"contract": "025908d6c17bb9a51a22fa8f85c40b9ea26bb9161a5d016c554aa7e340c15a52",
+			"runtime": "a289759bf06513632380a5baa8ac1f6a9a916c1d1905e0de6a7be531f7936431",
+			"files": [
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.ts",
+					"hash": "316c75b906d532b1a5b376f345b7de8e00da1f4d"
+				},
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.types.ts",
+					"hash": "8e36a063513222284548df76d240d4a45f6626a9"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.brand-mark",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "fb2b4190853d1ab0b53c15e5929d531e555e809f9c426b40f467e908b944a6c8",
+			"source": "3ffba15789e5f921ac0c65595de7218aabd69f2418b98005613a6426dfaee0a8",
+			"contract": "75db127aba94ba3cabab853da62d37991fce9e79781c05e0e444d130449a18f3",
+			"runtime": "45fdb83ba377329ce617e9e948bd224a83fdbff02c9075720f1280279a9e027e",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/development-tooling/brandMark.ts",
+					"hash": "4fbfd44b58a65183a0ee88991c6718599dd0cdce"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.011221666666642705,
+			"method": "Arithmetic mean of 3 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 123895808,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.brand-icon",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 13.916599900000012,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-0307feb08a621869-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.brand-icon",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 125550592,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-0307feb08a621869-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.script.mac-icon",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 344.611291,
+			"method": "Arithmetic mean of 1 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-43296b4d98a525d6-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.script.mac-icon",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 131022848,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-43296b4d98a525d6-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.brand-mark",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.009468500000011204,
+			"method": "Arithmetic mean of 4 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-72057358f0c775b9-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.brand-mark",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90750976,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-72057358f0c775b9-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "modular-h-branding-contract:brand-surfaces",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/components/brand-mark.test.ts",
+			"status": "passed",
+			"durationMs": 3549,
+			"log": {
+				"path": "logs/modular-h-branding-contract-brand-surfaces.log",
+				"bytes": 412,
+				"sha256": "50e692a9a8d2e330bf7294d35f828b1f54abd098bd4f12613fd4a8b161f3b9a5"
+			}
+		},
+		{
+			"id": "modular-h-native-contract:brand-icons",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/utils/brand-icon.test.ts",
+			"status": "passed",
+			"durationMs": 2435,
+			"log": {
+				"path": "logs/modular-h-native-contract-brand-icons.log",
+				"bytes": 473,
+				"sha256": "7b99ae857f4695c9cc33a1ac56cfc420bb97fdbe0fcae740e022733646ba2f42"
+			}
+		},
+		{
+			"id": "modular-h-branding-contract:brand-geometry",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/utils/brand-mark.test.ts",
+			"status": "passed",
+			"durationMs": 2056,
+			"log": {
+				"path": "logs/modular-h-branding-contract-brand-geometry.log",
+				"bytes": 403,
+				"sha256": "1a71fa04d7ee440bf322adcbe2fbb1f0466d422355f8b7450f8edea761c90fbd"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "modular-h-branding-contract",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "mark-geometry",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "modular-h-branding-contract-output",
+							"kind": "output",
+							"state": "mark-geometry",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/utils/brand-mark.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/modular-h-branding-contract/brand-geometry/test-utils-brand-mark.test.ts-mark-geometry.txt",
+							"sha256": "1a71fa04d7ee440bf322adcbe2fbb1f0466d422355f8b7450f8edea761c90fbd",
+							"bytes": 403,
+							"capturedAt": "2026-11-20T13:07:22.996Z"
+						},
+						{
+							"evidence": "modular-h-branding-contract-assertions",
+							"kind": "assertions",
+							"state": "mark-geometry",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/modular-h-branding-contract/brand-geometry/test-utils-brand-mark.test.ts-mark-geometry.json",
+							"sha256": "a10ab8a4514e01586e2ef43e8edfb6c834d5a7bf51fde25e1c49040654c2aba5",
+							"bytes": 3759,
+							"capturedAt": "2026-11-20T13:07:22.996Z"
+						}
+					]
+				},
+				{
+					"id": "favicons",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "modular-h-branding-contract-output",
+							"kind": "output",
+							"state": "favicons",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/utils/brand-mark.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/modular-h-branding-contract/brand-geometry/test-utils-brand-mark.test.ts-favicons.txt",
+							"sha256": "1a71fa04d7ee440bf322adcbe2fbb1f0466d422355f8b7450f8edea761c90fbd",
+							"bytes": 403,
+							"capturedAt": "2026-11-20T13:07:22.996Z"
+						},
+						{
+							"evidence": "modular-h-branding-contract-assertions",
+							"kind": "assertions",
+							"state": "favicons",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/modular-h-branding-contract/brand-geometry/test-utils-brand-mark.test.ts-favicons.json",
+							"sha256": "7e0538f84cdf6e067a76bfd29f65f54e03c910332ca880ef49a1cffe731c9a8f",
+							"bytes": 6271,
+							"capturedAt": "2026-11-20T13:07:22.996Z"
+						}
+					]
+				},
+				{
+					"id": "shared-mark",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "modular-h-branding-contract-output",
+							"kind": "output",
+							"state": "shared-mark",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/components/brand-mark.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/modular-h-branding-contract/brand-surfaces/test-components-brand-mark.test.ts-shared-mark.txt",
+							"sha256": "50e692a9a8d2e330bf7294d35f828b1f54abd098bd4f12613fd4a8b161f3b9a5",
+							"bytes": 412,
+							"capturedAt": "2026-11-20T13:07:16.151Z"
+						},
+						{
+							"evidence": "modular-h-branding-contract-assertions",
+							"kind": "assertions",
+							"state": "shared-mark",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/modular-h-branding-contract/brand-surfaces/test-components-brand-mark.test.ts-shared-mark.json",
+							"sha256": "e54dd2ce28e5b689caa15c311370915f4d2c767b4f35920f4b1c657a103ed62c",
+							"bytes": 9269,
+							"capturedAt": "2026-11-20T13:07:16.151Z"
+						}
+					]
+				},
+				{
+					"id": "shared-surfaces",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "modular-h-branding-contract-output",
+							"kind": "output",
+							"state": "shared-surfaces",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/components/brand-mark.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/modular-h-branding-contract/brand-surfaces/test-components-brand-mark.test.ts-shared-surfaces.txt",
+							"sha256": "50e692a9a8d2e330bf7294d35f828b1f54abd098bd4f12613fd4a8b161f3b9a5",
+							"bytes": 412,
+							"capturedAt": "2026-11-20T13:07:16.151Z"
+						},
+						{
+							"evidence": "modular-h-branding-contract-assertions",
+							"kind": "assertions",
+							"state": "shared-surfaces",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/modular-h-branding-contract/brand-surfaces/test-components-brand-mark.test.ts-shared-surfaces.json",
+							"sha256": "963a314479bfbff1c69e57ed15f37a82ad6cb4c8067977ce290b841246e04c24",
+							"bytes": 34313,
+							"capturedAt": "2026-11-20T13:07:16.151Z"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "modular-h-native-contract",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "native-icons",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "modular-h-native-contract-output",
+							"kind": "output",
+							"state": "native-icons",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/utils/brand-icon.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/modular-h-native-contract/brand-icons/test-utils-brand-icon.test.ts-native-icons.txt",
+							"sha256": "7b99ae857f4695c9cc33a1ac56cfc420bb97fdbe0fcae740e022733646ba2f42",
+							"bytes": 473,
+							"capturedAt": "2026-11-20T13:07:19.830Z"
+						},
+						{
+							"evidence": "modular-h-native-contract-assertions",
+							"kind": "assertions",
+							"state": "native-icons",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/modular-h-native-contract/brand-icons/test-utils-brand-icon.test.ts-native-icons.json",
+							"sha256": "e22b208a18a75334fc2239c83e254e44ae0c48ecb25e08288079dd8f81b64987",
+							"bytes": 6758,
+							"capturedAt": "2026-11-20T13:07:19.830Z"
+						}
+					]
+				},
+				{
+					"id": "mac-packaging",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "modular-h-native-contract-output",
+							"kind": "output",
+							"state": "mac-packaging",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/utils/brand-icon.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/modular-h-native-contract/brand-icons/test-utils-brand-icon.test.ts-mac-packaging.txt",
+							"sha256": "7b99ae857f4695c9cc33a1ac56cfc420bb97fdbe0fcae740e022733646ba2f42",
+							"bytes": 473,
+							"capturedAt": "2026-11-20T13:07:19.830Z"
+						},
+						{
+							"evidence": "modular-h-native-contract-assertions",
+							"kind": "assertions",
+							"state": "mac-packaging",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/modular-h-native-contract/brand-icons/test-utils-brand-icon.test.ts-mac-packaging.json",
+							"sha256": "505b113694ae4adf0c8d6115f0859db83e782caabddc35bc81baa54fd6222ea4",
+							"bytes": 875,
+							"capturedAt": "2026-11-20T13:07:19.830Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"shell-fixture",
+		"entity-preview"
+	],
+	"builds": [],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to desktop.script.brand-assets: only its scenario states ran, so this record is partial and never a full pass.",
+		"Scoped to desktop.script.brand-assets: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}
