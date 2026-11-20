@@ -6,6 +6,11 @@ import { item } from './project-overview-item-fixtures';
 
 /** Credential forms the sanitizer must redact, with their exact sanitized text. */
 const CREDENTIAL_CASES: [string, string, string][] = [
+	[
+		'private key block',
+		'Begin copy:\n-----BEGIN PRIVATE KEY-----\nZmljdHVyZS1rZXk=\n-----END PRIVATE KEY-----',
+		'Begin copy:\n[redacted]'
+	],
 	['quoted password with spaces', 'password = "two words here"', '[redacted]'],
 	['single-quoted token', "token: 'abc def ghi'", '[redacted]'],
 	['JSON api_key field', '{"api_key":"abc123xyz"}', '{"[redacted]}'],

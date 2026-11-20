@@ -9,7 +9,8 @@ export function syntheticRuns(): Record<string, unknown>[] {
 		{ id: 103, node: 'box', item_id: 'g1', state: 'finished', project: 'gamma-api' },
 		{ id: 104, node: 'box', item_id: 'n1', state: 'running', project: 'nu-hidden' },
 		{ id: 105, node: 'box', item_id: 'missing', state: 'running', project: null },
-		{ id: 106, node: 'box', item_id: 'd1', state: 'running', project: 'delta-docs' }
+		{ id: 106, node: 'box', item_id: 'd1', state: 'running', project: 'delta-docs' },
+		{ id: 107, node: 'box', item_id: 'g1', state: 'running', ended_at: 1795207200000 }
 	];
 }
 
