@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.remote-phone",
+	"symbol": "start",
+	"cases": [
+		{
+			"name": "start and status without a port",
+			"input": {},
+			"output": null
+		},
+		{
+			"name": "scan with a name and no port",
+			"input": {
+				"name": "Ada"
+			},
+			"output": false
+		},
+		{
+			"name": "disconnect without a port",
+			"input": {},
+			"output": false
+		},
+		{
+			"name": "blank name still reports the name notice",
+			"input": {
+				"name": ""
+			},
+			"output": "Give this phone a name of up to 80 characters."
+		}
+	]
+}

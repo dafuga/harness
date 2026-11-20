@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.remote-phone",
+	"symbol": "disconnect",
+	"cases": [
+		{
+			"name": "state before disconnect",
+			"input": {},
+			"output": "online"
+		},
+		{
+			"name": "disconnect returns true",
+			"input": {},
+			"output": true
+		},
+		{
+			"name": "state and busy after disconnect",
+			"input": {},
+			"output": {
+				"state": "unpaired",
+				"busy": false,
+				"error": ""
+			}
+		},
+		{
+			"name": "port disconnect calls",
+			"input": {},
+			"output": 1
+		}
+	]
+}

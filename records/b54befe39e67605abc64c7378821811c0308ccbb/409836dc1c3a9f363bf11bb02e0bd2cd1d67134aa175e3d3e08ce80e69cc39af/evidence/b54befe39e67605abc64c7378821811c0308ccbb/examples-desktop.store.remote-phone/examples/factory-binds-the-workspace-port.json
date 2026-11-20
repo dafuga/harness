@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.remote-phone",
+	"symbol": "createRemotePhoneStore",
+	"cases": [
+		{
+			"name": "two factory calls return distinct stores",
+			"input": {},
+			"output": {
+				"distinct": true
+			}
+		},
+		{
+			"name": "store reads the workspace phone port",
+			"input": {},
+			"output": {
+				"bound": true
+			}
+		},
+		{
+			"name": "initial status, error, busy, scan failure and fixture",
+			"input": {},
+			"output": {
+				"status": null,
+				"error": "",
+				"busy": false,
+				"scanFailure": null,
+				"fixture": false
+			}
+		},
+		{
+			"name": "port status calls before start",
+			"input": {},
+			"output": 0
+		}
+	]
+}

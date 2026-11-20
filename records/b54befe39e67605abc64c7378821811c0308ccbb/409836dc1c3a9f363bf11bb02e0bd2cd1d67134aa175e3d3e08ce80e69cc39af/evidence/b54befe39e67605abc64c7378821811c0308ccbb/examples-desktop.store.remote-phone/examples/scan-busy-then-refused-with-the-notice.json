@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.remote-phone",
+	"symbol": "scan",
+	"cases": [
+		{
+			"name": "blank name is refused before the port",
+			"input": {
+				"name": "   "
+			},
+			"output": {
+				"returned": false,
+				"error": "Give this phone a name of up to 80 characters."
+			}
+		},
+		{
+			"name": "expired code is refused with its notice",
+			"input": {
+				"name": "Ada"
+			},
+			"output": {
+				"returned": false,
+				"scanFailure": "offer-expired",
+				"error": "That code has expired. Choose New code on your computer and scan again.",
+				"busy": false,
+				"state": "unpaired"
+			}
+		},
+		{
+			"name": "scan while busy is not started again",
+			"input": {
+				"name": "Grace"
+			},
+			"output": {
+				"busy": true,
+				"secondScan": false
+			}
+		},
+		{
+			"name": "trimmed name is accepted and clears the failure",
+			"input": {
+				"name": " Ada iPhone "
+			},
+			"output": {
+				"returned": true,
+				"scanFailure": null,
+				"error": ""
+			}
+		}
+	]
+}

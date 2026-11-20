@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.remote-phone",
+	"symbol": "start",
+	"cases": [
+		{
+			"name": "answered state after two starts",
+			"input": {},
+			"output": {
+				"state": "unpaired",
+				"busy": false,
+				"error": ""
+			}
+		},
+		{
+			"name": "port status calls after two starts",
+			"input": {},
+			"output": 1
+		},
+		{
+			"name": "announcement listeners registered",
+			"input": {},
+			"output": 1
+		},
+		{
+			"name": "listener releases after dispose",
+			"input": {},
+			"output": 1
+		}
+	]
+}
