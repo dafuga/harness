@@ -1,0 +1,15 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-fXNAGp/packages/desktop[39m
+
+ [32m✓[39m test/services/project-task.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 1568[2mms[22m[39m
+   [33m[2m✓[22m[39m Ask preserves source and a returned answer containing a registered unit reference [33m 336[2mms[22m[39m
+   [33m[2m✓[22m[39m a requested registered unit beyond the first 120 is prioritized in the bounded prompt [33m 347[2mms[22m[39m
+   [33m[2m✓[22m[39m Change reports actual registered source owners rather than the requested subject [33m 315[2mms[22m[39m
+   [33m[2m✓[22m[39m an unexpected Ask write fails and preserves the changed file for review [33m 320[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+[2m   Start at [22m 11:45:29
+[2m   Duration [22m 3.41s[2m (transform 1.20s, setup 321ms, collect 1.35s, tests 1.57s, environment 0ms, prepare 52ms)[22m
+
+JSON report written to /tmp/harness-runner-Of05O3/report.json
