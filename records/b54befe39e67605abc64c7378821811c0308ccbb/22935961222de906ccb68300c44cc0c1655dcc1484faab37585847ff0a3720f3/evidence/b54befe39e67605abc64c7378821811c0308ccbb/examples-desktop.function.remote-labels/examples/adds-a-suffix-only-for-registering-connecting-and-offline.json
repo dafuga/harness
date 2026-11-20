@@ -1,0 +1,44 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.remote-labels",
+	"symbol": "hostLine",
+	"cases": [
+		{
+			"name": "registering state",
+			"input": {
+				"state": "registering"
+			},
+			"output": "Phone access is on · relay.example:8443 · registering…"
+		},
+		{
+			"name": "connecting state",
+			"input": {
+				"state": "connecting"
+			},
+			"output": "Phone access is on · relay.example:8443 · connecting…"
+		},
+		{
+			"name": "offline state",
+			"input": {
+				"state": "offline"
+			},
+			"output": "Phone access is on · relay.example:8443 · relay unreachable"
+		},
+		{
+			"name": "online state has no suffix",
+			"input": {
+				"state": "online"
+			},
+			"output": "Phone access is on · relay.example:8443"
+		},
+		{
+			"name": "null origin leaves the host empty",
+			"input": {
+				"state": "online",
+				"origin": null
+			},
+			"output": "Phone access is on · "
+		}
+	]
+}
