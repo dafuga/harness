@@ -32,12 +32,15 @@ const STATE_RANK: Record<ProjectState, number> = {
 
 /** Project validated tracker records into the overview. Pure: the same records and time give the same snapshot. */
 export function projectOverviewSnapshot(sources: TrackerSources, now: number): OverviewSnapshot {
-	const machines = sources.machines
-		.map((machine) => ({ name: machine.node, status: machine.status }))
-		.sort((a, b) => compareText(a.name, b.name));
+	// Labels are sanitized for display only; the offline set and run joins keep the raw node names.
 	const offline = new Set(
-		machines.filter((machine) => machine.status === 'offline').map((machine) => machine.name)
+		sources.machines
+			.filter((machine) => machine.status === 'offline')
+			.map((machine) => machine.node)
 	);
+	const machines = sources.machines
+		.map((machine) => ({ name: sanitizeText(machine.node), status: machine.status }))
+		.sort((a, b) => compareText(a.name, b.name));
 	const items = sources.items.filter(isIncludedItem);
 	const liveByItem = countLiveRuns(sources.runs, new Set(items.map((item) => item.id)), offline);
 	const cards = [...groupByAgent(items).entries()]
@@ -97,7 +100,7 @@ function buildCard(
 	const state = pickState(rows, liveSessions, updatedAt, now);
 	if (state === null) return null;
 	return {
-		agent,
+		agent: sanitizeText(agent),
 		state,
 		liveSessions,
 		counts: countStatuses(rows),
