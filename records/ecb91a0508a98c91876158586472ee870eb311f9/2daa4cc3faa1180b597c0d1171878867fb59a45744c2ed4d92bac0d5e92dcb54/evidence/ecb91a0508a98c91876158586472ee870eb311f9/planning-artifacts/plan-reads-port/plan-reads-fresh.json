@@ -1,0 +1,163 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "planning.function.plan-reads",
+	"symbol": "planReads",
+	"cases": [
+		{
+			"name": "rev-parse",
+			"input": {
+				"args": [
+					"rev-parse",
+					"--verify",
+					"HEAD^{commit}"
+				]
+			},
+			"output": "rev-parse --verify HEAD^{commit}"
+		},
+		{
+			"name": "rev-parse",
+			"input": {
+				"args": [
+					"rev-parse",
+					"--verify",
+					"HEAD^{commit}"
+				]
+			},
+			"output": "rev-parse --verify HEAD^{commit}"
+		},
+		{
+			"name": "ls-tree",
+			"input": {
+				"args": [
+					"ls-tree",
+					"-z",
+					"main",
+					"--",
+					"page.home/plan.json"
+				]
+			},
+			"output": "ls-tree -z main -- page.home/plan.json"
+		},
+		{
+			"name": "ls-tree",
+			"input": {
+				"args": [
+					"ls-tree",
+					"-z",
+					"main",
+					"--",
+					"page.home/plan.json"
+				]
+			},
+			"output": "ls-tree -z main -- page.home/plan.json"
+		},
+		{
+			"name": "show",
+			"input": {
+				"args": [
+					"show",
+					"aaaaaaa:page.home/plan.json"
+				]
+			},
+			"output": "show aaaaaaa:page.home/plan.json"
+		},
+		{
+			"name": "show",
+			"input": {
+				"args": [
+					"show",
+					"aaaaaaa:page.home/plan.json"
+				]
+			},
+			"output": "show aaaaaaa:page.home/plan.json"
+		},
+		{
+			"name": "ls-tree",
+			"input": {
+				"args": [
+					"ls-tree",
+					"-z",
+					"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"--",
+					"page.home/plan.json"
+				]
+			},
+			"output": "ls-tree -z aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa -- page.home/plan.json"
+		},
+		{
+			"name": "ls-tree",
+			"input": {
+				"args": [
+					"ls-tree",
+					"-z",
+					"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"--",
+					"page.home/plan.json"
+				]
+			},
+			"output": "ls-tree -z aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa -- page.home/plan.json"
+		},
+		{
+			"name": "ls-tree",
+			"input": {
+				"args": [
+					"ls-tree",
+					"-z",
+					"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"--",
+					"page.home/plan.json"
+				]
+			},
+			"output": "ls-tree -z aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa -- page.home/plan.json"
+		}
+	],
+	"reachedGit": [
+		[
+			"rev-parse",
+			"--verify",
+			"HEAD^{commit}"
+		],
+		[
+			"rev-parse",
+			"--verify",
+			"HEAD^{commit}"
+		],
+		[
+			"ls-tree",
+			"-z",
+			"main",
+			"--",
+			"page.home/plan.json"
+		],
+		[
+			"ls-tree",
+			"-z",
+			"main",
+			"--",
+			"page.home/plan.json"
+		],
+		[
+			"show",
+			"aaaaaaa:page.home/plan.json"
+		],
+		[
+			"show",
+			"aaaaaaa:page.home/plan.json"
+		],
+		[
+			"ls-tree",
+			"-z",
+			"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+			"--",
+			"page.home/plan.json"
+		],
+		[
+			"ls-tree",
+			"-z",
+			"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+			"--",
+			"page.home/plan.json"
+		]
+	]
+}

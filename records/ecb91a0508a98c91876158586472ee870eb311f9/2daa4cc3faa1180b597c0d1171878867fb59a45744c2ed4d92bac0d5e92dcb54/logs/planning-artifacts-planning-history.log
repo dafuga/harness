@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.nO8NRG/tmp/harness-snapshot-5dUHxi/packages/planning
+
+ ✓ test/planning-history.test.ts (2 tests) 3317ms
+   ✓ branch snapshots and ancestry history contain only the selected entity  1869ms
+   ✓ rejects changed historical message prefix even with a recomputed current hash chain  1442ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  00:35:13
+   Duration  3.86s (transform 208ms, setup 134ms, collect 182ms, tests 3.32s, environment 0ms, prepare 32ms)
+
+JSON report written to /tmp/z5jp8p-hl.nO8NRG/tmp/harness-runner-vw9lmc/report.json
+Switched to a new branch 'alternate'
+HEAD is now at 113de86 feat: plan function.first

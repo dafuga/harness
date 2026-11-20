@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "planning.function.plan-reads",
+	"symbol": "planReads",
+	"cases": [
+		{
+			"name": "readPlan in one operation",
+			"input": {
+				"unitId": "page.home"
+			},
+			"output": {
+				"gitCalls": 17,
+				"pinnedReads": 13,
+				"repeatedPinnedReads": 0
+			}
+		},
+		{
+			"name": "the same reads one by one",
+			"input": {
+				"unitId": "page.home"
+			},
+			"output": {
+				"gitCalls": 21,
+				"pinnedReads": 17,
+				"repeatedPinnedReads": 4
+			}
+		}
+	]
+}

@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.nO8NRG/tmp/harness-snapshot-5dUHxi/packages/planning
+
+ ✓ test/planning-registry.test.ts (4 tests) 20368ms
+   ✓ actual planning metadata stays outside active indexing for all five draft categories  11564ms
+   ✓ dirty or invalid registry configuration is never overwritten or committed  2670ms
+   ✓ existing formatter ignores protect immutable artifacts without hiding source  3348ms
+   ✓ dirty formatter ignores refuse planning without changing repository state  2772ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  00:35:35
+   Duration  20.93s (transform 213ms, setup 126ms, collect 212ms, tests 20.37s, environment 0ms, prepare 33ms)
+
+JSON report written to /tmp/z5jp8p-hl.nO8NRG/tmp/harness-runner-xhtaKn/report.json
