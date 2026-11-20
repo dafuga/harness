@@ -1,0 +1,85 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.side-impact",
+	"symbol": "sideImpact",
+	"cases": [
+		{
+			"name": "head side with no earlier side is added",
+			"input": {
+				"base": null,
+				"head": {
+					"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"side": {
+						"schemaVersion": 1,
+						"config": {
+							"schemaVersion": 1,
+							"workspaces": [
+								{
+									"name": "",
+									"root": "."
+								}
+							],
+							"tests": [
+								"test/",
+								"tests/"
+							],
+							"global": [],
+							"ignored": [
+								"**/*.md",
+								"specification/features/",
+								"specification/loops/",
+								".gitignore"
+							],
+							"references": []
+						},
+						"files": [
+							[
+								"src/utils/explorer-ui/sideImpact.ts",
+								"1111111111111111111111111111111111111111"
+							]
+						],
+						"units": [
+							{
+								"id": "function.side-impact",
+								"status": "active",
+								"source": [
+									"src/utils/explorer-ui/sideImpact.ts"
+								]
+							}
+						],
+						"scenarios": [],
+						"nodes": [
+							[
+								"src/utils/explorer-ui/sideImpact.ts",
+								"source"
+							]
+						],
+						"edges": [],
+						"uncertain": []
+					}
+				}
+			},
+			"output": {
+				"base": null,
+				"expanded": false,
+				"units": {
+					"direct": [],
+					"indirect": [],
+					"added": [],
+					"removed": []
+				},
+				"scenarios": [],
+				"uncertain": [],
+				"changed": [
+					{
+						"path": "src/utils/explorer-ui/sideImpact.ts",
+						"status": "added",
+						"classification": "source",
+						"unit": "function.side-impact"
+					}
+				]
+			}
+		}
+	]
+}

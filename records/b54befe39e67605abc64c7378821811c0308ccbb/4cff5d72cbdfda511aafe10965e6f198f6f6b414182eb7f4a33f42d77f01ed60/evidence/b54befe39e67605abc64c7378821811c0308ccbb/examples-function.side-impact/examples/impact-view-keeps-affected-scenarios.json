@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.side-impact",
+	"symbol": "impactView",
+	"cases": [
+		{
+			"name": "unaffected scenarios are dropped and base is copied",
+			"input": {
+				"report": {
+					"base": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"head": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"runtime": "module",
+					"expanded": false,
+					"changed": [
+						{
+							"path": "src/utils/explorer-ui/sideImpact.ts",
+							"status": "modified",
+							"classification": "source",
+							"unit": "function.side-impact"
+						}
+					],
+					"units": {
+						"direct": [
+							"function.side-impact"
+						],
+						"indirect": [],
+						"added": [],
+						"removed": []
+					},
+					"tests": {
+						"selected": [],
+						"excluded": [],
+						"removed": []
+					},
+					"scenarios": {
+						"affected": [
+							"titles-page"
+						],
+						"unaffected": [
+							"titles-audio"
+						]
+					},
+					"uncertain": []
+				},
+				"base": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+			},
+			"output": {
+				"base": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"expanded": false,
+				"units": {
+					"direct": [
+						"function.side-impact"
+					],
+					"indirect": [],
+					"added": [],
+					"removed": []
+				},
+				"scenarios": [
+					"titles-page"
+				],
+				"uncertain": [],
+				"changed": [
+					{
+						"path": "src/utils/explorer-ui/sideImpact.ts",
+						"status": "modified",
+						"classification": "source",
+						"unit": "function.side-impact"
+					}
+				]
+			}
+		}
+	]
+}
