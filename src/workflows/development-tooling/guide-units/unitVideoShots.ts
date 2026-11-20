@@ -17,6 +17,10 @@ const projectedVideoSchema = videoCaptureSchema.extend({
 	})
 });
 
+function declaredClips(scenario: ScenarioManifest, entity: string): VideoClip[] {
+	return scenario.video?.clips.filter((clip) => clip.unit === entity) ?? [];
+}
+
 /** A screenshot cannot complete a state whose explicit clip obligations are still missing. */
 export function unitVideoShots(
 	captures: ExplorerCapture[],
@@ -32,7 +36,7 @@ export function unitVideoShots(
 	const missing = new Set<string>(),
 		slots: string[] = [];
 	for (const scenario of scenarios) {
-		for (const clip of scenario.video?.clips.filter((clip) => clip.unit === entity) ?? [])
+		for (const clip of declaredClips(scenario, entity))
 			for (const viewport of clip.viewports) {
 				if (captures.some((item) => admittedVideo(item, scenario, clip, viewport))) continue;
 				missing.add(slotKey(unitStateName(entity, clip.state), viewport));
