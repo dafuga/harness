@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.workspace-search",
+	"symbol": "workspaceSearch",
+	"cases": [
+		{
+			"name": "shown with busy true and snapshot true",
+			"input": {
+				"project": "Alpha",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"atTip": true,
+				"pinned": false,
+				"busy": true,
+				"entities": 2
+			},
+			"output": {
+				"entries": null,
+				"scope": {
+					"label": "Reading the project",
+					"pinned": null
+				},
+				"at": null
+			}
+		},
+		{
+			"name": "shown with busy true and snapshot true",
+			"input": {
+				"project": "Alpha",
+				"commit": "cccccccccccccccccccccccccccccccccccccccc",
+				"atTip": false,
+				"pinned": true,
+				"busy": true,
+				"entities": 2
+			},
+			"output": {
+				"entries": null,
+				"scope": {
+					"label": "Reading the project",
+					"pinned": null
+				},
+				"at": null
+			}
+		},
+		{
+			"name": "shown with busy false and snapshot false",
+			"input": {
+				"snapshot": null,
+				"pinned": false,
+				"busy": false
+			},
+			"output": {
+				"entries": null,
+				"scope": {
+					"label": "Reading the project",
+					"pinned": null
+				},
+				"at": null
+			}
+		}
+	]
+}
