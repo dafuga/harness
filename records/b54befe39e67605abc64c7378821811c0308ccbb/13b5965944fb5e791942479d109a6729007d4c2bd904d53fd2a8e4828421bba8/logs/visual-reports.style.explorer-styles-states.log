@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+(node:54390) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/units/explorer-shell-unit-reports.style.explorer-styles.spec.ts:18:3 › reports.style.explorer-styles:default at desktop (1.1s)
+  ✓  2 tests/e2e/units/explorer-shell-unit-reports.style.explorer-styles.spec.ts:18:3 › reports.style.explorer-styles:default at tablet (927ms)
+  ✓  3 tests/e2e/units/explorer-shell-unit-reports.style.explorer-styles.spec.ts:18:3 › reports.style.explorer-styles:default at mobile (906ms)
+
+  3 passed (4.7s)

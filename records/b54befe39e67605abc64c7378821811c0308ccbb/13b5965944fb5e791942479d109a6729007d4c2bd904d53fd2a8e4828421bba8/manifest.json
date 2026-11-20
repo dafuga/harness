@@ -1,0 +1,98 @@
+{
+	"schemaVersion": 1,
+	"record": "13b5965944fb5e791942479d109a6729007d4c2bd904d53fd2a8e4828421bba8",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "0b626077f258190e21330e6a2ac56d25f3cbb1eb0fb62841566f21a95c5395b1",
+			"bytes": 336877,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-styles/captured-catalog-and-measurements/catalog-desktop-desktop.png",
+			"sha256": "2b99fac086d67cfe4a97b8747061b9a6d7a72fe84332a53b1822933fcc863552",
+			"bytes": 186602,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-styles/captured-catalog-and-measurements/catalog-desktop-desktop-benchmark.json",
+			"sha256": "74e8298dc8013221e79d7b615c34a072b97dddd865aa0e781b7ab6e0094bce31",
+			"bytes": 19365,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-styles/captured-catalog-and-measurements/catalog-tablet-tablet.png",
+			"sha256": "e2e870c89d29e4713cd62cce78e2da4a7a58dc18a8e614d69d1ba6dedc8d2661",
+			"bytes": 116062,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-styles/captured-catalog-and-measurements/catalog-tablet-tablet-benchmark.json",
+			"sha256": "ba10d9801d5406dc85cc4dbcb56a265f866c148c92850ca40ab09af0eff9395a",
+			"bytes": 19190,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-styles/captured-catalog-and-measurements/catalog-mobile-mobile.png",
+			"sha256": "dbfb8a739614e0f07fe757720fb80cb4143187bd86ee6afc623c569b16f3ac2b",
+			"bytes": 77236,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-styles/captured-catalog-and-measurements/catalog-mobile-mobile-benchmark.json",
+			"sha256": "8d2d0919f8e170e611ae9ef1f17262e3112594c82512136686ac00f7b49de86e",
+			"bytes": 19215,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/visual-reports.style.explorer-styles/states/default-desktop.png",
+			"sha256": "141347e5aa69975905a1774543957a9c57edc0d5d4593da8132d2416cb44e5d6",
+			"bytes": 1364101,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/visual-reports.style.explorer-styles/states/default-tablet.png",
+			"sha256": "8829ae572ccb20c4f8e535384b29c85df9dbe41f78ad9d6aa98713df095b5638",
+			"bytes": 1268192,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/visual-reports.style.explorer-styles/states/default-mobile.png",
+			"sha256": "fca7077e11967885e1099f3572dcdf36f6e2c0d171851152af8ed64d474bd545",
+			"bytes": 1506845,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "logs/visual-reports.style.explorer-styles-states.log",
+			"sha256": "94c32f4a9cef174f815839713482184b7331f1c54325afb84f5b3957f8fad26a",
+			"bytes": 660,
+			"storage": "git"
+		},
+		{
+			"path": "logs/harness-styles-captured-catalog-and-measurements.log",
+			"sha256": "6aab45e1d992d0fad47e05d3c54f0f4f4dad062c9c5f8e73ec8b4d8db4eaedf6",
+			"bytes": 3613,
+			"storage": "git"
+		},
+		{
+			"path": "logs/harness-styles-navigation-and-catalog.log",
+			"sha256": "9434d2f46faeb5f32f008eb12b405aefcb772a1550e7b30140c0da36309347bc",
+			"bytes": 3699,
+			"storage": "git"
+		}
+	]
+}
