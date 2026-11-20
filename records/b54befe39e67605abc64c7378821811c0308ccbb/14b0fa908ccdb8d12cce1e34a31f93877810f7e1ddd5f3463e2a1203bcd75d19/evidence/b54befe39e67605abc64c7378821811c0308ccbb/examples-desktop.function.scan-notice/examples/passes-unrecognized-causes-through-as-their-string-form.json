@@ -1,0 +1,45 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.scan-notice",
+	"symbol": "scanNotice",
+	"cases": [
+		{
+			"name": "plain error",
+			"input": {
+				"cause": "new Error(\"boom\")"
+			},
+			"output": "Error: boom"
+		},
+		{
+			"name": "unrecognized object code",
+			"input": {
+				"cause": {
+					"code": "method-denied"
+				}
+			},
+			"output": "[object Object]"
+		},
+		{
+			"name": "bare known code string",
+			"input": {
+				"cause": "offer-expired"
+			},
+			"output": "offer-expired"
+		},
+		{
+			"name": "null cause",
+			"input": {
+				"cause": null
+			},
+			"output": "null"
+		},
+		{
+			"name": "undefined cause",
+			"input": {
+				"cause": "undefined"
+			},
+			"output": "undefined"
+		}
+	]
+}
