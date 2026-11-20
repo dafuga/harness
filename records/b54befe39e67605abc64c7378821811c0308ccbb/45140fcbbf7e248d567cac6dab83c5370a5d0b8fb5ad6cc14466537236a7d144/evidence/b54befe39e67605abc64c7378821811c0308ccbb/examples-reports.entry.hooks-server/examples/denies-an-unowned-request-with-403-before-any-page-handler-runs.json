@@ -1,0 +1,25 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.entry.hooks-server",
+	"symbol": "handle",
+	"cases": [
+		{
+			"name": "non-loopback peer is refused and resolve is never called",
+			"input": {
+				"pathname": "/harness/reports",
+				"peer": "203.0.113.7",
+				"owner": {
+					"HARNESS_OWNER_MODE": "loopback",
+					"HARNESS_BIND": "127.0.0.1"
+				}
+			},
+			"output": {
+				"status": 403,
+				"body": "Forbidden",
+				"cacheControl": "no-store",
+				"resolved": 0
+			}
+		}
+	]
+}
