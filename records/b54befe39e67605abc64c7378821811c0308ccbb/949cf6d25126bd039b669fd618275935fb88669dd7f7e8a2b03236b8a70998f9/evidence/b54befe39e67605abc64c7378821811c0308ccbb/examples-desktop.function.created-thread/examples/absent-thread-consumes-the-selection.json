@@ -1,0 +1,23 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.created-thread",
+	"symbol": "createdThread",
+	"cases": [
+		{
+			"name": "read with only thread-2 listed",
+			"input": [
+				"thread-2"
+			],
+			"output": null
+		},
+		{
+			"name": "read with thread-1 listed afterwards",
+			"input": [
+				"thread-1",
+				"thread-2"
+			],
+			"output": null
+		}
+	]
+}

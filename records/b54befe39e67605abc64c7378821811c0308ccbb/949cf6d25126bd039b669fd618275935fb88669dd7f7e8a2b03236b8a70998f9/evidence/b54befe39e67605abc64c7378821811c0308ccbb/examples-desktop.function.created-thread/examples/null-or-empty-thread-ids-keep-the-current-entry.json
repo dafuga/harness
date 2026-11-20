@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.created-thread",
+	"symbol": "createdThread",
+	"cases": [
+		{
+			"name": "stored selection before null remember",
+			"input": null,
+			"output": {
+				"entityId": "function.format-time",
+				"threadId": "thread-1",
+				"projectId": "project-a"
+			}
+		},
+		{
+			"name": "stored selection after null remember",
+			"input": null,
+			"output": {
+				"entityId": "function.format-time",
+				"threadId": "thread-1",
+				"projectId": "project-a"
+			}
+		},
+		{
+			"name": "stored selection after empty remember",
+			"input": "",
+			"output": {
+				"entityId": "function.format-time",
+				"threadId": "thread-1",
+				"projectId": "project-a"
+			}
+		},
+		{
+			"name": "read keeps the earlier thread",
+			"input": {
+				"id": "function.format-time",
+				"threads": [
+					{
+						"id": "thread-1"
+					},
+					{
+						"id": "thread-2"
+					}
+				]
+			},
+			"output": {
+				"id": "thread-1"
+			}
+		}
+	]
+}
