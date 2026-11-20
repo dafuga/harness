@@ -1,0 +1,17 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.service.project-task",
+	"symbol": "ProjectTaskService.run",
+	"cases": [
+		{
+			"name": "change writes an owned file",
+			"input": {
+				"mode": "change"
+			},
+			"output": {
+				"summary": "Changes recorded. Verification is still required."
+			}
+		}
+	]
+}
