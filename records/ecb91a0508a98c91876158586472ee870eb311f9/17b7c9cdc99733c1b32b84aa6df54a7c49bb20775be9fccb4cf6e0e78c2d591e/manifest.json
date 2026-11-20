@@ -1,0 +1,179 @@
+{
+	"schemaVersion": 1,
+	"record": "17b7c9cdc99733c1b32b84aa6df54a7c49bb20775be9fccb4cf6e0e78c2d591e",
+	"source": {
+		"commit": "ecb91a0508a98c91876158586472ee870eb311f9",
+		"tree": "abd6c5656cfb7f28ed60d2f15dc92ec62db8e02b"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "a23de3d96d37e2c8fc5babbc28d3282ab51bcd844ade821e046bf2911b71a9c2",
+			"bytes": 537029,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/desktop-native/native-desktop/tests-e2e-native-desktop.spec.ts-native-ipc.txt",
+			"sha256": "83e68e8df9549e5cda315830e0c16d7e32a06dc2169cff575c9e94859aceff20",
+			"bytes": 52,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/desktop-native/native-desktop/tests-e2e-native-desktop.spec.ts-native-isolation.txt",
+			"sha256": "83e68e8df9549e5cda315830e0c16d7e32a06dc2169cff575c9e94859aceff20",
+			"bytes": 52,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/desktop-native/native-desktop/native-draft-desktop.png",
+			"sha256": "fe94e1475264a5258927c5b757644c80db88931db79743e144fc27b4fcf1eb84",
+			"bytes": 331784,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/desktop-native/native-desktop/native-design-desktop.png",
+			"sha256": "d1b143fa1d2728d6cd4e9c6f545c78f3ed2e3bf323d3494401609cd3dce6ba70",
+			"bytes": 246004,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/desktop-native/native-desktop/native-approved-desktop.png",
+			"sha256": "fc127de3e51b423404b6e8bcc42d029c246ae583d901dee545566c899cbe38ec",
+			"bytes": 246719,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/desktop-native/native-desktop/native-history-desktop.png",
+			"sha256": "9994c6c395a1ef4ba2c4b95c53022b072a8c8927aaa10a2e5476fd6f09c96f09",
+			"bytes": 243673,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/desktop-project-runs/backend-boundaries/test-backend-boundaries.test.ts-project-scope.txt",
+			"sha256": "c12a20c3bb9c2999163484c04b2b93fd485b3fb7e418fd215fbe7f1dde41149e",
+			"bytes": 557,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/desktop-project-runs/backend-boundaries/test-backend-boundaries.test.ts-project-scope.json",
+			"sha256": "919226a11dae9ff14b33f1bfcd33315394087051fc96029518a63fdda519ef82",
+			"bytes": 3129,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/desktop-project-runs/catalog-listing/test-catalog-listing.test.ts-project-scope.txt",
+			"sha256": "05a0989fef8e211bd943829f02150b7cd0f09fe08da73772b52c540ee8f6d7e3",
+			"bytes": 699,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/desktop-project-runs/catalog-listing/test-catalog-listing.test.ts-project-scope.json",
+			"sha256": "0d357a83181170d5ea94a9306cd1a0f87bae6b7b879fc10d6499c1cc7f8bda4f",
+			"bytes": 28485,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/desktop-project-runs/project-integration/test-project-integration.test.ts-project-scope.txt",
+			"sha256": "0acb51d1de97c8c46a9df163f7bc44beddfa0248a561017e92eb18f497928f37",
+			"bytes": 1503,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/desktop-project-runs/project-integration/test-project-integration.test.ts-project-scope.json",
+			"sha256": "6b45ff3006930e3d0e175d90d6d7963154edaaf76640f9c004ff96e3f13866d0",
+			"bytes": 44362,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/desktop-project-runs/backend-boundaries/test-backend-boundaries.test.ts-cli-boundaries.txt",
+			"sha256": "c12a20c3bb9c2999163484c04b2b93fd485b3fb7e418fd215fbe7f1dde41149e",
+			"bytes": 557,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/desktop-project-runs/backend-boundaries/test-backend-boundaries.test.ts-cli-boundaries.json",
+			"sha256": "b5bc81b1c15c4996fd6132d0f0ce529d6d67684cb3e9a0b9d2f8e3673f07a6fd",
+			"bytes": 1588,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/desktop-project-runs/cli-integration/test-cli-integration.test.ts-cli-boundaries.txt",
+			"sha256": "6ffb4c04d0191ccad82f686c9aaf9a59f3a041a014980a7161a7da9049e9b82a",
+			"bytes": 1227,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/desktop-project-runs/cli-integration/test-cli-integration.test.ts-cli-boundaries.json",
+			"sha256": "d9ab1c2b11b42dec8ddfdd133036cdd322a91dfff425accfe540c3b584114179",
+			"bytes": 25812,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/desktop-project-runs/run-integration/test-run-integration.test.ts-plan-change.txt",
+			"sha256": "e7de00010f4e42ab6cff08f5780c7fe4a2211401799d56d93a87b3e298043c6e",
+			"bytes": 1735,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/desktop-project-runs/run-integration/test-run-integration.test.ts-plan-change.json",
+			"sha256": "325904087b4c2ed2fbe8319778a47a29cd6f7093e1d70fcb24698a8464ff50ee",
+			"bytes": 48343,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/desktop-native-native-desktop.log",
+			"sha256": "83e68e8df9549e5cda315830e0c16d7e32a06dc2169cff575c9e94859aceff20",
+			"bytes": 52,
+			"storage": "git"
+		},
+		{
+			"path": "logs/desktop-project-runs-backend-boundaries.log",
+			"sha256": "c12a20c3bb9c2999163484c04b2b93fd485b3fb7e418fd215fbe7f1dde41149e",
+			"bytes": 557,
+			"storage": "git"
+		},
+		{
+			"path": "logs/desktop-project-runs-catalog-listing.log",
+			"sha256": "05a0989fef8e211bd943829f02150b7cd0f09fe08da73772b52c540ee8f6d7e3",
+			"bytes": 699,
+			"storage": "git"
+		},
+		{
+			"path": "logs/desktop-project-runs-cli-integration.log",
+			"sha256": "6ffb4c04d0191ccad82f686c9aaf9a59f3a041a014980a7161a7da9049e9b82a",
+			"bytes": 1227,
+			"storage": "git"
+		},
+		{
+			"path": "logs/desktop-project-runs-project-integration.log",
+			"sha256": "0acb51d1de97c8c46a9df163f7bc44beddfa0248a561017e92eb18f497928f37",
+			"bytes": 1503,
+			"storage": "git"
+		},
+		{
+			"path": "logs/desktop-project-runs-run-integration.log",
+			"sha256": "e7de00010f4e42ab6cff08f5780c7fe4a2211401799d56d93a87b3e298043c6e",
+			"bytes": 1735,
+			"storage": "git"
+		}
+	]
+}
