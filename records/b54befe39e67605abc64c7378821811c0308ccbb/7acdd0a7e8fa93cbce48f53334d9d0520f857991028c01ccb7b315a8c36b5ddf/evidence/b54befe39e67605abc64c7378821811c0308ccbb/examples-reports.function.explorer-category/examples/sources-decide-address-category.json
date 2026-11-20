@@ -1,0 +1,88 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-category",
+	"symbol": "explorerCategory",
+	"cases": [
+		{
+			"name": "component under a page address",
+			"input": {
+				"kind": "component",
+				"source": [
+					"src/routes/o/+page.svelte"
+				]
+			},
+			"output": "pages"
+		},
+		{
+			"name": "unknown kind at a page",
+			"input": {
+				"kind": "never-heard-of",
+				"source": [
+					"src/routes/x/+page.svelte"
+				]
+			},
+			"output": "pages"
+		},
+		{
+			"name": "route loader that only answers",
+			"input": {
+				"kind": "page",
+				"source": [
+					"src/routes/+page.server.ts"
+				]
+			},
+			"output": "services"
+		},
+		{
+			"name": "layout options module",
+			"input": {
+				"kind": "layout",
+				"source": [
+					"src/routes/+layout.ts"
+				]
+			},
+			"output": "configs"
+		},
+		{
+			"name": "legacy details address",
+			"input": {
+				"kind": "page",
+				"source": [
+					"packages/reports/src/routes/harness/branch/[branch]/[...at]/pages/[entity]/details/+page.svelte"
+				]
+			},
+			"output": "services"
+		},
+		{
+			"name": "legacy shells address",
+			"input": {
+				"kind": "shell",
+				"source": [
+					"packages/reports/src/routes/harness/shells/+page.svelte"
+				]
+			},
+			"output": "services"
+		},
+		{
+			"name": "component source that renders nothing",
+			"input": {
+				"kind": "component",
+				"source": [
+					"src/Button.svelte"
+				]
+			},
+			"output": "components"
+		},
+		{
+			"name": "owned symbols are not inspected",
+			"input": {
+				"kind": "component",
+				"source": [
+					"src/Badge.ts"
+				]
+			},
+			"output": "components"
+		}
+	]
+}
