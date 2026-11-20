@@ -73,7 +73,7 @@ if (mode.startsWith('context-')) {
     if (mode==='context-preflight') {
       const origin=process.env.ANTHROPIC_BASE_URL;
       if (!origin) process.exit(11);
-      await fetch(origin+'/v1/messages',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:'aA9!+'.repeat(28000)}]})}).catch(()=>{});
+      await fetch(origin+'/v1/messages',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:'aA9!+'.repeat(27000)}]})}).catch(()=>{});
       process.exit(12);
     }
     await Bun.sleep(3500);
