@@ -168,7 +168,9 @@
 			"PermissionsCommand",
 			"BoundedCommandAdapter",
 			"staleBuild",
-			"scenarioHealth"
+			"scenarioHealth",
+			"TaskOrchestrationCommand",
+			"ProviderSessionAdapter"
 		]
 	},
 	"contract": {
@@ -188,6 +190,11 @@
 		},
 		{
 			"unit": "adapter.agents-providers-module-task-worktree",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-provider-session",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -248,6 +255,11 @@
 		},
 		{
 			"unit": "command.agents-providers-module-task",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.agents-providers-task-orchestration",
 			"via": "reexport",
 			"origin": "derived"
 		},

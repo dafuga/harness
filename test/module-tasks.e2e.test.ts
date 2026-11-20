@@ -6,7 +6,6 @@ import { tmpdir } from 'node:os';
 import { moduleTaskFixture } from './support/moduleTaskFixture';
 import { runHarness } from './support/cli';
 import { GitAdapter } from '../src/adapters/git-source-history/GitAdapter';
-
 test('Harness owns and rotates the orchestrator before a fresh session resumes its checkpoint', async () => {
 	const f = await moduleTaskFixture();
 	try {
@@ -43,7 +42,6 @@ test('Harness owns and rotates the orchestrator before a fresh session resumes i
 		await f.dispose();
 	}
 }, 30000);
-
 test('module task creation requires a wanted contract and leaves source HEAD and edits intact', async () => {
 	const f = await moduleTaskFixture();
 	try {
@@ -67,7 +65,6 @@ test('module task creation requires a wanted contract and leaves source HEAD and
 		await f.dispose();
 	}
 }, 30000);
-
 test('tasks share a stable goal-first prompt and keep their wanted contracts after a fresh fetch', async () => {
 	const f = await moduleTaskFixture();
 	const clone = await mkdtemp(join(tmpdir(), 'harness-task-clone-'));

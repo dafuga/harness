@@ -52,9 +52,13 @@ function completedGeneration(
 	complete: CompleteGeneration,
 	startedAt: string
 ): GenerationResult {
-	const events = process.stdout.split('\n').flatMap(parseEvent);
+	const lines = process.stdout.split('\n').filter((line) => line.trim());
+	const events = lines.flatMap(parseEvent);
 	const usage = generationUsage(input, process, events);
-	const outcome = generationOutcome(input, process, events, complete);
+	const outcome = generationOutcome(input, process, events, {
+		complete,
+		malformed: lines.length !== events.length
+	});
 	const { sessionId, peakContextTokens } = process.observation ?? {
 		sessionId: null,
 		peakContextTokens: null
@@ -94,7 +98,7 @@ function generationOutcome(
 	input: TaskRunInput,
 	result: TaskProcessResult,
 	events: TaskPublicEvent[],
-	complete: CompleteGeneration
+	output: { complete: CompleteGeneration; malformed: boolean }
 ) {
 	const stop = result.stop;
 	if (stop === 'hard-limit')
@@ -116,7 +120,9 @@ function generationOutcome(
 		return { status: 'failed' as const, error: new ModuleTaskRunError(message) };
 	}
 	try {
-		return { status: 'succeeded' as const, result: complete(events, result.code, input) };
+		if (output.malformed)
+			throw new ModuleTaskRunError('Task CLI returned malformed structured output.');
+		return { status: 'succeeded' as const, result: output.complete(events, result.code, input) };
 	} catch (error) {
 		return {
 			status: 'failed' as const,
@@ -126,7 +132,6 @@ function generationOutcome(
 }
 
 function parseEvent(line: string): TaskPublicEvent[] {
-	if (!line.trim()) return [];
 	try {
 		const event = JSON.parse(line);
 		return event && typeof event.type === 'string' ? [event] : [];

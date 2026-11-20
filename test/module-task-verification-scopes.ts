@@ -5,6 +5,19 @@ export const moduleTaskVerificationScopes: Record<string, VerificationScope> = {
 	'module-tasks': {
 		package: 'root',
 		vitest: {
+			'test/adapters/agents-providers/provider-session.test.ts': {
+				'an emergency context reading stops the run instead of rotating again': 'context-rotation',
+				'a malformed completed stream fails while retaining available token usage':
+					'context-rotation',
+				'Codex reads only its own appended rollout and distinguishes peak context from total usage':
+					'context-rotation',
+				'Claude measures cache-inclusive context at message start and counts a streamed message once':
+					'context-rotation'
+			},
+			'test/commands/agents-providers/task-orchestration.test.ts': {
+				'orchestration rejects context settings above the default before running a provider':
+					'context-rotation'
+			},
 			'test/analytics.test.ts': {
 				'module task analytics retain model usage and count rejected completions once':
 					'usage-pricing',
@@ -83,6 +96,8 @@ export const moduleTaskVerificationScopes: Record<string, VerificationScope> = {
 					'usage-pricing'
 			},
 			'test/module-tasks.e2e.test.ts': {
+				'Harness owns and rotates the orchestrator before a fresh session resumes its checkpoint':
+					'context-rotation',
 				'module task creation requires a wanted contract and leaves source HEAD and edits intact':
 					'contract-admission',
 				'tasks share a stable goal-first prompt and keep their wanted contracts after a fresh fetch':

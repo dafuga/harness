@@ -5,7 +5,8 @@ import {
 	contextThreshold
 } from '../../adapters/agents-providers/module-task-runner-adapter/sessionPolicy';
 import { runTaskOrchestration } from '../../workflows/agents-providers/task-orchestration/runTaskOrchestration';
-import { TaskOrchestrationError, type OrchestratorFlags } from './TaskOrchestrationCommand.types';
+import type { OrchestratorFlags } from './TaskOrchestrationCommand.types';
+import { TaskOrchestrationError } from './task-orchestration-command/TaskOrchestrationError';
 
 /** Run an orchestration brief in a supervised foreground provider session. */
 export class TaskOrchestrationCommand {

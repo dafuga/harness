@@ -11,8 +11,16 @@
 		"source": [
 			"src/adapters/agents-providers/ModuleTaskRunnerAdapter.ts",
 			"src/adapters/agents-providers/ModuleTaskRunnerAdapter.types.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/ModuleTaskRunError.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/TaskOutputOverflowError.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/managedTaskSessions.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/managedTaskSessions.types.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/sessionPolicy.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/taskGeneration.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/taskProcess.ts",
-			"src/adapters/agents-providers/module-task-runner-adapter/taskProcess.types.ts"
+			"src/adapters/agents-providers/module-task-runner-adapter/taskProcess.types.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/trackerHandoff.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/trackerHandoff.types.ts"
 		],
 		"symbols": [
 			"ModuleTaskRunnerAdapter",
@@ -23,8 +31,26 @@
 			"TaskProcessExecutor",
 			"TaskPublicEvent",
 			"ModuleTaskRunError",
+			"ModuleTaskRunError",
+			"TaskOutputOverflowError",
+			"managedTaskSessions",
+			"LaunchGeneration",
+			"CompleteGeneration",
+			"GenerationResult",
+			"defaultContextTokens",
+			"hardContextTokens",
+			"providerCompactionTokens",
+			"contextPollMs",
+			"telemetryTimeoutMs",
+			"contextThreshold",
+			"contextStop",
+			"runGeneration",
 			"taskProcess",
-			"TaskOutputOverflowError"
+			"TaskChild",
+			"TaskOutputOverflowError",
+			"trackerHandoff",
+			"validateTrackerId",
+			"TrackerHandoff"
 		]
 	},
 	"contract": {
@@ -46,6 +72,51 @@
 				"required": true
 			},
 			{
+				"name": "managedTaskSessions.input",
+				"type": "TaskRunInput",
+				"required": true
+			},
+			{
+				"name": "managedTaskSessions.launch",
+				"type": "LaunchGeneration",
+				"required": true
+			},
+			{
+				"name": "managedTaskSessions.complete",
+				"type": "CompleteGeneration",
+				"required": true
+			},
+			{
+				"name": "contextThreshold.value",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "contextStop.peak",
+				"type": "number | null",
+				"required": true
+			},
+			{
+				"name": "contextStop.threshold",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "runGeneration.input",
+				"type": "TaskRunInput",
+				"required": true
+			},
+			{
+				"name": "runGeneration.launch",
+				"type": "LaunchGeneration",
+				"required": true
+			},
+			{
+				"name": "runGeneration.complete",
+				"type": "CompleteGeneration",
+				"required": true
+			},
+			{
 				"name": "taskProcess.command",
 				"type": "string[]",
 				"required": true
@@ -53,6 +124,26 @@
 			{
 				"name": "taskProcess.input",
 				"type": "TaskRunInput",
+				"required": true
+			},
+			{
+				"name": "trackerHandoff.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerHandoff.report",
+				"type": "TrackerHandoff",
+				"required": true
+			},
+			{
+				"name": "trackerHandoff.session",
+				"type": "TaskSessionMetric",
+				"required": true
+			},
+			{
+				"name": "validateTrackerId.id",
+				"type": "string",
 				"required": true
 			}
 		],
@@ -66,8 +157,52 @@
 				"type": "Promise<TaskRunResult>"
 			},
 			{
+				"name": "managedTaskSessions",
+				"type": "unknown"
+			},
+			{
+				"name": "defaultContextTokens",
+				"type": "unknown"
+			},
+			{
+				"name": "hardContextTokens",
+				"type": "unknown"
+			},
+			{
+				"name": "providerCompactionTokens",
+				"type": "unknown"
+			},
+			{
+				"name": "contextPollMs",
+				"type": "unknown"
+			},
+			{
+				"name": "telemetryTimeoutMs",
+				"type": "unknown"
+			},
+			{
+				"name": "contextThreshold",
+				"type": "number"
+			},
+			{
+				"name": "contextStop",
+				"type": "unknown"
+			},
+			{
+				"name": "runGeneration",
+				"type": "Promise<GenerationResult>"
+			},
+			{
 				"name": "taskProcess",
 				"type": "Promise<TaskProcessResult>"
+			},
+			{
+				"name": "trackerHandoff",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "validateTrackerId",
+				"type": "string"
 			}
 		],
 		"errors": [
@@ -115,6 +250,113 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "managedTaskSessions",
+				"inputs": [
+					{
+						"name": "managedTaskSessions.input",
+						"type": "TaskRunInput",
+						"required": true
+					},
+					{
+						"name": "managedTaskSessions.launch",
+						"type": "LaunchGeneration",
+						"required": true
+					},
+					{
+						"name": "managedTaskSessions.complete",
+						"type": "CompleteGeneration",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "managedTaskSessions",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "contextThreshold",
+				"inputs": [
+					{
+						"name": "contextThreshold.value",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "contextThreshold",
+						"type": "number"
+					}
+				],
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "contextStop",
+				"inputs": [
+					{
+						"name": "contextStop.peak",
+						"type": "number | null",
+						"required": true
+					},
+					{
+						"name": "contextStop.threshold",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "contextStop",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "runGeneration",
+				"inputs": [
+					{
+						"name": "runGeneration.input",
+						"type": "TaskRunInput",
+						"required": true
+					},
+					{
+						"name": "runGeneration.launch",
+						"type": "LaunchGeneration",
+						"required": true
+					},
+					{
+						"name": "runGeneration.complete",
+						"type": "CompleteGeneration",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runGeneration",
+						"type": "Promise<GenerationResult>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "taskProcess",
 				"inputs": [
 					{
@@ -135,6 +377,57 @@
 					}
 				],
 				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerHandoff",
+				"inputs": [
+					{
+						"name": "trackerHandoff.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerHandoff.report",
+						"type": "TrackerHandoff",
+						"required": true
+					},
+					{
+						"name": "trackerHandoff.session",
+						"type": "TaskSessionMetric",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHandoff",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "validateTrackerId",
+				"inputs": [
+					{
+						"name": "validateTrackerId.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateTrackerId",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown"
+					}
+				],
 				"errorStatus": "unknown"
 			}
 		],
@@ -166,6 +459,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.agents-providers-provider-session",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.resource-types",
 			"via": "import",
 			"origin": "derived"
@@ -177,6 +480,11 @@
 		},
 		{
 			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-analytics-service-model-run-pricing",
 			"via": "import",
 			"origin": "derived"
 		}

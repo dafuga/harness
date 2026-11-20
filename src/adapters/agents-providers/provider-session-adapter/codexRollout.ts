@@ -2,7 +2,7 @@
 import { closeSync, fstatSync, openSync, readdirSync, readSync } from 'node:fs';
 import { join } from 'node:path';
 import type { TokenCountEvent } from '../ProviderSessionAdapter.types';
-import { ProviderSessionTelemetryError } from '../ProviderSessionAdapter.types';
+import { ProviderSessionTelemetryError } from './ProviderSessionTelemetryError';
 
 const recordLimit = 32 * 1024;
 const scanBudget = 1024 * 1024;

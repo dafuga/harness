@@ -2,11 +2,9 @@
 	"name": "managed-orchestration",
 	"goal": "Prove the Harness-owned orchestrator and task workers checkpoint, stop and restart on live provider context limits and retain per-session tokens and API-equivalent cost.",
 	"createdAt": "2026-11-20T13:55:40.743Z",
-	"updatedAt": "2026-11-20T13:56:37.601Z",
+	"updatedAt": "2026-11-20T14:10:40.092Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-20T14:10:20.109Z",
+			"evidence": "Committed red snapshot failed at the exact resume assertion on harbor-mbp-2."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-20T14:10:20.844Z",
+			"evidence": "Harness owns the provider process group, journals metrics and restarts with a bounded checkpoint."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-20T14:10:40.092Z",
+			"evidence": "Unchanged orchestration CLI test and fixture passed on harbor-mbp-2."
 		},
 		{
 			"id": "verify",

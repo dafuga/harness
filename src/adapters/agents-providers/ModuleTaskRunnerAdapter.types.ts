@@ -26,7 +26,4 @@ export interface TaskPublicEvent {
 	usage?: Record<string, unknown>;
 	total_cost_usd?: number;
 }
-/** A module task CLI run that failed, or was rejected for its quota, model or tool use. */
-export class ModuleTaskRunError extends Error {
-	override name = 'ModuleTaskRunError';
-}
+export { ModuleTaskRunError } from './module-task-runner-adapter/ModuleTaskRunError';

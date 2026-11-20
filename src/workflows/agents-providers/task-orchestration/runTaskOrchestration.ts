@@ -6,10 +6,8 @@ import { resolve, join } from 'node:path';
 import { ModuleTaskRunnerAdapter } from '../../../adapters/agents-providers/ModuleTaskRunnerAdapter';
 import { contextThreshold } from '../../../adapters/agents-providers/module-task-runner-adapter/sessionPolicy';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
-import {
-	TaskOrchestrationError,
-	type OrchestratorFlags
-} from '../../../commands/agents-providers/TaskOrchestrationCommand.types';
+import type { OrchestratorFlags } from '../../../commands/agents-providers/TaskOrchestrationCommand.types';
+import { TaskOrchestrationError } from '../../../commands/agents-providers/task-orchestration-command/TaskOrchestrationError';
 import type { TaskSessionMetric } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import { taskSelection } from '../../../services/agents-providers/module-task-service/taskPrompt';
 import type { OrchestrationReport } from './runTaskOrchestration.types';

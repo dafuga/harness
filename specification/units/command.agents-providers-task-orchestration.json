@@ -1,0 +1,193 @@
+{
+	"schemaVersion": 1,
+	"id": "command.agents-providers-task-orchestration",
+	"uid": "u_wgjqmurp64",
+	"kind": "command",
+	"title": "TaskOrchestrationCommand",
+	"responsibility": "Owns the TaskOrchestrationCommand command registration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/commands/agents-providers/TaskOrchestrationCommand.ts",
+			"src/commands/agents-providers/TaskOrchestrationCommand.types.ts",
+			"src/commands/agents-providers/task-orchestration-command/TaskOrchestrationError.ts",
+			"src/workflows/agents-providers/task-orchestration/runTaskOrchestration.ts",
+			"src/workflows/agents-providers/task-orchestration/runTaskOrchestration.types.ts"
+		],
+		"symbols": [
+			"TaskOrchestrationCommand",
+			"TaskOrchestrationCommand.register",
+			"TaskOrchestrationCommand.run",
+			"OrchestratorFlags",
+			"TaskOrchestrationError",
+			"runTaskOrchestration",
+			"OrchestrationReport"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TaskOrchestrationCommand.register.task",
+				"type": "Command",
+				"required": true
+			},
+			{
+				"name": "TaskOrchestrationCommand.run.flags",
+				"type": "OrchestratorFlags",
+				"required": true
+			},
+			{
+				"name": "runTaskOrchestration.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "runTaskOrchestration.flags",
+				"type": "OrchestratorFlags",
+				"required": true
+			},
+			{
+				"name": "runTaskOrchestration.signal",
+				"type": "AbortSignal",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TaskOrchestrationCommand.register",
+				"type": "void"
+			},
+			{
+				"name": "TaskOrchestrationCommand.run",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "runTaskOrchestration",
+				"type": "Promise<OrchestrationReport>"
+			}
+		],
+		"errors": [
+			{
+				"name": "InvalidArgumentError",
+				"type": "thrown"
+			},
+			{
+				"name": "TaskOrchestrationError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TaskOrchestrationCommand.register",
+				"inputs": [
+					{
+						"name": "TaskOrchestrationCommand.register.task",
+						"type": "Command",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TaskOrchestrationCommand.register",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TaskOrchestrationCommand.run",
+				"inputs": [
+					{
+						"name": "TaskOrchestrationCommand.run.flags",
+						"type": "OrchestratorFlags",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TaskOrchestrationCommand.run",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "runTaskOrchestration",
+				"inputs": [
+					{
+						"name": "runTaskOrchestration.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "runTaskOrchestration.flags",
+						"type": "OrchestratorFlags",
+						"required": true
+					},
+					{
+						"name": "runTaskOrchestration.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runTaskOrchestration",
+						"type": "Promise<OrchestrationReport>"
+					}
+				],
+				"errors": [
+					{
+						"name": "TaskOrchestrationError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-module-task-runner",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/agents-providers/TaskOrchestrationCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/agents-providers/TaskOrchestrationCommand.ts"
+			}
+		]
+	},
+	"scenarios": ["module-tasks"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
