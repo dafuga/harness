@@ -1,0 +1,16 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-ui.aUz8v3/tmp/harness-snapshot-PXHEG1/packages/hub
+
+ ✓ test/utils/hub-design-region.test.ts (5 tests) 27263ms
+   ✓ a revision rectangle reaching the right and bottom edges is kept exactly  5494ms
+   ✓ a revision rectangle that has no width is refused  5122ms
+   ✓ a revision rectangle that has no height is refused  5081ms
+   ✓ a revision rectangle that passes the right edge is refused  5761ms
+   ✓ a revision rectangle that passes the bottom edge is refused  5781ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  11:30:31
+   Duration  28.91s (transform 936ms, setup 148ms, collect 1.28s, tests 27.26s, environment 0ms, prepare 37ms)
+
+JSON report written to /tmp/z5jp8p-ui.aUz8v3/tmp/harness-runner-xzZ3AB/report.json
