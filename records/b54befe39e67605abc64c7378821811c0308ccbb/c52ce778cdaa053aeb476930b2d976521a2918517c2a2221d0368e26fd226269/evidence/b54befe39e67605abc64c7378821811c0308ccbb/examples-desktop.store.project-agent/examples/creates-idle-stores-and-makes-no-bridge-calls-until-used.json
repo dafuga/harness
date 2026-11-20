@@ -1,0 +1,39 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.project-agent",
+	"symbol": "projectAgent",
+	"cases": [
+		{
+			"name": "create two stores over one workspace",
+			"input": {
+				"projectId": "project-alpha"
+			},
+			"output": {
+				"distinct": true,
+				"initial": {
+					"runId": "",
+					"status": "",
+					"error": "",
+					"asked": "",
+					"said": "",
+					"saved": null,
+					"providers": [],
+					"messages": [],
+					"starting": false,
+					"active": false
+				}
+			}
+		},
+		{
+			"name": "bridge calls after creation",
+			"input": {
+				"bridge": "synthetic"
+			},
+			"output": {
+				"providers": 0,
+				"onRunEvent": 0
+			}
+		}
+	]
+}

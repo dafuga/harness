@@ -1,0 +1,44 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.project-agent",
+	"symbol": "projectAgent",
+	"cases": [
+		{
+			"name": "open tip modes and providers",
+			"input": {
+				"projectId": "project-alpha",
+				"pinned": false
+			},
+			"output": {
+				"allowed": true,
+				"modes": [
+					"plan",
+					"ask",
+					"change",
+					"comment"
+				],
+				"pinnedAllowed": false,
+				"pinnedModes": [
+					"comment"
+				],
+				"providers": [
+					"local"
+				],
+				"listened": "function"
+			}
+		},
+		{
+			"name": "pinned commit stays read-only",
+			"input": {
+				"pinned": true
+			},
+			"output": {
+				"allowed": false,
+				"modes": [
+					"comment"
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.project-agent",
+	"symbol": "projectAgent",
+	"cases": [
+		{
+			"name": "send resolves with the action result",
+			"input": {
+				"mode": "ask"
+			},
+			"output": true
+		},
+		{
+			"name": "send rejection reaches the caller",
+			"input": {
+				"mode": "ask"
+			},
+			"output": {
+				"rethrown": true
+			}
+		},
+		{
+			"name": "comment rejection reaches the caller",
+			"input": {
+				"text": "Looks right"
+			},
+			"output": {
+				"rethrown": true
+			}
+		}
+	]
+}

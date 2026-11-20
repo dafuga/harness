@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-ui.7bySlZ/tmp/harness-snapshot-lSxXVR/packages/desktop
+
+ ✓ test/project-conversation.test.ts (2 tests) 7716ms
+   ✓ a project conversation creates the proposed function and retains its original request  6102ms
+   ✓ an invalid creation proposal creates no plan and emits no success  1598ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  10:15:03
+   Duration  8.75s (transform 532ms, setup 140ms, collect 678ms, tests 7.72s, environment 0ms, prepare 37ms)
+
+JSON report written to /tmp/z5jp8p-ui.7bySlZ/tmp/harness-runner-OBfwt7/report.json
