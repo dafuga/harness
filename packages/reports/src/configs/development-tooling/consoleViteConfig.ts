@@ -9,7 +9,7 @@ export default defineConfig({
 		emptyOutDir: true,
 		cssCodeSplit: false,
 		lib: {
-			entry: 'src/lib/console.ts',
+			entry: 'src/lib/development-tooling/console.ts',
 			formats: ['iife'],
 			name: 'HarnessConsole',
 			fileName: 'console'
