@@ -25,7 +25,10 @@
 	import type { OverviewItem } from '../../../lib/projects-sessions/project-overview/projectOverview.types';
 	import type { ProjectOverviewDetailRow, ProjectOverviewProps } from './ProjectOverview.types';
 	import './projectOverview.css';
-	let { snapshot, homeHref = '/harness' }: ProjectOverviewProps = $props();
+	import './projectOverviewCards.css';
+	import './projectOverviewControls.css';
+	import './projectOverviewResponsive.css';
+	let { snapshot, homeHref = '/harness', standalone = true }: ProjectOverviewProps = $props();
 	const ready = $derived(snapshot !== null && snapshot.status === 'ready' ? snapshot : null);
 	const cards = $derived(ready?.projects ?? []);
 	const chips = $derived(filterChips(cards));
@@ -62,9 +65,11 @@
 	}
 </script>
 
-<hx-main class="po-page" data-harness-component="project-overview" aria-labelledby="po-title">
+{#snippet page()}
 	<hx-header class="po-head">
-		<hx-a class="po-home" href={homeHref} aria-label="Back to Harness">Harness</hx-a>
+		{#if standalone}
+			<hx-a class="po-home" href={homeHref} aria-label="Back to Harness">Harness</hx-a>
+		{/if}
 		<hx-p class="po-kicker">Projects</hx-p>
 		{#if ready}
 			<hx-h1 id="po-title" class="po-title">{headline(cards)}</hx-h1>
@@ -114,10 +119,7 @@
 					<hx-h2 id={`po-band-${band.id}`} class="po-band-title"
 						>{band.label} <hx-span class="po-band-count">{band.cards.length}</hx-span></hx-h2
 					>
-					<hx-div
-						class="po-grid"
-						class:po-grid-compact={band.id === 'quiet' || band.id === 'done'}
-					>
+					<hx-div class="po-grid" class:po-grid-compact={band.id === 'quiet' || band.id === 'done'}>
 						{#each band.cards as card (card.agent)}
 							<ProjectOverviewCard {card} {now} onOpen={openItem} />
 						{/each}
@@ -126,7 +128,19 @@
 			{/each}
 		{/if}
 	{/if}
-</hx-main>
+{/snippet}
+
+<!-- Standalone (the native renderer) is the whole document: its own main and Harness link. Inside
+	the website's explorer layout, the layout already provides the main and the Harness brand. -->
+{#if standalone}
+	<hx-main class="po-page" data-harness-component="project-overview" aria-labelledby="po-title">
+		{@render page()}
+	</hx-main>
+{:else}
+	<hx-div class="po-page" data-harness-component="project-overview">
+		{@render page()}
+	</hx-div>
+{/if}
 
 <Modal isOpen={selected !== null} title={selected?.title ?? ''} variant="text" onClose={closeItem}>
 	{#if selected}

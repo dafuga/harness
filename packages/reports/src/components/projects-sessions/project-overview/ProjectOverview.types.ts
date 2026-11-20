@@ -6,6 +6,11 @@ export interface ProjectOverviewProps {
 	snapshot: OverviewSnapshot | null;
 	/** The Harness landing route the brand link returns to. */
 	homeHref?: string;
+	/**
+	 * True when the page is the whole document (the native renderer), so it draws its own main and
+	 * Harness link. False inside the website's explorer layout, which already provides both.
+	 */
+	standalone?: boolean;
 }
 
 /** A row of the read-only item detail. */

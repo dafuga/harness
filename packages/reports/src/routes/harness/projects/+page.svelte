@@ -5,6 +5,7 @@
 	import ExplorerLayout from '../../../components/explorer-ui/ExplorerLayout.svelte';
 	import ProjectOverview from '../../../components/projects-sessions/project-overview/ProjectOverview.svelte';
 	import type { OverviewSnapshot } from '../../../lib/projects-sessions/project-overview/projectOverview.types';
+	import '../../../lib/styles/harness.css';
 
 	const base = '/harness';
 	const endpoint = '/api/project-overview';
@@ -48,5 +49,5 @@
 		onroute: () => {}
 	}}
 >
-	<ProjectOverview {snapshot} homeHref={base} />
+	<ProjectOverview {snapshot} homeHref={base} standalone={false} />
 </ExplorerLayout>

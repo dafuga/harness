@@ -89,5 +89,35 @@ for (const viewport of viewports) {
 			await expectNoHorizontalScroll(page);
 			await captureScreen(page, 'quiet-only-no-match', viewport);
 		});
+
+		test('loading holds the page until the first read answers', async ({ page }) => {
+			await page.clock.setFixedTime(new Date(NOW));
+			// The read is held open, so the page stays in its loading state for the capture.
+			await page.route('**/api/project-overview', () => {});
+			await page.goto(route, { waitUntil: 'domcontentloaded' });
+			await expect(page.getByRole('status')).toHaveText('Loading projects…');
+			await expectNoHorizontalScroll(page);
+			await captureScreen(page, 'loading', viewport);
+		});
+
+		test('item-detail captures the read-only detail over the page', async ({ page }) => {
+			await openWith(page, 'all-states');
+			await page
+				.getByRole('article', { name: 'Atlas', exact: true })
+				.locator('.po-callout[data-kind="attention"] .po-action')
+				.click();
+			await expect(page.getByRole('dialog')).toContainText('Choose the export column names');
+			await captureScreen(page, 'item-detail', viewport);
+		});
+
+		for (const name of ['Atlas', 'Beacon', 'Cinder', 'Delta', 'Ember']) {
+			test(`card ${name} is captured at its own scroll checkpoint`, async ({ page }) => {
+				await openWith(page, 'all-states');
+				const card = page.getByRole('article', { name, exact: true });
+				await card.evaluate((node) => node.scrollIntoView({ block: 'start' }));
+				await expect(card).toBeInViewport();
+				await captureScreen(page, `card-${name.toLowerCase()}`, viewport);
+			});
+		}
 	});
 }
