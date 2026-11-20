@@ -40,6 +40,12 @@ for (const viewport of viewports) {
 		await fakeOverviewBridge(page, 'ready');
 		await page.goto('/projects');
 		await expect(page.getByText('fixture-blocked', { exact: true }).first()).toBeVisible();
+		if (viewport.name === 'mobile') {
+			await expect(page.getByRole('button', { name: /^Needs you / })).toHaveCSS(
+				'white-space',
+				'nowrap'
+			);
+		}
 		expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 			viewport.width
 		);

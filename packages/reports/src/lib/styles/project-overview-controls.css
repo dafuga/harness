@@ -2,6 +2,7 @@
 .po-chip {
 	display: inline-flex;
 	align-items: center;
+	flex: none;
 	gap: var(--hx-space-8);
 	min-height: var(--hx-space-40);
 	padding: 0 var(--hx-space-16);
@@ -11,6 +12,7 @@
 	color: var(--hx-color-text);
 	font: inherit;
 	font-size: var(--hx-type-size-sm);
+	white-space: nowrap;
 	cursor: pointer;
 }
 .po-chip[aria-pressed='true'] {
