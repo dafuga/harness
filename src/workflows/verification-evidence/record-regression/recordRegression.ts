@@ -49,6 +49,7 @@ export async function recordRegression(input: RecordRegressionInput) {
 	else if (phase.data === 'red') await regressionTestCommit(root, commit, request.tests);
 	return new RegressionProofService(root).run({
 		...request,
+		env: input.env,
 		knownUnits,
 		commit,
 		loop,

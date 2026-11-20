@@ -21,6 +21,7 @@ test('loop templates inherit parent steps and override by id', async () => {
 			'red',
 			'implement',
 			'green',
+			'siblings',
 			'verify'
 		]);
 		expect(template.steps[0].title).toContain('failing behavior');
@@ -53,6 +54,7 @@ test('project loop templates extend built-ins and append child steps', async () 
 			'red',
 			'implement',
 			'green',
+			'siblings',
 			'verify',
 			'test',
 			'release'

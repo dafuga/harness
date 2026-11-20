@@ -11,6 +11,7 @@
 		"source": [
 			"src/cli/program/loopEvaluate.ts",
 			"src/cli/program/loopEvaluate.types.ts",
+			"src/utils/execution-runtimes/runLoopEvaluatorProcess.ts",
 			"src/workflows/loopEvaluate.ts"
 		],
 		"symbols": [
@@ -22,6 +23,7 @@
 			"LoopEvaluationResult",
 			"LoopCommandResult",
 			"EvaluateLoopInput",
+			"runLoopEvaluatorProcess",
 			"evaluateLoop",
 			"renderLoopEvaluation",
 			"LoopEvaluationResult",
@@ -77,6 +79,31 @@
 						"skipped": true
 					}
 				]
+			},
+			{
+				"name": "runLoopEvaluatorProcess.root",
+				"type": "string",
+				"required": true,
+				"description": "Working directory of the command or isolated semantic evaluation."
+			},
+			{
+				"name": "runLoopEvaluatorProcess.argv",
+				"type": "string[]",
+				"required": true,
+				"description": "Executable followed by arguments. No shell is inserted."
+			},
+			{
+				"name": "runLoopEvaluatorProcess.options",
+				"type": "BoundedCommandOptions",
+				"required": true,
+				"description": "Explicit stdin, environment, elapsed time, and output bounds for the subprocess."
+			},
+			{
+				"name": "runLoopEvaluatorProcess.label",
+				"type": "string",
+				"required": false,
+				"default": "Semantic evaluator",
+				"description": "Name used for the Harness resource lease. Defaults to Semantic evaluator."
 			}
 		],
 		"outputs": [
@@ -237,6 +264,45 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "runLoopEvaluatorProcess",
+				"inputs": [
+					{
+						"name": "runLoopEvaluatorProcess.root",
+						"type": "string",
+						"required": true,
+						"description": "Working directory of the command or isolated semantic evaluation."
+					},
+					{
+						"name": "runLoopEvaluatorProcess.argv",
+						"type": "string[]",
+						"required": true,
+						"description": "Executable followed by arguments. No shell is inserted."
+					},
+					{
+						"name": "runLoopEvaluatorProcess.options",
+						"type": "BoundedCommandOptions",
+						"required": true,
+						"description": "Explicit stdin, environment, elapsed time, and output bounds for the subprocess."
+					},
+					{
+						"name": "runLoopEvaluatorProcess.label",
+						"type": "string",
+						"required": false,
+						"default": "Semantic evaluator",
+						"description": "Name used for the Harness resource lease. Defaults to Semantic evaluator."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runLoopEvaluatorProcess",
+						"type": "Promise<BoundedCommandResult>",
+						"description": "Resolves with exit code and captured streams from the bounded command under a Harness resource lease."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
