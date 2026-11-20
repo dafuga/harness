@@ -1,0 +1,235 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.recorded-value",
+	"symbol": "recordedValue",
+	"cases": [
+		{
+			"name": "mixed",
+			"input": "mixed",
+			"output": {
+				"kind": "list",
+				"items": [
+					{
+						"kind": "fields",
+						"fields": [
+							{
+								"name": "a",
+								"node": {
+									"kind": "scalar",
+									"type": "Number",
+									"text": "1"
+								}
+							}
+						],
+						"remaining": 0
+					},
+					{
+						"kind": "scalar",
+						"type": "Text",
+						"text": "x"
+					}
+				],
+				"remaining": 0
+			}
+		},
+		{
+			"name": "nested",
+			"input": "nested",
+			"output": {
+				"kind": "list",
+				"items": [
+					{
+						"kind": "fields",
+						"fields": [
+							{
+								"name": "tags",
+								"node": {
+									"kind": "list",
+									"items": [
+										{
+											"kind": "scalar",
+											"type": "Number",
+											"text": "1"
+										}
+									],
+									"remaining": 0
+								}
+							}
+						],
+						"remaining": 0
+					}
+				],
+				"remaining": 0
+			}
+		},
+		{
+			"name": "emptyObjects",
+			"input": "emptyObjects",
+			"output": {
+				"kind": "list",
+				"items": [
+					{
+						"kind": "notice",
+						"text": "Empty object"
+					},
+					{
+						"kind": "notice",
+						"text": "Empty object"
+					}
+				],
+				"remaining": 0
+			}
+		},
+		{
+			"name": "sparse",
+			"input": "sparse",
+			"output": {
+				"kind": "table",
+				"columns": [
+					"a",
+					"b"
+				],
+				"rows": [
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "1"
+						},
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "2"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "3"
+						},
+						{
+							"kind": "notice",
+							"text": "Not recorded"
+						}
+					]
+				],
+				"remaining": 0
+			}
+		},
+		{
+			"name": "trailingText",
+			"input": "trailingText",
+			"output": {
+				"kind": "table",
+				"columns": [
+					"id"
+				],
+				"rows": [
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "0"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "1"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "2"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "3"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "4"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "5"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "6"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "7"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "8"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "9"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "10"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "11"
+						}
+					]
+				],
+				"remaining": 1
+			}
+		},
+		{
+			"name": "emptyList",
+			"input": "emptyList",
+			"output": {
+				"kind": "notice",
+				"text": "Empty list"
+			}
+		},
+		{
+			"name": "emptyObject",
+			"input": "emptyObject",
+			"output": {
+				"kind": "notice",
+				"text": "Empty object"
+			}
+		}
+	]
+}

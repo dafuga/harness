@@ -1,0 +1,13 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.recorded-value",
+	"symbol": "recordedValue",
+	"cases": [
+		{
+			"name": "getter that throws",
+			"input": "object with a throwing getter",
+			"error": "Error"
+		}
+	]
+}

@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.recorded-value",
+	"symbol": "recordedValue",
+	"cases": [
+		{
+			"name": "frozen nested rows",
+			"input": "{\"rows\":[{\"id\":1,\"tags\":[\"a\"]}],\"note\":\"kept\"}",
+			"output": {
+				"kind": "fields",
+				"fields": [
+					{
+						"name": "rows",
+						"node": {
+							"kind": "list",
+							"items": [
+								{
+									"kind": "fields",
+									"fields": [
+										{
+											"name": "id",
+											"node": {
+												"kind": "scalar",
+												"type": "Number",
+												"text": "1"
+											}
+										},
+										{
+											"name": "tags",
+											"node": {
+												"kind": "list",
+												"items": [
+													{
+														"kind": "scalar",
+														"type": "Text",
+														"text": "a"
+													}
+												],
+												"remaining": 0
+											}
+										}
+									],
+									"remaining": 0
+								}
+							],
+							"remaining": 0
+						}
+					},
+					{
+						"name": "note",
+						"node": {
+							"kind": "scalar",
+							"type": "Text",
+							"text": "kept"
+						}
+					}
+				],
+				"remaining": 0
+			}
+		}
+	]
+}
