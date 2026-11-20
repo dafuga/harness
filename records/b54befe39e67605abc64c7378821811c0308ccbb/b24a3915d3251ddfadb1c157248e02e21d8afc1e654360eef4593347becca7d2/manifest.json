@@ -1,0 +1,107 @@
+{
+	"schemaVersion": 1,
+	"record": "b24a3915d3251ddfadb1c157248e02e21d8afc1e654360eef4593347becca7d2",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "27b4bcddc7648427ebdcabbbed794854daa04f99319eed733a5e6c828f9dc288",
+			"bytes": 32527,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.endpoint.harness-media-file/examples/reads-recorded-media-file.json",
+			"sha256": "55ba281a5a0c55ef96d08037be93aa78e1160117ceb3c931f98a448124db25c7",
+			"bytes": 444,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.endpoint.harness-media-file/examples/test-examples-reports.endpoint.harness-media-file.test.ts-reads-recorded-media-file.txt",
+			"sha256": "ac37a020b0676e3adf2c1b585355f01ec4d8db0dd348b06ad7648aeeddc8ea9a",
+			"bytes": 435,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.endpoint.harness-media-file/examples/test-examples-reports.endpoint.harness-media-file.test.ts-reads-recorded-media-file.json",
+			"sha256": "1a796deb3e6326c061045aaf4d60733db7230f41dbabec5b69c6db1196e4816b",
+			"bytes": 1215,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.endpoint.harness-media-file/examples/reports-recorded-content-type.json",
+			"sha256": "1b627c7e592fabfdc7c4cb043c68b8856ca7dfd41648093145a1170fb86750db",
+			"bytes": 344,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.endpoint.harness-media-file/examples/test-examples-reports.endpoint.harness-media-file.test.ts-reports-recorded-content-type.txt",
+			"sha256": "ac37a020b0676e3adf2c1b585355f01ec4d8db0dd348b06ad7648aeeddc8ea9a",
+			"bytes": 435,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.endpoint.harness-media-file/examples/test-examples-reports.endpoint.harness-media-file.test.ts-reports-recorded-content-type.json",
+			"sha256": "057ed95e24e31ed333e85e5d2818f392a76fb4fa15879537cf4e7057e83df269",
+			"bytes": 816,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.endpoint.harness-media-file/examples/refuses-missing-media-filename.json",
+			"sha256": "1d33d849b31ef44583c62f5c43c4216f6813fee9de4c4c4965cb7e0fb19a1220",
+			"bytes": 604,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.endpoint.harness-media-file/examples/test-examples-reports.endpoint.harness-media-file.test.ts-refuses-missing-media-filename.txt",
+			"sha256": "ac37a020b0676e3adf2c1b585355f01ec4d8db0dd348b06ad7648aeeddc8ea9a",
+			"bytes": 435,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.endpoint.harness-media-file/examples/test-examples-reports.endpoint.harness-media-file.test.ts-refuses-missing-media-filename.json",
+			"sha256": "df8997bacead29f99915f4bb38341e0a535755982b2b58a5daf5ac4daac9209d",
+			"bytes": 768,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.endpoint.harness-media-file/examples/refuses-non-owner-request.json",
+			"sha256": "a50614fa13740b069e4160f5d33a3747b826614629b3059094a8a3ed0b5cec4e",
+			"bytes": 465,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.endpoint.harness-media-file/examples/test-examples-reports.endpoint.harness-media-file.test.ts-refuses-non-owner-request.txt",
+			"sha256": "ac37a020b0676e3adf2c1b585355f01ec4d8db0dd348b06ad7648aeeddc8ea9a",
+			"bytes": 435,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.endpoint.harness-media-file/examples/test-examples-reports.endpoint.harness-media-file.test.ts-refuses-non-owner-request.json",
+			"sha256": "6bba178fe38fbb25343b6dd8e6d55b65408916228fe9621bc51dec4cc26770bc",
+			"bytes": 789,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-reports.endpoint.harness-media-file-examples.log",
+			"sha256": "ac37a020b0676e3adf2c1b585355f01ec4d8db0dd348b06ad7648aeeddc8ea9a",
+			"bytes": 435,
+			"storage": "git"
+		}
+	]
+}
