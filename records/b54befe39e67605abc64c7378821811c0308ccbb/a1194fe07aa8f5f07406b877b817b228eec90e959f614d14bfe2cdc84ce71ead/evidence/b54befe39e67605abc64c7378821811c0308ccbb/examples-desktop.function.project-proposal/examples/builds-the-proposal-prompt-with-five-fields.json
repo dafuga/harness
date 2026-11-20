@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.project-proposal",
+	"symbol": "proposalPrompt",
+	"cases": [
+		{
+			"name": "components request with one known id",
+			"input": {
+				"category": "components",
+				"known": [
+					"desktop.function.reference-prompt",
+					"not an id"
+				]
+			},
+			"output": {
+				"lines": 20,
+				"last": "Add a read-only panel that lists the units whose verification is unknown.",
+				"namesKnownId": true
+			}
+		},
+		{
+			"name": "no known ids names none",
+			"input": {
+				"category": "components",
+				"known": []
+			},
+			"output": {
+				"namesNone": true
+			}
+		}
+	]
+}
