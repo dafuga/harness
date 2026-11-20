@@ -25,6 +25,8 @@
 	/** Deployments are of this device's host: only a local bridge that reports them shows them. */
 	const activity = $derived(workspace.local && !!workspace.bridge?.deploymentActivities);
 	const gameViews = $derived(workspaceGameViews(workspace));
+	/** The overview reads the tracker of this computer: only a local bridge that offers it shows the link. */
+	const overview = $derived(workspace.local && !!workspace.bridge?.projectOverview);
 </script>
 
 <!-- Focus follows the visible rows: project and identity, context and search, then categories. -->
@@ -76,6 +78,7 @@
 		{#if gameViews}<hx-a href={resolve(gameViews as '/')}
 				><Icon name="game" /><hx-span>Game Views</hx-span></hx-a
 			>{/if}
+		{#if overview}<hx-a href={resolve('/projects' as '/')}><hx-span>Projects</hx-span></hx-a>{/if}
 	</hx-nav>
 
 	{#if account}<hx-div class="account">

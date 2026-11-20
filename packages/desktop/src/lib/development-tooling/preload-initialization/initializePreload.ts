@@ -49,6 +49,7 @@ const bridge: DesktopBridge = {
 	hostedStatus: call('hostedStatus'),
 	connectHosted: call('connectHosted'),
 	disconnectHosted: call('disconnectHosted'),
+	projectOverview: call('projectOverview'),
 	listProjects: call('listProjects'),
 	selectProject: call('selectProject'),
 	capabilities: call('capabilities'),
