@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"record": "ca2d89c9af5d40c43e58a11382163e57f4bc76e88a1dcd1f211ce62f0b8a8d5d",
+	"source": {
+		"commit": "ecb91a0508a98c91876158586472ee870eb311f9",
+		"tree": "abd6c5656cfb7f28ed60d2f15dc92ec62db8e02b"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "83e42a1fddceb01e72ae91a51543ac5719240ca3b8edc12e3ae0e3e180f6edd4",
+			"bytes": 13594327,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/history-fixture-integrity/seed-attacher/test-seed-attacher.test.ts-history-equivalence.txt",
+			"sha256": "2ca7d5ef6df1de9151f242f86077e076b3dae0c8619635d3b341c2a50cdd820f",
+			"bytes": 599,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/history-fixture-integrity/seed-attacher/test-seed-attacher.test.ts-history-equivalence.json",
+			"sha256": "651ed8acfd97bf52d98defcd641021051a53ef464a8d755540eaca123bbdab93",
+			"bytes": 5954,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/history-fixture-integrity/seed-attacher/test-seed-attacher.test.ts-seed-isolation.txt",
+			"sha256": "2ca7d5ef6df1de9151f242f86077e076b3dae0c8619635d3b341c2a50cdd820f",
+			"bytes": 599,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/history-fixture-integrity/seed-attacher/test-seed-attacher.test.ts-seed-isolation.json",
+			"sha256": "a3e238ed98dca2ebffd61cd4985b710e1ab899876f91691c45cdd50ba04321b3",
+			"bytes": 3760,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/history-fixture-integrity-history-attach-inherited.log",
+			"sha256": "3a80bc81e8d22f7f99f32af6c6ecd99dd059fb6a3b6b2a44d7dad5b3fd94c812",
+			"bytes": 640,
+			"storage": "git"
+		},
+		{
+			"path": "logs/history-fixture-integrity-seed-attacher.log",
+			"sha256": "2ca7d5ef6df1de9151f242f86077e076b3dae0c8619635d3b341c2a50cdd820f",
+			"bytes": 599,
+			"storage": "git"
+		},
+		{
+			"path": "logs/history-fixture-integrity-verification-check-shared.log",
+			"sha256": "628b2aa658702f3821af0d3e185122a123472b032bef4db10d903a81f44e9009",
+			"bytes": 499,
+			"storage": "git"
+		}
+	]
+}
