@@ -133,11 +133,18 @@
 <!-- Standalone (the native renderer) is the whole document: its own main and Harness link. Inside
 	the website's explorer layout, the layout already provides the main and the Harness brand. -->
 {#if standalone}
-	<hx-main class="po-page" data-harness-component="project-overview" aria-labelledby="po-title">
+	<hx-main
+		class="po-page"
+		data-harness-component="projects-sessions-project-overview-project-overview"
+		aria-labelledby="po-title"
+	>
 		{@render page()}
 	</hx-main>
 {:else}
-	<hx-div class="po-page" data-harness-component="project-overview">
+	<hx-div
+		class="po-page"
+		data-harness-component="projects-sessions-project-overview-project-overview"
+	>
 		{@render page()}
 	</hx-div>
 {/if}

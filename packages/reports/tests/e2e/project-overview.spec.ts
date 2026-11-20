@@ -23,6 +23,13 @@ import {
 } from './support/projectOverviewAssertions';
 
 const route = '/harness/projects';
+const cardStates = [
+	['needs-you', 'Atlas'],
+	['blocked', 'Beacon'],
+	['active', 'Cinder'],
+	['quiet', 'Delta'],
+	['done', 'Ember']
+] as const;
 const snapshots = {
 	'all-states': allStatesSnapshot,
 	'empty-ready': emptyReadySnapshot,
@@ -110,13 +117,13 @@ for (const viewport of viewports) {
 			await captureScreen(page, 'item-detail', viewport);
 		});
 
-		for (const name of ['Atlas', 'Beacon', 'Cinder', 'Delta', 'Ember']) {
+		for (const [state, name] of cardStates) {
 			test(`card ${name} is captured at its own scroll checkpoint`, async ({ page }) => {
 				await openWith(page, 'all-states');
 				const card = page.getByRole('article', { name, exact: true });
-				await card.evaluate((node) => node.scrollIntoView({ block: 'start' }));
+				await card.evaluate((node) => node.scrollIntoView({ block: 'center' }));
 				await expect(card).toBeInViewport();
-				await captureScreen(page, `card-${name.toLowerCase()}`, viewport);
+				await captureScreen(page, state, viewport);
 			});
 		}
 	});

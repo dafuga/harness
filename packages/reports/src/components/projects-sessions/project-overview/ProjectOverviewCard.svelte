@@ -43,7 +43,7 @@
 	as="article"
 	label={card.agent}
 	labelledby={`${id}-name`}
-	component="project-overview-card"
+	component="projects-sessions-project-overview-project-overview-card"
 	tone={`po-card po-${card.state}${compact ? ' po-compact' : ''}`}
 >
 	<hx-div class="po-card-head">
@@ -66,7 +66,9 @@
 		{@render callout(card.blocked, 'blocked', 'Blocked')}
 	{:else if blockedCount > 0 && card.blocked}
 		<hx-p class="po-note">
-			<hx-span class="po-note-lead">{countOf(blockedCount, 'blocked item', 'blocked items')}</hx-span>
+			<hx-span class="po-note-lead"
+				>{countOf(blockedCount, 'blocked item', 'blocked items')}</hx-span
+			>
 			<hx-span class="po-note-text">{card.blocked.text}</hx-span>
 		</hx-p>
 	{/if}
@@ -94,8 +96,11 @@
 	<hx-div class="po-milestone">
 		<hx-div class="po-milestone-head">
 			<hx-span class="po-label">Last milestone</hx-span>
-			{#if card.milestone}<hx-span class="po-milestone-at">{formatWhen(card.milestone.at)}</hx-span>{/if}
+			{#if card.milestone}<hx-span class="po-milestone-at">{formatWhen(card.milestone.at)}</hx-span
+				>{/if}
 		</hx-div>
-		<hx-p class="po-milestone-text">{card.milestone ? card.milestone.text : 'No milestone recorded.'}</hx-p>
+		<hx-p class="po-milestone-text"
+			>{card.milestone ? card.milestone.text : 'No milestone recorded.'}</hx-p
+		>
 	</hx-div>
 </Card>
