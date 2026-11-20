@@ -1,0 +1,28 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.entity-evidence",
+	"symbol": "createEntityEvidenceStore",
+	"cases": [
+		{
+			"name": "url before show refused",
+			"input": {
+				"side": "after"
+			},
+			"error": {
+				"name": "EvidenceCaptureUnavailableError",
+				"message": "This capture is not listed by the evidence that is shown."
+			}
+		},
+		{
+			"name": "evidence reads before show",
+			"input": {},
+			"output": 0
+		},
+		{
+			"name": "evidence reads after show",
+			"input": {},
+			"output": 1
+		}
+	]
+}
