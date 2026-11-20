@@ -1,0 +1,22 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.reference-prompt",
+	"symbol": "referencePrompt",
+	"cases": [
+		{
+			"name": "default discovery is off and asks for plain words",
+			"input": {
+				"discover": false
+			},
+			"output": "Name a unit as [[unit:<id>]] with its registered id, never by a file name, a path or a\nguessed id. Name a unit that is not listed here in plain words.\nUnits you may name: none"
+		},
+		{
+			"name": "discovery on requires the canonical manifest",
+			"input": {
+				"discover": true
+			},
+			"output": "Name a unit as [[unit:<id>]] with its registered id, never by a file name, a path or a\nguessed id. For another unit, first read its canonical manifest at the selected revision; use only its verified id.\nUnits you may name: none"
+		}
+	]
+}
