@@ -1,0 +1,26 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.corrected-location",
+	"symbol": "compactHelperLocation",
+	"cases": [
+		{
+			"name": "entity is the sole listed owner of the helper",
+			"input": {
+				"branch": "feat/x",
+				"commit": null,
+				"category": "functions",
+				"helper": "formatDuration",
+				"tab": "examples",
+				"entity": "function.duration"
+			},
+			"output": {
+				"branch": "feat/x",
+				"commit": null,
+				"category": "functions",
+				"helper": "formatDuration",
+				"tab": "examples"
+			}
+		}
+	]
+}

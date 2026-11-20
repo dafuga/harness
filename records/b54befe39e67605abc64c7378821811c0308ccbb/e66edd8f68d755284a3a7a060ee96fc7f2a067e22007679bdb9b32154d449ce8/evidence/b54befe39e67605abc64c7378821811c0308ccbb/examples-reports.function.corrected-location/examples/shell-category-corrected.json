@@ -1,0 +1,42 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.corrected-location",
+	"symbol": "correctedLocation",
+	"cases": [
+		{
+			"name": "shell at a commit, listed as a layout",
+			"input": {
+				"branch": "feat/x",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"category": "components",
+				"entity": "desktop.component.workspace-shell",
+				"section": "details",
+				"tab": "source"
+			},
+			"output": {
+				"branch": "feat/x",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"category": "layouts",
+				"entity": "desktop.component.workspace-shell",
+				"section": "details",
+				"tab": "source"
+			}
+		},
+		{
+			"name": "shell at the branch tip, listed as a layout",
+			"input": {
+				"branch": "feat/x",
+				"commit": null,
+				"category": "components",
+				"entity": "desktop.component.workspace-shell"
+			},
+			"output": {
+				"branch": "feat/x",
+				"commit": null,
+				"category": "layouts",
+				"entity": "desktop.component.workspace-shell"
+			}
+		}
+	]
+}

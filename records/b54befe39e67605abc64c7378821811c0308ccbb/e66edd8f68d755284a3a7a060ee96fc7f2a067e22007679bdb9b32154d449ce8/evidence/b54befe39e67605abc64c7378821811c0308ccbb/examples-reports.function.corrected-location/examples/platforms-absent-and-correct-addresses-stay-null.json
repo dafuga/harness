@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.corrected-location",
+	"symbol": "correctedLocation",
+	"cases": [
+		{
+			"name": "platforms address",
+			"input": {
+				"branch": "feat/x",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"category": "platforms",
+				"entity": "desktop.component.workspace-shell",
+				"section": "details",
+				"tab": "source"
+			},
+			"output": null
+		},
+		{
+			"name": "entity absent from the revision",
+			"input": {
+				"branch": "feat/x",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"category": "components",
+				"entity": "desktop.component.removed",
+				"section": "details",
+				"tab": "source"
+			},
+			"output": null
+		},
+		{
+			"name": "entity already under its listed category",
+			"input": {
+				"branch": "feat/x",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"category": "components",
+				"entity": "desktop.component.workspace-shell",
+				"section": "details",
+				"tab": "source"
+			},
+			"output": null
+		},
+		{
+			"name": "helper with an entity already set, though two owners exist",
+			"input": {
+				"branch": "feat/x",
+				"commit": null,
+				"category": "functions",
+				"helper": "formatDuration",
+				"tab": "examples",
+				"entity": "function.duration"
+			},
+			"output": null
+		}
+	]
+}
