@@ -1,0 +1,407 @@
+{
+	"schemaVersion": 1,
+	"record": "9a2e21ddab4928ff0b90a1ebd9137e91a70e39813e7ef001ef6147e82c77d752",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "20db917f60ddb9ca2586536585e5ca5fc9fcbe8f221e80d2f6675dcab42d9779",
+			"bytes": 1668018,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/desktop-native/native-desktop/tests-e2e-native-desktop.spec.ts-native-ipc.txt",
+			"sha256": "9d1459df2e91ea02739800794047a6aeb07f863c5a2fd02fc8ca90d0f7f01b28",
+			"bytes": 52,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/desktop-native/native-desktop/tests-e2e-native-desktop.spec.ts-native-isolation.txt",
+			"sha256": "9d1459df2e91ea02739800794047a6aeb07f863c5a2fd02fc8ca90d0f7f01b28",
+			"bytes": 52,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/desktop-native/native-desktop/native-draft-desktop.png",
+			"sha256": "076f95941f798a67d71d115777ad14dd3933697b57672b0b2025b88f2dc6f5b5",
+			"bytes": 331769,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/desktop-native/native-desktop/native-design-desktop.png",
+			"sha256": "0073b506b1b605fa79b65062f497822af95ec2caaab2931eebbb7a23f193c30c",
+			"bytes": 245987,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/desktop-native/native-desktop/native-approved-desktop.png",
+			"sha256": "a65d7dc30b129b2cc72845cad6f0ee4624f696eb4f994a47d16c0aea4c573ec7",
+			"bytes": 246704,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/desktop-native/native-desktop/native-history-desktop.png",
+			"sha256": "f2c10260776f20a19ed213f4b511cf88c885ec1e1a7e45445596fa9ec20e2139",
+			"bytes": 243687,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/desktop-project-runs/backend-boundaries/test-backend-boundaries.test.ts-project-scope.txt",
+			"sha256": "9ed2f16dd786a4a390e0b46c123e1792831e41175071686c89e745b6fbb9a707",
+			"bytes": 557,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/desktop-project-runs/backend-boundaries/test-backend-boundaries.test.ts-project-scope.json",
+			"sha256": "2e5d5de677ae78972dadeaaef9e2fb58d562296a13dc4b5f880434f3099ea683",
+			"bytes": 3129,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/desktop-project-runs/catalog-listing/test-catalog-listing.test.ts-project-scope.txt",
+			"sha256": "a3bc652b166fac5754d9ac177f6600477171758bebd4a647e2336f1970aa8003",
+			"bytes": 556,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/desktop-project-runs/catalog-listing/test-catalog-listing.test.ts-project-scope.json",
+			"sha256": "7ef233bf0ee60ee974a44804ae3fd4ad2622dbe1cb0558adc6d4f80144d70799",
+			"bytes": 28485,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/desktop-project-runs/project-integration/test-project-integration.test.ts-project-scope.txt",
+			"sha256": "8a783ffef12eeb56e322b07dc5c3878a0b235f8dcf8d60a7ecc94556c85ab6eb",
+			"bytes": 1503,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/desktop-project-runs/project-integration/test-project-integration.test.ts-project-scope.json",
+			"sha256": "014d5c3de78a68db4e0ed0ffd660684c029ea917ed6205decfc8b0874c3fc602",
+			"bytes": 44362,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/desktop-project-runs/backend-boundaries/test-backend-boundaries.test.ts-cli-boundaries.txt",
+			"sha256": "9ed2f16dd786a4a390e0b46c123e1792831e41175071686c89e745b6fbb9a707",
+			"bytes": 557,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/desktop-project-runs/backend-boundaries/test-backend-boundaries.test.ts-cli-boundaries.json",
+			"sha256": "908542d70954dae3b6e0daef3c8fae08cc7be750ee0ab3ac0f6f88c00d5c3135",
+			"bytes": 1588,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/desktop-project-runs/cli-integration/test-cli-integration.test.ts-cli-boundaries.txt",
+			"sha256": "bfc9e747923793c02d235b0f6400d6159e261191a2e3845e2e083bdf848dc74a",
+			"bytes": 1228,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/desktop-project-runs/cli-integration/test-cli-integration.test.ts-cli-boundaries.json",
+			"sha256": "a706aa063481426b977307a0fb7cc9b6cbd603ddcf4369a644df4e9f6adb94d2",
+			"bytes": 25812,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/desktop-project-runs/run-integration/test-run-integration.test.ts-plan-change.txt",
+			"sha256": "f75c626aed500a8139e33f43cb4e39b76d08a51cc3715bcbdf2d916be8a25e3a",
+			"bytes": 1735,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/desktop-project-runs/run-integration/test-run-integration.test.ts-plan-change.json",
+			"sha256": "73e34a8a1b7c9990b6c6925628a346026471cde4ce3ba34ec8cacfc2cc0d0f0c",
+			"bytes": 48343,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/authority/test-remote-pinned-revocation.test.ts-revision-authority.txt",
+			"sha256": "b67ef703ae6770a2b7e9b89a5e7eb7404808705ac01aac32b45205a8bea27d70",
+			"bytes": 938,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/authority/test-remote-pinned-revocation.test.ts-revision-authority.json",
+			"sha256": "8c0f38c99cf7705889c5f3c47d49f7959f119a005630b2fb965e5518ae852ff5",
+			"bytes": 860,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/authority/test-remote-pinned-revocation.test.ts-revocation.txt",
+			"sha256": "b67ef703ae6770a2b7e9b89a5e7eb7404808705ac01aac32b45205a8bea27d70",
+			"bytes": 938,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/authority/test-remote-pinned-revocation.test.ts-revocation.json",
+			"sha256": "42b46e25a2d467dfc118aad707a0e4429e5711c36d6a45382f23f1dcf50abf37",
+			"bytes": 2131,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/workerd/test-remote-relay-workerd.test.ts-encrypted-relay.txt",
+			"sha256": "7ccde18d551dcf80c58f86ae055d2e7cd54f7d1287c2d255b98536e400fa2b66",
+			"bytes": 843,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/workerd/test-remote-relay-workerd.test.ts-encrypted-relay.json",
+			"sha256": "0c0c9b3c2af7d1df2aab59e555c0c5473470a5b3613968a13109ea2591694e2e",
+			"bytes": 14411,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/workerd/test-remote-relay-workerd.test.ts-relay-reconnect.txt",
+			"sha256": "7ccde18d551dcf80c58f86ae055d2e7cd54f7d1287c2d255b98536e400fa2b66",
+			"bytes": 843,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/workerd/test-remote-relay-workerd.test.ts-relay-reconnect.json",
+			"sha256": "395f7187a85a7235ff2796b561d9f5a96ebf8f0bb75a541949d0ef7be6026049",
+			"bytes": 3213,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/human/test-remote-human-approval.test.ts-human-authority.txt",
+			"sha256": "e095791135f97d2950cbdf484f32982dca49cdc8b8585e0c8c42cdf76b81acad",
+			"bytes": 560,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/human/test-remote-human-approval.test.ts-human-authority.json",
+			"sha256": "888943655145774d8368ec1d4880d5daeb3b03df87fc389a201ab697b11d7269",
+			"bytes": 1266,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/agent-http/test-adapters-agent-http.test.ts-local-authority.txt",
+			"sha256": "c19a45a9d1eda933a619d3716b115c1c152743354d9cf2771ccedc3a94a8e839",
+			"bytes": 558,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/agent-http/test-adapters-agent-http.test.ts-local-authority.json",
+			"sha256": "1ae8100ff59852e7f6eb1e4be18acb8ed245bc84b4534a5653295d249602fc8e",
+			"bytes": 5413,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/local-bounds/test-local-transport-bounds.test.ts-local-authority.txt",
+			"sha256": "bbab37b24fe32f01581c64de3db6825ea40b38c7be4ccc53952191452c42aaef",
+			"bytes": 1175,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/local-bounds/test-local-transport-bounds.test.ts-local-authority.json",
+			"sha256": "46a13b4cc3566459caf8c1859189ebf3224a32e3a15381bc904d35de1e2161f9",
+			"bytes": 15910,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/preload-authority/test-utils-desktop-ipc.test.ts-local-authority.txt",
+			"sha256": "9201c96161c17da825dc35d2dce0b58f2b1d5765ca7282a78bf9d7b4db86aeb0",
+			"bytes": 553,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/preload-authority/test-utils-desktop-ipc.test.ts-local-authority.json",
+			"sha256": "c59a4ac5432ea749712d1166c93df0b6899d2866e12a62d5766d8e063675b627",
+			"bytes": 3054,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/repository-lease/test-utils-repository-lease.test.ts-local-authority.txt",
+			"sha256": "b8544c49d9ab5c3332b7600b0ef9f360959e52736e4b3cafaa0b8bd975b47241",
+			"bytes": 560,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/repository-lease/test-utils-repository-lease.test.ts-local-authority.json",
+			"sha256": "f16e76a9d3eeb3b600c0eb95e38bf380e19aa78221ae4778924b55be7ad35b3b",
+			"bytes": 3340,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/local-teardown/test-local-transport-teardown.test.ts-local-socket.txt",
+			"sha256": "fa474ce7c163a2d15cf6dfc24c5fc0f6edd4c195e9352c9810103bf8a9bf1ec3",
+			"bytes": 1089,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/local-teardown/test-local-transport-teardown.test.ts-local-socket.json",
+			"sha256": "2ae7dd9c996376c72712837134b98d2a5cb1b2f44c7ef4f008f204fb018ebdf4",
+			"bytes": 7725,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/local-socket/test-local-transport.test.ts-local-socket.txt",
+			"sha256": "d44cf9ab4f30bb130b7b8a4c4f656b897ba082e49cb5f7fc599efe8a6b5079d3",
+			"bytes": 1633,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/local-socket/test-local-transport.test.ts-local-socket.json",
+			"sha256": "a4ad43772d6b9ef2f33e341583dc3ca72dcf0d894e811fcce93d8b12db001f28",
+			"bytes": 29293,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/host-authority/test-remote-enable-lifecycle.test.ts-host-authority.txt",
+			"sha256": "294464e622729935989b661358daa22dfd67c0e3409ee9a0c70155540ca8ef20",
+			"bytes": 804,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-desktop-boundaries/host-authority/test-remote-enable-lifecycle.test.ts-host-authority.json",
+			"sha256": "b5b22afa4993cc14b4548b9248042ddd9fccc5c5e50c013bf5f127dc88e3e8d2",
+			"bytes": 1794,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/desktop-native-native-desktop.log",
+			"sha256": "9d1459df2e91ea02739800794047a6aeb07f863c5a2fd02fc8ca90d0f7f01b28",
+			"bytes": 52,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-desktop-boundaries-agent-http.log",
+			"sha256": "c19a45a9d1eda933a619d3716b115c1c152743354d9cf2771ccedc3a94a8e839",
+			"bytes": 558,
+			"storage": "git"
+		},
+		{
+			"path": "logs/desktop-project-runs-backend-boundaries.log",
+			"sha256": "9ed2f16dd786a4a390e0b46c123e1792831e41175071686c89e745b6fbb9a707",
+			"bytes": 557,
+			"storage": "git"
+		},
+		{
+			"path": "logs/desktop-project-runs-catalog-listing.log",
+			"sha256": "a3bc652b166fac5754d9ac177f6600477171758bebd4a647e2336f1970aa8003",
+			"bytes": 556,
+			"storage": "git"
+		},
+		{
+			"path": "logs/desktop-project-runs-cli-integration.log",
+			"sha256": "bfc9e747923793c02d235b0f6400d6159e261191a2e3845e2e083bdf848dc74a",
+			"bytes": 1228,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-desktop-boundaries-local-bounds.log",
+			"sha256": "bbab37b24fe32f01581c64de3db6825ea40b38c7be4ccc53952191452c42aaef",
+			"bytes": 1175,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-desktop-boundaries-local-teardown.log",
+			"sha256": "fa474ce7c163a2d15cf6dfc24c5fc0f6edd4c195e9352c9810103bf8a9bf1ec3",
+			"bytes": 1089,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-desktop-boundaries-local-socket.log",
+			"sha256": "d44cf9ab4f30bb130b7b8a4c4f656b897ba082e49cb5f7fc599efe8a6b5079d3",
+			"bytes": 1633,
+			"storage": "git"
+		},
+		{
+			"path": "logs/desktop-project-runs-project-integration.log",
+			"sha256": "8a783ffef12eeb56e322b07dc5c3878a0b235f8dcf8d60a7ecc94556c85ab6eb",
+			"bytes": 1503,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-desktop-boundaries-host-authority.log",
+			"sha256": "294464e622729935989b661358daa22dfd67c0e3409ee9a0c70155540ca8ef20",
+			"bytes": 804,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-desktop-boundaries-human.log",
+			"sha256": "e095791135f97d2950cbdf484f32982dca49cdc8b8585e0c8c42cdf76b81acad",
+			"bytes": 560,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-desktop-boundaries-authority.log",
+			"sha256": "b67ef703ae6770a2b7e9b89a5e7eb7404808705ac01aac32b45205a8bea27d70",
+			"bytes": 938,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-desktop-boundaries-workerd.log",
+			"sha256": "7ccde18d551dcf80c58f86ae055d2e7cd54f7d1287c2d255b98536e400fa2b66",
+			"bytes": 843,
+			"storage": "git"
+		},
+		{
+			"path": "logs/desktop-project-runs-run-integration.log",
+			"sha256": "f75c626aed500a8139e33f43cb4e39b76d08a51cc3715bcbdf2d916be8a25e3a",
+			"bytes": 1735,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-desktop-boundaries-preload-authority.log",
+			"sha256": "9201c96161c17da825dc35d2dce0b58f2b1d5765ca7282a78bf9d7b4db86aeb0",
+			"bytes": 553,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-desktop-boundaries-repository-lease.log",
+			"sha256": "b8544c49d9ab5c3332b7600b0ef9f360959e52736e4b3cafaa0b8bd975b47241",
+			"bytes": 560,
+			"storage": "git"
+		}
+	]
+}
