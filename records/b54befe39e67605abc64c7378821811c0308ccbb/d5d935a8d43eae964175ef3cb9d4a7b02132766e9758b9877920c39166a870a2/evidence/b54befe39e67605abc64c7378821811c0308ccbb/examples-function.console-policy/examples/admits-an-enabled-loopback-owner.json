@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.console-policy",
+	"symbol": "consolePolicy",
+	"cases": [
+		{
+			"name": "a loopback peer 127.0.0.1 on a loopback bind",
+			"input": {
+				"bind": "127.0.0.1",
+				"peer": "127.0.0.1"
+			},
+			"output": true
+		},
+		{
+			"name": "a loopback peer ::1 on a loopback bind",
+			"input": {
+				"bind": "127.0.0.1",
+				"peer": "::1"
+			},
+			"output": true
+		},
+		{
+			"name": "a loopback peer ::ffff:127.0.0.1 on a loopback bind",
+			"input": {
+				"bind": "127.0.0.1",
+				"peer": "::ffff:127.0.0.1"
+			},
+			"output": true
+		},
+		{
+			"name": "a loopback peer 127.8.4.2 on a loopback bind",
+			"input": {
+				"bind": "127.0.0.1",
+				"peer": "127.8.4.2"
+			},
+			"output": true
+		}
+	]
+}
