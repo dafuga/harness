@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-client",
+	"symbol": "harnessClient",
+	"cases": [
+		{
+			"name": "two calls with one base share a client",
+			"input": {
+				"base": "/harness-shared-client"
+			},
+			"output": {
+				"sameBase": true,
+				"trailingSlash": false
+			}
+		},
+		{
+			"name": "concurrent and repeated index calls reuse one fetch",
+			"input": {
+				"base": "/harness-shared-client"
+			},
+			"output": {
+				"concurrentA": {
+					"answer": 1
+				},
+				"again": {
+					"answer": 1
+				}
+			}
+		},
+		{
+			"name": "a trailing-slash base is its own client, unnormalized",
+			"input": {
+				"base": "/harness-shared-client/"
+			},
+			"output": {
+				"answer": 2
+			}
+		}
+	]
+}

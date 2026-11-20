@@ -1,0 +1,45 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-client",
+	"symbol": "harnessClient",
+	"cases": [
+		{
+			"name": "injected clients on one base fetch separately",
+			"input": {
+				"base": "/harness-injected"
+			},
+			"output": {
+				"leftIndex": {
+					"from": "one"
+				},
+				"rightIndex": {
+					"from": "one"
+				}
+			}
+		},
+		{
+			"name": "an injected client is not the shared client",
+			"input": {
+				"base": "/harness-injected"
+			},
+			"output": {
+				"injectedIsShared": false,
+				"injectedClientsSeparate": true,
+				"sharedRepeats": true
+			}
+		},
+		{
+			"name": "an injected fetcher answers, not the global fetch",
+			"input": {
+				"base": "/harness-injected"
+			},
+			"output": {
+				"injected": {
+					"from": "two"
+				},
+				"ambient": []
+			}
+		}
+	]
+}
