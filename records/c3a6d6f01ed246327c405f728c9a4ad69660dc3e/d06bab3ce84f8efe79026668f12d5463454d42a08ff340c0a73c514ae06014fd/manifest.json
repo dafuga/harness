@@ -1,0 +1,84 @@
+{
+	"schemaVersion": 1,
+	"record": "d06bab3ce84f8efe79026668f12d5463454d42a08ff340c0a73c514ae06014fd",
+	"source": {
+		"commit": "c3a6d6f01ed246327c405f728c9a4ad69660dc3e",
+		"tree": "54e33afa8bad250a75a66945baeacde45b1b619c"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "f4f639671f2e4cb19102023dc7703195e64b6fdf668c16847e0a8bac3aec58cb",
+			"bytes": 1506844,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/c3a6d6f01ed246327c405f728c9a4ad69660dc3e/game-authoring/native-game-authoring/game-components-desktop-component-game-navigation-guard-unsaved-desktop.json",
+			"sha256": "a4bd1fa3164c6c7d6e06bdb6104ea9e55758c2ffa247fb544100a3fdda9c3931",
+			"bytes": 921,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/c3a6d6f01ed246327c405f728c9a4ad69660dc3e/game-authoring/native-game-authoring/game-native-desktop-component-game-navigation-guard-unsaved-desktop.png",
+			"sha256": "f4c6e4d0adb93663c9b40f9ac32474b7d10f68d22f3befc7b31b8005ebcab5c4",
+			"bytes": 77955,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/c3a6d6f01ed246327c405f728c9a4ad69660dc3e/game-authoring/native-game-authoring/game-components-desktop-component-game-navigation-guard-unsaved-tablet.json",
+			"sha256": "de10d7c8e666bd05fcc1bd48c6a2c1718005f0a7a242fc68bf65fbfb0215010b",
+			"bytes": 919,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/c3a6d6f01ed246327c405f728c9a4ad69660dc3e/game-authoring/native-game-authoring/game-native-desktop-component-game-navigation-guard-unsaved-tablet.png",
+			"sha256": "9d187518fbec8d5c2624ef929755a15d5b1e3f0862d7c8603329ec724179a8c8",
+			"bytes": 76102,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/c3a6d6f01ed246327c405f728c9a4ad69660dc3e/game-authoring/native-game-authoring/game-components-desktop-component-game-navigation-guard-unsaved-mobile.json",
+			"sha256": "8e85ba05fbc429c8a3821250b6819ce766b1fc1bf0e5654e3f5ae0971a3490ac",
+			"bytes": 913,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/c3a6d6f01ed246327c405f728c9a4ad69660dc3e/game-authoring/native-game-authoring/game-native-desktop-component-game-navigation-guard-unsaved-mobile.png",
+			"sha256": "d78e05e2c379a70e793ece2eb6527f8831c762bc96b523f466a75a50c98d97f3",
+			"bytes": 62393,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/c3a6d6f01ed246327c405f728c9a4ad69660dc3e/game-authoring/native-game-authoring/tests-e2e-game-native.spec.ts-desktop-component-game-navigation-guard-unsaved.txt",
+			"sha256": "90d5db0685837f15308366d11c03bc157ae05720524df82e5cadaf6e0a23c1df",
+			"bytes": 63,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "logs/game-authoring-browser-checkpoint-review.log",
+			"sha256": "845a68d6793d40a9d7de80019f0a42285ef3817710905f11a30e7ddf7bd37aef",
+			"bytes": 69,
+			"storage": "git"
+		},
+		{
+			"path": "logs/game-authoring-level-lifecycle.log",
+			"sha256": "88e58875aa48d1ddeb52c3e18f4bc10eefb2f82761456132082def631f68e25a",
+			"bytes": 70,
+			"storage": "git"
+		},
+		{
+			"path": "logs/game-authoring-native-game-authoring.log",
+			"sha256": "90d5db0685837f15308366d11c03bc157ae05720524df82e5cadaf6e0a23c1df",
+			"bytes": 63,
+			"storage": "git"
+		}
+	]
+}
