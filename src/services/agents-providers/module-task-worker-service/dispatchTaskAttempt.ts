@@ -22,32 +22,32 @@ export async function dispatchTaskAttempt(
 	};
 	const analytics = new ModuleTaskAnalyticsService();
 	try {
-		const result = await runner.run(input);
+		const { sessions, ...result } = await runner.run(input);
 		executions.push({
 			...base,
 			reportedModel: result.reportedModel,
 			usage: result.usage,
-			sessions: result.sessions,
+			sessions,
 			apiCost: analytics.quote(result.reportedModel ?? input.model, result.usage),
 			status: 'succeeded',
 			finishedAt: new Date().toISOString()
 		});
 		return result;
 	} catch (error) {
-		const failure = error as {
+		const failure = (error ?? {}) as {
 			usage?: TaskUsage;
 			sessions?: TaskSessionMetric[];
 			reportedModel?: string | null;
 			quotaRejected?: boolean;
-		} | null;
+		};
 		executions.push({
 			...base,
-			reportedModel: failure?.reportedModel ?? null,
-			usage: failure?.usage,
-			sessions: failure?.sessions,
-			apiCost: analytics.quote(failure?.reportedModel ?? input.model, failure?.usage),
+			reportedModel: failure.reportedModel ?? null,
+			usage: failure.usage,
+			sessions: failure.sessions,
+			apiCost: analytics.quote(failure.reportedModel ?? input.model, failure.usage),
 			status: 'failed',
-			failureCause: rejectionCause(input.signal, failure?.quotaRejected === true),
+			failureCause: rejectionCause(input.signal, failure.quotaRejected === true),
 			finishedAt: new Date().toISOString()
 		});
 		throw error;

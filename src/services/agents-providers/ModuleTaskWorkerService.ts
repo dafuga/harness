@@ -72,18 +72,18 @@ export class ModuleTaskWorkerService {
 	}
 	private handoff(task: ModuleTask, cwd: string): TaskRunInput['onRotation'] {
 		const tracker = this.tracker;
-		if (tracker)
-			return (checkpoint, session) =>
-				trackerHandoff(
-					cwd,
-					{
-						tracker,
-						checkpoint,
-						role: 'module worker',
-						evidence: `harness task show ${task.id}`
-					},
-					session
-				);
+		if (!tracker) return undefined;
+		return (checkpoint, session) =>
+			trackerHandoff(
+				cwd,
+				{
+					tracker,
+					checkpoint,
+					role: 'module worker',
+					evidence: `harness task show ${task.id}`
+				},
+				session
+			);
 	}
 	private async run(
 		task: ModuleTask,

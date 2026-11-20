@@ -6,6 +6,7 @@ import { promisify } from 'node:util';
 import { GitAdapter } from '../../git-source-history/GitAdapter';
 import type { TaskSessionMetric } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import type { TrackerHandoff } from './trackerHandoff.types';
+import { ModuleTaskRunError } from '../ModuleTaskRunnerAdapter.types';
 
 const exec = promisify(execFile);
 
@@ -34,7 +35,7 @@ export async function trackerHandoff(
 	try {
 		await exec('tracker', ['note', report.tracker, text], { cwd: root, timeout: 10000 });
 	} catch (error) {
-		if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw trackerFailure();
+		if ((error as { code?: string }).code !== 'ENOENT') throw trackerFailure();
 		try {
 			await exec(join(homedir(), '.local/bin/tracker'), ['note', report.tracker, text], {
 				cwd: root,
@@ -47,12 +48,12 @@ export async function trackerHandoff(
 }
 
 export function validateTrackerId(id: string): string {
-	if (!/^[a-z0-9]{6,32}$/.test(id)) throw new Error('Expected a Tracker item ID.');
+	if (!/^[a-z0-9]{6,32}$/.test(id)) throw new ModuleTaskRunError('Expected a Tracker item ID.');
 	return id;
 }
 
 function trackerFailure(): Error {
-	return new Error(
+	return new ModuleTaskRunError(
 		'Could not record the orchestration handoff on Tracker. Local checkpoint and metrics are preserved.'
 	);
 }

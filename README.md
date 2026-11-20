@@ -1029,9 +1029,9 @@ execution failures count separately. Stale or duplicate reviews are refused.
 Run a Phase 4 orchestration brief from its assigned worktree with Harness:
 
 ```sh
-harness task orchestrate --tracker z5jp8p --brief phase4-handoff.md \
+harness task orchestrate --tracker "$TRACKER_ITEM" --brief phase4-handoff.md \
   --model gpt-6.2-sol --intelligence high
-harness task worker --worker phase4-haiku --tracker z5jp8p --watch
+harness task worker --worker phase4-haiku --tracker "$TRACKER_ITEM" --watch
 ```
 
 Use the existing worker assignments and evidence review gates in the brief. Run
@@ -1041,6 +1041,7 @@ tokens. Harness configures provider compaction headroom and stops the run if it
 observes 190,000 tokens. Provider counters arrive during or after requests, so a
 single large request can cross an observation threshold before its usage arrives.
 `--context-tokens` lowers the orchestrator threshold for a controlled trial.
+Harness declines an initial provider prompt larger than 96 KiB.
 
 Keep the current state, branch, verified evidence, and next steps in the
 checkpoint file named in the agent prompt. Harness saves a Tracker handoff and

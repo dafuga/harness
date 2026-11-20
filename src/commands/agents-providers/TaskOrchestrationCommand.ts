@@ -1,11 +1,11 @@
 // @harness-uid u_wgjqmurp64
-import { Command, InvalidArgumentError, Option } from 'commander';
+import { type Command, InvalidArgumentError, Option } from 'commander';
 import {
 	defaultContextTokens,
 	contextThreshold
 } from '../../adapters/agents-providers/module-task-runner-adapter/sessionPolicy';
 import { runTaskOrchestration } from '../../workflows/agents-providers/task-orchestration/runTaskOrchestration';
-import type { OrchestratorFlags } from './TaskOrchestrationCommand.types';
+import { TaskOrchestrationError, type OrchestratorFlags } from './TaskOrchestrationCommand.types';
 
 /** Run an orchestration brief in a supervised foreground provider session. */
 export class TaskOrchestrationCommand {
@@ -32,7 +32,7 @@ export class TaskOrchestrationCommand {
 
 	async run(flags: OrchestratorFlags): Promise<void> {
 		const controller = new AbortController();
-		const stop = () => controller.abort(new Error('Orchestration interrupted.'));
+		const stop = () => controller.abort(new TaskOrchestrationError('Orchestration interrupted.'));
 		process.once('SIGINT', stop);
 		process.once('SIGTERM', stop);
 		try {

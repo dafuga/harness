@@ -9,3 +9,7 @@ export interface OrchestratorFlags {
 	intelligence: NonNullable<z.infer<typeof taskInputSchema>['intelligence']>;
 	contextTokens: number;
 }
+
+export class TaskOrchestrationError extends Error {
+	override name = 'TaskOrchestrationError';
+}

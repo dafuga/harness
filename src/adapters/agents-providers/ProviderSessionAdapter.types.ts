@@ -27,3 +27,7 @@ export interface TokenCountEvent {
 		total_token_usage?: Record<string, unknown>;
 	};
 }
+
+export class ProviderSessionTelemetryError extends Error {
+	override name = 'ProviderSessionTelemetryError';
+}

@@ -19,36 +19,54 @@ export async function runGeneration(
 	const startedAt = new Date().toISOString();
 	let process: TaskProcessResult;
 	try {
+		if (Buffer.byteLength(input.prompt) > 96 * 1024)
+			throw new ModuleTaskRunError('Task prompt exceeds the 96 KiB context admission limit.');
 		process = await launch(input);
 	} catch (error) {
-		return {
-			metric: {
-				status: input.signal.aborted ? 'interrupted' : 'failed',
-				sessionId: null,
-				peakContextTokens: null,
-				apiCost: estimateApiCost(input.model),
-				startedAt,
-				finishedAt: new Date().toISOString()
-			},
-			error:
-				error instanceof Error ? error : new ModuleTaskRunError('Could not start the task CLI.')
-		};
+		return generationLaunchFailure(input, startedAt, error);
 	}
+	return completedGeneration(input, process, complete, startedAt);
+}
+
+function generationLaunchFailure(
+	input: TaskRunInput,
+	startedAt: string,
+	error: unknown
+): GenerationResult {
+	return {
+		metric: {
+			status: input.signal.aborted ? 'interrupted' : 'failed',
+			sessionId: null,
+			peakContextTokens: null,
+			apiCost: estimateApiCost(input.model),
+			startedAt,
+			finishedAt: new Date().toISOString()
+		},
+		error: error instanceof Error ? error : new ModuleTaskRunError('Could not start the task CLI.')
+	};
+}
+
+function completedGeneration(
+	input: TaskRunInput,
+	process: TaskProcessResult,
+	complete: CompleteGeneration,
+	startedAt: string
+): GenerationResult {
 	const events = process.stdout.split('\n').flatMap(parseEvent);
-	const terminalUsage = taskUsage(input.provider, events);
-	const usage =
-		terminalUsage.inputTokens !== null || terminalUsage.reportedCostUsd !== null
-			? terminalUsage
-			: (process.observation?.usage ?? terminalUsage);
+	const usage = generationUsage(input, process, events);
 	const outcome = generationOutcome(input, process, events, complete);
+	const { sessionId, peakContextTokens } = process.observation ?? {
+		sessionId: null,
+		peakContextTokens: null
+	};
 	const reportedModel =
 		events.find((e) => e.type === 'system' && e.subtype === 'init')?.model ?? null;
 	if (outcome.error) Object.assign(outcome.error, { reportedModel });
 	return {
 		metric: {
 			status: outcome.status,
-			sessionId: process.observation?.sessionId ?? null,
-			peakContextTokens: process.observation?.peakContextTokens ?? null,
+			sessionId,
+			peakContextTokens,
 			usage,
 			apiCost: estimateApiCost(
 				outcome.result?.reportedModel ?? reportedModel ?? input.model,
@@ -60,6 +78,16 @@ export async function runGeneration(
 		result: outcome.result,
 		error: outcome.error
 	};
+}
+
+function generationUsage(
+	input: TaskRunInput,
+	process: TaskProcessResult,
+	events: TaskPublicEvent[]
+) {
+	const terminal = taskUsage(input.provider, events);
+	if (terminal.inputTokens !== null || terminal.reportedCostUsd !== null) return terminal;
+	return process.observation?.usage ?? terminal;
 }
 
 function generationOutcome(

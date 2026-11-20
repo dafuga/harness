@@ -73,7 +73,9 @@ export class ProviderSessionAdapter {
 		if (!message?.id || !message.usage) return;
 		const usage = taskUsage('claude', [{ type: 'result', usage: message.usage }]);
 		this.claudeUsage.set(message.id, usage);
-		this.observePeak(usage.inputTokens);
+		const input = message.usage.input_tokens;
+		if (typeof input === 'number' && Number.isSafeInteger(input) && input >= 0)
+			this.observePeak(input + (usage.cacheReadTokens ?? 0) + (usage.cacheWriteTokens ?? 0));
 	}
 
 	private observeCodex(event: TokenCountEvent): void {
@@ -93,7 +95,7 @@ export class ProviderSessionAdapter {
 }
 
 function providerEvent(line: string): LiveProviderEvent | undefined {
-	if (!line) return;
+	if (!line) return undefined;
 	try {
 		return JSON.parse(line) ?? undefined;
 	} catch {

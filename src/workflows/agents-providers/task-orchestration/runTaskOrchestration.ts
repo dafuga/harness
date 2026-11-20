@@ -6,7 +6,11 @@ import { resolve, join } from 'node:path';
 import { ModuleTaskRunnerAdapter } from '../../../adapters/agents-providers/ModuleTaskRunnerAdapter';
 import { contextThreshold } from '../../../adapters/agents-providers/module-task-runner-adapter/sessionPolicy';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
-import type { OrchestratorFlags } from '../../../commands/agents-providers/TaskOrchestrationCommand.types';
+import {
+	TaskOrchestrationError,
+	type OrchestratorFlags
+} from '../../../commands/agents-providers/TaskOrchestrationCommand.types';
+import type { TaskSessionMetric } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import { taskSelection } from '../../../services/agents-providers/module-task-service/taskPrompt';
 import type { OrchestrationReport } from './runTaskOrchestration.types';
 import {
@@ -21,7 +25,8 @@ export async function runTaskOrchestration(
 ): Promise<OrchestrationReport> {
 	const git = new GitAdapter(root);
 	validateTrackerId(flags.tracker);
-	if (flags.model === 'auto') throw new Error('Choose an exact orchestration model.');
+	if (flags.model === 'auto')
+		throw new TaskOrchestrationError('Choose an exact orchestration model.');
 	const workspace = await git.run(['rev-parse', '--show-toplevel']);
 	const contextTokens = contextThreshold(flags.contextTokens);
 	const selection = taskSelection({ model: flags.model, intelligence: flags.intelligence });
@@ -35,7 +40,9 @@ export async function runTaskOrchestration(
 		try {
 			database.exec('BEGIN IMMEDIATE');
 		} catch {
-			throw new Error('Could not lock the orchestration for this Tracker item and repository.');
+			throw new TaskOrchestrationError(
+				'Could not lock the orchestration for this Tracker item and repository.'
+			);
 		}
 		return await supervise(workspace, brief, { ...flags, contextTokens }, { ...selection, signal });
 	} finally {
@@ -80,16 +87,7 @@ async function supervise(
 				checkpoint: report.checkpoint,
 				contextTokens: flags.contextTokens,
 				tracker: report.tracker,
-				onSession: async (session) => {
-					report.sessions.push(session);
-					await saveReport(path, report);
-					if (['rotated', 'hard-limit', 'interrupted'].includes(session.status))
-						await trackerHandoff(
-							root,
-							{ ...report, role: 'orchestrator', evidence: report.file },
-							session
-						);
-				}
+				onSession: (session) => reportSession(root, report, session)
 			}
 		});
 		report.status = 'succeeded';
@@ -99,6 +97,17 @@ async function supervise(
 	}
 	await saveReport(path, report);
 	return report;
+}
+
+async function reportSession(
+	root: string,
+	report: OrchestrationReport,
+	session: TaskSessionMetric
+) {
+	report.sessions.push(session);
+	await saveReport(resolve(root, report.file), report);
+	if (['rotated', 'hard-limit', 'interrupted'].includes(session.status))
+		await trackerHandoff(root, { ...report, role: 'orchestrator', evidence: report.file }, session);
 }
 
 async function saveReport(path: string, report: OrchestrationReport): Promise<void> {
@@ -112,11 +121,11 @@ async function readBrief(path: string): Promise<string> {
 	try {
 		const info = await file.stat();
 		if (!info.isFile() || info.size > 16000)
-			throw new Error('Brief must be a regular file of at most 16000 bytes.');
+			throw new TaskOrchestrationError('Brief must be a regular file of at most 16000 bytes.');
 		const bytes = Buffer.alloc(info.size);
 		const { bytesRead } = await file.read(bytes, 0, bytes.length, 0);
 		const value = bytes.subarray(0, bytesRead).toString('utf8').trim();
-		if (!value) throw new Error('Orchestration brief is empty.');
+		if (!value) throw new TaskOrchestrationError('Orchestration brief is empty.');
 		return value;
 	} finally {
 		await file.close();

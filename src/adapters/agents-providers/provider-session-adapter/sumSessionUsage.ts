@@ -2,7 +2,7 @@
 import type { TaskUsage } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 
 export function sumSessionUsage(observations: (TaskUsage | undefined)[]): TaskUsage | undefined {
-	if (!observations.some(Boolean)) return;
+	if (!observations.some(Boolean)) return undefined;
 	const sum = (key: keyof TaskUsage) => {
 		const values = observations.map((usage) => usage?.[key] ?? null);
 		return values.some((n) => n === null)

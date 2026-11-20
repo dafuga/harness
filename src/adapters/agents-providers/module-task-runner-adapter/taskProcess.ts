@@ -5,6 +5,7 @@ import { homedir } from 'node:os';
 import { join } from 'node:path';
 import { createInterface } from 'node:readline';
 import { StringDecoder } from 'node:string_decoder';
+import { clearInterval, setInterval } from 'node:timers';
 import type { TaskRunInput } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import type { TaskProcessResult } from '../ModuleTaskRunnerAdapter.types';
 import { ProviderSessionAdapter } from '../ProviderSessionAdapter';
@@ -13,6 +14,7 @@ import { resourceWork } from '../../../utils/execution-runtimes/resourceWork';
 import type { ResourceContext } from '../../../core/execution-runtimes/resourceTypes';
 import {
 	contextPollMs,
+	contextStop,
 	defaultContextTokens,
 	hardContextTokens,
 	providerCompactionTokens,
@@ -97,8 +99,8 @@ function processMonitor(child: TaskChild, input: TaskRunInput, meter: ProviderSe
 	const sample = () => {
 		try {
 			const peak = meter.sample().peakContextTokens;
-			if (peak !== null && peak >= hardContextTokens) halt('hard-limit');
-			else if (!exited && peak !== null && peak >= threshold) halt('rotated');
+			const reason = contextStop(peak, threshold);
+			if (reason === 'hard-limit' || (!exited && reason === 'rotated')) halt(reason);
 			else if (!exited && peak === null && Date.now() - startedAt >= telemetryTimeoutMs)
 				halt('meter-unavailable');
 		} catch {
