@@ -3,44 +3,15 @@ import { expect } from './verificationExpect';
 import { readFile, writeFile, mkdtemp, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
+import { verifyOrchestratorRotation } from './support/moduleTaskContextFixture';
 import { moduleTaskFixture } from './support/moduleTaskFixture';
 import { runHarness } from './support/cli';
 import { GitAdapter } from '../src/adapters/git-source-history/GitAdapter';
 test('Harness owns and rotates the orchestrator before a fresh session resumes its checkpoint', async () => {
-	const f = await moduleTaskFixture();
-	try {
-		const brief = join(f.root, 'brief.md');
-		await writeFile(brief, 'Verify this disposable Phase 4 orders fixture.');
-		await writeFile(join(f.root, 'mode'), 'context-orchestrator');
-		const result = await f.cli(
-			[
-				'orchestrate',
-				'--tracker=pilot1',
-				`--brief=${brief}`,
-				'--model=claude-haiku-5-5',
-				'--context-tokens=1500'
-			],
-			false
-		);
-		expect(result.exitCode, 'Harness-owned orchestrator resumes a terminated session').toBe(0);
-		const report = JSON.parse(result.stdout);
-		expect(report.sessions).toMatchObject([
-			{
-				status: 'rotated',
-				peakContextTokens: 1900,
-				usage: { inputTokens: 1900, outputTokens: 10 }
-			},
-			{ status: 'succeeded', usage: { inputTokens: 100, reportedCostUsd: 0.002 } }
-		]);
-		expect(report.sessions[0].apiCost).toMatchObject({ basis: 'standard-api-estimate' });
-		const notes = await readFile(join(f.root, 'tracker.ndjson'), 'utf8');
-		expect(notes).toContain(f.source);
-		expect(notes).toContain('resume from');
-		expect(notes).not.toContain('Verified orders fixture');
-		expect(await readFile(join(f.root, 'src/orders.ts'), 'utf8')).toContain('orders = 2');
-	} finally {
-		await f.dispose();
-	}
+	await verifyOrchestratorRotation('context-orchestrator');
+}, 30000);
+test('Harness hands off before the next request could cross 190000 tokens', async () => {
+	await verifyOrchestratorRotation('context-preflight');
 }, 30000);
 test('module task creation requires a wanted contract and leaves source HEAD and edits intact', async () => {
 	const f = await moduleTaskFixture();

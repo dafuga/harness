@@ -96,6 +96,7 @@ export const moduleTaskVerificationScopes: Record<string, VerificationScope> = {
 					'usage-pricing'
 			},
 			'test/module-tasks.e2e.test.ts': {
+				'Harness hands off before the next request could cross 190000 tokens': 'context-rotation',
 				'Harness owns and rotates the orchestrator before a fresh session resumes its checkpoint':
 					'context-rotation',
 				'module task creation requires a wanted contract and leaves source HEAD and edits intact':

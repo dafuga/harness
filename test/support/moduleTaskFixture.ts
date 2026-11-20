@@ -68,13 +68,19 @@ if (mode.startsWith('context-')) {
   const checkpoint=prompt.match(/^Checkpoint file: (.+)$/m)?.[1];
   if (!checkpoint || !existsSync(checkpoint)) {
     if (checkpoint) writeFileSync(checkpoint,'Verified orders fixture. Next: update orders.');
-    const input=mode==='context-worker'?154000:900;
+    const input=mode==='context-worker'?154000:mode==='context-preflight'?137000:900;
     console.log(JSON.stringify({type:'assistant',message:{id:'first',usage:{input_tokens:input,cache_read_input_tokens:1000,cache_creation_input_tokens:0,output_tokens:10}}}));
+    if (mode==='context-preflight') {
+      const origin=process.env.ANTHROPIC_BASE_URL;
+      if (!origin) process.exit(11);
+      await fetch(origin+'/v1/messages',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:'x'.repeat(60000)}]})}).catch(()=>{});
+      process.exit(12);
+    }
     await Bun.sleep(3500);
     process.exit(7);
   }
   if (!prompt.includes('Verified orders fixture. Next: update orders.')) process.exit(8);
-  if (mode==='context-orchestrator' && !existsSync(root+'/tracker.ndjson')) process.exit(9);
+  if (mode!=='context-worker' && !existsSync(root+'/tracker.ndjson')) process.exit(9);
 }
 if(provider==='claude'&&mode==='quota') { console.log(JSON.stringify({type:'rate_limit_event',rate_limit_info:{status:'rejected',resetsAt:2000000000}})); console.log(JSON.stringify({type:'result',is_error:true,result:'Quota exhausted'})); process.exit(1); }
 if(provider==='claude'&&mode==='auth') {console.log(JSON.stringify({type:'result',is_error:true,result:'Authentication required'}));process.exit(1);}
