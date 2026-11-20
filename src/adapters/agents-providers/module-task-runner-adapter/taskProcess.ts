@@ -1,10 +1,28 @@
 // @harness-uid u_rw64iex44n
+
 import { spawn } from 'node:child_process';
+import { homedir } from 'node:os';
+import { join } from 'node:path';
+import { createInterface } from 'node:readline';
+import { StringDecoder } from 'node:string_decoder';
+import { clearInterval, setInterval } from 'node:timers';
 import type { TaskRunInput } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import type { TaskProcessResult } from '../ModuleTaskRunnerAdapter.types';
-import { TaskOutputOverflowError } from './taskProcess.types';
+import { ProviderSessionAdapter } from '../ProviderSessionAdapter';
+import { TaskOutputOverflowError, type TaskChild } from './taskProcess.types';
 import { resourceWork } from '../../../utils/execution-runtimes/resourceWork';
 import type { ResourceContext } from '../../../core/execution-runtimes/resourceTypes';
+import { ProviderRequestGate } from './ProviderRequestGate';
+import { guardedProviderCommand } from './provider-request-gate/providerDestination';
+import {
+	contextPollMs,
+	contextStop,
+	defaultContextTokens,
+	hardContextTokens,
+	providerCompactionTokens,
+	telemetryTimeoutMs
+} from './sessionPolicy';
+
 /** Keep subscription auth on this host; never forward inherited provider keys or raw event logs. */
 export function taskProcess(command: string[], input: TaskRunInput): Promise<TaskProcessResult> {
 	return resourceWork(
@@ -14,54 +32,129 @@ export function taskProcess(command: string[], input: TaskRunInput): Promise<Tas
 		{ signal: input.signal }
 	);
 }
-function runTaskProcess(
-	command: string[],
-	input: TaskRunInput,
-	resources: ResourceContext
-): Promise<TaskProcessResult> {
+
+async function runTaskProcess(command: string[], input: TaskRunInput, resources: ResourceContext) {
 	input.signal.throwIfAborted();
-	return new Promise((resolve, reject) => {
-		const child = spawn(command[0], command.slice(1), {
+	const env = taskEnvironment(resources);
+	if (input.supervision) env.HARNESS_ORCHESTRATION_TRACKER = input.supervision.tracker;
+	const meter = new ProviderSessionAdapter(input.provider, join(env.HOME ?? homedir(), '.codex'));
+	const gate = new ProviderRequestGate(input.provider, () => meter.sample().peakContextTokens);
+	try {
+		if (input.provider === 'claude') env.ANTHROPIC_BASE_URL = gate.origin;
+		const guarded = guardedProviderCommand(command, input.provider, gate.origin);
+		const child = spawn(guarded[0], guarded.slice(1), {
 			cwd: input.cwd,
-			env: taskEnvironment(resources),
+			env,
 			stdio: 'pipe',
 			detached: process.platform !== 'win32'
 		});
 		if (child.pid) resources.track(child.pid);
-		let stdout = '',
-			overflow = false;
-		const kill = () => {
-			try {
-				if (child.pid)
-					process.kill(process.platform === 'win32' ? child.pid : -child.pid, 'SIGKILL');
-			} catch {
-				/* Already stopped. */
-			}
-		};
-		const abort = () => kill();
-		input.signal.addEventListener('abort', abort, { once: true });
-		const timer = setTimeout(kill, 900000);
-		child.stdout.on('data', (chunk: Buffer) => {
-			stdout += chunk.toString();
-			if (stdout.length > 8_000_000) {
-				overflow = true;
-				kill();
-			}
-		});
-		child.stderr.resume();
-		child.stdin.on('error', () => {});
+		return await collectTaskProcess(child, input, meter, gate);
+	} finally {
+		await gate.close();
+	}
+}
+
+function collectTaskProcess(
+	child: TaskChild,
+	input: TaskRunInput,
+	meter: ProviderSessionAdapter,
+	gate: ProviderRequestGate
+): Promise<TaskProcessResult> {
+	const controller = processMonitor(child, input, meter, gate);
+	const lines = createInterface({ input: child.stdout, crlfDelay: Infinity });
+	lines.on('line', (line) => {
+		meter.event(line);
+		if (input.provider === 'claude') controller.sample();
+	});
+	const decoder = new StringDecoder('utf8');
+	let stdout = '';
+	let overflow = false;
+	child.stdout.on('data', (chunk: Buffer) => {
+		if (overflow) return;
+		stdout += decoder.write(chunk);
+		if (stdout.length <= 8_000_000) return;
+		overflow = true;
+		killGroup(child);
+	});
+	child.stderr.resume();
+	child.stdin.on('error', () => {});
+	return new Promise((resolve, reject) => {
 		child.once('error', reject);
-		child.once('exit', kill);
 		child.once('close', (code) => {
-			clearTimeout(timer);
-			input.signal.removeEventListener('abort', abort);
-			if (input.signal.aborted) reject(input.signal.reason);
-			else if (overflow) reject(new TaskOutputOverflowError('Task CLI output exceeded its bound.'));
-			else resolve({ code: code ?? 1, stdout });
+			const stop = controller.close();
+			if (overflow && !stop)
+				reject(new TaskOutputOverflowError('Task CLI output exceeded its bound.'));
+			else
+				resolve({
+					code: code ?? 1,
+					stdout: stdout + decoder.end(),
+					observation: meter.summary(),
+					preRequestEstimateTokens: gate.blockedEstimate,
+					stop
+				});
 		});
 		child.stdin.end(input.prompt);
 	});
 }
+
+function processMonitor(
+	child: TaskChild,
+	input: TaskRunInput,
+	meter: ProviderSessionAdapter,
+	gate: ProviderRequestGate
+) {
+	const threshold = input.supervision?.contextTokens ?? defaultContextTokens;
+	const startedAt = Date.now();
+	let exited = false;
+	let stop: TaskProcessResult['stop'];
+	const halt = (reason: NonNullable<TaskProcessResult['stop']>) => {
+		if (!stop || reason === 'hard-limit') stop = reason;
+		if (!exited) killGroup(child);
+	};
+	const sample = () => {
+		try {
+			const peak = meter.sample().peakContextTokens;
+			const reason = contextStop(peak, threshold);
+			if (reason === 'hard-limit') halt(reason);
+			else if (gate.blockedEstimate !== undefined || (!exited && reason === 'rotated'))
+				halt('rotated');
+			else if (!exited && peak === null && Date.now() - startedAt >= telemetryTimeoutMs)
+				halt('meter-unavailable');
+		} catch {
+			halt('meter-unavailable');
+		}
+	};
+	const abort = () => halt('interrupted');
+	input.signal.addEventListener('abort', abort, { once: true });
+	if (input.signal.aborted) abort();
+	const poll = setInterval(sample, contextPollMs);
+	const timer = setTimeout(() => halt('timeout'), input.supervision ? 21_600_000 : 900_000);
+	child.once('exit', () => {
+		exited = true;
+		killGroup(child);
+	});
+	return {
+		sample,
+		close() {
+			exited = true;
+			clearInterval(poll);
+			clearTimeout(timer);
+			input.signal.removeEventListener('abort', abort);
+			sample();
+			return stop;
+		}
+	};
+}
+
+function killGroup(child: TaskChild): void {
+	try {
+		if (child.pid) process.kill(process.platform === 'win32' ? child.pid : -child.pid, 'SIGKILL');
+	} catch {
+		/* The process group already stopped. */
+	}
+}
+
 function taskEnvironment(resources: ResourceContext): Record<string, string | undefined> {
 	const env: Record<string, string | undefined> = {};
 	for (const key of [
@@ -74,6 +167,7 @@ function taskEnvironment(resources: ResourceContext): Record<string, string | un
 		'TEMP',
 		'LANG',
 		'TZ',
+		'TERM',
 		'SYSTEMROOT'
 	])
 		env[key] = process.env[key];
@@ -85,5 +179,9 @@ function taskEnvironment(resources: ResourceContext): Record<string, string | un
 		'HARNESS_RESOURCE_PRIORITY'
 	])
 		env[key] = resources.env[key];
+	env.CLAUDE_CODE_AUTO_COMPACT_WINDOW = String(hardContextTokens);
+	env.CLAUDE_AUTOCOMPACT_PCT_OVERRIDE = String(
+		Math.floor((100 * providerCompactionTokens) / hardContextTokens)
+	);
 	return env;
 }

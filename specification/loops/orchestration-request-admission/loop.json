@@ -1,0 +1,60 @@
+{
+	"name": "orchestration-request-admission",
+	"goal": "Refuse provider calls that could cross 190000 active context tokens before issuing the request, then preserve checkpoint handoff and fresh restart.",
+	"createdAt": "2026-11-20T15:04:06.216Z",
+	"updatedAt": "2026-11-20T15:17:44.532Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-20T15:04:48.053Z",
+			"evidence": "Use a live process fixture with 138000 observed context and 60000 bytes of pending input. The provider request must be stopped before transport and the checkpoint must resume."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-20T15:04:49.008Z",
+			"evidence": "The previous CLI case monitored provider usage after dispatch. The new normal-entry integration fixture submits a second payload below the handoff threshold and verifies pre-request rotation with separate telemetry."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-20T15:17:27.156Z",
+			"evidence": "Frozen no-gate fixture failed the checkpoint resume assertion before code changes."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-20T15:17:27.751Z",
+			"evidence": "Both provider CLIs route model inputs through the local admission boundary; estimates are stored separately from observed usage."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-20T15:17:44.532Z",
+			"evidence": "Unchanged normal-entry regression refused the oversized pending request and completed in a fresh session."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

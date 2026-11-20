@@ -3,10 +3,16 @@ import { expect } from './verificationExpect';
 import { readFile, writeFile, mkdtemp, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
+import { verifyOrchestratorRotation } from './support/moduleTaskContextFixture';
 import { moduleTaskFixture } from './support/moduleTaskFixture';
 import { runHarness } from './support/cli';
 import { GitAdapter } from '../src/adapters/git-source-history/GitAdapter';
-
+test('Harness owns and rotates the orchestrator before a fresh session resumes its checkpoint', async () => {
+	await verifyOrchestratorRotation('context-orchestrator');
+}, 30000);
+test('Harness hands off before the next request could cross 190000 tokens', async () => {
+	await verifyOrchestratorRotation('context-preflight');
+}, 30000);
 test('module task creation requires a wanted contract and leaves source HEAD and edits intact', async () => {
 	const f = await moduleTaskFixture();
 	try {
@@ -30,7 +36,6 @@ test('module task creation requires a wanted contract and leaves source HEAD and
 		await f.dispose();
 	}
 }, 30000);
-
 test('tasks share a stable goal-first prompt and keep their wanted contracts after a fresh fetch', async () => {
 	const f = await moduleTaskFixture();
 	const clone = await mkdtemp(join(tmpdir(), 'harness-task-clone-'));
@@ -73,6 +78,7 @@ test.each([
 			expect(
 				JSON.parse((await f.cli(['show', 'orders-validation', '--json'])).stdout).task.status
 			).toBe('queued');
+			if (provider === 'claude') await writeFile(join(f.root, 'mode'), 'context-worker');
 			await f.cli(['worker', '--worker', 'owner', '--once', '--json']);
 			const shown = JSON.parse((await f.cli(['show', 'orders-validation', '--json'])).stdout).task;
 			expect(shown.status).toBe('review');
@@ -81,7 +87,14 @@ test.each([
 				.trim()
 				.split('\n')
 				.map((x) => JSON.parse(x));
-			expect(calls).toHaveLength(1);
+			expect(calls).toHaveLength(provider === 'claude' ? 2 : 1);
+			if (provider === 'claude') {
+				expect(calls[1].cwd).toBe(calls[0].cwd);
+				expect(shown.result.executions[0].sessions).toMatchObject([
+					{ status: 'rotated', peakContextTokens: 155000 },
+					{ status: 'succeeded' }
+				]);
+			}
 			expect(calls[0].provider).toBe(provider);
 			expect(calls[0].args).toContain(model);
 			expect(calls[0].args.join(' ')).toContain(intelligence);

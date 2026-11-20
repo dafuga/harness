@@ -1,0 +1,289 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-provider-session",
+	"uid": "u_jqwsplz2qq",
+	"kind": "adapter",
+	"title": "ProviderSessionAdapter",
+	"responsibility": "Owns the ProviderSessionAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/ProviderSessionAdapter.ts",
+			"src/adapters/agents-providers/ProviderSessionAdapter.types.ts",
+			"src/adapters/agents-providers/provider-session-adapter/ProviderSessionTelemetryError.ts",
+			"src/adapters/agents-providers/provider-session-adapter/codexRollout.ts",
+			"src/adapters/agents-providers/provider-session-adapter/sumSessionUsage.ts"
+		],
+		"symbols": [
+			"ProviderSessionAdapter",
+			"ProviderSessionAdapter.constructor",
+			"ProviderSessionAdapter.event",
+			"ProviderSessionAdapter.sample",
+			"ProviderSessionAdapter.summary",
+			"SessionObservation",
+			"ClaudeMessage",
+			"LiveProviderEvent",
+			"TokenCountEvent",
+			"ProviderSessionTelemetryError",
+			"findCodexRollout",
+			"CodexRolloutReader",
+			"CodexRolloutReader.read",
+			"sumSessionUsage"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ProviderSessionAdapter.constructor.provider",
+				"type": "TaskSelection['provider']",
+				"required": true
+			},
+			{
+				"name": "ProviderSessionAdapter.constructor.codexHome",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "ProviderSessionAdapter.event.line",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "findCodexRollout.home",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "findCodexRollout.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "findCodexRollout.startedAt",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "CodexRolloutReader.read.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "CodexRolloutReader.read.record",
+				"type": "(event: TokenCountEvent) => void",
+				"required": true
+			},
+			{
+				"name": "sumSessionUsage.observations",
+				"type": "(TaskUsage | undefined)[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "ProviderSessionAdapter.event",
+				"type": "void"
+			},
+			{
+				"name": "ProviderSessionAdapter.sample",
+				"type": "SessionObservation"
+			},
+			{
+				"name": "ProviderSessionAdapter.summary",
+				"type": "SessionObservation"
+			},
+			{
+				"name": "findCodexRollout",
+				"type": "string | undefined"
+			},
+			{
+				"name": "CodexRolloutReader.read",
+				"type": "void"
+			},
+			{
+				"name": "sumSessionUsage",
+				"type": "TaskUsage | undefined"
+			}
+		],
+		"errors": [
+			{
+				"name": "ProviderSessionTelemetryError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ProviderSessionAdapter.event",
+				"inputs": [
+					{
+						"name": "ProviderSessionAdapter.event.line",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProviderSessionAdapter.event",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProviderSessionAdapter.sample",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProviderSessionAdapter.sample",
+						"type": "SessionObservation"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProviderSessionAdapter.summary",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProviderSessionAdapter.summary",
+						"type": "SessionObservation"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "findCodexRollout",
+				"inputs": [
+					{
+						"name": "findCodexRollout.home",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "findCodexRollout.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "findCodexRollout.startedAt",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "findCodexRollout",
+						"type": "string | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CodexRolloutReader.read",
+				"inputs": [
+					{
+						"name": "CodexRolloutReader.read.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "CodexRolloutReader.read.record",
+						"type": "(event: TokenCountEvent) => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CodexRolloutReader.read",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "ProviderSessionTelemetryError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sumSessionUsage",
+				"inputs": [
+					{
+						"name": "sumSessionUsage.observations",
+						"type": "(TaskUsage | undefined)[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sumSessionUsage",
+						"type": "TaskUsage | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ProviderSessionAdapter.constructor",
+				"inputs": [
+					{
+						"name": "ProviderSessionAdapter.constructor.provider",
+						"type": "TaskSelection['provider']",
+						"required": true
+					},
+					{
+						"name": "ProviderSessionAdapter.constructor.codexHome",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProviderSessionAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-module-task-runner-adapter-task-usage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/ProviderSessionAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/ProviderSessionAdapter.ts"
+			}
+		]
+	},
+	"scenarios": ["module-tasks"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

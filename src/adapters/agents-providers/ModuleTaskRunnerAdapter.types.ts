@@ -1,8 +1,12 @@
 // @harness-uid u_rw64iex44n
 import type { TaskRunInput } from '../../repositories/agents-providers/ModuleTaskRepository.types';
+import type { SessionObservation } from './ProviderSessionAdapter.types';
 export interface TaskProcessResult {
 	code: number;
 	stdout: string;
+	observation?: SessionObservation;
+	preRequestEstimateTokens?: number;
+	stop?: 'rotated' | 'hard-limit' | 'meter-unavailable' | 'interrupted' | 'timeout';
 }
 /** Runs one task CLI command for a run input and resolves its captured exit code and stdout. */
 export type TaskProcessExecutor = (
@@ -23,7 +27,4 @@ export interface TaskPublicEvent {
 	usage?: Record<string, unknown>;
 	total_cost_usd?: number;
 }
-/** A module task CLI run that failed, or was rejected for its quota, model or tool use. */
-export class ModuleTaskRunError extends Error {
-	override name = 'ModuleTaskRunError';
-}
+export { ModuleTaskRunError } from './module-task-runner-adapter/ModuleTaskRunError';

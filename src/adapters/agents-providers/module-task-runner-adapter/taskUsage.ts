@@ -21,7 +21,7 @@ export function taskUsage(provider: 'claude' | 'codex', events: TaskPublicEvent[
 		cacheWriteTokens: write,
 		cacheWriteLongTokens: long,
 		reportedCostUsd: number(result.total_cost_usd),
-		reasoningTokens: number(usage.reasoning_tokens)
+		reasoningTokens: number(usage.reasoning_tokens ?? usage.reasoning_output_tokens)
 	};
 }
 function totalInput(
