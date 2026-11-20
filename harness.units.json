@@ -68,6 +68,36 @@
 	],
 	"references": [
 		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/readProjectOverview",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/readProjectOverview.ts",
+			"reason": "Electron serves the fixed local tracker read through its trusted socket."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
+			"reason": "The Electron socket returns the same snapshot shape as the local website."
+		},
+		{
+			"from": "packages/desktop/src/models/development-tooling/DesktopBridge.types.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
+			"reason": "The preload contract uses the display-ready snapshot shape."
+		},
+		{
+			"from": "packages/desktop/src/routes/projects/+page.svelte",
+			"specifier": "$shared/projects-sessions/project-overview/ProjectOverview.svelte",
+			"to": "packages/reports/src/components/projects-sessions/project-overview/ProjectOverview.svelte",
+			"reason": "The bundled app renders the same project cards as the local website."
+		},
+		{
+			"from": "packages/desktop/src/routes/projects/+page.svelte",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
+			"reason": "The route distinguishes loading, unavailable and display-ready snapshots."
+		},
+		{
 			"from": "src/utils/execution-runtimes/kernelArtifacts.ts",
 			"specifier": "./kernel/",
 			"external": "kernel-build",
