@@ -1,0 +1,490 @@
+{
+	"id": "39fbe05cae22ad7f0731aa91a27a8e6741faba639ee388c1ffc12369183ef113",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/private/tmp/z5jp8p-hl.xwaYHF/source",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-20T14:19:11.056Z",
+	"finishedAt": "2026-11-20T14:19:25.674Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "function.record-capture",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41e40bb7a2b44b7fa1da3881ebf1a687d3d8471d42fd0a7c44d584361255ff42",
+			"source": "142bfa1513b076860925e3bac72e4361c1edd5901abe0b7061ebac711646346a",
+			"contract": "025908d6c17bb9a51a22fa8f85c40b9ea26bb9161a5d016c554aa7e340c15a52",
+			"runtime": "a289759bf06513632380a5baa8ac1f6a9a916c1d1905e0de6a7be531f7936431",
+			"files": [
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.ts",
+					"hash": "316c75b906d532b1a5b376f345b7de8e00da1f4d"
+				},
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.types.ts",
+					"hash": "8e36a063513222284548df76d240d4a45f6626a9"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cfb49b515cacc084047d75cdf10a295ab3790ecaf878e2b75e06463793f628bf",
+			"source": "cbf5fb170c4db458f39bcc4ba18996e377a782371040baa39d1667f04bf87635",
+			"contract": "6f2e8a598fb220dd111fe8085fb28c645ee24019cc4b1f25315b141a569962d7",
+			"runtime": "ec246a1eb80a7c06e7ccbd8601bab05e75d00122b0ad9d09eec95bbe94f31c19",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts",
+					"hash": "36741c54d766dd2689e542099ca02135cd07760b"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.types.ts",
+					"hash": "758395e715dd7c7d824deb57b07849f373ef164e"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/artifactCases.ts",
+					"hash": "f5a0a857433ab39a3aa86c795bab10681a76db3f"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.explorer-name",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "c4fab09433602bf710b316a893e37b122eeac84b8f8f11f636a6cea19ac38fb5",
+			"source": "f07aca4c2373ce76c7aa1ce91087938c1c8c7593aaf9cc40b7baa9327e3a059c",
+			"contract": "f32577deb9df76347b3bfa0b1885e5170158f9492995aa9de4fa09796e363b7c",
+			"runtime": "78ccc1d2268be406436ffb357b669fbd984b3d9ce5d6f387f214923ce79494a7",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorerName.ts",
+					"hash": "bd7b37345d70e4fcfb26c9300e5424e36b37fd76"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorerName.types.ts",
+					"hash": "1b8037a61659a535543cb4027396a443cf8644c1"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.012833999999998014,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90472448,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-name",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0676999999999964,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-11e5501ebb3ba5e9-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-name",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90832896,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-11e5501ebb3ba5e9-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.003760500000012712,
+			"method": "Arithmetic mean of 4 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90914816,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.21544749999999624,
+			"method": "Arithmetic mean of 4 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90914816,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-name",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.01305971428571086,
+			"method": "Arithmetic mean of 7 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-6ad9ef1d4ba3ef95-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 7,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-name",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90914816,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-6ad9ef1d4ba3ef95-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 7,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "examples-reports.function.explorer-name:examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.explorer-name.test.ts",
+			"status": "passed",
+			"durationMs": 2231,
+			"log": {
+				"path": "logs/examples-reports.function.explorer-name-examples.log",
+				"bytes": 427,
+				"sha256": "4c79476bcdc9acd4e6eb107fa38a4ce80dd42457cc0b3ca052f3474387e0b420"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "examples-reports.function.explorer-name",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "code-identity-wins",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "code-identity-wins",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-name/examples/code-identity-wins.json",
+							"sha256": "ef0b066d5c1ddd482cb94267df90597f6ee21df6b037b1dae64767bb7a80db36",
+							"bytes": 1435,
+							"capturedAt": "2026-11-20T14:19:23.856Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "code-identity-wins",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.explorer-name.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-name/examples/test-examples-reports.function.explorer-name.test.ts-code-identity-wins.txt",
+							"sha256": "4c79476bcdc9acd4e6eb107fa38a4ce80dd42457cc0b3ca052f3474387e0b420",
+							"bytes": 427,
+							"capturedAt": "2026-11-20T14:19:23.857Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "code-identity-wins",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-name/examples/test-examples-reports.function.explorer-name.test.ts-code-identity-wins.json",
+							"sha256": "c3062b5ada046104c0dbbb86a3ec99febca70bbcdb314d783f48039c172ea1ae",
+							"bytes": 754,
+							"capturedAt": "2026-11-20T14:19:23.857Z"
+						}
+					]
+				},
+				{
+					"id": "written-titles-and-route-screens",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "written-titles-and-route-screens",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-name/examples/written-titles-and-route-screens.json",
+							"sha256": "169a1c6f1cbcdad43401bee0d3d03d24e5431a67d60631a1e93f702e50f17ac2",
+							"bytes": 1442,
+							"capturedAt": "2026-11-20T14:19:23.857Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "written-titles-and-route-screens",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.explorer-name.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-name/examples/test-examples-reports.function.explorer-name.test.ts-written-titles-and-route-screens.txt",
+							"sha256": "4c79476bcdc9acd4e6eb107fa38a4ce80dd42457cc0b3ca052f3474387e0b420",
+							"bytes": 427,
+							"capturedAt": "2026-11-20T14:19:23.857Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "written-titles-and-route-screens",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-name/examples/test-examples-reports.function.explorer-name.test.ts-written-titles-and-route-screens.json",
+							"sha256": "fef14b102eee93f726495c99c2198d6217034476a1812659173a068784db348f",
+							"bytes": 856,
+							"capturedAt": "2026-11-20T14:19:23.857Z"
+						}
+					]
+				},
+				{
+					"id": "id-and-unnamed-fallbacks",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "id-and-unnamed-fallbacks",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-name/examples/id-and-unnamed-fallbacks.json",
+							"sha256": "b6795db7debfb0749d56bdf8583c6e3a60e34b35d6c0dbd1e197d389509b5126",
+							"bytes": 860,
+							"capturedAt": "2026-11-20T14:19:23.857Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "id-and-unnamed-fallbacks",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.explorer-name.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-name/examples/test-examples-reports.function.explorer-name.test.ts-id-and-unnamed-fallbacks.txt",
+							"sha256": "4c79476bcdc9acd4e6eb107fa38a4ce80dd42457cc0b3ca052f3474387e0b420",
+							"bytes": 427,
+							"capturedAt": "2026-11-20T14:19:23.857Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "id-and-unnamed-fallbacks",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-name/examples/test-examples-reports.function.explorer-name.test.ts-id-and-unnamed-fallbacks.json",
+							"sha256": "e0ae924d3e8e30e4e0cbc6f2da8a02c0c595d6e285b178c7a00fa8598309783f",
+							"bytes": 716,
+							"capturedAt": "2026-11-20T14:19:23.857Z"
+						}
+					]
+				},
+				{
+					"id": "page-and-layout-addresses",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "page-and-layout-addresses",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-name/examples/page-and-layout-addresses.json",
+							"sha256": "8107c1d366513ef41d53760cf602052e3c44d109416760a592432753a8ec481f",
+							"bytes": 1842,
+							"capturedAt": "2026-11-20T14:19:23.857Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "page-and-layout-addresses",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.explorer-name.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-name/examples/test-examples-reports.function.explorer-name.test.ts-page-and-layout-addresses.txt",
+							"sha256": "4c79476bcdc9acd4e6eb107fa38a4ce80dd42457cc0b3ca052f3474387e0b420",
+							"bytes": 427,
+							"capturedAt": "2026-11-20T14:19:23.857Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "page-and-layout-addresses",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-name/examples/test-examples-reports.function.explorer-name.test.ts-page-and-layout-addresses.json",
+							"sha256": "7f3d40f83aa4b4536813b0cfac8dabbdee7d4254cf83d73d97740b9f1805eb33",
+							"bytes": 778,
+							"capturedAt": "2026-11-20T14:19:23.857Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"shell-fixture",
+		"entity-preview"
+	],
+	"builds": [],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to reports.function.explorer-name: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}
