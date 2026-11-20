@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.prepare-project-task",
+	"symbol": "prepareProjectTask",
+	"cases": [
+		{
+			"name": "context for the matching revision",
+			"input": {
+				"branch": "main",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"provider": "claude",
+				"model": "synthetic-model"
+			},
+			"output": {
+				"root": "/synthetic/root",
+				"revision": {
+					"branch": "main",
+					"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				},
+				"requestCommit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"runner": {
+					"id": "synthetic-runner"
+				},
+				"idIsUuid": true,
+				"signalAborted": false
+			}
+		}
+	]
+}
