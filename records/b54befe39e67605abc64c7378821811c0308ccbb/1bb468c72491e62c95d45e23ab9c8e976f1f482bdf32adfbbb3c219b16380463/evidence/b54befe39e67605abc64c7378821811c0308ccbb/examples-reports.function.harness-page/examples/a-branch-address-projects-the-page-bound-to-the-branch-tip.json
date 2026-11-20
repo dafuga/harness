@@ -1,0 +1,296 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-page",
+	"symbol": "harnessPage",
+	"cases": [
+		{
+			"name": "branch address without a commit",
+			"input": {
+				"index": {
+					"branches": [
+						{
+							"name": "feature/kept#1",
+							"head": "dddddddddddddddddddddddddddddddddddddddd"
+						},
+						{
+							"name": "main",
+							"head": "cccccccccccccccccccccccccccccccccccccccc"
+						}
+					],
+					"revisions": [
+						{
+							"commit": "dddddddddddddddddddddddddddddddddddddddd",
+							"parents": [
+								"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+							],
+							"subject": "commit d",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"feature/kept#1"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "cccccccccccccccccccccccccccccccccccccccc",
+							"parents": [
+								"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+							],
+							"subject": "commit c",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"main"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"parents": [
+								"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							],
+							"subject": "commit b",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"feature/kept#1",
+								"main"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"parents": [],
+							"subject": "commit a",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"feature/kept#1",
+								"main"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+							"parents": [
+								"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							],
+							"subject": "commit e",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [],
+							"retained": true,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						}
+					],
+					"units": [],
+					"benchmarks": [],
+					"profiles": [],
+					"legacy": [],
+					"truncated": false,
+					"problems": []
+				},
+				"path": "/branch/feature%2Fkept%231/components",
+				"search": ""
+			},
+			"output": {
+				"kind": "page",
+				"scope": {
+					"location": {
+						"branch": "feature/kept#1",
+						"commit": null,
+						"category": "components"
+					},
+					"mode": "current",
+					"branch": "feature/kept#1",
+					"tip": "dddddddddddddddddddddddddddddddddddddddd",
+					"commit": "dddddddddddddddddddddddddddddddddddddddd",
+					"atTip": true,
+					"parent": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"summary": {
+						"commit": "dddddddddddddddddddddddddddddddddddddddd",
+						"parents": [
+							"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+						],
+						"subject": "commit d",
+						"author": "Synthetic",
+						"committedAt": "2026-10-10T18:00:00+00:00",
+						"branches": [
+							"feature/kept#1"
+						],
+						"retained": false,
+						"coverage": "verified",
+						"gaps": [],
+						"records": [],
+						"legacy": []
+					}
+				}
+			}
+		},
+		{
+			"name": "branch entity address with a tab query",
+			"input": {
+				"index": {
+					"branches": [
+						{
+							"name": "feature/kept#1",
+							"head": "dddddddddddddddddddddddddddddddddddddddd"
+						},
+						{
+							"name": "main",
+							"head": "cccccccccccccccccccccccccccccccccccccccc"
+						}
+					],
+					"revisions": [
+						{
+							"commit": "dddddddddddddddddddddddddddddddddddddddd",
+							"parents": [
+								"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+							],
+							"subject": "commit d",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"feature/kept#1"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "cccccccccccccccccccccccccccccccccccccccc",
+							"parents": [
+								"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+							],
+							"subject": "commit c",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"main"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"parents": [
+								"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							],
+							"subject": "commit b",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"feature/kept#1",
+								"main"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"parents": [],
+							"subject": "commit a",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"feature/kept#1",
+								"main"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+							"parents": [
+								"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							],
+							"subject": "commit e",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [],
+							"retained": true,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						}
+					],
+					"units": [],
+					"benchmarks": [],
+					"profiles": [],
+					"legacy": [],
+					"truncated": false,
+					"problems": []
+				},
+				"path": "/branch/main/functions/function.slugify",
+				"search": "?tab=source"
+			},
+			"output": {
+				"kind": "page",
+				"scope": {
+					"location": {
+						"branch": "main",
+						"commit": null,
+						"category": "functions",
+						"entity": "function.slugify",
+						"tab": "source"
+					},
+					"mode": "current",
+					"branch": "main",
+					"tip": "cccccccccccccccccccccccccccccccccccccccc",
+					"commit": "cccccccccccccccccccccccccccccccccccccccc",
+					"atTip": true,
+					"parent": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"summary": {
+						"commit": "cccccccccccccccccccccccccccccccccccccccc",
+						"parents": [
+							"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+						],
+						"subject": "commit c",
+						"author": "Synthetic",
+						"committedAt": "2026-10-10T18:00:00+00:00",
+						"branches": [
+							"main"
+						],
+						"retained": false,
+						"coverage": "verified",
+						"gaps": [],
+						"records": [],
+						"legacy": []
+					}
+				}
+			}
+		}
+	]
+}

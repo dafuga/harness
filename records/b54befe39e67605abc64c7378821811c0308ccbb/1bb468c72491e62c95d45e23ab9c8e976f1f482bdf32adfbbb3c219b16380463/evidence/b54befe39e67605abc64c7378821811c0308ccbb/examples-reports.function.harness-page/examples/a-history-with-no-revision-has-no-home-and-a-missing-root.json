@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-page",
+	"symbol": "harnessPage",
+	"cases": [
+		{
+			"name": "root of a history with no revision",
+			"input": {
+				"index": {
+					"branches": [],
+					"revisions": [],
+					"units": [],
+					"benchmarks": [],
+					"profiles": [],
+					"legacy": [],
+					"truncated": false,
+					"problems": []
+				},
+				"path": "",
+				"search": ""
+			},
+			"output": {
+				"kind": "missing",
+				"message": "This history holds no commit.",
+				"home": null
+			}
+		}
+	]
+}
