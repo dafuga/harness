@@ -1,5 +1,6 @@
-<!-- @harness-tier molecule -->
+<!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
+<!-- @harness-uid u_vfxty6iyq5 -->
 <script lang="ts">
 	import Pill from '../../explorer-ui/explorer-kit/Pill.svelte';
 	import HarnessIcon from '../../explorer-ui/HarnessIcon.svelte';

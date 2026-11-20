@@ -1,3 +1,4 @@
+// @harness-uid u_nves237tvx
 import type { MachineStatus, OverviewItem } from './projectOverview.types';
 
 /** Item statuses the tracker reports, including ignored records that never affect a card. */

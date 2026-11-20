@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
+<!-- @harness-uid u_n72w2an74r -->
 <script lang="ts">
 	import { tick } from 'svelte';
 	import EmptyState from '../../explorer-ui/explorer-kit/EmptyState.svelte';
@@ -152,8 +153,8 @@
 <Modal isOpen={selected !== null} title={selected?.title ?? ''} variant="text" onClose={closeItem}>
 	{#if selected}
 		<DetailList rows={detailRows} rowKey={(row) => row.term} className="po-detail">
-			{#snippet label(row)}{row.term}{/snippet}
-			{#snippet children(row)}{row.value}{/snippet}
+			{#snippet label(row: ProjectOverviewDetailRow)}{row.term}{/snippet}
+			{#snippet children(row: ProjectOverviewDetailRow)}{row.value}{/snippet}
 		</DetailList>
 	{/if}
 </Modal>

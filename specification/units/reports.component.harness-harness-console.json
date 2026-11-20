@@ -74,6 +74,13 @@
 				"type": "ExplorerScreen",
 				"required": true,
 				"description": "Svelte screen component rendered after the index, selected revision, parent read, relationships, and answer cache are ready. It receives the selected route context, entities, lens, client, media base, and navigation callback."
+			},
+			{
+				"name": "HarnessConsole.projectsHref",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "The local Projects destination supplied by the Explorer. Embedders may omit it."
 			}
 		],
 		"outputs": [

@@ -1,3 +1,4 @@
+// @harness-uid u_nves237tvx
 import type { MachineStatus } from './projectOverview.types';
 import type {
 	TrackerItemRecord,

@@ -30,6 +30,13 @@
 				"type": "ExplorerScreen",
 				"required": true,
 				"description": "The component that renders this screen, which HarnessScreen passes unchanged to HarnessConsole as its content. It is required with no default, so every page must supply its own."
+			},
+			{
+				"name": "HarnessScreen.projectsHref",
+				"type": "string",
+				"required": false,
+				"default": "/harness/projects",
+				"description": "The Projects destination in the local Explorer. It defaults to /harness/projects."
 			}
 		],
 		"outputs": [

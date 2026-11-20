@@ -1,3 +1,4 @@
+// @harness-uid u_et5rodvng6
 import type { OverviewItem } from '../../../lib/projects-sessions/project-overview/projectOverview.types';
 
 /** One in-progress item row; choosing it opens the read-only detail. */

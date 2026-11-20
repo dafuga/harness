@@ -1,0 +1,374 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.module.projects-sessions-project-overview-project-overview-items",
+	"uid": "u_6d3toxchme",
+	"kind": "module",
+	"title": "projectOverviewItems",
+	"responsibility": "Converts tracker items and times into display fields and orders work by live session and due date.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/lib/projects-sessions/project-overview/projectOverviewItems.ts"
+		],
+		"symbols": [
+			"DAY_MS",
+			"WEEK_MS",
+			"isoTime",
+			"isWithin",
+			"toOverviewItem",
+			"toCallout",
+			"compareItems",
+			"compareText"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "isoTime.value",
+				"type": "string",
+				"required": true,
+				"description": "A validated tracker time string."
+			},
+			{
+				"name": "isWithin.updatedAt",
+				"type": "string",
+				"required": true,
+				"description": "The tracker timestamp being checked against the time window."
+			},
+			{
+				"name": "isWithin.windowMs",
+				"type": "number",
+				"required": true,
+				"description": "The length of the look-back window in milliseconds."
+			},
+			{
+				"name": "isWithin.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds used to compare tracker timestamps."
+			},
+			{
+				"name": "toOverviewItem.record",
+				"type": "IncludedTrackerItem",
+				"required": true,
+				"description": "The tracker item after sensitivity and state filtering."
+			},
+			{
+				"name": "toOverviewItem.live",
+				"type": "boolean",
+				"required": true,
+				"description": "Whether a live run maps to this item."
+			},
+			{
+				"name": "toOverviewItem.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds used to compare tracker timestamps."
+			},
+			{
+				"name": "toCallout.record",
+				"type": "IncludedTrackerItem",
+				"required": true,
+				"description": "The tracker item after sensitivity and state filtering."
+			},
+			{
+				"name": "toCallout.text",
+				"type": "string | null | undefined",
+				"required": true,
+				"description": "The text to inspect before displaying it."
+			},
+			{
+				"name": "toCallout.live",
+				"type": "boolean",
+				"required": true,
+				"description": "Whether a live run maps to this item."
+			},
+			{
+				"name": "toCallout.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds used to compare tracker timestamps."
+			},
+			{
+				"name": "compareItems.a",
+				"type": "OverviewItem",
+				"required": true,
+				"description": "The first item or value to compare."
+			},
+			{
+				"name": "compareItems.b",
+				"type": "OverviewItem",
+				"required": true,
+				"description": "The second item or value to compare."
+			},
+			{
+				"name": "compareText.a",
+				"type": "string",
+				"required": true,
+				"description": "The first item or value to compare."
+			},
+			{
+				"name": "compareText.b",
+				"type": "string",
+				"required": true,
+				"description": "The second item or value to compare."
+			}
+		],
+		"outputs": [
+			{
+				"name": "DAY_MS",
+				"type": "unknown",
+				"description": "The number of milliseconds in a day."
+			},
+			{
+				"name": "WEEK_MS",
+				"type": "unknown",
+				"description": "The number of milliseconds in seven days."
+			},
+			{
+				"name": "isoTime",
+				"type": "string",
+				"description": "The tracker timestamp formatted in UTC ISO form."
+			},
+			{
+				"name": "isWithin",
+				"type": "boolean",
+				"description": "Whether the timestamp falls within the specified look-back window."
+			},
+			{
+				"name": "toOverviewItem",
+				"type": "OverviewItem",
+				"description": "The fields needed to display an included tracker item."
+			},
+			{
+				"name": "toCallout",
+				"type": "OverviewCallout",
+				"description": "The display item and its redacted question or blocked reason."
+			},
+			{
+				"name": "compareItems",
+				"type": "number",
+				"description": "A numeric ordering for display items, with active work first, then due date."
+			},
+			{
+				"name": "compareText",
+				"type": "number",
+				"description": "A numeric lexical ordering of the two input strings."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "isoTime",
+				"inputs": [
+					{
+						"name": "isoTime.value",
+						"type": "string",
+						"required": true,
+						"description": "A validated tracker time string."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isoTime",
+						"type": "string",
+						"description": "The tracker timestamp formatted in UTC ISO form."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isWithin",
+				"inputs": [
+					{
+						"name": "isWithin.updatedAt",
+						"type": "string",
+						"required": true,
+						"description": "The tracker timestamp being checked against the time window."
+					},
+					{
+						"name": "isWithin.windowMs",
+						"type": "number",
+						"required": true,
+						"description": "The length of the look-back window in milliseconds."
+					},
+					{
+						"name": "isWithin.now",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds used to compare tracker timestamps."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isWithin",
+						"type": "boolean",
+						"description": "Whether the timestamp falls within the specified look-back window."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "toOverviewItem",
+				"inputs": [
+					{
+						"name": "toOverviewItem.record",
+						"type": "IncludedTrackerItem",
+						"required": true,
+						"description": "The tracker item after sensitivity and state filtering."
+					},
+					{
+						"name": "toOverviewItem.live",
+						"type": "boolean",
+						"required": true,
+						"description": "Whether a live run maps to this item."
+					},
+					{
+						"name": "toOverviewItem.now",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds used to compare tracker timestamps."
+					}
+				],
+				"outputs": [
+					{
+						"name": "toOverviewItem",
+						"type": "OverviewItem",
+						"description": "The fields needed to display an included tracker item."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "toCallout",
+				"inputs": [
+					{
+						"name": "toCallout.record",
+						"type": "IncludedTrackerItem",
+						"required": true,
+						"description": "The tracker item after sensitivity and state filtering."
+					},
+					{
+						"name": "toCallout.text",
+						"type": "string | null | undefined",
+						"required": true,
+						"description": "The text to inspect before displaying it."
+					},
+					{
+						"name": "toCallout.live",
+						"type": "boolean",
+						"required": true,
+						"description": "Whether a live run maps to this item."
+					},
+					{
+						"name": "toCallout.now",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds used to compare tracker timestamps."
+					}
+				],
+				"outputs": [
+					{
+						"name": "toCallout",
+						"type": "OverviewCallout",
+						"description": "The display item and its redacted question or blocked reason."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "compareItems",
+				"inputs": [
+					{
+						"name": "compareItems.a",
+						"type": "OverviewItem",
+						"required": true,
+						"description": "The first item or value to compare."
+					},
+					{
+						"name": "compareItems.b",
+						"type": "OverviewItem",
+						"required": true,
+						"description": "The second item or value to compare."
+					}
+				],
+				"outputs": [
+					{
+						"name": "compareItems",
+						"type": "number",
+						"description": "A numeric ordering for display items, with active work first, then due date."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "compareText",
+				"inputs": [
+					{
+						"name": "compareText.a",
+						"type": "string",
+						"required": true,
+						"description": "The first item or value to compare."
+					},
+					{
+						"name": "compareText.b",
+						"type": "string",
+						"required": true,
+						"description": "The second item or value to compare."
+					}
+				],
+				"outputs": [
+					{
+						"name": "compareText",
+						"type": "number",
+						"description": "A numeric lexical ordering of the two input strings."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-privacy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-tracker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/projects-sessions/project-overview/projectOverviewItems.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/projects-sessions/project-overview/projectOverviewItems.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

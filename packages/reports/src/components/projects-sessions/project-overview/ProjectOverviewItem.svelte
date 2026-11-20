@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
+<!-- @harness-uid u_et5rodvng6 -->
 <script lang="ts">
 	import { etaFor, formatWhen, statusLabel } from './projectOverviewPresentation';
 	import type { ProjectOverviewItemProps } from './ProjectOverviewItem.types';

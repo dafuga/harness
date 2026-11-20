@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.page.harness-projects",
+	"uid": "u_5pg3d5ivbw",
+	"kind": "page",
+	"title": "Project Overview",
+	"responsibility": "Loads the owner-local tracker snapshot and renders Project Overview in the Harness Explorer.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": [
+			"reports.component.projects-sessions-project-overview-project-overview",
+			"reports.layout.explorer-layout"
+		]
+	},
+	"owns": {
+		"source": ["packages/reports/src/routes/harness/projects/+page.svelte"],
+		"symbols": ["+page"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "+page",
+				"type": "markup",
+				"description": "The Project Overview page showing the first read, project list, or unavailable state."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.projects-sessions-project-overview-project-overview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.layout.explorer-layout",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.harness",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/routes/harness/projects/+page.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/routes/harness/projects/+page.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

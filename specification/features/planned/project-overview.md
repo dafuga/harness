@@ -1,7 +1,12 @@
 ---
 status: planned
 shippedIn: null
-unitIds: []
+unitIds:
+  - desktop.page.projects
+  - reports.page.harness-projects
+  - reports.endpoint.api-project-overview
+  - reports.component.projects-sessions-project-overview-project-overview
+  - reports.module.projects-sessions-project-overview-read-project-overview
 owner: null
 reviewedAt: null
 ---
@@ -12,7 +17,7 @@ reviewedAt: null
 
 One page in Harness with a card per project, so Daniel sees at a glance what is being worked on and what is waiting on him. It is fed by the tracker data and is part of merging the tracker into Harness (tracker item m8fkcj). The approved design (tracker item n79x63) is implemented in tracker item xm64q4.
 
-Design for review: https://claude.ai/artifact/SKiYRVdFAv9zRVGqc4so7Y (private to Daniel). It holds five boards: desktop dark, desktop light, phone dark, phone light, and a sheet of the five card states in both themes. Sample content is a tracker snapshot from 2026-11-20 20:41 Lisbon, shortened.
+Approved design: https://claude.ai/artifact/SKiYRVdFAv9zRVGqc4so7Y (private to Daniel). It holds five boards: desktop dark, desktop light, phone dark, phone light, and a sheet of the five card states in both themes. Sample content is a tracker snapshot from 2026-11-20 20:41 Lisbon, shortened.
 
 The dark boards use the shared values in `packages/reports/src/lib/styles/app-tokens.css` (background, surface, border, text, primary, info, success and error roles, Inter, panel and control radii) and the current navbar with a new Projects category. Harness has no light theme today: the light boards are a proposal derived from the same roles. Primary is reserved for "needs you", the brand mark, the current nav item and focus rings.
 
@@ -23,8 +28,8 @@ A project has exactly one state, picked in this order:
 1. Needs you (waiting on Daniel): at least one item is flagged for Daniel and not answered or ignored. The question sits on the card with an Open item action.
 2. Blocked: one or more items are blocked and no session is live. The newest blocked reason sits on the card.
 3. Active: a session is live, or an in-progress item changed in the last 24 hours. Blocked items show as a count with one reason, not as the state.
-4. Quiet: open or in-progress items, but no live session and no change for 24 hours. In-progress items left untouched are labelled stale.
-5. Done: every included item is done and the most recent completion was within seven days.
+4. Quiet: no live session or recently updated in-progress item. Open work that has not started is quiet. In-progress items left untouched for more than 24 hours are labelled stale.
+5. Done: every included item is done and the newest update to a completed item is within seven days. The tracker exposes an update timestamp for these items.
 
 State is never shown by colour alone: each badge has its own shape and a text label.
 

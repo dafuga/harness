@@ -1,0 +1,175 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.projects-sessions-project-overview-project-overview-card",
+	"uid": "u_5zc2xsq34f",
+	"kind": "component",
+	"title": "ProjectOverviewCard",
+	"responsibility": "Shows one tracker agent’s status, activity counts, current work, attention, and latest milestone.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.explorer-ui-explorer-kit-card",
+			"reports.component.projects-sessions-project-overview-project-overview-item",
+			"reports.component.projects-sessions-project-overview-project-overview-state",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h3",
+			"reports.component.shared-primitives-atoms-html-h4",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-ul"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/components/projects-sessions/project-overview/ProjectOverviewCard.svelte",
+			"packages/reports/src/components/projects-sessions/project-overview/ProjectOverviewCard.types.ts"
+		],
+		"symbols": ["ProjectOverviewCard", "ProjectOverviewCard.callout", "ProjectOverviewCardProps"]
+	},
+	"contract": {
+		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-card"],
+		"inputs": [
+			{
+				"name": "ProjectOverviewCard.card",
+				"type": "OverviewCard",
+				"required": true,
+				"description": "A project record with its status, counts, context, and visible work items."
+			},
+			{
+				"name": "ProjectOverviewCard.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds used to compare tracker timestamps."
+			},
+			{
+				"name": "ProjectOverviewCard.onOpen",
+				"type": "(item: OverviewItem) => void",
+				"required": true,
+				"description": "Opens the work item provided by the card or action."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ProjectOverviewCard",
+				"type": "markup",
+				"description": "The project’s card with context, work, and milestone fields when present."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "ProjectOverviewCard.callout",
+				"inputs": [
+					{
+						"name": "ProjectOverviewCard.callout.surfaced",
+						"type": "OverviewCallout",
+						"required": true
+					},
+					{
+						"name": "ProjectOverviewCard.callout.kind",
+						"type": "'attention' | 'blocked'",
+						"required": true
+					},
+					{
+						"name": "ProjectOverviewCard.callout.label",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectOverviewCard.callout",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-project-overview-project-overview-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-project-overview-project-overview-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h3",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h4",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-project-overview-project-overview-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/project-overview/ProjectOverviewCard.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/project-overview/ProjectOverviewCard.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

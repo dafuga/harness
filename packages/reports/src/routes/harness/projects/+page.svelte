@@ -1,5 +1,6 @@
 <!-- @harness-tier page -->
 <!-- @harness-atoms ../../../components/shared-primitives/atoms -->
+<!-- @harness-uid u_5pg3d5ivbw -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import ExplorerLayout from '../../../components/explorer-ui/ExplorerLayout.svelte';

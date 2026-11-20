@@ -1,0 +1,654 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.projects-sessions-project-overview-project-overview-presentation",
+	"uid": "u_heb2rvinqp",
+	"kind": "function",
+	"title": "projectOverviewPresentation",
+	"responsibility": "Formats tracker card labels, groups, filters, dates, and contextual text for Project Overview.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/projects-sessions/project-overview/projectOverviewPresentation.ts",
+			"packages/reports/src/components/projects-sessions/project-overview/projectOverviewPresentation.types.ts"
+		],
+		"symbols": [
+			"stateLabel",
+			"statusLabel",
+			"isCompact",
+			"countOf",
+			"headline",
+			"totalsLine",
+			"filterChips",
+			"visibleCards",
+			"bandsFor",
+			"etaFor",
+			"formatWhen",
+			"inProgressItems",
+			"sessionsText",
+			"countsText",
+			"surfacedContext",
+			"projectOf",
+			"OverviewFilter",
+			"OverviewChip",
+			"OverviewBandId",
+			"OverviewBand",
+			"OverviewEta"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "stateLabel.state",
+				"type": "ProjectState",
+				"required": true,
+				"description": "The current state of one project."
+			},
+			{
+				"name": "statusLabel.status",
+				"type": "OverviewItem['status']",
+				"required": true,
+				"description": "The status of one tracker item."
+			},
+			{
+				"name": "isCompact.state",
+				"type": "ProjectState",
+				"required": true,
+				"description": "The current state of one project."
+			},
+			{
+				"name": "countOf.count",
+				"type": "number",
+				"required": true,
+				"description": "The numeric count used to select a singular or plural label."
+			},
+			{
+				"name": "countOf.one",
+				"type": "string",
+				"required": true,
+				"description": "The label used for one matching entry."
+			},
+			{
+				"name": "countOf.many",
+				"type": "string",
+				"required": true,
+				"description": "The label used for zero or multiple matching entries."
+			},
+			{
+				"name": "headline.cards",
+				"type": "OverviewCard[]",
+				"required": true,
+				"description": "The display-ready projects considered for a filter, band, count, or item detail."
+			},
+			{
+				"name": "totalsLine.projects",
+				"type": "number",
+				"required": true,
+				"description": "The number of displayed projects."
+			},
+			{
+				"name": "totalsLine.liveSessions",
+				"type": "number",
+				"required": true,
+				"description": "The total of running tracker sessions represented by the relevant projects."
+			},
+			{
+				"name": "filterChips.cards",
+				"type": "OverviewCard[]",
+				"required": true,
+				"description": "The display-ready projects considered for a filter, band, count, or item detail."
+			},
+			{
+				"name": "visibleCards.cards",
+				"type": "OverviewCard[]",
+				"required": true,
+				"description": "The display-ready projects considered for a filter, band, count, or item detail."
+			},
+			{
+				"name": "visibleCards.filter",
+				"type": "OverviewFilter",
+				"required": true,
+				"description": "The selected project state or All."
+			},
+			{
+				"name": "bandsFor.cards",
+				"type": "OverviewCard[]",
+				"required": true,
+				"description": "The display-ready projects considered for a filter, band, count, or item detail."
+			},
+			{
+				"name": "etaFor.due",
+				"type": "string | null",
+				"required": true,
+				"description": "The item due timestamp, or null when no due time is set."
+			},
+			{
+				"name": "etaFor.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds used to compare tracker timestamps."
+			},
+			{
+				"name": "formatWhen.iso",
+				"type": "string",
+				"required": true,
+				"description": "The ISO timestamp to display."
+			},
+			{
+				"name": "inProgressItems.items",
+				"type": "OverviewItem[]",
+				"required": true,
+				"description": "The work items to filter for in-progress status."
+			},
+			{
+				"name": "sessionsText.liveSessions",
+				"type": "number",
+				"required": true,
+				"description": "The total of running tracker sessions represented by the relevant projects."
+			},
+			{
+				"name": "countsText.counts",
+				"type": "OverviewCard['counts']",
+				"required": true,
+				"description": "The counts for the project’s displayed tracker statuses."
+			},
+			{
+				"name": "surfacedContext.cards",
+				"type": "OverviewCard[]",
+				"required": true,
+				"description": "The display-ready projects considered for a filter, band, count, or item detail."
+			},
+			{
+				"name": "surfacedContext.item",
+				"type": "OverviewItem",
+				"required": true,
+				"description": "The tracker item being visited or checked for display."
+			},
+			{
+				"name": "projectOf.cards",
+				"type": "OverviewCard[]",
+				"required": true,
+				"description": "The display-ready projects considered for a filter, band, count, or item detail."
+			},
+			{
+				"name": "projectOf.item",
+				"type": "OverviewItem",
+				"required": true,
+				"description": "The tracker item being visited or checked for display."
+			}
+		],
+		"outputs": [
+			{
+				"name": "stateLabel",
+				"type": "string",
+				"description": "The readable label for the project state."
+			},
+			{
+				"name": "statusLabel",
+				"type": "string",
+				"description": "The readable label for the tracker item status."
+			},
+			{
+				"name": "isCompact",
+				"type": "boolean",
+				"description": "Whether to render the compact card for a quiet or done project."
+			},
+			{
+				"name": "countOf",
+				"type": "string",
+				"description": "A count followed by the corresponding singular or plural label."
+			},
+			{
+				"name": "headline",
+				"type": "string",
+				"description": "The overview heading based on projects waiting on Daniel."
+			},
+			{
+				"name": "totalsLine",
+				"type": "string",
+				"description": "The counts of visible projects and live sessions."
+			},
+			{
+				"name": "filterChips",
+				"type": "OverviewChip[]",
+				"description": "The available filters and the number of projects in each."
+			},
+			{
+				"name": "visibleCards",
+				"type": "OverviewCard[]",
+				"description": "The cards matching the selected filter, in their original order."
+			},
+			{
+				"name": "bandsFor",
+				"type": "OverviewBand[]",
+				"description": "The visible cards grouped into attention, active, quiet, and done sections."
+			},
+			{
+				"name": "etaFor",
+				"type": "OverviewEta",
+				"description": "The due-state label and tone for the current time."
+			},
+			{
+				"name": "formatWhen",
+				"type": "string",
+				"description": "A readable time label for the tracker timestamp."
+			},
+			{
+				"name": "inProgressItems",
+				"type": "OverviewItem[]",
+				"description": "The input work items with in-progress status."
+			},
+			{
+				"name": "sessionsText",
+				"type": "string",
+				"description": "The readable live-session count for one project."
+			},
+			{
+				"name": "countsText",
+				"type": "string",
+				"description": "A readable summary of the nonzero tracker status counts."
+			},
+			{
+				"name": "surfacedContext",
+				"type": "string | null",
+				"description": "The matching question or blocked reason, or null when neither applies."
+			},
+			{
+				"name": "projectOf",
+				"type": "string | null",
+				"description": "The project name for the selected task, or null after the item disappears."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "stateLabel",
+				"inputs": [
+					{
+						"name": "stateLabel.state",
+						"type": "ProjectState",
+						"required": true,
+						"description": "The current state of one project."
+					}
+				],
+				"outputs": [
+					{
+						"name": "stateLabel",
+						"type": "string",
+						"description": "The readable label for the project state."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "statusLabel",
+				"inputs": [
+					{
+						"name": "statusLabel.status",
+						"type": "OverviewItem['status']",
+						"required": true,
+						"description": "The status of one tracker item."
+					}
+				],
+				"outputs": [
+					{
+						"name": "statusLabel",
+						"type": "string",
+						"description": "The readable label for the tracker item status."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "isCompact",
+				"inputs": [
+					{
+						"name": "isCompact.state",
+						"type": "ProjectState",
+						"required": true,
+						"description": "The current state of one project."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isCompact",
+						"type": "boolean",
+						"description": "Whether to render the compact card for a quiet or done project."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "countOf",
+				"inputs": [
+					{
+						"name": "countOf.count",
+						"type": "number",
+						"required": true,
+						"description": "The numeric count used to select a singular or plural label."
+					},
+					{
+						"name": "countOf.one",
+						"type": "string",
+						"required": true,
+						"description": "The label used for one matching entry."
+					},
+					{
+						"name": "countOf.many",
+						"type": "string",
+						"required": true,
+						"description": "The label used for zero or multiple matching entries."
+					}
+				],
+				"outputs": [
+					{
+						"name": "countOf",
+						"type": "string",
+						"description": "A count followed by the corresponding singular or plural label."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "headline",
+				"inputs": [
+					{
+						"name": "headline.cards",
+						"type": "OverviewCard[]",
+						"required": true,
+						"description": "The display-ready projects considered for a filter, band, count, or item detail."
+					}
+				],
+				"outputs": [
+					{
+						"name": "headline",
+						"type": "string",
+						"description": "The overview heading based on projects waiting on Daniel."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "totalsLine",
+				"inputs": [
+					{
+						"name": "totalsLine.projects",
+						"type": "number",
+						"required": true,
+						"description": "The number of displayed projects."
+					},
+					{
+						"name": "totalsLine.liveSessions",
+						"type": "number",
+						"required": true,
+						"description": "The total of running tracker sessions represented by the relevant projects."
+					}
+				],
+				"outputs": [
+					{
+						"name": "totalsLine",
+						"type": "string",
+						"description": "The counts of visible projects and live sessions."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "filterChips",
+				"inputs": [
+					{
+						"name": "filterChips.cards",
+						"type": "OverviewCard[]",
+						"required": true,
+						"description": "The display-ready projects considered for a filter, band, count, or item detail."
+					}
+				],
+				"outputs": [
+					{
+						"name": "filterChips",
+						"type": "OverviewChip[]",
+						"description": "The available filters and the number of projects in each."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "visibleCards",
+				"inputs": [
+					{
+						"name": "visibleCards.cards",
+						"type": "OverviewCard[]",
+						"required": true,
+						"description": "The display-ready projects considered for a filter, band, count, or item detail."
+					},
+					{
+						"name": "visibleCards.filter",
+						"type": "OverviewFilter",
+						"required": true,
+						"description": "The selected project state or All."
+					}
+				],
+				"outputs": [
+					{
+						"name": "visibleCards",
+						"type": "OverviewCard[]",
+						"description": "The cards matching the selected filter, in their original order."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "bandsFor",
+				"inputs": [
+					{
+						"name": "bandsFor.cards",
+						"type": "OverviewCard[]",
+						"required": true,
+						"description": "The display-ready projects considered for a filter, band, count, or item detail."
+					}
+				],
+				"outputs": [
+					{
+						"name": "bandsFor",
+						"type": "OverviewBand[]",
+						"description": "The visible cards grouped into attention, active, quiet, and done sections."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "etaFor",
+				"inputs": [
+					{
+						"name": "etaFor.due",
+						"type": "string | null",
+						"required": true,
+						"description": "The item due timestamp, or null when no due time is set."
+					},
+					{
+						"name": "etaFor.now",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds used to compare tracker timestamps."
+					}
+				],
+				"outputs": [
+					{
+						"name": "etaFor",
+						"type": "OverviewEta",
+						"description": "The due-state label and tone for the current time."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "formatWhen",
+				"inputs": [
+					{
+						"name": "formatWhen.iso",
+						"type": "string",
+						"required": true,
+						"description": "The ISO timestamp to display."
+					}
+				],
+				"outputs": [
+					{
+						"name": "formatWhen",
+						"type": "string",
+						"description": "A readable time label for the tracker timestamp."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "inProgressItems",
+				"inputs": [
+					{
+						"name": "inProgressItems.items",
+						"type": "OverviewItem[]",
+						"required": true,
+						"description": "The work items to filter for in-progress status."
+					}
+				],
+				"outputs": [
+					{
+						"name": "inProgressItems",
+						"type": "OverviewItem[]",
+						"description": "The input work items with in-progress status."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sessionsText",
+				"inputs": [
+					{
+						"name": "sessionsText.liveSessions",
+						"type": "number",
+						"required": true,
+						"description": "The total of running tracker sessions represented by the relevant projects."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sessionsText",
+						"type": "string",
+						"description": "The readable live-session count for one project."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "countsText",
+				"inputs": [
+					{
+						"name": "countsText.counts",
+						"type": "OverviewCard['counts']",
+						"required": true,
+						"description": "The counts for the project’s displayed tracker statuses."
+					}
+				],
+				"outputs": [
+					{
+						"name": "countsText",
+						"type": "string",
+						"description": "A readable summary of the nonzero tracker status counts."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "surfacedContext",
+				"inputs": [
+					{
+						"name": "surfacedContext.cards",
+						"type": "OverviewCard[]",
+						"required": true,
+						"description": "The display-ready projects considered for a filter, band, count, or item detail."
+					},
+					{
+						"name": "surfacedContext.item",
+						"type": "OverviewItem",
+						"required": true,
+						"description": "The tracker item being visited or checked for display."
+					}
+				],
+				"outputs": [
+					{
+						"name": "surfacedContext",
+						"type": "string | null",
+						"description": "The matching question or blocked reason, or null when neither applies."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "projectOf",
+				"inputs": [
+					{
+						"name": "projectOf.cards",
+						"type": "OverviewCard[]",
+						"required": true,
+						"description": "The display-ready projects considered for a filter, band, count, or item detail."
+					},
+					{
+						"name": "projectOf.item",
+						"type": "OverviewItem",
+						"required": true,
+						"description": "The tracker item being visited or checked for display."
+					}
+				],
+				"outputs": [
+					{
+						"name": "projectOf",
+						"type": "string | null",
+						"description": "The project name for the selected task, or null after the item disappears."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/project-overview/projectOverviewPresentation.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/project-overview/projectOverviewPresentation.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

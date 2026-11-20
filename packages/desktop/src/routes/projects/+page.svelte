@@ -1,5 +1,6 @@
 <!-- @harness-tier page -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_5ss75lisl2 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import ProjectOverview from '$shared/projects-sessions/project-overview/ProjectOverview.svelte';

@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
+<!-- @harness-uid u_5zc2xsq34f -->
 <script lang="ts">
 	import Card from '../../explorer-ui/explorer-kit/Card.svelte';
 	import type { OverviewCallout } from '../../../lib/projects-sessions/project-overview/projectOverview.types';

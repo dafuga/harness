@@ -1,3 +1,4 @@
+// @harness-uid u_2aj7ipsk7y
 /** The five project states, in the order they are picked. */
 export type ProjectState = 'needs-you' | 'blocked' | 'active' | 'quiet' | 'done';
 

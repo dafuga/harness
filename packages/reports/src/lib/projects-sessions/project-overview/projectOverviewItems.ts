@@ -1,3 +1,4 @@
+// @harness-uid u_6d3toxchme
 import type { OverviewCallout, OverviewItem } from './projectOverview.types';
 import type { IncludedTrackerItem } from './projectOverviewTracker.types';
 import { sanitizeText } from './projectOverviewPrivacy';
