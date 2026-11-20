@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-catalog",
+	"symbol": "catalogFilter",
+	"cases": [
+		{
+			"name": "shared camel-case search",
+			"input": {
+				"search": "filter orders"
+			},
+			"output": [
+				"filterOrders"
+			]
+		},
+		{
+			"name": "search ignores case",
+			"input": {
+				"search": "SEARCH"
+			},
+			"output": [
+				"OrderList",
+				"SearchBox"
+			]
+		},
+		{
+			"name": "changed only",
+			"input": {
+				"changedOnly": true
+			},
+			"output": [
+				"OrderList"
+			]
+		},
+		{
+			"name": "uncategorized group",
+			"input": {
+				"groups": [
+					"uncategorized"
+				]
+			},
+			"output": [
+				"OrderCard",
+				"OrderList",
+				"SearchBox"
+			]
+		},
+		{
+			"name": "changed order",
+			"input": {
+				"order": "changed"
+			},
+			"output": [
+				"OrderList",
+				"OrderCard",
+				"SearchBox"
+			]
+		},
+		{
+			"name": "name descending",
+			"input": {
+				"order": "name-desc"
+			},
+			"output": [
+				"SearchBox",
+				"OrderList",
+				"OrderCard"
+			]
+		}
+	]
+}
