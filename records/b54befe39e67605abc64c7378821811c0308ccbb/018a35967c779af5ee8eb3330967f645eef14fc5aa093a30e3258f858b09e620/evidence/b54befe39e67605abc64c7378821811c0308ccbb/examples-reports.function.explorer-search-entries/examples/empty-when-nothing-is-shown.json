@@ -1,0 +1,18 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-search-entries",
+	"symbol": "explorerSearchEntries",
+	"cases": [
+		{
+			"name": "no entities given",
+			"input": [],
+			"output": []
+		},
+		{
+			"name": "only a removed unit given",
+			"input": "entities of emptyHead",
+			"output": []
+		}
+	]
+}

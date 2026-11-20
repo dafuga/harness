@@ -1,0 +1,23 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-search-entries",
+	"symbol": "explorerSearchEntries",
+	"cases": [
+		{
+			"name": "shown unit with no contract",
+			"input": "app.function.format-time",
+			"error": "TypeError"
+		},
+		{
+			"name": "shown unit with no errors list",
+			"input": "app.function.format-time",
+			"error": "TypeError"
+		},
+		{
+			"name": "removed unit with no contract",
+			"input": "app.config.gone",
+			"output": []
+		}
+	]
+}
