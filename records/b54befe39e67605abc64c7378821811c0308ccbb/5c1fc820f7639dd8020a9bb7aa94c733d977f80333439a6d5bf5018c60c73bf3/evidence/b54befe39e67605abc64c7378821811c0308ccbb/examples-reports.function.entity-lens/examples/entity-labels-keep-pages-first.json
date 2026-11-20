@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-lens",
+	"symbol": "entityLabels",
+	"cases": [
+		{
+			"name": "collection keys in order",
+			"input": "entityLabels",
+			"output": [
+				"pages",
+				"apis",
+				"layouts",
+				"components",
+				"functions",
+				"configs",
+				"services",
+				"models",
+				"types",
+				"platforms"
+			]
+		},
+		{
+			"name": "helpers label",
+			"input": "functions",
+			"output": {
+				"title": "Helpers",
+				"one": "Helper",
+				"subtitle": "Pure, reusable functions. Same inputs, same result; no side effects."
+			}
+		}
+	]
+}

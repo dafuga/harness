@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-lens",
+	"symbol": "shortCommit",
+	"cases": [
+		{
+			"name": "full commit hash",
+			"input": "8b41d0720e252681deac809969b3faf8181dac30",
+			"output": "8b41d07"
+		},
+		{
+			"name": "exactly seven characters",
+			"input": "1234567",
+			"output": "1234567"
+		},
+		{
+			"name": "short text",
+			"input": "abc",
+			"output": "abc"
+		},
+		{
+			"name": "empty text",
+			"input": "",
+			"output": ""
+		},
+		{
+			"name": "text that is not a hash",
+			"input": "not-a-hash",
+			"output": "not-a-h"
+		}
+	]
+}
