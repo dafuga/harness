@@ -1,0 +1,16 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.browser-error-rows",
+	"symbol": "browserErrorRows",
+	"cases": [
+		{
+			"name": "no errors and no expectations",
+			"input": {
+				"errors": [],
+				"expected": []
+			},
+			"output": []
+		}
+	]
+}
