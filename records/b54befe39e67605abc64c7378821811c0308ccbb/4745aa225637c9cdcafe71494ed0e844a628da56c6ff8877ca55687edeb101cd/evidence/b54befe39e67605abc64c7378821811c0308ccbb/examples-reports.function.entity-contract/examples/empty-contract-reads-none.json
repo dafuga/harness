@@ -1,0 +1,53 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-contract",
+	"symbol": "entityContract",
+	"cases": [
+		{
+			"name": "function with no inputs or outputs",
+			"input": {
+				"unit": "app.function.export"
+			},
+			"output": [
+				{
+					"label": "Inputs",
+					"value": "None"
+				},
+				{
+					"label": "Output",
+					"value": "Nothing declared"
+				}
+			]
+		},
+		{
+			"name": "component with no inputs",
+			"input": {
+				"unit": "app.function.export",
+				"category": "components"
+			},
+			"output": [
+				{
+					"label": "Props",
+					"value": "None"
+				}
+			]
+		},
+		{
+			"name": "config with no outputs",
+			"input": {
+				"unit": "app.config.settings"
+			},
+			"output": [
+				{
+					"label": "Purpose",
+					"value": "OrderSettings as described."
+				},
+				{
+					"label": "Provides",
+					"value": "Nothing declared"
+				}
+			]
+		}
+	]
+}

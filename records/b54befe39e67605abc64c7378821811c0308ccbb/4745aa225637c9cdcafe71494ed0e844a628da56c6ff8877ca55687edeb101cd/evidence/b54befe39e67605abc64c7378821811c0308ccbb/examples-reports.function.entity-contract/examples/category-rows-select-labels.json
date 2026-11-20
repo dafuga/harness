@@ -1,0 +1,67 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-contract",
+	"symbol": "entityContract",
+	"cases": [
+		{
+			"name": "config shows purpose and what it provides",
+			"input": {
+				"unit": "app.config.settings",
+				"category": "configs"
+			},
+			"output": [
+				{
+					"label": "Purpose",
+					"value": "OrderSettings as described."
+				},
+				{
+					"label": "Provides",
+					"value": "page size, sort"
+				}
+			]
+		},
+		{
+			"name": "service shows inputs, output and how it runs",
+			"input": {
+				"unit": "app.service.store",
+				"category": "services"
+			},
+			"output": [
+				{
+					"label": "Inputs",
+					"value": "account id"
+				},
+				{
+					"label": "Output",
+					"value": "orders"
+				},
+				{
+					"label": "Runs as",
+					"value": "Wasm, Native process"
+				}
+			]
+		},
+		{
+			"name": "function shows inputs, output and failures",
+			"input": {
+				"unit": "app.function.filter",
+				"category": "functions"
+			},
+			"output": [
+				{
+					"label": "Inputs",
+					"value": "search text"
+				},
+				{
+					"label": "Output",
+					"value": "orders"
+				},
+				{
+					"label": "Fails with",
+					"value": "no match"
+				}
+			]
+		}
+	]
+}
