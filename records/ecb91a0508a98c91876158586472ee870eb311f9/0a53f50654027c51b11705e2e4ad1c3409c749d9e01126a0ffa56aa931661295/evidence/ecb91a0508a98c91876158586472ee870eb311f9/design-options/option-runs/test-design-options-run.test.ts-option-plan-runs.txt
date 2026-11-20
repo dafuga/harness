@@ -1,0 +1,16 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.nO8NRG/tmp/harness-snapshot-PppScu/packages/desktop
+
+ ✓ test/design-options-run.test.ts (5 tests) 19339ms
+   ✓ a page Plan generates three separately directed options and commits them once  5070ms
+   ✓ a Plan that asks for two options generates two  4596ms
+   ✓ a failed option leaves no version and no design commit  2588ms
+   ✓ a Plan cancelled during an option leaves no version and no design commit  2611ms
+   ✓ a headless Plan keeps notes and generates no image, whatever count it is given  4455ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  00:30:20
+   Duration  20.34s (transform 510ms, setup 135ms, collect 641ms, tests 19.34s, environment 0ms, prepare 38ms)
+
+JSON report written to /tmp/z5jp8p-hl.nO8NRG/tmp/harness-runner-nvFYEb/report.json
