@@ -1,0 +1,25 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-EpKFos/packages/desktop[39m
+
+ [32m✓[39m test/project-integration.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 4130[2mms[22m[39m
+   [33m[2m✓[22m[39m project selection and slash branches retain full ancestry and explicit historical views are immutable [33m 1062[2mms[22m[39m
+   [33m[2m✓[22m[39m catalog shows source size and relationships without leaking source bodies or inventing verification [33m 538[2mms[22m[39m
+   [33m[2m✓[22m[39m planning drafts stay separate from canonical registry and immutable approvals bind only their original version [33m 1787[2mms[22m[39m
+   [33m[2m✓[22m[39m existing canonical entities gain bound plans without duplicate draft identities [33m 734[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 09:44:45
+[2m   Duration [22m 5.57s[2m (transform 873ms, setup 356ms, collect 858ms, tests 4.13s, environment 0ms, prepare 69ms)[22m
+
+JSON report written to /tmp/harness-runner-U5S3F3/report.json
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
