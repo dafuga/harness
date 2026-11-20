@@ -17,9 +17,7 @@ const { commits, keptBranch } = seeded();
 const { explorerBranch, explorerUnits: units } = explorer();
 const dropped = /^(reports?|project reports|analytics|activity|growth|compare|component map)$/i;
 
-test('the explorer has its expected navigation, pages first, and no unrelated destinations', async ({
-	page
-}) => {
+test('the explorer opens Pages and exposes the Project Overview destination', async ({ page }) => {
 	await page.goto('/harness');
 	await checkpoint(page, 'routes-categories');
 	expect(pathOf(page)).toBe('/harness/branch/main/pages');

@@ -60,7 +60,7 @@ test('the Projects page shows the synthetic overview and highlights its nav link
 test('an unavailable read is shown as unavailable and never as a project', async ({ page }) => {
 	await serve(page, { status: 'unavailable' }, 503);
 	await page.goto('/harness/projects');
-	await expect(page.getByText(/unavailable/i).first()).toBeVisible();
+	await expect(page.getByRole('alert')).toContainText('The tracker could not be reached');
 	await expect(page.getByText('synthetic-project')).toHaveCount(0);
 	await checkpoint(page, 'project-overview-website-unavailable');
 });
@@ -79,13 +79,12 @@ test('the local explorer links to Projects, and the link opens the page', async 
 	);
 });
 
-test('the endpoint answers the owner with no-store and no cross-origin sharing', async ({
-	page
-}) => {
-	const response = await page.request.get('/api/project-overview');
-	expect([200, 503]).toContain(response.status());
+test('the endpoint refuses a cross-site read and marks its response private', async ({ page }) => {
+	const response = await page.request.get('/api/project-overview', {
+		headers: { 'sec-fetch-site': 'cross-site' }
+	});
+	expect(response.status()).toBe(403);
 	expect(response.headers()['cache-control']).toBe('no-store');
 	expect(response.headers()['access-control-allow-origin']).toBeUndefined();
-	const body = (await response.json()) as { status: string };
-	expect(['ready', 'unavailable']).toContain(body.status);
+	expect(await response.json()).toEqual({ status: 'unavailable' });
 });
