@@ -1,0 +1,68 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.console-access",
+	"symbol": "consoleAccess",
+	"cases": [
+		{
+			"name": "admitted present revision",
+			"input": {
+				"policy": "admitted",
+				"kind": "json",
+				"path": "revisions/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.json"
+			},
+			"output": {
+				"status": 200,
+				"body": "{\"commit\":\"x\"}"
+			}
+		},
+		{
+			"name": "admitted missing revision",
+			"input": {
+				"policy": "admitted",
+				"kind": "json",
+				"path": "revisions/cccccccccccccccccccccccccccccccccccccccc.json"
+			},
+			"output": {
+				"status": 404,
+				"body": "Not found"
+			}
+		},
+		{
+			"name": "admitted present media",
+			"input": {
+				"policy": "admitted",
+				"kind": "media",
+				"name": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.png"
+			},
+			"output": {
+				"status": 200,
+				"body": "PNGDATA"
+			}
+		},
+		{
+			"name": "admitted missing media",
+			"input": {
+				"policy": "admitted",
+				"kind": "media",
+				"name": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+			},
+			"output": {
+				"status": 404,
+				"body": "Not found"
+			}
+		},
+		{
+			"name": "closed missing revision",
+			"input": {
+				"policy": "closed",
+				"kind": "json",
+				"path": "revisions/cccccccccccccccccccccccccccccccccccccccc.json"
+			},
+			"output": {
+				"status": 403,
+				"body": "Forbidden"
+			}
+		}
+	]
+}

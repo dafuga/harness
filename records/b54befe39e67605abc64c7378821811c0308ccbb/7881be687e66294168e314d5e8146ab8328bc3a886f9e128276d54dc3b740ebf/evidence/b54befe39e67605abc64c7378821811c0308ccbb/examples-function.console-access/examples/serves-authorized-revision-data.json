@@ -1,0 +1,24 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.console-access",
+	"symbol": "consoleAccess",
+	"cases": [
+		{
+			"name": "answers an admitted revision request",
+			"input": {
+				"policy": "admitted",
+				"path": "revisions/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.json"
+			},
+			"output": {
+				"status": 200,
+				"type": "application/json; charset=utf-8",
+				"cache": "no-store",
+				"body": "{\"commit\":\"x\"}",
+				"opened": [
+					"/x"
+				]
+			}
+		}
+	]
+}
