@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.script.seed-harness-console",
+	"symbol": "seedHarnessConsole",
+	"cases": [
+		{
+			"name": "import the seeder under a run root that holds a sentinel",
+			"input": {
+				"module": "packages/reports/scripts/seed-harness-console.ts"
+			},
+			"output": {
+				"exports": [
+					"seedHarnessConsole"
+				]
+			}
+		},
+		{
+			"name": "list the run root before and after the import",
+			"input": {
+				"root": "temporary run root"
+			},
+			"output": {
+				"entries": [
+					"console",
+					"console/sentinel.txt"
+				],
+				"unchanged": true
+			}
+		},
+		{
+			"name": "read the sentinel after the import",
+			"input": {
+				"path": "console/sentinel.txt"
+			},
+			"output": {
+				"text": "sentinel: the import must leave this file as it is"
+			}
+		}
+	]
+}
