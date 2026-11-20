@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-verdict",
+	"symbol": "explorerVerdict",
+	"cases": [
+		{
+			"name": "commit with no verification record",
+			"input": {
+				"unit": "reports.function.explorer-verdict",
+				"records": 0
+			},
+			"output": {
+				"passed": false,
+				"label": "Evidence missing",
+				"reasons": [
+					"No verification record is attached to this commit."
+				]
+			}
+		},
+		{
+			"name": "revision without a registry names its gap",
+			"input": {
+				"unit": "reports.function.explorer-verdict",
+				"registry": "unavailable"
+			},
+			"output": {
+				"passed": false,
+				"label": "Evidence missing",
+				"reasons": [
+					"No registry at commit"
+				]
+			}
+		}
+	]
+}
