@@ -24,10 +24,10 @@
 	import type { OverviewFilter } from './projectOverviewPresentation.types';
 	import type { OverviewItem } from '../../../lib/projects-sessions/project-overview/projectOverview.types';
 	import type { ProjectOverviewDetailRow, ProjectOverviewProps } from './ProjectOverview.types';
-	import './projectOverview.css';
-	import './projectOverviewCards.css';
-	import './projectOverviewControls.css';
-	import './projectOverviewResponsive.css';
+	import '../../../lib/styles/project-overview.css';
+	import '../../../lib/styles/project-overview-cards.css';
+	import '../../../lib/styles/project-overview-controls.css';
+	import '../../../lib/styles/project-overview-responsive.css';
 	let { snapshot, homeHref = '/harness', standalone = true }: ProjectOverviewProps = $props();
 	const ready = $derived(snapshot !== null && snapshot.status === 'ready' ? snapshot : null);
 	const cards = $derived(ready?.projects ?? []);
