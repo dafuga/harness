@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.select-environment",
+	"symbol": "selectEnvironment",
+	"cases": [
+		{
+			"name": "bridge with no desktop control port",
+			"input": {
+				"harness": "present"
+			},
+			"output": {
+				"kind": "electron",
+				"bridge": "preload-bridge",
+				"local": true,
+				"host": null,
+				"phone": null,
+				"account": null
+			}
+		},
+		{
+			"name": "bridge with a whole control port",
+			"input": {
+				"harness": "present",
+				"harnessRemote": "all nine functions"
+			},
+			"output": {
+				"kind": "electron",
+				"bridge": "preload-bridge",
+				"local": true,
+				"host": "desktop-control",
+				"phone": null,
+				"account": null
+			}
+		},
+		{
+			"name": "bridge with denyPairing missing",
+			"input": {
+				"harness": "present",
+				"harnessRemote": "eight functions"
+			},
+			"output": {
+				"kind": "electron",
+				"bridge": "preload-bridge",
+				"local": true,
+				"host": null,
+				"phone": null,
+				"account": null
+			}
+		}
+	]
+}

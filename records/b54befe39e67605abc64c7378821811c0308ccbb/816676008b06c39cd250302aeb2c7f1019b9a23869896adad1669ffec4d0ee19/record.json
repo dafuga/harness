@@ -1,0 +1,1208 @@
+{
+	"id": "816676008b06c39cd250302aeb2c7f1019b9a23869896adad1669ffec4d0ee19",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/private/tmp/z5jp8p-ui.E7GO8J/source",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-20T11:20:22.152Z",
+	"finishedAt": "2026-11-20T11:22:51.398Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "desktop.adapter.capacitor-bridge",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "4ea524c90b1d942bac0b9263f274401f7dd29e3f1506cc4d5bfbe0d3f3a93c4b",
+			"source": "62aaac4a5795bc288449112830042a6bf9b2644f5dbc89141669fc788638774b",
+			"contract": "89bae52556cdf8925098612247d18159d0eeef0f859f21cd4466ea85b8029afb",
+			"runtime": "7c47c85b3f9ab8af744be0c8f5bf42c534c9193316738d60efb297101ead20a8",
+			"files": [
+				{
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
+					"hash": "5af050ce6439fe04cd72fb822c3ad8205474bf68"
+				},
+				{
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.types.ts",
+					"hash": "4b18056ce231f1d062d799839db557fe07efe7ad"
+				}
+			]
+		},
+		{
+			"unit": "desktop.adapter.capacitor-environment",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "b3de050cf0354fe644aabf261c21b4f599657e251786ec55fdc6328de1899767",
+			"source": "1d7ec95078fd07025fe077eafeaf618c01d27a82e2e10bb33578f881a8a8da83",
+			"contract": "ea63a9ddf5b7e7f65181f2596d5fdb911a6532bcf6493a91cb5d818c4677ae09",
+			"runtime": "18a236d4f79285c5ef0a026a0b6afde1544583f76ed130729f38f7aba0ad0531",
+			"files": [
+				{
+					"path": "packages/desktop/src/adapters/CapacitorEnvironmentAdapter.ts",
+					"hash": "fbc3436ddd1f5b8fd2ec487c91a17bc22bd7ea31"
+				},
+				{
+					"path": "packages/desktop/src/lib/select-environment/CapacitorEnvironmentAdapter.ts",
+					"hash": "acb7b418400fd153629de6fa321bc941cb255255"
+				},
+				{
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
+					"hash": "ba48e8ea5efafb3e4b949d7b4e02164289cb7ea4"
+				},
+				{
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.types.ts",
+					"hash": "b96ef20e0ecde5c72c0407766806c5136e503ab2"
+				}
+			]
+		},
+		{
+			"unit": "desktop.adapter.electron-environment",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "3a22c0c383feb76e61b9bde0b176ab9d3848bbc59063718e0c9f43b20f0f890b",
+			"source": "d409c19541cbca5f08cfa29dba360f4c31d43833c21f90c836b4b5b6a9d3a3ee",
+			"contract": "3434e301259607daae640ed8c2d26d731151bddc5af97e29149cf8558adafed9",
+			"runtime": "28e3dc0586e4062d4b694aa503011dc689051abc1bf7672187574beb56a41a4f",
+			"files": [
+				{
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
+					"hash": "8bcba871e688dc93f75dfdece25aeb949ad967df"
+				},
+				{
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.types.ts",
+					"hash": "61d00062da9a0353e8dfbde57715d0a024ec6d5e"
+				}
+			]
+		},
+		{
+			"unit": "desktop.function.project-capabilities",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "bd87daa64ad2896762ebe002e054244cc9c5d0ed16e99659a2fece37b764271e",
+			"source": "8bfca24f22d7cf6559bc0f85ae93c7825cf8b075dcebd3f177dce6d29a934bea",
+			"contract": "256fc683569ae0502bf88209d96ee9e9cebe4698bcb9dcea8216d383f31b57f8",
+			"runtime": "dfa63e5d955a27235b0350687e425aed02c129c6bec2d901f4a5763958260ef5",
+			"files": [
+				{
+					"path": "packages/desktop/src/utils/projects-sessions/load-workspace/projectCapabilities.ts",
+					"hash": "1b6903d26869d26e249592dcab800b9810919f27"
+				},
+				{
+					"path": "packages/desktop/src/utils/projects-sessions/projectCapabilities.ts",
+					"hash": "7d530b67cb737df93a6535cad685cb3c254950da"
+				}
+			]
+		},
+		{
+			"unit": "desktop.function.select-environment",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "42c0b18d88b00e3057fd813a2394e7995066b8e213d74a5bc00ba9e312a6e23a",
+			"source": "03bf2eef02e5c5866ffc4d12c6704259b80e830236899cc8e3d9863b63145c2f",
+			"contract": "9a8e95503040a25896ba082228d12d795c8ad68fc08148f4328725bd83794774",
+			"runtime": "6ae63719f1d8680933cb2eaaaea7a668de756aee9cc820b2ea2d4dcdeb00eca3",
+			"files": [
+				{
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/selectEnvironment.ts",
+					"hash": "b181a5375ca953a7a8081f5dc811558fbb0692e6"
+				}
+			]
+		},
+		{
+			"unit": "function.record-capture",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41e40bb7a2b44b7fa1da3881ebf1a687d3d8471d42fd0a7c44d584361255ff42",
+			"source": "142bfa1513b076860925e3bac72e4361c1edd5901abe0b7061ebac711646346a",
+			"contract": "025908d6c17bb9a51a22fa8f85c40b9ea26bb9161a5d016c554aa7e340c15a52",
+			"runtime": "a289759bf06513632380a5baa8ac1f6a9a916c1d1905e0de6a7be531f7936431",
+			"files": [
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.ts",
+					"hash": "316c75b906d532b1a5b376f345b7de8e00da1f4d"
+				},
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.types.ts",
+					"hash": "8e36a063513222284548df76d240d4a45f6626a9"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cfb49b515cacc084047d75cdf10a295ab3790ecaf878e2b75e06463793f628bf",
+			"source": "cbf5fb170c4db458f39bcc4ba18996e377a782371040baa39d1667f04bf87635",
+			"contract": "6f2e8a598fb220dd111fe8085fb28c645ee24019cc4b1f25315b141a569962d7",
+			"runtime": "ec246a1eb80a7c06e7ccbd8601bab05e75d00122b0ad9d09eec95bbe94f31c19",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts",
+					"hash": "36741c54d766dd2689e542099ca02135cd07760b"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.types.ts",
+					"hash": "758395e715dd7c7d824deb57b07849f373ef164e"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/artifactCases.ts",
+					"hash": "f5a0a857433ab39a3aa86c795bab10681a76db3f"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0126669999999649,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90046464,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.project-capabilities",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.00533300000000736,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-6618454807105beb-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.project-capabilities",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90587136,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-6618454807105beb-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.007576500000046356,
+			"method": "Arithmetic mean of 6 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91488256,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.adapter.capacitor-bridge",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.107291000000032,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-4e482a34cf61fc49-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.adapter.capacitor-bridge",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91209728,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-4e482a34cf61fc49-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.adapter.capacitor-environment",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.18770800000004328,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-75f8974e9d5d1cd6-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.adapter.capacitor-environment",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91209728,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-75f8974e9d5d1cd6-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.select-environment",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.04120420000000422,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-c954cd0242882002-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.select-environment",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91488256,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-c954cd0242882002-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.adapter.electron-environment",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.010229249999980539,
+			"method": "Arithmetic mean of 4 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-69d775cd0da3ebd3-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.adapter.electron-environment",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91455488,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-69d775cd0da3ebd3-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.23079199999998914,
+			"method": "Arithmetic mean of 3 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91504640,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "remote-mobile-ui:cache",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-remote-cache.spec.ts",
+			"status": "passed",
+			"durationMs": 2224,
+			"log": {
+				"path": "logs/remote-mobile-ui-cache.log",
+				"bytes": 219,
+				"sha256": "a084c419904ea0710cb4aee307c0c5f2e46d3c25c7bf84d7ae2deea3ab231598"
+			}
+		},
+		{
+			"id": "remote-mobile-ui:host",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-remote-host.spec.ts",
+			"status": "passed",
+			"durationMs": 8205,
+			"log": {
+				"path": "logs/remote-mobile-ui-host.log",
+				"bytes": 223,
+				"sha256": "99b75df2b9d858b6d1c4f559f4a1d20355293e0a0530bd817b3bb59669a3b7b3"
+			}
+		},
+		{
+			"id": "remote-mobile-ui:phone",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-remote-phone.spec.ts",
+			"status": "passed",
+			"durationMs": 2768,
+			"log": {
+				"path": "logs/remote-mobile-ui-phone.log",
+				"bytes": 222,
+				"sha256": "6049910c986d09260aace838b75323856f75da8a72e850dfaee8a9a5f20c9aa1"
+			}
+		},
+		{
+			"id": "remote-mobile-ui:scan",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-remote-scan.spec.ts",
+			"status": "passed",
+			"durationMs": 1944,
+			"log": {
+				"path": "logs/remote-mobile-ui-scan.log",
+				"bytes": 216,
+				"sha256": "6abdf6185908bc900b286b9bea6ce80bd512edd372deabf84a90203b1f683931"
+			}
+		},
+		{
+			"id": "remote-mobile-ui:tablet",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-remote-tablet.spec.ts",
+			"status": "passed",
+			"durationMs": 2259,
+			"log": {
+				"path": "logs/remote-mobile-ui-tablet.log",
+				"bytes": 221,
+				"sha256": "36a122605a44a89c8ff61dd3818b2f290423558d52521b0abd48b5f1fd2d6175"
+			}
+		},
+		{
+			"id": "examples-desktop.function.select-environment:examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.select-environment.test.ts",
+			"status": "passed",
+			"durationMs": 2178,
+			"log": {
+				"path": "logs/examples-desktop.function.select-environment-examples.log",
+				"bytes": 433,
+				"sha256": "01824f8f5d17097f14b130cfc51e40e2716fc208afa5e2963942966c050331c3"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "examples-desktop.function.select-environment",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "native-shell-takes-precedence",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "native-shell-takes-precedence",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.select-environment/examples/native-shell-takes-precedence.json",
+							"sha256": "dbaac7b5788fbd5022b776fc329ec5376b76389b2320f9053d8a7de06ebbee6e",
+							"bytes": 781,
+							"capturedAt": "2026-11-20T11:22:49.314Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "native-shell-takes-precedence",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/desktop.function.select-environment.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.select-environment/examples/test-examples-desktop.function.select-environment.test.ts-native-shell-takes-precedence.txt",
+							"sha256": "01824f8f5d17097f14b130cfc51e40e2716fc208afa5e2963942966c050331c3",
+							"bytes": 433,
+							"capturedAt": "2026-11-20T11:22:49.315Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "native-shell-takes-precedence",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.select-environment/examples/test-examples-desktop.function.select-environment.test.ts-native-shell-takes-precedence.json",
+							"sha256": "9d2d0e15259d36b4deb68f5b33ae6dee5e0bd097fae7f6fc174053f7432dbe7c",
+							"bytes": 3494,
+							"capturedAt": "2026-11-20T11:22:49.315Z"
+						}
+					]
+				},
+				{
+					"id": "preload-bridge-selects-electron",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "preload-bridge-selects-electron",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.select-environment/examples/preload-bridge-selects-electron.json",
+							"sha256": "0a932a1dc7df452ed0f6bfe2ddf08c54314c579e8397eaff97073d5b8d4cef94",
+							"bytes": 1010,
+							"capturedAt": "2026-11-20T11:22:49.314Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "preload-bridge-selects-electron",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/desktop.function.select-environment.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.select-environment/examples/test-examples-desktop.function.select-environment.test.ts-preload-bridge-selects-electron.txt",
+							"sha256": "01824f8f5d17097f14b130cfc51e40e2716fc208afa5e2963942966c050331c3",
+							"bytes": 433,
+							"capturedAt": "2026-11-20T11:22:49.315Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "preload-bridge-selects-electron",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.select-environment/examples/test-examples-desktop.function.select-environment.test.ts-preload-bridge-selects-electron.json",
+							"sha256": "55c9c6f6c16b667944c146a094b8e41dc5b7870aa142ee4bd6f2a659f6cda814",
+							"bytes": 2464,
+							"capturedAt": "2026-11-20T11:22:49.315Z"
+						}
+					]
+				},
+				{
+					"id": "web-without-bridge",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "web-without-bridge",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.select-environment/examples/web-without-bridge.json",
+							"sha256": "d211d99446170d94360ff06e11a5c7a621c0e18a755f1683e151e795da7929d5",
+							"bytes": 1040,
+							"capturedAt": "2026-11-20T11:22:49.314Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "web-without-bridge",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/desktop.function.select-environment.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.select-environment/examples/test-examples-desktop.function.select-environment.test.ts-web-without-bridge.txt",
+							"sha256": "01824f8f5d17097f14b130cfc51e40e2716fc208afa5e2963942966c050331c3",
+							"bytes": 433,
+							"capturedAt": "2026-11-20T11:22:49.315Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "web-without-bridge",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.select-environment/examples/test-examples-desktop.function.select-environment.test.ts-web-without-bridge.json",
+							"sha256": "933cec6e9961c9be7e349847d76d32287c8db32b5d0adc40fc5111e9ea3124a3",
+							"bytes": 1809,
+							"capturedAt": "2026-11-20T11:22:49.315Z"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "remote-mobile-ui",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "phone-interaction",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-mobile-ui-output",
+							"kind": "output",
+							"state": "phone-interaction",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/ui-remote-phone.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/tests-e2e-ui-remote-phone.spec.ts-phone-interaction.txt",
+							"sha256": "6049910c986d09260aace838b75323856f75da8a72e850dfaee8a9a5f20c9aa1",
+							"bytes": 222,
+							"capturedAt": "2026-11-20T11:22:39.295Z"
+						}
+					]
+				},
+				{
+					"id": "desktop-interaction",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-mobile-ui-output",
+							"kind": "output",
+							"state": "desktop-interaction",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/ui-remote-host.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/tests-e2e-ui-remote-host.spec.ts-desktop-interaction.txt",
+							"sha256": "99b75df2b9d858b6d1c4f559f4a1d20355293e0a0530bd817b3bb59669a3b7b3",
+							"bytes": 223,
+							"capturedAt": "2026-11-20T11:22:35.269Z"
+						}
+					]
+				},
+				{
+					"id": "cached-interaction",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-mobile-ui-output",
+							"kind": "output",
+							"state": "cached-interaction",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/ui-remote-cache.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/cache/tests-e2e-ui-remote-cache.spec.ts-cached-interaction.txt",
+							"sha256": "a084c419904ea0710cb4aee307c0c5f2e46d3c25c7bf84d7ae2deea3ab231598",
+							"bytes": 219,
+							"capturedAt": "2026-11-20T11:22:25.818Z"
+						}
+					]
+				},
+				{
+					"id": "scan-interaction",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-mobile-ui-output",
+							"kind": "output",
+							"state": "scan-interaction",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/ui-remote-scan.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/scan/tests-e2e-ui-remote-scan.spec.ts-scan-interaction.txt",
+							"sha256": "6abdf6185908bc900b286b9bea6ce80bd512edd372deabf84a90203b1f683931",
+							"bytes": 216,
+							"capturedAt": "2026-11-20T11:22:42.456Z"
+						}
+					]
+				},
+				{
+					"id": "phone-start",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-screens-mobile",
+							"kind": "screenshot",
+							"state": "phone-start",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer with a SYNTHETIC control port or native plugin in the page. No relay, host computer, phone, key or credential exists; this is no proof of a connection.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-start-mobile.png",
+							"sha256": "c59fac5b4a5e12c80aa933698148d945b9d8a6a2afa646b4e9687500d21f5243",
+							"bytes": 30657,
+							"capturedAt": "2026-11-20T11:22:39.290Z",
+							"server": {
+								"buildId": "5a588f6902b604b54736d206940fb1f193c2ae6ffa2be99a198a33f52ccb8879",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "phone-pending",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-screens-mobile",
+							"kind": "screenshot",
+							"state": "phone-pending",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer with a SYNTHETIC control port or native plugin in the page. No relay, host computer, phone, key or credential exists; this is no proof of a connection.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-pending-mobile.png",
+							"sha256": "417bded7731b74bdba96642ad885ee3aa2fc30342183f751026bf24ca4ef9e64",
+							"bytes": 29549,
+							"capturedAt": "2026-11-20T11:22:39.291Z",
+							"server": {
+								"buildId": "5a588f6902b604b54736d206940fb1f193c2ae6ffa2be99a198a33f52ccb8879",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "phone-scan-denied",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-screens-mobile",
+							"kind": "screenshot",
+							"state": "phone-scan-denied",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer with a SYNTHETIC control port or native plugin in the page. No relay, host computer, phone, key or credential exists; this is no proof of a connection.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/scan/remote-phone-scan-denied-mobile.png",
+							"sha256": "4797ee3ecc8a43cb7c4bff6beda0967d4d04353ac311c6bbdb04341c3b25c30a",
+							"bytes": 36064,
+							"capturedAt": "2026-11-20T11:22:42.453Z",
+							"server": {
+								"buildId": "5a588f6902b604b54736d206940fb1f193c2ae6ffa2be99a198a33f52ccb8879",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "phone-scan-cancelled",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-screens-mobile",
+							"kind": "screenshot",
+							"state": "phone-scan-cancelled",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer with a SYNTHETIC control port or native plugin in the page. No relay, host computer, phone, key or credential exists; this is no proof of a connection.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/scan/remote-phone-scan-cancelled-mobile.png",
+							"sha256": "d17200ff2a0257df1e83835920d8fbd3d4ebb6ce229827e5b6b1d989999a4b1b",
+							"bytes": 34124,
+							"capturedAt": "2026-11-20T11:22:42.454Z",
+							"server": {
+								"buildId": "5a588f6902b604b54736d206940fb1f193c2ae6ffa2be99a198a33f52ccb8879",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "phone-scan-invalid",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-screens-mobile",
+							"kind": "screenshot",
+							"state": "phone-scan-invalid",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer with a SYNTHETIC control port or native plugin in the page. No relay, host computer, phone, key or credential exists; this is no proof of a connection.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/scan/remote-phone-scan-invalid-mobile.png",
+							"sha256": "622db55b4136738dc68fd8dcb4ddd157c791de9b0728b1a81904bc21b910e82e",
+							"bytes": 36811,
+							"capturedAt": "2026-11-20T11:22:42.455Z",
+							"server": {
+								"buildId": "5a588f6902b604b54736d206940fb1f193c2ae6ffa2be99a198a33f52ccb8879",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "phone-scan-expired",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-screens-mobile",
+							"kind": "screenshot",
+							"state": "phone-scan-expired",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer with a SYNTHETIC control port or native plugin in the page. No relay, host computer, phone, key or credential exists; this is no proof of a connection.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/scan/remote-phone-scan-expired-mobile.png",
+							"sha256": "15507522ed2cd1e4dbf2ac442f076fba86d70d82e44f48b3d8682b2d1f15c8be",
+							"bytes": 36514,
+							"capturedAt": "2026-11-20T11:22:42.456Z",
+							"server": {
+								"buildId": "5a588f6902b604b54736d206940fb1f193c2ae6ffa2be99a198a33f52ccb8879",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "phone-connected",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-screens-mobile",
+							"kind": "screenshot",
+							"state": "phone-connected",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer with a SYNTHETIC control port or native plugin in the page. No relay, host computer, phone, key or credential exists; this is no proof of a connection.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-connected-mobile.png",
+							"sha256": "e1d84f3e0a906f3736e51588b593fc5435c75ed5b2346b41be41afae6af437f9",
+							"bytes": 36602,
+							"capturedAt": "2026-11-20T11:22:39.292Z",
+							"server": {
+								"buildId": "5a588f6902b604b54736d206940fb1f193c2ae6ffa2be99a198a33f52ccb8879",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "phone-workspace",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-screens-mobile",
+							"kind": "screenshot",
+							"state": "phone-workspace",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer with a SYNTHETIC control port or native plugin in the page. No relay, host computer, phone, key or credential exists; this is no proof of a connection.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-workspace-mobile.png",
+							"sha256": "479cefe5487a4f2da84d8e2e85776fc68959c9f423e13c18874ded008f19172a",
+							"bytes": 50080,
+							"capturedAt": "2026-11-20T11:22:39.294Z",
+							"server": {
+								"buildId": "5a588f6902b604b54736d206940fb1f193c2ae6ffa2be99a198a33f52ccb8879",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "phone-offline",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-screens-mobile",
+							"kind": "screenshot",
+							"state": "phone-offline",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer with a SYNTHETIC control port or native plugin in the page. No relay, host computer, phone, key or credential exists; this is no proof of a connection.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-offline-mobile.png",
+							"sha256": "035f145d05105492a510e7a58315c31e4695a60cc533ce98872ef9d0b973c778",
+							"bytes": 40852,
+							"capturedAt": "2026-11-20T11:22:39.295Z",
+							"server": {
+								"buildId": "5a588f6902b604b54736d206940fb1f193c2ae6ffa2be99a198a33f52ccb8879",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "phone-revoked",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-screens-mobile",
+							"kind": "screenshot",
+							"state": "phone-revoked",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer with a SYNTHETIC control port or native plugin in the page. No relay, host computer, phone, key or credential exists; this is no proof of a connection.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-revoked-mobile.png",
+							"sha256": "d40cf1c8e1008b5b6c44986655137cceef32fad9006121ffe54db29fd595c9d6",
+							"bytes": 30369,
+							"capturedAt": "2026-11-20T11:22:39.293Z",
+							"server": {
+								"buildId": "5a588f6902b604b54736d206940fb1f193c2ae6ffa2be99a198a33f52ccb8879",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "desktop-start",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-screens-desktop",
+							"kind": "screenshot",
+							"state": "desktop-start",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer with a SYNTHETIC control port or native plugin in the page. No relay, host computer, phone, key or credential exists; this is no proof of a connection.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/remote-desktop-start-desktop.png",
+							"sha256": "b27c687679ab6fd59625490d809df827875aa9eb4fcf791c7a45c866a0b770a1",
+							"bytes": 85135,
+							"capturedAt": "2026-11-20T11:22:35.258Z",
+							"server": {
+								"buildId": "5a588f6902b604b54736d206940fb1f193c2ae6ffa2be99a198a33f52ccb8879",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "desktop-approval",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-screens-desktop",
+							"kind": "screenshot",
+							"state": "desktop-approval",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer with a SYNTHETIC control port or native plugin in the page. No relay, host computer, phone, key or credential exists; this is no proof of a connection.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/remote-desktop-approval-desktop.png",
+							"sha256": "85c254efaf815c735df67efcaaa1cdb0ed4822339298236ca67c13fd206c1472",
+							"bytes": 101853,
+							"capturedAt": "2026-11-20T11:22:35.267Z",
+							"server": {
+								"buildId": "5a588f6902b604b54736d206940fb1f193c2ae6ffa2be99a198a33f52ccb8879",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "desktop-access",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-screens-desktop",
+							"kind": "screenshot",
+							"state": "desktop-access",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer with a SYNTHETIC control port or native plugin in the page. No relay, host computer, phone, key or credential exists; this is no proof of a connection.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/remote-desktop-access-desktop.png",
+							"sha256": "060b6e988ebc1d7032ca4cf019ed44f3f12473e3726cfd639247cfe830f9876d",
+							"bytes": 69161,
+							"capturedAt": "2026-11-20T11:22:35.261Z",
+							"server": {
+								"buildId": "5a588f6902b604b54736d206940fb1f193c2ae6ffa2be99a198a33f52ccb8879",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "desktop-code-hidden",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-screens-desktop",
+							"kind": "screenshot",
+							"state": "desktop-code-hidden",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer with a SYNTHETIC control port or native plugin in the page. No relay, host computer, phone, key or credential exists; this is no proof of a connection.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/remote-desktop-code-hidden-desktop.png",
+							"sha256": "6f58c60465e249dfd66fd3d75bc7c1bea809a791c943e4c559eb0f61ccc3e90b",
+							"bytes": 91112,
+							"capturedAt": "2026-11-20T11:22:35.264Z",
+							"server": {
+								"buildId": "5a588f6902b604b54736d206940fb1f193c2ae6ffa2be99a198a33f52ccb8879",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "desktop-code-expired",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-screens-desktop",
+							"kind": "screenshot",
+							"state": "desktop-code-expired",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer with a SYNTHETIC control port or native plugin in the page. No relay, host computer, phone, key or credential exists; this is no proof of a connection.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/remote-desktop-code-expired-desktop.png",
+							"sha256": "e1bff879d915a8b893451b016742ec4e81f6b85f96b59ac076b8394b2fcfecd9",
+							"bytes": 93975,
+							"capturedAt": "2026-11-20T11:22:35.269Z",
+							"server": {
+								"buildId": "5a588f6902b604b54736d206940fb1f193c2ae6ffa2be99a198a33f52ccb8879",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "tablet-interaction",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-mobile-ui-output",
+							"kind": "output",
+							"state": "tablet-interaction",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/ui-remote-tablet.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/tablet/tests-e2e-ui-remote-tablet.spec.ts-tablet-interaction.txt",
+							"sha256": "36a122605a44a89c8ff61dd3818b2f290423558d52521b0abd48b5f1fd2d6175",
+							"bytes": 221,
+							"capturedAt": "2026-11-20T11:22:45.909Z"
+						}
+					]
+				},
+				{
+					"id": "tablet-phone-workspace",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-screens-tablet",
+							"kind": "screenshot",
+							"state": "tablet-phone-workspace",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer with a SYNTHETIC control port or native plugin in the page. No relay, host computer, phone, key or credential exists; this is no proof of a connection.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/tablet/remote-tablet-phone-workspace-tablet.png",
+							"sha256": "589be95b668407e73d7dc90ba3408bf619d7f1e439ab9f9541617bf2c1fcda31",
+							"bytes": 58699,
+							"capturedAt": "2026-11-20T11:22:45.907Z",
+							"server": {
+								"buildId": "5a588f6902b604b54736d206940fb1f193c2ae6ffa2be99a198a33f52ccb8879",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "tablet-desktop-approval",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "remote-screens-tablet",
+							"kind": "screenshot",
+							"state": "tablet-desktop-approval",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer with a SYNTHETIC control port or native plugin in the page. No relay, host computer, phone, key or credential exists; this is no proof of a connection.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/tablet/remote-tablet-desktop-approval-tablet.png",
+							"sha256": "cb334aefe6765feeda18a256891c623271003f43b724dd71435d7b862fe4c55b",
+							"bytes": 103101,
+							"capturedAt": "2026-11-20T11:22:45.909Z",
+							"server": {
+								"buildId": "5a588f6902b604b54736d206940fb1f193c2ae6ffa2be99a198a33f52ccb8879",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				}
+			]
+		}
+	],
+	"builds": [
+		{
+			"id": "reports",
+			"directory": "packages/reports/build",
+			"buildId": "375b7d30c218e38528aff47a161722bdaea5f8937091bddaf2edf5589827009c",
+			"files": 722
+		},
+		{
+			"id": "planning",
+			"directory": "packages/planning/dist",
+			"buildId": "3738a3efb5f023b93ea637744c775d7d95870cd7564a986730e1d3e0b409f0c6",
+			"files": 1
+		},
+		{
+			"id": "desktop-renderer",
+			"directory": "packages/desktop/build",
+			"buildId": "5a588f6902b604b54736d206940fb1f193c2ae6ffa2be99a198a33f52ccb8879",
+			"files": 33
+		},
+		{
+			"id": "desktop-main",
+			"directory": "packages/desktop/dist",
+			"buildId": "569ceb4f923d1cbbd1d1fe85c1be3bccda3decc65d6bce07a1d5834bd9513342",
+			"files": 4
+		},
+		{
+			"id": "shell-fixture",
+			"directory": "packages/reports/output/shell-fixture",
+			"buildId": "edc496cfd149a2bf5bb60a0866b4f7ef31b48d3c3c4d16baf0953b9e150982dd",
+			"files": 11
+		},
+		{
+			"id": "entity-preview",
+			"directory": "packages/reports/output/entity-preview",
+			"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+			"files": 504
+		}
+	],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to desktop.function.select-environment: only its scenario states ran, so this record is partial and never a full pass.",
+		"Scoped to desktop.function.select-environment: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}

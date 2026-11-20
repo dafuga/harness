@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.select-environment",
+	"symbol": "selectEnvironment",
+	"cases": [
+		{
+			"name": "empty host",
+			"input": {},
+			"output": {
+				"kind": "web",
+				"bridge": null,
+				"local": false,
+				"host": null,
+				"phone": null,
+				"account": null
+			}
+		},
+		{
+			"name": "native check returns false",
+			"input": {
+				"Capacitor": "isNativePlatform false"
+			},
+			"output": {
+				"kind": "web",
+				"bridge": null,
+				"local": false,
+				"host": null,
+				"phone": null,
+				"account": null
+			}
+		},
+		{
+			"name": "harnessRemote without harness",
+			"input": {
+				"harnessRemote": "whole"
+			},
+			"output": {
+				"kind": "web",
+				"bridge": null,
+				"local": false,
+				"host": null,
+				"phone": null,
+				"account": null
+			}
+		},
+		{
+			"name": "harness is null",
+			"input": {
+				"harness": null
+			},
+			"output": {
+				"kind": "web",
+				"bridge": null,
+				"local": false,
+				"host": null,
+				"phone": null,
+				"account": null
+			}
+		}
+	]
+}
