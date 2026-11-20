@@ -1,0 +1,1090 @@
+{
+	"schemaVersion": 1,
+	"id": "function.development-tooling-sibling-bug-sweep",
+	"uid": "u_wwerrde2nk",
+	"kind": "function",
+	"title": "bugClass",
+	"responsibility": "Classifies bugs, evaluates similar sites at a committed revision, and records reviewed sibling repair evidence.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/core/development-tooling/bug-class/bugClassSchemas.ts",
+			"src/core/development-tooling/bug-class/bugClassSchemas.types.ts",
+			"src/utils/development-tooling/sibling-bug-sweep/committedSourcePaths.ts",
+			"src/utils/development-tooling/sibling-bug-sweep/patternHits.ts",
+			"src/utils/development-tooling/sibling-bug-sweep/patternHits.types.ts",
+			"src/utils/development-tooling/sibling-bug-sweep/recordBugClass.ts",
+			"src/utils/development-tooling/sibling-bug-sweep/reviewCandidates.ts",
+			"src/utils/development-tooling/sibling-bug-sweep/reviewKnownClasses.ts",
+			"src/utils/development-tooling/sibling-bug-sweep/scanCandidates.ts",
+			"src/utils/development-tooling/sibling-bug-sweep/scanCandidates.types.ts",
+			"src/utils/development-tooling/sibling-bug-sweep/sourceLayout.ts",
+			"src/utils/development-tooling/siblingBugSweep.ts",
+			"src/utils/development-tooling/siblingBugSweep.types.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/loopSiblingReport.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/repairSibling.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/repairSibling.types.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/siblingRepairProof.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/siblingRepairProof.types.ts"
+		],
+		"symbols": [
+			"bugClassId",
+			"searchPatternSchema",
+			"bugClassSchema",
+			"classRecordSchema",
+			"candidateVerdictSchema",
+			"candidateReviewSchema",
+			"repairReviewSchema",
+			"workerTestSchema",
+			"BugClass",
+			"SearchPattern",
+			"CandidateVerdict",
+			"committedSourcePaths",
+			"patternHits",
+			"PatternHit",
+			"readBugClasses",
+			"registeredBugClass",
+			"recordBugClass",
+			"reviewCandidates",
+			"reviewKnownClasses",
+			"scanCandidates",
+			"SourceRange",
+			"SourceCandidate",
+			"CandidateContext",
+			"ReviewedCandidate",
+			"sourceLayout",
+			"BugSweepInput",
+			"BugSweepReport",
+			"siblingBugSweep",
+			"BugSweepInput",
+			"BugSweepReport",
+			"SweepReviewInput",
+			"BugEvaluator",
+			"beginSiblingReport",
+			"requireSiblingReport",
+			"siblingReportComplete",
+			"repairSiblings",
+			"RepairOptions",
+			"RepairDependencies",
+			"SiblingRepairResult",
+			"RepairContext",
+			"enableRepairProof",
+			"recordFailingRepair",
+			"recordPassingRepair",
+			"RepairProofInput"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "committedSourcePaths.root",
+				"type": "string",
+				"required": true,
+				"description": "Absolute repository path for the source and Git state."
+			},
+			{
+				"name": "committedSourcePaths.revision",
+				"type": "string",
+				"required": true,
+				"description": "Commit hash of the source being evaluated."
+			},
+			{
+				"name": "committedSourcePaths.ranges",
+				"type": "Map<string, SourceRange[]>",
+				"required": false,
+				"description": "Optional map of source paths with changed line ranges to consider."
+			},
+			{
+				"name": "patternHits.path",
+				"type": "string",
+				"required": true,
+				"description": "Source path that selects the applicable syntax parser."
+			},
+			{
+				"name": "patternHits.source",
+				"type": "string",
+				"required": true,
+				"description": "Committed source text to search."
+			},
+			{
+				"name": "patternHits.patterns",
+				"type": "SearchPattern[]",
+				"required": true,
+				"description": "Literal text, call, or constructor patterns with ranking weights."
+			},
+			{
+				"name": "readBugClasses.tree",
+				"type": "SourceTree",
+				"required": true,
+				"description": "A readable source snapshot pinned to one Git commit."
+			},
+			{
+				"name": "registeredBugClass.tree",
+				"type": "SourceTree",
+				"required": true,
+				"description": "A readable source snapshot pinned to one Git commit."
+			},
+			{
+				"name": "registeredBugClass.id",
+				"type": "string",
+				"required": true,
+				"description": "Class identifier committed to the selected snapshot."
+			},
+			{
+				"name": "recordBugClass.root",
+				"type": "string",
+				"required": true,
+				"description": "Absolute repository path for the source and Git state."
+			},
+			{
+				"name": "recordBugClass.bugClass",
+				"type": "BugClass",
+				"required": true,
+				"description": "Reusable root cause, evidence criteria, and source search patterns."
+			},
+			{
+				"name": "recordBugClass.revision",
+				"type": "string",
+				"required": true,
+				"description": "Commit hash of the source being evaluated."
+			},
+			{
+				"name": "reviewCandidates.candidates",
+				"type": "CandidateContext[]",
+				"required": true,
+				"description": "Ranked candidate sites with source context for the evaluator."
+			},
+			{
+				"name": "reviewCandidates.bugClass",
+				"type": "BugClass",
+				"required": true,
+				"description": "Reusable root cause, evidence criteria, and source search patterns."
+			},
+			{
+				"name": "reviewCandidates.evaluate",
+				"type": "AgentEvaluator",
+				"required": true,
+				"description": "Semantic evaluator used to validate candidate and acceptance verdicts."
+			},
+			{
+				"name": "reviewCandidates.options",
+				"type": "{ model: string; reviewLimit: number }",
+				"required": true,
+				"description": "Evaluator model and maximum candidate sites to review."
+			},
+			{
+				"name": "reviewKnownClasses.input",
+				"type": "SweepReviewInput",
+				"required": true,
+				"description": "Repository, base ref, optional head revision, evaluator model, and review limit per class."
+			},
+			{
+				"name": "reviewKnownClasses.evaluate",
+				"type": "BugEvaluator",
+				"required": false,
+				"description": "Optional evaluator. Defaults to the authenticated Codex evaluator."
+			},
+			{
+				"name": "scanCandidates.tree",
+				"type": "SourceTree",
+				"required": true,
+				"description": "A readable source snapshot pinned to one Git commit."
+			},
+			{
+				"name": "scanCandidates.bugClass",
+				"type": "BugClass",
+				"required": true,
+				"description": "Reusable root cause, evidence criteria, and source search patterns."
+			},
+			{
+				"name": "scanCandidates.options",
+				"type": "{ root: string; ranges?: Map<string, SourceRange[]>; origin?: { path: string; line: number }; reviewLimit: number; }",
+				"required": true,
+				"description": "Repository path, optional diff ranges and original site, and the semantic review limit."
+			},
+			{
+				"name": "sourceLayout.tree",
+				"type": "SourceTree",
+				"required": true,
+				"description": "A readable source snapshot pinned to one Git commit."
+			},
+			{
+				"name": "siblingBugSweep.input",
+				"type": "BugSweepInput",
+				"required": true,
+				"description": "Repository, optional commit, bug report or class ID, optional original site, model, and review limit."
+			},
+			{
+				"name": "siblingBugSweep.evaluate",
+				"type": "BugEvaluator",
+				"required": false,
+				"description": "Optional evaluator. Defaults to the authenticated Codex evaluator."
+			},
+			{
+				"name": "beginSiblingReport.root",
+				"type": "string",
+				"required": true,
+				"description": "Absolute repository path for the source and Git state."
+			},
+			{
+				"name": "beginSiblingReport.loop",
+				"type": "string",
+				"required": true,
+				"description": "Existing loop that receives the report."
+			},
+			{
+				"name": "beginSiblingReport.runId",
+				"type": "string",
+				"required": true,
+				"description": "Unique invocation identifier used for the report and repair refs."
+			},
+			{
+				"name": "beginSiblingReport.output",
+				"type": "BugSweepReport & { repairs?: SiblingRepairResult[] }",
+				"required": true,
+				"description": "Source report and optional initial repair results."
+			},
+			{
+				"name": "requireSiblingReport.root",
+				"type": "string",
+				"required": true,
+				"description": "Absolute repository path for the source and Git state."
+			},
+			{
+				"name": "requireSiblingReport.loop",
+				"type": "string",
+				"required": true,
+				"description": "Loop whose sibling step is completing."
+			},
+			{
+				"name": "requireSiblingReport.filename",
+				"type": "string",
+				"required": true,
+				"description": "Filename of the recorded sibling report in the loop directory."
+			},
+			{
+				"name": "siblingReportComplete.report",
+				"type": "BugSweepReport & { repairs?: SiblingRepairResult[] }",
+				"required": true,
+				"description": "Scan with evaluator errors, skipped files, and any requested repair results."
+			},
+			{
+				"name": "repairSiblings.report",
+				"type": "BugSweepReport",
+				"required": true,
+				"description": "Ranked source report and semantic evidence for the pinned revision."
+			},
+			{
+				"name": "repairSiblings.options",
+				"type": "RepairOptions",
+				"required": true,
+				"description": "Repository, run identifier, authorized test command, and worker model."
+			},
+			{
+				"name": "repairSiblings.dependencies",
+				"type": "RepairDependencies",
+				"required": false,
+				"description": "Optional worker runner and independent evaluator."
+			},
+			{
+				"name": "repairSiblings.onResult",
+				"type": "(results: SiblingRepairResult[]) => Promise<void>",
+				"required": false,
+				"description": "Optional callback to persist accumulated outcomes after each repair."
+			},
+			{
+				"name": "enableRepairProof.root",
+				"type": "string",
+				"required": true,
+				"description": "Absolute repository path for the source and Git state."
+			},
+			{
+				"name": "enableRepairProof.cwd",
+				"type": "string",
+				"required": true,
+				"description": "New detached worktree for the candidate."
+			},
+			{
+				"name": "enableRepairProof.id",
+				"type": "string",
+				"required": true,
+				"description": "Stable candidate ID used to name its proof loop."
+			},
+			{
+				"name": "recordFailingRepair.input",
+				"type": "RepairProofInput",
+				"required": true,
+				"description": "Isolated checkout, candidate, repair ref, and authorized test command."
+			},
+			{
+				"name": "recordFailingRepair.runner",
+				"type": "TaskRunner",
+				"required": true,
+				"description": "Worker runner for the isolated checkout and phase-specific prompt."
+			},
+			{
+				"name": "recordPassingRepair.input",
+				"type": "RepairProofInput",
+				"required": true,
+				"description": "Isolated checkout, candidate, repair ref, and authorized test command."
+			},
+			{
+				"name": "recordPassingRepair.parent",
+				"type": "string",
+				"required": true,
+				"description": "Commit holding the already observed failing regression."
+			},
+			{
+				"name": "recordPassingRepair.runner",
+				"type": "TaskRunner",
+				"required": true,
+				"description": "Worker runner for the isolated checkout and phase-specific prompt."
+			}
+		],
+		"outputs": [
+			{
+				"name": "bugClassId",
+				"type": "unknown",
+				"description": "Schema for a stable kebab-case class identifier."
+			},
+			{
+				"name": "searchPatternSchema",
+				"type": "unknown",
+				"description": "Schema for one literal or syntax pattern and its rank weight."
+			},
+			{
+				"name": "bugClassSchema",
+				"type": "unknown",
+				"description": "Schema for the root cause, criteria, search patterns, and ranking hints."
+			},
+			{
+				"name": "classRecordSchema",
+				"type": "unknown",
+				"description": "Schema for a persisted bug class and its originating Git revision."
+			},
+			{
+				"name": "candidateVerdictSchema",
+				"type": "unknown",
+				"description": "Schema for a site ID, disposition, impact rating, and textual evidence."
+			},
+			{
+				"name": "candidateReviewSchema",
+				"type": "unknown",
+				"description": "Schema for one bounded batch of candidate verdicts."
+			},
+			{
+				"name": "repairReviewSchema",
+				"type": "unknown",
+				"description": "Schema for the independent accept or reject decision with evidence."
+			},
+			{
+				"name": "workerTestSchema",
+				"type": "unknown",
+				"description": "Schema for test paths and the expected literal failing assertion."
+			},
+			{
+				"name": "readBugClasses",
+				"type": "unknown",
+				"description": "Resolves with all valid classes committed to the supplied tree."
+			},
+			{
+				"name": "registeredBugClass",
+				"type": "unknown",
+				"description": "Resolves with the selected committed class, or rejects if its record is missing or invalid."
+			},
+			{
+				"name": "recordBugClass",
+				"type": "unknown",
+				"description": "Resolves with the relative registry path, retaining an identical existing class."
+			},
+			{
+				"name": "committedSourcePaths",
+				"type": "unknown",
+				"description": "Resolves with matching tracked regular source paths and their blob sizes."
+			},
+			{
+				"name": "reviewCandidates",
+				"type": "unknown",
+				"description": "Resolves with ranked sites and explicit diagnostics for failed evaluator batches."
+			},
+			{
+				"name": "reviewKnownClasses",
+				"type": "unknown",
+				"description": "Resolves with the pinned base and head, per-class reports, and gate verdict."
+			},
+			{
+				"name": "scanCandidates",
+				"type": "unknown",
+				"description": "Resolves with candidate sites, scanned file count, and skipped paths."
+			},
+			{
+				"name": "sourceLayout",
+				"type": "unknown",
+				"description": "Resolves with common extensions, directory prefixes, and present framework configs."
+			},
+			{
+				"name": "patternHits",
+				"type": "PatternHit[]",
+				"description": "Line-based matches for each supplied literal or syntax pattern."
+			},
+			{
+				"name": "siblingBugSweep",
+				"type": "Promise<BugSweepReport>",
+				"description": "Resolves with the class, scan revision, ranked sites, and evaluator batch errors."
+			},
+			{
+				"name": "beginSiblingReport",
+				"type": "unknown",
+				"description": "Resolves with the report filename and a callback to persist later repair outcomes."
+			},
+			{
+				"name": "requireSiblingReport",
+				"type": "unknown",
+				"description": "Resolves when the current commit has complete required sibling evidence."
+			},
+			{
+				"name": "siblingReportComplete",
+				"type": "unknown",
+				"description": "Whether the scan succeeded and every requested confirmed repair was accepted."
+			},
+			{
+				"name": "repairSiblings",
+				"type": "unknown",
+				"description": "Resolves with attempted repairs for confirmed sites, preserving each outcome."
+			},
+			{
+				"name": "enableRepairProof",
+				"type": "unknown",
+				"description": "Resolves after preparing an isolated loop for the candidate proof."
+			},
+			{
+				"name": "recordFailingRepair",
+				"type": "unknown",
+				"description": "Resolves with the test-only commit and its observed failing regression record."
+			},
+			{
+				"name": "recordPassingRepair",
+				"type": "unknown",
+				"description": "Resolves with the separate repair commit and unchanged passing regression record."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Disallowed input, an invalid snapshot or class, incomplete evidence, or failed regression admission rejects the affected operation."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "committedSourcePaths",
+				"inputs": [
+					{
+						"name": "committedSourcePaths.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute repository path for the source and Git state."
+					},
+					{
+						"name": "committedSourcePaths.revision",
+						"type": "string",
+						"required": true,
+						"description": "Commit hash of the source being evaluated."
+					},
+					{
+						"name": "committedSourcePaths.ranges",
+						"type": "Map<string, SourceRange[]>",
+						"required": false,
+						"description": "Optional map of source paths with changed line ranges to consider."
+					}
+				],
+				"outputs": [
+					{
+						"name": "committedSourcePaths",
+						"type": "unknown",
+						"description": "Resolves with matching tracked regular source paths and their blob sizes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "patternHits",
+				"inputs": [
+					{
+						"name": "patternHits.path",
+						"type": "string",
+						"required": true,
+						"description": "Source path that selects the applicable syntax parser."
+					},
+					{
+						"name": "patternHits.source",
+						"type": "string",
+						"required": true,
+						"description": "Committed source text to search."
+					},
+					{
+						"name": "patternHits.patterns",
+						"type": "SearchPattern[]",
+						"required": true,
+						"description": "Literal text, call, or constructor patterns with ranking weights."
+					}
+				],
+				"outputs": [
+					{
+						"name": "patternHits",
+						"type": "PatternHit[]",
+						"description": "Line-based matches for each supplied literal or syntax pattern."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readBugClasses",
+				"inputs": [
+					{
+						"name": "readBugClasses.tree",
+						"type": "SourceTree",
+						"required": true,
+						"description": "A readable source snapshot pinned to one Git commit."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readBugClasses",
+						"type": "unknown",
+						"description": "Resolves with all valid classes committed to the supplied tree."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "registeredBugClass",
+				"inputs": [
+					{
+						"name": "registeredBugClass.tree",
+						"type": "SourceTree",
+						"required": true,
+						"description": "A readable source snapshot pinned to one Git commit."
+					},
+					{
+						"name": "registeredBugClass.id",
+						"type": "string",
+						"required": true,
+						"description": "Class identifier committed to the selected snapshot."
+					}
+				],
+				"outputs": [
+					{
+						"name": "registeredBugClass",
+						"type": "unknown",
+						"description": "Resolves with the selected committed class, or rejects if its record is missing or invalid."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Disallowed input, an invalid snapshot or class, incomplete evidence, or failed regression admission rejects the affected operation."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "recordBugClass",
+				"inputs": [
+					{
+						"name": "recordBugClass.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute repository path for the source and Git state."
+					},
+					{
+						"name": "recordBugClass.bugClass",
+						"type": "BugClass",
+						"required": true,
+						"description": "Reusable root cause, evidence criteria, and source search patterns."
+					},
+					{
+						"name": "recordBugClass.revision",
+						"type": "string",
+						"required": true,
+						"description": "Commit hash of the source being evaluated."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordBugClass",
+						"type": "unknown",
+						"description": "Resolves with the relative registry path, retaining an identical existing class."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Disallowed input, an invalid snapshot or class, incomplete evidence, or failed regression admission rejects the affected operation."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "reviewCandidates",
+				"inputs": [
+					{
+						"name": "reviewCandidates.candidates",
+						"type": "CandidateContext[]",
+						"required": true,
+						"description": "Ranked candidate sites with source context for the evaluator."
+					},
+					{
+						"name": "reviewCandidates.bugClass",
+						"type": "BugClass",
+						"required": true,
+						"description": "Reusable root cause, evidence criteria, and source search patterns."
+					},
+					{
+						"name": "reviewCandidates.evaluate",
+						"type": "AgentEvaluator",
+						"required": true,
+						"description": "Semantic evaluator used to validate candidate and acceptance verdicts."
+					},
+					{
+						"name": "reviewCandidates.options",
+						"type": "{ model: string; reviewLimit: number }",
+						"required": true,
+						"description": "Evaluator model and maximum candidate sites to review."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reviewCandidates",
+						"type": "unknown",
+						"description": "Resolves with ranked sites and explicit diagnostics for failed evaluator batches."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "reviewKnownClasses",
+				"inputs": [
+					{
+						"name": "reviewKnownClasses.input",
+						"type": "SweepReviewInput",
+						"required": true,
+						"description": "Repository, base ref, optional head revision, evaluator model, and review limit per class."
+					},
+					{
+						"name": "reviewKnownClasses.evaluate",
+						"type": "BugEvaluator",
+						"required": false,
+						"description": "Optional evaluator. Defaults to the authenticated Codex evaluator."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reviewKnownClasses",
+						"type": "unknown",
+						"description": "Resolves with the pinned base and head, per-class reports, and gate verdict."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scanCandidates",
+				"inputs": [
+					{
+						"name": "scanCandidates.tree",
+						"type": "SourceTree",
+						"required": true,
+						"description": "A readable source snapshot pinned to one Git commit."
+					},
+					{
+						"name": "scanCandidates.bugClass",
+						"type": "BugClass",
+						"required": true,
+						"description": "Reusable root cause, evidence criteria, and source search patterns."
+					},
+					{
+						"name": "scanCandidates.options",
+						"type": "{ root: string; ranges?: Map<string, SourceRange[]>; origin?: { path: string; line: number }; reviewLimit: number; }",
+						"required": true,
+						"description": "Repository path, optional diff ranges and original site, and the semantic review limit."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scanCandidates",
+						"type": "unknown",
+						"description": "Resolves with candidate sites, scanned file count, and skipped paths."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sourceLayout",
+				"inputs": [
+					{
+						"name": "sourceLayout.tree",
+						"type": "SourceTree",
+						"required": true,
+						"description": "A readable source snapshot pinned to one Git commit."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sourceLayout",
+						"type": "unknown",
+						"description": "Resolves with common extensions, directory prefixes, and present framework configs."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "siblingBugSweep",
+				"inputs": [
+					{
+						"name": "siblingBugSweep.input",
+						"type": "BugSweepInput",
+						"required": true,
+						"description": "Repository, optional commit, bug report or class ID, optional original site, model, and review limit."
+					},
+					{
+						"name": "siblingBugSweep.evaluate",
+						"type": "BugEvaluator",
+						"required": false,
+						"description": "Optional evaluator. Defaults to the authenticated Codex evaluator."
+					}
+				],
+				"outputs": [
+					{
+						"name": "siblingBugSweep",
+						"type": "Promise<BugSweepReport>",
+						"description": "Resolves with the class, scan revision, ranked sites, and evaluator batch errors."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "beginSiblingReport",
+				"inputs": [
+					{
+						"name": "beginSiblingReport.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute repository path for the source and Git state."
+					},
+					{
+						"name": "beginSiblingReport.loop",
+						"type": "string",
+						"required": true,
+						"description": "Existing loop that receives the report."
+					},
+					{
+						"name": "beginSiblingReport.runId",
+						"type": "string",
+						"required": true,
+						"description": "Unique invocation identifier used for the report and repair refs."
+					},
+					{
+						"name": "beginSiblingReport.output",
+						"type": "BugSweepReport & { repairs?: SiblingRepairResult[] }",
+						"required": true,
+						"description": "Source report and optional initial repair results."
+					}
+				],
+				"outputs": [
+					{
+						"name": "beginSiblingReport",
+						"type": "unknown",
+						"description": "Resolves with the report filename and a callback to persist later repair outcomes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "requireSiblingReport",
+				"inputs": [
+					{
+						"name": "requireSiblingReport.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute repository path for the source and Git state."
+					},
+					{
+						"name": "requireSiblingReport.loop",
+						"type": "string",
+						"required": true,
+						"description": "Loop whose sibling step is completing."
+					},
+					{
+						"name": "requireSiblingReport.filename",
+						"type": "string",
+						"required": true,
+						"description": "Filename of the recorded sibling report in the loop directory."
+					}
+				],
+				"outputs": [
+					{
+						"name": "requireSiblingReport",
+						"type": "unknown",
+						"description": "Resolves when the current commit has complete required sibling evidence."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Disallowed input, an invalid snapshot or class, incomplete evidence, or failed regression admission rejects the affected operation."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "siblingReportComplete",
+				"inputs": [
+					{
+						"name": "siblingReportComplete.report",
+						"type": "BugSweepReport & { repairs?: SiblingRepairResult[] }",
+						"required": true,
+						"description": "Scan with evaluator errors, skipped files, and any requested repair results."
+					}
+				],
+				"outputs": [
+					{
+						"name": "siblingReportComplete",
+						"type": "unknown",
+						"description": "Whether the scan succeeded and every requested confirmed repair was accepted."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "repairSiblings",
+				"inputs": [
+					{
+						"name": "repairSiblings.report",
+						"type": "BugSweepReport",
+						"required": true,
+						"description": "Ranked source report and semantic evidence for the pinned revision."
+					},
+					{
+						"name": "repairSiblings.options",
+						"type": "RepairOptions",
+						"required": true,
+						"description": "Repository, run identifier, authorized test command, and worker model."
+					},
+					{
+						"name": "repairSiblings.dependencies",
+						"type": "RepairDependencies",
+						"required": false,
+						"description": "Optional worker runner and independent evaluator."
+					},
+					{
+						"name": "repairSiblings.onResult",
+						"type": "(results: SiblingRepairResult[]) => Promise<void>",
+						"required": false,
+						"description": "Optional callback to persist accumulated outcomes after each repair."
+					}
+				],
+				"outputs": [
+					{
+						"name": "repairSiblings",
+						"type": "unknown",
+						"description": "Resolves with attempted repairs for confirmed sites, preserving each outcome."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "enableRepairProof",
+				"inputs": [
+					{
+						"name": "enableRepairProof.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute repository path for the source and Git state."
+					},
+					{
+						"name": "enableRepairProof.cwd",
+						"type": "string",
+						"required": true,
+						"description": "New detached worktree for the candidate."
+					},
+					{
+						"name": "enableRepairProof.id",
+						"type": "string",
+						"required": true,
+						"description": "Stable candidate ID used to name its proof loop."
+					}
+				],
+				"outputs": [
+					{
+						"name": "enableRepairProof",
+						"type": "unknown",
+						"description": "Resolves after preparing an isolated loop for the candidate proof."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordFailingRepair",
+				"inputs": [
+					{
+						"name": "recordFailingRepair.input",
+						"type": "RepairProofInput",
+						"required": true,
+						"description": "Isolated checkout, candidate, repair ref, and authorized test command."
+					},
+					{
+						"name": "recordFailingRepair.runner",
+						"type": "TaskRunner",
+						"required": true,
+						"description": "Worker runner for the isolated checkout and phase-specific prompt."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordFailingRepair",
+						"type": "unknown",
+						"description": "Resolves with the test-only commit and its observed failing regression record."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Disallowed input, an invalid snapshot or class, incomplete evidence, or failed regression admission rejects the affected operation."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "recordPassingRepair",
+				"inputs": [
+					{
+						"name": "recordPassingRepair.input",
+						"type": "RepairProofInput",
+						"required": true,
+						"description": "Isolated checkout, candidate, repair ref, and authorized test command."
+					},
+					{
+						"name": "recordPassingRepair.parent",
+						"type": "string",
+						"required": true,
+						"description": "Commit holding the already observed failing regression."
+					},
+					{
+						"name": "recordPassingRepair.runner",
+						"type": "TaskRunner",
+						"required": true,
+						"description": "Worker runner for the isolated checkout and phase-specific prompt."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordPassingRepair",
+						"type": "unknown",
+						"description": "Resolves with the separate repair commit and unchanged passing regression record."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Disallowed input, an invalid snapshot or class, incomplete evidence, or failed regression admission rejects the affected operation."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-module-task-runner",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-module-task-worktree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-evaluate-agent",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.record-regression",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.regression-files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.loop-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.manage-loop",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/development-tooling/bug-class/bugClassSchemas.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/development-tooling/bug-class/bugClassSchemas.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
