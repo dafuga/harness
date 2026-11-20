@@ -1,0 +1,19 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.recorded-preview",
+	"symbol": "recordedPreview",
+	"cases": [
+		{
+			"name": "answer whose identity names project other",
+			"input": {
+				"requestedProjectId": "7a2e3d4c-5b6a-4f79-8a81-9b2c3d4e5f60",
+				"answerProjectId": "other"
+			},
+			"error": {
+				"name": "RecordedPreviewError",
+				"message": "The screenshot answer belongs to another project."
+			}
+		}
+	]
+}

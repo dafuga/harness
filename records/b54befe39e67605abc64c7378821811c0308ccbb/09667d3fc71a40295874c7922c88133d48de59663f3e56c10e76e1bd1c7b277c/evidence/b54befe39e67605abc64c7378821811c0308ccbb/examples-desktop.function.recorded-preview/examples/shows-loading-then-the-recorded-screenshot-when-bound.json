@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.recorded-preview",
+	"symbol": "recordedPreview",
+	"cases": [
+		{
+			"name": "bound thumbnail on the branch tip",
+			"input": {
+				"entityId": "app.page.orders",
+				"thumbnail": {
+					"source": "recorded",
+					"scenario": "orders-page",
+					"state": "default",
+					"viewport": "desktop"
+				},
+				"commit": "c725e9337e913674d8b859665a97c2ea5d62c2da"
+			},
+			"output": {
+				"states": [
+					{
+						"status": "loading",
+						"reason": "",
+						"caption": ""
+					},
+					{
+						"status": "ready",
+						"reason": "",
+						"caption": "Screenshot · default · c725e93"
+					}
+				],
+				"artifactState": "default",
+				"artifactSha256": "1d7fff556b1abb2fdb7970e2a8a97a670f7cee5b1f2b30121e97c8244f4c505f"
+			}
+		}
+	]
+}

@@ -1,0 +1,23 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.recorded-preview",
+	"symbol": "recordedPreview",
+	"cases": [
+		{
+			"name": "stop after the screenshot is ready",
+			"input": {
+				"releasedAfter": "ready"
+			},
+			"output": {
+				"revoked": [
+					"blob:recorded-preview-1"
+				],
+				"statuses": [
+					"loading",
+					"ready"
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,19 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.recorded-preview",
+	"symbol": "recordedPreview",
+	"cases": [
+		{
+			"name": "answer whose scope names another entity",
+			"input": {
+				"requestedEntityId": "app.page.orders",
+				"answerEntityId": "other.entity"
+			},
+			"error": {
+				"name": "RecordedPreviewError",
+				"message": "The screenshot answer belongs to another entity or commit."
+			}
+		}
+	]
+}
