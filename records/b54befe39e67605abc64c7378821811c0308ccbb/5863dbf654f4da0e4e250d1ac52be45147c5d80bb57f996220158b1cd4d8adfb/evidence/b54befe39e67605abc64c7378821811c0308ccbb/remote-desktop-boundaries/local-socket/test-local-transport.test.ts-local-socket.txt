@@ -1,0 +1,19 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-ZyPNFn/packages/desktop[39m
+
+ [32m✓[39m test/local-transport.test.ts [2m([22m[2m8 tests[22m[2m)[22m[33m 10382[2mms[22m[39m
+   [33m[2m✓[22m[39m the bridge works over a socket that only this machine can reach [33m 776[2mms[22m[39m
+   [33m[2m✓[22m[39m an image of more than a mebibyte crosses the socket in bounded frames and arrives intact [33m 1782[2mms[22m[39m
+   [33m[2m✓[22m[39m two large answers take turns on the socket and a small one does not wait for them [33m 2630[2mms[22m[39m
+   [33m[2m✓[22m[39m each window is its own client: its own project, its own run events, one repository lock [33m 2383[2mms[22m[39m
+   [33m[2m✓[22m[39m a reload keeps the session of its window; closing the window ends its socket and its run only [33m 1162[2mms[22m[39m
+   [33m[2m✓[22m[39m a game of nearly a mebibyte crosses to the main process in bounded frames and reopens [33m 795[2mms[22m[39m
+   [33m[2m✓[22m[39m the control port travels over the same socket, with exactly what the page gave [33m 423[2mms[22m[39m
+   [33m[2m✓[22m[39m repeated concurrent listens reuse one listener and closing releases it [33m 417[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 10:50:52
+[2m   Duration [22m 16.95s[2m (transform 3.90s, setup 295ms, collect 6.08s, tests 10.38s, environment 0ms, prepare 48ms)[22m
+
+JSON report written to /tmp/harness-runner-OhaqwM/report.json
