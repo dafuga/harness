@@ -1,0 +1,467 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-icons",
+	"symbol": "harnessIcons",
+	"cases": [
+		{
+			"name": "pages",
+			"input": "pages",
+			"output": {
+				"path": true,
+				"points": 4,
+				"outside": []
+			}
+		},
+		{
+			"name": "layouts",
+			"input": "layouts",
+			"output": {
+				"path": true,
+				"points": 3,
+				"outside": []
+			}
+		},
+		{
+			"name": "components",
+			"input": "components",
+			"output": {
+				"path": true,
+				"points": 5,
+				"outside": []
+			}
+		},
+		{
+			"name": "styles",
+			"input": "styles",
+			"output": {
+				"path": true,
+				"points": 5,
+				"outside": []
+			}
+		},
+		{
+			"name": "functions",
+			"input": "functions",
+			"output": {
+				"path": true,
+				"points": 5,
+				"outside": []
+			}
+		},
+		{
+			"name": "configs",
+			"input": "configs",
+			"output": {
+				"path": true,
+				"points": 33,
+				"outside": []
+			}
+		},
+		{
+			"name": "services",
+			"input": "services",
+			"output": {
+				"path": true,
+				"points": 4,
+				"outside": []
+			}
+		},
+		{
+			"name": "platforms",
+			"input": "platforms",
+			"output": {
+				"path": true,
+				"points": 4,
+				"outside": []
+			}
+		},
+		{
+			"name": "web",
+			"input": "web",
+			"output": {
+				"path": true,
+				"points": 4,
+				"outside": []
+			}
+		},
+		{
+			"name": "phone",
+			"input": "phone",
+			"output": {
+				"path": true,
+				"points": 2,
+				"outside": []
+			}
+		},
+		{
+			"name": "android",
+			"input": "android",
+			"output": {
+				"path": true,
+				"points": 7,
+				"outside": []
+			}
+		},
+		{
+			"name": "desktop",
+			"input": "desktop",
+			"output": {
+				"path": true,
+				"points": 3,
+				"outside": []
+			}
+		},
+		{
+			"name": "passed",
+			"input": "passed",
+			"output": {
+				"path": true,
+				"points": 2,
+				"outside": []
+			}
+		},
+		{
+			"name": "failed",
+			"input": "failed",
+			"output": {
+				"path": true,
+				"points": 6,
+				"outside": []
+			}
+		},
+		{
+			"name": "contract",
+			"input": "contract",
+			"output": {
+				"path": true,
+				"points": 4,
+				"outside": []
+			}
+		},
+		{
+			"name": "file",
+			"input": "file",
+			"output": {
+				"path": true,
+				"points": 2,
+				"outside": []
+			}
+		},
+		{
+			"name": "size",
+			"input": "size",
+			"output": {
+				"path": true,
+				"points": 6,
+				"outside": []
+			}
+		},
+		{
+			"name": "performance",
+			"input": "performance",
+			"output": {
+				"path": true,
+				"points": 4,
+				"outside": []
+			}
+		},
+		{
+			"name": "gauge",
+			"input": "gauge",
+			"output": {
+				"path": true,
+				"points": 3,
+				"outside": []
+			}
+		},
+		{
+			"name": "layers",
+			"input": "layers",
+			"output": {
+				"path": true,
+				"points": 5,
+				"outside": []
+			}
+		},
+		{
+			"name": "tests",
+			"input": "tests",
+			"output": {
+				"path": true,
+				"points": 3,
+				"outside": []
+			}
+		},
+		{
+			"name": "history",
+			"input": "history",
+			"output": {
+				"path": true,
+				"points": 4,
+				"outside": []
+			}
+		},
+		{
+			"name": "relationships",
+			"input": "relationships",
+			"output": {
+				"path": true,
+				"points": 5,
+				"outside": []
+			}
+		},
+		{
+			"name": "environment",
+			"input": "environment",
+			"output": {
+				"path": true,
+				"points": 3,
+				"outside": []
+			}
+		},
+		{
+			"name": "database",
+			"input": "database",
+			"output": {
+				"path": true,
+				"points": 3,
+				"outside": []
+			}
+		},
+		{
+			"name": "shield",
+			"input": "shield",
+			"output": {
+				"path": true,
+				"points": 2,
+				"outside": []
+			}
+		},
+		{
+			"name": "fixture",
+			"input": "fixture",
+			"output": {
+				"path": true,
+				"points": 4,
+				"outside": []
+			}
+		},
+		{
+			"name": "state",
+			"input": "state",
+			"output": {
+				"path": true,
+				"points": 6,
+				"outside": []
+			}
+		},
+		{
+			"name": "route",
+			"input": "route",
+			"output": {
+				"path": true,
+				"points": 3,
+				"outside": []
+			}
+		},
+		{
+			"name": "clock",
+			"input": "clock",
+			"output": {
+				"path": true,
+				"points": 2,
+				"outside": []
+			}
+		},
+		{
+			"name": "object",
+			"input": "object",
+			"output": {
+				"path": true,
+				"points": 2,
+				"outside": []
+			}
+		},
+		{
+			"name": "array",
+			"input": "array",
+			"output": {
+				"path": true,
+				"points": 2,
+				"outside": []
+			}
+		},
+		{
+			"name": "code",
+			"input": "code",
+			"output": {
+				"path": true,
+				"points": 3,
+				"outside": []
+			}
+		},
+		{
+			"name": "branch",
+			"input": "branch",
+			"output": {
+				"path": true,
+				"points": 5,
+				"outside": []
+			}
+		},
+		{
+			"name": "commit",
+			"input": "commit",
+			"output": {
+				"path": true,
+				"points": 3,
+				"outside": []
+			}
+		},
+		{
+			"name": "arrow-right",
+			"input": "arrow-right",
+			"output": {
+				"path": true,
+				"points": 2,
+				"outside": []
+			}
+		},
+		{
+			"name": "arrow-left",
+			"input": "arrow-left",
+			"output": {
+				"path": true,
+				"points": 2,
+				"outside": []
+			}
+		},
+		{
+			"name": "chevron-right",
+			"input": "chevron-right",
+			"output": {
+				"path": true,
+				"points": 1,
+				"outside": []
+			}
+		},
+		{
+			"name": "chevron-down",
+			"input": "chevron-down",
+			"output": {
+				"path": true,
+				"points": 1,
+				"outside": []
+			}
+		},
+		{
+			"name": "search",
+			"input": "search",
+			"output": {
+				"path": true,
+				"points": 3,
+				"outside": []
+			}
+		},
+		{
+			"name": "close",
+			"input": "close",
+			"output": {
+				"path": true,
+				"points": 3,
+				"outside": []
+			}
+		},
+		{
+			"name": "external",
+			"input": "external",
+			"output": {
+				"path": true,
+				"points": 3,
+				"outside": []
+			}
+		},
+		{
+			"name": "expand",
+			"input": "expand",
+			"output": {
+				"path": true,
+				"points": 4,
+				"outside": []
+			}
+		},
+		{
+			"name": "help",
+			"input": "help",
+			"output": {
+				"path": true,
+				"points": 3,
+				"outside": []
+			}
+		},
+		{
+			"name": "info",
+			"input": "info",
+			"output": {
+				"path": true,
+				"points": 3,
+				"outside": []
+			}
+		},
+		{
+			"name": "grid",
+			"input": "grid",
+			"output": {
+				"path": true,
+				"points": 4,
+				"outside": []
+			}
+		},
+		{
+			"name": "list",
+			"input": "list",
+			"output": {
+				"path": true,
+				"points": 6,
+				"outside": []
+			}
+		},
+		{
+			"name": "link",
+			"input": "link",
+			"output": {
+				"path": true,
+				"points": 2,
+				"outside": []
+			}
+		},
+		{
+			"name": "change",
+			"input": "change",
+			"output": {
+				"path": true,
+				"points": 4,
+				"outside": []
+			}
+		},
+		{
+			"name": "check-square",
+			"input": "check-square",
+			"output": {
+				"path": true,
+				"points": 2,
+				"outside": []
+			}
+		},
+		{
+			"name": "empty",
+			"input": "empty",
+			"output": {
+				"path": true,
+				"points": 8,
+				"outside": []
+			}
+		}
+	]
+}
