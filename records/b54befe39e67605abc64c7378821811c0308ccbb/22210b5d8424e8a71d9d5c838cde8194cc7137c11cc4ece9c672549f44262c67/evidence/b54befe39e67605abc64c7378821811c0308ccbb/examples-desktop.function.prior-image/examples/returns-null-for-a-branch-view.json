@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.prior-image",
+	"symbol": "priorImage",
+	"cases": [
+		{
+			"name": "branch view has no commit to compare",
+			"input": {
+				"versions": [
+					{
+						"version": "v1",
+						"createdAt": "2026-11-10T09:00:00.000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"generator": "codex",
+						"prompt": "Refine the header image lighting.",
+						"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+						"images": [
+							{
+								"state": "default",
+								"viewport": "desktop",
+								"sha256": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+								"bytes": 124800
+							},
+							{
+								"state": "default",
+								"viewport": "mobile",
+								"sha256": "431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460",
+								"bytes": 124800
+							}
+						],
+						"approval": null
+					},
+					{
+						"version": "v2",
+						"createdAt": "2026-11-10T09:00:00.000Z",
+						"commit": "89abcdef0123456789abcdef0123456789abcdef",
+						"generator": "codex",
+						"prompt": "Refine the header image lighting.",
+						"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+						"images": [
+							{
+								"state": "default",
+								"viewport": "mobile",
+								"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+								"bytes": 124800
+							}
+						],
+						"approval": null
+					}
+				],
+				"shown": {
+					"version": "v2",
+					"image": {
+						"state": "default",
+						"viewport": "mobile",
+						"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+						"bytes": 124800
+					}
+				},
+				"commit": null
+			},
+			"output": null
+		}
+	]
+}
