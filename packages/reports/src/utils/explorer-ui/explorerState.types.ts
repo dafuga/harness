@@ -16,3 +16,14 @@ export interface Judged {
 }
 
 export type Users = Map<string, string[]>;
+
+/** A video clip the scenario's manifest declares. */
+export type DeclaredVideoClip = NonNullable<HarnessScenario['video']>['clips'][number];
+
+/** One slot a declared evidence must fill: a viewport, and the clip recorded there, if any. */
+export interface ExpectedCaptureSlot {
+	id: string;
+	kind: string;
+	viewport: string | null;
+	clip?: DeclaredVideoClip;
+}

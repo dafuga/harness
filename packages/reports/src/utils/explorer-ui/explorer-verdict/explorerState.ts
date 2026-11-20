@@ -1,6 +1,6 @@
 // @harness-uid u_i4vqq2pyhj
 import { shortCommit } from '../../../helpers/strings/shortCommit';
-import type { Judged, Told } from '../explorerState';
+import type { DeclaredVideoClip, ExpectedCaptureSlot, Judged, Told } from '../explorerState.types';
 import { reasonText, coverageWorst } from '../explorerState';
 import type {
 	ExplorerSlotCoverage,
@@ -35,33 +35,77 @@ function slot(judged: Judged, where: string, capture: HarnessCapture | undefined
 	return unbound ? ['stale', `The capture of ${where} ${unbound}.`] : ['passed', ''];
 }
 
-/** The captures a required state must have: one for each declared evidence, kind and viewport. */
+/** The clips of a state that a video records at one viewport: each is a slot of its own. */
+function clipsAt(judged: Judged, state: string, viewport: string | null): DeclaredVideoClip[] {
+	if (viewport === null) return [];
+	return (judged.declared.video?.clips ?? []).filter(
+		(clip) => clip.state === state && clip.viewports.includes(viewport)
+	);
+}
+
+/** The slots one declared evidence must fill at a viewport: one per clip it records, else one. */
+function expectedAt(
+	judged: Judged,
+	state: string,
+	evidence: { id: string; kind: string },
+	viewport: string | null
+): ExpectedCaptureSlot[] {
+	const { id, kind } = evidence;
+	const clips = kind === 'video' ? clipsAt(judged, state, viewport) : [];
+	if (clips.length === 0) return [{ id, kind, viewport }];
+	return clips.map((clip) => ({ id, kind, viewport, clip }));
+}
+
+/** Whether a capture fills a slot: the same evidence, kind and viewport and, for a clip, its own. */
+function fills(
+	capture: HarnessCapture,
+	{ id, kind, viewport, clip }: ExpectedCaptureSlot
+): boolean {
+	const same =
+		capture.evidence === id && capture.kind === kind && (capture.viewport ?? null) === viewport;
+	if (!clip) return same;
+	return (
+		same &&
+		capture.state === clip.state &&
+		capture.video?.clipId === clip.id &&
+		capture.video?.unit === clip.unit
+	);
+}
+
+/** The slot one expected capture makes of what the record holds for it. */
+function slotFor(
+	judged: Judged,
+	named: string,
+	expected: ExpectedCaptureSlot,
+	captures: HarnessCapture[]
+): ExplorerSlotCoverage {
+	const { id, kind, viewport } = expected;
+	const found = captures.find((capture) => fills(capture, expected));
+	const [standing, reason] = slot(judged, `${named}${viewport ? ` at ${viewport}` : ''}`, found);
+	return {
+		evidence: id,
+		kind,
+		viewport,
+		capture: found ?? null,
+		standing,
+		reason: reason || null
+	};
+}
+
+/**
+ * The captures a required state must have: one for each declared evidence, kind and viewport, and
+ * for a video one for each clip the manifest records for that state and viewport.
+ */
 function slots(judged: Judged, state: string, captures: HarnessCapture[]): ExplorerSlotCoverage[] {
 	const named = `${judged.declared.title}: ${state}`;
 	return (judged.declared.evidence ?? [])
 		.filter((evidence) => evidence.states.includes(state))
-		.flatMap(({ id, kind, viewports }) =>
-			(viewports.length > 0 ? viewports : [null]).map((viewport): ExplorerSlotCoverage => {
-				const found = captures.find(
-					(capture) =>
-						capture.evidence === id &&
-						capture.kind === kind &&
-						(capture.viewport ?? null) === viewport
-				);
-				const [standing, reason] = slot(
-					judged,
-					`${named}${viewport ? ` at ${viewport}` : ''}`,
-					found
-				);
-				return {
-					evidence: id,
-					kind,
-					viewport,
-					capture: found ?? null,
-					standing,
-					reason: reason || null
-				};
-			})
+		.flatMap((evidence) =>
+			(evidence.viewports.length > 0 ? evidence.viewports : [null]).flatMap((viewport) =>
+				expectedAt(judged, state, evidence, viewport).map((expected) =>
+					slotFor(judged, named, expected, captures)
+				)
+			)
 		);
 }
 

@@ -10,6 +10,13 @@ import type {
 import type { UnitShots } from './unitShots.types';
 import { unitStateName } from './contractStates';
 
+/** The history view adds the poster's display filename to the validated capture. */
+const projectedVideoSchema = videoCaptureSchema.extend({
+	poster: videoCaptureSchema.shape.poster.extend({
+		url: videoCaptureSchema.shape.poster.shape.file.optional()
+	})
+});
+
 /** A screenshot cannot complete a state whose explicit clip obligations are still missing. */
 export function unitVideoShots(
 	captures: ExplorerCapture[],
@@ -54,7 +61,7 @@ function admittedVideo(
 ): boolean {
 	if (!captureForSlot(item, scenario.id, clip, viewport)) return false;
 	const raw: unknown = 'video' in item.capture ? item.capture.video : undefined;
-	const parsed = videoCaptureSchema.safeParse(raw),
+	const parsed = projectedVideoSchema.safeParse(raw),
 		duration = item.capture.durationSeconds;
 	if (!parsed.success || !validDuration(duration, clip.durationSeconds)) return false;
 	const video = parsed.data,
