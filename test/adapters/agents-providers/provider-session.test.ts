@@ -1,8 +1,8 @@
-import { mkdtemp, mkdir, appendFile, rm } from 'node:fs/promises';
+import { mkdir, appendFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { tmpdir } from 'node:os';
 import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
+import { withTempDir } from '../../support/temporary';
 import { ProviderSessionAdapter } from '../../../src/adapters/agents-providers/ProviderSessionAdapter';
 import { ModuleTaskRunnerAdapter } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter';
 import {
@@ -42,9 +42,8 @@ test('a malformed completed stream fails while retaining available token usage',
 });
 
 test('Codex reads only its own appended rollout and distinguishes peak context from total usage', async () => {
-	const home = await mkdtemp(join(tmpdir(), 'harness-codex-meter-'));
-	const id = '10000000-1111-2222-3333-444444444444';
-	try {
+	await withTempDir('harness-codex-meter-', async (home) => {
+		const id = '10000000-1111-2222-3333-444444444444';
 		const meter = new ProviderSessionAdapter('codex', home);
 		meter.event(JSON.stringify({ type: 'thread.started', thread_id: id }));
 		const directory = join(
@@ -65,9 +64,7 @@ test('Codex reads only its own appended rollout and distinguishes peak context f
 			peakContextTokens: 1000,
 			usage: { inputTokens: 5900, outputTokens: 400 }
 		});
-	} finally {
-		await rm(home, { recursive: true, force: true });
-	}
+	});
 });
 
 test('Claude measures cache-inclusive context at message start and counts a streamed message once', () => {
