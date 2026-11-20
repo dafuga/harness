@@ -1,0 +1,43 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-screens",
+	"symbol": "screenOptions",
+	"cases": [
+		{
+			"name": "visual page offers required states",
+			"input": {
+				"unit": "app.page.orders"
+			},
+			"output": [
+				{
+					"scenario": "orders-page",
+					"title": "Orders page over synthetic orders",
+					"states": [
+						"default",
+						"empty"
+					],
+					"viewports": [
+						{
+							"id": "desktop",
+							"label": "Desktop",
+							"size": "1440 × 900"
+						},
+						{
+							"id": "mobile",
+							"label": "Mobile",
+							"size": "390 × 844"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "function offers no choice",
+			"input": {
+				"unit": "app.function.filter-orders"
+			},
+			"output": []
+		}
+	]
+}

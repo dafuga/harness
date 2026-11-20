@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-screens",
+	"symbol": "screenPick",
+	"cases": [
+		{
+			"name": "exact scenario state viewport",
+			"input": {
+				"scenario": "orders-page",
+				"state": "empty",
+				"viewport": "mobile"
+			},
+			"output": {
+				"scenario": "orders-page",
+				"state": "empty",
+				"viewport": "mobile"
+			}
+		},
+		{
+			"name": "unknown state falls back",
+			"input": {
+				"state": "uncaptured"
+			},
+			"output": {
+				"scenario": "orders-page",
+				"state": "default",
+				"viewport": "mobile"
+			}
+		},
+		{
+			"name": "unknown viewport falls back",
+			"input": {
+				"viewport": "tablet"
+			},
+			"output": {
+				"scenario": "orders-page",
+				"state": "empty",
+				"viewport": "desktop"
+			}
+		},
+		{
+			"name": "unknown scenario uses first option",
+			"input": {
+				"scenario": "other"
+			},
+			"output": {
+				"scenario": "orders-page",
+				"state": "empty",
+				"viewport": "mobile"
+			}
+		},
+		{
+			"name": "no options is null",
+			"input": {
+				"options": []
+			},
+			"output": null
+		}
+	]
+}
