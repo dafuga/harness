@@ -1,0 +1,24 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.remote-host",
+	"symbol": "enable",
+	"cases": [
+		{
+			"name": "failures-keep-the-error-and-block-overlap",
+			"input": null,
+			"output": {
+				"failed": false,
+				"errorAfterFailure": "offline",
+				"cleared": true,
+				"errorAfterClear": "",
+				"refused": false,
+				"busyWhileWaiting": true,
+				"accepted": true,
+				"enableCalls": 1,
+				"disableCalls": 0,
+				"busyAfter": false
+			}
+		}
+	]
+}

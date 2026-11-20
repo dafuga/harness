@@ -1,0 +1,45 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.remote-host",
+	"symbol": "start",
+	"cases": [
+		{
+			"name": "start-subscribes-once-and-accepts-announcements",
+			"input": null,
+			"output": {
+				"asked": {
+					"supported": true,
+					"enabled": false,
+					"state": "disabled",
+					"reason": "starting",
+					"host": null,
+					"origin": null,
+					"pairing": null,
+					"requests": [],
+					"devices": [],
+					"projects": []
+				},
+				"announced": {
+					"supported": true,
+					"enabled": true,
+					"state": "online",
+					"reason": null,
+					"host": {
+						"id": "host-1",
+						"name": "Desk"
+					},
+					"origin": null,
+					"pairing": null,
+					"requests": [],
+					"devices": [],
+					"projects": []
+				},
+				"calls": [
+					"onStatus",
+					"status"
+				]
+			}
+		}
+	]
+}

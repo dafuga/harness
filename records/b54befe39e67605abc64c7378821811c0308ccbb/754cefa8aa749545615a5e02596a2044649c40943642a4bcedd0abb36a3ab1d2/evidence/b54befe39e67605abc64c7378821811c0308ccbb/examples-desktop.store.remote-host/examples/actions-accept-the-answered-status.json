@@ -1,0 +1,48 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.remote-host",
+	"symbol": "enable",
+	"cases": [
+		{
+			"name": "actions-accept-the-answered-status",
+			"input": null,
+			"output": {
+				"results": [
+					true,
+					true,
+					true,
+					true,
+					true,
+					true,
+					true
+				],
+				"status": {
+					"supported": true,
+					"enabled": true,
+					"state": "online",
+					"reason": null,
+					"host": {
+						"id": "host-1",
+						"name": "Desk"
+					},
+					"origin": null,
+					"pairing": null,
+					"requests": [],
+					"devices": [],
+					"projects": []
+				},
+				"calls": [
+					"enable",
+					"createPairing",
+					"status",
+					"approvePairing",
+					"denyPairing",
+					"revokeDevice",
+					"closePairing",
+					"disable"
+				]
+			}
+		}
+	]
+}

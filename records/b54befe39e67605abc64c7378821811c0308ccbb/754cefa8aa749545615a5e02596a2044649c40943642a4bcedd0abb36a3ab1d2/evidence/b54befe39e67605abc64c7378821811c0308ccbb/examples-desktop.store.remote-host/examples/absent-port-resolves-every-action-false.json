@@ -1,0 +1,24 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.remote-host",
+	"symbol": "createRemoteHostStore",
+	"cases": [
+		{
+			"name": "absent-port-resolves-every-action-false",
+			"input": null,
+			"output": {
+				"started": null,
+				"results": [
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false
+				]
+			}
+		}
+	]
+}
