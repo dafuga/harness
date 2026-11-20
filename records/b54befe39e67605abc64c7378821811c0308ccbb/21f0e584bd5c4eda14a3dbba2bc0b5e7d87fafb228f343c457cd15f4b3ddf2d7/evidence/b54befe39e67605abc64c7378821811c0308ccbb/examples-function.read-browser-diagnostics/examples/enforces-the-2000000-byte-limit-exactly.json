@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.read-browser-diagnostics",
+	"symbol": "readBrowserDiagnostics",
+	"cases": [
+		{
+			"name": "file of exactly 2000000 bytes",
+			"input": {
+				"bytes": 2000000
+			},
+			"output": {
+				"browserErrors": [
+					{
+						"test": "verification page loads",
+						"file": "tests/e2e/verification.spec.ts",
+						"project": "chromium",
+						"retry": 0,
+						"errors": [
+							{
+								"type": "pageerror",
+								"message": "TypeError: Cannot read properties of undefined",
+								"page": "http://127.0.0.1:4173/verify"
+							}
+						],
+						"expected": []
+					}
+				]
+			}
+		},
+		{
+			"name": "file of 2000001 bytes",
+			"input": {
+				"bytes": 2000001
+			},
+			"output": {
+				"failure": "Browser diagnostics must be a regular file of at most 2000000 bytes."
+			}
+		}
+	]
+}

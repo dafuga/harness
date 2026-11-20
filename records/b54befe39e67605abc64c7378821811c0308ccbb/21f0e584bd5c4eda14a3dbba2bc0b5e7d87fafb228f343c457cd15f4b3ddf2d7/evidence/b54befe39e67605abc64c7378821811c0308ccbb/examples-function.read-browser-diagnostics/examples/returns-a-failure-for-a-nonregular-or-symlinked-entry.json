@@ -1,0 +1,26 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.read-browser-diagnostics",
+	"symbol": "readBrowserDiagnostics",
+	"cases": [
+		{
+			"name": "browser-errors.ndjson is a directory",
+			"input": {
+				"entry": "directory"
+			},
+			"output": {
+				"failure": "Browser diagnostics must be a regular file of at most 2000000 bytes."
+			}
+		},
+		{
+			"name": "browser-errors.ndjson is a symlink to a valid file",
+			"input": {
+				"entry": "symlink"
+			},
+			"output": {
+				"failure": "Browser diagnostics must be a regular file of at most 2000000 bytes."
+			}
+		}
+	]
+}
