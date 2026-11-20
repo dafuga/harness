@@ -1,0 +1,122 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.history-series",
+	"symbol": "unitGrowth",
+	"cases": [
+		{
+			"name": "points follow supplied order per unit",
+			"input": {
+				"records": [
+					{
+						"id": "r-beta",
+						"measurements": [
+							{
+								"unitOfMeasure": "bytes",
+								"method": "Byte count of the unit source.",
+								"workload": null,
+								"profile": null,
+								"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"artifacts": [],
+								"unit": "function.beta",
+								"metric": "source-bytes",
+								"value": 200
+							}
+						]
+					},
+					{
+						"id": "r-alpha",
+						"measurements": [
+							{
+								"unitOfMeasure": "bytes",
+								"method": "Byte count of the unit source.",
+								"workload": null,
+								"profile": null,
+								"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"artifacts": [],
+								"unit": "function.alpha",
+								"metric": "source-bytes",
+								"value": 100
+							}
+						]
+					},
+					{
+						"id": "r-alpha-next",
+						"measurements": [
+							{
+								"unitOfMeasure": "bytes",
+								"method": "Byte count of the unit source.",
+								"workload": null,
+								"profile": null,
+								"testedRevision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"artifacts": [],
+								"unit": "function.alpha",
+								"metric": "source-bytes",
+								"value": 120
+							},
+							{
+								"unitOfMeasure": "bytes",
+								"method": "Byte count of the unit source.",
+								"workload": null,
+								"profile": null,
+								"testedRevision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"artifacts": [],
+								"unit": "function.alpha",
+								"metric": "artifact-bytes",
+								"value": 4096,
+								"target": "module"
+							}
+						]
+					},
+					{
+						"id": "r-alpha-repeat",
+						"measurements": [
+							{
+								"unitOfMeasure": "bytes",
+								"method": "Byte count of the unit source.",
+								"workload": null,
+								"profile": null,
+								"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"artifacts": [],
+								"unit": "function.alpha",
+								"metric": "complexity",
+								"value": 7
+							}
+						]
+					}
+				]
+			},
+			"output": [
+				{
+					"id": "function.alpha",
+					"growth": [
+						{
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"record": "r-alpha",
+							"source-bytes": 100,
+							"complexity": 7
+						},
+						{
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"record": "r-alpha-next",
+							"source-bytes": 120,
+							"emitted": {
+								"module": 4096
+							}
+						}
+					]
+				},
+				{
+					"id": "function.beta",
+					"growth": [
+						{
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"record": "r-beta",
+							"source-bytes": 200
+						}
+					]
+				}
+			]
+		}
+	]
+}
