@@ -1,0 +1,34 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-reading",
+	"symbol": "explorerReading",
+	"cases": [
+		{
+			"name": "current read keeps its output uncompared",
+			"input": {
+				"mode": "current",
+				"before": null,
+				"after": "a"
+			},
+			"output": {
+				"summary": "not-compared",
+				"reason": null,
+				"change": "unknown",
+				"differences": [],
+				"beforeRead": {
+					"output": null,
+					"verified": null,
+					"problem": null
+				},
+				"afterRead": {
+					"output": [
+						"a"
+					],
+					"verified": true,
+					"problem": null
+				}
+			}
+		}
+	]
+}
