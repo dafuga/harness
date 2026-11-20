@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.artifact-query",
+	"symbol": "artifactQuery",
+	"cases": [
+		{
+			"name": "stored after capture named by filename with a focused record",
+			"input": {
+				"side": "after",
+				"file": "2f9a6c1e8b4d7053a9e2c6f1b8d4a7e0c3f5b9d2a6e1c8f4b7d0a3e5c9f2b6d1.png",
+				"scope": "desktop.component.runtime-evidence"
+			},
+			"output": {
+				"projectId": "local-5e0c9a21d7b44f83a6c10e2f9b57d3c84a1f06be9d2c75e83f0b6a19c4d27e5f",
+				"entityId": "desktop.component.runtime-evidence",
+				"commit": "9b1e4c7a2d6f08e5c3a1b9d7f2e4c6a8b0d1e3f5",
+				"branch": "main",
+				"mode": "commit",
+				"side": "after",
+				"recordId": "1d9f3b7e5a2c8041f6e3b9d7a0c2f5e8b1d4a6c39e7f2b5d8a0c3e6f9b2d4a71",
+				"scenarioId": "runtime-evidence-ui",
+				"state": "current",
+				"evidenceId": "runtime-screens-desktop",
+				"viewport": "desktop",
+				"sha256": "2f9a6c1e8b4d7053a9e2c6f1b8d4a7e0c3f5b9d2a6e1c8f4b7d0a3e5c9f2b6d1",
+				"notesRevision": "a6c3e9f1d7b2054e8c1a3f6d9b0e2c7a4f8d5b13",
+				"evidenceRevision": "7d2b5f8e1a4c9036b2e7d5f0a8c1e4b9d3f6a270"
+			}
+		}
+	]
+}

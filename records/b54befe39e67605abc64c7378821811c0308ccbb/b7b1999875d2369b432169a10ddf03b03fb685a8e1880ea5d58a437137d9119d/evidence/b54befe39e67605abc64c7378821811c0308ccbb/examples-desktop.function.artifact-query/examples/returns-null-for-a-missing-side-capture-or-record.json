@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.artifact-query",
+	"symbol": "artifactQuery",
+	"cases": [
+		{
+			"name": "before side with no parent",
+			"input": {
+				"side": "before",
+				"file": "2f9a6c1e8b4d7053a9e2c6f1b8d4a7e0c3f5b9d2a6e1c8f4b7d0a3e5c9f2b6d1.png"
+			},
+			"output": null
+		},
+		{
+			"name": "filename that the side does not list",
+			"input": {
+				"side": "after",
+				"file": "not-listed.png"
+			},
+			"output": null
+		},
+		{
+			"name": "equal copy of a listed capture",
+			"input": {
+				"side": "after",
+				"file": "equal copy object"
+			},
+			"output": null
+		},
+		{
+			"name": "capture whose bytes are not stored",
+			"input": {
+				"side": "after",
+				"file": "unstored capture object"
+			},
+			"output": null
+		},
+		{
+			"name": "capture without a focused record on a side with no record",
+			"input": {
+				"side": "after",
+				"file": "plain capture object",
+				"recordOnSide": null
+			},
+			"output": null
+		}
+	]
+}
