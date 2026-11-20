@@ -1,0 +1,57 @@
+{
+	"name": "phase4-video-guide-readers",
+	"goal": "Admit intact projected pilot clips and report each declared clip in explorer coverage while retaining the existing screenshot and page inventory requirements.",
+	"createdAt": "2026-11-20T22:41:55.899Z",
+	"updatedAt": "2026-11-20T22:42:57.217Z",
+	"agentModel": "claude-haiku-5-5",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-20T22:42:56.443Z",
+			"evidence": "Exact b54befe39 captures prove all 57 slots. The guide rejects poster.url and Reports collapses 48 search clips to three viewport slots."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-20T22:42:57.217Z",
+			"evidence": "The units-guide fixture omits the display poster URL. Explorer-state examples exercise only one capture of each kind per viewport."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
