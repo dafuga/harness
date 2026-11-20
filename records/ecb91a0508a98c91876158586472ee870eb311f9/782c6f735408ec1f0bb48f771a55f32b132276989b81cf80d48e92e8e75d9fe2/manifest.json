@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"record": "782c6f735408ec1f0bb48f771a55f32b132276989b81cf80d48e92e8e75d9fe2",
+	"source": {
+		"commit": "ecb91a0508a98c91876158586472ee870eb311f9",
+		"tree": "abd6c5656cfb7f28ed60d2f15dc92ec62db8e02b"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "96b44fcf47edc4b5835a667c137d78bc66efb2f7066152abeab05cbe1c531d85",
+			"bytes": 13592828,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/history-fixture-integrity/verification-check-shared/test-verification-check-shared.test.ts-indexer-parity.txt",
+			"sha256": "b6552274bf8a1b6704c06264653729fe0d91097330821d22f425eb4bad30226e",
+			"bytes": 521,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/history-fixture-integrity/verification-check-shared/test-verification-check-shared.test.ts-indexer-parity.json",
+			"sha256": "1daf2cfae49c4984e67e0ff55e94a6f31ac89cb02a39f0f363e76bb4fc5714c9",
+			"bytes": 19938,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/history-fixture-integrity-history-attach-inherited.log",
+			"sha256": "2d9d28c4ffb1bcc186f99b9fc7766cdf1191795324101ff005a099fa4e05aa8b",
+			"bytes": 662,
+			"storage": "git"
+		},
+		{
+			"path": "logs/history-fixture-integrity-seed-attacher.log",
+			"sha256": "9d9fc3062ba94796532b30620eb7d78987d47072a1d0181f671c98a1b22827d6",
+			"bytes": 621,
+			"storage": "git"
+		},
+		{
+			"path": "logs/history-fixture-integrity-verification-check-shared.log",
+			"sha256": "b6552274bf8a1b6704c06264653729fe0d91097330821d22f425eb4bad30226e",
+			"bytes": 521,
+			"storage": "git"
+		}
+	]
+}
