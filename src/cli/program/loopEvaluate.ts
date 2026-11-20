@@ -9,11 +9,9 @@ export type {
 	LoopCommandResult,
 	EvaluateLoopInput
 } from './loopEvaluate.types';
-import { BoundedCommandAdapter } from '../../adapters/execution-runtimes/BoundedCommandAdapter';
+import { runLoopEvaluatorProcess } from '../../utils/execution-runtimes/runLoopEvaluatorProcess';
 import { BoundedCommandFailure } from '../../adapters/execution-runtimes/bounded-command-adapter/commandFailure';
 import { commandDeadlines } from '../../adapters/execution-runtimes/bounded-command-adapter/commandDeadlines';
-import { resourceEnvironment } from '../../utils/execution-runtimes/resourceEnvironment';
-import { resourceWork } from '../../utils/execution-runtimes/resourceWork';
 import {
 	appendTrace,
 	assertLoopOpen,
@@ -74,53 +72,51 @@ function runEvaluators(
 	return Promise.all(evaluators.map((evaluator) => runEvaluator(root, evaluator, context)));
 }
 
-function runEvaluator(
+async function runEvaluator(
 	root: string,
 	evaluator: LoopEvaluator,
 	context: { loop: string; agentModel?: string }
 ): Promise<LoopCommandResult> {
 	const startedAt = Date.now();
-	return resourceWork({ priority: 'agent-test', label: context.loop }, async (lease) => {
-		const summary = { id: evaluator.id, title: evaluator.title, command: evaluator.command };
-		try {
-			const result = await new BoundedCommandAdapter().run('sh', ['-c', evaluator.command], {
-				cwd: root,
+	const summary = { id: evaluator.id, title: evaluator.title, command: evaluator.command };
+	try {
+		const result = await runLoopEvaluatorProcess(
+			root,
+			['sh', '-c', evaluator.command],
+			{
 				timeoutMs: evaluator.timeoutMs ?? commandDeadlines.evaluatorMs,
 				env: {
-					...resourceEnvironment(lease.env),
 					GH_TOKEN: process.env.GH_TOKEN,
 					HARNESS_ANALYTICS_LOOP: context.loop,
 					HARNESS_ANALYTICS_STEP: evaluator.step,
 					HARNESS_ANALYTICS_DISABLED: process.env.HARNESS_ANALYTICS_DISABLED,
 					HARNESS_AGENT_MODEL: context.agentModel ?? process.env.HARNESS_AGENT_MODEL
-				},
-				onSpawn: (child) => {
-					if (child.pid) lease.track(child.pid);
 				}
-			});
-			return {
-				...summary,
-				exitCode: result.code,
-				stdout: result.stdout.toString('utf8'),
-				stderr: result.stderr,
-				durationMs: Date.now() - startedAt
-			};
-		} catch (error) {
-			const failure = error instanceof BoundedCommandFailure ? error : undefined;
-			return {
-				...summary,
-				exitCode: 1,
-				stdout: failure?.stdout.toString('utf8') ?? '',
-				stderr: [
-					error instanceof Error ? error.message : 'Evaluator could not start',
-					failure?.stderr
-				]
-					.filter(Boolean)
-					.join('\n'),
-				durationMs: Date.now() - startedAt
-			};
-		}
-	});
+			},
+			context.loop
+		);
+		return {
+			...summary,
+			exitCode: result.code,
+			stdout: result.stdout.toString('utf8'),
+			stderr: result.stderr,
+			durationMs: Date.now() - startedAt
+		};
+	} catch (error) {
+		const failure = error instanceof BoundedCommandFailure ? error : undefined;
+		return {
+			...summary,
+			exitCode: 1,
+			stdout: failure?.stdout.toString('utf8') ?? '',
+			stderr: [
+				error instanceof Error ? error.message : 'Evaluator could not start',
+				failure?.stderr
+			]
+				.filter(Boolean)
+				.join('\n'),
+			durationMs: Date.now() - startedAt
+		};
+	}
 }
 
 function renderCommandResult(result: LoopCommandResult): string {

@@ -6,6 +6,7 @@ import {
 } from '../../workflows/verification-evidence/record-regression/recordRegression';
 import { evaluateLoop, renderLoopEvaluation } from './loopEvaluate';
 import { registerLoopLifecycleCommands } from './loopLifecycle';
+import { registerLoopSiblingCommands } from './loopSiblings';
 import { nextLoopStep, renderNextLoopStep } from './loopNext';
 import { renderLoopSearchResults, searchLoops } from './loopSearch';
 import {
@@ -21,6 +22,7 @@ export function registerLoopCommand(program: Command): void {
 		.command('loop')
 		.description('Define and trace verifiable agent work loops.');
 	registerLoopLifecycleCommands(command);
+	registerLoopSiblingCommands(command);
 	registerRegressionCommand(command);
 	registerCreateCommand(command);
 

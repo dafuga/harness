@@ -6,6 +6,8 @@ import { expect, test } from 'vitest';
 import { runCommand, runHarness } from './support/cli';
 import { expectFailedCapture } from './support/loop-repair/captureFixture';
 import { prepareRepair, exerciseRepair, expectPendingVerification } from './support/loopRepair';
+import { exerciseSiblingCli } from './support/sibling-bug-sweep/exerciseSiblingCli';
+test('loop CLI classifies, reports and reuses registered bug classes', exerciseSiblingCli, 120_000);
 test('loop CLI traces work and remains audit-safe in generated projects', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-loop-e2e-'));
 	try {
