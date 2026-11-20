@@ -1,0 +1,23 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.image-url",
+	"symbol": "imageUrl",
+	"cases": [
+		{
+			"name": "unvalidated request fields reach the bridge",
+			"input": {
+				"entityId": "",
+				"version": "not-a-version",
+				"sha256": "XYZ"
+			},
+			"output": {
+				"entityId": "",
+				"version": "not-a-version",
+				"sha256": "XYZ",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"projectId": "project-7"
+			}
+		}
+	]
+}
