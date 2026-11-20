@@ -1,0 +1,31 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-artifact",
+	"symbol": "artifactBehavior",
+	"cases": [
+		{
+			"name": "document 1 gives no behavior",
+			"input": null,
+			"output": null
+		},
+		{
+			"name": "document 2 gives no behavior",
+			"input": [
+				1,
+				2
+			],
+			"output": null
+		},
+		{
+			"name": "document 3 gives no behavior",
+			"input": 42,
+			"output": null
+		},
+		{
+			"name": "document 4 gives no behavior",
+			"input": "text",
+			"output": null
+		}
+	]
+}

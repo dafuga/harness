@@ -1,0 +1,21 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-artifact",
+	"symbol": "explorerArtifact",
+	"cases": [
+		{
+			"name": "a 404 response is unverified",
+			"input": {
+				"status": 404
+			},
+			"output": {
+				"verified": false,
+				"problem": "The artifact could not be read (404).",
+				"text": "",
+				"document": null,
+				"behavior": null
+			}
+		}
+	]
+}

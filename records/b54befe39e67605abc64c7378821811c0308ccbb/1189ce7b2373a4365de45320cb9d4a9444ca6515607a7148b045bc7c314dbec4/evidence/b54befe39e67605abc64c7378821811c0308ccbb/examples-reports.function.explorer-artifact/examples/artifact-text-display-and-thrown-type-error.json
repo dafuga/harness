@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-artifact",
+	"symbol": "artifactText",
+	"cases": [
+		{
+			"name": "a string is unchanged",
+			"input": "Open the page",
+			"output": "Open the page"
+		},
+		{
+			"name": "undefined reads as not recorded",
+			"input": "undefined value",
+			"output": "Not recorded"
+		},
+		{
+			"name": "a structure is indented JSON",
+			"input": {
+				"action": "search",
+				"text": "SERVICE"
+			},
+			"output": "{\n  \"action\": \"search\",\n  \"text\": \"SERVICE\"\n}"
+		},
+		{
+			"name": "a cycle throws a TypeError",
+			"input": "cyclic object",
+			"error": "TypeError"
+		},
+		{
+			"name": "a BigInt throws a TypeError",
+			"input": "BigInt value",
+			"error": "TypeError"
+		}
+	]
+}
