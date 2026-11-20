@@ -1,0 +1,561 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.thread-anchor",
+	"symbol": "versionOption",
+	"cases": [
+		{
+			"name": "use the current approved option of the exact version",
+			"input": {
+				"versions": [
+					{
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"generator": "image-generator",
+						"prompt": "Design a compact dashboard header.",
+						"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+						"version": "v11",
+						"images": [
+							{
+								"state": "approved",
+								"viewport": "desktop",
+								"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"bytes": 184320,
+								"option": "o1"
+							}
+						],
+						"approval": null,
+						"options": [
+							{
+								"id": "o1",
+								"direction": "direction o1",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": [
+									"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+								]
+							},
+							{
+								"id": "o2",
+								"direction": "direction o2",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": [
+									"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+								]
+							}
+						]
+					},
+					{
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"generator": "image-generator",
+						"prompt": "Design a compact dashboard header.",
+						"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+						"version": "v12",
+						"images": [
+							{
+								"state": "approved",
+								"viewport": "desktop",
+								"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"bytes": 184320,
+								"option": "o2"
+							}
+						],
+						"approval": {
+							"id": "a9f0c2e4-61b7-4d3a-8e25-7c1f0b9d4e63",
+							"version": "v12",
+							"imageHashes": [
+								"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+							],
+							"contractHash": "c3a1e7f9d2b40658a1e3c7f9d2b4065ca1e3c7f9d2b4065ca1e3c7f9d2b40658",
+							"approvedAt": "2026-11-16T08:30:00.000Z",
+							"current": true,
+							"option": "o2"
+						},
+						"options": [
+							{
+								"id": "o1",
+								"direction": "direction o1",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": [
+									"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+								]
+							},
+							{
+								"id": "o2",
+								"direction": "direction o2",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": [
+									"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+								]
+							}
+						]
+					},
+					{
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"generator": "image-generator",
+						"prompt": "Design a compact dashboard header.",
+						"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+						"version": "v13",
+						"images": [
+							{
+								"state": "draft",
+								"viewport": "desktop",
+								"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+								"bytes": 1200
+							}
+						],
+						"approval": null
+					}
+				],
+				"version": "v12"
+			},
+			"output": "o2"
+		},
+		{
+			"name": "use the first option when the version has no current approval",
+			"input": {
+				"versions": [
+					{
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"generator": "image-generator",
+						"prompt": "Design a compact dashboard header.",
+						"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+						"version": "v11",
+						"images": [
+							{
+								"state": "approved",
+								"viewport": "desktop",
+								"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"bytes": 184320,
+								"option": "o1"
+							}
+						],
+						"approval": null,
+						"options": [
+							{
+								"id": "o1",
+								"direction": "direction o1",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": [
+									"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+								]
+							},
+							{
+								"id": "o2",
+								"direction": "direction o2",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": [
+									"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+								]
+							}
+						]
+					},
+					{
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"generator": "image-generator",
+						"prompt": "Design a compact dashboard header.",
+						"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+						"version": "v12",
+						"images": [
+							{
+								"state": "approved",
+								"viewport": "desktop",
+								"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"bytes": 184320,
+								"option": "o2"
+							}
+						],
+						"approval": {
+							"id": "a9f0c2e4-61b7-4d3a-8e25-7c1f0b9d4e63",
+							"version": "v12",
+							"imageHashes": [
+								"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+							],
+							"contractHash": "c3a1e7f9d2b40658a1e3c7f9d2b4065ca1e3c7f9d2b4065ca1e3c7f9d2b40658",
+							"approvedAt": "2026-11-16T08:30:00.000Z",
+							"current": true,
+							"option": "o2"
+						},
+						"options": [
+							{
+								"id": "o1",
+								"direction": "direction o1",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": [
+									"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+								]
+							},
+							{
+								"id": "o2",
+								"direction": "direction o2",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": [
+									"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+								]
+							}
+						]
+					},
+					{
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"generator": "image-generator",
+						"prompt": "Design a compact dashboard header.",
+						"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+						"version": "v13",
+						"images": [
+							{
+								"state": "draft",
+								"viewport": "desktop",
+								"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+								"bytes": 1200
+							}
+						],
+						"approval": null
+					}
+				],
+				"version": "v11"
+			},
+			"output": "o1"
+		},
+		{
+			"name": "return the empty string for a version without options",
+			"input": {
+				"versions": [
+					{
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"generator": "image-generator",
+						"prompt": "Design a compact dashboard header.",
+						"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+						"version": "v11",
+						"images": [
+							{
+								"state": "approved",
+								"viewport": "desktop",
+								"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"bytes": 184320,
+								"option": "o1"
+							}
+						],
+						"approval": null,
+						"options": [
+							{
+								"id": "o1",
+								"direction": "direction o1",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": [
+									"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+								]
+							},
+							{
+								"id": "o2",
+								"direction": "direction o2",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": [
+									"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+								]
+							}
+						]
+					},
+					{
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"generator": "image-generator",
+						"prompt": "Design a compact dashboard header.",
+						"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+						"version": "v12",
+						"images": [
+							{
+								"state": "approved",
+								"viewport": "desktop",
+								"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"bytes": 184320,
+								"option": "o2"
+							}
+						],
+						"approval": {
+							"id": "a9f0c2e4-61b7-4d3a-8e25-7c1f0b9d4e63",
+							"version": "v12",
+							"imageHashes": [
+								"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+							],
+							"contractHash": "c3a1e7f9d2b40658a1e3c7f9d2b4065ca1e3c7f9d2b4065ca1e3c7f9d2b40658",
+							"approvedAt": "2026-11-16T08:30:00.000Z",
+							"current": true,
+							"option": "o2"
+						},
+						"options": [
+							{
+								"id": "o1",
+								"direction": "direction o1",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": [
+									"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+								]
+							},
+							{
+								"id": "o2",
+								"direction": "direction o2",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": [
+									"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+								]
+							}
+						]
+					},
+					{
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"generator": "image-generator",
+						"prompt": "Design a compact dashboard header.",
+						"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+						"version": "v13",
+						"images": [
+							{
+								"state": "draft",
+								"viewport": "desktop",
+								"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+								"bytes": 1200
+							}
+						],
+						"approval": null
+					}
+				],
+				"version": "v13"
+			},
+			"output": ""
+		},
+		{
+			"name": "match the version exactly and not by prefix",
+			"input": {
+				"versions": [
+					{
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"generator": "image-generator",
+						"prompt": "Design a compact dashboard header.",
+						"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+						"version": "v11",
+						"images": [
+							{
+								"state": "approved",
+								"viewport": "desktop",
+								"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"bytes": 184320,
+								"option": "o1"
+							}
+						],
+						"approval": null,
+						"options": [
+							{
+								"id": "o1",
+								"direction": "direction o1",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": [
+									"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+								]
+							},
+							{
+								"id": "o2",
+								"direction": "direction o2",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": [
+									"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+								]
+							}
+						]
+					},
+					{
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"generator": "image-generator",
+						"prompt": "Design a compact dashboard header.",
+						"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+						"version": "v12",
+						"images": [
+							{
+								"state": "approved",
+								"viewport": "desktop",
+								"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"bytes": 184320,
+								"option": "o2"
+							}
+						],
+						"approval": {
+							"id": "a9f0c2e4-61b7-4d3a-8e25-7c1f0b9d4e63",
+							"version": "v12",
+							"imageHashes": [
+								"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+							],
+							"contractHash": "c3a1e7f9d2b40658a1e3c7f9d2b4065ca1e3c7f9d2b4065ca1e3c7f9d2b40658",
+							"approvedAt": "2026-11-16T08:30:00.000Z",
+							"current": true,
+							"option": "o2"
+						},
+						"options": [
+							{
+								"id": "o1",
+								"direction": "direction o1",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": [
+									"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+								]
+							},
+							{
+								"id": "o2",
+								"direction": "direction o2",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": [
+									"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+								]
+							}
+						]
+					},
+					{
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"generator": "image-generator",
+						"prompt": "Design a compact dashboard header.",
+						"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+						"version": "v13",
+						"images": [
+							{
+								"state": "draft",
+								"viewport": "desktop",
+								"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+								"bytes": 1200
+							}
+						],
+						"approval": null
+					}
+				],
+				"version": "v1"
+			},
+			"output": ""
+		},
+		{
+			"name": "use only the first duplicate of a version",
+			"input": {
+				"versions": [
+					{
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"generator": "image-generator",
+						"prompt": "Design a compact dashboard header.",
+						"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+						"version": "v12",
+						"images": [
+							{
+								"state": "approved",
+								"viewport": "desktop",
+								"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"bytes": 184320,
+								"option": "o2"
+							}
+						],
+						"approval": null,
+						"options": [
+							{
+								"id": "o1",
+								"direction": "direction o1",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": [
+									"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+								]
+							}
+						]
+					},
+					{
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"generator": "image-generator",
+						"prompt": "Design a compact dashboard header.",
+						"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+						"version": "v12",
+						"images": [
+							{
+								"state": "approved",
+								"viewport": "desktop",
+								"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"bytes": 184320,
+								"option": "o2"
+							}
+						],
+						"approval": {
+							"id": "a9f0c2e4-61b7-4d3a-8e25-7c1f0b9d4e63",
+							"version": "v12",
+							"imageHashes": [
+								"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+							],
+							"contractHash": "c3a1e7f9d2b40658a1e3c7f9d2b4065ca1e3c7f9d2b4065ca1e3c7f9d2b40658",
+							"approvedAt": "2026-11-16T08:30:00.000Z",
+							"current": true,
+							"option": "o2"
+						},
+						"options": [
+							{
+								"id": "o1",
+								"direction": "direction o1",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": [
+									"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+								]
+							},
+							{
+								"id": "o2",
+								"direction": "direction o2",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": [
+									"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+								]
+							}
+						]
+					}
+				],
+				"version": "v12"
+			},
+			"output": "o1"
+		}
+	]
+}

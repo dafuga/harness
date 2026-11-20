@@ -1,0 +1,1040 @@
+{
+	"id": "eec55823efe41c10da95040bf4b75e47e4e8e726c55a7f4fbd61ca1b34ca80a7",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/private/tmp/z5jp8p-ui.7bySlZ/source",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-20T10:28:30.921Z",
+	"finishedAt": "2026-11-20T10:29:21.940Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "desktop.function.thread-anchor",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "b1e66d0bb58119d356f4067de62f63cd30210de6b486565a4c01076f733f2edb",
+			"source": "9281b4120c8ddeccc9e7033eb33e7f016bbbae7d08e0026b61521853d10c3aa6",
+			"contract": "805cd0ba48254c1c033e53cda09a2b7082e871fe856bf2eb19f0082f0484170e",
+			"runtime": "41b5399aa8b0bacc6ef75cb17a072f6a45991e8a53cd4c4afd1771b8461e2d5d",
+			"files": [
+				{
+					"path": "packages/desktop/src/components/explorer-ui/entity-view/threadAnchor.ts",
+					"hash": "fbded515bda28d761ff423c69fb40cc23b4b4378"
+				},
+				{
+					"path": "packages/desktop/src/components/explorer-ui/thread-links/threadAnchor.ts",
+					"hash": "2bbdbafa3bda2b8a8ee45c24b8b0fc300015ce94"
+				},
+				{
+					"path": "packages/desktop/src/components/explorer-ui/thread-panel/threadAnchor.ts",
+					"hash": "de8451ba08f5d33e9deb47a18c39e695242fcd97"
+				},
+				{
+					"path": "packages/desktop/src/components/thread-panel/threadAnchor.ts",
+					"hash": "63be3f33235d583aff09fd53dd3aeff2f382d81d"
+				},
+				{
+					"path": "packages/desktop/src/utils/explorer-ui/threadAnchor.ts",
+					"hash": "8278df190a538d83ff614af12a84aeb8831531e5"
+				},
+				{
+					"path": "packages/desktop/src/utils/explorer-ui/threadAnchor.types.ts",
+					"hash": "e4da7b7cb1a5d8258a051ab487657bcc48870319"
+				},
+				{
+					"path": "packages/desktop/src/utils/threadAnchor.ts",
+					"hash": "77a1ac2c97694cb408429b47b8e678e5309c6d33"
+				}
+			]
+		},
+		{
+			"unit": "function.record-capture",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41e40bb7a2b44b7fa1da3881ebf1a687d3d8471d42fd0a7c44d584361255ff42",
+			"source": "142bfa1513b076860925e3bac72e4361c1edd5901abe0b7061ebac711646346a",
+			"contract": "025908d6c17bb9a51a22fa8f85c40b9ea26bb9161a5d016c554aa7e340c15a52",
+			"runtime": "a289759bf06513632380a5baa8ac1f6a9a916c1d1905e0de6a7be531f7936431",
+			"files": [
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.ts",
+					"hash": "316c75b906d532b1a5b376f345b7de8e00da1f4d"
+				},
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.types.ts",
+					"hash": "8e36a063513222284548df76d240d4a45f6626a9"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cfb49b515cacc084047d75cdf10a295ab3790ecaf878e2b75e06463793f628bf",
+			"source": "cbf5fb170c4db458f39bcc4ba18996e377a782371040baa39d1667f04bf87635",
+			"contract": "6f2e8a598fb220dd111fe8085fb28c645ee24019cc4b1f25315b141a569962d7",
+			"runtime": "ec246a1eb80a7c06e7ccbd8601bab05e75d00122b0ad9d09eec95bbe94f31c19",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts",
+					"hash": "36741c54d766dd2689e542099ca02135cd07760b"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.types.ts",
+					"hash": "758395e715dd7c7d824deb57b07849f373ef164e"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/artifactCases.ts",
+					"hash": "f5a0a857433ab39a3aa86c795bab10681a76db3f"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.015083000000004176,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90570752,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.006097333333334139,
+			"method": "Arithmetic mean of 6 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90931200,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.thread-anchor",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.006833200000005491,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-a83713862d7b75a7-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.thread-anchor",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90767360,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-a83713862d7b75a7-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.thread-anchor",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.03234179999999469,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-c557bbc19a448d5d-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.thread-anchor",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90783744,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-c557bbc19a448d5d-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.25598600000000715,
+			"method": "Arithmetic mean of 3 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90931200,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.thread-anchor",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.008180666666665578,
+			"method": "Arithmetic mean of 3 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-44b051661b136cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.thread-anchor",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90882048,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-44b051661b136cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "design-options-ui:design-options-review-ui",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-design-options-review.spec.ts",
+			"status": "passed",
+			"durationMs": 4259,
+			"log": {
+				"path": "logs/design-options-ui-design-options-review-ui.log",
+				"bytes": 225,
+				"sha256": "0b5845958b5f1c5bf6d5d6611cd4ebe051b76fbf495914dba380d1bc92c2299e"
+			}
+		},
+		{
+			"id": "design-options-ui:design-options-count-ui",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-design-options.spec.ts",
+			"status": "passed",
+			"durationMs": 4679,
+			"log": {
+				"path": "logs/design-options-ui-design-options-count-ui.log",
+				"bytes": 233,
+				"sha256": "00629c15cc053602737e9b28493e23ab7d9ffc2fa2c47b6fcf2d44e3195e601d"
+			}
+		},
+		{
+			"id": "examples-desktop.function.thread-anchor:examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.thread-anchor.test.ts",
+			"status": "passed",
+			"durationMs": 2011,
+			"log": {
+				"path": "logs/examples-desktop.function.thread-anchor-examples.log",
+				"bytes": 427,
+				"sha256": "54762297924bf8d78f59835c7b78ef2d89bb980babe9faaa6f62c1b4955fbe60"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "design-options-ui",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "thread-count",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "design-options-screens-desktop",
+							"kind": "screenshot",
+							"state": "thread-count",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over a SYNTHETIC project with fixture design options. Only the build and revision identify tested software.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/design-options-thread-count-desktop.png",
+							"sha256": "1395ec7fa32019a853127acc402d42445b7da31861090c1d9c95ab37537647dd",
+							"bytes": 397816,
+							"capturedAt": "2026-11-20T10:29:16.860Z",
+							"server": {
+								"buildId": "6c1e8d61479f189b7096c9748bdef0ccf70351e1c272efc553bb05af920477d1",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "design-options-ui-output",
+							"kind": "output",
+							"state": "thread-count",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/ui-design-options.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/tests-e2e-ui-design-options.spec.ts-thread-count.txt",
+							"sha256": "00629c15cc053602737e9b28493e23ab7d9ffc2fa2c47b6fcf2d44e3195e601d",
+							"bytes": 233,
+							"capturedAt": "2026-11-20T10:29:16.920Z"
+						}
+					]
+				},
+				{
+					"id": "thread-default",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "design-options-screens-desktop",
+							"kind": "screenshot",
+							"state": "thread-default",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over a SYNTHETIC project with fixture design options. Only the build and revision identify tested software.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/design-options-thread-default-desktop.png",
+							"sha256": "444dae10166b362e556483af03ff010547ca8916b768387fdd109e7b52a10b01",
+							"bytes": 397841,
+							"capturedAt": "2026-11-20T10:29:16.869Z",
+							"server": {
+								"buildId": "6c1e8d61479f189b7096c9748bdef0ccf70351e1c272efc553bb05af920477d1",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "design-options-ui-output",
+							"kind": "output",
+							"state": "thread-default",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/ui-design-options.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/tests-e2e-ui-design-options.spec.ts-thread-default.txt",
+							"sha256": "00629c15cc053602737e9b28493e23ab7d9ffc2fa2c47b6fcf2d44e3195e601d",
+							"bytes": 233,
+							"capturedAt": "2026-11-20T10:29:16.920Z"
+						}
+					]
+				},
+				{
+					"id": "comment-count",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "design-options-screens-desktop",
+							"kind": "screenshot",
+							"state": "comment-count",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over a SYNTHETIC project with fixture design options. Only the build and revision identify tested software.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/design-options-comment-count-desktop.png",
+							"sha256": "3f39b9b1d4635ed49bd512bddcbfda5636431f654ec470efddcde93928805fb3",
+							"bytes": 396345,
+							"capturedAt": "2026-11-20T10:29:16.878Z",
+							"server": {
+								"buildId": "6c1e8d61479f189b7096c9748bdef0ccf70351e1c272efc553bb05af920477d1",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "design-options-ui-output",
+							"kind": "output",
+							"state": "comment-count",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/ui-design-options.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/tests-e2e-ui-design-options.spec.ts-comment-count.txt",
+							"sha256": "00629c15cc053602737e9b28493e23ab7d9ffc2fa2c47b6fcf2d44e3195e601d",
+							"bytes": 233,
+							"capturedAt": "2026-11-20T10:29:16.920Z"
+						}
+					]
+				},
+				{
+					"id": "creation-count",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "design-options-screens-desktop",
+							"kind": "screenshot",
+							"state": "creation-count",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over a SYNTHETIC project with fixture design options. Only the build and revision identify tested software.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/design-options-creation-count-desktop.png",
+							"sha256": "c1a30317779cff45f45cb4d27a8ac78890176c247e1f22aab0403a5923cf0aac",
+							"bytes": 314085,
+							"capturedAt": "2026-11-20T10:29:16.884Z",
+							"server": {
+								"buildId": "6c1e8d61479f189b7096c9748bdef0ccf70351e1c272efc553bb05af920477d1",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "design-options-ui-output",
+							"kind": "output",
+							"state": "creation-count",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/ui-design-options.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/tests-e2e-ui-design-options.spec.ts-creation-count.txt",
+							"sha256": "00629c15cc053602737e9b28493e23ab7d9ffc2fa2c47b6fcf2d44e3195e601d",
+							"bytes": 233,
+							"capturedAt": "2026-11-20T10:29:16.920Z"
+						}
+					]
+				},
+				{
+					"id": "headless-count",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "design-options-screens-desktop",
+							"kind": "screenshot",
+							"state": "headless-count",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over a SYNTHETIC project with fixture design options. Only the build and revision identify tested software.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/design-options-headless-count-desktop.png",
+							"sha256": "6db41066f8ea3f17a473cb51fbaa968c4c91b2bb6dc3ff376afa3d5ad943bd72",
+							"bytes": 329608,
+							"capturedAt": "2026-11-20T10:29:16.891Z",
+							"server": {
+								"buildId": "6c1e8d61479f189b7096c9748bdef0ccf70351e1c272efc553bb05af920477d1",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "design-options-ui-output",
+							"kind": "output",
+							"state": "headless-count",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/ui-design-options.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/tests-e2e-ui-design-options.spec.ts-headless-count.txt",
+							"sha256": "00629c15cc053602737e9b28493e23ab7d9ffc2fa2c47b6fcf2d44e3195e601d",
+							"bytes": 233,
+							"capturedAt": "2026-11-20T10:29:16.920Z"
+						}
+					]
+				},
+				{
+					"id": "legacy",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "design-options-screens-desktop",
+							"kind": "screenshot",
+							"state": "legacy",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over a SYNTHETIC project with fixture design options. Only the build and revision identify tested software.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/design-options-legacy-desktop.png",
+							"sha256": "33e117d7d5eb6624f78fdc7611f4c25ca3a8b199acf47d98566df5211b20df91",
+							"bytes": 502799,
+							"capturedAt": "2026-11-20T10:29:16.902Z",
+							"server": {
+								"buildId": "6c1e8d61479f189b7096c9748bdef0ccf70351e1c272efc553bb05af920477d1",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "design-options-ui-output",
+							"kind": "output",
+							"state": "legacy",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/ui-design-options.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/tests-e2e-ui-design-options.spec.ts-legacy.txt",
+							"sha256": "00629c15cc053602737e9b28493e23ab7d9ffc2fa2c47b6fcf2d44e3195e601d",
+							"bytes": 233,
+							"capturedAt": "2026-11-20T10:29:16.920Z"
+						}
+					]
+				},
+				{
+					"id": "option-fit",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "design-options-screens-desktop",
+							"kind": "screenshot",
+							"state": "option-fit",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over a SYNTHETIC project with fixture design options. Only the build and revision identify tested software.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/design-options-option-fit-desktop.png",
+							"sha256": "262571af307ba4f925d1dafeae728fa5db33efb5b69442a458b0dea544983103",
+							"bytes": 397034,
+							"capturedAt": "2026-11-20T10:29:16.911Z",
+							"server": {
+								"buildId": "6c1e8d61479f189b7096c9748bdef0ccf70351e1c272efc553bb05af920477d1",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "design-options-screens-tablet",
+							"kind": "screenshot",
+							"state": "option-fit",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over a SYNTHETIC project with fixture design options. Only the build and revision identify tested software.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/design-options-option-fit-tablet.png",
+							"sha256": "cac8a8175d12880b0f5a1ed35cfbcf7e232a4015382750bd2cd8a79295e2cdf8",
+							"bytes": 253012,
+							"capturedAt": "2026-11-20T10:29:16.916Z",
+							"server": {
+								"buildId": "6c1e8d61479f189b7096c9748bdef0ccf70351e1c272efc553bb05af920477d1",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "design-options-screens-phone",
+							"kind": "screenshot",
+							"state": "option-fit",
+							"viewport": "phone",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over a SYNTHETIC project with fixture design options. Only the build and revision identify tested software.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/design-options-option-fit-phone.png",
+							"sha256": "bc0470c8fb18e5323127d75c02156d2b103414e7d0e3c3de8e2a2512da84e6fd",
+							"bytes": 194582,
+							"capturedAt": "2026-11-20T10:29:16.919Z",
+							"server": {
+								"buildId": "6c1e8d61479f189b7096c9748bdef0ccf70351e1c272efc553bb05af920477d1",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "design-options-ui-output",
+							"kind": "output",
+							"state": "option-fit",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/ui-design-options.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-count-ui/tests-e2e-ui-design-options.spec.ts-option-fit.txt",
+							"sha256": "00629c15cc053602737e9b28493e23ab7d9ffc2fa2c47b6fcf2d44e3195e601d",
+							"bytes": 233,
+							"capturedAt": "2026-11-20T10:29:16.920Z"
+						}
+					]
+				},
+				{
+					"id": "options",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "design-options-screens-desktop",
+							"kind": "screenshot",
+							"state": "options",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over a SYNTHETIC project with fixture design options. Only the build and revision identify tested software.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/design-options-options-desktop.png",
+							"sha256": "3f39b9b1d4635ed49bd512bddcbfda5636431f654ec470efddcde93928805fb3",
+							"bytes": 396345,
+							"capturedAt": "2026-11-20T10:29:10.915Z",
+							"server": {
+								"buildId": "6c1e8d61479f189b7096c9748bdef0ccf70351e1c272efc553bb05af920477d1",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "design-options-ui-output",
+							"kind": "output",
+							"state": "options",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/ui-design-options-review.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/tests-e2e-ui-design-options-review.spec.ts-options.txt",
+							"sha256": "0b5845958b5f1c5bf6d5d6611cd4ebe051b76fbf495914dba380d1bc92c2299e",
+							"bytes": 225,
+							"capturedAt": "2026-11-20T10:29:10.957Z"
+						}
+					]
+				},
+				{
+					"id": "selected-option",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "design-options-screens-desktop",
+							"kind": "screenshot",
+							"state": "selected-option",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over a SYNTHETIC project with fixture design options. Only the build and revision identify tested software.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/design-options-selected-option-desktop.png",
+							"sha256": "530f24f6224c5bf8a290cdb43ab1c4d16aa2969b0d0412e5b63c44aa1be0e7ae",
+							"bytes": 395610,
+							"capturedAt": "2026-11-20T10:29:10.924Z",
+							"server": {
+								"buildId": "6c1e8d61479f189b7096c9748bdef0ccf70351e1c272efc553bb05af920477d1",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "design-options-ui-output",
+							"kind": "output",
+							"state": "selected-option",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/ui-design-options-review.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/tests-e2e-ui-design-options-review.spec.ts-selected-option.txt",
+							"sha256": "0b5845958b5f1c5bf6d5d6611cd4ebe051b76fbf495914dba380d1bc92c2299e",
+							"bytes": 225,
+							"capturedAt": "2026-11-20T10:29:10.958Z"
+						}
+					]
+				},
+				{
+					"id": "approve",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "design-options-screens-desktop",
+							"kind": "screenshot",
+							"state": "approve",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over a SYNTHETIC project with fixture design options. Only the build and revision identify tested software.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/design-options-approve-desktop.png",
+							"sha256": "3c0cd422b6a24bf803ee0f604b9e13f88f07246672cc6edccfd445b8fde065da",
+							"bytes": 399045,
+							"capturedAt": "2026-11-20T10:29:10.932Z",
+							"server": {
+								"buildId": "6c1e8d61479f189b7096c9748bdef0ccf70351e1c272efc553bb05af920477d1",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "design-options-ui-output",
+							"kind": "output",
+							"state": "approve",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/ui-design-options-review.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/tests-e2e-ui-design-options-review.spec.ts-approve.txt",
+							"sha256": "0b5845958b5f1c5bf6d5d6611cd4ebe051b76fbf495914dba380d1bc92c2299e",
+							"bytes": 225,
+							"capturedAt": "2026-11-20T10:29:10.958Z"
+						}
+					]
+				},
+				{
+					"id": "option-thread",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "design-options-screens-desktop",
+							"kind": "screenshot",
+							"state": "option-thread",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over a SYNTHETIC project with fixture design options. Only the build and revision identify tested software.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/design-options-option-thread-desktop.png",
+							"sha256": "bd8535d92c0ebd75a90236db7d553d505402684c429b3206a48e8894020785b5",
+							"bytes": 398262,
+							"capturedAt": "2026-11-20T10:29:10.940Z",
+							"server": {
+								"buildId": "6c1e8d61479f189b7096c9748bdef0ccf70351e1c272efc553bb05af920477d1",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "design-options-ui-output",
+							"kind": "output",
+							"state": "option-thread",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/ui-design-options-review.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/tests-e2e-ui-design-options-review.spec.ts-option-thread.txt",
+							"sha256": "0b5845958b5f1c5bf6d5d6611cd4ebe051b76fbf495914dba380d1bc92c2299e",
+							"bytes": 225,
+							"capturedAt": "2026-11-20T10:29:10.958Z"
+						}
+					]
+				},
+				{
+					"id": "pinned",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "design-options-screens-desktop",
+							"kind": "screenshot",
+							"state": "pinned",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over a SYNTHETIC project with fixture design options. Only the build and revision identify tested software.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/design-options-pinned-desktop.png",
+							"sha256": "e8936f83023bf79dc20e53b0c1ed6ee0fb868af4aa23943cb1d6b22921476353",
+							"bytes": 394929,
+							"capturedAt": "2026-11-20T10:29:10.949Z",
+							"server": {
+								"buildId": "6c1e8d61479f189b7096c9748bdef0ccf70351e1c272efc553bb05af920477d1",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "design-options-ui-output",
+							"kind": "output",
+							"state": "pinned",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/ui-design-options-review.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/tests-e2e-ui-design-options-review.spec.ts-pinned.txt",
+							"sha256": "0b5845958b5f1c5bf6d5d6611cd4ebe051b76fbf495914dba380d1bc92c2299e",
+							"bytes": 225,
+							"capturedAt": "2026-11-20T10:29:10.958Z"
+						}
+					]
+				},
+				{
+					"id": "shared",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "design-options-screens-desktop",
+							"kind": "screenshot",
+							"state": "shared",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over a SYNTHETIC project with fixture design options. Only the build and revision identify tested software.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/design-options-shared-desktop.png",
+							"sha256": "e8d79084fab7ac927e95819b4a979ce231f08470e54c3990a690d0f7667b898c",
+							"bytes": 382992,
+							"capturedAt": "2026-11-20T10:29:10.957Z",
+							"server": {
+								"buildId": "6c1e8d61479f189b7096c9748bdef0ccf70351e1c272efc553bb05af920477d1",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "design-options-ui-output",
+							"kind": "output",
+							"state": "shared",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/ui-design-options-review.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/design-options-ui/design-options-review-ui/tests-e2e-ui-design-options-review.spec.ts-shared.txt",
+							"sha256": "0b5845958b5f1c5bf6d5d6611cd4ebe051b76fbf495914dba380d1bc92c2299e",
+							"bytes": 225,
+							"capturedAt": "2026-11-20T10:29:10.958Z"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "examples-desktop.function.thread-anchor",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "selects-the-exact-version-and-its-current-option",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "selects-the-exact-version-and-its-current-option",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.thread-anchor/examples/selects-the-exact-version-and-its-current-option.json",
+							"sha256": "cb7ba83918c5ad4a21b8f48c157830b3f34d8f8280806b419355edf0e50b319b",
+							"bytes": 16250,
+							"capturedAt": "2026-11-20T10:29:20.148Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "selects-the-exact-version-and-its-current-option",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/desktop.function.thread-anchor.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.thread-anchor/examples/test-examples-desktop.function.thread-anchor.test.ts-selects-the-exact-version-and-its-current-option.txt",
+							"sha256": "54762297924bf8d78f59835c7b78ef2d89bb980babe9faaa6f62c1b4955fbe60",
+							"bytes": 427,
+							"capturedAt": "2026-11-20T10:29:20.149Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "selects-the-exact-version-and-its-current-option",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.thread-anchor/examples/test-examples-desktop.function.thread-anchor.test.ts-selects-the-exact-version-and-its-current-option.json",
+							"sha256": "045c67fec1255e4b07a2d13c1bde79d9e22dc1fd4442263467d2414b13edcfec",
+							"bytes": 1461,
+							"capturedAt": "2026-11-20T10:29:20.149Z"
+						}
+					]
+				},
+				{
+					"id": "builds-the-entity-wide-target-with-null-fields",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "builds-the-entity-wide-target-with-null-fields",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.thread-anchor/examples/builds-the-entity-wide-target-with-null-fields.json",
+							"sha256": "839680e21d7709bfb35e678b2ab0022cfdd3b6e76dc8b225a79036c0fb2ba80e",
+							"bytes": 378,
+							"capturedAt": "2026-11-20T10:29:20.148Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "builds-the-entity-wide-target-with-null-fields",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/desktop.function.thread-anchor.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.thread-anchor/examples/test-examples-desktop.function.thread-anchor.test.ts-builds-the-entity-wide-target-with-null-fields.txt",
+							"sha256": "54762297924bf8d78f59835c7b78ef2d89bb980babe9faaa6f62c1b4955fbe60",
+							"bytes": 427,
+							"capturedAt": "2026-11-20T10:29:20.149Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "builds-the-entity-wide-target-with-null-fields",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.thread-anchor/examples/test-examples-desktop.function.thread-anchor.test.ts-builds-the-entity-wide-target-with-null-fields.json",
+							"sha256": "9c7afaef978988cc699f659cfee20aaab9757ad2e930f724f70ccf9dbb0a7f9c",
+							"bytes": 1016,
+							"capturedAt": "2026-11-20T10:29:20.149Z"
+						}
+					]
+				},
+				{
+					"id": "builds-image-targets-with-an-option-only-when-truthy",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "builds-image-targets-with-an-option-only-when-truthy",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.thread-anchor/examples/builds-image-targets-with-an-option-only-when-truthy.json",
+							"sha256": "a8fc3ce757744ee6d6bd91273c6ed939a8ae6954559feb78419dbdef9fb4190a",
+							"bytes": 1868,
+							"capturedAt": "2026-11-20T10:29:20.148Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "builds-image-targets-with-an-option-only-when-truthy",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/desktop.function.thread-anchor.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.thread-anchor/examples/test-examples-desktop.function.thread-anchor.test.ts-builds-image-targets-with-an-option-only-when-truthy.txt",
+							"sha256": "54762297924bf8d78f59835c7b78ef2d89bb980babe9faaa6f62c1b4955fbe60",
+							"bytes": 427,
+							"capturedAt": "2026-11-20T10:29:20.149Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "builds-image-targets-with-an-option-only-when-truthy",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.thread-anchor/examples/test-examples-desktop.function.thread-anchor.test.ts-builds-image-targets-with-an-option-only-when-truthy.json",
+							"sha256": "e7caf58c6ba63582265e1c26a7a8826be985461486d3581069a536a78def3d2f",
+							"bytes": 2318,
+							"capturedAt": "2026-11-20T10:29:20.149Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-main",
+		"shell-fixture",
+		"entity-preview"
+	],
+	"builds": [
+		{
+			"id": "desktop-renderer",
+			"directory": "packages/desktop/build",
+			"buildId": "6c1e8d61479f189b7096c9748bdef0ccf70351e1c272efc553bb05af920477d1",
+			"files": 33
+		}
+	],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to desktop.function.thread-anchor: only its scenario states ran, so this record is partial and never a full pass.",
+		"Scoped to desktop.function.thread-anchor: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}
