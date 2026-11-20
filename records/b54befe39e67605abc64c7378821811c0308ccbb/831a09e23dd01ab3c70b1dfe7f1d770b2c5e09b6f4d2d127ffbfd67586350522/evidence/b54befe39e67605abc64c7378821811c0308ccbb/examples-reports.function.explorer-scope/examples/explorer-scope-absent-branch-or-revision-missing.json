@@ -1,0 +1,68 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-scope",
+	"symbol": "explorerScope",
+	"cases": [
+		{
+			"name": "branch not in history",
+			"input": {
+				"branch": "nowhere",
+				"commit": null,
+				"category": "functions"
+			},
+			"output": {
+				"kind": "missing",
+				"message": "Branch nowhere is not in this history."
+			}
+		},
+		{
+			"name": "branch whose recorded tip is absent",
+			"input": {
+				"branch": "gone",
+				"commit": null,
+				"category": "functions"
+			},
+			"output": {
+				"kind": "missing",
+				"message": "The tip of branch gone (9999999) is not in this history."
+			}
+		},
+		{
+			"name": "commit not in history",
+			"input": {
+				"branch": "main",
+				"commit": "ffffffffffffffffffffffffffffffffffffffff",
+				"category": "functions"
+			},
+			"output": {
+				"kind": "missing",
+				"message": "Commit fffffff is not in this history."
+			}
+		},
+		{
+			"name": "commit not on the named branch",
+			"input": {
+				"branch": "main",
+				"commit": "dddddddddddddddddddddddddddddddddddddddd",
+				"category": "functions"
+			},
+			"output": {
+				"kind": "missing",
+				"message": "Branch main does not contain commit ddddddd."
+			}
+		},
+		{
+			"name": "unknown commit without branch",
+			"input": {
+				"branch": null,
+				"commit": "ffffffffffffffffffffffffffffffffffffffff",
+				"category": "functions"
+			},
+			"output": {
+				"kind": "missing",
+				"message": "Commit fffffff is not in this history."
+			}
+		}
+	]
+}
