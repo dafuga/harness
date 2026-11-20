@@ -31,7 +31,8 @@
 		base,
 		path,
 		navigate,
-		content
+		content,
+		projectsHref
 	}: {
 		base: string;
 		/** The address after `base`, with its query: branch, commit, category, entity and tab. */
@@ -41,8 +42,11 @@
 		links?: Array<{ label: string; href: string }>;
 		/** What renders the screen. The host has no renderer of its own: whoever mounts it names one. */
 		content: ExplorerScreen;
+		/** Where the Projects link leads; left out, the bar shows no such link. */
+		projectsHref?: string;
 	} = $props();
 	let Content = $derived(content);
+	let projects = $derived(projectsHref ? { href: projectsHref, active: false } : undefined);
 	let client = $derived(harnessClient(base));
 	// What is read is never changed in place, so it is held as read and not made reactive inside.
 	let index = $state.raw<HarnessIndex | null>(null);
@@ -170,6 +174,7 @@
 		missing={page?.kind === 'missing' ? page : null}
 		navbar={{
 			modules: shown?.head.modules,
+			projects,
 			repository,
 			scope: shown?.scope ?? scope,
 			index,

@@ -54,6 +54,14 @@
 				>
 			{/if}
 		{/each}
+		{#if input.projects}
+			<hx-a
+				class="hx-projects"
+				href={input.projects.href}
+				aria-current={input.projects.active ? 'page' : undefined}
+				><HarnessIcon name="gauge" size={24} /><hx-span>Projects</hx-span></hx-a
+			>
+		{/if}
 	</hx-nav>
 	{#if input.scope && moduleActive}
 		<HarnessTabs
