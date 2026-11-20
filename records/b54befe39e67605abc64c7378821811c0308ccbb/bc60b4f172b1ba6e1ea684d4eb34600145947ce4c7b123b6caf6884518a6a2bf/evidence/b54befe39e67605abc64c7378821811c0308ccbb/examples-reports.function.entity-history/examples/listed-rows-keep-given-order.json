@@ -1,0 +1,128 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-history",
+	"symbol": "historyListed",
+	"cases": [
+		{
+			"name": "reversed history rows stay in the given order",
+			"input": {
+				"rows": [
+					"3f9c2a180ce54b0df3f6cadf02d1192568f6d7c6",
+					"8b41d0720e252681deac809969b3faf8181dac30"
+				],
+				"read": []
+			},
+			"output": {
+				"listed": [
+					{
+						"commit": "3f9c2a180ce54b0df3f6cadf02d1192568f6d7c6",
+						"subject": "feat: orders page",
+						"author": "Fixture",
+						"committedAt": "2026-10-08T09:00:00.000Z",
+						"coverage": "verified",
+						"previous": null,
+						"standing": "changed",
+						"change": "added",
+						"gap": null,
+						"measured": {
+							"record": "r1",
+							"size": 1000,
+							"complexity": 3,
+							"dependencies": null,
+							"notes": {}
+						},
+						"sizeChange": null,
+						"complexityChange": null,
+						"reviews": []
+					},
+					{
+						"commit": "8b41d0720e252681deac809969b3faf8181dac30",
+						"subject": "feat: case-insensitive search",
+						"author": "Fixture",
+						"committedAt": "2026-10-09T09:00:00.000Z",
+						"coverage": "verified",
+						"previous": "3f9c2a180ce54b0df3f6cadf02d1192568f6d7c6",
+						"standing": "changed",
+						"change": "direct",
+						"gap": null,
+						"measured": {
+							"record": "r2",
+							"size": 1200,
+							"complexity": 2,
+							"dependencies": null,
+							"notes": {}
+						},
+						"sizeChange": 200,
+						"complexityChange": -1,
+						"reviews": [
+							{
+								"type": "approval",
+								"commit": "8b41d0720e252681deac809969b3faf8181dac30",
+								"record": "r2",
+								"reviewer": "Fixture reviewer",
+								"reason": "Case folding needs the extra table.",
+								"at": "2026-10-09T11:00:00.000Z",
+								"before": {
+									"source-bytes": 1000
+								},
+								"after": {
+									"source-bytes": 1200
+								}
+							}
+						]
+					}
+				],
+				"unread": []
+			}
+		},
+		{
+			"name": "unknown rows: read direct change listed, unread row kept in order",
+			"input": {
+				"rows": [
+					"3f9c2a180ce54b0df3f6cadf02d1192568f6d7c6",
+					"8b41d0720e252681deac809969b3faf8181dac30"
+				],
+				"read": [
+					"3f9c2a180ce54b0df3f6cadf02d1192568f6d7c6"
+				]
+			},
+			"output": {
+				"listed": [
+					{
+						"commit": "3f9c2a180ce54b0df3f6cadf02d1192568f6d7c6",
+						"subject": "feat: orders page",
+						"author": "Fixture",
+						"committedAt": "2026-10-08T09:00:00.000Z",
+						"coverage": "verified",
+						"previous": null,
+						"standing": "unknown",
+						"change": null,
+						"gap": "This history was built before it recorded what each commit changed.",
+						"measured": null,
+						"sizeChange": null,
+						"complexityChange": null,
+						"reviews": []
+					}
+				],
+				"unread": [
+					{
+						"commit": "8b41d0720e252681deac809969b3faf8181dac30",
+						"subject": "feat: case-insensitive search",
+						"author": "Fixture",
+						"committedAt": "2026-10-09T09:00:00.000Z",
+						"coverage": "verified",
+						"previous": "3f9c2a180ce54b0df3f6cadf02d1192568f6d7c6",
+						"standing": "unknown",
+						"change": null,
+						"gap": "This history was built before it recorded what each commit changed.",
+						"measured": null,
+						"sizeChange": null,
+						"complexityChange": null,
+						"reviews": []
+					}
+				]
+			}
+		}
+	]
+}
