@@ -1,0 +1,89 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.artifact-cases",
+	"symbol": "artifactCases",
+	"cases": [
+		{
+			"name": "first alias in each group wins",
+			"input": "all six names",
+			"output": {
+				"kind": "cases",
+				"source": "observation",
+				"symbol": null,
+				"cases": [
+					{
+						"name": "Test observation",
+						"input": "first",
+						"output": "o1",
+						"failed": false
+					}
+				]
+			}
+		},
+		{
+			"name": "request and response aliases",
+			"input": {
+				"request": "r",
+				"response": "s"
+			},
+			"output": {
+				"kind": "cases",
+				"source": "observation",
+				"symbol": null,
+				"cases": [
+					{
+						"name": "Test observation",
+						"input": "r",
+						"output": "s",
+						"failed": false
+					}
+				]
+			}
+		},
+		{
+			"name": "list values are kept",
+			"input": {
+				"inputs": [
+					"a"
+				],
+				"outputs": []
+			},
+			"output": {
+				"kind": "cases",
+				"source": "observation",
+				"symbol": null,
+				"cases": [
+					{
+						"name": "Test observation",
+						"input": [
+							"a"
+						],
+						"output": [],
+						"failed": false
+					}
+				]
+			}
+		},
+		{
+			"name": "input without output is a gap",
+			"input": {
+				"input": 1
+			},
+			"output": {
+				"kind": "gap",
+				"why": "This result records no input and output."
+			}
+		},
+		{
+			"name": "output without input is a gap",
+			"input": {
+				"response": 1
+			},
+			"output": {
+				"kind": "gap",
+				"why": "This result records no input and output."
+			}
+		}
+	]
+}

@@ -1,0 +1,534 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.artifact-cases",
+	"symbol": "artifactCases",
+	"cases": [
+		{
+			"name": "schema version 2",
+			"input": {
+				"schemaVersion": 2,
+				"kind": "function-invocations",
+				"unitId": "reports.function.artifact-cases",
+				"symbol": "artifactCases",
+				"cases": [
+					{
+						"name": "call 0",
+						"input": 0,
+						"output": 0
+					}
+				]
+			},
+			"output": {
+				"kind": "gap",
+				"why": "Its cases are not in the recorded form."
+			}
+		},
+		{
+			"name": "empty symbol",
+			"input": {
+				"schemaVersion": 1,
+				"kind": "function-invocations",
+				"unitId": "reports.function.artifact-cases",
+				"symbol": "",
+				"cases": [
+					{
+						"name": "call 0",
+						"input": 0,
+						"output": 0
+					}
+				]
+			},
+			"output": {
+				"kind": "gap",
+				"why": "Its cases are not in the recorded form."
+			}
+		},
+		{
+			"name": "unit name of 201 characters",
+			"input": {
+				"schemaVersion": 1,
+				"kind": "function-invocations",
+				"unitId": "uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu",
+				"symbol": "artifactCases",
+				"cases": [
+					{
+						"name": "call 0",
+						"input": 0,
+						"output": 0
+					}
+				]
+			},
+			"output": {
+				"kind": "gap",
+				"why": "Its cases are not in the recorded form."
+			}
+		},
+		{
+			"name": "no calls",
+			"input": {
+				"schemaVersion": 1,
+				"kind": "function-invocations",
+				"unitId": "reports.function.artifact-cases",
+				"symbol": "artifactCases",
+				"cases": []
+			},
+			"output": {
+				"kind": "gap",
+				"why": "Its cases are not in the recorded form."
+			}
+		},
+		{
+			"name": "65 calls",
+			"input": {
+				"schemaVersion": 1,
+				"kind": "function-invocations",
+				"unitId": "reports.function.artifact-cases",
+				"symbol": "artifactCases",
+				"cases": [
+					{
+						"name": "call 0",
+						"input": 0,
+						"output": 0
+					},
+					{
+						"name": "call 1",
+						"input": 1,
+						"output": 2
+					},
+					{
+						"name": "call 2",
+						"input": 2,
+						"output": 4
+					},
+					{
+						"name": "call 3",
+						"input": 3,
+						"output": 6
+					},
+					{
+						"name": "call 4",
+						"input": 4,
+						"output": 8
+					},
+					{
+						"name": "call 5",
+						"input": 5,
+						"output": 10
+					},
+					{
+						"name": "call 6",
+						"input": 6,
+						"output": 12
+					},
+					{
+						"name": "call 7",
+						"input": 7,
+						"output": 14
+					},
+					{
+						"name": "call 8",
+						"input": 8,
+						"output": 16
+					},
+					{
+						"name": "call 9",
+						"input": 9,
+						"output": 18
+					},
+					{
+						"name": "call 10",
+						"input": 10,
+						"output": 20
+					},
+					{
+						"name": "call 11",
+						"input": 11,
+						"output": 22
+					},
+					{
+						"name": "call 12",
+						"input": 12,
+						"output": 24
+					},
+					{
+						"name": "call 13",
+						"input": 13,
+						"output": 26
+					},
+					{
+						"name": "call 14",
+						"input": 14,
+						"output": 28
+					},
+					{
+						"name": "call 15",
+						"input": 15,
+						"output": 30
+					},
+					{
+						"name": "call 16",
+						"input": 16,
+						"output": 32
+					},
+					{
+						"name": "call 17",
+						"input": 17,
+						"output": 34
+					},
+					{
+						"name": "call 18",
+						"input": 18,
+						"output": 36
+					},
+					{
+						"name": "call 19",
+						"input": 19,
+						"output": 38
+					},
+					{
+						"name": "call 20",
+						"input": 20,
+						"output": 40
+					},
+					{
+						"name": "call 21",
+						"input": 21,
+						"output": 42
+					},
+					{
+						"name": "call 22",
+						"input": 22,
+						"output": 44
+					},
+					{
+						"name": "call 23",
+						"input": 23,
+						"output": 46
+					},
+					{
+						"name": "call 24",
+						"input": 24,
+						"output": 48
+					},
+					{
+						"name": "call 25",
+						"input": 25,
+						"output": 50
+					},
+					{
+						"name": "call 26",
+						"input": 26,
+						"output": 52
+					},
+					{
+						"name": "call 27",
+						"input": 27,
+						"output": 54
+					},
+					{
+						"name": "call 28",
+						"input": 28,
+						"output": 56
+					},
+					{
+						"name": "call 29",
+						"input": 29,
+						"output": 58
+					},
+					{
+						"name": "call 30",
+						"input": 30,
+						"output": 60
+					},
+					{
+						"name": "call 31",
+						"input": 31,
+						"output": 62
+					},
+					{
+						"name": "call 32",
+						"input": 32,
+						"output": 64
+					},
+					{
+						"name": "call 33",
+						"input": 33,
+						"output": 66
+					},
+					{
+						"name": "call 34",
+						"input": 34,
+						"output": 68
+					},
+					{
+						"name": "call 35",
+						"input": 35,
+						"output": 70
+					},
+					{
+						"name": "call 36",
+						"input": 36,
+						"output": 72
+					},
+					{
+						"name": "call 37",
+						"input": 37,
+						"output": 74
+					},
+					{
+						"name": "call 38",
+						"input": 38,
+						"output": 76
+					},
+					{
+						"name": "call 39",
+						"input": 39,
+						"output": 78
+					},
+					{
+						"name": "call 40",
+						"input": 40,
+						"output": 80
+					},
+					{
+						"name": "call 41",
+						"input": 41,
+						"output": 82
+					},
+					{
+						"name": "call 42",
+						"input": 42,
+						"output": 84
+					},
+					{
+						"name": "call 43",
+						"input": 43,
+						"output": 86
+					},
+					{
+						"name": "call 44",
+						"input": 44,
+						"output": 88
+					},
+					{
+						"name": "call 45",
+						"input": 45,
+						"output": 90
+					},
+					{
+						"name": "call 46",
+						"input": 46,
+						"output": 92
+					},
+					{
+						"name": "call 47",
+						"input": 47,
+						"output": 94
+					},
+					{
+						"name": "call 48",
+						"input": 48,
+						"output": 96
+					},
+					{
+						"name": "call 49",
+						"input": 49,
+						"output": 98
+					},
+					{
+						"name": "call 50",
+						"input": 50,
+						"output": 100
+					},
+					{
+						"name": "call 51",
+						"input": 51,
+						"output": 102
+					},
+					{
+						"name": "call 52",
+						"input": 52,
+						"output": 104
+					},
+					{
+						"name": "call 53",
+						"input": 53,
+						"output": 106
+					},
+					{
+						"name": "call 54",
+						"input": 54,
+						"output": 108
+					},
+					{
+						"name": "call 55",
+						"input": 55,
+						"output": 110
+					},
+					{
+						"name": "call 56",
+						"input": 56,
+						"output": 112
+					},
+					{
+						"name": "call 57",
+						"input": 57,
+						"output": 114
+					},
+					{
+						"name": "call 58",
+						"input": 58,
+						"output": 116
+					},
+					{
+						"name": "call 59",
+						"input": 59,
+						"output": 118
+					},
+					{
+						"name": "call 60",
+						"input": 60,
+						"output": 120
+					},
+					{
+						"name": "call 61",
+						"input": 61,
+						"output": 122
+					},
+					{
+						"name": "call 62",
+						"input": 62,
+						"output": 124
+					},
+					{
+						"name": "call 63",
+						"input": 63,
+						"output": 126
+					},
+					{
+						"name": "extra",
+						"input": 0,
+						"output": 0
+					}
+				]
+			},
+			"output": {
+				"kind": "gap",
+				"why": "Its cases are not in the recorded form."
+			}
+		},
+		{
+			"name": "name of 161 characters",
+			"input": {
+				"schemaVersion": 1,
+				"kind": "function-invocations",
+				"unitId": "reports.function.artifact-cases",
+				"symbol": "artifactCases",
+				"cases": [
+					{
+						"name": "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
+						"input": 1,
+						"output": 1
+					}
+				]
+			},
+			"output": {
+				"kind": "gap",
+				"why": "Its cases are not in the recorded form."
+			}
+		},
+		{
+			"name": "call with output and error",
+			"input": {
+				"schemaVersion": 1,
+				"kind": "function-invocations",
+				"unitId": "reports.function.artifact-cases",
+				"symbol": "artifactCases",
+				"cases": [
+					{
+						"name": "both",
+						"input": 1,
+						"output": 2,
+						"error": "x"
+					}
+				]
+			},
+			"output": {
+				"kind": "gap",
+				"why": "Its cases are not in the recorded form."
+			}
+		},
+		{
+			"name": "call with neither output nor error",
+			"input": {
+				"schemaVersion": 1,
+				"kind": "function-invocations",
+				"unitId": "reports.function.artifact-cases",
+				"symbol": "artifactCases",
+				"cases": [
+					{
+						"name": "neither",
+						"input": 1
+					}
+				]
+			},
+			"output": {
+				"kind": "gap",
+				"why": "Its cases are not in the recorded form."
+			}
+		},
+		{
+			"name": "call without input",
+			"input": {
+				"schemaVersion": 1,
+				"kind": "function-invocations",
+				"unitId": "reports.function.artifact-cases",
+				"symbol": "artifactCases",
+				"cases": [
+					{
+						"name": "no input",
+						"output": 1
+					}
+				]
+			},
+			"output": {
+				"kind": "gap",
+				"why": "Its cases are not in the recorded form."
+			}
+		},
+		{
+			"name": "one bad call among good calls",
+			"input": {
+				"schemaVersion": 1,
+				"kind": "function-invocations",
+				"unitId": "reports.function.artifact-cases",
+				"symbol": "artifactCases",
+				"cases": [
+					{
+						"name": "good",
+						"input": 1,
+						"output": 1
+					},
+					{
+						"name": "bad",
+						"output": 1
+					}
+				]
+			},
+			"output": {
+				"kind": "gap",
+				"why": "Its cases are not in the recorded form."
+			}
+		},
+		{
+			"name": "64 calls are accepted",
+			"input": {
+				"calls": 64
+			},
+			"output": {
+				"count": 64
+			}
+		}
+	]
+}

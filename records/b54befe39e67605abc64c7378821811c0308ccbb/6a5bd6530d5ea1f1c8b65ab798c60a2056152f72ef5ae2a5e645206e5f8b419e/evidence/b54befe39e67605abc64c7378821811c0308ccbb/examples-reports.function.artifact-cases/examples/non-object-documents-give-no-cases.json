@@ -1,0 +1,50 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.artifact-cases",
+	"symbol": "artifactCases",
+	"cases": [
+		{
+			"name": "document 0",
+			"input": null,
+			"output": {
+				"kind": "gap",
+				"why": "This result records no input and output."
+			}
+		},
+		{
+			"name": "document 1",
+			"output": {
+				"kind": "gap",
+				"why": "This result records no input and output."
+			}
+		},
+		{
+			"name": "document 2",
+			"input": "text",
+			"output": {
+				"kind": "gap",
+				"why": "This result records no input and output."
+			}
+		},
+		{
+			"name": "document 3",
+			"input": 42,
+			"output": {
+				"kind": "gap",
+				"why": "This result records no input and output."
+			}
+		},
+		{
+			"name": "document 4",
+			"input": [
+				"input",
+				"output"
+			],
+			"output": {
+				"kind": "gap",
+				"why": "This result records no input and output."
+			}
+		}
+	]
+}
