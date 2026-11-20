@@ -1,0 +1,25 @@
+
+ RUN  v3.2.4 /Users/danielfugere/harness-z5jp8p-evidence/supervised-hheapr/resume-run5/tmp/harness-snapshot-fCMzxz
+
+ ✓ test/units-guide.test.ts (5 tests) 23023ms
+   ✓ guide distinguishes named states and heuristic prop boundaries  1473ms
+   ✓ guide counts verified shots per state and viewport and reaches DONE  10716ms
+   ✓ guide rejects partial, stale and uncommitted coverage  5183ms
+   ✓ a registry string alone is not a committed test, even with retained shots  4236ms
+   ✓ guide rejects unknown identities with a useful diagnostic  1409ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  22:59:35
+   Duration  26.63s (transform 199ms, setup 129ms, collect 173ms, tests 23.02s, environment 0ms, prepare 29ms)
+
+
+ RUN  v3.2.4 /Users/danielfugere/harness-z5jp8p-evidence/supervised-hheapr/resume-run5/tmp/harness-snapshot-fCMzxz/packages/reports
+
+ ✓ test/examples/reports.function.explorer-state.test.ts (7 tests) 8ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  23:00:03
+   Duration  346ms (transform 108ms, setup 122ms, collect 53ms, tests 8ms, environment 0ms, prepare 34ms)
+
