@@ -1,5 +1,7 @@
 import {
 	keepNativeNavigation,
+	leaveCleanGame,
+	guardState,
 	viewSettings,
 	doneCheckpoint,
 	advancedCheckpoint
@@ -66,7 +68,7 @@ async function author(page: Page, dimension: string) {
 	await approveCheckpointImage(page);
 	await keepNativeNavigation(page);
 	// The guard's own state is shared by both dimensions; capture it once per viewport.
-	if (dimension === '2d') await capture(page, 'desktop-component-game-navigation-guard-unsaved');
+	if (dimension === '2d') await capture(page, guardState('unsaved'));
 	await page.getByRole('button', { name: 'Save', exact: true }).click();
 	await expect(page.getByText('Unsaved changes', { exact: true })).toHaveCount(0);
 }
@@ -196,6 +198,8 @@ for (const { dimension, viewport } of ['2d', '3d'].flatMap((dimension) =>
 			await recordStartup(app, page, started, dimension);
 			beginGameFlow(page);
 			await test.step('Create a game', () => createNativeGame(page, name, dimension));
+			if (dimension === '2d') await capture(page, guardState('default'));
+			await leaveCleanGame(page);
 			await imageProvider(root);
 			await test.step('Author rules and image', () => author(page, dimension));
 			await persisted(page, root, dimension);

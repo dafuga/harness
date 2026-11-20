@@ -27,6 +27,33 @@ export async function keepEdits(page: Page) {
 	await expect(page.getByText('Unsaved changes', { exact: true })).toBeVisible();
 }
 
+/** Scenario id of a guard state; the bare unit id is its default presentation. */
+export function guardState(name: 'default' | 'unsaved') {
+	return name === 'default'
+		? 'desktop-component-game-navigation-guard'
+		: 'desktop-component-game-navigation-guard-' + name;
+}
+
+/** A clean game has no unsaved edits, so its guard is inactive and leaving needs no confirmation. */
+export async function leaveCleanGame(page: Page) {
+	await expect(page.getByText('Unsaved changes', { exact: true })).toHaveCount(0);
+	const address = page.url();
+	await page.evaluate(() => {
+		window.confirm = (message) => {
+			document.documentElement.dataset.gameConfirmation = message;
+			return true;
+		};
+	});
+	await page.getByRole('link', { name: 'Back to project', exact: true }).click();
+	await expect(
+		page.getByRole('navigation', { name: 'Catalog categories', exact: true })
+	).toBeVisible();
+	await expect(page).not.toHaveURL(address);
+	await expect(page.locator('html')).not.toHaveAttribute('data-game-confirmation');
+	await page.getByRole('link', { name: 'Game Views', exact: true }).click();
+	await expect(page.getByRole('heading', { name: 'Game Views', exact: true })).toBeVisible();
+}
+
 /** Native app navigation uses a controlled confirm; host unload is checked by startup tests and native UI. */
 export async function keepNativeNavigation(page: Page) {
 	const address = page.url();
