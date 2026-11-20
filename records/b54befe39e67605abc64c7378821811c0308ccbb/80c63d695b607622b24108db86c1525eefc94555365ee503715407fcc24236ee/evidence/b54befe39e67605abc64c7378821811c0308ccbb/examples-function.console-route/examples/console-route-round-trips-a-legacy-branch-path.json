@@ -1,0 +1,64 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.console-route",
+	"symbol": "consoleRoutePath",
+	"cases": [
+		{
+			"name": "a legacy path of map round-trips",
+			"input": {
+				"branch": "main",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"view": "map"
+			},
+			"output": "/branch/main/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/map"
+		},
+		{
+			"name": "a legacy path of map round-trips",
+			"input": {
+				"branch": "feature/kept#1",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"view": "map"
+			},
+			"output": "/branch/feature/kept%231/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/map"
+		},
+		{
+			"name": "a legacy path of activity round-trips",
+			"input": {
+				"branch": null,
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"view": "activity"
+			},
+			"output": "/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/activity"
+		},
+		{
+			"name": "a legacy path of history round-trips",
+			"input": {
+				"branch": "fix/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/map",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"view": "history"
+			},
+			"output": "/branch/fix/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/map/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/history"
+		},
+		{
+			"name": "a legacy path of compare round-trips",
+			"input": {
+				"branch": "main",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"view": "compare",
+				"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+			},
+			"output": "/branch/main/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/compare/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+		},
+		{
+			"name": "a legacy path of history round-trips",
+			"input": {
+				"branch": "main",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"view": "history",
+				"record": "r1"
+			},
+			"output": "/branch/main/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/history/record/r1"
+		}
+	]
+}
