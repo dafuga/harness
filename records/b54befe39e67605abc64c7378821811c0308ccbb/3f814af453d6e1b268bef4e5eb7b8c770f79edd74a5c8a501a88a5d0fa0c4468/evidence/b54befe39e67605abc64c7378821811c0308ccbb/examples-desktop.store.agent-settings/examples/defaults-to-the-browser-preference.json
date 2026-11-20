@@ -1,0 +1,26 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.agent-settings",
+	"symbol": "createAgentSettingsStore",
+	"cases": [
+		{
+			"name": "load with no adapter reads the stored count",
+			"input": {
+				"stored": 8
+			},
+			"output": 8
+		},
+		{
+			"name": "set 4 with no adapter writes the browser preference",
+			"input": {
+				"designOptions": 4
+			},
+			"output": {
+				"returned": true,
+				"designOptions": 4,
+				"saved": true
+			}
+		}
+	]
+}

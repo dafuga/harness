@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.agent-settings",
+	"symbol": "setDesignOptions",
+	"cases": [
+		{
+			"name": "set 7 when the adapter write fails",
+			"input": {
+				"designOptions": 7
+			},
+			"output": {
+				"returned": false,
+				"designOptions": 7,
+				"saved": false
+			}
+		},
+		{
+			"name": "set 8 when the adapter write succeeds",
+			"input": {
+				"designOptions": 8
+			},
+			"output": {
+				"returned": true,
+				"designOptions": 8,
+				"saved": true
+			}
+		}
+	]
+}
