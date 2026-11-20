@@ -1,0 +1,78 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.tooltip-place",
+	"symbol": "tooltipPlace",
+	"cases": [
+		{
+			"name": "exactly the room below",
+			"input": {
+				"mark": {
+					"left": 180,
+					"top": 100,
+					"width": 32,
+					"height": 32
+				},
+				"tip": {
+					"width": 240,
+					"height": 696
+				},
+				"view": {
+					"width": 390,
+					"height": 844
+				}
+			},
+			"output": {
+				"left": 76,
+				"top": 140
+			}
+		},
+		{
+			"name": "one pixel over the room below",
+			"input": {
+				"mark": {
+					"left": 180,
+					"top": 100,
+					"width": 32,
+					"height": 32
+				},
+				"tip": {
+					"width": 240,
+					"height": 697
+				},
+				"view": {
+					"width": 390,
+					"height": 844
+				}
+			},
+			"output": {
+				"left": 76,
+				"top": 140,
+				"height": 696
+			}
+		},
+		{
+			"name": "exactly the room above",
+			"input": {
+				"mark": {
+					"left": 180,
+					"top": 800,
+					"width": 32,
+					"height": 32
+				},
+				"tip": {
+					"width": 240,
+					"height": 784
+				},
+				"view": {
+					"width": 390,
+					"height": 844
+				}
+			},
+			"output": {
+				"left": 76,
+				"top": 8
+			}
+		}
+	]
+}

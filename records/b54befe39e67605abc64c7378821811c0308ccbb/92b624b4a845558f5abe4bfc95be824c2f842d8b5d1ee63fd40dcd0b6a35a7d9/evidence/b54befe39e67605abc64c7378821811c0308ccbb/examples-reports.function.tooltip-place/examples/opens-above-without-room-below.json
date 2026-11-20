@@ -1,0 +1,31 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.tooltip-place",
+	"symbol": "tooltipPlace",
+	"cases": [
+		{
+			"name": "mark near the bottom",
+			"input": {
+				"mark": {
+					"left": 180,
+					"top": 800,
+					"width": 32,
+					"height": 32
+				},
+				"tip": {
+					"width": 240,
+					"height": 80
+				},
+				"view": {
+					"width": 390,
+					"height": 844
+				}
+			},
+			"output": {
+				"left": 76,
+				"top": 712
+			}
+		}
+	]
+}

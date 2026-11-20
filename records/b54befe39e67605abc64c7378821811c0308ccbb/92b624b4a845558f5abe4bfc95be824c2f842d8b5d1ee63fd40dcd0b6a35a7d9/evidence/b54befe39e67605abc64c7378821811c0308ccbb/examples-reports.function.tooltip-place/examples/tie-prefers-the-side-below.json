@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.tooltip-place",
+	"symbol": "tooltipPlace",
+	"cases": [
+		{
+			"name": "equal room above and below",
+			"input": {
+				"mark": {
+					"left": 180,
+					"top": 100,
+					"width": 32,
+					"height": 32
+				},
+				"tip": {
+					"width": 240,
+					"height": 200
+				},
+				"view": {
+					"width": 390,
+					"height": 232
+				}
+			},
+			"output": {
+				"left": 76,
+				"top": 140,
+				"height": 84
+			}
+		}
+	]
+}
