@@ -1,0 +1,19 @@
+
+Running 12 tests using 1 worker
+
+(node:55626) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-controls at desktop (959ms)
+  ✓   2 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-controls:search at desktop (889ms)
+  ✓   3 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-controls:long at desktop (872ms)
+  ✓   4 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-controls:focused at desktop (870ms)
+  ✓   5 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-controls at tablet (555ms)
+  ✓   6 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-controls:search at tablet (557ms)
+  ✓   7 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-controls:long at tablet (554ms)
+  ✓   8 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-controls:focused at tablet (571ms)
+  ✓   9 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-controls at mobile (571ms)
+  ✓  10 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-controls:search at mobile (551ms)
+  ✓  11 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-controls:long at mobile (571ms)
+  ✓  12 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-controls:focused at mobile (551ms)
+
+  12 passed (10.3s)
