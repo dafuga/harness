@@ -1,0 +1,23 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.thread-run",
+	"symbol": "start, event",
+	"cases": [
+		{
+			"name": "start, event",
+			"input": {
+				"mode": "change"
+			},
+			"output": {
+				"environment": "prod",
+				"thrown": "load down",
+				"status": "Change applied",
+				"streaming": "",
+				"runId": "",
+				"refreshCalls": 1,
+				"loadCalls": 1
+			}
+		}
+	]
+}
