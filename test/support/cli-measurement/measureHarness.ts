@@ -164,7 +164,6 @@ const measuredWorkloads: Record<string, string[]> = {
 		'service.check-run',
 		'function.resource-work'
 	],
-
 	'info:benchmark': ['guide.benchmark', 'guide.guide', 'entry.program', 'entry.index'],
 	'benchmark:run': benchmarkRunUnits,
 	'analytics:benchmarks': [
