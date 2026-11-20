@@ -1,0 +1,97 @@
+{
+	"schemaVersion": 1,
+	"record": "d9824f03a0140fc558bdb1eb1c8e9638d380084143f8c09712a7fd6f44806bb9",
+	"source": {
+		"commit": "ecb91a0508a98c91876158586472ee870eb311f9",
+		"tree": "abd6c5656cfb7f28ed60d2f15dc92ec62db8e02b"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "e8c137e842070bc6e76d5d6988ec1f0a841ad53798d84138b6e60ef194aeb512",
+			"bytes": 304175,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/remote-mobile-native/ios-authority/test-ios-cache-authority.test.ts-native-authority.txt",
+			"sha256": "fdc6c05d8c41ddcc3ac7d6869828043a1b120aba14409300553529826c293e0b",
+			"bytes": 486,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/remote-mobile-native/ios-authority/test-ios-cache-authority.test.ts-native-authority.json",
+			"sha256": "bc09d49838ab068eda1afb7556a342d20aea454063fed9bd5cd35f4419220944",
+			"bytes": 713,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/remote-mobile-native/ios-cache-listing/test-ios-cache-listing.test.ts-native-authority.txt",
+			"sha256": "12413b129e5b10d1804c57008b9d72445766fc8dafd1f511a9700d0486eb6c97",
+			"bytes": 527,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/remote-mobile-native/ios-cache-listing/test-ios-cache-listing.test.ts-native-authority.json",
+			"sha256": "dc139ce943f016003943c3981e663937fd26df9064eca82069e25a8329979f94",
+			"bytes": 1816,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/remote-mobile-native/native-profile/test-ios-native-profile.test.ts-native-profile.txt",
+			"sha256": "7b502fd645633bb2d34e0b41e5a980b349074fecee64e9f4ee2766ff1ce5262d",
+			"bytes": 40442,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/remote-mobile-native/native-profile/test-ios-native-profile.test.ts-native-profile.json",
+			"sha256": "4d78727f92d65ba438da5d3af1701f59ef04126843a03698462ec6cfe09b3c7e",
+			"bytes": 12749,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/remote-mobile-native/native-build/test-ios-simulator-build.test.ts-native-build.txt",
+			"sha256": "65256def2666c224a8e8c5390b5b1de9ad4a5336d905b30abca4e9fba12df3f2",
+			"bytes": 1575,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/remote-mobile-native/native-build/test-ios-simulator-build.test.ts-native-build.json",
+			"sha256": "54948f7f7e01fb3b9c1a45720f98ab607360df704eb99e197ffa4317d894c57b",
+			"bytes": 4859,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-mobile-native-ios-authority.log",
+			"sha256": "fdc6c05d8c41ddcc3ac7d6869828043a1b120aba14409300553529826c293e0b",
+			"bytes": 486,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-mobile-native-ios-cache-listing.log",
+			"sha256": "12413b129e5b10d1804c57008b9d72445766fc8dafd1f511a9700d0486eb6c97",
+			"bytes": 527,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-mobile-native-native-profile.log",
+			"sha256": "7b502fd645633bb2d34e0b41e5a980b349074fecee64e9f4ee2766ff1ce5262d",
+			"bytes": 40442,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-mobile-native-native-build.log",
+			"sha256": "a1e7272d1b4054ea8a295697059c9b8da6d345c031ae787174d749eeb308fe34",
+			"bytes": 2006,
+			"storage": "git"
+		}
+	]
+}
