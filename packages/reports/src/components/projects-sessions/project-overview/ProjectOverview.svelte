@@ -75,7 +75,7 @@
 			<hx-h1 id="po-title" class="po-title">{headline(cards)}</hx-h1>
 			<hx-p class="po-totals">{totalsLine(cards.length, ready.liveSessions)}</hx-p>
 			<hx-ul class="po-machines" aria-label="Computers">
-				{#each ready.machines as machine (machine.name)}
+				{#each ready.machines as machine (machine)}
 					<Pill as="li" tone="po-machine" state={machine.status}>
 						<hx-span class="po-machine-mark" aria-hidden="true"></hx-span>
 						{machine.name} <hx-span class="po-machine-status">{machine.status}</hx-span>
@@ -120,7 +120,7 @@
 						>{band.label} <hx-span class="po-band-count">{band.cards.length}</hx-span></hx-h2
 					>
 					<hx-div class="po-grid" class:po-grid-compact={band.id === 'quiet' || band.id === 'done'}>
-						{#each band.cards as card (card.agent)}
+						{#each band.cards as card (card)}
 							<ProjectOverviewCard {card} {now} onOpen={openItem} />
 						{/each}
 					</hx-div>

@@ -1,20 +1,8 @@
 /** Synthetic tracker item rows only. No test reads the real tracker or its item bodies. */
+import type { ItemFields, ItemFlags } from './project-overview-item-fixtures.types';
 
 /** A credential-shaped value placed in a note; it must never reach the snapshot. */
 export const SECRET_NOTE_TOKEN = 'ghp_abcdefghijklmnopqrstuvwxyz0123456789';
-
-type ItemFields = {
-	agent: string | null;
-	id: string;
-	status: string;
-	title: string;
-	updated: string;
-};
-type ItemFlags = {
-	due?: string;
-	notes?: Record<string, unknown>[];
-	extra?: Record<string, unknown>;
-};
 
 /** A tracker item row from its fields, then the optional due date, notes and extra fields the overview reads. */
 export function item(fields: ItemFields, flags: ItemFlags = {}): Record<string, unknown> {

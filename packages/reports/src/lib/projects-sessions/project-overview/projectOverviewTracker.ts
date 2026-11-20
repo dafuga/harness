@@ -101,12 +101,16 @@ function parseItem(value: unknown): TrackerItemRecord {
 
 function parseRun(value: unknown): TrackerRunRecord {
 	const row = asRecord(value, 'run');
+	const ended = row.ended_at ?? null;
+	if (ended !== null && (typeof ended !== 'number' || !Number.isFinite(ended)))
+		throw new Error('malformed run ended_at');
 	if (typeof row.id !== 'number' || !Number.isInteger(row.id)) throw new Error('malformed run id');
 	return {
 		id: row.id,
 		node: optionalText(row.node, 'run node'),
 		item_id: requiredText(row.item_id, 'run item_id'),
-		state: requiredText(row.state, 'run state')
+		state: requiredText(row.state, 'run state'),
+		ended_at: ended
 	};
 }
 

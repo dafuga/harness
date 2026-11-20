@@ -1,4 +1,5 @@
 /** Synthetic tracker transport only. No test reads the real tracker or its item bodies. */
+import type { TrackerCall, TrackerReply, TrackerRoute } from './project-overview-fixtures.types';
 import { syntheticItems } from './project-overview-item-fixtures';
 import { syntheticMachines, syntheticRuns } from './project-overview-run-fixtures';
 
@@ -10,17 +11,6 @@ export const NOW = Date.parse('2026-11-20T20:41:00.000Z');
 export const TRACKER_ITEMS_URL = 'http://127.0.0.1:7701/items?status=all&limit=-1';
 export const TRACKER_RUNS_URL = 'http://127.0.0.1:7701/runs?limit=500';
 export const TRACKER_MACHINES_URL = 'http://127.0.0.1:7701/machines';
-
-export type TrackerRoute = 'items' | 'runs' | 'machines';
-export type TrackerReply = () => Response | Promise<Response>;
-export type TrackerCall = {
-	url: string;
-	method: string | undefined;
-	redirect: string | undefined;
-	cache: string | undefined;
-	credentials: string | undefined;
-	headers: Record<string, string> | undefined;
-};
 
 const ROUTE_BY_URL: Record<string, TrackerRoute> = {
 	[TRACKER_ITEMS_URL]: 'items',

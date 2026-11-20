@@ -7,6 +7,7 @@ const REDACTED = '[redacted]';
  * text is shown. Ordinary words (secretary, "API key from vendor") are not matched.
  */
 const CREDENTIAL_PATTERNS: readonly RegExp[] = [
+	/-----BEGIN (?:[A-Z]+ )*PRIVATE KEY-----[\s\S]*?(?:-----END (?:[A-Z]+ )*PRIVATE KEY-----|$)/g,
 	/\bgithub_pat_[A-Za-z0-9_]{20,}\b/g,
 	/\bgh[pousr]_[A-Za-z0-9]{20,}\b/g,
 	/\bsk-[A-Za-z0-9_-]{16,}\b/g,

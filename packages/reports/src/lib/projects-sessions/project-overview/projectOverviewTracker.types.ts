@@ -35,6 +35,7 @@ export type TrackerRunRecord = {
 	node?: string | null;
 	item_id: string;
 	state: string;
+	ended_at: number | null;
 };
 
 /** A computer from GET /machines. Its session and process counts are not read. */

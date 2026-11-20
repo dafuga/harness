@@ -67,7 +67,7 @@ function countLiveRuns(
 	const seen = new Set<string>();
 	const counts = new Map<string, number>();
 	for (const run of runs) {
-		if (run.state !== 'running' || !itemIds.has(run.item_id)) continue;
+		if (run.state !== 'running' || run.ended_at !== null || !itemIds.has(run.item_id)) continue;
 		if (run.node && offline.has(run.node)) continue;
 		const key = `${run.node ?? ''}:${run.id}`;
 		if (seen.has(key)) continue;
