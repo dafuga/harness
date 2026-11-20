@@ -1,0 +1,15 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.changed-units",
+	"symbol": "changedUnits",
+	"cases": [
+		{
+			"name": "empty change list",
+			"input": {
+				"paths": []
+			},
+			"output": ""
+		}
+	]
+}

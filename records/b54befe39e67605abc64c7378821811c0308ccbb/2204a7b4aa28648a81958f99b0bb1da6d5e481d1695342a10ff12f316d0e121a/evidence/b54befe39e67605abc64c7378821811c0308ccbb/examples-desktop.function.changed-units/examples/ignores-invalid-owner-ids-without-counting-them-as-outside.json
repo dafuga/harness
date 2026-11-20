@@ -1,0 +1,22 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.changed-units",
+	"symbol": "changedUnits",
+	"cases": [
+		{
+			"name": "only invalid ids give no notice",
+			"input": {
+				"path": "src/x.ts"
+			},
+			"output": ""
+		},
+		{
+			"name": "valid id kept beside invalid id",
+			"input": {
+				"path": "src/y.ts"
+			},
+			"output": "Units changed: [[unit:app.function.one]]."
+		}
+	]
+}
