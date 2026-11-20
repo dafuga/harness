@@ -1,0 +1,263 @@
+{
+	"id": "0736a5c2e95901bc7cc6f0210dc8a40ff1b823059bd684b22cc2a9dc3cdaa65a",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/private/tmp/z5jp8p-ui.aUz8v3/source",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-20T12:47:03.146Z",
+	"finishedAt": "2026-11-20T12:47:49.049Z",
+	"status": "failed",
+	"components": [],
+	"measurements": [],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "visual-reports.style.harness:states",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts tests/e2e/units/explorer-shell-unit-reports.style.harness.spec.ts",
+			"status": "passed",
+			"durationMs": 8277,
+			"log": {
+				"path": "logs/visual-reports.style.harness-states.log",
+				"bytes": 1473,
+				"sha256": "308e356731083d1a0b74a3e05f9ebd9d7286e50b93a270af155a8d90c45bea5c"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "visual-reports.style.harness",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "problem",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "problem",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/visual-reports.style.harness/states/problem-desktop.png",
+							"sha256": "9da68ceb667fbb029ca33676f2d100694f562ce9ccd4890aae992913951705ba",
+							"bytes": 27554,
+							"capturedAt": "2026-11-20T12:47:47.216Z",
+							"server": {
+								"buildId": "0162a2582a7872983acf49268fb6964ff1e7a2fba272f3fd6caf5a46d8529043",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "problem",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/visual-reports.style.harness/states/problem-tablet.png",
+							"sha256": "48eb68be4f24f2c75c7d4f969447d3805f8e3637d3a1776df345faa5faacb1a1",
+							"bytes": 27095,
+							"capturedAt": "2026-11-20T12:47:47.219Z",
+							"server": {
+								"buildId": "0162a2582a7872983acf49268fb6964ff1e7a2fba272f3fd6caf5a46d8529043",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "problem",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/visual-reports.style.harness/states/problem-mobile.png",
+							"sha256": "4534ae478f6772649fc702404ff7454b5df3a3a137f39c99c6853601bc90f10e",
+							"bytes": 23558,
+							"capturedAt": "2026-11-20T12:47:47.221Z",
+							"server": {
+								"buildId": "0162a2582a7872983acf49268fb6964ff1e7a2fba272f3fd6caf5a46d8529043",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "missing",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "missing",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/visual-reports.style.harness/states/missing-desktop.png",
+							"sha256": "1fddabb49f91f1a1189d88197327a32696e0b6380b5d4f3ec32d2adea903d015",
+							"bytes": 28642,
+							"capturedAt": "2026-11-20T12:47:47.217Z",
+							"server": {
+								"buildId": "0162a2582a7872983acf49268fb6964ff1e7a2fba272f3fd6caf5a46d8529043",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "missing",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/visual-reports.style.harness/states/missing-tablet.png",
+							"sha256": "3ae26ceb77900938c11803484b9416111afffa89aaf300c76f4a592185bd4e4e",
+							"bytes": 28347,
+							"capturedAt": "2026-11-20T12:47:47.220Z",
+							"server": {
+								"buildId": "0162a2582a7872983acf49268fb6964ff1e7a2fba272f3fd6caf5a46d8529043",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "missing",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/visual-reports.style.harness/states/missing-mobile.png",
+							"sha256": "bc48bb2e9f09da9c4485c587c10944dcd28bef316be267bd8d4a0a5fbe7bf971",
+							"bytes": 24667,
+							"capturedAt": "2026-11-20T12:47:47.222Z",
+							"server": {
+								"buildId": "0162a2582a7872983acf49268fb6964ff1e7a2fba272f3fd6caf5a46d8529043",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "default",
+					"coverage": "inapplicable",
+					"reason": "The default console draws no notice, so the notice rules of this stylesheet do not occur in it.",
+					"captures": []
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"entity-preview"
+	],
+	"builds": [
+		{
+			"id": "shell-fixture",
+			"directory": "packages/reports/output/shell-fixture",
+			"buildId": "0162a2582a7872983acf49268fb6964ff1e7a2fba272f3fd6caf5a46d8529043",
+			"files": 11
+		}
+	],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to reports.style.harness: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}
