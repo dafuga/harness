@@ -1,0 +1,31 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.workspace",
+	"symbol": "createWorkspaceStore",
+	"cases": [
+		{
+			"name": "create two stores with no bridge connected",
+			"input": null,
+			"output": {
+				"distinct": true,
+				"projectId": null,
+				"snapshot": null,
+				"entity": null,
+				"category": "pages",
+				"suffix": null,
+				"projects": [],
+				"capabilities": {
+					"comments": false,
+					"agents": false,
+					"planning": false,
+					"approval": false,
+					"source": "local"
+				},
+				"offline": null,
+				"error": "",
+				"path": "/"
+			}
+		}
+	]
+}

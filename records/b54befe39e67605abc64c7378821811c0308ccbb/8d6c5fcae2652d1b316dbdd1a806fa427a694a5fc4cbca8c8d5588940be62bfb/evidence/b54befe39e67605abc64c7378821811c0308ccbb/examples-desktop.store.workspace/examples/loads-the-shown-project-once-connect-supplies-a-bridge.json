@@ -1,0 +1,23 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.workspace",
+	"symbol": "connect, navigate",
+	"cases": [
+		{
+			"name": "connect the bridge then open the main branch pages",
+			"input": {
+				"url": "/harness/branch/main/pages"
+			},
+			"output": {
+				"calls": [
+					"snapshot"
+				],
+				"projectId": "project-7",
+				"busy": false,
+				"error": "",
+				"pushed": 1
+			}
+		}
+	]
+}
