@@ -10,6 +10,7 @@ import {
 } from '../../src/utils/explorer-ui/explorerState';
 import type { Judged, Told } from '../../src/utils/explorer-ui/explorerState';
 import { capture, declared, record, result, sha, unit } from '../explorerFixture';
+import { clipSlots, clips, failedSecond, videoJudge } from '../explorerVideoCoverageFixture';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
 
@@ -204,7 +205,11 @@ test('a required state passes only with passed, stored, bound captures in every 
 				rejected
 			],
 			['unstored capture', withCaptures([gapped]), catalog, 'missing', unstored],
-			['no capture for a slot', withCaptures([]), catalog, 'incomplete', noCapture]
+			['no capture for a slot', withCaptures([]), catalog, 'incomplete', noCapture],
+			['each clip has its own capture', videoJudge(clips), catalog, 'passed'],
+			['missing second clip', videoJudge([clips[0]]), catalog, 'incomplete', noCapture],
+			['rejected second clip', videoJudge([clips[0], failedSecond]), catalog, 'failed', rejected]
 		]
 	);
+	expect(clipSlots(videoJudge(clips))).toEqual(['use-first', 'use-second']);
 });
