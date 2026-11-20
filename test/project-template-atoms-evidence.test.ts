@@ -36,7 +36,7 @@ test('generated atom evidence names only active registered units or the template
 		expect(unregistered.filter((slug) => !has(owner, `compile-native-atom-${slug}`))).toEqual([]);
 		const compiled = new Set(
 			measured
-				.filter((entry) => entry.workload.startsWith('compile-native-atom'))
+				.filter((entry) => entry.workload?.startsWith('compile-native-atom') === true)
 				.map((entry) => `${entry.unit}\u0000${entry.workload}`)
 		);
 		expect(compiled.size).toBe(generated.length);
@@ -49,9 +49,9 @@ test('generated atom evidence names only active registered units or the template
 
 async function benchmarkMeasurements(
 	evidence: string
-): Promise<Array<{ unit: string; workload: string }>> {
+): Promise<Array<{ unit: string; workload: string | null }>> {
 	const lines = (await readFile(join(evidence, captureIndex), 'utf8')).trim().split('\n');
-	const out: Array<{ unit: string; workload: string }> = [];
+	const out: Array<{ unit: string; workload: string | null }> = [];
 	for (const line of lines.map((text) => JSON.parse(text) as { kind: string; file: string })) {
 		if (line.kind !== 'benchmark') continue;
 		const capture = benchmarkCaptureSchema.parse(
