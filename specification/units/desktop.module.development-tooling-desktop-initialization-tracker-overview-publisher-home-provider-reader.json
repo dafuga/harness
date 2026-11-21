@@ -1,0 +1,78 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-home-provider-reader",
+	"uid": "u_pmptujoqui",
+	"kind": "module",
+	"title": "homeProviderReader",
+	"responsibility": "Owns the homeProviderReader library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeProviderReader.ts"
+		],
+		"symbols": ["createHomeProviderReader"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "createHomeProviderReader.options",
+				"type": "{ file?: string; codexHistoryFile?: string }",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "createHomeProviderReader",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "createHomeProviderReader",
+				"inputs": [
+					{
+						"name": "createHomeProviderReader.options",
+						"type": "{ file?: string; codexHistoryFile?: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createHomeProviderReader",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-home-codex-usage",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeProviderReader.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeProviderReader.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

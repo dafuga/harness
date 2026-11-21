@@ -46,8 +46,20 @@
 				"examples": ["Login page capture", "Test run output"]
 			},
 			{
+				"name": "Modal.summary",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)"
+			},
+			{
+				"name": "Modal.actions",
+				"type": "import('svelte').Snippet",
+				"required": false,
+				"default": "undefined (omitted)"
+			},
+			{
 				"name": "Modal.variant",
-				"type": "'image' | 'text' | 'lightbox'",
+				"type": "'image' | 'text' | 'lightbox' | 'section'",
 				"required": false,
 				"default": "image",
 				"description": "Optional presentation, defaulting to image, which adds neither the text nor the lightbox class. The text value adds the text class, which limits the dialog to at most 760px wide and fits its height to the content, and the lightbox value adds the lightbox class, which makes it a borderless full-viewport canvas.",

@@ -28,14 +28,17 @@ const ITEM_STATUSES: ReadonlySet<string> = new Set([
 const MACHINE_STATUSES: ReadonlySet<string> = new Set(['ok', 'busy', 'overloaded', 'offline']);
 
 /** Read the three fixed tracker operations and validate each response. Any failure rejects. */
-export async function readTrackerSources(fetcher: typeof fetch): Promise<TrackerSources> {
+export async function readTrackerSources(
+	fetcher: typeof fetch,
+	includeHomeFields = false
+): Promise<TrackerSources> {
 	const [items, runs, machines] = await Promise.all([
 		getTrackerJson(fetcher, TRACKER_GET_URLS.items),
 		getTrackerJson(fetcher, TRACKER_GET_URLS.runs),
 		getTrackerJson(fetcher, TRACKER_GET_URLS.machines)
 	]);
 	return {
-		items: asList(items, 'items').map(parseItem),
+		items: asList(items, 'items').map((item) => parseItem(item, includeHomeFields)),
 		runs: asList(runs, 'runs').map(parseRun),
 		machines: asList(machines, 'machines').map(parseMachine)
 	};
@@ -81,7 +84,7 @@ async function closeBody(response: Response): Promise<void> {
 	}
 }
 
-function parseItem(value: unknown): TrackerItemRecord {
+function parseItem(value: unknown, includeHomeFields: boolean): TrackerItemRecord {
 	const row = asRecord(value, 'item');
 	return {
 		id: requiredText(row.id, 'item id'),
@@ -96,7 +99,22 @@ function parseItem(value: unknown): TrackerItemRecord {
 		needs_daniel: optionalBoolean(row.needs_daniel, 'item needs_daniel'),
 		resolved: optionalBoolean(row.resolved, 'item resolved'),
 		question: optionalText(row.question, 'item question'),
-		notes_log: optionalNotes(row.notes_log)
+		notes_log: optionalNotes(row.notes_log),
+		...(includeHomeFields ? homeFields(row) : {})
+	};
+}
+
+function homeFields(row: Record<string, unknown>): Partial<TrackerItemRecord> {
+	return {
+		kind: optionalText(row.kind, 'item kind'),
+		parent: optionalText(row.parent, 'item parent'),
+		computer: optionalText(row.computer, 'item computer'),
+		model: optionalText(row.model, 'item model'),
+		occurrence: optionalTime(row.occurrence, 'item occurrence'),
+		recurring: row.recurring === true || Boolean(row.every),
+		scheduleOff: row.schedule_off === true || row.schedule_off === 1,
+		answer: typeof row.answer === 'string' ? row.answer : null,
+		answeredAt: optionalTime(row.answered_at, 'item answered_at')
 	};
 }
 

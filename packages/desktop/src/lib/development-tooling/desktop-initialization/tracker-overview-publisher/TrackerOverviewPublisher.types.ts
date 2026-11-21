@@ -1,4 +1,8 @@
 // @harness-uid u_p43nh5e4yc
+import type {
+	HomeChatInput,
+	HomeChatReceipt
+} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
 import type { NativeHostedCredential } from '../remote-http-project-adapter/RemoteHttpProjectAdapter';
 
@@ -10,6 +14,8 @@ export interface TrackerOverviewAuthority {
 	version(): number;
 	/** Sends one PUT of the display snapshot to the owner-only endpoint. */
 	put(credential: NativeHostedCredential, body: string): Promise<void>;
+	publishHome?(credential: NativeHostedCredential, body: string): Promise<HomeChatInput[]>;
+	finishHomeChat?(credential: NativeHostedCredential, receipt: HomeChatReceipt): Promise<void>;
 }
 
 export interface TrackerOverviewTimers {
@@ -23,6 +29,11 @@ export interface TrackerOverviewPublisherOptions {
 	ownerActorId: string;
 	/** The fixed local tracker read; it never throws, failures arrive as an unavailable snapshot. */
 	read: () => Promise<OverviewSnapshot>;
+	publishHome?: (
+		authority: TrackerOverviewAuthority,
+		credential: NativeHostedCredential,
+		current: () => boolean
+	) => Promise<void>;
 	intervalMs?: number;
 	timers?: TrackerOverviewTimers;
 }
@@ -36,4 +47,5 @@ export interface TrackerOverviewFactoryInput {
 	 */
 	env: Record<string, string | undefined>;
 	read?: () => Promise<OverviewSnapshot>;
+	codexHomeHistoryFile?: string;
 }

@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.module.projects-sessions-hub-home-hub-home-types",
+	"uid": "u_kda7xezayo",
+	"kind": "module",
+	"title": "hubHome",
+	"responsibility": "Owns the hubHome library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts"],
+		"symbols": [
+			"HomeAgentState",
+			"HomePlanState",
+			"HomeSection",
+			"HomeMessage",
+			"HomeAgent",
+			"HomePlan",
+			"HomeRun",
+			"HomeLimit",
+			"HomeSubscription",
+			"HomeProviderReadings",
+			"OwnerHomeSnapshot",
+			"HomeChatInput",
+			"HomeChatStatus",
+			"HomeChatReceipt"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

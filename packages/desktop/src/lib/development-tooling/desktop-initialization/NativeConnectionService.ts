@@ -1,4 +1,5 @@
 // @harness-uid u_u5rrzn7a6a
+import type { HomeChatInput } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import type { NativeConnectionOptions } from './NativeConnectionService.types';
 import {
 	NativeSessionAdapter,
@@ -21,7 +22,20 @@ function overviewAuthority(
 		authorize: () => http.authorize(),
 		version: () => store.generation,
 		put: (credential, body) =>
-			http.request(TRACKER_OVERVIEW_PATH, credential, { method: 'PUT', body }).then(() => undefined)
+			http
+				.request(TRACKER_OVERVIEW_PATH, credential, { method: 'PUT', body })
+				.then(() => undefined),
+		publishHome: async (credential, body) => {
+			const response = await http.request('/api/hub-home', credential, { method: 'PUT', body });
+			const result = (await response.json()) as { messages?: HomeChatInput[] };
+			return Array.isArray(result.messages) ? result.messages.slice(0, 10) : [];
+		},
+		finishHomeChat: async (credential, receipt) => {
+			await http.request('/api/hub-home/chat', credential, {
+				method: 'PUT',
+				body: JSON.stringify(receipt)
+			});
+		}
 	};
 }
 

@@ -88,6 +88,11 @@ export class TrackerOverviewPublisher {
 		} catch (error) {
 			if (isDenied(error)) this.block(version);
 		}
+		if (this.blocked === version) return;
+		// The opt-in Home publisher is independent of the read-only overview route.
+		await this.options
+			.publishHome?.(authority, credential, () => this.current(epoch, version, authority))
+			.catch(() => {});
 	}
 
 	/** Holds publishing for this connection only; a new sign-in changes the version and resumes. */

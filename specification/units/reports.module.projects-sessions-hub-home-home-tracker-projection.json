@@ -1,0 +1,120 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.module.projects-sessions-hub-home-home-tracker-projection",
+	"uid": "u_3fnmp7mnr4",
+	"kind": "module",
+	"title": "homeTrackerProjection",
+	"responsibility": "Owns the homeTrackerProjection library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/lib/projects-sessions/hub-home/homeTrackerProjection.ts"],
+		"symbols": ["noProviders", "buildHomeSnapshot"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "buildHomeSnapshot.sources",
+				"type": "TrackerSources | null",
+				"required": true
+			},
+			{
+				"name": "buildHomeSnapshot.providers",
+				"type": "HomeProviderReadings",
+				"required": true
+			},
+			{
+				"name": "buildHomeSnapshot.now",
+				"type": "number",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "noProviders",
+				"type": "HomeProviderReadings"
+			},
+			{
+				"name": "buildHomeSnapshot",
+				"type": "OwnerHomeSnapshot"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "buildHomeSnapshot",
+				"inputs": [
+					{
+						"name": "buildHomeSnapshot.sources",
+						"type": "TrackerSources | null",
+						"required": true
+					},
+					{
+						"name": "buildHomeSnapshot.providers",
+						"type": "HomeProviderReadings",
+						"required": true
+					},
+					{
+						"name": "buildHomeSnapshot.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "buildHomeSnapshot",
+						"type": "OwnerHomeSnapshot"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-tracker-agents",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-tracker-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-snapshot",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-tracker",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/projects-sessions/hub-home/homeTrackerProjection.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/projects-sessions/hub-home/homeTrackerProjection.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

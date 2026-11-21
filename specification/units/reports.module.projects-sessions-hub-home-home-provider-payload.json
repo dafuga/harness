@@ -1,0 +1,59 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.module.projects-sessions-hub-home-home-provider-payload",
+	"uid": "u_6dm7i22pxp",
+	"kind": "module",
+	"title": "homeProviderPayload",
+	"responsibility": "Owns the homeProviderPayload library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/lib/projects-sessions/hub-home/homeProviderPayload.ts"],
+		"symbols": ["homeRunPayload", "homeSubscriptionPayload", "homeProviders"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "homeRunPayload",
+				"type": "unknown"
+			},
+			{
+				"name": "homeSubscriptionPayload",
+				"type": "unknown"
+			},
+			{
+				"name": "homeProviders",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-privacy",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/projects-sessions/hub-home/homeProviderPayload.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/projects-sessions/hub-home/homeProviderPayload.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

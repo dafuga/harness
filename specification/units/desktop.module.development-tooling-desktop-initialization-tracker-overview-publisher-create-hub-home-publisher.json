@@ -1,0 +1,93 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-create-hub-home-publisher",
+	"uid": "u_s7u2mjlzu4",
+	"kind": "module",
+	"title": "createHubHomePublisher",
+	"responsibility": "Owns the createHubHomePublisher library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHubHomePublisher.ts"
+		],
+		"symbols": ["createHubHomePublisher"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "createHubHomePublisher.options",
+				"type": "{ file?: string; codexHistoryFile?: string }",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "createHubHomePublisher",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "createHubHomePublisher",
+				"inputs": [
+					{
+						"name": "createHubHomePublisher.options",
+						"type": "{ file?: string; codexHistoryFile?: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createHubHomePublisher",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.adapter.remote-http-project",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-home-provider-reader",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-home-tracker-chat",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.tracker-overview-publisher",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHubHomePublisher.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHubHomePublisher.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

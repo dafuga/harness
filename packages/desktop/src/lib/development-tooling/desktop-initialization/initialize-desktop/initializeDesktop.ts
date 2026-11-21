@@ -131,9 +131,21 @@ function desktopBackend() {
 	});
 	lifecycle.start();
 	const transport = new LocalTransportService();
-	const publisher = createTrackerOverviewPublisher({ authority, env: process.env });
-	publisher?.start();
+	const publisher = trackerPublisher(authority, directory);
 	return { shared: { ...stores, ...connection }, remote, lifecycle, transport, publisher };
+}
+
+function trackerPublisher(
+	authority: Parameters<typeof createTrackerOverviewPublisher>[0]['authority'],
+	directory: string
+) {
+	const publisher = createTrackerOverviewPublisher({
+		authority,
+		env: process.env,
+		codexHomeHistoryFile: resolve(directory, 'hub-codex-usage.json')
+	});
+	publisher?.start();
+	return publisher;
 }
 
 /**

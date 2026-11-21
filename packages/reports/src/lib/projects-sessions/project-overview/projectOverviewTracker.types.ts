@@ -22,6 +22,15 @@ export type TrackerItemRecord = {
 	resolved?: boolean;
 	question?: string | null;
 	notes_log?: TrackerNote[];
+	kind?: string | null;
+	parent?: string | null;
+	computer?: string | null;
+	model?: string | null;
+	occurrence?: string | null;
+	recurring?: boolean;
+	scheduleOff?: boolean;
+	answer?: string | null;
+	answeredAt?: string | null;
 };
 
 /** An item that may appear on a card: not deleted, sensitive or ignored, and named by its agent. */
