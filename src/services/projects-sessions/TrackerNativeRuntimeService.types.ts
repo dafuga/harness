@@ -11,6 +11,7 @@ import type { TrackerNotificationOptions } from './TrackerNotificationService.ty
 import type { TrackerRecurringJobRunner } from './TrackerRecurringService.types';
 import type { TrackerSpokeLoopOptions } from './TrackerSpokeLoopService.types';
 import type { TrackerHostEffects } from './tracker-native-runtime-service/nativeTrackerHostEffects.types';
+import type { TrackerGuestSigningKey } from '../../adapters/agents-providers/module-task-runner-adapter/dockerTrackerGuest.types';
 
 export interface TrackerLegacyDestinationBindings {
 	urls?: ReadonlyMap<string, string>;
@@ -37,6 +38,7 @@ export interface TrackerNativeRuntimeOptions extends Omit<
 	adapter?: TrackerAdapterPollDependencies;
 	hostEffects?: TrackerHostEffects;
 	hostEffectsHeld?: boolean;
+	guestSigningKey?: TrackerGuestSigningKey;
 	recurring?: { jobs?: TrackerRecurringJobRunner };
 	dispatch?: Omit<TrackerDispatchSchedulerOptions, 'policy'> &
 		Pick<TrackerDispatchRepositoryOptions, 'due' | 'sessions'> & {

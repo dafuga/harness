@@ -9,6 +9,7 @@ import { TrackerRunReadRepository } from '../../repositories/projects-sessions/T
 import { TrackerRecurringRepository } from '../../repositories/projects-sessions/TrackerRecurringRepository';
 import { TrackerAdapterPollService } from './TrackerAdapterPollService';
 import { TrackerHubSyncService } from './TrackerHubSyncService';
+import { TrackerGuestCommandApi } from './tracker-native-runtime-service/TrackerGuestCommandApi';
 import { TrackerLocalApiService } from './TrackerLocalApiService';
 import type { TrackerNativeRuntimeOptions } from './TrackerNativeRuntimeService.types';
 import { TrackerNotificationService } from './TrackerNotificationService';
@@ -33,6 +34,7 @@ export class TrackerNativeRuntimeService {
 	readonly scheduler?: TrackerDispatchSchedulerService;
 	readonly store: TrackerPersistenceService;
 	readonly items: TrackerLocalApiService;
+	readonly guestCommands?: TrackerGuestCommandApi;
 	readonly notifications?: TrackerNotificationService;
 	readonly adapter?: TrackerAdapterPollService;
 	readonly watchdog?: ReturnType<typeof trackerHostWatchdog>;
@@ -58,6 +60,8 @@ export class TrackerNativeRuntimeService {
 		const recurring = composeRecurrence(store, options, this.notifications);
 		this.recurring = recurring?.worker;
 		this.items = composeItemApi(store, runs, options, recurring?.repo);
+		if (options.guestSigningKey)
+			this.guestCommands = new TrackerGuestCommandApi(store, options.guestSigningKey, options);
 		this.links = composeTrackerLinks(store, options);
 		this.adapter = configuredHostAdapter(store, runs, options, this.now);
 		const dispatch = options.dispatch ?? configuredHostDispatch(store, hostEffects);

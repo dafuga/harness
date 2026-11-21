@@ -57,5 +57,6 @@ export type TrackerGuestAuthWriter = (scope: {
 	path: string;
 	itemId: string;
 	runId: number;
+	key: string;
 	apiPort: number;
 }) => void;

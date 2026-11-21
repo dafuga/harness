@@ -18,6 +18,7 @@ import { readPrivateText, trackerSyncPort } from './trackerNodeConfig';
 import type { TrackerNodeConfig } from './trackerNodeConfig.types';
 import { trackerNodeNotifications } from './trackerNodeNotifications';
 import { trackerUpstreamLink } from './trackerUpstreamLink';
+import { trackerGuestSigner } from './trackerGuestSigner';
 
 export function trackerNodeRuntime(
 	config: TrackerNodeConfig,
@@ -32,7 +33,7 @@ export function trackerNodeRuntime(
 		node: config.node,
 		role: config.role,
 		notification,
-		hostEffects: configuredHostEffects(config, writeGuestAuth),
+		...configuredHostRuntime(config, secret, writeGuestAuth),
 		hostEffectsHeld,
 		manualLaunch: true,
 		...(config.role === 'hub' || config.peer
@@ -45,6 +46,26 @@ export function trackerNodeRuntime(
 		},
 		planLaunch: (fields, current) => planNativeLaunch(fields, current, config.node)
 	};
+}
+
+function configuredHostRuntime(
+	config: TrackerNodeConfig,
+	secret: string,
+	writeGuestAuth?: TrackerGuestAuthWriter
+) {
+	const guest = configuredGuestSigner(config, secret);
+	return {
+		hostEffects: configuredHostEffects(config, writeGuestAuth ?? guest?.write),
+		guestSigningKey: guest?.signingKey
+	};
+}
+
+function configuredGuestSigner(config: TrackerNodeConfig, secret: string) {
+	const effects = config.hostEffects;
+	const launch = effects?.mode === 'active' ? effects.launch : undefined;
+	return launch && 'managed' in launch && launch.managed.docker
+		? trackerGuestSigner(config.node, secret)
+		: undefined;
 }
 
 function configuredHostEffects(

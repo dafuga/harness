@@ -1,7 +1,11 @@
 // @harness-uid u_rw64iex44n
 import { createHmac } from 'node:crypto';
 import { z } from 'zod';
-import type { TrackerGuestGrant, TrackerGuestRequest } from './dockerTrackerGuest.types';
+import type {
+	TrackerGuestGrant,
+	TrackerGuestIdentity,
+	TrackerGuestRequest
+} from './dockerTrackerGuest.types';
 
 export const trackerGuestPath = '/native/guest/v1';
 export const trackerGuestItemId = z.string().regex(/^[a-z0-9]{6,32}$/);
@@ -37,10 +41,9 @@ export function scopedTrackerGuestRequest(
 /** Use a domain-separated key confined to a single local run and item. */
 export function deriveTrackerGuestKey(
 	secret: string | Uint8Array,
-	itemId: string,
-	runId: number
+	{ node, itemId, runId, attemptKey }: TrackerGuestIdentity
 ): Buffer {
 	return createHmac('sha256', secret)
-		.update(JSON.stringify(['harness-tracker-guest/v1', itemId, runId]))
+		.update(JSON.stringify(['harness-tracker-guest/v1', node, itemId, runId, attemptKey]))
 		.digest();
 }

@@ -1,6 +1,7 @@
 // @harness-uid u_gvqtr5mdwv
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerSupervisorService } from '../TrackerSupervisorService';
+import { trackerGuestPath } from '../../../adapters/agents-providers/module-task-runner-adapter/dockerTrackerGuestProtocol';
 
 const host = '127.0.0.1';
 const nativePrefix = '/native/v1';
@@ -57,6 +58,11 @@ export function trackerNodeApi(
 	checkpoint: string
 ) {
 	const url = new URL(request.url);
+	if (url.pathname === trackerGuestPath)
+		return (
+			runtime.guestCommands?.handle(request) ??
+			Response.json({ error: 'no route' }, { status: 404 })
+		);
 	if (url.pathname.startsWith(nativePrefix + '/')) {
 		return trackerNativeApi(request, runtime, supervisor, checkpoint);
 	}
