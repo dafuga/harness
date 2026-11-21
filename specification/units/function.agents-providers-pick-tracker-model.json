@@ -1,0 +1,150 @@
+{
+	"schemaVersion": 1,
+	"id": "function.agents-providers-pick-tracker-model",
+	"uid": "u_gs5pnxnxt4",
+	"kind": "function",
+	"title": "pickTrackerModel",
+	"responsibility": "Select the earliest eligible Tracker model, honor valid pins, and escalate from measured outcomes.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/agents-providers/pickTrackerModel.ts",
+			"src/utils/agents-providers/pickTrackerModel.types.ts"
+		],
+		"symbols": [
+			"pickTrackerModel",
+			"retryTrackerModel",
+			"TrackerModelHistory",
+			"TrackerModelSelectionOptions",
+			"TrackerModelSelection",
+			"TrackerRetryRun"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "pickTrackerModel.item",
+				"type": "TrackerModelItem",
+				"required": true
+			},
+			{
+				"name": "pickTrackerModel.options",
+				"type": "TrackerModelSelectionOptions",
+				"required": false,
+				"default": {}
+			},
+			{
+				"name": "retryTrackerModel.item",
+				"type": "TrackerModelItem",
+				"required": true
+			},
+			{
+				"name": "retryTrackerModel.run",
+				"type": "TrackerRetryRun",
+				"required": true
+			},
+			{
+				"name": "retryTrackerModel.cfg",
+				"type": "TrackerLadderConfig",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "pickTrackerModel",
+				"type": "TrackerModelSelection"
+			},
+			{
+				"name": "retryTrackerModel",
+				"type": "TrackerModelRung"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "pickTrackerModel",
+				"inputs": [
+					{
+						"name": "pickTrackerModel.item",
+						"type": "TrackerModelItem",
+						"required": true
+					},
+					{
+						"name": "pickTrackerModel.options",
+						"type": "TrackerModelSelectionOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "pickTrackerModel",
+						"type": "TrackerModelSelection"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "retryTrackerModel",
+				"inputs": [
+					{
+						"name": "retryTrackerModel.item",
+						"type": "TrackerModelItem",
+						"required": true
+					},
+					{
+						"name": "retryTrackerModel.run",
+						"type": "TrackerRetryRun",
+						"required": true
+					},
+					{
+						"name": "retryTrackerModel.cfg",
+						"type": "TrackerLadderConfig",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "retryTrackerModel",
+						"type": "TrackerModelRung"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-classify-tracker-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-parse-tracker-model-spec",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/agents-providers/pickTrackerModel.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/agents-providers/pickTrackerModel.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
