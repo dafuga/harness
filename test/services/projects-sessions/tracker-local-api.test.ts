@@ -16,6 +16,7 @@ beforeEach(() => {
 	});
 	api = new TrackerLocalApiService(store, new TrackerItemReadRepository(database), {
 		now: () => Date.UTC(2026, 10, 21, 12),
+		planLaunch: (fields) => fields,
 		runs: new TrackerRunReadRepository(database, store.node)
 	});
 });
@@ -35,11 +36,13 @@ function request(path: string, method = 'GET', payload?: object | string) {
 test('commits item and notes under the actor, serves the overview feed and returns tombstones', async () => {
 	const created = await request('/items', 'POST', {
 		title: 'Fixture bridge rollout',
-		due: 'today'
+		due: 'today',
+		auto: true
 	});
 	expect(created.status).toBe(201);
-	const { id } = await created.json();
+	const { id, auto } = await created.json();
 	expect(id).toMatch(/^[0-9a-z]{10}$/);
+	expect(auto).toMatch(/^fixture-mac@2026-11-21T12:00:00(?:\.000)?Z#[0-9a-z-]+$/);
 	const prefix = id.slice(0, 6);
 	const noted = await request(`/items/${prefix}/progress`, 'POST', { text: 'Synthetic note' });
 	expect(noted.status).toBe(200);
