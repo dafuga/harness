@@ -1,6 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { chmodSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { chmodSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterEach, test, vi } from 'vitest';
 import type { PreparedBenchmark } from '../../src/cli/program/benchmark-service/benchmarkDefinition';
@@ -10,6 +9,7 @@ import type { BenchmarkRun } from '../../src/core/agents-providers/subagentBench
 import { ExpectedCliError } from '../../src/core/development-tooling/errors';
 import { BenchmarkRepository } from '../../src/repositories/agents-providers/BenchmarkRepository';
 import { recordExampleCases } from '../support/recordExampleCases';
+import { createTempDirectory } from '../support/temporary';
 import { expect } from '../verificationExpect';
 import type { Rendered } from './service.benchmark.test.types';
 import { failedTrial, passedTrial } from './service.benchmark.fixtures';
@@ -38,15 +38,15 @@ afterEach(() => {
 	for (const directory of owned.splice(0)) rmSync(directory, { recursive: true, force: true });
 });
 
-function temporaryDirectory(): string {
-	const directory = mkdtempSync(join(tmpdir(), 'service-benchmark-examples-'));
+async function temporaryDirectory(): Promise<string> {
+	const directory = await createTempDirectory('service-benchmark-examples-');
 	owned.push(directory);
 	return directory;
 }
 
 /** Points the analytics home, where benchmark runs are kept, at a temporary directory. */
-function analyticsHome(): void {
-	vi.stubEnv('HARNESS_ANALYTICS_HOME', temporaryDirectory());
+async function analyticsHome(): Promise<void> {
+	vi.stubEnv('HARNESS_ANALYTICS_HOME', await temporaryDirectory());
 }
 
 /** Runs git in a fixture repository under a fixed identity, so commits do not depend on the machine. */
@@ -62,7 +62,7 @@ function printed(calls: unknown[][]): string {
 
 /** Saves the two-trial run where `benchmark run` saves it, in this test's analytics home. */
 async function persistSeededRun(): Promise<BenchmarkRun> {
-	analyticsHome();
+	await analyticsHome();
 	const run: BenchmarkRun = {
 		version: 1,
 		id: runId,
@@ -81,13 +81,13 @@ async function persistSeededRun(): Promise<BenchmarkRun> {
 }
 
 test('execute called with validate on a definition file prints its preview with the revision, runner version and trial count', async () => {
-	const root = temporaryDirectory();
-	const bin = join(temporaryDirectory(), 'bin');
+	const root = await temporaryDirectory();
+	const bin = join(await temporaryDirectory(), 'bin');
 	mkdirSync(bin);
 	writeFileSync(join(bin, 'codex'), '#!/bin/sh\necho "codex fixture 1"\n');
 	chmodSync(join(bin, 'codex'), 0o755);
 	vi.stubEnv('PATH', `${bin}:${process.env.PATH ?? ''}`);
-	analyticsHome();
+	await analyticsHome();
 	writeFileSync(join(root, 'component.ts'), 'export const value = 0;\n');
 	git(root, 'init', '-q');
 	git(root, 'add', 'component.ts');
@@ -176,7 +176,7 @@ test('execute called with results and json output prints the persisted run and i
 });
 
 test('execute called with results for a target that is not a run ID rejects with an expected CLI error', async () => {
-	analyticsHome();
+	await analyticsHome();
 	const rejected = new BenchmarkService().execute('results', 'not-a-run', {});
 	await expect(rejected).rejects.toBeInstanceOf(ExpectedCliError);
 	const message = await rejected.catch((error: Error) => error.message);

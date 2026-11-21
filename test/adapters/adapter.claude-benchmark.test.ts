@@ -1,10 +1,10 @@
 import { afterEach, test } from 'vitest';
-import { chmodSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { chmodSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ClaudeBenchmarkAdapter } from '../../src/cli/program/benchmark-service/benchmark-definition/ClaudeBenchmarkAdapter';
 import { benchmarkFixtureDefinition } from '../support/benchmark';
 import { recordExampleCases } from '../support/recordExampleCases';
+import { createTempDirectory } from '../support/temporary';
 import { expect } from '../verificationExpect';
 
 const owned: string[] = [];
@@ -13,8 +13,8 @@ afterEach(() => {
 	for (const directory of owned.splice(0)) rmSync(directory, { recursive: true, force: true });
 });
 
-function temporaryDirectory(): string {
-	const directory = mkdtempSync(join(tmpdir(), 'claude-benchmark-examples-'));
+async function temporaryDirectory(): Promise<string> {
+	const directory = await createTempDirectory('claude-benchmark-examples-');
 	owned.push(directory);
 	return directory;
 }
@@ -67,8 +67,8 @@ const expectedCommand = [
 	'prior-session-17'
 ];
 
-test('Command returns Claude arguments for file tools and resuming a prior session.', () => {
-	const cwd = temporaryDirectory();
+test('Command returns Claude arguments for file tools and resuming a prior session.', async () => {
+	const cwd = await temporaryDirectory();
 	const input = {
 		candidate: claudeCandidate(),
 		cwd,
@@ -103,7 +103,7 @@ test('Command returns Claude arguments for file tools and resuming a prior sessi
 });
 
 test("Run returns the completed session and usage from Claude's event stream.", async () => {
-	const directory = temporaryDirectory();
+	const directory = await temporaryDirectory();
 	const cwd = join(directory, 'workspace');
 	mkdirSync(cwd);
 	const executable = installClaudeFixture(directory);
