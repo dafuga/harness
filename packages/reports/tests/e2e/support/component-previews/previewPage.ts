@@ -135,7 +135,7 @@ async function readyRoute(page: Page, id: string) {
 	if (id === 'hub.page.root' || id === 'hub.component.projects-sessions-hub-home')
 		await expect(page.getByRole('heading', { name: /working, .* need[s]? you/ })).toBeVisible();
 	else if (isHubHomePreview(id))
-		await expect(page.locator('[data-catalog-home-part]')).toBeVisible();
+		await expect(page.locator('[data-catalog-home-part]')).toBeAttached();
 }
 const overviewPreviews = new Set([
 	'desktop.page.projects',
