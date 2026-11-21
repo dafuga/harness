@@ -2,11 +2,9 @@
 	"name": "managed-docker-crash-recovery",
 	"goal": "Prove that a restarted offline Docker task supervisor reclaims a killed supervisor’s task container with daemon, owner and workspace evidence while concurrent live tasks and shared Docker resources survive.",
 	"createdAt": "2026-11-21T19:08:27.541Z",
-	"updatedAt": "2026-11-21T19:18:02.996Z",
+	"updatedAt": "2026-11-21T19:23:13.649Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -34,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T19:23:12.310Z",
+			"evidence": "The explicit pilot now fsyncs an owner, supervisor start identity, engine and canonical workspace receipt before Docker create; verified full-ID cleanup is shared by normal exit, cancellation and later managed launches."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T19:23:13.649Z",
+			"evidence": "Unchanged MB2 lifecycle test passed at 50d2619b3a, one worker, Docker Desktop 29.4.0 and the cached offline image. Sealed proof 4c2a9a7c910c4334d5d383d3d064a5e981278d5436cc7857e7ae6798c8c7ecff. The exact orphan was removed; cancellation, live bystander, volume canary and cached image were preserved."
 		},
 		{
 			"id": "verify",
