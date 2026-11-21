@@ -11,6 +11,7 @@ const maxBackoff = 60_000;
 export class TrackerSpokeLoopService {
 	private running = false;
 	private hub: string | null = null;
+	private requestPush?: () => void;
 	private readonly state = newSpokeStatus();
 
 	constructor(private readonly options: TrackerSpokeLoopOptions) {}
@@ -20,21 +21,15 @@ export class TrackerSpokeLoopService {
 	}
 
 	status() {
-		const { store, relayOps } = this.options;
-		const peer = this.kind === 'peer';
-		const { push, replay } = trackerMetaKeys(peer ? 'peer_' : '');
-		const relayAll = (relayOps ?? peer) || store.getMeta(replay) === '1';
-		return {
-			...this.state,
-			pending_push: store.countOpsSince(
-				Number(store.getMeta(push)),
-				relayAll ? undefined : store.node
-			)
-		};
+		return { ...this.state, pending_push: pendingPushCount(this.options) };
 	}
 
 	upstream() {
 		return this.options.endpoint?.host ?? this.hub;
+	}
+
+	kick(): void {
+		this.requestPush?.();
 	}
 
 	async run(signal: AbortSignal): Promise<void> {
@@ -65,6 +60,7 @@ export class TrackerSpokeLoopService {
 				return response;
 			}
 		});
+		this.requestPush = wake.request;
 		const unsubscribe = this.options.store.subscribe(wake.request);
 		const workers = [this.push(link, wake.wait, lifetime), this.pull(link, lifetime)];
 		try {
@@ -72,6 +68,7 @@ export class TrackerSpokeLoopService {
 		} finally {
 			controller.abort();
 			await Promise.allSettled(workers);
+			this.requestPush = undefined;
 			unsubscribe();
 		}
 	}
@@ -126,6 +123,13 @@ export class TrackerSpokeLoopService {
 	private timestamp(): string {
 		return new Date((this.options.now ?? Date.now)()).toISOString();
 	}
+}
+
+function pendingPushCount({ store, relayOps, link }: TrackerSpokeLoopOptions): number {
+	const peer = link === 'peer';
+	const { push, replay } = trackerMetaKeys(peer ? 'peer_' : '');
+	const relayAll = (relayOps ?? peer) || store.getMeta(replay) === '1';
+	return store.countOpsSince(Number(store.getMeta(push)), relayAll ? undefined : store.node);
 }
 
 function newSpokeStatus(): TrackerSpokeStatus {
