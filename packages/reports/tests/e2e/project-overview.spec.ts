@@ -38,9 +38,16 @@ const snapshots = {
 	'quiet-only': quietOnlySnapshot
 } as const;
 
+/** Pins the ETA clock while keeping Chromium's real navigation timing. */
+function pinWallClock(page: Page): Promise<void> {
+	return page.addInitScript((now) => {
+		Date.now = () => now;
+	}, NOW);
+}
+
 /** Serves one synthetic snapshot through the local read, with the clock pinned to NOW. */
 async function openWith(page: Page, state: keyof typeof snapshots) {
-	await page.clock.setFixedTime(new Date(NOW));
+	await pinWallClock(page);
 	await page.route('**/api/project-overview', (request) =>
 		request.fulfill({ json: snapshots[state]() })
 	);
@@ -100,7 +107,7 @@ for (const viewport of viewports) {
 		});
 
 		test('loading holds the page until the first read answers', async ({ page }) => {
-			await page.clock.setFixedTime(new Date(NOW));
+			await pinWallClock(page);
 			// The read is held open, so the page stays in its loading state for the capture.
 			await page.route('**/api/project-overview', () => {});
 			await page.goto(route, { waitUntil: 'domcontentloaded' });
