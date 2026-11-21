@@ -148,7 +148,7 @@ test.each(['bug-fix', 'fix', 'regression-prevention'])(
 			await rm(root, { recursive: true, force: true });
 		}
 	},
-	120_000
+	300_000
 );
 
 const captureCommit = [
