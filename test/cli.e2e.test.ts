@@ -213,3 +213,4 @@ test('CLI installs module foundations and generates their declared resources', a
 		await rm(root, { recursive: true, force: true });
 	}
 }, 600_000);
+import './completion-hooks.cases';
