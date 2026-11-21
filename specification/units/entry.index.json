@@ -178,7 +178,6 @@
 			"TrackerPersistenceService",
 			"TrackerCutoverCommand",
 			"TrackerLocalApiService",
-			"TrackerRehearsalCommand",
 			"TrackerRehearsalService",
 			"classifyResourceHost",
 			"scoreResourceHost",
@@ -198,7 +197,8 @@
 			"clockMinutes",
 			"planDigestAlertTick",
 			"TrackerNotificationService",
-			"planGithubIssueIntake"
+			"planGithubIssueIntake",
+			"TrackerNotificationSourceRepository"
 		]
 	},
 	"contract": {
@@ -333,11 +333,6 @@
 		},
 		{
 			"unit": "command.projects-sessions-tracker-cutover",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "command.projects-sessions-tracker-rehearsal",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -708,6 +703,11 @@
 		},
 		{
 			"unit": "repository.codex-session",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-notification-source",
 			"via": "reexport",
 			"origin": "derived"
 		},
