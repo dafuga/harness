@@ -50,7 +50,7 @@
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional section dialog description referenced by aria-describedby. Defaults to omitted."
+				"description": "Optional description displayed below the section dialog title. Defaults to omitted."
 			},
 			{
 				"name": "Modal.actions",
