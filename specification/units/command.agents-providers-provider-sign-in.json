@@ -8,8 +8,18 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/commands/agents-providers/ProviderSignInCommand.ts"],
-		"symbols": ["ProviderSignInCommand", "ProviderSignInCommand.run"]
+		"source": [
+			"src/commands/agents-providers/ProviderSignInCommand.ts",
+			"src/commands/agents-providers/ProviderSignInCommand.types.ts"
+		],
+		"symbols": [
+			"ProviderSignInCommand",
+			"ProviderSignInCommand.run",
+			"SignInProviderId",
+			"ProviderSignInStatus",
+			"ProviderSignInSpec",
+			"ProviderSignInDeps"
+		]
 	},
 	"contract": {
 		"origin": "derived",
