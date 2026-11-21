@@ -36,14 +36,10 @@
 				"required": true
 			},
 			{
-				"name": "TrackerRunReadRepository.list.itemId",
-				"type": "unknown",
-				"required": false
-			},
-			{
-				"name": "TrackerRunReadRepository.list.limit",
-				"type": "unknown",
-				"required": false
+				"name": "TrackerRunReadRepository.list.filters",
+				"type": "TrackerRunFilters",
+				"required": false,
+				"default": {}
 			}
 		],
 		"outputs": [
@@ -63,14 +59,10 @@
 				"name": "TrackerRunReadRepository.list",
 				"inputs": [
 					{
-						"name": "TrackerRunReadRepository.list.itemId",
-						"type": "unknown",
-						"required": false
-					},
-					{
-						"name": "TrackerRunReadRepository.list.limit",
-						"type": "unknown",
-						"required": false
+						"name": "TrackerRunReadRepository.list.filters",
+						"type": "TrackerRunFilters",
+						"required": false,
+						"default": {}
 					}
 				],
 				"outputs": [

@@ -13,7 +13,8 @@ export class TrackerRunReadRepository {
 		private readonly node: string
 	) {}
 
-	list({ itemId, limit }: TrackerRunFilters = {}): TrackerListedRun[] {
+	list(filters: TrackerRunFilters = {}): TrackerListedRun[] {
+		const { itemId, limit } = filters;
 		if (itemId) {
 			return this.rows('WHERE item_id = ?', itemId).sort(compareQueue);
 		}

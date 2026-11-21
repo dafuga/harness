@@ -183,7 +183,6 @@
 			"rankResourcePlacement",
 			"admitResourceHost",
 			"chooseResourceHost",
-			"TrackerRunReadRepository",
 			"TrackerSpokeLoopService",
 			"quietHourBoundary",
 			"isQuietHour",
@@ -197,8 +196,8 @@
 			"planDigestAlertTick",
 			"TrackerNotificationService",
 			"planGithubIssueIntake",
-			"TrackerNotificationSourceRepository",
-			"TrackerNativeRuntimeService"
+			"TrackerNativeRuntimeService",
+			"TrackerAdapterLeaseAdapter"
 		]
 	},
 	"contract": {
@@ -263,6 +262,11 @@
 		},
 		{
 			"unit": "adapter.networking-security-harness-http",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-adapter-lease",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -707,17 +711,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "repository.projects-sessions-tracker-notification-source",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
 			"unit": "repository.projects-sessions-tracker-operation",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "repository.projects-sessions-tracker-run-read",
 			"via": "reexport",
 			"origin": "derived"
 		},

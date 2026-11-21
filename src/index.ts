@@ -201,7 +201,6 @@ export { rankResourcePlacement } from './services/execution-runtimes/resource-pl
 export { admitResourceHost } from './services/execution-runtimes/resource-placement/admitResourceHost';
 export { chooseResourceHost } from './services/execution-runtimes/resource-placement/chooseResourceHost';
 export * from './services/agents-providers/TrackerDispatcherService';
-export { TrackerRunReadRepository } from './repositories/projects-sessions/TrackerRunReadRepository';
 export { TrackerSpokeLoopService } from './services/projects-sessions/TrackerSpokeLoopService';
 export { quietHourBoundary } from './helpers/attention-timing/quietHourBoundary';
 export { isQuietHour } from './helpers/attention-timing/isQuietHour';
@@ -216,5 +215,5 @@ export { planDigestAlertTick } from './helpers/attention-timing/planDigestAlertT
 export { TrackerNotificationService } from './services/projects-sessions/TrackerNotificationService';
 export { planGithubIssueIntake } from './helpers/planning-collaboration/planGithubIssueIntake';
 export * from './services/projects-sessions/TrackerAdapterPollService';
-export { TrackerNotificationSourceRepository } from './repositories/projects-sessions/TrackerNotificationSourceRepository';
 export { TrackerNativeRuntimeService } from './services/projects-sessions/TrackerNativeRuntimeService';
+export { TrackerAdapterLeaseAdapter } from './adapters/projects-sessions/TrackerAdapterLeaseAdapter';

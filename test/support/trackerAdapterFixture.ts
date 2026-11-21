@@ -1,5 +1,6 @@
 import { DatabaseSync } from 'node:sqlite';
 import { vi } from 'vitest';
+import { TrackerAdapterLeaseAdapter } from '../../src/adapters/projects-sessions/TrackerAdapterLeaseAdapter';
 import type {
 	TrackerAdapterLease,
 	TrackerAdapterReadQuery,
@@ -127,20 +128,7 @@ function seedLegacySource(database: DatabaseSync): void {
 }
 
 export function sqliteFixtureLease(path: string): TrackerAdapterLease {
-	return {
-		owner: 'fixture-owner',
-		tryAcquire() {
-			const lock = new DatabaseSync(path);
-			try {
-				lock.exec('BEGIN EXCLUSIVE');
-				return () => lock.close();
-			} catch (error) {
-				lock.close();
-				if (error instanceof Error && 'errcode' in error && error.errcode === 5) return null;
-				throw error;
-			}
-		}
-	};
+	return new TrackerAdapterLeaseAdapter('fixture-owner', path);
 }
 
 export function refuseInsert(

@@ -56,9 +56,9 @@ export class TrackerNativeRuntimeService {
 }
 
 function validateLinks({ links = [], role }: TrackerNativeRuntimeOptions): void {
-	if (role === 'hub' && links.length) throw new Error('A Tracker hub cannot have spoke links');
+	if (role === 'hub' && links.length) throw new TypeError('A Tracker hub cannot have spoke links');
 	const kinds = new Set(links.map((link) => link.link ?? 'hub'));
-	if (kinds.size !== links.length) throw new Error('Duplicate Tracker spoke link');
+	if (kinds.size !== links.length) throw new TypeError('Duplicate Tracker spoke link');
 }
 
 function composeNotifications(

@@ -14,7 +14,7 @@ export class TrackerSpokeLoopService {
 	constructor(private readonly options: TrackerSpokeLoopOptions) {}
 
 	async run(signal: AbortSignal): Promise<void> {
-		if (this.running) throw new Error('Tracker spoke loop is already running');
+		if (this.running) throw new TypeError('Tracker spoke loop is already running');
 		if (signal.aborted) return;
 		this.running = true;
 		try {
