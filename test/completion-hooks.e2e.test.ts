@@ -23,8 +23,7 @@ test.each(models)(
 				'orchestrate',
 				'--tracker=pilot1',
 				'--brief=brief.md',
-				`--model=${model}`,
-				'--json'
+				`--model=${model}`
 			]);
 			expect(JSON.parse(response.stdout)).toMatchObject({ status: 'succeeded', provider });
 			expect(await readFile(join(f.root, 'contract.md'), 'utf8')).toBe(
