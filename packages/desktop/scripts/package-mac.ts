@@ -2,6 +2,7 @@
 import electron from 'electron';
 import { cp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
+import { createRequire } from 'node:module';
 import { execFileSync } from 'node:child_process';
 import { macIcon } from './mac-icon/mac-icon';
 if (process.platform !== 'darwin') throw new Error('This package target requires macOS.');
@@ -28,6 +29,8 @@ await rm(resolve(project, 'build'), { recursive: true, force: true });
 await cp('build', resolve(project, 'build'), { recursive: true });
 await cp('dist/main.cjs', resolve(project, 'dist/main.cjs'));
 await cp('dist/preload.cjs', resolve(project, 'dist/preload.cjs'));
+const playwright = dirname(createRequire(import.meta.url).resolve('playwright-core/package.json'));
+await cp(playwright, resolve(project, 'node_modules/playwright-core'), { recursive: true });
 await writeFile(
 	resolve(project, 'package.json'),
 	JSON.stringify({ name: 'harness-desktop', version: '0.1.0', main: 'dist/main.cjs' })

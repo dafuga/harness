@@ -39,10 +39,13 @@ export class LocalClientService {
 	private releaseAgent?: () => void;
 	private readonly sockets = new Set<LocalSocket>();
 	constructor(private readonly options: LocalClientOptions) {
-		const { providers, generator, ...stores } = options.shared;
+		const { providers, renderMockups, ...stores } = options.shared;
 		this.session = new ProjectSessionService(stores);
-		this.runs = new DesktopRunService(this.session, providers, generator, (event) =>
-			this.wire.emit('run', event)
+		this.runs = new DesktopRunService(
+			this.session,
+			providers,
+			(event) => this.wire.emit('run', event),
+			renderMockups
 		);
 		const { session, runs } = this,
 			bridge = new DesktopBridgeService(session, providers, runs, options.choose).bridge(),

@@ -1,21 +1,6 @@
 // @harness-uid u_fq2qh7235c
 import type { Preparation } from './prepareRun.types';
-import type { RunRequest } from '../../models/development-tooling/DesktopBridge.types';
 import type { RunContext } from '../../models/development-tooling/RunContext.types';
-
-export async function imageModel(
-	preparation: Preparation,
-	request: Pick<RunRequest, 'mode'>,
-	category: string
-) {
-	if (request.mode !== 'plan' || !['pages', 'layouts', 'components'].includes(category)) return '';
-	const state = (await preparation.providers.list()).find((p) => p.id === 'codex');
-	if (!state?.available || !state.imageGeneration)
-		throw new Error('GPT Image requires the signed-in Codex image-generation capability.');
-	const model = state.models.find((m) => m.isDefault);
-	if (!model) throw new Error('Codex did not list a default image-orchestration model.');
-	return model.id;
-}
 
 export function messageFor(
 	context: Pick<RunContext, 'request'>,

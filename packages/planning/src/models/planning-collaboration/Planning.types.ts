@@ -13,7 +13,7 @@ export type PlanCategory =
 	| 'config'
 	| 'service';
 /** Pages and components use the three screen viewports; headless units use `diagram`. */
-export type PlanViewport = 'desktop' | 'tablet' | 'mobile' | 'diagram';
+export type PlanViewport = 'desktop' | 'tablet' | 'mobile' | 'diagram' | `width-${number}`;
 /** Derived, never stored: no version, latest version unapproved, latest version approved. */
 export type PlanLifecycle = 'draft' | 'review' | 'approved';
 export type MessageMode = 'plan' | 'change';

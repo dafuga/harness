@@ -54,6 +54,7 @@
 }
 .design-controls {
 	display: flex;
+	flex-wrap: wrap;
 	gap: var(--hx-space-12);
 	margin-top: var(--hx-space-12);
 }

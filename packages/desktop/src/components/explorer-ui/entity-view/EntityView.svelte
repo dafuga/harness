@@ -4,7 +4,6 @@
 <script lang="ts">
 	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import type { Section } from './EntityView.types';
-
 	import { onDestroy, onMount, untrack } from 'svelte';
 	import { explorerAppRoute, explorerName } from '$reports/utils/explorer-ui/explorerName';
 	import { createEntityEvidenceStore } from '../../../lib/stores/explorer-ui/entityEvidence.svelte';
@@ -50,14 +49,17 @@
 	const entity = $derived(workspace.entity!);
 	const apis = $derived(entity.relationships.filter((item) => item.category === 'apis'));
 	const shown = $derived(versionOption(entity.versions, version, option));
-	/** Another project, revision, entity or version shows its open thread's option, if any. */
+	const latest = $derived(entity.versions.at(-1));
+	const open = $derived(entity.lifecycle === 'review' || entity.lifecycle === 'approved');
+	$effect(() => {
+		if (tab === 'Overview' && open && latest?.mockup) version = latest.version;
+	});
 	$effect(() => {
 		void [workspace.projectId, workspace.snapshot?.revision.commit, entity.id, version];
 		untrack(() => (option = thread?.version === version ? (thread.option ?? '') : ''));
 	});
 	const agents = $derived(workspace.capabilities.agents && Boolean(workspace.snapshot?.writable));
 	const annotatable = $derived(agents || workspace.capabilities.comments);
-	/** Read the addressed section again when the scope or entity changes. */
 	$effect(() => {
 		const read = { suffix: workspace.suffix, entity: workspace.entity };
 		untrack(() => {
@@ -84,15 +86,8 @@
 		const stamp = `${pin?.notesRevision ?? ''}|${pin?.evidenceRevision ?? ''}`;
 		const scope = evidenceQuery(workspace, workspace.entity?.id ?? '');
 		const planned = Boolean(workspace.entity?.planned);
-		if (
-			pictured ||
-			tab === 'Overview' ||
-			tab === 'Evidence' ||
-			tab === 'Examples' ||
-			tab === 'States' ||
-			tab === 'History'
-		)
-			evidence.show(workspace.bridge, { scope, planned, stamp });
+		const reads = ['Overview', 'Evidence', 'Examples', 'States', 'History'].includes(tab);
+		if (pictured || reads) evidence.show(workspace.bridge, { scope, planned, stamp });
 	});
 	onDestroy(() => evidence.reset());
 	/** The mark beside the name: the verdict of the record that was read, or why there is none. */
@@ -111,9 +106,7 @@
 	/** A selection opens an agent thread or aims the next hosted comment. */
 	async function annotate(value: ThreadTarget) {
 		if (!agents) {
-			thread = null;
-			target = value;
-			conversation = true;
+			[thread, target, conversation] = [null, value, true];
 			return;
 		}
 		const opened = await workspace.bridge!.openThread({
@@ -170,7 +163,16 @@
 					{entity}
 					{workspace}
 				/>{/key}
-		{:else if tab === 'Overview'}<hx-div class="base-panels">
+		{:else if tab === 'Overview'}{#if visual && open && latest?.mockup}<DesignPanel
+					{entity}
+					{workspace}
+					{annotatable}
+					inline
+					version={latest.version}
+					option={versionOption(entity.versions, latest.version)}
+					onthread={select}
+					onannotate={annotate}
+				/>{/if}<hx-div class="base-panels">
 				<ContractPanel contract={entity.contract} /><MeasuresPanel
 					size={entity.size}
 					performance={entity.performance}

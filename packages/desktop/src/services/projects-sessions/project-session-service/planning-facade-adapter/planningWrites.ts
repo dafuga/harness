@@ -146,9 +146,9 @@ function designImages(draft: DesignDraft) {
 		{ state: draft.state, viewport: draft.viewport as PlanViewport, bytes }
 	];
 	if (!draft.options) return { images: draft.bytes ? image(draft.bytes) : [] };
-	const options = draft.options.map(({ direction, bytes, prompt, revisedPrompt }) => ({
+	const options = draft.options.map(({ direction, bytes, images, prompt, revisedPrompt }) => ({
 		...{ direction, prompt, revisedPrompt, generator: draft.generator },
-		images: image(bytes)
+		images: images ?? image(bytes)
 	}));
 	return { options };
 }

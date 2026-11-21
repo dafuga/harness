@@ -31,12 +31,12 @@ export async function hostFixture(action: (turn: AgentTurn) => Promise<void> = a
 	const file = join(root, 'remote.enc');
 	const storeFor = (available = true) =>
 		new RemoteHostStoreAdapter({ file, encryption: fakeEncryption(available), platform: 'darwin' });
-	const { registry, arbiter, providers, generator } = f;
+	const { registry, arbiter, providers, renderMockups } = f;
 	const options = (overrides: Partial<RemoteHostOptions> = {}): RemoteHostOptions => ({
 		store: storeFor(),
 		register: relay.register,
 		open: relay.open,
-		shared: { registry, arbiter, providers, generator, outbox: new CommentOutboxService() },
+		shared: { registry, arbiter, providers, renderMockups, outbox: new CommentOutboxService() },
 		name: () => 'Fixture Mac',
 		link: { retryMs: [10] },
 		...overrides

@@ -68,9 +68,9 @@ async function setup() {
 		sent: { address: DeviceAddress; packet: SecurePacket }[] = [],
 		drops: { address: DeviceAddress; code: number }[] = [],
 		inbox = new Map<string, (packet: SecurePacket) => void>();
-	const { registry, arbiter, providers, generator } = f;
+	const { registry, arbiter, providers, renderMockups } = f;
 	const sessions = new RemoteDeviceSessionsService({
-		shared: { registry, arbiter, providers, generator, outbox: new CommentOutboxService() },
+		shared: { registry, arbiter, providers, renderMockups, outbox: new CommentOutboxService() },
 		host: () => ({ id: hostId, name: 'Fixture Mac', keys: hostKeys }),
 		device: (id) => records.get(id) ?? null,
 		send: (address, packet) => {

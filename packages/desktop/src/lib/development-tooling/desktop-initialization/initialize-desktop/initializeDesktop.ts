@@ -102,7 +102,7 @@ function desktopBackend() {
 	);
 	const codex = new CodexAppServerAdapter(),
 		providers = new ProviderDiscoveryService({ codex, claude: new ClaudeCliAdapter() }),
-		stores = { registry, outbox, arbiter, providers, generator: codex, cache };
+		stores = { registry, outbox, arbiter, providers, cache };
 	const hosted = new NativeSessionAdapter(sessionFile, safeStorage),
 		registration = new RemoteRegistrationAdapter({ origin, credentials: () => hosted.read() }),
 		sockets = new RelaySocketAdapter(),

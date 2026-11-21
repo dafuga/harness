@@ -38,7 +38,7 @@ export class ClientProjectsService {
 		for (const project of this.ready.values()) project.runs.cancelActive();
 	}
 	private async open(projectId: string): Promise<ClientProject> {
-		const { registry, outbox, arbiter, cache, providers, generator, emit } = this.options;
+		const { registry, outbox, arbiter, cache, providers, renderMockups, emit } = this.options;
 		const record = await registry.get(projectId);
 		const session = new ProjectSessionService({ registry, outbox, arbiter, cache });
 		await session.open(record.root ?? '');
@@ -48,7 +48,7 @@ export class ClientProjectsService {
 		 * entry. A write could not have happened, since nothing was handed out.
 		 */
 		if (this.over) throw new Error(ended);
-		const runs = new DesktopRunService(session, providers, generator, emit);
+		const runs = new DesktopRunService(session, providers, emit, renderMockups);
 		const alive = () => !this.over,
 			bridge = desktopBridge({ session, providers, runs, choose: async () => null, alive });
 		const project = { id: projectId, root: session.root ?? '', session, runs, bridge };

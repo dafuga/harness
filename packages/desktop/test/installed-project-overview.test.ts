@@ -177,7 +177,7 @@ test('a window of a Desktop with a Hub reads the owner overview through its nati
 		registry: f.registry,
 		arbiter: f.arbiter,
 		providers: f.providers,
-		generator: f.generator,
+		renderMockups: f.renderMockups,
 		outbox: new CommentOutboxService(),
 		auth: hub.service
 	};

@@ -1,4 +1,5 @@
 import type { Page } from '@playwright/test';
+import type { PlanFixtureCapture } from './ui-design-fixture.types';
 import { nativeImageFixture } from './native-image-fixture';
 const hash = 'a'.repeat(40),
 	sha = 'b'.repeat(64);
@@ -86,17 +87,25 @@ const messages = [
 ];
 const stream = { runId: 'run-owned', kind: 'text', text: 'Working on the approved design.' };
 
-function fixtureData(image: number[], headless: boolean) {
+function fixtureData(image: number[], headless: boolean, captures: PlanFixtureCapture[]) {
 	const design = {
 		version: 'v002',
 		createdAt: '2026-10-11',
 		commit: hash,
-		generator: 'GPT Image',
+		generator: captures.length ? 'claude · claude-sonnet-5-5' : 'GPT Image',
+		mockup: Boolean(captures.length),
 		prompt: 'Activity page',
 		baseRevision: hash,
-		images: headless
-			? []
-			: [{ state: 'default', viewport: 'desktop', sha256: sha, bytes: image.length }],
+		images: captures.length
+			? captures.map(({ state, viewport, sha256, png }) => ({
+					state,
+					viewport,
+					sha256,
+					bytes: png.length
+				}))
+			: headless
+				? []
+				: [{ state: 'default', viewport: 'desktop', sha256: sha, bytes: image.length }],
 		notes: headless
 			? 'Validate each event before saving it. Return a typed error when the input is invalid.'
 			: undefined,
@@ -104,6 +113,7 @@ function fixtureData(image: number[], headless: boolean) {
 	};
 	const detailedEntity = {
 		...entity,
+		...(captures.length ? { planned: false, lifecycle: 'review' } : {}),
 		category: headless ? 'services' : 'pages',
 		kind: headless ? 'service' : 'page',
 		versions: [design]
@@ -116,11 +126,12 @@ function fixtureData(image: number[], headless: boolean) {
 		entities: [detailedEntity],
 		writable: true
 	};
-	return { image, entity: detailedEntity, snapshot, providers, messages, stream };
+	return { image, captures, entity: detailedEntity, snapshot, providers, messages, stream };
 }
 
 function installFixture({
 	image,
+	captures,
 	entity,
 	snapshot,
 	providers,
@@ -135,7 +146,8 @@ function installFixture({
 			openProject: async () => snapshot,
 			snapshot: async () => snapshot,
 			entity: async () => entity,
-			image: async () => new Uint8Array(image),
+			image: async (input: { sha256: string }) =>
+				new Uint8Array(captures.find((capture) => capture.sha256 === input.sha256)?.png ?? image),
 			source: async () => ({ path: 'src/activity.svelte', text: '<h1>Activity</h1>' }),
 			createPlan: async () => entity,
 			openThread: async (input: Record<string, unknown>) => {
@@ -172,7 +184,7 @@ function installFixture({
 	});
 }
 
-export async function fixture(page: Page, headless = false) {
+export async function fixture(page: Page, headless = false, captures: PlanFixtureCapture[] = []) {
 	const image = Array.from(nativeImageFixture());
-	await page.addInitScript(installFixture, fixtureData(image, headless));
+	await page.addInitScript(installFixture, fixtureData(image, headless, captures));
 }

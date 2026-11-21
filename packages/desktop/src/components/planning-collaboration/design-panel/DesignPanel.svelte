@@ -28,6 +28,7 @@
 		annotatable,
 		version = $bindable(''),
 		option = $bindable(''),
+		inline = false,
 		onthread,
 		onannotate
 	}: {
@@ -38,6 +39,8 @@
 		version?: string;
 		/** The design option shown, of a version that has options; empty otherwise. */
 		option?: string;
+		/** The Overview's planned design: one given version, with no version picker or measures. */
+		inline?: boolean;
 		onthread: (thread: ThreadInfo) => void;
 		onannotate: (target: ThreadTarget) => Promise<void>;
 	} = $props();
@@ -54,18 +57,51 @@
 	const caption = $derived(chosen ? ` ${named(chosen.id)}` : '');
 	/** The plan of a function is notes and cases: no image of it is chosen, asked for or drawn. */
 	const headless = $derived(entity.category === 'functions');
+	/** A mockup holds its own befores: `before-<state>` is the current build of `<state>`. */
+	const mockup = $derived(Boolean(current?.mockup) && !headless);
+	const after = $derived(mockup ? images.filter((i) => !i.state.startsWith('before-')) : images);
+	const px = (key: string) => Number(/^width-(\d+)$/.exec(key)?.[1] ?? Infinity);
+	const sizes = new Map([
+		[390, 'Phone'],
+		[834, 'Tablet'],
+		[1440, 'Laptop'],
+		[1920, 'Wide']
+	]);
+	/** `width-1440` reads `Laptop · 1440px`; another width, `Npx`; a legacy viewport, its name. */
+	function sized(key: string) {
+		const width = px(key);
+		if (width === Infinity) return key;
+		return sizes.has(width) ? `${sizes.get(width)} · ${width}px` : `${width}px`;
+	}
+	const viewports = $derived.by(() => {
+		const keys = [...new Set(after.map((image) => image.viewport))];
+		return mockup ? keys.sort((a, b) => px(a) - px(b)) : keys;
+	});
+	const states = $derived([
+		...new Set(after.filter((i) => i.viewport === viewport).map((i) => i.state))
+	]);
 	const selected = $derived(
-		headless ? undefined : images.find((i) => i.viewport === viewport && i.state === imageState)
+		headless ? undefined : after.find((i) => i.viewport === viewport && i.state === imageState)
+	);
+	const paired = $derived(
+		mockup && selected
+			? images.find((i) => i.viewport === viewport && i.state === `before-${selected.state}`)
+			: undefined
 	);
 	/** Only a commit view has a commit whose change can be shown as before and after. */
 	const viewed = $derived(workspace.pinned ? (workspace.snapshot?.revision.commit ?? null) : null);
-	const before = $derived(priorImage(entity.versions, { version, image: selected }, viewed));
+	const before = $derived(
+		mockup
+			? paired && { version, sha256: paired.sha256 }
+			: priorImage(entity.versions, { version, image: selected }, viewed)
+	);
+	/** What the Before slot of a mockup says when it has no current image to pair. */
+	const unbuilt = $derived(entity.planned ? 'Not built yet.' : 'No current capture of this view.');
 	$effect(() => {
-		if (!images.some((image) => image.viewport === viewport))
-			viewport = images[0]?.viewport || 'desktop';
-		const states = images.filter((image) => image.viewport === viewport);
-		if (!states.some((image) => image.state === imageState))
-			imageState = states[0]?.state || 'default';
+		if (!viewports.includes(viewport))
+			viewport =
+				(mockup && viewports.includes('width-1440') ? 'width-1440' : viewports[0]) || 'desktop';
+		if (!states.includes(imageState)) imageState = states[0] || 'default';
 	});
 	const threads = $derived(
 		entity.threads.filter((t) => t.version === version && t.imageSha256 === selected?.sha256)
@@ -105,20 +141,25 @@
 				}
 	);
 	function imageLabel(v: DesignVersion) {
-		return `${v.version}${v.approval?.current ? ' · Approved' : ''}`;
+		return `${v.version}${v.mockup ? ' · Mockup' : ''}${v.approval?.current ? ' · Approved' : ''}`;
 	}
+	const proposal = $derived(entity.planned ? `Proposed ${entity.kind}` : 'Design');
+	const kind = $derived(headless ? 'plan' : mockup ? 'mockup' : 'design');
+	const status = $derived(entity.lifecycle === 'approved' ? 'Approved' : 'In review');
 </script>
 
 <hx-section class="panel design-panel">
 	<hx-div class="row">
-		<hx-h2>{headless ? 'Plan' : entity.planned ? 'Proposed ' + entity.kind : 'Design'}</hx-h2>
+		<hx-h2>{inline ? 'Planned design' : headless ? 'Plan' : proposal}</hx-h2>
 		{#if current}{#if !headless}<Pill as="span" variant="chip" tone="design-panel-chip"
-					>{current.generator}</Pill
-				>{/if}<Select label={headless ? 'Plan version' : 'Design version'} bind:value={version}
-				>{#each entity.versions as v (v.version)}<hx-option value={v.version}
-						>{imageLabel(v)}</hx-option
-					>{/each}</Select
-			><hx-small>Committed {headless ? 'plan' : 'design'} · {version}</hx-small>{/if}
+					>{inline ? status : current.generator}</Pill
+				>{/if}{#if inline}<hx-small>Latest {kind} · {version}</hx-small>{:else}<Select
+					label={headless ? 'Plan version' : 'Design version'}
+					bind:value={version}
+					>{#each entity.versions as v (v.version)}<hx-option value={v.version}
+							>{imageLabel(v)}</hx-option
+						>{/each}</Select
+				><hx-small>Committed {kind} · {version}</hx-small>{/if}{/if}
 	</hx-div>
 	{#if current && choices.length}<hx-div class="design-options">
 			<SegmentedChoice
@@ -133,30 +174,27 @@
 	{#if current && selected}<hx-div class="design-controls">
 			<SegmentedChoice
 				label="Viewport"
-				bind:value={viewport}
-				options={[...new Set(images.map((image) => image.viewport))]}
+				options={viewports.map(sized)}
+				bind:value={
+					() => sized(viewport),
+					(value) => (viewport = viewports.find((key) => sized(key) === value) ?? viewport)
+				}
 			/>
-			<SegmentedChoice
-				label="Image state"
-				bind:value={imageState}
-				options={[
-					...new Set(
-						images.filter((image) => image.viewport === viewport).map((image) => image.state)
-					)
-				]}
-			/>
+			<SegmentedChoice label="Image state" bind:value={imageState} options={states} />
 		</hx-div>
-		<hx-div class:before-after={before}>
-			{#if before}<PriorImage
+		<hx-div class:before-after={before || mockup}>
+			{#if before || mockup}<PriorImage
 					{workspace}
 					entityId={entity.id}
-					version={before.version}
-					sha256={before.sha256}
-					title={`${entity.title} ${before.version} ${selected.viewport} ${selected.state}`}
+					version={before?.version ?? version}
+					sha256={before?.sha256 ?? ''}
+					title={`${entity.title} ${mockup ? 'current' : before?.version} ${sized(viewport)} ${selected.state}`}
+					caption={mockup ? 'Before · Current mockup' : ''}
+					note={unbuilt}
 				/>{/if}{#if url}<AnnotatedImage
 					src={url}
-					title={`${entity.title} ${version}${caption} ${selected.viewport} ${selected.state}`}
-					caption={before ? `After · ${version}` : ''}
+					title={`${entity.title} ${version}${caption} ${sized(viewport)} ${selected.state}`}
+					caption={mockup ? `After · Planned ${version}` : before ? `After · ${version}` : ''}
 					{threads}
 					writable={annotatable}
 					{comment}
@@ -173,7 +211,7 @@
 			<hx-p>{workspace.capabilities.planning ? empty.planning : empty.committed}</hx-p>
 		</EmptyState>{/if}
 	{#if error && url}<hx-p class="error" role="alert">{error}</hx-p>{/if}
-	{#if entity.category === 'pages'}<hx-div class="row measures">
+	{#if entity.category === 'pages' && !inline}<hx-div class="row measures">
 			<hx-span>Size · {entity.size.text || 'Not measured'}</hx-span><hx-span
 				>Performance · {entity.performance.text || 'Not measured'}</hx-span
 			>

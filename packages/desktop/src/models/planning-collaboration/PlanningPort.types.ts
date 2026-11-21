@@ -14,6 +14,7 @@ import type {
 	PlanDraft,
 	ThreadDraft
 } from '../development-tooling/DesktopBridge.types';
+import type { MockupImage } from '../../utils/planning-collaboration/mockupSource.types';
 import type { HostFileChange } from '../../../../planning/src/lib/planning/index';
 
 /** A draft plan as the planning package keeps it, in the words the desktop shows. */
@@ -51,13 +52,12 @@ export interface DesignDraft {
 	options?: DesignOptionDraft[];
 }
 
-export interface DesignOptionDraft {
+export type DesignOptionDraft = {
 	direction: string;
-	bytes: Uint8Array;
 	/** The exact prompt the image was generated from, and the one the generator reports. */
 	prompt: string;
 	revisedPrompt: string | null;
-}
+} & ({ bytes: Uint8Array; images?: never } | { images: MockupImage[]; bytes?: never });
 
 export interface MessageDraft extends Omit<ThreadMessage, 'id' | 'at'> {
 	entityId: string;

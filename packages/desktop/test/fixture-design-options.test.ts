@@ -17,10 +17,8 @@ import { remoteFixture } from './remote-fixture';
 import { bytes } from './run-fixture';
 
 /**
- * The fixtures that stand in for an image generator fit a Plan that states no count. A paired phone
- * over the wire, a local window over its transport, and the native fixture project each finish it
- * with three options of distinct pictures of the fixture's own size, the first exactly the picture
- * the fixture always made, kept by the real planning storage.
+ * A phone, a desktop window and the native fixture send the same default Plan over their
+ * normal transports. Each option binds the four viewport captures in the real planning storage.
  */
 const roots: string[] = [];
 afterEach(async () => {
@@ -44,13 +42,14 @@ const size = (png: Buffer) => {
 const distinct = (images: Buffer[]) =>
 	new Set(images.map((image) => image.toString('base64'))).size;
 
-const two = [
-	[2, 2],
-	[2, 2],
-	[2, 2]
-];
+function matrix(plan: Awaited<ReturnType<typeof stored>>['plan']) {
+	return plan.versions.at(-1)?.images.map((image) => image.viewport);
+}
+const widths = ['width-390', 'width-834', 'width-1440', 'width-1920'];
+const expected = [...widths, ...widths, ...widths];
+const pixels = (bytes: Uint8Array) => PNG.sync.read(Buffer.from(bytes)).data;
 
-test('remote: a phone starts a Plan stating no count over the wire; it finishes with three distinct pictures', async () => {
+test('remote: a phone starts a Plan stating no count over the wire; it finishes with three responsive mockups', async () => {
 	const r = await remoteFixture();
 	const phone = await r.device().connect();
 	const seen: RunEvent[] = [];
@@ -61,11 +60,15 @@ test('remote: a phone starts a Plan stating no count over the wire; it finishes 
 	await expect.poll(() => seen.at(-1)?.kind, { timeout: 30000 }).toBe('finished');
 	const { plan, images } = await stored(r.root, r.request.entityId);
 	expect(plan.versions.map((version) => version.options?.length)).toEqual([3]);
-	expect([images.map(size), distinct(images)]).toEqual([two, 3]);
-	expect(images[0].equals(Buffer.from(bytes))).toBe(true);
+	expect(matrix(plan)).toEqual(expected);
+	expect([images.map(size), distinct(images)]).toEqual([
+		Array.from({ length: 12 }, () => [2, 2]),
+		12
+	]);
+	expect(pixels(images[0])).toEqual(pixels(bytes));
 }, 60000);
 
-test('local: a window opens its project and starts a Plan stating no count; it finishes with three distinct pictures', async () => {
+test('local: a window opens its project and starts a Plan stating no count; it finishes with three responsive mockups', async () => {
 	const l = await localFixture();
 	const window = l.connect(l.window());
 	const seen: RunEvent[] = [];
@@ -76,22 +79,26 @@ test('local: a window opens its project and starts a Plan stating no count; it f
 	await expect.poll(() => seen.at(-1)?.kind, { timeout: 30000 }).toBe('finished');
 	const { plan, images } = await stored(l.root, l.request.entityId);
 	expect(plan.versions.map((version) => version.options?.length)).toEqual([3]);
-	expect([images.map(size), distinct(images)]).toEqual([two, 3]);
-	expect(images[0].equals(Buffer.from(bytes))).toBe(true);
+	expect(matrix(plan)).toEqual(expected);
+	expect([images.map(size), distinct(images)]).toEqual([
+		Array.from({ length: 12 }, () => [2, 2]),
+		12
+	]);
+	expect(pixels(images[0])).toEqual(pixels(bytes));
 }, 60000);
 
-test('native: the fixture project plans with its stand-in providers, stating no count; it finishes with three distinct pictures', async () => {
+test('native: the fixture project plans with its stand-in providers, stating no count; it finishes with three responsive mockups', async () => {
 	const { root, entityId, threadId } = await remoteFixtureProject();
 	roots.push(root);
 	const session = new ProjectSessionService();
 	await session.open(root);
-	const { generator, ...runners } = fixtureProviders();
+	const { renderMockups, ...runners } = fixtureProviders();
 	const events: RunEvent[] = [];
 	const runs = new DesktopRunService(
 		session,
 		new ProviderDiscoveryService(runners),
-		generator,
-		(event) => events.push(event)
+		(event) => events.push(event),
+		renderMockups
 	);
 	await runs.start({
 		...{ mode: 'plan', provider: 'codex', model: 'fixture-model', effort: 'high' },
@@ -101,15 +108,12 @@ test('native: the fixture project plans with its stand-in providers, stating no 
 	expect(events.at(-1)).toMatchObject({ kind: 'finished' });
 	const { api, plan, images } = await stored(root, entityId);
 	expect(plan.versions.map((version) => version.options?.length)).toEqual([undefined, 3]);
+	expect(matrix(plan)).toEqual(expected);
 	expect([images.map(size), distinct(images)]).toEqual([
-		[
-			[128, 128],
-			[128, 128],
-			[128, 128]
-		],
-		3
+		Array.from({ length: 12 }, () => [128, 128]),
+		12
 	]);
-	expect(images[0].equals(Buffer.from(fixtureImage(128)))).toBe(true);
+	expect(pixels(images[0])).toEqual(pixels(fixtureImage(128)));
 	// The seeded single design is the picture it always was.
 	const [seed] = plan.versions[0].images;
 	const seeded = await api.readImage({ unitId: entityId, version: 'v001', file: seed.file });

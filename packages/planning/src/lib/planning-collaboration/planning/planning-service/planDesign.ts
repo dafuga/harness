@@ -30,6 +30,7 @@ import {
 import { fail, hash, json, now, planData } from '../../../../utils/planning-collaboration/planData';
 import {
 	contractHash,
+	planViewport,
 	region,
 	slug,
 	text
@@ -43,8 +44,7 @@ function imageFiles(
 ): DesignImage[] {
 	return images.map((image) => {
 		slug(image.state);
-		if (!['desktop', 'tablet', 'mobile', 'diagram'].includes(image.viewport))
-			fail('invalid-input', 'Invalid viewport');
+		if (!planViewport(image.viewport)) fail('invalid-input', 'Invalid viewport');
 		const file = `${prefix}${image.state}-${image.viewport}.png`;
 		if (files[`${base}/${file}`]) fail('invalid-input', 'Duplicate image');
 		const size = decode(image.bytes);

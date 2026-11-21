@@ -13,6 +13,7 @@ import type {
 	AgentTurn,
 	ImageGenerator
 } from '../src/models/agents-providers/AgentRunner.types';
+import type { RenderMockups } from '../src/utils/planning-collaboration/mockupSource.types';
 import type { RunEvent, RunRequest } from '../src/models/DesktopBridge.types';
 import { createPlanning } from '../../planning/src/lib/planning/index';
 const roots: string[] = [];
@@ -22,10 +23,21 @@ export const git = (root: string, ...args: string[]) =>
 afterEach(async () => {
 	await Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true })));
 });
+export function visualAnswer(turn: AgentTurn, source = 'src/owned.ts') {
+	if (turn.model !== 'claude-sonnet-5-5') return null;
+	const count = Number(/Design option count: (\d+)/.exec(turn.prompt)?.[1] ?? '1');
+	const options = Array.from({ length: count }, (_, index) => ({
+		direction: 'Fixture option ' + (index + 1),
+		html: `<main class="fixture-card">Fixture option ${index + 1}</main>`,
+		css: '.fixture-card { background: var(--fixture-surface); padding: 1rem; }'
+	}));
+	return JSON.stringify({ sources: [source], stylesheets: [], before: null, options });
+}
+
 function fakeRunner(action: (turn: AgentTurn) => Promise<void>) {
 	const run = vi.fn(async (turn: AgentTurn) => {
 		await action(turn);
-		return { text: 'Precise design direction', model: turn.model };
+		return { text: visualAnswer(turn) ?? 'Precise design direction', model: turn.model };
 	});
 	const runner: AgentRunner = {
 		run,
@@ -35,7 +47,7 @@ function fakeRunner(action: (turn: AgentTurn) => Promise<void>) {
 			available: true,
 			reason: null,
 			version: 'fixture',
-			imageGeneration: true,
+			imageGeneration: false,
 			models: [
 				{
 					id: 'selected',
@@ -94,8 +106,12 @@ export async function fixture(action: (turn: AgentTurn) => Promise<void> = async
 		generateImage: vi.fn(async () => ({ bytes, revisedPrompt: null }))
 	};
 	const events: RunEvent[] = [];
-	const service = new DesktopRunService(session, providers(runner), generator, (event) =>
-		events.push(event)
+	const renderMockups = vi.fn<RenderMockups>(async (captures) => captures.map(() => bytes));
+	const service = new DesktopRunService(
+		session,
+		providers(runner),
+		(event) => events.push(event),
+		renderMockups
 	);
 	const request: RunRequest = {
 		mode: 'plan',
@@ -107,7 +123,18 @@ export async function fixture(action: (turn: AgentTurn) => Promise<void> = async
 		text: 'Design target',
 		approval: null
 	};
-	return { root, session, planning, service, events, run, runner, generator, request };
+	return {
+		root,
+		session,
+		planning,
+		service,
+		events,
+		run,
+		runner,
+		generator,
+		renderMockups,
+		request
+	};
 }
 export async function settled(f: Awaited<ReturnType<typeof fixture>>, request = f.request) {
 	const started = await f.service.start(request);
