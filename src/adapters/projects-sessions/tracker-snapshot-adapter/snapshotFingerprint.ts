@@ -1,3 +1,4 @@
+// @harness-uid u_earfvkmyr2
 import { createHash } from 'node:crypto';
 import type {
 	SqliteDatabase,
