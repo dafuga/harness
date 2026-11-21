@@ -12,6 +12,7 @@ import type {
 } from './TrackerSnapshotAdapter.types';
 import { fingerprintRows, fingerprintTable } from './tracker-snapshot-adapter/snapshotFingerprint';
 import { fingerprintPendingPush } from './tracker-snapshot-adapter/snapshotPendingPush';
+import { TrackerSnapshotError } from './tracker-snapshot-adapter/TrackerSnapshotError';
 
 function standaloneFile(path: string): string {
 	let file: string;
@@ -19,14 +20,15 @@ function standaloneFile(path: string): string {
 	try {
 		file = realpathSync(path);
 		const info = statSync(file);
-		if (!info.isFile() || info.size < 100) throw new Error('Expected a SQLite file');
+		if (!info.isFile() || info.size < 100) throw new TrackerSnapshotError();
 		hasJournal = ['-wal', '-journal'].some(
 			(suffix) => (statSync(file + suffix, { throwIfNoEntry: false })?.size ?? 0) > 0
 		);
 	} catch {
-		throw new Error('Unable to read SQLite snapshot');
+		throw new TrackerSnapshotError();
 	}
-	if (hasJournal) throw new Error('SQLite snapshot has a nonempty WAL or rollback journal');
+	if (hasJournal)
+		throw new TrackerSnapshotError('SQLite snapshot has a nonempty WAL or rollback journal');
 	// The inputs must be quiesced copies. Immutable mode also keeps SQLite from
 	// creating sidecars when reading a checkpoint whose header still declares WAL.
 	return pathToFileURL(file).href + '?immutable=1';
@@ -42,10 +44,9 @@ function summarize(db: SqliteDatabase, sync?: TrackerSnapshotSyncOptions): Track
 	`
 		)
 		.all() as { name: string; type: string }[];
-	if (tables.some(({ type }) => type !== 'table')) throw new Error('Unsupported SQLite table type');
+	if (tables.some(({ type }) => type !== 'table')) throw new TrackerSnapshotError();
 	const check = db.prepare('PRAGMA main.integrity_check').all() as { integrity_check: string }[];
-	if (check.length !== 1 || check[0].integrity_check !== 'ok')
-		throw new Error('Integrity check failed');
+	if (check.length !== 1 || check[0].integrity_check !== 'ok') throw new TrackerSnapshotError();
 
 	return {
 		schema: fingerprintSchema(db),
@@ -98,7 +99,7 @@ export class TrackerSnapshotAdapter {
 			}
 		} catch {
 			// SQLite diagnostics can contain private schema or row content.
-			throw new Error('Unable to read SQLite snapshot');
+			throw new TrackerSnapshotError();
 		}
 	}
 

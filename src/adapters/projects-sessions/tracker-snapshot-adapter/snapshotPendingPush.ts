@@ -1,9 +1,11 @@
+// @harness-uid u_earfvkmyr2
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import type {
 	TrackerSnapshotFingerprint,
 	TrackerSnapshotSyncOptions
 } from '../TrackerSnapshotAdapter.types';
 import { fingerprintTable } from './snapshotFingerprint';
+import { TrackerSnapshotError } from './TrackerSnapshotError';
 
 function pendingLink(
 	db: SqliteDatabase,
@@ -14,7 +16,7 @@ function pendingLink(
 	const metadata = db.prepare('SELECT v FROM main.meta WHERE k = ?');
 	const pushed = metadata.get(prefix + 'pushed_seq') as { v: string | null } | undefined;
 	const from = Number(pushed?.v ?? 0);
-	if (!Number.isSafeInteger(from) || from < 0) throw new Error('Invalid Tracker push cursor');
+	if (!Number.isSafeInteger(from) || from < 0) throw new TrackerSnapshotError();
 
 	const replay = metadata.get(prefix + 'push_all') as { v: string | null } | undefined;
 	return fingerprintTable(

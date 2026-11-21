@@ -1,3 +1,4 @@
+// @harness-uid u_q5pl6yqth7
 export interface TrackerSyncRequest {
 	/** The HTTP method as it appears on the wire. */
 	method: string;
