@@ -197,12 +197,7 @@
 			"TrackerNotificationService",
 			"planGithubIssueIntake",
 			"TrackerNativeRuntimeService",
-			"TrackerAdapterLeaseAdapter",
-			"DeployCommand",
-			"DeployDockerAdapter",
-			"ScriptedDeployService",
-			"DeployManifestValidator",
-			"DeployRunRepository"
+			"TrackerAdapterLeaseAdapter"
 		]
 	},
 	"contract": {
@@ -266,11 +261,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "adapter.execution-runtimes-deploy-docker",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
 			"unit": "adapter.networking-security-harness-http",
 			"via": "reexport",
 			"origin": "derived"
@@ -322,11 +312,6 @@
 		},
 		{
 			"unit": "command.codex-picker",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "command.execution-runtimes-deploy",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -726,11 +711,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "repository.execution-runtimes-deploy-run",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
 			"unit": "repository.projects-sessions-tracker-operation",
 			"via": "reexport",
 			"origin": "derived"
@@ -822,11 +802,6 @@
 		},
 		{
 			"unit": "service.desktop-experiment",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.execution-runtimes-scripted-deploy",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -982,11 +957,6 @@
 		},
 		{
 			"unit": "validator.codex-request",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "validator.execution-runtimes-deploy-manifest",
 			"via": "reexport",
 			"origin": "derived"
 		},

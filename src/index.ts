@@ -217,8 +217,3 @@ export { planGithubIssueIntake } from './helpers/planning-collaboration/planGith
 export * from './services/projects-sessions/TrackerAdapterPollService';
 export { TrackerNativeRuntimeService } from './services/projects-sessions/TrackerNativeRuntimeService';
 export { TrackerAdapterLeaseAdapter } from './adapters/projects-sessions/TrackerAdapterLeaseAdapter';
-export { DeployCommand } from './commands/execution-runtimes/DeployCommand';
-export { DeployDockerAdapter } from './adapters/execution-runtimes/DeployDockerAdapter';
-export { ScriptedDeployService } from './services/execution-runtimes/ScriptedDeployService';
-export { DeployManifestValidator } from './validators/execution-runtimes/DeployManifestValidator';
-export { DeployRunRepository } from './repositories/execution-runtimes/DeployRunRepository';
