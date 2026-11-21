@@ -190,3 +190,4 @@ export { TaskOrchestrationCommand } from './commands/agents-providers/TaskOrches
 export { ProviderSessionAdapter } from './adapters/agents-providers/ProviderSessionAdapter';
 export { TrackerCommand } from './commands/projects-sessions/TrackerCommand';
 export { TrackerOperationRepository } from './repositories/projects-sessions/TrackerOperationRepository';
+export { TrackerSchemaAdapter } from './adapters/projects-sessions/TrackerSchemaAdapter';
