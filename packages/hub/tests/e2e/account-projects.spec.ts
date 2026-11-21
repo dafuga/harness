@@ -166,7 +166,9 @@ test('the verified GitHub callback status appears on the projects page', async (
 }, testInfo) => {
 	await overviewFixture(page);
 	await open(page, viewports[0], '/projects?github=connected');
-	await expect(page.getByText('GitHub is connected.', { exact: true })).toBeVisible();
+	const confirmation = page.getByText('GitHub is connected.', { exact: true });
+	await confirmation.scrollIntoViewIfNeeded();
+	await expect(confirmation).toBeInViewport();
 	await attachShot(page, testInfo, 'github-connected', viewports[0], 'github-result');
 });
 
@@ -177,6 +179,14 @@ for (const viewport of viewports) {
 		await expect(page.getByRole('link', { name: 'Project overview', exact: true })).toBeVisible();
 		await expect(page.locator(overviewRoot)).toBeVisible();
 		await expect(page.getByText('synthetic-sync', { exact: true })).toBeVisible();
+		const fit = await page.evaluate(() => ({
+			documentOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+			offscreenCards: [...document.querySelectorAll('.po-card')].filter((card) => {
+				const { left, right } = card.getBoundingClientRect();
+				return left < 0 || right > innerWidth;
+			}).length
+		}));
+		expect(fit).toEqual({ documentOverflow: 0, offscreenCards: 0 });
 		await attachShot(page, testInfo, 'owner', viewport);
 	});
 
