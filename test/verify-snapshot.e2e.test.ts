@@ -83,6 +83,7 @@ test('a file that one check adds and a later check removes is still caught', asy
 }, 180_000);
 
 test('a declared output may be written, and nothing else may be', async () => {
+	expect((await baseline.run(['verify', 'run', '--help'])).stdout).toContain('--retain-artifact');
 	const declared = (repo: VerifyRepo) => declareOutputs(repo, ['build/']);
 	const artifactArgs = ['--retain-artifact', 'build/out.js'];
 	const built = await verifyWith({ FIXTURE_MUTATE: 'build/out.js' }, declared, artifactArgs);
