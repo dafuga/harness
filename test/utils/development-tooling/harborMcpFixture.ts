@@ -3,6 +3,7 @@ import { once } from 'node:events';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { createInterface } from 'node:readline';
+import type { Writable } from 'node:stream';
 import { expect } from 'vitest';
 import { measureWorkload } from '../../support/measureWorkload';
 import { ownEnvironment } from '../../support/cli';
@@ -71,16 +72,14 @@ async function checkProcess(entry: string, workspace: string, state: string): Pr
 		if (sdkPid !== undefined) killFixture(sdkPid);
 	}, 4000);
 	try {
-		await checkReplies(
-			child.stdin,
-			replies,
-			workspace,
-			() => stderr,
-			(pid) => (sdkPid = pid)
-		);
+		await checkReplies(child.stdin, replies, workspace, {
+			stderr: () => stderr,
+			pid: (pid) => (sdkPid = pid)
+		});
 		if (state === 'eof') child.stdin.end();
 		else child.kill(state === 'interrupt' ? 'SIGINT' : 'SIGTERM');
-		const status = state === 'eof' ? 0 : state === 'interrupt' ? 130 : 143;
+		const interruptStatus = state === 'interrupt' ? 130 : 143;
+		const status = state === 'eof' ? 0 : interruptStatus;
 		await expect(closed).resolves.toStrictEqual([status, null]);
 		expect(stderr).toBe(state === 'interrupt' ? 'fixture cleanup complete\n' : '');
 		expect(() => process.kill(sdkPid!, 0)).toThrow();
@@ -95,17 +94,16 @@ async function checkProcess(entry: string, workspace: string, state: string): Pr
 }
 
 async function checkReplies(
-	input: NodeJS.WritableStream,
+	input: Writable,
 	replies: AsyncIterableIterator<string>,
 	workspace: string,
-	errorOutput: () => string,
-	observePid: (pid: number) => void
+	observe: { stderr: () => string; pid: (pid: number) => void }
 ) {
 	let pid: number | undefined;
 	for (const line of ['{"id":1}', '{"id":2,"text":"Harbor 港"}']) {
 		input.write(line + '\n');
 		const reply = await replies.next();
-		expect(reply.done, errorOutput() || 'expected reply before stdin EOF').toBe(false);
+		expect(reply.done, observe.stderr() || 'expected reply before stdin EOF').toBe(false);
 		const payload = JSON.parse(reply.value);
 		expect(payload).toStrictEqual({
 			line,
@@ -115,7 +113,7 @@ async function checkReplies(
 			pid: expect.any(Number)
 		});
 		pid ??= payload.pid;
-		if (pid !== undefined) observePid(pid);
+		if (pid !== undefined) observe.pid(pid);
 		expect(payload.pid).toBe(pid);
 	}
 }

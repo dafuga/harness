@@ -84,7 +84,7 @@ test('Harbor tooling forwards fixed argv without provider or signing credentials
 	}));
 
 test.each(process.platform === 'win32' ? ['eof'] : ['eof', 'interrupt', 'stubborn'])(
-	'Harbor MCP streams fixed SDK arguments and shuts down on %s',
+	'Harbor MCP replies before stdin closes and shuts down on %s',
 	checkHarborMcp,
 	12_000
 );
