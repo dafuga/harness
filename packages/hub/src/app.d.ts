@@ -14,6 +14,10 @@ declare global {
 				HARNESS_RELAY_ORIGIN?: string;
 				DB?: D1Database;
 				CACHE?: R2Bucket;
+				/** Private bucket of vetted release archives. Read only by the Mac download route. */
+				DOWNLOADS?: R2Bucket;
+				/** Provisioned object key of the vetted Mac archive, e.g. releases/mac-arm64/<sha>/Harness.zip. */
+				HARNESS_MAC_DOWNLOAD_KEY?: string;
 				REMOTE_HOSTS?: DurableObjectNamespace;
 			};
 		}
