@@ -4,7 +4,7 @@
 	"uid": "u_ymrcybx25k",
 	"kind": "adapter",
 	"title": "ManagedProviderDockerAdapter",
-	"responsibility": "Start offline Linux provider fixtures with an explicit Docker policy, attach their standard streams and remove the task-owned container on completion.",
+	"responsibility": "Run offline Linux provider fixtures in task-owned Docker storage, attach standard streams, reconcile worktree edits and remove task resources.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"catalog": {
@@ -13,7 +13,10 @@
 	"owns": {
 		"source": [
 			"src/adapters/agents-providers/ManagedProviderDockerAdapter.ts",
-			"src/adapters/agents-providers/ManagedProviderDockerAdapter.types.ts"
+			"src/adapters/agents-providers/ManagedProviderDockerAdapter.types.ts",
+			"src/adapters/agents-providers/managed-provider-docker-adapter/dockerControl.ts",
+			"src/adapters/agents-providers/managed-provider-docker-adapter/dockerWorkspace.ts",
+			"src/adapters/agents-providers/managed-provider-docker-adapter/reconcileDockerWorkspace.ts"
 		],
 		"symbols": [
 			"managedProviderDockerResources",
@@ -22,11 +25,26 @@
 			"ManagedProviderDockerAdapter.run",
 			"DockerTaskWorkspace",
 			"DockerTaskCreate",
-			"DockerTaskDaemon"
+			"DockerTaskDaemon",
+			"createStorageContainer",
+			"createVolume",
+			"removeVolume",
+			"dockerDaemon",
+			"createContainer",
+			"removeContainers",
+			"dockerArgs",
+			"stopContainer",
+			"bunCache",
+			"storagePath",
+			"workspaceVolume",
+			"workspaceSubpath",
+			"seedDockerWorkspace",
+			"recoverDockerWorkspace",
+			"reconcileDockerWorkspace"
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ManagedProviderDockerAdapter.command.[executable, ...args]",

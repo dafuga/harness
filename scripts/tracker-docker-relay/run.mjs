@@ -118,16 +118,9 @@ async function main() {
 		'Pass one pinned local image ID'
 	);
 	const docker = localDocker();
-	assert.equal(
-		docker(
-			'image',
-			'inspect',
-			image,
-			'--format',
-			'{{.Os}}/{{.Architecture}} {{json .Config.Volumes}}'
-		),
-		'linux/arm64 null'
-	);
+	const [localImage] = JSON.parse(docker('image', 'inspect', image));
+	assert.equal(`${localImage.Os}/${localImage.Architecture}`, 'linux/arm64');
+	assert.equal(localImage.Config.Volumes ?? null, null);
 	const root = mkdtempSync('/tmp/harness-tracker-relay-');
 	const interrupt = new AbortController();
 	const stop = () => interrupt.abort(new Error('Tracker relay proof interrupted'));
