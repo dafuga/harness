@@ -60,7 +60,16 @@ function seedPausedAttention(f: ReturnType<typeof notificationFixture>, night: n
 }
 
 test('pause and resume release one relevant Chief of Staff batch, with recurring agent wake-ups outside quiet hours', async () => {
-	const f = notificationFixture();
+	let uncertain = true;
+	const f = notificationFixture({
+		send: async (request) => {
+			if (request.destination.id === chief.id && uncertain) {
+				uncertain = false;
+				throw new Error('synthetic acknowledgement lost');
+			}
+			return { status: 'sent' };
+		}
+	});
 	const night = start + 180 * minute;
 	await f.service.tick();
 	await f.service.pause('fixture-operator');
@@ -73,7 +82,7 @@ test('pause and resume release one relevant Chief of Staff batch, with recurring
 	expect(wire(f.calls[0]).recurring_due).toMatchObject([{ item_id: 'd', occurrence: 'current' }]);
 
 	f.rows.set('c', { ...f.rows.get('c')!, resolved: 1 });
-	await f.restart().resume();
+	await expect(f.restart().resume()).rejects.toThrow('synthetic acknowledgement lost');
 	expect(f.calls.map((call) => call.destination)).toEqual([worker, chief]);
 	const id = eventId(`done|a|${clock(night)}`, `blocked|b|${clock(night)}`);
 	expect(wire(f.calls[1])).toMatchObject({
@@ -84,8 +93,13 @@ test('pause and resume release one relevant Chief of Staff batch, with recurring
 		text: 'BLOCKED: Fixture b - Fixture blocker (needs Daniel)\nDONE: Fixture a - Fixture result'
 	});
 	expect(f.queue.read().attention.get(`flag|c|${clock(night)}`)?.status).toBe('dropped');
+	await f.service.pause('fixture-operator');
 	await f.restart().tick();
 	expect(f.calls).toHaveLength(2);
+	await f.restart().resume();
+	expect(f.calls[2]).toEqual(f.calls[1]);
+	await f.restart().tick();
+	expect(f.calls).toHaveLength(3);
 });
 
 test('tick keeps a delayed window out of quiet hours and retries the attention batch on the next window', async () => {
