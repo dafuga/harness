@@ -17,18 +17,17 @@ import { promisify } from 'node:util';
 import { z } from 'zod';
 import { ProcessIdentityAdapter } from '../../../services/agents-providers/agent-activity-service/ProcessIdentityAdapter';
 import { resourceHome } from '../../../utils/execution-runtimes/resourceConfig';
-import type { DockerTaskDaemon, DockerTaskLaunch } from '../ManagedProviderDockerAdapter.types';
+import type {
+	DockerTaskDaemon,
+	DockerTaskLaunch,
+	DockerVolumeLaunch
+} from '../ManagedProviderDockerAdapter.types';
 import { ModuleTaskRunError } from '../module-task-runner-adapter/ModuleTaskRunError';
-import {
-	containerIdPattern,
-	daemonIdPattern,
-	dockerSocketPattern,
-	removeScopedContainer
-} from './dockerContainerScope';
+import { containerIdPattern, daemonIdPattern, dockerSocketPattern } from './dockerControl';
+import { removeLaunch } from './dockerContainerScope';
 
 const ownerPattern = /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/;
-const launchSchema = z.strictObject({
-	version: z.literal(1),
+const identity = {
 	owner: z.string().regex(ownerPattern),
 	cwd: z.string().max(4096).refine(isAbsolute),
 	host: z.string().regex(dockerSocketPattern),
@@ -36,7 +35,21 @@ const launchSchema = z.strictObject({
 	pid: z.number().int().positive().max(2147483647),
 	startedAt: z.string().min(1).max(128),
 	containerId: z.string().regex(containerIdPattern).optional()
-});
+};
+const launchSchema = z.discriminatedUnion('version', [
+	z.strictObject({ ...identity, version: z.literal(1) }),
+	z
+		.strictObject({
+			...identity,
+			version: z.literal(2),
+			stage: z.enum(['volume', 'storage', 'task']),
+			storageId: z.string().regex(containerIdPattern).optional()
+		})
+		.refine(({ stage, storageId, containerId }) => {
+			if (stage === 'task') return storageId !== undefined;
+			return containerId === undefined && (stage === 'storage' || storageId === undefined);
+		})
+]);
 
 export async function launchDirectory(cwd: string): Promise<string> {
 	const scope = await localSupervisorScope();
@@ -73,12 +86,13 @@ async function machineIdentity(): Promise<string> {
 	return stdout.match(/"IOPlatformUUID" = "([a-f0-9-]{36})"/i)?.[1] ?? '';
 }
 
-export function newLaunch(daemon: DockerTaskDaemon, cwd: string): DockerTaskLaunch {
+export function newLaunch(daemon: DockerTaskDaemon, cwd: string): DockerVolumeLaunch {
 	const identity = new ProcessIdentityAdapter().find(process.pid);
 	if (!identity.startedAt)
 		throw new ModuleTaskRunError('Cannot establish Docker supervisor identity.');
 	return {
-		version: 1,
+		version: 2,
+		stage: 'volume',
 		owner: randomUUID(),
 		cwd,
 		host: daemon.host,
@@ -127,7 +141,7 @@ export async function recoverLaunches(
 		const launch = await readLaunch(directory, owner);
 		if (launch?.host !== daemon.host || launch.daemonId !== daemon.id) continue;
 		if (!supervisorGone(launch)) continue;
-		if (await removeScopedContainer(daemon, launch)) await forgetLaunch(directory, launch);
+		if (await removeLaunch(daemon, launch)) await forgetLaunch(directory, launch);
 	}
 }
 
