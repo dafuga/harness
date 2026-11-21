@@ -49,13 +49,15 @@
 				"name": "Modal.summary",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Optional section dialog description referenced by aria-describedby. Defaults to omitted."
 			},
 			{
 				"name": "Modal.actions",
 				"type": "import('svelte').Snippet",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Optional section-specific controls rendered in the dialog header. Defaults to omitted."
 			},
 			{
 				"name": "Modal.variant",
