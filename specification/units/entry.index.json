@@ -175,7 +175,8 @@
 			"TrackerOperationRepository",
 			"TrackerSchemaAdapter",
 			"nextTrackerClock",
-			"TrackerPersistenceService"
+			"TrackerPersistenceService",
+			"planGithubIssueIntake"
 		]
 	},
 	"contract": {
@@ -520,6 +521,11 @@
 		},
 		{
 			"unit": "helper.module-system-module-resource-location",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.planning-collaboration-plan-github-issue-intake",
 			"via": "reexport",
 			"origin": "derived"
 		},
