@@ -54,7 +54,7 @@ export class TrackerDispatchSchedulerService {
 		this.ticking = true;
 		this.waits.clear();
 		try {
-			await this.options.runner.refresh?.(signal);
+			await this.options.runner.refresh?.(signal, this.repository.managedRuns());
 			signal.throwIfAborted();
 			adoptLegacyRuns(this.repository, this.options.runner);
 			if (!(await this.reconcile(signal))) await this.requestWork(signal);

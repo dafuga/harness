@@ -39,3 +39,19 @@ export function localWatchdogRuns(store: TrackerPersistenceService): WatchdogRun
 export function readWatchdogAlerts(store: TrackerPersistenceService) {
 	return trackerWatchdogAlerts.parse(JSON.parse(store.getMeta('watchdog_alerts') ?? '{}'));
 }
+
+export function finishObservedRuns(
+	store: TrackerPersistenceService,
+	ids: readonly number[],
+	now: number
+): void {
+	if (!ids.length) return;
+	store.commitLocal(() => {
+		const finish = store.database
+			.prepare(`UPDATE runs SET state = 'finished', outcome = 'abandoned',
+			failure_reason = 'Hand-launched session ended or its item closed', ended_at = ?
+			WHERE id = ? AND state = 'observed'`);
+		for (const id of ids) finish.run(now, id);
+		return { result: undefined };
+	});
+}

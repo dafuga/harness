@@ -4,7 +4,40 @@ import { z } from 'zod';
 
 const absolutePath = z.string().refine(isAbsolute);
 const driver = absolutePath;
+const adapterPolicy = {
+	scheduleDue: z.literal(true).optional(),
+	dueDisk: z
+		.strictObject({ freePct: z.number().positive().max(100), freeGB: z.number().positive() })
+		.optional()
+};
 const checkpoint = z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$/);
+
+const launchPolicy = {
+	maxConcurrent: z.int().positive().max(500).optional(),
+	legacyRunDirectory: absolutePath.optional(),
+	repositories: z.record(
+		z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$/),
+		z.strictObject({ repo: absolutePath, platform: z.enum(['linux', 'macos']) })
+	),
+	due: z.literal(true).optional()
+};
+const managedLauncher = z
+	.strictObject({
+		tmux: absolutePath,
+		stateDirectory: absolutePath,
+		trackerBinDirectory: absolutePath,
+		native: z
+			.strictObject({ codex: absolutePath, claude: absolutePath, profile: absolutePath })
+			.optional(),
+		docker: z
+			.strictObject({
+				harness: absolutePath,
+				image: z.string().regex(/^sha256:[a-f0-9]{64}$/),
+				profile: absolutePath
+			})
+			.optional()
+	})
+	.refine(({ native, docker }) => Boolean(native ?? docker));
 
 export const trackerHostEffectsSchema = z.discriminatedUnion('mode', [
 	z.strictObject({ mode: z.literal('held') }),
@@ -12,14 +45,10 @@ export const trackerHostEffectsSchema = z.discriminatedUnion('mode', [
 		mode: z.literal('active'),
 		checkpoint,
 		launch: z
-			.strictObject({
-				driver,
-				repositories: z.record(
-					z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$/),
-					z.strictObject({ repo: absolutePath, platform: z.enum(['linux', 'macos']) })
-				),
-				due: z.literal(true).optional()
-			})
+			.union([
+				z.strictObject({ driver, ...launchPolicy }),
+				z.strictObject({ managed: managedLauncher, ...launchPolicy })
+			])
 			.optional(),
 		watchdog: z
 			.union([
@@ -29,9 +58,10 @@ export const trackerHostEffectsSchema = z.discriminatedUnion('mode', [
 			.optional(),
 		adapter: z
 			.union([
-				z.strictObject({ driver }),
+				z.strictObject({ driver, ...adapterPolicy }),
 				z.strictObject({
-					github: z.strictObject({ executable: absolutePath, configDirectory: absolutePath })
+					github: z.strictObject({ executable: absolutePath, configDirectory: absolutePath }),
+					...adapterPolicy
 				})
 			])
 			.optional()

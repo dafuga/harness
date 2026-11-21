@@ -12,7 +12,7 @@ export type TrackerReservedStart = Extract<TrackerDispatchResult, { status: 'sta
 
 export interface TrackerDispatchRunner {
 	/** Refresh authoritative session evidence before reconciling or claiming work. */
-	refresh?(signal: AbortSignal): Promise<void>;
+	refresh?(signal: AbortSignal, runs: readonly TrackerRunReceipt[]): Promise<void>;
 	legacySession?(run: TrackerRunReceipt): TrackerSessionEvidence | undefined;
 	/** Append the completion instructions to the launch brief and launch only the committed attempt key. */
 	start(

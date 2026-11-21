@@ -1,23 +1,26 @@
 // @harness-uid u_bl6xl2h4a3
-import type { TrackerHostProcessAdapter } from '../../../adapters/projects-sessions/TrackerHostProcessAdapter';
 import type { TrackerTmuxAdapter } from '../../../adapters/projects-sessions/TrackerTmuxAdapter';
 import type { WatchdogPane } from '../WatchdogPaneService.types';
-import type { TrackerHostSession } from './trackerHostLaunch.types';
-import { hostInventory } from './trackerHostLaunchSchema';
+import type { TrackerHostLaunchPort, TrackerHostSession } from './trackerHostLaunch.types';
 
 export async function trackerHostInventory(
 	{
 		driver,
 		tmux,
-		node
-	}: { driver: TrackerHostProcessAdapter; tmux?: TrackerTmuxAdapter; node: string },
+		node,
+		keys
+	}: {
+		driver: TrackerHostLaunchPort;
+		tmux?: TrackerTmuxAdapter;
+		node: string;
+		keys: readonly string[];
+	},
 	signal: AbortSignal
 ) {
-	const [value, panes] = await Promise.all([
-		driver.request('inspect', { node }, signal),
+	const [sessions, panes] = await Promise.all([
+		driver.inspect({ node, keys }, signal),
 		tmux?.inventory(signal) ?? []
 	]);
-	const sessions = hostInventory.parse(value);
 	const direct = panes.flatMap((pane) => {
 		const evidence = legacyTmuxSession(pane);
 		return evidence &&

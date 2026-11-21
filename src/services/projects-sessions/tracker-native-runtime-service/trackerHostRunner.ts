@@ -1,8 +1,8 @@
 // @harness-uid u_bl6xl2h4a3
 import type { TrackerTmuxAdapter } from '../../../adapters/projects-sessions/TrackerTmuxAdapter';
 import type { WatchdogPane } from '../WatchdogPaneService.types';
+import { trackerLegacyExitReceipt } from './trackerLegacyExitReceipt';
 import { trackerHostInventory } from './trackerHostInventory';
-import type { TrackerHostProcessAdapter } from '../../../adapters/projects-sessions/TrackerHostProcessAdapter';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import {
@@ -16,25 +16,34 @@ import type {
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import type { TrackerReservedStart } from '../TrackerDispatchSchedulerService.types';
 import type { TrackerHostRepository } from './nativeTrackerHostEffects.types';
-import type { TrackerHostRoute, TrackerHostSession } from './trackerHostLaunch.types';
-import { hostStart } from './trackerHostLaunchSchema';
+import type {
+	TrackerHostLaunchPort,
+	TrackerHostRoute,
+	TrackerHostSession
+} from './trackerHostLaunch.types';
 import { formatTrackerHostBrief } from './trackerHostBrief';
 
 export function trackerHostRunner(
 	store: TrackerPersistenceService,
-	driver: TrackerHostProcessAdapter,
+	driver: TrackerHostLaunchPort,
 	routeFor: TrackerHostRoute,
-	tmux?: TrackerTmuxAdapter
+	{ tmux, legacyRunDirectory }: { tmux?: TrackerTmuxAdapter; legacyRunDirectory?: string } = {}
 ) {
 	const items = new TrackerItemReadRepository(store.database);
 	const node = canonicalNode(store.node, {});
 	let sessions: TrackerHostSession[] = [];
 	let manual: WatchdogPane[] = [];
+	const legacyExit = legacyRunDirectory ? trackerLegacyExitReceipt(legacyRunDirectory) : undefined;
+	const legacySession = (run: TrackerRunReceipt) =>
+		legacyExit?.(run) ?? trackerLegacySession(run, sessions);
 	return {
 		inventory: () => sessions,
 		runner: {
-			async refresh(signal: AbortSignal) {
-				({ sessions, manual } = await trackerHostInventory({ driver, tmux, node }, signal));
+			async refresh(signal: AbortSignal, runs: readonly TrackerRunReceipt[]) {
+				({ sessions, manual } = await trackerHostInventory(
+					{ driver, tmux, node, keys: runs.map(attemptKey) },
+					signal
+				));
 			},
 			async start(reservation: TrackerReservedStart, signal: AbortSignal, instructions: string) {
 				const item = items.getStored(reservation.run.item_id);
@@ -46,11 +55,9 @@ export function trackerHostRunner(
 				if (result?.type === 'session') sessions.push({ ...result.session, itemId: item.id });
 				return result;
 			},
-			legacySession(run: TrackerRunReceipt) {
-				return trackerLegacySession(run, sessions);
-			},
+			legacySession,
 			async observe(run: TrackerRunReceipt, key: string) {
-				return recordedHostEvent(run, { key, sessions, items });
+				return recordedHostEvent(run, { key, sessions, items, legacySession });
 			}
 		},
 		sessions(itemId: string) {
@@ -68,7 +75,7 @@ export function trackerHostRunner(
 }
 
 async function startTrackerHost(
-	driver: TrackerHostProcessAdapter,
+	driver: TrackerHostLaunchPort,
 	input: {
 		node: string;
 		route: TrackerHostRepository;
@@ -83,22 +90,19 @@ async function startTrackerHost(
 		reservation: { run, key, selection },
 		brief
 	} = input;
-	const result = hostStart.parse(
-		await driver.request(
-			'start',
-			{
-				node,
-				itemId: run.item_id,
-				runId: run.id,
-				key,
-				selection,
-				brief,
-				...route,
-				backend: route.platform === 'macos' ? 'native' : 'docker',
-				queuedAt: run.queued_at
-			},
-			signal
-		)
+	const result = await driver.start(
+		{
+			node,
+			itemId: run.item_id,
+			runId: run.id,
+			key,
+			selection,
+			brief,
+			...route,
+			backend: route.platform === 'macos' ? 'native' : 'docker',
+			queuedAt: run.queued_at
+		},
+		signal
 	);
 	if (result.status === 'rejected')
 		return { type: 'startup-failed', reason: 'Tracker host declined the reserved launch' };
@@ -127,7 +131,7 @@ async function launchApprovedItem(
 		driver,
 		node,
 		routeFor
-	}: { driver: TrackerHostProcessAdapter; node: string; routeFor: TrackerHostRoute },
+	}: { driver: TrackerHostLaunchPort; node: string; routeFor: TrackerHostRoute },
 	{
 		item,
 		reservation,
@@ -164,11 +168,17 @@ function recordedHostEvent(
 	{
 		key,
 		sessions,
-		items
-	}: { key: string; sessions: readonly TrackerHostSession[]; items: TrackerItemReadRepository }
+		items,
+		legacySession
+	}: {
+		key: string;
+		sessions: readonly TrackerHostSession[];
+		items: TrackerItemReadRepository;
+		legacySession(run: TrackerRunReceipt): TrackerHostSession | undefined;
+	}
 ): TrackerDispatchEvent | undefined {
 	const session = run.host_session_id
-		? trackerLegacySession(run, sessions)
+		? legacySession(run)
 		: sessions.find(
 				(entry) => !entry.legacyRunId && entry.key === key && entry.itemId === run.item_id
 			);

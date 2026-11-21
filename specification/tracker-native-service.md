@@ -136,7 +136,23 @@ whose ownership, credentials, and effect scopes the operator has verified.
 		"mode": "active",
 		"checkpoint": "approved-cutover-01",
 		"launch": {
-			"driver": "/absolute/qualified/tracker-provider-driver",
+			"maxConcurrent": 9,
+			"legacyRunDirectory": "/absolute/retained/tracker/autolaunch",
+			"managed": {
+				"tmux": "/absolute/bin/tmux",
+				"stateDirectory": "/absolute/private/tracker-attempts",
+				"trackerBinDirectory": "/absolute/qualified/tracker/bin",
+				"native": {
+					"codex": "/absolute/bin/codex",
+					"claude": "/absolute/bin/claude",
+					"profile": "/absolute/private/native-provider-profile"
+				},
+				"docker": {
+					"harness": "/absolute/qualified/managed-docker-harness",
+					"image": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"profile": "/absolute/private/docker-launcher-profile"
+				}
+			},
 			"repositories": {
 				"Harness": { "repo": "/absolute/repos/harness", "platform": "linux" },
 				"iOS": { "repo": "/absolute/repos/ios", "platform": "macos" }
@@ -144,6 +160,8 @@ whose ownership, credentials, and effect scopes the operator has verified.
 		},
 		"watchdog": { "tmux": "/absolute/bin/tmux", "chiefOfStaff": true },
 		"adapter": {
+			"scheduleDue": true,
+			"dueDisk": { "freePct": 5, "freeGB": 50 },
 			"github": {
 				"executable": "/absolute/bin/gh",
 				"configDirectory": "/absolute/private/tracker-github"
@@ -154,13 +172,39 @@ whose ownership, credentials, and effect scopes the operator has verified.
 ```
 
 `launch.due: true` enables due scheduling through the existing due-owner and
-signed permit path. Launch requests use a configured repository, and an item
-repository override must match it exactly. Linux uses the plain Docker lane.
-Mac-only projects use the native lane on the two registered Mac nodes. A
-driver must reject unsupported lanes and keep worktrees, provider login, and
-Docker storage within its approved scope.
+signed permit path. The primary adapter's `scheduleDue` opt-in works
+independently. Its `dueDisk` limits apply to its due work and are checked
+against the repository and managed worktree disks. `maxConcurrent` counts
+retained running work, committed reservations, and independent live
+sessions. Carry forward the verified host value.
 
-### Provider driver protocol
+Launch requests use a configured repository, and an item repository
+override must match it exactly. Configure the lanes qualified on each host.
+Linux uses plain Docker through the pinned Harness
+`task orchestrate --platform linux` entry point and its managed provider
+adapter. Mac-only projects use interactive native Codex or Claude in the
+retained tmux socket on a registered Mac. The launcher creates a detached
+task worktree and records the attempt key before opening the worker pane.
+Worker profiles are separate private directories. The worker's host-side
+Tracker client only receives the verified loopback role and port. The
+generated client file holds inert placeholders for daemon-only paths.
+Use the immutable native `harness` and `tracker` shim in the configured
+tool directory so worker commands reach that foreground service.
+
+The staged managed Docker runner keeps the guest on `--network=none`.
+The separate relay fixture in #164 uses the attached streams for its
+own protocol and does not compose with provider prompts and output.
+Production Docker needs a qualified provider credential and egress path,
+plus an item-scoped host-signed Tracker completion channel that works
+alongside provider I/O. The host-side client binding in this draft keeps
+the daemon socket, signing key, and credentials outside guest storage.
+Worker exit alone never completes the Tracker item. Keep the Docker lane
+held on the protected hosts until the production seams pass rehearsal.
+
+### External provider driver protocol
+
+Set `launch.driver` instead of `launch.managed` for a separately qualified
+provider driver. It uses the same reservation, capacity and route checks.
 
 The foreground service invokes a configured, owner-controlled executable
 directly, with one operation argument and a version 1 JSON request on stdin.
@@ -171,7 +215,8 @@ worker lifetime. Use the existing managed Docker provider stack for the
 `docker` backend. A production binding for that stack and a live provider
 rehearsal are cutover prerequisites.
 
-- `inspect` receives `node` and returns authoritative sessions. Each session
+- `inspect` receives `node` and the current reservation `keys` and returns
+  authoritative sessions. Each session
   carries `itemId`, `key`, `id`, `state` (`live` or `exited`),
   and `startedAt` epoch milliseconds. Include `activityAt`, `exitCode`, and
   the managed `tmux` name when available. Exit receipts remain observable
@@ -189,7 +234,10 @@ rehearsal are cutover prerequisites.
   A custom driver can also return a session with `legacyRunId`, the exact
   `tmux` name, and an item ID or its six-character prefix. The service
   checks the existing local run and its start time before recording the
-  host identity. The legacy session ID stays available to old readers.
+  host identity. When `legacyRunDirectory` points to the verified retained
+  autolaunch directory, the exact local `run-<id>/exit` receipt also allows
+  reconciliation after the old tmux pane disappears. The legacy session ID
+  stays available to old readers.
 
 For an explicitly qualified external watchdog bridge, use
 `watchdog.driver` instead of `watchdog.tmux`. Its operations are

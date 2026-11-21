@@ -11,7 +11,12 @@ import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { recordStartupAlerts, recordWatchdogAlert } from './trackerHostWatchdogAlerts';
 import { sendWatchdogAlerts } from './trackerHostCos';
 import type { TrackerHostEffects } from './nativeTrackerHostEffects.types';
-import { localWatchdogRuns, readWatchdogAlerts, watchdogItem } from './trackerHostWatchdogState';
+import {
+	finishObservedRuns,
+	localWatchdogRuns,
+	readWatchdogAlerts,
+	watchdogItem
+} from './trackerHostWatchdogState';
 import { trackerWatchdogPort } from './trackerWatchdogPort';
 import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
 
@@ -56,7 +61,9 @@ export function trackerHostWatchdog(
 			if (!panes) return;
 			const snapshot = watchdogSnapshot(store, items, panes, now());
 			recordStartupAlerts(store, snapshot, startup);
-			for (const decision of idle.plan(snapshot).actions) {
+			const plan = idle.plan(snapshot);
+			finishObservedRuns(store, plan.abandonRunIds, snapshot.now);
+			for (const decision of plan.actions) {
 				const pane = panes.find(({ key }) => key === decision.paneKey);
 				const item = activeWatchdogItem(items, decision.id);
 				if (!pane || !idleWatchdogItem(item)) continue;
