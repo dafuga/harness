@@ -1,0 +1,73 @@
+// @harness-uid u_rzpjc6wqqy
+import type { TaskSelection } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
+import type {
+	TrackerDispatchOutcome,
+	TrackerLaunchSource
+} from '../TrackerDispatcherService.types';
+
+/** Usage fields are supplied by the runner's receipt reader. Costs are recorded as supplied. */
+export interface TrackerReceiptUsage {
+	input_tokens?: number | null;
+	output_tokens?: number | null;
+	cache_read_tokens?: number | null;
+	cache_write_tokens?: number | null;
+	cost_usd?: number | null;
+	credits_balance?: string | null;
+}
+
+/** Legacy run columns keep these receipts consumable by the Tracker analytics adapter. */
+export interface TrackerRunReceipt extends TrackerReceiptUsage {
+	node: string;
+	id: number;
+	item_id: string;
+	auto_token: string;
+	launch_source: TrackerLaunchSource;
+	attempt: number;
+	escalated_from: number | null;
+	rung: string;
+	cli: TaskSelection['provider'] | 'none';
+	model: string;
+	effort: string | null;
+	pinned: boolean;
+	kind: string | null;
+	project: string | null;
+	reason: string | null;
+	state: 'queued' | 'running' | 'verifying' | 'finished';
+	outcome: TrackerDispatchOutcome | null;
+	failure_reason: string | null;
+	exit_code?: number | null;
+	queued_at: number;
+	dispatch_at?: number;
+	started_at: number | null;
+	ended_at: number | null;
+	resumed_at?: number;
+	eta_at: number | null;
+	verificationFor?: string;
+	kill_at?: number;
+	session_id?: string | null;
+	redone_by?: string;
+	revision: number;
+}
+
+export interface TrackerSessionEvidence {
+	key: string;
+	id: string;
+	state: 'live' | 'exited';
+	startedAt: number;
+}
+
+export type TrackerDispatchEvent =
+	| { type: 'session'; session: TrackerSessionEvidence }
+	| {
+			type: 'monitor';
+			session: 'live' | 'exited' | 'unknown';
+			activityAt?: number;
+			exitCode?: number | null;
+			verify?: boolean;
+			idleReview?: boolean;
+			usage?: TrackerReceiptUsage;
+	  }
+	| { type: 'startup-failed'; reason: string; exitCode?: number | null }
+	| { type: 'verified'; passed: boolean; reason?: string; usage?: TrackerReceiptUsage }
+	| { type: 'resume'; session: TrackerSessionEvidence }
+	| { type: 'reject'; reason: string };

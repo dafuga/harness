@@ -1,0 +1,77 @@
+{
+	"schemaVersion": 1,
+	"id": "tracker-dispatcher",
+	"title": "Tracker dispatcher lifecycle in disposable SQLite fixtures",
+	"kind": "headless",
+	"units": ["service.agents-providers-tracker-dispatcher"],
+	"builds": [],
+	"states": [
+		{
+			"id": "manual-claims",
+			"title": "Explicit options, canonical host and one concurrent claim per token",
+			"coverage": "required"
+		},
+		{
+			"id": "due-policy",
+			"title": "Due eligibility, hub grants, outage ownership and launch pacing",
+			"coverage": "required"
+		},
+		{
+			"id": "reservation-recovery",
+			"title": "Atomic reservations, rollback, session adoption and startup retry",
+			"coverage": "required"
+		},
+		{
+			"id": "run-outcomes",
+			"title": "Verification, blocked answers, timeouts and model escalation",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "manual-claims",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/agents-providers/tracker-dispatcher.test.ts",
+			"timeoutMs": 60000
+		},
+		{
+			"id": "due-policy",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/agents-providers/tracker-dispatcher-due.test.ts",
+			"timeoutMs": 60000
+		},
+		{
+			"id": "reservation-recovery",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/agents-providers/tracker-dispatcher-lifecycle.test.ts",
+			"timeoutMs": 60000
+		},
+		{
+			"id": "run-outcomes",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/agents-providers/tracker-dispatcher-outcomes.test.ts",
+			"timeoutMs": 60000
+		}
+	],
+	"evidence": [
+		{
+			"id": "dispatcher-output",
+			"kind": "output",
+			"states": ["manual-claims", "due-policy", "reservation-recovery", "run-outcomes"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "dispatcher-assertions",
+			"kind": "assertions",
+			"states": ["manual-claims", "due-policy", "reservation-recovery", "run-outcomes"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

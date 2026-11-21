@@ -1,0 +1,45 @@
+{
+	"name": "tracker-dispatcher",
+	"goal": "Port Tracker 122e190 launch intent, token claims, session adoption and run transitions through atomic injected persistence",
+	"createdAt": "2026-11-21T15:36:39.893Z",
+	"updatedAt": "2026-11-21T15:54:53.980Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:36:41.132Z",
+			"evidence": "Pinned 122e190 dispatcher and run log. Verify explicit and due intent, reachable denial and sole-owner outage fallback, one claim per token, queued/running/verifying/finished transitions, adopted sessions, retry escalation and atomic receipt writes. Use artificial clocks and records only."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:42:30.956Z",
+			"evidence": "Implemented an injectable TrackerDispatcherService, token-bound ownership and due admission, an atomic runner reservation and receipt model, and pure reconciliation for startup, session adoption, verification, answers and retry."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:54:53.980Z",
+			"evidence": "19 test cases with disposable SQLite and one Vitest worker passed through the registered Harness scenario; captured eight output and assertion artifacts. Cases include launch idempotence, due grant and fresh admission, atomic rollback, session adoption, stale verification, answers, retries and receipts."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

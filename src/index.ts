@@ -197,3 +197,29 @@ export { TrackerCutoverCommand } from './commands/projects-sessions/TrackerCutov
 export { TrackerLocalApiService } from './services/projects-sessions/TrackerLocalApiService';
 export { TrackerRehearsalCommand } from './commands/projects-sessions/TrackerRehearsalCommand';
 export { TrackerRehearsalService } from './services/projects-sessions/TrackerRehearsalService';
+export { classifyResourceHost } from './services/execution-runtimes/resource-placement/classifyResourceHost';
+export { scoreResourceHost } from './services/execution-runtimes/resource-placement/scoreResourceHost';
+export { rankResourcePlacement } from './services/execution-runtimes/resource-placement/rankResourcePlacement';
+export { admitResourceHost } from './services/execution-runtimes/resource-placement/admitResourceHost';
+export { chooseResourceHost } from './services/execution-runtimes/resource-placement/chooseResourceHost';
+export { TrackerDispatcherService } from './services/agents-providers/TrackerDispatcherService';
+export type {
+	TrackerAttemptVersion,
+	TrackerDispatchDecision,
+	TrackerDispatchEvent,
+	TrackerDispatchItem,
+	TrackerDispatchPolicy,
+	TrackerDispatchResult,
+	TrackerDispatchSnapshot,
+	TrackerDispatchStore,
+	TrackerDispatchWrites,
+	TrackerDueGrant,
+	TrackerDuePolicy,
+	TrackerLaunchIntent,
+	TrackerLaunchOptions,
+	TrackerLaunchPick,
+	TrackerLaunchRequest,
+	TrackerLaunchRung,
+	TrackerRunReceipt,
+	TrackerSessionEvidence
+} from './services/agents-providers/TrackerDispatcherService.types';
