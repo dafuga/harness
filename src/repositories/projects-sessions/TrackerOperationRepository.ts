@@ -22,7 +22,7 @@ const appendNoteField = 'note+';
 export class TrackerOperationRepository {
 	constructor(
 		private readonly database: SqliteDatabase,
-		private readonly now = Date.now
+		private readonly now: () => number = Date.now
 	) {}
 
 	/** Apply a batch to a database with the Tracker items, item_notes and ops tables. */
@@ -56,8 +56,9 @@ export class TrackerOperationRepository {
 	opsSince(
 		seq: number,
 		limit = 1000,
-		{ onlyNode }: TrackerOperationFilter = {}
+		filter: TrackerOperationFilter = {}
 	): TrackerSequencedOperation[] {
+		const { onlyNode } = filter;
 		const select = 'SELECT seq, op_id, item_id, fields, hlc, node, actor FROM ops WHERE seq > ?';
 		const rows = (
 			onlyNode

@@ -1,3 +1,4 @@
+// @harness-uid u_tzqekyfiyf
 export interface TrackerSchemaAdapterConfig {
 	now?: () => number;
 	databaseId?: () => string;

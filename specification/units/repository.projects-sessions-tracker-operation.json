@@ -46,7 +46,7 @@
 			},
 			{
 				"name": "TrackerOperationRepository.constructor.now",
-				"type": "unknown",
+				"type": "() => number",
 				"required": false
 			},
 			{
@@ -81,9 +81,10 @@
 				"default": 1000
 			},
 			{
-				"name": "TrackerOperationRepository.opsSince.onlyNode",
-				"type": "unknown",
-				"required": false
+				"name": "TrackerOperationRepository.opsSince.filter",
+				"type": "TrackerOperationFilter",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "TrackerOperationRepository.countOpsSince.seq",
@@ -227,9 +228,10 @@
 						"default": 1000
 					},
 					{
-						"name": "TrackerOperationRepository.opsSince.onlyNode",
-						"type": "unknown",
-						"required": false
+						"name": "TrackerOperationRepository.opsSince.filter",
+						"type": "TrackerOperationFilter",
+						"required": false,
+						"default": {}
 					}
 				],
 				"outputs": [
@@ -327,7 +329,7 @@
 					},
 					{
 						"name": "TrackerOperationRepository.constructor.now",
-						"type": "unknown",
+						"type": "() => number",
 						"required": false
 					}
 				],
