@@ -2,7 +2,7 @@
 	"name": "tracker-watchdog-parity",
 	"goal": "Prove synthetic idle, startup, recovery and answer-resume decisions against Tracker release 2ccd898 and saved prompt patch 5c70a23, with live actions outside the module.",
 	"createdAt": "2026-11-21T14:43:27.568Z",
-	"updatedAt": "2026-11-21T14:47:18.897Z",
+	"updatedAt": "2026-11-21T14:56:03.167Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -17,7 +17,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T14:56:03.167Z",
+			"evidence": "Decision services and registry scenario implemented. All 20 fixture cases pass, including live settled panes, startup prompt ownership, one nudge then alert, restart holds, and answered-run identity."
 		},
 		{
 			"id": "test",
