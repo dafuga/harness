@@ -2,7 +2,7 @@
 	"name": "tracker-legacy-dispatch-rollback",
 	"goal": "Fence legacy dispatcher rollback while native-owned work can still run, then preserve pinned legacy run rows and startup fingerprints on the same database.",
 	"createdAt": "2026-11-21T16:49:00.829Z",
-	"updatedAt": "2026-11-21T16:49:36.046Z",
+	"updatedAt": "2026-11-21T18:34:16.451Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T18:34:14.486Z",
+			"evidence": "At ed68e8ea50 the existing SQLite claim case failed because assertLegacyRollbackSafe was absent. The checkpoint is b5a9d3b5fbc8."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T18:34:15.156Z",
+			"evidence": "Inspect native attempt metadata and fence rollback while a matching run is queued, running, or verifying. Finished and legacy-owned runs remain readable by both dispatchers."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T18:34:16.451Z",
+			"evidence": "The unchanged case passed at 8b744e63f5, checkpoint afdc59204515. The pinned Node SQLite rehearsal also settled the reserved run after reopen and verified legacy rollback on the same file."
 		},
 		{
 			"id": "verify",
