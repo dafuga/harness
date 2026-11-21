@@ -1,0 +1,116 @@
+{
+	"schemaVersion": 1,
+	"id": "function.execution-runtimes-rank-resource-placement",
+	"uid": "u_dflfpaat6n",
+	"kind": "function",
+	"title": "rankResourcePlacement",
+	"responsibility": "Rank computers for a work request and recommend the best fitting one, retaining Tracker placement results",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/execution-runtimes/resource-placement/rankResourcePlacement.ts"],
+		"symbols": ["rankResourcePlacement"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "rankResourcePlacement.hosts",
+				"type": "ResourceHost[]",
+				"required": true
+			},
+			{
+				"name": "rankResourcePlacement.work",
+				"type": "ResourceWork",
+				"required": true
+			},
+			{
+				"name": "rankResourcePlacement.policy",
+				"type": "ResourcePlacementPolicy",
+				"required": true
+			},
+			{
+				"name": "rankResourcePlacement.now",
+				"type": "number",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "rankResourcePlacement",
+				"type": "ResourcePlacement"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "rankResourcePlacement",
+				"inputs": [
+					{
+						"name": "rankResourcePlacement.hosts",
+						"type": "ResourceHost[]",
+						"required": true
+					},
+					{
+						"name": "rankResourcePlacement.work",
+						"type": "ResourceWork",
+						"required": true
+					},
+					{
+						"name": "rankResourcePlacement.policy",
+						"type": "ResourcePlacementPolicy",
+						"required": true
+					},
+					{
+						"name": "rankResourcePlacement.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "rankResourcePlacement",
+						"type": "ResourcePlacement"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.execution-runtimes-classify-resource-host",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-resource-placement-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-score-resource-host",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/resource-placement/rankResourcePlacement.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/resource-placement/rankResourcePlacement.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

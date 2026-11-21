@@ -1,0 +1,106 @@
+{
+	"schemaVersion": 1,
+	"id": "function.execution-runtimes-admit-resource-host",
+	"uid": "u_zhks2htppd",
+	"kind": "function",
+	"title": "admitResourceHost",
+	"responsibility": "Decide whether one computer may start one work request now, returning the first blocking reason",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/execution-runtimes/resource-placement/admitResourceHost.ts"],
+		"symbols": ["admitResourceHost"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "admitResourceHost.host",
+				"type": "ResourceHost",
+				"required": true
+			},
+			{
+				"name": "admitResourceHost.work",
+				"type": "ResourceWork",
+				"required": true
+			},
+			{
+				"name": "admitResourceHost.candidate",
+				"type": "ResourceCandidate",
+				"required": true
+			},
+			{
+				"name": "admitResourceHost.reservations",
+				"type": "ResourceReservation[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "admitResourceHost",
+				"type": "string | null"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "admitResourceHost",
+				"inputs": [
+					{
+						"name": "admitResourceHost.host",
+						"type": "ResourceHost",
+						"required": true
+					},
+					{
+						"name": "admitResourceHost.work",
+						"type": "ResourceWork",
+						"required": true
+					},
+					{
+						"name": "admitResourceHost.candidate",
+						"type": "ResourceCandidate",
+						"required": true
+					},
+					{
+						"name": "admitResourceHost.reservations",
+						"type": "ResourceReservation[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "admitResourceHost",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.execution-runtimes-resource-placement-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/resource-placement/admitResourceHost.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/resource-placement/admitResourceHost.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

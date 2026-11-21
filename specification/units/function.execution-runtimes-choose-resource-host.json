@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"id": "function.execution-runtimes-choose-resource-host",
+	"uid": "u_tr6ntw6xu2",
+	"kind": "function",
+	"title": "chooseResourceHost",
+	"responsibility": "Choose the admitted computer for a work request from ranked candidates, retaining Tracker choice results",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/execution-runtimes/resource-placement/chooseResourceHost.ts"],
+		"symbols": ["chooseResourceHost"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "chooseResourceHost.input",
+				"type": "{ hosts: ResourceHost[]; work: ResourceWork; reservations: ResourceReservation[]; policy: ResourcePlacementPolicy; now: number; }",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "chooseResourceHost",
+				"type": "ResourceChoice"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "chooseResourceHost",
+				"inputs": [
+					{
+						"name": "chooseResourceHost.input",
+						"type": "{ hosts: ResourceHost[]; work: ResourceWork; reservations: ResourceReservation[]; policy: ResourcePlacementPolicy; now: number; }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "chooseResourceHost",
+						"type": "ResourceChoice"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.execution-runtimes-admit-resource-host",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-rank-resource-placement",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-resource-placement-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/resource-placement/chooseResourceHost.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/resource-placement/chooseResourceHost.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

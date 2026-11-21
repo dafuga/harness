@@ -1,0 +1,82 @@
+{
+	"schemaVersion": 1,
+	"id": "function.execution-runtimes-resource-placement-types",
+	"uid": "u_pl4cmnt2aa",
+	"kind": "function",
+	"title": "resourcePlacementTypes",
+	"responsibility": "Owns the resourcePlacementTypes shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/core/execution-runtimes/resourcePlacementTypes.ts",
+			"src/core/execution-runtimes/resourcePlacementTypes.types.ts"
+		],
+		"symbols": [
+			"ResourceCandidate",
+			"ResourceChoice",
+			"ResourceCli",
+			"ResourceHost",
+			"ResourceHostClassification",
+			"ResourceHostRole",
+			"ResourceHostStatus",
+			"ResourcePlacement",
+			"ResourcePlacementPolicy",
+			"ResourceReservation",
+			"ResourceRunnerState",
+			"ResourceWork",
+			"ResourceWorkKind",
+			"defaultResourcePlacementPolicy",
+			"ResourceHostRole",
+			"ResourceHostStatus",
+			"ResourceWorkKind",
+			"ResourceCli",
+			"ResourceRunnerState",
+			"ResourceHost",
+			"ResourceWork",
+			"ResourceReservation",
+			"ResourcePlacementPolicy",
+			"ResourceHostClassification",
+			"ResourceCandidate",
+			"ResourcePlacement",
+			"ResourceChoice"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "defaultResourcePlacementPolicy",
+				"type": "ResourcePlacementPolicy"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.resource-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/execution-runtimes/resourcePlacementTypes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/execution-runtimes/resourcePlacementTypes.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
