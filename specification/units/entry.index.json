@@ -179,7 +179,8 @@
 			"nextReminderSlotAt",
 			"nextAttentionBatchAt",
 			"groupAttentionLines",
-			"clockMinutes"
+			"clockMinutes",
+			"planDigestAlertTick"
 		]
 	},
 	"contract": {
@@ -534,6 +535,11 @@
 		},
 		{
 			"unit": "helper.attention-timing-next-reminder-slot-at",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-plan-digest-alert-tick",
 			"via": "reexport",
 			"origin": "derived"
 		},
