@@ -1,5 +1,4 @@
 import { expect, test } from 'vitest';
-import type { HarnessScenario, HarnessUnit } from '../../src/models/explorer-ui/Harness.types';
 import {
 	entityContract,
 	humanize,
@@ -7,6 +6,7 @@ import {
 } from '../../src/utils/explorer-ui/entityContract';
 import { scenarioFor } from '../../src/utils/explorer-ui/explorerState';
 import { ids, scenarios, units } from '../entityUnits';
+import { made, registry, screens } from './entity-contract.fixtures';
 
 const find = (id: string) => units.find((unit) => unit.id === id)!;
 const row = (rows: Array<{ label: string; value: string }>, label: string) =>
@@ -162,35 +162,6 @@ test('contract fields preserve admitted iterators, species and getter reads', ()
 });
 
 /** A unit of a small registry: what it uses is all that matters of it here. */
-const made = (id: string, uses: string[] = []): HarnessUnit => ({
-	...find(ids.page),
-	id,
-	kind: id.startsWith('page.')
-		? 'page'
-		: ({ shared: 'component', endpoint: 'endpoint' }[id] ?? 'function'),
-	dependencies: uses.map((unit) => ({ unit, via: 'import' }))
-});
-// Three pages: two are made of one shared component, and an endpoint is behind none of them.
-const registry = [
-	made('page.a', ['shared']),
-	made('page.b', ['shared']),
-	made('page.c'),
-	made('shared', ['helper']),
-	made('helper'),
-	made('endpoint')
-];
-const screens: HarnessScenario = {
-	...scenarios[0],
-	id: 'screens',
-	units: registry.map((unit) => unit.id),
-	states: [
-		{ id: 'a', coverage: 'required', units: ['page.a'] },
-		{ id: 'a-empty', coverage: 'required', units: ['page.a'] },
-		{ id: 'a-denied', coverage: 'inapplicable', reason: 'no sign-in', units: ['page.a'] },
-		{ id: 'b', coverage: 'required', units: ['page.b'] },
-		{ id: 'c', coverage: 'required', units: ['page.c'] }
-	]
-};
 const required = (id: string, units = registry) =>
 	requiredStates(units.find((unit) => unit.id === id) ?? made(id), [screens], units);
 

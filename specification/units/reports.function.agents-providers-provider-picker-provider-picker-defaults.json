@@ -9,9 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/components/agents-providers/provider-picker/providerPickerDefaults.ts"
+			"packages/reports/src/components/agents-providers/provider-picker/providerPickerDefaults.ts",
+			"packages/reports/src/components/agents-providers/provider-picker/providerPickerDefaults.types.ts"
 		],
-		"symbols": ["PickerDefault", "pickerDefault"]
+		"symbols": ["pickerDefault", "PickerDefault"]
 	},
 	"contract": {
 		"origin": "declared",
