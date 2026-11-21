@@ -91,7 +91,7 @@ export class TrackerOverviewPublisher {
 		if (this.blocked === version) return;
 		// The opt-in Home publisher is independent of the read-only overview route.
 		await this.options
-			.publishHome?.(authority, credential, () => this.current(epoch, version, authority))
+			.publishHome?.(credential, () => this.current(epoch, version, authority))
 			.catch(() => {});
 	}
 

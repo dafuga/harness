@@ -20,10 +20,7 @@ export function createTrackerOverviewPublisher(
 		read: input.read ?? (() => readProjectOverview()),
 		publishHome:
 			input.env.HARNESS_HUB_HOME_PUBLISH === '1'
-				? createHubHomePublisher({
-						file: input.env.HARNESS_HUB_HOME_PROVIDER_FILE,
-						codexHistoryFile: input.codexHomeHistoryFile
-					})
+				? createHubHomePublisher(input.env.HARNESS_HUB_HOME_PROVIDER_FILE)
 				: undefined
 	});
 }

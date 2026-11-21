@@ -17,9 +17,9 @@
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "createHomeProviderReader.options",
-				"type": "{ file?: string; codexHistoryFile?: string }",
-				"required": true
+				"name": "createHomeProviderReader.file",
+				"type": "string",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -35,9 +35,9 @@
 				"name": "createHomeProviderReader",
 				"inputs": [
 					{
-						"name": "createHomeProviderReader.options",
-						"type": "{ file?: string; codexHistoryFile?: string }",
-						"required": true
+						"name": "createHomeProviderReader.file",
+						"type": "string",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -55,6 +55,21 @@
 	"dependencies": [
 		{
 			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-home-codex-usage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-provider-payload",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-tracker-projection",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		}
