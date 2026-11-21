@@ -106,3 +106,5 @@ function machineResourceRules(): string {
 		''
 	].join('\n');
 }
+export const specificationReadme =
+	'# Specification\n\nFeature files define delivery scope.\n\nRequired sections:\n\n1. # Feature: <name>\n2. ## Overview\n3. ## Acceptance Criteria\n4. ## Future Enhancements\n';

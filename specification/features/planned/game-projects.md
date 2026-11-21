@@ -29,6 +29,18 @@ Create Harness apps or games while retaining app pages. Game views separate UI a
 - Automated regressions, standalone generated-game checks, manual browser flows and fresh inspected screenshots prove the feature. Live provider quality is reported separately and remains unproven without a compliant transport and dedicated credential.
 - Merge into main only after current-main integration, complete verification and native game authoring acceptance pass. No separate application release is requested.
 
+## Godot CLI profile
+
+- `harness new game <name> --engine godot --dimension 2d|3d` scaffolds a
+  Godot 4.6 project with the corresponding scene type and headless test.
+- The generated `bun run check` checks the scene and runs Harness audit
+  before and after an export. The audit excludes Godot's generated cache.
+- Matching Godot templates produce an ad-hoc signed macOS ZIP and a
+  no-threads Web export. Rendered screenshot checks use the exported
+  game and a rendering-capable runtime, including headless Chromium.
+- Godot enters through the CLI. The desktop Game Views editor covers
+  the SvelteKit and Three.js profile.
+
 ## Future Enhancements
 
 - Multiplayer synchronization, native mobile acceptance, advanced physics and measured provider comparisons beyond the initial Decart models.
