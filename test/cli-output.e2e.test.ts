@@ -1,6 +1,8 @@
-import { resolve } from 'node:path';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { join, resolve } from 'node:path';
 import { expect, test } from 'vitest';
-import { runHarness } from './support/cli';
+import { runCommand, runHarness } from './support/cli';
+import { withTempDir } from './support/temporary';
 
 const root = resolve(import.meta.dirname, '..');
 
@@ -11,3 +13,68 @@ test('JSON larger than a pipe buffer reaches a piped reader whole', async () => 
 	expect(parsed.nodes.length).toBeGreaterThan(100);
 	expect(graph.stdout.endsWith('}\n')).toBe(true);
 }, 60_000);
+
+test(
+	'Tracker compatibility preserves argv, output, and exit status through both entry points',
+	() =>
+		withTempDir('harness-tracker-cli-', async (home) => {
+			const backend = join(home, '.local', 'libexec', 'harness', 'tracker-legacy');
+			const shim = join(root, 'scripts', 'tracker-shim.sh');
+			const harness = join(home, 'harness');
+			const env = {
+				HOME: home,
+				HARNESS_EXECUTABLE: harness,
+				HARNESS_TRACKER_LEGACY_BIN: '',
+				HARNESS_TRACKER_FORWARD_PARENT: ''
+			};
+			await mkdir(join(home, '.local', 'libexec', 'harness'), { recursive: true });
+			await writeFile(
+				backend,
+				`#!/usr/bin/env bun
+const args = process.argv.slice(2);
+process.stdout.write(JSON.stringify(args) + '\\n');
+process.stderr.write('fixture diagnostic\\n');
+process.exitCode = args[1] === 'ignored' ? 4 : args[1] === 'open' ? 5 : 0;
+`,
+				{ mode: 0o700 }
+			);
+			await writeFile(harness, '#!/bin/sh\nexec bun "$HARNESS_CLI_PATH" "$@"\n', { mode: 0o700 });
+			for (const args of [
+				[],
+				['--help'],
+				['check', 'ignored', '--json'],
+				['check', 'open', '--json'],
+				['note', 'abc', '--', '--help', 'quoted "text"', 'a\nb'],
+				['--version']
+			]) {
+				const expected = await runCommand([backend, ...args], home, false, env);
+				expect(await runHarness(['tracker', ...args], home, false, env)).toEqual(expected);
+				expect(await runCommand([shim, ...args], home, false, env)).toEqual(expected);
+			}
+		}),
+	30_000
+);
+
+test(
+	'Tracker shim finds its installed Harness executable with a restricted service PATH',
+	() =>
+		withTempDir('harness-tracker-service-', async (home) => {
+			const directory = join(home, '.local', 'libexec', 'harness');
+			const shim = join(root, 'scripts', 'tracker-shim.sh');
+			await mkdir(directory, { recursive: true });
+			await writeFile(join(directory, 'harness'), '#!/bin/sh\nprintf "%s\\n" "$@"\n', {
+				mode: 0o700
+			});
+			const result = await runCommand([shim, 'note', 'item', 'Fixture event'], home, false, {
+				HOME: home,
+				HARNESS_EXECUTABLE: '',
+				PATH: '/usr/bin:/bin:/usr/sbin:/sbin'
+			});
+			expect(result).toEqual({
+				exitCode: 0,
+				stdout: 'tracker\nnote\nitem\nFixture event\n',
+				stderr: ''
+			});
+		}),
+	30_000
+);
