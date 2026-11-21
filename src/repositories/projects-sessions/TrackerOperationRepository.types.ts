@@ -11,3 +11,15 @@ export interface TrackerAppliedOperations {
 	operations: TrackerOperation[];
 	itemIds: string[];
 }
+
+export interface TrackerSequencedOperation extends TrackerOperation {
+	seq: number;
+}
+
+export interface TrackerStoredOperation extends Omit<TrackerSequencedOperation, 'fields'> {
+	fields: string;
+}
+
+export interface TrackerOperationFilter {
+	onlyNode?: string;
+}

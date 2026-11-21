@@ -16,10 +16,18 @@
 			"TrackerOperationRepository",
 			"TrackerOperationRepository.constructor",
 			"TrackerOperationRepository.applyOps",
+			"TrackerOperationRepository.maxSeq",
+			"TrackerOperationRepository.opsSince",
+			"TrackerOperationRepository.countOpsSince",
 			"TrackerAppliedOperations",
 			"TrackerOperation",
+			"TrackerOperationFilter",
+			"TrackerSequencedOperation",
 			"TrackerOperation",
-			"TrackerAppliedOperations"
+			"TrackerAppliedOperations",
+			"TrackerSequencedOperation",
+			"TrackerStoredOperation",
+			"TrackerOperationFilter"
 		]
 	},
 	"contract": {
@@ -44,12 +52,50 @@
 				"name": "TrackerOperationRepository.applyOps.persist",
 				"type": "() => void",
 				"required": false
+			},
+			{
+				"name": "TrackerOperationRepository.opsSince.seq",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "TrackerOperationRepository.opsSince.limit",
+				"type": "number",
+				"required": false,
+				"default": 1000
+			},
+			{
+				"name": "TrackerOperationRepository.opsSince.onlyNode",
+				"type": "unknown",
+				"required": false
+			},
+			{
+				"name": "TrackerOperationRepository.countOpsSince.seq",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "TrackerOperationRepository.countOpsSince.onlyNode",
+				"type": "string",
+				"required": false
 			}
 		],
 		"outputs": [
 			{
 				"name": "TrackerOperationRepository.applyOps",
 				"type": "TrackerAppliedOperations"
+			},
+			{
+				"name": "TrackerOperationRepository.maxSeq",
+				"type": "number"
+			},
+			{
+				"name": "TrackerOperationRepository.opsSince",
+				"type": "TrackerSequencedOperation[]"
+			},
+			{
+				"name": "TrackerOperationRepository.countOpsSince",
+				"type": "number"
 			}
 		],
 		"errors": [
@@ -78,6 +124,70 @@
 					{
 						"name": "TrackerOperationRepository.applyOps",
 						"type": "TrackerAppliedOperations"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerOperationRepository.maxSeq",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerOperationRepository.maxSeq",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerOperationRepository.opsSince",
+				"inputs": [
+					{
+						"name": "TrackerOperationRepository.opsSince.seq",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "TrackerOperationRepository.opsSince.limit",
+						"type": "number",
+						"required": false,
+						"default": 1000
+					},
+					{
+						"name": "TrackerOperationRepository.opsSince.onlyNode",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOperationRepository.opsSince",
+						"type": "TrackerSequencedOperation[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerOperationRepository.countOpsSince",
+				"inputs": [
+					{
+						"name": "TrackerOperationRepository.countOpsSince.seq",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "TrackerOperationRepository.countOpsSince.onlyNode",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOperationRepository.countOpsSince",
+						"type": "number"
 					}
 				],
 				"errors": [],
