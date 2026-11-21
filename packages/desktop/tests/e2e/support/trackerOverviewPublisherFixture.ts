@@ -1,6 +1,6 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import { mkdir, writeFile } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import type { ElectronApplication } from '../../../../../test/support/browserTest';
 import type { HubSpy, HubSpyRecord } from './trackerOverviewPublisherFixture.types';
 export type { HubSpy, HubSpyRecord } from './trackerOverviewPublisherFixture.types';
@@ -75,21 +75,28 @@ export async function startHubSpy(): Promise<HubSpy> {
 }
 
 /**
- * Seeds the encrypted hosted session the app reads at startup. Encryption happens in the MAIN
- * process through safeStorage, so the file is exactly what the app itself would write.
+ * Seeds the synthetic hosted session in this app's temporary profile. The SSH-launched fixture
+ * has no unlocked Keychain, so substitute only the main process's OS storage boundary.
  */
 export async function seedHostedSession(
 	app: ElectronApplication,
-	userData: string,
+	profile: string,
 	actor: { id: string; token: string },
 	origin: string
 ): Promise<void> {
-	const plain = JSON.stringify({ origin, principalId: actor.id, token: actor.token });
-	const encoded = await app.evaluate(
-		(electron, text: string) => electron.safeStorage.encryptString(text).toString('base64'),
-		plain
-	);
+	const userData = await app.evaluate(({ app, safeStorage }) => {
+		Object.assign(safeStorage, {
+			isEncryptionAvailable: () => true,
+			decryptString: (bytes: Buffer) => bytes.toString('utf8')
+		});
+		return app.getPath('userData');
+	});
+	if (resolve(userData) !== resolve(profile))
+		throw new Error('Expected the temporary Electron profile.');
 	const file = join(userData, 'session.enc');
 	await mkdir(dirname(file), { recursive: true });
-	await writeFile(file, Buffer.from(encoded, 'base64'));
+	await writeFile(file, JSON.stringify({ origin, principalId: actor.id, token: actor.token }), {
+		mode: 0o600,
+		flag: 'wx'
+	});
 }

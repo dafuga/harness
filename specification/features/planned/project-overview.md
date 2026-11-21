@@ -7,6 +7,11 @@ unitIds:
   - reports.endpoint.api-project-overview
   - reports.component.projects-sessions-project-overview-project-overview
   - reports.module.projects-sessions-project-overview-read-project-overview
+  - desktop.module.tracker-overview-publisher
+  - desktop.adapter.ios-account
+  - hub.endpoint.api-tracker-overview
+  - hub.module.tracker-overview-api
+  - hub.page.tracker-overview
 owner: null
 reviewedAt: null
 ---

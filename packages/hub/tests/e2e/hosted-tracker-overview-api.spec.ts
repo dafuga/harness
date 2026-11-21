@@ -1,6 +1,9 @@
 import { expect, test } from '../../../../test/support/browserTest';
 import { buildStamp } from '../../../../src/utils/buildStamp';
-import { recordCapture } from '../../../../src/utils/reports-media/record-capture/recordCapture';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import { SESSION_COOKIE } from '../../src/utils/accounts-access/authCookies';
 import { ORIGIN } from '../../test/support/authFixture';
 import {
@@ -49,7 +52,13 @@ test('the owner publishes natively; the page renders it with only GET calls and 
 	const fixture = apiFixture();
 	const bearer = await fixture.native(OWNER);
 	const cookie = await fixture.browser(OWNER);
-	const put = await fixture.handle(overviewRequest('PUT', { bearer }, snapshot()));
+	const payload = snapshot();
+	const card = payload.projects[0];
+	const note = 'Synthetic milestone. '.repeat(90);
+	card.milestone = { text: note, at: card.updatedAt };
+	payload.projects.push({ ...snapshot().projects[0], agent: 'synthetic-other-project' });
+	payload.liveSessions = 2;
+	const put = await fixture.handle(overviewRequest('PUT', { bearer }, payload));
 	expect(put.status).toBe(204);
 
 	const logs: string[] = [];
@@ -62,6 +71,8 @@ test('the owner publishes natively; the page renders it with only GET calls and 
 	await page.setViewportSize({ width: 1440, height: 900 });
 	await page.goto('/tracker-overview');
 	await expect(page.getByText('synthetic-project', { exact: true })).toBeVisible();
+	await expect(page.getByText('synthetic-other-project', { exact: true })).toBeVisible();
+	await expect(page.locator('.po-milestone-text').first()).toHaveText(note.slice(0, 999) + '…');
 
 	expect(calls.length).toBeGreaterThan(0);
 	expect(calls.every((call) => call.method === 'GET' && call.path === path)).toBe(true);
@@ -84,7 +95,7 @@ test('the owner publishes natively; the page renders it with only GET calls and 
 		body: JSON.stringify({ viewport: 'desktop', ...timing }),
 		contentType: 'application/json'
 	});
-	await captureOwnerReady(page, testInfo);
+	if (evidenceRequested()) await captureOwnerReady(page, testInfo);
 });
 
 /** The published owner state, from the compiled page's own stamp and the canonical desktop viewport. */
@@ -92,13 +103,18 @@ async function captureOwnerReady(
 	page: import('@playwright/test').Page,
 	testInfo: import('@playwright/test').TestInfo
 ) {
-	await page.evaluate(() => document.fonts.ready);
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await new Promise<void>((resolve) =>
+			requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+		);
+	});
 	const stamp = await page.locator('meta[name="harness-build"]').getAttribute('content');
 	const buildId = buildStamp(stamp ?? undefined);
 	const revision = process.env.HARNESS_VERIFY_REVISION;
 	expect(buildId, 'The compiled Hub page must carry its build identity').toBeTruthy();
 	expect(revision, 'Evidence must identify the verification revision').toMatch(/^[a-f0-9]{40}$/);
-	const body = await page.screenshot({ fullPage: true, animations: 'disabled', caret: 'hide' });
+	const body = await page.screenshot({ animations: 'disabled', caret: 'hide', scale: 'css' });
 	await testInfo.attach('tracker-overview-hub-owner-ready-desktop.png', {
 		body,
 		contentType: 'image/png'

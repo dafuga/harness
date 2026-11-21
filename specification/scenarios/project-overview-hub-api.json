@@ -7,7 +7,7 @@
 	"states": [
 		{
 			"id": "owner-ready",
-			"title": "Owner publishes with a native bearer and reads a ready snapshot (200)",
+			"title": "The owner reads a ready snapshot with a bounded note and the other authorized cards",
 			"coverage": "required",
 			"units": ["hub.module.tracker-overview-api", "hub.endpoint.api-tracker-overview"]
 		},
@@ -49,6 +49,13 @@
 			"kind": "unit",
 			"runner": "vitest",
 			"target": "test/controllers/tracker-overview-api.test.ts",
+			"cwd": "packages/hub"
+		},
+		{
+			"id": "excerpts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/controllers/tracker-overview-excerpts.test.ts",
 			"cwd": "packages/hub"
 		},
 		{

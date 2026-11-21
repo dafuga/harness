@@ -63,7 +63,12 @@ test('a signed-in non-owner sees no link on the home page', async ({
 }) => {
 	refusal(browserErrors, baseURL!, forbidden);
 	await overviewFixture(page, 'ready', { actor: grace });
+	const refused = page.waitForResponse(
+		(response) =>
+			new URL(response.url()).pathname === '/api/tracker-overview' && response.status() === 403
+	);
 	await page.goto('/');
+	await (await refused).finished();
 	await expect(page.getByRole('heading', { name: 'Shared projects' })).toBeVisible();
 	await expect(page.getByRole('link', { name: 'Project overview', exact: true })).toHaveCount(0);
 });
