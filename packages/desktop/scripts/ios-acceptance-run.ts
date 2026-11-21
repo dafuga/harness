@@ -80,8 +80,8 @@ return JSON.stringify({
 	);
 	await page.until('return document.title;', project.name);
 	await page.until(
-		"return pressLink('Review designs') ? 'review link pressed' : '';",
-		'review link pressed'
+		"return press('Open Fixture page') ? 'design card pressed' : '';",
+		'design card pressed'
 	);
 	const image = "const image = document.querySelector('.image-canvas img');";
 	return page.until(`${image} return image?.naturalWidth ? 'loaded' : '';`, 'loaded', 90);
