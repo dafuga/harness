@@ -9,6 +9,13 @@ export const commandHelp = [
 		aliases: []
 	},
 	{
+		name: 'provider',
+		signature: 'provider',
+		description: 'Open the installed provider sign-in tools.',
+		term: 'provider',
+		aliases: []
+	},
+	{
 		name: 'benchmark',
 		signature: 'benchmark',
 		description: 'Compare subagents against fixed component contracts.',
