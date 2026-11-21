@@ -6,6 +6,8 @@ import {
 	adapterFixture,
 	adapterIssue,
 	adapterSourceId,
+	refuseInsert,
+	sourceRun,
 	sqliteFixtureLease
 } from './support/trackerAdapterFixture';
 
@@ -33,7 +35,7 @@ test('poll holds the shared lease across a delayed read and releases it on cance
 			resume.resolve();
 			await expect(polling).rejects.toThrow('Tracker adapter poll cancelled');
 			expect(first.store.maxSeq()).toBe(0);
-			expect(first.database.prepare('SELECT cursor, last_run FROM adapter_sources').get()).toEqual({
+			expect(sourceRun(first.database)).toMatchObject({
 				cursor: 10_000,
 				last_run: null
 			});
@@ -61,9 +63,7 @@ test('poll retries a partially consumed feed and acknowledges the write only aft
 				'Tracker adapter intake failed'
 			);
 			expect(initial.store.maxSeq()).toBe(1);
-			expect(
-				initial.database.prepare('SELECT cursor, last_run, last_error FROM adapter_sources').get()
-			).toEqual({
+			expect(sourceRun(initial.database)).toMatchObject({
 				cursor: 10_000,
 				last_run: 30_000,
 				last_error: 'Tracker adapter intake failed'
@@ -74,45 +74,7 @@ test('poll retries a partially consumed feed and acknowledges the write only aft
 		}
 		const restarted = adapterFixture({ database: new DatabaseSync(file), lease });
 		try {
-			await expect(restarted.service.poll(adapterSourceId)).resolves.toMatchObject({
-				actions: [],
-				synced_back: 0
-			});
-			expect(restarted.readIssues.mock.calls[0]?.[1].since).toBe(5_000);
-			expect(restarted.markTracked).not.toHaveBeenCalled();
-			restarted.feed.started = true;
-			restarted.feed.failWrite = true;
-			restarted.feed.now = 40_000;
-			await expect(restarted.service.poll(adapterSourceId)).resolves.toMatchObject({
-				synced_back: 0,
-				sync_errors: [{ external_id: '100', error: 'Tracker adapter write-back failed' }]
-			});
-			expect(
-				restarted.database.prepare('SELECT cursor, last_error FROM adapter_sources').get()
-			).toEqual({
-				cursor: 40_000,
-				last_error: 'Tracker adapter write-back failed'
-			});
-			expect(restarted.database.prepare('SELECT sync_pending FROM adapter_links').get()).toEqual({
-				sync_pending: 1
-			});
-			restarted.feed.failWrite = false;
-			restarted.feed.now = 35_000;
-			await expect(restarted.service.poll(adapterSourceId)).resolves.toMatchObject({
-				synced_back: 1,
-				sync_errors: []
-			});
-			await expect(restarted.service.poll(adapterSourceId)).resolves.toMatchObject({
-				synced_back: 0
-			});
-			expect(restarted.markTracked).toHaveBeenCalledTimes(2);
-			expect(
-				restarted.database.prepare('SELECT cursor, last_error FROM adapter_sources').get()
-			).toEqual({
-				cursor: 40_000,
-				last_error: null
-			});
-			expect(restarted.store.maxSeq()).toBe(1);
+			await verifyWriteRetry(restarted);
 		} finally {
 			restarted.database.close();
 		}
@@ -146,7 +108,7 @@ test('poll commits links and event receipts with their operations and preserves 
 		expect(database.prepare('SELECT remote_state FROM adapter_links').get()).toEqual({
 			remote_state: 'open'
 		});
-		expect(database.prepare('SELECT cursor FROM adapter_sources').get()).toEqual({
+		expect(sourceRun(database)).toMatchObject({
 			cursor: 30_000
 		});
 		database.exec('DROP TRIGGER refuse_receipt');
@@ -155,24 +117,7 @@ test('poll commits links and event receipts with their operations and preserves 
 			status: 'done',
 			due: null
 		});
-		feed.timeline.push({ id: 502, event: 'reopened', created_at: new Date(42_000).toISOString() });
-		feed.now = 50_000;
-		await expect(service.poll(adapterSourceId)).resolves.toMatchObject({ events: 1 });
-		await expect(service.poll(adapterSourceId)).resolves.toMatchObject({ events: 0 });
-		expect(database.prepare('SELECT status, due FROM items').get()).toEqual({
-			status: 'open',
-			due: null
-		});
-		expect(database.prepare('SELECT event_id FROM adapter_events ORDER BY event_id').all()).toEqual(
-			[{ event_id: 'state:501' }, { event_id: 'state:502' }]
-		);
-		expect(database.prepare('SELECT text FROM item_notes ORDER BY hlc').all()).toEqual([
-			{
-				text: 'GitHub issue closed by @fixture-human: https://github.com/example/widgets/issues/17'
-			},
-			{ text: 'GitHub issue reopened: https://github.com/example/widgets/issues/17' }
-		]);
-		expect(store.maxSeq()).toBe(3);
+		await verifyReopen({ database, feed, service, store });
 	} finally {
 		database.close();
 	}
@@ -206,7 +151,70 @@ test('poll adopts a matching item without reopening it or creating a second pick
 	}
 });
 
-function refuseInsert(database: DatabaseSync, table: 'adapter_links' | 'adapter_events'): void {
-	database.exec(`CREATE TRIGGER refuse_receipt BEFORE INSERT ON ${table}
-		BEGIN SELECT RAISE(ABORT, 'fixture receipt refused'); END`);
+async function verifyWriteRetry(restarted: ReturnType<typeof adapterFixture>): Promise<void> {
+	await expect(restarted.service.poll(adapterSourceId)).resolves.toMatchObject({
+		actions: [],
+		synced_back: 0
+	});
+	expect(restarted.readIssues.mock.calls[0]?.[1].since).toBe(5_000);
+	expect(restarted.markTracked).not.toHaveBeenCalled();
+	restarted.feed.started = true;
+	restarted.feed.failWrite = true;
+	restarted.feed.now = 40_000;
+	await expect(restarted.service.poll(adapterSourceId)).resolves.toMatchObject({
+		synced_back: 0,
+		sync_errors: [{ external_id: '100', error: 'Tracker adapter write-back failed' }]
+	});
+	expect(sourceRun(restarted.database)).toMatchObject({
+		cursor: 40_000,
+		last_error: 'Tracker adapter write-back failed'
+	});
+	expect(restarted.database.prepare('SELECT sync_pending FROM adapter_links').get()).toEqual({
+		sync_pending: 1
+	});
+	restarted.feed.failWrite = false;
+	restarted.feed.now = 35_000;
+	await expect(restarted.service.poll(adapterSourceId)).resolves.toMatchObject({
+		synced_back: 1,
+		sync_errors: []
+	});
+	await expect(restarted.service.poll(adapterSourceId)).resolves.toMatchObject({
+		synced_back: 0
+	});
+	expect(restarted.markTracked).toHaveBeenCalledTimes(2);
+	expect(sourceRun(restarted.database)).toMatchObject({
+		cursor: 40_000,
+		last_error: null
+	});
+	expect(restarted.store.maxSeq()).toBe(1);
+}
+
+async function verifyReopen({
+	database,
+	feed,
+	service,
+	store
+}: Pick<
+	ReturnType<typeof adapterFixture>,
+	'database' | 'feed' | 'service' | 'store'
+>): Promise<void> {
+	feed.timeline.push({ id: 502, event: 'reopened', created_at: new Date(42_000).toISOString() });
+	feed.now = 50_000;
+	await expect(service.poll(adapterSourceId)).resolves.toMatchObject({ events: 1 });
+	await expect(service.poll(adapterSourceId)).resolves.toMatchObject({ events: 0 });
+	expect(database.prepare('SELECT status, due FROM items').get()).toEqual({
+		status: 'open',
+		due: null
+	});
+	expect(database.prepare('SELECT event_id FROM adapter_events ORDER BY event_id').all()).toEqual([
+		{ event_id: 'state:501' },
+		{ event_id: 'state:502' }
+	]);
+	expect(database.prepare('SELECT text FROM item_notes ORDER BY hlc').all()).toEqual([
+		{
+			text: 'GitHub issue closed by @fixture-human: https://github.com/example/widgets/issues/17'
+		},
+		{ text: 'GitHub issue reopened: https://github.com/example/widgets/issues/17' }
+	]);
+	expect(store.maxSeq()).toBe(3);
 }

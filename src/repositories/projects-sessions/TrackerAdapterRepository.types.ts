@@ -40,3 +40,10 @@ export interface TrackerAdapterCandidate {
 	agent: string | null;
 	project: string | null;
 }
+
+export interface TrackerAdapterSourceRow {
+	config: string;
+	enabled_at: number;
+	cursor: number;
+	paused: number;
+}

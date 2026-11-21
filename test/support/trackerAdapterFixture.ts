@@ -36,6 +36,7 @@ export function adapterFixture(options: TrackerAdapterFixtureOptions = {}) {
 		now: 30_000,
 		issues: [adapterIssue()],
 		timeline: [],
+		comments: [],
 		failRead: false,
 		started: false,
 		failWrite: false
@@ -46,20 +47,24 @@ export function adapterFixture(options: TrackerAdapterFixtureOptions = {}) {
 		if (feed.failRead) throw new Error('synthetic provider body');
 	});
 	const readTimeline = vi.fn(async () => feed.timeline);
+	const readComments = vi.fn(async function* () {
+		yield* feed.comments;
+	});
 	const markTracked = vi.fn(async () => {
 		if (feed.failWrite) throw new Error('synthetic provider body');
 	});
 	const ids = () => ['fixture-001', 'fixture-002', 'fixture-003'][store.maxSeq()] ?? 'fixture-004';
 	const service = new TrackerAdapterPollService(store, {
 		lease: options.lease ?? { owner: node, tryAcquire: () => () => {} },
-		provider: { readIssues, readTimeline, markTracked },
+		provider: { readIssues, readTimeline, readComments, markTracked },
 		redactText: options.redactText ?? ((text) => text),
+		intakePolicy: options.intakePolicy,
 		now: () => feed.now,
 		itemId: ids,
 		hasStarted: () => feed.started
 	});
 	seedLegacySource(database);
-	return { service, store, database, feed, readIssues, readTimeline, markTracked };
+	return { service, store, database, feed, readIssues, readTimeline, readComments, markTracked };
 }
 
 function seedLegacySource(database: DatabaseSync): void {
@@ -120,4 +125,16 @@ export function sqliteFixtureLease(path: string): TrackerAdapterLease {
 			}
 		}
 	};
+}
+
+export function refuseInsert(
+	database: DatabaseSync,
+	table: 'adapter_links' | 'adapter_events'
+): void {
+	database.exec(`CREATE TRIGGER refuse_receipt BEFORE INSERT ON ${table}
+		BEGIN SELECT RAISE(ABORT, 'fixture receipt refused'); END`);
+}
+
+export function sourceRun(database: DatabaseSync): unknown {
+	return database.prepare('SELECT cursor, last_run, last_error FROM adapter_sources').get();
 }

@@ -22,7 +22,7 @@ export class TrackerPersistenceService {
 	private readonly changes = new EventEmitter();
 
 	constructor(
-		database: SqliteDatabase,
+		readonly database: SqliteDatabase,
 		readonly node: string,
 		options: TrackerSchemaAdapterConfig = {}
 	) {

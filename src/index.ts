@@ -195,3 +195,11 @@ export { nextTrackerClock } from './utils/projects-sessions/nextTrackerClock';
 export { TrackerPersistenceService } from './services/projects-sessions/TrackerPersistenceService';
 export { planGithubIssueIntake } from './helpers/planning-collaboration/planGithubIssueIntake';
 export { TrackerAdapterPollService } from './services/projects-sessions/TrackerAdapterPollService';
+export type {
+	TrackerAdapterIntakePolicy,
+	TrackerAdapterLease,
+	TrackerAdapterPollDependencies,
+	TrackerAdapterPollOptions,
+	TrackerAdapterPollResult,
+	TrackerGithubAdapterProvider
+} from './services/projects-sessions/TrackerAdapterPollService.types';

@@ -176,7 +176,14 @@
 			"TrackerSchemaAdapter",
 			"nextTrackerClock",
 			"TrackerPersistenceService",
-			"planGithubIssueIntake"
+			"planGithubIssueIntake",
+			"TrackerAdapterPollService",
+			"TrackerAdapterIntakePolicy",
+			"TrackerAdapterLease",
+			"TrackerAdapterPollDependencies",
+			"TrackerAdapterPollOptions",
+			"TrackerAdapterPollResult",
+			"TrackerGithubAdapterProvider"
 		]
 	},
 	"contract": {
@@ -766,6 +773,11 @@
 		},
 		{
 			"unit": "service.picker-preview",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-adapter-poll",
 			"via": "reexport",
 			"origin": "derived"
 		},
