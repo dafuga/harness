@@ -1,0 +1,135 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-dispatch-scheduler",
+	"uid": "u_4rnjtzp6cn",
+	"kind": "service",
+	"title": "TrackerDispatchSchedulerService",
+	"responsibility": "Owns the TrackerDispatchSchedulerService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/TrackerDispatchSchedulerService.ts",
+			"src/services/projects-sessions/TrackerDispatchSchedulerService.types.ts"
+		],
+		"symbols": [
+			"TrackerDispatchSchedulerService",
+			"TrackerDispatchSchedulerService.constructor",
+			"TrackerDispatchSchedulerService.tick",
+			"TrackerReservedStart",
+			"TrackerDispatchRunner",
+			"TrackerDispatchSchedulerOptions"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerDispatchSchedulerService.constructor.repository",
+				"type": "TrackerDispatchRepository",
+				"required": true
+			},
+			{
+				"name": "TrackerDispatchSchedulerService.constructor.dispatcher",
+				"type": "TrackerDispatcherService",
+				"required": true
+			},
+			{
+				"name": "TrackerDispatchSchedulerService.constructor.options",
+				"type": "TrackerDispatchSchedulerOptions",
+				"required": true
+			},
+			{
+				"name": "TrackerDispatchSchedulerService.tick.signal",
+				"type": "AbortSignal",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerDispatchSchedulerService.tick",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerDispatchSchedulerService.tick",
+				"inputs": [
+					{
+						"name": "TrackerDispatchSchedulerService.tick.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerDispatchSchedulerService.tick",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerDispatchSchedulerService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerDispatchSchedulerService.constructor.repository",
+						"type": "TrackerDispatchRepository",
+						"required": true
+					},
+					{
+						"name": "TrackerDispatchSchedulerService.constructor.dispatcher",
+						"type": "TrackerDispatcherService",
+						"required": true
+					},
+					{
+						"name": "TrackerDispatchSchedulerService.constructor.options",
+						"type": "TrackerDispatchSchedulerOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerDispatchSchedulerService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "repository.projects-sessions-tracker-dispatch",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-tracker-dispatcher",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/TrackerDispatchSchedulerService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/TrackerDispatchSchedulerService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -41,7 +41,7 @@ test('headless units cannot declare screenshot previews', async () => {
 	);
 });
 
-test('a derived unit names its default execution target and lists it as its only target', async () => {
+test('a derived unit names its default target and validation requires readable inputs', async () => {
 	const unit = await manifest();
 	expect(unit.runtime).toEqual({
 		kind: 'module',
@@ -68,7 +68,63 @@ test('a derived unit names its default execution target and lists it as its only
 			'function.rank: contract error Error is a bare Error'
 		])
 	);
+	await assertDeclaredUnknownBoundary(unit);
 });
+
+async function assertDeclaredUnknownBoundary(unit: ComponentManifest): Promise<void> {
+	const boundary = {
+		name: 'rank.value',
+		type: 'unknown',
+		required: true,
+		unknownReason: 'The caller passes unparsed request data for the function to inspect.'
+	};
+	const declared = {
+		...unit,
+		contract: {
+			...unit.contract,
+			origin: 'declared' as const,
+			inputs: [boundary],
+			operations: unit.contract.operations?.map((operation) => ({
+				...operation,
+				inputs: [boundary]
+			}))
+		}
+	};
+	const checked = new ComponentManifestValidator().validate(declared, file);
+	expect(checked.errors, 'declared unknown input preserves reason').toEqual([]);
+	expect(checked.value?.contract.inputs).toEqual([boundary]);
+	const reindexed = unitOf(
+		await indexFiles(
+			{ 'src/utils/rank.ts': 'export function rank(value: unknown): number { return 1; }' },
+			[declared]
+		),
+		'function.rank'
+	);
+	expect(reindexed.contract.inputs).toEqual([boundary]);
+	expect(reindexed.contract.operations?.[0]?.inputs).toEqual([boundary]);
+
+	expect(
+		errorsOf({ ...declared, contract: { ...declared.contract, origin: 'derived' } })
+	).toContain('function.rank: contract input rank.value has unknown type');
+	expect(
+		errorsOf({
+			...declared,
+			contract: {
+				...declared.contract,
+				inputs: [{ ...boundary, unknownReason: '  ' }]
+			}
+		})
+	).not.toEqual([]);
+	expect(
+		errorsOf({
+			...declared,
+			contract: {
+				...declared.contract,
+				inputs: [{ name: 'payload', type: 'Record<string, unknown>', required: true }]
+			}
+		})
+	).toContain('function.rank: contract input payload has unknown type');
+}
 
 test('a unit may declare every applicable execution target beside its default', async () => {
 	const unit = await manifest();

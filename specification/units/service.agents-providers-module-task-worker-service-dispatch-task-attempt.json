@@ -40,7 +40,7 @@
 			{
 				"name": "dispatchTaskAttempt",
 				"type": "unknown",
-				"description": "The TaskRunResult resolved by runner.run(input), returned unchanged after its success record is appended. If the run or attempt processing rejects, this function produces no output.",
+				"description": "Provider result fields with the run context used by the module completion stage. The success record is appended before this function returns.",
 				"examples": [
 					{
 						"provider": "codex",
@@ -90,7 +90,7 @@
 					{
 						"name": "dispatchTaskAttempt",
 						"type": "unknown",
-						"description": "The TaskRunResult resolved by runner.run(input), returned unchanged after its success record is appended. If the run or attempt processing rejects, this function produces no output.",
+						"description": "Provider result fields with the run context used by the module completion stage. The success record is appended before this function returns.",
 						"examples": [
 							{
 								"provider": "codex",
@@ -117,6 +117,11 @@
 	"dependencies": [
 		{
 			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-completion-hooks",
 			"via": "import",
 			"origin": "derived"
 		},

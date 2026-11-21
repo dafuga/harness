@@ -20,7 +20,10 @@ const nonWorkTitle = /^\s*(?:decision|reminder|brainstorm(?:ing)?)(?::|\s+for\b)
 
 export const minute = 60_000;
 
-export function canonicalNode(name: string, policy: TrackerDispatchPolicy): string {
+export function canonicalNode(
+	name: string,
+	policy: Pick<TrackerDispatchPolicy, 'resolveHost'>
+): string {
 	const node = name.trim().toLowerCase();
 	return fleetAliases.get(node) ?? policy.resolveHost?.(node) ?? node;
 }

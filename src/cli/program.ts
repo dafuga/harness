@@ -10,6 +10,7 @@ import { registerCodexCommand } from './program/CodexCommand';
 import { registerBenchmarkCommand } from './program/BenchmarkCommand';
 import { registerAnalyticsCommand } from './program/AnalyticsCommand';
 import { registerActivityCommand } from './program/ActivityCommand';
+import { ProjectListCommand } from '../commands/projects-sessions/ProjectListCommand';
 import { registerReportCommand } from './program/ReportCommand';
 import { registerResourcesCommand } from './program/ResourcesCommand';
 import { Command } from 'commander';
@@ -43,6 +44,7 @@ export function buildProgram(): Command {
 	registerResourcesCommand(program);
 	registerAnalyticsCommand(program);
 	registerActivityCommand(program);
+	new ProjectListCommand().register(program);
 	registerReportCommand(program);
 	registerNewCommand(program);
 	registerGenerateCommand(program);

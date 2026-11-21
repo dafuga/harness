@@ -16,6 +16,7 @@
 			"TrackerAdapterLeaseAdapter",
 			"TrackerAdapterLeaseAdapter.constructor",
 			"TrackerAdapterLeaseAdapter.tryAcquire",
+			"tryAcquireTrackerSqliteLease",
 			"TrackerAdapterLeaseError",
 			"TrackerAdapterLeaseError.constructor"
 		]
@@ -34,6 +35,11 @@
 				"required": true
 			},
 			{
+				"name": "tryAcquireTrackerSqliteLease.path",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "TrackerAdapterLeaseError.constructor.message",
 				"type": "string",
 				"required": true
@@ -42,6 +48,10 @@
 		"outputs": [
 			{
 				"name": "TrackerAdapterLeaseAdapter.tryAcquire",
+				"type": "(()"
+			},
+			{
+				"name": "tryAcquireTrackerSqliteLease",
 				"type": "(()"
 			}
 		],
@@ -59,6 +69,24 @@
 				"outputs": [
 					{
 						"name": "TrackerAdapterLeaseAdapter.tryAcquire",
+						"type": "(()"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "tryAcquireTrackerSqliteLease",
+				"inputs": [
+					{
+						"name": "tryAcquireTrackerSqliteLease.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "tryAcquireTrackerSqliteLease",
 						"type": "(()"
 					}
 				],

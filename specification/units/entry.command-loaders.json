@@ -134,6 +134,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "command.projects-sessions-project-list",
+			"via": "dynamic-import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.projects-sessions-tracker",
 			"via": "dynamic-import",
 			"origin": "derived"

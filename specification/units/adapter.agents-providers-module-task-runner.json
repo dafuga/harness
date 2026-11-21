@@ -70,6 +70,7 @@
 			"TaskChild",
 			"TaskOutputOverflowError",
 			"trackerHandoff",
+			"recordTrackerNote",
 			"validateTrackerId",
 			"TrackerHandoff"
 		]
@@ -248,6 +249,21 @@
 				"required": true
 			},
 			{
+				"name": "recordTrackerNote.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordTrackerNote.tracker",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordTrackerNote.text",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "validateTrackerId.id",
 				"type": "string",
 				"required": true
@@ -340,6 +356,10 @@
 			},
 			{
 				"name": "trackerHandoff",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "recordTrackerNote",
 				"type": "Promise<void>"
 			},
 			{
@@ -734,6 +754,34 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "recordTrackerNote",
+				"inputs": [
+					{
+						"name": "recordTrackerNote.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recordTrackerNote.tracker",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recordTrackerNote.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordTrackerNote",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "validateTrackerId",
 				"inputs": [
 					{
@@ -834,6 +882,11 @@
 		},
 		{
 			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-completion-hooks",
 			"via": "import",
 			"origin": "derived"
 		},

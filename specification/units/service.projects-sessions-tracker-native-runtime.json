@@ -13,6 +13,9 @@
 			"src/services/projects-sessions/TrackerNativeRuntimeService.types.ts"
 		],
 		"symbols": [
+			"TrackerLocalApiService",
+			"TrackerNotificationService",
+			"TrackerPersistenceService",
 			"TrackerNativeRuntimeService",
 			"TrackerNativeRuntimeService.constructor",
 			"TrackerNativeRuntimeService.runLinks",
@@ -110,6 +113,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.projects-sessions-tracker-dispatch",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.projects-sessions-tracker-item-read",
 			"via": "import",
 			"origin": "derived"
@@ -125,7 +133,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.agents-providers-tracker-dispatcher",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-adapter-poll",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-dispatch-scheduler",
 			"via": "import",
 			"origin": "derived"
 		},

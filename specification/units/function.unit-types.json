@@ -64,7 +64,7 @@
 				"name": "sourceContractSchema.item",
 				"type": "typeof contractItemSchema",
 				"required": true,
-				"description": "A Zod contract-item schema supplied to parameterize the builder; contract input, output, error, and storage-field entries are validated against it, with storage fields additionally allowing nullable, primaryKey, validation, and relations. Base items require trimmed nonempty name and type, permit required, default, description, and examples, and reject undeclared keys."
+				"description": "A Zod contract-item schema supplied to parameterize the builder; contract input, output, error, and storage-field entries are validated against it, with storage fields additionally allowing nullable, primaryKey, validation, and relations. Base items require trimmed nonempty name and type, permit required, default, description, examples, and a trimmed nonempty unknownReason, and reject undeclared keys."
 			}
 		],
 		"outputs": [
@@ -123,7 +123,7 @@
 			{
 				"name": "contractItemSchema",
 				"type": "unknown",
-				"description": "A strict Zod schema for contract items with trimmed nonempty name and type, plus optional required, JSON default, description, and JSON examples fields. Extra fields are rejected."
+				"description": "A strict Zod schema for contract items with trimmed nonempty name and type, plus optional required, JSON default, description, JSON examples, and a trimmed nonempty unknownReason. Extra fields are rejected."
 			},
 			{
 				"name": "unitDependencySchema",
@@ -167,7 +167,7 @@
 						"name": "sourceContractSchema.item",
 						"type": "typeof contractItemSchema",
 						"required": true,
-						"description": "A Zod contract-item schema supplied to parameterize the builder; contract input, output, error, and storage-field entries are validated against it, with storage fields additionally allowing nullable, primaryKey, validation, and relations. Base items require trimmed nonempty name and type, permit required, default, description, and examples, and reject undeclared keys."
+						"description": "A Zod contract-item schema supplied to parameterize the builder; contract input, output, error, and storage-field entries are validated against it, with storage fields additionally allowing nullable, primaryKey, validation, and relations. Base items require trimmed nonempty name and type, permit required, default, description, examples, and a trimmed nonempty unknownReason, and reject undeclared keys."
 					}
 				],
 				"outputs": [

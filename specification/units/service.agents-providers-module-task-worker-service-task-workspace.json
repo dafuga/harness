@@ -153,7 +153,7 @@
 			},
 			{
 				"name": "snapshotTaskWork.result",
-				"type": "NonNullable<ModuleTask['result']>",
+				"type": "NonNullable<ModuleTask['result']> & { [moduleCompletionContext]?: ModuleCompletionContext; }",
 				"required": true,
 				"description": "Existing task result whose worktree is inspected; its sourceCommit overrides the task source when present, and changedFiles and checkpointCommit are overwritten.",
 				"examples": [
@@ -395,7 +395,7 @@
 					},
 					{
 						"name": "snapshotTaskWork.result",
-						"type": "NonNullable<ModuleTask['result']>",
+						"type": "NonNullable<ModuleTask['result']> & { [moduleCompletionContext]?: ModuleCompletionContext; }",
 						"required": true,
 						"description": "Existing task result whose worktree is inspected; its sourceCommit overrides the task source when present, and changedFiles and checkpointCommit are overwritten.",
 						"examples": [
@@ -450,6 +450,11 @@
 		},
 		{
 			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-completion-hooks",
 			"via": "import",
 			"origin": "derived"
 		},

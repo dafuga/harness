@@ -4,6 +4,7 @@ import type { SqliteDatabase, SqliteValue } from '../../core/development-tooling
 import { trackerClockMilliseconds } from '../../utils/projects-sessions/nextTrackerClock';
 import type {
 	TrackerAppliedOperations,
+	TrackerLocalCommit,
 	TrackerLocalOperation,
 	TrackerOperation,
 	TrackerOperationFilter,
@@ -43,6 +44,18 @@ export class TrackerOperationRepository {
 			if (!this.applyOperation(operation)) throw new TypeError('Tracker operation clock collision');
 			persistReceipt(persist);
 			return operation;
+		});
+	}
+
+	/** Decide, persist associated rows and append the optional item change under one writer lock. */
+	commitLocal<T>(node: string, decide: () => TrackerLocalCommit<T>) {
+		return trackerWrite(this.database, () => {
+			const { result, operation } = decide();
+			if (operation) {
+				const next = localTrackerOperation(this.database, { ...operation, node }, this.now());
+				if (!this.applyOperation(next)) throw new TypeError('Tracker operation clock collision');
+			}
+			return { result, changed: Boolean(operation) };
 		});
 	}
 
@@ -109,34 +122,34 @@ export class TrackerOperationRepository {
 				this.now(),
 				operationActor(operation.actor)
 			);
-		this.applyItemFields(operation);
+		applyItemFields(this.database, operation);
 		return true;
 	}
+}
 
-	private applyItemFields(operation: TrackerOperation): void {
-		const { item_id: item, hlc, fields } = operation;
-		this.database.prepare('INSERT INTO items(id) VALUES (?) ON CONFLICT(id) DO NOTHING').run(item);
-		const row = this.database.prepare('SELECT clocks FROM items WHERE id = ?').get(item) as {
-			clocks: string;
-		};
-		const clocks = JSON.parse(row.clocks) as Record<string, string>;
-		const columns: string[] = [];
-		const values: SqliteValue[] = [];
-		for (const [field, value] of Object.entries(fields)) {
-			if (field === appendNoteField) {
-				appendTrackerNote(this.database, operation, value);
-				if (!clocks.notes_log || hlc > clocks.notes_log) clocks.notes_log = hlc;
-			} else if (itemFields.has(field) && (!clocks[field] || hlc > clocks[field])) {
-				clocks[field] = hlc;
-				columns.push(`${field} = ?`);
-				values.push(itemValue(value));
-			}
+function applyItemFields(database: SqliteDatabase, operation: TrackerOperation): void {
+	const { item_id: item, hlc, fields } = operation;
+	database.prepare('INSERT INTO items(id) VALUES (?) ON CONFLICT(id) DO NOTHING').run(item);
+	const row = database.prepare('SELECT clocks FROM items WHERE id = ?').get(item) as {
+		clocks: string;
+	};
+	const clocks = JSON.parse(row.clocks) as Record<string, string>;
+	const columns: string[] = [];
+	const values: SqliteValue[] = [];
+	for (const [field, value] of Object.entries(fields)) {
+		if (field === appendNoteField) {
+			appendTrackerNote(database, operation, value);
+			if (!clocks.notes_log || hlc > clocks.notes_log) clocks.notes_log = hlc;
+		} else if (itemFields.has(field) && (!clocks[field] || hlc > clocks[field])) {
+			clocks[field] = hlc;
+			columns.push(`${field} = ?`);
+			values.push(itemValue(value));
 		}
-		columns.push('clocks = ?', 'updated_at = ?');
-		this.database
-			.prepare(`UPDATE items SET ${columns.join(', ')} WHERE id = ?`)
-			.run(...values, JSON.stringify(clocks), itemUpdatedAt(clocks), item);
 	}
+	columns.push('clocks = ?', 'updated_at = ?');
+	database
+		.prepare(`UPDATE items SET ${columns.join(', ')} WHERE id = ?`)
+		.run(...values, JSON.stringify(clocks), itemUpdatedAt(clocks), item);
 }
 
 function appendTrackerNote(
