@@ -1,18 +1,15 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.function.planning-collaboration-approved-mockup",
+	"uid": "u_tpp44nx2dp",
 	"kind": "function",
 	"title": "approvedMockup",
 	"responsibility": "Stage only the approved option’s HTML, CSS, and screenshot bytes for the implementation agent.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/planning-collaboration/approvedMockup.ts"
-		],
-		"symbols": [
-			"approvedMockup"
-		]
+		"source": ["packages/desktop/src/utils/planning-collaboration/approvedMockup.ts"],
+		"symbols": ["approvedMockup"]
 	},
 	"contract": {
 		"origin": "declared",

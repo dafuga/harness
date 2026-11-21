@@ -1,18 +1,15 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.function.planning-collaboration-mockup-capture",
+	"uid": "u_f2wpkt3xth",
 	"kind": "function",
 	"title": "mockupCapture",
 	"responsibility": "Render static mockup documents headlessly at their declared viewports.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/planning-collaboration/mockupCapture.ts"
-		],
-		"symbols": [
-			"mockupCapture"
-		]
+		"source": ["packages/desktop/src/utils/planning-collaboration/mockupCapture.ts"],
+		"symbols": ["mockupCapture"]
 	},
 	"contract": {
 		"origin": "declared",

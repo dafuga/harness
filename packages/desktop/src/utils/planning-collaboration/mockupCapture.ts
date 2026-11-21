@@ -1,3 +1,4 @@
+// @harness-uid u_f2wpkt3xth
 import type { Browser, Page } from 'playwright-core';
 import { RunCancelled } from '../../models/agents-providers/AgentRunner.types';
 import type { MockupCapture } from './mockupSource.types';

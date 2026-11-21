@@ -65,7 +65,10 @@ export class ProjectRunService {
 		const progress: Progress = { created: null, thread: null };
 		try {
 			const planned = await this.planned(context, { proposal, mockupRunner }, progress);
-			const saved = await planDesign(planned, proposal.proposal);
+			const instructions = mockupRunner
+				? `${proposal.proposal}\nRequest:\n${context.request.text}`
+				: proposal.proposal;
+			const saved = await planDesign(planned, instructions);
 			return { summary: `Planned ${proposal.title}. ${saved}`, created: progress.created! };
 		} catch (error) {
 			if (progress.thread && progress.created?.requestSaved)

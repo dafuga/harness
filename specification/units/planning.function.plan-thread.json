@@ -144,7 +144,9 @@
 								"contractHash": "2f8d61b0c9a4e7f35d12a08c6e4b9f71d3a5c2e80f96b4d17a3c8e52f0b61d94"
 							},
 							"status": "completed",
-							"changedPaths": ["src/components/evidence-grid/index.tsx"],
+							"changedPaths": [
+								"src/components/evidence-grid/index.tsx"
+							],
 							"hostChanges": [
 								{
 									"path": "/workspace/app/src/components/evidence-grid/index.tsx",
@@ -161,12 +163,14 @@
 			{
 				"name": "validateThreadReference.reference",
 				"type": "ThreadMessage['references'][number]",
-				"required": true
+				"required": true,
+				"description": "Thread reference that identifies the exact saved notes or screenshot of the design version."
 			},
 			{
 				"name": "validateThreadReference.plan",
 				"type": "PlanDetail",
-				"required": true
+				"required": true,
+				"description": "Pinned plan with the committed versions and artifacts against which the reference is checked."
 			}
 		],
 		"outputs": [
@@ -329,7 +333,9 @@
 									"contractHash": "2f8d61b0c9a4e7f35d12a08c6e4b9f71d3a5c2e80f96b4d17a3c8e52f0b61d94"
 								},
 								"status": "completed",
-								"changedPaths": ["src/components/evidence-grid/index.tsx"],
+								"changedPaths": [
+									"src/components/evidence-grid/index.tsx"
+								],
 								"hostChanges": [
 									{
 										"path": "/workspace/app/src/components/evidence-grid/index.tsx",
@@ -581,7 +587,9 @@
 										"contractHash": "2f8d61b0c9a4e7f35d12a08c6e4b9f71d3a5c2e80f96b4d17a3c8e52f0b61d94"
 									},
 									"status": "completed",
-									"changedPaths": ["src/components/evidence-grid/index.tsx"],
+									"changedPaths": [
+										"src/components/evidence-grid/index.tsx"
+									],
 									"hostChanges": [
 										{
 											"path": "/workspace/app/src/components/evidence-grid/index.tsx",
@@ -670,7 +678,9 @@
 											"contractHash": "2f8d61b0c9a4e7f35d12a08c6e4b9f71d3a5c2e80f96b4d17a3c8e52f0b61d94"
 										},
 										"status": "completed",
-										"changedPaths": ["src/components/evidence-grid/index.tsx"],
+										"changedPaths": [
+											"src/components/evidence-grid/index.tsx"
+										],
 										"hostChanges": [
 											{
 												"path": "/workspace/app/src/components/evidence-grid/index.tsx",
@@ -707,12 +717,14 @@
 					{
 						"name": "validateThreadReference.reference",
 						"type": "ThreadMessage['references'][number]",
-						"required": true
+						"required": true,
+						"description": "Thread reference that identifies the exact saved notes or screenshot of the design version."
 					},
 					{
 						"name": "validateThreadReference.plan",
 						"type": "PlanDetail",
-						"required": true
+						"required": true,
+						"description": "Pinned plan with the committed versions and artifacts against which the reference is checked."
 					}
 				],
 				"outputs": [
@@ -794,7 +806,9 @@
 			}
 		]
 	},
-	"scenarios": ["planning-artifacts"],
+	"scenarios": [
+		"planning-artifacts"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

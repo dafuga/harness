@@ -1,19 +1,15 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.function.planning-collaboration-mockup-plan",
+	"uid": "u_znltg4lq3i",
 	"kind": "function",
 	"title": "mockupPlan",
 	"responsibility": "Author static mockup source with Sonnet and extend requested widths and states with Haiku.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/planning-collaboration/mockupPlan.ts"
-		],
-		"symbols": [
-			"visualPlan",
-			"mockupPlan"
-		]
+		"source": ["packages/desktop/src/utils/planning-collaboration/mockupPlan.ts"],
+		"symbols": ["visualPlan", "mockupPlan"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -1,3 +1,4 @@
+// @harness-uid u_znltg4lq3i
 import { z } from 'zod';
 import type { RunContext } from '../../models/development-tooling/RunContext.types';
 import { RunCancelled } from '../../models/agents-providers/AgentRunner.types';
@@ -30,7 +31,7 @@ export { visualCategory as visualPlan } from '../explorer-ui/composeModes';
 function displayRequest(text: string) {
 	return (
 		/\b(?:re[ -]?render|recapture)\b/i.test(text) ||
-		/\b(?:add|show|preview|render|include|capture)\b[^.\n]{0,155}\b(?:\d{3,4}\s*(?:px\b|pixels?\b|wide\b)|widths?\b|viewports?\b|states?\b|light mode\b|dark mode\b)/i.test(
+		/\b(?:add|show|preview|render|include|capture)\b[^.\n]{0,155}\b(?:\d{3,4}\s*(?:px\b|pixels?\b|wide\b)|widths?\b|viewports?\b|states?\b|(?:light|dark) (?:mode|theme)\b|(?:empty|loading|busy)(?:[.!?]?$| (?:screens?|views?)\b))/i.test(
 			text
 		)
 	);
@@ -169,7 +170,11 @@ async function expanded(context: RunContext, source: MockupSource) {
 		'Saved mockup: ' + JSON.stringify(source)
 	].join('\n');
 	const extra = variationSchema.parse(await ask(context, haiku, prompt, variationSchema));
-	return mergeVariations(source, extra);
+	const result = mergeVariations(source, extra);
+	const requested = context.request.text.matchAll(/\b([1-9]\d{2,3})\s*(?:px\b|pixels?\b|wide\b)/gi);
+	if ([...requested].some((match) => !result.widths.includes(Number(match[1]))))
+		throw new MockupFailure('Haiku did not return the requested viewport width.');
+	return result;
 }
 
 export async function mockupPlan(context: RunContext, proposal: string): Promise<MockupPlanDraft> {

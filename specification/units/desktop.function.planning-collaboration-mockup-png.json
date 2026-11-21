@@ -1,18 +1,15 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.function.planning-collaboration-mockup-png",
+	"uid": "u_ntxv5f2g76",
 	"kind": "function",
 	"title": "mockupPng",
 	"responsibility": "Add a stable capture identity to PNG metadata while preserving its pixels.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/planning-collaboration/mockupPng.ts"
-		],
-		"symbols": [
-			"mockupPng"
-		]
+		"source": ["packages/desktop/src/utils/planning-collaboration/mockupPng.ts"],
+		"symbols": ["mockupPng"]
 	},
 	"contract": {
 		"origin": "declared",

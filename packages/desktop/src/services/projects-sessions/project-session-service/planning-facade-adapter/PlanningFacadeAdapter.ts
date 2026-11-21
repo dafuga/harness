@@ -56,8 +56,9 @@ export class PlanningFacadeAdapter implements PlanningPort {
 	image(query: PlanImageQuery) {
 		return readPlanImage(this.context, query);
 	}
-	async images({ entityId, ...query }: PlanImagesQuery) {
-		const captures = await this.context.api.readImages({ ...query, unitId: entityId });
+	async images(query: PlanImagesQuery) {
+		const { entityId, ...selection } = query;
+		const captures = await this.context.api.readImages({ ...selection, unitId: entityId });
 		return captures.map((capture) => capture.bytes);
 	}
 	history(entityId: string, revision: string) {

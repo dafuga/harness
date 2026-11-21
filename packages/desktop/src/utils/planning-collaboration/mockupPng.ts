@@ -1,3 +1,4 @@
+// @harness-uid u_ntxv5f2g76
 import { crc32 } from 'node:zlib';
 
 /** Preserve pixels and give each comparison slot its own PNG artifact identity. */

@@ -1,18 +1,15 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.function.planning-collaboration-mockup-matrix",
+	"uid": "u_onzkhfjzkk",
 	"kind": "function",
 	"title": "mockupMatrix",
 	"responsibility": "Associate each authored option with the screenshots of its states and viewport widths.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/planning-collaboration/mockupMatrix.ts"
-		],
-		"symbols": [
-			"mockupMatrix"
-		]
+		"source": ["packages/desktop/src/utils/planning-collaboration/mockupMatrix.ts"],
+		"symbols": ["mockupMatrix"]
 	},
 	"contract": {
 		"origin": "declared",

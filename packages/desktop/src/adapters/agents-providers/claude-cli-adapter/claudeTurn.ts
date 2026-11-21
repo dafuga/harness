@@ -51,8 +51,11 @@ async function runClaudeTurn(command: CliCommand, turn: AgentTurn, resources: Re
 			}
 		}
 	);
+	return finalResponse(turn, actual, result);
+}
+
+function finalResponse(turn: AgentTurn, actual: string, final: Record<string, unknown> | null) {
 	if (actual !== turn.model) throw new Error('Claude did not run the requested model.');
-	const final = result as Record<string, unknown> | null;
 	if (!final || final.is_error)
 		throw new Error(String(final?.result ?? 'Claude returned no completed result.'));
 	if (turn.outputSchema && !final.structured_output)

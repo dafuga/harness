@@ -1,3 +1,4 @@
+// @harness-uid u_onzkhfjzkk
 import type { RunContext } from '../../models/development-tooling/RunContext.types';
 import { MockupFailure, beforeState, mockupHtml } from './mockupSource';
 import type { MockupCapture, MockupPlanDraft, MockupSource } from './mockupSource.types';
