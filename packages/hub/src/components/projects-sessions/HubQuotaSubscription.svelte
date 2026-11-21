@@ -24,10 +24,12 @@
 		reload?: () => void;
 	} = $props();
 	const stale = $derived(staleReading(subscription.readAt, now));
+	const today = $derived(new Date(now).toISOString().slice(0, 10));
+	const weekday = new Intl.DateTimeFormat('en-GB', { weekday: 'short', timeZone: 'UTC' });
 	const chartMax = $derived(
 		Math.max(
-			10,
-			Math.ceil(Math.max(...subscription.history.map((reading) => reading.used)) / 10) * 10
+			20,
+			Math.ceil(Math.max(...subscription.history.map((reading) => reading.used)) / 20) * 20
 		)
 	);
 	const warnings = $derived(
@@ -108,11 +110,23 @@
 							.map((reading) => `${reading.day}: ${reading.used}% used`)
 							.join(', ')}
 					>
-						{#each subscription.history as reading (reading.day)}
-							<hx-div class="hh-q-history-col" title={`${reading.day} · ${reading.used}% used`}
-								><hx-span style:height={`${(reading.used / chartMax) * 100}%`}></hx-span></hx-div
-							>
-						{/each}
+						<hx-div class="hh-q-axis" aria-hidden="true">
+							<hx-span>{chartMax}%</hx-span>
+							<hx-span>{chartMax / 2}%</hx-span>
+							<hx-span>0%</hx-span>
+						</hx-div>
+						<hx-div class="hh-q-series" aria-hidden="true">
+							{#each subscription.history as reading (reading.day)}
+								<hx-div class="hh-q-history-col" title={`${reading.day} · ${reading.used}% used`}>
+									<hx-span style:height={`${(reading.used / chartMax) * 100}%`}></hx-span>
+									<hx-time class="hh-q-day" datetime={reading.day}
+										>{reading.day === today
+											? 'Today'
+											: weekday.format(new Date(reading.day))}</hx-time
+									>
+								</hx-div>
+							{/each}
+						</hx-div>
 					</hx-div>
 				{:else}<hx-p class="po-sessions">No usage history yet.</hx-p>{/if}
 			</hx-div>

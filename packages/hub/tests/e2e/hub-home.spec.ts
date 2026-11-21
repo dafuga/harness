@@ -72,8 +72,12 @@ async function dialogs(page: Page, position: CapturePosition, fixture: HomeFixtu
 		if (screen.id === 'projects' && (position[2] === 'default' || position[2] === 'busy'))
 			await expect(dialog.getByText('Change history')).toBeVisible();
 		await capture(page, position, screen.id);
-		if (screen.id === 'quota' && (position[2] === 'default' || position[2] === 'busy'))
-			await expect(dialog.locator('.hh-q-history-col > span').first()).toBeVisible();
+		if (screen.id === 'quota' && (position[2] === 'default' || position[2] === 'busy')) {
+			const history = dialog.locator('.hh-q-chart').first();
+			await expect(history.locator('.hh-q-history-col > span').first()).toBeVisible();
+			await expect(history.getByText('0%', { exact: true })).toBeVisible();
+			await expect(history.getByText('Today', { exact: true })).toBeVisible();
+		}
 		await fullDialog(page, position, screen.id);
 		if (screen.id === 'agents' && position[0] === 'phone' && position[2] === 'default')
 			await agentChat(page, position, fixture);
