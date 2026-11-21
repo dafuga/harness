@@ -8,10 +8,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/routes/downloads/[asset]/+server.ts",
-			"specification/units/hub.endpoint.download-mac.json"
-		],
+		"source": ["packages/hub/src/routes/downloads/[asset]/+server.ts"],
 		"symbols": ["trailingSlash", "GET", "HEAD"]
 	},
 	"contract": {
@@ -145,7 +142,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["project-overview-mac-download"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -1,8 +1,16 @@
 import type { Page, TestInfo } from '@playwright/test';
-import { expect, test } from '../../../../test/support/browserTest';
+import { expect as baseExpect, test } from '../../../../test/support/browserTest';
+import { buildStamp } from '../../../../src/utils/buildStamp';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import { ada, hostedFixture } from './hosted-fixture';
 import { grace, overviewFixture, refusal, viewports, open } from './tracker-overview-fixture';
 import type { Viewport } from './tracker-overview-fixture';
+
+const expect = baseExpect.configure({ timeout: 25_000 });
+test.setTimeout(90_000);
 
 /** The owner endpoint answers a signed-in account that is not the owner with 403, on purpose. */
 const forbidden = {
@@ -26,14 +34,37 @@ const overviewRoot =
 const unavailableNotice =
 	'The tracker could not be reached from this host, so no projects are shown.';
 
-/** Attaches the actual compiled page; these shots are not recorded as tracker-overview evidence. */
+/** Records the compiled account surface, with synthetic credentials and tracker data only. */
 async function attachShot(page: Page, testInfo: TestInfo, state: string, viewport: Viewport) {
-	await page.evaluate(() => document.fonts.ready);
-	const body = await page.screenshot({ animations: 'disabled', caret: 'hide' });
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await new Promise<void>((resolve) =>
+			requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+		);
+	});
+	const body = await page.screenshot({ animations: 'disabled', caret: 'hide', scale: 'css' });
 	await testInfo.attach(`projects-${state}-${viewport.id}.png`, {
 		body,
 		contentType: 'image/png'
 	});
+	if (!evidenceRequested()) return;
+	const stamp = await page.locator('meta[name="harness-build"]').getAttribute('content');
+	const buildId = buildStamp(stamp ?? undefined);
+	const revision = process.env.HARNESS_VERIFY_REVISION;
+	if (!buildId || !revision) throw new Error('Project account captures need a stamped Hub build.');
+	recordCapture(
+		{
+			evidence: 'account-screen',
+			kind: 'screenshot',
+			state,
+			viewport: viewport.id,
+			file: `projects-${state}-${viewport.id}.png`,
+			mediaType: 'image/png',
+			provenance: 'actual-capture',
+			server: { buildId, revision }
+		},
+		body
+	);
 }
 
 test('the owner sees the Project overview link on /projects and it opens the overview', async ({
@@ -42,6 +73,7 @@ test('the owner sees the Project overview link on /projects and it opens the ove
 	const { overview } = await overviewFixture(page, 'ready');
 	await page.goto('/projects');
 	await expect(page.getByRole('heading', { name: 'Shared projects' })).toBeVisible();
+	await expect(page.getByText('synthetic-sync', { exact: true })).toBeVisible();
 	await page.getByRole('link', { name: 'Project overview', exact: true }).click();
 	await expect(page).toHaveURL(/\/tracker-overview$/);
 	expect(overview.calls.length).toBeGreaterThan(0);
@@ -128,7 +160,12 @@ for (const viewport of viewports) {
 	}, testInfo) => {
 		refusal(browserErrors, baseURL!, forbidden);
 		await overviewFixture(page, 'ready', { actor: grace });
+		const denied = page.waitForResponse(
+			(response) =>
+				new URL(response.url()).pathname === '/api/tracker-overview' && response.status() === 403
+		);
 		await open(page, viewport, '/projects');
+		await (await denied).finished();
 		await expect(page.getByRole('heading', { name: 'Shared projects' })).toBeVisible();
 		await expect(page.getByRole('link', { name: 'Project overview', exact: true })).toHaveCount(0);
 		await expect(page.locator(overviewRoot)).toHaveCount(0);

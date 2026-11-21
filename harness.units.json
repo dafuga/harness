@@ -2232,6 +2232,24 @@
 			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
 			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
 			"reason": "The hosted and native Project Overview surfaces share the Reports display contract."
+		},
+		{
+			"from": "packages/hub/src/routes/projects/+page.svelte",
+			"specifier": "$desktop/services/projects-sessions/ProjectSyncService",
+			"to": "packages/desktop/src/services/projects-sessions/ProjectSyncService.ts",
+			"reason": "The signed-in projects page shares focus and reconnect refresh."
+		},
+		{
+			"from": "packages/hub/src/routes/projects/+page.svelte",
+			"specifier": "$shared/projects-sessions/project-overview/ProjectOverview.svelte",
+			"to": "packages/reports/src/components/projects-sessions/project-overview/ProjectOverview.svelte",
+			"reason": "The owner sees the shared cards on the account page."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
+			"reason": "The native owner read returns the shared display snapshot."
 		}
 	]
 }

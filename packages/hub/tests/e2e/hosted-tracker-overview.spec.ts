@@ -34,11 +34,11 @@ const unavailable = {
 	reason: 'The owner endpoint answers 503 on purpose when no current snapshot exists.'
 };
 
-test('the owner sees the link on the home page, opens it and reads with GET only', async ({
+test('the owner sees the link on the projects page, opens it and reads with GET only', async ({
 	page
 }) => {
 	const { overview } = await overviewFixture(page);
-	await page.goto('/');
+	await page.goto('/projects');
 	await page.getByRole('link', { name: 'Project overview', exact: true }).click();
 	await expect(page).toHaveURL(/\/tracker-overview$/);
 	await expect(page.getByText('synthetic-sync', { exact: true })).toBeVisible();
@@ -48,18 +48,18 @@ test('the owner sees the link on the home page, opens it and reads with GET only
 	expect(overview.calls.every((call) => call.query === '')).toBe(true);
 });
 
-test('an unavailable owner read still offers the link on the home page', async ({
+test('an unavailable owner read still offers the link on the projects page', async ({
 	page,
 	browserErrors,
 	baseURL
 }) => {
 	refusal(browserErrors, baseURL!, unavailable);
 	await overviewFixture(page, 'unavailable');
-	await page.goto('/');
+	await page.goto('/projects');
 	await expect(page.getByRole('link', { name: 'Project overview', exact: true })).toBeVisible();
 });
 
-test('a signed-in non-owner sees no link on the home page', async ({
+test('a signed-in non-owner sees no link on the projects page', async ({
 	page,
 	browserErrors,
 	baseURL
@@ -70,7 +70,7 @@ test('a signed-in non-owner sees no link on the home page', async ({
 		(response) =>
 			new URL(response.url()).pathname === '/api/tracker-overview' && response.status() === 403
 	);
-	await page.goto('/');
+	await page.goto('/projects');
 	await (await refused).finished();
 	await expect(page.getByRole('heading', { name: 'Shared projects' })).toBeVisible();
 	await expect(page.getByRole('link', { name: 'Project overview', exact: true })).toHaveCount(0);

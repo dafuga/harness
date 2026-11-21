@@ -20,10 +20,7 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/routes/projects/+page.svelte",
-			"specification/units/hub.page.projects.json"
-		],
+		"source": ["packages/hub/src/routes/projects/+page.svelte"],
 		"symbols": ["+page"]
 	},
 	"contract": {
@@ -91,7 +88,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["project-overview-hub-projects"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
