@@ -21,7 +21,7 @@ import type { Git } from '../../../../utils/planning-collaboration/planGit';
 import { blob, revision } from '../../../../utils/planning-collaboration/planGit';
 import { planRead } from '../../../../utils/planning-collaboration/plan-read/planRead';
 import { readImage } from '../../../../utils/planning-collaboration/plan-design/readImage';
-import { optionOf } from '../../../../utils/planOptions';
+import { validateThreadReference } from './validateThreadReference';
 import {
 	clean,
 	commitFiles,
@@ -44,7 +44,7 @@ function messageValue(
 	}
 	if (input.mode === 'change') validateChange(input, plan);
 	else if (input.change) fail('invalid-input', 'Plan message cannot contain a change request');
-	for (const reference of input.references ?? []) validateReference(reference, plan);
+	for (const reference of input.references ?? []) validateThreadReference(reference, plan);
 	return {
 		id: randomUUID(),
 		unitId: plan.unitId,
@@ -72,28 +72,6 @@ function changedPath(path: string): void {
 	text(path);
 	if (path.startsWith('/') || path.split('/').includes('..') || path.includes('\\'))
 		fail('unsafe-path', 'Invalid changed path');
-}
-function validateReference(reference: ThreadMessage['references'][number], plan: PlanDetail): void {
-	if (reference.kind === 'approval' && plan.approvals.some((a) => a.id === reference.approvalId))
-		return;
-	if (
-		reference.kind === 'notes' &&
-		plan.versions.some(
-			(v) => v.version === reference.version && v.notes && v.notes.sha256 === reference.sha256
-		)
-	)
-		return;
-	if (
-		reference.kind === 'image' &&
-		plan.versions.some(
-			(v) =>
-				v.version === reference.version &&
-				v.images.some((i) => i.file === reference.file && i.sha256 === reference.sha256) &&
-				(reference.option === undefined || optionOf(v, reference.file) === reference.option)
-		)
-	)
-		return;
-	fail('invalid-input', 'Reference is not an artifact of this entity');
 }
 function approvedContent(approval: ApprovalRecord, imageHash: string | null): boolean {
 	if (imageHash === null) return approval.images.length === 0 && approval.notesSha256 !== null;
