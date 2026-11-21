@@ -1,0 +1,243 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.projects-sessions-tracker-item-read",
+	"uid": "u_xba7ieg4je",
+	"kind": "repository",
+	"title": "TrackerItemReadRepository",
+	"responsibility": "Owns the TrackerItemReadRepository persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/projects-sessions/TrackerItemReadRepository.ts",
+			"src/repositories/projects-sessions/TrackerItemReadRepository.types.ts"
+		],
+		"symbols": [
+			"TrackerItemReadRepository",
+			"TrackerItemReadRepository.constructor",
+			"TrackerItemReadRepository.get",
+			"TrackerItemReadRepository.list",
+			"TrackerItemReadRepository.digest",
+			"TrackerItemReadRepository.digestText",
+			"TrackerDigest",
+			"TrackerItem",
+			"TrackerItemListFilters",
+			"TrackerItemRow",
+			"TrackerItemListFilters",
+			"TrackerItemNote",
+			"TrackerItem",
+			"TrackerDigestItem",
+			"TrackerRecurringProblem",
+			"TrackerDigest"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerItemReadRepository.constructor._database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "TrackerItemReadRepository.get._idOrPrefix",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerItemReadRepository.list._filters",
+				"type": "TrackerItemListFilters",
+				"required": false,
+				"default": {}
+			},
+			{
+				"name": "TrackerItemReadRepository.digest._nowMs",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "TrackerItemReadRepository.digest._timeZone",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "TrackerItemReadRepository.digestText._nowMs",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "TrackerItemReadRepository.digestText._timeZone",
+				"type": "string",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerItemReadRepository.get",
+				"type": "TrackerItem"
+			},
+			{
+				"name": "TrackerItemReadRepository.list",
+				"type": "TrackerItem[]"
+			},
+			{
+				"name": "TrackerItemReadRepository.digest",
+				"type": "TrackerDigest"
+			},
+			{
+				"name": "TrackerItemReadRepository.digestText",
+				"type": "string"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "TrackerItemReadRepository.get",
+				"inputs": [
+					{
+						"name": "TrackerItemReadRepository.get._idOrPrefix",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerItemReadRepository.get",
+						"type": "TrackerItem"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "found"
+			},
+			{
+				"name": "TrackerItemReadRepository.list",
+				"inputs": [
+					{
+						"name": "TrackerItemReadRepository.list._filters",
+						"type": "TrackerItemListFilters",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerItemReadRepository.list",
+						"type": "TrackerItem[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "TrackerItemReadRepository.digest",
+				"inputs": [
+					{
+						"name": "TrackerItemReadRepository.digest._nowMs",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "TrackerItemReadRepository.digest._timeZone",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerItemReadRepository.digest",
+						"type": "TrackerDigest"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "found"
+			},
+			{
+				"name": "TrackerItemReadRepository.digestText",
+				"inputs": [
+					{
+						"name": "TrackerItemReadRepository.digestText._nowMs",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "TrackerItemReadRepository.digestText._timeZone",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerItemReadRepository.digestText",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerItemReadRepository.constructor",
+				"inputs": [
+					{
+						"name": "TrackerItemReadRepository.constructor._database",
+						"type": "SqliteDatabase",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerItemReadRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.projects-sessions-tracker-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/projects-sessions/TrackerItemReadRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/projects-sessions/TrackerItemReadRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
