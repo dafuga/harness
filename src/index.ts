@@ -194,3 +194,4 @@ export { TrackerSchemaAdapter } from './adapters/projects-sessions/TrackerSchema
 export { nextTrackerClock } from './utils/projects-sessions/nextTrackerClock';
 export { TrackerPersistenceService } from './services/projects-sessions/TrackerPersistenceService';
 export { TrackerCutoverCommand } from './commands/projects-sessions/TrackerCutoverCommand';
+export { TrackerLocalApiService } from './services/projects-sessions/TrackerLocalApiService';
