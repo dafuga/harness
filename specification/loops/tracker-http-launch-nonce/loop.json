@@ -2,38 +2,46 @@
 	"name": "tracker-http-launch-nonce",
 	"goal": "A native HTTP item create with approved automatic placement persists a fresh launch token and returns 201",
 	"createdAt": "2026-11-21T17:32:24.864Z",
-	"updatedAt": "2026-11-21T17:32:24.864Z",
+	"updatedAt": "2026-11-21T17:37:23.803Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T17:34:46.631Z",
+			"evidence": "Native POST /items with auto true and approved placement reproduced 500; expected 201 and a signed-wire-compatible launch token."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T17:34:47.985Z",
+			"evidence": "Strengthened the existing TrackerLocalApiService item-create method case by setting auto true, approving placement and checking the persisted token."
 		},
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T17:37:06.642Z",
+			"evidence": "Committed HTTP case at e5793a6691 reproduced expected 500 to be 201."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T17:37:10.440Z",
+			"evidence": "Inject a fresh random UUID into the existing native HTTP mutation planner."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T17:37:23.803Z",
+			"evidence": "Unchanged API regression passed on e6ef17db25 and persisted the qualified launch token."
 		},
 		{
 			"id": "verify",
