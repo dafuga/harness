@@ -11,6 +11,7 @@ Game projects retain app pages and add independent mechanics and executable chec
 ```bash
 bun run dev -- new lib my-lib
 bun run dev -- new app my-app
+bun run dev -- new app my-static-app --adapter static
 bun run dev -- new game my-game --dimension 3d
 bun run dev -- generate model Post title:string body:text --adapter sqlite
 bun run dev -- generate mailer Welcome
@@ -36,6 +37,9 @@ bun run dev -- explain list
 bun run dev -- verify run
 bun run check
 ```
+
+`harness new app <name> --adapter static` generates a prerendered SvelteKit project that builds
+to `build/` with adapter-static. The default app scaffold uses adapter-auto.
 
 The Explorer’s APIs catalog lists HTTP endpoints and method exports at the selected project revision. Each page has an APIs tab for source-recorded usage through its components and services. API cards open contracts and consumer links in the same revision. Computed or external requests are not presented as confirmed same-app endpoint dependencies.
 
