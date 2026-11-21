@@ -68,9 +68,21 @@ export async function shot(run: Acceptance, name: string): Promise<void> {
 export async function openDesign(run: Acceptance): Promise<string> {
 	const { page, project } = run;
 	const open = JSON.stringify(`Open ${project.name}`);
-	await page.until(`return press(${open}) ? 'pressed' : '';`, 'pressed');
+	await page.until(
+		`if (press(${open})) return 'project control pressed';
+return JSON.stringify({
+	root: location.pathname === '/',
+	overview: location.pathname === '/projects',
+	connected: panel().includes('Connected to'),
+	recentProjects: document.querySelectorAll('.recent-projects button').length
+});`,
+		'project control pressed'
+	);
 	await page.until('return document.title;', project.name);
-	await page.until("return pressLink('Review designs') ? 'pressed' : '';", 'pressed');
+	await page.until(
+		"return pressLink('Review designs') ? 'review link pressed' : '';",
+		'review link pressed'
+	);
 	const image = "const image = document.querySelector('.image-canvas img');";
 	return page.until(`${image} return image?.naturalWidth ? 'loaded' : '';`, 'loaded', 90);
 }
