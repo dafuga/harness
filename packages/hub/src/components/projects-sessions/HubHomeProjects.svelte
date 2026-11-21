@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_yclqwrgobq -->
 <script lang="ts">
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 	import type { ProjectSummary } from 'collaboration';
 	import type { ProjectSnapshot } from '$desktop/models/development-tooling/Desktop.types';
 	import type { CatalogEntity } from '$desktop/models/development-tooling/DesktopEntity.types';
@@ -85,7 +86,7 @@
 								></hx-span
 							>
 							{#if last}<hx-span class="hh-change"
-									><hx-code>{last.hash.slice(0, 7)}</hx-code> {when(last.authoredAt)}</hx-span
+									><hx-code>{shortCommit(last.hash)}</hx-code> {when(last.authoredAt)}</hx-span
 								>{/if}
 						</hx-button>
 					</hx-li>
@@ -126,7 +127,7 @@
 				<hx-ol class="hh-history">
 					{#each detail.commits.slice(0, 10) as commit (commit.hash)}
 						<hx-li class="hh-commit">
-							<hx-code>{commit.hash.slice(0, 7)}</hx-code>
+							<hx-code>{shortCommit(commit.hash)}</hx-code>
 							<hx-span class="po-item-title">{commit.subject}</hx-span>
 							<hx-time class="po-item-meta" datetime={commit.authoredAt}
 								>{when(commit.authoredAt)}</hx-time

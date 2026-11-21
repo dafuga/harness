@@ -43,10 +43,7 @@
 		reload: () => void;
 		close: () => void;
 	} = $props();
-	let chatOpen = $state(false);
-	$effect(() => {
-		chatOpen = Boolean(agentId);
-	});
+	let chatOpen = $derived(Boolean(agentId));
 	const summary = $derived(
 		{
 			agents:

@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_gtrdllvpk7 -->
 <script lang="ts">
+	import { SvelteMap } from 'svelte/reactivity';
 	import EmptyState from '$shared/explorer-ui/explorer-kit/EmptyState.svelte';
 	import type { HomeRun } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { runDay, runTime } from './hubHomePresentation';
@@ -16,7 +17,7 @@
 		{ id: 'claude', label: 'Claude routines' }
 	] as const;
 	const groups = $derived.by(() => {
-		const days = new Map<string, HomeRun[]>();
+		const days = new SvelteMap<string, HomeRun[]>();
 		for (const run of runs ?? []) {
 			if (filter !== 'all' && run.source !== filter) continue;
 			const day = runDay(run.at, now);

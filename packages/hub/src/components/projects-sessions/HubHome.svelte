@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_mqkhzvyhou -->
 <script lang="ts">
+	import { SvelteMap } from 'svelte/reactivity';
 	import type { ProjectSummary } from 'collaboration';
 	import type { ProjectSnapshot } from '$desktop/models/development-tooling/Desktop.types';
 	import type {
@@ -26,7 +27,7 @@
 	let agentId = $state<string | undefined>();
 	let list = $state<ProjectSummary[] | null>(null);
 	let projectSnapshots = $state<Record<string, ProjectSnapshot>>({});
-	const projectFlights = new Map<string, Promise<ProjectSnapshot>>();
+	const projectFlights = new SvelteMap<string, Promise<ProjectSnapshot>>();
 	let projectError = $state(false);
 	let home = $state<ReadHomeResult | null>(null);
 	let now = $state(Date.now());

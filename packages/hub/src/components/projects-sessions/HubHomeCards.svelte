@@ -43,45 +43,41 @@
 			: `${working} working · ${view.agents.length - working - attention} idle or offline`}
 		open={() => open('agents')}
 	>
-		{#snippet children()}
-			{#if view.agents === null}
-				<HubHomeSkeleton />
-			{:else if view.agents.length}
-				<hx-ul class="po-items hh-agent-list">
-					{#each view.agents.slice(0, 4) as agent, index (agent.id)}
-						<HubHomeRow title={agent.name} meta={agent.task} extra={index >= 2}>
-							{#snippet lead()}<hx-span
-									class="hh-avatar"
-									data-state={agent.state}
-									aria-hidden="true">{initials(agent.name)}</hx-span
-								>{/snippet}
-							{#snippet trailing()}
-								<hx-span class="hh-agent-side">
-									<Pill
-										tone={`hh-tone po-state po-${overviewTone(agent.state)}`}
-										state={overviewTone(agent.state)}
-									>
-										<hx-span class="po-mark" aria-hidden="true"></hx-span>{agentLabels[agent.state]}
-									</Pill>
-									<hx-button
-										type="button"
-										class="po-action hh-talk"
-										onclick={() => open('agents', agent.id)}
-										aria-label={`Message ${agent.name}`}>Message</hx-button
-									>
-								</hx-span>
-							{/snippet}
-						</HubHomeRow>
-					{/each}
-				</hx-ul>
-			{:else}
-				{@render empty(
-					view.trackerConnected
-						? 'No agents are connected.'
-						: 'Tracker is unavailable for this account.'
-				)}
-			{/if}
-		{/snippet}
+		{#if view.agents === null}
+			<HubHomeSkeleton />
+		{:else if view.agents.length}
+			<hx-ul class="po-items hh-agent-list">
+				{#each view.agents.slice(0, 4) as agent, index (agent.id)}
+					<HubHomeRow title={agent.name} meta={agent.task} extra={index >= 2}>
+						{#snippet lead()}<hx-span class="hh-avatar" data-state={agent.state} aria-hidden="true"
+								>{initials(agent.name)}</hx-span
+							>{/snippet}
+						{#snippet trailing()}
+							<hx-span class="hh-agent-side">
+								<Pill
+									tone={`hh-tone po-state po-${overviewTone(agent.state)}`}
+									state={overviewTone(agent.state)}
+								>
+									<hx-span class="po-mark" aria-hidden="true"></hx-span>{agentLabels[agent.state]}
+								</Pill>
+								<hx-button
+									type="button"
+									class="po-action hh-talk"
+									onclick={() => open('agents', agent.id)}
+									aria-label={`Message ${agent.name}`}>Message</hx-button
+								>
+							</hx-span>
+						{/snippet}
+					</HubHomeRow>
+				{/each}
+			</hx-ul>
+		{:else}
+			{@render empty(
+				view.trackerConnected
+					? 'No agents are connected.'
+					: 'Tracker is unavailable for this account.'
+			)}
+		{/if}
 		{#snippet badge()}
 			{#if attention}<Pill tone="hh-tone po-state po-needs-you" state="needs-you"
 					><hx-span class="po-mark" aria-hidden="true"></hx-span>{attention}
@@ -115,24 +111,22 @@
 				</hx-span>
 			{/if}
 		{/snippet}
-		{#snippet children()}
-			{#if view.quota === null}
-				<HubHomeSkeleton rows={2} />
-			{:else if view.quota.length}
-				<hx-div class="hh-q-preview">
-					{#each view.quota.slice(0, 2) as subscription (subscription.id)}
-						<HubQuotaSubscription {subscription} now={view.now} />
-					{/each}
-					{#if view.quota.length > 2}<hx-p class="po-more"
-							>{count(view.quota.length - 2, 'more subscription')}</hx-p
-						>{/if}
-				</hx-div>
-			{:else}
-				{@render empty(
-					view.quotaConnected ? 'No subscriptions connected.' : 'Provider readings are unavailable.'
-				)}
-			{/if}
-		{/snippet}
+		{#if view.quota === null}
+			<HubHomeSkeleton rows={2} />
+		{:else if view.quota.length}
+			<hx-div class="hh-q-preview">
+				{#each view.quota.slice(0, 2) as subscription (subscription.id)}
+					<HubQuotaSubscription {subscription} now={view.now} />
+				{/each}
+				{#if view.quota.length > 2}<hx-p class="po-more"
+						>{count(view.quota.length - 2, 'more subscription')}</hx-p
+					>{/if}
+			</hx-div>
+		{:else}
+			{@render empty(
+				view.quotaConnected ? 'No subscriptions connected.' : 'Provider readings are unavailable.'
+			)}
+		{/if}
 	</HubHomeCard>
 
 	<HubHomeWorkCards {view} {open} />

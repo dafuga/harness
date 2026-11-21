@@ -24,9 +24,7 @@ export async function readOverviewText(
 	request: Request,
 	maximum: number = MAX_BODY_BYTES
 ): Promise<string> {
-	if (!request.headers.get('Content-Type')?.startsWith('application/json')) invalid();
-	const declared = request.headers.get('Content-Length');
-	if (declared !== null && (!/^\d+$/.test(declared) || Number(declared) > maximum)) tooLarge();
+	assertJsonLength(request, maximum);
 	const reader = request.body?.getReader();
 	if (!reader) return invalid();
 	const chunks: Uint8Array[] = [];
@@ -40,6 +38,12 @@ export async function readOverviewText(
 		chunks.push(part.value);
 	}
 	return decode(chunks, size);
+}
+
+function assertJsonLength(request: Request, maximum: number) {
+	if (!request.headers.get('Content-Type')?.startsWith('application/json')) invalid();
+	const declared = request.headers.get('Content-Length');
+	if (declared !== null && (!/^\d+$/.test(declared) || Number(declared) > maximum)) tooLarge();
 }
 
 /** Parses and checks one snapshot. Only the display allowlist is kept; anything else is refused. */

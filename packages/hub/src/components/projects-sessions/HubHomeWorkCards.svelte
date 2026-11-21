@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_yo3goi2ees -->
 <script lang="ts">
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 	import { resolve } from '$app/paths';
 	import EmptyState from '$shared/explorer-ui/explorer-kit/EmptyState.svelte';
 	import { statusLabel } from '$shared/projects-sessions/project-overview/projectOverviewPresentation';
@@ -141,7 +142,7 @@
 				>
 					{#snippet trailing()}
 						{#if change}<hx-span class="hh-change"
-								><hx-code>{change.hash.slice(0, 7)}</hx-code>
+								><hx-code>{shortCommit(change.hash)}</hx-code>
 								{relativeWhen(change.authoredAt, view.now)}</hx-span
 							>{/if}
 					{/snippet}

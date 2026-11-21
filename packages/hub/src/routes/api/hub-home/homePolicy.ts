@@ -1,3 +1,7 @@
+import type {
+	HomeAgent,
+	HomeChatInput
+} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { ZodError } from 'zod';
 import { hubHttpFailure } from '../[...path]/hub-api-controller/hubHttp';
 import { readOverviewText } from '../tracker-overview/trackerOverviewInput';
@@ -13,12 +17,17 @@ const headers = { 'Cache-Control': 'private, no-store', 'X-Content-Type-Options'
 const json = (body: unknown, status = 200) => Response.json(body, { status, headers });
 const unreadable = { granted: false, snapshot: null };
 
+async function verifiedOwner(request: Request, deps: HomeDeps) {
+	if (!deps.ownerId || !deps.sessions) return null;
+	const session = await deps.sessions.resolve(request);
+	return session?.actor.id === deps.ownerId ? session : null;
+}
+
 export async function serveHubHome(request: Request, deps: HomeDeps): Promise<Response> {
 	const url = new URL(request.url);
 	const read = url.pathname === root && request.method === 'GET';
 	try {
-		const session = deps.ownerId ? await deps.sessions?.resolve(request) : null;
-		const owner = session && session.actor.id === deps.ownerId ? session : null;
+		const owner = await verifiedOwner(request, deps);
 		if (!owner) return read ? json(unreadable) : json({ error: 'not-found' }, 404);
 		return await dispatchHome(request, url, deps, owner);
 	} catch (cause) {
@@ -82,18 +91,23 @@ async function browserChat(
 		return json((await chatReceipt(deps.db, actor, id, deps.now)) ?? { id, status: 'unconfirmed' });
 	}
 	if (request.method !== 'POST' || url.search) return json({ error: 'not-found' }, 404);
+	return await postChat(request, deps, actor);
+}
+
+async function postChat(request: Request, deps: HomeDeps, actor: string) {
+	if (!deps.db || !deps.bucket) return json({ error: 'unavailable' }, 503);
 	const message = chatInput.parse(JSON.parse(await readOverviewText(request, 8192)));
 	const snapshot = await readHomeSnapshot(deps.bucket, actor, deps.now);
 	const agent = snapshot?.agents.find((entry) => entry.id === message.agentId);
-	if (
-		!agent?.itemId ||
-		agent.itemId !== message.itemId ||
-		(message.kind === 'answer' && agent.question !== message.question)
-	)
-		return json({ id: message.id, status: 'refused' });
+	if (!matchesCurrentItem(message, agent)) return json({ id: message.id, status: 'refused' });
 	const receipt = await queueChat(deps.db, actor, message, deps.now);
 	return json(
 		receipt ?? { id: message.id, status: 'refused' },
 		receipt?.status === 'queued' ? 202 : 200
 	);
+}
+
+function matchesCurrentItem(message: HomeChatInput, agent: HomeAgent | undefined) {
+	if (!agent?.itemId || agent.itemId !== message.itemId) return false;
+	return message.kind === 'note' || agent.question === message.question;
 }

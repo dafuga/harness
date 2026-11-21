@@ -28,13 +28,11 @@
 		"symbols": [
 			"HubHomeCards",
 			"HubHomeCards.empty",
-			"HubHomeCards.children",
 			"HubHomeCards.lead",
 			"HubHomeCards.trailing",
 			"HubHomeCards.badge",
 			"HubHomeCards.footer",
-			"HubHomeCards.badge",
-			"HubHomeCards.children"
+			"HubHomeCards.badge"
 		]
 	},
 	"contract": {
@@ -79,18 +77,6 @@
 				"outputs": [
 					{
 						"name": "HubHomeCards.empty",
-						"type": "markup"
-					}
-				],
-				"errors": [],
-				"errorStatus": "none-found"
-			},
-			{
-				"name": "HubHomeCards.children",
-				"inputs": [],
-				"outputs": [
-					{
-						"name": "HubHomeCards.children",
 						"type": "markup"
 					}
 				],
@@ -151,18 +137,6 @@
 				"outputs": [
 					{
 						"name": "HubHomeCards.badge",
-						"type": "markup"
-					}
-				],
-				"errors": [],
-				"errorStatus": "none-found"
-			},
-			{
-				"name": "HubHomeCards.children",
-				"inputs": [],
-				"outputs": [
-					{
-						"name": "HubHomeCards.children",
 						"type": "markup"
 					}
 				],
