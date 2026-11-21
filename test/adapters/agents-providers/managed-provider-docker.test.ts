@@ -6,7 +6,7 @@ import { observedTaskOperation } from '../../support/taskProfiles';
 
 const image = 'sha256:' + 'a'.repeat(64);
 
-test('Docker command retains exact arguments and grants only the offline fixture workspace', async () => {
+test('Docker command preserves argv and uses a task-owned workspace volume and bounded tmpfs', async () => {
 	const args = ['-c', 'printf "%s" "$1"', 'literal', '$(touch unexpected); * "', ''];
 	const command = await observedTaskOperation(
 		'adapter.agents-providers-managed-provider-docker',
@@ -38,7 +38,9 @@ test('Docker command retains exact arguments and grants only the offline fixture
 		'--user=501:20',
 		'--tmpfs=/tmp:rw,nosuid,nodev,size=256m',
 		'--env=HOME=/tmp',
-		'--mount=type=bind,"source=/private/tmp/a space,with ""quotes""",target=/workspace,bind-recursive=disabled',
+		'--env=TMPDIR=/tmp',
+		'--env=BUN_INSTALL_CACHE_DIR=/workspace/.cache/harness/bun',
+		'--mount=type=volume,source=harness-task-fixture-owner,target=/workspace,volume-nocopy,"volume-subpath=a space,with ""quotes"""',
 		'--workdir=/workspace',
 		'--label=org.harness.managed-provider-task=fixture-owner',
 		'--entrypoint=/bin/sh',
