@@ -2,6 +2,8 @@
 status: planned
 shippedIn: null
 unitIds:
+  - command.projects-sessions-project-list
+  - module.projects
   - reports.module.projects-sessions-project-overview-read-project-overview
 owner: null
 reviewedAt: null

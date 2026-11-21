@@ -42,6 +42,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "module.projects",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "module.resources",
 			"via": "reexport",
 			"origin": "derived"
