@@ -51,33 +51,39 @@
 			{
 				"name": "trackerItemInput.body",
 				"type": "TrackerItemInput",
-				"required": true
+				"required": true,
+				"description": "Incoming fields and aliases from the Tracker API request."
 			},
 			{
 				"name": "trackerItemInput.context",
 				"type": "TrackerItemMutationContext",
-				"required": true
+				"required": true,
+				"description": "Clock, source node, candidates and optional launch planner."
 			},
 			{
 				"name": "trackerItemInput.current",
 				"type": "TrackerItemSnapshot",
-				"required": false
+				"required": false,
+				"description": "Existing item when updating, omitted for creation."
 			},
 			{
 				"name": "guardTrackerDuplicate.context",
 				"type": "TrackerItemMutationContext",
-				"required": true
+				"required": true,
+				"description": "Mutation context containing candidate items to compare."
 			},
 			{
 				"name": "guardTrackerDuplicate.probe",
 				"type": "TrackerDuplicateProbe",
-				"required": true
+				"required": true,
+				"description": "Duplicate search text, scope, and optional force setting."
 			}
 		],
 		"outputs": [
 			{
 				"name": "planTrackerItemMutation",
-				"type": "TrackerItemMutationPlan<Receipt>"
+				"type": "TrackerItemMutationPlan<Receipt>",
+				"description": "Target item ID, journal fields and the original receipt when supplied."
 			}
 		],
 		"errors": [
@@ -108,7 +114,8 @@
 				"outputs": [
 					{
 						"name": "planTrackerItemMutation",
-						"type": "TrackerItemMutationPlan<Receipt>"
+						"type": "TrackerItemMutationPlan<Receipt>",
+						"description": "Target item ID, journal fields and the original receipt when supplied."
 					}
 				],
 				"errors": [],
@@ -120,17 +127,20 @@
 					{
 						"name": "trackerItemInput.body",
 						"type": "TrackerItemInput",
-						"required": true
+						"required": true,
+						"description": "Incoming fields and aliases from the Tracker API request."
 					},
 					{
 						"name": "trackerItemInput.context",
 						"type": "TrackerItemMutationContext",
-						"required": true
+						"required": true,
+						"description": "Clock, source node, candidates and optional launch planner."
 					},
 					{
 						"name": "trackerItemInput.current",
 						"type": "TrackerItemSnapshot",
-						"required": false
+						"required": false,
+						"description": "Existing item when updating, omitted for creation."
 					}
 				],
 				"outputs": [
@@ -153,12 +163,14 @@
 					{
 						"name": "guardTrackerDuplicate.context",
 						"type": "TrackerItemMutationContext",
-						"required": true
+						"required": true,
+						"description": "Mutation context containing candidate items to compare."
 					},
 					{
 						"name": "guardTrackerDuplicate.probe",
 						"type": "TrackerDuplicateProbe",
-						"required": true
+						"required": true,
+						"description": "Duplicate search text, scope, and optional force setting."
 					}
 				],
 				"outputs": [

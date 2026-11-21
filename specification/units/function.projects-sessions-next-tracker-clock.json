@@ -8,8 +8,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/projects-sessions/nextTrackerClock.ts"],
-		"symbols": ["trackerClockMilliseconds", "nextTrackerClock"]
+		"source": [
+			"src/utils/projects-sessions/nextTrackerClock.ts"
+		],
+		"symbols": [
+			"trackerClockMilliseconds",
+			"nextTrackerClock"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -43,62 +43,74 @@
 			{
 				"name": "normalizeTrackerCron.value",
 				"type": "TrackerItemValue",
-				"required": true
+				"required": true,
+				"description": "Five-field cron expression or supported shorthand to validate."
 			},
 			{
 				"name": "normalizeTrackerCron.timeZone",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "IANA time zone used to evaluate the recurrence."
 			},
 			{
 				"name": "normalizeTrackerCron.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Epoch milliseconds used to start the schedule's five-year search window."
 			},
 			{
 				"name": "trackerDateFormatter.timeZone",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "IANA time zone for calendar date and time parts."
 			},
 			{
 				"name": "trackerDateParts.time",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Epoch milliseconds to break into localized calendar parts."
 			},
 			{
 				"name": "trackerDateParts.formatter",
 				"type": "Intl.DateTimeFormat",
-				"required": true
+				"required": true,
+				"description": "Formatter configured for the caller's time zone."
 			},
 			{
 				"name": "trackerLocalStamp.time",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Epoch milliseconds to format as a local day and minute."
 			},
 			{
 				"name": "trackerLocalStamp.timeZone",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "IANA time zone used for the local stamp."
 			},
 			{
 				"name": "normalizeTrackerDue.value",
 				"type": "TrackerItemValue",
-				"required": true
+				"required": true,
+				"description": "Due date as a day, timestamp, relative expression, or a clear value."
 			},
 			{
 				"name": "normalizeTrackerDue.clock",
 				"type": "TrackerItemClock",
-				"required": true
+				"required": true,
+				"description": "Current epoch time and optional time zone used to resolve relative dates."
 			},
 			{
 				"name": "trackerIsoTime.epoch",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Epoch milliseconds to format as an ISO timestamp."
 			},
 			{
 				"name": "validateTrackerTimeZone.timeZone",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Proposed IANA time zone to validate."
 			},
 			{
 				"name": "normalizeTrackerItemFields.input",
@@ -115,28 +127,33 @@
 			{
 				"name": "clearsTrackerRecurrence.value",
 				"type": "TrackerItemValue",
-				"required": true
+				"required": true,
+				"description": "Proposed recurrence value to check for a clear request."
 			},
 			{
 				"name": "requestsTrackerLaunch.value",
 				"type": "TrackerItemValue",
-				"required": true
+				"required": true,
+				"description": "Requested auto-launch value to check for a launch request."
 			},
 			{
 				"name": "trackerItemValueOr.value",
 				"type": "Value",
-				"required": true
+				"required": true,
+				"description": "Tracker field value that may be absent or empty."
 			},
 			{
 				"name": "trackerItemValueOr.fallback",
 				"type": "Fallback",
-				"required": true
+				"required": true,
+				"description": "Replacement returned when the input is absent or empty."
 			}
 		],
 		"outputs": [
 			{
 				"name": "normalizeTrackerItemFields",
-				"type": "TrackerItemFields"
+				"type": "TrackerItemFields",
+				"description": "Mutation fields normalized to the Tracker journal representation."
 			}
 		],
 		"errors": [
@@ -154,17 +171,20 @@
 					{
 						"name": "normalizeTrackerCron.value",
 						"type": "TrackerItemValue",
-						"required": true
+						"required": true,
+						"description": "Five-field cron expression or supported shorthand to validate."
 					},
 					{
 						"name": "normalizeTrackerCron.timeZone",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "IANA time zone used to evaluate the recurrence."
 					},
 					{
 						"name": "normalizeTrackerCron.now",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Epoch milliseconds used to start the schedule's five-year search window."
 					}
 				],
 				"outputs": [
@@ -182,7 +202,8 @@
 					{
 						"name": "trackerDateFormatter.timeZone",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "IANA time zone for calendar date and time parts."
 					}
 				],
 				"outputs": [
@@ -200,12 +221,14 @@
 					{
 						"name": "trackerDateParts.time",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Epoch milliseconds to break into localized calendar parts."
 					},
 					{
 						"name": "trackerDateParts.formatter",
 						"type": "Intl.DateTimeFormat",
-						"required": true
+						"required": true,
+						"description": "Formatter configured for the caller's time zone."
 					}
 				],
 				"outputs": [
@@ -223,12 +246,14 @@
 					{
 						"name": "trackerLocalStamp.time",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Epoch milliseconds to format as a local day and minute."
 					},
 					{
 						"name": "trackerLocalStamp.timeZone",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "IANA time zone used for the local stamp."
 					}
 				],
 				"outputs": [
@@ -246,12 +271,14 @@
 					{
 						"name": "normalizeTrackerDue.value",
 						"type": "TrackerItemValue",
-						"required": true
+						"required": true,
+						"description": "Due date as a day, timestamp, relative expression, or a clear value."
 					},
 					{
 						"name": "normalizeTrackerDue.clock",
 						"type": "TrackerItemClock",
-						"required": true
+						"required": true,
+						"description": "Current epoch time and optional time zone used to resolve relative dates."
 					}
 				],
 				"outputs": [
@@ -269,7 +296,8 @@
 					{
 						"name": "trackerIsoTime.epoch",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Epoch milliseconds to format as an ISO timestamp."
 					}
 				],
 				"outputs": [
@@ -287,7 +315,8 @@
 					{
 						"name": "validateTrackerTimeZone.timeZone",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Proposed IANA time zone to validate."
 					}
 				],
 				"outputs": [
@@ -318,7 +347,8 @@
 				"outputs": [
 					{
 						"name": "normalizeTrackerItemFields",
-						"type": "TrackerItemFields"
+						"type": "TrackerItemFields",
+						"description": "Mutation fields normalized to the Tracker journal representation."
 					}
 				],
 				"errors": [],
@@ -330,7 +360,8 @@
 					{
 						"name": "clearsTrackerRecurrence.value",
 						"type": "TrackerItemValue",
-						"required": true
+						"required": true,
+						"description": "Proposed recurrence value to check for a clear request."
 					}
 				],
 				"outputs": [
@@ -348,7 +379,8 @@
 					{
 						"name": "requestsTrackerLaunch.value",
 						"type": "TrackerItemValue",
-						"required": true
+						"required": true,
+						"description": "Requested auto-launch value to check for a launch request."
 					}
 				],
 				"outputs": [
@@ -366,12 +398,14 @@
 					{
 						"name": "trackerItemValueOr.value",
 						"type": "Value",
-						"required": true
+						"required": true,
+						"description": "Tracker field value that may be absent or empty."
 					},
 					{
 						"name": "trackerItemValueOr.fallback",
 						"type": "Fallback",
-						"required": true
+						"required": true,
+						"description": "Replacement returned when the input is absent or empty."
 					}
 				],
 				"outputs": [
