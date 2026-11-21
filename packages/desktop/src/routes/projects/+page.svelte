@@ -11,6 +11,7 @@
 		RemoteMobileStatus
 	} from '../../models/development-tooling/Environment.types';
 	import { selectEnvironment } from '../../lib/verification-evidence/select-environment/selectEnvironment';
+	import { ProjectSyncService } from '../../services/projects-sessions/ProjectSyncService';
 	import '../../lib/styles/workspace.css';
 	import '../../lib/styles/design.css';
 
@@ -45,38 +46,50 @@
 		let asked = 0;
 		/** The computer this read is for: null before any status, empty while not online. */
 		let pairing: string | null = null;
-		/** Every answer asked for before a change of pairing or account is discarded. */
-		const show = () => {
+		/** Every answer asked for before a change of pairing or account, or before a later read, is discarded. */
+		const reload = async () => {
 			const ticket = ++asked;
-			snapshot = null;
-			void read(bridge, !!phone).then((value) => {
-				if (ticket === asked) snapshot = value;
-			});
+			const value = await read(bridge, !!phone);
+			if (ticket === asked) snapshot = value;
 		};
-		const clear = () => {
+		/** A fresh pairing blanks the rows until its own read answers. */
+		const show = () => {
+			snapshot = null;
+			void reload();
+		};
+		/** Rows gone at once; an answer in flight is discarded. The refresh of a paired phone goes on. */
+		const cleared = () => {
 			asked++;
 			snapshot = unavailable;
+		};
+		/** Re-reads on focus, when shown, when back online and every half minute, but only on a paired phone. */
+		const sync = new ProjectSyncService({ refresh: reload });
+		const clear = () => {
+			sync.stop();
+			cleared();
 		};
 		/** The overview is read while the computer is online, and cleared the moment it is not. */
 		const follow = (status: RemoteMobileStatus) => {
 			const key = status.state === 'online' ? (status.host?.id ?? 'online') : '';
 			if (key === pairing) return;
 			pairing = key;
-			if (key) show();
-			else clear();
+			if (!key) return clear();
+			show();
+			sync.start();
 		};
 		if (!phone) show();
 		else {
 			releases.push(phone.onStatus(follow));
 			releases.push(
 				bridge?.onCacheStatus?.((status) => {
-					if (status.status === 'denied') clear();
+					if (status.status === 'denied') cleared();
 				})
 			);
 			void phone.status().then(follow, clear);
 		}
 		return () => {
 			asked++;
+			sync.stop();
 			releases.forEach((release) => release?.());
 		};
 	});

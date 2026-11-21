@@ -106,12 +106,15 @@ test('a pairing that is revoked while shown clears the rows and reads nothing mo
 	expect(calls.length).toBe(before);
 });
 
-test('a denied overview read after the link clears the rows and captures the denied state', async ({
+test('a denial after the card is shown clears it on focus and captures the denied state', async ({
 	page
 }) => {
 	await page.setViewportSize(phone);
 	await pairedPhoneFixture(page, 'denied');
 	await openFromLanding(page);
+	await expect(page.getByText('fixture-needs', { exact: true }).first()).toBeVisible();
+	/** The paired, visible page re-reads on focus; the Hub now denies this owner, so the old card goes. */
+	await page.evaluate(() => window.dispatchEvent(new Event('focus')));
 	await expect(page.getByText('fixture-needs', { exact: true })).toHaveCount(0);
 	await expect(page.getByText('fixture-done', { exact: true })).toHaveCount(0);
 	await expectReadsOnly(page);

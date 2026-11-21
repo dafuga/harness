@@ -1,0 +1,214 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.endpoint.api-tracker-overview",
+	"uid": "u_c7d5pmjxa2",
+	"kind": "endpoint",
+	"title": "/api/tracker-overview",
+	"responsibility": "Owns the owner-only /api/tracker-overview HTTP endpoint: the GET read of the stored Project Overview snapshot and the native PUT publish.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/routes/api/tracker-overview/+server.ts"],
+		"symbols": ["GET", "PUT"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "GET.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "GET.platform",
+				"type": "App.Platform | undefined",
+				"required": true
+			},
+			{
+				"name": "PUT.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "PUT.platform",
+				"type": "App.Platform | undefined",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "GET",
+				"type": "Response",
+				"description": "Runs the policy directly. The owner's current ready snapshot answers 200 with Cache-Control private, no-store; any other owner-authorized read answers 503 with exactly {status:'unavailable'}."
+			},
+			{
+				"name": "PUT",
+				"type": "Response",
+				"description": "Runs the policy. Only the owner's native bearer in the projects scope may publish; a valid snapshot is stored with the server receive time and answers 204 with no body."
+			}
+		],
+		"errors": [
+			{
+				"name": "not-found",
+				"type": "Response 404",
+				"description": "The owner setting is missing or the path is not the exact one. The body is the opaque {error:'not-found'} and carries no CORS grant."
+			},
+			{
+				"name": "session-required",
+				"type": "Response 401",
+				"description": "No verified session resolves from the request. The body is not read."
+			},
+			{
+				"name": "forbidden",
+				"type": "Response 403",
+				"description": "A verified actor other than the owner, or a browser cookie on PUT."
+			},
+			{
+				"name": "invalid-input",
+				"type": "Response 400",
+				"description": "A query on GET or PUT, or a publish body that is not a strict, consistent JSON snapshot."
+			},
+			{
+				"name": "artifact-too-large",
+				"type": "Response 413",
+				"description": "A publish body over 256 KiB, refused while the stream is read."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "GET",
+				"inputs": [
+					{
+						"name": "GET.request",
+						"type": "Request",
+						"required": true,
+						"description": "The GET or PUT request for the exact path /api/tracker-overview. Cookie or native bearer credentials are read by the verified session resolver."
+					},
+					{
+						"name": "GET.platform",
+						"type": "App.Platform | undefined",
+						"required": true,
+						"description": "The host platform bindings (D1, R2 and private settings) read for this one request. Missing settings answer the opaque not-found."
+					}
+				],
+				"outputs": [
+					{
+						"name": "GET",
+						"type": "Promise<Response>",
+						"description": "Runs the policy directly. The owner's current ready snapshot answers 200 with Cache-Control private, no-store; any other owner-authorized read answers 503 with exactly {status:'unavailable'}."
+					}
+				],
+				"errors": [
+					{
+						"name": "not-found",
+						"type": "Response 404",
+						"description": "The owner setting is missing or the path is not the exact one. The body is the opaque {error:'not-found'} and carries no CORS grant."
+					},
+					{
+						"name": "session-required",
+						"type": "Response 401",
+						"description": "No verified session resolves from the request. The body is not read."
+					},
+					{
+						"name": "forbidden",
+						"type": "Response 403",
+						"description": "A verified actor other than the owner, or a browser cookie on PUT."
+					},
+					{
+						"name": "invalid-input",
+						"type": "Response 400",
+						"description": "A query on GET or PUT, or a publish body that is not a strict, consistent JSON snapshot."
+					},
+					{
+						"name": "artifact-too-large",
+						"type": "Response 413",
+						"description": "A publish body over 256 KiB, refused while the stream is read."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "PUT",
+				"inputs": [
+					{
+						"name": "PUT.request",
+						"type": "Request",
+						"required": true,
+						"description": "The GET or PUT request for the exact path /api/tracker-overview. Cookie or native bearer credentials are read by the verified session resolver."
+					},
+					{
+						"name": "PUT.platform",
+						"type": "App.Platform | undefined",
+						"required": true,
+						"description": "The host platform bindings (D1, R2 and private settings) read for this one request. Missing settings answer the opaque not-found."
+					}
+				],
+				"outputs": [
+					{
+						"name": "PUT",
+						"type": "Promise<Response>",
+						"description": "Runs the policy. Only the owner's native bearer in the projects scope may publish; a valid snapshot is stored with the server receive time and answers 204 with no body."
+					}
+				],
+				"errors": [
+					{
+						"name": "not-found",
+						"type": "Response 404",
+						"description": "The owner setting is missing or the path is not the exact one. The body is the opaque {error:'not-found'} and carries no CORS grant."
+					},
+					{
+						"name": "session-required",
+						"type": "Response 401",
+						"description": "No verified session resolves from the request. The body is not read."
+					},
+					{
+						"name": "forbidden",
+						"type": "Response 403",
+						"description": "A verified actor other than the owner, or a browser cookie on PUT."
+					},
+					{
+						"name": "invalid-input",
+						"type": "Response 400",
+						"description": "A query on GET or PUT, or a publish body that is not a strict, consistent JSON snapshot."
+					},
+					{
+						"name": "artifact-too-large",
+						"type": "Response 413",
+						"description": "A publish body over 256 KiB, refused while the stream is read."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.config.hub-env",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.module.tracker-overview-api",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/routes/api/tracker-overview/+server.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/routes/api/tracker-overview/+server.ts"
+			}
+		]
+	},
+	"scenarios": ["project-overview-hub-api"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

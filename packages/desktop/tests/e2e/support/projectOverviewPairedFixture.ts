@@ -49,10 +49,13 @@ function pairedEmit(shell: PairedShell) {
 	});
 }
 
-/** The overview answer for the Nth read: a non-owner is denied, a denied owner loses it on the second read. */
+/**
+ * The overview answer for the Nth read: a non-owner is denied, a denied owner keeps the card for the
+ * landing confirmation and the page's own read, and loses it on the third (a focus refresh).
+ */
 function pairedOverviewReply(mode: PairedMode, snapshot: unknown, read: number) {
 	if (mode === 'non-owner') return pairedReply(403, { error: 'permission-denied' });
-	if (mode === 'denied' && read > 1) return pairedReply(403, { error: 'permission-denied' });
+	if (mode === 'denied' && read > 2) return pairedReply(403, { error: 'permission-denied' });
 	if (mode === 'unavailable') return pairedReply(503, { status: 'unavailable' });
 	return pairedReply(200, snapshot);
 }
