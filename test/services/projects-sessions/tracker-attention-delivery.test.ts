@@ -1,9 +1,11 @@
-import { expect, test } from 'vitest';
+import { test } from 'vitest';
+import { expect } from '../../verificationExpect';
 import {
 	chief,
 	clock,
 	eventId,
 	fixtureItem,
+	measureTick,
 	minute,
 	notificationFixture,
 	start,
@@ -11,13 +13,7 @@ import {
 	worker
 } from './tracker-notification/fixture';
 
-test('pause and resume release one relevant Chief of Staff batch, with recurring agent wake-ups outside quiet hours', async () => {
-	const f = notificationFixture();
-	const night = start + 180 * minute;
-	await f.service.tick();
-	await f.service.pause('fixture-operator');
-	f.at(night);
-
+function seedPausedAttention(f: ReturnType<typeof notificationFixture>, night: number): void {
 	f.rows.set('a', fixtureItem('a', { status: 'done', notes: 'Fixture result' }));
 	f.rows.set(
 		'b',
@@ -61,6 +57,17 @@ test('pause and resume release one relevant Chief of Staff batch, with recurring
 		at: night,
 		payload: { occurrence: 'current', every: '0 23 * * *' }
 	});
+}
+
+test('pause and resume release one relevant Chief of Staff batch, with recurring agent wake-ups outside quiet hours', async () => {
+	const f = notificationFixture();
+	const night = start + 180 * minute;
+	await f.service.tick();
+	await f.service.pause('fixture-operator');
+	f.at(night);
+
+	seedPausedAttention(f, night);
+
 	await f.service.tick();
 	expect(f.calls.map((call) => call.destination)).toEqual([worker]);
 	expect(wire(f.calls[0]).recurring_due).toMatchObject([{ item_id: 'd', occurrence: 'current' }]);
@@ -114,7 +121,7 @@ test('tick keeps a delayed window out of quiet hours and retries the attention b
 	expect(f.calls).toHaveLength(1);
 
 	f.at(release + 30 * minute);
-	await f.restart().tick();
+	await measureTick(f.restart(), 'quiet-hour-batch');
 	const id = eventId(`flag|a|${clock()}`);
 	expect(f.calls.map((call) => call.id)).toEqual([id, id]);
 	expect(f.queue.read().attention.get(`flag|a|${clock()}`)).toMatchObject({
@@ -122,4 +129,43 @@ test('tick keeps a delayed window out of quiet hours and retries the attention b
 		batchId: id
 	});
 	expect(f.queue.read().lastAttentionError).toBeUndefined();
+});
+
+test('enqueue keeps only the latest unsent launch-wait text and drops waits with superseded tokens', async () => {
+	const f = notificationFixture();
+	f.at(start + 5 * minute);
+	f.rows.set('waiting', fixtureItem('waiting', { auto: 'fixture-token' }));
+	f.rows.set('stale', fixtureItem('stale', { auto: 'old-token' }));
+	f.service.enqueue({
+		kind: 'launch_wait',
+		itemId: 'waiting',
+		computer: 'fixture-computer',
+		reason: 'first reason'
+	});
+	f.service.enqueue({
+		kind: 'launch_wait',
+		itemId: 'stale',
+		computer: 'fixture-computer',
+		reason: 'stale reason'
+	});
+	f.at(start + 15 * minute);
+	f.service.enqueue({
+		kind: 'launch_wait',
+		itemId: 'waiting',
+		computer: 'fixture-computer',
+		reason: 'latest reason'
+	});
+	f.rows.set('stale', { ...f.rows.get('stale')!, auto: 'new-token' });
+	await f.service.tick();
+	expect(f.calls).toHaveLength(0);
+
+	f.at(start + 30 * minute);
+	await f.restart().tick();
+	const id = eventId('launch_wait|waiting|fixture-token');
+	expect(wire(f.calls[0])).toMatchObject({
+		event_id: id,
+		counts: { launch_wait: 1 },
+		text: 'LAUNCH WAITING: Fixture waiting on fixture-computer - latest reason'
+	});
+	expect(f.queue.read().attention.get('launch_wait|stale|old-token')?.status).toBe('dropped');
 });

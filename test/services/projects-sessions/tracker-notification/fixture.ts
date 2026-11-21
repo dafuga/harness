@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { measureWorkload } from '../../../support/measureWorkload';
 import { TrackerNotificationService } from '../../../../src/services/projects-sessions/TrackerNotificationService';
 import type {
 	TrackerDeliveryRequest,
@@ -32,9 +33,9 @@ export function memoryQueue(): FixtureQueue {
 	let saved = emptyQueue();
 	let tail: Promise<unknown> = Promise.resolve();
 	return {
-		read: () => structuredClone(saved),
+		read: () => globalThis.structuredClone(saved),
 		update(change) {
-			const draft = structuredClone(saved);
+			const draft = globalThis.structuredClone(saved);
 			const result = change(draft);
 			saved = draft;
 			return result;
@@ -135,4 +136,10 @@ export function eventId(...keys: string[]): string {
 
 export function wire(request: TrackerDeliveryRequest) {
 	return JSON.parse(request.body);
+}
+
+export function measureTick(service: TrackerNotificationService, workload: string): Promise<void> {
+	return measureWorkload('service.projects-sessions-tracker-notification', workload, () =>
+		service.tick()
+	);
 }

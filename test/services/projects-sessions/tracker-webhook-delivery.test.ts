@@ -1,32 +1,18 @@
-import { expect, test } from 'vitest';
+import { test } from 'vitest';
+import { expect } from '../../verificationExpect';
 import {
 	chief,
 	clock,
 	eventId,
 	fixtureItem,
-	minute,
+	measureTick,
 	notificationFixture,
 	start,
 	wire,
 	worker
 } from './tracker-notification/fixture';
 
-test('tick seeds its cursor and routes one stable owner batch while suppressing self changes and note-only changes', async () => {
-	const f = notificationFixture();
-	const at = clock();
-	f.rows.set('a', fixtureItem('a', { agent: 'fixture-agent', owner: ' Fixture-Alias ' }));
-	f.ops.push({
-		seq: 1,
-		item_id: 'a',
-		hlc: at,
-		node: 'fixture-peer',
-		actor: 'fixture-other',
-		fields: { status: 'done' }
-	});
-	await f.service.tick();
-	expect(f.queue.read().cursor).toBe(1);
-	expect(f.calls).toHaveLength(0);
-
+function addOwnerChanges(f: ReturnType<typeof notificationFixture>): string {
 	const changed = clock(start + 1);
 	f.ops.push(
 		{
@@ -54,14 +40,11 @@ test('tick seeds its cursor and routes one stable owner batch while suppressing 
 			fields: { 'note+': 'fixture note' }
 		}
 	);
-	await f.restart().tick();
-	await f.service.tick();
-	expect(f.calls).toHaveLength(1);
-	const [call] = f.calls;
-	const id = eventId(`changed|a|${changed}`);
-	expect(call.destination).toEqual(worker);
-	expect(call.headers?.['x-tracker-event-id']).toBe(id);
-	expect(wire(call)).toEqual({
+	return changed;
+}
+
+function expectedOwnerBatch(id: string) {
+	return {
 		event_id: id,
 		event: 'attention',
 		to: 'fixture-agent',
@@ -103,7 +86,35 @@ test('tick seeds its cursor and routes one stable owner batch while suppressing 
 		recurring_due: [],
 		sent_at: new Date(start).toISOString(),
 		attempt: 1
+	};
+}
+
+test('tick seeds its cursor and routes one stable owner batch while suppressing self changes and note-only changes', async () => {
+	const f = notificationFixture();
+	const at = clock();
+	f.rows.set('a', fixtureItem('a', { agent: 'fixture-agent', owner: ' Fixture-Alias ' }));
+	f.ops.push({
+		seq: 1,
+		item_id: 'a',
+		hlc: at,
+		node: 'fixture-peer',
+		actor: 'fixture-other',
+		fields: { status: 'done' }
 	});
+	await f.service.tick();
+	expect(f.queue.read().cursor).toBe(1);
+	expect(f.calls).toHaveLength(0);
+
+	const changed = addOwnerChanges(f);
+
+	await measureTick(f.restart(), 'owner-routing');
+	await f.service.tick();
+	expect(f.calls).toHaveLength(1);
+	const [call] = f.calls;
+	const id = eventId(`changed|a|${changed}`);
+	expect(call.destination).toEqual(worker);
+	expect(call.headers?.['x-tracker-event-id']).toBe(id);
+	expect(wire(call)).toEqual(expectedOwnerBatch(id));
 	expect(f.queue.read().cursor).toBe(4);
 });
 

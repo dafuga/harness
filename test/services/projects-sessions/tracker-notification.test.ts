@@ -1,9 +1,11 @@
-import { expect, test } from 'vitest';
+import { test } from 'vitest';
+import { expect } from '../../verificationExpect';
 import type { FixtureQueue } from './tracker-notification/fixture.types';
 import {
 	clock,
 	fixtureItem,
 	memoryQueue,
+	measureTick,
 	minute,
 	notificationFixture,
 	owner,
@@ -12,17 +14,7 @@ import {
 	worker
 } from './tracker-notification/fixture';
 
-test('tick groups completion at one clock, snapshots local targets and retries only the rejected callback', async () => {
-	let rejected = false;
-	const f = notificationFixture({
-		send: async (request) => {
-			if (request.destination.id === owner.id && !rejected) {
-				rejected = true;
-				return { status: 'rejected', error: 'exit 1' };
-			}
-			return { status: 'sent' };
-		}
-	});
+function seedCallbacks(f: ReturnType<typeof notificationFixture>): string {
 	const transition = clock();
 	const callback = { ...owner, node: 'fixture-node' };
 	f.rows.set(
@@ -52,6 +44,22 @@ test('tick groups completion at one clock, snapshots local targets and retries o
 			clocks: { status: clock(start - minute - 1) }
 		})
 	);
+
+	return transition;
+}
+
+test('tick groups completion at one clock, snapshots local targets and retries only the rejected callback', async () => {
+	let rejected = false;
+	const f = notificationFixture({
+		send: async (request) => {
+			if (request.destination.id === owner.id && !rejected) {
+				rejected = true;
+				return { status: 'rejected', error: 'exit 1' };
+			}
+			return { status: 'sent' };
+		}
+	});
+	const transition = seedCallbacks(f);
 
 	await Promise.all([f.service.tick(), f.restart().tick()]);
 	expect(f.calls.map((call) => call.destination)).toEqual([owner, worker]);
@@ -163,7 +171,7 @@ test('tick replays the persisted request after an accepted send and a failed out
 	expect(issued).toEqual(f.calls[0]);
 	f.at(start + 10 * minute);
 	f.rows.set('a', { ...f.rows.get('a')!, title: 'Fixture a changed since delivery' });
-	await f.restart().tick();
+	await measureTick(f.restart(), 'callback-recovery');
 	await f.service.tick();
 	expect(f.calls).toEqual([issued, issued]);
 	expect(receipts.size).toBe(1);
