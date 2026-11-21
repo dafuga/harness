@@ -4,7 +4,8 @@ import type {
 	TrackerDispatchResult,
 	TrackerDispatchSnapshot,
 	TrackerDispatchStore,
-	TrackerRunReceipt
+	TrackerRunReceipt,
+	TrackerSessionEvidence
 } from '../../services/agents-providers/TrackerDispatcherService.types';
 import { canonicalNode } from '../../services/agents-providers/tracker-dispatcher-service/launchEligibility';
 import type { TrackerPersistenceService } from '../../services/projects-sessions/TrackerPersistenceService';
@@ -19,8 +20,10 @@ import {
 	dispatchJournalFields
 } from './tracker-dispatch-repository/dispatchItemFields';
 import {
+	adoptLegacyDispatchRun,
 	assertLegacyDispatchRollbackSafe,
 	dispatchRunRows,
+	legacyDispatchRuns,
 	managedDispatchRuns,
 	persistDispatchRun
 } from './tracker-dispatch-repository/dispatchRunRows';
@@ -57,6 +60,14 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 
 	managedRuns(): TrackerRunReceipt[] {
 		return managedDispatchRuns(this.store.database, this.node);
+	}
+
+	legacyRuns(): TrackerRunReceipt[] {
+		return legacyDispatchRuns(this.store.database, this.node);
+	}
+
+	adoptLegacy(run: TrackerRunReceipt, session: TrackerSessionEvidence): void {
+		adoptLegacyDispatchRun(this.store, run, session);
 	}
 
 	/** Call after quiescing the native writer, before starting the legacy dispatcher. */

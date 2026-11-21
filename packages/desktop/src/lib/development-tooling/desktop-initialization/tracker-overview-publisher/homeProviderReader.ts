@@ -1,15 +1,16 @@
 // @harness-uid u_pmptujoqui
+import { resolve } from 'node:path';
 import { open, rename, writeFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import type {
 	HomeProviderReadings,
 	HomeSubscription
-} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+} from '../../../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 import {
 	homeProviders,
 	homeSubscriptionPayload
-} from '$reports/lib/projects-sessions/hub-home/homeProviderPayload';
-import { noProviders } from '$reports/lib/projects-sessions/hub-home/homeTrackerProjection';
+} from '../../../../../../reports/src/lib/projects-sessions/hub-home/homeProviderPayload';
+import { noProviders } from '../../../../../../reports/src/lib/projects-sessions/hub-home/homeTrackerProjection';
 import { readCodexUsage } from './homeCodexUsage';
 
 const every = 5 * 60 * 1000;
@@ -54,19 +55,26 @@ async function codexHistory(reading: HomeSubscription, file: string, now: number
 	return next;
 }
 
-export function createHomeProviderReader(options: { file?: string; codexHistoryFile?: string }) {
+async function historyFile() {
+	const { app } = await import('electron');
+	return app ? resolve(app.getPath('userData'), 'hub-codex-usage.json') : undefined;
+}
+
+export function createHomeProviderReader(file?: string) {
 	let lastRead = -Infinity;
 	let cached: HomeProviderReadings = noProviders;
 	return async (now: number): Promise<HomeProviderReadings> => {
 		if (now - lastRead < every) return cached;
 		lastRead = now;
-		const external = await readExternal(options.file);
-		const file = options.codexHistoryFile;
-		const reading = file ? await readCodexUsage(now).catch(() => undefined) : null;
+		const external = await readExternal(file);
+		const reading = await readCodexUsage(now).catch(() => undefined);
+		const history = reading ? await historyFile().catch(() => undefined) : undefined;
 		const prior =
 			reading === undefined ? cached.quota?.find((sub) => sub.provider === 'codex') : null;
 		const codex =
-			reading && file ? await codexHistory(reading, file, now).catch(() => reading) : prior;
+			reading && history
+				? await codexHistory(reading, history, now).catch(() => reading)
+				: (reading ?? prior);
 		const quota = (external.quota ?? []).filter((sub) => sub.id !== codex?.id);
 		cached = {
 			routines: external.routines,

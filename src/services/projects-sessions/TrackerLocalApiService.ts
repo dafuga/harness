@@ -1,20 +1,19 @@
 // @harness-uid u_g7kdpz7bel
-import { randomBytes, randomUUID } from 'node:crypto';
+import { randomUUID } from 'node:crypto';
 import type { TrackerItemReadRepository } from '../../repositories/projects-sessions/TrackerItemReadRepository';
 import { checkTrackerItem } from '../../utils/projects-sessions/checkTrackerItem';
 import type { TrackerItemInput } from '../../utils/projects-sessions/normalizeTrackerItemFields.types';
 import { planTrackerItemMutation } from '../../utils/projects-sessions/planTrackerItemMutation';
-import type {
-	TrackerItemAction,
-	TrackerItemMutation
-} from '../../utils/projects-sessions/planTrackerItemMutation.types';
 import { trackerItemError } from '../../utils/projects-sessions/trackerItemError';
-import { trackerItemTransitions } from '../../utils/projects-sessions/trackerItemTransitions';
+import { itemAction, itemMutation } from './tracker-local-api-service/trackerLocalItemMutation';
 import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
 import { readTrackerRunEndpoint } from './tracker-local-api-service/readTrackerRunEndpoint';
 import type { TrackerPersistenceService } from './TrackerPersistenceService';
+import {
+	isTrackerManualLaunch,
+	planTrackerManualLaunch
+} from './tracker-local-api-service/trackerManualLaunch';
 
-const itemAlphabet = '0123456789abcdefghjkmnpqrstvwxyz';
 const maxBodyBytes = 1024 * 1024;
 
 /** Handles core item requests for the loopback listener over its shared Tracker journal. */
@@ -93,14 +92,26 @@ export class TrackerLocalApiService {
 
 	private async write(request: Request, [, id, verb]: string[]): Promise<Response | undefined> {
 		const action = itemAction(request.method, id, verb);
-		if (!action) return undefined;
+		const manual =
+			this.options.manualLaunch && request.method === 'POST' && id && isTrackerManualLaunch(verb);
+		if (!action && !manual) return undefined;
 		const body = await readItemBody(request);
 		request.signal.throwIfAborted();
-		const mutation: TrackerItemMutation =
-			action === 'add'
-				? { action, itemId: newItemId(), body }
-				: { action, item: this.items.resolve(id), body };
-		const plan = planTrackerItemMutation(mutation, {
+		const context = this.mutationContext();
+		const plan = action
+			? planTrackerItemMutation(itemMutation(action, id, body, this.items), context)
+			: planTrackerManualLaunch(verb, this.items.resolve(id), body, context);
+		if (plan.fields)
+			this.store.appendLocal({
+				itemId: plan.itemId,
+				fields: plan.fields,
+				actor: readActor(request.headers)
+			});
+		return trackerResponse(action === 'add' ? 201 : 200, this.items.getStored(plan.itemId));
+	}
+
+	private mutationContext() {
+		return {
 			node: this.store.node,
 			now: this.options.now?.() ?? Date.now(),
 			timeZone: this.options.timeZone,
@@ -108,32 +119,8 @@ export class TrackerLocalApiService {
 			candidates: this.items.candidates(),
 			validateModel: this.options.validateModel,
 			planLaunch: this.options.planLaunch
-		});
-		this.store.appendLocal({
-			itemId: plan.itemId,
-			fields: plan.fields,
-			actor: readActor(request.headers)
-		});
-		return trackerResponse(action === 'add' ? 201 : 200, this.items.getStored(plan.itemId));
+		};
 	}
-}
-
-function itemAction(
-	method: string,
-	id: string | undefined,
-	verb: string | undefined
-): TrackerItemAction | 'add' | undefined {
-	if (verb) {
-		if (method !== 'POST' || verb === 'remove') return undefined;
-		return Object.hasOwn(trackerItemTransitions, verb) ? (verb as TrackerItemAction) : undefined;
-	}
-	if (!id) return method === 'POST' ? 'add' : undefined;
-	if (method === 'PATCH') return 'update';
-	return method === 'DELETE' ? 'remove' : undefined;
-}
-
-function newItemId(): string {
-	return Array.from(randomBytes(10), (byte) => itemAlphabet[byte & 31]).join('');
 }
 
 function readActor(headers: Headers): string | null {
