@@ -31,17 +31,18 @@
 			"clearsTrackerRecurrence",
 			"requestsTrackerLaunch",
 			"TrackerItemClock",
+			"TrackerItemValue",
 			"TrackerItemInput",
 			"TrackerItemFields",
 			"trackerItemValueOr"
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "normalizeTrackerCron.value",
-				"type": "unknown",
+				"type": "TrackerItemValue",
 				"required": true
 			},
 			{
@@ -81,7 +82,7 @@
 			},
 			{
 				"name": "normalizeTrackerDue.value",
-				"type": "unknown",
+				"type": "TrackerItemValue",
 				"required": true
 			},
 			{
@@ -102,21 +103,23 @@
 			{
 				"name": "normalizeTrackerItemFields.input",
 				"type": "TrackerItemInput",
-				"required": true
+				"required": true,
+				"description": "The Store field map with unvalidated values. Undefined values are omitted and recorded values are journal-ready scalars."
 			},
 			{
 				"name": "normalizeTrackerItemFields.clock",
 				"type": "TrackerItemClock",
-				"required": true
+				"required": true,
+				"description": "The caller supplies the node, epoch milliseconds and applicable policy or time-zone inputs."
 			},
 			{
 				"name": "clearsTrackerRecurrence.value",
-				"type": "unknown",
+				"type": "TrackerItemValue",
 				"required": true
 			},
 			{
 				"name": "requestsTrackerLaunch.value",
-				"type": "unknown",
+				"type": "TrackerItemValue",
 				"required": true
 			},
 			{
@@ -132,68 +135,25 @@
 		],
 		"outputs": [
 			{
-				"name": "normalizeTrackerCron",
-				"type": "string"
-			},
-			{
-				"name": "trackerTimeZone",
-				"type": "unknown"
-			},
-			{
-				"name": "trackerDateFormatter",
-				"type": "Intl.DateTimeFormat"
-			},
-			{
-				"name": "trackerDateParts",
-				"type": "unknown"
-			},
-			{
-				"name": "trackerLocalStamp",
-				"type": "string"
-			},
-			{
-				"name": "normalizeTrackerDue",
-				"type": "string | null"
-			},
-			{
-				"name": "trackerIsoTime",
-				"type": "string"
-			},
-			{
-				"name": "validateTrackerTimeZone",
-				"type": "void"
-			},
-			{
 				"name": "normalizeTrackerItemFields",
 				"type": "TrackerItemFields"
-			},
-			{
-				"name": "clearsTrackerRecurrence",
-				"type": "boolean"
-			},
-			{
-				"name": "requestsTrackerLaunch",
-				"type": "boolean"
-			},
-			{
-				"name": "trackerItemValueOr",
-				"type": "NonNullable<Value> | Fallback"
 			}
 		],
 		"errors": [
 			{
-				"name": "TypeError",
-				"type": "thrown"
+				"name": "TrackerItemRequestError",
+				"type": "thrown",
+				"description": "A request with invalid Tracker input carries status 400 and a compatibility message."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "found",
 		"operations": [
 			{
 				"name": "normalizeTrackerCron",
 				"inputs": [
 					{
 						"name": "normalizeTrackerCron.value",
-						"type": "unknown",
+						"type": "TrackerItemValue",
 						"required": true
 					},
 					{
@@ -285,7 +245,7 @@
 				"inputs": [
 					{
 						"name": "normalizeTrackerDue.value",
-						"type": "unknown",
+						"type": "TrackerItemValue",
 						"required": true
 					},
 					{
@@ -345,12 +305,14 @@
 					{
 						"name": "normalizeTrackerItemFields.input",
 						"type": "TrackerItemInput",
-						"required": true
+						"required": true,
+						"description": "The Store field map with unvalidated values. Undefined values are omitted and recorded values are journal-ready scalars."
 					},
 					{
 						"name": "normalizeTrackerItemFields.clock",
 						"type": "TrackerItemClock",
-						"required": true
+						"required": true,
+						"description": "The caller supplies the node, epoch milliseconds and applicable policy or time-zone inputs."
 					}
 				],
 				"outputs": [
@@ -367,7 +329,7 @@
 				"inputs": [
 					{
 						"name": "clearsTrackerRecurrence.value",
-						"type": "unknown",
+						"type": "TrackerItemValue",
 						"required": true
 					}
 				],
@@ -385,7 +347,7 @@
 				"inputs": [
 					{
 						"name": "requestsTrackerLaunch.value",
-						"type": "unknown",
+						"type": "TrackerItemValue",
 						"required": true
 					}
 				],

@@ -1,8 +1,10 @@
+// @harness-uid u_dv4lnm54rz
 import {
 	trackerDateFormatter,
 	trackerDateParts,
 	validateTrackerTimeZone
 } from './normalizeTrackerDue';
+import type { TrackerItemValue } from './normalizeTrackerItemFields.types';
 import { trackerItemError } from './trackerItemError';
 import { trackerItemValueOr } from './trackerItemValueOr';
 import type { CronField, CronSchedule } from './normalizeTrackerCron.types';
@@ -32,7 +34,11 @@ const fields: readonly CronField[] = [
 const dayMs = 86_400_000;
 
 /** Validate against the same five-year horizon as Tracker 122e190, at the supplied time. */
-export function normalizeTrackerCron(value: unknown, timeZone: string, now: number): string {
+export function normalizeTrackerCron(
+	value: TrackerItemValue,
+	timeZone: string,
+	now: number
+): string {
 	validateTrackerTimeZone(timeZone);
 	const raw = String(trackerItemValueOr(value, '')).trim();
 	const schedule = parseSchedule(raw);

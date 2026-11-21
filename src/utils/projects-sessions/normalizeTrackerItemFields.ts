@@ -11,12 +11,13 @@ import { trackerItemValueOr } from './trackerItemValueOr';
 import type {
 	TrackerItemClock,
 	TrackerItemFields,
-	TrackerItemInput
+	TrackerItemInput,
+	TrackerItemValue
 } from './normalizeTrackerItemFields.types';
 
 const kinds = ['task', 'plan', 'goal', 'recurring'];
 const statuses = ['open', 'in_progress', 'blocked', 'done', 'ignored'];
-const recurringClearValues = new Set<unknown>([null, '', 'none']);
+const recurringClearValues = new Set<TrackerItemValue>([null, '', 'none']);
 
 const textFields = new Set([
 	'owner',
@@ -54,11 +55,11 @@ const flagFields = new Set([
 	'adapter_closed'
 ]);
 
-function normalizeText(value: unknown): string | null {
+function normalizeText(value: TrackerItemValue): string | null {
 	return value === null || value === '' ? null : String(value).trim();
 }
 
-const normalizeFlag = (value: unknown): number =>
+const normalizeFlag = (value: TrackerItemValue): number =>
 	value && value !== '0' && value !== 'false' ? 1 : 0;
 
 const normalizers = {
@@ -90,7 +91,7 @@ export function normalizeTrackerItemFields(
 
 function normalizeField(
 	key: string,
-	value: unknown,
+	value: TrackerItemValue,
 	clock: TrackerItemClock,
 	input: TrackerItemInput
 ): string | number | null {
@@ -102,14 +103,14 @@ function normalizeField(
 	throw trackerItemError(`unknown field "${key}"`);
 }
 
-function normalizeKind(value: unknown): string {
+function normalizeKind(value: TrackerItemValue): string {
 	if (typeof value !== 'string' || !kinds.includes(value)) {
 		throw trackerItemError(`kind must be one of ${kinds.join(', ')}`);
 	}
 	return value;
 }
 
-function normalizeStatus(value: unknown): string {
+function normalizeStatus(value: TrackerItemValue): string {
 	const normalized = String(value)
 		.toLowerCase()
 		.replace(/[\s-]+/g, '_');
@@ -120,13 +121,13 @@ function normalizeStatus(value: unknown): string {
 	return status;
 }
 
-function normalizeTitle(value: unknown): string {
+function normalizeTitle(value: TrackerItemValue): string {
 	const title = String(value).trim();
 	if (!title) throw trackerItemError('title must not be empty');
 	return title;
 }
 
-function normalizeCallback(value: unknown, clock: TrackerItemClock): string | null {
+function normalizeCallback(value: TrackerItemValue, clock: TrackerItemClock): string | null {
 	if (value === null || value === '') return null;
 	if (!value || typeof value !== 'object') {
 		throw trackerItemError('callback must be {url} or {cmd}');
@@ -139,7 +140,7 @@ function normalizeCallback(value: unknown, clock: TrackerItemClock): string | nu
 	throw trackerItemError('callback must have url or cmd');
 }
 
-function validateCallbackUrl(value: unknown): string {
+function validateCallbackUrl(value: TrackerItemValue): string {
 	const text = String(value);
 	let url: URL;
 	try {
@@ -151,7 +152,7 @@ function validateCallbackUrl(value: unknown): string {
 	return text;
 }
 
-function normalizeRepo(value: unknown): string | null {
+function normalizeRepo(value: TrackerItemValue): string | null {
 	const repo = normalizeText(value);
 	if (repo && !repo.startsWith('/') && !repo.startsWith('~')) {
 		throw trackerItemError('repo must be an absolute path');
@@ -160,7 +161,7 @@ function normalizeRepo(value: unknown): string | null {
 }
 
 function normalizeRecurrence(
-	value: unknown,
+	value: TrackerItemValue,
 	clock: TrackerItemClock,
 	input: TrackerItemInput
 ): string | null {
@@ -172,37 +173,37 @@ function normalizeRecurrence(
 	);
 }
 
-export function clearsTrackerRecurrence(value: unknown): boolean {
+export function clearsTrackerRecurrence(value: TrackerItemValue): boolean {
 	return recurringClearValues.has(value);
 }
 
-function normalizeTimeZone(value: unknown): string | null {
+function normalizeTimeZone(value: TrackerItemValue): string | null {
 	const timeZone = normalizeText(value);
 	if (timeZone) validateTrackerTimeZone(timeZone);
 	return timeZone;
 }
 
-function normalizeInstant(value: unknown): string | null {
+function normalizeInstant(value: TrackerItemValue): string | null {
 	return value === null || value === '' ? null : trackerIsoTime(Date.parse(value as string));
 }
 
-function normalizeResult(value: unknown): string | null {
+function normalizeResult(value: TrackerItemValue): string | null {
 	if (value === null || value === '') return null;
 	return typeof value === 'string' ? value : JSON.stringify(value);
 }
 
-function normalizeLaunchToken(value: unknown, clock: TrackerItemClock): string | null {
+function normalizeLaunchToken(value: TrackerItemValue, clock: TrackerItemClock): string | null {
 	const token = readTrackerLaunchToken(value);
 	if (token !== true) return token;
 	if (!clock.launchNonce) throw new TypeError('A Tracker launch nonce is required');
 	return `${clock.node}@${trackerIsoTime(clock.now)}#${clock.launchNonce}`;
 }
 
-export function requestsTrackerLaunch(value: unknown): boolean {
+export function requestsTrackerLaunch(value: TrackerItemValue): boolean {
 	return value !== undefined && Boolean(readTrackerLaunchToken(value));
 }
 
-function readTrackerLaunchToken(value: unknown): string | true | null {
+function readTrackerLaunchToken(value: TrackerItemValue): string | true | null {
 	if ([null, '', false, 0, '0', 'false'].includes(value as string | number | boolean | null)) {
 		return null;
 	}

@@ -1,4 +1,5 @@
-import type { TrackerItemClock } from './normalizeTrackerItemFields.types';
+// @harness-uid u_dv4lnm54rz
+import type { TrackerItemClock, TrackerItemValue } from './normalizeTrackerItemFields.types';
 import { trackerItemError } from './trackerItemError';
 import { trackerItemValueOr } from './trackerItemValueOr';
 
@@ -42,7 +43,10 @@ export function trackerLocalStamp(time: number, timeZone: string): string {
 	return `${calendarDate(date.year, date.month, date.day)} ${pad(date.hour)}:${pad(date.minute)}`;
 }
 
-export function normalizeTrackerDue(value: unknown, clock: TrackerItemClock): string | null {
+export function normalizeTrackerDue(
+	value: TrackerItemValue,
+	clock: TrackerItemClock
+): string | null {
 	if (value === null || value === undefined || value === '' || value === 'none') return null;
 	const text = String(value).trim();
 	const relative = /^\+(\d+)d$/.exec(text);

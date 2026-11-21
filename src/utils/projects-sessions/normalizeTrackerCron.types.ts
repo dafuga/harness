@@ -1,3 +1,4 @@
+// @harness-uid u_dv4lnm54rz
 export interface CronField {
 	readonly name: string;
 	readonly min: number;
