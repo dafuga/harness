@@ -1,4 +1,4 @@
-<!-- @harness-tier molecule -->
+<!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_yynkdbd66b -->
 <script lang="ts">
