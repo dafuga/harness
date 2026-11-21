@@ -14,6 +14,7 @@
 			"hub.component.login-panel",
 			"hub.component.project-create",
 			"hub.component.project-list",
+			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-h1",
 			"reports.component.shared-primitives-atoms-html-p"
 		]
@@ -71,6 +72,16 @@
 		},
 		{
 			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.page.tracker-overview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -32,9 +32,9 @@
 			"ReadyOverviewPayload",
 			"OverviewRecord",
 			"overviewSessions",
-			"OverviewDeps",
 			"OVERVIEW_PATH",
-			"serveTrackerOverview"
+			"serveTrackerOverview",
+			"OverviewDeps"
 		]
 	},
 	"contract": {
@@ -380,6 +380,11 @@
 		},
 		{
 			"unit": "reports.module.projects-sessions-project-overview-project-overview-privacy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
 			"via": "import",
 			"origin": "derived"
 		}

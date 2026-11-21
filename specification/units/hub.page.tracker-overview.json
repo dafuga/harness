@@ -22,7 +22,7 @@
 			"packages/hub/src/routes/tracker-overview/overviewClient.ts",
 			"packages/hub/src/routes/tracker-overview/overviewClient.types.ts"
 		],
-		"symbols": ["+page"]
+		"symbols": ["+page", "overviewPath", "readOverview", "watchWhileVisible", "OverviewOutcome"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,7 +42,49 @@
 			}
 		],
 		"errorStatus": "declared",
-		"operations": [],
+		"operations": [
+			{
+				"name": "readOverview",
+				"inputs": [
+					{
+						"name": "readOverview.fetcher",
+						"type": "typeof fetch",
+						"required": false
+					},
+					{
+						"name": "readOverview.signal",
+						"type": "AbortSignal",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "readOverview",
+						"type": "Promise<OverviewOutcome>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "watchWhileVisible",
+				"inputs": [
+					{
+						"name": "watchWhileVisible.refresh",
+						"type": "() => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "watchWhileVisible",
+						"type": "()"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
 		"initialization": []
 	},
 	"dependencies": [
@@ -70,6 +112,11 @@
 			"unit": "reports.component.projects-sessions-project-overview-project-overview",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
@@ -83,14 +130,14 @@
 		]
 	},
 	"scenarios": ["project-overview-hub-page"],
-	"budgets": {
-		"size": "frozen",
-		"complexity": "frozen",
-		"performance": []
-	},
 	"preview": {
 		"scenario": "project-overview-hub-page",
 		"state": "ready",
 		"viewport": "desktop"
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
 	}
 }

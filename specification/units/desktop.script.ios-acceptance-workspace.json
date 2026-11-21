@@ -9,11 +9,16 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/scripts/ios-acceptance-workspace.ts"],
-		"symbols": ["workspace", "savedCopies", "reconnection"]
+		"symbols": ["pairedOverview", "workspace", "savedCopies", "reconnection"]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "pairedOverview.run",
+				"type": "Acceptance",
+				"required": true
+			},
 			{
 				"name": "workspace.run",
 				"type": "Acceptance",
@@ -59,6 +64,29 @@
 		],
 		"errorStatus": "declared",
 		"operations": [
+			{
+				"name": "pairedOverview",
+				"inputs": [
+					{
+						"name": "pairedOverview.run",
+						"type": "Acceptance",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "pairedOverview",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "workspace",
 				"inputs": [

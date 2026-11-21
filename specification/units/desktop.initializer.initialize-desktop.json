@@ -129,6 +129,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.module.tracker-overview-publisher",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.service.comment-outbox",
 			"via": "import",
 			"origin": "derived"

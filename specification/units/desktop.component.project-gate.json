@@ -47,6 +47,12 @@
 				"examples": [true, false]
 			},
 			{
+				"name": "ProjectGate.overview",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
 				"name": "ProjectGate.busy",
 				"type": "boolean",
 				"required": true,
