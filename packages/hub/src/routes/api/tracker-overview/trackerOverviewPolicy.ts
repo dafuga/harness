@@ -66,10 +66,14 @@ async function dispatch(request: Request, deps: OverviewDeps): Promise<Response>
 	if (session.actor.id !== ownerId) return problem(403, 'forbidden');
 	const key = await overviewKey(ownerId);
 	if (request.method === 'GET') return read(request, deps, key);
-	const native = session.kind === 'native' && session.resource === 'projects';
-	if (request.method !== 'PUT' || !native) return problem(403, 'forbidden');
+	if (!isNativePublish(request, session)) return problem(403, 'forbidden');
 	if (new URL(request.url).search !== '') return problem(400, 'invalid-input');
 	return publish(request, deps, key);
+}
+
+/** Only a native client holding a project-scoped session may PUT; browser and other scopes are refused. */
+function isNativePublish(request: Request, session: { kind: string; resource: string }): boolean {
+	return request.method === 'PUT' && session.kind === 'native' && session.resource === 'projects';
 }
 
 async function read(
