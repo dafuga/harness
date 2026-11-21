@@ -81,7 +81,7 @@
 			{
 				"name": "RecordAssemblyService.assemble",
 				"type": "Promise<VerificationRecord>",
-				"description": "Resolves to a sealed verification record containing source identity, profile and tools, component versions, measurements, impact, filtered tests, judged scenarios, optional builds, budget and reason results, gates, and failures. Assembly generates finishedAt, omits setup checks from tests, and sets id to the SHA-256 hash of the other record fields.",
+				"description": "Seals the recorded source, checks, scenarios and gate results. An optional artifact gate binds a passing full run to the retained file and its digest.",
 				"examples": [
 					{
 						"id": "4727c5bd8473ce5bc3e7b376318425909810beaaf87b8f12f6fd046a1c61c1e0",
@@ -183,7 +183,7 @@
 					{
 						"name": "RecordAssemblyService.assemble",
 						"type": "Promise<VerificationRecord>",
-						"description": "Resolves to a sealed verification record containing source identity, profile and tools, component versions, measurements, impact, filtered tests, judged scenarios, optional builds, budget and reason results, gates, and failures. Assembly generates finishedAt, omits setup checks from tests, and sets id to the SHA-256 hash of the other record fields.",
+						"description": "Seals the recorded source, checks, scenarios and gate results. An optional artifact gate binds a passing full run to the retained file and its digest.",
 						"examples": [
 							{
 								"id": "4727c5bd8473ce5bc3e7b376318425909810beaaf87b8f12f6fd046a1c61c1e0",

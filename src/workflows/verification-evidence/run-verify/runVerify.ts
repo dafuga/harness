@@ -8,6 +8,7 @@ export { renderVerify } from './renderVerify';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { fail } from '../../../core/development-tooling/errors';
+import { resourcePriority } from '../../../core/execution-runtimes/resourceTypes';
 import {
 	defaultVerifyConfig,
 	verifyConfigFile,
@@ -35,7 +36,9 @@ import {
 	type RevisionSide
 } from '../../development-tooling/loadRevisions';
 import { runtimeKind } from '../../development-tooling/runImpact';
+import { resourceWork } from '../../../utils/execution-runtimes/resourceWork';
 import { TrustedBaseService } from './TrustedBaseService';
+import { partialRetention, requiresPerformance } from './verifyAdmission';
 import { VerificationService } from './verification-service/VerificationService';
 
 async function resolveCommit(git: GitAdapter, reference: string): Promise<string> {
@@ -57,16 +60,34 @@ async function provenBase(git: GitAdapter, commit: string, base: string | undefi
 
 /** Verifies one exact commit in a clean snapshot; the record is stored even when it fails. */
 export async function verifyRun(options: VerifyOptions = {}): Promise<VerifyResult> {
+	if (partialRetention(options))
+		return fail('Artifact retention requires full commit verification.');
 	const root = resolve(options.root ?? process.cwd());
 	const git = new GitAdapter(root);
 	if (!(await git.isRepository())) return fail('harness verify needs a Git repository.');
 	const commit = await resolveCommit(git, options.commit ?? 'HEAD');
-	return options.entity
-		? verifyEntity(git, commit, { ...options, root })
-		: verifyFull(git, commit, { ...options, root });
+	const request = { ...options, root };
+	if (options.entity) return verifyEntity(git, commit, request);
+	const env = verifyEnv(request);
+	if (options.retainArtifact === undefined || env.HARNESS_RESOURCE_LEASE)
+		return verifyFull(git, commit, request, env);
+	return resourceWork(
+		{
+			priority: resourcePriority.parse(env.HARNESS_RESOURCE_PRIORITY),
+			label: 'Verification export'
+		},
+		(lease) => verifyFull(git, commit, request, lease.env),
+		env,
+		{ signal: options.signal }
+	);
 }
 
-async function verifyFull(git: GitAdapter, commit: string, options: VerifyOptions) {
+async function verifyFull(
+	git: GitAdapter,
+	commit: string,
+	options: VerifyOptions,
+	env: ReturnType<typeof verifyEnv>
+) {
 	const root = options.root!;
 	const { requestedBase, proven } = await provenBase(git, commit, options.base);
 	const baseCommit = proven?.commit ?? null;
@@ -98,10 +119,11 @@ async function verifyFull(git: GitAdapter, commit: string, options: VerifyOption
 		impact,
 		config,
 		verificationProfile: options.profile,
+		retainArtifact: options.retainArtifact,
+		signal: options.signal,
 		requirePerformance: requiresPerformance(options, config),
 		testTimeoutMs: options.testTimeout ? Number(options.testTimeout) : undefined,
-		entity: options.entity,
-		env: verifyEnv(options),
+		env,
 		// What was written about the range is held to the writing limits: its reasons, and the
 		// stored messages of its commits, so a commit made past the hook does not pass.
 		explained: async () => reasons
@@ -193,8 +215,4 @@ export async function verifyStamp(
 ): Promise<IdentifiedBuild & { directory: string }> {
 	const target = resolve(directory);
 	return { directory: target, ...(await new BuildIdentityService().stamp(target)) };
-}
-
-function requiresPerformance(options: VerifyOptions, config: VerifyConfig): boolean {
-	return options.requirePerformance === true || config.performanceRequired === 1;
 }

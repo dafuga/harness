@@ -14,6 +14,7 @@ export interface RunContext {
 	profile: string;
 	lite?: boolean;
 	env: Record<string, string | undefined>;
+	signal?: AbortSignal;
 	/** Byte caps on what the checks may capture; none when absent. */
 	limits?: CaptureLimits;
 }

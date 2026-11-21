@@ -23,13 +23,9 @@ export class SnapshotRunService {
 	async execute(plan: PlannedCheck[], artifactPaths: string[] = []): Promise<Executed> {
 		const { root, config, context } = this.run;
 		const needed = this.buildsToIdentify(this.run.needed ?? 'all');
+		context.signal?.throwIfAborted();
 		const snapshot = await SnapshotAdapter.create(root, context.commit, config.outputs);
-		const seen = { mutated: new Set<string>(), added: new Set<string>() };
-		const observe = async (): Promise<void> => {
-			const drift = await snapshot.drift();
-			for (const path of drift.mutated) seen.mutated.add(path);
-			for (const path of drift.added) seen.added.add(path);
-		};
+		const drift = trackDrift(snapshot);
 		try {
 			for (const path of config.link) await snapshot.link(root, path);
 			const limits = captureLimits(config);
@@ -39,18 +35,20 @@ export class SnapshotRunService {
 			const tools = setupFailures.length > 0 ? [] : await this.tools(runner, setupFailures);
 			const wanted = config.builds.filter((build) => needed === 'all' || needed.has(build.id));
 			const compiled = await this.identities.declared(snapshot.directory, wanted);
-			await observe();
-			const outcomes: CheckOutcome[] = [];
-			for (const check of setupFailures.length > 0 ? [] : plan) {
-				outcomes.push(await runner.run(check));
-				await observe();
-			}
+			await drift.observe();
+			const outcomes = await runChecks(runner, setupFailures.length > 0 ? [] : plan, drift.observe);
+			context.signal?.throwIfAborted();
 			const artifacts = await built(snapshot, artifactPaths);
-			const [mutated, added] = [[...seen.mutated].sort(), [...seen.added].sort()];
 			const moved = await this.identities.changed(snapshot.directory, compiled.found);
 			const buildFailures = [...compiled.failures, ...moved];
-			const observed = { outcomes, mutated, added, setupFailures, tools, artifacts };
-			return { ...observed, ...recordedBuilds(config, needed, compiled.found), buildFailures };
+			const observed = { outcomes, ...drift.paths(), setupFailures, tools, artifacts };
+			const exported = await retainedArtifact(this.run, snapshot, observed, buildFailures);
+			return {
+				...observed,
+				...recordedBuilds(config, needed, compiled.found),
+				buildFailures,
+				...exported
+			};
 		} finally {
 			await snapshot.remove();
 		}
@@ -109,6 +107,62 @@ export class SnapshotRunService {
 		}
 		return failures;
 	}
+}
+
+/** Retains the requested generated file only from a clean snapshot whose checks passed. */
+async function retainedArtifact(
+	run: SnapshotRun,
+	snapshot: SnapshotAdapter,
+	observed: Pick<Executed, 'outcomes' | 'mutated' | 'added' | 'setupFailures'>,
+	buildFailures: string[]
+): Promise<Pick<Executed, 'retainedArtifact' | 'artifactFailures'>> {
+	const { retainArtifact, context } = run;
+	if (retainArtifact === undefined) return {};
+	const { outcomes, mutated, added, setupFailures } = observed;
+	if (
+		mutated.length ||
+		added.length ||
+		setupFailures.length ||
+		buildFailures.length ||
+		outcomes.some((outcome) => !outcome.passed)
+	)
+		return {
+			artifactFailures: ['Artifact retention requires a clean snapshot and passing checks.']
+		};
+	const retained = await snapshot.retainArtifact(retainArtifact, context.directory);
+	return retained
+		? { retainedArtifact: retained, artifactFailures: [] }
+		: {
+				artifactFailures: [
+					'The requested artifact is missing or is not an eligible generated file.'
+				]
+			};
+}
+
+function trackDrift(snapshot: SnapshotAdapter) {
+	const mutated = new Set<string>();
+	const added = new Set<string>();
+	return {
+		async observe() {
+			const drift = await snapshot.drift();
+			for (const path of drift.mutated) mutated.add(path);
+			for (const path of drift.added) added.add(path);
+		},
+		paths: () => ({ mutated: [...mutated].sort(), added: [...added].sort() })
+	};
+}
+
+async function runChecks(
+	runner: CheckRunService,
+	plan: PlannedCheck[],
+	observe: () => Promise<void>
+): Promise<CheckOutcome[]> {
+	const outcomes: CheckOutcome[] = [];
+	for (const check of plan) {
+		outcomes.push(await runner.run(check));
+		await observe();
+	}
+	return outcomes;
 }
 
 /** The optional byte caps of the config, leaving out any it does not declare. */
