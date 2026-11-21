@@ -1,29 +1,20 @@
 // @harness-uid u_yga4vj5ueo
 import { execFile } from 'node:child_process';
-import { extname, isAbsolute, resolve } from 'node:path';
 import { promisify } from 'node:util';
 import type { Command } from 'commander';
 import { ExpectedCliError } from '../../core/development-tooling/errors';
 import type { PublishOptions, RunMode } from './HarborInspectionCommand.types';
-import { HARBOR_RUN_PROFILES } from './harborRunProfiles';
+import {
+	HARBOR_RUN_PROFILES,
+	installedEntry,
+	nodeExecutable,
+	runtimeEnv,
+	unsetIfEmpty
+} from './harborRunProfiles';
 import { registerHarborAppTools } from './registerHarborAppTools';
 
 const execute = promisify(execFile);
 const CANCEL_GRACE_MS = 35_000;
-const RUNTIME_ENV = [
-	'PATH',
-	'HOME',
-	'USERPROFILE',
-	'SystemRoot',
-	'APPDATA',
-	'LOCALAPPDATA',
-	'TMPDIR',
-	'TMP',
-	'TEMP',
-	'LANG',
-	'LC_ALL',
-	'HARBOR_HOME'
-];
 
 export class HarborInspectionCommand {
 	register(program: Command): void {
@@ -140,37 +131,6 @@ function publishArgs(project: string, options: PublishOptions): string[] {
 	return ['publish', project, ...verification];
 }
 
-function installedEntry(sdk: boolean): string {
-	const variable = sdk ? 'HARNESS_HARBOR_APP_SDK_PATH' : 'HARNESS_HARBOR_CLI_PATH';
-	const entry = process.env[variable];
-	if (!entry || !isAbsolute(entry) || !['.js', '.cjs', '.mjs'].includes(extname(entry))) {
-		throw new ExpectedCliError(`Set ${variable} to the installed Harbor package entry.`);
-	}
-	return entry;
-}
-
-function nodeExecutable(): string {
-	const node = unsetIfEmpty(process.env.HARNESS_HARBOR_NODE_PATH) ?? Bun.which('node');
-	if (!node || !isAbsolute(node) || /\.(?:bat|cmd)$/i.test(node)) {
-		throw new ExpectedCliError('Set HARNESS_HARBOR_NODE_PATH to an absolute Node executable.');
-	}
-	return node;
-}
-
-function runtimeEnv(mode: RunMode, node: string): Record<string, string | undefined> {
-	const env: Record<string, string | undefined> = Object.fromEntries(
-		RUNTIME_ENV.map((key) => [key, process.env[key]])
-	);
-	if (mode === 'inspect') return env;
-	const sdkEnv = { ...env, HARNESS_CLI_PATH: resolve(process.argv[1]) };
-	if (mode !== 'publish') return sdkEnv;
-	return {
-		...sdkEnv,
-		HARNESS_HARBOR_CLI_PATH: process.env.HARNESS_HARBOR_CLI_PATH,
-		HARNESS_HARBOR_NODE_PATH: node
-	};
-}
-
 async function waitForCancellable(child: ReturnType<typeof execute>) {
 	let grace: ReturnType<typeof setTimeout> | undefined;
 	const cancel = (signal: 'SIGINT' | 'SIGTERM') => {
@@ -188,11 +148,6 @@ async function waitForCancellable(child: ReturnType<typeof execute>) {
 		process.off('SIGTERM', onTerminate);
 		clearTimeout(grace);
 	}
-}
-
-// Empty values count as unset, matching the earlier `||` fallback.
-function unsetIfEmpty(value: string | undefined): string | undefined {
-	return value === '' ? undefined : value;
 }
 
 function rpcArgs(raw: string | undefined): string[] {

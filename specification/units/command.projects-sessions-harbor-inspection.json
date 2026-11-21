@@ -4,7 +4,7 @@
 	"uid": "u_yga4vj5ueo",
 	"kind": "command",
 	"title": "HarborInspectionCommand",
-	"responsibility": "Registers Harbor inspection, SDK app tooling and verified testnet publication and delegates each operation to its operator-selected installed Harbor package.",
+	"responsibility": "Registers Harbor inspection, SDK app tooling, MCP stdio and verified testnet publication through the installed Harbor packages.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -50,7 +50,7 @@
 			{
 				"name": "HarborInspectionCommand.register",
 				"type": "void",
-				"description": "Adds Harbor version, chain info, agent and service status, runtime doctor, app templates, scaffold, check, pack, Android staging and verified testnet publication."
+				"description": "Adds Harbor version, chain info, agent and service status, runtime doctor, app templates, scaffold, check, pack, Android staging, a workspace-bound MCP stdio session and verified testnet publication."
 			}
 		],
 		"errors": [
@@ -75,7 +75,7 @@
 					{
 						"name": "HarborInspectionCommand.register",
 						"type": "void",
-						"description": "Adds Harbor version, chain info, agent and service status, runtime doctor, app templates, scaffold, check, pack, Android staging and verified testnet publication."
+						"description": "Adds Harbor version, chain info, agent and service status, runtime doctor, app templates, scaffold, check, pack, Android staging, a workspace-bound MCP stdio session and verified testnet publication."
 					}
 				],
 				"errors": [],
