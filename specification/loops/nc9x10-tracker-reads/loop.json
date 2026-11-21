@@ -2,7 +2,7 @@
 	"name": "nc9x10-tracker-reads",
 	"goal": "Prove legacy 122e190 lookup, item list, due/ignored/recurring digest and redacted loopback JSON on an injected SQLite fixture",
 	"createdAt": "2026-11-21T15:35:27.833Z",
-	"updatedAt": "2026-11-21T15:38:22.600Z",
+	"updatedAt": "2026-11-21T15:53:04.156Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -17,12 +17,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T15:53:02.290Z",
+			"evidence": "Native TrackerItemReadRepository delivers read-only lookup, loopback-shaped item lists, redacted callbacks, and JSON and text digests. Parent #144 retains schema and journal, and #149 retains item mutations."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T15:53:04.156Z",
+			"evidence": "All 11 tests committed at 59d4a55755 fail on the scaffold and pass unchanged at e64265f704. The wider focused run passed 17 tests on harbor-mbp-2."
 		},
 		{
 			"id": "verify",
