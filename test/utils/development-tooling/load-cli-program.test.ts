@@ -96,21 +96,6 @@ function harborDispatchCases(root: string) {
 		config
 	];
 	const approved = [...review, '--approve', 'b'.repeat(64)];
-	const scaffold = [
-		'scaffold',
-		'tool',
-		join(root, 'an app'),
-		'example-app',
-		'Example App',
-		'--mobile'
-	];
-	const check = ['check', root];
-	const pack = ['pack', root, join(root, 'my app.harborapp')];
-	const stageAndroid = [
-		'stage-android',
-		join(root, 'game.harborapp'),
-		join(root, 'android assets')
-	];
 	return [
 		{ name: 'version', input: ['version'], expected: ['--version'] },
 		{
@@ -140,6 +125,27 @@ function harborDispatchCases(root: string) {
 		},
 		{ name: 'publish-review', input: review, expected: review, sdk: true },
 		{ name: 'publish-approved', input: approved, expected: approved, sdk: true },
+		...harborSdkDispatchCases(root)
+	];
+}
+
+function harborSdkDispatchCases(root: string) {
+	const scaffold = [
+		'scaffold',
+		'tool',
+		join(root, 'an app'),
+		'example-app',
+		'Example App',
+		'--mobile'
+	];
+	const check = ['check', root];
+	const pack = ['pack', root, join(root, 'my app.harborapp')];
+	const stageAndroid = [
+		'stage-android',
+		join(root, 'game.harborapp'),
+		join(root, 'android assets')
+	];
+	return [
 		{ name: 'templates', input: ['templates'], expected: ['templates'], sdk: true },
 		{ name: 'scaffold-mobile', input: scaffold, expected: scaffold, sdk: true },
 		{

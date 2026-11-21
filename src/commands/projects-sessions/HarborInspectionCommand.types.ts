@@ -16,6 +16,10 @@ export type RunProfile = {
 
 export type RunHarborSdkTool = (args: string[], mode: 'tool' | 'scaffold') => Promise<void>;
 
-export interface ScaffoldOptions {
-	mobile?: boolean;
-}
+export type ScaffoldArguments = [
+	template: string,
+	dir: string,
+	id: string | undefined,
+	name: string | undefined,
+	options: { mobile?: boolean }
+];
