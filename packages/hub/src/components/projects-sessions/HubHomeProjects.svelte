@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_yclqwrgobq -->
 <script lang="ts">
+	import { untrack } from 'svelte';
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 	import type { ProjectSummary } from 'collaboration';
 	import type { ProjectSnapshot } from '$desktop/models/development-tooling/Desktop.types';
@@ -31,7 +32,7 @@
 		showAll = false;
 		if (!id) return;
 		let active = true;
-		void readProject(id).then(
+		void untrack(() => readProject(id)).then(
 			(snapshot) => {
 				if (active) loaded = { ...loaded, [id]: snapshot };
 			},
