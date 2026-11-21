@@ -7,7 +7,7 @@ import {
 import type { TrackerItemValue } from './normalizeTrackerItemFields.types';
 import { trackerItemError } from './trackerItemError';
 import { trackerItemValueOr } from './trackerItemValueOr';
-import type { CronField, CronSchedule } from './normalizeTrackerCron.types';
+import type { CronField, CronSchedule, CronTimeCache } from './normalizeTrackerCron.types';
 
 const macros: Readonly<Record<string, string>> = {
 	'@hourly': '0 * * * *',
@@ -41,11 +41,29 @@ export function normalizeTrackerCron(
 ): string {
 	validateTrackerTimeZone(timeZone);
 	const raw = String(trackerItemValueOr(value, '')).trim();
-	const schedule = parseSchedule(raw);
-	if (!hasNextOccurrence(schedule, now, trackerDateFormatter(timeZone))) {
-		throw trackerItemError('cron "?" never fires');
-	}
+	trackerCronOccurrences(raw, timeZone)(now);
 	return raw.replace(/\s+/g, ' ');
+}
+
+/** Find each next occurrence in legacy wall-clock order, reusing offsets during catch-up. */
+export function trackerCronOccurrences(raw: string, timeZone: string): (after: number) => number {
+	const schedule = parseSchedule(raw);
+	const formatter = trackerDateFormatter(timeZone);
+	const times = [...schedule.hours]
+		.flatMap((hour) => [...schedule.minutes].map((minute) => (hour * 60 + minute) * 60_000))
+		.sort((left, right) => left - right);
+	const cache = new Map<number, Map<number, number>>();
+	return (after) => {
+		const date = trackerDateParts(after, formatter);
+		const start = Date.UTC(date.year, date.month - 1, date.day) - dayMs;
+		for (let index = 0; index < 366 * 5 + 2; index++) {
+			const day = start + index * dayMs;
+			if (!matchesDay(schedule, new Date(day))) continue;
+			const next = nextWallTime(day, after, { times, formatter, cache });
+			if (next !== undefined) return next;
+		}
+		throw trackerItemError('cron "?" never fires');
+	};
 }
 
 function parseSchedule(raw: string): CronSchedule {
@@ -120,26 +138,17 @@ function matchesDay(schedule: CronSchedule, date: Date): boolean {
 	return dayOfMonth || dayOfWeek;
 }
 
-function hasNextOccurrence(
-	schedule: CronSchedule,
-	now: number,
-	formatter: Intl.DateTimeFormat
-): boolean {
-	const date = trackerDateParts(now, formatter);
-	const start = Date.UTC(date.year, date.month - 1, date.day) - dayMs;
-	const hours = [...schedule.hours];
-	const minutes = [...schedule.minutes];
-	for (let index = 0; index < 366 * 5 + 2; index++) {
-		const day = start + index * dayMs;
-		if (!matchesDay(schedule, new Date(day))) continue;
-		if (
-			hours.some((hour) =>
-				minutes.some((minute) => wallTime(day + (hour * 60 + minute) * 60_000, formatter) > now)
-			)
-		)
-			return true;
+function nextWallTime(day: number, after: number, options: CronTimeCache): number | undefined {
+	const { times, formatter, cache } = options;
+	const resolved = cache.get(day) ?? new Map<number, number>();
+	cache.set(day, resolved);
+	if (cache.size > 3) cache.delete(cache.keys().next().value!);
+	for (const time of times) {
+		const epoch = resolved.get(time) ?? wallTime(day + time, formatter);
+		resolved.set(time, epoch);
+		if (epoch > after) return epoch;
 	}
-	return false;
+	return undefined;
 }
 
 function wallTime(guess: number, formatter: Intl.DateTimeFormat): number {

@@ -15,8 +15,12 @@
 		"symbols": [
 			"TrackerSpokeLoopService",
 			"TrackerSpokeLoopService.constructor",
+			"TrackerSpokeLoopService.kind",
+			"TrackerSpokeLoopService.status",
+			"TrackerSpokeLoopService.upstream",
 			"TrackerSpokeLoopService.run",
-			"TrackerSpokeLoopOptions"
+			"TrackerSpokeLoopOptions",
+			"TrackerSpokeStatus"
 		]
 	},
 	"contract": {
@@ -35,6 +39,18 @@
 		],
 		"outputs": [
 			{
+				"name": "TrackerSpokeLoopService.kind",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerSpokeLoopService.status",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerSpokeLoopService.upstream",
+				"type": "unknown"
+			},
+			{
 				"name": "TrackerSpokeLoopService.run",
 				"type": "Promise<void>"
 			}
@@ -47,6 +63,42 @@
 		],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "TrackerSpokeLoopService.kind",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerSpokeLoopService.kind",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSpokeLoopService.status",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerSpokeLoopService.status",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSpokeLoopService.upstream",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerSpokeLoopService.upstream",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
 			{
 				"name": "TrackerSpokeLoopService.run",
 				"inputs": [
@@ -93,6 +145,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-hub-sync",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "service.projects-sessions-tracker-persistence",
 			"via": "import",

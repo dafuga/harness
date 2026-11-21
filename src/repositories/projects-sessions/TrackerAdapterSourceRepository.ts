@@ -53,6 +53,15 @@ export class TrackerAdapterSourceRepository {
 		return !row || row.node === node;
 	}
 
+	dueSourceIds(now: number): string[] {
+		const rows = this.database
+			.prepare(
+				'SELECT id FROM adapter_sources WHERE removed = 0 AND paused = 0 AND (last_run IS NULL OR last_run <= ?) ORDER BY id'
+			)
+			.all(now - 60_000) as { id: string }[];
+		return rows.map(({ id }) => id);
+	}
+
 	source(id: string): TrackerAdapterSource | undefined {
 		const row = this.database
 			.prepare(

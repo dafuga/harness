@@ -15,3 +15,9 @@ export interface CronSchedule {
 	anyDayOfMonth: boolean;
 	anyDayOfWeek: boolean;
 }
+
+export interface CronTimeCache {
+	times: readonly number[];
+	formatter: Intl.DateTimeFormat;
+	cache: Map<number, Map<number, number>>;
+}

@@ -1,0 +1,60 @@
+{
+	"name": "tracker-notification-storage",
+	"goal": "Prove additive startup on pinned 4a6be709 SQLite, unchanged historical delivery state, matching IDs and retry times, exact request replay after a failed acknowledgement, and same-database legacy rollback.",
+	"createdAt": "2026-11-21T16:37:00.397Z",
+	"updatedAt": "2026-11-21T16:51:39.317Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-21T16:37:04.292Z",
+			"evidence": "Pinned 4a6be709 store.js, notifier.js and webhook.js establish table schemas, webhook_seq and cos metadata, callback keys and batch ID hashes. Baseline runtime requires an external queue and has no durable SQLite implementation."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-21T16:37:05.441Z",
+			"evidence": "The existing notification cases use injected queues. A new native SQLite method/state matrix covers existing and missing schemas, pause and retry migration, uncertain send, restart, and legacy readback."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-21T16:50:33.088Z",
+			"evidence": "Sealed 0ae42e7f63. Four SQLite cases identified the absent queue or the missing incompatible-schema check. The existing attention case also reproduced a third send while paused after an uncertain outcome."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-21T16:50:38.346Z",
+			"evidence": "Native runtime uses the existing six tables and legacy metadata, an atomic outstanding-attempt slot, and a file-based worker lock. Recovery preserves the exact request and honors a CoS pause."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T16:51:39.317Z",
+			"evidence": "The frozen SQLite and pause fixtures pass (7/7) at 62699034ec. Synthetic receipt replay preserves the request bytes and the receiver retains one receipt."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

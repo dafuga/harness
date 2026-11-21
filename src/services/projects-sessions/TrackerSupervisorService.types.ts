@@ -1,5 +1,10 @@
 // @harness-uid u_46eur7qage
-export type TrackerSupervisorWorker = 'adapter' | 'dispatch' | 'notifications' | 'recurring';
+export type TrackerSupervisorWorker =
+	| 'adapter'
+	| 'dispatch'
+	| 'notifications'
+	| 'recurring'
+	| 'telemetry';
 
 export interface TrackerSupervisorOptions {
 	now?: () => number;

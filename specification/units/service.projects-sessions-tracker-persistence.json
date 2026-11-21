@@ -17,6 +17,7 @@
 			"TrackerPersistenceService.maxSeq",
 			"TrackerPersistenceService.opsSince",
 			"TrackerPersistenceService.countLocalOpsSince",
+			"TrackerPersistenceService.countOpsSince",
 			"TrackerPersistenceService.applyOps",
 			"TrackerPersistenceService.appendLocal",
 			"TrackerPersistenceService.commitLocal",
@@ -73,6 +74,16 @@
 				"required": true
 			},
 			{
+				"name": "TrackerPersistenceService.countOpsSince.seq",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "TrackerPersistenceService.countOpsSince.node",
+				"type": "string",
+				"required": false
+			},
+			{
 				"name": "TrackerPersistenceService.applyOps.operations",
 				"type": "readonly TrackerOperation[]",
 				"required": true
@@ -117,6 +128,10 @@
 			},
 			{
 				"name": "TrackerPersistenceService.countLocalOpsSince",
+				"type": "number"
+			},
+			{
+				"name": "TrackerPersistenceService.countOpsSince",
 				"type": "number"
 			},
 			{
@@ -232,6 +247,29 @@
 				"outputs": [
 					{
 						"name": "TrackerPersistenceService.countLocalOpsSince",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerPersistenceService.countOpsSince",
+				"inputs": [
+					{
+						"name": "TrackerPersistenceService.countOpsSince.seq",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "TrackerPersistenceService.countOpsSince.node",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerPersistenceService.countOpsSince",
 						"type": "number"
 					}
 				],
