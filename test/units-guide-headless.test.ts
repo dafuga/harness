@@ -106,9 +106,9 @@ test('headlessStateNames keeps required viewport-free states without UI or regis
 		{ entity: 'component.beta', where: 'other.json', kind: 'required-states', states: ['ready'] }
 	];
 
-	expect(headlessStateNames([headless, ui, headlessWithViewport, audio], unitId, registry)).toEqual([
-		'ready'
-	]);
+	expect(headlessStateNames([headless, ui, headlessWithViewport, audio], unitId, registry)).toEqual(
+		['ready']
+	);
 	expect(headlessOnly([headless, ui], unitId)).toBe(false);
 	expect(headlessOnly([headless, audio], unitId)).toBe(true);
 });
@@ -172,11 +172,7 @@ test('recordedDone accepts usable passed assertions or trace captures for the na
 	expect(recordedDone([capture({ kind: 'trace' })], unitId, 'ready')).toBe(true);
 	expect(
 		recordedDone(
-			[
-				capture({ usable: false }),
-				capture({ status: 'failed' }),
-				capture({ kind: 'output' })
-			],
+			[capture({ usable: false }), capture({ status: 'failed' }), capture({ kind: 'output' })],
 			unitId,
 			'ready'
 		)

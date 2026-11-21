@@ -175,9 +175,7 @@
 				"name": "RemoteProjectionService.projects",
 				"type": "unknown",
 				"description": "The project-discovery result for the principal's owned and joined projects. The discovery helper reads a newly found project once so it can be kept offline.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "RemoteProjectionService.read",
@@ -327,9 +325,7 @@
 						"name": "RemoteProjectionService.projects",
 						"type": "unknown",
 						"description": "The project-discovery result for the principal's owned and joined projects. The discovery helper reads a newly found project once so it can be kept offline.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"errors": [],

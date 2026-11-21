@@ -34,10 +34,7 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Required strings rendered in array order as both button text and keyed each-block identities. The keys therefore need to be unique; an empty array renders no buttons.",
-				"examples": [
-					["Daily", "Weekly", "Monthly"],
-					[]
-				]
+				"examples": [["Daily", "Weekly", "Monthly"], []]
 			},
 			{
 				"name": "SegmentedChoice.label",

@@ -88,9 +88,7 @@
 				"name": "availableGuideTopics",
 				"type": "string[]",
 				"description": "availableGuideTopics() returns the strings produced by uniqueGuideTopics(guides). It matters when callers need the assembled guide topics, and this wrapper returns the helper result unchanged.",
-				"examples": [
-					["model", "controller", "component"]
-				]
+				"examples": [["model", "controller", "component"]]
 			}
 		],
 		"errors": [],
@@ -147,9 +145,7 @@
 						"name": "availableGuideTopics",
 						"type": "string[]",
 						"description": "availableGuideTopics() returns the strings produced by uniqueGuideTopics(guides). It matters when callers need the assembled guide topics, and this wrapper returns the helper result unchanged.",
-						"examples": [
-							["model", "controller", "component"]
-						]
+						"examples": [["model", "controller", "component"]]
 					}
 				],
 				"errors": [],

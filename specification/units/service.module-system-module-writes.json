@@ -54,11 +54,7 @@
 				"required": false,
 				"default": [],
 				"description": "Planned output paths, matched exactly, that may be overwritten when the file already exists with different contents. Entries are not validated, and an entry that matches no planned path has no effect.",
-				"examples": [
-					[],
-					["harness.modules.json"],
-					["package.json", "harness.groups.json"]
-				]
+				"examples": [[], ["harness.modules.json"], ["package.json", "harness.groups.json"]]
 			},
 			{
 				"name": "writeModuleFiles.allowIdentical",
@@ -151,11 +147,7 @@
 						"required": false,
 						"default": [],
 						"description": "Planned output paths, matched exactly, that may be overwritten when the file already exists with different contents. Entries are not validated, and an entry that matches no planned path has no effect.",
-						"examples": [
-							[],
-							["harness.modules.json"],
-							["package.json", "harness.groups.json"]
-						]
+						"examples": [[], ["harness.modules.json"], ["package.json", "harness.groups.json"]]
 					},
 					{
 						"name": "writeModuleFiles.allowIdentical",

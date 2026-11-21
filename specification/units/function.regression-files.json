@@ -68,9 +68,7 @@
 				"type": "string[]",
 				"required": true,
 				"description": "A nonempty list of repository-relative paths naming strengthened tests. Each path must be tracked in the selected commit, cannot start with / or contain a .. segment, and cannot name manifest-owned product source unless testPath matches it.",
-				"examples": [
-					["tests/utils/regressionFiles.test.ts"]
-				]
+				"examples": [["tests/utils/regressionFiles.test.ts"]]
 			},
 			{
 				"name": "regressionFixCommit.root",
@@ -148,9 +146,7 @@
 				"type": "string[]",
 				"required": true,
 				"description": "A list of repository-relative paths naming tests that the checkpoint must strengthen. At least one listed path must appear among the changed files; this operation does not validate the paths against the commit tree.",
-				"examples": [
-					["tests/utils/regressionFiles.test.ts"]
-				]
+				"examples": [["tests/utils/regressionFiles.test.ts"]]
 			}
 		],
 		"outputs": [
@@ -252,9 +248,7 @@
 						"type": "string[]",
 						"required": true,
 						"description": "A nonempty list of repository-relative paths naming strengthened tests. Each path must be tracked in the selected commit, cannot start with / or contain a .. segment, and cannot name manifest-owned product source unless testPath matches it.",
-						"examples": [
-							["tests/utils/regressionFiles.test.ts"]
-						]
+						"examples": [["tests/utils/regressionFiles.test.ts"]]
 					}
 				],
 				"outputs": [
@@ -384,9 +378,7 @@
 						"type": "string[]",
 						"required": true,
 						"description": "A list of repository-relative paths naming tests that the checkpoint must strengthen. At least one listed path must appear among the changed files; this operation does not validate the paths against the commit tree.",
-						"examples": [
-							["tests/utils/regressionFiles.test.ts"]
-						]
+						"examples": [["tests/utils/regressionFiles.test.ts"]]
 					}
 				],
 				"outputs": [

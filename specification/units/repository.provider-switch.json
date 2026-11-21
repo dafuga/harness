@@ -80,9 +80,7 @@
 				"name": "ProviderSwitchRepository.list",
 				"type": "SwitchRequest[]",
 				"description": "Stored switch requests ordered by descending rowid, with at most 100 rows returned. Each row's data is parsed as JSON and malformed stored data throws.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "ProviderSwitchRepository.close",
@@ -203,9 +201,7 @@
 						"name": "ProviderSwitchRepository.list",
 						"type": "SwitchRequest[]",
 						"description": "Stored switch requests ordered by descending rowid, with at most 100 rows returned. Each row's data is parsed as JSON and malformed stored data throws.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"errors": [

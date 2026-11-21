@@ -119,9 +119,7 @@
 				"name": "proposalUnits",
 				"type": "string[]",
 				"description": "Distinct ids from non-planned entries, with recognized ids mentioned in the request first, then the request category, then other categories in categories order. Input order is kept within each category and no result cap is applied.",
-				"examples": [
-					["desktop.function.proposal-units"]
-				]
+				"examples": [["desktop.function.proposal-units"]]
 			}
 		],
 		"errors": [],
@@ -175,9 +173,7 @@
 						"name": "proposalUnits",
 						"type": "string[]",
 						"description": "Distinct ids from non-planned entries, with recognized ids mentioned in the request first, then the request category, then other categories in categories order. Input order is kept within each category and no result cap is applied.",
-						"examples": [
-							["desktop.function.proposal-units"]
-						]
+						"examples": [["desktop.function.proposal-units"]]
 					}
 				],
 				"errors": [],
@@ -247,9 +243,7 @@
 						"name": "taskUnits",
 						"type": "string[]",
 						"description": "All supplied manifest ids sorted by descending score, with equal scores ordered by localeCompare on id; duplicate ids remain. A case-sensitive id substring scores 10,000; otherwise each overlapping title token scores 8 and each responsibility token scores 1.",
-						"examples": [
-							["desktop.function.proposal-units"]
-						]
+						"examples": [["desktop.function.proposal-units"]]
 					}
 				],
 				"errors": [],

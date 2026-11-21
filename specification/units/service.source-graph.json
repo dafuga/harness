@@ -59,9 +59,7 @@
 				"type": "ComponentManifest[]",
 				"required": true,
 				"description": "Component manifests supply unit ids, source ownership, status and declared dependencies. Only active manifests owning at least one indexed source path add unit nodes and ownership edges; only dependencies with via equal to process, http, wasm or contract add declared runtime edges.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "SourceGraphService.build.scenarios",
@@ -69,9 +67,7 @@
 				"required": false,
 				"default": [],
 				"description": "Scenario manifests supply ids, covered units and test cwd/target paths. Every supplied scenario adds a node and its covers edges, while a proves edge is added only when the joined test path is indexed; defaults to an empty array and no test is run.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			}
 		],
 		"outputs": [
@@ -195,9 +191,7 @@
 						"type": "ComponentManifest[]",
 						"required": true,
 						"description": "Component manifests supply unit ids, source ownership, status and declared dependencies. Only active manifests owning at least one indexed source path add unit nodes and ownership edges; only dependencies with via equal to process, http, wasm or contract add declared runtime edges.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					},
 					{
 						"name": "SourceGraphService.build.scenarios",
@@ -205,9 +199,7 @@
 						"required": false,
 						"default": [],
 						"description": "Scenario manifests supply ids, covered units and test cwd/target paths. Every supplied scenario adds a node and its covers edges, while a proves edge is added only when the joined test path is indexed; defaults to an empty array and no test is run.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"outputs": [

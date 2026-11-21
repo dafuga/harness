@@ -624,9 +624,7 @@
 				"name": "GitSourceAdapter.units",
 				"type": "Promise<ComponentManifest[]>",
 				"description": "Returns manifests parsed from specification/units/*.json at the resolved commit after checking each manifest ID against its filename. The resolved commit is used as the per-instance cache key.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "GitSourceAdapter.changed",
@@ -822,9 +820,7 @@
 						"name": "GitSourceAdapter.units",
 						"type": "Promise<ComponentManifest[]>",
 						"description": "Returns manifests parsed from specification/units/*.json at the resolved commit after checking each manifest ID against its filename. The resolved commit is used as the per-instance cache key.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"errors": [

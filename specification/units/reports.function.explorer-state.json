@@ -175,9 +175,7 @@
 				"required": false,
 				"default": [],
 				"description": "Registry units used to resolve the unit kind and follow active consumers through dependency links. Defaults to an empty array; if no state matches the unit or a consumer, the full declared scenario is returned.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "coverageWorst.standings",
@@ -544,9 +542,7 @@
 						"required": false,
 						"default": [],
 						"description": "Registry units used to resolve the unit kind and follow active consumers through dependency links. Defaults to an empty array; if no state matches the unit or a consumer, the full declared scenario is returned.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"outputs": [

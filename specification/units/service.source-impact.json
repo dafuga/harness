@@ -95,9 +95,7 @@
 				"name": "SourceImpactService.reasons",
 				"type": "Promise<RequiredReason[] | undefined>",
 				"description": "RequiredReason entries for changes against the first parent, with fingerprints bound to each changed symbol or unit. The result is undefined if either source side cannot be read.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "SourceImpactService.parent",
@@ -143,9 +141,7 @@
 				"name": "SourceImpactService.measurements",
 				"type": "unknown",
 				"description": "Static measurements produced for each manifest in the loaded source side and tagged with the requested commit. It returns an empty list when side loading fails.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			}
 		],
 		"errors": [],
@@ -203,9 +199,7 @@
 						"name": "SourceImpactService.reasons",
 						"type": "Promise<RequiredReason[] | undefined>",
 						"description": "RequiredReason entries for changes against the first parent, with fingerprints bound to each changed symbol or unit. The result is undefined if either source side cannot be read.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"errors": [],
@@ -299,9 +293,7 @@
 						"name": "SourceImpactService.measurements",
 						"type": "unknown",
 						"description": "Static measurements produced for each manifest in the loaded source side and tagged with the requested commit. It returns an empty list when side loading fails.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"errors": [],

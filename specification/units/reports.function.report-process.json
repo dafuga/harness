@@ -26,9 +26,7 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Strings passed as separate argument entries to the executable. An empty array supplies no arguments.",
-				"examples": [
-					["--version"]
-				]
+				"examples": [["--version"]]
 			},
 			{
 				"name": "reportProcess.cwd",
@@ -96,9 +94,7 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Strings passed as separate argument entries to the executable. An empty array supplies no arguments.",
-						"examples": [
-							["--version"]
-						]
+						"examples": [["--version"]]
 					},
 					{
 						"name": "reportProcess.cwd",

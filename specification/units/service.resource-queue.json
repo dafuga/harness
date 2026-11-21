@@ -28,9 +28,7 @@
 				"required": false,
 				"default": {},
 				"description": "The constructor reads env from options.env or process.env, resolves home from options.home or resourceHome(env), and passes options.monitor to ResourceMonitorService. These options configure the service's environment, home path, and monitor adapter.",
-				"examples": [
-					{}
-				]
+				"examples": [{}]
 			},
 			{
 				"name": "ResourceQueueService.run.input",
@@ -58,9 +56,7 @@
 				"required": false,
 				"default": {},
 				"description": "The options are passed to monitor.wait, with env overriding the service environment and signal checked before enqueue and after waiting. If supplied, waitTimeoutMs must be finite and greater than zero.",
-				"examples": [
-					{}
-				]
+				"examples": [{}]
 			}
 		],
 		"outputs": [
@@ -162,9 +158,7 @@
 						"required": false,
 						"default": {},
 						"description": "The options are passed to monitor.wait, with env overriding the service environment and signal checked before enqueue and after waiting. If supplied, waitTimeoutMs must be finite and greater than zero.",
-						"examples": [
-							{}
-						]
+						"examples": [{}]
 					}
 				],
 				"outputs": [
@@ -212,9 +206,7 @@
 						"required": false,
 						"default": {},
 						"description": "The constructor reads env from options.env or process.env, resolves home from options.home or resourceHome(env), and passes options.monitor to ResourceMonitorService. These options configure the service's environment, home path, and monitor adapter.",
-						"examples": [
-							{}
-						]
+						"examples": [{}]
 					}
 				],
 				"outputs": [

@@ -43,9 +43,7 @@
 				"type": "TreeFile[]",
 				"required": true,
 				"description": "Files added under directory when a new commit is made; a file whose path equals key supplies the bytes used to recognize an identical existing entry. If that file is absent or lacks matching byte content, an existing entry is refused.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "EvidenceBranchRepository.add.message",
@@ -123,9 +121,7 @@
 						"type": "TreeFile[]",
 						"required": true,
 						"description": "Files added under directory when a new commit is made; a file whose path equals key supplies the bytes used to recognize an identical existing entry. If that file is absent or lacks matching byte content, an existing entry is refused.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					},
 					{
 						"name": "EvidenceBranchRepository.add.message",

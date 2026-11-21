@@ -50,9 +50,7 @@
 				"required": false,
 				"default": {},
 				"description": "The arguments for the method (default {}), sent as a copy so the caller's object is neither kept nor changed; a mutation method also gets the current epoch added to that copy. The request's JSON text must stay within 1114112 bytes, or it fails with 'too-large'.",
-				"examples": [
-					{}
-				]
+				"examples": [{}]
 			},
 			{
 				"name": "LocalTransportClientService.on.channel",
@@ -73,11 +71,7 @@
 				"name": "LocalTransportClientService.request",
 				"type": "Promise<T>",
 				"description": "The reply value the desktop sent for the request, typed by the caller's T (unknown when T is not given); the client does not check its shape. The request is sent only once the connection is open and bound, and the promise rejects with any of the errors listed for this operation.",
-				"examples": [
-					null,
-					{},
-					[]
-				]
+				"examples": [null, {}, []]
 			},
 			{
 				"name": "LocalTransportClientService.on",
@@ -130,9 +124,7 @@
 						"required": false,
 						"default": {},
 						"description": "The arguments for the method (default {}), sent as a copy so the caller's object is neither kept nor changed; a mutation method also gets the current epoch added to that copy. The request's JSON text must stay within 1114112 bytes, or it fails with 'too-large'.",
-						"examples": [
-							{}
-						]
+						"examples": [{}]
 					}
 				],
 				"outputs": [
@@ -140,11 +132,7 @@
 						"name": "LocalTransportClientService.request",
 						"type": "Promise<T>",
 						"description": "The reply value the desktop sent for the request, typed by the caller's T (unknown when T is not given); the client does not check its shape. The request is sent only once the connection is open and bound, and the promise rejects with any of the errors listed for this operation.",
-						"examples": [
-							null,
-							{},
-							[]
-						]
+						"examples": [null, {}, []]
 					}
 				],
 				"errors": [

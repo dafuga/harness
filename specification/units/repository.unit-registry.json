@@ -53,9 +53,7 @@
 				"type": "ComponentManifest[]",
 				"required": true,
 				"description": "Manifests to store as canonical JSON files named from each manifest id. Existing files whose contents already equal stableJson output are skipped.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "UnitRegistryRepository.remove.id",
@@ -109,9 +107,7 @@
 				"name": "UnitRegistryRepository.write",
 				"type": "Promise<string[]>",
 				"description": "Repository-relative paths of manifests whose canonical JSON contents were written. Manifests whose existing file contents already equal stableJson output are omitted.",
-				"examples": [
-					["specification/units/reports.component.evidence-grid.json"]
-				]
+				"examples": [["specification/units/reports.component.evidence-grid.json"]]
 			},
 			{
 				"name": "UnitRegistryRepository.remove",
@@ -215,9 +211,7 @@
 						"type": "ComponentManifest[]",
 						"required": true,
 						"description": "Manifests to store as canonical JSON files named from each manifest id. Existing files whose contents already equal stableJson output are skipped.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"outputs": [
@@ -225,9 +219,7 @@
 						"name": "UnitRegistryRepository.write",
 						"type": "Promise<string[]>",
 						"description": "Repository-relative paths of manifests whose canonical JSON contents were written. Manifests whose existing file contents already equal stableJson output are omitted.",
-						"examples": [
-							["specification/units/reports.component.evidence-grid.json"]
-						]
+						"examples": [["specification/units/reports.component.evidence-grid.json"]]
 					}
 				],
 				"errors": [],

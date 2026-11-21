@@ -87,9 +87,7 @@
 				"name": "knownAuditExtensions",
 				"type": "string[]",
 				"description": "The deduplicated extensions declared by registered adapters together with the built-in future extensions. First occurrence order is preserved.",
-				"examples": [
-					[".go", ".java", ".kt", ".m", ".mm", ".swift", ".vue"]
-				]
+				"examples": [[".go", ".java", ".kt", ".m", ".mm", ".swift", ".vue"]]
 			},
 			{
 				"name": "resolveAuditProfile",
@@ -158,9 +156,7 @@
 						"name": "knownAuditExtensions",
 						"type": "string[]",
 						"description": "The deduplicated extensions declared by registered adapters together with the built-in future extensions. First occurrence order is preserved.",
-						"examples": [
-							[".go", ".java", ".kt", ".m", ".mm", ".swift", ".vue"]
-						]
+						"examples": [[".go", ".java", ".kt", ".m", ".mm", ".swift", ".vue"]]
 					}
 				],
 				"errors": [],

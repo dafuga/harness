@@ -75,9 +75,7 @@
 				"name": "GOOGLE_ISSUERS",
 				"type": "unknown",
 				"description": "The two issuer values a Google credential may carry in its iss claim: the https form and the bare host name. verify passes this list to jwtVerify as the accepted issuers, so a credential with any other iss is rejected.",
-				"examples": [
-					["https://accounts.google.com", "accounts.google.com"]
-				]
+				"examples": [["https://accounts.google.com", "accounts.google.com"]]
 			},
 			{
 				"name": "GoogleIdentityService.verify",

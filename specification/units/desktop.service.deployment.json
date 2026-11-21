@@ -44,9 +44,7 @@
 				"required": false,
 				"default": {},
 				"description": "Optional deployment plugin, executor, health check, and activity service overrides. Missing plugin and activities use CloudflareDeployAdapter and desktopDeployments respectively; execute and health are forwarded to deployment execution.",
-				"examples": [
-					{}
-				]
+				"examples": [{}]
 			},
 			{
 				"name": "DeploymentService.status.input",
@@ -54,9 +52,7 @@
 				"required": false,
 				"default": {},
 				"description": "Project context used to validate the project ID and resolve the selected local root. If omitted, the input is {}; a local project root is still required.",
-				"examples": [
-					{}
-				]
+				"examples": [{}]
 			},
 			{
 				"name": "DeploymentService.plan.input",
@@ -188,9 +184,7 @@
 						"required": false,
 						"default": {},
 						"description": "Project context used to validate the project ID and resolve the selected local root. If omitted, the input is {}; a local project root is still required.",
-						"examples": [
-							{}
-						]
+						"examples": [{}]
 					}
 				],
 				"outputs": [
@@ -428,9 +422,7 @@
 						"required": false,
 						"default": {},
 						"description": "Optional deployment plugin, executor, health check, and activity service overrides. Missing plugin and activities use CloudflareDeployAdapter and desktopDeployments respectively; execute and health are forwarded to deployment execution.",
-						"examples": [
-							{}
-						]
+						"examples": [{}]
 					}
 				],
 				"outputs": [

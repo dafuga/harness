@@ -66,9 +66,7 @@
 				"name": "groupTeardown",
 				"type": "Promise<TrackedProcess[]>",
 				"description": "Resolves with the last survivor list obtained before escalation. If that list is nonempty, the function sends SIGTERM, waits graceMs, sends SIGKILL, and returns the same list without checking again.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			}
 		],
 		"errors": [
@@ -140,9 +138,7 @@
 						"name": "groupTeardown",
 						"type": "Promise<TrackedProcess[]>",
 						"description": "Resolves with the last survivor list obtained before escalation. If that list is nonempty, the function sends SIGTERM, waits graceMs, sends SIGKILL, and returns the same list without checking again.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"errors": [

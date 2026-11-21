@@ -144,11 +144,7 @@
 				"required": false,
 				"default": ["owner", "writer", "commenter", "viewer"],
 				"description": "Roles that may access the project; the actor's membership role must be one of them, and when omitted the default is owner, writer, commenter and viewer.",
-				"examples": [
-					["owner", "writer", "commenter", "viewer"],
-					["owner", "writer"],
-					["owner"]
-				]
+				"examples": [["owner", "writer", "commenter", "viewer"], ["owner", "writer"], ["owner"]]
 			},
 			{
 				"name": "transaction.deps",
@@ -547,11 +543,7 @@
 						"required": false,
 						"default": ["owner", "writer", "commenter", "viewer"],
 						"description": "Roles that may access the project; the actor's membership role must be one of them, and when omitted the default is owner, writer, commenter and viewer.",
-						"examples": [
-							["owner", "writer", "commenter", "viewer"],
-							["owner", "writer"],
-							["owner"]
-						]
+						"examples": [["owner", "writer", "commenter", "viewer"], ["owner", "writer"], ["owner"]]
 					}
 				],
 				"outputs": [

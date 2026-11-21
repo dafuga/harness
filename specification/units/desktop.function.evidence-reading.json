@@ -22,9 +22,7 @@
 				"type": "Pick<DesktopBridge, 'artifact'>",
 				"required": true,
 				"description": "The bridge object exposes the optional artifact reader used for a stored capture. If the reader is absent, the capture remains unread; individual reader rejections are caught and reported by hash.",
-				"examples": [
-					{}
-				]
+				"examples": [{}]
 			},
 			{
 				"name": "evidenceReading.result",
@@ -152,9 +150,7 @@
 						"type": "Pick<DesktopBridge, 'artifact'>",
 						"required": true,
 						"description": "The bridge object exposes the optional artifact reader used for a stored capture. If the reader is absent, the capture remains unread; individual reader rejections are caught and reported by hash.",
-						"examples": [
-							{}
-						]
+						"examples": [{}]
 					},
 					{
 						"name": "evidenceReading.result",

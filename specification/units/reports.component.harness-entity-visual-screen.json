@@ -60,9 +60,7 @@
 				"type": "ExplorerEntity[]",
 				"required": true,
 				"description": "The ExplorerEntity list is carried on host to EntityFrame and EntitySections. This file does not traverse host.entities directly; its pane uses the entity supplied to the children snippet.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "EntityVisualScreen.lens",

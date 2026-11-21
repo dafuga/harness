@@ -197,10 +197,7 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Scenario identifiers whose end-to-end jobs are summed: an `e2e` test counts when its id starts with one of them followed by a colon, as in `package-api:packed-consumer`. An empty list matches no test, so the duration is null.",
-				"examples": [
-					["package-api"],
-					["explorer-shell"]
-				]
+				"examples": [["package-api"], ["explorer-shell"]]
 			}
 		],
 		"outputs": [
@@ -665,10 +662,7 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Scenario identifiers whose end-to-end jobs are summed: an `e2e` test counts when its id starts with one of them followed by a colon, as in `package-api:packed-consumer`. An empty list matches no test, so the duration is null.",
-						"examples": [
-							["package-api"],
-							["explorer-shell"]
-						]
+						"examples": [["package-api"], ["explorer-shell"]]
 					}
 				],
 				"outputs": [

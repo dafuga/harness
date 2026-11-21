@@ -52,9 +52,7 @@
 				"type": "WasmSource | WasmLoader",
 				"required": true,
 				"description": "Provides a precompiled WebAssembly.Module, module bytes, or a loader that returns either synchronously or asynchronously. Byte sources are compiled when first loaded, and the adapter does not read a file.",
-				"examples": [
-					[0, 97, 115, 109, 1, 0, 0, 0]
-				]
+				"examples": [[0, 97, 115, 109, 1, 0, 0, 0]]
 			},
 			{
 				"name": "WasmModuleRuntimeAdapter.constructor.options",
@@ -392,9 +390,7 @@
 						"type": "WasmSource | WasmLoader",
 						"required": true,
 						"description": "Provides a precompiled WebAssembly.Module, module bytes, or a loader that returns either synchronously or asynchronously. Byte sources are compiled when first loaded, and the adapter does not read a file.",
-						"examples": [
-							[0, 97, 115, 109, 1, 0, 0, 0]
-						]
+						"examples": [[0, 97, 115, 109, 1, 0, 0, 0]]
 					},
 					{
 						"name": "WasmModuleRuntimeAdapter.constructor.options",

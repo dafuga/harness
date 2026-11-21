@@ -43,9 +43,7 @@
 				"type": "ComponentManifest[]",
 				"required": true,
 				"description": "Prior registry records, active and retired: an active record's owns.source paths decide which unit already owns each file, and a retired record is revived when one of its owns.source paths matches an unowned file or is offered as a predecessor when no indexed file remains. The stable JSON of each record is the baseline that decides whether a unit is reported as updated.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "modelCompanions.index",
@@ -58,9 +56,7 @@
 				"type": "ComponentManifest[]",
 				"required": true,
 				"description": "Prior registry records; only active records of kind model take part. A model whose sole source path ends in .types.ts merges into another active model whose owns.source includes the .ts path that replaces that suffix, and only when the index reports storage for that .ts file.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			}
 		],
 		"outputs": [
@@ -83,9 +79,7 @@
 				"name": "modelCompanions",
 				"type": "ComponentManifest[]",
 				"description": "The same records in the same order, where each merged model companion becomes a retired record (retired.reason names its owner and retired.at is the index revision) and the model that owns its implementation gains the companion's source paths and id as lineage predecessors. An owner's owns.source and lineage.predecessors are sorted and deduplicated, and a dependency on a merged companion is redirected to its owner, or dropped when that would point at the owner itself.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			}
 		],
 		"errors": [
@@ -116,9 +110,7 @@
 						"type": "ComponentManifest[]",
 						"required": true,
 						"description": "Prior registry records, active and retired: an active record's owns.source paths decide which unit already owns each file, and a retired record is revived when one of its owns.source paths matches an unowned file or is offered as a predecessor when no indexed file remains. The stable JSON of each record is the baseline that decides whether a unit is reported as updated.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"outputs": [
@@ -166,9 +158,7 @@
 						"type": "ComponentManifest[]",
 						"required": true,
 						"description": "Prior registry records; only active records of kind model take part. A model whose sole source path ends in .types.ts merges into another active model whose owns.source includes the .ts path that replaces that suffix, and only when the index reports storage for that .ts file.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"outputs": [
@@ -176,9 +166,7 @@
 						"name": "modelCompanions",
 						"type": "ComponentManifest[]",
 						"description": "The same records in the same order, where each merged model companion becomes a retired record (retired.reason names its owner and retired.at is the index revision) and the model that owns its implementation gains the companion's source paths and id as lineage predecessors. An owner's owns.source and lineage.predecessors are sorted and deduplicated, and a dependency on a merged companion is redirected to its owner, or dropped when that would point at the owner itself.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"errors": [

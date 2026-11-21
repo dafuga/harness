@@ -174,10 +174,7 @@
 				"name": "abandonedResources",
 				"type": "string[]",
 				"description": "The ids, in the order of jobs, of each job whose heartbeatAt is more than 30000 ms before now, whose owner (matched by pid and start time) is missing from rows, and whose worker, if it has a workerPid, is also missing from rows. A worker with workerStarted must match on pid and start time, and a worker without it only on pid.",
-				"examples": [
-					["0d9a7e15-c4b2-4f83-a6e1-5b7c9d2f8a40"],
-					[]
-				]
+				"examples": [["0d9a7e15-c4b2-4f83-a6e1-5b7c9d2f8a40"], []]
 			}
 		],
 		"errors": [],
@@ -355,10 +352,7 @@
 						"name": "abandonedResources",
 						"type": "string[]",
 						"description": "The ids, in the order of jobs, of each job whose heartbeatAt is more than 30000 ms before now, whose owner (matched by pid and start time) is missing from rows, and whose worker, if it has a workerPid, is also missing from rows. A worker with workerStarted must match on pid and start time, and a worker without it only on pid.",
-						"examples": [
-							["0d9a7e15-c4b2-4f83-a6e1-5b7c9d2f8a40"],
-							[]
-						]
+						"examples": [["0d9a7e15-c4b2-4f83-a6e1-5b7c9d2f8a40"], []]
 					}
 				],
 				"errors": [],

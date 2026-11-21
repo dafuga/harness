@@ -281,11 +281,7 @@
 				"name": "requiredStates",
 				"type": "string[]",
 				"description": "The unique ids of the required states of the scenarios that name the unit, each narrowed for it, in first-seen order. Missing and inapplicable states never appear, and the list is empty when no scenario names the unit.",
-				"examples": [
-					["listed"],
-					["default", "empty"],
-					[]
-				]
+				"examples": [["listed"], ["default", "empty"], []]
 			},
 			{
 				"name": "entityContract",
@@ -509,11 +505,7 @@
 						"name": "requiredStates",
 						"type": "string[]",
 						"description": "The unique ids of the required states of the scenarios that name the unit, each narrowed for it, in first-seen order. Missing and inapplicable states never appear, and the list is empty when no scenario names the unit.",
-						"examples": [
-							["listed"],
-							["default", "empty"],
-							[]
-						]
+						"examples": [["listed"], ["default", "empty"], []]
 					}
 				],
 				"errors": [],

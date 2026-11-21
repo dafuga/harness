@@ -59,9 +59,7 @@
 				"required": false,
 				"default": "undefined",
 				"description": "Optional options record passed through to the selected route's helper or RPC call. The bridge does not read its fields; when omitted, it remains undefined.",
-				"examples": [
-					{}
-				]
+				"examples": [{}]
 			}
 		],
 		"outputs": [
@@ -69,9 +67,7 @@
 				"name": "NativePickerBridgeService.send",
 				"type": "Promise<PickerData>",
 				"description": "The resolved response record from the selected route. For model/list, data must be an array and nativeOpusModel is added if absent; other route results are returned from the selected helper or RPC.",
-				"examples": [
-					{}
-				]
+				"examples": [{}]
 			}
 		],
 		"errors": [
@@ -111,9 +107,7 @@
 						"required": false,
 						"default": "undefined",
 						"description": "Optional options record passed through to the selected route's helper or RPC call. The bridge does not read its fields; when omitted, it remains undefined.",
-						"examples": [
-							{}
-						]
+						"examples": [{}]
 					}
 				],
 				"outputs": [
@@ -121,9 +115,7 @@
 						"name": "NativePickerBridgeService.send",
 						"type": "Promise<PickerData>",
 						"description": "The resolved response record from the selected route. For model/list, data must be an array and nativeOpusModel is added if absent; other route results are returned from the selected helper or RPC.",
-						"examples": [
-							{}
-						]
+						"examples": [{}]
 					}
 				],
 				"errors": [

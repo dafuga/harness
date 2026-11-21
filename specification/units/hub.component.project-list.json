@@ -33,9 +33,7 @@
 				"type": "ProjectSummary[]",
 				"required": true,
 				"description": "Required project summaries supplied to the list. Items with role `owner` appear under “Owned by you”; every other role appears under “Shared with you”, preserving order within each group and omitting empty groups.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			}
 		],
 		"outputs": [

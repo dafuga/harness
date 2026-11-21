@@ -19,9 +19,7 @@
 				"type": "readonly string[]",
 				"required": true,
 				"description": "The step names to process in the supplied order; each is run sequentially and processing stops at the first nonzero result. An empty list returns 0 without invoking run.",
-				"examples": [
-					["typecheck", "lint"]
-				]
+				"examples": [["typecheck", "lint"]]
 			},
 			{
 				"name": "runSteps.run",
@@ -94,9 +92,7 @@
 						"type": "readonly string[]",
 						"required": true,
 						"description": "The step names to process in the supplied order; each is run sequentially and processing stops at the first nonzero result. An empty list returns 0 without invoking run.",
-						"examples": [
-							["typecheck", "lint"]
-						]
+						"examples": [["typecheck", "lint"]]
 					},
 					{
 						"name": "runSteps.run",

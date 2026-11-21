@@ -30,9 +30,7 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Archive entry names that read passes to extractFile in array order. The returned map uses these names as keys, so duplicate names collapse to one key and invalid or missing entries are delegated to extractFile.",
-				"examples": [
-					["package.json", "resources/app.js"]
-				]
+				"examples": [["package.json", "resources/app.js"]]
 			},
 			{
 				"name": "DesktopArchiveAdapter.patch.source",
@@ -92,9 +90,7 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Archive entry names that read passes to extractFile in array order. The returned map uses these names as keys, so duplicate names collapse to one key and invalid or missing entries are delegated to extractFile.",
-						"examples": [
-							["package.json", "resources/app.js"]
-						]
+						"examples": [["package.json", "resources/app.js"]]
 					}
 				],
 				"outputs": [

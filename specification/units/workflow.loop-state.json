@@ -188,9 +188,7 @@
 				"type": "Record<string, unknown>",
 				"required": true,
 				"description": "A JSON-serializable record appended as one compact JSON line to the trace file. The function does not validate event fields.",
-				"examples": [
-					{}
-				]
+				"examples": [{}]
 			},
 			{
 				"name": "validateLoopId.value",
@@ -638,9 +636,7 @@
 						"type": "Record<string, unknown>",
 						"required": true,
 						"description": "A JSON-serializable record appended as one compact JSON line to the trace file. The function does not validate event fields.",
-						"examples": [
-							{}
-						]
+						"examples": [{}]
 					}
 				],
 				"outputs": [

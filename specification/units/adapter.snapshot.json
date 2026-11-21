@@ -48,10 +48,7 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Path patterns checked against tracked files and used to exclude covered additions from drift results. Each pattern is passed to pathMatches.",
-				"examples": [
-					["dist/**"],
-					["coverage/**", "reports/**"]
-				]
+				"examples": [["dist/**"], ["coverage/**", "reports/**"]]
 			},
 			{
 				"name": "SnapshotAdapter.link.root",
@@ -163,10 +160,7 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Path patterns checked against tracked files and used to exclude covered additions from drift results. Each pattern is passed to pathMatches.",
-						"examples": [
-							["dist/**"],
-							["coverage/**", "reports/**"]
-						]
+						"examples": [["dist/**"], ["coverage/**", "reports/**"]]
 					}
 				],
 				"outputs": [

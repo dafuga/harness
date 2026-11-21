@@ -33,11 +33,7 @@
 				"type": "ComposeMode[]",
 				"required": true,
 				"description": "Ordered list of the modes this context allows (comment, ask, plan, change): the first is used until the person picks a mode, and falls back to the first whenever the chosen mode is no longer offered. An empty list disables the message box and submission, and the mode buttons appear only when more than one mode is offered.",
-				"examples": [
-					["comment", "ask", "plan", "change"],
-					["comment", "plan"],
-					[]
-				]
+				"examples": [["comment", "ask", "plan", "change"], ["comment", "plan"], []]
 			},
 			{
 				"name": "Composer.providers",

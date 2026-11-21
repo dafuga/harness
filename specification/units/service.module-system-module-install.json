@@ -39,9 +39,7 @@
 				"name": "ModuleInstallService.add",
 				"type": "Promise<string[]>",
 				"description": "Promise resolving to the string array returned by writeModuleFiles for the collected setup, package/group plans, README, and module-state entries. If the installed-entry check succeeds, it resolves to []; otherwise this method leaves the array contents to the writer.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			}
 		],
 		"errors": [
@@ -78,9 +76,7 @@
 						"name": "ModuleInstallService.add",
 						"type": "Promise<string[]>",
 						"description": "Promise resolving to the string array returned by writeModuleFiles for the collected setup, package/group plans, README, and module-state entries. If the installed-entry check succeeds, it resolves to []; otherwise this method leaves the array contents to the writer.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"errors": [

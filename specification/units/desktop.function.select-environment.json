@@ -21,9 +21,7 @@
 				"type": "EnvironmentHost",
 				"required": true,
 				"description": "The runtime host inspected to choose an adapter. Native Capacitor detection takes precedence; otherwise only a truthy harness selects Electron, and harnessRemote alone does not select it.",
-				"examples": [
-					{}
-				]
+				"examples": [{}]
 			}
 		],
 		"outputs": [
@@ -44,9 +42,7 @@
 						"type": "EnvironmentHost",
 						"required": true,
 						"description": "The runtime host inspected to choose an adapter. Native Capacitor detection takes precedence; otherwise only a truthy harness selects Electron, and harnessRemote alone does not select it.",
-						"examples": [
-							{}
-						]
+						"examples": [{}]
 					}
 				],
 				"outputs": [

@@ -22,7 +22,11 @@
 	import GameWorkspaceChips from './GameWorkspaceChips.svelte';
 	import { gameWorkspaceSection } from './game-workspace/gameWorkspaceSection';
 	import { patchGameView } from './game-workspace/patchGameView';
-	import { isRevisionConflict, replaceCheckpoint, withoutCheckpoint } from './game-workspace/checkpointEdits';
+	import {
+		isRevisionConflict,
+		replaceCheckpoint,
+		withoutCheckpoint
+	} from './game-workspace/checkpointEdits';
 	let { projectId = null, commit, readonly = false, bridge }: Props = $props();
 	let doc = $state.raw<GameDocument>();
 	let revision = $state<string>();

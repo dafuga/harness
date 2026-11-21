@@ -328,9 +328,7 @@
 				"name": "testFiles",
 				"type": "string[]",
 				"description": "Reads test snapshot paths by numeric index in their original order. It returns an empty array when testFiles is absent.",
-				"examples": [
-					["packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.test.ts"]
-				]
+				"examples": [["packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.test.ts"]]
 			}
 		],
 		"errors": [

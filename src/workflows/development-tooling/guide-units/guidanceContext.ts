@@ -94,11 +94,12 @@ export function headlessOnly(
 	unitId: string,
 	registryStates: StateRegistry[] = []
 ): boolean {
-	return headlessStateNames(scenarios, unitId, registryStates).length > 0 &&
+	return (
+		headlessStateNames(scenarios, unitId, registryStates).length > 0 &&
 		!scenarios.some(
-			(scenario) =>
-				scenario.kind === 'ui' && scenarioStatesFor(scenario, unitId).length > 0
-		);
+			(scenario) => scenario.kind === 'ui' && scenarioStatesFor(scenario, unitId).length > 0
+		)
+	);
 }
 
 export function namedUnitStates(context: GuidanceContext, unit: ComponentManifest): UnitState[] {

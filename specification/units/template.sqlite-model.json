@@ -26,9 +26,7 @@
 				"type": "Field[]",
 				"required": true,
 				"description": "Provides the field entries added after the generated id field. For each entry, the implementation reads name, type and column; only type values exactly equal to json, boolean, or number are preserved, while all others become string.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			}
 		],
 		"outputs": [
@@ -59,9 +57,7 @@
 						"type": "Field[]",
 						"required": true,
 						"description": "Provides the field entries added after the generated id field. For each entry, the implementation reads name, type and column; only type values exactly equal to json, boolean, or number are preserved, while all others become string.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"outputs": [

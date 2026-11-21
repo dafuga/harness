@@ -19,11 +19,7 @@
 				"type": "string[]",
 				"required": true,
 				"description": "CLI arguments after the executable and script names have been removed, where args[0] is the top-level command and args[1] is the optional subcommand. args[1] matters only when args[0] names a command with listed subcommands, later entries are ignored, and an empty array is treated as the command 'help'.",
-				"examples": [
-					["benchmark", "run"],
-					["units"],
-					["deploy"]
-				]
+				"examples": [["benchmark", "run"], ["units"], ["deploy"]]
 			}
 		],
 		"outputs": [
@@ -51,11 +47,7 @@
 						"type": "string[]",
 						"required": true,
 						"description": "CLI arguments after the executable and script names have been removed, where args[0] is the top-level command and args[1] is the optional subcommand. args[1] matters only when args[0] names a command with listed subcommands, later entries are ignored, and an empty array is treated as the command 'help'.",
-						"examples": [
-							["benchmark", "run"],
-							["units"],
-							["deploy"]
-						]
+						"examples": [["benchmark", "run"], ["units"], ["deploy"]]
 					}
 				],
 				"outputs": [

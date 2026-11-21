@@ -19,11 +19,7 @@
 				"type": "readonly string[]",
 				"required": true,
 				"description": "CLI argument vector, excluding the executable and script names, that the function reads without modifying. Only args[0] and the entries before the first `--` are checked, by exact case-sensitive string match, and an empty array returns true.",
-				"examples": [
-					[],
-					["help"],
-					["export", "--", "--help"]
-				]
+				"examples": [[], ["help"], ["export", "--", "--help"]]
 			}
 		],
 		"outputs": [
@@ -45,11 +41,7 @@
 						"type": "readonly string[]",
 						"required": true,
 						"description": "CLI argument vector, excluding the executable and script names, that the function reads without modifying. Only args[0] and the entries before the first `--` are checked, by exact case-sensitive string match, and an empty array returns true.",
-						"examples": [
-							[],
-							["help"],
-							["export", "--", "--help"]
-						]
+						"examples": [[], ["help"], ["export", "--", "--help"]]
 					}
 				],
 				"outputs": [

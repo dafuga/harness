@@ -27,11 +27,7 @@
 				"name": "changeEnvironment",
 				"type": "DeploymentEnvironment[]",
 				"description": "Automatic destinations in promotion order. dev returns [\"dev\"], stage returns [\"dev\", \"stage\"], and preprod or prod returns [\"dev\", \"stage\", \"preprod\"].",
-				"examples": [
-					["dev"],
-					["dev", "stage"],
-					["dev", "stage", "preprod"]
-				]
+				"examples": [["dev"], ["dev", "stage"], ["dev", "stage", "preprod"]]
 			}
 		],
 		"errors": [
@@ -59,11 +55,7 @@
 						"name": "changeEnvironment",
 						"type": "DeploymentEnvironment[]",
 						"description": "Automatic destinations in promotion order. dev returns [\"dev\"], stage returns [\"dev\", \"stage\"], and preprod or prod returns [\"dev\", \"stage\", \"preprod\"].",
-						"examples": [
-							["dev"],
-							["dev", "stage"],
-							["dev", "stage", "preprod"]
-						]
+						"examples": [["dev"], ["dev", "stage"], ["dev", "stage", "preprod"]]
 					}
 				],
 				"errors": [

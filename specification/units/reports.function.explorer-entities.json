@@ -233,9 +233,7 @@
 				"name": "explorerEntities",
 				"type": "ExplorerEntity[]",
 				"description": "Active head units and eligible removals, grouped in explorer-category order while preserving registry order within those groups. A removal must be named by head's removed marks, be active in parent, and no longer be active in head; it uses the parent's unit data, change removed, lastAt parent.commit, and an unpassed Removed at this commit verdict.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			}
 		],
 		"errors": [],
@@ -481,9 +479,7 @@
 						"name": "explorerEntities",
 						"type": "ExplorerEntity[]",
 						"description": "Active head units and eligible removals, grouped in explorer-category order while preserving registry order within those groups. A removal must be named by head's removed marks, be active in parent, and no longer be active in head; it uses the parent's unit data, change removed, lastAt parent.commit, and an unpassed Removed at this commit verdict.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"errors": [],

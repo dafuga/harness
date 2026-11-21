@@ -68,11 +68,7 @@
 				"required": false,
 				"default": "undefined",
 				"description": "The ids of the declared builds that an entity-scoped run skipped because it did not need them. When given, even as an empty array, it is copied into skippedBuilds; when undefined, the result has no skippedBuilds key.",
-				"examples": [
-					["docs.site"],
-					["api-server", "docs.site"],
-					[]
-				]
+				"examples": [["docs.site"], ["api-server", "docs.site"], []]
 			}
 		],
 		"outputs": [
@@ -166,11 +162,7 @@
 						"required": false,
 						"default": "undefined",
 						"description": "The ids of the declared builds that an entity-scoped run skipped because it did not need them. When given, even as an empty array, it is copied into skippedBuilds; when undefined, the result has no skippedBuilds key.",
-						"examples": [
-							["docs.site"],
-							["api-server", "docs.site"],
-							[]
-						]
+						"examples": [["docs.site"], ["api-server", "docs.site"], []]
 					}
 				],
 				"outputs": [

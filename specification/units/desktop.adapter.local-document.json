@@ -47,19 +47,13 @@
 				"name": "LocalDocumentAdapter.read",
 				"type": "Promise<T>",
 				"description": "The document: the parsed file content cast to T without validation, the value from empty() when the configured file does not exist (ENOENT), or a structured clone of the in-memory copy when no file is set. read() does not wait for pending update() calls, so it returns the document as of the last completed write.",
-				"examples": [
-					{},
-					[]
-				]
+				"examples": [{}, []]
 			},
 			{
 				"name": "LocalDocumentAdapter.update",
 				"type": "Promise<R>",
 				"description": "The value that change returned, resolved only after the document has been written. Updates run one at a time in call order, and a failed update does not block later updates.",
-				"examples": [
-					true,
-					{}
-				]
+				"examples": [true, {}]
 			}
 		],
 		"errors": [
@@ -104,10 +98,7 @@
 						"name": "LocalDocumentAdapter.read",
 						"type": "Promise<T>",
 						"description": "The document: the parsed file content cast to T without validation, the value from empty() when the configured file does not exist (ENOENT), or a structured clone of the in-memory copy when no file is set. read() does not wait for pending update() calls, so it returns the document as of the last completed write.",
-						"examples": [
-							{},
-							[]
-						]
+						"examples": [{}, []]
 					}
 				],
 				"errors": [
@@ -149,10 +140,7 @@
 						"name": "LocalDocumentAdapter.update",
 						"type": "Promise<R>",
 						"description": "The value that change returned, resolved only after the document has been written. Updates run one at a time in call order, and a failed update does not block later updates.",
-						"examples": [
-							true,
-							{}
-						]
+						"examples": [true, {}]
 					}
 				],
 				"errors": [

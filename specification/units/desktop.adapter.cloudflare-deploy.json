@@ -29,9 +29,7 @@
 				"required": false,
 				"default": {},
 				"description": "Optional overrides for the external calls: execute replaces deploymentCommand for running wrangler through bun, and request replaces the global fetch used for the Cloudflare target check. Defaults to {}, which uses deploymentCommand and fetch.",
-				"examples": [
-					{}
-				]
+				"examples": [{}]
 			},
 			{
 				"name": "CloudflareDeployAdapter.discover.root",
@@ -337,9 +335,7 @@
 						"required": false,
 						"default": {},
 						"description": "Optional overrides for the external calls: execute replaces deploymentCommand for running wrangler through bun, and request replaces the global fetch used for the Cloudflare target check. Defaults to {}, which uses deploymentCommand and fetch.",
-						"examples": [
-							{}
-						]
+						"examples": [{}]
 					}
 				],
 				"outputs": [

@@ -39,9 +39,7 @@
 				"required": false,
 				"default": [],
 				"description": "Additional strings appended after the configured testing script in the bun run invocation. Arguments beginning with --headed, --debug, --ui, or --config followed by = or end of argument, and arguments beginning with -c, are rejected; no other argument validation is performed here.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "TestingPluginService.run.signal",
@@ -93,9 +91,7 @@
 						"required": false,
 						"default": [],
 						"description": "Additional strings appended after the configured testing script in the bun run invocation. Arguments beginning with --headed, --debug, --ui, or --config followed by = or end of argument, and arguments beginning with -c, are rejected; no other argument validation is performed here.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					},
 					{
 						"name": "TestingPluginService.run.signal",

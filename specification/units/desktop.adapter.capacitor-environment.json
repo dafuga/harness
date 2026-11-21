@@ -40,9 +40,7 @@
 				"required": false,
 				"default": {},
 				"description": "The optional configuration: a `plugin` that is not null or undefined is used in place of registering the 'HarnessRemote' native plugin, and an `account` key, whatever its value, skips the native 'HarnessAccount' lookup, so `account: undefined` turns the account off. Defaults to {}, which registers 'HarnessRemote', and registers 'HarnessAccount' only where Capacitor reports that plugin available.",
-				"examples": [
-					{}
-				]
+				"examples": [{}]
 			}
 		],
 		"outputs": [
@@ -91,9 +89,7 @@
 						"required": false,
 						"default": {},
 						"description": "The optional configuration: a `plugin` that is not null or undefined is used in place of registering the 'HarnessRemote' native plugin, and an `account` key, whatever its value, skips the native 'HarnessAccount' lookup, so `account: undefined` turns the account off. Defaults to {}, which registers 'HarnessRemote', and registers 'HarnessAccount' only where Capacitor reports that plugin available.",
-						"examples": [
-							{}
-						]
+						"examples": [{}]
 					}
 				],
 				"outputs": [

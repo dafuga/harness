@@ -102,9 +102,7 @@
 				"type": "ExplorerEntity[]",
 				"required": true,
 				"description": "Not read by this component; it is forwarded to the shared ExplorerFrame inside the host object that this component passes unchanged.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "ExplorerModulesScreen.lens",

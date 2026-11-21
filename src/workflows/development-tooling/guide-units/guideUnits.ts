@@ -1,8 +1,6 @@
 // @harness-uid u_3ersk4crkf
 import type { GuidanceOptions, GuideReport, GuideState } from './guideUnits.types';
-import type {
-	ExplorerCapture
-} from '../../../../packages/reports/src/models/explorer-ui/ExplorerEvidence.types';
+import type { ExplorerCapture } from '../../../../packages/reports/src/models/explorer-ui/ExplorerEvidence.types';
 import {
 	allUnitStates,
 	guidanceContext,
@@ -18,11 +16,7 @@ import { unitShots } from './unitShots';
 const devices = ['desktop', 'tablet', 'mobile'];
 
 /** @pure Whether a usable, passed assertion or trace capture proves this named unit state. */
-export function recordedDone(
-	captures: ExplorerCapture[],
-	unitId: string,
-	name: string
-): boolean {
+export function recordedDone(captures: ExplorerCapture[], unitId: string, name: string): boolean {
 	return captures.some(
 		(item) =>
 			item.usable &&
@@ -41,11 +35,11 @@ export async function guideUnits(id: string, options: GuidanceOptions = {}): Pro
 	const headlessUnit = headlessOnly(context.loaded.scenarios, id, context.registries);
 	const headlessNames = headlessStateNames(context.loaded.scenarios, id, context.registries);
 	const namedDefault = namedUnitStates(context, unit).find((state) => state.name === 'default');
-	const explicitDefault = namedDefault?.reasons.some((reason) => reason !== 'Default presentation.') ?? false;
+	const explicitDefault =
+		namedDefault?.reasons.some((reason) => reason !== 'Default presentation.') ?? false;
 	for (const state of derived.filter(
 		(item) =>
-			item.origin === 'REQUIRED' &&
-			(!headlessUnit || item.name !== 'default' || explicitDefault)
+			item.origin === 'REQUIRED' && (!headlessUnit || item.name !== 'default' || explicitDefault)
 	)) {
 		// Each state is classified on its own: a mixed unit has both headless and UI states.
 		const isHeadless = headlessNames.includes(state.name);

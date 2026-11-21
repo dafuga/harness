@@ -30,9 +30,7 @@
 				"required": false,
 				"default": {},
 				"description": "The optional configuration for selecting the adapter storage object. If omitted, the constructor uses an empty configuration and read/write use globalThis.localStorage.",
-				"examples": [
-					{}
-				]
+				"examples": [{}]
 			},
 			{
 				"name": "AgentSettingsAdapter.write.designOptions",
@@ -106,9 +104,7 @@
 						"required": false,
 						"default": {},
 						"description": "The optional configuration for selecting the adapter storage object. If omitted, the constructor uses an empty configuration and read/write use globalThis.localStorage.",
-						"examples": [
-							{}
-						]
+						"examples": [{}]
 					}
 				],
 				"outputs": [

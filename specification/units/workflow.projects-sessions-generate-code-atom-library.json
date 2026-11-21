@@ -28,9 +28,7 @@
 				"type": "PlannedFile[]",
 				"required": true,
 				"description": "Planned files to transform. When the directory is not src/components/atoms, each entry is shallow-copied and .svelte entries use path and contents for import and declaration rewriting; an empty array is accepted.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "useAtomLibrary.directory",
@@ -51,9 +49,7 @@
 				"name": "useAtomLibrary",
 				"type": "PlannedFile[]",
 				"description": "Files returned for generation. If directory is src/components/atoms, the original array is returned; otherwise each file object is shallow-copied and only .svelte contents are rewritten for atom imports and the @harness-atoms marker.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			}
 		],
 		"errors": [
@@ -103,9 +99,7 @@
 						"type": "PlannedFile[]",
 						"required": true,
 						"description": "Planned files to transform. When the directory is not src/components/atoms, each entry is shallow-copied and .svelte entries use path and contents for import and declaration rewriting; an empty array is accepted.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					},
 					{
 						"name": "useAtomLibrary.directory",
@@ -120,9 +114,7 @@
 						"name": "useAtomLibrary",
 						"type": "PlannedFile[]",
 						"description": "Files returned for generation. If directory is src/components/atoms, the original array is returned; otherwise each file object is shallow-copied and only .svelte contents are rewritten for atom imports and the @harness-atoms marker.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"errors": [],

@@ -86,9 +86,7 @@
 				"name": "hookStages",
 				"type": "unknown",
 				"description": "The stages Harness offers, in this order: pre-push, where a push is verified, and commit-msg, where the message of a commit is measured. hookScript and stageFile accept any string and do not check it against this list.",
-				"examples": [
-					["pre-push", "commit-msg"]
-				]
+				"examples": [["pre-push", "commit-msg"]]
 			},
 			{
 				"name": "stageFile",

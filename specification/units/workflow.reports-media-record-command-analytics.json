@@ -19,11 +19,7 @@
 				"type": "readonly string[]",
 				"required": true,
 				"description": "CLI argument strings are checked before recording; values recognized by skipsAnalytics suppress the event, and other values are passed to commandAction.",
-				"examples": [
-					["help"],
-					["version"],
-					["info"]
-				]
+				"examples": [["help"], ["version"], ["info"]]
 			},
 			{
 				"name": "recordCommandAnalytics.startedAt",
@@ -70,11 +66,7 @@
 						"type": "readonly string[]",
 						"required": true,
 						"description": "CLI argument strings are checked before recording; values recognized by skipsAnalytics suppress the event, and other values are passed to commandAction.",
-						"examples": [
-							["help"],
-							["version"],
-							["info"]
-						]
+						"examples": [["help"], ["version"], ["info"]]
 					},
 					{
 						"name": "recordCommandAnalytics.startedAt",

@@ -19,10 +19,7 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Arguments forwarded unchanged after the reports CLI entry script in the child process's argv. runReport does not parse or validate them, and an element containing a null byte makes the returned promise reject before the child starts.",
-				"examples": [
-					[],
-					["--help"]
-				]
+				"examples": [[], ["--help"]]
 			}
 		],
 		"outputs": [
@@ -64,10 +61,7 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Arguments forwarded unchanged after the reports CLI entry script in the child process's argv. runReport does not parse or validate them, and an element containing a null byte makes the returned promise reject before the child starts.",
-						"examples": [
-							[],
-							["--help"]
-						]
+						"examples": [[], ["--help"]]
 					}
 				],
 				"outputs": [

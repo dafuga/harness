@@ -39,9 +39,7 @@
 				"name": "LegacyHistoryService.entries",
 				"type": "Promise<LegacyEntry[]>",
 				"description": "The resolved entries contain the latest schema-valid report for each record id, sorted by startedAt and then id, with linked commit information, a gap when unlinked, and media results. The result is empty when there is no evidence tip, and malformed reports are skipped.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			}
 		],
 		"errors": [],
@@ -62,9 +60,7 @@
 						"name": "LegacyHistoryService.entries",
 						"type": "Promise<LegacyEntry[]>",
 						"description": "The resolved entries contain the latest schema-valid report for each record id, sorted by startedAt and then id, with linked commit information, a gap when unlinked, and media results. The result is empty when there is no evidence tip, and malformed reports are skipped.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"errors": [],

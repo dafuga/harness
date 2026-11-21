@@ -47,9 +47,7 @@
 				"name": "graphTests",
 				"type": "string[]",
 				"description": "Repository paths derived from matching test-node IDs after removing the `file:` prefix. Only test nodes with .test or .spec JavaScript/TypeScript extensions are returned.",
-				"examples": [
-					["src/services/example.test.ts"]
-				]
+				"examples": [["src/services/example.test.ts"]]
 			},
 			{
 				"name": "impactReport",
@@ -150,9 +148,7 @@
 						"name": "graphTests",
 						"type": "string[]",
 						"description": "Repository paths derived from matching test-node IDs after removing the `file:` prefix. Only test nodes with .test or .spec JavaScript/TypeScript extensions are returned.",
-						"examples": [
-							["src/services/example.test.ts"]
-						]
+						"examples": [["src/services/example.test.ts"]]
 					}
 				],
 				"errors": [],

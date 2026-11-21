@@ -163,10 +163,7 @@
 				"name": "paths",
 				"type": "Promise<string[]>",
 				"description": "Repository paths emitted by git ls-tree for the selected revision and pathspec; the array may be empty.",
-				"examples": [
-					["packages/planning/src/utils/planning-collaboration/planGit.ts"],
-					[]
-				]
+				"examples": [["packages/planning/src/utils/planning-collaboration/planGit.ts"], []]
 			},
 			{
 				"name": "blob",
@@ -332,10 +329,7 @@
 						"name": "paths",
 						"type": "Promise<string[]>",
 						"description": "Repository paths emitted by git ls-tree for the selected revision and pathspec; the array may be empty.",
-						"examples": [
-							["packages/planning/src/utils/planning-collaboration/planGit.ts"],
-							[]
-						]
+						"examples": [["packages/planning/src/utils/planning-collaboration/planGit.ts"], []]
 					}
 				],
 				"errors": [],

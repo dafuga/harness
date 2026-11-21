@@ -98,10 +98,7 @@
 				"required": false,
 				"default": [],
 				"description": "Supplies ordered reasons for a non-passing verdict tooltip and defaults to an empty array. A proven verdict hides these reasons.",
-				"examples": [
-					[],
-					["No verification record was found", "Capture predates this commit"]
-				]
+				"examples": [[], ["No verification record was found", "Capture predates this commit"]]
 			},
 			{
 				"name": "Status.framed",

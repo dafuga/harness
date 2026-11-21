@@ -88,9 +88,7 @@
 				"required": false,
 				"default": [],
 				"description": "Snapshot-relative file paths to hash and size after setup and checks. Only files readable inside the snapshot are included; missing paths and paths resolving outside the snapshot are omitted, and the default is [].",
-				"examples": [
-					["dist/server.js"]
-				]
+				"examples": [["dist/server.js"]]
 			}
 		],
 		"outputs": [
@@ -149,9 +147,7 @@
 						"required": false,
 						"default": [],
 						"description": "Snapshot-relative file paths to hash and size after setup and checks. Only files readable inside the snapshot are included; missing paths and paths resolving outside the snapshot are omitted, and the default is [].",
-						"examples": [
-							["dist/server.js"]
-						]
+						"examples": [["dist/server.js"]]
 					}
 				],
 				"outputs": [

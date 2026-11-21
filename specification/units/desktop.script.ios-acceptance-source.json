@@ -178,9 +178,7 @@
 				"name": "nativeSources",
 				"type": "unknown",
 				"description": "The exported constant list of repository-relative paths that the native shell is built from, beside the renderer that is copied into it. It is a fixed array in the source, not computed or read from disk.",
-				"examples": [
-					["packages/desktop/ios", "packages/desktop/capacitor.config.ts"]
-				]
+				"examples": [["packages/desktop/ios", "packages/desktop/capacitor.config.ts"]]
 			},
 			{
 				"name": "computerSources",

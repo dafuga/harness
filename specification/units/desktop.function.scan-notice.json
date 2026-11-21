@@ -77,9 +77,7 @@
 				"name": "scanFailures",
 				"type": "readonly ScanFailure[]",
 				"description": "Readonly list of remote scan-failure codes used by scanFailure to recognize rejected causes; it is assigned from remoteScanFailures.",
-				"examples": [
-					["camera-denied", "camera-unavailable", "scan-cancelled"]
-				]
+				"examples": [["camera-denied", "camera-unavailable", "scan-cancelled"]]
 			},
 			{
 				"name": "nameNotice",

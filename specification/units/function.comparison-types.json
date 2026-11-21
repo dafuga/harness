@@ -48,9 +48,7 @@
 				"name": "measurementBoundaries",
 				"type": "unknown",
 				"description": "The two allowed measurement boundaries: 'public-invocation' times the whole call, and 'fixture' is a value a test fixture declares. comparisonSchema's boundary field accepts only these two values.",
-				"examples": [
-					["public-invocation", "fixture"]
-				]
+				"examples": [["public-invocation", "fixture"]]
 			},
 			{
 				"name": "metricUnits",

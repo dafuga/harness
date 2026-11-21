@@ -32,9 +32,7 @@
 				"name": "resourcePriorities",
 				"type": "unknown",
 				"description": "The ordered priority list used by the `resourcePriority` schema. Its three entries are the only accepted priority values.",
-				"examples": [
-					["agent-test", "coding", "environment"]
-				]
+				"examples": [["agent-test", "coding", "environment"]]
 			},
 			{
 				"name": "resourcePriority",

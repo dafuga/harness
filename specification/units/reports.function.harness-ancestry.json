@@ -360,9 +360,7 @@
 				"name": "branchNames",
 				"type": "string[]",
 				"description": "Selectable source branch names, in index branch order, whose names occur on indexed revisions, followed by Retained commits when any revision is marked retained. Source branches with no indexed member are omitted.",
-				"examples": [
-					["main", "Retained commits"]
-				]
+				"examples": [["main", "Retained commits"]]
 			},
 			{
 				"name": "defaultCommit",
@@ -662,9 +660,7 @@
 						"name": "branchNames",
 						"type": "string[]",
 						"description": "Selectable source branch names, in index branch order, whose names occur on indexed revisions, followed by Retained commits when any revision is marked retained. Source branches with no indexed member are omitted.",
-						"examples": [
-							["main", "Retained commits"]
-						]
+						"examples": [["main", "Retained commits"]]
 					}
 				],
 				"errors": [],

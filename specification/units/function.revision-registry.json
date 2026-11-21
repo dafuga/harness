@@ -31,18 +31,14 @@
 				"type": "ComponentManifest[]",
 				"required": true,
 				"description": "The component manifests stored at this revision; each becomes a unit entry and contributes its declared dependencies to the graph. They are sorted by id, and an empty list yields available: false with a gap.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "revisionRegistry.scenarios",
 				"type": "ScenarioManifest[]",
 				"required": true,
 				"description": "The scenario manifests stored at this revision; each becomes a scenario entry and its declared unit coverage becomes graph edges. They are sorted by id, and an empty list adds no scenario nodes or coverage edges.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "revisionRegistry.blobs",
@@ -87,18 +83,14 @@
 						"type": "ComponentManifest[]",
 						"required": true,
 						"description": "The component manifests stored at this revision; each becomes a unit entry and contributes its declared dependencies to the graph. They are sorted by id, and an empty list yields available: false with a gap.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					},
 					{
 						"name": "revisionRegistry.scenarios",
 						"type": "ScenarioManifest[]",
 						"required": true,
 						"description": "The scenario manifests stored at this revision; each becomes a scenario entry and its declared unit coverage becomes graph edges. They are sorted by id, and an empty list adds no scenario nodes or coverage edges.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					},
 					{
 						"name": "revisionRegistry.blobs",

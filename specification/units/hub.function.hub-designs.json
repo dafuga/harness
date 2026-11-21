@@ -175,9 +175,7 @@
 				"name": "hubDesigns",
 				"type": "unknown",
 				"description": "Returns the committed design versions in numeric version order and requires a gapless sequence starting at v001. Each version includes the decoded prompt, optional notes, image, approval, option and revision data; commit is null, and only an approval for the newest version is marked current.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "hubDesignImage",
@@ -321,9 +319,7 @@
 						"name": "hubDesigns",
 						"type": "unknown",
 						"description": "Returns the committed design versions in numeric version order and requires a gapless sequence starting at v001. Each version includes the decoded prompt, optional notes, image, approval, option and revision data; commit is null, and only an approval for the newest version is marked current.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"errors": [

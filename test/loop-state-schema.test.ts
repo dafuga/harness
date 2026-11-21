@@ -121,7 +121,9 @@ test('a schema mismatch names the file, each failing field and what was expected
 		expect(message).not.toContain('persisted schema mismatch');
 		for (const nested of [[42], [null], [['nested']], null])
 			await expect(
-				readLoop(await seed(root, { ...stored, steps: [{ ...steps[1], evidence: nested }] }, 'nest'))
+				readLoop(
+					await seed(root, { ...stored, steps: [{ ...steps[1], evidence: nested }] }, 'nest')
+				)
 			).rejects.toThrow('steps[0].evidence: Expected text');
 		await expect(readLoop(await seed(root, [], 'not-an-object'))).rejects.toThrow(
 			/not-an-object\/loop\.json: \(root\): /

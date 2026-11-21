@@ -366,10 +366,7 @@
 				"name": "emittedTargets",
 				"type": "string[]",
 				"description": "Returns process and Wasm keys found in the unit's growth emitted maps or artifact-bytes notes, in fixed order. Missing units and histories without those keys produce an empty array.",
-				"examples": [
-					[],
-					["process", "wasm"]
-				]
+				"examples": [[], ["process", "wasm"]]
 			}
 		],
 		"errors": [],
@@ -509,10 +506,7 @@
 						"name": "emittedTargets",
 						"type": "string[]",
 						"description": "Returns process and Wasm keys found in the unit's growth emitted maps or artifact-bytes notes, in fixed order. Missing units and histories without those keys produce an empty array.",
-						"examples": [
-							[],
-							["process", "wasm"]
-						]
+						"examples": [[], ["process", "wasm"]]
 					}
 				],
 				"errors": [],
@@ -692,10 +686,7 @@
 						"name": "targetsOf",
 						"type": "string[]",
 						"description": "Returns only process and Wasm kinds declared in runtime.targets, ordered process then Wasm. Other target kinds are omitted.",
-						"examples": [
-							[],
-							["process", "wasm"]
-						]
+						"examples": [[], ["process", "wasm"]]
 					}
 				],
 				"errors": [],

@@ -28,9 +28,7 @@
 				"type": "RecordStatus[]",
 				"required": true,
 				"description": "Array of record statuses to project; each status supplies an attachment reference, validity flag, and problem list. Statuses whose loaded attachment has no parsed record are omitted from the result.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "hubEvidenceOrigin.history",
@@ -56,9 +54,7 @@
 				"name": "hubEvidenceViews",
 				"type": "unknown",
 				"description": "Array of non-null projected record views for statuses whose loaded attachments contain a record; statuses without one are filtered out. It carries status validity and problems, and resolves capture media only when the originating record has the same path, SHA-256, and byte count; unresolved captures retain a gap.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			}
 		],
 		"errors": [
@@ -84,9 +80,7 @@
 						"type": "RecordStatus[]",
 						"required": true,
 						"description": "Array of record statuses to project; each status supplies an attachment reference, validity flag, and problem list. Statuses whose loaded attachment has no parsed record are omitted from the result.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"outputs": [
@@ -94,9 +88,7 @@
 						"name": "hubEvidenceViews",
 						"type": "unknown",
 						"description": "Array of non-null projected record views for statuses whose loaded attachments contain a record; statuses without one are filtered out. It carries status validity and problems, and resolves capture media only when the originating record has the same path, SHA-256, and byte count; unresolved captures retain a gap.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"errors": [

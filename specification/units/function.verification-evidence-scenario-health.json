@@ -93,9 +93,7 @@
 				"name": "documentedViewports",
 				"type": "string[]",
 				"description": "Provides the documented viewport ids used to classify viewport ids as known or unknown. The initial values are desktop, tablet, and mobile; the exported array is mutable at runtime.",
-				"examples": [
-					["desktop", "tablet", "mobile"]
-				]
+				"examples": [["desktop", "tablet", "mobile"]]
 			},
 			{
 				"name": "scenarioHealth",

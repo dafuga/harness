@@ -36,9 +36,7 @@
 				"type": "SearchEntry[] | null",
 				"required": true,
 				"description": "Supplies the searchable entries; null produces no matches and the loading placeholder unless a truthy pinned value takes precedence. The component does not fetch entries and passes 12 as the entitySearch result limit.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "EntitySearch.scope",

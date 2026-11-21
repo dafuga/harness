@@ -111,11 +111,7 @@
 				"name": "freePorts",
 				"type": "number[]",
 				"description": "Array of numeric loopback ports that a child process briefly bound and then released. The ports are not reserved for later use.",
-				"examples": [
-					[],
-					[49152],
-					[49152, 49153]
-				]
+				"examples": [[], [49152], [49152, 49153]]
 			},
 			{
 				"name": "openE2eRun",
@@ -195,11 +191,7 @@
 						"name": "freePorts",
 						"type": "number[]",
 						"description": "Array of numeric loopback ports that a child process briefly bound and then released. The ports are not reserved for later use.",
-						"examples": [
-							[],
-							[49152],
-							[49152, 49153]
-						]
+						"examples": [[], [49152], [49152, 49153]]
 					}
 				],
 				"errors": [

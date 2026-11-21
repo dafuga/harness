@@ -58,9 +58,7 @@
 				"type": "ExplorerEntity[]",
 				"required": true,
 				"description": "The projected entity list is carried in host to EntityFrame. This screen does not inspect or filter the list.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "EntityHistoryScreen.lens",

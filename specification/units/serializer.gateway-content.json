@@ -23,9 +23,7 @@
 				"type": "GatewayItem[]",
 				"required": true,
 				"description": "The ordered gateway items that history normalizes. It recursively visits nested arrays and object fields, extracts inline images, and throws for unsupported attachments, binary file resources, or nesting beyond depth 32.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "GatewayContentSerializer.toolResult.output",
@@ -89,9 +87,7 @@
 						"type": "GatewayItem[]",
 						"required": true,
 						"description": "The ordered gateway items that history normalizes. It recursively visits nested arrays and object fields, extracts inline images, and throws for unsupported attachments, binary file resources, or nesting beyond depth 32.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"outputs": [

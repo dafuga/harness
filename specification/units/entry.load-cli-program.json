@@ -19,11 +19,7 @@
 				"type": "readonly string[]",
 				"required": true,
 				"description": "The arguments after the executable name, of which only the first token is read (the second when the first is `help`); that token is matched exactly against a command name or alias, so `g` selects `generate` and `plugin` selects the `module` family. A missing or unmatched token loads no command family, and every `commandHelp` row is then registered only as a help placeholder.",
-				"examples": [
-					["units"],
-					["help", "impact"],
-					[]
-				]
+				"examples": [["units"], ["help", "impact"], []]
 			}
 		],
 		"outputs": [
@@ -50,11 +46,7 @@
 						"type": "readonly string[]",
 						"required": true,
 						"description": "The arguments after the executable name, of which only the first token is read (the second when the first is `help`); that token is matched exactly against a command name or alias, so `g` selects `generate` and `plugin` selects the `module` family. A missing or unmatched token loads no command family, and every `commandHelp` row is then registered only as a help placeholder.",
-						"examples": [
-							["units"],
-							["help", "impact"],
-							[]
-						]
+						"examples": [["units"], ["help", "impact"], []]
 					}
 				],
 				"outputs": [
