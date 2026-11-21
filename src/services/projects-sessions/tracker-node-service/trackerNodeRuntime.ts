@@ -13,7 +13,7 @@ import type { TrackerItemInput } from '../../../utils/projects-sessions/normaliz
 import type { TrackerItemSnapshot } from '../../../utils/projects-sessions/planTrackerItemMutation.types';
 import { trackerItemError } from '../../../utils/projects-sessions/trackerItemError';
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
-import { readPrivateText } from './trackerNodeConfig';
+import { readPrivateText, trackerSyncPort } from './trackerNodeConfig';
 import type { TrackerNodeConfig } from './trackerNodeConfig.types';
 import { trackerNodeNotifications } from './trackerNodeNotifications';
 import { trackerUpstreamLink } from './trackerUpstreamLink';
@@ -52,6 +52,12 @@ function configuredHostEffects(
 	return {
 		launch,
 		watchdog,
+		workerClient: {
+			node: config.node,
+			role: config.role,
+			apiPort: config.apiPort,
+			syncPort: trackerSyncPort(config)
+		},
 		adapter: adapter && {
 			...adapter,
 			leaseFile: join(dirname(config.database), 'adapter-runner.lock')

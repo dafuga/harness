@@ -113,9 +113,8 @@ export function adoptLegacyDispatchRun(
 
 function validLegacySession(run: TrackerRunReceipt, session: TrackerSessionEvidence): boolean {
 	return (
-		run.state !== 'finished' &&
+		(run.state === 'running' || run.state === 'verifying') &&
 		run.started_at !== null &&
-		session.state === 'live' &&
 		session.key === attemptKey(run) &&
 		Boolean(session.id) &&
 		session.tmux === run.tmux &&

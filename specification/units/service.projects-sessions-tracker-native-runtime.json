@@ -19,12 +19,14 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerGithubCli.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdapter.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdapterSchema.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdmission.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostBrief.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostCos.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostEffectsSchema.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostInventory.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunchPort.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunchSchema.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostRunner.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdog.ts",
@@ -32,6 +34,7 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogAlerts.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogSchema.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogState.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerLegacyExitReceipt.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogPort.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogPort.types.ts"
 		],
@@ -51,8 +54,11 @@
 			"TrackerHostEffectsMode",
 			"TrackerHostEffects",
 			"TrackerHostLaunchConfig",
+			"TrackerManagedLaunchConfig",
 			"TrackerHostRepository",
 			"TrackerHostAdapterBinding",
+			"TrackerHostAdapterConfig",
+			"TrackerWorkerClient",
 			"composeTrackerLinks",
 			"composeTrackerTelemetry",
 			"trackerSpokeStatus",
@@ -62,6 +68,7 @@
 			"adapterTimeline",
 			"adapterComments",
 			"adapterWrite",
+			"trackerHostAdmission",
 			"formatTrackerHostBrief",
 			"sendWatchdogAlerts",
 			"trackerHostEffectsSchema",
@@ -70,6 +77,10 @@
 			"TrackerHostSession",
 			"TrackerHostRouteItem",
 			"TrackerHostRoute",
+			"TrackerHostStartReply",
+			"TrackerHostStartRequest",
+			"TrackerHostLaunchPort",
+			"trackerHostLaunchPort",
 			"hostSession",
 			"hostInventory",
 			"hostStart",
@@ -85,6 +96,8 @@
 			"watchdogItem",
 			"localWatchdogRuns",
 			"readWatchdogAlerts",
+			"finishObservedRuns",
+			"trackerLegacyExitReceipt",
 			"trackerWatchdogPort",
 			"TrackerWatchdogPort"
 		]
@@ -198,6 +211,31 @@
 				"required": true
 			},
 			{
+				"name": "trackerHostAdmission.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerHostAdmission.config",
+				"type": "TrackerHostLaunchConfig",
+				"required": true
+			},
+			{
+				"name": "trackerHostAdmission.adapter",
+				"type": "TrackerHostAdapterConfig",
+				"required": false
+			},
+			{
+				"name": "trackerHostAdmission.routeFor",
+				"type": "TrackerHostRoute",
+				"required": true
+			},
+			{
+				"name": "trackerHostAdmission.inventory",
+				"type": "() => readonly TrackerHostSession[]",
+				"required": true
+			},
+			{
 				"name": "formatTrackerHostBrief.item",
 				"type": "TrackerItem",
 				"required": true
@@ -229,7 +267,7 @@
 			},
 			{
 				"name": "trackerHostInventory.driver",
-				"type": "TrackerHostProcessAdapter",
+				"type": "TrackerHostLaunchPort",
 				"required": true
 			},
 			{
@@ -240,6 +278,11 @@
 			{
 				"name": "trackerHostInventory.node",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerHostInventory.keys",
+				"type": "readonly string[]",
 				"required": true
 			},
 			{
@@ -258,8 +301,19 @@
 				"required": true
 			},
 			{
-				"name": "trackerHostLaunch.tmuxExecutable",
-				"type": "string",
+				"name": "trackerHostLaunch.effects",
+				"type": "{ tmuxExecutable?: string; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; }",
+				"required": false,
+				"default": {}
+			},
+			{
+				"name": "trackerHostLaunchPort.config",
+				"type": "TrackerHostLaunchConfig",
+				"required": true
+			},
+			{
+				"name": "trackerHostLaunchPort.client",
+				"type": "TrackerWorkerClient",
 				"required": false
 			},
 			{
@@ -269,7 +323,7 @@
 			},
 			{
 				"name": "trackerHostRunner.driver",
-				"type": "TrackerHostProcessAdapter",
+				"type": "TrackerHostLaunchPort",
 				"required": true
 			},
 			{
@@ -280,6 +334,11 @@
 			{
 				"name": "trackerHostRunner.tmux",
 				"type": "TrackerTmuxAdapter",
+				"required": false
+			},
+			{
+				"name": "trackerHostRunner.legacyRunDirectory",
+				"type": "string",
 				"required": false
 			},
 			{
@@ -363,6 +422,26 @@
 				"required": true
 			},
 			{
+				"name": "finishObservedRuns.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "finishObservedRuns.ids",
+				"type": "readonly number[]",
+				"required": true
+			},
+			{
+				"name": "finishObservedRuns.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerLegacyExitReceipt.directory",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "trackerWatchdogPort.config",
 				"type": "NonNullable<TrackerHostEffects['watchdog']>",
 				"required": true
@@ -439,6 +518,10 @@
 				"type": "unknown"
 			},
 			{
+				"name": "trackerHostAdmission",
+				"type": "TrackerDispatchPolicy['admit']"
+			},
+			{
 				"name": "formatTrackerHostBrief",
 				"type": "string"
 			},
@@ -457,6 +540,10 @@
 			{
 				"name": "trackerHostLaunch",
 				"type": "NonNullable<TrackerNativeRuntimeOptions['dispatch']>"
+			},
+			{
+				"name": "trackerHostLaunchPort",
+				"type": "TrackerHostLaunchPort"
 			},
 			{
 				"name": "hostSession",
@@ -508,6 +595,14 @@
 			},
 			{
 				"name": "readWatchdogAlerts",
+				"type": "unknown"
+			},
+			{
+				"name": "finishObservedRuns",
+				"type": "void"
+			},
+			{
+				"name": "trackerLegacyExitReceipt",
 				"type": "unknown"
 			},
 			{
@@ -777,6 +872,44 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "trackerHostAdmission",
+				"inputs": [
+					{
+						"name": "trackerHostAdmission.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "trackerHostAdmission.config",
+						"type": "TrackerHostLaunchConfig",
+						"required": true
+					},
+					{
+						"name": "trackerHostAdmission.adapter",
+						"type": "TrackerHostAdapterConfig",
+						"required": false
+					},
+					{
+						"name": "trackerHostAdmission.routeFor",
+						"type": "TrackerHostRoute",
+						"required": true
+					},
+					{
+						"name": "trackerHostAdmission.inventory",
+						"type": "() => readonly TrackerHostSession[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHostAdmission",
+						"type": "TrackerDispatchPolicy['admit']"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "formatTrackerHostBrief",
 				"inputs": [
 					{
@@ -837,7 +970,7 @@
 				"inputs": [
 					{
 						"name": "trackerHostInventory.driver",
-						"type": "TrackerHostProcessAdapter",
+						"type": "TrackerHostLaunchPort",
 						"required": true
 					},
 					{
@@ -848,6 +981,11 @@
 					{
 						"name": "trackerHostInventory.node",
 						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerHostInventory.keys",
+						"type": "readonly string[]",
 						"required": true
 					},
 					{
@@ -879,9 +1017,10 @@
 						"required": true
 					},
 					{
-						"name": "trackerHostLaunch.tmuxExecutable",
-						"type": "string",
-						"required": false
+						"name": "trackerHostLaunch.effects",
+						"type": "{ tmuxExecutable?: string; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; }",
+						"required": false,
+						"default": {}
 					}
 				],
 				"outputs": [
@@ -894,6 +1033,34 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "trackerHostLaunchPort",
+				"inputs": [
+					{
+						"name": "trackerHostLaunchPort.config",
+						"type": "TrackerHostLaunchConfig",
+						"required": true
+					},
+					{
+						"name": "trackerHostLaunchPort.client",
+						"type": "TrackerWorkerClient",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHostLaunchPort",
+						"type": "TrackerHostLaunchPort"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "trackerHostRunner",
 				"inputs": [
 					{
@@ -903,7 +1070,7 @@
 					},
 					{
 						"name": "trackerHostRunner.driver",
-						"type": "TrackerHostProcessAdapter",
+						"type": "TrackerHostLaunchPort",
 						"required": true
 					},
 					{
@@ -914,6 +1081,11 @@
 					{
 						"name": "trackerHostRunner.tmux",
 						"type": "TrackerTmuxAdapter",
+						"required": false
+					},
+					{
+						"name": "trackerHostRunner.legacyRunDirectory",
+						"type": "string",
 						"required": false
 					}
 				],
@@ -1085,6 +1257,57 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "finishObservedRuns",
+				"inputs": [
+					{
+						"name": "finishObservedRuns.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "finishObservedRuns.ids",
+						"type": "readonly number[]",
+						"required": true
+					},
+					{
+						"name": "finishObservedRuns.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "finishObservedRuns",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerLegacyExitReceipt",
+				"inputs": [
+					{
+						"name": "trackerLegacyExitReceipt.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerLegacyExitReceipt",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "trackerWatchdogPort",
 				"inputs": [
 					{
@@ -1162,6 +1385,11 @@
 		},
 		{
 			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
 			"via": "import",
 			"origin": "derived"
 		},

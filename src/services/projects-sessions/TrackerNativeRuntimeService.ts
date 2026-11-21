@@ -188,9 +188,13 @@ function configuredHostDispatch(
 	store: TrackerPersistenceService,
 	effects: TrackerNativeRuntimeOptions['hostEffects']
 ) {
-	const { launch, watchdog } = effects ?? {};
+	const { launch, watchdog, adapter, workerClient } = effects ?? {};
 	return launch
-		? trackerHostLaunch(store, launch, watchdog && 'tmux' in watchdog ? watchdog.tmux : undefined)
+		? trackerHostLaunch(store, launch, {
+				workerClient,
+				adapter,
+				tmuxExecutable: watchdog && 'tmux' in watchdog ? watchdog.tmux : undefined
+			})
 		: undefined;
 }
 

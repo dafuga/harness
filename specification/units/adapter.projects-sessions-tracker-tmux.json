@@ -11,7 +11,13 @@
 		"source": [
 			"src/adapters/projects-sessions/TrackerTmuxAdapter.ts",
 			"src/adapters/projects-sessions/TrackerTmuxAdapter.types.ts",
-			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerTmuxPane.ts"
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedHostLauncher.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedHostLauncher.types.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedLaunchReceipt.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedProviderCommands.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedWorkerProcess.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerTmuxPane.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerWorkerClient.ts"
 		],
 		"symbols": [
 			"TrackerTmuxAdapter",
@@ -22,11 +28,28 @@
 			"TrackerTmuxAdapterConfig",
 			"TrackerTmuxPane",
 			"TrackerTmuxNudge",
+			"trackerManagedHostLauncher",
+			"TrackerManagedReceipt",
+			"TrackerManagedCommand",
+			"TrackerManagedProfiles",
+			"TrackerManagedTarget",
+			"TrackerManagedExec",
+			"trackerManagedToken",
+			"checkTrackerManagedReceipt",
+			"trackerManagedEvidence",
+			"validateManagedProfiles",
+			"privateTrackerDirectory",
+			"trackerManagedProviderCommand",
+			"workerScript",
+			"launchTmux",
+			"trackerSocket",
+			"managedBrief",
 			"trackerPaneFormat",
 			"trackerSessionName",
 			"trackerTmuxPane",
 			"matchesTrackerTmuxPane",
-			"trackerTmuxKeys"
+			"trackerTmuxKeys",
+			"trackerWorkerClient"
 		]
 	},
 	"contract": {
@@ -69,6 +92,146 @@
 				"description": "Lifetime for the identity checks and guarded write."
 			},
 			{
+				"name": "trackerManagedHostLauncher.config",
+				"type": "TrackerManagedLaunchConfig",
+				"required": true
+			},
+			{
+				"name": "trackerManagedHostLauncher.client",
+				"type": "TrackerWorkerClient",
+				"required": true
+			},
+			{
+				"name": "trackerManagedHostLauncher.platform",
+				"type": "typeof process.platform",
+				"required": false
+			},
+			{
+				"name": "trackerManagedToken.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerManagedToken.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "checkTrackerManagedReceipt.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "checkTrackerManagedReceipt.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "checkTrackerManagedReceipt.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerManagedEvidence.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerManagedEvidence.receipt",
+				"type": "TrackerManagedReceipt",
+				"required": true
+			},
+			{
+				"name": "trackerManagedEvidence.live",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "validateManagedProfiles.profiles",
+				"type": "TrackerManagedProfiles",
+				"required": true
+			},
+			{
+				"name": "privateTrackerDirectory.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerManagedProviderCommand.profiles",
+				"type": "TrackerManagedProfiles",
+				"required": true
+			},
+			{
+				"name": "trackerManagedProviderCommand.input",
+				"type": "TrackerHostStartRequest",
+				"required": true
+			},
+			{
+				"name": "trackerManagedProviderCommand.briefPath",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerManagedProviderCommand.host",
+				"type": "typeof process.platform",
+				"required": true
+			},
+			{
+				"name": "launchTmux.tmux",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "launchTmux.trackerBin",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "launchTmux.trackerExecutable",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "launchTmux.worktree",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "launchTmux.receipt",
+				"type": "TrackerManagedReceipt",
+				"required": true
+			},
+			{
+				"name": "launchTmux.script",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "launchTmux.command",
+				"type": "TrackerManagedCommand",
+				"required": true
+			},
+			{
+				"name": "launchTmux.clientPath",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "launchTmux.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "trackerSocket.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "managedBrief.input",
+				"type": "TrackerHostStartRequest",
+				"required": true
+			},
+			{
 				"name": "trackerTmuxPane.raw",
 				"type": "string",
 				"required": true,
@@ -103,6 +266,16 @@
 				"type": "string",
 				"required": true,
 				"description": "Control-character-free message already checked by the caller."
+			},
+			{
+				"name": "trackerWorkerClient.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerWorkerClient.address",
+				"type": "TrackerWorkerClient",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -229,6 +402,291 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "trackerManagedHostLauncher",
+				"inputs": [
+					{
+						"name": "trackerManagedHostLauncher.config",
+						"type": "TrackerManagedLaunchConfig",
+						"required": true
+					},
+					{
+						"name": "trackerManagedHostLauncher.client",
+						"type": "TrackerWorkerClient",
+						"required": true
+					},
+					{
+						"name": "trackerManagedHostLauncher.platform",
+						"type": "typeof process.platform",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerManagedHostLauncher",
+						"type": "TrackerHostLaunchPort"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerManagedToken",
+				"inputs": [
+					{
+						"name": "trackerManagedToken.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerManagedToken.key",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerManagedToken",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "checkTrackerManagedReceipt",
+				"inputs": [
+					{
+						"name": "checkTrackerManagedReceipt.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "checkTrackerManagedReceipt.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "checkTrackerManagedReceipt.key",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkTrackerManagedReceipt",
+						"type": "TrackerManagedReceipt | undefined"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerManagedEvidence",
+				"inputs": [
+					{
+						"name": "trackerManagedEvidence.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerManagedEvidence.receipt",
+						"type": "TrackerManagedReceipt",
+						"required": true
+					},
+					{
+						"name": "trackerManagedEvidence.live",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerManagedEvidence",
+						"type": "TrackerHostSession | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "validateManagedProfiles",
+				"inputs": [
+					{
+						"name": "validateManagedProfiles.profiles",
+						"type": "TrackerManagedProfiles",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateManagedProfiles",
+						"type": "TrackerManagedProfiles"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "privateTrackerDirectory",
+				"inputs": [
+					{
+						"name": "privateTrackerDirectory.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "privateTrackerDirectory",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerManagedProviderCommand",
+				"inputs": [
+					{
+						"name": "trackerManagedProviderCommand.profiles",
+						"type": "TrackerManagedProfiles",
+						"required": true
+					},
+					{
+						"name": "trackerManagedProviderCommand.input",
+						"type": "TrackerHostStartRequest",
+						"required": true
+					},
+					{
+						"name": "trackerManagedProviderCommand.briefPath",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerManagedProviderCommand.host",
+						"type": "typeof process.platform",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerManagedProviderCommand",
+						"type": "TrackerManagedCommand | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "launchTmux",
+				"inputs": [
+					{
+						"name": "launchTmux.tmux",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "launchTmux.trackerBin",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "launchTmux.trackerExecutable",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "launchTmux.worktree",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "launchTmux.receipt",
+						"type": "TrackerManagedReceipt",
+						"required": true
+					},
+					{
+						"name": "launchTmux.script",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "launchTmux.command",
+						"type": "TrackerManagedCommand",
+						"required": true
+					},
+					{
+						"name": "launchTmux.clientPath",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "launchTmux.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "launchTmux",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerSocket",
+				"inputs": [
+					{
+						"name": "trackerSocket.node",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerSocket",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "managedBrief",
+				"inputs": [
+					{
+						"name": "managedBrief.input",
+						"type": "TrackerHostStartRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "managedBrief",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "trackerTmuxPane",
 				"inputs": [
 					{
@@ -305,6 +763,29 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerWorkerClient",
+				"inputs": [
+					{
+						"name": "trackerWorkerClient.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerWorkerClient.address",
+						"type": "TrackerWorkerClient",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerWorkerClient",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -333,6 +814,11 @@
 	"dependencies": [
 		{
 			"unit": "adapter.projects-sessions-tracker-host-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime",
 			"via": "import",
 			"origin": "derived"
 		},
