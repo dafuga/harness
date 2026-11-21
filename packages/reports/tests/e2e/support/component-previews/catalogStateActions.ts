@@ -14,7 +14,7 @@ import { prepareReportState } from './reportStateActions';
 import { prepareDesktopState } from './desktopStateActions';
 import { prepareDesktopGameState } from './desktopGameStateActions';
 
-type CatalogStateAction = (component: Locator) => Promise<void>;
+import type { CatalogStateAction } from './catalogStateActions.types';
 
 const actions: Record<string, CatalogStateAction> = {
 	'reports.component.floating-chat:closed': async (component) => {
