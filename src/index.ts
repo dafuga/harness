@@ -205,3 +205,16 @@ export { chooseResourceHost } from './services/execution-runtimes/resource-place
 export * from './services/agents-providers/TrackerDispatcherService';
 export { TrackerRunReadRepository } from './repositories/projects-sessions/TrackerRunReadRepository';
 export { TrackerSpokeLoopService } from './services/projects-sessions/TrackerSpokeLoopService';
+export { quietHourBoundary } from './helpers/attention-timing/quietHourBoundary';
+export { isQuietHour } from './helpers/attention-timing/isQuietHour';
+export { zonedWallClock } from './helpers/attention-timing/zonedWallClock';
+export { wallClockToEpochMs } from './helpers/attention-timing/wallClockToEpochMs';
+export { nextReminderAt } from './helpers/attention-timing/nextReminderAt';
+export { nextReminderSlotAt } from './helpers/attention-timing/nextReminderSlotAt';
+export { nextAttentionBatchAt } from './helpers/attention-timing/nextAttentionBatchAt';
+export { groupAttentionLines } from './helpers/attention-timing/groupAttentionLines';
+export { clockMinutes } from './helpers/attention-timing/clockMinutes';
+export { planDigestAlertTick } from './helpers/attention-timing/planDigestAlertTick';
+export { TrackerNotificationService } from './services/projects-sessions/TrackerNotificationService';
+export { planGithubIssueIntake } from './helpers/planning-collaboration/planGithubIssueIntake';
+export * from './services/projects-sessions/TrackerAdapterPollService';

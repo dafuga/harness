@@ -1,0 +1,140 @@
+import { DatabaseSync } from 'node:sqlite';
+import { vi } from 'vitest';
+import { TrackerAdapterPollService } from '../../src/services/projects-sessions/TrackerAdapterPollService';
+import type {
+	TrackerAdapterLease,
+	TrackerAdapterReadQuery,
+	TrackerGithubIssue
+} from '../../src/services/projects-sessions/TrackerAdapterPollService.types';
+import { TrackerPersistenceService } from '../../src/services/projects-sessions/TrackerPersistenceService';
+import type {
+	TrackerAdapterFeed,
+	TrackerAdapterFixtureOptions
+} from './trackerAdapterFixture.types';
+
+export const adapterSourceId = 'github:example/widgets';
+export const adapterEnabledAt = 10_000;
+
+export function adapterIssue(overrides: Partial<TrackerGithubIssue> = {}): TrackerGithubIssue {
+	return {
+		id: 100,
+		number: 17,
+		title: 'Fixture issue',
+		state: 'open',
+		created_at: new Date(12_000).toISOString(),
+		updated_at: new Date(12_000).toISOString(),
+		labels: [],
+		user: { login: 'fixture-author' },
+		...overrides
+	};
+}
+
+export function adapterFixture(options: TrackerAdapterFixtureOptions = {}) {
+	const database = options.database ?? new DatabaseSync(':memory:');
+	const node = options.node ?? 'fixture-owner';
+	const feed: TrackerAdapterFeed = {
+		now: 30_000,
+		issues: [adapterIssue()],
+		timeline: [],
+		comments: [],
+		failRead: false,
+		started: false,
+		failWrite: false
+	};
+	const store = new TrackerPersistenceService(database, node, { now: () => feed.now });
+	const readIssues = vi.fn(async function* (_source: unknown, _query: TrackerAdapterReadQuery) {
+		yield* feed.issues;
+		if (feed.failRead) throw new Error('synthetic provider body');
+	});
+	const readTimeline = vi.fn(async () => feed.timeline);
+	const readComments = vi.fn(async function* () {
+		yield* feed.comments;
+	});
+	const markTracked = vi.fn(async () => {
+		if (feed.failWrite) throw new Error('synthetic provider body');
+	});
+	const ids = () => ['fixture-001', 'fixture-002', 'fixture-003'][store.maxSeq()] ?? 'fixture-004';
+	const service = new TrackerAdapterPollService(store, {
+		lease: options.lease ?? { owner: node, tryAcquire: () => () => {} },
+		provider: { readIssues, readTimeline, readComments, markTracked },
+		redactText: options.redactText ?? ((text) => text),
+		intakePolicy: options.intakePolicy,
+		now: () => feed.now,
+		itemId: ids,
+		hasStarted: () => feed.started
+	});
+	seedLegacySource(database);
+	return { service, store, database, feed, readIssues, readTimeline, readComments, markTracked };
+}
+
+function seedLegacySource(database: DatabaseSync): void {
+	database.exec(`
+		CREATE TABLE IF NOT EXISTS adapter_runner(
+			slot INTEGER PRIMARY KEY CHECK(slot = 1), node TEXT NOT NULL
+		);
+		CREATE TABLE IF NOT EXISTS adapter_sources(
+			id TEXT PRIMARY KEY, config TEXT NOT NULL, enabled_at INTEGER NOT NULL, cursor INTEGER NOT NULL,
+			paused INTEGER NOT NULL DEFAULT 0, removed INTEGER NOT NULL DEFAULT 0, last_run INTEGER, last_error TEXT
+		);
+		CREATE TABLE IF NOT EXISTS adapter_links(
+			source_id TEXT NOT NULL, external_id TEXT NOT NULL, external_key TEXT NOT NULL, item_id TEXT NOT NULL,
+			remote_state TEXT, events_after INTEGER NOT NULL, owned INTEGER NOT NULL, sync_pending INTEGER NOT NULL,
+			PRIMARY KEY(source_id, external_id)
+		);
+		CREATE TABLE IF NOT EXISTS adapter_events(
+			source_id TEXT NOT NULL, external_id TEXT NOT NULL, event_id TEXT NOT NULL,
+			PRIMARY KEY(source_id, external_id, event_id)
+		);
+	`);
+	const config = {
+		id: adapterSourceId,
+		type: 'github',
+		target: 'example/widgets',
+		kind: 'task',
+		agent: 'fixture',
+		project: 'fixture',
+		computer: 'auto',
+		owner: null,
+		model: null,
+		auto_launch: 'unlabeled',
+		include_labels: [],
+		exclude_labels: [],
+		enabled_at: adapterEnabledAt
+	};
+	database
+		.prepare(
+			`
+		INSERT OR IGNORE INTO adapter_sources(id, config, enabled_at, cursor) VALUES (?, ?, ?, ?)
+	`
+		)
+		.run(adapterSourceId, JSON.stringify(config), adapterEnabledAt, adapterEnabledAt);
+}
+
+export function sqliteFixtureLease(path: string): TrackerAdapterLease {
+	return {
+		owner: 'fixture-owner',
+		tryAcquire() {
+			const lock = new DatabaseSync(path);
+			try {
+				lock.exec('BEGIN EXCLUSIVE');
+				return () => lock.close();
+			} catch (error) {
+				lock.close();
+				if (error instanceof Error && 'errcode' in error && error.errcode === 5) return null;
+				throw error;
+			}
+		}
+	};
+}
+
+export function refuseInsert(
+	database: DatabaseSync,
+	table: 'adapter_links' | 'adapter_events'
+): void {
+	database.exec(`CREATE TRIGGER refuse_receipt BEFORE INSERT ON ${table}
+		BEGIN SELECT RAISE(ABORT, 'fixture receipt refused'); END`);
+}
+
+export function sourceRun(database: DatabaseSync): unknown {
+	return database.prepare('SELECT cursor, last_run, last_error FROM adapter_sources').get();
+}

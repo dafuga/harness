@@ -18,6 +18,7 @@ import { historyFixtureVerificationScopes } from './history-fixture-verification
 import { moduleTaskVerificationScopes } from './module-task-verification-scopes';
 import { unitExamplesVerificationScopes } from './unit-examples-verification-scopes';
 import { trackerDispatcherVerificationScopes } from './tracker-dispatcher-verification-scopes';
+import { trackerNotificationVerificationScopes } from './tracker-notification-verification-scopes';
 import { trackerHubVerificationScopes } from './tracker-hub-verification-scopes';
 import type { VerificationScope } from './verification-targets';
 
@@ -81,5 +82,6 @@ export const registeredVerificationScopes: Record<string, VerificationScope> = {
 	...registryOwnershipVerificationScopes,
 	...trackerDispatcherVerificationScopes,
 	...trackerHubVerificationScopes,
+	...trackerNotificationVerificationScopes,
 	...unitExamplesVerificationScopes
 };

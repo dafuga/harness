@@ -185,7 +185,20 @@
 			"rankResourcePlacement",
 			"admitResourceHost",
 			"chooseResourceHost",
-			"TrackerRunReadRepository"
+			"TrackerRunReadRepository",
+			"TrackerSpokeLoopService",
+			"quietHourBoundary",
+			"isQuietHour",
+			"zonedWallClock",
+			"wallClockToEpochMs",
+			"nextReminderAt",
+			"nextReminderSlotAt",
+			"nextAttentionBatchAt",
+			"groupAttentionLines",
+			"clockMinutes",
+			"planDigestAlertTick",
+			"TrackerNotificationService",
+			"planGithubIssueIntake"
 		]
 	},
 	"contract": {
@@ -564,7 +577,62 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "helper.attention-timing-clock-minutes",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-group-attention-lines",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-is-quiet-hour",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-next-attention-batch-at",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-next-reminder-at",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-next-reminder-slot-at",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-plan-digest-alert-tick",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-quiet-hour-boundary",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-wall-clock-to-epoch-ms",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-zoned-wall-clock",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "helper.module-system-module-resource-location",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.planning-collaboration-plan-github-issue-intake",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -819,7 +887,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-adapter-poll",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-local-api",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-notification",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -830,6 +908,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-rehearsal",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-spoke-loop",
 			"via": "reexport",
 			"origin": "derived"
 		},
