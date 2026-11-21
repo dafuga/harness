@@ -1,0 +1,45 @@
+{
+	"name": "tracker-cli-compatibility",
+	"goal": "Use the shared Harness CLI and an exec shim to relay Tracker commands with the same bytes, options and exit codes while preserving the existing service.",
+	"createdAt": "2026-11-21T14:39:50.384Z",
+	"updatedAt": "2026-11-21T14:53:24.645Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T14:41:38.564Z",
+			"evidence": "Tracker m8fkcj migration plan maps every legacy command. Scope: namespace, exact argv and exit status, stable retained backend and staged shim. Isolated fixtures only. Live system stays on its existing release."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-21T14:47:07.452Z",
+			"evidence": "Harness registers the Tracker command family, delegates raw argv to an explicitly selected or retained client, and packages an exec shim. The unit tests exercise launch error and recursion handling."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-21T14:53:24.645Z",
+			"evidence": "harbor-mbp-2: red at 4b12da6fb1 said unknown command tracker. Same compatibility regression passed at 6692fc202b. Direct executable shim, two method states and CLI registration tests passed together at 44d8ffde6c (six tests). The built CLI and shim passed item lifecycle, digest, role restrictions and duplicate codes against an isolated Tracker 122e190 spoke."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

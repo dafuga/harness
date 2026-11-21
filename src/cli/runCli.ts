@@ -8,12 +8,19 @@ import { skipsAnalytics } from '../workflows/reports-media/skipsAnalytics';
 
 /** Shared executable entry; compatibility imports never call it. */
 export async function runCli(entry: string): Promise<void> {
+	const args = process.argv.slice(2);
+	// The legacy parser owns every Tracker flag, including --help, --version and --.
+	if (args[0] === 'tracker') {
+		const { TrackerCommand } = await import('../commands/projects-sessions/TrackerCommand');
+		process.exitCode = new TrackerCommand().run(args.slice(1));
+		return;
+	}
 	pipedOutput();
 	const warning = staleBuild(entry);
 	if (warning) console.error(warning);
 	const startedAt = Date.now();
 	try {
-		await (await loadCliProgram(process.argv.slice(2))).exitOverride().parseAsync(process.argv);
+		await (await loadCliProgram(args)).exitOverride().parseAsync(process.argv);
 	} catch (error) {
 		if (error instanceof CommanderError) process.exitCode = error.exitCode;
 		else {
