@@ -1,4 +1,7 @@
 import { expect, test, vi } from 'vitest';
+import { mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { measureWorkload } from '../../support/measureWorkload';
 import { buildProgram } from '../../../src/cli/program';
 import { loadCliProgram } from '../../../src/cli/loadCliProgram';
@@ -98,5 +101,54 @@ test('project list emits the same aggregate states as the canonical tracker read
 	} finally {
 		vi.unstubAllGlobals();
 		output.mockRestore();
+	}
+});
+
+test('Harbor inspection forwards fixed argv without provider or signing credentials', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-harbor-inspect-'));
+	const entry = join(root, 'harbor tool.cjs');
+	const output = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+	await writeFile(
+		entry,
+		`
+		console.log(JSON.stringify({
+			args: process.argv.slice(2),
+			safe: !process.env.OPENAI_API_KEY && !process.env.HARBOR_PRIVATE_KEY && !process.env.NODE_OPTIONS
+		}));`
+	);
+	vi.stubEnv('HARNESS_HARBOR_CLI_PATH', entry);
+	vi.stubEnv('HARNESS_HARBOR_NODE_PATH', process.execPath);
+	vi.stubEnv('OPENAI_API_KEY', 'synthetic-provider-key');
+	vi.stubEnv('HARBOR_PRIVATE_KEY', 'synthetic-harbor-key');
+	vi.stubEnv('NODE_OPTIONS', '--require /fixture/not-imported.cjs');
+	const rpc = 'http://127.0.0.1:18900';
+	const config = join(root, 'operator config.json');
+	try {
+		for (const [input, expected] of [
+			[['version'], ['--version']],
+			[
+				['chain', 'info', '--url', rpc],
+				['chain', 'info', '--json', '--url', rpc]
+			],
+			[
+				['agent', 'status', '--config', config],
+				['agent', 'status', '--config', config]
+			]
+		]) {
+			const args = ['harbor', ...input];
+			const cli = await loadCliProgram(args);
+			expect(cli.commands.some((command) => command.name() === 'harbor')).toBe(true);
+			await measureWorkload('command.projects-sessions-harbor-inspection', expected.join(' '), () =>
+				cli.parseAsync(args, { from: 'user' })
+			);
+			expect(JSON.parse(output.mock.lastCall?.[0] as string)).toStrictEqual({
+				args: expected,
+				safe: true
+			});
+		}
+	} finally {
+		vi.unstubAllEnvs();
+		output.mockRestore();
+		await rm(root, { recursive: true, force: true });
 	}
 });
