@@ -23,8 +23,6 @@ import {
 } from './tracker-native-runtime-service/nativeTrackerLinks';
 import { configuredTrackerDestinations } from './tracker-native-runtime-service/configuredTrackerDestinations';
 
-export { TrackerLocalApiService, TrackerNotificationService, TrackerPersistenceService };
-
 /** Composes the Tracker node's API, delivery and link workers over one SQLite journal. */
 export class TrackerNativeRuntimeService {
 	readonly role: 'hub' | 'spoke';
@@ -163,3 +161,11 @@ function composeNotifications(
 		})
 	});
 }
+
+export {
+	TrackerLocalApiService,
+	TrackerNotificationService,
+	TrackerPersistenceService,
+	TrackerRecurringRepository,
+	TrackerRecurringService
+};

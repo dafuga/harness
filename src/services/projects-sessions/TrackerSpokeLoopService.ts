@@ -1,5 +1,6 @@
 // @harness-uid u_7763mfxmkn
 import { setTimeout as delay } from 'node:timers/promises';
+import type { TrackerWireValue } from './TrackerHubSyncService.types';
 import type { TrackerSpokeLoopOptions, TrackerSpokeStatus } from './TrackerSpokeLoopService.types';
 import { trackerMetaKeys, TrackerSpokeSyncService } from './TrackerSpokeSyncService';
 
@@ -109,7 +110,7 @@ export class TrackerSpokeLoopService {
 		}
 	}
 
-	private notePull(hub: string, duePolicy: unknown): void {
+	private notePull(hub: string, duePolicy: TrackerWireValue | undefined): void {
 		if (duePolicy !== undefined) this.options.onDuePolicy?.(duePolicy);
 		this.hub = hub;
 		this.state.connected = true;

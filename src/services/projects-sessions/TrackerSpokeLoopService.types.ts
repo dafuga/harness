@@ -1,4 +1,5 @@
 // @harness-uid u_7763mfxmkn
+import type { TrackerWireValue } from './TrackerHubSyncService.types';
 import type { TrackerPersistenceService } from './TrackerPersistenceService';
 import type { TrackerSpokeOptions, TrackerSpokeRequest } from './TrackerSpokeSyncService.types';
 
@@ -13,7 +14,7 @@ export interface TrackerSpokeLoopOptions extends Omit<
 	endpoint?: URL;
 	now?: () => number;
 	onError?(direction: 'push' | 'pull', error: unknown): void;
-	onDuePolicy?(policy: unknown): void;
+	onDuePolicy?(policy: TrackerWireValue): void;
 }
 
 export interface TrackerSpokeStatus {

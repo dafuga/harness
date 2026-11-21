@@ -12,6 +12,9 @@ export function assertTrackerLegacyRollbackSafe(database: SqliteDatabase): void 
 		table.get('harness_notification_inflight') &&
 		database.prepare('SELECT 1 FROM harness_notification_inflight LIMIT 1').get()
 	) {
-		throw new Error('Tracker rollback blocked by an unacknowledged notification');
+		throw new DOMException(
+			'Tracker rollback blocked by an unacknowledged notification',
+			'InvalidStateError'
+		);
 	}
 }

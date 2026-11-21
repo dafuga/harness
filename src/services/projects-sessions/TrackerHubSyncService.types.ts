@@ -1,6 +1,11 @@
 // @harness-uid u_jkomno4o5u
 import type { TrackerSyncAuthService } from '../networking-security/TrackerSyncAuthService';
 
+import type { z } from 'zod';
+
+export type TrackerWireValue = z.infer<ReturnType<typeof z.json>>;
+export type TrackerWireObject = Readonly<Record<string, TrackerWireValue>>;
+
 export interface TrackerHubRequest {
 	method: string;
 	/** Original origin-form HTTP target, including raw query ordering and escapes. */
@@ -57,7 +62,7 @@ export interface TrackerHubMachineStore {
 }
 
 export interface TrackerHubRunStore {
-	importRemote(node: string, runs: readonly unknown[]): void;
+	importRemote(node: string, runs: readonly TrackerWireValue[]): void;
 	historyRowsFor(node: string): readonly unknown[];
 }
 

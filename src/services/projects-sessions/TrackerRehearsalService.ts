@@ -19,62 +19,87 @@ export class TrackerRehearsalService {
 		const release = tryAcquireTrackerSqliteLease(databasePath + '.supervisor-lock.sqlite');
 		if (!release)
 			throw new DOMException('Tracker rehearsal database is already owned', 'InvalidStateError');
-		const controller = new AbortController();
-		const health = rehearsalHealth(node, options?.role ?? 'spoke', options?.now ?? Date.now);
-		let database: SqliteDatabase | undefined;
-		let runtime: TrackerNativeRuntimeService | undefined;
-		let supervisor: TrackerSupervisorService | undefined;
-		let server: ReturnType<typeof bindLoopback> | undefined;
-		let workers: Promise<void> | undefined;
-		let closing: Promise<void> | undefined;
-		const close = (checkRollback = false) => {
-			if (closing) {
-				if (checkRollback) return Promise.reject(new Error('Tracker rehearsal is already closing'));
-				return closing;
-			}
-			const afterDrain = checkRollback ? () => supervisor?.assertLegacyRollbackSafe() : undefined;
-			return (closing = stopRehearsal(
-				{ server, workers, controller, afterDrain },
-				database,
-				release
-			));
+		const runtimeOptions: TrackerNativeRuntimeOptions = {
+			...options,
+			node,
+			role: options?.role ?? 'spoke'
 		};
-		try {
-			server = bindLoopback(port, (request) => {
-				if (!runtime || !supervisor) return Response.json({ error: 'starting' }, { status: 503 });
-				const { pathname: path, search } = new URL(request.url);
-				if (request.method === 'GET' && path === '/health') return Response.json(health);
-				if (request.method === 'GET' && path === '/status')
-					return Response.json(supervisor.status());
-				if (runtime.sync && path.startsWith('/sync/')) {
-					return runtime.sync.handle({
-						method: request.method,
-						pathAndQuery: path + search,
-						headers: request.headers,
-						body: request.body,
-						signal: request.signal
-					});
-				}
-				return runtime.items.handle(request);
-			});
-			database = openSqlite(databasePath);
-			runtime = new TrackerNativeRuntimeService(database, { ...options, node, role: health.role });
-			supervisor = new TrackerSupervisorService(runtime, {
-				now: () => Date.parse(health.started_at)
-			});
-			workers = supervisor.run(controller.signal);
-			return {
-				port: server.port,
-				node,
-				pid: health.pid,
-				close: () => close(),
-				closeForLegacyRollback: () => close(true)
-			};
-		} catch (error) {
-			await close();
-			throw error;
-		}
+		return startRehearsal(databasePath, port, release, runtimeOptions);
 	}
+}
+
+async function startRehearsal(
+	databasePath: string,
+	port: number,
+	release: () => void,
+	options: TrackerNativeRuntimeOptions
+) {
+	const controller = new AbortController();
+	const health = rehearsalHealth(options.node, options.role, options.now ?? Date.now);
+	let database: SqliteDatabase | undefined;
+	let runtime: TrackerNativeRuntimeService | undefined;
+	let supervisor: TrackerSupervisorService | undefined;
+	let server: ReturnType<typeof bindLoopback> | undefined;
+	let workers: Promise<void> | undefined;
+	let closing: Promise<void> | undefined;
+	const close = (checkRollback = false) => {
+		if (closing) {
+			if (checkRollback)
+				return Promise.reject(
+					new DOMException('Tracker rehearsal is already closing', 'InvalidStateError')
+				);
+			return closing;
+		}
+		const afterDrain = checkRollback ? () => supervisor?.assertLegacyRollbackSafe() : undefined;
+		return (closing = stopRehearsal(
+			{ server, workers, controller, afterDrain },
+			database,
+			release
+		));
+	};
+	try {
+		server = bindLoopback(port, (request) =>
+			rehearsalRequest(request, health, runtime, supervisor)
+		);
+		database = openSqlite(databasePath);
+		runtime = new TrackerNativeRuntimeService(database, options);
+		supervisor = new TrackerSupervisorService(runtime, {
+			now: () => Date.parse(health.started_at)
+		});
+		workers = supervisor.run(controller.signal);
+		return {
+			port: server.port,
+			node: health.node,
+			pid: health.pid,
+			close: () => close(),
+			closeForLegacyRollback: () => close(true)
+		};
+	} catch (error) {
+		await close();
+		throw error;
+	}
+}
+
+function rehearsalRequest(
+	request: Request,
+	health: ReturnType<typeof rehearsalHealth>,
+	runtime: TrackerNativeRuntimeService | undefined,
+	supervisor: TrackerSupervisorService | undefined
+) {
+	if (!runtime || !supervisor) return Response.json({ error: 'starting' }, { status: 503 });
+	const { pathname: path, search } = new URL(request.url);
+	if (request.method === 'GET' && path === '/health') return Response.json(health);
+	if (request.method === 'GET' && path === '/status') return Response.json(supervisor.status());
+	if (runtime.sync && path.startsWith('/sync/')) {
+		return runtime.sync.handle({
+			method: request.method,
+			pathAndQuery: path + search,
+			headers: request.headers,
+			body: request.body,
+			signal: request.signal
+		});
+	}
+	return runtime.items.handle(request);
 }
 
 async function stopRehearsal(

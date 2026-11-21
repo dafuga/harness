@@ -1,11 +1,12 @@
 // @harness-uid u_7ryrqak22k
 import type { TrackerPersistenceService } from '../../services/projects-sessions/TrackerPersistenceService';
 import type {
+	TrackerCurrentOccurrence,
 	TrackerOccurrenceRow,
 	TrackerRecurringItem,
 	TrackerRecurringJob,
 	TrackerRecurringPlan,
-	TrackerRecurringResult,
+	TrackerRecurringSettlement,
 	TrackerRecurringWork
 } from './TrackerRecurringRepository.types';
 import {
@@ -54,7 +55,7 @@ export class TrackerRecurringRepository {
 				`INSERT INTO recurring_state (item_id, spec) VALUES (?, ?)
 				ON CONFLICT(item_id) DO UPDATE SET spec = excluded.spec WHERE spec <> excluded.spec`
 			).run(id, next.spec);
-			if (next.wake) this.stageWork(next.wake, now, next.missed ?? []);
+			if (next.wake) stageWork(this.store, next.wake, now, next.missed ?? []);
 			return {
 				result: undefined,
 				operation: Object.keys(next.fields).length ? { itemId: id, fields: next.fields } : undefined
@@ -63,10 +64,7 @@ export class TrackerRecurringRepository {
 	}
 
 	work(): TrackerRecurringWork[] {
-		const rows = this.store.database
-			.prepare('SELECT v FROM meta WHERE k GLOB ? ORDER BY k')
-			.all(workPrefix + '*') as { v: string }[];
-		return rows.map(({ v }) => JSON.parse(v) as TrackerRecurringWork);
+		return recurringWork(this.store);
 	}
 
 	claim(work: TrackerRecurringWork): boolean {
@@ -74,11 +72,11 @@ export class TrackerRecurringRepository {
 		return this.store.commitLocal(() => {
 			const key = workPrefix + work.wake.key;
 			if (this.store.getMeta(key) !== JSON.stringify(work)) return { result: false };
-			const current = this.readJob(work.wake.itemId);
+			const current = readJob(this.store, work.wake.itemId);
 			const item = this.store.database
 				.prepare(`SELECT 1 FROM items WHERE id = ? AND ${active} AND occurrence = ?`)
 				.get(work.wake.itemId, new Date(work.wake.at).toISOString());
-			if (!item || !current || current.updated_at !== work.job.updated_at) {
+			if (!item || current?.updated_at !== work.job.updated_at) {
 				this.store.database.prepare('DELETE FROM meta WHERE k = ?').run(key);
 				return { result: false };
 			}
@@ -87,10 +85,7 @@ export class TrackerRecurringRepository {
 		});
 	}
 
-	settle(
-		work: TrackerRecurringWork,
-		outcome?: { result: TrackerRecurringResult; note: string; wake?: TrackerRecurringWork }
-	): boolean {
+	settle(work: TrackerRecurringWork, outcome?: TrackerRecurringSettlement): boolean {
 		return this.store.commitLocal(() => {
 			const key = workPrefix + work.wake.key;
 			const db = this.store.database;
@@ -98,25 +93,13 @@ export class TrackerRecurringRepository {
 			const id = work.wake.itemId;
 			const item = db
 				.prepare('SELECT status, occurrence, last_result FROM items WHERE id = ? AND deleted = 0')
-				.get(id) as Pick<TrackerRecurringItem, 'status' | 'occurrence' | 'last_result'> | undefined;
-			const nextWake = item && outcome?.wake;
+				.get(id) as TrackerCurrentOccurrence | undefined;
+			const nextWake = item ? outcome?.wake : undefined;
 			if (nextWake) this.store.writeMeta({ [key]: JSON.stringify(nextWake) });
 			else db.prepare('DELETE FROM meta WHERE k = ?').run(key);
 			const result = Boolean(nextWake);
-			if (
-				!outcome ||
-				item?.occurrence !== outcome.result.occurrence ||
-				readRecurringResult(item.last_result)?.occurrence === item.occurrence
-			)
-				return { result };
-			syncRecurringResult(db, id, outcome.result);
-			const reopen = item.status === 'in_progress' || item.status === 'done';
-			const fields = {
-				last_result: JSON.stringify(outcome.result),
-				'note+': outcome.note,
-				...(reopen && { status: 'open' })
-			};
-			return { result, operation: { itemId: id, fields } };
+			const operation = settlementOperation(db, id, item, outcome);
+			return { result, operation };
 		});
 	}
 
@@ -148,31 +131,62 @@ export class TrackerRecurringRepository {
 	assertLegacyRollbackSafe(): void {
 		assertLegacyRecurringRollbackSafe(this.store.database);
 	}
+}
 
-	private readJob(id: string): TrackerRecurringJob | undefined {
-		return this.store.database
-			.prepare('SELECT item_id, wake_on, timeout_s, updated_at FROM box_jobs WHERE item_id = ?')
-			.get(id) as TrackerRecurringJob | undefined;
-	}
+function settlementOperation(
+	db: TrackerPersistenceService['database'],
+	id: string,
+	item: TrackerCurrentOccurrence | undefined,
+	outcome: TrackerRecurringSettlement | undefined
+) {
+	if (!outcome || item?.occurrence !== outcome.result.occurrence) return undefined;
+	if (readRecurringResult(item.last_result)?.occurrence === item.occurrence) return undefined;
+	syncRecurringResult(db, id, outcome.result);
+	const reopen = item.status === 'in_progress' || item.status === 'done';
+	const fields = {
+		last_result: JSON.stringify(outcome.result),
+		'note+': outcome.note,
+		...(reopen && { status: 'open' })
+	};
+	return { itemId: id, fields };
+}
 
-	private stageWork(wake: TrackerRecurringWork['wake'], now: number, missed: readonly string[]) {
-		const db = this.store.database;
-		const { itemId, at, key } = wake;
-		for (const time of missed) writeOccurrence(db, itemId, time, null);
-		writeOccurrence(db, itemId, new Date(at).toISOString(), now);
-		const job = this.readJob(itemId);
-		if (job && this.work().some((entry) => entry.phase !== 'wake' && entry.wake.itemId === itemId))
-			return;
-		const work: TrackerRecurringWork = job
-			? { phase: 'queued', wake, job }
-			: { phase: 'wake', wake };
-		this.store.writeMeta({ [workPrefix + key]: JSON.stringify(work) });
-	}
+function recurringWork(store: TrackerPersistenceService): TrackerRecurringWork[] {
+	const rows = store.database
+		.prepare('SELECT v FROM meta WHERE k GLOB ? ORDER BY k')
+		.all(workPrefix + '*') as { v: string }[];
+	return rows.map(({ v }) => JSON.parse(v) as TrackerRecurringWork);
+}
+
+function readJob(store: TrackerPersistenceService, id: string): TrackerRecurringJob | undefined {
+	return store.database
+		.prepare('SELECT item_id, wake_on, timeout_s, updated_at FROM box_jobs WHERE item_id = ?')
+		.get(id) as TrackerRecurringJob | undefined;
+}
+
+function stageWork(
+	store: TrackerPersistenceService,
+	wake: TrackerRecurringWork['wake'],
+	now: number,
+	missed: readonly string[]
+) {
+	const db = store.database;
+	const { itemId, at, key } = wake;
+	for (const time of missed) writeOccurrence(db, itemId, time, null);
+	writeOccurrence(db, itemId, new Date(at).toISOString(), now);
+	const job = readJob(store, itemId);
+	if (
+		job &&
+		recurringWork(store).some((entry) => entry.phase !== 'wake' && entry.wake.itemId === itemId)
+	)
+		return;
+	const work: TrackerRecurringWork = job ? { phase: 'queued', wake, job } : { phase: 'wake', wake };
+	store.writeMeta({ [workPrefix + key]: JSON.stringify(work) });
 }
 
 export function assertLegacyRecurringRollbackSafe(
 	database: TrackerPersistenceService['database']
 ): void {
 	if (database.prepare('SELECT 1 FROM meta WHERE k GLOB ? LIMIT 1').get(workPrefix + '*'))
-		throw new Error('Tracker rollback blocked by recurring work');
+		throw new DOMException('Tracker rollback blocked by recurring work', 'InvalidStateError');
 }

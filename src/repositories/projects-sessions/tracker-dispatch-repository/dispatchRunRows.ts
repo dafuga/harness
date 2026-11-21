@@ -52,7 +52,11 @@ export function assertLegacyDispatchRollbackSafe(database: SqliteDatabase): void
 		ORDER BY r.id LIMIT 1`
 		)
 		.get() as { id: number; state: string } | undefined;
-	if (blocker) throw new Error(`Tracker rollback blocked by run ${blocker.id} (${blocker.state})`);
+	if (blocker)
+		throw new DOMException(
+			`Tracker rollback blocked by run ${blocker.id} (${blocker.state})`,
+			'InvalidStateError'
+		);
 }
 
 export function dispatchRunRows(
@@ -89,11 +93,12 @@ function localRows(database: SqliteDatabase, where: string, ...bindings: SqliteV
 }
 
 function receipt(row: TrackerStoredDispatchRun, node: string): TrackerRunReceipt {
-	const { reservation: encodedReservation, ...fields } = row;
-	const reservation = encodedReservation
-		? (JSON.parse(encodedReservation) as TrackerRunReservation)
+	const reservation = row.reservation
+		? (JSON.parse(row.reservation) as TrackerRunReservation)
 		: undefined;
 	const metadata = reservation?.signature === signature(row) ? reservation : undefined;
+	const fields = { ...row };
+	delete fields.reservation;
 	return {
 		...fields,
 		node,

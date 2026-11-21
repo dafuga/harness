@@ -117,7 +117,7 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 			runs,
 			nextRunId: id,
 			activeSessionKeys: sessions?.activeSessionKeys,
-			openSession: sessions?.openSession === true || this.unmanagedSession(itemId),
+			openSession: Boolean(sessions?.openSession) || this.unmanagedSession(itemId),
 			due: this.options.due?.(),
 			lastDueStartAt: lastDueStartAt === null ? undefined : Number(lastDueStartAt)
 		};

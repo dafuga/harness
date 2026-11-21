@@ -18,17 +18,26 @@ export function planRecurringOccurrence(
 	now: number,
 	previous?: string
 ): TrackerRecurringPlan | undefined {
-	const { every, every_tz, due, id } = item;
-	const zone = every_tz || trackerTimeZone;
+	const { every, every_tz, due } = item;
+	const zone = every_tz === '' ? trackerTimeZone : (every_tz ?? trackerTimeZone);
 	const spec = `${every}|${zone}`;
 	const dueAt = due ? Date.parse(due) : NaN;
-	if (previous === spec && dueAt > now) return;
+	if (previous === spec && dueAt > now) return undefined;
 	const next = trackerCronOccurrences(every, zone);
 	if (previous !== spec || !Number.isFinite(dueAt)) {
 		const scheduled = trackerIsoTime(next(now));
 		return { spec, fields: due === scheduled ? {} : { due: scheduled } };
 	}
-	const { at, following, missed } = catchUp(dueAt, now, next);
+	return planWake(item, spec, zone, catchUp(dueAt, now, next));
+}
+
+function planWake(
+	item: TrackerRecurringItem,
+	spec: string,
+	zone: string,
+	{ at, following, missed }: ReturnType<typeof catchUp>
+): TrackerRecurringPlan {
+	const { id, every } = item;
 	if (item.occurrence && readRecurringResult(item.last_result)?.occurrence !== item.occurrence) {
 		missed.unshift(item.occurrence);
 	}
