@@ -65,7 +65,8 @@ function spokeTransport() {
 	let pullAttempts = 0;
 	const transport: TrackerSpokeLoopOptions['transport'] = async (request, signal) => {
 		if (request.method === 'GET') {
-			if (++pullAttempts === 1) {
+			// The first push establishes hub identity and invalidates the concurrent pull.
+			if (++pullAttempts <= 2) {
 				await allowPull.promise;
 				return { hub: 'fixture-hub', db_id: 'fixture-hub', ops: [], max: 0, last: 0 };
 			}
