@@ -2,11 +2,9 @@
 	"name": "managed-docker-volume-recovery",
 	"goal": "Keep offline worktree volume and tmpfs defaults while recovering only the exact task, staging container, and volume after supervisor death; preserve v1 bind recovery, concurrent live tasks, and synthetic Tracker relay.",
 	"createdAt": "2026-11-21T21:24:12.618Z",
-	"updatedAt": "2026-11-21T21:24:35.351Z",
+	"updatedAt": "2026-11-21T21:35:00.528Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T21:33:23.388Z",
+			"evidence": "The existing argv case failed with the v1 bind and missing guest TMPDIR and Bun cache. Immutable red checkpoint 9dedc4afb872104f31fec7ee61f665556228f2fbcd2bc31287ee8055399846a0."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T21:35:00.528Z",
+			"evidence": "Persist versioned host intent before every Docker create. Validate engine identity, owner labels, full container IDs when known, volume identity, and exact mount scopes before reclaiming resources. Earlier bind receipts retain their v1 path validation."
 		},
 		{
 			"id": "green",

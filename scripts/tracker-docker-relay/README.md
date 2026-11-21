@@ -21,13 +21,13 @@ bun install --frozen-lockfile --ignore-scripts
 bun scripts/tracker-docker-relay/run.mjs sha256:5740a8559c5363061a0cfa8d98c0de664afcce88ed8158eb08b5b6381f137ca5
 ```
 
-The last command uses `--pull=never` through #163's existing adapter. It extracts the pinned
+The last command uses `--pull=never` through the managed provider Docker adapter. It extracts the pinned
 Tracker sources under a new temporary directory. The small `unsigned-spoke.patch` substitutes an
 unsigned transport call at the #157 spoke's signing boundary in that copy. It leaves the spoke's
-journal, request serialization, receipt validation, and cursor logic intact. The host mounts
-only the generated guest bundle's scratch directory as the task workspace. Existing #163
-confinement supplies network mode `none`, nonroot execution, a read-only root filesystem,
-all capabilities dropped, no new privileges, and a separate writable `/tmp`.
+journal, request serialization, receipt validation, and cursor logic intact. The host copies the
+generated guest bundle into a Docker-owned workspace volume. The adapter supplies network
+mode `none`, nonroot execution, a read-only root filesystem, all capabilities dropped,
+no new privileges, and a separate writable `/tmp`.
 
 ## What the checks prove
 
@@ -38,12 +38,12 @@ all capabilities dropped, no new privileges, and a separate writable `/tmp`.
   The same guest verifies 13 forbidden and replayed requests and one malformed JSON request are
   denied without signing. The tests cover other sync routes, method and query changes, absolute
   targets, caller-supplied authorization, and changes to the operation's node or item.
-- The runner inspects the live container's isolation settings and sole bind mount. The guest
+- The runner inspects the live container's isolation settings and sole workspace volume. The guest
   checks its addressed interfaces, files, and environment, confirms the root filesystem rejects
   writes, and checks that replies carry no TrackerHMAC value.
 - A second guest runs serially and sends an oversized unterminated frame. The relay aborts before
-  signing. The adapter removes both task-owned containers, and the runner checks their absence
-  by label and removes the temporary host bundle and journal.
+  signing. The adapter removes each task's containers and volume. The proof checks cleanup
+  and removes the temporary host bundle and journal.
 
 ## Compatibility limits
 
@@ -52,7 +52,7 @@ HMAC and hub handler through an in-process request. Network transit, TLS, long p
 incremental cursors, retries, concurrent spokes, reconnection, and host restart are outside
 the proof.
 
-The entry point uses the #163 Docker adapter directly. It reserves the attached stdin and stdout
+The entry point uses the Docker adapter directly. It reserves the attached stdin and stdout
 for relay frames, so a managed provider using those streams for prompts and output cannot share
 this channel. The shipped #157 spoke still expects a local signing key. This fixture adds no
 provider auth, egress policy, Tracker cutover, or default runtime integration.
