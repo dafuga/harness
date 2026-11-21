@@ -3,7 +3,7 @@ import { DeployDockerAdapter } from '../../../src/adapters/execution-runtimes/De
 import { deployFixture } from '../../support/scripted-deploy/fixture';
 
 test('refuses ambiguous mounts before starting a container', async () => {
-	const fixture = deployFixture();
+	const fixture = await deployFixture();
 	try {
 		const docker = new DeployDockerAdapter({ project: fixture.project });
 		await expect(docker.run('build', { '/out': '/tmp/invalid,readonly' }, {})).rejects.toThrow(

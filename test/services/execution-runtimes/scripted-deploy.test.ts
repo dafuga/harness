@@ -2,8 +2,8 @@ import { expect, test } from 'vitest';
 import { parityReport } from '../../../src/core/execution-runtimes/scripted-deploy/parity';
 import { deployFixture } from '../../support/scripted-deploy/fixture';
 
-test('records missing environment coverage and blocks unexpected differences', () => {
-	const fixture = deployFixture();
+test('records missing environment coverage and blocks unexpected differences', async () => {
+	const fixture = await deployFixture();
 	try {
 		const { staging, prod } = fixture.project.targets;
 		const config = { ...fixture.project, targets: { staging, prod } };
@@ -23,8 +23,8 @@ test('records missing environment coverage and blocks unexpected differences', (
 	}
 });
 
-test('blocks an unapplied candidate migration even when the current baseline matches', () => {
-	const fixture = deployFixture();
+test('blocks an unapplied candidate migration even when the current baseline matches', async () => {
+	const fixture = await deployFixture();
 	try {
 		const profile = fixture.project.targets.staging.profile;
 		const observed = {

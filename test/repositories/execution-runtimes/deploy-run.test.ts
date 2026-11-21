@@ -2,8 +2,8 @@ import { randomUUID } from 'node:crypto';
 import { expect, test } from 'vitest';
 import { deployFixture } from '../../support/scripted-deploy/fixture';
 
-test('serializes claims per project and environment', () => {
-	const fixture = deployFixture();
+test('serializes claims per project and environment', async () => {
+	const fixture = await deployFixture();
 	try {
 		const id = randomUUID();
 		fixture.store.lock('fixture', 'staging', id);

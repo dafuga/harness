@@ -3,9 +3,9 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import type { Journal } from '../src/core/execution-runtimes/scripted-deploy/contracts';
 import { deployFixture } from './support/scripted-deploy/fixture';
 
-let fixture: ReturnType<typeof deployFixture>;
-beforeEach(() => {
-	fixture = deployFixture();
+let fixture: Awaited<ReturnType<typeof deployFixture>>;
+beforeEach(async () => {
+	fixture = await deployFixture();
 });
 afterEach(() => fixture.dispose());
 describe('scripted deployment CLI', () => {

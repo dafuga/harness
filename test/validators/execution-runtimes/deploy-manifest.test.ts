@@ -7,8 +7,8 @@ import {
 } from '../../../src/validators/execution-runtimes/DeployManifestValidator';
 import { deployFixture } from '../../support/scripted-deploy/fixture';
 
-test('requires a private trusted registry and hashes reviewed scripts', () => {
-	const fixture = deployFixture();
+test('requires a private trusted registry and hashes reviewed scripts', async () => {
+	const fixture = await deployFixture();
 	try {
 		const file = join(fixture.root, 'registry.json');
 		const validate = new DeployManifestValidator();

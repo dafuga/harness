@@ -1,7 +1,6 @@
 import { createHash, generateKeyPairSync, sign, type KeyObject } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import {
 	canonical,
@@ -12,6 +11,7 @@ import {
 } from '../../../src/core/execution-runtimes/scripted-deploy/contracts';
 import { signoffScope } from '../../../src/core/execution-runtimes/scripted-deploy/proofs';
 import { DeployRunRepository } from '../../../src/repositories/execution-runtimes/DeployRunRepository';
+import { createTempDirectory } from '../temporary';
 import {
 	manifestDigest,
 	type DeployProject,
@@ -30,8 +30,8 @@ const profile = {
 };
 const artifact = 'candidate fixture artifact';
 
-export function deployFixture() {
-	const root = mkdtempSync(join(tmpdir(), 'harness-deploy-'));
+export async function deployFixture() {
+	const root = await createTempDirectory('harness-deploy-');
 	const project = fixtureProject(root);
 	const { registry, reviewer } = fixtureRegistry(root, project);
 	const file = join(root, 'registry.json');
