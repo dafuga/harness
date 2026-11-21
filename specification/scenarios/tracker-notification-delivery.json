@@ -1,0 +1,77 @@
+{
+	"schemaVersion": 1,
+	"id": "tracker-notification-delivery",
+	"title": "Tracker notification delivery with synthetic actors and destinations",
+	"kind": "headless",
+	"units": ["service.projects-sessions-tracker-notification"],
+	"states": [
+		{
+			"id": "callbacks",
+			"title": "Local completion callbacks, retry and receipt replay",
+			"coverage": "required"
+		},
+		{
+			"id": "outbox",
+			"title": "Hub cursor, routes, retry and recurring eligibility",
+			"coverage": "required"
+		},
+		{
+			"id": "reminders",
+			"title": "Quiet-hour release, due reminders and flag escalation",
+			"coverage": "required"
+		},
+		{
+			"id": "attention",
+			"title": "Chief of Staff grouping, pause, catch-up and launch holds",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"builds": [],
+	"tests": [
+		{
+			"id": "callbacks",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/projects-sessions/tracker-notification.test.ts",
+			"timeoutMs": 120000
+		},
+		{
+			"id": "outbox",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/projects-sessions/tracker-webhook-delivery.test.ts",
+			"timeoutMs": 120000
+		},
+		{
+			"id": "reminders",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/projects-sessions/tracker-reminder-delivery.test.ts",
+			"timeoutMs": 120000
+		},
+		{
+			"id": "attention",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/projects-sessions/tracker-attention-delivery.test.ts",
+			"timeoutMs": 120000
+		}
+	],
+	"evidence": [
+		{
+			"id": "tracker-notification-delivery-output",
+			"kind": "output",
+			"states": ["callbacks", "outbox", "reminders", "attention"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "tracker-notification-delivery-assertions",
+			"kind": "assertions",
+			"states": ["callbacks", "outbox", "reminders", "attention"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

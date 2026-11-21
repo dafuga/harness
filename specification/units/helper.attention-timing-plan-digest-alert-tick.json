@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "helper.attention-timing-plan-digest-alert-tick",
+	"uid": "u_uchh2rd6vl",
+	"kind": "helper",
+	"title": "planDigestAlertTick",
+	"responsibility": "Owns the planDigestAlertTick helper unit.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/helpers/attention-timing/planDigestAlertTick.ts",
+			"src/helpers/attention-timing/planDigestAlertTick.types.ts"
+		],
+		"symbols": [
+			"planDigestAlertTick",
+			"DigestItem",
+			"DigestAlertMode",
+			"DigestAlertInput",
+			"DigestAlertPlan"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "planDigestAlertTick.input",
+				"type": "DigestAlertInput",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "planDigestAlertTick",
+				"type": "DigestAlertPlan"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "planDigestAlertTick",
+				"inputs": [
+					{
+						"name": "planDigestAlertTick.input",
+						"type": "DigestAlertInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "planDigestAlertTick",
+						"type": "DigestAlertPlan"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "helper.attention-timing-attention-timing-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-is-quiet-hour",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-zoned-wall-clock",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/helpers/attention-timing/planDigestAlertTick.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/helpers/attention-timing/planDigestAlertTick.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

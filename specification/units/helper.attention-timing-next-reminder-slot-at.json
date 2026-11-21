@@ -1,0 +1,116 @@
+{
+	"schemaVersion": 1,
+	"id": "helper.attention-timing-next-reminder-slot-at",
+	"uid": "u_ycrneh6g6i",
+	"kind": "helper",
+	"title": "nextReminderSlotAt",
+	"responsibility": "Owns the nextReminderSlotAt helper unit.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/helpers/attention-timing/nextReminderSlotAt.ts"],
+		"symbols": ["nextReminderSlotAt"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "nextReminderSlotAt.atMs",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "nextReminderSlotAt.times",
+				"type": "readonly string[]",
+				"required": true
+			},
+			{
+				"name": "nextReminderSlotAt.tz",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "nextReminderSlotAt",
+				"type": "number"
+			}
+		],
+		"errors": [
+			{
+				"name": "RangeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "nextReminderSlotAt",
+				"inputs": [
+					{
+						"name": "nextReminderSlotAt.atMs",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "nextReminderSlotAt.times",
+						"type": "readonly string[]",
+						"required": true
+					},
+					{
+						"name": "nextReminderSlotAt.tz",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nextReminderSlotAt",
+						"type": "number"
+					}
+				],
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "helper.attention-timing-clock-minutes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-wall-clock-to-epoch-ms",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-zoned-wall-clock",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/helpers/attention-timing/nextReminderSlotAt.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/helpers/attention-timing/nextReminderSlotAt.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

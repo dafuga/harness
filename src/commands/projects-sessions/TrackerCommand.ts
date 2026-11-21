@@ -4,6 +4,8 @@ import { spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { constants, homedir } from 'node:os';
 import { isAbsolute, join } from 'node:path';
+import { TrackerCutoverCommand } from './TrackerCutoverCommand';
+import { TrackerRehearsalCommand } from './TrackerRehearsalCommand';
 
 export class TrackerCommand {
 	register(program: Command): void {
@@ -11,12 +13,14 @@ export class TrackerCommand {
 			.command('tracker [args...]')
 			.description('Use the shared Tracker service.')
 			.allowUnknownOption()
-			.action((args: string[]) => {
-				process.exitCode = this.run(args);
+			.action(async (args: string[]) => {
+				process.exitCode = await this.run(args);
 			});
 	}
 
-	run(args: string[]): number {
+	run(args: string[]): number | Promise<number> {
+		if (args[0] === 'verify-cutover') return new TrackerCutoverCommand().run(args.slice(1));
+		if (args[0] === 'rehearse') return new TrackerRehearsalCommand().run(args.slice(1));
 		if (process.env.HARNESS_TRACKER_FORWARD_PARENT === String(process.ppid)) {
 			console.error('tracker: the shim needs a retained legacy client.');
 			return 126;

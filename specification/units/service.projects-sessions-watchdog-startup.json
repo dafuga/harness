@@ -1,0 +1,90 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-watchdog-startup",
+	"uid": "u_yz3ar5ts6w",
+	"kind": "service",
+	"title": "WatchdogStartupService",
+	"responsibility": "Decides whether to report, clear, or propose confirming a Tracker startup prompt.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/WatchdogStartupService.ts",
+			"src/services/projects-sessions/WatchdogStartupService.types.ts"
+		],
+		"symbols": [
+			"WatchdogStartupService",
+			"WatchdogStartupService.plan",
+			"StartupTrustEvidence",
+			"StartupAlert",
+			"StartupScan",
+			"StartupDecision",
+			"StartupPlan",
+			"StartupCandidates"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "WatchdogStartupService.plan.input",
+				"type": "StartupScan",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "WatchdogStartupService.plan",
+				"type": "StartupPlan",
+				"description": "Startup alerts, proposed trust for an attested recent managed run, and stale alert and question clearances."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "WatchdogStartupService.plan",
+				"inputs": [
+					{
+						"name": "WatchdogStartupService.plan.input",
+						"type": "StartupScan",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WatchdogStartupService.plan",
+						"type": "StartupPlan",
+						"description": "Startup alerts, proposed trust for an attested recent managed run, and stale alert and question clearances."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-watchdog-pane",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/WatchdogStartupService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/WatchdogStartupService.ts"
+			}
+		]
+	},
+	"scenarios": ["tracker-watchdog-parity"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

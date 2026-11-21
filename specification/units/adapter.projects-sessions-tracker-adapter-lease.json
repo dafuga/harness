@@ -1,0 +1,146 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.projects-sessions-tracker-adapter-lease",
+	"uid": "u_7xh35kvg5l",
+	"kind": "adapter",
+	"title": "TrackerAdapterLeaseAdapter",
+	"responsibility": "Owns the TrackerAdapterLeaseAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/projects-sessions/TrackerAdapterLeaseAdapter.ts",
+			"src/adapters/projects-sessions/tracker-adapter-lease-adapter/TrackerAdapterLeaseError.ts"
+		],
+		"symbols": [
+			"TrackerAdapterLeaseAdapter",
+			"TrackerAdapterLeaseAdapter.constructor",
+			"TrackerAdapterLeaseAdapter.tryAcquire",
+			"TrackerAdapterLeaseError",
+			"TrackerAdapterLeaseError.constructor"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerAdapterLeaseAdapter.constructor.owner",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterLeaseAdapter.constructor.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterLeaseError.constructor.message",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerAdapterLeaseAdapter.tryAcquire",
+				"type": "(()"
+			}
+		],
+		"errors": [
+			{
+				"name": "TrackerAdapterLeaseError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerAdapterLeaseAdapter.tryAcquire",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerAdapterLeaseAdapter.tryAcquire",
+						"type": "(()"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerAdapterLeaseError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerAdapterLeaseAdapter.constructor",
+				"inputs": [
+					{
+						"name": "TrackerAdapterLeaseAdapter.constructor.owner",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerAdapterLeaseAdapter.constructor.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterLeaseAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "TrackerAdapterLeaseError.constructor",
+				"inputs": [
+					{
+						"name": "TrackerAdapterLeaseError.constructor.message",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterLeaseError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.open-sqlite",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-adapter-poll",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/projects-sessions/TrackerAdapterLeaseAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/projects-sessions/TrackerAdapterLeaseAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

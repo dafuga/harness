@@ -1,0 +1,224 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-local-api",
+	"uid": "u_g7kdpz7bel",
+	"kind": "service",
+	"title": "TrackerLocalApiService",
+	"responsibility": "Owns the TrackerLocalApiService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/TrackerLocalApiService.ts",
+			"src/services/projects-sessions/TrackerLocalApiService.types.ts",
+			"src/services/projects-sessions/tracker-local-api-service/readTrackerRunEndpoint.ts"
+		],
+		"symbols": [
+			"TrackerLocalApiService",
+			"TrackerLocalApiService.constructor",
+			"TrackerLocalApiService.handle",
+			"TrackerLocalApiOptions",
+			"readTrackerRunEndpoint"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerLocalApiService.constructor.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "TrackerLocalApiService.constructor.items",
+				"type": "TrackerItemReadRepository",
+				"required": true
+			},
+			{
+				"name": "TrackerLocalApiService.constructor.options",
+				"type": "TrackerLocalApiOptions",
+				"required": false,
+				"default": {}
+			},
+			{
+				"name": "TrackerLocalApiService.handle.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "readTrackerRunEndpoint.parts",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "readTrackerRunEndpoint.query",
+				"type": "Record<string, string>",
+				"required": true
+			},
+			{
+				"name": "readTrackerRunEndpoint.options",
+				"type": "TrackerLocalApiOptions & { items: TrackerItemReadRepository }",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerLocalApiService.handle",
+				"type": "Promise<Response>"
+			},
+			{
+				"name": "readTrackerRunEndpoint",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerLocalApiService.handle",
+				"inputs": [
+					{
+						"name": "TrackerLocalApiService.handle.request",
+						"type": "Request",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerLocalApiService.handle",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readTrackerRunEndpoint",
+				"inputs": [
+					{
+						"name": "readTrackerRunEndpoint.parts",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "readTrackerRunEndpoint.query",
+						"type": "Record<string, string>",
+						"required": true
+					},
+					{
+						"name": "readTrackerRunEndpoint.options",
+						"type": "TrackerLocalApiOptions & { items: TrackerItemReadRepository }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerRunEndpoint",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerLocalApiService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerLocalApiService.constructor.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "TrackerLocalApiService.constructor.items",
+						"type": "TrackerItemReadRepository",
+						"required": true
+					},
+					{
+						"name": "TrackerLocalApiService.constructor.options",
+						"type": "TrackerLocalApiOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerLocalApiService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-classify-tracker-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-parse-tracker-model-spec",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-pick-tracker-model",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-tracker-run-report",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-normalize-tracker-item-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-plan-tracker-item-mutation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-run-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/TrackerLocalApiService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/TrackerLocalApiService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

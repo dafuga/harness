@@ -1,0 +1,574 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.projects-sessions-tracker-item-read",
+	"uid": "u_xba7ieg4je",
+	"kind": "repository",
+	"title": "TrackerItemReadRepository",
+	"responsibility": "Reads Tracker items and digests from injected SQLite using the legacy public response shape.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/projects-sessions/TrackerItemReadRepository.ts",
+			"src/repositories/projects-sessions/TrackerItemReadRepository.types.ts",
+			"src/repositories/projects-sessions/tracker-item-read-repository/TrackerItemReadError.ts",
+			"src/repositories/projects-sessions/tracker-item-read-repository/buildTrackerDigest.ts",
+			"src/repositories/projects-sessions/tracker-item-read-repository/buildTrackerDigest.types.ts",
+			"src/repositories/projects-sessions/tracker-item-read-repository/formatTrackerDigest.ts",
+			"src/repositories/projects-sessions/tracker-item-read-repository/serializeTrackerItem.ts",
+			"src/repositories/projects-sessions/tracker-item-read-repository/serializeTrackerItem.types.ts"
+		],
+		"symbols": [
+			"TrackerItemReadRepository",
+			"TrackerItemReadRepository.constructor",
+			"TrackerItemReadRepository.get",
+			"TrackerItemReadRepository.getStored",
+			"TrackerItemReadRepository.candidates",
+			"TrackerItemReadRepository.list",
+			"TrackerItemReadRepository.digest",
+			"TrackerItemReadRepository.digestText",
+			"TrackerItemReadRepository.resolve",
+			"TrackerDigest",
+			"TrackerItem",
+			"TrackerItemListFilters",
+			"TrackerItemRow",
+			"TrackerItemListFilters",
+			"TrackerItemNote",
+			"TrackerItem",
+			"TrackerDigestItem",
+			"TrackerRecurringProblem",
+			"TrackerDigest",
+			"TrackerItemReadError",
+			"TrackerItemReadError.constructor",
+			"buildTrackerDigest",
+			"StoredRecurringResult",
+			"formatTrackerDigest",
+			"serializeTrackerItem",
+			"StoredTrackerNote",
+			"StoredTrackerCallback"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "TrackerItemReadRepository.constructor.database",
+				"type": "SqliteDatabase",
+				"required": true,
+				"description": "Initialized SQLite connection owned by the caller."
+			},
+			{
+				"name": "TrackerItemReadRepository.get.idOrPrefix",
+				"type": "string",
+				"required": true,
+				"description": "Full ID or unique prefix after trimming and lowercasing. A live exact match takes precedence."
+			},
+			{
+				"name": "TrackerItemReadRepository.getStored.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerItemReadRepository.list.filters",
+				"type": "TrackerItemListFilters",
+				"required": false,
+				"default": {},
+				"description": "Status, identity fields, unresolved flag, recurrence and SQL limit. Omit status for active items and use status all with limit -1 for the Project Overview feed."
+			},
+			{
+				"name": "TrackerItemReadRepository.digest.nowMs",
+				"type": "number",
+				"required": true,
+				"description": "Fixed instant in milliseconds since the Unix epoch."
+			},
+			{
+				"name": "TrackerItemReadRepository.digest.timeZone",
+				"type": "string",
+				"required": false,
+				"default": "Europe/Lisbon",
+				"description": "IANA time zone used to group ordinary due dates and format the local time."
+			},
+			{
+				"name": "TrackerItemReadRepository.digestText.nowMs",
+				"type": "number",
+				"required": true,
+				"description": "Fixed instant in milliseconds since the Unix epoch."
+			},
+			{
+				"name": "TrackerItemReadRepository.digestText.timeZone",
+				"type": "string",
+				"required": false,
+				"default": "Europe/Lisbon",
+				"description": "IANA time zone used to group ordinary due dates and format the local time."
+			},
+			{
+				"name": "TrackerItemReadRepository.resolve.idOrPrefix",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerItemReadError.constructor.message",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerItemReadError.constructor.status",
+				"type": "number",
+				"required": false,
+				"default": 400
+			},
+			{
+				"name": "buildTrackerDigest.rows",
+				"type": "TrackerItemRow[]",
+				"required": true
+			},
+			{
+				"name": "buildTrackerDigest.nowMs",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "buildTrackerDigest.timeZone",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "formatTrackerDigest.digest",
+				"type": "TrackerDigest",
+				"required": true
+			},
+			{
+				"name": "serializeTrackerItem.row",
+				"type": "TrackerItemRow",
+				"required": true
+			},
+			{
+				"name": "serializeTrackerItem.notes",
+				"type": "SqliteStatement",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerItemReadRepository.get",
+				"type": "TrackerItem"
+			},
+			{
+				"name": "TrackerItemReadRepository.list",
+				"type": "TrackerItem[]"
+			},
+			{
+				"name": "TrackerItemReadRepository.digest",
+				"type": "TrackerDigest"
+			},
+			{
+				"name": "TrackerItemReadRepository.digestText",
+				"type": "string"
+			},
+			{
+				"name": "buildTrackerDigest",
+				"type": "TrackerDigest"
+			},
+			{
+				"name": "formatTrackerDigest",
+				"type": "string"
+			},
+			{
+				"name": "serializeTrackerItem",
+				"type": "TrackerItem"
+			}
+		],
+		"errors": [
+			{
+				"name": "TrackerItemReadError",
+				"type": "thrown",
+				"description": "Status 400 for invalid reads, 404 for missing items and 500 for malformed callback metadata."
+			},
+			{
+				"name": "SQLite query failure",
+				"type": "driver error",
+				"description": "The injected SQLite driver rejects a read or its bound parameters."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Stored item result metadata is invalid JSON."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "The configured zone or a timestamp used in the digest cannot be formatted."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "TrackerItemReadRepository.get",
+				"inputs": [
+					{
+						"name": "TrackerItemReadRepository.get.idOrPrefix",
+						"type": "string",
+						"required": true,
+						"description": "Full ID or unique prefix after trimming and lowercasing. A live exact match takes precedence."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerItemReadRepository.get",
+						"type": "TrackerItem"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerItemReadError",
+						"type": "thrown",
+						"description": "Status 400 for an empty or ambiguous ID, 404 for a missing item and 500 for malformed callback metadata."
+					},
+					{
+						"name": "SQLite query failure",
+						"type": "driver error",
+						"description": "The injected SQLite driver rejects a read or its bound parameters."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Stored item result metadata is invalid JSON."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "TrackerItemReadRepository.getStored",
+				"inputs": [
+					{
+						"name": "TrackerItemReadRepository.getStored.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerItemReadRepository.getStored",
+						"type": "TrackerItem"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerItemReadError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerItemReadRepository.candidates",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerItemReadRepository.candidates",
+						"type": "TrackerItemRow[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerItemReadRepository.list",
+				"inputs": [
+					{
+						"name": "TrackerItemReadRepository.list.filters",
+						"type": "TrackerItemListFilters",
+						"required": false,
+						"default": {},
+						"description": "Status, identity fields, unresolved flag, recurrence and SQL limit. Omit status for active items and use status all with limit -1 for the Project Overview feed."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerItemReadRepository.list",
+						"type": "TrackerItem[]"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerItemReadError",
+						"type": "thrown",
+						"description": "Status 400 for an invalid status filter and 500 for malformed callback metadata."
+					},
+					{
+						"name": "SQLite query failure",
+						"type": "driver error",
+						"description": "The injected SQLite driver rejects a read or its bound parameters."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Stored item result metadata is invalid JSON."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "TrackerItemReadRepository.digest",
+				"inputs": [
+					{
+						"name": "TrackerItemReadRepository.digest.nowMs",
+						"type": "number",
+						"required": true,
+						"description": "Fixed instant in milliseconds since the Unix epoch."
+					},
+					{
+						"name": "TrackerItemReadRepository.digest.timeZone",
+						"type": "string",
+						"required": false,
+						"default": "Europe/Lisbon",
+						"description": "IANA time zone used to group ordinary due dates and format the local time."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerItemReadRepository.digest",
+						"type": "TrackerDigest"
+					}
+				],
+				"errors": [
+					{
+						"name": "SQLite query failure",
+						"type": "driver error",
+						"description": "The injected SQLite driver rejects a read or its bound parameters."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "The configured zone or a timestamp used in the digest cannot be formatted."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "TrackerItemReadRepository.digestText",
+				"inputs": [
+					{
+						"name": "TrackerItemReadRepository.digestText.nowMs",
+						"type": "number",
+						"required": true,
+						"description": "Fixed instant in milliseconds since the Unix epoch."
+					},
+					{
+						"name": "TrackerItemReadRepository.digestText.timeZone",
+						"type": "string",
+						"required": false,
+						"default": "Europe/Lisbon",
+						"description": "IANA time zone used to group ordinary due dates and format the local time."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerItemReadRepository.digestText",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "SQLite query failure",
+						"type": "driver error",
+						"description": "The injected SQLite driver rejects a read or its bound parameters."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "The configured zone or a timestamp used in the digest cannot be formatted."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "TrackerItemReadRepository.resolve",
+				"inputs": [
+					{
+						"name": "TrackerItemReadRepository.resolve.idOrPrefix",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerItemReadRepository.resolve",
+						"type": "TrackerItemRow"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerItemReadError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "buildTrackerDigest",
+				"inputs": [
+					{
+						"name": "buildTrackerDigest.rows",
+						"type": "TrackerItemRow[]",
+						"required": true
+					},
+					{
+						"name": "buildTrackerDigest.nowMs",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "buildTrackerDigest.timeZone",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "buildTrackerDigest",
+						"type": "TrackerDigest"
+					}
+				],
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "The configured zone or a timestamp used in the digest cannot be formatted."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "formatTrackerDigest",
+				"inputs": [
+					{
+						"name": "formatTrackerDigest.digest",
+						"type": "TrackerDigest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "formatTrackerDigest",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "serializeTrackerItem",
+				"inputs": [
+					{
+						"name": "serializeTrackerItem.row",
+						"type": "TrackerItemRow",
+						"required": true
+					},
+					{
+						"name": "serializeTrackerItem.notes",
+						"type": "SqliteStatement",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "serializeTrackerItem",
+						"type": "TrackerItem"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerItemReadError",
+						"type": "thrown",
+						"description": "Status 500 for malformed callback metadata."
+					},
+					{
+						"name": "SQLite query failure",
+						"type": "driver error",
+						"description": "The injected SQLite driver rejects a read or its bound parameters."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Stored item result metadata is invalid JSON."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerItemReadRepository.constructor",
+				"inputs": [
+					{
+						"name": "TrackerItemReadRepository.constructor.database",
+						"type": "SqliteDatabase",
+						"required": true,
+						"description": "Initialized SQLite connection owned by the caller."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerItemReadRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "TrackerItemReadError.constructor",
+				"inputs": [
+					{
+						"name": "TrackerItemReadError.constructor.message",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerItemReadError.constructor.status",
+						"type": "number",
+						"required": false,
+						"default": 400
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerItemReadError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.projects-sessions-tracker-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/projects-sessions/TrackerItemReadRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/projects-sessions/TrackerItemReadRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

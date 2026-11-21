@@ -25,6 +25,10 @@ export const trackerItemTransitions: Record<
 	TrackerItemTransition
 > = {
 	start: () => ({ fields: start }),
+	reopen: () => ({ fields: { status: 'open' } }),
+	remove: () => ({ fields: { deleted: 1 } }),
+	block: blockItem,
+	unblock: unblockItem,
 	progress: (_, body) => appendText('progress', body.text, start),
 	note: (_, body) => appendText('note', body.text, {}),
 	flag: flagItem,
@@ -38,6 +42,42 @@ export const trackerItemTransitions: Record<
 	ignore: ignoreItem,
 	unignore: unignoreItem
 };
+
+function blockItem(
+	item: TrackerItemSnapshot,
+	body: TrackerItemInput,
+	context: TrackerItemMutationContext
+): TrackerItemChange {
+	const reason = String(trackerItemValueOr(body.reason, '')).trim();
+	if (!reason) throw trackerItemError('block reason required');
+	const fields = { status: 'blocked', blocked_reason: reason };
+	const appendNote = `blocked: ${reason}`;
+	if (body.needs_daniel === false) return { fields, appendNote };
+	guardTrackerDuplicate(context, {
+		text: `${item.title} ${reason}`,
+		agent: item.agent,
+		excludeId: item.id,
+		force: body.force,
+		askingDaniel: true
+	});
+	return {
+		fields: { ...fields, needs_daniel: 1, resolved: 0, question: `Blocked: ${reason}` },
+		appendNote
+	};
+}
+
+function unblockItem(item: TrackerItemSnapshot, body: TrackerItemInput): TrackerItemChange {
+	if (item.status !== 'blocked') {
+		throw trackerItemError(
+			`item ${item.id.slice(0, 6)} is not blocked (status ${item.status})`,
+			409
+		);
+	}
+	return {
+		fields: { ...start, needs_daniel: 0 },
+		appendNote: body.note ? `unblocked: ${body.note}` : 'unblocked'
+	};
+}
 
 function appendText(
 	action: 'note' | 'progress',
