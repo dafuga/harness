@@ -7,7 +7,11 @@ const trackerAuthorization = /^TrackerHMAC ts=(\d+),sig=([0-9a-f]{64})$/;
 
 /** Wire-compatible authentication for Tracker's shared-secret sync requests. */
 export class TrackerSyncAuthService {
-	constructor(private readonly secret: string | Uint8Array) {}
+	readonly #secret: string | Uint8Array;
+
+	constructor(secret: string | Uint8Array) {
+		this.#secret = secret;
+	}
 
 	/** Returns the Authorization header for the supplied method, target, and serialized body. */
 	authorizationHeader(request: TrackerSyncRequest, now: number = Date.now()): string {
@@ -32,7 +36,7 @@ export class TrackerSyncAuthService {
 		timestamp: number
 	): Buffer {
 		const bodyHash = createHash('sha256').update(body).digest('hex');
-		return createHmac('sha256', this.secret)
+		return createHmac('sha256', this.#secret)
 			.update(`${method}\n${pathAndQuery}\n${timestamp}\n${bodyHash}`)
 			.digest();
 	}
