@@ -173,7 +173,8 @@
 			"ProviderSessionAdapter",
 			"TrackerCommand",
 			"TrackerOperationRepository",
-			"TrackerSchemaAdapter"
+			"TrackerSchemaAdapter",
+			"nextTrackerClock"
 		]
 	},
 	"contract": {
@@ -448,6 +449,11 @@
 		},
 		{
 			"unit": "function.preview-binding",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-next-tracker-clock",
 			"via": "reexport",
 			"origin": "derived"
 		},
