@@ -1,0 +1,111 @@
+{
+	"schemaVersion": 1,
+	"id": "tracker-hub-sync",
+	"title": "Signed Tracker hub wire contract and lifecycle",
+	"kind": "headless",
+	"units": ["service.projects-sessions-tracker-hub-sync"],
+	"builds": [],
+	"states": [
+		{
+			"id": "signed-push-retry-and-pull",
+			"title": "Commit and retry relay operations, page in hub order, rewind an ahead cursor and return due policy.",
+			"coverage": "required"
+		},
+		{
+			"id": "health-and-peers",
+			"title": "Return hub identity and expose last contact for authenticated callers.",
+			"coverage": "required"
+		},
+		{
+			"id": "unauthorized",
+			"title": "Reject changed request bytes, missing credentials and expired credentials without calling stores.",
+			"coverage": "required"
+		},
+		{
+			"id": "due-permission",
+			"title": "Call the grant policy with the signed item and token and the reported node, and deny by default.",
+			"coverage": "required"
+		},
+		{
+			"id": "fleet-telemetry",
+			"title": "Store machine and run samples under the reported node and return fleet data when enabled.",
+			"coverage": "required"
+		},
+		{
+			"id": "request-errors",
+			"title": "Bound and decode request streams, release canceled reads, validate inputs and redact internal errors.",
+			"coverage": "required"
+		},
+		{
+			"id": "signed-push-wakes-two-pulls",
+			"title": "Wake all waiting clients on commit, enforce the wait cap and remove subscriptions on cancellation.",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "sync",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/projects-sessions/tracker-hub-sync.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		},
+		{
+			"id": "http",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/projects-sessions/tracker-hub-http.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		},
+		{
+			"id": "poll",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/projects-sessions/tracker-hub-poll.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "hub-sync-output",
+			"kind": "output",
+			"states": [
+				"signed-push-retry-and-pull",
+				"health-and-peers",
+				"unauthorized",
+				"due-permission",
+				"fleet-telemetry",
+				"request-errors",
+				"signed-push-wakes-two-pulls"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "hub-sync-assertions",
+			"kind": "assertions",
+			"states": [
+				"signed-push-retry-and-pull",
+				"health-and-peers",
+				"unauthorized",
+				"due-permission",
+				"fleet-telemetry",
+				"request-errors",
+				"signed-push-wakes-two-pulls"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "behavior-benchmarks",
+			"kind": "benchmark",
+			"states": ["signed-push-retry-and-pull", "signed-push-wakes-two-pulls"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
