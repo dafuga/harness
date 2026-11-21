@@ -1,6 +1,8 @@
 import { randomUUID } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { expect } from '../verificationExpect';
 import { moduleTaskFixture } from './moduleTaskFixture';
@@ -69,15 +71,27 @@ export async function verifyDockerOrchestrator(base: string) {
 }
 
 export async function verifyDockerProcess(base: string) {
-	await withDockerFixture(base, async (f, env) => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-docker-process-'));
+	try {
+		const image = await runCommand(['docker', 'image', 'inspect', '--format={{.Id}}', base], root);
 		const file = fileURLToPath(new URL('./managedProviderProcessFixture.ts', import.meta.url));
-		const result = await runCommand(['bun', file, f.root], f.root, true, env);
+		const result = await runCommand(['bun', file, root], root, true, {
+			HARNESS_TASK_DOCKER_IMAGE: image.stdout.trim(),
+			HARNESS_RESOURCES_HOME: join(root, 'host-resource-state'),
+			HARNESS_RESOURCE_LEASE: ''
+		});
 		expect(JSON.parse(result.stdout)).toEqual({
 			exit: { code: 37, stdout: 'Prompt ✓\n[literal $(exit 91); * "]' },
 			interrupted: 'interrupted',
-			removed: true
+			removed: true,
+			recovered: true,
+			liveBystanderPreserved: true,
+			liveBystanderRemovedOnExit: true,
+			cachedImagePreserved: true
 		});
-	});
+	} finally {
+		await rm(root, { recursive: true, force: true });
+	}
 }
 
 async function withDockerFixture(
