@@ -26,6 +26,20 @@ export class TrackerItemReadRepository {
 		return serializeTrackerItem(this.resolve(idOrPrefix), this.noteQuery());
 	}
 
+	/** Read a committed item, including a tombstone, without prefix matching. */
+	getStored(id: string): TrackerItem {
+		const row = this.raw(id);
+		if (!row) throw new TrackerItemReadError(`no item "${id}"`, 404);
+		return serializeTrackerItem(row, this.noteQuery());
+	}
+
+	/** Read rows needed by duplicate probing and mutation planning. */
+	candidates(): TrackerItemRow[] {
+		return this.database
+			.prepare(`SELECT * FROM items WHERE ${visibleItems} AND status <> 'done'`)
+			.all() as TrackerItemRow[];
+	}
+
 	/** Return the item array used by the Tracker loopback list endpoint. */
 	list(filters: TrackerItemListFilters = {}): TrackerItem[] {
 		const where = [visibleItems];
@@ -66,14 +80,12 @@ export class TrackerItemReadRepository {
 		return formatTrackerDigest(this.digest(nowMs, timeZone));
 	}
 
-	private resolve(idOrPrefix: string): TrackerItemRow {
+	resolve(idOrPrefix: string): TrackerItemRow {
 		const id = String(idOrPrefix || '')
 			.trim()
 			.toLowerCase();
 		if (!id) throw new TrackerItemReadError('item id required');
-		const exact = this.database.prepare('SELECT * FROM items WHERE id = ?').get(id) as
-			| TrackerItemRow
-			| undefined;
+		const exact = this.raw(id);
 		if (exact && !exact.deleted) return exact;
 		const rows = this.database
 			.prepare("SELECT * FROM items WHERE id LIKE ? || '%' AND deleted = 0 LIMIT 2")
@@ -82,6 +94,12 @@ export class TrackerItemReadRepository {
 		if (rows.length > 1)
 			throw new TrackerItemReadError(`"${id}" is ambiguous; use more characters`);
 		return rows[0];
+	}
+
+	private raw(id: string): TrackerItemRow | undefined {
+		return this.database.prepare('SELECT * FROM items WHERE id = ?').get(id) as
+			| TrackerItemRow
+			| undefined;
 	}
 
 	private noteQuery(): SqliteStatement {
