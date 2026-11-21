@@ -188,3 +188,24 @@ export { staleBuild } from './utils/development-tooling/staleBuild';
 export { scenarioHealth } from './utils/verification-evidence/scenarioHealth';
 export { TaskOrchestrationCommand } from './commands/agents-providers/TaskOrchestrationCommand';
 export { ProviderSessionAdapter } from './adapters/agents-providers/ProviderSessionAdapter';
+export { TrackerDispatcherService } from './services/agents-providers/TrackerDispatcherService';
+export type {
+	TrackerAttemptVersion,
+	TrackerDispatchDecision,
+	TrackerDispatchEvent,
+	TrackerDispatchItem,
+	TrackerDispatchPolicy,
+	TrackerDispatchResult,
+	TrackerDispatchSnapshot,
+	TrackerDispatchStore,
+	TrackerDispatchWrites,
+	TrackerDueGrant,
+	TrackerDuePolicy,
+	TrackerLaunchIntent,
+	TrackerLaunchOptions,
+	TrackerLaunchPick,
+	TrackerLaunchRequest,
+	TrackerLaunchRung,
+	TrackerRunReceipt,
+	TrackerSessionEvidence
+} from './services/agents-providers/TrackerDispatcherService.types';

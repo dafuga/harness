@@ -170,7 +170,26 @@
 			"staleBuild",
 			"scenarioHealth",
 			"TaskOrchestrationCommand",
-			"ProviderSessionAdapter"
+			"ProviderSessionAdapter",
+			"TrackerDispatcherService",
+			"TrackerAttemptVersion",
+			"TrackerDispatchDecision",
+			"TrackerDispatchEvent",
+			"TrackerDispatchItem",
+			"TrackerDispatchPolicy",
+			"TrackerDispatchResult",
+			"TrackerDispatchSnapshot",
+			"TrackerDispatchStore",
+			"TrackerDispatchWrites",
+			"TrackerDueGrant",
+			"TrackerDuePolicy",
+			"TrackerLaunchIntent",
+			"TrackerLaunchOptions",
+			"TrackerLaunchPick",
+			"TrackerLaunchRequest",
+			"TrackerLaunchRung",
+			"TrackerRunReceipt",
+			"TrackerSessionEvidence"
 		]
 	},
 	"contract": {
@@ -615,6 +634,11 @@
 		},
 		{
 			"unit": "service.agents-providers-module-task-worker",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-tracker-dispatcher",
 			"via": "reexport",
 			"origin": "derived"
 		},
