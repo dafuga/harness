@@ -2799,13 +2799,13 @@
 			"unit": "workflow.run-verify",
 			"from": "src/workflows/runVerify.ts",
 			"to": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-			"definition": "39760d24d34ed1909950c97bf6ee8dcdd3b786f47c2cd2ed01c4635e6ceac498",
+			"definition": "787fd5c22cfcb530d783eb4f871fa294625b4df4dde9b4b555e322f12389fa0b",
 			"relocationDefinition": "e0409b5f004bb8a3d911c1b43ea9f69717d3d9f5ba894bfc7c741da424850a38",
 			"review": {
-				"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
+				"commit": "59e4c64d62fd82b587f00ad9b9c6b23daac0bcc4",
 				"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-				"definition": "39760d24d34ed1909950c97bf6ee8dcdd3b786f47c2cd2ed01c4635e6ceac498",
-				"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
+				"definition": "787fd5c22cfcb530d783eb4f871fa294625b4df4dde9b4b555e322f12389fa0b",
+				"reason": "Propagate cancellation to admitted setup and check processes so verification can clean up before exiting."
 			},
 			"previousReviews": [
 				{
@@ -2861,6 +2861,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
 					"definition": "a2e278d182469096dbace16fc9c02992d19254af4c73a9c81b9352f02013f77c",
 					"reason": "Return automatic entity attachment results without changing whole-commit verification."
+				},
+				{
+					"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
+					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+					"definition": "39760d24d34ed1909950c97bf6ee8dcdd3b786f47c2cd2ed01c4635e6ceac498",
+					"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
 				}
 			]
 		},
@@ -2868,13 +2874,13 @@
 			"unit": "service.verification",
 			"from": "src/services/verification-service/VerificationService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-			"definition": "23dfd0980a8a12620e8cc8f32380158792eef707e221c4f9dc8f899160d9c762",
+			"definition": "c0842801d54d6023c0bcdcaf23c238a416ee29387c2debdb00aa30130c1ab933",
 			"relocationDefinition": "146b117282696844fcc9506d83b7d30df30482554e3603d38b08b295272e02c9",
 			"review": {
-				"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
+				"commit": "59e4c64d62fd82b587f00ad9b9c6b23daac0bcc4",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-				"definition": "23dfd0980a8a12620e8cc8f32380158792eef707e221c4f9dc8f899160d9c762",
-				"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
+				"definition": "c0842801d54d6023c0bcdcaf23c238a416ee29387c2debdb00aa30130c1ab933",
+				"reason": "Propagate cancellation to admitted setup and check processes so verification can clean up before exiting."
 			},
 			"previousReviews": [
 				{
@@ -2906,6 +2912,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
 					"definition": "95c001160c34bf95bcf7242ecb31190f2f9624511ad8afe02fc69fb5031e3622",
 					"reason": "Retain the reviewed change: entity-scoped verify computes the needed builds; skipped builds are not 'not produced' failures."
+				},
+				{
+					"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
+					"definition": "23dfd0980a8a12620e8cc8f32380158792eef707e221c4f9dc8f899160d9c762",
+					"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
 				}
 			]
 		},
@@ -4028,13 +4040,13 @@
 			"unit": "service.snapshot-run",
 			"from": "src/services/SnapshotRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
-			"definition": "c62d507d7ae396d54b30acbaf032f14020f0cdc72839b48f7553d07ab0b49ea7",
+			"definition": "da687ac46f3f8b25ae6bbf5e3dc6064f39d90c66b4992d1aa4a13f7005e08062",
 			"relocationDefinition": "6c3ff0bd50e6e2875d27738b036a234a6c7ee208b4687d4a4b94f53319e3e740",
 			"review": {
-				"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
+				"commit": "59e4c64d62fd82b587f00ad9b9c6b23daac0bcc4",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
-				"definition": "c62d507d7ae396d54b30acbaf032f14020f0cdc72839b48f7553d07ab0b49ea7",
-				"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
+				"definition": "da687ac46f3f8b25ae6bbf5e3dc6064f39d90c66b4992d1aa4a13f7005e08062",
+				"reason": "Propagate cancellation to admitted setup and check processes so verification can clean up before exiting."
 			},
 			"previousReviews": [
 				{
@@ -4054,6 +4066,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
 					"definition": "c0083e8dd28bf5e0abc9724719de679fdb12b452e2586e14443630668a638656",
 					"reason": "Retain the reviewed change: snapshot run: skip setup steps and builds a scoped run does not need."
+				},
+				{
+					"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
+					"definition": "c62d507d7ae396d54b30acbaf032f14020f0cdc72839b48f7553d07ab0b49ea7",
+					"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
 				}
 			]
 		},
@@ -4067,13 +4085,13 @@
 			"unit": "service.check-run",
 			"from": "src/services/check-run-service/CheckRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-			"definition": "673199522b2f06180d8ba2b6d078005fc88f4e11ae827b920e38f1ade36f1dec",
+			"definition": "97ebd97204897e4a258f2bf687c888785d24456b030b4127e86d6c7d29fc7bc2",
 			"relocationDefinition": "b4409148ed49b4fe1574ee44790338bbbe23be3b7a6a284687a37ca0b9e8a0c6",
 			"review": {
-				"commit": "5885a5eedf04c2cdd0f598e4e52bdd22c51d6294",
+				"commit": "59e4c64d62fd82b587f00ad9b9c6b23daac0bcc4",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-				"definition": "673199522b2f06180d8ba2b6d078005fc88f4e11ae827b920e38f1ade36f1dec",
-				"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				"definition": "97ebd97204897e4a258f2bf687c888785d24456b030b4127e86d6c7d29fc7bc2",
+				"reason": "Propagate cancellation to admitted setup and check processes so verification can clean up before exiting."
 			},
 			"previousReviews": [
 				{
@@ -4099,6 +4117,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
 					"definition": "1063715061bcde25b7974396646e41b64b11ce223c65017ec6479f2a2288a05b",
 					"reason": "Record main’s scoped verification resource label while preserving the admitted execution context."
+				},
+				{
+					"commit": "5885a5eedf04c2cdd0f598e4e52bdd22c51d6294",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"definition": "673199522b2f06180d8ba2b6d078005fc88f4e11ae827b920e38f1ade36f1dec",
+					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
 				}
 			]
 		},
@@ -4138,13 +4162,13 @@
 			"unit": "command.verify",
 			"from": "src/commands/VerifyCommand.ts",
 			"to": "src/cli/program/VerifyCommand.ts",
-			"definition": "e5a9cf22a3638e998edb3885810edad89285d7dd42b1e6b39587cb024b41ac97",
+			"definition": "552a65eecde95fc0a4654a6b055c92ea0a93f3a44f280fbec96d95dd82da8e86",
 			"relocationDefinition": "9bdae348aa1c461f5189e3ab3900c11dec68f78ec4a82c0d9c7986c56cfabbfc",
 			"review": {
-				"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
+				"commit": "59e4c64d62fd82b587f00ad9b9c6b23daac0bcc4",
 				"path": "src/cli/program/VerifyCommand.ts",
-				"definition": "e5a9cf22a3638e998edb3885810edad89285d7dd42b1e6b39587cb024b41ac97",
-				"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
+				"definition": "552a65eecde95fc0a4654a6b055c92ea0a93f3a44f280fbec96d95dd82da8e86",
+				"reason": "Propagate cancellation to admitted setup and check processes so verification can clean up before exiting."
 			},
 			"previousReviews": [
 				{
@@ -4200,6 +4224,12 @@
 					"path": "src/cli/program/VerifyCommand.ts",
 					"definition": "c7edca0fd25fc68ba3b4dd2e638dceacc4dfa7d4cb05930ef04bab7d04bfb6ad",
 					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				},
+				{
+					"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
+					"path": "src/cli/program/VerifyCommand.ts",
+					"definition": "e5a9cf22a3638e998edb3885810edad89285d7dd42b1e6b39587cb024b41ac97",
+					"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
 				}
 			]
 		},
