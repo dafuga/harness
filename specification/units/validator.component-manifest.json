@@ -381,7 +381,7 @@
 			{
 				"name": "contractFindings",
 				"type": "string[]",
-				"description": "One message for each contract problem: an input whose type contains the word unknown, an input whose name ends in .props and whose type is an empty object literal, an input with no required flag, and an error named Error or typed Error. The list is empty for a unit whose status is not active.",
+				"description": "One message for each contract problem: an input whose type contains the word unknown unless the contract is declared and that input has a nonblank unknownReason, an input whose name ends in .props and whose type is an empty object literal, an input with no required flag, and an error named Error or typed Error. The list is empty for a unit whose status is not active.",
 				"examples": [
 					[],
 					[
@@ -729,7 +729,7 @@
 					{
 						"name": "contractFindings",
 						"type": "string[]",
-						"description": "One message for each contract problem: an input whose type contains the word unknown, an input whose name ends in .props and whose type is an empty object literal, an input with no required flag, and an error named Error or typed Error. The list is empty for a unit whose status is not active.",
+						"description": "One message for each contract problem: an input whose type contains the word unknown unless the contract is declared and that input has a nonblank unknownReason, an input whose name ends in .props and whose type is an empty object literal, an input with no required flag, and an error named Error or typed Error. The list is empty for a unit whose status is not active.",
 						"examples": [
 							[],
 							[

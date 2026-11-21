@@ -35,7 +35,8 @@
 						"src/utils/development-tooling/stableJson.types.ts",
 						"src/utils/stableJson.ts"
 					]
-				]
+				],
+				"unknownReason": "Callers can pass data before narrowing its type. The formatter inspects the runtime value and applies the documented conversion and error rules."
 			}
 		],
 		"outputs": [
@@ -85,7 +86,8 @@
 								"src/utils/development-tooling/stableJson.types.ts",
 								"src/utils/stableJson.ts"
 							]
-						]
+						],
+						"unknownReason": "Callers can pass data before narrowing its type. The formatter inspects the runtime value and applies the documented conversion and error rules."
 					}
 				],
 				"outputs": [
