@@ -17,6 +17,7 @@ import { brandingVerificationScopes } from './branding-verification-scopes';
 import { historyFixtureVerificationScopes } from './history-fixture-verification-scopes';
 import { moduleTaskVerificationScopes } from './module-task-verification-scopes';
 import { unitExamplesVerificationScopes } from './unit-examples-verification-scopes';
+import { trackerDispatcherVerificationScopes } from './tracker-dispatcher-verification-scopes';
 import type { VerificationScope } from './verification-targets';
 
 /** The authoring spec's tests cover creation, mechanics, the checkpoint graph, saved and reopened graphs, history and play. */
@@ -75,6 +76,7 @@ export const registeredVerificationScopes: Record<string, VerificationScope> = {
 	...brandingVerificationScopes,
 	...historyFixtureVerificationScopes,
 	...moduleTaskVerificationScopes,
+	...trackerDispatcherVerificationScopes,
 	...uploadVerificationScopes,
 	...registryOwnershipVerificationScopes,
 	...unitExamplesVerificationScopes
