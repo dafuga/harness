@@ -1,3 +1,4 @@
+import { recordCapture } from '../../../src/utils/reports-media/record-capture/recordCapture';
 import type {
 	WatchdogItem,
 	WatchdogPane,
@@ -53,4 +54,17 @@ export function run(overrides: Partial<WatchdogRun> = {}): WatchdogRun {
 
 export function clock(at: number, tick = 0): string {
 	return `${String(at).padStart(15, '0')}-${String(tick).padStart(6, '0')}-fixture`;
+}
+
+export function recordWatchdogOutcome(state: string, output: unknown): void {
+	recordCapture(
+		{
+			evidence: 'watchdog-decision',
+			kind: 'output',
+			state,
+			file: `watchdog-${state}.json`,
+			mediaType: 'application/json'
+		},
+		JSON.stringify(output)
+	);
 }

@@ -1,12 +1,25 @@
 import { expect, test } from 'vitest';
 import { WatchdogPaneService } from '../../../src/services/projects-sessions/WatchdogPaneService';
-import { claude, claudeTrust, codex, codexTrust, host, item, pane, run } from './watchdog-fixtures';
+import {
+	claude,
+	claudeTrust,
+	codex,
+	codexTrust,
+	host,
+	item,
+	pane,
+	recordWatchdogOutcome,
+	run
+} from './watchdog-fixtures';
 
 const service = new WatchdogPaneService();
 
 test('idlePrompt accepts the active empty composer in each provider', () => {
-	expect(service.idlePrompt(pane())).toBe('codex');
-	expect(service.idlePrompt(pane({ screen: claude }))).toBe('claude');
+	const codexProvider = service.idlePrompt(pane());
+	const claudeProvider = service.idlePrompt(pane({ screen: claude }));
+	expect(codexProvider).toBe('codex');
+	expect(claudeProvider).toBe('claude');
+	recordWatchdogOutcome('pane', { codexProvider, claudeProvider });
 });
 
 test('idlePrompt rejects typed text, busy output, other cursors and unsafe captures', () => {

@@ -169,7 +169,7 @@ export class WatchdogPaneService {
 	): boolean {
 		if (!this.isManual(pane)) return false;
 		const local = notes.filter((note) => note.node === host);
-		const stop = local.findLast((note) => /^stopped:.*\bresume from\b/is.test(note.text));
+		const stop = local.filter((note) => /^stopped:.*\bresume from\b/is.test(note.text)).at(-1);
 		if (!stop || stop.at < pane.createdAt) return false;
 		if (stop.at > pane.activity) return Boolean(cli);
 		const legacyNudge = local.some(

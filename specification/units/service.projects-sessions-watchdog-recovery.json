@@ -52,7 +52,7 @@
 			}
 		],
 		"errors": [],
-		"errorStatus": "none",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "WatchdogRecoveryService.plan",
@@ -71,7 +71,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none"
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "WatchdogRecoveryService.resume",
@@ -90,7 +90,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none"
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": []

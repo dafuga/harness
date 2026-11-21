@@ -5,7 +5,16 @@ import type {
 	RecoverySnapshot,
 	ResumeSnapshot
 } from '../../../src/services/projects-sessions/WatchdogRecoveryService.types';
-import { clock, host, item, minute, now, pane, run } from './watchdog-fixtures';
+import {
+	clock,
+	host,
+	item,
+	minute,
+	now,
+	pane,
+	recordWatchdogOutcome,
+	run
+} from './watchdog-fixtures';
 
 const service = new WatchdogRecoveryService();
 const row = { ...item(), type: 'task', target: host } as const;
@@ -57,7 +66,9 @@ test('plan distinguishes ownership, exclusions, unavailable panes and opt-outs',
 
 test('plan protects recently active settled panes and fresh peer reports after reassignment', () => {
 	const recent = pane({ activity: now - 10 * minute });
-	expect(service.plan({ ...input, localRuns: [blocked], panes: [recent] })?.action).toBe('live');
+	const protectedRun = service.plan({ ...input, localRuns: [blocked], panes: [recent] });
+	expect(protectedRun?.action).toBe('live');
+	recordWatchdogOutcome('recovery', protectedRun);
 	for (const capture of [
 		{ ...recent, activity: recent.activity - 1 },
 		{ ...recent, live: false },
@@ -142,7 +153,9 @@ test('plan preserves precedence across grace, flags, queue, hold and cooldown', 
 });
 
 test('resume reopens the original live run and keeps resumed timestamps monotonic', () => {
-	expect(service.resume(resume)).toEqual({ runId: blocked.id, reopenItem: true, resumedAt: now });
+	const decision = service.resume(resume);
+	expect(decision).toEqual({ runId: blocked.id, reopenItem: true, resumedAt: now });
+	recordWatchdogOutcome('resume', decision);
 	expect(
 		service.resume({
 			...resume,
