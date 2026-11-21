@@ -1,3 +1,5 @@
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { expectTypeOf, test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { ModuleTaskRunnerAdapter } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter';
@@ -6,6 +8,22 @@ import {
 	type TaskProcessExecutor
 } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter.types';
 import { observedTaskOperation } from '../../support/taskProfiles';
+test('managed Linux provider keeps its streams while tracker acts on its assigned run', async () => {
+	const result = await observedTaskOperation(
+		'adapter.agents-providers-module-task-runner',
+		'run-offline-provider-with-scoped-tracker',
+		() =>
+			promisify(execFile)('bun', ['test/support/managedTrackerGuestFixture.ts'], {
+				timeout: 20_000
+			})
+	);
+	expect(JSON.parse(result.stdout)).toEqual({
+		code: 0,
+		providerOutput: 'Prompt with Unicode ✓\nProvider completed',
+		requests: ['start', 'note', 'note', 'progress', 'flag', 'show', 'done', 'show'],
+		writes: ['start', 'note', 'progress', 'flag', 'done']
+	});
+});
 test('Claude and Codex launch exact models and intelligence without shell interpolation', () => {
 	const runner = new ModuleTaskRunnerAdapter();
 	expect(
