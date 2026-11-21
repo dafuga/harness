@@ -1,0 +1,116 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-rehearsal",
+	"uid": "u_q52bxqlyeg",
+	"kind": "service",
+	"title": "TrackerRehearsalService",
+	"responsibility": "Owns the TrackerRehearsalService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/projects-sessions/TrackerRehearsalService.ts"],
+		"symbols": ["TrackerRehearsalService", "TrackerRehearsalService.start"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerRehearsalService.start.databasePath",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerRehearsalService.start.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerRehearsalService.start.port",
+				"type": "number",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerRehearsalService.start",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerRehearsalService.start",
+				"inputs": [
+					{
+						"name": "TrackerRehearsalService.start.databasePath",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerRehearsalService.start.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerRehearsalService.start.port",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerRehearsalService.start",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.open-sqlite",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-local-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/TrackerRehearsalService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/TrackerRehearsalService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

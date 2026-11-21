@@ -22,9 +22,12 @@
 			"TrackerItemReadRepository",
 			"TrackerItemReadRepository.constructor",
 			"TrackerItemReadRepository.get",
+			"TrackerItemReadRepository.getStored",
+			"TrackerItemReadRepository.candidates",
 			"TrackerItemReadRepository.list",
 			"TrackerItemReadRepository.digest",
 			"TrackerItemReadRepository.digestText",
+			"TrackerItemReadRepository.resolve",
 			"TrackerDigest",
 			"TrackerItem",
 			"TrackerItemListFilters",
@@ -61,6 +64,11 @@
 				"description": "Full ID or unique prefix after trimming and lowercasing. A live exact match takes precedence."
 			},
 			{
+				"name": "TrackerItemReadRepository.getStored.id",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "TrackerItemReadRepository.list.filters",
 				"type": "TrackerItemListFilters",
 				"required": false,
@@ -92,6 +100,11 @@
 				"required": false,
 				"default": "Europe/Lisbon",
 				"description": "IANA time zone used to group ordinary due dates and format the local time."
+			},
+			{
+				"name": "TrackerItemReadRepository.resolve.idOrPrefix",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "TrackerItemReadError.constructor.message",
@@ -225,6 +238,41 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "TrackerItemReadRepository.getStored",
+				"inputs": [
+					{
+						"name": "TrackerItemReadRepository.getStored.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerItemReadRepository.getStored",
+						"type": "TrackerItem"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerItemReadError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerItemReadRepository.candidates",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerItemReadRepository.candidates",
+						"type": "TrackerItemRow[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "TrackerItemReadRepository.list",
 				"inputs": [
 					{
@@ -333,6 +381,29 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "TrackerItemReadRepository.resolve",
+				"inputs": [
+					{
+						"name": "TrackerItemReadRepository.resolve.idOrPrefix",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerItemReadRepository.resolve",
+						"type": "TrackerItemRow"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerItemReadError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "buildTrackerDigest",

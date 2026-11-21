@@ -12,30 +12,13 @@ export class TrackerRehearsalService {
 	async start(databasePath: string, node: string, port: number) {
 		let database: SqliteDatabase | undefined;
 		let api: TrackerLocalApiService | undefined;
-		const health = {
-			app: 'tracker',
-			ok: true,
-			version: 'harness-rehearsal',
-			node,
-			role: 'spoke',
-			pid: process.pid,
-			started_at: new Date().toISOString()
-		};
-		const server = Bun.serve({
-			hostname: host,
-			port,
-			reusePort: false,
-			fetch(request, listening) {
-				const origin = `http://${host}:${listening.port}`;
-				if (!authorizedLoopback(request, origin)) {
-					return Response.json({ error: 'loopback request required' }, { status: 403 });
-				}
-				if (!api) return Response.json({ error: 'starting' }, { status: 503 });
-				if (request.method === 'GET' && new URL(request.url).pathname === '/health') {
-					return Response.json(health);
-				}
-				return api.handle(request);
+		const health = rehearsalHealth(node);
+		const server = bindLoopback(port, (request) => {
+			if (!api) return Response.json({ error: 'starting' }, { status: 503 });
+			if (request.method === 'GET' && new URL(request.url).pathname === '/health') {
+				return Response.json(health);
 			}
+			return api.handle(request);
 		});
 		try {
 			database = openSqlite(databasePath);
@@ -56,6 +39,33 @@ export class TrackerRehearsalService {
 			}
 		};
 	}
+}
+
+function rehearsalHealth(node: string) {
+	return {
+		app: 'tracker',
+		ok: true,
+		version: 'harness-rehearsal',
+		node,
+		role: 'spoke',
+		pid: process.pid,
+		started_at: new Date().toISOString()
+	};
+}
+
+function bindLoopback(port: number, handle: (request: Request) => Response | Promise<Response>) {
+	return Bun.serve({
+		hostname: host,
+		port,
+		reusePort: false,
+		fetch(request, listening) {
+			const origin = `http://${host}:${listening.port}`;
+			if (!authorizedLoopback(request, origin)) {
+				return Response.json({ error: 'loopback request required' }, { status: 403 });
+			}
+			return handle(request);
+		}
+	});
 }
 
 function authorizedLoopback(request: Request, origin: string): boolean {

@@ -176,7 +176,10 @@
 			"TrackerSchemaAdapter",
 			"nextTrackerClock",
 			"TrackerPersistenceService",
-			"TrackerCutoverCommand"
+			"TrackerCutoverCommand",
+			"TrackerLocalApiService",
+			"TrackerRehearsalCommand",
+			"TrackerRehearsalService"
 		]
 	},
 	"contract": {
@@ -311,6 +314,11 @@
 		},
 		{
 			"unit": "command.projects-sessions-tracker-cutover",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-rehearsal",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -770,7 +778,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-local-api",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-rehearsal",
 			"via": "reexport",
 			"origin": "derived"
 		},

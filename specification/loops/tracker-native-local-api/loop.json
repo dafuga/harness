@@ -2,11 +2,9 @@
 	"name": "tracker-native-local-api",
 	"goal": "Serve core Tracker loopback item reads and writes through the native SQLite journal, with legacy HTTP shapes and isolated replication proof.",
 	"createdAt": "2026-11-21T15:58:36.541Z",
-	"updatedAt": "2026-11-21T15:58:48.425Z",
+	"updatedAt": "2026-11-21T16:10:59.447Z",
 	"template": "feature",
-	"templateLineage": [
-		"feature"
-	],
+	"templateLineage": ["feature"],
 	"enforceOrder": false,
 	"steps": [
 		{
@@ -19,12 +17,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T16:10:58.077Z",
+			"evidence": "Core item routes, duplicate diagnostics and text/JSON digest share the existing SQLite journal and read repository."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T16:10:59.447Z",
+			"evidence": "MB2 focused cases were red at 1437329b1c and passed at ebd1b34e3e: 74/74 in the aggregate. Extended native sync case to round-trip mutations through the item API."
 		},
 		{
 			"id": "verify",

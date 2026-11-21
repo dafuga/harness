@@ -11,23 +11,21 @@ const usage =
 export class TrackerRehearsalCommand {
 	async run(args: string[]): Promise<number> {
 		const input = parseRehearsalArgs(args);
-		if (input?.values.help) {
-			console.log(usage);
-			return 0;
-		}
-		const node = input?.values.node;
-		const port = Number(input?.values.port ?? '0');
-		if (!node || /\s/.test(node) || input?.positionals.length !== 1 || !validPort(port)) {
+		if (!input) {
 			console.error(usage);
 			return 2;
 		}
-		const database = disposableDatabase(input.positionals[0]);
+		if (input.help) {
+			console.log(usage);
+			return 0;
+		}
+		const database = disposableDatabase(input.database);
 		if (!database) {
 			console.error('tracker: rehearsal needs a private disposable SQLite file.');
 			return 2;
 		}
 		try {
-			const owner = await new TrackerRehearsalService().start(database, node, port);
+			const owner = await new TrackerRehearsalService().start(database, input.node, input.port);
 			await waitForStop(owner);
 			return 0;
 		} catch {
@@ -39,7 +37,7 @@ export class TrackerRehearsalCommand {
 
 function parseRehearsalArgs(args: string[]) {
 	try {
-		return parseArgs({
+		const { values, positionals } = parseArgs({
 			args,
 			allowPositionals: true,
 			options: {
@@ -48,6 +46,11 @@ function parseRehearsalArgs(args: string[]) {
 				help: { type: 'boolean', short: 'h' }
 			}
 		});
+		if (values.help) return { help: true as const };
+		const node = values.node;
+		const port = Number(values.port ?? '0');
+		if (!node || /\s/.test(node) || positionals.length !== 1 || !validPort(port)) return null;
+		return { help: false as const, database: positionals[0], node, port };
 	} catch {
 		return null;
 	}

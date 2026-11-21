@@ -84,6 +84,18 @@ The command emits JSON with schema, table, and pending-operation fingerprints.
 It exits with 0 when the copies match, 1 when they differ, and 2 when a copy
 cannot be verified or the arguments are invalid.
 
+Run the native item API on a disposable SQLite copy for migration rehearsal.
+Put the copy in the system temporary directory with mode 0600. The command
+prints the loopback port and PID. Stop it with SIGTERM or Ctrl+C before
+comparing the database fingerprints.
+
+```bash
+harness tracker rehearse /path/to/disposable-copy.sqlite --node fixture-spoke
+```
+
+The rehearsal serves core items, duplicate checks, and digest requests.
+It does not read fleet configuration or run sync, jobs, adapters, or notifications.
+
 ## API access from the CLI
 
 `harness api` calls the same HTTP APIs as the app. It works from any directory;

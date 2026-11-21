@@ -1,0 +1,150 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-local-api",
+	"uid": "u_g7kdpz7bel",
+	"kind": "service",
+	"title": "TrackerLocalApiService",
+	"responsibility": "Owns the TrackerLocalApiService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/TrackerLocalApiService.ts",
+			"src/services/projects-sessions/TrackerLocalApiService.types.ts"
+		],
+		"symbols": [
+			"TrackerLocalApiService",
+			"TrackerLocalApiService.constructor",
+			"TrackerLocalApiService.handle",
+			"TrackerLocalApiOptions"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerLocalApiService.constructor.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "TrackerLocalApiService.constructor.items",
+				"type": "TrackerItemReadRepository",
+				"required": true
+			},
+			{
+				"name": "TrackerLocalApiService.constructor.options",
+				"type": "TrackerLocalApiOptions",
+				"required": false,
+				"default": {}
+			},
+			{
+				"name": "TrackerLocalApiService.handle.request",
+				"type": "Request",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerLocalApiService.handle",
+				"type": "Promise<Response>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerLocalApiService.handle",
+				"inputs": [
+					{
+						"name": "TrackerLocalApiService.handle.request",
+						"type": "Request",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerLocalApiService.handle",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerLocalApiService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerLocalApiService.constructor.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "TrackerLocalApiService.constructor.items",
+						"type": "TrackerItemReadRepository",
+						"required": true
+					},
+					{
+						"name": "TrackerLocalApiService.constructor.options",
+						"type": "TrackerLocalApiOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerLocalApiService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-normalize-tracker-item-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-plan-tracker-item-mutation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/TrackerLocalApiService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/TrackerLocalApiService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

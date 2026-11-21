@@ -48,7 +48,7 @@ export class TrackerLocalApiService {
 			case 'items':
 				if (parts.length === 1) return trackerResponse(200, this.items.list(query));
 				if (parts.length === 2) return trackerResponse(200, this.items.get(parts[1]));
-				return;
+				return undefined;
 			case 'check':
 				return trackerResponse(
 					200,
@@ -64,11 +64,12 @@ export class TrackerLocalApiService {
 				return trackerResponse(200, digest);
 			}
 		}
+		return undefined;
 	}
 
 	private async write(request: Request, [, id, verb]: string[]): Promise<Response | undefined> {
 		const action = itemAction(request.method, id, verb);
-		if (!action) return;
+		if (!action) return undefined;
 		const body = await readItemBody(request);
 		request.signal.throwIfAborted();
 		const mutation: TrackerItemMutation =
@@ -97,17 +98,13 @@ function itemAction(
 	id: string | undefined,
 	verb: string | undefined
 ): TrackerItemAction | 'add' | undefined {
-	if (!id) return method === 'POST' ? 'add' : undefined;
-	if (!verb && method === 'PATCH') return 'update';
-	if (!verb && method === 'DELETE') return 'remove';
-	if (
-		method === 'POST' &&
-		verb !== 'remove' &&
-		verb &&
-		Object.hasOwn(trackerItemTransitions, verb)
-	) {
-		return verb as TrackerItemAction;
+	if (verb) {
+		if (method !== 'POST' || verb === 'remove') return undefined;
+		return Object.hasOwn(trackerItemTransitions, verb) ? (verb as TrackerItemAction) : undefined;
 	}
+	if (!id) return method === 'POST' ? 'add' : undefined;
+	if (method === 'PATCH') return 'update';
+	return method === 'DELETE' ? 'remove' : undefined;
 }
 
 function newItemId(): string {
@@ -120,7 +117,8 @@ function readActor(headers: Headers): string | null {
 		?.replace(/[^\P{Cc}\u0080-\u009f]/gu, '')
 		.trim()
 		.slice(0, 80);
-	return actor || null;
+	if (!actor) return null;
+	return actor;
 }
 
 async function readItemBody(request: Request): Promise<TrackerItemInput> {
