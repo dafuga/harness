@@ -65,7 +65,7 @@
 			},
 			{
 				"name": "localProps.seen",
-				"type": "unknown",
+				"type": "Set<string>",
 				"required": false,
 				"description": "Visited local type names preventing recursive expansion; defaults to an empty set."
 			},
@@ -220,7 +220,7 @@
 					},
 					{
 						"name": "localProps.seen",
-						"type": "unknown",
+						"type": "Set<string>",
 						"required": false,
 						"description": "Visited local type names preventing recursive expansion; defaults to an empty set."
 					}

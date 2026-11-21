@@ -22,7 +22,7 @@
 			},
 			{
 				"name": "GameRenderService.constructor.transportReady",
-				"type": "unknown",
+				"type": "() => boolean",
 				"required": false,
 				"description": "Defaults to () => false, so start() always rejects with 'Live AI is blocked until a credential-safe provider transport is available.' unless a caller passes a callback that returns a truthy value. start() calls this callback on every call that passes the busy check, before any credential read."
 			},
@@ -186,7 +186,7 @@
 					},
 					{
 						"name": "GameRenderService.constructor.transportReady",
-						"type": "unknown",
+						"type": "() => boolean",
 						"required": false,
 						"description": "Defaults to () => false, so start() always rejects with 'Live AI is blocked until a credential-safe provider transport is available.' unless a caller passes a callback that returns a truthy value. start() calls this callback on every call that passes the busy check, before any credential read."
 					},

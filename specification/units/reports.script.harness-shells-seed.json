@@ -25,7 +25,7 @@
 			},
 			{
 				"name": "seedShells.verified",
-				"type": "unknown",
+				"type": "(repo: VerifyRepo) => Promise<VerifyOutcome>",
 				"required": true,
 				"description": "A callback run after each commit stage to verify repository state. The first resolved outcome supplies the record id used to establish the initial budget."
 			},
@@ -84,7 +84,7 @@
 					},
 					{
 						"name": "seedShells.verified",
-						"type": "unknown",
+						"type": "(repo: VerifyRepo) => Promise<VerifyOutcome>",
 						"required": true,
 						"description": "A callback run after each commit stage to verify repository state. The first resolved outcome supplies the record id used to establish the initial budget."
 					},
