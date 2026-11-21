@@ -32,7 +32,7 @@
 			},
 			{
 				"name": "ProjectOperationsService.constructor.outbox",
-				"type": "unknown",
+				"type": "CommentOutboxService",
 				"required": false,
 				"description": "The outbox that persists pending comment drafts and lists them for the selected project. Defaults to session.outbox when omitted."
 			},
@@ -503,7 +503,7 @@
 					},
 					{
 						"name": "ProjectOperationsService.constructor.outbox",
-						"type": "unknown",
+						"type": "CommentOutboxService",
 						"required": false,
 						"description": "The outbox that persists pending comment drafts and lists them for the selected project. Defaults to session.outbox when omitted."
 					}

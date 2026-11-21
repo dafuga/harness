@@ -29,7 +29,7 @@
 			},
 			{
 				"name": "ExplanationRepository.constructor.file",
-				"type": "unknown",
+				"type": "string",
 				"required": false,
 				"description": "Defaults to explanationsFile: .cache/harness/explanations.ndjson, the scratch store for reasons written before a commit exists. It is joined onto root with path.join, so only undefined selects the default, and any other non-string value makes the constructor throw a TypeError.",
 				"examples": [".cache/harness/explanations.ndjson", "state/explanations.ndjson"]
@@ -475,7 +475,7 @@
 					},
 					{
 						"name": "ExplanationRepository.constructor.file",
-						"type": "unknown",
+						"type": "string",
 						"required": false,
 						"description": "Defaults to explanationsFile: .cache/harness/explanations.ndjson, the scratch store for reasons written before a commit exists. It is joined onto root with path.join, so only undefined selects the default, and any other non-string value makes the constructor throw a TypeError.",
 						"examples": [".cache/harness/explanations.ndjson", "state/explanations.ndjson"]

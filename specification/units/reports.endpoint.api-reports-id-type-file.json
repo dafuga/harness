@@ -16,7 +16,7 @@
 		"inputs": [
 			{
 				"name": "GET.params",
-				"type": "unknown",
+				"type": "Record<string, string>",
 				"required": true,
 				"description": "The route parameters from the path: params.id is the report id (a UUID that reportState creates) and must be 1 to 100 letters, digits, underscores or hyphens (safeId); params.type is the asset folder, and only 'assets' is served; params.file is the registered evidence file name, which must be listed in that report's manifest and not marked missing. A value that fails these checks makes GET throw an HttpError.",
 				"examples": [
@@ -34,7 +34,7 @@
 			},
 			{
 				"name": "GET.request",
-				"type": "unknown",
+				"type": "Request",
 				"required": true,
 				"description": "The Fetch Request of this call, of which only the Range header is read through request.headers.get('range'); a missing header returns the whole asset with status 200. A Range header of the form bytes=start-end, bytes=start- or bytes=-N returns 206 with that slice, and a malformed or unsatisfiable header returns 416 with an empty body."
 			}
@@ -75,7 +75,7 @@
 				"inputs": [
 					{
 						"name": "GET.params",
-						"type": "unknown",
+						"type": "Record<string, string>",
 						"required": true,
 						"description": "The route parameters from the path: params.id is the report id (a UUID that reportState creates) and must be 1 to 100 letters, digits, underscores or hyphens (safeId); params.type is the asset folder, and only 'assets' is served; params.file is the registered evidence file name, which must be listed in that report's manifest and not marked missing. A value that fails these checks makes GET throw an HttpError.",
 						"examples": [
@@ -93,7 +93,7 @@
 					},
 					{
 						"name": "GET.request",
-						"type": "unknown",
+						"type": "Request",
 						"required": true,
 						"description": "The Fetch Request of this call, of which only the Range header is read through request.headers.get('range'); a missing header returns the whole asset with status 200. A Range header of the form bytes=start-end, bytes=start- or bytes=-N returns 206 with that slice, and a malformed or unsatisfiable header returns 416 with an empty body."
 					}

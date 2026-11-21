@@ -59,7 +59,7 @@
 			},
 			{
 				"name": "RevisionDetailService.constructor.kept",
-				"type": "unknown",
+				"type": "{ source: SourceImpactService; registries: Map<string, Stored>; }",
 				"required": false,
 				"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map."
 			},
@@ -332,7 +332,7 @@
 					},
 					{
 						"name": "RevisionDetailService.constructor.kept",
-						"type": "unknown",
+						"type": "{ source: SourceImpactService; registries: Map<string, Stored>; }",
 						"required": false,
 						"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map."
 					}

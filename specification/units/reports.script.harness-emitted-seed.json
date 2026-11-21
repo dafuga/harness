@@ -25,7 +25,7 @@
 			},
 			{
 				"name": "seedEmitted.verified",
-				"type": "unknown",
+				"type": "(repo: VerifyRepo) => Promise<VerifyOutcome>",
 				"required": true,
 				"description": "Callback invoked whenever the seed needs a verification result from the synthetic repository. It receives the same VerifyRepo and resolves to a VerifyOutcome whose record ID is used by budget commands."
 			},
@@ -66,7 +66,7 @@
 					},
 					{
 						"name": "seedEmitted.verified",
-						"type": "unknown",
+						"type": "(repo: VerifyRepo) => Promise<VerifyOutcome>",
 						"required": true,
 						"description": "Callback invoked whenever the seed needs a verification result from the synthetic repository. It receives the same VerifyRepo and resolves to a VerifyOutcome whose record ID is used by budget commands."
 					},

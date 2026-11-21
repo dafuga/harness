@@ -55,7 +55,7 @@
 			},
 			{
 				"name": "expiredOffer.now",
-				"type": "unknown",
+				"type": "number",
 				"required": false,
 				"description": "The time to age the offer against, in epoch milliseconds as Date.now() gives it; the new exp is 60 seconds before it. Defaults to Date.now(), evaluated at each call.",
 				"examples": [1794700800000, 1794745200000]
@@ -181,7 +181,7 @@
 					},
 					{
 						"name": "expiredOffer.now",
-						"type": "unknown",
+						"type": "number",
 						"required": false,
 						"description": "The time to age the offer against, in epoch milliseconds as Date.now() gives it; the new exp is 60 seconds before it. Defaults to Date.now(), evaluated at each call.",
 						"examples": [1794700800000, 1794745200000]

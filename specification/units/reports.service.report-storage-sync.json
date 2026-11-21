@@ -25,7 +25,7 @@
 		"inputs": [
 			{
 				"name": "ReportStorageSyncService.constructor.repository",
-				"type": "unknown",
+				"type": "ReportRepository",
 				"required": false,
 				"description": "The ReportRepository dependency used to load reports and resolve report directories. Defaults to new ReportRepository(); a supplied repository replaces that default."
 			},
@@ -135,7 +135,7 @@
 				"inputs": [
 					{
 						"name": "ReportStorageSyncService.constructor.repository",
-						"type": "unknown",
+						"type": "ReportRepository",
 						"required": false,
 						"description": "The ReportRepository dependency used to load reports and resolve report directories. Defaults to new ReportRepository(); a supplied repository replaces that default."
 					}

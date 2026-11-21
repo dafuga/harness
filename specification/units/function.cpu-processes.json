@@ -29,7 +29,7 @@
 			},
 			{
 				"name": "cpuProcesses.monitorPid",
-				"type": "unknown",
+				"type": "number",
 				"required": false,
 				"description": "Pid to classify as Harness regardless of its command; defaults to process.pid (the current process id). It is compared with === against each numeric pid, so a string holding the same digits never matches.",
 				"examples": [812, 4821, 90231]
@@ -99,7 +99,7 @@
 					},
 					{
 						"name": "cpuProcesses.monitorPid",
-						"type": "unknown",
+						"type": "number",
 						"required": false,
 						"description": "Pid to classify as Harness regardless of its command; defaults to process.pid (the current process id). It is compared with === against each numeric pid, so a string holding the same digits never matches.",
 						"examples": [812, 4821, 90231]
