@@ -22,43 +22,50 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "pickTrackerModel.item",
 				"type": "TrackerModelItem",
-				"required": true
+				"required": true,
+				"description": "Tracker item with its text, optional model pin and eligibility information."
 			},
 			{
 				"name": "pickTrackerModel.options",
 				"type": "TrackerModelSelectionOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional ladder configuration and outcomes from similar prior work."
 			},
 			{
 				"name": "retryTrackerModel.item",
 				"type": "TrackerModelItem",
-				"required": true
+				"required": true,
+				"description": "Tracker item to use when selecting a retry model."
 			},
 			{
 				"name": "retryTrackerModel.run",
 				"type": "TrackerRetryRun",
-				"required": true
+				"required": true,
+				"description": "Previous attempt's model, effort, ladder position and pin status."
 			},
 			{
 				"name": "retryTrackerModel.cfg",
 				"type": "TrackerLadderConfig",
-				"required": false
+				"required": false,
+				"description": "Optional configuration for the current model ladder and eligibility rules."
 			}
 		],
 		"outputs": [
 			{
 				"name": "pickTrackerModel",
-				"type": "TrackerModelSelection"
+				"type": "TrackerModelSelection",
+				"description": "Selected model and effort with the work type and reason for the choice."
 			},
 			{
 				"name": "retryTrackerModel",
-				"type": "TrackerModelRung"
+				"type": "TrackerModelRung",
+				"description": "Pinned retry model or escalated Sol reasoning effort for another attempt."
 			}
 		],
 		"errors": [],
@@ -70,19 +77,22 @@
 					{
 						"name": "pickTrackerModel.item",
 						"type": "TrackerModelItem",
-						"required": true
+						"required": true,
+						"description": "Tracker item with its text, optional model pin and eligibility information."
 					},
 					{
 						"name": "pickTrackerModel.options",
 						"type": "TrackerModelSelectionOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional ladder configuration and outcomes from similar prior work."
 					}
 				],
 				"outputs": [
 					{
 						"name": "pickTrackerModel",
-						"type": "TrackerModelSelection"
+						"type": "TrackerModelSelection",
+						"description": "Selected model and effort with the work type and reason for the choice."
 					}
 				],
 				"errors": [],
@@ -94,23 +104,27 @@
 					{
 						"name": "retryTrackerModel.item",
 						"type": "TrackerModelItem",
-						"required": true
+						"required": true,
+						"description": "Tracker item to use when selecting a retry model."
 					},
 					{
 						"name": "retryTrackerModel.run",
 						"type": "TrackerRetryRun",
-						"required": true
+						"required": true,
+						"description": "Previous attempt's model, effort, ladder position and pin status."
 					},
 					{
 						"name": "retryTrackerModel.cfg",
 						"type": "TrackerLadderConfig",
-						"required": false
+						"required": false,
+						"description": "Optional configuration for the current model ladder and eligibility rules."
 					}
 				],
 				"outputs": [
 					{
 						"name": "retryTrackerModel",
-						"type": "TrackerModelRung"
+						"type": "TrackerModelRung",
+						"description": "Pinned retry model or escalated Sol reasoning effort for another attempt."
 					}
 				],
 				"errors": [],

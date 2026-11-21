@@ -26,77 +26,92 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "classifyTrackerTask.item",
 				"type": "TrackerModelItem",
-				"required": true
+				"required": true,
+				"description": "Tracker item whose title and notes determine the work type."
 			},
 			{
 				"name": "sizeOf.item",
 				"type": "TrackerModelItem",
-				"required": true
+				"required": true,
+				"description": "Tracker item whose title and notes determine the work size."
 			},
 			{
 				"name": "projectOf.item",
 				"type": "TrackerModelItem",
-				"required": true
+				"required": true,
+				"description": "Tracker item with optional project and agent names."
 			},
 			{
 				"name": "floorReasons.item",
 				"type": "TrackerModelItem",
-				"required": true
+				"required": true,
+				"description": "Tracker item whose fields determine minimum model eligibility."
 			},
 			{
 				"name": "isHarnessModule.item",
 				"type": "TrackerModelItem",
-				"required": true
+				"required": true,
+				"description": "Tracker item checked for Harness project and module scope."
 			},
 			{
 				"name": "isVisualInspection.item",
 				"type": "TrackerModelItem",
-				"required": true
+				"required": true,
+				"description": "Tracker item whose title is tested for visual review wording."
 			},
 			{
 				"name": "solEffort.kind",
 				"type": "TrackerTaskKind",
-				"required": true
+				"required": true,
+				"description": "Classified work type used to select reasoning effort."
 			},
 			{
 				"name": "solEffort.size",
 				"type": "TrackerTaskSize",
-				"required": true
+				"required": true,
+				"description": "Estimated work size used to select reasoning effort."
 			}
 		],
 		"outputs": [
 			{
 				"name": "classifyTrackerTask",
-				"type": "TrackerTaskKind"
+				"type": "TrackerTaskKind",
+				"description": "Work type matched from the title first and then notes, defaulting to feature."
 			},
 			{
 				"name": "sizeOf",
-				"type": "TrackerTaskSize"
+				"type": "TrackerTaskSize",
+				"description": "Small, medium or large work size based on text length and list items."
 			},
 			{
 				"name": "projectOf",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "Explicit project, agent fallback, or null if both are absent."
 			},
 			{
 				"name": "floorReasons",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Sensitivity, database and promotion reasons that constrain model eligibility."
 			},
 			{
 				"name": "isHarnessModule",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Whether this item qualifies as Harness module work."
 			},
 			{
 				"name": "isVisualInspection",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Whether the title requests inspection of a visual artifact."
 			},
 			{
 				"name": "solEffort",
-				"type": "string"
+				"type": "string",
+				"description": "Sol reasoning effort for the classified type and estimated size."
 			}
 		],
 		"errors": [],
@@ -108,13 +123,15 @@
 					{
 						"name": "classifyTrackerTask.item",
 						"type": "TrackerModelItem",
-						"required": true
+						"required": true,
+						"description": "Tracker item whose title and notes determine the work type."
 					}
 				],
 				"outputs": [
 					{
 						"name": "classifyTrackerTask",
-						"type": "TrackerTaskKind"
+						"type": "TrackerTaskKind",
+						"description": "Work type matched from the title first and then notes, defaulting to feature."
 					}
 				],
 				"errors": [],
@@ -126,13 +143,15 @@
 					{
 						"name": "sizeOf.item",
 						"type": "TrackerModelItem",
-						"required": true
+						"required": true,
+						"description": "Tracker item whose title and notes determine the work size."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sizeOf",
-						"type": "TrackerTaskSize"
+						"type": "TrackerTaskSize",
+						"description": "Small, medium or large work size based on text length and list items."
 					}
 				],
 				"errors": [],
@@ -144,13 +163,15 @@
 					{
 						"name": "projectOf.item",
 						"type": "TrackerModelItem",
-						"required": true
+						"required": true,
+						"description": "Tracker item with optional project and agent names."
 					}
 				],
 				"outputs": [
 					{
 						"name": "projectOf",
-						"type": "string | null"
+						"type": "string | null",
+						"description": "Explicit project, agent fallback, or null if both are absent."
 					}
 				],
 				"errors": [],
@@ -162,13 +183,15 @@
 					{
 						"name": "floorReasons.item",
 						"type": "TrackerModelItem",
-						"required": true
+						"required": true,
+						"description": "Tracker item whose fields determine minimum model eligibility."
 					}
 				],
 				"outputs": [
 					{
 						"name": "floorReasons",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Sensitivity, database and promotion reasons that constrain model eligibility."
 					}
 				],
 				"errors": [],
@@ -180,13 +203,15 @@
 					{
 						"name": "isHarnessModule.item",
 						"type": "TrackerModelItem",
-						"required": true
+						"required": true,
+						"description": "Tracker item checked for Harness project and module scope."
 					}
 				],
 				"outputs": [
 					{
 						"name": "isHarnessModule",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Whether this item qualifies as Harness module work."
 					}
 				],
 				"errors": [],
@@ -198,13 +223,15 @@
 					{
 						"name": "isVisualInspection.item",
 						"type": "TrackerModelItem",
-						"required": true
+						"required": true,
+						"description": "Tracker item whose title is tested for visual review wording."
 					}
 				],
 				"outputs": [
 					{
 						"name": "isVisualInspection",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Whether the title requests inspection of a visual artifact."
 					}
 				],
 				"errors": [],
@@ -216,18 +243,21 @@
 					{
 						"name": "solEffort.kind",
 						"type": "TrackerTaskKind",
-						"required": true
+						"required": true,
+						"description": "Classified work type used to select reasoning effort."
 					},
 					{
 						"name": "solEffort.size",
 						"type": "TrackerTaskSize",
-						"required": true
+						"required": true,
+						"description": "Estimated work size used to select reasoning effort."
 					}
 				],
 				"outputs": [
 					{
 						"name": "solEffort",
-						"type": "string"
+						"type": "string",
+						"description": "Sol reasoning effort for the classified type and estimated size."
 					}
 				],
 				"errors": [],

@@ -23,52 +23,61 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ladderFrom.config",
 				"type": "TrackerLadderConfig",
-				"required": false
+				"required": false,
+				"description": "Optional configuration overriding matching default ladder entries."
 			},
 			{
 				"name": "parseTrackerModelSpec.spec",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Model name or alias with an optional reasoning effort suffix."
 			},
 			{
 				"name": "parseTrackerModelSpec.ladder",
 				"type": "readonly TrackerModelRung[]",
-				"required": true
+				"required": true,
+				"description": "Current ladder entries and their model and effort defaults."
 			},
 			{
 				"name": "parseTrackerModelSpec.project",
 				"type": "string | null",
-				"required": true
+				"required": true,
+				"description": "Project name used for model allowlists, or null."
 			},
 			{
 				"name": "parseTrackerModelSpec.config",
 				"type": "TrackerLadderConfig",
-				"required": false
+				"required": false,
+				"description": "Optional Tracker configuration with project allowlists."
 			}
 		],
 		"outputs": [
 			{
 				"name": "solEfforts",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Supported Sol reasoning efforts in increasing order."
 			},
 			{
 				"name": "ladderFrom",
-				"type": "TrackerModelRung[]"
+				"type": "TrackerModelRung[]",
+				"description": "Default ladder with configured matching overrides and unchanged CLI selections."
 			},
 			{
 				"name": "parseTrackerModelSpec",
-				"type": "TrackerModelRung"
+				"type": "TrackerModelRung",
+				"description": "Validated pinned model and effort selected for this project."
 			}
 		],
 		"errors": [
 			{
 				"name": "RangeError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The model syntax, model version, named effort, or project is invalid for the requested pin."
 			}
 		],
 		"errorStatus": "unknown",
@@ -79,13 +88,15 @@
 					{
 						"name": "ladderFrom.config",
 						"type": "TrackerLadderConfig",
-						"required": false
+						"required": false,
+						"description": "Optional configuration overriding matching default ladder entries."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ladderFrom",
-						"type": "TrackerModelRung[]"
+						"type": "TrackerModelRung[]",
+						"description": "Default ladder with configured matching overrides and unchanged CLI selections."
 					}
 				],
 				"errors": [],
@@ -97,28 +108,33 @@
 					{
 						"name": "parseTrackerModelSpec.spec",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Model name or alias with an optional reasoning effort suffix."
 					},
 					{
 						"name": "parseTrackerModelSpec.ladder",
 						"type": "readonly TrackerModelRung[]",
-						"required": true
+						"required": true,
+						"description": "Current ladder entries and their model and effort defaults."
 					},
 					{
 						"name": "parseTrackerModelSpec.project",
 						"type": "string | null",
-						"required": true
+						"required": true,
+						"description": "Project name used for model allowlists, or null."
 					},
 					{
 						"name": "parseTrackerModelSpec.config",
 						"type": "TrackerLadderConfig",
-						"required": false
+						"required": false,
+						"description": "Optional Tracker configuration with project allowlists."
 					}
 				],
 				"outputs": [
 					{
 						"name": "parseTrackerModelSpec",
-						"type": "TrackerModelRung"
+						"type": "TrackerModelRung",
+						"description": "Validated pinned model and effort selected for this project."
 					}
 				],
 				"errors": [

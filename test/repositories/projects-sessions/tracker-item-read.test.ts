@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, expect, test } from 'vitest';
-import { readTrackerSources } from '$reports/lib/projects-sessions/project-overview/projectOverviewTracker';
+import { readTrackerSources } from '../../../packages/reports/src/lib/projects-sessions/project-overview/projectOverviewTracker';
 import { insertItem, publicItem, trackerReadFixture, UPDATED } from './trackerItemReadFixture';
 
 let fixture: ReturnType<typeof trackerReadFixture>;

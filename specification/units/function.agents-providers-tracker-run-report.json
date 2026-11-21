@@ -21,38 +21,44 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "trackerModelHistory.rows",
 				"type": "readonly TrackerRunRow[]",
-				"required": true
+				"required": true,
+				"description": "Snapshot of run attempts, including model rung, status and outcome."
 			},
 			{
 				"name": "trackerModelHistory.scope",
 				"type": "TrackerHistoryScope",
-				"required": true
+				"required": true,
+				"description": "Project and work type used to choose the nearest comparable history."
 			},
 			{
 				"name": "trackerModelHistory.minSamples",
 				"type": "number",
 				"required": false,
-				"default": 3
+				"default": 3,
+				"description": "Minimum finished success and failure samples required for a comparable group."
 			},
 			{
 				"name": "trackerRunReport.rows",
 				"type": "readonly TrackerRunRow[]",
-				"required": true
+				"required": true,
+				"description": "Run attempts from both local and replicated histories, keyed by node and run ID."
 			}
 		],
 		"outputs": [
 			{
 				"name": "trackerModelHistory",
-				"type": "TrackerModelHistory"
+				"type": "TrackerModelHistory",
+				"description": "Success and failure counts by model rung for the best comparable group, or an empty map."
 			},
 			{
 				"name": "trackerRunReport",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Sorted aggregates by model rung and work type, including all-type totals."
 			}
 		],
 		"errors": [],
@@ -64,24 +70,28 @@
 					{
 						"name": "trackerModelHistory.rows",
 						"type": "readonly TrackerRunRow[]",
-						"required": true
+						"required": true,
+						"description": "Snapshot of run attempts, including model rung, status and outcome."
 					},
 					{
 						"name": "trackerModelHistory.scope",
 						"type": "TrackerHistoryScope",
-						"required": true
+						"required": true,
+						"description": "Project and work type used to choose the nearest comparable history."
 					},
 					{
 						"name": "trackerModelHistory.minSamples",
 						"type": "number",
 						"required": false,
-						"default": 3
+						"default": 3,
+						"description": "Minimum finished success and failure samples required for a comparable group."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerModelHistory",
-						"type": "TrackerModelHistory"
+						"type": "TrackerModelHistory",
+						"description": "Success and failure counts by model rung for the best comparable group, or an empty map."
 					}
 				],
 				"errors": [],
@@ -93,13 +103,15 @@
 					{
 						"name": "trackerRunReport.rows",
 						"type": "readonly TrackerRunRow[]",
-						"required": true
+						"required": true,
+						"description": "Run attempts from both local and replicated histories, keyed by node and run ID."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerRunReport",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Sorted aggregates by model rung and work type, including all-type totals."
 					}
 				],
 				"errors": [],
