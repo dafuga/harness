@@ -1,6 +1,6 @@
 import { expect } from 'vitest';
-import { join } from 'node:path';
-import { readFile } from 'node:fs/promises';
+import { join, resolve } from 'node:path';
+import { copyFile, readFile } from 'node:fs/promises';
 import { spawn } from 'node:child_process';
 import { runCommand, runHarness } from './cli';
 import { browserErrorCollector } from './browserTest';
@@ -8,6 +8,11 @@ import { measureWorkload } from './measureWorkload';
 
 /** Compile both declared Rust targets and exercise their actual browser and HTTP boundaries. */
 export async function assertRustModuleProject(project: string): Promise<void> {
+	// The disposable project's Cargo commands use the same installed toolchain as the root build.
+	await copyFile(
+		resolve(import.meta.dirname, '../../rust-toolchain.toml'),
+		join(project, 'rust-toolchain.toml')
+	);
 	for (const id of ['rust-wasm', 'rust-backend']) {
 		await runHarness(['module', 'add', id], project);
 		await runHarness(['module', 'generate', id, 'kernel', 'Metrics'], project);
