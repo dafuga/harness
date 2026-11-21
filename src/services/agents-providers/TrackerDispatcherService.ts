@@ -58,6 +58,7 @@ export class TrackerDispatcherService {
 	}
 
 	private currentRun({ runs }: TrackerDispatchSnapshot, { id, revision }: TrackerAttemptVersion) {
+		if (revision < 0) return undefined;
 		const node = canonicalNode(this.policy.node, this.policy);
 		return runs.find((run) => run.node === node && run.id === id && run.revision === revision);
 	}

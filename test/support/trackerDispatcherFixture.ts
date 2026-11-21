@@ -144,7 +144,7 @@ export function dispatcherFixture(options: DispatcherFixtureOptions = {}) {
 	};
 }
 
-function fixturePolicy(
+export function fixturePolicy(
 	now: () => number,
 	overrides?: Partial<TrackerDispatchPolicy>
 ): TrackerDispatchPolicy {

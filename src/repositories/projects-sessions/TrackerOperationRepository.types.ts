@@ -31,3 +31,8 @@ export interface TrackerLocalOperation {
 	fields: TrackerOperation['fields'];
 	actor?: string | null;
 }
+
+export interface TrackerLocalCommit<T> {
+	result: T;
+	operation?: Omit<TrackerLocalOperation, 'node'>;
+}
