@@ -52,7 +52,13 @@ export function resourceQueueFixture(cleanup: Array<() => void>) {
 	const service = new ResourceQueueService({
 		home,
 		env: {},
-		monitor: { sample: async () => snapshot({ memoryPressure: pressure ? 'critical' : 'normal' }) }
+		monitor: {
+			sample: async () =>
+				snapshot({
+					memoryPressure: pressure ? 'critical' : 'normal',
+					...(pressure ? { memoryAvailableBytes: 128 * mib } : {})
+				})
+		}
 	});
 	cleanup.push(() => {
 		service.close();

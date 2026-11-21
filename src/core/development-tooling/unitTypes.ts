@@ -3,37 +3,20 @@ import { z } from 'zod';
 import { compositionSchema } from './composition';
 import { sourceContractSchema } from './contractSchemas';
 
-/** The stable id of a unit: `u_` and ten base32 letters. */
-export const uidPattern = /^u_[a-z2-7]{10}$/;
-export const unitIdPattern = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
+import {
+	dependencyVias,
+	runtimeKinds,
+	performanceMetrics,
+	performanceTolerance,
+	uidPattern,
+	unitIdPattern
+} from './unitRegistryValues';
+export * from './unitRegistryValues';
+
 const identifier = z
 	.string()
 	.regex(unitIdPattern, 'must be a lowercase dotted or dashed identifier');
 const text = z.string().trim().min(1, 'must not be empty');
-
-export const dependencyVias = [
-	'import',
-	'reexport',
-	'dynamic-import',
-	'require',
-	'url',
-	'style-import',
-	'process',
-	'http',
-	'wasm',
-	'contract'
-] as const;
-export const runtimeKinds = ['module', 'wasm', 'process', 'http'] as const;
-export const performanceMetrics = [
-	'latency-cold-ms',
-	'latency-warm-ms',
-	'latency-floor-ms',
-	'throughput-ops',
-	'memory-bytes'
-] as const;
-
-/** Performance may drift this far from its baseline; only a recorded approval may change it. */
-export const performanceTolerance = 0.05;
 
 export const contractItemSchema = z.strictObject({
 	name: text,
@@ -44,7 +27,9 @@ export const contractItemSchema = z.strictObject({
 	default: z.json().optional(),
 	description: z.string().optional(),
 	/** Values a person declared as examples of the item; any JSON, kept exactly as written. */
-	examples: z.array(z.json()).optional()
+	examples: z.array(z.json()).optional(),
+	/** Why a declared boundary intentionally accepts an unknown type; required by strict checks. */
+	unknownReason: text.optional()
 });
 
 /** Authored usage, distinct from observed verification evidence. */

@@ -14,7 +14,7 @@ export function contractFindings(unit: ComponentManifest): string[] {
 	const errors = [...contract.errors, ...operations.flatMap((operation) => operation.errors)];
 	return [
 		...new Set([
-			...inputs.flatMap((item) => inputFindings(unit.id, item)),
+			...inputs.flatMap((item) => inputFindings(unit.id, contract.origin, item)),
 			...errors
 				.filter((item) => item.name === 'Error' || item.type === 'Error')
 				.map((item) => `${unit.id}: contract error ${item.name} is a bare Error`)
@@ -22,11 +22,16 @@ export function contractFindings(unit: ComponentManifest): string[] {
 	];
 }
 
-function inputFindings(id: string, item: ContractItem): string[] {
+function inputFindings(
+	id: string,
+	origin: ComponentManifest['contract']['origin'],
+	item: ContractItem
+): string[] {
 	const label = `${id}: contract input ${item.name}`;
 	const empty = /\.props$/.test(item.name) && /^\{\s*\}$/.test(item.type);
+	const declaredUnknown = origin === 'declared' && Boolean(item.unknownReason?.trim());
 	return [
-		...(/\bunknown\b/.test(item.type) ? [`${label} has unknown type`] : []),
+		...(/\bunknown\b/.test(item.type) && !declaredUnknown ? [`${label} has unknown type`] : []),
 		...(empty ? [`${label} is an empty props blob`] : []),
 		...(item.required === undefined ? [`${label} is missing required`] : [])
 	];

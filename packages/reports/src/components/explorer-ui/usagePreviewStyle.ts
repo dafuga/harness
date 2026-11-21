@@ -1,9 +1,9 @@
 // @harness-uid u_2ldh4ufj6z
 import { tooltipPlace } from '../../utils/explorer-ui/tooltipPlace';
+import type { Place } from './usagePreviewStyle.types';
 
 const edge = 8;
 const widest = 280;
-type Place = ReturnType<typeof tooltipPlace>;
 
 /** The room the owning card, or else the screen, leaves a preview from side to side. */
 function room(frame: DOMRect | undefined, screen: number): { left: number; right: number } {

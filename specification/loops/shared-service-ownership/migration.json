@@ -2941,15 +2941,21 @@
 			"unit": "service.record-assembly",
 			"from": "src/services/record-assembly-service/RecordAssemblyService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-			"definition": "d2c41ff73865a9c2c9c3a94e5de16153c26ef52ee57ce2c04ccc3a70e6dd2e7c",
+			"definition": "9cf207e2c0d91cb1b71431b0e95187f0da34afa36a9c4c39b0d643b0d229af8e",
 			"relocationDefinition": "cf89f78b86c140f16a7bc001d974c7f60504d60cea4223b556f1521081274936",
 			"review": {
-				"commit": "ecf3fe78354597ca168b43168d96ff4bc1ce5ab0",
+				"commit": "e3191b248640e223bc34a92c8e973da3d60ba742",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-				"definition": "d2c41ff73865a9c2c9c3a94e5de16153c26ef52ee57ce2c04ccc3a70e6dd2e7c",
-				"reason": "Retain the reviewed change: record assembly writes skippedBuilds from the snapshot run."
+				"definition": "9cf207e2c0d91cb1b71431b0e95187f0da34afa36a9c4c39b0d643b0d229af8e",
+				"reason": "Extract the component snapshot assembly so the record assembly method meets the length rule. Preserve the order, inputs, and fields used to seal the verification record."
 			},
 			"previousReviews": [
+				{
+					"commit": "ecf3fe78354597ca168b43168d96ff4bc1ce5ab0",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "d2c41ff73865a9c2c9c3a94e5de16153c26ef52ee57ce2c04ccc3a70e6dd2e7c",
+					"reason": "Retain the reviewed change: record assembly writes skippedBuilds from the snapshot run."
+				},
 				{
 					"commit": "3f02435bdd97721f0dff36c7e2681ce6650e3e38",
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",

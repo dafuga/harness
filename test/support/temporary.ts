@@ -4,11 +4,16 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import type { TemporaryRepo } from './temporary.types';
 
+/** Create a unique fixture directory when a test hook owns its cleanup. */
+export function createTempDirectory(prefix: string): Promise<string> {
+	return mkdtemp(join(tmpdir(), prefix));
+}
+
 export async function withTempDir<T>(
 	prefix: string,
 	use: (directory: string) => Promise<T> | T
 ): Promise<T> {
-	const directory = await mkdtemp(join(tmpdir(), prefix));
+	const directory = await createTempDirectory(prefix);
 	try {
 		return await use(directory);
 	} finally {

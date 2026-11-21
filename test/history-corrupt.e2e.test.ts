@@ -1,3 +1,4 @@
+import { shortCommit } from '../packages/reports/src/helpers/strings/shortCommit';
 import { rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
@@ -51,15 +52,16 @@ test('missing evidence, a changed manifest and tampered media are never trusted'
 	const missing = await attached();
 	const lines = await noteLines(missing.repo);
 	const verification = lines.find((line) => line.kind === 'verification');
+	const missingCommit = '0'.repeat(40);
 	const absent = {
 		...verification,
-		evidence: { ...verification?.evidence, commit: '0'.repeat(40) }
+		evidence: { ...verification?.evidence, commit: missingCommit }
 	};
 	await setNote(missing.repo, JSON.stringify(absent));
 	const gone = await statusOf(missing.repo);
 	expect(gone.verified).toBe(false);
 	expect(gone.records[0].problems).toEqual([
-		`evidence commit ${'0'.repeat(12)} is not available; run harness history fetch`
+		`evidence commit ${shortCommit(missingCommit)} is not available; run harness history fetch`
 	]);
 	const other = {
 		...verification,

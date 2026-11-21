@@ -37,6 +37,13 @@ export const commandHelp = [
 		aliases: []
 	},
 	{
+		name: 'projects',
+		signature: 'projects',
+		description: 'Read local Harness project cards.',
+		term: 'projects',
+		aliases: []
+	},
+	{
 		name: 'report',
 		signature: 'report [args...]',
 		description: 'Record media reports and serve the website.',
@@ -125,6 +132,13 @@ export const commandHelp = [
 		signature: 'task',
 		description: 'Committed module tasks, assigned workers and evidence-based completion.',
 		term: 'task',
+		aliases: []
+	},
+	{
+		name: 'tracker',
+		signature: 'tracker [args...]',
+		description: 'Use the shared Tracker service.',
+		term: 'tracker [args...]',
 		aliases: []
 	},
 	{

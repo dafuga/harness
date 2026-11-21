@@ -368,14 +368,14 @@
 			},
 			{
 				"name": "binding.file",
-				"type": "unknown",
+				"type": "string",
 				"required": true,
 				"description": "Image file name to retain in the returned ImageBinding, copied unchanged without validation.",
 				"examples": ["o1-default-desktop.png", "o2-default-desktop.png"]
 			},
 			{
 				"name": "binding.sha256",
-				"type": "unknown",
+				"type": "string",
 				"required": true,
 				"description": "SHA-256 digest of the image bytes, expected as 64 lowercase hexadecimal characters, copied unchanged without validation.",
 				"examples": [
@@ -1311,14 +1311,14 @@
 				"inputs": [
 					{
 						"name": "binding.file",
-						"type": "unknown",
+						"type": "string",
 						"required": true,
 						"description": "Image file name to retain in the returned ImageBinding, copied unchanged without validation.",
 						"examples": ["o1-default-desktop.png", "o2-default-desktop.png"]
 					},
 					{
 						"name": "binding.sha256",
-						"type": "unknown",
+						"type": "string",
 						"required": true,
 						"description": "SHA-256 digest of the image bytes, expected as 64 lowercase hexadecimal characters, copied unchanged without validation.",
 						"examples": [

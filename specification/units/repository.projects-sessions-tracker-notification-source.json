@@ -1,0 +1,357 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.projects-sessions-tracker-notification-source",
+	"uid": "u_o3bwaj4ogu",
+	"kind": "repository",
+	"title": "TrackerNotificationSourceRepository",
+	"responsibility": "Owns the TrackerNotificationSourceRepository persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/projects-sessions/TrackerNotificationSourceRepository.ts",
+			"src/repositories/projects-sessions/TrackerNotificationSourceRepository.types.ts"
+		],
+		"symbols": [
+			"TrackerNotificationSourceRepository",
+			"TrackerNotificationSourceRepository.constructor",
+			"TrackerNotificationSourceRepository.items",
+			"TrackerNotificationSourceRepository.item",
+			"TrackerNotificationSourceRepository.agent",
+			"TrackerNotificationSourceRepository.maxSeq",
+			"TrackerNotificationSourceRepository.opsSince",
+			"TrackerNotificationSourceRepository.publicItem",
+			"TrackerNotificationSourceRepository.digest",
+			"TrackerNotificationSourceRepository.latestNote",
+			"TrackerNotificationSourceRepository.launchStarted",
+			"TrackerNotificationSourceOptions",
+			"TrackerStoredNotificationItem",
+			"TrackerStoredNotificationAgent"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerNotificationSourceRepository.constructor.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.constructor.options",
+				"type": "TrackerNotificationSourceOptions",
+				"required": true
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.item.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.agent.name",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.opsSince.seq",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.opsSince.limit",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.publicItem.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.digest.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.latestNote.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.launchStarted.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.launchStarted.token",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerNotificationSourceRepository.items",
+				"type": "TrackerNotificationItem[]"
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.item",
+				"type": "TrackerNotificationItem | undefined"
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.agent",
+				"type": "ReturnType<TrackerNotificationSource['agent']>"
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.maxSeq",
+				"type": "number"
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.opsSince",
+				"type": "TrackerNotificationOp[]"
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.publicItem",
+				"type": "ReturnType<TrackerItemReadRepository['getStored']> | null"
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.digest",
+				"type": "ReturnType<TrackerItemReadRepository['digest']>"
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.latestNote",
+				"type": "string | undefined"
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.launchStarted",
+				"type": "boolean"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerNotificationSourceRepository.items",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.items",
+						"type": "TrackerNotificationItem[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.item",
+				"inputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.item.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.item",
+						"type": "TrackerNotificationItem | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.agent",
+				"inputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.agent.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.agent",
+						"type": "ReturnType<TrackerNotificationSource['agent']>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.maxSeq",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.maxSeq",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.opsSince",
+				"inputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.opsSince.seq",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "TrackerNotificationSourceRepository.opsSince.limit",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.opsSince",
+						"type": "TrackerNotificationOp[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.publicItem",
+				"inputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.publicItem.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.publicItem",
+						"type": "ReturnType<TrackerItemReadRepository['getStored']> | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.digest",
+				"inputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.digest.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.digest",
+						"type": "ReturnType<TrackerItemReadRepository['digest']>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.latestNote",
+				"inputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.latestNote.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.latestNote",
+						"type": "string | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.launchStarted",
+				"inputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.launchStarted.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerNotificationSourceRepository.launchStarted.token",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.launchStarted",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerNotificationSourceRepository.constructor",
+				"inputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.constructor.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "TrackerNotificationSourceRepository.constructor.options",
+						"type": "TrackerNotificationSourceOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "repository.projects-sessions-tracker-item-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-run-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-notification",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/projects-sessions/TrackerNotificationSourceRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/projects-sessions/TrackerNotificationSourceRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

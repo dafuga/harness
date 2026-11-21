@@ -55,7 +55,7 @@
 				"inputs": [
 					{
 						"name": "load.url",
-						"type": "unknown",
+						"type": "URL",
 						"required": true,
 						"description": "It is the request URL, the url field of the ServerLoadEvent that load destructures. Its pathname sliced after the eighth character (the length of '/harness') and its search string go to explorerExact, and the whole URL goes to consoleCanonical with the parsed index and '/harness'."
 					}

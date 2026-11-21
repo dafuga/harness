@@ -129,6 +129,7 @@ test('public configs require real source controls and retain their reviewed decl
 		};
 		await project.write(path, JSON.stringify({ ...publicConfig, configControls: [control] }));
 		await project.harness(['units', 'index', '--write']);
+		await project.harness(['units', 'uid-backfill', '--write']);
 		await project.harness(['units', 'check']);
 		expect((await project.json(path)).configControls).toEqual([control]);
 		for (const controls of [

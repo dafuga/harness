@@ -22,6 +22,10 @@ export const commandLoaders = {
 		const m = await import('./program/ActivityCommand');
 		m.registerActivityCommand(program);
 	},
+	projects: async (program: Command) => {
+		const { ProjectListCommand } = await import('../commands/projects-sessions/ProjectListCommand');
+		new ProjectListCommand().register(program);
+	},
 	report: async (program: Command) => {
 		const m = await import('./program/ReportCommand');
 		m.registerReportCommand(program);
@@ -73,6 +77,10 @@ export const commandLoaders = {
 	task: async (program: Command) => {
 		const m = await import('./program/TaskCommand');
 		m.registerTaskCommand(program);
+	},
+	tracker: async (program: Command) => {
+		const { TrackerCommand } = await import('../commands/projects-sessions/TrackerCommand');
+		new TrackerCommand().register(program);
 	},
 	module: async (program: Command) => {
 		const m = await import('./../commands/module-system/ModuleCommand');

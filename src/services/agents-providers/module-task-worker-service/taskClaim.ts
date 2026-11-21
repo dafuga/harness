@@ -1,7 +1,7 @@
 // @harness-uid u_b4uzqkb2i6
 import { randomUUID } from 'node:crypto';
 import type { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
-import { TaskWorktreeChangedError } from '../../../adapters/agents-providers/ModuleTaskWorktreeAdapter.types';
+import { TaskWorktreeChangedError } from '../../../adapters/agents-providers/TaskWorktreeChangedError';
 import type {
 	ModuleTask,
 	ModuleTaskQueue,

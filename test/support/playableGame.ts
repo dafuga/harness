@@ -11,9 +11,11 @@ export async function playableGame(cwd: string) {
 	execFileSync('bun', ['install', '--backend=copyfile'], { cwd, stdio: 'pipe' });
 	const original = await readFile(join(cwd, 'game.json'), 'utf8');
 	await transitionDocument(cwd, JSON.parse(original));
+	// Serve the built fixture so dependency discovery cannot reload a run in progress.
+	execFileSync('bun', ['run', 'build'], { cwd, stdio: 'pipe' });
 	const server = spawn(
 		process.execPath,
-		['node_modules/vite/bin/vite.js', 'dev', '--host', '127.0.0.1', '--port', '0'],
+		['node_modules/vite/bin/vite.js', 'preview', '--host', '127.0.0.1', '--port', '0'],
 		{
 			cwd,
 			stdio: ['ignore', 'pipe', 'pipe'],

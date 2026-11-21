@@ -35,12 +35,16 @@ export async function observedLoop(root: string) {
 			const ran = spawnSync(command[0], command.slice(1), {
 				cwd,
 				encoding: 'utf8',
-				timeout: 5000,
+				timeout: 90_000,
 				killSignal: 'SIGKILL',
 				env
 			});
 			status = ran.status;
-			return { exitCode: ran.status ?? 1, stdout: ran.stdout, stderr: ran.stderr };
+			return {
+				exitCode: ran.status ?? 1,
+				stdout: ran.stdout,
+				stderr: [ran.stderr, ran.error?.message].filter(Boolean).join('\n')
+			};
 		}
 	);
 	return { status, stdout: result.stdout, stderr: result.stderr };

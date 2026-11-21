@@ -1,4 +1,4 @@
-import { mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
@@ -134,23 +134,34 @@ test('empty answer has a deterministic failure in gate mode without an API call'
 
 test('existing command-based loops reject uncertain response checks', async () => {
 	const root = await fixture();
-	const command = `bun --preload "${join(process.cwd(), 'test/support/jevPreload.ts')}" "${join(process.cwd(), 'src/index.ts')}" response-check --request request.txt --response answer.txt --gate --json`;
-	await writeFile(join(root, 'harness.loop.json'), JSON.stringify({ templates: [] }));
-	const { mkdir } = await import('node:fs/promises');
-	await mkdir(join(root, 'specification/loops/answer'), { recursive: true });
+	const created = await runJevCli(root, [
+		'loop',
+		'create',
+		'answer',
+		'--goal',
+		'Answer follows request'
+	]);
+	expect(created.exitCode, created.stderr).toBe(0);
+	const command = [
+		'TEST_JEV_SCENARIO=uncertain HARNESS_JEV_API_KEY=synthetic-test-key',
+		`bun --preload "${join(process.cwd(), 'test/support/jevPreload.ts')}" "${join(process.cwd(), 'src/index.ts')}"`,
+		'response-check --request request.txt --response answer.txt --gate --json'
+	].join(' ');
+	const loop = join(root, 'specification/loops/answer/loop.json');
+	const state = JSON.parse(await readFile(loop, 'utf8'));
 	await writeFile(
-		join(root, 'specification/loops/answer/loop.json'),
+		loop,
 		JSON.stringify({
-			name: 'answer',
-			goal: 'Answer follows request',
-			steps: [],
+			...state,
 			evaluators: [{ id: 'response', title: 'Response follows request', command }]
 		})
 	);
-	const result = await runJevCli(root, ['loop', 'evaluate', 'answer', '--json'], 'uncertain');
-	expect(result.exitCode).toBe(1);
-	expect(JSON.parse(result.stdout).passed).toBe(false);
-	expect(JSON.parse(result.stdout).results[0].exitCode).toBe(1);
+	const result = await runJevCli(root, ['loop', 'evaluate', 'answer', '--json']);
+	expect(result.exitCode, result.stderr).toBe(1);
+	const evaluation = JSON.parse(result.stdout);
+	expect(evaluation.passed).toBe(false);
+	expect(evaluation.results[0].exitCode).toBe(1);
+	expect(JSON.parse(evaluation.results[0].stdout).status).toBe('needs-review');
 });
 
 test.each(['malformed', 'wrong-model'])(

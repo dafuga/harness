@@ -1,6 +1,7 @@
 // @harness-uid u_3tibsmkofv
 import { PermissionsCommand } from '../commands/networking-security/PermissionsCommand';
 import { registerTaskCommand } from './program/TaskCommand';
+import { TrackerCommand } from '../commands/projects-sessions/TrackerCommand';
 import { ModuleCommand } from '../commands/module-system/ModuleCommand';
 import { ApiCommand } from '../commands/networking-security/ApiCommand';
 import { sdkPackage } from '../utils/development-tooling/buildStamp';
@@ -8,6 +9,7 @@ import { registerCodexCommand } from './program/CodexCommand';
 import { registerBenchmarkCommand } from './program/BenchmarkCommand';
 import { registerAnalyticsCommand } from './program/AnalyticsCommand';
 import { registerActivityCommand } from './program/ActivityCommand';
+import { ProjectListCommand } from '../commands/projects-sessions/ProjectListCommand';
 import { registerReportCommand } from './program/ReportCommand';
 import { registerResourcesCommand } from './program/ResourcesCommand';
 import { Command } from 'commander';
@@ -41,6 +43,7 @@ export function buildProgram(): Command {
 	registerResourcesCommand(program);
 	registerAnalyticsCommand(program);
 	registerActivityCommand(program);
+	new ProjectListCommand().register(program);
 	registerReportCommand(program);
 	registerNewCommand(program);
 	registerGenerateCommand(program);
@@ -54,6 +57,7 @@ export function buildProgram(): Command {
 	registerBudgetCommand(program);
 	registerVerifyCommand(program);
 	registerTaskCommand(program);
+	new TrackerCommand().register(program);
 	new ModuleCommand().register(program);
 	new ApiCommand().register(program);
 	new PermissionsCommand().register(program);

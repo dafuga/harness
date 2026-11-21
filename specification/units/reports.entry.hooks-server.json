@@ -20,13 +20,13 @@
 		"inputs": [
 			{
 				"name": "handle.event",
-				"type": "unknown",
+				"type": "RequestEvent<Record<string, string>, string>",
 				"required": true,
 				"description": "The SvelteKit RequestEvent of the incoming request. The hook itself reads only url.pathname, which selects the agent controller, and request, which that controller reads; the owner guard reads only getClientAddress from the event."
 			},
 			{
 				"name": "handle.resolve",
-				"type": "unknown",
+				"type": "(event: RequestEvent<Record<string, string>, string>, opts?: ResolveOptions) => MaybePromise<Response>",
 				"required": true,
 				"description": "The SvelteKit resolve function, which the hook calls only for an admitted request whose pathname is not /api/agent. Its Response is returned after the hook sets cache-control to 'private, no-store' if the Response has none."
 			}
@@ -57,13 +57,13 @@
 				"inputs": [
 					{
 						"name": "handle.event",
-						"type": "unknown",
+						"type": "RequestEvent<Record<string, string>, string>",
 						"required": true,
 						"description": "The SvelteKit RequestEvent of the incoming request. The hook itself reads only url.pathname, which selects the agent controller, and request, which that controller reads; the owner guard reads only getClientAddress from the event."
 					},
 					{
 						"name": "handle.resolve",
-						"type": "unknown",
+						"type": "(event: RequestEvent<Record<string, string>, string>, opts?: ResolveOptions) => MaybePromise<Response>",
 						"required": true,
 						"description": "The SvelteKit resolve function, which the hook calls only for an admitted request whose pathname is not /api/agent. Its Response is returned after the hook sets cache-control to 'private, no-store' if the Response has none."
 					}

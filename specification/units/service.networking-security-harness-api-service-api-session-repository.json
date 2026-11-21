@@ -34,7 +34,7 @@
 			},
 			{
 				"name": "ApiSessionRepository.constructor.directory",
-				"type": "unknown",
+				"type": "string",
 				"required": false,
 				"description": "The folder that holds the session files; save() and ensure() create it with mode 0700 when it is missing. Defaults to process.env.HARNESS_API_HOME ?? join(homedir(), '.codex/harness/api'): the HARNESS_API_HOME value whenever it is set, even to an empty string, otherwise the .codex/harness/api folder under the home directory.",
 				"examples": [
@@ -185,7 +185,7 @@
 					},
 					{
 						"name": "ApiSessionRepository.constructor.directory",
-						"type": "unknown",
+						"type": "string",
 						"required": false,
 						"description": "The folder that holds the session files; save() and ensure() create it with mode 0700 when it is missing. Defaults to process.env.HARNESS_API_HOME ?? join(homedir(), '.codex/harness/api'): the HARNESS_API_HOME value whenever it is set, even to an empty string, otherwise the .codex/harness/api folder under the home directory.",
 						"examples": [

@@ -4,6 +4,7 @@ import {
 	createSqliteAdapter,
 	type SqliteAdapter
 } from '../../src/adapters/development-tooling/SqliteAdapter';
+import type { FieldValues } from './sqlite.test.types';
 
 const definition = {
 	table: 'notes',
@@ -107,7 +108,6 @@ test('schema coverage rejects unmodeled tables, missing columns and colliding fi
 });
 
 test('field inputs are typed as stored field values, never unknown', () => {
-	type FieldValues = Record<string, string | number | boolean | null | object>;
 	expectTypeOf<Parameters<SqliteAdapter['findBy']>[1]>().toEqualTypeOf<FieldValues>();
 	expectTypeOf<Parameters<SqliteAdapter['create']>[1]>().toEqualTypeOf<FieldValues>();
 	expectTypeOf<Parameters<SqliteAdapter['update']>[2]>().toEqualTypeOf<FieldValues>();

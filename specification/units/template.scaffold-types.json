@@ -15,10 +15,10 @@
 		],
 		"symbols": [
 			"scaffoldKinds",
-			"ScaffoldDetail",
 			"scaffoldDetails",
 			"isAppOnlyScaffold",
 			"PieceKind",
+			"ScaffoldDetail",
 			"PieceKind",
 			"scaffoldKinds",
 			"scaffoldDetails",
@@ -529,7 +529,7 @@
 		},
 		{
 			"unit": "template.scaffold-detail-types",
-			"via": "import",
+			"via": "reexport",
 			"origin": "derived"
 		}
 	],

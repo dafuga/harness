@@ -8,7 +8,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/development-tooling/SqliteAdapter.ts"],
+		"source": [
+			"src/adapters/development-tooling/SqliteAdapter.ts",
+			"src/adapters/development-tooling/SqliteAdapter.types.ts"
+		],
 		"symbols": [
 			"SqliteAdapter",
 			"SqliteAdapter.constructor",
@@ -23,7 +26,8 @@
 			"SqliteAdapter.createTables",
 			"SqliteAdapter.transaction",
 			"SqliteAdapter.assertModels",
-			"createSqliteAdapter"
+			"createSqliteAdapter",
+			"SqliteFieldValue"
 		]
 	},
 	"contract": {

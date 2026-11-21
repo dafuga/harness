@@ -1,0 +1,409 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.projects-sessions-tracker-adapter",
+	"uid": "u_eug7dfr5kp",
+	"kind": "repository",
+	"title": "TrackerAdapterRepository",
+	"responsibility": "Owns the TrackerAdapterRepository persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/projects-sessions/TrackerAdapterRepository.ts",
+			"src/repositories/projects-sessions/TrackerAdapterRepository.types.ts"
+		],
+		"symbols": [
+			"TrackerAdapterRepository",
+			"TrackerAdapterRepository.constructor",
+			"TrackerAdapterRepository.link",
+			"TrackerAdapterRepository.linkByKey",
+			"TrackerAdapterRepository.saveLink",
+			"TrackerAdapterRepository.hasEvent",
+			"TrackerAdapterRepository.saveEvent",
+			"TrackerAdapterRepository.saveState",
+			"TrackerAdapterRepository.pending",
+			"TrackerAdapterRepository.acknowledgeWrite",
+			"TrackerAdapterRepository.item",
+			"TrackerAdapterRepository.candidates",
+			"TrackerAdapterSource",
+			"TrackerAdapterRemoteState",
+			"TrackerAdapterLink",
+			"TrackerAdapterItem",
+			"TrackerAdapterCandidate",
+			"TrackerAdapterSourceRow"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerAdapterRepository.constructor.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterRepository.link.sourceId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterRepository.link.externalId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterRepository.linkByKey.sourceId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterRepository.linkByKey.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterRepository.saveLink.link",
+				"type": "TrackerAdapterLink",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterRepository.hasEvent.link",
+				"type": "TrackerAdapterLink",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterRepository.hasEvent.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterRepository.saveEvent.link",
+				"type": "TrackerAdapterLink",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterRepository.saveEvent.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterRepository.saveState.link",
+				"type": "TrackerAdapterLink",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterRepository.saveState.state",
+				"type": "TrackerAdapterRemoteState",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterRepository.pending.sourceId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterRepository.acknowledgeWrite.link",
+				"type": "TrackerAdapterLink",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterRepository.item.id",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerAdapterRepository.link",
+				"type": "TrackerAdapterLink | undefined"
+			},
+			{
+				"name": "TrackerAdapterRepository.linkByKey",
+				"type": "TrackerAdapterLink | undefined"
+			},
+			{
+				"name": "TrackerAdapterRepository.saveLink",
+				"type": "void"
+			},
+			{
+				"name": "TrackerAdapterRepository.hasEvent",
+				"type": "boolean"
+			},
+			{
+				"name": "TrackerAdapterRepository.saveEvent",
+				"type": "void"
+			},
+			{
+				"name": "TrackerAdapterRepository.saveState",
+				"type": "void"
+			},
+			{
+				"name": "TrackerAdapterRepository.pending",
+				"type": "TrackerAdapterLink[]"
+			},
+			{
+				"name": "TrackerAdapterRepository.acknowledgeWrite",
+				"type": "void"
+			},
+			{
+				"name": "TrackerAdapterRepository.item",
+				"type": "TrackerAdapterItem | undefined"
+			},
+			{
+				"name": "TrackerAdapterRepository.candidates",
+				"type": "TrackerAdapterCandidate[]"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerAdapterRepository.link",
+				"inputs": [
+					{
+						"name": "TrackerAdapterRepository.link.sourceId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerAdapterRepository.link.externalId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterRepository.link",
+						"type": "TrackerAdapterLink | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterRepository.linkByKey",
+				"inputs": [
+					{
+						"name": "TrackerAdapterRepository.linkByKey.sourceId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerAdapterRepository.linkByKey.key",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterRepository.linkByKey",
+						"type": "TrackerAdapterLink | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterRepository.saveLink",
+				"inputs": [
+					{
+						"name": "TrackerAdapterRepository.saveLink.link",
+						"type": "TrackerAdapterLink",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterRepository.saveLink",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterRepository.hasEvent",
+				"inputs": [
+					{
+						"name": "TrackerAdapterRepository.hasEvent.link",
+						"type": "TrackerAdapterLink",
+						"required": true
+					},
+					{
+						"name": "TrackerAdapterRepository.hasEvent.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterRepository.hasEvent",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterRepository.saveEvent",
+				"inputs": [
+					{
+						"name": "TrackerAdapterRepository.saveEvent.link",
+						"type": "TrackerAdapterLink",
+						"required": true
+					},
+					{
+						"name": "TrackerAdapterRepository.saveEvent.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterRepository.saveEvent",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterRepository.saveState",
+				"inputs": [
+					{
+						"name": "TrackerAdapterRepository.saveState.link",
+						"type": "TrackerAdapterLink",
+						"required": true
+					},
+					{
+						"name": "TrackerAdapterRepository.saveState.state",
+						"type": "TrackerAdapterRemoteState",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterRepository.saveState",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterRepository.pending",
+				"inputs": [
+					{
+						"name": "TrackerAdapterRepository.pending.sourceId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterRepository.pending",
+						"type": "TrackerAdapterLink[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterRepository.acknowledgeWrite",
+				"inputs": [
+					{
+						"name": "TrackerAdapterRepository.acknowledgeWrite.link",
+						"type": "TrackerAdapterLink",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterRepository.acknowledgeWrite",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterRepository.item",
+				"inputs": [
+					{
+						"name": "TrackerAdapterRepository.item.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterRepository.item",
+						"type": "TrackerAdapterItem | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterRepository.candidates",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerAdapterRepository.candidates",
+						"type": "TrackerAdapterCandidate[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerAdapterRepository.constructor",
+				"inputs": [
+					{
+						"name": "TrackerAdapterRepository.constructor.database",
+						"type": "SqliteDatabase",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.planning-collaboration-plan-github-issue-intake",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/projects-sessions/TrackerAdapterRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/projects-sessions/TrackerAdapterRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

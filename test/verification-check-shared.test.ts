@@ -6,7 +6,7 @@ import { VerificationStoreRepository } from '../src/repositories/verification-ev
 import { VerificationCheckService } from '../src/services/verification-evidence/VerificationCheckService';
 import { sealRecord } from '../src/utils/sealRecord';
 import { verificationSample } from './support/verificationSample';
-import legacy from './fixtures/verification-v1.json';
+import legacy from './support/fixtures/verification-v1.json';
 import type { StoredRecord } from '../src/repositories/verification-evidence/VerificationStoreRepository';
 import type { VerificationRecord } from '../src/core/verificationTypes';
 import { CommitTreeAdapter } from '../src/adapters/git-source-history/CommitTreeAdapter';

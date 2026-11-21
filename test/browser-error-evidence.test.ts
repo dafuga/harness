@@ -1,11 +1,15 @@
 import { appendFile, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { expect, test } from 'vitest';
+import { afterAll, expect, test, vi } from 'vitest';
 import { CheckRunService } from '../src/services/check-run-service/CheckRunService';
 import { verificationRecordSchema } from '../src/core/verificationTypes';
 import { recordView } from '../src/utils/development-tooling/recordView';
 import { verificationSample } from './support/verificationSample';
+
+// Leave time beyond the runner deadline for resource admission and cleanup.
+vi.setConfig({ testTimeout: 30_000 });
+afterAll(() => vi.resetConfig());
 
 const diagnostics = {
 	test: 'Orders › recovers from a failed request',

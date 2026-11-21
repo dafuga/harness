@@ -59,6 +59,21 @@ test.skipIf(!mac)('a read of the processes that fails ends as unknown', async ()
 	const failing = { alive: () => Promise.reject(new Error('unreadable')) };
 	const settled = await bounded(settleProcesses(failing, judging(), timing).catch(() => 'threw'));
 	expect(settled).toMatchObject({ unknown: true, survivors: [] });
+
+	const unreadable = await bounded(settleProcesses({ alive: async () => null }, judging(), timing));
+	expect(unreadable).toMatchObject({ unknown: true, survivors: [] });
+
+	let reads = 0;
+	const transient = { alive: async () => (++reads === 1 ? null : []) };
+	const recovered = await bounded(settleProcesses(transient, judging(), timing));
+	expect(
+		recovered,
+		'A fresh successful table read resolves a transient observation failure'
+	).toMatchObject({
+		unknown: false,
+		survivors: [],
+		stopped: 0
+	});
 });
 
 test.skipIf(!mac)(

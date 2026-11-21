@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/validators/development-tooling/uidFindings.ts"],
-		"symbols": ["UidFinding", "uidFindings"]
+		"source": [
+			"src/validators/development-tooling/uidFindings.ts",
+			"src/validators/development-tooling/uidFindings.types.ts"
+		],
+		"symbols": ["uidFindings", "UidFinding"]
 	},
 	"contract": {
 		"origin": "declared",
