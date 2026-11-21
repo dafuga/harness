@@ -171,7 +171,11 @@
 			"scenarioHealth",
 			"TaskOrchestrationCommand",
 			"ProviderSessionAdapter",
-			"TrackerCommand"
+			"TrackerCommand",
+			"TrackerOperationRepository",
+			"TrackerSchemaAdapter",
+			"nextTrackerClock",
+			"TrackerPersistenceService"
 		]
 	},
 	"contract": {
@@ -236,6 +240,11 @@
 		},
 		{
 			"unit": "adapter.networking-security-harness-http",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-schema",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -445,6 +454,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-next-tracker-clock",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.read-tree-texts",
 			"via": "reexport",
 			"origin": "derived"
@@ -581,6 +595,11 @@
 		},
 		{
 			"unit": "repository.codex-session",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-operation",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -741,6 +760,11 @@
 		},
 		{
 			"unit": "service.picker-preview",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
 			"via": "reexport",
 			"origin": "derived"
 		},
