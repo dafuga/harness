@@ -151,7 +151,6 @@ export async function overviewFixture(
 	return { state, overview };
 }
 
-/** The scenario whose evidence ids and state ids these captures and workloads are filed under. */
 const scenario = JSON.parse(
 	readFileSync(
 		join(import.meta.dirname, '../../../../specification/scenarios/project-overview-hub-page.json'),
@@ -159,14 +158,12 @@ const scenario = JSON.parse(
 	)
 ) as ScenarioManifest;
 
-/** The widths the scenario declares; ids match the scenario's viewports. */
 export const viewports: Viewport[] = [
 	{ id: 'desktop', width: 1440, height: 900 },
 	{ id: 'tablet', width: 920, height: 800 },
 	{ id: 'mobile', width: 390, height: 844 }
 ];
 
-/** Declares one expected console error per page load that asks the endpoint, for this test only. */
 export function refusal(
 	browserErrors: { expectError(error: object): void },
 	origin: string,
@@ -183,13 +180,11 @@ export function refusal(
 	}
 }
 
-/** Sets the width and opens the page; the viewport is set before the document loads. */
 export async function open(page: Page, viewport: Viewport, path = '/tracker-overview') {
 	await page.setViewportSize({ width: viewport.width, height: viewport.height });
 	await page.goto(path);
 }
 
-/** The compiled build this page answers from, read from its own DOM slot. */
 async function buildOf(page: Page): Promise<string> {
 	const stamp = await page.locator('meta[name="harness-build"]').getAttribute('content');
 	const buildId = buildStamp(stamp ?? undefined);
@@ -200,7 +195,6 @@ async function buildOf(page: Page): Promise<string> {
 	return buildId ?? 'unstamped';
 }
 
-/** Records the real viewport pixels and the page's navigation and heap for one state. */
 export async function capture(page: Page, testInfo: TestInfo, state: string, viewport: Viewport) {
 	await page.evaluate(() => document.fonts.ready);
 	const buildId = await buildOf(page);
