@@ -174,7 +174,8 @@
 			"TrackerCommand",
 			"TrackerOperationRepository",
 			"TrackerSchemaAdapter",
-			"nextTrackerClock"
+			"nextTrackerClock",
+			"TrackerPersistenceService"
 		]
 	},
 	"contract": {
@@ -759,6 +760,11 @@
 		},
 		{
 			"unit": "service.picker-preview",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
 			"via": "reexport",
 			"origin": "derived"
 		},
