@@ -3,6 +3,7 @@ import type { SqliteDatabase } from '../../core/development-tooling/sqliteTypes'
 import type { TrackerDispatcherService } from '../agents-providers/TrackerDispatcherService';
 import type { TrackerDispatchSchedulerService } from './TrackerDispatchSchedulerService';
 import { TrackerItemReadRepository } from '../../repositories/projects-sessions/TrackerItemReadRepository';
+import { TrackerNotificationQueueRepository } from '../../repositories/projects-sessions/TrackerNotificationQueueRepository';
 import { TrackerNotificationSourceRepository } from '../../repositories/projects-sessions/TrackerNotificationSourceRepository';
 import { TrackerRunReadRepository } from '../../repositories/projects-sessions/TrackerRunReadRepository';
 import { TrackerRecurringRepository } from '../../repositories/projects-sessions/TrackerRecurringRepository';
@@ -116,15 +117,19 @@ function composeNotifications(
 	options: TrackerNativeRuntimeOptions,
 	notification: NonNullable<TrackerNativeRuntimeOptions['notification']>
 ) {
-	const { resolveDestination, legacyDestinations, ...delivery } = notification;
+	const { resolveDestination, legacyDestinations, queue, ...delivery } = notification;
+	const resolve = resolveDestination ?? configuredTrackerDestinations(legacyDestinations ?? {});
+	const now = options.now ?? Date.now;
 	return new TrackerNotificationService({
 		...delivery,
 		role: options.role,
-		now: options.now ?? Date.now,
+		now,
+		queue:
+			queue ??
+			new TrackerNotificationQueueRepository(store.database, { resolveDestination: resolve, now }),
 		source: new TrackerNotificationSourceRepository(store, {
 			timeZone: options.timeZone ?? 'Europe/Lisbon',
-			resolveDestination:
-				resolveDestination ?? configuredTrackerDestinations(legacyDestinations ?? {})
+			resolveDestination: resolve
 		})
 	});
 }

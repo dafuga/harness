@@ -78,7 +78,7 @@ export function outboxBatch(
 		sent_at: isoTime(now),
 		attempt: rows.reduce((highest, row) => Math.max(highest, row.attempts), 0) + 1
 	});
-	return { kind: 'outbox', keys, request, startedAt: now };
+	return { kind: 'outbox', keys, request, startedAt: now, holdWhenPaused: route === null };
 }
 
 export function outboxSingle(
@@ -91,5 +91,5 @@ export function outboxSingle(
 		attempt: row.attempts + 1,
 		sent_at: isoTime(now)
 	});
-	return { kind: 'outbox', keys: [row.key], request, startedAt: now };
+	return { kind: 'outbox', keys: [row.key], request, startedAt: now, holdWhenPaused: true };
 }

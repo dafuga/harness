@@ -51,7 +51,9 @@ export class TrackerNotificationSourceRepository implements TrackerNotificationS
 			.get(name) as TrackerStoredNotificationAgent | undefined;
 		if (!row) return undefined;
 		const target = this.options.resolveDestination(JSON.parse(row.target));
-		return target ? { name: row.name, target, createdAt: row.created_at } : undefined;
+		return target
+			? { name: row.name, target, createdAt: row.created_at, legacyTarget: row.target }
+			: undefined;
 	}
 
 	maxSeq(): number {
@@ -99,6 +101,6 @@ export class TrackerNotificationSourceRepository implements TrackerNotificationS
 		if (!stored || typeof stored !== 'object' || !('node' in stored)) return null;
 		if (typeof stored.node !== 'string') return null;
 		const destination = this.options.resolveDestination(stored);
-		return destination ? { node: stored.node, ...destination } : null;
+		return destination ? { node: stored.node, ...destination, legacyTarget: value } : null;
 	}
 }

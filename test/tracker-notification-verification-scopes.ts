@@ -37,5 +37,21 @@ export const trackerNotificationVerificationScopes: Record<string, VerificationS
 			}
 		},
 		playwright: {}
+	},
+	'tracker-notification-storage': {
+		package: 'root',
+		vitest: {
+			'test/repositories/projects-sessions/tracker-notification-queue.test.ts': {
+				'startup preserves pinned notification rows, pause state and cursors through a legacy reopen':
+					'startup',
+				'tick keeps legacy retry eligibility and IDs and resume settles the existing CoS batch':
+					'retry-and-resume',
+				'tick replays the exact committed request after a receipt and a rolled-back acknowledgement':
+					'receipt-replay',
+				'startup refuses incompatible notification tables and rolls back the queue schema migration':
+					'migration-rollback'
+			}
+		},
+		playwright: {}
 	}
 };

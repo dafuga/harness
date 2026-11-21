@@ -23,15 +23,16 @@ function completionEvents(item: TrackerNotificationItem): Map<string, CallbackEv
 function callbackTargets(item: TrackerNotificationItem, source: TrackerNotificationSource) {
 	const targets = [];
 	if (item.callback?.node === source.node) {
-		const { id, kind } = item.callback;
-		targets.push({ targetId: 'item', destination: { id, kind }, since: 0 });
+		const { id, kind, legacyTarget } = item.callback;
+		targets.push({ targetId: 'item', destination: { id, kind }, since: 0, legacyTarget });
 	}
 	const agent = item.agent ? source.agent(item.agent) : undefined;
 	if (agent)
 		targets.push({
 			targetId: `agent:${agent.name}`,
 			destination: agent.target,
-			since: agent.createdAt
+			since: agent.createdAt,
+			legacyTarget: agent.legacyTarget
 		});
 	return targets;
 }
@@ -48,7 +49,7 @@ function queueItemCallbacks(
 	for (const [clock, events] of eventsByClock) {
 		const at = clockTime(clock);
 		if (at < source.createdAt - minute) continue;
-		for (const { targetId, destination, since } of targets) {
+		for (const { targetId, destination, since, legacyTarget } of targets) {
 			const key = `${item.id}|${clock}|${targetId}`;
 			if (at < since - minute || state.callbacks.has(key)) continue;
 			state.callbacks.set(key, {
@@ -56,6 +57,7 @@ function queueItemCallbacks(
 				itemId: item.id,
 				targetId,
 				destination,
+				legacyTarget,
 				events,
 				status: 'pending',
 				attempts: 0,
@@ -85,8 +87,12 @@ export function nextCallback(
 	source: TrackerNotificationSource,
 	now: number
 ): DeliveryAttempt | undefined {
-	const row = readyRows(state.callbacks.values(), now, (entry) => entry.status === 'pending')[0];
-	if (!row) return undefined;
+	const row = readyRows(
+		state.callbacks.values(),
+		now,
+		(entry) => entry.status === 'pending' && Boolean(entry.destination)
+	)[0];
+	if (!row?.destination) return undefined;
 	const payload = {
 		type: 'item',
 		events: row.events,

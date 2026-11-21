@@ -18,8 +18,9 @@ export interface TrackerLegacyDestinationBindings {
 
 export interface TrackerNativeNotificationOptions extends Omit<
 	TrackerNotificationOptions,
-	'source' | 'role' | 'now'
+	'source' | 'role' | 'now' | 'queue'
 > {
+	queue?: TrackerNotificationOptions['queue'];
 	resolveDestination?: TrackerNotificationSourceOptions['resolveDestination'];
 	legacyDestinations?: TrackerLegacyDestinationBindings;
 }
