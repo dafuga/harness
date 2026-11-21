@@ -128,3 +128,30 @@ test('opsSince preserves sequence order and scopes queues to the selected node',
 	expect(journal.countOpsSince(1)).toBe(2);
 	expect(journal.countOpsSince(1, 'alpha')).toBe(1);
 });
+
+test('appendLocal allocates after the durable replica clock and rolls back a refused receipt', () => {
+	const remote = operation(9000, 'beta', { title: 'Peer title' });
+	journal.applyOps([remote]);
+	const request = {
+		node: 'alpha',
+		itemId: 'fixture-item',
+		fields: { title: 'Local title' },
+		actor: ' fixture-operator '
+	};
+	expect(() =>
+		journal.appendLocal(request, () => {
+			throw new Error('receipt refused');
+		})
+	).toThrow('receipt refused');
+	expect(journal.maxSeq()).toBe(1);
+	const resumed = new TrackerOperationRepository(database, () => 2350);
+	const saved = resumed.appendLocal(request);
+	expect(saved).toMatchObject({
+		op_id: '000000000009000-000001-alpha',
+		hlc: '000000000009000-000001-alpha',
+		item_id: 'fixture-item',
+		actor: 'fixture-operator'
+	});
+	expect(journal.opsSince(1)).toEqual([{ ...saved, seq: 2 }]);
+	expect(database.prepare('SELECT title FROM items').get()).toEqual({ title: 'Local title' });
+});
