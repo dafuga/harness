@@ -29,19 +29,12 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/projects-sessions/HubHomeProjects.svelte"
-		],
-		"symbols": [
-			"HubHomeProjects",
-			"HubHomeProjects.tags"
-		]
+		"source": ["packages/hub/src/components/projects-sessions/HubHomeProjects.svelte"],
+		"symbols": ["HubHomeProjects", "HubHomeProjects.tags"]
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": [
-			"reports.component.explorer-ui-explorer-kit-empty-state"
-		],
+		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
 		"inputs": [
 			{
 				"name": "HubHomeProjects.projects",

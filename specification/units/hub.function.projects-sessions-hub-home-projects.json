@@ -8,13 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/components/projects-sessions/hubHomeProjects.ts"
-		],
-		"symbols": [
-			"projectInventory",
-			"inventorySummary"
-		]
+		"source": ["packages/hub/src/components/projects-sessions/hubHomeProjects.ts"],
+		"symbols": ["projectInventory", "inventorySummary"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -53,13 +48,15 @@
 					{
 						"name": "projectInventory.snapshot",
 						"type": "ProjectSnapshot",
-						"required": true
+						"required": true,
+						"description": "The current published snapshot, if available for the operation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "projectInventory",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Counts of published apps, pages and components and the sorted recent changes."
 					}
 				],
 				"errors": [],
@@ -71,13 +68,15 @@
 					{
 						"name": "inventorySummary.inventory",
 						"type": "ReturnType<typeof projectInventory>",
-						"required": true
+						"required": true,
+						"description": "Grouped counts and changes from a published catalog."
 					}
 				],
 				"outputs": [
 					{
 						"name": "inventorySummary",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Compact sentence listing the three catalog counts."
 					}
 				],
 				"errors": [],

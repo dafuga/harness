@@ -25,18 +25,12 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/projects-sessions/HubHomeSchedule.svelte"
-		],
-		"symbols": [
-			"HubHomeSchedule"
-		]
+		"source": ["packages/hub/src/components/projects-sessions/HubHomeSchedule.svelte"],
+		"symbols": ["HubHomeSchedule"]
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": [
-			"reports.component.explorer-ui-explorer-kit-empty-state"
-		],
+		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
 		"inputs": [
 			{
 				"name": "HubHomeSchedule.runs",

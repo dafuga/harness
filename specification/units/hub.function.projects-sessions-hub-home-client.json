@@ -8,13 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/components/projects-sessions/hubHomeClient.ts"
-		],
-		"symbols": [
-			"readHome",
-			"homeSnapshot"
-		]
+		"source": ["packages/hub/src/components/projects-sessions/hubHomeClient.ts"],
+		"symbols": ["readHome", "homeSnapshot"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -53,13 +48,15 @@
 					{
 						"name": "readHome.api",
 						"type": "BrowserApi",
-						"required": true
+						"required": true,
+						"description": "Authenticated browser API client that reads the owner projection."
 					}
 				],
 				"outputs": [
 					{
 						"name": "readHome",
-						"type": "Promise<ReadHomeResult>"
+						"type": "Promise<ReadHomeResult>",
+						"description": "Resolves to the owner access result, falling back to unavailable on request failure."
 					}
 				],
 				"errors": [],
@@ -71,13 +68,15 @@
 					{
 						"name": "homeSnapshot.result",
 						"type": "ReadHomeResult | null",
-						"required": true
+						"required": true,
+						"description": "Owner access result or null during loading."
 					}
 				],
 				"outputs": [
 					{
 						"name": "homeSnapshot",
-						"type": "OwnerHomeSnapshot | null"
+						"type": "OwnerHomeSnapshot | null",
+						"description": "Owner snapshot when access was granted, or null."
 					}
 				],
 				"errors": [],

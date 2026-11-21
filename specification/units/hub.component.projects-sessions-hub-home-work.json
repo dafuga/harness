@@ -21,19 +21,12 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/projects-sessions/HubHomeWork.svelte"
-		],
-		"symbols": [
-			"HubHomeWork",
-			"HubHomeWork.trailing"
-		]
+		"source": ["packages/hub/src/components/projects-sessions/HubHomeWork.svelte"],
+		"symbols": ["HubHomeWork", "HubHomeWork.trailing"]
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": [
-			"reports.component.explorer-ui-explorer-kit-empty-state"
-		],
+		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
 		"inputs": [
 			{
 				"name": "HubHomeWork.overview",

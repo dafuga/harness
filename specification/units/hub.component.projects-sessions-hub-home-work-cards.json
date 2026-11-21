@@ -22,9 +22,7 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/projects-sessions/HubHomeWorkCards.svelte"
-		],
+		"source": ["packages/hub/src/components/projects-sessions/HubHomeWorkCards.svelte"],
 		"symbols": [
 			"HubHomeWorkCards",
 			"HubHomeWorkCards.empty",
@@ -36,9 +34,7 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": [
-			"reports.component.explorer-ui-explorer-kit-empty-state"
-		],
+		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
 		"inputs": [
 			{
 				"name": "HubHomeWorkCards.view",

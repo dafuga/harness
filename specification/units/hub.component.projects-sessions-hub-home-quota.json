@@ -18,18 +18,12 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/projects-sessions/HubHomeQuota.svelte"
-		],
-		"symbols": [
-			"HubHomeQuota"
-		]
+		"source": ["packages/hub/src/components/projects-sessions/HubHomeQuota.svelte"],
+		"symbols": ["HubHomeQuota"]
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": [
-			"reports.component.explorer-ui-explorer-kit-empty-state"
-		],
+		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
 		"inputs": [
 			{
 				"name": "HubHomeQuota.quota",

@@ -25,18 +25,12 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/projects-sessions/HubHomeHeader.svelte"
-		],
-		"symbols": [
-			"HubHomeHeader"
-		]
+		"source": ["packages/hub/src/components/projects-sessions/HubHomeHeader.svelte"],
+		"symbols": ["HubHomeHeader"]
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": [
-			"reports.component.explorer-ui-explorer-kit-pill"
-		],
+		"primitives": ["reports.component.explorer-ui-explorer-kit-pill"],
 		"inputs": [
 			{
 				"name": "HubHomeHeader.view",
