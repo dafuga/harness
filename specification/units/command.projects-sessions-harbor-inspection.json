@@ -10,21 +10,10 @@
 	"owns": {
 		"source": [
 			"src/commands/projects-sessions/HarborInspectionCommand.ts",
-			"src/commands/projects-sessions/HarborInspectionCommand.types.ts",
 			"src/commands/projects-sessions/harborRunProfiles.ts",
 			"src/commands/projects-sessions/registerHarborAppTools.ts"
 		],
-		"symbols": [
-			"HarborInspectionCommand",
-			"HarborInspectionCommand.register",
-			"PublishOptions",
-			"RunMode",
-			"RunProfile",
-			"RunHarborSdkTool",
-			"ScaffoldArguments",
-			"HARBOR_RUN_PROFILES",
-			"registerHarborAppTools"
-		]
+		"symbols": ["HarborInspectionCommand", "HarborInspectionCommand.register"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -34,16 +23,6 @@
 				"type": "Command",
 				"required": true,
 				"description": "The root Harness command that receives the Harbor command group."
-			},
-			{
-				"name": "registerHarborAppTools.harbor",
-				"type": "Command",
-				"required": true
-			},
-			{
-				"name": "registerHarborAppTools.run",
-				"type": "RunHarborSdkTool",
-				"required": true
 			}
 		],
 		"outputs": [
@@ -87,22 +66,116 @@
 					{
 						"name": "registerHarborAppTools.harbor",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "The existing Harbor command group."
 					},
 					{
 						"name": "registerHarborAppTools.run",
 						"type": "RunHarborSdkTool",
-						"required": true
+						"required": true,
+						"description": "The existing finite SDK app tooling runner."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerHarborAppTools",
-						"type": "void"
+						"type": "void",
+						"description": "Registers SDK templates, scaffold, check, pack, Android staging, and the unbuffered MCP authoring session."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
+			},
+			{
+				"name": "installedEntry",
+				"inputs": [
+					{
+						"name": "installedEntry.sdk",
+						"type": "boolean",
+						"required": true,
+						"description": "Selects the SDK entry instead of the Harbor CLI entry."
+					}
+				],
+				"outputs": [
+					{
+						"name": "installedEntry",
+						"type": "string",
+						"description": "An operator-selected, absolute JavaScript entry path."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The selected entry is empty, relative, or has an unsupported file extension."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "nodeExecutable",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "nodeExecutable",
+						"type": "string",
+						"description": "An absolute Node executable from operator configuration or PATH."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "No acceptable absolute Node executable is available."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "runtimeEnv",
+				"inputs": [
+					{
+						"name": "runtimeEnv.mode",
+						"type": "RunMode",
+						"required": true,
+						"description": "The mode that selects the environment allowed for this process."
+					},
+					{
+						"name": "runtimeEnv.node",
+						"type": "string",
+						"required": true,
+						"description": "The selected absolute Node executable, forwarded in publish mode."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runtimeEnv",
+						"type": "Record<string, string | undefined>",
+						"description": "Allows runtime variables. SDK modes receive the current Harness entry, and publish receives the Harbor CLI and Node paths."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "unsetIfEmpty",
+				"inputs": [
+					{
+						"name": "unsetIfEmpty.value",
+						"type": "string | undefined",
+						"required": true,
+						"description": "An environment value supplied by the caller."
+					}
+				],
+				"outputs": [
+					{
+						"name": "unsetIfEmpty",
+						"type": "string | undefined",
+						"description": "Undefined for an empty or unset value, otherwise the original value."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
