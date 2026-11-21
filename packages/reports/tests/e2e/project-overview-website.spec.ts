@@ -57,7 +57,18 @@ test('the Projects page shows the synthetic overview and highlights its nav link
 	await checkpoint(page, 'project-overview-website-ready');
 });
 
-test('an unavailable read is shown as unavailable and never as a project', async ({ page }) => {
+test('an unavailable read is shown as unavailable and never as a project', async ({
+	page,
+	browserErrors,
+	baseURL
+}) => {
+	browserErrors.expectError({
+		type: 'console',
+		message:
+			'Failed to load resource: the server responded with a status of 503 (Service Unavailable)',
+		source: new URL('/api/project-overview', baseURL).href,
+		reason: 'The tracker unavailable response intentionally uses HTTP 503.'
+	});
 	await serve(page, { status: 'unavailable' }, 503);
 	await page.goto('/harness/projects');
 	await expect(page.getByRole('alert')).toContainText('The tracker could not be reached');
