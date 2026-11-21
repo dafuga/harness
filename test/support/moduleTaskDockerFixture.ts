@@ -1,12 +1,12 @@
 import { randomUUID } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { mkdtemp, rm } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { rm } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { expect } from '../verificationExpect';
 import { moduleTaskFixture } from './moduleTaskFixture';
 import { runCommand, runHarness } from './cli';
+import { createTempDirectory } from './temporary';
 
 const fixtureSource = `#!/usr/bin/env bun
 import {writeFileSync} from 'node:fs';
@@ -71,7 +71,7 @@ export async function verifyDockerOrchestrator(base: string) {
 }
 
 export async function verifyDockerProcess(base: string) {
-	const root = await mkdtemp(join(tmpdir(), 'harness-docker-process-'));
+	const root = await createTempDirectory('harness-docker-process-');
 	try {
 		const image = await runCommand(['docker', 'image', 'inspect', '--format={{.Id}}', base], root);
 		const file = fileURLToPath(new URL('./managedProviderProcessFixture.ts', import.meta.url));
