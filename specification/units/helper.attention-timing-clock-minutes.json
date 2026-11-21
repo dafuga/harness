@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"id": "helper.attention-timing-clock-minutes",
+	"uid": "u_rycmpfjeif",
+	"kind": "helper",
+	"title": "clockMinutes",
+	"responsibility": "Owns the clockMinutes helper unit.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/helpers/attention-timing/clockMinutes.ts"],
+		"symbols": ["clockMinutes"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "clockMinutes.clock",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "clockMinutes",
+				"type": "number"
+			}
+		],
+		"errors": [
+			{
+				"name": "RangeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "clockMinutes",
+				"inputs": [
+					{
+						"name": "clockMinutes.clock",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "clockMinutes",
+						"type": "number"
+					}
+				],
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/helpers/attention-timing/clockMinutes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/helpers/attention-timing/clockMinutes.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

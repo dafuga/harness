@@ -170,7 +170,16 @@
 			"staleBuild",
 			"scenarioHealth",
 			"TaskOrchestrationCommand",
-			"ProviderSessionAdapter"
+			"ProviderSessionAdapter",
+			"quietHourBoundary",
+			"isQuietHour",
+			"zonedWallClock",
+			"wallClockToEpochMs",
+			"nextReminderAt",
+			"nextReminderSlotAt",
+			"nextAttentionBatchAt",
+			"groupAttentionLines",
+			"clockMinutes"
 		]
 	},
 	"contract": {
@@ -495,6 +504,51 @@
 		},
 		{
 			"unit": "function.writing-limits",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-clock-minutes",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-group-attention-lines",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-is-quiet-hour",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-next-attention-batch-at",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-next-reminder-at",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-next-reminder-slot-at",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-quiet-hour-boundary",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-wall-clock-to-epoch-ms",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-zoned-wall-clock",
 			"via": "reexport",
 			"origin": "derived"
 		},
