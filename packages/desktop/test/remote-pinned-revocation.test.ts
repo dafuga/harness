@@ -69,11 +69,11 @@ test('revoking during provider preparation cannot append a request or start a CL
 	await client.request('snapshot', { projectId: f.project.id, branch: null, commit: null });
 	const entered = deferred(),
 		release = deferred();
-	const original = f.providers.select.bind(f.providers);
-	vi.spyOn(f.providers, 'select').mockImplementation(async (...args) => {
+	const original = f.providers.mockupRunner.bind(f.providers);
+	vi.spyOn(f.providers, 'mockupRunner').mockImplementation(async () => {
 		entered.resolve();
 		await release.promise;
-		return original(...args);
+		return original();
 	});
 	const revision = f.revision();
 	const pending = link.receive(
