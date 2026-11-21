@@ -1,3 +1,4 @@
+import type * as nodeOs from 'node:os';
 import { expect, test, vi } from 'vitest';
 import {
 	hostMemory,
@@ -7,7 +8,7 @@ import {
 import { BoundedCommandAdapter } from '../../src/adapters/execution-runtimes/BoundedCommandAdapter';
 
 vi.mock('node:os', async (original) => ({
-	...(await original<typeof import('node:os')>()),
+	...(await original<typeof nodeOs>()),
 	platform: () => 'darwin'
 }));
 
