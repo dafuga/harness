@@ -4,6 +4,7 @@ import type { SqliteDatabase, SqliteValue } from '../../core/development-tooling
 import { trackerClockMilliseconds } from '../../utils/projects-sessions/nextTrackerClock';
 import type {
 	TrackerAppliedOperations,
+	TrackerLocalCommit,
 	TrackerLocalOperation,
 	TrackerOperation,
 	TrackerOperationFilter,
@@ -43,6 +44,18 @@ export class TrackerOperationRepository {
 			if (!this.applyOperation(operation)) throw new TypeError('Tracker operation clock collision');
 			persistReceipt(persist);
 			return operation;
+		});
+	}
+
+	/** Decide, persist associated rows and append the optional item change under one writer lock. */
+	commitLocal<T>(node: string, decide: () => TrackerLocalCommit<T>) {
+		return trackerWrite(this.database, () => {
+			const { result, operation } = decide();
+			if (operation) {
+				const next = localTrackerOperation(this.database, { ...operation, node }, this.now());
+				if (!this.applyOperation(next)) throw new TypeError('Tracker operation clock collision');
+			}
+			return { result, changed: Boolean(operation) };
 		});
 	}
 
