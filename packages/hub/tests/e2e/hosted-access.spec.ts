@@ -1,5 +1,6 @@
 import { expect, test } from '../../../../test/support/browserTest';
 import { atlas, clientId, code, credential, hostedFixture, invitation } from './hosted-fixture';
+import { macRelease } from './hosted-home';
 
 const signIn = { name: 'Sign in with Google' };
 
@@ -128,16 +129,21 @@ test('an invitation asks for sign-in and the code, then opens the project', asyn
 test('the same Google account automatically discovers owned and joined projects on another open device', async ({
 	page,
 	browser,
+	browserErrors,
 	baseURL
 }) => {
 	const state = await hostedFixture(page);
 	const joined = state.data.projects.pop()!;
 	const context = await browser.newContext({ baseURL });
+	browserErrors.watch(context);
 	try {
 		const other = await context.newPage();
 		const second = await hostedFixture(other, { data: state.data });
+		await macRelease(other, 'page');
 		await page.goto('/projects');
 		await other.goto('/');
+		await other.getByRole('main').getByRole('link', { name: 'Your projects' }).click();
+		await expect(other).toHaveURL(/\/projects$/);
 		await expect(other.getByRole('link', { name: 'Open Atlas', exact: true })).toBeVisible();
 		state.data.projects.push(joined, {
 			...state.data.projects[0],
