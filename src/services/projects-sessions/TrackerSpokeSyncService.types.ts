@@ -1,4 +1,6 @@
 // @harness-uid u_657a3wmun2
+import type { TrackerWireValue } from './TrackerHubSyncService.types';
+
 export interface TrackerSpokeOperation {
 	op_id: string;
 	item_id: string;
@@ -47,9 +49,14 @@ export interface TrackerSpokeOptions {
 	/** Include replicated operations in normal pushes. Defaults to true for peer links. */
 	relayOps?: boolean;
 	pullWaitSeconds?: number;
+	onPushAcknowledged?(): void;
 }
 
 export type TrackerSpokePullResult =
-	| { status: 'applied'; last: number; hub: string; duePolicy?: unknown }
+	| { status: 'applied'; last: number; hub: string; duePolicy?: TrackerWireValue }
 	| { status: 'reset' }
 	| { status: 'stale' };
+
+export type TrackerSpokePostBody =
+	| { id: string; token: string }
+	| { sample: TrackerWireValue | undefined; runs: readonly TrackerWireValue[] };

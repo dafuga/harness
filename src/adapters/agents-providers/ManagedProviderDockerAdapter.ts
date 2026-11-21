@@ -5,15 +5,23 @@ import { realpath } from 'node:fs/promises';
 import type {
 	DockerTaskCreate,
 	DockerTaskDaemon,
-	DockerTaskWorkspace
+	DockerTaskWorkspace,
+	DockerVolumeLaunch
 } from './ManagedProviderDockerAdapter.types';
 import { ModuleTaskRunError } from './module-task-runner-adapter/ModuleTaskRunError';
 import {
 	createContainer,
+	createStorageContainer,
+	createVolume,
 	dockerArgs,
 	dockerDaemon,
-	removeScopedContainer,
+	requireDaemon,
+	requireWorkspaceImage,
 	taskLabel
+} from './managed-provider-docker-adapter/dockerControl';
+import {
+	removeLaunch,
+	removeScopedContainer
 } from './managed-provider-docker-adapter/dockerContainerScope';
 import {
 	newLaunch,
@@ -22,20 +30,25 @@ import {
 	forgetLaunch,
 	writeLaunch
 } from './managed-provider-docker-adapter/dockerLaunchJournal';
+import {
+	bunCache,
+	recoverDockerWorkspace,
+	seedDockerWorkspace,
+	workspaceSubpath,
+	workspaceVolume
+} from './managed-provider-docker-adapter/dockerWorkspace';
 
 export const managedProviderDockerResources = { cpus: 2, memoryMiB: 6144 };
 
-/** Run a local, offline Linux fixture with one task-owned container. */
+/** Run a local, offline Linux fixture with a task-owned workspace volume. */
 export class ManagedProviderDockerAdapter {
 	command([executable, ...args]: string[], task: DockerTaskCreate): string[] {
 		const { cpus, memoryMiB } = managedProviderDockerResources;
-		const source = `"source=${task.cwd.replaceAll('"', '""')}"`;
 		return [
 			'create',
 			'--interactive',
 			'--init',
 			'--pull=never',
-			'--platform=linux',
 			'--network=none',
 			'--cap-drop=ALL',
 			'--security-opt=no-new-privileges',
@@ -49,7 +62,9 @@ export class ManagedProviderDockerAdapter {
 			`--user=${task.user}`,
 			'--tmpfs=/tmp:rw,nosuid,nodev,size=256m',
 			'--env=HOME=/tmp',
-			`--mount=type=bind,${source},target=/workspace,bind-recursive=disabled`,
+			'--env=TMPDIR=/tmp',
+			`--env=BUN_INSTALL_CACHE_DIR=/workspace/${bunCache}`,
+			`--mount=type=volume,source=${workspaceVolume(task.owner)},target=/workspace,volume-nocopy,${workspaceSubpath(task.cwd)}`,
 			'--workdir=/workspace',
 			`--label=${taskLabel}=${task.owner}`,
 			`--entrypoint=${executable}`,
@@ -69,27 +84,60 @@ export class ManagedProviderDockerAdapter {
 		const daemon = await dockerDaemon();
 		const directory = await launchDirectory(cwd);
 		await recoverLaunches(directory, daemon, workspace.signal);
+		await requireWorkspaceImage(daemon, workspace.image);
 		workspace.signal.throwIfAborted();
 		const launch = newLaunch(daemon, cwd);
+		const task = { ...workspace, cwd, owner: launch.owner, user };
 		await writeLaunch(directory, launch);
 		if (workspace.signal.aborted) {
 			await forgetLaunch(directory, launch);
 			workspace.signal.throwIfAborted();
 		}
 		try {
-			const owner = launch.owner;
-			const id = await createContainer(
-				daemon,
-				this.command(command, { ...workspace, cwd, owner, user })
-			);
+			const storage = await stageWorkspace(daemon, launch, task, directory);
+			const id = await createContainer(daemon, this.command(command, task));
 			launch.containerId = id;
 			await writeLaunch(directory, launch);
 			workspace.signal.throwIfAborted();
-			return await collect(attachContainer(daemon, id));
+			try {
+				return await collect(attachContainer(daemon, id));
+			} finally {
+				await exportWorkspace(daemon, launch, storage);
+			}
 		} finally {
-			if (await removeScopedContainer(daemon, launch)) await forgetLaunch(directory, launch);
+			if (await removeLaunch(daemon, launch)) await forgetLaunch(directory, launch);
 		}
 	}
+}
+
+async function stageWorkspace(
+	daemon: DockerTaskDaemon,
+	launch: DockerVolumeLaunch,
+	task: DockerTaskCreate & Pick<DockerTaskWorkspace, 'signal'>,
+	directory: string
+): Promise<string> {
+	await createVolume(daemon, launch.owner);
+	launch.stage = 'storage';
+	await writeLaunch(directory, launch);
+	const storage = await createStorageContainer(daemon, task);
+	launch.storageId = storage;
+	await writeLaunch(directory, launch);
+	await seedDockerWorkspace(daemon, storage, task.cwd, task.signal);
+	task.signal.throwIfAborted();
+	launch.stage = 'task';
+	await writeLaunch(directory, launch);
+	return storage;
+}
+
+async function exportWorkspace(
+	daemon: DockerTaskDaemon,
+	launch: DockerVolumeLaunch,
+	storage: string
+) {
+	// Retire the task before exporting edits, even if its attach client was killed.
+	await removeScopedContainer(daemon, launch);
+	await requireDaemon(daemon);
+	await recoverDockerWorkspace(daemon, storage, launch.cwd);
 }
 
 function attachContainer(daemon: DockerTaskDaemon, id: string) {

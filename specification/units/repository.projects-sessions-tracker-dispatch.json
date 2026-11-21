@@ -20,7 +20,9 @@
 			"TrackerDispatchRepository.constructor",
 			"TrackerDispatchRepository.update",
 			"TrackerDispatchRepository.managedRuns",
+			"TrackerDispatchRepository.assertLegacyRollbackSafe",
 			"TrackerDispatchRepository.candidates",
+			"TrackerDispatchRepository.stuckRequests",
 			"TrackerDispatchRepositoryOptions",
 			"TrackerDispatchCandidate",
 			"TrackerDispatchRow",
@@ -28,6 +30,7 @@
 			"TrackerRunReservation",
 			"dispatchItem",
 			"dispatchJournalFields",
+			"assertLegacyDispatchRollbackSafe",
 			"dispatchRunRows",
 			"managedDispatchRuns",
 			"persistDispatchRun",
@@ -71,6 +74,11 @@
 			{
 				"name": "dispatchJournalFields.item",
 				"type": "NonNullable<TrackerDispatchWrites['item']>",
+				"required": true
+			},
+			{
+				"name": "assertLegacyDispatchRollbackSafe.database",
+				"type": "SqliteDatabase",
 				"required": true
 			},
 			{
@@ -124,8 +132,16 @@
 				"type": "TrackerRunReceipt[]"
 			},
 			{
+				"name": "TrackerDispatchRepository.assertLegacyRollbackSafe",
+				"type": "void"
+			},
+			{
 				"name": "TrackerDispatchRepository.candidates",
 				"type": "TrackerDispatchCandidate[]"
+			},
+			{
+				"name": "TrackerDispatchRepository.stuckRequests",
+				"type": "unknown"
 			},
 			{
 				"name": "dispatchItem",
@@ -134,6 +150,10 @@
 			{
 				"name": "dispatchJournalFields",
 				"type": "unknown"
+			},
+			{
+				"name": "assertLegacyDispatchRollbackSafe",
+				"type": "void"
 			},
 			{
 				"name": "dispatchRunRows",
@@ -196,12 +216,36 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "TrackerDispatchRepository.assertLegacyRollbackSafe",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerDispatchRepository.assertLegacyRollbackSafe",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "TrackerDispatchRepository.candidates",
 				"inputs": [],
 				"outputs": [
 					{
 						"name": "TrackerDispatchRepository.candidates",
 						"type": "TrackerDispatchCandidate[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerDispatchRepository.stuckRequests",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerDispatchRepository.stuckRequests",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -246,6 +290,29 @@
 					}
 				],
 				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "assertLegacyDispatchRollbackSafe",
+				"inputs": [
+					{
+						"name": "assertLegacyDispatchRollbackSafe.database",
+						"type": "SqliteDatabase",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "assertLegacyDispatchRollbackSafe",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "DOMException",
+						"type": "thrown"
+					}
+				],
 				"errorStatus": "unknown"
 			},
 			{

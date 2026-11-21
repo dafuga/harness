@@ -1,0 +1,60 @@
+{
+	"name": "tracker-supervisor-worker-isolation",
+	"goal": "A blocked adapter poll cannot delay other worker ticks, an individual worker cannot overlap itself, and cancellation drains all active ticks before SQLite closes.",
+	"createdAt": "2026-11-21T17:10:39.466Z",
+	"updatedAt": "2026-11-21T17:16:14.519Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-21T17:11:08.264Z",
+			"evidence": "A slow adapter stalls subsequent notification/dispatch/recurrence passes because all workers are awaited by the same poll loop. Each worker must repeat independently and drain before close."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-21T17:11:09.889Z",
+			"evidence": "The existing supervisor run/status/shutdown case blocked the only worker and never required another worker to keep ticking. Strengthen it with a held adapter and repeated notifications."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-21T17:12:24.130Z",
+			"evidence": "At a7c95dc170 the committed test observed one notification tick while the adapter was blocked; expected more than one."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-21T17:12:46.487Z",
+			"evidence": "Run one non-overlapping poll loop per configured worker under the common lifetime and drain all workers before close."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T17:16:14.519Z",
+			"evidence": "The unchanged case passed at ce0a7e7e16 with the matching fixed environment profile. Notification ticks continued during the held adapter, and shutdown waited for release."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

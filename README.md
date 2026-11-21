@@ -1112,30 +1112,35 @@ The managed provider runtime has an offline Linux Docker pilot. Set
 `"platform": "linux"` in a module task input or pass `--platform linux` to
 `harness task add` or `harness task orchestrate`. Set
 `HARNESS_TASK_DOCKER_IMAGE` on the worker or orchestrator to the full
-`sha256:…` ID of a trusted, locally installed Linux fixture image. The image
-must provide the selected provider command as a synthetic executable on its
-PATH. Run the pilot as a non-root user against a local Docker Unix socket.
+`sha256:…` ID of a trusted, locally installed Linux fixture image built for the
+Docker daemon's architecture. The image must provide the selected provider
+command as a synthetic executable on its PATH and must have no declared
+volumes. Run the pilot as a non-root user against a local Docker Unix socket.
 
 Each Docker generation reserves 2 CPUs and 6 GiB through Harness and applies
-matching container limits. It uses a read-only image, a temporary home, and
-one writable mount at `/workspace`. Use a disposable, credential-free
-workspace. Networking, host login files, and the Docker socket are outside
-the container. Harness removes the task container before returning the
-result. Git operations on linked worktree metadata run on the host.
+matching container limits. Use Docker Engine 26 or later and reserve a
+disposable, credential-free worktree for each task. Harness stages the
+worktree into a task-owned Docker volume at `/workspace`. Guest
+`node_modules` and the Bun install cache use the volume. Bounded tmpfs at
+`/tmp` supplies `HOME` and `TMPDIR`. The guest uses a read-only image without
+networking or host mounts. When the task exits or is cancelled, Harness copies
+edits, deletions, and checkpoints back and removes the containers and volume.
+Git metadata, host dependencies, and caches stay out of the exchange.
 
-Before creating a container, Harness records its supervisor and workspace in
-a private journal under the host's Harness resource directory. The next
-explicit Linux Docker launch on the same host and engine can reclaim a
-container after the recorded supervisor exits. Recovery checks the engine,
-full container ID, task owner label and workspace bind. Active supervisors
-keep their containers. Keep the resource directory on disk across runs and
-outside any task workspace.
+Before creating Docker resources, Harness records its supervisor and
+workspace in a private journal under the host's Harness resource directory.
+After a supervisor dies, the next explicit Linux Docker launch on the same
+host and engine can reclaim the task container, staging container, and
+volume. Recovery checks full container IDs when recorded, exact owner labels,
+and both mount scopes. Earlier v1 receipts still use their recorded workspace
+bind. Active supervisors keep their resources. Keep the resource directory on
+disk across runs and outside every task workspace.
 
-Recovery runs when another pilot task launches. It needs a journal entry from
-the generation that created the container. If Docker create was interrupted
-and its container has yet to appear, Harness keeps the entry for a later
-launch. An ambiguous owner, workspace or container match stops recovery and
-keeps the entry for inspection.
+Crash recovery reclaims resources from the original journal entry. Unexported
+guest edits can be lost when the supervisor dies. If an interrupted create
+has yet to appear, Harness keeps the entry and any prerequisite storage for a
+later launch. An ambiguous owner, workspace, or container match pauses
+recovery and keeps the entry for inspection.
 
 Set `--platform macos` (or `"platform": "macos"` in the task JSON) for Xcode,
 simulators, computer use, Apple signing, and other tasks that require a Mac.

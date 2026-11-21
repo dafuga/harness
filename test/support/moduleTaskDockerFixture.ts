@@ -85,6 +85,7 @@ export async function verifyDockerProcess(base: string) {
 			interrupted: 'interrupted',
 			removed: true,
 			recovered: true,
+			legacyRecovered: true,
 			liveBystanderPreserved: true,
 			liveBystanderRemovedOnExit: true,
 			cachedImagePreserved: true

@@ -3,6 +3,7 @@ import { TrackerAdapterRepository } from '../../repositories/projects-sessions/T
 import { TrackerAdapterSourceRepository } from '../../repositories/projects-sessions/TrackerAdapterSourceRepository';
 import type { TrackerAdapterSource } from '../../repositories/projects-sessions/TrackerAdapterRepository.types';
 import type {
+	TrackerAdapterIntakeContext,
 	TrackerAdapterPollDependencies,
 	TrackerAdapterPollOptions,
 	TrackerAdapterPollResult,
@@ -48,6 +49,30 @@ export class TrackerAdapterPollService {
 		this.repository = new TrackerAdapterRepository(store.database);
 		this.sources = new TrackerAdapterSourceRepository(store.database);
 		this.now = dependencies.now ?? Date.now;
+	}
+
+	status(): { runner: string; active: boolean } {
+		const runner = this.dependencies.lease.owner;
+		return {
+			runner,
+			active:
+				runner === this.store.node &&
+				(!this.sources.isInitialized() || this.sources.isOwner(runner, false))
+		};
+	}
+
+	async tick(signal: AbortSignal): Promise<void> {
+		if (!this.status().active || !this.sources.isInitialized()) return;
+		const errors: unknown[] = [];
+		for (const id of this.sources.dueSourceIds(this.now())) {
+			signal.throwIfAborted();
+			try {
+				await this.poll(id, { signal });
+			} catch (error) {
+				errors.push(error);
+			}
+		}
+		if (errors.length) throw new AggregateError(errors, 'Tracker adapters failed to poll');
 	}
 
 	async poll(
@@ -102,7 +127,7 @@ export class TrackerAdapterPollService {
 			const comments = await readTrackerComments(context, source, query);
 			assertTrackerPollActive(signal);
 			this.sources.advance(source.id, startedAt);
-			const sync = await this.syncBack(source, signal);
+			const sync = await syncBack(context, source, signal);
 			assertTrackerPollActive(signal);
 			this.sources.recordRun(source.id, this.now(), sync.sync_errors[0]?.error ?? null);
 			return { ...result, events: events + comments, ...sync };
@@ -112,27 +137,31 @@ export class TrackerAdapterPollService {
 			throw new TrackerAdapterPollError(intakeError);
 		}
 	}
+}
 
-	private async syncBack(source: TrackerAdapterSource, signal: AbortSignal) {
-		const { provider, hasStarted } = this.dependencies;
-		const sync_errors: TrackerAdapterWriteError[] = [];
-		let synced_back = 0;
-		if (!provider.markTracked || !hasStarted) return { synced_back, sync_errors };
-		for (const link of this.repository.pending(source.id)) {
+async function syncBack(
+	{ dependencies, repository }: TrackerAdapterIntakeContext,
+	source: TrackerAdapterSource,
+	signal: AbortSignal
+) {
+	const { provider, hasStarted } = dependencies;
+	const sync_errors: TrackerAdapterWriteError[] = [];
+	let synced_back = 0;
+	if (!provider.markTracked || !hasStarted) return { synced_back, sync_errors };
+	for (const link of repository.pending(source.id)) {
+		assertTrackerPollActive(signal);
+		const item = repository.item(link.item_id);
+		if (!item || item.deleted) continue;
+		try {
+			if (!hasStarted(item.id)) continue;
+			await provider.markTracked(source, link.external_key, signal);
 			assertTrackerPollActive(signal);
-			const item = this.repository.item(link.item_id);
-			if (!item || item.deleted) continue;
-			try {
-				if (!hasStarted(item.id)) continue;
-				await provider.markTracked(source, link.external_key, signal);
-				assertTrackerPollActive(signal);
-				this.repository.acknowledgeWrite(link);
-				synced_back++;
-			} catch {
-				assertTrackerPollActive(signal);
-				sync_errors.push({ external_id: link.external_id, error: writeBackError });
-			}
+			repository.acknowledgeWrite(link);
+			synced_back++;
+		} catch {
+			assertTrackerPollActive(signal);
+			sync_errors.push({ external_id: link.external_id, error: writeBackError });
 		}
-		return { synced_back, sync_errors };
 	}
+	return { synced_back, sync_errors };
 }
