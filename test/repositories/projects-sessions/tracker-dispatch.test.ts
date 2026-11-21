@@ -43,6 +43,9 @@ test('commits one local claim and atomically rolls back an item transition with 
 	expect(reads.list()).toMatchObject([
 		{ id: 1, item_id: sampleId, auto_token: sampleToken, state: 'queued' }
 	]);
+	expect(() => repo.assertLegacyRollbackSafe()).toThrow(
+		'Tracker rollback blocked by run 1 (queued)'
+	);
 
 	const seq = store.maxSeq();
 	database.exec(
@@ -59,4 +62,13 @@ test('commits one local claim and atomically rolls back an item transition with 
 	database.exec("UPDATE runs SET state = 'running', session_id = 'legacy-session' WHERE id = 1");
 	expect(repo.managedRuns()).toEqual([]);
 	expect(reads.list()).toMatchObject([{ id: 1, state: 'running', session_id: 'legacy-session' }]);
+	expect(() => repo.assertLegacyRollbackSafe()).toThrow(
+		'Tracker rollback blocked by run 1 (running)'
+	);
+	database.exec("UPDATE runs SET state = 'verifying' WHERE id = 1");
+	expect(() => repo.assertLegacyRollbackSafe()).toThrow(
+		'Tracker rollback blocked by run 1 (verifying)'
+	);
+	database.exec("UPDATE runs SET state = 'finished', outcome = 'done' WHERE id = 1");
+	expect(() => repo.assertLegacyRollbackSafe()).not.toThrow();
 });
