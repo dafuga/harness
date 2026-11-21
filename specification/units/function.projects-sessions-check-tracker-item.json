@@ -1,0 +1,171 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-check-tracker-item",
+	"uid": "u_gfp6bkgz67",
+	"kind": "function",
+	"title": "checkTrackerItem",
+	"responsibility": "Find and rank open or ignored Tracker item matches from supplied item rows.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/projects-sessions/checkTrackerItem.ts",
+			"src/utils/projects-sessions/checkTrackerItem.types.ts",
+			"src/utils/projects-sessions/trackerItemError.ts"
+		],
+		"symbols": [
+			"checkTrackerItem",
+			"TrackerMatchRow",
+			"TrackerMatchOptions",
+			"TrackerItemMatch",
+			"TrackerItemMatches",
+			"TrackerDuplicateDetails",
+			"TrackerCandidateRow",
+			"TrackerItemRequestError",
+			"trackerItemError"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "checkTrackerItem.rows",
+				"type": "readonly TrackerMatchRow[]",
+				"required": true,
+				"description": "The raw item rows, in the order supplied by the caller. Ignored and open results are sorted separately and capped at five."
+			},
+			{
+				"name": "checkTrackerItem.text",
+				"type": "string | null | undefined",
+				"required": true,
+				"description": "Search text used to detect an existing Tracker item."
+			},
+			{
+				"name": "checkTrackerItem.options",
+				"type": "TrackerMatchOptions",
+				"required": false,
+				"default": {},
+				"description": "Optional agent filter and item ID to exclude. Defaults to neither filter."
+			},
+			{
+				"name": "trackerItemError.message",
+				"type": "string",
+				"required": true,
+				"description": "Diagnostic explaining why Tracker rejected the request."
+			},
+			{
+				"name": "trackerItemError.status",
+				"type": "number",
+				"required": false,
+				"default": 400,
+				"description": "Response status used for the rejection. Defaults to 400."
+			},
+			{
+				"name": "trackerItemError.body",
+				"type": "TrackerDuplicateDetails",
+				"required": false,
+				"description": "Optional duplicate details attached to the error for structured clients."
+			}
+		],
+		"outputs": [
+			{
+				"name": "checkTrackerItem",
+				"type": "TrackerItemMatches",
+				"description": "Ranked matches split into ignored and open items."
+			}
+		],
+		"errors": [
+			{
+				"name": "TrackerItemRequestError",
+				"type": "thrown",
+				"description": "A request with invalid Tracker input carries status 400 and a compatibility message."
+			}
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "checkTrackerItem",
+				"inputs": [
+					{
+						"name": "checkTrackerItem.rows",
+						"type": "readonly TrackerMatchRow[]",
+						"required": true,
+						"description": "The raw item rows, in the order supplied by the caller. Ignored and open results are sorted separately and capped at five."
+					},
+					{
+						"name": "checkTrackerItem.text",
+						"type": "string | null | undefined",
+						"required": true,
+						"description": "Search text used to detect an existing Tracker item."
+					},
+					{
+						"name": "checkTrackerItem.options",
+						"type": "TrackerMatchOptions",
+						"required": false,
+						"default": {},
+						"description": "Optional agent filter and item ID to exclude. Defaults to neither filter."
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkTrackerItem",
+						"type": "TrackerItemMatches",
+						"description": "Ranked matches split into ignored and open items."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerItemError",
+				"inputs": [
+					{
+						"name": "trackerItemError.message",
+						"type": "string",
+						"required": true,
+						"description": "Diagnostic explaining why Tracker rejected the request."
+					},
+					{
+						"name": "trackerItemError.status",
+						"type": "number",
+						"required": false,
+						"default": 400,
+						"description": "Response status used for the rejection. Defaults to 400."
+					},
+					{
+						"name": "trackerItemError.body",
+						"type": "TrackerDuplicateDetails",
+						"required": false,
+						"description": "Optional duplicate details attached to the error for structured clients."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerItemError",
+						"type": "TrackerItemRequestError"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/checkTrackerItem.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/checkTrackerItem.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

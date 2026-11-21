@@ -1,0 +1,446 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-normalize-tracker-item-fields",
+	"uid": "u_dv4lnm54rz",
+	"kind": "function",
+	"title": "normalizeTrackerItemFields",
+	"responsibility": "Normalize Tracker item input into scalar fields accepted by the operation journal.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/projects-sessions/normalizeTrackerCron.ts",
+			"src/utils/projects-sessions/normalizeTrackerCron.types.ts",
+			"src/utils/projects-sessions/normalizeTrackerDue.ts",
+			"src/utils/projects-sessions/normalizeTrackerItemFields.ts",
+			"src/utils/projects-sessions/normalizeTrackerItemFields.types.ts",
+			"src/utils/projects-sessions/trackerItemValueOr.ts"
+		],
+		"symbols": [
+			"normalizeTrackerCron",
+			"CronField",
+			"CronSchedule",
+			"trackerTimeZone",
+			"trackerDateFormatter",
+			"trackerDateParts",
+			"trackerLocalStamp",
+			"normalizeTrackerDue",
+			"trackerIsoTime",
+			"validateTrackerTimeZone",
+			"normalizeTrackerItemFields",
+			"clearsTrackerRecurrence",
+			"requestsTrackerLaunch",
+			"TrackerItemClock",
+			"TrackerItemValue",
+			"TrackerItemInput",
+			"TrackerItemFields",
+			"trackerItemValueOr"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "normalizeTrackerCron.value",
+				"type": "TrackerItemValue",
+				"required": true,
+				"description": "Five-field cron expression or supported shorthand to validate."
+			},
+			{
+				"name": "normalizeTrackerCron.timeZone",
+				"type": "string",
+				"required": true,
+				"description": "IANA time zone used to evaluate the recurrence."
+			},
+			{
+				"name": "normalizeTrackerCron.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds used to start the schedule's five-year search window."
+			},
+			{
+				"name": "trackerDateFormatter.timeZone",
+				"type": "string",
+				"required": true,
+				"description": "IANA time zone for calendar date and time parts."
+			},
+			{
+				"name": "trackerDateParts.time",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds to break into localized calendar parts."
+			},
+			{
+				"name": "trackerDateParts.formatter",
+				"type": "Intl.DateTimeFormat",
+				"required": true,
+				"description": "Formatter configured for the caller's time zone."
+			},
+			{
+				"name": "trackerLocalStamp.time",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds to format as a local day and minute."
+			},
+			{
+				"name": "trackerLocalStamp.timeZone",
+				"type": "string",
+				"required": true,
+				"description": "IANA time zone used for the local stamp."
+			},
+			{
+				"name": "normalizeTrackerDue.value",
+				"type": "TrackerItemValue",
+				"required": true,
+				"description": "Due date as a day, timestamp, relative expression, or a clear value."
+			},
+			{
+				"name": "normalizeTrackerDue.clock",
+				"type": "TrackerItemClock",
+				"required": true,
+				"description": "Current epoch time and optional time zone used to resolve relative dates."
+			},
+			{
+				"name": "trackerIsoTime.epoch",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds to format as an ISO timestamp."
+			},
+			{
+				"name": "validateTrackerTimeZone.timeZone",
+				"type": "string",
+				"required": true,
+				"description": "Proposed IANA time zone to validate."
+			},
+			{
+				"name": "normalizeTrackerItemFields.input",
+				"type": "TrackerItemInput",
+				"required": true,
+				"description": "The Store field map with unvalidated values. Undefined values are omitted and recorded values are journal-ready scalars."
+			},
+			{
+				"name": "normalizeTrackerItemFields.clock",
+				"type": "TrackerItemClock",
+				"required": true,
+				"description": "The caller supplies the node, epoch milliseconds and applicable policy or time-zone inputs."
+			},
+			{
+				"name": "clearsTrackerRecurrence.value",
+				"type": "TrackerItemValue",
+				"required": true,
+				"description": "Proposed recurrence value to check for a clear request."
+			},
+			{
+				"name": "requestsTrackerLaunch.value",
+				"type": "TrackerItemValue",
+				"required": true,
+				"description": "Requested auto-launch value to check for a launch request."
+			},
+			{
+				"name": "trackerItemValueOr.value",
+				"type": "Value",
+				"required": true,
+				"description": "Tracker field value that may be absent or empty."
+			},
+			{
+				"name": "trackerItemValueOr.fallback",
+				"type": "Fallback",
+				"required": true,
+				"description": "Replacement returned when the input is absent or empty."
+			}
+		],
+		"outputs": [
+			{
+				"name": "normalizeTrackerItemFields",
+				"type": "TrackerItemFields",
+				"description": "Mutation fields normalized to the Tracker journal representation."
+			}
+		],
+		"errors": [
+			{
+				"name": "TrackerItemRequestError",
+				"type": "thrown",
+				"description": "A request with invalid Tracker input carries status 400 and a compatibility message."
+			}
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "normalizeTrackerCron",
+				"inputs": [
+					{
+						"name": "normalizeTrackerCron.value",
+						"type": "TrackerItemValue",
+						"required": true,
+						"description": "Five-field cron expression or supported shorthand to validate."
+					},
+					{
+						"name": "normalizeTrackerCron.timeZone",
+						"type": "string",
+						"required": true,
+						"description": "IANA time zone used to evaluate the recurrence."
+					},
+					{
+						"name": "normalizeTrackerCron.now",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds used to start the schedule's five-year search window."
+					}
+				],
+				"outputs": [
+					{
+						"name": "normalizeTrackerCron",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerDateFormatter",
+				"inputs": [
+					{
+						"name": "trackerDateFormatter.timeZone",
+						"type": "string",
+						"required": true,
+						"description": "IANA time zone for calendar date and time parts."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerDateFormatter",
+						"type": "Intl.DateTimeFormat"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "trackerDateParts",
+				"inputs": [
+					{
+						"name": "trackerDateParts.time",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds to break into localized calendar parts."
+					},
+					{
+						"name": "trackerDateParts.formatter",
+						"type": "Intl.DateTimeFormat",
+						"required": true,
+						"description": "Formatter configured for the caller's time zone."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerDateParts",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerLocalStamp",
+				"inputs": [
+					{
+						"name": "trackerLocalStamp.time",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds to format as a local day and minute."
+					},
+					{
+						"name": "trackerLocalStamp.timeZone",
+						"type": "string",
+						"required": true,
+						"description": "IANA time zone used for the local stamp."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerLocalStamp",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "normalizeTrackerDue",
+				"inputs": [
+					{
+						"name": "normalizeTrackerDue.value",
+						"type": "TrackerItemValue",
+						"required": true,
+						"description": "Due date as a day, timestamp, relative expression, or a clear value."
+					},
+					{
+						"name": "normalizeTrackerDue.clock",
+						"type": "TrackerItemClock",
+						"required": true,
+						"description": "Current epoch time and optional time zone used to resolve relative dates."
+					}
+				],
+				"outputs": [
+					{
+						"name": "normalizeTrackerDue",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerIsoTime",
+				"inputs": [
+					{
+						"name": "trackerIsoTime.epoch",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds to format as an ISO timestamp."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerIsoTime",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "validateTrackerTimeZone",
+				"inputs": [
+					{
+						"name": "validateTrackerTimeZone.timeZone",
+						"type": "string",
+						"required": true,
+						"description": "Proposed IANA time zone to validate."
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateTrackerTimeZone",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "normalizeTrackerItemFields",
+				"inputs": [
+					{
+						"name": "normalizeTrackerItemFields.input",
+						"type": "TrackerItemInput",
+						"required": true,
+						"description": "The Store field map with unvalidated values. Undefined values are omitted and recorded values are journal-ready scalars."
+					},
+					{
+						"name": "normalizeTrackerItemFields.clock",
+						"type": "TrackerItemClock",
+						"required": true,
+						"description": "The caller supplies the node, epoch milliseconds and applicable policy or time-zone inputs."
+					}
+				],
+				"outputs": [
+					{
+						"name": "normalizeTrackerItemFields",
+						"type": "TrackerItemFields",
+						"description": "Mutation fields normalized to the Tracker journal representation."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "clearsTrackerRecurrence",
+				"inputs": [
+					{
+						"name": "clearsTrackerRecurrence.value",
+						"type": "TrackerItemValue",
+						"required": true,
+						"description": "Proposed recurrence value to check for a clear request."
+					}
+				],
+				"outputs": [
+					{
+						"name": "clearsTrackerRecurrence",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "requestsTrackerLaunch",
+				"inputs": [
+					{
+						"name": "requestsTrackerLaunch.value",
+						"type": "TrackerItemValue",
+						"required": true,
+						"description": "Requested auto-launch value to check for a launch request."
+					}
+				],
+				"outputs": [
+					{
+						"name": "requestsTrackerLaunch",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerItemValueOr",
+				"inputs": [
+					{
+						"name": "trackerItemValueOr.value",
+						"type": "Value",
+						"required": true,
+						"description": "Tracker field value that may be absent or empty."
+					},
+					{
+						"name": "trackerItemValueOr.fallback",
+						"type": "Fallback",
+						"required": true,
+						"description": "Replacement returned when the input is absent or empty."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerItemValueOr",
+						"type": "NonNullable<Value> | Fallback"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/normalizeTrackerItemFields.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/normalizeTrackerItemFields.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
