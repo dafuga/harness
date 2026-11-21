@@ -68,6 +68,7 @@ test('verify accepts pinned legacy headers throughout the inclusive clock window
 });
 
 test('verify rejects changed wire bytes, a different key, missing credentials and out-of-window timestamps', () => {
+	expect(JSON.stringify(auth)).toBe('{}');
 	const header = `TrackerHMAC ts=${timestamp},sig=${vectors[0][1]}`;
 	expect(auth.verify({ ...pull, method: 'POST' }, header, timestamp)).toBe(false);
 	expect(
