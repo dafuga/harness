@@ -29,7 +29,7 @@
 				"name": "createProject.input",
 				"type": "CreateProjectInput",
 				"required": true,
-				"description": "Provides the required project kind and name, with optional parent, dimension, and force fields. A non-empty parent prefixes the target directory; an omitted or empty parent uses the name, dimension is limited to 2d or 3d when truthy, and omitted dimension or force is passed through as undefined.",
+				"description": "Provides kind and name, plus optional parent, dimension, force, and adapter. App adapters are auto (default) or static. Other project kinds reject an explicit adapter before writing files.",
 				"examples": [
 					{
 						"kind": "app",
@@ -105,7 +105,7 @@
 						"name": "createProject.input",
 						"type": "CreateProjectInput",
 						"required": true,
-						"description": "Provides the required project kind and name, with optional parent, dimension, and force fields. A non-empty parent prefixes the target directory; an omitted or empty parent uses the name, dimension is limited to 2d or 3d when truthy, and omitted dimension or force is passed through as undefined.",
+						"description": "Provides kind and name, plus optional parent, dimension, force, and adapter. App adapters are auto (default) or static. Other project kinds reject an explicit adapter before writing files.",
 						"examples": [
 							{
 								"kind": "app",
@@ -187,6 +187,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.files",
 			"via": "import",

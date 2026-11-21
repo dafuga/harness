@@ -14,9 +14,11 @@
 		],
 		"symbols": [
 			"projectFiles",
+			"AppAdapter",
 			"ProjectKind",
 			"ProjectTemplateInput",
 			"ProjectKind",
+			"AppAdapter",
 			"ProjectTemplateInput"
 		]
 	},
@@ -27,7 +29,7 @@
 				"name": "projectFiles.input",
 				"type": "ProjectTemplateInput",
 				"required": true,
-				"description": "`ProjectTemplateInput` supplies the project name and kind used to plan scaffold files. `kind` is `app`, `lib`, or `game`; optional `dimension` is `2d` or `3d` and is passed to game scaffolding only when `kind` is `game`.",
+				"description": "Supplies the name and kind (app, lib or game). The game dimension is 2d or 3d. Static apps use the optional static adapter profile. The app default is auto.",
 				"examples": [
 					{
 						"name": "inventory-app",
@@ -70,7 +72,7 @@
 						"name": "projectFiles.input",
 						"type": "ProjectTemplateInput",
 						"required": true,
-						"description": "`ProjectTemplateInput` supplies the project name and kind used to plan scaffold files. `kind` is `app`, `lib`, or `game`; optional `dimension` is `2d` or `3d` and is passed to game scaffolding only when `kind` is `game`.",
+						"description": "Supplies the name and kind (app, lib or game). The game dimension is 2d or 3d. Static apps use the optional static adapter profile. The app default is auto.",
 						"examples": [
 							{
 								"name": "inventory-app",
