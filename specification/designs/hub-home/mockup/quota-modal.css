@@ -1,0 +1,100 @@
+/* Quota modal panels: meters | history chart | top agents across on laptop and wider, stacked on
+   phones. The chart is one series in tertiary blue (never the warning amber), grid and axes recessive. */
+.hh-q-panels {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-20);
+}
+.hh-q-plan {
+	margin-left: var(--hx-space-6);
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-sm);
+	font-weight: var(--hx-style-weight-regular);
+	letter-spacing: var(--hx-style-tracking-normal);
+}
+.hh-q-panel-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 0.8fr);
+	gap: var(--hx-space-28);
+	align-items: start;
+}
+.hh-q-chart {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-6);
+	margin: 0;
+}
+.hh-q-chart svg {
+	width: 100%;
+	height: auto;
+	overflow: visible;
+}
+.hh-q-grid {
+	stroke: var(--hx-color-border);
+	stroke-width: 1;
+}
+.hh-q-axis {
+	fill: var(--hx-color-text-muted);
+	font-size: 10px;
+	font-family: var(--hx-font-family-body);
+}
+.hh-q-bar-mark {
+	fill: var(--hx-color-tertiary);
+}
+.hh-q-col:hover .hh-q-bar-mark {
+	opacity: var(--hx-opacity-secondary);
+}
+.hh-q-label-today {
+	fill: var(--hx-color-text);
+	font-size: 11px;
+	font-weight: var(--hx-style-weight-semibold);
+	font-family: var(--hx-font-family-body);
+}
+.hh-q-top {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-6);
+}
+.hh-q-top-row {
+	display: flex;
+	justify-content: space-between;
+	gap: var(--hx-space-10);
+	padding: var(--hx-space-8) 0;
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+	font-size: var(--hx-type-size-compact);
+}
+.hh-q-top-value {
+	color: var(--hx-color-text-muted);
+	font-variant-numeric: var(--hx-style-numeric-tabular);
+	white-space: nowrap;
+}
+.hh-q-stale {
+	align-items: center;
+	color: var(--hx-color-text-supporting);
+}
+.hh-q-add {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+@media (max-width: 1000px) {
+	.hh-q-panel-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+	.hh-q-top {
+		grid-column: span 2;
+	}
+}
+@media (max-width: 560px) {
+	.hh-q-panel-grid {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--hx-space-20);
+	}
+	.hh-q-top {
+		grid-column: auto;
+	}
+	.hh-q-add {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+}
