@@ -189,3 +189,4 @@ export { scenarioHealth } from './utils/verification-evidence/scenarioHealth';
 export { TaskOrchestrationCommand } from './commands/agents-providers/TaskOrchestrationCommand';
 export { ProviderSessionAdapter } from './adapters/agents-providers/ProviderSessionAdapter';
 export { TrackerCommand } from './commands/projects-sessions/TrackerCommand';
+export { TrackerOperationRepository } from './repositories/projects-sessions/TrackerOperationRepository';

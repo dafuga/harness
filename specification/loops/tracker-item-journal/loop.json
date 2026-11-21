@@ -1,0 +1,43 @@
+{
+	"name": "tracker-item-journal",
+	"goal": "Apply Tracker item operations to existing SQLite stores with exactly-once op IDs, per-field clock merges, append-only notes, and atomic commit.",
+	"createdAt": "2026-11-21T14:54:14.292Z",
+	"updatedAt": "2026-11-21T14:54:14.394Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T14:54:14.394Z",
+			"evidence": "Tracker 122e190 store provides the compatibility contract. Prove out-of-order field merges, duplicate op IDs, forward-compatible unknown fields, append-only notes, and rollback of an invalid batch on a synthetic SQLite fixture."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
