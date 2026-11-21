@@ -42,7 +42,7 @@ const CREDENTIAL_CASES: [string, string, string][] = [
 	['conservative token label', 'Token: refresh flow', '[redacted] flow']
 ];
 
-/** Public titles with credential-like words that must stay readable. */
+/** Public titles, public URLs and relative paths, with credential or location shapes, that stay readable. */
 const PUBLIC_TITLES = [
 	'Pick Stripe or Paddle?',
 	'Rotate logs',
@@ -51,7 +51,23 @@ const PUBLIC_TITLES = [
 	'Write token economy docs',
 	'Basic security review',
 	'api key: rotate',
-	'private key: rotate'
+	'private key: rotate',
+	'Read https://example.invalid/docs/home',
+	'Open packages/reports/src/tmp/file.ts'
+];
+
+/** Local callbacks, file URLs and absolute runtime paths that must never reach a browser or publisher. */
+const RUNTIME_LOCATION_CASES: [string, string, string][] = [
+	['localhost callback', 'Wait http://localhost:3000/cb now', 'Wait [redacted] now'],
+	['loopback callback', 'Hook http://127.0.0.1:8787/hook', 'Hook [redacted]'],
+	['IPv6 loopback callback', 'Hook http://[::1]:8787/hook', 'Hook [redacted]'],
+	['private hosts', 'Hit http://10.1.1.1 and http://192.168.1.2', 'Hit [redacted] and [redacted]'],
+	['file URL', 'Open file:///Users/example/a.md today', 'Open [redacted] today'],
+	['home paths', 'Saved /Users/a/b.md and /home/a/c.md', 'Saved [redacted] and [redacted]'],
+	['temp paths', 'Log /private/tmp/o.log and /var/folders/ab/T', 'Log [redacted] and [redacted]'],
+	['Windows drive path', 'Saved to C:\\Users\\example\\plan.md', 'Saved to [redacted]'],
+	['quoted path with spaces', 'Open "/Users/example/My Project/a.md" next', 'Open [redacted] next'],
+	['quoted Windows path', "Open 'C:\\Users\\Example Name\\a.md' next", 'Open [redacted] next']
 ];
 
 /** Two items whose raw agent names carry credential-shaped labels; cards keep them as sanitized text. */
@@ -158,6 +174,10 @@ function sameLabelItems(): Record<string, unknown>[] {
 
 describe('sanitizeText credential matrix', () => {
 	it.each(CREDENTIAL_CASES)('redacts %s', (_label, input, output) => {
+		expect(sanitizeText(input)).toBe(output);
+	});
+
+	it.each(RUNTIME_LOCATION_CASES)('redacts runtime location %s', (_label, input, output) => {
 		expect(sanitizeText(input)).toBe(output);
 	});
 

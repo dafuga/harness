@@ -148,10 +148,8 @@ function machine(value: unknown) {
 
 function counts(value: unknown) {
 	const body = record(value, ITEM_STATUSES);
-	return Object.fromEntries(ITEM_STATUSES.map((key) => [key, count(body[key])])) as Record<
-		(typeof ITEM_STATUSES)[number],
-		number
-	>;
+	const entries = ITEM_STATUSES.map((key) => [key, count(body[key])]);
+	return Object.fromEntries(entries) as Record<(typeof ITEM_STATUSES)[number], number>;
 }
 
 function objectOf(value: unknown): OverviewRecord {
@@ -206,9 +204,8 @@ function flag(value: unknown): boolean {
 }
 
 function oneOf<T extends string>(value: unknown, allowed: readonly T[]): T {
-	return typeof value === 'string' && (allowed as readonly string[]).includes(value)
-		? (value as T)
-		: invalid();
+	const known = typeof value === 'string' && (allowed as readonly string[]).includes(value);
+	return known ? (value as T) : invalid();
 }
 
 function invalid(): never {
