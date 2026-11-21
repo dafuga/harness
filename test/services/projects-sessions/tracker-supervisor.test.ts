@@ -48,8 +48,8 @@ async function proveWorkerLifecycle() {
 	try {
 		await entered.promise;
 		await expect(service.run(abort.signal)).rejects.toThrow('already running');
-		await vi.waitFor(() => expectConnectedFleet(service, runtime));
-		await vi.waitFor(() => expect(notifications.mock.calls.length).toBeGreaterThan(1));
+		await expectConnectedFleet(service, runtime);
+		await expect.poll(() => notifications.mock.calls.length).toBeGreaterThan(1);
 		expect(adapter).toHaveBeenCalledTimes(1);
 		abort.abort();
 		const settled = vi.fn();
@@ -69,26 +69,28 @@ function expectConnectedFleet(
 	service: TrackerSupervisorService,
 	runtime: TrackerNativeRuntimeService
 ) {
-	expect(service.status()).toMatchObject({
-		role: 'spoke',
-		node: primary,
-		db_id: runtime.store.dbId,
-		sync: {
-			hub: 'fixture-hub',
-			connected: true,
-			lastPullOk: timestamp,
-			lastPushOk: timestamp,
-			lastError: null,
-			pending_push: 0
-		},
-		autolaunch: {
-			computers: [
-				{ computer: primary, state: 'polling', active_runs: 0 },
-				{ computer: secondary, state: 'polling', last_tick_at: timestamp, active_runs: 2 },
-				{ computer: 'grok-box', state: 'offline', active_runs: null }
-			]
-		}
-	});
+	return expect
+		.poll(() => service.status())
+		.toMatchObject({
+			role: 'spoke',
+			node: primary,
+			db_id: runtime.store.dbId,
+			sync: {
+				hub: 'fixture-hub',
+				connected: true,
+				lastPullOk: timestamp,
+				lastPushOk: timestamp,
+				lastError: null,
+				pending_push: 0
+			},
+			autolaunch: {
+				computers: [
+					{ computer: primary, state: 'polling', active_runs: 0 },
+					{ computer: secondary, state: 'polling', last_tick_at: timestamp, active_runs: 2 },
+					{ computer: 'grok-box', state: 'offline', active_runs: null }
+				]
+			}
+		});
 }
 
 function configuredSpoke(database: DatabaseSync) {
