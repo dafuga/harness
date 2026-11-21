@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.module.projects-sessions-project-overview-project-overview-types",
+	"uid": "u_2aj7ipsk7y",
+	"kind": "module",
+	"title": "projectOverview",
+	"responsibility": "Declares the display-ready tracker snapshot, project card, work item, and computer status types.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts"
+		],
+		"symbols": [
+			"ProjectState",
+			"MachineStatus",
+			"OverviewItem",
+			"OverviewCallout",
+			"OverviewCard",
+			"OverviewSnapshot"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

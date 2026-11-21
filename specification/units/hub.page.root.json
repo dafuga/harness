@@ -9,14 +9,7 @@
 	"status": "active",
 	"composition": {
 		"level": "page",
-		"uses": [
-			"hub.component.hub-frame",
-			"hub.component.login-panel",
-			"hub.component.project-create",
-			"hub.component.project-list",
-			"reports.component.shared-primitives-atoms-html-h1",
-			"reports.component.shared-primitives-atoms-html-p"
-		]
+		"uses": ["hub.component.public-site-home-page"]
 	},
 	"owns": {
 		"source": ["packages/hub/src/routes/+page.svelte"],
@@ -45,42 +38,7 @@
 	},
 	"dependencies": [
 		{
-			"unit": "desktop.service.project-sync",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.component.hub-frame",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.component.login-panel",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.component.project-create",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.component.project-list",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.function.browser-context",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-h1",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"unit": "hub.component.public-site-home-page",
 			"via": "import",
 			"origin": "derived"
 		}

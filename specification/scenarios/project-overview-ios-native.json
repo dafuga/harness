@@ -1,0 +1,42 @@
+{
+	"schemaVersion": 1,
+	"id": "project-overview-ios-native",
+	"title": "Native iOS admission of the tracker overview GET",
+	"kind": "headless",
+	"units": ["desktop.adapter.ios-account"],
+	"states": [
+		{
+			"id": "overview-admission",
+			"title": "Compiled Swift admits one plain GET of the overview and refuses every alias, query, body and other method",
+			"coverage": "required",
+			"units": ["desktop.adapter.ios-account"]
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "native-profile",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/ios-native-profile.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 360000
+		}
+	],
+	"evidence": [
+		{
+			"id": "project-overview-ios-native-output",
+			"kind": "output",
+			"states": ["overview-admission"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "project-overview-ios-native-assertions",
+			"kind": "assertions",
+			"states": ["overview-admission"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

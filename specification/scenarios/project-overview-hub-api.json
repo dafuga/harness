@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "project-overview-hub-api",
+	"title": "Owner-only Hub tracker overview API",
+	"kind": "headless",
+	"units": ["hub.module.tracker-overview-api", "hub.endpoint.api-tracker-overview"],
+	"states": [
+		{
+			"id": "owner-ready",
+			"title": "The owner reads a ready snapshot with a bounded note and the other authorized cards",
+			"coverage": "required",
+			"units": ["hub.module.tracker-overview-api", "hub.endpoint.api-tracker-overview"]
+		},
+		{
+			"id": "unavailable",
+			"title": "No stored snapshot, or a stale one, answers 503 unavailable",
+			"coverage": "required",
+			"units": ["hub.module.tracker-overview-api", "hub.endpoint.api-tracker-overview"]
+		},
+		{
+			"id": "published",
+			"title": "Owner native publish is accepted and answers 204",
+			"coverage": "required",
+			"units": ["hub.module.tracker-overview-api", "hub.endpoint.api-tracker-overview"]
+		},
+		{
+			"id": "missing-session",
+			"title": "A request without a verified session answers 401 before the body is read",
+			"coverage": "required",
+			"units": ["hub.module.tracker-overview-api", "hub.endpoint.api-tracker-overview"]
+		},
+		{
+			"id": "other-actor",
+			"title": "Another verified actor, or a browser PUT, answers 403",
+			"coverage": "required",
+			"units": ["hub.module.tracker-overview-api", "hub.endpoint.api-tracker-overview"]
+		},
+		{
+			"id": "unconfigured-owner",
+			"title": "No owner setting answers the opaque 404",
+			"coverage": "required",
+			"units": ["hub.module.tracker-overview-api", "hub.endpoint.api-tracker-overview"]
+		}
+	],
+	"viewports": [{ "id": "desktop", "width": 1440, "height": 900 }],
+	"tests": [
+		{
+			"id": "api",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/controllers/tracker-overview-api.test.ts",
+			"cwd": "packages/hub"
+		},
+		{
+			"id": "excerpts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/controllers/tracker-overview-excerpts.test.ts",
+			"cwd": "packages/hub"
+		},
+		{
+			"id": "hosted-api",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test tests/e2e/hosted-tracker-overview-api.spec.ts --workers=1",
+			"cwd": "packages/hub"
+		}
+	],
+	"evidence": [
+		{
+			"id": "api-assertions",
+			"kind": "assertions",
+			"states": [
+				"owner-ready",
+				"unavailable",
+				"published",
+				"missing-session",
+				"other-actor",
+				"unconfigured-owner"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "owner-page",
+			"kind": "screenshot",
+			"states": ["owner-ready"],
+			"viewports": ["desktop"],
+			"provenance": "actual-capture",
+			"capture": "viewport",
+			"build": "hub",
+			"required": true
+		}
+	]
+}

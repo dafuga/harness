@@ -1,0 +1,99 @@
+{
+	"schemaVersion": 1,
+	"id": "project-overview-hub-projects",
+	"title": "Signed-in Harness Hub projects",
+	"kind": "ui",
+	"units": ["hub.page.projects", "hub.controller.github-connection"],
+	"states": [
+		{
+			"id": "owner",
+			"title": "The verified owner sees the live tracker cards, beside that account\u2019s hosted projects",
+			"coverage": "required",
+			"units": ["hub.page.projects"]
+		},
+		{
+			"id": "non-owner",
+			"title": "Another verified account receives no tracker cards or owner navigation",
+			"coverage": "required",
+			"units": ["hub.page.projects"]
+		},
+		{
+			"id": "signed-out",
+			"title": "Anonymous visitors see Google sign-in and no tracker data",
+			"coverage": "required",
+			"units": ["hub.page.projects"]
+		},
+		{
+			"id": "github-connected",
+			"title": "The verified GitHub callback result appears in the signed-in dashboard",
+			"coverage": "required",
+			"units": ["hub.page.projects", "hub.controller.github-connection"]
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 1440,
+			"height": 900
+		},
+		{
+			"id": "tablet",
+			"width": 920,
+			"height": 800
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "account-projects",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test tests/e2e/account-projects.spec.ts --workers=1",
+			"cwd": "packages/hub"
+		}
+	],
+	"evidence": [
+		{
+			"id": "account-screen",
+			"kind": "screenshot",
+			"states": ["owner", "non-owner", "signed-out"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"capture": "viewport",
+			"build": "hub",
+			"required": true
+		},
+		{
+			"id": "github-result",
+			"kind": "screenshot",
+			"states": ["github-connected"],
+			"viewports": ["desktop"],
+			"provenance": "actual-capture",
+			"capture": "viewport",
+			"build": "hub",
+			"required": true
+		},
+		{
+			"id": "account-benchmarks",
+			"kind": "benchmark",
+			"states": ["owner", "non-owner", "signed-out"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"build": "hub",
+			"required": true
+		},
+		{
+			"id": "github-benchmark",
+			"kind": "benchmark",
+			"states": ["github-connected"],
+			"viewports": ["desktop"],
+			"provenance": "actual-capture",
+			"build": "hub",
+			"required": true
+		}
+	]
+}

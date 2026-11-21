@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.style.project-overview-cards",
+	"uid": "u_7uantpuqf2",
+	"kind": "style",
+	"title": "project-overview-cards",
+	"responsibility": "Styles full and compact project cards, their status labels, and attention callouts.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/lib/styles/project-overview-cards.css"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/styles/project-overview-cards.css",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/styles/project-overview-cards.css"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

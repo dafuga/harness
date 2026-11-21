@@ -12,12 +12,28 @@ function previewPort(): number {
 }
 const port = previewPort();
 const url = `http://127.0.0.1:${port}`;
+const verifying = process.env.HARNESS_VERIFY === '1';
+const downloads = verifying && process.env.HARNESS_HUB_TEST_MAC_DOWNLOAD === '1';
+const persist = `.cache/playwright-hub-${port}`;
+const archiveKey = 'releases/mac-arm64/1111111111111111111111111111111111111111/Harness.zip';
+const fixtureBucket = 'harness-fixture-mac-downloads';
+const wrangler = 'WRANGLER_SEND_METRICS=false bun x --no-install wrangler';
+const worker =
+	`${wrangler} pages dev .svelte-kit/cloudflare` +
+	' --bundle --compatibility-date 2026-10-12 --compatibility-flag nodejs_compat' +
+	` --ip 127.0.0.1 --port ${port} --persist-to ${persist}`;
+const builtHub = downloads
+	? `printf 'synthetic mac archive' | ${wrangler} r2 object put ${fixtureBucket}/${archiveKey}` +
+		` --local --pipe --persist-to ${persist} && ${worker} --r2 DOWNLOADS=${fixtureBucket}` +
+		` --binding HARNESS_MAC_DOWNLOAD_KEY=${archiveKey}`
+	: worker;
 
 export default defineConfig({
 	testDir: 'tests/e2e',
 	webServer: {
-		command: `bun run dev --port ${port}`,
+		command: verifying ? builtHub : `bun run dev --port ${port}`,
 		url,
+		timeout: verifying ? 180_000 : 60_000,
 		reuseExistingServer: false
 	},
 	use: {

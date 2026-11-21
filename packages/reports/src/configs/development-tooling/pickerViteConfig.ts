@@ -9,7 +9,7 @@ export default defineConfig({
 		emptyOutDir: true,
 		cssCodeSplit: false,
 		lib: {
-			entry: 'src/utils/providerPickerEntry.ts',
+			entry: 'src/utils/agents-providers/providerPickerEntry.ts',
 			formats: ['iife'],
 			name: 'HarnessPicker',
 			fileName: 'picker'

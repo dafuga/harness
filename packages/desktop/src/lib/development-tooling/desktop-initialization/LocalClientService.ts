@@ -46,7 +46,12 @@ export class LocalClientService {
 		);
 		const { session, runs } = this,
 			bridge = new DesktopBridgeService(session, providers, runs, options.choose).bridge(),
-			operations = new LocalOperationsService({ bridge, control: options.control }),
+			auth = options.shared.auth,
+			operations = new LocalOperationsService({
+				bridge,
+				control: options.control,
+				hubOverview: auth && (() => auth.overview())
+			}),
 			host = { id: null, name: hostname(), platform: process.platform };
 		this.wire = new WireSessionService({
 			role: 'local',

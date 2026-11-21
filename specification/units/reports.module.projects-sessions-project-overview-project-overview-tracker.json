@@ -1,0 +1,104 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.module.projects-sessions-project-overview-project-overview-tracker",
+	"uid": "u_nves237tvx",
+	"kind": "module",
+	"title": "projectOverviewTracker",
+	"responsibility": "Reads and validates three fixed local tracker resources without following redirects or forwarding credentials.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/lib/projects-sessions/project-overview/projectOverviewTracker.ts",
+			"packages/reports/src/lib/projects-sessions/project-overview/projectOverviewTracker.types.ts"
+		],
+		"symbols": [
+			"readTrackerSources",
+			"TrackerItemStatus",
+			"TrackerNote",
+			"TrackerItemRecord",
+			"IncludedTrackerItem",
+			"TrackerRunRecord",
+			"TrackerMachineRecord",
+			"TrackerSources"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "readTrackerSources.fetcher",
+				"type": "typeof fetch",
+				"required": true,
+				"description": "The fetch implementation for the fixed loopback GET requests."
+			}
+		],
+		"outputs": [
+			{
+				"name": "readTrackerSources",
+				"type": "Promise<TrackerSources>",
+				"description": "Validated item, run, and machine records from the local tracker."
+			}
+		],
+		"errors": [
+			{
+				"name": "Tracker read failed",
+				"type": "thrown",
+				"description": "A fixed tracker request timed out, failed, redirected, or returned data outside the expected shape."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "readTrackerSources",
+				"inputs": [
+					{
+						"name": "readTrackerSources.fetcher",
+						"type": "typeof fetch",
+						"required": true,
+						"description": "The fetch implementation for the fixed loopback GET requests."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerSources",
+						"type": "Promise<TrackerSources>",
+						"description": "Validated item, run, and machine records from the local tracker."
+					}
+				],
+				"errors": [
+					{
+						"name": "Tracker read failed",
+						"type": "thrown",
+						"description": "A fixed tracker request timed out, failed, redirected, or returned data outside the expected shape."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/projects-sessions/project-overview/projectOverviewTracker.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/projects-sessions/project-overview/projectOverviewTracker.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

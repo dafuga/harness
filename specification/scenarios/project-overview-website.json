@@ -1,0 +1,168 @@
+{
+	"schemaVersion": 1,
+	"id": "project-overview-website",
+	"title": "Project Overview on the Harness Explorer website",
+	"kind": "ui",
+	"units": [
+		"reports.page.harness-projects",
+		"reports.component.projects-sessions-project-overview-project-overview",
+		"reports.component.projects-sessions-project-overview-project-overview-card"
+	],
+	"states": [
+		{
+			"id": "all-states",
+			"title": "Overview with all five project states",
+			"coverage": "required",
+			"units": [
+				"reports.page.harness-projects",
+				"reports.component.projects-sessions-project-overview-project-overview",
+				"reports.component.projects-sessions-project-overview-project-overview-card"
+			]
+		},
+		{
+			"id": "needs-you",
+			"title": "A project is waiting on Daniel",
+			"coverage": "required",
+			"units": [
+				"reports.page.harness-projects",
+				"reports.component.projects-sessions-project-overview-project-overview",
+				"reports.component.projects-sessions-project-overview-project-overview-card"
+			]
+		},
+		{
+			"id": "blocked",
+			"title": "A project is blocked without a live session",
+			"coverage": "required",
+			"units": [
+				"reports.page.harness-projects",
+				"reports.component.projects-sessions-project-overview-project-overview",
+				"reports.component.projects-sessions-project-overview-project-overview-card"
+			]
+		},
+		{
+			"id": "active",
+			"title": "A project has recent or live work",
+			"coverage": "required",
+			"units": [
+				"reports.page.harness-projects",
+				"reports.component.projects-sessions-project-overview-project-overview",
+				"reports.component.projects-sessions-project-overview-project-overview-card"
+			]
+		},
+		{
+			"id": "quiet",
+			"title": "A project has gone quiet",
+			"coverage": "required",
+			"units": [
+				"reports.page.harness-projects",
+				"reports.component.projects-sessions-project-overview-project-overview",
+				"reports.component.projects-sessions-project-overview-project-overview-card"
+			]
+		},
+		{
+			"id": "done",
+			"title": "A project finished within the last seven days",
+			"coverage": "required",
+			"units": [
+				"reports.page.harness-projects",
+				"reports.component.projects-sessions-project-overview-project-overview",
+				"reports.component.projects-sessions-project-overview-project-overview-card"
+			]
+		},
+		{
+			"id": "loading",
+			"title": "The first tracker read is pending",
+			"coverage": "required",
+			"units": [
+				"reports.page.harness-projects",
+				"reports.component.projects-sessions-project-overview-project-overview"
+			]
+		},
+		{
+			"id": "empty-ready",
+			"title": "The tracker has no projects to show",
+			"coverage": "required",
+			"units": [
+				"reports.page.harness-projects",
+				"reports.component.projects-sessions-project-overview-project-overview"
+			]
+		},
+		{
+			"id": "quiet-only-no-match",
+			"title": "The filter matches no projects",
+			"coverage": "required",
+			"units": [
+				"reports.page.harness-projects",
+				"reports.component.projects-sessions-project-overview-project-overview"
+			]
+		},
+		{
+			"id": "unavailable",
+			"title": "The local tracker cannot be reached",
+			"coverage": "required",
+			"units": [
+				"reports.page.harness-projects",
+				"reports.component.projects-sessions-project-overview-project-overview"
+			]
+		},
+		{
+			"id": "item-detail",
+			"title": "A read-only item detail is open",
+			"coverage": "required",
+			"units": [
+				"reports.page.harness-projects",
+				"reports.component.projects-sessions-project-overview-project-overview"
+			]
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 1440,
+			"height": 900
+		},
+		{
+			"id": "tablet",
+			"width": 920,
+			"height": 800
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "overview",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test tests/e2e/project-overview.spec.ts tests/e2e/project-overview-website.spec.ts --workers=1",
+			"cwd": "packages/reports"
+		}
+	],
+	"evidence": [
+		{
+			"id": "screens",
+			"kind": "screenshot",
+			"states": [
+				"all-states",
+				"needs-you",
+				"blocked",
+				"active",
+				"quiet",
+				"done",
+				"loading",
+				"empty-ready",
+				"quiet-only-no-match",
+				"unavailable",
+				"item-detail"
+			],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"capture": "viewport",
+			"build": "reports",
+			"required": true
+		}
+	]
+}

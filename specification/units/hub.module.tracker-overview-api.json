@@ -1,0 +1,408 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.module.tracker-overview-api",
+	"uid": "u_k4rxbz6pq3",
+	"kind": "module",
+	"title": "Owner-only Hub tracker overview policy",
+	"responsibility": "Authorize the verified owner and store or read a bounded display projection.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/hub/src/routes/api/tracker-overview/trackerOverviewCache.ts",
+			"packages/hub/src/routes/api/tracker-overview/trackerOverviewCache.types.ts",
+			"packages/hub/src/routes/api/tracker-overview/trackerOverviewInput.ts",
+			"packages/hub/src/routes/api/tracker-overview/trackerOverviewInput.types.ts",
+			"packages/hub/src/routes/api/tracker-overview/trackerOverviewPolicy.ts",
+			"packages/hub/src/routes/api/tracker-overview/trackerOverviewPolicy.types.ts"
+		],
+		"symbols": [
+			"OVERVIEW_TTL_MS",
+			"overviewKey",
+			"storeOverview",
+			"clearOverview",
+			"readOverview",
+			"OverviewBucket",
+			"StoredOverview",
+			"MAX_BODY_BYTES",
+			"readOverviewText",
+			"parseOverviewPayload",
+			"readySnapshot",
+			"OverviewPayload",
+			"ReadyOverviewPayload",
+			"OverviewRecord",
+			"overviewSessions",
+			"OVERVIEW_PATH",
+			"serveTrackerOverview",
+			"OverviewDeps"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "overviewKey.ownerId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "storeOverview.bucket",
+				"type": "OverviewBucket",
+				"required": true
+			},
+			{
+				"name": "storeOverview.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "storeOverview.snapshot",
+				"type": "ReadyOverviewPayload",
+				"required": true
+			},
+			{
+				"name": "storeOverview.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "clearOverview.bucket",
+				"type": "OverviewBucket",
+				"required": true
+			},
+			{
+				"name": "clearOverview.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readOverview.bucket",
+				"type": "OverviewBucket",
+				"required": true
+			},
+			{
+				"name": "readOverview.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readOverview.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "readOverviewText.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "parseOverviewPayload.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readySnapshot.value",
+				"type": "OverviewRecord",
+				"required": true
+			},
+			{
+				"name": "overviewSessions.env",
+				"type": "HubEnv",
+				"required": true
+			},
+			{
+				"name": "serveTrackerOverview.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "serveTrackerOverview.deps",
+				"type": "OverviewDeps",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "result",
+				"type": "Project Overview feature result",
+				"description": "Filtered display snapshot, safe navigation or the unit-specific admission outcome."
+			}
+		],
+		"errors": [
+			{
+				"name": "unavailable",
+				"type": "Unavailable or denied response",
+				"description": "Fail closed without carrying previous account data or credentials."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "overviewKey",
+				"inputs": [
+					{
+						"name": "overviewKey.ownerId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "overviewKey",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "storeOverview",
+				"inputs": [
+					{
+						"name": "storeOverview.bucket",
+						"type": "OverviewBucket",
+						"required": true
+					},
+					{
+						"name": "storeOverview.key",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "storeOverview.snapshot",
+						"type": "ReadyOverviewPayload",
+						"required": true
+					},
+					{
+						"name": "storeOverview.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "storeOverview",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "clearOverview",
+				"inputs": [
+					{
+						"name": "clearOverview.bucket",
+						"type": "OverviewBucket",
+						"required": true
+					},
+					{
+						"name": "clearOverview.key",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "clearOverview",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readOverview",
+				"inputs": [
+					{
+						"name": "readOverview.bucket",
+						"type": "OverviewBucket",
+						"required": true
+					},
+					{
+						"name": "readOverview.key",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "readOverview.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readOverview",
+						"type": "Promise<ReadyOverviewPayload | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readOverviewText",
+				"inputs": [
+					{
+						"name": "readOverviewText.request",
+						"type": "Request",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readOverviewText",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parseOverviewPayload",
+				"inputs": [
+					{
+						"name": "parseOverviewPayload.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseOverviewPayload",
+						"type": "OverviewPayload"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readySnapshot",
+				"inputs": [
+					{
+						"name": "readySnapshot.value",
+						"type": "OverviewRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readySnapshot",
+						"type": "ReadyOverviewPayload"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "overviewSessions",
+				"inputs": [
+					{
+						"name": "overviewSessions.env",
+						"type": "HubEnv",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "overviewSessions",
+						"type": "Pick<RequestSessionService, 'resolve'> | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "serveTrackerOverview",
+				"inputs": [
+					{
+						"name": "serveTrackerOverview.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "serveTrackerOverview.deps",
+						"type": "OverviewDeps",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "serveTrackerOverview",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.config.hub-env",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.auth-config",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.auth-secrets",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-http",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.module.server-auth",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.repository.session",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.service.request-session",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-privacy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/routes/api/tracker-overview/trackerOverviewPolicy.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/routes/api/tracker-overview/trackerOverviewPolicy.ts"
+			}
+		]
+	},
+	"scenarios": ["project-overview-hub-api"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

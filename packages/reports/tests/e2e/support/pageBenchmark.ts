@@ -117,6 +117,10 @@ export async function pageBenchmark(page: Page, state: string, unit?: string): P
  * claim isolation. What is drawn is observed, so a piece the route did not draw is not credited.
  */
 async function includedUnits(page: Page, route: string): Promise<string[]> {
+	if (route === 'reports.page.harness-projects')
+		return (await shownUnits(page, true)).filter((unit) =>
+			existsSync(join(unitsDirectory, unit + '.json'))
+		);
 	const ran = [
 		'function.explorer-route',
 		'reports.function.entity-measure',
@@ -189,6 +193,10 @@ function markersInView(whole: boolean): string[] {
 
 /** The registered framework page of this exact route. */
 export function pageUnit(address: string): string | undefined {
+	if (new URL(address).pathname === '/harness/projects') {
+		const unit = 'reports.page.harness-projects';
+		return existsSync(join(unitsDirectory, unit + '.json')) ? unit : undefined;
+	}
 	if (/^\/harness\/commit\/[a-f0-9]{40}(?:\/|$)/.test(new URL(address).pathname))
 		return 'reports.page.harness-view';
 	const match =

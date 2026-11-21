@@ -1,0 +1,155 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.public-site-home-page",
+	"uid": "u_uvdzwua6yi",
+	"kind": "component",
+	"title": "HomePage",
+	"responsibility": "Compose the public Harness homepage, safe download readiness, and signed-in Projects navigation.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"hub.component.public-site-home-download",
+			"hub.component.public-site-home-features",
+			"hub.component.public-site-home-hero",
+			"hub.component.public-site-home-steps",
+			"reports.component.brand-mark",
+			"reports.component.shared-primitives-atoms-html-a",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-footer",
+			"reports.component.shared-primitives-atoms-html-header",
+			"reports.component.shared-primitives-atoms-html-main",
+			"reports.component.shared-primitives-atoms-html-nav",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-strong"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/hub/src/components/public-site/HomePage.svelte",
+			"packages/hub/src/lib/styles/home-scheme.css",
+			"packages/hub/src/lib/styles/home.css"
+		],
+		"symbols": ["HomePage"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "HomePage",
+				"type": "markup",
+				"description": "The public homepage regardless of session state. It includes the current entry action and published download state."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.public-site-home-download",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.public-site-home-features",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.public-site-home-hero",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.public-site-home-steps",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.config.public-site-home-download",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.public-site-published-download",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.brand-mark",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-footer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-header",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-main",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-nav",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/public-site/HomePage.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/public-site/HomePage.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

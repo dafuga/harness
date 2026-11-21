@@ -11,6 +11,7 @@ import {
 } from './ios-acceptance-run';
 import type { Acceptance } from './ios-acceptance-run';
 import { keychainGroups } from './ios-acceptance-simulator';
+import { overviewSnapshot } from '../tests/e2e/support/projectOverviewNativeFixture';
 
 const listed = (selector: string) =>
 	`[...document.querySelectorAll('${selector}')].map((item) => item.textContent.trim()).join(',')`;
@@ -34,6 +35,75 @@ async function seen(run: Acceptance, expression: string, words: string, name: st
 	} catch (error) {
 		run.record.check(false, name);
 		throw error;
+	}
+}
+
+/** The real paired phone stays connected. Only its Hub account reply is synthetic. */
+const overviewAccount = `
+const cap = window.Capacitor;
+if (!cap.isNativePlatform() || !cap.isPluginAvailable('HarnessAccount')) return 'unavailable';
+const native = cap.nativePromise;
+const fixture = { calls: [], denied: false, restore: () => { cap.nativePromise = native; } };
+window.harnessOverviewAcceptance = fixture;
+cap.nativePromise = (plugin, method, options) => {
+	if (plugin !== 'HarnessAccount') return native.call(cap, plugin, method, options);
+	if (method === 'status') return Promise.resolve({
+		configured: true, state: 'signed-in',
+		actor: { id: 'google-fixture-owner', name: 'Fixture Owner', email: 'owner@example.invalid' }
+	});
+	fixture.calls.push(options);
+	const overview = options?.path === '/api/tracker-overview';
+	const status = overview && fixture.denied ? 403 : 200;
+	const body = overview ? (fixture.denied ? {} : ${JSON.stringify(overviewSnapshot)}) : [];
+	return Promise.resolve({ status, contentType: 'application/json', data: btoa(JSON.stringify(body)) });
+};
+const link = document.createElement('a');
+link.href = '/projects';
+document.body.append(link);
+link.click();
+link.remove();
+return 'opened';`;
+
+class NativeOverviewAccountUnavailable extends Error {}
+
+/** Captures the cards in native WebKit after pairing, and proves an owner refusal clears them. */
+export async function pairedOverview(run: Acceptance): Promise<void> {
+	const { record, page } = run;
+	record.begin('Project Overview on the paired iOS app');
+	try {
+		if ((await page.evaluate(overviewAccount)) !== 'opened')
+			throw new NativeOverviewAccountUnavailable(
+				'The paired iOS shell did not expose its account plugin.'
+			);
+		await seen(
+			run,
+			"return text('main');",
+			'fixture-needs',
+			'the paired app renders synthetic cards'
+		);
+		await shot(run, 'project-overview-ready');
+		const wire = `const calls = window.harnessOverviewAcceptance.calls.filter(call => call.path === '/api/tracker-overview');
+return String(calls.length > 0 && calls.every(call =>
+	call.method === 'GET' && !call.query && !call.body));`;
+		record.check(
+			(await page.evaluate(wire)) === 'true',
+			'overview requests use the fixed read-only GET'
+		);
+		await page.evaluate(
+			"window.harnessOverviewAcceptance.denied = true; window.dispatchEvent(new Event('focus'));"
+		);
+		const cleared = await seen(
+			run,
+			"return text('main');",
+			'no projects are shown',
+			'a refused refresh clears the overview'
+		);
+		record.check(!cleared.includes('fixture-needs'), 'the now-denied page contains no prior card');
+		await shot(run, 'project-overview-denied');
+	} finally {
+		await page.evaluate(
+			'window.harnessOverviewAcceptance?.restore(); delete window.harnessOverviewAcceptance;'
+		);
 	}
 }
 

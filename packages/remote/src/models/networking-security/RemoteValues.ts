@@ -64,7 +64,8 @@ export const localMethods = [
 	'selectProject',
 	'hostedStatus',
 	'connectHosted',
-	'disconnectHosted'
+	'disconnectHosted',
+	'projectOverview'
 ] as const;
 /** The desktop control port. Local connection only. */
 export const controlMethods = [

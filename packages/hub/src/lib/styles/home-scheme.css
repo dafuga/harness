@@ -1,0 +1,61 @@
+/* @harness-uid u_uvdzwua6yi */
+/* The homepage follows the visitor's color scheme. Dark is the shared Harness palette. Light is
+   mixed from those same catalog colors: the outer .home-scheme reads them before .home-page
+   reassigns the public tokens, so every shared control inside the page follows the scheme too. */
+.home-scheme {
+	--home-ink: var(--hx-color-background);
+	--home-paper: var(--hx-color-text);
+	--home-gold: var(--hx-color-primary);
+	--home-alarm: var(--hx-color-error);
+	--home-pass: var(--hx-color-success);
+	--home-accent: var(--hx-color-primary);
+	--home-shadow: var(--hx-shadow-overlay);
+	--home-light-background: color-mix(in srgb, var(--home-paper) 88%, var(--home-gold));
+	--home-light-surface: var(--home-paper);
+	--home-light-raised: color-mix(in srgb, var(--home-paper) 94%, var(--home-ink));
+	--home-light-supporting: color-mix(in srgb, var(--home-ink) 80%, var(--home-paper));
+	--home-light-muted: color-mix(in srgb, var(--home-ink) 68%, var(--home-paper));
+	--home-light-border: color-mix(in srgb, var(--home-ink) 14%, var(--home-paper));
+	--home-light-border-strong: color-mix(in srgb, var(--home-ink) 28%, var(--home-paper));
+	--home-light-accent: color-mix(in srgb, var(--home-gold) 42%, var(--home-ink));
+	--home-light-error: color-mix(in srgb, var(--home-alarm) 70%, var(--home-ink));
+	--home-light-success: color-mix(in srgb, var(--home-pass) 55%, var(--home-ink));
+	--home-light-hover: color-mix(in srgb, var(--home-ink) 5%, transparent);
+	--home-light-selected: color-mix(in srgb, var(--home-ink) 8%, transparent);
+	--home-light-shadow: color-mix(in srgb, var(--home-ink) 16%, transparent);
+	--home-light-scrim: color-mix(in srgb, var(--home-light-background) 86%, transparent);
+	--home-light-soft: color-mix(in srgb, var(--home-gold) 22%, transparent);
+	--home-light-tint: color-mix(in srgb, var(--home-gold) 34%, transparent);
+	--home-light-wash: color-mix(in srgb, var(--home-gold) 14%, transparent);
+	--home-light-line: color-mix(in srgb, var(--home-light-accent) 45%, transparent);
+	--home-light-error-soft: color-mix(in srgb, var(--home-alarm) 12%, transparent);
+	--home-light-success-soft: color-mix(in srgb, var(--home-pass) 18%, transparent);
+}
+@media (prefers-color-scheme: light) {
+	.home-page {
+		color-scheme: light;
+		--home-accent: var(--home-light-accent);
+		--hx-color-background: var(--home-light-background);
+		--hx-color-surface: var(--home-light-surface);
+		--hx-color-surface-raised: var(--home-light-raised);
+		--hx-color-text: var(--home-ink);
+		--hx-color-text-supporting: var(--home-light-supporting);
+		--hx-color-text-muted: var(--home-light-muted);
+		--hx-color-border: var(--home-light-border);
+		--hx-color-border-strong: var(--home-light-border-strong);
+		--hx-color-secondary: var(--home-light-border-strong);
+		--hx-color-error: var(--home-light-error);
+		--hx-color-error-soft: var(--home-light-error-soft);
+		--hx-color-success: var(--home-light-success);
+		--hx-color-success-soft: var(--home-light-success-soft);
+		--hx-color-hover: var(--home-light-hover);
+		--hx-color-selected: var(--home-light-selected);
+		--hx-color-shadow: var(--home-light-shadow);
+		--hx-color-scrim: var(--home-light-scrim);
+		--hx-color-primary-soft: var(--home-light-soft);
+		--hx-color-primary-tint: var(--home-light-tint);
+		--hx-color-primary-wash: var(--home-light-wash);
+		--hx-color-primary-line: var(--home-light-line);
+		--home-shadow: none;
+	}
+}

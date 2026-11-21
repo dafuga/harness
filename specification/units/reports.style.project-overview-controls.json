@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.style.project-overview-controls",
+	"uid": "u_i4nkfngx7d",
+	"kind": "style",
+	"title": "project-overview-controls",
+	"responsibility": "Styles the overview item actions, due labels, milestone footer, and empty and unavailable states.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/lib/styles/project-overview-controls.css"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/styles/project-overview-controls.css",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/styles/project-overview-controls.css"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

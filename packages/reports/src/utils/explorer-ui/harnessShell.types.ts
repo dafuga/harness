@@ -8,9 +8,18 @@ import type { SearchEntry } from './entitySearch';
 import type { HarnessIconName } from './harnessIcons';
 import type { ModuleCatalog } from '../../../../../src/services/module-system/moduleDefinition.types';
 
+/** The Projects link of the local explorer; a host without one shows no such link. */
+export interface HarnessProjectsLink {
+	href: string;
+	/** True on the Projects page itself, so the link is the current one. */
+	active: boolean;
+}
+
 /** What a host gives the bar of the explorer. */
 export interface HarnessNavbarInput {
 	modules?: ModuleCatalog;
+	/** Present only in the local Harness Explorer; embedders leave it out. */
+	projects?: HarnessProjectsLink;
 	/** The mount of the console; the brand leads there while no branch is resolved. */
 	base: string;
 	/** The repository this website shows; without a name no repository segment is drawn. */

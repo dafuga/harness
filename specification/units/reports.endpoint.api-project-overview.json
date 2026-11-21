@@ -1,0 +1,112 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.endpoint.api-project-overview",
+	"uid": "u_bbdcde2lmc",
+	"kind": "endpoint",
+	"title": "/api/project-overview",
+	"responsibility": "Returns the privacy-filtered tracker overview to requests from the local Explorer owner.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/routes/api/project-overview/+server.ts"],
+		"symbols": ["GET"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "GET.event",
+				"type": "RequestEvent",
+				"required": true,
+				"description": "The SvelteKit request and peer address checked by the Explorer owner policy."
+			}
+		],
+		"outputs": [
+			{
+				"name": "GET",
+				"type": "Promise<Response>",
+				"description": "A no-store JSON snapshot with status 200, or an unavailable body with status 403 or 503."
+			}
+		],
+		"errors": [
+			{
+				"name": "403",
+				"type": "Response",
+				"description": "The request failed the local owner and same-origin checks. The tracker is not read."
+			},
+			{
+				"name": "503",
+				"type": "Response",
+				"description": "The local tracker could not produce a valid snapshot."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "GET",
+				"inputs": [
+					{
+						"name": "GET.event",
+						"type": "RequestEvent",
+						"required": true,
+						"description": "The SvelteKit request and peer address checked by the Explorer owner policy."
+					}
+				],
+				"outputs": [
+					{
+						"name": "GET",
+						"type": "Promise<Response>",
+						"description": "A no-store JSON snapshot with status 200, or an unavailable body with status 403 or 503."
+					}
+				],
+				"errors": [
+					{
+						"name": "403",
+						"type": "Response",
+						"description": "The request failed the local owner and same-origin checks. The tracker is not read."
+					},
+					{
+						"name": "503",
+						"type": "Response",
+						"description": "The local tracker could not produce a valid snapshot."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.console-server",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-read-project-overview",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/routes/api/project-overview/+server.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/routes/api/project-overview/+server.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

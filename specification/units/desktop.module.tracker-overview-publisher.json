@@ -1,0 +1,174 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.tracker-overview-publisher",
+	"uid": "u_p43nh5e4yc",
+	"kind": "module",
+	"title": "Desktop background tracker overview publisher",
+	"responsibility": "Desktop background tracker overview publisher",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/TrackerOverviewPublisher.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/TrackerOverviewPublisher.types.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createTrackerOverviewPublisher.ts"
+		],
+		"symbols": [
+			"OVERVIEW_PUBLISH_INTERVAL_MS",
+			"TrackerOverviewPublisher",
+			"TrackerOverviewPublisher.constructor",
+			"TrackerOverviewPublisher.start",
+			"TrackerOverviewPublisher.stop",
+			"TrackerOverviewPublisher.tick",
+			"TrackerOverviewAuthority",
+			"TrackerOverviewTimers",
+			"TrackerOverviewPublisherOptions",
+			"TrackerOverviewFactoryInput",
+			"createTrackerOverviewPublisher"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "TrackerOverviewPublisher.constructor.options",
+				"type": "TrackerOverviewPublisherOptions",
+				"required": true
+			},
+			{
+				"name": "createTrackerOverviewPublisher.input",
+				"type": "TrackerOverviewFactoryInput",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "result",
+				"type": "Project Overview feature result",
+				"description": "Filtered display snapshot, safe navigation or the unit-specific admission outcome."
+			}
+		],
+		"errors": [
+			{
+				"name": "unavailable",
+				"type": "Unavailable or denied response",
+				"description": "Fail closed without carrying previous account data or credentials."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "TrackerOverviewPublisher.start",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerOverviewPublisher.start",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerOverviewPublisher.stop",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerOverviewPublisher.stop",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerOverviewPublisher.tick",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerOverviewPublisher.tick",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "createTrackerOverviewPublisher",
+				"inputs": [
+					{
+						"name": "createTrackerOverviewPublisher.input",
+						"type": "TrackerOverviewFactoryInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createTrackerOverviewPublisher",
+						"type": "TrackerOverviewPublisher | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerOverviewPublisher.constructor",
+				"inputs": [
+					{
+						"name": "TrackerOverviewPublisher.constructor.options",
+						"type": "TrackerOverviewPublisherOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOverviewPublisher.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.adapter.remote-http-project",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.validator.hosted-failure",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-read-project-overview",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/TrackerOverviewPublisher.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/TrackerOverviewPublisher.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

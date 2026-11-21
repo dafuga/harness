@@ -9,12 +9,15 @@
 	import HarnessConsole from './HarnessConsole.svelte';
 	let {
 		title,
-		content
+		content,
+		projectsHref = '/harness/projects'
 	}: {
 		/** What this screen of the explorer is called, for the title of its document. */
 		title: string;
 		/** The component that renders this screen; a page names its own and there is no other. */
 		content: ExplorerScreen;
+		/** The local explorer's Projects link; this screen is only ever the local explorer. */
+		projectsHref?: string;
 	} = $props();
 	const base = '/harness';
 	// Each branch, commit, category and entity is a page of its own route, so the router keeps
@@ -29,4 +32,5 @@
 	path={page.url.pathname.slice(base.length) + page.url.search}
 	{navigate}
 	{content}
+	{projectsHref}
 />

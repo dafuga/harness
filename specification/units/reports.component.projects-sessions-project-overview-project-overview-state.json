@@ -1,0 +1,91 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.projects-sessions-project-overview-project-overview-state",
+	"uid": "u_vfxty6iyq5",
+	"kind": "component",
+	"title": "ProjectOverviewState",
+	"responsibility": "Displays the text label and distinct marker for a project state.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.explorer-ui-explorer-kit-pill",
+			"reports.component.harness-harness-icon",
+			"reports.component.shared-primitives-atoms-html-span"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/components/projects-sessions/project-overview/ProjectOverviewState.svelte",
+			"packages/reports/src/components/projects-sessions/project-overview/ProjectOverviewState.types.ts"
+		],
+		"symbols": ["ProjectOverviewState", "ProjectOverviewStateProps"]
+	},
+	"contract": {
+		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-pill"],
+		"inputs": [
+			{
+				"name": "ProjectOverviewState.state",
+				"type": "ProjectState",
+				"required": true,
+				"description": "The current state of one project."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ProjectOverviewState",
+				"type": "markup",
+				"description": "A pill with a readable status label and a distinct decorative marker."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-project-overview-project-overview-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/project-overview/ProjectOverviewState.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/project-overview/ProjectOverviewState.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

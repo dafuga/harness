@@ -1,0 +1,151 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.endpoint.download-mac",
+	"uid": "u_hubmac2222",
+	"kind": "endpoint",
+	"title": "Public Mac ZIP download",
+	"responsibility": "Stream the single vetted Mac archive at /downloads/Harness-mac-arm64.zip from a dedicated private R2 binding.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/routes/downloads/[asset]/+server.ts"],
+		"symbols": ["trailingSlash", "GET", "HEAD"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "GET.url",
+				"type": "URL",
+				"required": true
+			},
+			{
+				"name": "GET.params",
+				"type": "{ asset: string }",
+				"required": true
+			},
+			{
+				"name": "GET.platform",
+				"type": "App.Platform | undefined",
+				"required": true
+			},
+			{
+				"name": "HEAD.url",
+				"type": "URL",
+				"required": true
+			},
+			{
+				"name": "HEAD.params",
+				"type": "{ asset: string }",
+				"required": true
+			},
+			{
+				"name": "HEAD.platform",
+				"type": "App.Platform | undefined",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "result",
+				"type": "Response",
+				"description": "GET streams the archive as application/zip with attachment name and content length. HEAD returns the same headers with no body. Both send no-store and nosniff."
+			}
+		],
+		"errors": [
+			{
+				"name": "not-found",
+				"type": "Response 404",
+				"description": "Opaque text/plain 404 for a missing binding, key, object, unvetted name or query. It never names a key, prefix or binding."
+			}
+		],
+		"operations": [
+			{
+				"name": "GET",
+				"inputs": [
+					{
+						"name": "GET.url",
+						"type": "URL",
+						"required": true
+					},
+					{
+						"name": "GET.params",
+						"type": "{ asset: string }",
+						"required": true
+					},
+					{
+						"name": "GET.platform",
+						"type": "App.Platform | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GET",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [
+					{
+						"name": "not-found",
+						"type": "Response 404",
+						"description": "Opaque text/plain 404 for a missing binding, key, object, unvetted name or query. It never names a key, prefix or binding."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "HEAD",
+				"inputs": [
+					{
+						"name": "HEAD.url",
+						"type": "URL",
+						"required": true
+					},
+					{
+						"name": "HEAD.params",
+						"type": "{ asset: string }",
+						"required": true
+					},
+					{
+						"name": "HEAD.platform",
+						"type": "App.Platform | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HEAD",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [
+					{
+						"name": "not-found",
+						"type": "Response 404",
+						"description": "Opaque text/plain 404 for a missing binding, key, object, unvetted name or query. It never names a key, prefix or binding."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/routes/downloads/[asset]/+server.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/routes/downloads/[asset]/+server.ts"
+			}
+		]
+	},
+	"scenarios": ["project-overview-mac-download"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

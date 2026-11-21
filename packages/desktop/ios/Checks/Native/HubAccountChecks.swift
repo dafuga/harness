@@ -47,7 +47,7 @@ private func awaited<T>(_ ask: (@escaping (T) -> Void) -> Void) -> T? {
 
 private let hubOrigin = URL(string: "https://hub.example.invalid")!
 private let hubProject = "/api/projects/11111111-1111-4111-8111-111111111111"
-private let hubToken = String(repeating: "t", count: 43)
+let hubToken = String(repeating: "t", count: 43)
 private let hubHandoff = String(repeating: "h", count: 43)
 private let hubAda: [String: Any] = ["id": "google:ada", "name": "Ada", "email": "ada@example.invalid", "emailVerified": true]
 private let hubKept = HubAccountCredential(origin: hubOrigin.absoluteString, subject: "google:ada", name: "Ada",
@@ -58,7 +58,7 @@ private func hubJSON(_ status: Int, _ object: [String: Any]) -> HubAccountReply 
 }
 
 /// One real `HubAccountSession` with a vault in memory, a Hub played here and a clock moved here.
-private final class AccountBench {
+final class AccountBench {
     let vault: MemoryAccountVault
     let hub: FakeHub
     let session: HubAccountSession

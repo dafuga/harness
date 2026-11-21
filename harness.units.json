@@ -68,6 +68,42 @@
 	],
 	"references": [
 		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/readProjectOverview",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/readProjectOverview.ts",
+			"reason": "Electron serves the fixed local tracker read through its trusted socket."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
+			"reason": "The Electron socket returns the same snapshot shape as the local website."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.types.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
+			"reason": "The desktop socket contract declares the shared overview snapshot type."
+		},
+		{
+			"from": "packages/desktop/src/models/development-tooling/DesktopBridge.types.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
+			"reason": "The preload contract uses the display-ready snapshot shape."
+		},
+		{
+			"from": "packages/desktop/src/routes/projects/+page.svelte",
+			"specifier": "$shared/projects-sessions/project-overview/ProjectOverview.svelte",
+			"to": "packages/reports/src/components/projects-sessions/project-overview/ProjectOverview.svelte",
+			"reason": "The bundled app renders the same project cards as the local website."
+		},
+		{
+			"from": "packages/desktop/src/routes/projects/+page.svelte",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
+			"reason": "The route distinguishes loading, unavailable and display-ready snapshots."
+		},
+		{
 			"from": "src/utils/execution-runtimes/kernelArtifacts.ts",
 			"specifier": "./kernel/",
 			"external": "kernel-build",
@@ -210,6 +246,12 @@
 			"specifier": "$shared/BrandMark.svelte",
 			"to": "packages/reports/src/components/BrandMark.svelte",
 			"reason": "The hosted frame renders the shared brand component through its configured $shared alias."
+		},
+		{
+			"from": "packages/hub/src/components/public-site/HomePage.svelte",
+			"specifier": "$shared/BrandMark.svelte",
+			"to": "packages/reports/src/components/BrandMark.svelte",
+			"reason": "The public Hub homepage renders the same brand component as the signed-in Hub frame."
 		},
 		{
 			"from": "packages/desktop/src/components/agents-providers/AgentSettings.svelte",
@@ -2136,6 +2178,90 @@
 			"specifier": "$reports/helpers/strings/shortCommit",
 			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
 			"reason": "Format commit identities consistently while retaining record and content digests."
+		},
+		{
+			"from": "packages/hub/src/routes/tracker-overview/+page.svelte",
+			"specifier": "$shared/projects-sessions/project-overview/ProjectOverview.svelte",
+			"to": "packages/reports/src/components/projects-sessions/project-overview/ProjectOverview.svelte",
+			"reason": "The hosted and native Project Overview surfaces share the Reports display contract."
+		},
+		{
+			"from": "packages/hub/src/routes/tracker-overview/+page.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "The hosted and native Project Overview surfaces share the Reports display contract."
+		},
+		{
+			"from": "packages/hub/src/routes/tracker-overview/overviewClient.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
+			"reason": "The hosted and native Project Overview surfaces share the Reports display contract."
+		},
+		{
+			"from": "packages/hub/src/routes/tracker-overview/overviewClient.types.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
+			"reason": "The hosted and native Project Overview surfaces share the Reports display contract."
+		},
+		{
+			"from": "packages/hub/src/routes/api/tracker-overview/trackerOverviewInput.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverviewPrivacy.ts",
+			"reason": "The hosted and native Project Overview surfaces share the Reports display contract."
+		},
+		{
+			"from": "packages/hub/src/routes/api/tracker-overview/trackerOverviewInput.types.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
+			"reason": "The hosted and native Project Overview surfaces share the Reports display contract."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/TrackerOverviewPublisher.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
+			"reason": "The hosted and native Project Overview surfaces share the Reports display contract."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/TrackerOverviewPublisher.types.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
+			"reason": "The hosted and native Project Overview surfaces share the Reports display contract."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createTrackerOverviewPublisher.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/readProjectOverview",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/readProjectOverview.ts",
+			"reason": "The hosted and native Project Overview surfaces share the Reports display contract."
+		},
+		{
+			"from": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
+			"reason": "The hosted and native Project Overview surfaces share the Reports display contract."
+		},
+		{
+			"from": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
+			"reason": "The hosted and native Project Overview surfaces share the Reports display contract."
+		},
+		{
+			"from": "packages/hub/src/routes/projects/+page.svelte",
+			"specifier": "$desktop/services/projects-sessions/ProjectSyncService",
+			"to": "packages/desktop/src/services/projects-sessions/ProjectSyncService.ts",
+			"reason": "The signed-in projects page shares focus and reconnect refresh."
+		},
+		{
+			"from": "packages/hub/src/routes/projects/+page.svelte",
+			"specifier": "$shared/projects-sessions/project-overview/ProjectOverview.svelte",
+			"to": "packages/reports/src/components/projects-sessions/project-overview/ProjectOverview.svelte",
+			"reason": "The owner sees the shared cards on the account page."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
+			"reason": "The native owner read returns the shared display snapshot."
 		}
 	]
 }

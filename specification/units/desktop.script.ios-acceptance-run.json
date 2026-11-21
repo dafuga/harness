@@ -126,7 +126,7 @@
 				"name": "openDesign.run",
 				"type": "Acceptance",
 				"required": true,
-				"description": "The TEST ONLY Acceptance context supplying the page and synthetic project name used by this flow. The operation also opens Review designs and waits for an image with nonzero naturalWidth."
+				"description": "The TEST ONLY Acceptance context supplying the page and synthetic project name used by this flow. The operation also opens the fixture page through its card and waits for an image with nonzero naturalWidth."
 			}
 		],
 		"outputs": [
@@ -208,7 +208,7 @@
 			{
 				"name": "openDesign",
 				"type": "Promise<string>",
-				"description": "Resolves with loaded after opening the named project, confirming its title, opening Review designs, and waiting for an image with nonzero naturalWidth. The returned value is the readiness marker, not the image.",
+				"description": "Resolves with loaded after opening the named project, confirming its title, opening the fixture page through its card, and waiting for an image with nonzero naturalWidth. The returned value is the readiness marker, not the image.",
 				"examples": ["loaded"]
 			}
 		],
@@ -439,14 +439,14 @@
 						"name": "openDesign.run",
 						"type": "Acceptance",
 						"required": true,
-						"description": "The TEST ONLY Acceptance context supplying the page and synthetic project name used by this flow. The operation also opens Review designs and waits for an image with nonzero naturalWidth."
+						"description": "The TEST ONLY Acceptance context supplying the page and synthetic project name used by this flow. The operation also opens the fixture page through its card and waits for an image with nonzero naturalWidth."
 					}
 				],
 				"outputs": [
 					{
 						"name": "openDesign",
 						"type": "Promise<string>",
-						"description": "Resolves with loaded after opening the named project, confirming its title, opening Review designs, and waiting for an image with nonzero naturalWidth. The returned value is the readiness marker, not the image.",
+						"description": "Resolves with loaded after opening the named project, confirming its title, opening the fixture page through its card, and waiting for an image with nonzero naturalWidth. The returned value is the readiness marker, not the image.",
 						"examples": ["loaded"]
 					}
 				],
