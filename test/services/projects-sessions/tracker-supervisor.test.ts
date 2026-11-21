@@ -1,9 +1,14 @@
 import { DatabaseSync } from 'node:sqlite';
+import { once } from 'node:events';
 import { test, vi } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { measureWorkload } from '../../support/measureWorkload';
 import { TrackerNativeRuntimeService } from '../../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { TrackerSupervisorService } from '../../../src/services/projects-sessions/TrackerSupervisorService';
+import { fixturePolicy, primary, secondary } from '../../support/trackerDispatcherFixture';
+
+const now = () => 1780000000000;
+const timestamp = new Date(now()).toISOString();
 
 test('reports node status and waits for in-flight work after cancellation', async () => {
 	await measureWorkload(
@@ -15,12 +20,7 @@ test('reports node status and waits for in-flight work after cancellation', asyn
 
 async function proveWorkerLifecycle() {
 	const database = new DatabaseSync(':memory:');
-	const now = () => 1780000000000;
-	const runtime = new TrackerNativeRuntimeService(database, {
-		node: 'fixture',
-		now,
-		role: 'spoke'
-	});
+	const runtime = configuredSpoke(database);
 	const abort = new AbortController();
 	const blocked = Promise.withResolvers<void>();
 	const entered = Promise.withResolvers<void>();
@@ -39,12 +39,7 @@ async function proveWorkerLifecycle() {
 	try {
 		await entered.promise;
 		await expect(service.run(abort.signal)).rejects.toThrow('already running');
-		expect(service.status()).toMatchObject({
-			role: 'spoke',
-			node: 'fixture',
-			db_id: runtime.store.dbId,
-			sync: { disabled: true }
-		});
+		await vi.waitFor(() => expectConnectedFleet(service, runtime));
 		await vi.waitFor(() => expect(notifications.mock.calls.length).toBeGreaterThan(1));
 		expect(adapter).toHaveBeenCalledTimes(1);
 		abort.abort();
@@ -59,4 +54,75 @@ async function proveWorkerLifecycle() {
 		database.close();
 	}
 	expect(adapter).toHaveBeenCalledTimes(1);
+}
+
+function expectConnectedFleet(
+	service: TrackerSupervisorService,
+	runtime: TrackerNativeRuntimeService
+) {
+	expect(service.status()).toMatchObject({
+		role: 'spoke',
+		node: primary,
+		db_id: runtime.store.dbId,
+		sync: {
+			hub: 'fixture-hub',
+			connected: true,
+			lastPullOk: timestamp,
+			lastPushOk: timestamp,
+			lastError: null,
+			pending_push: 0
+		},
+		autolaunch: {
+			computers: [
+				{ computer: primary, state: 'polling', active_runs: 0 },
+				{ computer: secondary, state: 'polling', last_tick_at: timestamp, active_runs: 2 },
+				{ computer: 'grok-box', state: 'offline', active_runs: null }
+			]
+		}
+	});
+}
+
+function configuredSpoke(database: DatabaseSync) {
+	let pulled = false;
+	const runtime = new TrackerNativeRuntimeService(database, {
+		node: primary,
+		now,
+		role: 'spoke',
+		dispatch: {
+			policy: fixturePolicy(now),
+			runner: { start: async () => undefined, observe: async () => undefined },
+			telemetry: { sample: () => ({ at: timestamp }) }
+		},
+		links: [
+			{
+				secret: 'synthetic-supervisor-status-fixture',
+				async transport(request, signal) {
+					if (request.pathAndQuery === '/sync/machine')
+						return {
+							ok: true,
+							machines: [
+								{
+									node: secondary,
+									at: timestamp,
+									runner: {
+										enabled: true,
+										last_tick_at: timestamp,
+										active: 2
+									}
+								}
+							]
+						};
+					if (request.method === 'POST') return { ok: true, db_id: 'fixture-db' };
+					if (!pulled) {
+						pulled = true;
+						return { hub: 'fixture-hub', db_id: 'fixture-db', ops: [], max: 0, last: 0 };
+					}
+					await once(signal, 'abort');
+					throw signal.reason;
+				}
+			}
+		]
+	});
+	runtime.store.appendLocal({ itemId: 'status-fixture', fields: { title: 'Status fixture' } });
+	return runtime;
 }
