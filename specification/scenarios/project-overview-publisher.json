@@ -62,7 +62,17 @@
 			"states": ["publish", "absent", "denied", "race"],
 			"required": true,
 			"viewports": []
+		},
+		{
+			"id": "publisher-screen",
+			"kind": "screenshot",
+			"states": ["publish"],
+			"viewports": ["desktop"],
+			"provenance": "actual-capture",
+			"capture": "viewport",
+			"build": "desktop-renderer",
+			"required": true
 		}
 	],
-	"viewports": []
+	"viewports": [{ "id": "desktop", "width": 1440, "height": 900 }]
 }

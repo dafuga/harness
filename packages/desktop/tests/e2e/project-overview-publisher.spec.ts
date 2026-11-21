@@ -4,6 +4,11 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
+import { buildStamp } from '../../../../src/utils/buildStamp';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import {
 	installTrackerDouble,
 	LEAK_SENTINELS,
@@ -55,9 +60,46 @@ async function waitForWire(hub: HubSpy, predicate: () => boolean): Promise<void>
 	const end = Date.now() + FLIGHT_WAIT_MS;
 	while (!predicate()) {
 		if (Date.now() > end)
-			throw new Error(`Hub spy saw no matching request: ${JSON.stringify(hub.records)}`);
+			throw new Error(`Hub spy saw no matching request among ${hub.records.length} requests.`);
 		await new Promise((done) => setTimeout(done, 250));
 	}
+}
+
+/** Shows the same display projection after the genuine main-process publish is observed. */
+async function capturePublishedOverview(app: ElectronApplication) {
+	const size = { width: 1440, height: 900 };
+	await app.evaluate(({ BrowserWindow }, viewport) => {
+		BrowserWindow.getAllWindows()[0].setContentSize(viewport.width, viewport.height);
+	}, size);
+	const page = await app.firstWindow();
+	await page.getByRole('link', { name: 'Project Overview', exact: true }).click();
+	await expect(page.getByText('fixture-needs', { exact: true }).first()).toBeVisible();
+	await expect.poll(() => page.evaluate(() => innerWidth)).toBe(size.width);
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await new Promise<void>((resolve) =>
+			requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+		);
+	});
+	const buildId = buildStamp(
+		(await page.locator('meta[name="harness-build"]').getAttribute('content')) ?? undefined
+	);
+	const revision = process.env.HARNESS_VERIFY_REVISION;
+	if (!buildId || !revision)
+		throw new Error('The publisher capture needs a stamped native renderer.');
+	recordCapture(
+		{
+			evidence: 'publisher-screen',
+			kind: 'screenshot',
+			state: 'publish',
+			viewport: 'desktop',
+			file: 'publisher-overview-desktop.png',
+			mediaType: 'image/png',
+			provenance: 'actual-capture',
+			server: { buildId, revision }
+		},
+		await page.screenshot({ animations: 'disabled', caret: 'hide', scale: 'css' })
+	);
 }
 
 test('the verified owner publishes the display snapshot over the real wire', async () => {
@@ -79,6 +121,7 @@ test('the verified owner publishes the display snapshot over the real wire', asy
 		const snapshot = JSON.parse(put?.body ?? 'null') as { status?: string };
 		expect(snapshot.status).toBe('ready');
 		for (const sentinel of LEAK_SENTINELS) expect(put?.body ?? '').not.toContain(sentinel);
+		if (evidenceRequested()) await capturePublishedOverview(app);
 	} finally {
 		await app.close();
 		await hub.close();
