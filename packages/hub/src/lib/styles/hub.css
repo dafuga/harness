@@ -150,7 +150,9 @@
 	grid-template-columns: minmax(0, 1fr);
 	max-width: 1520px;
 }
+/* The page's auto margins would size it to its widest chip row and push the cards past the frame. */
 .hub-main > .po-page {
+	width: 100%;
 	min-width: 0;
 }
 .po-page ~ .viewer-dialog {
