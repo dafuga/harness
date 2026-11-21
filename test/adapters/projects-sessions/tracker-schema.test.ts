@@ -74,6 +74,17 @@ test('initialize restores the previous schema if operation replay fails', () => 
 	});
 });
 
+test('sync metadata preserves independent cursors across initialization', () => {
+	schema.initialize();
+	expect(schema.getMeta('pushed_seq')).toBeNull();
+	schema.setMeta('pushed_seq', 14);
+	schema.setMeta('peer_pushed_seq', '7');
+	schema.setMeta('pushed_seq', 17);
+	expect(schema.initialize()).toEqual({ createdAt: 2600, dbId: 'fixture-db-id' });
+	expect(schema.getMeta('pushed_seq')).toBe('17');
+	expect(schema.getMeta('peer_pushed_seq')).toBe('7');
+});
+
 function seedOlderStore(): void {
 	database.exec(`
 		CREATE TABLE items(id TEXT PRIMARY KEY, title TEXT, status TEXT, deleted INTEGER, updated_at TEXT, clocks TEXT);
