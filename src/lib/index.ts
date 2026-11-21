@@ -8,3 +8,4 @@ export * from './development-tooling/sqlite';
 export * from './git-source-history/catalog';
 export * from './execution-runtimes/resources';
 export * from './development-tooling/atoms';
+export * from './projects';

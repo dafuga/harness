@@ -36,6 +36,7 @@ import {
 import { resourceConfigSchema, resourceRequestSchema, type ResourceRequest } from '@dafuga01/harness/resources';
 import * as root from '@dafuga01/harness';
 import { consolePolicy, consoleAccess, consoleRoutePath } from '@dafuga01/harness/console';
+import { readProjectList, type ProjectList } from '@dafuga01/harness/projects';
 const sdkPolicy = consolePolicy({ mode: 'loopback', bind: '127.0.0.1' });
 const sdkAccess = consoleAccess({ policy: sdkPolicy, data: { json: async () => undefined, media: async () => undefined } });
 const sdkRoute: string = consoleRoutePath({ branch: null, commit: 'a', view: 'map' });
@@ -60,7 +61,9 @@ const responses: RuntimeResponse[] = [];
 for (const runtime of runtimes) responses.push(await runtime.invoke(request));
 await Promise.all(runtimes.map((runtime) => runtime.close()));
 await served.close();
+const projects: ProjectList = await readProjectList(async () => Response.json([]), 0);
 console.log(JSON.stringify({
+	projects,
 	resources: { request: resourceRequest.priority, reserve: resourceConfigSchema.parse({}).cpuReservePercent },
 	id: manifest.id,
 	errors,
@@ -176,7 +179,7 @@ test('a packed consumer imports typed contracts and calls real adapters without 
 	for (const runner of ['bun', 'node']) {
 		const run = await measureProcess(
 			{
-				units: ['module.index', 'module.resources', 'module.verification'],
+				units: ['module.index', 'module.resources', 'module.verification', 'module.projects'],
 				workload: `cold-${runner}-packed-sdk`,
 				target: 'module',
 				command: [runner, 'consumer.ts', manifest, native],
@@ -188,6 +191,7 @@ test('a packed consumer imports typed contracts and calls real adapters without 
 		printed[runner] = result;
 		expect(result, runner).toMatchObject({
 			resources: { request: 'agent-test', reserve: 10 },
+			projects: { schema: 1, status: 'empty', projects: [] },
 			id: 'function.stable-json',
 			errors: [],
 			scenario: true,
@@ -198,7 +202,7 @@ test('a packed consumer imports typed contracts and calls real adapters without 
 			cli: 'undefined'
 		});
 		expect(result.rootExports).toEqual(
-			expect.arrayContaining(['componentManifestSchema', 'impactKernel'])
+			expect.arrayContaining(['componentManifestSchema', 'impactKernel', 'readProjectList'])
 		);
 		expect(run.stdout).not.toContain('Usage: harness');
 	}
