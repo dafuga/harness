@@ -12,13 +12,17 @@ import {
 import type { TrackerItemInput } from '../../../utils/projects-sessions/normalizeTrackerItemFields.types';
 import type { TrackerItemSnapshot } from '../../../utils/projects-sessions/planTrackerItemMutation.types';
 import { trackerItemError } from '../../../utils/projects-sessions/trackerItemError';
+import type { TrackerGuestAuthWriter } from '../tracker-native-runtime-service/nativeTrackerHostEffects.types';
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
 import { readPrivateText, trackerSyncPort } from './trackerNodeConfig';
 import type { TrackerNodeConfig } from './trackerNodeConfig.types';
 import { trackerNodeNotifications } from './trackerNodeNotifications';
 import { trackerUpstreamLink } from './trackerUpstreamLink';
 
-export function trackerNodeRuntime(config: TrackerNodeConfig): TrackerNativeRuntimeOptions {
+export function trackerNodeRuntime(
+	config: TrackerNodeConfig,
+	writeGuestAuth?: TrackerGuestAuthWriter
+): TrackerNativeRuntimeOptions {
 	const secret = readPrivateText(config.syncSecretFile).trim();
 	if (secret.length < 16) throw new TypeError('Tracker sync key is too short');
 	const hostEffectsHeld = config.hostEffects?.mode === 'held';
@@ -28,7 +32,7 @@ export function trackerNodeRuntime(config: TrackerNodeConfig): TrackerNativeRunt
 		node: config.node,
 		role: config.role,
 		notification,
-		hostEffects: configuredHostEffects(config),
+		hostEffects: configuredHostEffects(config, writeGuestAuth),
 		hostEffectsHeld,
 		manualLaunch: true,
 		...(config.role === 'hub' || config.peer
@@ -44,7 +48,8 @@ export function trackerNodeRuntime(config: TrackerNodeConfig): TrackerNativeRunt
 }
 
 function configuredHostEffects(
-	config: TrackerNodeConfig
+	config: TrackerNodeConfig,
+	writeGuestAuth?: TrackerGuestAuthWriter
 ): TrackerNativeRuntimeOptions['hostEffects'] {
 	const effects = config.hostEffects;
 	if (effects?.mode !== 'active') return undefined;
@@ -56,7 +61,8 @@ function configuredHostEffects(
 			node: config.node,
 			role: config.role,
 			apiPort: config.apiPort,
-			syncPort: trackerSyncPort(config)
+			syncPort: trackerSyncPort(config),
+			writeGuestAuth
 		},
 		adapter: adapter && {
 			...adapter,

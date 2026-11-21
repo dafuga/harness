@@ -196,7 +196,11 @@ The separate relay fixture in #164 uses the attached streams for its
 own protocol and does not compose with provider prompts and output.
 Production Docker needs a qualified provider credential and egress path,
 plus an item-scoped host-signed Tracker completion channel that works
-alongside provider I/O. The host-side client binding in this draft keeps
+alongside provider I/O. The optional node signer hook writes the private
+per-attempt authorization file just before launch. Its path reaches only
+the Linux host worker via `HARNESS_TRACKER_GUEST_AUTH_FILE`. This draft
+provides the consumer and leaves the signer and guest route to that
+integration. The host-side client binding keeps
 the daemon socket, signing key, and credentials outside guest storage.
 Worker exit alone never completes the Tracker item. Keep the Docker lane
 held on the protected hosts until the production seams pass rehearsal.
