@@ -2,6 +2,7 @@
 import type { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
+import type { TrackerListedRun } from '../../../repositories/projects-sessions/TrackerRunReadRepository.types';
 import {
 	classifyTrackerTask,
 	projectOf
@@ -14,6 +15,36 @@ import {
 	trackerRunReport
 } from '../../../utils/agents-providers/trackerRunReport';
 import type { TrackerLocalApiOptions } from '../TrackerLocalApiService.types';
+
+export function readTrackerItemDetail(item: TrackerItem, options: TrackerLocalApiOptions) {
+	const runs = options.runs?.list({ itemId: item.id }) ?? [];
+	const launch = itemLaunchStatus(item, runs);
+	return {
+		...item,
+		...(item.auto || runs.length ? { runs, launch_status: launch } : {}),
+		schedule_preview: readSchedulePreview(item, options, launch)
+	};
+}
+
+function readSchedulePreview(
+	item: TrackerItem,
+	options: TrackerLocalApiOptions,
+	launch: ReturnType<typeof itemLaunchStatus>
+) {
+	if (item.schedule_off) return 'automatic launch opted out';
+	if (item.launch_source === 'due' && launch) return launch.reason;
+	return options.schedulePreview?.(item) ?? item.schedule_status;
+}
+
+function itemLaunchStatus(item: TrackerItem, runs: TrackerListedRun[]) {
+	if (!item.auto) return null;
+	const matching = runs.filter((run) => run.auto_token === item.auto).reverse();
+	const current =
+		matching.find((run) => run.state === 'queued') ?? matching.find((run) => run.started_at);
+	if (!current) return null;
+	const computer = item.launch_target ?? current.node ?? item.computer;
+	return { computer, reason: current.outcome ?? current.state, attempt: current.attempt };
+}
 
 export function readTrackerRunEndpoint(
 	parts: string[],

@@ -67,6 +67,7 @@
 			"TrackerLaunchRequest",
 			"TrackerAttemptVersion",
 			"trackerFleetNodes",
+			"trackerNodeNames",
 			"minute",
 			"canonicalNode",
 			"knownNode",
@@ -78,10 +79,13 @@
 			"dueOwner",
 			"mayScheduleHere",
 			"dueItemHold",
+			"schedulingHold",
+			"isDueNow",
 			"hasOpenSession",
 			"attemptKey",
 			"matchesRequest",
 			"requestLaunch",
+			"previewDueLaunch",
 			"claimLaunch",
 			"prepareRetry",
 			"monitorRun",
@@ -179,6 +183,16 @@
 				"type": "TrackerDispatchEvent",
 				"required": true,
 				"description": "Trusted session, monitor, verification, startup failure, answer or rejection evidence supplied by the caller."
+			},
+			{
+				"name": "trackerNodeNames.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerNodeNames.hub",
+				"type": "boolean",
+				"required": true
 			},
 			{
 				"name": "canonicalNode.name",
@@ -291,6 +305,26 @@
 				"required": true
 			},
 			{
+				"name": "schedulingHold.item",
+				"type": "TrackerDispatchItem",
+				"required": true
+			},
+			{
+				"name": "isDueNow.due",
+				"type": "string | null | undefined",
+				"required": true
+			},
+			{
+				"name": "isDueNow.timezone",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "isDueNow.now",
+				"type": "number",
+				"required": true
+			},
+			{
 				"name": "hasOpenSession.snapshot",
 				"type": "TrackerDispatchSnapshot",
 				"required": true
@@ -347,6 +381,21 @@
 			},
 			{
 				"name": "requestLaunch.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "previewDueLaunch.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "previewDueLaunch.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "previewDueLaunch.now",
 				"type": "number",
 				"required": true
 			},
@@ -730,6 +779,29 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "trackerNodeNames",
+				"inputs": [
+					{
+						"name": "trackerNodeNames.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerNodeNames.hub",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerNodeNames",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "canonicalNode",
 				"inputs": [
 					{
@@ -970,6 +1042,52 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "schedulingHold",
+				"inputs": [
+					{
+						"name": "schedulingHold.item",
+						"type": "TrackerDispatchItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "schedulingHold",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isDueNow",
+				"inputs": [
+					{
+						"name": "isDueNow.due",
+						"type": "string | null | undefined",
+						"required": true
+					},
+					{
+						"name": "isDueNow.timezone",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "isDueNow.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isDueNow",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "hasOpenSession",
 				"inputs": [
 					{
@@ -1076,6 +1194,34 @@
 					{
 						"name": "requestLaunch",
 						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "previewDueLaunch",
+				"inputs": [
+					{
+						"name": "previewDueLaunch.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "previewDueLaunch.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "previewDueLaunch.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "previewDueLaunch",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

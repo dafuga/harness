@@ -25,6 +25,7 @@ const configFields = {
 	legacyFenceFile: absolutePath,
 	legacySupervisorSocket: absolutePath.optional(),
 	syncSecretFile: absolutePath,
+	backupDirectory: absolutePath.optional(),
 	hostEffects: trackerHostEffectsSchema.optional(),
 	notifications: z
 		.strictObject({

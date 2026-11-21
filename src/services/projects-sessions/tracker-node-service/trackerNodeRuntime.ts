@@ -31,6 +31,7 @@ export function trackerNodeRuntime(
 	return {
 		node: config.node,
 		role: config.role,
+		backupDirectory: config.backupDirectory,
 		notification,
 		hostEffects: configuredHostEffects(config, writeGuestAuth),
 		hostEffectsHeld,

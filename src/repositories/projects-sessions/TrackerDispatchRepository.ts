@@ -49,7 +49,7 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 		decide: (snapshot: TrackerDispatchSnapshot) => TrackerDispatchDecision
 	): Promise<TrackerDispatchResult> {
 		return this.store.commitLocal(() => {
-			const { result, writes } = decide(this.snapshot(itemId));
+			const { result, writes } = decide(this.readSnapshot(itemId));
 			for (const run of writes?.runs ?? []) persistDispatchRun(this.store, run, this.node);
 			if (writes?.lastDueStartAt !== undefined)
 				this.store.writeMeta({ [dueStartKey]: String(writes.lastDueStartAt) });
@@ -109,7 +109,7 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 		});
 	}
 
-	private snapshot(itemId: string): TrackerDispatchSnapshot {
+	readSnapshot(itemId: string): TrackerDispatchSnapshot {
 		const database = this.store.database;
 		const row = database.prepare('SELECT * FROM items WHERE id = ?').get(itemId) as
 			| TrackerDispatchRow

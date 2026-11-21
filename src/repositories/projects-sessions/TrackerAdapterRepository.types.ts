@@ -48,3 +48,9 @@ export interface TrackerAdapterSourceRow {
 	cursor: number;
 	paused: number;
 }
+
+export interface TrackerAdapterListRow extends TrackerAdapterSourceRow {
+	id: string;
+	last_run: number | null;
+	last_error: string | null;
+}

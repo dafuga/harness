@@ -1,0 +1,60 @@
+{
+	"name": "tracker-cli-compat",
+	"goal": "Prove the five priority legacy CLI surfaces using isolated native fixtures while preserving read-only inspections and legacy output and command exits.",
+	"createdAt": "2026-11-21T21:50:41.611Z",
+	"updatedAt": "2026-11-21T22:10:13.315Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-21T21:52:05.913Z",
+			"evidence": "Compared legacy 7acf3ca command switches, output formatters, and daemon routes to f7aa66cce4 native CLI and API."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-21T21:52:07.087Z",
+			"evidence": "The existing TrackerCommand suite covered only the retained-client fence and run/model request parsing. Extend the suite with native command-to-dispatcher fixtures for the five missing command capabilities."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-21T22:05:40.549Z",
+			"evidence": "At 6680997560, the unchanged command fixture suite reported five failures and three passes: show emitted JSON in human mode, and ignore, autolaunch, adapter list, and backup list were unavailable."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-21T22:05:42.282Z",
+			"evidence": "Connected CLI parsing and rendering to native item transitions, run/due reads, adapter ownership and backup metadata."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T22:10:13.315Z",
+			"evidence": "The same committed command, assertions and fixtures passed all eight tests in a clean snapshot of the fix."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
