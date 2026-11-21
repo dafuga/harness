@@ -1,5 +1,4 @@
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { format, type Options } from 'prettier';
 import { test } from 'vitest';
@@ -9,6 +8,7 @@ import { projectFiles } from '../src/templates/projects-sessions/project';
 import { measureWorkload } from './support/measureWorkload';
 import { assertFoundationLint } from './support/project-template/foundations';
 import { assertAtomCompiler } from './support/project-template/atoms';
+import { withTempDir } from './support/temporary';
 
 test(
 	'generated element atoms preserve native compilation and emitted runtime source',
@@ -130,9 +130,8 @@ test('static apps scaffold a prerendered build while default apps use adapter-au
 		expect(defaults.some((file) => file.path === 'src/routes/+layout.ts')).toBe(false);
 	}));
 
-test('project creation writes a static app and rejects unsupported adapter requests before writing', async () => {
-	const root = await mkdtemp(join(tmpdir(), 'harness-static-app-'));
-	try {
+test('project creation writes a static app and rejects unsupported adapter requests before writing', () =>
+	withTempDir('harness-static-app-', async (root) => {
 		const created = await measureWorkload(
 			'workflow.create-project',
 			'create-static-app-files',
@@ -153,10 +152,7 @@ test('project creation writes a static app and rejects unsupported adapter reque
 				code: 'ENOENT'
 			});
 		}
-	} finally {
-		await rm(root, { recursive: true, force: true });
-	}
-});
+	}));
 
 test.each(['app', 'lib'] as const)(
 	'generated %s code and testing foundations obey their formatter and lint settings',
