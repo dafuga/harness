@@ -1,0 +1,101 @@
+{
+	"schemaVersion": 1,
+	"id": "template.game-authoring-godot-project",
+	"uid": "u_7n2divksx4",
+	"kind": "template",
+	"title": "Godot project",
+	"responsibility": "Plans the Godot scene, headless check and export files used by the Harness game scaffold.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/templates/game-authoring/godotProject.ts"],
+		"symbols": ["godotProjectFiles"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "godotProjectFiles.input",
+				"type": "ProjectTemplateInput",
+				"required": true,
+				"description": "Reads the name and optional dimension from a selected Godot game request. The caller validates the name and dimension. The template defaults to 2d.",
+				"examples": [
+					{
+						"kind": "game",
+						"name": "terrain-demo",
+						"dimension": "3d",
+						"engine": "godot"
+					}
+				]
+			}
+		],
+		"outputs": [
+			{
+				"name": "godotProjectFiles",
+				"type": "PlannedFile[]",
+				"description": "Returns relative paths and contents for the project, matching scene and headless test, macOS and Web export presets and runner scripts."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "godotProjectFiles",
+				"inputs": [
+					{
+						"name": "godotProjectFiles.input",
+						"type": "ProjectTemplateInput",
+						"required": true,
+						"description": "Reads the name and optional dimension from a selected Godot game request. The caller validates the name and dimension. The template defaults to 2d.",
+						"examples": [
+							{
+								"kind": "game",
+								"name": "terrain-demo",
+								"dimension": "3d",
+								"engine": "godot"
+							}
+						]
+					}
+				],
+				"outputs": [
+					{
+						"name": "godotProjectFiles",
+						"type": "PlannedFile[]",
+						"description": "Returns relative paths and contents for the project, matching scene and headless test, macOS and Web export presets and runner scripts."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.project",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/templates/game-authoring/godotProject.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/templates/game-authoring/godotProject.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

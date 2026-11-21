@@ -4,14 +4,15 @@ export const gameGuide: Guide = {
 	topic: 'game',
 	summary: 'Create 2D or 3D games with independent mechanics and executable checkpoint graphs.',
 	steps: [
-		'Create a game project and choose its dimension.',
-		'Open the project in the desktop workspace and select Game Views.',
+		'Create a game project and choose its engine and dimension.',
+		'For Godot, edit the scene and GDScript, run bun run check and export with bun run build.',
+		'For SvelteKit, open the project in the desktop workspace and select Game Views.',
 		'Edit graph conditions, consequences and AI guidance; save game.json.',
 		'Implement mechanics against shared state/input/event contracts.'
 	],
 	rules: [
-		'Game projects retain app generators and pages.',
-		'Native Three.js owns 2D/3D gameplay; generate and save image assets during authoring.',
+		'SvelteKit games retain app generators and pages and use Three.js for their 2D/3D gameplay.',
+		'Godot games use headless scene tests and macOS and Web exports. Capture rendered scenes from the Web export in headless Chromium or from the native game.',
 		'Use GPT Image or another chosen image model for textures/sprites; build geometry or import GLB separately.',
 		'AI rendering is off by default; keep rendering experiments explicitly opt-in.',
 		'AI preview is disabled pending a credential-safe transport; prepared sessions cap at 60 seconds.',
@@ -22,6 +23,7 @@ export const gameGuide: Guide = {
 		'Do not put arbitrary code in checkpoint data.'
 	],
 	exampleCommands: [
+		'harness new game harbor-lottery --engine godot --dimension 2d',
 		'harness new game adventure --dimension 3d',
 		'harness generate game-view courtyard',
 		'harness generate mechanic movement',

@@ -18,7 +18,7 @@
 				"name": "registerNewCommand.program",
 				"type": "Command",
 				"required": true,
-				"description": "Registers app, game and lib commands. The app command takes an optional --adapter value of auto or static."
+				"description": "Registers app, game and lib commands. Apps support --adapter auto or static. Games support --engine sveltekit or godot and --dimension 2d or 3d."
 			}
 		],
 		"outputs": [
@@ -44,7 +44,7 @@
 						"name": "registerNewCommand.program",
 						"type": "Command",
 						"required": true,
-						"description": "Registers app, game and lib commands. The app command takes an optional --adapter value of auto or static."
+						"description": "Registers app, game and lib commands. Apps support --adapter auto or static. Games support --engine sveltekit or godot and --dimension 2d or 3d."
 					}
 				],
 				"outputs": [

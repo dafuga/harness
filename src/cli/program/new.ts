@@ -19,8 +19,9 @@ export function registerNewCommand(program: Command): void {
 		.command('game <name>')
 		.option('--force', 'Overwrite existing files.')
 		.option('--dimension <dimension>', '2d or 3d.', '2d')
+		.option('--engine <engine>', 'Game engine: sveltekit (default) or godot.')
 		.description('Create a game with independent views, mechanics and checkpoints.')
-		.action((name: string, options: { force?: boolean; dimension: '2d' | '3d' }) =>
+		.action((name: string, options: Pick<CreateProjectInput, 'force' | 'dimension' | 'engine'>) =>
 			runCreateProject('game', name, options)
 		);
 
@@ -34,7 +35,7 @@ export function registerNewCommand(program: Command): void {
 async function runCreateProject(
 	kind: ProjectKind,
 	name: string,
-	options: Pick<CreateProjectInput, 'force' | 'dimension' | 'adapter'>
+	options: Pick<CreateProjectInput, 'force' | 'dimension' | 'adapter' | 'engine'>
 ): Promise<void> {
 	const result = await createProject({ kind, name, ...options });
 	console.log(renderCreateProject(result));

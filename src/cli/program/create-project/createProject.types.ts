@@ -9,6 +9,7 @@ export interface CreateProjectInput {
 	parent?: string;
 	dimension?: '2d' | '3d';
 	adapter?: string;
+	engine?: string;
 }
 
 export interface CreateProjectResult {

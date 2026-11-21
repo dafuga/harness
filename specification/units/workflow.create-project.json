@@ -29,14 +29,18 @@
 				"name": "createProject.input",
 				"type": "CreateProjectInput",
 				"required": true,
-				"description": "Provides kind and name, plus optional parent, dimension, force, and adapter. App adapters are auto (default) or static. Other project kinds reject an explicit adapter before writing files.",
+				"description": "Provides kind and name with optional parent, force and dimension. Apps support adapter auto or static. Games support engine sveltekit or godot. The workflow validates both options before writing.",
 				"examples": [
 					{
 						"kind": "app",
 						"name": "ledger-console",
-						"force": true,
-						"parent": "packages",
-						"dimension": "3d"
+						"adapter": "static"
+					},
+					{
+						"kind": "game",
+						"name": "terrain-demo",
+						"dimension": "3d",
+						"engine": "godot"
 					}
 				]
 			},
@@ -94,6 +98,26 @@
 				"name": "Project file failure",
 				"type": "thrown",
 				"description": "An error from template generation, parent creation, or planned-file writing rejects the returned promise. This function does not roll back writes completed before a later failure."
+			},
+			{
+				"name": "ExpectedCliError(\"The SvelteKit adapter is only available for app projects.\")",
+				"type": "thrown",
+				"description": "An explicit adapter was supplied for a library or game. The workflow rejects before generating or writing files."
+			},
+			{
+				"name": "ExpectedCliError(\"Unsupported app adapter. Use auto or static.\")",
+				"type": "thrown",
+				"description": "The app adapter is neither auto nor static. The workflow rejects before generating or writing files."
+			},
+			{
+				"name": "ExpectedCliError(\"The engine is only available for game projects.\")",
+				"type": "thrown",
+				"description": "An explicit engine was supplied for an app or library. The workflow rejects before generating or writing files."
+			},
+			{
+				"name": "ExpectedCliError(\"Unsupported game engine. Use sveltekit or godot.\")",
+				"type": "thrown",
+				"description": "The game engine is neither sveltekit nor godot. The workflow rejects before generating or writing files."
 			}
 		],
 		"errorStatus": "declared",
@@ -105,14 +129,18 @@
 						"name": "createProject.input",
 						"type": "CreateProjectInput",
 						"required": true,
-						"description": "Provides kind and name, plus optional parent, dimension, force, and adapter. App adapters are auto (default) or static. Other project kinds reject an explicit adapter before writing files.",
+						"description": "Provides kind and name with optional parent, force and dimension. Apps support adapter auto or static. Games support engine sveltekit or godot. The workflow validates both options before writing.",
 						"examples": [
 							{
 								"kind": "app",
 								"name": "ledger-console",
-								"force": true,
-								"parent": "packages",
-								"dimension": "3d"
+								"adapter": "static"
+							},
+							{
+								"kind": "game",
+								"name": "terrain-demo",
+								"dimension": "3d",
+								"engine": "godot"
 							}
 						]
 					}
@@ -151,6 +179,26 @@
 						"name": "Project file failure",
 						"type": "thrown",
 						"description": "An error from template generation, parent creation, or planned-file writing rejects the returned promise. This function does not roll back writes completed before a later failure."
+					},
+					{
+						"name": "ExpectedCliError(\"The SvelteKit adapter is only available for app projects.\")",
+						"type": "thrown",
+						"description": "An explicit adapter was supplied for a library or game. The workflow rejects before generating or writing files."
+					},
+					{
+						"name": "ExpectedCliError(\"Unsupported app adapter. Use auto or static.\")",
+						"type": "thrown",
+						"description": "The app adapter is neither auto nor static. The workflow rejects before generating or writing files."
+					},
+					{
+						"name": "ExpectedCliError(\"The engine is only available for game projects.\")",
+						"type": "thrown",
+						"description": "An explicit engine was supplied for an app or library. The workflow rejects before generating or writing files."
+					},
+					{
+						"name": "ExpectedCliError(\"Unsupported game engine. Use sveltekit or godot.\")",
+						"type": "thrown",
+						"description": "The game engine is neither sveltekit nor godot. The workflow rejects before generating or writing files."
 					}
 				],
 				"errorStatus": "declared"

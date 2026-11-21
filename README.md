@@ -129,6 +129,8 @@ the printed request id if an agent start's response is lost.
 - `app` scaffolds a SvelteKit-shaped application inspired by Daniel's `app-template`.
 - `dapp` audits SvelteKit dApps with Antelope or Harbor smart-contract folders.
 - `lib` scaffolds a Bun TypeScript package.
+- `game` scaffolds a SvelteKit game or, with `--engine godot`, a Godot 4.6
+  scene with headless checks and macOS and Web exports.
 
 ## Local SQLite models and queries
 

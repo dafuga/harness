@@ -51,6 +51,7 @@ test('coverage reports covered, ignored, and unknown files', async () => {
 	try {
 		await mkdir(join(root, 'src'));
 		await mkdir(join(root, 'node_modules'));
+		await mkdir(join(root, '.godot/editor'), { recursive: true });
 		await writeFile(join(root, 'src/index.ts'), 'export const value = 1;\n');
 		await writeFile(join(root, 'src/component.vue'), '<template />\n');
 		await writeFile(join(root, 'node_modules/ignored.ts'), 'export const ignored = true;\n');
@@ -60,6 +61,8 @@ test('coverage reports covered, ignored, and unknown files', async () => {
 		expect(result.coverage.coveredFiles).toContain('src/index.ts');
 		expect(result.coverage.unknownFiles).toContain('src/component.vue');
 		expect(result.coverage.ignoredPaths).toContain('node_modules/');
+		expect(result.coverage.ignoredPaths).toContain('.godot/');
+		expect(result.findings.some((finding) => finding.path.startsWith('.godot/'))).toBe(false);
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}

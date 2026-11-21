@@ -11,6 +11,7 @@ import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { bunMaxRssBytes, gameCommand } from './support/gameCommand';
+import { measureWorkload } from './support/measureWorkload';
 
 /** Bun 1.2.18 reports raw ru_maxrss: bytes on macOS, KiB on Linux and Windows. 50 MiB each. */
 const maxRssUnits: [string, number, number][] = [
@@ -154,3 +155,25 @@ test('game build scripts retain engine bytes and audit through the project CLI',
 function observeScript(unit: string, command: string[], cwd: string) {
 	return gameCommand(command, cwd, { units: [unit], workload: unit + '.normal-script' });
 }
+
+test('Godot game scaffolds expose headless tests and native and web builds', async () => {
+	const input = { kind: 'game', name: 'godot-proof', dimension: '2d', engine: 'godot' } as const;
+	const files = await measureWorkload('template.project', 'plan-godot-game-files', () =>
+		projectFiles(input)
+	);
+	const contents = new Map(files.map((file) => [file.path, file.contents]));
+	const manifest = JSON.parse(contents.get('package.json')!);
+	expect(manifest.harness).toEqual({ kind: 'game', engine: 'godot', dimension: '2d' });
+	expect(manifest.scripts.check).toBe('bun run test && harness audit .');
+	expect(manifest.scripts.test).toBe('bun scripts/godot.ts test');
+	expect(manifest.scripts['build:web']).toBe('bun scripts/godot.ts web');
+	expect(manifest.scripts['build:native']).toBe('bun scripts/godot.ts native');
+	expect(contents.get('project.godot')).toContain('res://game.tscn');
+	expect(contents.get('game.tscn')).toContain('type="Node2D"');
+	expect(contents.get('export_presets.cfg')).toContain('platform="Web"');
+	expect(contents.get('export_presets.cfg')).toContain('platform="macOS"');
+	expect(contents.get('scripts/godot.ts')).toContain('--headless');
+	expect(contents.has('svelte.config.js')).toBe(false);
+	const files3d = projectFiles({ ...input, dimension: '3d' });
+	expect(files3d.find((file) => file.path === 'game.tscn')?.contents).toContain('type="Node3D"');
+});
