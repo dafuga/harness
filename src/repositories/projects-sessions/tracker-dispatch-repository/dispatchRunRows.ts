@@ -76,11 +76,11 @@ function localRows(database: SqliteDatabase, where: string, ...bindings: SqliteV
 }
 
 function receipt(row: TrackerStoredDispatchRun, node: string): TrackerRunReceipt {
-	const reservation = row.reservation
-		? (JSON.parse(row.reservation) as TrackerRunReservation)
+	const { reservation: encodedReservation, ...fields } = row;
+	const reservation = encodedReservation
+		? (JSON.parse(encodedReservation) as TrackerRunReservation)
 		: undefined;
 	const metadata = reservation?.signature === signature(row) ? reservation : undefined;
-	const { reservation: _, ...fields } = row;
 	return {
 		...fields,
 		node,

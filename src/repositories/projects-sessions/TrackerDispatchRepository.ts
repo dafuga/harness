@@ -85,7 +85,7 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 			runs,
 			nextRunId: id,
 			activeSessionKeys: sessions?.activeSessionKeys,
-			openSession: sessions?.openSession || this.unmanagedSession(itemId),
+			openSession: sessions?.openSession === true || this.unmanagedSession(itemId),
 			due: this.options.due?.(),
 			lastDueStartAt: lastDueStartAt === null ? undefined : Number(lastDueStartAt)
 		};
@@ -100,7 +100,7 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 				.prepare(
 					"SELECT 1 FROM runs WHERE item_id = ? AND (auto_token IS NULL OR state = 'observed') AND state IN ('queued','running','verifying','observed') LIMIT 1"
 				)
-				.get(itemId) ||
+				.get(itemId) ??
 			db
 				.prepare(
 					"SELECT 1 FROM remote_runs WHERE item_id = ? AND (auto_token IS NULL OR state = 'observed') AND state IN ('queued','running','verifying','observed') AND coalesce(resumed_at, started_at, queued_at, 0) >= ? LIMIT 1"
