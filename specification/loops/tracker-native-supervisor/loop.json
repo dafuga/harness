@@ -1,0 +1,41 @@
+{
+	"name": "tracker-native-supervisor",
+	"goal": "Prove durable launch ownership and process adoption, recurring and job receipt replay, and supervised shutdown with legacy status and rollback on disposable Tracker state",
+	"createdAt": "2026-11-21T16:39:07.598Z",
+	"updatedAt": "2026-11-21T16:40:23.318Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T16:40:23.318Z",
+			"evidence": "Use the pinned legacy tables and journal. Prove rollback, stale and competing claims, committed-start recovery, status and cancellation on synthetic services. Keep actual providers, destinations, job commands, and all installed supervisors outside the fixture."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

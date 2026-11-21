@@ -12,22 +12,27 @@ export class TrackerAdapterLeaseAdapter implements TrackerAdapterLease {
 	) {}
 
 	tryAcquire(): (() => void) | null {
-		prepareLockFile(this.path);
-		const lock = openSqlite(this.path);
-		try {
-			lock.exec('PRAGMA busy_timeout = 0; BEGIN EXCLUSIVE');
-		} catch (error) {
-			lock.close();
-			if (leaseBusy(error)) return null;
-			throw new TrackerAdapterLeaseError('Could not acquire the Tracker adapter lease');
-		}
-		let released = false;
-		return () => {
-			if (released) return;
-			released = true;
-			lock.close();
-		};
+		return tryAcquireTrackerSqliteLease(this.path);
 	}
+}
+
+/** A private SQLite writer lock released by closing the connection or exiting the process. */
+export function tryAcquireTrackerSqliteLease(path: string): (() => void) | null {
+	prepareLockFile(path);
+	const lock = openSqlite(path);
+	try {
+		lock.exec('PRAGMA busy_timeout = 0; BEGIN EXCLUSIVE');
+	} catch (error) {
+		lock.close();
+		if (leaseBusy(error)) return null;
+		throw new TrackerAdapterLeaseError('Could not acquire the Tracker SQLite lease');
+	}
+	let released = false;
+	return () => {
+		if (released) return;
+		released = true;
+		lock.close();
+	};
 }
 
 function prepareLockFile(path: string): void {
@@ -36,7 +41,7 @@ function prepareLockFile(path: string): void {
 	try {
 		const stat = fstatSync(fd);
 		if (!stat.isFile() || stat.nlink !== 1) {
-			throw new TrackerAdapterLeaseError('Invalid Tracker adapter lock file');
+			throw new TrackerAdapterLeaseError('Invalid Tracker SQLite lock file');
 		}
 		if (stat.mode & 0o077) fchmodSync(fd, 0o600);
 	} finally {

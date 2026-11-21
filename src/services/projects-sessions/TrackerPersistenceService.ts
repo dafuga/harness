@@ -6,6 +6,7 @@ import type { TrackerSchemaAdapterConfig } from '../../adapters/projects-session
 import type { SqliteDatabase } from '../../core/development-tooling/sqliteTypes';
 import { TrackerOperationRepository } from '../../repositories/projects-sessions/TrackerOperationRepository';
 import type {
+	TrackerLocalCommit,
 	TrackerLocalOperation,
 	TrackerOperation,
 	TrackerOperationFilter,
@@ -74,6 +75,13 @@ export class TrackerPersistenceService {
 		const operation = this.journal.appendLocal({ ...request, node: this.node }, persist);
 		this.changes.emit('change');
 		return operation;
+	}
+
+	/** Publish a journal wake only after all writes in a synchronous decision have committed. */
+	commitLocal<T>(decide: () => TrackerLocalCommit<T>): T {
+		const { result, changed } = this.journal.commitLocal(this.node, decide);
+		if (changed) this.changes.emit('change');
+		return result;
 	}
 
 	subscribe(listener: () => void): () => void {
