@@ -2,7 +2,7 @@
 	"name": "tracker-spoke-lifecycle",
 	"goal": "Drive durable Tracker push and pull from one abortable spoke-side lifecycle, including lost-receipt retries, identity replay and shutdown.",
 	"createdAt": "2026-11-21T16:19:32.191Z",
-	"updatedAt": "2026-11-21T16:19:33.857Z",
+	"updatedAt": "2026-11-21T16:22:25.462Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -17,12 +17,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T16:22:23.328Z",
+			"evidence": "One generation per link drives pull backoff, immediate push on journal changes, periodic receipt retry, and identity replay. Abort cancels requests and timers and joins both workers before shutdown."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T16:22:25.462Z",
+			"evidence": "Unchanged fixture rejects overlapping owners and observed two push attempts with one unique op after a dropped reply, plus cancellation of the outstanding pull. Local red at 8682c7b4fd and green with the implementation."
 		},
 		{
 			"id": "verify",
