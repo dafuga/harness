@@ -1,0 +1,62 @@
+{
+	"name": "hzcrh4-cancel-verified-build",
+	"goal": "Cancelling a verified artifact build stops its owned process tree, releases admission, and removes the source snapshot.",
+	"createdAt": "2026-11-21T11:02:45.939Z",
+	"updatedAt": "2026-11-21T11:25:34.586Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-21T11:03:56.743Z",
+			"evidence": "An admitted setup starts a child. Cancelling verification must stop that child and remove its exact-commit snapshot."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-21T11:03:57.058Z",
+			"evidence": "The retained-output case verifies success and a missing file. The SDK fixture checked pre-abort only. The snapshot case now waits on a real setup descendant, then checks child exit and snapshot teardown."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-21T11:25:32.659Z",
+			"evidence": "Exact snapshot regression failed with descendant and snapshot still present. Recorded on harbor-mbp-2."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-21T11:25:33.279Z",
+			"evidence": "An admitted verification process propagates cancellation to its checks and preserves its Bun signal handler."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T11:25:34.586Z",
+			"evidence": "The unchanged regression passed on harbor-mbp-2. The packaged CLI separately passed cleanup from the real Node SDK."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
