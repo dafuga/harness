@@ -68,7 +68,9 @@
 							"input": {
 								"base": {
 									"nodes": ["reports.component.evidence-grid", "reports.component.kernel"],
-									"edges": [[0, 1]]
+									"edges": [
+										[0, 1]
+									]
 								},
 								"head": {
 									"nodes": [
@@ -111,7 +113,9 @@
 							"input": {
 								"base": {
 									"nodes": ["reports.component.evidence-grid", "reports.component.kernel"],
-									"edges": [[0, 1]]
+									"edges": [
+										[0, 1]
+									]
 								},
 								"head": {
 									"nodes": [
@@ -137,7 +141,9 @@
 				"type": "string[]",
 				"required": true,
 				"description": "CLI command vector whose first string is passed to spawn and whose remaining strings precede kernel serve --port 0 --runtime module. The vector must contain an executable command; the function does not validate it first.",
-				"examples": [["harness"]]
+				"examples": [
+					["harness"]
+				]
 			},
 			{
 				"name": "serveKernel.startupTimeoutMs",
@@ -422,7 +428,9 @@
 									"input": {
 										"base": {
 											"nodes": ["reports.component.evidence-grid", "reports.component.kernel"],
-											"edges": [[0, 1]]
+											"edges": [
+												[0, 1]
+											]
 										},
 										"head": {
 											"nodes": [
@@ -695,7 +703,9 @@
 									"input": {
 										"base": {
 											"nodes": ["reports.component.evidence-grid", "reports.component.kernel"],
-											"edges": [[0, 1]]
+											"edges": [
+												[0, 1]
+											]
 										},
 										"head": {
 											"nodes": [
@@ -745,7 +755,9 @@
 						"type": "string[]",
 						"required": true,
 						"description": "CLI command vector whose first string is passed to spawn and whose remaining strings precede kernel serve --port 0 --runtime module. The vector must contain an executable command; the function does not validate it first.",
-						"examples": [["harness"]]
+						"examples": [
+							["harness"]
+						]
 					},
 					{
 						"name": "serveKernel.startupTimeoutMs",

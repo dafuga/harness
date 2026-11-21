@@ -32,7 +32,9 @@
 				"required": false,
 				"default": {},
 				"description": "Optional header-capable socket constructor used to open relay connections. Defaults to {}; when socket is absent, open uses the global WebSocket constructor.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "RelaySocketAdapter.open.url",
@@ -118,7 +120,9 @@
 						"required": false,
 						"default": {},
 						"description": "Optional header-capable socket constructor used to open relay connections. Defaults to {}; when socket is absent, open uses the global WebSocket constructor.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [

@@ -39,7 +39,9 @@
 				"name": "projects",
 				"type": "Promise<DesktopProject[]>",
 				"description": "Returns deduplicated projects from bridges that expose listProjects, keeping non-local IDs from cloud and local-* IDs from mac. Rejected sides are skipped unless every bridge that exposes listProjects rejects, in which case the promise rejects with the first rejection reason.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "operations",

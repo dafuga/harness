@@ -49,7 +49,9 @@
 				"required": false,
 				"default": [],
 				"description": "An ordered list of regression views; views are shown when their units list is empty or contains the supplied unit. An empty list shows the unavailable message, while views without a gap or red checkpoint show that no failing-test checkpoint is recorded.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "RegressionProof.unit",

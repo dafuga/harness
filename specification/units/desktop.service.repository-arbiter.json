@@ -34,7 +34,9 @@
 				"type": "object",
 				"required": true,
 				"description": "The object identity requesting the run lock; an existing lock is retained for this same object and refused to a different object.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "RepositoryArbiterService.release.root",
@@ -50,7 +52,9 @@
 				"type": "object",
 				"required": true,
 				"description": "The object identity requesting release; only the identical object currently holding this root can release it.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "RepositoryArbiterService.held.root",
@@ -134,7 +138,9 @@
 						"type": "object",
 						"required": true,
 						"description": "The object identity requesting the run lock; an existing lock is retained for this same object and refused to a different object.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
@@ -165,7 +171,9 @@
 						"type": "object",
 						"required": true,
 						"description": "The object identity requesting release; only the identical object currently holding this root can release it.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [

@@ -186,7 +186,9 @@
 				"name": "explorerSections",
 				"type": "unknown",
 				"description": "The supported entity sections are details and history; an entity without a section is on its overview.",
-				"examples": [["details", "history"]]
+				"examples": [
+					["details", "history"]
+				]
 			},
 			{
 				"name": "explorerTabs",

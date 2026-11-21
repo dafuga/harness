@@ -19,7 +19,9 @@
 				"type": "PlannedFile[]",
 				"required": true,
 				"description": "The planned files to process in one scaffold. Paths under tests/, test/, or db/, paths containing .test. or .spec., paths ending in .types.ts, and paths beginning src/models/adapters/ are returned unchanged; other paths are annotated with a unit uid.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "annotateUnitFiles.root",
@@ -36,7 +38,9 @@
 				"name": "annotateUnitFiles",
 				"type": "PlannedFile[]",
 				"description": "Returns one planned entry for each input file in the original order. Excluded paths are returned unchanged; other paths have contents annotated with the existing on-disk uid when present, or a minted uid otherwise.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			}
 		],
 		"errors": [
@@ -56,7 +60,9 @@
 						"type": "PlannedFile[]",
 						"required": true,
 						"description": "The planned files to process in one scaffold. Paths under tests/, test/, or db/, paths containing .test. or .spec., paths ending in .types.ts, and paths beginning src/models/adapters/ are returned unchanged; other paths are annotated with a unit uid.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "annotateUnitFiles.root",
@@ -73,7 +79,9 @@
 						"name": "annotateUnitFiles",
 						"type": "PlannedFile[]",
 						"description": "Returns one planned entry for each input file in the original order. Excluded paths are returned unchanged; other paths have contents annotated with the existing on-disk uid when present, or a minted uid otherwise.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [

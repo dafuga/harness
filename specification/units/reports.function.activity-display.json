@@ -61,7 +61,10 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Ordered branch names passed to the history route; only the first is used. An empty array passes null for the branch.",
-				"examples": [["main"], ["release/1.4"]]
+				"examples": [
+					["main"],
+					["release/1.4"]
+				]
 			},
 			{
 				"name": "plural.count",
@@ -189,7 +192,10 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Ordered branch names passed to the history route; only the first is used. An empty array passes null for the branch.",
-						"examples": [["main"], ["release/1.4"]]
+						"examples": [
+							["main"],
+							["release/1.4"]
+						]
 					}
 				],
 				"outputs": [

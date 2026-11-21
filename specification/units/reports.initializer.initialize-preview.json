@@ -24,7 +24,9 @@
 				"type": "string[]",
 				"required": false,
 				"description": "A string array of CLI arguments passed to previewArguments to determine the preview root, config file, port, and identity. Defaults to process.argv.slice(2) when omitted; each entry is a string, and parsing and validation are delegated to previewArguments.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			}
 		],
 		"outputs": [
@@ -51,7 +53,9 @@
 						"type": "string[]",
 						"required": false,
 						"description": "A string array of CLI arguments passed to previewArguments to determine the preview root, config file, port, and identity. Defaults to process.argv.slice(2) when omitted; each entry is a string, and parsing and validation are delegated to previewArguments.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [

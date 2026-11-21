@@ -29,7 +29,10 @@
 				"type": "SearchEntry[] | null | undefined",
 				"required": true,
 				"description": "Candidate search entries, or null/undefined while unavailable. Entries are usable only when a location exists and every entry's commit equals scope?.commit; one mismatch rejects the whole set.",
-				"examples": [[], null]
+				"examples": [
+					[],
+					null
+				]
 			}
 		],
 		"outputs": [
@@ -57,7 +60,10 @@
 						"type": "SearchEntry[] | null | undefined",
 						"required": true,
 						"description": "Candidate search entries, or null/undefined while unavailable. Entries are usable only when a location exists and every entry's commit equals scope?.commit; one mismatch rejects the whole set.",
-						"examples": [[], null]
+						"examples": [
+							[],
+							null
+						]
 					}
 				],
 				"outputs": [

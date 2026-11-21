@@ -57,7 +57,9 @@
 				"name": "reportCloudPrefixes",
 				"type": "unknown",
 				"description": "Array of three cloud storage key prefixes in this order: 'report-evidence/runs/' for report evidence, 'uploaded-screenshots/runs/' for uploaded screenshots and 'published-reports/' for published reports. Every prefix ends with a slash, and reportRetention does not read this list.",
-				"examples": [["report-evidence/runs/", "uploaded-screenshots/runs/", "published-reports/"]]
+				"examples": [
+					["report-evidence/runs/", "uploaded-screenshots/runs/", "published-reports/"]
+				]
 			},
 			{
 				"name": "reportRetention",

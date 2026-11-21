@@ -1,5 +1,11 @@
 // @harness-uid u_3ersk4crkf
-import type { GuidanceOptions, GuideReport, GuideState } from './guideUnits.types';
+import type {
+	GuidanceOptions,
+	GuideReport,
+	GuideState,
+	UnitState,
+	StateTest
+} from './guideUnits.types';
 import type { ExplorerCapture } from '../../../../packages/reports/src/models/explorer-ui/ExplorerEvidence.types';
 import {
 	allUnitStates,
@@ -44,31 +50,11 @@ export async function guideUnits(id: string, options: GuidanceOptions = {}): Pro
 		// Each state is classified on its own: a mixed unit has both headless and UI states.
 		const isHeadless = headlessNames.includes(state.name);
 		const tests = await stateTests(context, unit, state.name, { headless: isHeadless });
-		if (isHeadless) {
-			const evidence = recordedDone(shots.captures, id, state.name) ? 'DONE' : 'MISSING';
-			states.push({
-				...state,
-				tests,
-				viewports: {},
-				evidence,
-				status: tests.length > 0 && evidence === 'DONE' ? 'DONE' : 'MISSING'
-			});
-			continue;
-		}
-		const viewports: GuideState['viewports'] = {};
-		for (const viewport of devices)
-			viewports[viewport] = shots.captures.some(
-				(shot) =>
-					shot.usable &&
-					shot.capture.status === 'passed' &&
-					shot.capture.kind === 'screenshot' &&
-					shot.capture.viewport === viewport &&
-					unitStateName(id, shot.state) === state.name
-			)
-				? 'DONE'
-				: 'MISSING';
-		const done = tests.length > 0 && devices.every((device) => viewports[device] === 'DONE');
-		states.push({ ...state, tests, viewports, status: done ? 'DONE' : 'MISSING' });
+		states.push(
+			isHeadless
+				? headlessGuideState(state, tests, recordedDone(shots.captures, id, state.name))
+				: visualGuideState(state, tests, shots.captures, id)
+		);
 	}
 	const missing = states.filter((state) => state.status === 'MISSING');
 	const first = missing[0];
@@ -93,6 +79,38 @@ export async function guideUnits(id: string, options: GuidanceOptions = {}): Pro
 		next,
 		proof: { store: 'git', gap: shots.gap }
 	};
+}
+
+function headlessGuideState(state: UnitState, tests: StateTest[], recorded: boolean): GuideState {
+	return {
+		...state,
+		tests,
+		viewports: {},
+		evidence: recorded ? 'DONE' : 'MISSING',
+		status: tests.length > 0 && recorded ? 'DONE' : 'MISSING'
+	};
+}
+
+function visualGuideState(
+	state: UnitState,
+	tests: StateTest[],
+	captures: ExplorerCapture[],
+	id: string
+): GuideState {
+	const viewports: GuideState['viewports'] = {};
+	for (const viewport of devices) {
+		const captured = captures.some(
+			(shot) =>
+				shot.usable &&
+				shot.capture.status === 'passed' &&
+				shot.capture.kind === 'screenshot' &&
+				shot.capture.viewport === viewport &&
+				unitStateName(id, shot.state) === state.name
+		);
+		viewports[viewport] = captured ? 'DONE' : 'MISSING';
+	}
+	const done = tests.length > 0 && devices.every((device) => viewports[device] === 'DONE');
+	return { ...state, tests, viewports, status: done ? 'DONE' : 'MISSING' };
 }
 
 export function renderUnitsGuide(report: GuideReport): string {

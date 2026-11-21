@@ -69,7 +69,9 @@
 				"name": "commitPrefixes",
 				"type": "unknown",
 				"description": "The four allowed subject prefix tokens: feat:, fix:, chore:, and cleanup:. The list contains the tokens only; a valid nonempty subject must also have a space and a nonspace character after one of them.",
-				"examples": [["feat:", "fix:", "chore:", "cleanup:"]]
+				"examples": [
+					["feat:", "fix:", "chore:", "cleanup:"]
+				]
 			},
 			{
 				"name": "writtenMessage",
@@ -81,7 +83,10 @@
 				"name": "commitMessage",
 				"type": "string[]",
 				"description": "Returns the subject and body length problems produced by writingProblems using writingLimits.subject and writingLimits.body, plus a missing-prefix problem for a nonempty subject unless it starts with one of the four allowed prefixes, a colon and space, and a following nonspace character. An empty subject is reported through the subject length checks; the body is checked only when its joined, trimmed text is nonempty, and an empty result means no problems were reported.",
-				"examples": [[], ["subject does not start with feat:, fix:, chore: or cleanup:."]]
+				"examples": [
+					[],
+					["subject does not start with feat:, fix:, chore: or cleanup:."]
+				]
 			}
 		],
 		"errors": [],
@@ -151,7 +156,10 @@
 						"name": "commitMessage",
 						"type": "string[]",
 						"description": "Returns the subject and body length problems produced by writingProblems using writingLimits.subject and writingLimits.body, plus a missing-prefix problem for a nonempty subject unless it starts with one of the four allowed prefixes, a colon and space, and a following nonspace character. An empty subject is reported through the subject length checks; the body is checked only when its joined, trimmed text is nonempty, and an empty result means no problems were reported.",
-						"examples": [[], ["subject does not start with feat:, fix:, chore: or cleanup:."]]
+						"examples": [
+							[],
+							["subject does not start with feat:, fix:, chore: or cleanup:."]
+						]
 					}
 				],
 				"errors": [],

@@ -40,7 +40,9 @@
 				"type": "string[]",
 				"required": true,
 				"description": "The dotted declarations to inspect for methods of owner. Only names starting with the literal `${owner}.` and containing a nonempty method segment are considered; a declaration ending at owner.method is included only when whole is true, and repeated declarations can repeat results.",
-				"examples": [["Class.create.input", "Class.read", "Class.create.value"]]
+				"examples": [
+					["Class.create.input", "Class.read", "Class.create.value"]
+				]
 			},
 			{
 				"name": "methodsNamed.owner",
@@ -61,7 +63,9 @@
 				"type": "string[]",
 				"required": true,
 				"description": "The method names to deduplicate and sort. The first occurrence of each name is kept; priorities are create, then read/find/findBy, update, delete, constructor, and then unlisted names, with equal-priority items retaining first-occurrence order.",
-				"examples": [["delete", "read", "create", "constructor", "findBy", "custom", "create"]]
+				"examples": [
+					["delete", "read", "create", "constructor", "findBy", "custom", "create"]
+				]
 			}
 		],
 		"outputs": [
@@ -75,13 +79,17 @@
 				"name": "methodsNamed",
 				"type": "string[]",
 				"description": "Method segments extracted from declarations starting with the literal `${owner}.` prefix and containing a nonempty method segment, in declaration order. Declarations ending at owner.method are included only when whole is true; duplicates remain.",
-				"examples": [["create", "read", "create"]]
+				"examples": [
+					["create", "read", "create"]
+				]
 			},
 			{
 				"name": "orderedMethods",
 				"type": "string[]",
 				"description": "Unique input method names sorted by priority: create; read, find, and findBy; update; delete; constructor; then unlisted methods. Names within a priority retain their first-occurrence order.",
-				"examples": [["create", "read", "findBy", "delete", "constructor", "custom"]]
+				"examples": [
+					["create", "read", "findBy", "delete", "constructor", "custom"]
+				]
 			}
 		],
 		"errors": [],
@@ -131,7 +139,9 @@
 						"type": "string[]",
 						"required": true,
 						"description": "The dotted declarations to inspect for methods of owner. Only names starting with the literal `${owner}.` and containing a nonempty method segment are considered; a declaration ending at owner.method is included only when whole is true, and repeated declarations can repeat results.",
-						"examples": [["Class.create.input", "Class.read", "Class.create.value"]]
+						"examples": [
+							["Class.create.input", "Class.read", "Class.create.value"]
+						]
 					},
 					{
 						"name": "methodsNamed.owner",
@@ -153,7 +163,9 @@
 						"name": "methodsNamed",
 						"type": "string[]",
 						"description": "Method segments extracted from declarations starting with the literal `${owner}.` prefix and containing a nonempty method segment, in declaration order. Declarations ending at owner.method are included only when whole is true; duplicates remain.",
-						"examples": [["create", "read", "create"]]
+						"examples": [
+							["create", "read", "create"]
+						]
 					}
 				],
 				"errors": [],
@@ -167,7 +179,9 @@
 						"type": "string[]",
 						"required": true,
 						"description": "The method names to deduplicate and sort. The first occurrence of each name is kept; priorities are create, then read/find/findBy, update, delete, constructor, and then unlisted names, with equal-priority items retaining first-occurrence order.",
-						"examples": [["delete", "read", "create", "constructor", "findBy", "custom", "create"]]
+						"examples": [
+							["delete", "read", "create", "constructor", "findBy", "custom", "create"]
+						]
 					}
 				],
 				"outputs": [
@@ -175,7 +189,9 @@
 						"name": "orderedMethods",
 						"type": "string[]",
 						"description": "Unique input method names sorted by priority: create; read, find, and findBy; update; delete; constructor; then unlisted methods. Names within a priority retain their first-occurrence order.",
-						"examples": [["create", "read", "findBy", "delete", "constructor", "custom"]]
+						"examples": [
+							["create", "read", "findBy", "delete", "constructor", "custom"]
+						]
 					}
 				],
 				"errors": [],

@@ -63,7 +63,9 @@
 				"required": false,
 				"default": [],
 				"description": "Arguments passed directly to the executable as separate strings, without shell parsing.",
-				"examples": [["--version"]]
+				"examples": [
+					["--version"]
+				]
 			},
 			{
 				"name": "BoundedCommandAdapter.checked.options",
@@ -96,7 +98,9 @@
 				"required": false,
 				"default": [],
 				"description": "Arguments passed directly to the executable as separate strings, without shell parsing.",
-				"examples": [["rev-parse", "--show-toplevel"]]
+				"examples": [
+					["rev-parse", "--show-toplevel"]
+				]
 			},
 			{
 				"name": "BoundedCommandAdapter.run.options",
@@ -129,7 +133,9 @@
 				"required": false,
 				"default": [],
 				"description": "Arguments passed directly to the executable, subject to the runSync direct-probe allowlist.",
-				"examples": [["--version"]]
+				"examples": [
+					["--version"]
+				]
 			},
 			{
 				"name": "BoundedCommandAdapter.runSync.options",
@@ -299,7 +305,9 @@
 						"required": false,
 						"default": [],
 						"description": "Arguments passed directly to the executable as separate strings, without shell parsing.",
-						"examples": [["--version"]]
+						"examples": [
+							["--version"]
+						]
 					},
 					{
 						"name": "BoundedCommandAdapter.checked.options",
@@ -362,7 +370,9 @@
 						"required": false,
 						"default": [],
 						"description": "Arguments passed directly to the executable as separate strings, without shell parsing.",
-						"examples": [["rev-parse", "--show-toplevel"]]
+						"examples": [
+							["rev-parse", "--show-toplevel"]
+						]
 					},
 					{
 						"name": "BoundedCommandAdapter.run.options",
@@ -430,7 +440,9 @@
 						"required": false,
 						"default": [],
 						"description": "Arguments passed directly to the executable, subject to the runSync direct-probe allowlist.",
-						"examples": [["--version"]]
+						"examples": [
+							["--version"]
+						]
 					},
 					{
 						"name": "BoundedCommandAdapter.runSync.options",

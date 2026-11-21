@@ -259,7 +259,11 @@
 				"name": "validateDocument",
 				"type": "string[]",
 				"description": "The list of validation messages for the document, in the order the checks run, and empty only when every check passes. It is exactly ['Invalid game document'] when the top-level shape fails, exactly ['Invalid game view'] when a views entry is not a non-null, non-array object, and otherwise holds one message per failure, such as 'Unknown view: <target>'.",
-				"examples": [[], ["Unknown view: view-cellar"], ["Invalid game document"]]
+				"examples": [
+					[],
+					["Unknown view: view-cellar"],
+					["Invalid game document"]
+				]
 			},
 			{
 				"name": "assertDocument",
@@ -403,7 +407,11 @@
 						"name": "validateDocument",
 						"type": "string[]",
 						"description": "The list of validation messages for the document, in the order the checks run, and empty only when every check passes. It is exactly ['Invalid game document'] when the top-level shape fails, exactly ['Invalid game view'] when a views entry is not a non-null, non-array object, and otherwise holds one message per failure, such as 'Unknown view: <target>'.",
-						"examples": [[], ["Unknown view: view-cellar"], ["Invalid game document"]]
+						"examples": [
+							[],
+							["Unknown view: view-cellar"],
+							["Invalid game document"]
+						]
 					}
 				],
 				"errors": [],

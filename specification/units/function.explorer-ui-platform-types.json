@@ -26,7 +26,9 @@
 				"name": "platformIds",
 				"type": "readonly [\"web\", \"ios\", \"android\", \"desktop\"]",
 				"description": "The four supported platform identifiers 'web', 'ios', 'android' and 'desktop' as a readonly tuple, declared `as const` in PlatformValues.ts and re-exported from Platform.types.ts. It is the source of the PlatformId type, so PlatformEntry.id accepts only these four values, and its doc comment states that deployment declarations are public repository metadata, never host credential values.",
-				"examples": [["web", "ios", "android", "desktop"]]
+				"examples": [
+					["web", "ios", "android", "desktop"]
+				]
 			}
 		],
 		"errors": [],

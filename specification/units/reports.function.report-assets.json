@@ -91,7 +91,9 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Caller-provided list of allowed filenames; membership is checked by exact string equality before path resolution.",
-				"examples": [["9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"]]
+				"examples": [
+					["9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"]
+				]
 			}
 		],
 		"outputs": [
@@ -291,7 +293,9 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Caller-provided list of allowed filenames; membership is checked by exact string equality before path resolution.",
-						"examples": [["9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"]]
+						"examples": [
+							["9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"]
+						]
 					}
 				],
 				"outputs": [

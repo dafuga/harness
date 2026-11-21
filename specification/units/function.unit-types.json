@@ -95,7 +95,9 @@
 				"name": "runtimeKinds",
 				"type": "unknown",
 				"description": "The complete set of execution kinds accepted by executionTargetSchema and performance-budget targets. A target kind must be module, wasm, process, or http.",
-				"examples": [["module", "wasm", "process", "http"]]
+				"examples": [
+					["module", "wasm", "process", "http"]
+				]
 			},
 			{
 				"name": "performanceMetrics",

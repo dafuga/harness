@@ -1,3 +1,4 @@
+import { allStatesSnapshot, NOW } from '../projectOverviewFixture';
 import { previewMountMarkup } from './previewMountMarkup';
 import { recordPreviewCapture } from './recordPreviewCapture';
 import { captureClip, usesNativePopup } from './previewCapturePolicy';
@@ -48,20 +49,26 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 	}
 	const markup = await previewMountMarkup(id, variant);
 	await page.route('**/*', (route) => servePreview(route, home, markup));
+	await routeProjectOverview(page, id);
 	await routeLoadingZoom(page, id, variant);
 	await routeShellCatalog(page, id, variant);
 	// The real Hub layout creates its own API/session, answered by the existing isolated fixture.
 	if (id === 'hub.layout.root') await hostedFixture(page);
 	// Freeze calendar labels alone: Playwright's clock also erases NavigationTiming entries.
-	await page.addInitScript((now) => {
-		const NativeDate = Date;
-		window.Date = new Proxy(NativeDate, {
-			construct: (target, args, type) =>
-				Reflect.construct(target, args.length ? args : [now], type),
-			apply: () => new NativeDate(now).toString(),
-			get: (target, name) => (name === 'now' ? () => now : Reflect.get(target, name))
-		});
-	}, Date.parse('2026-10-20T10:00:05Z'));
+	await page.addInitScript(
+		(now) => {
+			const NativeDate = Date;
+			window.Date = new Proxy(NativeDate, {
+				construct: (target, args, type) =>
+					Reflect.construct(target, args.length ? args : [now], type),
+				apply: () => new NativeDate(now).toString(),
+				get: (target, name) => (name === 'now' ? () => now : Reflect.get(target, name))
+			});
+		},
+		overviewPreviews.has(id) || id.includes('project-overview-project-overview')
+			? NOW
+			: Date.parse('2026-10-20T10:00:05Z')
+	);
 	await page.goto(
 		`${previewOrigin}/?unit=${encodeURIComponent(id)}${variant ? `&variant=${encodeURIComponent(variant)}` : ''}`,
 		{
@@ -97,6 +104,10 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 }
 /** Wait for the real route store, rather than its earlier gate or loading frame. */
 async function readyRoute(page: Page, id: string) {
+	if (overviewPreviews.has(id))
+		await expect(page.getByText('Atlas', { exact: true })).toBeVisible();
+	if (id === 'hub.component.public-site-home-page')
+		await expect(page.getByRole('link', { name: 'Download for Mac' }).first()).toBeVisible();
 	const headings: Record<string, string> = {
 		'desktop.page.root': 'Recent projects',
 		'desktop.page.harness-path': 'Pages',
@@ -118,6 +129,24 @@ async function readyRoute(page: Page, id: string) {
 	if (id === 'hub.page.root')
 		await expect(page.getByRole('region', { name: 'Owned by you', exact: true })).toBeVisible();
 }
+const overviewPreviews = new Set([
+	'desktop.page.projects',
+	'hub.page.projects',
+	'hub.page.tracker-overview',
+	'reports.page.harness-projects'
+]);
+
+async function routeProjectOverview(page: Page, id: string) {
+	if (overviewPreviews.has(id) && id !== 'desktop.page.projects') {
+		const path = id === 'reports.page.harness-projects' ? 'project-overview' : 'tracker-overview';
+		await page.route(`**/api/${path}`, (route) => route.fulfill({ json: allStatesSnapshot() }));
+	}
+	if (id === 'hub.component.public-site-home-page')
+		await page.route('**/downloads/Harness-mac-arm64.zip', (route) =>
+			route.fulfill({ status: 200, contentType: 'application/zip' })
+		);
+}
+
 function isBrokenPreviewImage(id: string, variant: string) {
 	return (
 		variant === 'image-error' &&

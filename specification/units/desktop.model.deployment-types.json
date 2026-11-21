@@ -43,7 +43,9 @@
 				"name": "deploymentEnvironments",
 				"type": "unknown",
 				"description": "Lists the supported deployment environment literals used by Deployment types. Its values are limited to dev, stage, preprod, and prod.",
-				"examples": [["dev", "stage", "preprod", "prod"]]
+				"examples": [
+					["dev", "stage", "preprod", "prod"]
+				]
 			},
 			{
 				"name": "deploymentSteps",

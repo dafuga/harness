@@ -95,7 +95,9 @@
 				"name": "nameWords",
 				"type": "string[]",
 				"description": "The substrings from name.split(\".\"), preserving empty segments and all characters other than the split periods. A string with no periods produces a one-element array.",
-				"examples": [["data", "displayName"]]
+				"examples": [
+					["data", "displayName"]
+				]
 			}
 		],
 		"errors": [],
@@ -203,7 +205,9 @@
 						"name": "nameWords",
 						"type": "string[]",
 						"description": "The substrings from name.split(\".\"), preserving empty segments and all characters other than the split periods. A string with no periods produces a one-element array.",
-						"examples": [["data", "displayName"]]
+						"examples": [
+							["data", "displayName"]
+						]
 					}
 				],
 				"errors": [],

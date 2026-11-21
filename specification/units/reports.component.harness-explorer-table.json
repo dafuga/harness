@@ -71,7 +71,9 @@
 				"type": "CatalogRow[]",
 				"required": true,
 				"description": "Rows render in input order and are keyed by `row.id`; an empty array renders `No rows to display.` The selected category determines which row fields are read.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "ExplorerTable.nav",

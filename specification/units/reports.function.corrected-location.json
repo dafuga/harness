@@ -74,7 +74,9 @@
 				"type": "ExplorerEntity[]",
 				"required": true,
 				"description": "Full explorer entities at the viewed revision. Only function entities whose unit lists a helper with the exact requested name can establish ownership.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			}
 		],
 		"outputs": [
@@ -216,7 +218,9 @@
 						"type": "ExplorerEntity[]",
 						"required": true,
 						"description": "Full explorer entities at the viewed revision. Only function entities whose unit lists a helper with the exact requested name can establish ownership.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [

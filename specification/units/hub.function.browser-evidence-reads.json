@@ -36,7 +36,9 @@
 				"name": "browserEvidenceReads",
 				"type": "Pick<DesktopBridge, 'evidence' | 'artifact'>",
 				"description": "The bridge object with an evidence method, which resolves with the JSON that api.get returns for one entity's recorded evidence, and an artifact method, which resolves with the bytes, mediaType and sha256 of one capture only after browserArtifact has checked its media type, size and SHA-256. Both methods send only the fields that evidencePayload keeps, so any other field of the input is dropped.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			}
 		],
 		"errors": [
@@ -94,7 +96,9 @@
 						"name": "browserEvidenceReads",
 						"type": "Pick<DesktopBridge, 'evidence' | 'artifact'>",
 						"description": "The bridge object with an evidence method, which resolves with the JSON that api.get returns for one entity's recorded evidence, and an artifact method, which resolves with the bytes, mediaType and sha256 of one capture only after browserArtifact has checked its media type, size and SHA-256. Both methods send only the fields that evidencePayload keeps, so any other field of the input is dropped.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"errors": [

@@ -97,7 +97,11 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Names of the configured remotes, used to split each refs/remotes/<remote>/<branch> ref: the longest configured name that the path starts with, followed by a slash, wins, and when none matches the first path segment is the remote.",
-				"examples": [["origin"], ["origin", "upstream"], ["origin", "upstream", "fork"]]
+				"examples": [
+					["origin"],
+					["origin", "upstream"],
+					["origin", "upstream", "fork"]
+				]
 			}
 		],
 		"outputs": [
@@ -232,7 +236,11 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Names of the configured remotes, used to split each refs/remotes/<remote>/<branch> ref: the longest configured name that the path starts with, followed by a slash, wins, and when none matches the first path segment is the remote.",
-						"examples": [["origin"], ["origin", "upstream"], ["origin", "upstream", "fork"]]
+						"examples": [
+							["origin"],
+							["origin", "upstream"],
+							["origin", "upstream", "fork"]
+						]
 					}
 				],
 				"outputs": [

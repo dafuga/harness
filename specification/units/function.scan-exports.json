@@ -43,7 +43,9 @@
 				"type": "ExportedSymbol[]",
 				"required": true,
 				"description": "Previously discovered symbols matched to declaration bodies by name; matching entries are copied with syntactically identified errors and an errorStatus. Entries without a matching declaration remain unchanged.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			}
 		],
 		"outputs": [
@@ -110,7 +112,9 @@
 						"type": "ExportedSymbol[]",
 						"required": true,
 						"description": "Previously discovered symbols matched to declaration bodies by name; matching entries are copied with syntactically identified errors and an errorStatus. Entries without a matching declaration remain unchanged.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
@@ -118,7 +122,9 @@
 						"name": "scanSymbolErrors",
 						"type": "ExportedSymbol[]",
 						"description": "Returns the supplied symbols in order, adding sorted error names and an errorStatus only when a symbol name matches a top-level function, function-valued variable, or class method body. Unclassified calls make that symbol's errorStatus unknown; nested function-like bodies are skipped.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],

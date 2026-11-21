@@ -29,7 +29,9 @@
 				"type": "BehaviorScenario[]",
 				"required": true,
 				"description": "These ordered scenario records become facts after the duration row, one per indexed entry. The helper reads length and numeric indices, so array iterator and species behavior do not affect traversal.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "behaviorFacts.paired",
@@ -116,7 +118,9 @@
 						"type": "BehaviorScenario[]",
 						"required": true,
 						"description": "These ordered scenario records become facts after the duration row, one per indexed entry. The helper reads length and numeric indices, so array iterator and species behavior do not affect traversal.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "behaviorFacts.paired",

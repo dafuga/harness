@@ -90,15 +90,10 @@ export function boundProps(
 			(entry) => (entry.propertyName?.getText() ?? entry.name.getText()) === item.name
 		);
 		const fallback = binding?.initializer ? bindableValue(binding.initializer) : undefined;
-		return {
-			...item,
-			name: `${owner}.${item.name}`,
-			...(fallback
-				? { required: false, ...parameterDefault(fallback) }
-				: item.required === false
-					? { default: 'undefined (omitted)' }
-					: {})
-		};
+		const named = { ...item, name: `${owner}.${item.name}` };
+		if (fallback) return { ...named, required: false, ...parameterDefault(fallback) };
+		if (item.required === false) return { ...named, default: 'undefined (omitted)' };
+		return named;
 	});
 }
 

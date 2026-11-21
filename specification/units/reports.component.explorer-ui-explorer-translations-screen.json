@@ -192,7 +192,9 @@
 				"type": "ExplorerEntity[]",
 				"required": true,
 				"description": "Revision-scoped entities are searched by each row's `usedBy` IDs to build consumer links. A recorded consumer ID without a matching entity is rendered without a link.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "ExplorerTranslationsScreen.lens",

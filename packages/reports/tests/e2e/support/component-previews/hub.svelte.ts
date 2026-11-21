@@ -61,7 +61,15 @@ export function hubPreview(id: string, shown: ProjectSnapshot) {
 		'hub.component.members-panel': { projectId: project.id },
 		'hub.component.native-approval': { handoffId: 'preview-request' },
 		'hub.component.project-create': { created: done },
-		'hub.component.project-list': { projects: [project] }
+		'hub.component.project-list': { projects: [project] },
+		'hub.component.public-site-home-page': {},
+		'hub.component.public-site-home-hero': { download: '#download' },
+		'hub.component.public-site-home-download': {
+			mac: '/downloads/Harness-mac-arm64.zip',
+			ios: null
+		},
+		'hub.component.public-site-home-features': {},
+		'hub.component.public-site-home-steps': {}
 	};
 	return { context: { session, projects, api }, cases, addresses: hosted.addresses, project };
 }

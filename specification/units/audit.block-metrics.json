@@ -44,7 +44,10 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Ordered source lines scanned to estimate maximum control-block depth. A line matching if, for, while, switch, or catch before an opening brace increments once, and each closing brace decrements the depth down to zero; this is a brace-counting heuristic.",
-				"examples": [[], ["if (ready) {", "while (running) {", "}", "}"]]
+				"examples": [
+					[],
+					["if (ready) {", "while (running) {", "}", "}"]
+				]
 			},
 			{
 				"name": "count.value",
@@ -155,7 +158,10 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Ordered source lines scanned to estimate maximum control-block depth. A line matching if, for, while, switch, or catch before an opening brace increments once, and each closing brace decrements the depth down to zero; this is a brace-counting heuristic.",
-						"examples": [[], ["if (ready) {", "while (running) {", "}", "}"]]
+						"examples": [
+							[],
+							["if (ready) {", "while (running) {", "}", "}"]
+						]
 					}
 				],
 				"outputs": [

@@ -269,14 +269,18 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Additional unit ids included in the candidate set before de-duplication and sorting. A measured id still produces no component when its selected side has no matching manifest.",
-				"examples": [["function.seal-record"]]
+				"examples": [
+					["function.seal-record"]
+				]
 			},
 			{
 				"name": "benchmarkMeasurements.gathered",
 				"type": "Gathered[]",
 				"required": true,
 				"description": "Gathered captures whose benchmark payloads are parsed as benchmark captures. A payload that fails the schema contributes no measurements.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "benchmarkMeasurements.context",
@@ -896,7 +900,9 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Additional unit ids included in the candidate set before de-duplication and sorting. A measured id still produces no component when its selected side has no matching manifest.",
-						"examples": [["function.seal-record"]]
+						"examples": [
+							["function.seal-record"]
+						]
 					}
 				],
 				"outputs": [
@@ -936,7 +942,9 @@
 						"type": "Gathered[]",
 						"required": true,
 						"description": "Gathered captures whose benchmark payloads are parsed as benchmark captures. A payload that fails the schema contributes no measurements.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "benchmarkMeasurements.context",

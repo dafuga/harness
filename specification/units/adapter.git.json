@@ -174,7 +174,11 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Git argv scanned for a subcommand after recognized value-taking global options. No detected verb and the configured long-verb set use the long deadline; every other detected verb uses the local deadline.",
-				"examples": [["status", "--short"], ["push", "origin", "main"], ["--version"]]
+				"examples": [
+					["status", "--short"],
+					["push", "origin", "main"],
+					["--version"]
+				]
 			}
 		],
 		"outputs": [
@@ -492,7 +496,11 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Git argv scanned for a subcommand after recognized value-taking global options. No detected verb and the configured long-verb set use the long deadline; every other detected verb uses the local deadline.",
-						"examples": [["status", "--short"], ["push", "origin", "main"], ["--version"]]
+						"examples": [
+							["status", "--short"],
+							["push", "origin", "main"],
+							["--version"]
+						]
 					}
 				],
 				"outputs": [

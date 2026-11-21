@@ -460,7 +460,10 @@
 				"name": "historyProfiles",
 				"type": "string[]",
 				"description": "Each distinct profile identifier once, in the order it first occurs as the timings are read: value by value in the map's order, and within each value in array order.",
-				"examples": [["5c1e7a09d3b8f266"], ["5c1e7a09d3b8f266", "a41f0d2e9b7c3851"]]
+				"examples": [
+					["5c1e7a09d3b8f266"],
+					["5c1e7a09d3b8f266", "a41f0d2e9b7c3851"]
+				]
 			},
 			{
 				"name": "reviewChanges",
@@ -939,7 +942,10 @@
 						"name": "historyProfiles",
 						"type": "string[]",
 						"description": "Each distinct profile identifier once, in the order it first occurs as the timings are read: value by value in the map's order, and within each value in array order.",
-						"examples": [["5c1e7a09d3b8f266"], ["5c1e7a09d3b8f266", "a41f0d2e9b7c3851"]]
+						"examples": [
+							["5c1e7a09d3b8f266"],
+							["5c1e7a09d3b8f266", "a41f0d2e9b7c3851"]
+						]
 					}
 				],
 				"errors": [],

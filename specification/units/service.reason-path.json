@@ -53,7 +53,9 @@
 				"type": "Explanation[]",
 				"required": true,
 				"description": "Explanations the caller already holds; the direct check and every step check are each made against this same list, which the service passes on unchanged.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			}
 		],
 		"outputs": [
@@ -99,7 +101,9 @@
 						"type": "Explanation[]",
 						"required": true,
 						"description": "Explanations the caller already holds; the direct check and every step check are each made against this same list, which the service passes on unchanged.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [

@@ -53,7 +53,9 @@
 				"type": "GatewayItem[]",
 				"required": true,
 				"description": "Array of gateway output items whose call_id values identify pending calls and whose output values become resolved strings. The array may be empty; stringified call IDs must be unique and currently pending, and non-string outputs are JSON-stringified.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "CodexSessionRepository.cancel.session",
@@ -169,7 +171,9 @@
 						"type": "GatewayItem[]",
 						"required": true,
 						"description": "Array of gateway output items whose call_id values identify pending calls and whose output values become resolved strings. The array may be empty; stringified call IDs must be unique and currently pending, and non-string outputs are JSON-stringified.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [

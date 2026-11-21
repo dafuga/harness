@@ -36,7 +36,9 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Git arguments appended after the command disables repository hooks. They select the Git action and options; a nonzero Git exit code causes an Error.",
-				"examples": [["status", "--short"]]
+				"examples": [
+					["status", "--short"]
+				]
 			},
 			{
 				"name": "benchmarkFiles.project",
@@ -142,7 +144,9 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Paths processed in order against the source and target roots. Each regular source file is copied; a missing, symlinked, or otherwise nonregular source path triggers removal of the matching target entry.",
-				"examples": [["src/cli/program/benchmark-service/benchmarkWorkspace.ts"]]
+				"examples": [
+					["src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
+				]
 			}
 		],
 		"outputs": [
@@ -156,13 +160,17 @@
 				"name": "benchmarkFiles",
 				"type": "Promise<string[]>",
 				"description": "Relative paths parsed from the selected tree after all entries pass the regular-blob mode check. Symlinks and submodules are rejected.",
-				"examples": [["README.md", "src/cli/program/benchmark-service/benchmarkWorkspace.ts"]]
+				"examples": [
+					["README.md", "src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
+				]
 			},
 			{
 				"name": "snapshotBenchmark",
 				"type": "Promise<string[]>",
 				"description": "Relative paths retained from the selected tree after extraction and regular-file checks. Export-ignore archives that omit a listed path are rejected.",
-				"examples": [["README.md", "src/cli/program/benchmark-service/benchmarkWorkspace.ts"]]
+				"examples": [
+					["README.md", "src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
+				]
 			},
 			{
 				"name": "createBenchmarkWorkspace",
@@ -213,7 +221,9 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Git arguments appended after the command disables repository hooks. They select the Git action and options; a nonzero Git exit code causes an Error.",
-						"examples": [["status", "--short"]]
+						"examples": [
+							["status", "--short"]
+						]
 					}
 				],
 				"outputs": [
@@ -258,7 +268,9 @@
 						"name": "benchmarkFiles",
 						"type": "Promise<string[]>",
 						"description": "Relative paths parsed from the selected tree after all entries pass the regular-blob mode check. Symlinks and submodules are rejected.",
-						"examples": [["README.md", "src/cli/program/benchmark-service/benchmarkWorkspace.ts"]]
+						"examples": [
+							["README.md", "src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
+						]
 					}
 				],
 				"errors": [
@@ -302,7 +314,9 @@
 						"name": "snapshotBenchmark",
 						"type": "Promise<string[]>",
 						"description": "Relative paths retained from the selected tree after extraction and regular-file checks. Export-ignore archives that omit a listed path are rejected.",
-						"examples": [["README.md", "src/cli/program/benchmark-service/benchmarkWorkspace.ts"]]
+						"examples": [
+							["README.md", "src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
+						]
 					}
 				],
 				"errors": [
@@ -444,7 +458,9 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Paths processed in order against the source and target roots. Each regular source file is copied; a missing, symlinked, or otherwise nonregular source path triggers removal of the matching target entry.",
-						"examples": [["src/cli/program/benchmark-service/benchmarkWorkspace.ts"]]
+						"examples": [
+							["src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
+						]
 					}
 				],
 				"outputs": [

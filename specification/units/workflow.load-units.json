@@ -50,7 +50,9 @@
 				"type": "unknown",
 				"required": false,
 				"description": "Manifest list used for graph ownership and dependencies when provided. Defaults to loaded.stored.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			}
 		],
 		"outputs": [
@@ -137,7 +139,9 @@
 						"type": "unknown",
 						"required": false,
 						"description": "The manifest list passed to SourceGraphService.build in place of the snapshot's stored manifests. When omitted, the default is loaded.stored; the loaded index and scenarios still come from loaded.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [

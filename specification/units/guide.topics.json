@@ -67,7 +67,10 @@
 				"name": "availableGuideTopics",
 				"type": "string[]",
 				"description": "The distinct topic strings from the entries, exactly as stored and in the order each first appears. A new array is returned on every call, and an empty entries array gives an empty array.",
-				"examples": [["page", "scaffolds"], []]
+				"examples": [
+					["page", "scaffolds"],
+					[]
+				]
 			},
 			{
 				"name": "findGuideByTopic",
@@ -115,7 +118,10 @@
 						"name": "availableGuideTopics",
 						"type": "string[]",
 						"description": "The distinct topic strings from the entries, exactly as stored and in the order each first appears. A new array is returned on every call, and an empty entries array gives an empty array.",
-						"examples": [["page", "scaffolds"], []]
+						"examples": [
+							["page", "scaffolds"],
+							[]
+						]
 					}
 				],
 				"errors": [],

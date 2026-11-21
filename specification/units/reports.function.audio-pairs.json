@@ -22,7 +22,9 @@
 				"type": "Evidence[]",
 				"required": true,
 				"description": "The evidence records supplied for comparison. A record participates only if `evidenceMedia(item)` is `audio`, `comparison?.trim()` is nonempty, and `phase` is exactly `before` or `after`; grouping retains the original comparison string and uses `viewport || \"\"`.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			}
 		],
 		"outputs": [
@@ -43,7 +45,9 @@
 						"type": "Evidence[]",
 						"required": true,
 						"description": "The evidence records supplied for comparison. A record participates only if `evidenceMedia(item)` is `audio`, `comparison?.trim()` is nonempty, and `phase` is exactly `before` or `after`; grouping retains the original comparison string and uses `viewport || \"\"`.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [

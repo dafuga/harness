@@ -71,7 +71,9 @@
 				"required": false,
 				"default": [],
 				"description": "Each string is appended as a separate Set-Cookie header after response creation. Defaults to []; invalid header values can cause a TypeError.",
-				"examples": [["session=abc123; Path=/; HttpOnly; Secure; SameSite=Lax"]]
+				"examples": [
+					["session=abc123; Path=/; HttpOnly; Secure; SameSite=Lax"]
+				]
 			},
 			{
 				"name": "sameOrigin.request",
@@ -104,7 +106,9 @@
 				"required": false,
 				"default": [],
 				"description": "Each string is appended as a separate Set-Cookie header to the response. Defaults to []; invalid header values or immutable response headers can cause a TypeError.",
-				"examples": [["session=abc123; Path=/; HttpOnly; Secure; SameSite=Lax"]]
+				"examples": [
+					["session=abc123; Path=/; HttpOnly; Secure; SameSite=Lax"]
+				]
 			},
 			{
 				"name": "authHttp.body",
@@ -275,7 +279,9 @@
 						"required": false,
 						"default": [],
 						"description": "Each string is appended as a separate Set-Cookie header after response creation. Defaults to []; invalid header values can cause a TypeError.",
-						"examples": [["session=abc123; Path=/; HttpOnly; Secure; SameSite=Lax"]]
+						"examples": [
+							["session=abc123; Path=/; HttpOnly; Secure; SameSite=Lax"]
+						]
 					}
 				],
 				"outputs": [
@@ -358,7 +364,9 @@
 						"required": false,
 						"default": [],
 						"description": "Each string is appended as a separate Set-Cookie header to the response. Defaults to []; invalid header values or immutable response headers can cause a TypeError.",
-						"examples": [["session=abc123; Path=/; HttpOnly; Secure; SameSite=Lax"]]
+						"examples": [
+							["session=abc123; Path=/; HttpOnly; Secure; SameSite=Lax"]
+						]
 					}
 				],
 				"outputs": [

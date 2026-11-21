@@ -198,7 +198,9 @@
 				"name": "frozenMetrics",
 				"type": "unknown",
 				"description": "The readonly list of frozen source metric names, in this order: source-bytes, complexity and dependencies. Each is checked only when checkSize is true, and a measured value above its reviewed baseline is exceeded.",
-				"examples": [["source-bytes", "complexity", "dependencies"]]
+				"examples": [
+					["source-bytes", "complexity", "dependencies"]
+				]
 			},
 			{
 				"name": "isFrozen",

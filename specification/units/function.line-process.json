@@ -39,7 +39,11 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Argument array passed to spawn from node:child_process with piped standard streams, one element per argument and no shell parsing. The same array is reused each time the child is started again after it stops.",
-				"examples": [["server.js"], ["-u", "worker.py"], []]
+				"examples": [
+					["server.js"],
+					["-u", "worker.py"],
+					[]
+				]
 			},
 			{
 				"name": "unavailable.command",
@@ -143,7 +147,11 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Argument array passed to spawn from node:child_process with piped standard streams, one element per argument and no shell parsing. The same array is reused each time the child is started again after it stops.",
-						"examples": [["server.js"], ["-u", "worker.py"], []]
+						"examples": [
+							["server.js"],
+							["-u", "worker.py"],
+							[]
+						]
 					}
 				],
 				"outputs": [

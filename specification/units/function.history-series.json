@@ -22,7 +22,9 @@
 				"type": "VerificationRecord[]",
 				"required": true,
 				"description": "Verification records scanned in supplied order for unit measurements and emitted sizes. Repeated measurements for one unit and tested commit merge into one point whose record id is from the first occurrence.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "unitGrowth.reviews",
@@ -35,7 +37,9 @@
 				"type": "Array<Pick<VerificationRecord, 'id' | 'measurements'>>",
 				"required": true,
 				"description": "Verification record projections containing ids and measurements to group into benchmark series. Only numeric measurements with a workload and profile participate.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "historySeries.focused",
@@ -43,7 +47,9 @@
 				"required": false,
 				"default": [],
 				"description": "Focused regression views that may contribute red and green point measurements when the view is not a gap and the point has an id. Only measurements tested at the point's commit are retained; defaults to an empty list.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			}
 		],
 		"outputs": [
@@ -51,13 +57,17 @@
 				"name": "unitGrowth",
 				"type": "Growth",
 				"description": "A list of units sorted by id, with one growth point per tested commit and reviews from a matching supplied map entry when present. Frozen own measurements and emitted target sizes are included; missing metrics are notes rather than zeroes, and benchmark-reported sizes are excluded.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "historySeries",
 				"type": "BenchmarkSeries[]",
 				"description": "A list of benchmark groups sorted by group key, each containing its unit, workload, metric, target, incompatibility flag, and measurement lines. Only non-null numeric measurements with a workload and profile are included; differences in profile, unit of measure, method, or comparison context form separate lines.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			}
 		],
 		"errors": [],
@@ -71,7 +81,9 @@
 						"type": "VerificationRecord[]",
 						"required": true,
 						"description": "Verification records scanned in supplied order for unit measurements and emitted sizes. Repeated measurements for one unit and tested commit merge into one point whose record id is from the first occurrence.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "unitGrowth.reviews",
@@ -85,7 +97,9 @@
 						"name": "unitGrowth",
 						"type": "Growth",
 						"description": "A list of units sorted by id, with one growth point per tested commit and reviews from a matching supplied map entry when present. Frozen own measurements and emitted target sizes are included; missing metrics are notes rather than zeroes, and benchmark-reported sizes are excluded.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],
@@ -99,7 +113,9 @@
 						"type": "Array<Pick<VerificationRecord, 'id' | 'measurements'>>",
 						"required": true,
 						"description": "Verification record projections containing ids and measurements to group into benchmark series. Only numeric measurements with a workload and profile participate.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "historySeries.focused",
@@ -107,7 +123,9 @@
 						"required": false,
 						"default": [],
 						"description": "Focused regression views that may contribute red and green point measurements when the view is not a gap and the point has an id. Only measurements tested at the point's commit are retained; defaults to an empty list.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
@@ -115,7 +133,9 @@
 						"name": "historySeries",
 						"type": "BenchmarkSeries[]",
 						"description": "A list of benchmark groups sorted by group key, each containing its unit, workload, metric, target, incompatibility flag, and measurement lines. Only non-null numeric measurements with a workload and profile are included; differences in profile, unit of measure, method, or comparison context form separate lines.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],

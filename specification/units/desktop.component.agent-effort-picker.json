@@ -27,7 +27,10 @@
 				"type": "string[]",
 				"required": true,
 				"description": "The list contains the model-supported effort names in display order, and each string becomes one button. An empty list disables the dialog and changes its title to \"Reasoning effort: model default\"; values are rendered as supplied with no validation.",
-				"examples": [["low", "medium", "high"], []]
+				"examples": [
+					["low", "medium", "high"],
+					[]
+				]
 			},
 			{
 				"name": "AgentEffortPicker.effort",

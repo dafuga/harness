@@ -213,7 +213,11 @@
 				"type": "number[]",
 				"required": true,
 				"description": "Byte size of each blob in one batch read. The result adds 128 bytes of room per blob for its header line and trailing newline, and an empty list gives 1.",
-				"examples": [[1024, 65536, 2048], [268435456], [0]]
+				"examples": [
+					[1024, 65536, 2048],
+					[268435456],
+					[0]
+				]
 			},
 			{
 				"name": "batchGroups.hashes",
@@ -649,7 +653,11 @@
 						"type": "number[]",
 						"required": true,
 						"description": "Byte size of each blob in one batch read. The result adds 128 bytes of room per blob for its header line and trailing newline, and an empty list gives 1.",
-						"examples": [[1024, 65536, 2048], [268435456], [0]]
+						"examples": [
+							[1024, 65536, 2048],
+							[268435456],
+							[0]
+						]
 					}
 				],
 				"outputs": [

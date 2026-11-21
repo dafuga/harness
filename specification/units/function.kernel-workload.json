@@ -40,11 +40,15 @@
 						"input": {
 							"base": {
 								"nodes": ["n0", "n1"],
-								"edges": [[1, 0]]
+								"edges": [
+									[1, 0]
+								]
 							},
 							"head": {
 								"nodes": ["n0", "n1"],
-								"edges": [[1, 0]]
+								"edges": [
+									[1, 0]
+								]
 							},
 							"changed": ["n1"],
 							"uncertain": [],
@@ -155,11 +159,15 @@
 								"input": {
 									"base": {
 										"nodes": ["n0", "n1"],
-										"edges": [[1, 0]]
+										"edges": [
+											[1, 0]
+										]
 									},
 									"head": {
 										"nodes": ["n0", "n1"],
-										"edges": [[1, 0]]
+										"edges": [
+											[1, 0]
+										]
 									},
 									"changed": ["n1"],
 									"uncertain": [],
@@ -282,7 +290,12 @@
 						"name": "edges",
 						"type": "Array<[number, number]>",
 						"description": "Returns directed edge pairs whose endpoints are numeric node positions. Each position from 1 through size - 1 gets one to three edges to lower positions, with an occasional reverse edge.",
-						"examples": [[], [[1, 0]]]
+						"examples": [
+							[],
+							[
+								[1, 0]
+							]
+						]
 					}
 				],
 				"errors": [],

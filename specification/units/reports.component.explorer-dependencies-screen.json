@@ -71,7 +71,9 @@
 				"type": "HarnessRevision | null",
 				"required": true,
 				"description": "Parent revision context, or null, passed to the shared Explorer frame. Dependency rows are read from the selected head record rather than derived from the parent.",
-				"examples": [[null]]
+				"examples": [
+					[null]
+				]
 			},
 			{
 				"name": "ExplorerDependenciesScreen.scope",
@@ -90,7 +92,9 @@
 				"type": "ExplorerEntity[]",
 				"required": true,
 				"description": "Revision-scoped entity catalog passed to the shared Explorer frame. Dependency declarations on this screen come from head.projectDependencies, not from the entity catalog.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "ExplorerDependenciesScreen.lens",

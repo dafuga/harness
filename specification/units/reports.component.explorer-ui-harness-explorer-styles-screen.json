@@ -203,7 +203,9 @@
 				"type": "ExplorerEntity[]",
 				"required": true,
 				"description": "The units of the selected revision as the explorer lists them, with the entities the shown commit removed. This screen and its frame never read it.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "ExplorerStylesScreen.lens",

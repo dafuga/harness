@@ -213,7 +213,9 @@
 				"name": "checkMessage",
 				"type": "Promise<string[]>",
 				"description": "Resolves to the commit-message service's list of findings for the file Git supplied. The list can be empty.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "renderHooks",
@@ -227,7 +229,9 @@
 				"name": "renderHookOutcome",
 				"type": "string[]",
 				"description": "Formatted lines for verified and blocked commits. Verified lines include shortened commit and record identifiers; blocked commits include shortened commit identifiers and their failure messages.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			}
 		],
 		"errors": [
@@ -405,7 +409,9 @@
 						"name": "checkMessage",
 						"type": "Promise<string[]>",
 						"description": "Resolves to the commit-message service's list of findings for the file Git supplied. The list can be empty.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [
@@ -502,7 +508,9 @@
 						"name": "renderHookOutcome",
 						"type": "string[]",
 						"description": "Formatted lines for verified and blocked commits. Verified lines include shortened commit and record identifiers; blocked commits include shortened commit identifiers and their failure messages.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],

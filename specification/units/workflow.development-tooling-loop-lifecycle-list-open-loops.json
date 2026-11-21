@@ -30,7 +30,9 @@
 				"required": false,
 				"default": {},
 				"description": "The options passed to listOpenLoops and its loop-root and clock helpers, with an optional staleDays threshold. The function defaults omitted input to {} and an omitted staleDays value to 0.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "renderOpenLoops.list",
@@ -95,7 +97,9 @@
 						"required": false,
 						"default": {},
 						"description": "The options passed to listOpenLoops and its loop-root and clock helpers, with an optional staleDays threshold. The function defaults omitted input to {} and an omitted staleDays value to 0.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [

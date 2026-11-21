@@ -28,7 +28,9 @@
 				"type": "ComponentManifest[]",
 				"required": true,
 				"description": "The registry manifests to validate. Only active entries participate in identity, ownership, relationship and source checks; all manifests remain available as candidates for predecessor lineage.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "UnitRegistryValidator.validate.files",
@@ -48,14 +50,18 @@
 				"type": "string[]",
 				"required": true,
 				"description": "The IDs of active units supplied for duplicate detection. Repeated IDs produce one diagnostic per repeated ID.",
-				"examples": [["validator.unit-registry"]]
+				"examples": [
+					["validator.unit-registry"]
+				]
 			},
 			{
 				"name": "registryOwnershipFindings.units",
 				"type": "ComponentManifest[]",
 				"required": true,
 				"description": "The active manifests considered for canonical dependency inspection. Only units in the fixed reviewed-owner set are inspected, and only when sources is supplied.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "registryOwnershipFindings.sources",
@@ -79,7 +85,10 @@
 				"name": "registryOwnershipFindings",
 				"type": "string[]",
 				"description": "The duplicate active-ID diagnostics and, when sources is supplied, canonical import findings for reviewed owners. An unread owned source produces a diagnostic, while an owned path absent from the map is skipped.",
-				"examples": [[], ["Duplicate active unit id validator.unit-registry"]]
+				"examples": [
+					[],
+					["Duplicate active unit id validator.unit-registry"]
+				]
 			}
 		],
 		"errors": [],
@@ -93,7 +102,9 @@
 						"type": "ComponentManifest[]",
 						"required": true,
 						"description": "The registry manifests to validate. Only active entries participate in identity, ownership, relationship and source checks; all manifests remain available as candidates for predecessor lineage.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "UnitRegistryValidator.validate.files",
@@ -133,14 +144,18 @@
 						"type": "string[]",
 						"required": true,
 						"description": "The IDs of active units supplied for duplicate detection. Repeated IDs produce one diagnostic per repeated ID.",
-						"examples": [["validator.unit-registry"]]
+						"examples": [
+							["validator.unit-registry"]
+						]
 					},
 					{
 						"name": "registryOwnershipFindings.units",
 						"type": "ComponentManifest[]",
 						"required": true,
 						"description": "The active manifests considered for canonical dependency inspection. Only units in the fixed reviewed-owner set are inspected, and only when sources is supplied.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "registryOwnershipFindings.sources",
@@ -155,7 +170,10 @@
 						"name": "registryOwnershipFindings",
 						"type": "string[]",
 						"description": "The duplicate active-ID diagnostics and, when sources is supplied, canonical import findings for reviewed owners. An unread owned source produces a diagnostic, while an owned path absent from the map is skipped.",
-						"examples": [[], ["Duplicate active unit id validator.unit-registry"]]
+						"examples": [
+							[],
+							["Duplicate active unit id validator.unit-registry"]
+						]
 					}
 				],
 				"errors": [],

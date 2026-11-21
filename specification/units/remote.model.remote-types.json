@@ -161,13 +161,17 @@
 				"name": "commentMethods",
 				"type": "unknown",
 				"description": "Names a person’s own comment operation and the thread it needs. These methods do not include planning, approval, or a run.",
-				"examples": [["addComment", "openThread"]]
+				"examples": [
+					["addComment", "openThread"]
+				]
 			},
 			{
 				"name": "agentMethods",
 				"type": "unknown",
 				"description": "Names planning writes and agent runs. These methods require the agents permission of a grant.",
-				"examples": [["createPlan", "approve", "startRun", "cancelRun"]]
+				"examples": [
+					["createPlan", "approve", "startRun", "cancelRun"]
+				]
 			},
 			{
 				"name": "localMethods",
@@ -273,13 +277,17 @@
 				"name": "revisionMethods",
 				"type": "readonly RemoteMethod[]",
 				"description": "Methods for which a device needs an explicit checked-out revision. The list is limited to createPlan, openThread, approve, and startRun.",
-				"examples": [["createPlan", "openThread", "approve", "startRun"]]
+				"examples": [
+					["createPlan", "openThread", "approve", "startRun"]
+				]
 			},
 			{
 				"name": "projectlessMethods",
 				"type": "readonly RemoteMethod[]",
 				"description": "The methods classified as projectless: session attachment, project listing, deployment activities, and providers.",
-				"examples": [["session.attach", "listProjects", "deploymentActivities", "providers"]]
+				"examples": [
+					["session.attach", "listProjects", "deploymentActivities", "providers"]
+				]
 			},
 			{
 				"name": "mutationMethods",

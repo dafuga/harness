@@ -29,7 +29,9 @@
 				"type": "ExplorerEntity[]",
 				"required": true,
 				"description": "Consumer entities for the shown revision, in caller-supplied order; an empty array renders a dash. Entries are deduplicated by usageIdentity (entity id plus caller symbol when present), retaining the first occurrence, and only the first three distinct entries are eligible to show.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "ExplorerUsage.nav",

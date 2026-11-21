@@ -64,5 +64,7 @@ function matchesExampleType(
 					(byte) => typeof byte === 'number' && Number.isInteger(byte) && byte >= 0 && byte <= 255
 				)
 			);
+		default:
+			return false;
 	}
 }

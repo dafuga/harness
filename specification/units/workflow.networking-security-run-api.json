@@ -26,7 +26,11 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Provides positional strings consumed by the selected command; some commands ignore this array. Required positions vary by command, and handlers access entries directly, so a missing position can fail during dispatch.",
-				"examples": [[], ["GET", "/"], ["/"]]
+				"examples": [
+					[],
+					["GET", "/"],
+					["/"]
+				]
 			},
 			{
 				"name": "runApi.options",
@@ -71,7 +75,11 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Provides positional strings consumed by the selected command; some commands ignore this array. Required positions vary by command, and handlers access entries directly, so a missing position can fail during dispatch.",
-						"examples": [[], ["GET", "/"], ["/"]]
+						"examples": [
+							[],
+							["GET", "/"],
+							["/"]
+						]
 					},
 					{
 						"name": "runApi.options",

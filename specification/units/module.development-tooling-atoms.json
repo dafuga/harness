@@ -20,7 +20,9 @@
 				"required": false,
 				"default": "undefined",
 				"description": "Supply it when calling the wrapper with preprocessor options; the wrapper forwards it unchanged to the imported atomic preprocessor. The only declared field is optional aliases, a record of string keys and values.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			}
 		],
 		"outputs": [
@@ -28,7 +30,9 @@
 				"name": "atomicComponents",
 				"type": "PreprocessorGroup",
 				"description": "The PreprocessorGroup returned directly from the imported atomic preprocessor. It is the Svelte build integration value produced by this wrapper; this file defines no further shape or behavior.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			}
 		],
 		"errors": [],
@@ -43,7 +47,9 @@
 						"required": false,
 						"default": "undefined",
 						"description": "Supply it when calling the wrapper with preprocessor options; the wrapper forwards it unchanged to the imported atomic preprocessor. The only declared field is optional aliases, a record of string keys and values.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
@@ -51,7 +57,9 @@
 						"name": "atomicComponents",
 						"type": "PreprocessorGroup",
 						"description": "The PreprocessorGroup returned directly from the imported atomic preprocessor. It is the Svelte build integration value produced by this wrapper; this file defines no further shape or behavior.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"errors": [],

@@ -157,7 +157,11 @@
 				"name": "artifactDifferences",
 				"type": "string[]",
 				"description": "The paths at which the two values differ, such as output.total or trace[2].durationMs; arrays are compared by index, objects by the sorted union of their keys, and a difference in the whole value is the empty string. Recognized run metadata is set aside only inside a supported harnessRun declaration, at the root or on trace entries when the root has one, so undeclared times and process IDs count as behavior.",
-				"examples": [[], ["output.total"], ["assertions[0].passed", "trace[2].durationMs"]]
+				"examples": [
+					[],
+					["output.total"],
+					["assertions[0].passed", "trace[2].durationMs"]
+				]
 			},
 			{
 				"name": "explorerReading",
@@ -322,7 +326,11 @@
 						"name": "artifactDifferences",
 						"type": "string[]",
 						"description": "The paths at which the two values differ, such as output.total or trace[2].durationMs; arrays are compared by index, objects by the sorted union of their keys, and a difference in the whole value is the empty string. Recognized run metadata is set aside only inside a supported harnessRun declaration, at the root or on trace entries when the root has one, so undeclared times and process IDs count as behavior.",
-						"examples": [[], ["output.total"], ["assertions[0].passed", "trace[2].durationMs"]]
+						"examples": [
+							[],
+							["output.total"],
+							["assertions[0].passed", "trace[2].durationMs"]
+						]
 					}
 				],
 				"errors": [],

@@ -26,7 +26,11 @@
 				"type": "unknown",
 				"required": true,
 				"description": "Value supplied with the channel for parsing. Its shape is not constrained here and it is passed to `gamePayload`, project-context handling, or `ipcPayload` according to the channel.",
-				"examples": [null, {}, []]
+				"examples": [
+					null,
+					{},
+					[]
+				]
 			}
 		],
 		"outputs": [
@@ -34,7 +38,9 @@
 				"name": "IpcRequestValidator.parse",
 				"type": "unknown",
 				"description": "Value returned for the request: the `gamePayload` result for `game:` channels, a defined project-context operation result for other channels, or the `ipcPayload` result. When the `ipcPayload` result is a truthy object, its fields are spread together with project context; the result type is otherwise unconstrained.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			}
 		],
 		"errors": [
@@ -61,7 +67,11 @@
 						"type": "unknown",
 						"required": true,
 						"description": "Value supplied with the channel for parsing. Its shape is not constrained here and it is passed to `gamePayload`, project-context handling, or `ipcPayload` according to the channel.",
-						"examples": [null, {}, []]
+						"examples": [
+							null,
+							{},
+							[]
+						]
 					}
 				],
 				"outputs": [
@@ -69,7 +79,9 @@
 						"name": "IpcRequestValidator.parse",
 						"type": "unknown",
 						"description": "Value returned for the request: the `gamePayload` result for `game:` channels, a defined project-context operation result for other channels, or the `ipcPayload` result. When the `ipcPayload` result is a truthy object, its fields are spread together with project context; the result type is otherwise unconstrained.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"errors": [

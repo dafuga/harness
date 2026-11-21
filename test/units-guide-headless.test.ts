@@ -18,12 +18,8 @@ import {
 	recordedDone,
 	renderUnitsGuide
 } from '../src/workflows/development-tooling/guide-units/guideUnits';
-import {
-	commitGuidance,
-	entity,
-	guidanceProject,
-	writeGuidanceFile
-} from './support/unitsGuidanceProject';
+import { entity, guidanceProject } from './support/unitsGuidanceProject';
+import { addGuidanceRecording } from './support/unitsGuidanceRecording';
 
 const unitId = 'component.alpha';
 const roots: string[] = [];
@@ -183,42 +179,7 @@ test('recordedDone accepts usable passed assertions or trace captures for the na
 test('a unit with UI and headless states classifies each state on its own', async () => {
 	const root = await guidanceProject(['default', 'loading']);
 	roots.push(root);
-	await writeGuidanceFile(
-		root,
-		'specification/scenarios/widget-recorded.json',
-		JSON.stringify({
-			schemaVersion: 1,
-			id: 'widget-recorded',
-			title: 'Widget recorded assertions',
-			kind: 'headless',
-			units: [entity],
-			states: [
-				{
-					id: 'component-widget-recorded',
-					title: 'Recorded',
-					coverage: 'required',
-					units: [entity]
-				}
-			],
-			viewports: [],
-			tests: [{ id: 'recorded', kind: 'unit', runner: 'vitest', target: 'tests/recorded.test.ts' }],
-			evidence: [
-				{
-					id: 'assertions',
-					kind: 'assertions',
-					states: ['component-widget-recorded'],
-					viewports: [],
-					required: true
-				}
-			]
-		})
-	);
-	await writeGuidanceFile(
-		root,
-		'tests/recorded.test.ts',
-		"test('recorded', () => expect(true).toBe(true));"
-	);
-	await commitGuidance(root);
+	await addGuidanceRecording(root, 'tests/recorded.test.ts', 'vitest');
 
 	const report = await guideUnits(entity, { root });
 	const state = (name: string) => report.states.find((item) => item.name === name);

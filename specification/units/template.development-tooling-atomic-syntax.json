@@ -25,7 +25,9 @@
 				"type": "unknown",
 				"required": true,
 				"description": "An object subtree or array of subtrees that the walker inspects. Falsy and non-object values are ignored; traversal skips keys parent, metadata, expression, and attributes, and it has no general cycle guard.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "walkAtomicMarkup.callback",
@@ -99,7 +101,9 @@
 						"type": "unknown",
 						"required": true,
 						"description": "An object subtree or array of subtrees that the walker inspects. Falsy and non-object values are ignored; traversal skips keys parent, metadata, expression, and attributes, and it has no general cycle guard.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "walkAtomicMarkup.callback",

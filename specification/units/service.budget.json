@@ -34,21 +34,27 @@
 				"type": "BudgetEvent[]",
 				"required": true,
 				"description": "Ledger events folded in input order to derive each unit's frozen metrics, unmeasured statements, and performance entries. Baseline events contribute metrics; other events contribute after-values, and a later performance entry replaces an earlier one only for the same workload, metric, target, and profile.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "BudgetService.baselines.manifests",
 				"type": "ComponentManifest[]",
 				"required": true,
 				"description": "Component manifests are used to add units without an existing baseline to the returned map. A unit inherits the baseline of its first predecessor already in the map, while a unit with its own baseline is not overwritten.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "BudgetService.evaluate.subjects",
 				"type": "BudgetSubject[]",
 				"required": true,
 				"description": "Each subject pairs a component manifest with a checkSize flag for budget evaluation. The manifest supplies the unit ID, runtime kind, and performance budgets; checkSize is passed to the finding evaluator to control size and complexity checks.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "BudgetService.evaluate.context",
@@ -86,14 +92,18 @@
 						"type": "BudgetEvent[]",
 						"required": true,
 						"description": "Ledger events folded in input order to derive each unit's frozen metrics, unmeasured statements, and performance entries. Baseline events contribute metrics; other events contribute after-values, and a later performance entry replaces an earlier one only for the same workload, metric, target, and profile.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "BudgetService.baselines.manifests",
 						"type": "ComponentManifest[]",
 						"required": true,
 						"description": "Component manifests are used to add units without an existing baseline to the returned map. A unit inherits the baseline of its first predecessor already in the map, while a unit with its own baseline is not overwritten.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
@@ -114,7 +124,9 @@
 						"type": "BudgetSubject[]",
 						"required": true,
 						"description": "Each subject pairs a component manifest with a checkSize flag for budget evaluation. The manifest supplies the unit ID, runtime kind, and performance budgets; checkSize is passed to the finding evaluator to control size and complexity checks.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "BudgetService.evaluate.context",

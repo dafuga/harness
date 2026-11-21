@@ -126,7 +126,9 @@
 				"type": "ScreenOption[]",
 				"required": true,
 				"description": "Each option supplies a scenario key and title, state IDs, and viewport IDs with display sizes. `screenPick` reconciles the selection; controls render only when a valid pick and matching option exist, and the scenario selector is disabled when fewer than two options are supplied.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "RuntimeScreens.evidence",

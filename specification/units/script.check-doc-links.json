@@ -55,7 +55,10 @@
 				"type": "readonly string[]",
 				"required": true,
 				"description": "The repository-relative paths where the run starts, each checked once in list order, and a listed path that does not exist is reported as a problem. Each link target that exists, ends in `.md` and is not the linking document itself is queued and checked the same way, so linked Markdown files are followed through their own links too.",
-				"examples": [["ARCHITECTURE-BOUNDARIES.md", "README.md"], ["README.md"]]
+				"examples": [
+					["ARCHITECTURE-BOUNDARIES.md", "README.md"],
+					["README.md"]
+				]
 			},
 			{
 				"name": "brokenDocLinks.files",
@@ -69,7 +72,10 @@
 				"required": false,
 				"default": [],
 				"description": "The documents whose backticked repository paths must also exist; for each listed document that is checked, every `codePaths` target is tested with `exists` and a missing one is reported. It defaults to `[]`, which checks no code paths, and `main` passes `pathCheckedDocuments`.",
-				"examples": [["ARCHITECTURE-BOUNDARIES.md"], []]
+				"examples": [
+					["ARCHITECTURE-BOUNDARIES.md"],
+					[]
+				]
 			}
 		],
 		"outputs": [
@@ -77,13 +83,17 @@
 				"name": "checkedDocuments",
 				"type": "unknown",
 				"description": "The documents every run checks first, in this order: `ARCHITECTURE-BOUNDARIES.md`, then `README.md`. Markdown files that they link to are checked after them, so this list is only the starting set and not every file the run checks.",
-				"examples": [["ARCHITECTURE-BOUNDARIES.md", "README.md"]]
+				"examples": [
+					["ARCHITECTURE-BOUNDARIES.md", "README.md"]
+				]
 			},
 			{
 				"name": "pathCheckedDocuments",
 				"type": "unknown",
 				"description": "The documents whose backticked repository paths must also exist, because they map owners to files; `main` passes this list as the `pathChecked` argument of `brokenDocLinks`. In this module it holds only `ARCHITECTURE-BOUNDARIES.md`.",
-				"examples": [["ARCHITECTURE-BOUNDARIES.md"]]
+				"examples": [
+					["ARCHITECTURE-BOUNDARIES.md"]
+				]
 			},
 			{
 				"name": "markdownLinks",
@@ -248,7 +258,10 @@
 						"type": "readonly string[]",
 						"required": true,
 						"description": "The repository-relative paths where the run starts, each checked once in list order, and a listed path that does not exist is reported as a problem. Each link target that exists, ends in `.md` and is not the linking document itself is queued and checked the same way, so linked Markdown files are followed through their own links too.",
-						"examples": [["ARCHITECTURE-BOUNDARIES.md", "README.md"], ["README.md"]]
+						"examples": [
+							["ARCHITECTURE-BOUNDARIES.md", "README.md"],
+							["README.md"]
+						]
 					},
 					{
 						"name": "brokenDocLinks.files",
@@ -262,7 +275,10 @@
 						"required": false,
 						"default": [],
 						"description": "The documents whose backticked repository paths must also exist; for each listed document that is checked, every `codePaths` target is tested with `exists` and a missing one is reported. It defaults to `[]`, which checks no code paths, and `main` passes `pathCheckedDocuments`.",
-						"examples": [["ARCHITECTURE-BOUNDARIES.md"], []]
+						"examples": [
+							["ARCHITECTURE-BOUNDARIES.md"],
+							[]
+						]
 					}
 				],
 				"outputs": [

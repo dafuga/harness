@@ -45,7 +45,9 @@
 				"name": "hubRecordJson",
 				"type": "unknown",
 				"description": "The parsed JSON value without schema validation, or undefined if UTF-8 decoding or JSON parsing fails.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "hubAttachedRecord",
@@ -103,7 +105,9 @@
 						"name": "hubRecordJson",
 						"type": "unknown",
 						"description": "The parsed JSON value without schema validation, or undefined if UTF-8 decoding or JSON parsing fails.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"errors": [],

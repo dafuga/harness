@@ -23,7 +23,9 @@
 				"required": false,
 				"default": {},
 				"description": "Optional controls select the repository root, commit, requested comparison base, runtime, entity scope, and per-check timeout; the workflow defaults root to process.cwd(), commit to HEAD, and base to the first parent, but uses that base only when locally provable (entity scope plans from no base). An http runtime is rejected; the shared type also permits priority, requirePerformance, and record, which this workflow does not read.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			}
 		],
 		"outputs": [
@@ -80,7 +82,9 @@
 						"required": false,
 						"default": {},
 						"description": "Optional controls select the repository root, commit, requested comparison base, runtime, entity scope, and per-check timeout; the workflow defaults root to process.cwd(), commit to HEAD, and base to the first parent, but uses that base only when locally provable (entity scope plans from no base). An http runtime is rejected; the shared type also permits priority, requirePerformance, and record, which this workflow does not read.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [

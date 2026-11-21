@@ -66,7 +66,11 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Configured glob or directory-prefix patterns, each tested with matchesExclusion against collected file paths only and never against ignoredPaths entries. The test runs after the Git-ignored and sensitive-path checks and before the generated-source and source-extension checks; an empty array adds no configured exclusions.",
-				"examples": [["src/legacy/**"], ["docs/", "**/*.gen.ts"], []]
+				"examples": [
+					["src/legacy/**"],
+					["docs/", "**/*.gen.ts"],
+					[]
+				]
 			},
 			{
 				"name": "matchesExclusion.path",
@@ -206,7 +210,11 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Configured glob or directory-prefix patterns, each tested with matchesExclusion against collected file paths only and never against ignoredPaths entries. The test runs after the Git-ignored and sensitive-path checks and before the generated-source and source-extension checks; an empty array adds no configured exclusions.",
-						"examples": [["src/legacy/**"], ["docs/", "**/*.gen.ts"], []]
+						"examples": [
+							["src/legacy/**"],
+							["docs/", "**/*.gen.ts"],
+							[]
+						]
 					}
 				],
 				"outputs": [

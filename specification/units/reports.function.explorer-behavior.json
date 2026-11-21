@@ -406,7 +406,9 @@
 				"name": "behaviorKinds",
 				"type": "unknown",
 				"description": "The capture kinds that record what a unit did, as the constant ['output', 'assertions', 'trace']. A capture of any other kind, such as a benchmark, is never compared and never appears in a row.",
-				"examples": [["output", "assertions", "trace"]]
+				"examples": [
+					["output", "assertions", "trace"]
+				]
 			},
 			{
 				"name": "behaviorSummary",

@@ -32,7 +32,9 @@
 				"required": false,
 				"default": {},
 				"description": "The options select one report when run is truthy and set the effective dry-run flag from Boolean(dryRun). A run-scoped call skips orphan cleanup, and an omitted argument defaults to {}.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			}
 		],
 		"outputs": [
@@ -71,7 +73,9 @@
 						"required": false,
 						"default": {},
 						"description": "The options select one report when run is truthy and set the effective dry-run flag from Boolean(dryRun). A run-scoped call skips orphan cleanup, and an omitted argument defaults to {}.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [

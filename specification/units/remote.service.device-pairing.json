@@ -38,7 +38,9 @@
 				"required": false,
 				"default": {},
 				"description": "Optional transport override: its fetch replaces the global fetch for every relay call this service makes, and the default {} uses the global fetch. It is read on each call, and every relay request is sent with redirect set to error, so a redirect rejects that call.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "DevicePairingService.scanned.text",
@@ -391,7 +393,9 @@
 						"required": false,
 						"default": {},
 						"description": "Optional transport override: its fetch replaces the global fetch for every relay call this service makes, and the default {} uses the global fetch. It is read on each call, and every relay request is sent with redirect set to error, so a redirect rejects that call.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [

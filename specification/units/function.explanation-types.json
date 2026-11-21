@@ -44,7 +44,9 @@
 				"name": "explanationOutcomes",
 				"type": "unknown",
 				"description": "The readonly tuple of outcome strings accepted by simplification and performance attempts; only improved, not-improved, and not-applicable are allowed.",
-				"examples": [["improved", "not-improved", "not-applicable"]]
+				"examples": [
+					["improved", "not-improved", "not-applicable"]
+				]
 			},
 			{
 				"name": "explanationSchema",

@@ -28,7 +28,9 @@
 				"type": "ComponentManifest[]",
 				"required": true,
 				"description": "The array contains component manifests considered by required or validate. Only active manifests are retained; non-module runtimes are always executable, while a module runtime is executable if any owned file is unread or missing, no owned paths are listed, or a readable non-CSS owned file is not declarative.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "PerformanceEvidenceValidator.required.files",
@@ -48,7 +50,9 @@
 				"name": "PerformanceEvidenceValidator.required",
 				"type": "ComponentManifest[]",
 				"description": "Returns the active manifests that need profiling according to their runtime and inspected owned files. Non-module runtimes always qualify; module runtimes qualify when an owned file is unread or missing, no owned paths are listed, or any readable non-CSS owned file is not declarative.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "PerformanceEvidenceValidator.validate",
@@ -73,7 +77,9 @@
 						"type": "ComponentManifest[]",
 						"required": true,
 						"description": "The array contains component manifests considered by required or validate. Only active manifests are retained; non-module runtimes are always executable, while a module runtime is executable if any owned file is unread or missing, no owned paths are listed, or a readable non-CSS owned file is not declarative.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "PerformanceEvidenceValidator.required.files",
@@ -87,7 +93,9 @@
 						"name": "PerformanceEvidenceValidator.required",
 						"type": "ComponentManifest[]",
 						"description": "Returns the active manifests that need profiling according to their runtime and inspected owned files. Non-module runtimes always qualify; module runtimes qualify when an owned file is unread or missing, no owned paths are listed, or any readable non-CSS owned file is not declarative.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],

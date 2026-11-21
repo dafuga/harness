@@ -288,7 +288,9 @@
 				"required": false,
 				"default": "undefined",
 				"description": "Argument list of a call to the wrapped operation; the proxy forwards it unchanged and records no argument values.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "watchMethod.owner",
@@ -447,7 +449,9 @@
 				"name": "nativeProfilePlugins",
 				"type": "unknown",
 				"description": "Promise that resolves to the plugins of the runner configuration loaded in test mode, or to an empty array when HARNESS_COLLECT_FILES is set; it rejects when Vite loads no configuration.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "profileSelection",
@@ -813,7 +817,9 @@
 						"required": false,
 						"default": "undefined",
 						"description": "Argument list of a call to the wrapped operation; the proxy forwards it unchanged and records no argument values.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
@@ -967,7 +973,9 @@
 						"name": "nativeProfilePlugins",
 						"type": "unknown",
 						"description": "Promise that resolves to the plugins of the runner configuration loaded in test mode, or to an empty array when HARNESS_COLLECT_FILES is set; it rejects when Vite loads no configuration.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [

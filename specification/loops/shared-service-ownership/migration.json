@@ -1572,15 +1572,21 @@
 			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-			"definition": "97d9f4a4a730affc84f1a186d3778d40a16b08239e3852c6d7b6fea181cc4fd7",
+			"definition": "fc327936981eb1ef64eef693127c67f1a5e77c8807ef9b7a93914cbe55fdc4df",
 			"relocationDefinition": "ad6779f744c3301ed9c076ccd555033b60565ddb328f789f7efeff9f93b08d6b",
 			"review": {
-				"commit": "07511ea946a971e687682ff5c8abf43e93e0cac8",
+				"commit": "caea83354142413dd97edae29bdd055924c9847b",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-				"definition": "97d9f4a4a730affc84f1a186d3778d40a16b08239e3852c6d7b6fea181cc4fd7",
-				"reason": "Moves remote controls and the project chooser into sibling modules; behavior unchanged."
+				"definition": "fc327936981eb1ef64eef693127c67f1a5e77c8807ef9b7a93914cbe55fdc4df",
+				"reason": "Keeps the Tracker overview publisher in the desktop backend lifecycle."
 			},
 			"previousReviews": [
+				{
+					"commit": "07511ea946a971e687682ff5c8abf43e93e0cac8",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+					"definition": "97d9f4a4a730affc84f1a186d3778d40a16b08239e3852c6d7b6fea181cc4fd7",
+					"reason": "Moves remote controls and the project chooser into sibling modules; behavior unchanged."
+				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
@@ -1599,27 +1605,43 @@
 			"unit": "desktop.service.native-connection",
 			"from": "packages/desktop/src/services/NativeConnectionService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.ts",
-			"definition": "35091df5a8f74b97d97a0396da7d31c5fe8b14aa38a812d54d8c8ee3129f0b81",
+			"definition": "f95a39e59fd26b8ff9fc17f70cf265ecef85c0481be8a4eeee6443ef7e27abbe",
 			"relocationDefinition": "d2e47f584c82ec1dc1ee8b2633bfda9fd0b18e23c0d7bea61f4d3eccc4347133",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "caea83354142413dd97edae29bdd055924c9847b",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.ts",
-				"definition": "35091df5a8f74b97d97a0396da7d31c5fe8b14aa38a812d54d8c8ee3129f0b81",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "f95a39e59fd26b8ff9fc17f70cf265ecef85c0481be8a4eeee6443ef7e27abbe",
+				"reason": "Exposes the fixed Tracker overview operation through native session authority."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.ts",
+					"definition": "35091df5a8f74b97d97a0396da7d31c5fe8b14aa38a812d54d8c8ee3129f0b81",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.native-auth",
 			"from": "packages/desktop/src/services/NativeAuthService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
-			"definition": "0435f4b7a85e042232cfe12ae825a7b3c48895b3cbd315b0bc63df1e47a3e41b",
+			"definition": "11320e6d5b82ebd8669a90d972996bc48246dc328a09bd57bceedada92cc671f",
 			"relocationDefinition": "67a3c6213e0976f629348ba23061f5fa8274ef5c97eb067ee00cba2f8005485f",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "caea83354142413dd97edae29bdd055924c9847b",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
-				"definition": "0435f4b7a85e042232cfe12ae825a7b3c48895b3cbd315b0bc63df1e47a3e41b",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "11320e6d5b82ebd8669a90d972996bc48246dc328a09bd57bceedada92cc671f",
+				"reason": "Reads the Tracker overview through the current native account and rejects stale sessions."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
+					"definition": "0435f4b7a85e042232cfe12ae825a7b3c48895b3cbd315b0bc63df1e47a3e41b",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "workflow.export-plans",
@@ -2469,14 +2491,22 @@
 			"unit": "command.new",
 			"from": "src/commands/new.ts",
 			"to": "src/cli/program/new.ts",
-			"definition": "d75850024742dc2f26d08b564d099efc61f57c5ce29b82312aa1bde4180ac3d8",
+			"definition": "1fb111ad72677cdcfa6446840eaeeb6ddddac9650848f7991e4bbffdfb67a527",
 			"relocationDefinition": "5b23218644999fd41e1610c4f710030dfce37b2977a2c3b8e31db18a8c97a2ee",
 			"review": {
-				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
-				"path": "src/commands/new.ts",
-				"definition": "d75850024742dc2f26d08b564d099efc61f57c5ce29b82312aa1bde4180ac3d8",
-				"reason": "Retain the game branch’s game project command and dimension option."
-			}
+				"commit": "d07eac3753950f0f30df3242830668d4c3bcbfc8",
+				"path": "src/cli/program/new.ts",
+				"definition": "1fb111ad72677cdcfa6446840eaeeb6ddddac9650848f7991e4bbffdfb67a527",
+				"reason": "Registers and forwards the game engine option in the CLI."
+			},
+			"previousReviews": [
+				{
+					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
+					"path": "src/commands/new.ts",
+					"definition": "d75850024742dc2f26d08b564d099efc61f57c5ce29b82312aa1bde4180ac3d8",
+					"reason": "Retain the game branch’s game project command and dimension option."
+				}
+			]
 		},
 		{
 			"unit": "hub.service.hub-projection",
@@ -3556,27 +3586,43 @@
 			"unit": "desktop.adapter.capacitor-environment",
 			"from": "packages/desktop/src/adapters/CapacitorEnvironmentAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
-			"definition": "05e7b0ad0818cc4c6310d6a56abf0b26d62435fdd0fc85b3f6dcea083893b9dd",
+			"definition": "f81e499329ad2ba79d16593299b0cae12ff92d3f7baf5b5a46c261a90de70950",
 			"relocationDefinition": "a8686e0c6a99b21cf67d3b48283b7791fe3c0230f56e99b01fb0a072a81d2c94",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "caea83354142413dd97edae29bdd055924c9847b",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
-				"definition": "05e7b0ad0818cc4c6310d6a56abf0b26d62435fdd0fc85b3f6dcea083893b9dd",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "f81e499329ad2ba79d16593299b0cae12ff92d3f7baf5b5a46c261a90de70950",
+				"reason": "Maintains pairing generations when the phone changes computer or goes offline."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
+					"definition": "05e7b0ad0818cc4c6310d6a56abf0b26d62435fdd0fc85b3f6dcea083893b9dd",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.capacitor-projects",
 			"from": "packages/desktop/src/services/CapacitorProjectsService.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
-			"definition": "d32f1355839ee8dd8af1ebc9e107dc17ced5aac289db63c84c25fb1286b22ef7",
+			"definition": "0c2876d496326aa0f2560fb39c4b8243508b42f5ee4bb5ae554041303e443e79",
 			"relocationDefinition": "fe30761246bf612fad1c8e18fa34c681a39a90ba14d7460dd78b469ebc5651f8",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "caea83354142413dd97edae29bdd055924c9847b",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
-				"definition": "d32f1355839ee8dd8af1ebc9e107dc17ced5aac289db63c84c25fb1286b22ef7",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "0c2876d496326aa0f2560fb39c4b8243508b42f5ee4bb5ae554041303e443e79",
+				"reason": "Gates the paired overview read on the phone account and current pairing."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
+					"definition": "d32f1355839ee8dd8af1ebc9e107dc17ced5aac289db63c84c25fb1286b22ef7",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "service.console-install",
@@ -4321,15 +4367,21 @@
 			"unit": "desktop.initializer.initialize-preload",
 			"from": "packages/desktop/src/initializers/initializePreload.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-			"definition": "1321a44da2dd99384ed21498d8618cfb9bab01e0e6389ebb89ad8ad0d4a05fc6",
+			"definition": "795fd28ae7e4feffe99c57fea4a02ed05dca03049b0dd37e70b752647da05988",
 			"relocationDefinition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5",
 			"review": {
-				"commit": "f94303b4de5fdca1ab1cf13d242b1a9e8ad0abc8",
+				"commit": "caea83354142413dd97edae29bdd055924c9847b",
 				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-				"definition": "1321a44da2dd99384ed21498d8618cfb9bab01e0e6389ebb89ad8ad0d4a05fc6",
-				"reason": "Adds read-only agent registrations through the selected local project boundary without changing existing mutation permissions."
+				"definition": "795fd28ae7e4feffe99c57fea4a02ed05dca03049b0dd37e70b752647da05988",
+				"reason": "Includes the fixed project overview call on the preload bridge."
 			},
 			"previousReviews": [
+				{
+					"commit": "f94303b4de5fdca1ab1cf13d242b1a9e8ad0abc8",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "1321a44da2dd99384ed21498d8618cfb9bab01e0e6389ebb89ad8ad0d4a05fc6",
+					"reason": "Adds read-only agent registrations through the selected local project boundary without changing existing mutation permissions."
+				},
 				{
 					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 					"path": "packages/desktop/src/initializers/initializePreload.ts",
@@ -5183,14 +5235,22 @@
 			"unit": "hub.controller.github-connection",
 			"from": "packages/hub/src/controllers/github-connection-controller/GithubConnectionController.ts",
 			"to": "packages/hub/src/lib/verification-evidence/server/auth/github-connection-controller/GithubConnectionController.ts",
-			"definition": "fc956083b52bb70b6f65063933d2a7aadccef4073c727ef6487e1b7893acfdaa",
+			"definition": "3345af2c137cf6b451b9c29052376eb1240ae22c9175fc0fd1d1c87b175422bb",
 			"relocationDefinition": "b9d251c80caa2bd7338394371b892f1a3e5a1a1a68125864a9285274e4505d7b",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "caea83354142413dd97edae29bdd055924c9847b",
 				"path": "packages/hub/src/lib/verification-evidence/server/auth/github-connection-controller/GithubConnectionController.ts",
-				"definition": "fc956083b52bb70b6f65063933d2a7aadccef4073c727ef6487e1b7893acfdaa",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "3345af2c137cf6b451b9c29052376eb1240ae22c9175fc0fd1d1c87b175422bb",
+				"reason": "Returns GitHub connection results to the projects page."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/hub/src/lib/verification-evidence/server/auth/github-connection-controller/GithubConnectionController.ts",
+					"definition": "fc956083b52bb70b6f65063933d2a7aadccef4073c727ef6487e1b7893acfdaa",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "hub.function.auth-http",
@@ -5351,15 +5411,21 @@
 			"unit": "desktop.service.local-client",
 			"from": "packages/desktop/src/services/LocalClientService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-			"definition": "1f8781d596660ae51c109384f6efb74834a9e19cfa93c319f71ee6dc8b668d1e",
+			"definition": "bbd255f3b64af1587a08a456291b5d1cd00fc621d404a1699a41382700f83b50",
 			"relocationDefinition": "db0ec4b62e6922c297169687608d262d5d27c0fbea6e3b27da2a52def20bb765",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "caea83354142413dd97edae29bdd055924c9847b",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-				"definition": "1f8781d596660ae51c109384f6efb74834a9e19cfa93c319f71ee6dc8b668d1e",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				"definition": "bbd255f3b64af1587a08a456291b5d1cd00fc621d404a1699a41382700f83b50",
+				"reason": "Uses the configured native Hub account as the overview source."
 			},
 			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
+					"definition": "1f8781d596660ae51c109384f6efb74834a9e19cfa93c319f71ee6dc8b668d1e",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
 				{
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "packages/desktop/src/services/LocalClientService.ts",
@@ -5372,14 +5438,22 @@
 			"unit": "desktop.service.local-operations",
 			"from": "packages/desktop/src/services/LocalOperationsService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-			"definition": "a820511343a29c7edeb5ba96bd48a84e12615a4275e20d64f45f1054258db559",
+			"definition": "24abc5d2f2cb8a71536125e8a723d22be51876df584e9d9b8ff577877c4c59de",
 			"relocationDefinition": "6c93c210df9a0612e8b374298b009646d8cc776940b82b610c6aa2edf7a6f2b4",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "caea83354142413dd97edae29bdd055924c9847b",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-				"definition": "a820511343a29c7edeb5ba96bd48a84e12615a4275e20d64f45f1054258db559",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "24abc5d2f2cb8a71536125e8a723d22be51876df584e9d9b8ff577877c4c59de",
+				"reason": "Dispatches the zero-argument project overview operation."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "a820511343a29c7edeb5ba96bd48a84e12615a4275e20d64f45f1054258db559",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "relay.service.rate-limit",
@@ -5486,14 +5560,22 @@
 			"unit": "desktop.adapter.capacitor-account",
 			"from": "packages/desktop/src/adapters/capacitor-account-adapter/CapacitorAccountAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-			"definition": "70a7d0dab7d16078c4fea5135346fdd88a87b30923b8d0c9a46cdf779dd45ce5",
+			"definition": "e5347496d8defb1eda4eb3857a3321acb2869cd58ceb5c0df7f88132bd2cb1fd",
 			"relocationDefinition": "f54f1586b418a653ad39961751f61e977322b2dfa5d0ab7c8f660f3bb3cdd01a",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "caea83354142413dd97edae29bdd055924c9847b",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-				"definition": "70a7d0dab7d16078c4fea5135346fdd88a87b30923b8d0c9a46cdf779dd45ce5",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "e5347496d8defb1eda4eb3857a3321acb2869cd58ceb5c0df7f88132bd2cb1fd",
+				"reason": "Exposes the owner overview through the phone account adapter and keeps its denial separate from project access."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
+					"definition": "70a7d0dab7d16078c4fea5135346fdd88a87b30923b8d0c9a46cdf779dd45ce5",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.adapter.capacitor-account",
@@ -5505,15 +5587,21 @@
 			"unit": "workflow.create-project",
 			"from": "src/workflows/create-project/createProject.ts",
 			"to": "src/cli/program/create-project/createProject.ts",
-			"definition": "1e96e6ce8d029b320a828135312efef03142585dae49afe7f84970097d62aaed",
+			"definition": "42e9bf2ed78903f643705f75d3593a332bc3e8e4d953ee86c77cd2dece3d4fa9",
 			"relocationDefinition": "079d03bf5f45ed18001faf540c6fe2ea44ec45252b43225525d9e377022a84d1",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "d07eac3753950f0f30df3242830668d4c3bcbfc8",
 				"path": "src/cli/program/create-project/createProject.ts",
-				"definition": "1e96e6ce8d029b320a828135312efef03142585dae49afe7f84970097d62aaed",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				"definition": "42e9bf2ed78903f643705f75d3593a332bc3e8e4d953ee86c77cd2dece3d4fa9",
+				"reason": "Validates and forwards the optional game engine for project generation."
 			},
 			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/create-project/createProject.ts",
+					"definition": "1e96e6ce8d029b320a828135312efef03142585dae49afe7f84970097d62aaed",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
 				{
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "src/workflows/create-project/createProject.ts",

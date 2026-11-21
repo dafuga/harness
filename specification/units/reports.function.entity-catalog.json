@@ -715,7 +715,10 @@
 				"type": "string[]",
 				"required": true,
 				"description": "The names to summarize, in the order given; an empty list gives 'none'.",
-				"examples": [["ExplorerTable", "ExplorerIndex", "EntityRelations"], []]
+				"examples": [
+					["ExplorerTable", "ExplorerIndex", "EntityRelations"],
+					[]
+				]
 			},
 			{
 				"name": "listed.most",
@@ -731,7 +734,9 @@
 				"name": "catalogOrders",
 				"type": "unknown",
 				"description": "The readonly list of order keys, in this order: name, name-desc, changed and failed; CatalogOrder is derived from it.",
-				"examples": [["name", "name-desc", "changed", "failed"]]
+				"examples": [
+					["name", "name-desc", "changed", "failed"]
+				]
 			},
 			{
 				"name": "orderLabels",
@@ -2019,7 +2024,10 @@
 						"type": "string[]",
 						"required": true,
 						"description": "The names to summarize, in the order given; an empty list gives 'none'.",
-						"examples": [["ExplorerTable", "ExplorerIndex", "EntityRelations"], []]
+						"examples": [
+							["ExplorerTable", "ExplorerIndex", "EntityRelations"],
+							[]
+						]
 					},
 					{
 						"name": "listed.most",

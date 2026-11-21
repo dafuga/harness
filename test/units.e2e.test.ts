@@ -35,6 +35,8 @@ test('generic unit generator coexists with the Svelte component generator', asyn
 	const index = await project.harnessJson<IndexResult>(['units', 'index', '--write']);
 	expect(index.added).toContain('component.price-quote');
 	expect(index.added).not.toContain('function.price-quote');
+	// Bring newly indexed scaffold units through the published UID migration before checking contracts.
+	await project.harness(['units', 'uid-backfill', '--write']);
 	await checkGeneratedAppContracts(project);
 	const service = await project.harness(['generate', 'unit', 'Billing', '--kind', 'service']);
 	expect(service.stdout).toContain('create src/services/BillingService.ts');

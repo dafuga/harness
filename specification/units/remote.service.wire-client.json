@@ -70,7 +70,9 @@
 				"required": false,
 				"default": {},
 				"description": "The arguments object sent with the request, unchanged unless the method is in mutationMethods, where any `epoch` key is overwritten with the current cursor epoch. It defaults to {} when no argument is passed.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "WireClientService.on.channel",
@@ -211,7 +213,11 @@
 				"name": "WireClientService.request",
 				"type": "Promise<T>",
 				"description": "The `value` of an ok response from the host, returned without any check and typed as `T`, which defaults to `unknown`.",
-				"examples": [null, true, []]
+				"examples": [
+					null,
+					true,
+					[]
+				]
 			},
 			{
 				"name": "WireClientService.on",
@@ -395,7 +401,9 @@
 						"required": false,
 						"default": {},
 						"description": "The arguments object sent with the request, unchanged unless the method is in mutationMethods, where any `epoch` key is overwritten with the current cursor epoch. It defaults to {} when no argument is passed.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
@@ -403,7 +411,11 @@
 						"name": "WireClientService.request",
 						"type": "Promise<T>",
 						"description": "The `value` of an ok response from the host, returned without any check and typed as `T`, which defaults to `unknown`.",
-						"examples": [null, true, []]
+						"examples": [
+							null,
+							true,
+							[]
+						]
 					}
 				],
 				"errors": [

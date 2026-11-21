@@ -33,7 +33,9 @@
 				"type": "ComparisonPane<T>[]",
 				"required": true,
 				"description": "An array of side contexts to render. Entries are filtered by visible and keyed by key; shown panes provide heading and role, while value and optional gap select the content path.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "ComparePanes.visible",

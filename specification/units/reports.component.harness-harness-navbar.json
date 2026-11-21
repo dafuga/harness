@@ -82,7 +82,9 @@
 				"type": "HarnessRevisionSummary[]",
 				"required": true,
 				"description": "The branch revision choices in newest-first order. harnessShell prepends the viewed revision summary when its commit is absent from this list.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "HarnessNavbar.href",
