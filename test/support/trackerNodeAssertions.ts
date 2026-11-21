@@ -1,0 +1,219 @@
+import { createServer } from 'node:http';
+import type { IncomingMessage, ServerResponse } from 'node:http';
+import type { TrackerFixtureReceipts } from './trackerNodeProcess.types';
+import { once } from 'node:events';
+import { expect } from 'vitest';
+import { TrackerSyncAuthService } from '../../src/services/networking-security/TrackerSyncAuthService';
+import {
+	fixtureTrackerJson,
+	loopback,
+	startTrackerFixture,
+	trackerFixtureKey,
+	trackerProcess
+} from './trackerNodeProcess';
+import type { TrackerNodeFixture } from './trackerNodeProcess.types';
+import { verifyCosDryRun } from './verifyCosDryRun';
+
+export async function proveForegroundSync(
+	hub: TrackerNodeFixture,
+	spoke: TrackerNodeFixture,
+	syncPort: number,
+	sink: Awaited<ReturnType<typeof notificationSink>>
+) {
+	const hubOwner = await startTrackerFixture(hub);
+	try {
+		const spokeOwner = await startTrackerFixture(spoke);
+		try {
+			expect(hubOwner.ready).toMatchObject({
+				node: 'synthetic-hub',
+				syncPort,
+				checkpoint: 'fixture-migration-01'
+			});
+			expect(await fixtureTrackerJson(hub, ['ensure'])).toMatchObject({
+				version: 'harness-native',
+				role: 'hub'
+			});
+			const { id } = await fixtureTrackerJson(spoke, [
+				'add',
+				'Synthetic loopback qualification',
+				'--callback-url',
+				sink.base + '/callback'
+			]);
+			await qualifyItemCommands(spoke, id);
+			const sync = await trackerProcess(spoke, ['sync']).exited;
+			expect(sync).toMatchObject({ code: 0, stdout: 'sync triggered\n' });
+			await expect
+				.poll(() => fixtureTrackerJson(hub, ['list']), { timeout: 8_000 })
+				.toMatchObject([{ id }]);
+			await verifyTrackerWire(syncPort, id);
+			const reverse = await fixtureTrackerJson(hub, ['add', 'Reverse fixture item']);
+			await expect
+				.poll(() => fixtureTrackerJson(spoke, ['list']), { timeout: 8_000 })
+				.toEqual(expect.arrayContaining([expect.objectContaining({ id: reverse.id })]));
+			await verifyTrackerNotificationFlow(hub, spoke, id, sink.receipts);
+			expect(await fixtureTrackerJson(spoke, ['status'])).toMatchObject({
+				role: 'spoke',
+				sync: { connected: true, pending_push: 0 },
+				native: { provider_runner: 'disabled', notification_tick: true }
+			});
+		} finally {
+			expect((await spokeOwner.stop()).code).toBe(0);
+		}
+	} finally {
+		expect((await hubOwner.stop()).code).toBe(0);
+	}
+	expect((await trackerProcess(spoke, ['ensure']).exited).code).toBe(3);
+}
+
+async function qualifyItemCommands(spoke: TrackerNodeFixture, id: string) {
+	const short = id.slice(0, 6);
+	expect(
+		(await trackerProcess(spoke, ['add', 'Synthetic loopback qualification']).exited).code
+	).toBe(5);
+	expect(await fixtureTrackerJson(spoke, ['note', short, 'Retain this note'])).toMatchObject({
+		id,
+		notes_log: [{ text: 'Retain this note' }]
+	});
+	const launch = ['launch', short, '--model', 'sol:high'];
+	const launched = await fixtureTrackerJson(spoke, launch);
+	expect(launched).toMatchObject({
+		id,
+		auto: expect.stringMatching(/^synthetic-spoke@/),
+		launch_source: 'manual',
+		launch_target: 'synthetic-spoke',
+		model: 'sol:high'
+	});
+	expect(await fixtureTrackerJson(spoke, launch)).toEqual(launched);
+	expect((await trackerProcess(spoke, ['launch', short, '--model', 'sol:low']).exited).code).toBe(
+		1
+	);
+	expect(await fixtureTrackerJson(spoke, ['launch', 'off', short])).toMatchObject({
+		id,
+		auto: null,
+		schedule_off: true
+	});
+	expect(await fixtureTrackerJson(spoke, ['launch', 'on', short])).toMatchObject({
+		id,
+		schedule_off: false
+	});
+}
+
+async function verifyTrackerWire(port: number, id: string) {
+	const pathAndQuery = '/sync/pull?since=0&wait=0';
+	const url = loopback(port) + pathAndQuery;
+	expect((await fetch(url)).status).toBe(401);
+	const authorization = new TrackerSyncAuthService(trackerFixtureKey).authorizationHeader({
+		method: 'GET',
+		pathAndQuery
+	});
+	const response = await fetch(url, {
+		headers: { authorization, 'x-tracker-node': 'synthetic-observer' }
+	});
+	expect(response.status).toBe(200);
+	expect(await response.json()).toMatchObject({
+		hub: 'synthetic-hub',
+		ops: expect.arrayContaining([
+			expect.objectContaining({ item_id: id, actor: 'synthetic-attestation' })
+		])
+	});
+	expect((await fetch(loopback(port) + '/items', { method: 'POST', body: '{}' })).status).toBe(404);
+}
+
+async function verifyTrackerNotificationFlow(
+	hub: TrackerNodeFixture,
+	spoke: TrackerNodeFixture,
+	id: string,
+	receipts: Awaited<ReturnType<typeof notificationSink>>['receipts']
+) {
+	expect(await fixtureTrackerJson(spoke, ['flag', id, 'Is the fixture ready?'])).toMatchObject({
+		needs_daniel: true
+	});
+	await expect
+		.poll(async () => (await trackerProcess(hub, ['digest']).exited).stdout)
+		.toContain('Is the fixture ready?');
+	verifyCosDryRun(hub, id);
+	await expect
+		.poll(() => [...receipts.values()].find(({ path }) => path === '/cos')?.body, {
+			timeout: 9_000
+		})
+		.toMatchObject({
+			type: 'attention',
+			new: [{ id, question: 'Is the fixture ready?' }]
+		});
+	expect(
+		await fixtureTrackerJson(spoke, ['answer', id, 'Fixture confirmed', '--by', 'fixture-operator'])
+	).toMatchObject({
+		id,
+		resolved: true,
+		needs_daniel: false,
+		answer: 'Fixture confirmed',
+		answered_by: 'fixture-operator'
+	});
+	expect(
+		await fixtureTrackerJson(spoke, ['done', id, '--note', 'Completion before worktree cleanup'])
+	).toMatchObject({ id, status: 'done' });
+	await verifyCompletionCallback(receipts, id);
+	await expect
+		.poll(() => fixtureTrackerJson(hub, ['show', id]), { timeout: 8_000 })
+		.toMatchObject({
+			id,
+			status: 'done',
+			answer: 'Fixture confirmed',
+			notes_log: expect.arrayContaining([
+				expect.objectContaining({ text: 'Completion before worktree cleanup' })
+			])
+		});
+}
+
+async function verifyCompletionCallback(
+	receipts: Awaited<ReturnType<typeof notificationSink>>['receipts'],
+	id: string
+) {
+	await expect
+		.poll(
+			() =>
+				[...receipts.values()].filter(({ path }) => path === '/callback').map(({ body }) => body),
+			{ timeout: 9_000 }
+		)
+		.toEqual(
+			expect.arrayContaining([
+				expect.objectContaining({
+					type: 'item',
+					events: expect.arrayContaining(['done']),
+					item: expect.objectContaining({ id, status: 'done' })
+				})
+			])
+		);
+}
+
+export async function notificationSink(port: number) {
+	const receipts: TrackerFixtureReceipts = new Map();
+	const server = createServer((request, response) => {
+		void collectReceipt(request, response, receipts).catch(() => response.writeHead(500).end());
+	});
+	server.listen(port, '127.0.0.1');
+	await once(server, 'listening');
+	return {
+		base: loopback(port),
+		receipts,
+		close: () => new Promise<void>((resolve) => server.close(() => resolve()))
+	};
+}
+
+async function collectReceipt(
+	request: IncomingMessage,
+	response: ServerResponse,
+	receipts: TrackerFixtureReceipts
+) {
+	const key = request.headers['idempotency-key'];
+	const path = request.url ?? '';
+	const chunks: Buffer[] = [];
+	for await (const chunk of request) chunks.push(chunk);
+	if (typeof key !== 'string') {
+		response.writeHead(400).end();
+		return;
+	}
+	if (!receipts.has(key))
+		receipts.set(key, { path, body: JSON.parse(Buffer.concat(chunks).toString()) });
+	response.writeHead(204).end();
+}

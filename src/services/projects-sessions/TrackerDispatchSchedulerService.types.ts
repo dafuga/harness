@@ -10,10 +10,11 @@ import type {
 export type TrackerReservedStart = Extract<TrackerDispatchResult, { status: 'start' }>;
 
 export interface TrackerDispatchRunner {
-	/** Launch only the committed attempt key. Throw when execution is uncertain. */
+	/** Append the completion instructions to the launch brief and launch only the committed attempt key. */
 	start(
 		reservation: TrackerReservedStart,
-		signal: AbortSignal
+		signal: AbortSignal,
+		completionInstructions: string
 	): Promise<TrackerDispatchEvent | undefined>;
 	/** Match runner evidence using the exact attempt key. Missing evidence keeps a reservation pending. */
 	observe(

@@ -5,6 +5,7 @@ import type { TrackerItemMutationContext } from '../../utils/projects-sessions/p
 
 export interface TrackerLocalApiOptions {
 	now?: () => number;
+	manualLaunch?: boolean;
 	timeZone?: string;
 	runs?: TrackerRunReadRepository;
 	recurring?: {
