@@ -146,11 +146,7 @@ export class TrackerRecurringRepository {
 	}
 
 	assertLegacyRollbackSafe(): void {
-		if (
-			this.store.database.prepare('SELECT 1 FROM meta WHERE k GLOB ? LIMIT 1').get(workPrefix + '*')
-		) {
-			throw new Error('Tracker rollback blocked by recurring work');
-		}
+		assertLegacyRecurringRollbackSafe(this.store.database);
 	}
 
 	private readJob(id: string): TrackerRecurringJob | undefined {
@@ -172,4 +168,11 @@ export class TrackerRecurringRepository {
 			: { phase: 'wake', wake };
 		this.store.writeMeta({ [workPrefix + key]: JSON.stringify(work) });
 	}
+}
+
+export function assertLegacyRecurringRollbackSafe(
+	database: TrackerPersistenceService['database']
+): void {
+	if (database.prepare('SELECT 1 FROM meta WHERE k GLOB ? LIMIT 1').get(workPrefix + '*'))
+		throw new Error('Tracker rollback blocked by recurring work');
 }

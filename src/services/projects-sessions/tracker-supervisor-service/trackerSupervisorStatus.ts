@@ -30,6 +30,7 @@ export function trackerSupervisorStatus(
 
 function trackerStatusDefaults(runtime: TrackerNativeRuntimeService, hub: boolean) {
 	const { store, scheduler } = runtime;
+	const notification = runtime.notifications?.status();
 	const activeRuns = exists(store.database, 'runs')
 		? count(
 				store.database,
@@ -37,13 +38,15 @@ function trackerStatusDefaults(runtime: TrackerNativeRuntimeService, hub: boolea
 			)
 		: 0;
 	return {
-		chief_of_staff: 'not configured',
+		chief_of_staff: notification?.chiefOfStaff ?? 'not configured',
 		backup: { enabled: false, note: 'backups run on the hub (set backup.enabled to change)' },
 		machines: [],
-		webhook: hub
-			? { sender: false, note: 'webhook sender is disabled' }
-			: { sender: false, note: 'only the hub sends webhook events' },
-		jobs: {
+		webhook:
+			notification?.webhook ??
+			(hub
+				? { sender: false, note: 'webhook sender is disabled' }
+				: { sender: false, note: 'only the hub sends webhook events' }),
+		jobs: runtime.recurring?.status() ?? {
 			enabled: false,
 			jobs: exists(store.database, 'box_jobs')
 				? count(store.database, 'SELECT count(*) AS n FROM box_jobs')
@@ -51,9 +54,15 @@ function trackerStatusDefaults(runtime: TrackerNativeRuntimeService, hub: boolea
 			running: [],
 			queued: 0
 		},
-		adapters: { runner: null, active: Boolean(runtime.adapter) },
-		autolaunch: { enabled: Boolean(scheduler), active_runs: activeRuns, computers: [], stuck: [] },
-		quiet_hours: null
+		adapters: runtime.adapter?.status() ?? { runner: null, active: false },
+		autolaunch: {
+			enabled: false,
+			stuck: [],
+			...scheduler?.status(),
+			active_runs: activeRuns,
+			computers: []
+		},
+		quiet_hours: notification?.quietHours ?? null
 	};
 }
 

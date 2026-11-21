@@ -51,7 +51,8 @@ function launchIntent(row: TrackerDispatchRow): TrackerLaunchIntent | null {
 	return {
 		token: row.auto,
 		source: row.launch_source === 'due' ? 'due' : 'manual',
-		target: row.launch_target ?? (row.computer === 'auto' ? null : row.computer),
+		target:
+			(row.launch_target ?? row.computer) === 'auto' ? null : (row.launch_target ?? row.computer),
 		...(row.launch_pick && { scheduledPick: JSON.parse(row.launch_pick) })
 	};
 }

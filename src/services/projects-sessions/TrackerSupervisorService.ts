@@ -6,6 +6,7 @@ import type {
 	TrackerSupervisorWorker
 } from './TrackerSupervisorService.types';
 import { trackerSupervisorStatus } from './tracker-supervisor-service/trackerSupervisorStatus';
+import { assertTrackerLegacyRollbackSafe } from './tracker-supervisor-service/assertTrackerLegacyRollbackSafe';
 
 /** Owns one node's workers and drains in-flight work before returning database ownership. */
 export class TrackerSupervisorService {
@@ -21,6 +22,12 @@ export class TrackerSupervisorService {
 
 	status() {
 		return trackerSupervisorStatus(this.runtime, this.startedAt, this.options.views?.());
+	}
+
+	assertLegacyRollbackSafe(): void {
+		if (this.running)
+			throw new Error('Stop and drain the native Tracker workers before checking rollback');
+		assertTrackerLegacyRollbackSafe(this.runtime.store.database);
 	}
 
 	async run(signal: AbortSignal): Promise<void> {
@@ -55,10 +62,13 @@ export class TrackerSupervisorService {
 	}
 
 	private workers() {
-		const { scheduler, notifications } = this.runtime;
+		const { scheduler, notifications, recurring, adapter, telemetry } = this.runtime;
 		const ticks = {
+			...(telemetry && { telemetry }),
 			...(scheduler && { dispatch: (signal: AbortSignal) => scheduler.tick(signal) }),
+			...(recurring && { recurring: (signal: AbortSignal) => recurring.tick(signal) }),
 			...(notifications && { notifications: () => notifications.tick() }),
+			...(adapter && { adapter: (signal: AbortSignal) => adapter.tick(signal) }),
 			...this.options.ticks
 		};
 		return Object.entries(ticks) as [

@@ -77,6 +77,21 @@ export class TrackerSpokeSyncService {
 			}));
 	}
 
+	/** A signed, parsed hub decision. Transport or response failures propagate to the owner. */
+	async permitDue(id: string, token: string): Promise<boolean> {
+		const response = await this.#post('/sync/permit-due', { id, token });
+		return duePermit.parse(response).allowed;
+	}
+
+	async exchangeMachine(sample: unknown, runs: readonly unknown[]) {
+		const response = await this.#post('/sync/machine', { sample, runs });
+		return telemetryResponse.parse(response);
+	}
+
+	#post(pathAndQuery: string, body: unknown) {
+		return this.#request({ method: 'POST', pathAndQuery, body: JSON.stringify(body) }, 30_000);
+	}
+
 	async #drainPush(): Promise<number> {
 		const { push, replay } = this.#keys;
 		let acknowledged = 0;
@@ -153,6 +168,12 @@ export class TrackerSpokeSyncService {
 }
 
 const identity = z.string().min(1);
+const duePermit = z.object({ allowed: z.boolean() });
+const telemetryResponse = z.object({
+	ok: z.literal(true),
+	machines: z.array(z.unknown()),
+	run_history: z.array(z.unknown()).optional()
+});
 const sequence = z.int().nonnegative();
 const pushReceipt = z.object({ ok: z.literal(true), db_id: identity });
 const pullPage = z.object({

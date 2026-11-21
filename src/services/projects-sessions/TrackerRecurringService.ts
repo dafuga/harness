@@ -15,6 +15,10 @@ export class TrackerRecurringService {
 		private readonly options: TrackerRecurringOptions
 	) {}
 
+	status() {
+		return { enabled: Boolean(this.options.jobs), ...this.repository.jobStatus() };
+	}
+
 	async tick(signal: AbortSignal): Promise<void> {
 		if (signal.aborted || this.ticking) return;
 		this.ticking = true;

@@ -49,6 +49,8 @@ export class TrackerLocalApiService {
 			case 'items':
 				if (parts.length === 1) return trackerResponse(200, this.items.list(query));
 				if (parts.length === 2) return trackerResponse(200, this.items.get(parts[1]));
+				if (parts.length === 3 && parts[2] === 'history' && this.options.recurring)
+					return this.readHistory(parts[1], query.limit);
 				break;
 			case 'check':
 				return trackerResponse(
@@ -67,6 +69,19 @@ export class TrackerLocalApiService {
 		}
 		const run = readTrackerRunEndpoint(parts, query, { ...this.options, items: this.items });
 		return run === undefined ? undefined : trackerResponse(200, run);
+	}
+
+	private readHistory(id: string, rawLimit?: string): Response {
+		const recurring = this.options.recurring;
+		if (recurring?.role === 'spoke')
+			return trackerResponse(409, {
+				error: 'run tracker history on the box (the hub keeps the run history)'
+			});
+		const limit = Number(rawLimit) || 50;
+		if (!Number.isSafeInteger(limit))
+			return trackerResponse(400, { error: 'invalid history limit' });
+		const item = this.items.resolve(id);
+		return trackerResponse(200, recurring?.history?.(item.id, limit) ?? []);
 	}
 
 	private async write(request: Request, [, id, verb]: string[]): Promise<Response | undefined> {
