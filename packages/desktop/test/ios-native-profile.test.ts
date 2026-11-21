@@ -53,7 +53,9 @@ test.skipIf(process.platform !== 'darwin')(
 			expect(output).toMatch(/Debug: \d+ passed, 0 failed\./);
 			expect(output).toMatch(/Release: \d+ passed, 0 failed\./);
 			expect(output).toContain('ok   account: the tracker overview is one plain GET');
-			expect(output).toContain('ok   account: the tracker overview is signed with the kept session');
+			expect(output).toContain(
+				'ok   account: the tracker overview is signed with the kept session'
+			);
 			expect(output).toContain('ok   account: after Disconnect the tracker overview is not sent');
 			expect(output).not.toContain('FAIL');
 		} finally {
