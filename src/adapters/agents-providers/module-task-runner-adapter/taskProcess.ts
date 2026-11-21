@@ -23,6 +23,8 @@ import { guardedProviderCommand } from './provider-request-gate/providerDestinat
 import { ModuleTaskRunError } from './ModuleTaskRunError';
 import { processMonitor, killGroup } from './taskProcessMonitor';
 import { hardContextTokens, providerCompactionTokens } from './sessionPolicy';
+import { dockerTrackerGuestGrant } from './dockerTrackerGuestGrant';
+import { relayDockerTrackerGuest } from './dockerTrackerGuestRelay';
 
 /** Keep native subscription auth on this host. The Docker pilot runs offline. */
 export async function taskProcess(
@@ -66,21 +68,40 @@ export function dockerTaskImage(
 	return image;
 }
 
-function runDockerTaskProcess(
+async function runDockerTaskProcess(
 	command: string[],
 	input: TaskRunInput,
 	resources: ResourceContext,
 	image: string
 ) {
 	const meter = new ProviderSessionAdapter(input.provider, undefined);
-	return new ManagedProviderDockerAdapter().run(
-		command,
-		{ cwd: input.cwd, signal: input.signal, image },
-		(child) => {
-			if (child.pid) resources.track(child.pid);
-			return collectTaskProcess(child, input, meter);
-		}
-	);
+	const grant = await dockerTrackerGuestGrant(input.cwd, input.supervision?.tracker);
+	try {
+		const argv = grant
+			? (await import('./dockerTrackerGuestProgram')).dockerTrackerGuestCommand(
+					command,
+					grant.itemId,
+					grant.runId
+				)
+			: command;
+		return await new ManagedProviderDockerAdapter().run(
+			argv,
+			{ cwd: input.cwd, signal: input.signal, image },
+			async (child) => {
+				if (child.pid) resources.track(child.pid);
+				const result = collectTaskProcess(child, input, meter);
+				if (!grant) writeTaskPrompt(child, input.prompt);
+				else
+					await Promise.all([
+						result,
+						relayDockerTrackerGuest(child, grant, input.prompt, input.signal)
+					]);
+				return result;
+			}
+		);
+	} finally {
+		grant?.key.fill(0);
+	}
 }
 
 async function runNativeTaskProcess(
@@ -103,7 +124,9 @@ async function runNativeTaskProcess(
 			detached: process.platform !== 'win32'
 		});
 		if (child.pid) resources.track(child.pid);
-		return await collectTaskProcess(child, input, meter, gate);
+		const result = collectTaskProcess(child, input, meter, gate);
+		writeTaskPrompt(child, input.prompt);
+		return await result;
 	} finally {
 		await gate.close();
 	}
@@ -131,7 +154,6 @@ function collectTaskProcess(
 		overflow = true;
 		killGroup(child);
 	});
-	child.stderr.resume();
 	child.stdin.on('error', () => {});
 	return new Promise((resolve, reject) => {
 		let launchError: Error | undefined;
@@ -152,8 +174,12 @@ function collectTaskProcess(
 					stop
 				});
 		});
-		child.stdin.end(input.prompt);
 	});
+}
+
+function writeTaskPrompt(child: TaskChild, prompt: string): void {
+	child.stderr.resume();
+	child.stdin.end(prompt);
 }
 
 function taskEnvironment(resources: ResourceContext): Record<string, string | undefined> {
