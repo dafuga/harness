@@ -33,6 +33,7 @@ test('selected command registrations preserve every help surface and alias', asy
 test('Harbor inspection forwards fixed argv without provider or signing credentials', () =>
 	withTempDir('harness-harbor-inspect-', async (root) => {
 		const entry = join(root, 'harbor tool.cjs');
+		const initialExitCode = process.exitCode;
 		const output = vi.spyOn(console, 'log').mockImplementation(() => undefined);
 		await writeFile(
 			entry,
@@ -40,7 +41,8 @@ test('Harbor inspection forwards fixed argv without provider or signing credenti
 		console.log(JSON.stringify({
 			args: process.argv.slice(2),
 			safe: !process.env.OPENAI_API_KEY && !process.env.HARBOR_PRIVATE_KEY && !process.env.NODE_OPTIONS && !process.env.BUN_OPTIONS
-		}));`
+		}));
+		if (process.argv[2] === 'doctor' && process.argv.includes('--strict')) process.exitCode = 1;`
 		);
 		vi.stubEnv('HARNESS_HARBOR_CLI_PATH', entry);
 		vi.stubEnv('HARNESS_HARBOR_APP_SDK_PATH', entry);
@@ -52,6 +54,7 @@ test('Harbor inspection forwards fixed argv without provider or signing credenti
 		try {
 			for (const { name, input, expected } of harborDispatchCases(root)) {
 				const args = ['harbor', ...input];
+				output.mockClear();
 				const cli = await loadCliProgram(args);
 				const command = cli.commands.find((item) => item.name() === 'harbor');
 				expect(command).toBeDefined();
@@ -62,12 +65,15 @@ test('Harbor inspection forwards fixed argv without provider or signing credenti
 				await measureWorkload('command.projects-sessions-harbor-inspection', name, () =>
 					cli.parseAsync(args, { from: 'user' })
 				);
+				expect(output, name + ' must retain JSON').toHaveBeenCalledTimes(1);
+				if (name === 'runtime-doctor') expect(process.exitCode).toBe(1);
 				expect(JSON.parse(output.mock.lastCall?.[0] as string)).toStrictEqual({
 					args: expected,
 					safe: true
 				});
 			}
 		} finally {
+			process.exitCode = initialExitCode;
 			vi.unstubAllEnvs();
 			output.mockRestore();
 		}
