@@ -1,3 +1,4 @@
+// @harness-uid u_xghv2ih7cg
 import type { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 
 export interface ModuleCompletionMeasurement {

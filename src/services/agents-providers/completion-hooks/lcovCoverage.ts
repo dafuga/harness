@@ -1,3 +1,4 @@
+// @harness-uid u_xghv2ih7cg
 import { relative, resolve } from 'node:path';
 import type { CoverageMetric, FileCoverage } from './completionRun.types';
 import { CompletionCheckError } from './CompletionCheckError';

@@ -1,3 +1,4 @@
+// @harness-uid u_xghv2ih7cg
 import { constants } from 'node:fs';
 import { open } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -80,14 +81,16 @@ async function readLcov(path: string): Promise<string> {
 		const file = await open(path, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK);
 		try {
 			const stat = await file.stat();
-			if (!stat.isFile() || stat.size > 8_000_000) throw new Error();
+			if (!stat.isFile() || stat.size > 8_000_000)
+				throw new CompletionCheckError('LCOV output must be a regular file of at most 8 MB.');
 			const bytes = Buffer.alloc(stat.size);
 			const { bytesRead } = await file.read(bytes, 0, bytes.length, 0);
 			return bytes.subarray(0, bytesRead).toString('utf8');
 		} finally {
 			await file.close();
 		}
-	} catch {
+	} catch (error) {
+		if (error instanceof CompletionCheckError) throw error;
 		throw new CompletionCheckError('Module verification did not produce a readable LCOV report.');
 	}
 }

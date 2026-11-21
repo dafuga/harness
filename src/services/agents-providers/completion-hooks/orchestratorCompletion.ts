@@ -1,3 +1,4 @@
+// @harness-uid u_xghv2ih7cg
 import { randomUUID } from 'node:crypto';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { completionHooksConfig } from '../../../configs/agents-providers/completionHooksConfig';

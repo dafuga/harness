@@ -1,3 +1,4 @@
+// @harness-uid u_xghv2ih7cg
 import { mkdtemp, realpath, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
