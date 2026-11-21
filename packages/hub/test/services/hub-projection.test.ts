@@ -84,9 +84,16 @@ test('registry reads include backend contracts and recheck project membership be
 		.object({ commit: z.string(), units: z.array(componentManifestSchema) })
 		.parse(await response.json());
 	expect(result.commit).toBe(commit);
-	expect(
-		result.units.find((entry) => entry.id === 'entry.program')?.contract.outputs
-	).toContainEqual({ name: 'buildProgram', type: 'Command' });
+	const outputs = result.units.find((entry) => entry.id === 'entry.program')?.contract.outputs;
+	const declared = componentManifestSchema.parse(JSON.parse(manifest.toString('utf8')));
+	expect(outputs).toEqual(declared.contract.outputs);
+	expect(outputs).toContainEqual(
+		expect.objectContaining({
+			name: 'buildProgram',
+			type: 'Command',
+			description: expect.any(String)
+		})
+	);
 	f.setActor(outsider);
 	expect((await f.controller.handle(request())).status).toBe(403);
 });
