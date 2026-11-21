@@ -1,0 +1,6 @@
+{"event":"loop.created","timestamp":"2026-11-21T18:33:16.821Z","name":"hzcrh4-declared-boundary","goal":"Accept justified unknown contract inputs and reject undeclared unknowns.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-11-21T18:34:08.788Z","loop":"hzcrh4-declared-boundary","step":"spec","evidence":"Both exact installed API runs reject the reviewed unknown formatter input. A declared reason should admit it."}
+{"event":"step.completed","timestamp":"2026-11-21T18:34:10.355Z","loop":"hzcrh4-declared-boundary","step":"coverage","evidence":"The standard manifest case covered missing types but had no reviewed-unknown case. It now covers persistence and strict rejection."}
+{"event":"step.completed","timestamp":"2026-11-21T18:45:03.931Z","loop":"hzcrh4-declared-boundary","step":"red","evidence":"Sealed red at 130c077974 fails the declared-unknown input assertion."}
+{"event":"step.completed","timestamp":"2026-11-21T18:45:05.859Z","loop":"hzcrh4-declared-boundary","step":"implement","evidence":"Declared contract inputs now require a nonblank reason for unknown types."}
+{"event":"step.completed","timestamp":"2026-11-21T18:45:18.536Z","loop":"hzcrh4-declared-boundary","step":"green","evidence":"Matched regression passes on the product fix commit."}
