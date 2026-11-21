@@ -16,6 +16,7 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDuePolicy.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerHostEffects.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerLinks.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/readTrackerDuePreview.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerGithubCli.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdapter.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdapterSchema.ts",
@@ -49,6 +50,7 @@
 			"TrackerPersistenceService",
 			"TrackerRecurringRepository",
 			"TrackerRecurringService",
+			"TrackerDuePreviewPolicy",
 			"TrackerLegacyDestinationBindings",
 			"TrackerNativeNotificationOptions",
 			"TrackerNativeRuntimeOptions",
@@ -68,6 +70,8 @@
 			"composeTrackerLinks",
 			"composeTrackerTelemetry",
 			"trackerSpokeStatus",
+			"readTrackerDuePreview",
+			"trackerDueItemPreview",
 			"trackerGithubCli",
 			"trackerHostAdapter",
 			"adapterIssues",
@@ -195,6 +199,21 @@
 			{
 				"name": "trackerSpokeStatus.links",
 				"type": "readonly TrackerSpokeLoopService[]",
+				"required": true
+			},
+			{
+				"name": "readTrackerDuePreview.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "trackerDueItemPreview.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "trackerDueItemPreview.item",
+				"type": "TrackerItem",
 				"required": true
 			},
 			{
@@ -509,6 +528,14 @@
 			{
 				"name": "trackerSpokeStatus",
 				"type": "unknown"
+			},
+			{
+				"name": "readTrackerDuePreview",
+				"type": "unknown"
+			},
+			{
+				"name": "trackerDueItemPreview",
+				"type": "string | null"
 			},
 			{
 				"name": "trackerGithubCli",
@@ -841,6 +868,47 @@
 					{
 						"name": "trackerSpokeStatus",
 						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readTrackerDuePreview",
+				"inputs": [
+					{
+						"name": "readTrackerDuePreview.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerDuePreview",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerDueItemPreview",
+				"inputs": [
+					{
+						"name": "trackerDueItemPreview.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					},
+					{
+						"name": "trackerDueItemPreview.item",
+						"type": "TrackerItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerDueItemPreview",
+						"type": "string | null"
 					}
 				],
 				"errors": [],
@@ -1423,7 +1491,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.agents-providers-classify-tracker-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-parse-tracker-model-spec",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.agents-providers-pick-tracker-model",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-normalize-tracker-item-fields",
 			"via": "import",
 			"origin": "derived"
 		},
