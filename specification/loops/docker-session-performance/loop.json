@@ -1,0 +1,43 @@
+{
+	"name": "docker-session-performance",
+	"goal": "Compare the run-112 native and plain Docker Harness session on MB2 with paired samples and unchanged isolation; verify the suite target and account for cold setup, warm launch, resources and task-owned cleanup.",
+	"createdAt": "2026-11-21T19:33:19.310Z",
+	"updatedAt": "2026-11-21T20:25:17.381Z",
+	"steps": [
+		{
+			"id": "baseline",
+			"title": "Reproduce the five-file worker workload against the pinned native and bind-backed container",
+			"status": "complete",
+			"completedAt": "2026-11-21T19:37:46.074Z",
+			"evidence": "MB2 macOS 26.3.1, Docker Desktop 29.4.0, Harness 282bc50961. Five 14/14 pairs using the unchanged session and suite. Median paired suite overhead +20.51%, startup +182 ms. See baseline samples in benchmark evidence."
+		},
+		{
+			"id": "storage",
+			"title": "Pair dependency and checkout volumes with the bind baseline and measure cold setup",
+			"status": "complete",
+			"completedAt": "2026-11-21T19:54:23.693Z",
+			"evidence": "Five runs per mode on MB2. Dependencies/cache only yielded -0.1%, checkout volume -6.6%, and full volume plus bounded tmpfs -11.9% paired suite wall versus native. Bind +16.1%. All 35 workload runs passed. Three storage locations and tmpfs verified in guest mount data."
+		},
+		{
+			"id": "launch",
+			"title": "Pair temporary storage and prewarmed launch variants against the same workload",
+			"status": "complete",
+			"completedAt": "2026-11-21T20:02:10.535Z",
+			"evidence": "Five matched workload rounds and 25/25 passes. Docker-only fresh launch 130 ms [126, 136], paired +96 ms. Prewarmed exec 69 ms [62, 76], paired +35 ms, with separate pool boot and priming. Split attach median 100 ms guest-local versus 5,904 ms with host binds. Guest scope probe passed."
+		},
+		{
+			"id": "sizing",
+			"title": "Measure per-container and isolated VM resource sizing with the same workload",
+			"status": "complete",
+			"completedAt": "2026-11-21T20:15:30.605Z",
+			"evidence": "MB2 Desktop 1–3 CPU and 6–8 GiB caps, plus three matched trials each on private arm64 Docker VM at 2 vCPU/8 GiB, 3 vCPU/8 GiB, and 3 vCPU/10 GiB. Private matrix 27/27 passing. Identical image layer digests and explicit resource caps. VirtioFS binds remained +37.1% to +50.7% vs native; full volumes plus tmpfs -9.4% to -14.7%."
+		},
+		{
+			"id": "closure",
+			"title": "Verify isolation, repeat the finalist, account for remaining costs, and remove owned resources",
+			"status": "complete",
+			"completedAt": "2026-11-21T20:25:17.381Z",
+			"evidence": "Seven final matched rounds reproduced the target, with fresh Docker-only suite -13.3% and prewarmed -12.3% vs native. All 150 completed runs passed 14/14. Docker-only mount isolation verified. Task containers, volumes, runtime image and private VM removed. Per-run metrics are in samples.csv."
+		}
+	]
+}
