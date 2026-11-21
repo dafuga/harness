@@ -50,7 +50,17 @@ export function hubPreview(id: string, shown: ProjectSnapshot) {
 		send: async () => ({ resource: `project:${project.id}`, status: 'pending' }),
 		bytes: hosted.bytes
 	};
-	const cases: PreviewCases = {
+
+	return {
+		context: { session, projects, api },
+		cases: hubCases(),
+		addresses: hosted.addresses,
+		project
+	};
+}
+
+function hubCases(): PreviewCases {
+	return {
 		'hub.component.account-menu': { projectId: project.id },
 		'hub.component.email-proof-panel': { proof },
 		'hub.component.hosted-workspace': {},
@@ -71,7 +81,6 @@ export function hubPreview(id: string, shown: ProjectSnapshot) {
 		'hub.component.public-site-home-features': {},
 		'hub.component.public-site-home-steps': {}
 	};
-	return { context: { session, projects, api }, cases, addresses: hosted.addresses, project };
 }
 
 /**
