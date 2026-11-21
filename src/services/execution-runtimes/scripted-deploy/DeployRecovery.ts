@@ -1,3 +1,5 @@
+// @harness-uid u_ak2bjzfju3
+import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import {
 	assertObservation,
 	assertResult,
@@ -19,9 +21,10 @@ export class DeployRecovery {
 		const record = this.store.get(id);
 		const { project, environment } = record.plan;
 		if (record.phase === 'pending')
-			throw new Error('No provider mutation has been submitted for this run.');
+			throw new ExpectedCliError('No provider mutation has been submitted for this run.');
 		const active = this.store.active(project, environment);
-		if (active && active !== id) throw new Error('Another run has claimed the deployment target.');
+		if (active && active !== id)
+			throw new ExpectedCliError('Another run has claimed the deployment target.');
 		if (!active) this.store.lock(project, environment, id);
 		try {
 			if (record.phase === 'applying') await this.reconcile(record);
@@ -37,11 +40,11 @@ export class DeployRecovery {
 		const { plan } = record;
 		const result = await this.broker.reconcile(plan);
 		if (result.status === 'pending')
-			throw new Error('Provider operation is still unresolved. The claim remains held.');
+			throw new ExpectedCliError('Provider operation is still unresolved. The claim remains held.');
 		if (result.status === 'not-applied') {
 			assertObservation(plan.target, result.observed);
 			if (!sameVersion(plan.previous, result.observed))
-				throw new Error('Provider could not reconcile the previous target.');
+				throw new ExpectedCliError('Provider could not reconcile the previous target.');
 			record.phase = 'not-applied';
 		} else {
 			assertResult(plan, result.result.observed);
@@ -54,11 +57,11 @@ export class DeployRecovery {
 	private async finish(record: Journal): Promise<Journal> {
 		if (record.phase === 'not-applied' || record.phase === 'complete') return record;
 		const { plan, result } = record;
-		if (!result) throw new Error('Provider operation has no deployment receipt.');
+		if (!result) throw new ExpectedCliError('Provider operation has no deployment receipt.');
 		const current = await this.broker.inspect(plan.project, plan.environment, plan.manifest);
 		assertObservation(plan.target, current);
 		if (!sameVersion(current, result.observed))
-			throw new Error('Current target differs from the interrupted deployment.');
+			throw new ExpectedCliError('Current target differs from the interrupted deployment.');
 		return this.verify.verify(record);
 	}
 }

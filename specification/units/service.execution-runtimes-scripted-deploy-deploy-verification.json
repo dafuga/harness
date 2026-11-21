@@ -1,10 +1,11 @@
 {
 	"schemaVersion": 1,
 	"id": "service.execution-runtimes-scripted-deploy-deploy-verification",
+	"uid": "u_v7jkpzcx3c",
 	"kind": "service",
 	"title": "DeployVerification",
-	"responsibility": "Owns the DeployVerification service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Verifies the canonical route, runs task-scoped cleanup, and records the verified operation in Tracker.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/services/execution-runtimes/scripted-deploy/DeployVerification.ts"],
@@ -16,56 +17,65 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DeployVerification.constructor.config",
 				"type": "DeployProject",
-				"required": true
+				"required": true,
+				"description": "Reviewed project or target settings for this operation."
 			},
 			{
 				"name": "DeployVerification.constructor.store",
 				"type": "DeployRunRepository",
-				"required": true
+				"required": true,
+				"description": "Owner-only deployment state directory and its artifact index."
 			},
 			{
 				"name": "DeployVerification.constructor.broker",
 				"type": "DeployBroker",
-				"required": true
+				"required": true,
+				"description": "Verifies the canonical route, runs task-scoped cleanup, and records the verified operation in Tracker."
 			},
 			{
 				"name": "DeployVerification.verify.record",
 				"type": "Journal",
-				"required": true
+				"required": true,
+				"description": "Persisted deployment plan or run being authorized, reconciled, or signed off."
 			},
 			{
 				"name": "DeployVerification.cleanup.record",
 				"type": "Journal",
-				"required": true
+				"required": true,
+				"description": "Persisted deployment plan or run being authorized, reconciled, or signed off."
 			},
 			{
 				"name": "DeployVerification.cleanup.route",
-				"type": "unknown",
-				"required": false
+				"type": "string",
+				"required": false,
+				"description": "Canonical HTTPS address that must serve the expected release."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeployVerification.verify",
-				"type": "Promise<Journal>"
+				"type": "Promise<Journal>",
+				"description": "Verifies the canonical route, runs task-scoped cleanup, and records the verified operation in Tracker."
 			},
 			{
 				"name": "DeployVerification.cleanup",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Verifies the canonical route, runs task-scoped cleanup, and records the verified operation in Tracker."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The operation could not verify its input, target identity, or expected result."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "DeployVerification.verify",
@@ -73,22 +83,25 @@
 					{
 						"name": "DeployVerification.verify.record",
 						"type": "Journal",
-						"required": true
+						"required": true,
+						"description": "Persisted deployment plan or run being authorized, reconciled, or signed off."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployVerification.verify",
-						"type": "Promise<Journal>"
+						"type": "Promise<Journal>",
+						"description": "Verifies the canonical route, runs task-scoped cleanup, and records the verified operation in Tracker."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "DeployVerification.cleanup",
@@ -96,27 +109,31 @@
 					{
 						"name": "DeployVerification.cleanup.record",
 						"type": "Journal",
-						"required": true
+						"required": true,
+						"description": "Persisted deployment plan or run being authorized, reconciled, or signed off."
 					},
 					{
 						"name": "DeployVerification.cleanup.route",
-						"type": "unknown",
-						"required": false
+						"type": "string",
+						"required": false,
+						"description": "Canonical HTTPS address that must serve the expected release."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployVerification.cleanup",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Verifies the canonical route, runs task-scoped cleanup, and records the verified operation in Tracker."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -126,23 +143,27 @@
 					{
 						"name": "DeployVerification.constructor.config",
 						"type": "DeployProject",
-						"required": true
+						"required": true,
+						"description": "Reviewed project or target settings for this operation."
 					},
 					{
 						"name": "DeployVerification.constructor.store",
 						"type": "DeployRunRepository",
-						"required": true
+						"required": true,
+						"description": "Owner-only deployment state directory and its artifact index."
 					},
 					{
 						"name": "DeployVerification.constructor.broker",
 						"type": "DeployBroker",
-						"required": true
+						"required": true,
+						"description": "Verifies the canonical route, runs task-scoped cleanup, and records the verified operation in Tracker."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployVerification.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Verifies the canonical route, runs task-scoped cleanup, and records the verified operation in Tracker."
 					}
 				],
 				"errors": [],
@@ -153,6 +174,11 @@
 	"dependencies": [
 		{
 			"unit": "adapter.execution-runtimes-deploy-docker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},

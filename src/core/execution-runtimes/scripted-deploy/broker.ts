@@ -1,3 +1,5 @@
+// @harness-uid u_bepb2gipf3
+import { ExpectedCliError } from '../../development-tooling/errors';
 import { z } from 'zod';
 import {
 	deployment,
@@ -66,7 +68,7 @@ export class DeployBroker {
 		try {
 			return schema.parse(JSON.parse(output));
 		} catch {
-			throw new Error('Deployment broker returned invalid ' + operation + ' evidence.');
+			throw new ExpectedCliError('Deployment broker returned invalid ' + operation + ' evidence.');
 		}
 	}
 }

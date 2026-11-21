@@ -1,10 +1,11 @@
 {
 	"schemaVersion": 1,
 	"id": "function.execution-runtimes-scripted-deploy-proofs",
+	"uid": "u_bycapn5sbw",
 	"kind": "function",
 	"title": "proofs",
-	"responsibility": "Owns the proofs shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Verifies pinned issuer signatures and their exact release, operation and time scope before accepting approval or reviewer sign-off.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -14,89 +15,105 @@
 		"symbols": ["verifyProof", "verifyApproval", "signoffScope", "verifySignoff", "Issuer"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "verifyProof.proof",
 				"type": "Proof",
-				"required": true
+				"required": true,
+				"description": "Signed approval or sign-off envelope to verify."
 			},
 			{
 				"name": "verifyProof.expected",
 				"type": "{ kind: Proof['payload']['kind']; scope: string; after: number }",
-				"required": true
+				"required": true,
+				"description": "Reviewed target profile or expected signature scope for this verification."
 			},
 			{
 				"name": "verifyProof.trusted",
 				"type": "Issuer[]",
-				"required": true
+				"required": true,
+				"description": "Pinned public keys for the eligible approval or reviewer authorities."
 			},
 			{
 				"name": "verifyProof.now",
-				"type": "unknown",
-				"required": false
+				"type": "number",
+				"required": false,
+				"description": "Time in epoch milliseconds, defaulting to the host clock."
 			},
 			{
 				"name": "verifyApproval.record",
 				"type": "Plan",
-				"required": true
+				"required": true,
+				"description": "Persisted deployment plan or run being authorized, reconciled, or signed off."
 			},
 			{
 				"name": "verifyApproval.proof",
 				"type": "Proof",
-				"required": true
+				"required": true,
+				"description": "Signed approval or sign-off envelope to verify."
 			},
 			{
 				"name": "verifyApproval.registry",
 				"type": "DeployRegistry",
-				"required": true
+				"required": true,
+				"description": "Trusted deploy registry, including approved targets, executable paths and signer public keys."
 			},
 			{
 				"name": "signoffScope.record",
 				"type": "Journal",
-				"required": true
+				"required": true,
+				"description": "Persisted deployment plan or run being authorized, reconciled, or signed off."
 			},
 			{
 				"name": "verifySignoff.record",
 				"type": "Journal",
-				"required": true
+				"required": true,
+				"description": "Persisted deployment plan or run being authorized, reconciled, or signed off."
 			},
 			{
 				"name": "verifySignoff.proof",
 				"type": "Proof",
-				"required": true
+				"required": true,
+				"description": "Signed approval or sign-off envelope to verify."
 			},
 			{
 				"name": "verifySignoff.registry",
 				"type": "DeployRegistry",
-				"required": true
+				"required": true,
+				"description": "Trusted deploy registry, including approved targets, executable paths and signer public keys."
 			}
 		],
 		"outputs": [
 			{
 				"name": "verifyProof",
-				"type": "void"
+				"type": "void",
+				"description": "No output. Success means the receipt matches the trusted issuer, scope and validity window."
 			},
 			{
 				"name": "verifyApproval",
-				"type": "void"
+				"type": "void",
+				"description": "No output. Success means the correct authority signed this exact mutation attempt."
 			},
 			{
 				"name": "signoffScope",
-				"type": "string"
+				"type": "string",
+				"description": "The digest binding a completed deployment plan, provider receipt and route smoke evidence."
 			},
 			{
 				"name": "verifySignoff",
-				"type": "void"
+				"type": "void",
+				"description": "No output. Success means an authorized reviewer signed the exact verified deployment."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The operation could not verify its input, target identity, or expected result."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "verifyProof",
@@ -104,37 +121,43 @@
 					{
 						"name": "verifyProof.proof",
 						"type": "Proof",
-						"required": true
+						"required": true,
+						"description": "Signed approval or sign-off envelope to verify."
 					},
 					{
 						"name": "verifyProof.expected",
 						"type": "{ kind: Proof['payload']['kind']; scope: string; after: number }",
-						"required": true
+						"required": true,
+						"description": "Reviewed target profile or expected signature scope for this verification."
 					},
 					{
 						"name": "verifyProof.trusted",
 						"type": "Issuer[]",
-						"required": true
+						"required": true,
+						"description": "Pinned public keys for the eligible approval or reviewer authorities."
 					},
 					{
 						"name": "verifyProof.now",
-						"type": "unknown",
-						"required": false
+						"type": "number",
+						"required": false,
+						"description": "Time in epoch milliseconds, defaulting to the host clock."
 					}
 				],
 				"outputs": [
 					{
 						"name": "verifyProof",
-						"type": "void"
+						"type": "void",
+						"description": "No output. Success means the receipt matches the trusted issuer, scope and validity window."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "verifyApproval",
@@ -142,32 +165,37 @@
 					{
 						"name": "verifyApproval.record",
 						"type": "Plan",
-						"required": true
+						"required": true,
+						"description": "Persisted deployment plan or run being authorized, reconciled, or signed off."
 					},
 					{
 						"name": "verifyApproval.proof",
 						"type": "Proof",
-						"required": true
+						"required": true,
+						"description": "Signed approval or sign-off envelope to verify."
 					},
 					{
 						"name": "verifyApproval.registry",
 						"type": "DeployRegistry",
-						"required": true
+						"required": true,
+						"description": "Trusted deploy registry, including approved targets, executable paths and signer public keys."
 					}
 				],
 				"outputs": [
 					{
 						"name": "verifyApproval",
-						"type": "void"
+						"type": "void",
+						"description": "No output. Success means the correct authority signed this exact mutation attempt."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "signoffScope",
@@ -175,22 +203,25 @@
 					{
 						"name": "signoffScope.record",
 						"type": "Journal",
-						"required": true
+						"required": true,
+						"description": "Persisted deployment plan or run being authorized, reconciled, or signed off."
 					}
 				],
 				"outputs": [
 					{
 						"name": "signoffScope",
-						"type": "string"
+						"type": "string",
+						"description": "The digest binding a completed deployment plan, provider receipt and route smoke evidence."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "verifySignoff",
@@ -198,23 +229,27 @@
 					{
 						"name": "verifySignoff.record",
 						"type": "Journal",
-						"required": true
+						"required": true,
+						"description": "Persisted deployment plan or run being authorized, reconciled, or signed off."
 					},
 					{
 						"name": "verifySignoff.proof",
 						"type": "Proof",
-						"required": true
+						"required": true,
+						"description": "Signed approval or sign-off envelope to verify."
 					},
 					{
 						"name": "verifySignoff.registry",
 						"type": "DeployRegistry",
-						"required": true
+						"required": true,
+						"description": "Trusted deploy registry, including approved targets, executable paths and signer public keys."
 					}
 				],
 				"outputs": [
 					{
 						"name": "verifySignoff",
-						"type": "void"
+						"type": "void",
+						"description": "No output. Success means an authorized reviewer signed the exact verified deployment."
 					}
 				],
 				"errors": [],
@@ -224,6 +259,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.execution-runtimes-scripted-deploy-contracts",
 			"via": "import",

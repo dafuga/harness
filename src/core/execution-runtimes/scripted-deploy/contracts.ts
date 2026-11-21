@@ -1,5 +1,7 @@
+// @harness-uid u_mo4ka6dupc
 import { createHash } from 'node:crypto';
 import { z } from 'zod';
+import type { CanonicalValue } from './contracts.types';
 
 export const name = z.string().regex(/^[a-z0-9][a-z0-9-]{0,63}$/);
 export const sha = z.string().regex(/^[a-f0-9]{40}$/);
@@ -110,7 +112,7 @@ export type {
 	Smoke
 } from './contracts.types';
 
-export function canonical(value: unknown): string {
+export function canonical(value: CanonicalValue): string {
 	if (Array.isArray(value)) return '[' + value.map(canonical).join(',') + ']';
 	if (value === null || typeof value !== 'object') return JSON.stringify(value);
 	const fields = Object.entries(value).sort(([left], [right]) =>
@@ -121,6 +123,6 @@ export function canonical(value: unknown): string {
 	);
 }
 
-export function hash(value: unknown): string {
+export function hash(value: CanonicalValue): string {
 	return createHash('sha256').update(canonical(value)).digest('hex');
 }

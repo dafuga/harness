@@ -1,3 +1,4 @@
+// @harness-uid u_vmj2plxn7l
 export interface DeployOptions {
 	registry?: string;
 	ref?: string;

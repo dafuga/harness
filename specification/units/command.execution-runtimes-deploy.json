@@ -4,26 +4,28 @@
 	"uid": "u_qsjzwebg6r",
 	"kind": "command",
 	"title": "DeployCommand",
-	"responsibility": "Owns the DeployCommand command registration.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Registers the single-target deploy CLI, its read-only and recovery operations, and release sign-off options.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/commands/execution-runtimes/DeployCommand.ts"],
 		"symbols": ["DeployCommand", "DeployCommand.register"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DeployCommand.register.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "Commander program that receives the deploy command and its subcommands."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeployCommand.register",
-				"type": "void"
+				"type": "void",
+				"description": "Registers the single-target deploy CLI, its read-only and recovery operations, and release sign-off options."
 			}
 		],
 		"errors": [],
@@ -35,13 +37,15 @@
 					{
 						"name": "DeployCommand.register.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "Commander program that receives the deploy command and its subcommands."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployCommand.register",
-						"type": "void"
+						"type": "void",
+						"description": "Registers the single-target deploy CLI, its read-only and recovery operations, and release sign-off options."
 					}
 				],
 				"errors": [],

@@ -1,3 +1,4 @@
+// @harness-uid u_mo4ka6dupc
 import type { z } from 'zod';
 import type {
 	environment,
@@ -20,3 +21,5 @@ export type Journal = z.infer<typeof journal>;
 export type Proof = z.infer<typeof signedProof>;
 export type Deployment = z.infer<typeof deployment>;
 export type Smoke = z.infer<typeof smoke>;
+
+export type CanonicalValue = string | number | boolean | object | null;

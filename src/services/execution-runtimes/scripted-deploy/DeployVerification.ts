@@ -1,3 +1,5 @@
+// @harness-uid u_v7jkpzcx3c
+import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import { z } from 'zod';
 import { DeployDockerAdapter } from '../../../adapters/execution-runtimes/DeployDockerAdapter';
 import { smoke, type Journal } from '../../../core/execution-runtimes/scripted-deploy/contracts';
@@ -19,7 +21,7 @@ export class DeployVerification {
 
 	async verify(record: Journal): Promise<Journal> {
 		const { plan } = record;
-		const route = this.route(record);
+		const route: string = this.route(record);
 		const observed = record.result!.observed;
 		const passed = smoke.parse(await this.docker.run('smoke', {}, { route, observed }));
 		if (
@@ -27,7 +29,7 @@ export class DeployVerification {
 			passed.source !== observed.source ||
 			passed.artifact !== observed.artifact
 		) {
-			throw new Error('Routed smoke returned a different release.');
+			throw new ExpectedCliError('Routed smoke returned a different release.');
 		}
 		record.smoke = passed;
 		record.phase = 'verified';
@@ -50,14 +52,14 @@ export class DeployVerification {
 		return record;
 	}
 
-	async cleanup(record: Journal, route = this.route(record)): Promise<void> {
+	async cleanup(record: Journal, route: string = this.route(record)): Promise<void> {
 		const { plan } = record;
 		try {
 			cleanupResult.parse(await this.docker.run('cleanup', {}, { run: plan.id, route }));
 		} catch {
 			record.phase = 'cleanup-failed';
 			this.store.save(record);
-			throw new Error('Route smoke passed and task cleanup needs reconciliation.');
+			throw new ExpectedCliError('Route smoke passed and task cleanup needs reconciliation.');
 		}
 		record.phase = 'complete';
 		this.store.save(record);
@@ -65,7 +67,7 @@ export class DeployVerification {
 
 	private route(record: Journal): string {
 		const target = this.config.targets[record.plan.environment];
-		if (!target) throw new Error('Run target is no longer in the deploy manifest.');
+		if (!target) throw new ExpectedCliError('Run target is no longer in the deploy manifest.');
 		return target.route;
 	}
 }

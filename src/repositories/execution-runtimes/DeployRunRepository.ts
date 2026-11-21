@@ -1,4 +1,6 @@
+// @harness-uid u_wpvhgcfqx5
 // @harness-uid u_dkv7p92mfc
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { randomUUID } from 'node:crypto';
 import { mkdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -18,7 +20,7 @@ export class DeployRunRepository {
 		mkdirSync(root, { recursive: true, mode: 0o700 });
 		const info = statSync(root);
 		if (!info.isDirectory() || info.uid !== process.getuid?.() || (info.mode & 0o077) !== 0) {
-			throw new Error('Deployment state must be an owner-only directory.');
+			throw new ExpectedCliError('Deployment state must be an owner-only directory.');
 		}
 	}
 
@@ -51,7 +53,7 @@ export class DeployRunRepository {
 			writeFileSync(path, runId.parse(id), { flag: 'wx', mode: 0o600 });
 		} catch (error) {
 			if ((error as { code?: string }).code !== 'EEXIST') throw error;
-			throw new Error(
+			throw new ExpectedCliError(
 				'Target already has an active or unresolved run: ' + this.active(project, target)
 			);
 		}
@@ -68,7 +70,8 @@ export class DeployRunRepository {
 
 	unlock(record: Journal): void {
 		const { project, environment: target, id } = record.plan;
-		if (this.active(project, target) !== id) throw new Error('Deployment claim ownership changed.');
+		if (this.active(project, target) !== id)
+			throw new ExpectedCliError('Deployment claim ownership changed.');
 		rmSync(this.claimFile(project, target));
 	}
 
@@ -81,7 +84,7 @@ export class DeployRunRepository {
 	}
 }
 
-export function atomicWrite(path: string, input: unknown): void {
+export function atomicWrite(path: string, input: Journal | Release): void {
 	const temporary = path + '.' + randomUUID();
 	writeFileSync(temporary, JSON.stringify(input, null, 2) + '\n', {
 		mode: 0o600,

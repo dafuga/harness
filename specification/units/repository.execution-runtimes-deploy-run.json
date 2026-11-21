@@ -1,10 +1,11 @@
 {
 	"schemaVersion": 1,
 	"id": "repository.execution-runtimes-deploy-run",
+	"uid": "u_wpvhgcfqx5",
 	"kind": "repository",
 	"title": "DeployRunRepository",
-	"responsibility": "Owns the DeployRunRepository persistence boundary.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Tracks immutable release artifacts and atomically persists per-target deployment journals and claims.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -28,124 +29,148 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DeployRunRepository.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Owner-controlled root directory for the deployment registry, scripts or state."
 			},
 			{
 				"name": "DeployRunRepository.artifact.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Opaque identity of the stored release or deployment run requested."
 			},
 			{
 				"name": "DeployRunRepository.releaseDirectory.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Opaque identity of the stored release or deployment run requested."
 			},
 			{
 				"name": "DeployRunRepository.getRelease.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Opaque identity of the stored release or deployment run requested."
 			},
 			{
 				"name": "DeployRunRepository.get.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Opaque identity of the stored release or deployment run requested."
 			},
 			{
 				"name": "DeployRunRepository.save.record",
 				"type": "Journal",
-				"required": true
+				"required": true,
+				"description": "Persisted deployment plan or run being authorized, reconciled, or signed off."
 			},
 			{
 				"name": "DeployRunRepository.lock.project",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project name registered on the trusted deploy host."
 			},
 			{
 				"name": "DeployRunRepository.lock.target",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Expected provider resource identifier."
 			},
 			{
 				"name": "DeployRunRepository.lock.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Opaque identity of the stored release or deployment run requested."
 			},
 			{
 				"name": "DeployRunRepository.active.project",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project name registered on the trusted deploy host."
 			},
 			{
 				"name": "DeployRunRepository.active.target",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Expected provider resource identifier."
 			},
 			{
 				"name": "DeployRunRepository.unlock.record",
 				"type": "Journal",
-				"required": true
+				"required": true,
+				"description": "Persisted deployment plan or run being authorized, reconciled, or signed off."
 			},
 			{
 				"name": "atomicWrite.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Owner-local file or reviewed relative path used for this operation."
 			},
 			{
 				"name": "atomicWrite.input",
-				"type": "unknown",
-				"required": true
+				"type": "Journal | Release",
+				"required": true,
+				"description": "Typed request or persisted JSON payload for this operation."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeployRunRepository.artifact",
-				"type": "string"
+				"type": "string",
+				"description": "Tracks immutable release artifacts and atomically persists per-target deployment journals and claims."
 			},
 			{
 				"name": "DeployRunRepository.releaseDirectory",
-				"type": "string"
+				"type": "string",
+				"description": "Tracks immutable release artifacts and atomically persists per-target deployment journals and claims."
 			},
 			{
 				"name": "DeployRunRepository.getRelease",
-				"type": "Release"
+				"type": "Release",
+				"description": "Tracks immutable release artifacts and atomically persists per-target deployment journals and claims."
 			},
 			{
 				"name": "DeployRunRepository.get",
-				"type": "Journal"
+				"type": "Journal",
+				"description": "Tracks immutable release artifacts and atomically persists per-target deployment journals and claims."
 			},
 			{
 				"name": "DeployRunRepository.save",
-				"type": "void"
+				"type": "void",
+				"description": "Tracks immutable release artifacts and atomically persists per-target deployment journals and claims."
 			},
 			{
 				"name": "DeployRunRepository.lock",
-				"type": "void"
+				"type": "void",
+				"description": "Tracks immutable release artifacts and atomically persists per-target deployment journals and claims."
 			},
 			{
 				"name": "DeployRunRepository.active",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "Tracks immutable release artifacts and atomically persists per-target deployment journals and claims."
 			},
 			{
 				"name": "DeployRunRepository.unlock",
-				"type": "void"
+				"type": "void",
+				"description": "Tracks immutable release artifacts and atomically persists per-target deployment journals and claims."
 			},
 			{
 				"name": "atomicWrite",
-				"type": "void"
+				"type": "void",
+				"description": "Tracks immutable release artifacts and atomically persists per-target deployment journals and claims."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The operation could not verify its input, target identity, or expected result."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "DeployRunRepository.artifact",
@@ -153,13 +178,15 @@
 					{
 						"name": "DeployRunRepository.artifact.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Opaque identity of the stored release or deployment run requested."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployRunRepository.artifact",
-						"type": "string"
+						"type": "string",
+						"description": "Tracks immutable release artifacts and atomically persists per-target deployment journals and claims."
 					}
 				],
 				"errors": [],
@@ -171,13 +198,15 @@
 					{
 						"name": "DeployRunRepository.releaseDirectory.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Opaque identity of the stored release or deployment run requested."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployRunRepository.releaseDirectory",
-						"type": "string"
+						"type": "string",
+						"description": "Tracks immutable release artifacts and atomically persists per-target deployment journals and claims."
 					}
 				],
 				"errors": [],
@@ -189,13 +218,15 @@
 					{
 						"name": "DeployRunRepository.getRelease.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Opaque identity of the stored release or deployment run requested."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployRunRepository.getRelease",
-						"type": "Release"
+						"type": "Release",
+						"description": "Tracks immutable release artifacts and atomically persists per-target deployment journals and claims."
 					}
 				],
 				"errors": [],
@@ -207,13 +238,15 @@
 					{
 						"name": "DeployRunRepository.get.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Opaque identity of the stored release or deployment run requested."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployRunRepository.get",
-						"type": "Journal"
+						"type": "Journal",
+						"description": "Tracks immutable release artifacts and atomically persists per-target deployment journals and claims."
 					}
 				],
 				"errors": [],
@@ -225,13 +258,15 @@
 					{
 						"name": "DeployRunRepository.save.record",
 						"type": "Journal",
-						"required": true
+						"required": true,
+						"description": "Persisted deployment plan or run being authorized, reconciled, or signed off."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployRunRepository.save",
-						"type": "void"
+						"type": "void",
+						"description": "Tracks immutable release artifacts and atomically persists per-target deployment journals and claims."
 					}
 				],
 				"errors": [],
@@ -243,32 +278,37 @@
 					{
 						"name": "DeployRunRepository.lock.project",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project name registered on the trusted deploy host."
 					},
 					{
 						"name": "DeployRunRepository.lock.target",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Expected provider resource identifier."
 					},
 					{
 						"name": "DeployRunRepository.lock.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Opaque identity of the stored release or deployment run requested."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployRunRepository.lock",
-						"type": "void"
+						"type": "void",
+						"description": "Tracks immutable release artifacts and atomically persists per-target deployment journals and claims."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "DeployRunRepository.active",
@@ -276,18 +316,21 @@
 					{
 						"name": "DeployRunRepository.active.project",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project name registered on the trusted deploy host."
 					},
 					{
 						"name": "DeployRunRepository.active.target",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Expected provider resource identifier."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployRunRepository.active",
-						"type": "string | null"
+						"type": "string | null",
+						"description": "Tracks immutable release artifacts and atomically persists per-target deployment journals and claims."
 					}
 				],
 				"errors": [],
@@ -299,22 +342,25 @@
 					{
 						"name": "DeployRunRepository.unlock.record",
 						"type": "Journal",
-						"required": true
+						"required": true,
+						"description": "Persisted deployment plan or run being authorized, reconciled, or signed off."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployRunRepository.unlock",
-						"type": "void"
+						"type": "void",
+						"description": "Tracks immutable release artifacts and atomically persists per-target deployment journals and claims."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "atomicWrite",
@@ -322,18 +368,21 @@
 					{
 						"name": "atomicWrite.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Owner-local file or reviewed relative path used for this operation."
 					},
 					{
 						"name": "atomicWrite.input",
-						"type": "unknown",
-						"required": true
+						"type": "Journal | Release",
+						"required": true,
+						"description": "Typed request or persisted JSON payload for this operation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "atomicWrite",
-						"type": "void"
+						"type": "void",
+						"description": "Tracks immutable release artifacts and atomically persists per-target deployment journals and claims."
 					}
 				],
 				"errors": [],
@@ -347,26 +396,34 @@
 					{
 						"name": "DeployRunRepository.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Owner-controlled root directory for the deployment registry, scripts or state."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployRunRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Tracks immutable release artifacts and atomically persists per-target deployment journals and claims."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.execution-runtimes-scripted-deploy-contracts",
 			"via": "import",

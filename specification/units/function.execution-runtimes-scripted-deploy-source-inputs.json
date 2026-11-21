@@ -1,75 +1,87 @@
 {
 	"schemaVersion": 1,
 	"id": "function.execution-runtimes-scripted-deploy-source-inputs",
+	"uid": "u_psxc3463x5",
 	"kind": "function",
 	"title": "sourceInputs",
-	"responsibility": "Owns the sourceInputs shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Checks trusted remote reachability and prepares local, shallow copies of private Git dependencies without forwarding GitHub credentials.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/core/execution-runtimes/scripted-deploy/sourceInputs.ts"],
 		"symbols": ["prepareDeployInputs", "exportSource", "validateSource"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "prepareDeployInputs.config",
 				"type": "DeployProject",
-				"required": true
+				"required": true,
+				"description": "Reviewed project or target settings for this operation."
 			},
 			{
 				"name": "prepareDeployInputs.work",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Private per-build scratch directory."
 			},
 			{
 				"name": "exportSource.config",
 				"type": "DeployProject",
-				"required": true
+				"required": true,
+				"description": "Reviewed project or target settings for this operation."
 			},
 			{
 				"name": "exportSource.source",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Full Git commit expected to be reachable from the configured remote branch."
 			},
 			{
 				"name": "exportSource.output",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Destination path for the authorized source archive."
 			},
 			{
 				"name": "validateSource.config",
 				"type": "Pick<DeployProject, 'checkout' | 'repository' | 'sourceRef'>",
-				"required": true
+				"required": true,
+				"description": "Reviewed project or target settings for this operation."
 			},
 			{
 				"name": "validateSource.source",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Full Git commit expected to be reachable from the configured remote branch."
 			}
 		],
 		"outputs": [
 			{
 				"name": "prepareDeployInputs",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "The private scratch path containing the pinned shallow Git inputs."
 			},
 			{
 				"name": "exportSource",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "No output. Success means the reviewed source archive was written."
 			},
 			{
 				"name": "validateSource",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "No output. Success proves the revision is reachable from the trusted remote branch."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The operation could not verify its input, target identity, or expected result."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "prepareDeployInputs",
@@ -77,18 +89,21 @@
 					{
 						"name": "prepareDeployInputs.config",
 						"type": "DeployProject",
-						"required": true
+						"required": true,
+						"description": "Reviewed project or target settings for this operation."
 					},
 					{
 						"name": "prepareDeployInputs.work",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Private per-build scratch directory."
 					}
 				],
 				"outputs": [
 					{
 						"name": "prepareDeployInputs",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "The private scratch path containing the pinned shallow Git inputs."
 					}
 				],
 				"errors": [],
@@ -100,23 +115,27 @@
 					{
 						"name": "exportSource.config",
 						"type": "DeployProject",
-						"required": true
+						"required": true,
+						"description": "Reviewed project or target settings for this operation."
 					},
 					{
 						"name": "exportSource.source",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Full Git commit expected to be reachable from the configured remote branch."
 					},
 					{
 						"name": "exportSource.output",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Destination path for the authorized source archive."
 					}
 				],
 				"outputs": [
 					{
 						"name": "exportSource",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "No output. Success means the reviewed source archive was written."
 					}
 				],
 				"errors": [],
@@ -128,32 +147,41 @@
 					{
 						"name": "validateSource.config",
 						"type": "Pick<DeployProject, 'checkout' | 'repository' | 'sourceRef'>",
-						"required": true
+						"required": true,
+						"description": "Reviewed project or target settings for this operation."
 					},
 					{
 						"name": "validateSource.source",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Full Git commit expected to be reachable from the configured remote branch."
 					}
 				],
 				"outputs": [
 					{
 						"name": "validateSource",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "No output. Success proves the revision is reachable from the trusted remote branch."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.execution-runtimes-scripted-deploy-contracts",
 			"via": "import",

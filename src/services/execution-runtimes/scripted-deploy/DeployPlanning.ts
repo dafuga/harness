@@ -1,3 +1,5 @@
+// @harness-uid u_2xqpdkpwdk
+import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import type { DeployRequest } from './DeployPlanning.types';
 import { randomUUID } from 'node:crypto';
 import {
@@ -36,7 +38,7 @@ export class DeployPlanning {
 	async plan(input: DeployRequest) {
 		const { environment, release, rollback } = input;
 		if (!this.context.config.targets[environment])
-			throw new Error('Environment is absent from the trusted project manifest.');
+			throw new ExpectedCliError('Environment is absent from the trusted project manifest.');
 		const manifest = manifestDigest(this.context.config);
 		if (input.source) await validateSource(this.context.config, input.source);
 		const current = await this.inventory(manifest);
@@ -91,7 +93,7 @@ export class DeployPlanning {
 		const lower = input.environment === 'preprod' ? 'staging' : 'preprod';
 		const observed = live[lower];
 		if (!input.release || !input.from || !observed)
-			throw new Error('An exact signed ' + lower + ' deployment is required.');
+			throw new ExpectedCliError('An exact signed ' + lower + ' deployment is required.');
 		const record = this.store.get(input.from);
 		assertPredecessor(record, {
 			project: this.context.project,
@@ -114,7 +116,7 @@ export class DeployPlanning {
 			!sameVersion(result.observed, current) ||
 			current.version === plan.previous.version
 		) {
-			throw new Error('Rollback source does not match the currently routed release.');
+			throw new ExpectedCliError('Rollback source does not match the currently routed release.');
 		}
 		assertTargetProfile(plan.previous.profile, current);
 		return plan.previous;
@@ -134,7 +136,9 @@ function assertPredecessor(
 		!signoff ||
 		!sameVersion(result.observed, expected.observed)
 	) {
-		throw new Error('The signed predecessor is for another release or is no longer routed.');
+		throw new ExpectedCliError(
+			'The signed predecessor is for another release or is no longer routed.'
+		);
 	}
 }
 

@@ -1,10 +1,11 @@
 {
 	"schemaVersion": 1,
 	"id": "function.execution-runtimes-scripted-deploy-run-process",
+	"uid": "u_b5ysx34qie",
 	"kind": "function",
 	"title": "runProcess",
-	"responsibility": "Owns the runProcess shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Executes one script or tool with explicit argv, a scrubbed process environment, bounded output, and optional cancellation.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -14,28 +15,32 @@
 		"symbols": ["runProcess", "RunProcessOptions"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "runProcess.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Executable or local file path used by this operation."
 			},
 			{
 				"name": "runProcess.args",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Exact child argv without shell interpolation."
 			},
 			{
 				"name": "runProcess.options",
 				"type": "RunProcessOptions",
-				"required": true
+				"required": true,
+				"description": "Child execution or command options including bounds and optional input."
 			}
 		],
 		"outputs": [
 			{
 				"name": "runProcess",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "The bounded standard output of the successful child process."
 			}
 		],
 		"errors": [],
@@ -47,23 +52,27 @@
 					{
 						"name": "runProcess.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Executable or local file path used by this operation."
 					},
 					{
 						"name": "runProcess.args",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Exact child argv without shell interpolation."
 					},
 					{
 						"name": "runProcess.options",
 						"type": "RunProcessOptions",
-						"required": true
+						"required": true,
+						"description": "Child execution or command options including bounds and optional input."
 					}
 				],
 				"outputs": [
 					{
 						"name": "runProcess",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "The bounded standard output of the successful child process."
 					}
 				],
 				"errors": [],

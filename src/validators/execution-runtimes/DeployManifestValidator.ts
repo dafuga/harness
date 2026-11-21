@@ -1,4 +1,6 @@
+// @harness-uid u_ovq4nyetm2
 // @harness-uid u_ckez8zqasf
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { constants, accessSync, lstatSync, readFileSync, realpathSync, statSync } from 'node:fs';
 import { isAbsolute, relative, resolve } from 'node:path';
 import { z } from 'zod';
@@ -92,7 +94,7 @@ export class DeployManifestValidator {
 		const input = privateFile(file);
 		const result = registry.safeParse(readJson(input));
 		if (!result.success)
-			throw new Error(
+			throw new ExpectedCliError(
 				'Invalid deploy registry: ' +
 					result.error.issues.map((issue) => issue.path.join('.')).join(', ')
 			);
@@ -106,7 +108,7 @@ export function privateFile(path: string): string {
 	const file = resolve(path);
 	const stat = lstatSync(file);
 	if (!stat.isFile() || (stat.mode & 0o077) !== 0 || stat.uid !== process.getuid?.()) {
-		throw new Error('Deployment control files must be regular, owner-only files.');
+		throw new ExpectedCliError('Deployment control files must be regular, owner-only files.');
 	}
 	return file;
 }
@@ -118,7 +120,7 @@ function checkExecutable(file: string): void {
 		(details.mode & 0o022) !== 0 ||
 		![0, process.getuid?.()].includes(details.uid)
 	) {
-		throw new Error('Invalid deployment control executable.');
+		throw new ExpectedCliError('Invalid deployment control executable.');
 	}
 	accessSync(file, constants.X_OK);
 }
@@ -127,7 +129,7 @@ export function readJson(path: string): unknown {
 	try {
 		return JSON.parse(readFileSync(path, 'utf8'));
 	} catch {
-		throw new Error('Invalid or missing deployment JSON.');
+		throw new ExpectedCliError('Invalid or missing deployment JSON.');
 	}
 }
 
@@ -141,7 +143,9 @@ export function scriptFile(root: string, path: string): string {
 		isAbsolute(inside) ||
 		!lstatSync(file).isFile()
 	) {
-		throw new Error('Deployment scripts must be regular files within the reviewed adapter root.');
+		throw new ExpectedCliError(
+			'Deployment scripts must be regular files within the reviewed adapter root.'
+		);
 	}
 	return file;
 }

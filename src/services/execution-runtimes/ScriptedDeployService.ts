@@ -1,4 +1,5 @@
 // @harness-uid u_hknoug3rur
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { DeployBroker } from '../../core/execution-runtimes/scripted-deploy/broker';
 import {
 	hash,
@@ -58,22 +59,19 @@ export class ScriptedDeployService {
 	async deploy(input: DeployRequest): Promise<Journal> {
 		const { plan, parity } = await this.planning.plan(input);
 		if (parity.blocked)
-			throw new Error(
+			throw new ExpectedCliError(
 				'Deployment parity has unexpected differences. Run with --plan to view them.'
 			);
-		if (!plan.release && !plan.restore) throw new Error('Deployment requires a prepared release.');
+		if (!plan.release && !plan.restore)
+			throw new ExpectedCliError('Deployment requires a prepared release.');
 		const artifact = await verifyPreparedArtifact(this.store, plan, this.config.image);
 		const record: Journal = { plan, phase: 'pending' };
 		this.store.lock(plan.project, plan.environment, plan.id);
 		try {
 			return await this.apply(record, artifact, input);
 		} catch (error) {
-			throw new Error(
-				'Deployment run ' +
-					plan.id +
-					' stopped. ' +
-					(error instanceof Error ? error.message : 'Operation failed.')
-			);
+			const reason = error instanceof Error ? error.message : 'Operation failed.';
+			throw new ExpectedCliError(`Deployment run ${plan.id} stopped. ${reason}`);
 		} finally {
 			if (record.phase !== 'applying') this.store.unlock(record);
 		}
@@ -81,8 +79,9 @@ export class ScriptedDeployService {
 
 	async signoff(id: string, proof: Proof): Promise<Journal> {
 		const record = this.store.get(id);
-		if (record.plan.project !== this.project) throw new Error('Run belongs to another project.');
-		if (record.signoff) throw new Error('A sign-off is already recorded for this run.');
+		if (record.plan.project !== this.project)
+			throw new ExpectedCliError('Run belongs to another project.');
+		if (record.signoff) throw new ExpectedCliError('A sign-off is already recorded for this run.');
 		verifySignoff(record, proof, this.registry);
 		await this.broker.note(
 			record.plan.item,
@@ -128,7 +127,7 @@ export class ScriptedDeployService {
 			parity.digest !== plan.parity ||
 			manifestDigest(this.config) !== plan.manifest
 		) {
-			throw new Error('Provider state or deploy scripts changed after planning.');
+			throw new ExpectedCliError('Provider state or deploy scripts changed after planning.');
 		}
 		this.planning.predecessor(input, current);
 		await this.broker.note(
@@ -156,7 +155,9 @@ async function verifyPreparedArtifact(
 	const value = plan.release;
 	if (!value) return null;
 	if (value.project !== plan.project || value.manifest !== plan.manifest || value.image !== image) {
-		throw new Error('Prepared artifact belongs to another project, manifest, or toolchain.');
+		throw new ExpectedCliError(
+			'Prepared artifact belongs to another project, manifest, or toolchain.'
+		);
 	}
 	return verifyArtifact(store, value);
 }

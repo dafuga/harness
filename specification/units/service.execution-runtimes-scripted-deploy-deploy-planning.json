@@ -1,10 +1,11 @@
 {
 	"schemaVersion": 1,
 	"id": "service.execution-runtimes-scripted-deploy-deploy-planning",
+	"uid": "u_2xqpdkpwdk",
 	"kind": "service",
 	"title": "DeployPlanning",
-	"responsibility": "Owns the DeployPlanning service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Constructs a plan for one target from fresh provider inventory, and verifies that promotion or rollback refers to the exact live release.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -22,65 +23,76 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DeployPlanning.constructor.context",
 				"type": "{ config: DeployProject; project: string; registry: DeployRegistry }",
-				"required": true
+				"required": true,
+				"description": "Constructs a plan for one target from fresh provider inventory, and verifies that promotion or rollback refers to the exact live release."
 			},
 			{
 				"name": "DeployPlanning.constructor.store",
 				"type": "DeployRunRepository",
-				"required": true
+				"required": true,
+				"description": "Owner-only deployment state directory and its artifact index."
 			},
 			{
 				"name": "DeployPlanning.constructor.broker",
 				"type": "DeployBroker",
-				"required": true
+				"required": true,
+				"description": "Constructs a plan for one target from fresh provider inventory, and verifies that promotion or rollback refers to the exact live release."
 			},
 			{
 				"name": "DeployPlanning.plan.input",
 				"type": "DeployRequest",
-				"required": true
+				"required": true,
+				"description": "Typed request or persisted JSON payload for this operation."
 			},
 			{
 				"name": "DeployPlanning.inventory.manifest",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Digest binding the reviewed project configuration and scripts."
 			},
 			{
 				"name": "DeployPlanning.predecessor.input",
 				"type": "DeployRequest",
-				"required": true
+				"required": true,
+				"description": "Typed request or persisted JSON payload for this operation."
 			},
 			{
 				"name": "DeployPlanning.predecessor.live",
 				"type": "Partial<Record<Environment, Observation>>",
-				"required": true
+				"required": true,
+				"description": "Constructs a plan for one target from fresh provider inventory, and verifies that promotion or rollback refers to the exact live release."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeployPlanning.plan",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Schema for one mutation attempt, related approvals and current rollback target."
 			},
 			{
 				"name": "DeployPlanning.inventory",
-				"type": "Promise<Partial<Record<Environment, Observation>>>"
+				"type": "Promise<Partial<Record<Environment, Observation>>>",
+				"description": "Constructs a plan for one target from fresh provider inventory, and verifies that promotion or rollback refers to the exact live release."
 			},
 			{
 				"name": "DeployPlanning.predecessor",
-				"type": "Journal | null"
+				"type": "Journal | null",
+				"description": "Constructs a plan for one target from fresh provider inventory, and verifies that promotion or rollback refers to the exact live release."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The operation could not verify its input, target identity, or expected result."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "DeployPlanning.plan",
@@ -88,22 +100,25 @@
 					{
 						"name": "DeployPlanning.plan.input",
 						"type": "DeployRequest",
-						"required": true
+						"required": true,
+						"description": "Typed request or persisted JSON payload for this operation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployPlanning.plan",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Schema for one mutation attempt, related approvals and current rollback target."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "DeployPlanning.inventory",
@@ -111,13 +126,15 @@
 					{
 						"name": "DeployPlanning.inventory.manifest",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Digest binding the reviewed project configuration and scripts."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployPlanning.inventory",
-						"type": "Promise<Partial<Record<Environment, Observation>>>"
+						"type": "Promise<Partial<Record<Environment, Observation>>>",
+						"description": "Constructs a plan for one target from fresh provider inventory, and verifies that promotion or rollback refers to the exact live release."
 					}
 				],
 				"errors": [],
@@ -129,27 +146,31 @@
 					{
 						"name": "DeployPlanning.predecessor.input",
 						"type": "DeployRequest",
-						"required": true
+						"required": true,
+						"description": "Typed request or persisted JSON payload for this operation."
 					},
 					{
 						"name": "DeployPlanning.predecessor.live",
 						"type": "Partial<Record<Environment, Observation>>",
-						"required": true
+						"required": true,
+						"description": "Constructs a plan for one target from fresh provider inventory, and verifies that promotion or rollback refers to the exact live release."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployPlanning.predecessor",
-						"type": "Journal | null"
+						"type": "Journal | null",
+						"description": "Constructs a plan for one target from fresh provider inventory, and verifies that promotion or rollback refers to the exact live release."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -159,23 +180,27 @@
 					{
 						"name": "DeployPlanning.constructor.context",
 						"type": "{ config: DeployProject; project: string; registry: DeployRegistry }",
-						"required": true
+						"required": true,
+						"description": "Constructs a plan for one target from fresh provider inventory, and verifies that promotion or rollback refers to the exact live release."
 					},
 					{
 						"name": "DeployPlanning.constructor.store",
 						"type": "DeployRunRepository",
-						"required": true
+						"required": true,
+						"description": "Owner-only deployment state directory and its artifact index."
 					},
 					{
 						"name": "DeployPlanning.constructor.broker",
 						"type": "DeployBroker",
-						"required": true
+						"required": true,
+						"description": "Constructs a plan for one target from fresh provider inventory, and verifies that promotion or rollback refers to the exact live release."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployPlanning.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Constructs a plan for one target from fresh provider inventory, and verifies that promotion or rollback refers to the exact live release."
 					}
 				],
 				"errors": [],
@@ -184,6 +209,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.execution-runtimes-scripted-deploy-broker",
 			"via": "import",

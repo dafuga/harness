@@ -1,3 +1,5 @@
+// @harness-uid u_vmj2plxn7l
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 import type { DeployOptions, Operation } from './runDeploy.types';
 import { signoffScope } from '../../core/execution-runtimes/scripted-deploy/proofs';
 import { homedir } from 'node:os';
@@ -44,7 +46,7 @@ async function execute(operation: Operation, options: DeployOptions): Promise<un
 	}
 	const project = operationProject(operation, store);
 	const config = registry.projects[project];
-	if (!config) throw new Error('Project is absent from the trusted deploy registry.');
+	if (!config) throw new ExpectedCliError('Project is absent from the trusted deploy registry.');
 	const service = new ScriptedDeployService(registry, project, config);
 	if (operation.kind === 'resume') return service.recovery.resume(operation.run);
 	if (operation.kind === 'prepare') return service.prepare(sha.parse(options.ref));
@@ -70,10 +72,10 @@ async function routeDeploy(
 	options: DeployOptions
 ) {
 	if (options.ref && (options.release || target !== 'staging')) {
-		throw new Error('--ref is staging-only and cannot be combined with --release.');
+		throw new ExpectedCliError('--ref is staging-only and cannot be combined with --release.');
 	}
 	if (!options.release && !options.ref)
-		throw new Error('Select --ref or --release for this deployment.');
+		throw new ExpectedCliError('Select --ref or --release for this deployment.');
 	const source = options.ref ? sha.parse(options.ref) : undefined;
 	const release = options.release ? store.getRelease(options.release) : null;
 	if (options.plan)
@@ -89,6 +91,6 @@ function operationProject(operation: Operation, store: DeployRunRepository): str
 }
 
 function recordSignoff(service: ScriptedDeployService, run: string, receipt: string | undefined) {
-	if (!receipt) throw new Error('A signed receipt file is required.');
+	if (!receipt) throw new ExpectedCliError('A signed receipt file is required.');
 	return service.signoff(run, signedProof.parse(readJson(privateFile(receipt))));
 }

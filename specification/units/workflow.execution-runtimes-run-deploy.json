@@ -1,10 +1,11 @@
 {
 	"schemaVersion": 1,
 	"id": "workflow.execution-runtimes-run-deploy",
+	"uid": "u_vmj2plxn7l",
 	"kind": "workflow",
 	"title": "runDeploy",
-	"responsibility": "Owns the runDeploy command workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Routes the deploy CLI to its requested operation and returns structured receipts or a bounded error.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -14,32 +15,36 @@
 		"symbols": ["DeployOptions", "deployOperation", "DeployOptions", "Operation"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "deployOperation.operation",
 				"type": "Operation",
-				"required": true
+				"required": true,
+				"description": "Selected deploy subcommand and its requested target or run ID."
 			},
 			{
 				"name": "deployOperation.options",
 				"type": "DeployOptions",
-				"required": true
+				"required": true,
+				"description": "Child execution or command options including bounds and optional input."
 			}
 		],
 		"outputs": [
 			{
 				"name": "deployOperation",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Routes the deploy CLI to its requested operation and returns structured receipts or a bounded error."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The operation could not verify its input, target identity, or expected result."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "deployOperation",
@@ -47,18 +52,21 @@
 					{
 						"name": "deployOperation.operation",
 						"type": "Operation",
-						"required": true
+						"required": true,
+						"description": "Selected deploy subcommand and its requested target or run ID."
 					},
 					{
 						"name": "deployOperation.options",
 						"type": "DeployOptions",
-						"required": true
+						"required": true,
+						"description": "Child execution or command options including bounds and optional input."
 					}
 				],
 				"outputs": [
 					{
 						"name": "deployOperation",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Routes the deploy CLI to its requested operation and returns structured receipts or a bounded error."
 					}
 				],
 				"errors": [],
@@ -68,6 +76,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.execution-runtimes-scripted-deploy-contracts",
 			"via": "import",

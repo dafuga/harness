@@ -1,3 +1,5 @@
+// @harness-uid u_psxc3463x5
+import { ExpectedCliError } from '../../development-tooling/errors';
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -47,7 +49,7 @@ export async function validateSource(
 	).trim();
 	const commit = sha.parse(remote.split('\t')[0]);
 	if (remote.split('\t')[1] !== config.sourceRef)
-		throw new Error('Unexpected release source branch.');
+		throw new ExpectedCliError('Unexpected release source branch.');
 	await git(config, ['merge-base', '--is-ancestor', sha.parse(source), commit]);
 }
 

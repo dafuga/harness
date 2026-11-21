@@ -1,3 +1,5 @@
+// @harness-uid u_wtwd3u5kn3
+import { ExpectedCliError } from '../../development-tooling/errors';
 import type { Build } from './releaseFiles.types';
 import { createHash } from 'node:crypto';
 import { createReadStream, lstatSync, mkdirSync, mkdtempSync, renameSync, rmSync } from 'node:fs';
@@ -42,7 +44,7 @@ export async function buildRelease(
 			)
 		);
 		if (hash(versions) !== hash(config.toolchain))
-			throw new Error(
+			throw new ExpectedCliError(
 				'Built release used an unexpected deploy toolchain: ' + JSON.stringify(versions)
 			);
 		return await preserveRelease(store, output, { ...spec, image: config.image, migrations });
@@ -78,7 +80,7 @@ export async function verifyArtifact(store: DeployRunRepository, value: Release)
 		lstatSync(file).size !== value.size ||
 		(await hashFile(file)) !== value.artifact
 	) {
-		throw new Error('Stored deployment artifact is missing or has changed.');
+		throw new ExpectedCliError('Stored deployment artifact is missing or has changed.');
 	}
 	return file;
 }
@@ -86,7 +88,7 @@ export async function verifyArtifact(store: DeployRunRepository, value: Release)
 async function hashFile(file: string): Promise<string> {
 	const stat = lstatSync(file);
 	if (!stat.isFile() || !stat.size)
-		throw new Error('Deployment build did not produce a regular artifact.');
+		throw new ExpectedCliError('Deployment build did not produce a regular artifact.');
 	const hashing = createHash('sha256');
 	for await (const bytes of createReadStream(file)) hashing.update(bytes);
 	return hashing.digest('hex');

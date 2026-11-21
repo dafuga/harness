@@ -1,4 +1,5 @@
 // @harness-uid u_f77zx26wcb
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { randomUUID } from 'node:crypto';
 import { runProcess } from '../../core/execution-runtimes/scripted-deploy/runProcess';
 import { scriptFile } from '../../validators/execution-runtimes/DeployManifestValidator';
@@ -7,7 +8,7 @@ import type { DeployDockerAdapterConfig, LocalPhase } from './DeployDockerAdapte
 export class DeployDockerAdapter {
 	constructor(private readonly config: DeployDockerAdapterConfig) {}
 
-	async run(phase: LocalPhase, mounts: Record<string, string>, input: unknown): Promise<unknown> {
+	async run(phase: LocalPhase, mounts: Record<string, string>, input: object): Promise<unknown> {
 		const container = 'harness-deploy-' + randomUUID();
 		const { project } = this.config;
 		const script = scriptFile(project.root, project.scripts[phase]);
@@ -85,7 +86,7 @@ function containerArguments(
 
 function mount(source: string, destination: string, writable: boolean): string {
 	if (!source.startsWith('/') || /[\r\n,]/.test(source) || !/^\/[a-z/-]+$/.test(destination)) {
-		throw new Error('Invalid Docker deployment mount.');
+		throw new ExpectedCliError('Invalid Docker deployment mount.');
 	}
 	return 'type=bind,src=' + source + ',dst=' + destination + (writable ? '' : ',readonly');
 }
@@ -99,7 +100,7 @@ async function removeContainer(container: string): Promise<void> {
 	const id = listing.trim();
 	if (!id) return;
 	if (!/^[a-f0-9]{12,64}$/.test(id))
-		throw new Error('Could not identify the task-owned deployment container.');
+		throw new ExpectedCliError('Could not identify the task-owned deployment container.');
 	await runProcess('docker', ['rm', '-f', id], { description: 'Docker task container cleanup' });
 }
 

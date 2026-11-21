@@ -1,52 +1,59 @@
 {
 	"schemaVersion": 1,
 	"id": "service.execution-runtimes-scripted-deploy-deploy-recovery",
+	"uid": "u_ak2bjzfju3",
 	"kind": "service",
 	"title": "DeployRecovery",
-	"responsibility": "Owns the DeployRecovery service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Reconciles an interrupted provider operation without submitting it a second time and resumes route smoke and cleanup.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/services/execution-runtimes/scripted-deploy/DeployRecovery.ts"],
 		"symbols": ["DeployRecovery", "DeployRecovery.constructor", "DeployRecovery.resume"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DeployRecovery.constructor.store",
 				"type": "DeployRunRepository",
-				"required": true
+				"required": true,
+				"description": "Owner-only deployment state directory and its artifact index."
 			},
 			{
 				"name": "DeployRecovery.constructor.broker",
 				"type": "DeployBroker",
-				"required": true
+				"required": true,
+				"description": "Reconciles an interrupted provider operation without submitting it a second time and resumes route smoke and cleanup."
 			},
 			{
 				"name": "DeployRecovery.constructor.verify",
 				"type": "DeployVerification",
-				"required": true
+				"required": true,
+				"description": "Reconciles an interrupted provider operation without submitting it a second time and resumes route smoke and cleanup."
 			},
 			{
 				"name": "DeployRecovery.resume.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Opaque identity of the stored release or deployment run requested."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeployRecovery.resume",
-				"type": "Promise<Journal>"
+				"type": "Promise<Journal>",
+				"description": "Reconciles an interrupted provider operation without submitting it a second time and resumes route smoke and cleanup."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The operation could not verify its input, target identity, or expected result."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "DeployRecovery.resume",
@@ -54,22 +61,25 @@
 					{
 						"name": "DeployRecovery.resume.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Opaque identity of the stored release or deployment run requested."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployRecovery.resume",
-						"type": "Promise<Journal>"
+						"type": "Promise<Journal>",
+						"description": "Reconciles an interrupted provider operation without submitting it a second time and resumes route smoke and cleanup."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -79,23 +89,27 @@
 					{
 						"name": "DeployRecovery.constructor.store",
 						"type": "DeployRunRepository",
-						"required": true
+						"required": true,
+						"description": "Owner-only deployment state directory and its artifact index."
 					},
 					{
 						"name": "DeployRecovery.constructor.broker",
 						"type": "DeployBroker",
-						"required": true
+						"required": true,
+						"description": "Reconciles an interrupted provider operation without submitting it a second time and resumes route smoke and cleanup."
 					},
 					{
 						"name": "DeployRecovery.constructor.verify",
 						"type": "DeployVerification",
-						"required": true
+						"required": true,
+						"description": "Reconciles an interrupted provider operation without submitting it a second time and resumes route smoke and cleanup."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployRecovery.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Reconciles an interrupted provider operation without submitting it a second time and resumes route smoke and cleanup."
 					}
 				],
 				"errors": [],
@@ -104,6 +118,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.execution-runtimes-scripted-deploy-broker",
 			"via": "import",

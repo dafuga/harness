@@ -1,10 +1,11 @@
 {
 	"schemaVersion": 1,
 	"id": "function.execution-runtimes-scripted-deploy-broker",
+	"uid": "u_bepb2gipf3",
 	"kind": "function",
 	"title": "broker",
-	"responsibility": "Owns the broker shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Calls the trusted deployment broker for filtered provider inventory, scoped approvals, a single mutation, and reconciliation of submitted operations.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/core/execution-runtimes/scripted-deploy/broker.ts"],
@@ -19,98 +20,116 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DeployBroker.constructor.registry",
 				"type": "DeployRegistry",
-				"required": true
+				"required": true,
+				"description": "Trusted deploy registry, including approved targets, executable paths and signer public keys."
 			},
 			{
 				"name": "DeployBroker.constructor.config",
 				"type": "DeployProject",
-				"required": true
+				"required": true,
+				"description": "Reviewed project or target settings for this operation."
 			},
 			{
 				"name": "DeployBroker.inspect.project",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project name registered on the trusted deploy host."
 			},
 			{
 				"name": "DeployBroker.inspect.environment",
 				"type": "Environment",
-				"required": true
+				"required": true,
+				"description": "The single environment addressed by the operation."
 			},
 			{
 				"name": "DeployBroker.inspect.manifest",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Digest binding the reviewed project configuration and scripts."
 			},
 			{
 				"name": "DeployBroker.authorize.plan",
 				"type": "Plan",
-				"required": true
+				"required": true,
+				"description": "Exact deployment attempt including target, release, predecessor and rollback information."
 			},
 			{
 				"name": "DeployBroker.apply.plan",
 				"type": "Plan",
-				"required": true
+				"required": true,
+				"description": "Exact deployment attempt including target, release, predecessor and rollback information."
 			},
 			{
 				"name": "DeployBroker.apply.proof",
 				"type": "Proof",
-				"required": true
+				"required": true,
+				"description": "Signed approval or sign-off envelope to verify."
 			},
 			{
 				"name": "DeployBroker.apply.artifact",
 				"type": "string | null",
-				"required": true
+				"required": true,
+				"description": "Path of the previously verified build artifact, or null for a rollback."
 			},
 			{
 				"name": "DeployBroker.reconcile.plan",
 				"type": "Plan",
-				"required": true
+				"required": true,
+				"description": "Exact deployment attempt including target, release, predecessor and rollback information."
 			},
 			{
 				"name": "DeployBroker.note.item",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Tracker item that receives the evidence reference."
 			},
 			{
 				"name": "DeployBroker.note.message",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Redacted human-readable evidence reference to append."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeployBroker.inspect",
-				"type": "Promise<Observation>"
+				"type": "Promise<Observation>",
+				"description": "A current, filtered observation of the named provider target and its release."
 			},
 			{
 				"name": "DeployBroker.authorize",
-				"type": "Promise<Proof>"
+				"type": "Promise<Proof>",
+				"description": "The signed single-use approval scoped to this plan."
 			},
 			{
 				"name": "DeployBroker.apply",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Identity and provider read-back of the submitted operation."
 			},
 			{
 				"name": "DeployBroker.reconcile",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The authoritative status or original receipt for an already-submitted operation."
 			},
 			{
 				"name": "DeployBroker.note",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "No output. Success confirms Tracker accepted the evidence reference."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The operation could not verify its input, target identity, or expected result."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "DeployBroker.inspect",
@@ -118,23 +137,27 @@
 					{
 						"name": "DeployBroker.inspect.project",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project name registered on the trusted deploy host."
 					},
 					{
 						"name": "DeployBroker.inspect.environment",
 						"type": "Environment",
-						"required": true
+						"required": true,
+						"description": "The single environment addressed by the operation."
 					},
 					{
 						"name": "DeployBroker.inspect.manifest",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Digest binding the reviewed project configuration and scripts."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployBroker.inspect",
-						"type": "Promise<Observation>"
+						"type": "Promise<Observation>",
+						"description": "A current, filtered observation of the named provider target and its release."
 					}
 				],
 				"errors": [],
@@ -146,13 +169,15 @@
 					{
 						"name": "DeployBroker.authorize.plan",
 						"type": "Plan",
-						"required": true
+						"required": true,
+						"description": "Exact deployment attempt including target, release, predecessor and rollback information."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployBroker.authorize",
-						"type": "Promise<Proof>"
+						"type": "Promise<Proof>",
+						"description": "The signed single-use approval scoped to this plan."
 					}
 				],
 				"errors": [],
@@ -164,23 +189,27 @@
 					{
 						"name": "DeployBroker.apply.plan",
 						"type": "Plan",
-						"required": true
+						"required": true,
+						"description": "Exact deployment attempt including target, release, predecessor and rollback information."
 					},
 					{
 						"name": "DeployBroker.apply.proof",
 						"type": "Proof",
-						"required": true
+						"required": true,
+						"description": "Signed approval or sign-off envelope to verify."
 					},
 					{
 						"name": "DeployBroker.apply.artifact",
 						"type": "string | null",
-						"required": true
+						"required": true,
+						"description": "Path of the previously verified build artifact, or null for a rollback."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployBroker.apply",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Identity and provider read-back of the submitted operation."
 					}
 				],
 				"errors": [],
@@ -192,13 +221,15 @@
 					{
 						"name": "DeployBroker.reconcile.plan",
 						"type": "Plan",
-						"required": true
+						"required": true,
+						"description": "Exact deployment attempt including target, release, predecessor and rollback information."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployBroker.reconcile",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The authoritative status or original receipt for an already-submitted operation."
 					}
 				],
 				"errors": [],
@@ -210,18 +241,21 @@
 					{
 						"name": "DeployBroker.note.item",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Tracker item that receives the evidence reference."
 					},
 					{
 						"name": "DeployBroker.note.message",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Redacted human-readable evidence reference to append."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployBroker.note",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "No output. Success confirms Tracker accepted the evidence reference."
 					}
 				],
 				"errors": [],
@@ -235,18 +269,21 @@
 					{
 						"name": "DeployBroker.constructor.registry",
 						"type": "DeployRegistry",
-						"required": true
+						"required": true,
+						"description": "Trusted deploy registry, including approved targets, executable paths and signer public keys."
 					},
 					{
 						"name": "DeployBroker.constructor.config",
 						"type": "DeployProject",
-						"required": true
+						"required": true,
+						"description": "Reviewed project or target settings for this operation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeployBroker.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Calls the trusted deployment broker for filtered provider inventory, scoped approvals, a single mutation, and reconciliation of submitted operations."
 					}
 				],
 				"errors": [],
@@ -255,6 +292,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.execution-runtimes-scripted-deploy-contracts",
 			"via": "import",

@@ -1,3 +1,5 @@
+// @harness-uid u_pmxlg3sdum
+import { ExpectedCliError } from '../../development-tooling/errors';
 import type { Fields, Difference } from './parity.types';
 import {
 	canonical,
@@ -35,16 +37,21 @@ function diff(
 	});
 }
 
-export function assertObservation(target: string, actual: Observation, now = Date.now()): void {
-	if (actual.target !== target) throw new Error('Inspection returned the wrong deployment target.');
+export function assertObservation(
+	target: string,
+	actual: Observation,
+	now: number = Date.now()
+): void {
+	if (actual.target !== target)
+		throw new ExpectedCliError('Inspection returned the wrong deployment target.');
 	if (actual.observedAt > now + 5000 || actual.observedAt < now - 90_000) {
-		throw new Error('Deployment inspection is stale.');
+		throw new ExpectedCliError('Deployment inspection is stale.');
 	}
 }
 
 export function assertTargetProfile(expected: Profile, actual: Observation): void {
 	if (diff('staging', fields(expected), fields(actual.profile), {}).length) {
-		throw new Error('Live deployment profile drifted after planning.');
+		throw new ExpectedCliError('Live deployment profile drifted after planning.');
 	}
 }
 
@@ -116,7 +123,9 @@ export function assertResult(plan: Plan, actual: Observation): void {
 		actual.artifact !== wanted.artifact ||
 		wrongVersion(plan, actual)
 	) {
-		throw new Error('Provider result does not prove the requested deployment or restoration.');
+		throw new ExpectedCliError(
+			'Provider result does not prove the requested deployment or restoration.'
+		);
 	}
 }
 
