@@ -1,3 +1,4 @@
+import type { Page } from '@playwright/test';
 import { expect as baseExpect, test } from '../../../../test/support/browserTest';
 import { ada } from './hosted-fixture';
 import {
@@ -33,6 +34,17 @@ const unavailable = {
 	text: 'Service Unavailable',
 	reason: 'The owner endpoint answers 503 on purpose when no current snapshot exists.'
 };
+
+/** Fitted: no horizontal document scroll, and no card edge past the viewport's right side. */
+async function expectFitted(page: Page) {
+	const fit = await page.evaluate(() => ({
+		scroll: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+		past: [...document.querySelectorAll('.po-card')].filter(
+			(card) => card.getBoundingClientRect().right > innerWidth
+		).length
+	}));
+	expect(fit).toEqual({ scroll: 0, past: 0 });
+}
 
 test('the owner sees the link on the projects page, opens it and reads with GET only', async ({
 	page
@@ -101,6 +113,7 @@ for (const viewport of viewports) {
 		for (const band of bands) {
 			await expect(page.getByRole('heading', { name: band })).toBeVisible();
 		}
+		await expectFitted(page);
 		await capture(page, testInfo, 'ready', viewport);
 	});
 
@@ -117,6 +130,10 @@ for (const viewport of viewports) {
 		const dialog = page.getByRole('dialog');
 		await expect(dialog.getByText('Confirm the cutover window')).toBeVisible();
 		await expect(dialog.getByText('SYN-1', { exact: true })).toBeVisible();
+		const title = await dialog.locator('.viewer-header h2').boundingBox();
+		const close = await dialog.locator('.viewer-header button').boundingBox();
+		expect(close!.y).toBeLessThan(title!.y + title!.height);
+		expect(await dialog.evaluate((el) => getComputedStyle(el).borderTopWidth)).toBe('1px');
 		await capture(page, testInfo, 'item-detail', viewport);
 		await page.keyboard.press('Escape');
 		await expect(dialog).toHaveCount(0);
