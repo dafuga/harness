@@ -56,6 +56,21 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 		return managedDispatchRuns(this.store.database, this.node);
 	}
 
+	/** Call after quiescing the native writer, before starting the legacy dispatcher. */
+	assertLegacyRollbackSafe(): void {
+		const blocker = this.store.database
+			.prepare(
+				`SELECT r.id, r.state FROM runs r
+			JOIN meta m ON m.k = 'harness_dispatch_run:' || r.id
+			WHERE r.state IN ('queued','running','verifying')
+			ORDER BY r.id LIMIT 1`
+			)
+			.get() as { id: number; state: string } | undefined;
+		if (blocker) {
+			throw new Error(`Tracker rollback blocked by run ${blocker.id} (${blocker.state})`);
+		}
+	}
+
 	candidates(): TrackerDispatchCandidate[] {
 		return this.store.database
 			.prepare(
