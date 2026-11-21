@@ -121,6 +121,14 @@ func accountPolicyChecks() {
     let address = request?.url?.absoluteString ?? ""
     check(HubAccountPolicy.allowed(fielded) && address.hasSuffix("?commit=c&path=a%2Bb%26c%3Dd%2F%C3%A9"), "account: each field is escaped whole and none is read as another")
     check(request?.value(forHTTPHeaderField: "Authorization") == "Bearer \(hubToken)" && request?.url?.host == hubOrigin.host && !address.contains(hubToken), "account: the session goes in a header to the configured Hub, never in an address")
+    let overview = HubAccountCall(method: "GET", path: "/api/tracker-overview")
+    let overviewRefused = [HubAccountCall(method: "GET", path: "/api/tracker-overview", query: ["x": "1"]),
+        HubAccountCall(method: "GET", path: "/api/tracker-overview", body: Data("{}".utf8)), HubAccountCall(method: "PUT", path: "/api/tracker-overview"),
+        HubAccountCall(method: "POST", path: "/api/tracker-overview"), HubAccountCall(method: "DELETE", path: "/api/tracker-overview"),
+        HubAccountCall(method: "GET", path: "/api/tracker-overview/"), HubAccountCall(method: "GET", path: "/api//tracker-overview"),
+        HubAccountCall(method: "GET", path: "/api/tracker-overview?x=1"), HubAccountCall(method: "GET", path: "/API/TRACKER-OVERVIEW"),
+        HubAccountCall(method: "GET", path: "/api/tracker-overview%2F")]
+    check(HubAccountPolicy.allowed(overview) && overviewRefused.allSatisfy { !HubAccountPolicy.allowed($0) }, "account: the tracker overview is one plain GET; queries, bodies, other methods and aliases are refused")
 }
 
 func accountSignInChecks() {
@@ -176,6 +184,12 @@ func accountRequestChecks() {
     let listed = (try? bench.request("/api/projects")?.get())?.object ?? [:]
     let signed = listed["data"] as? String == "W10=" && bench.hub.bearer("/api/projects") == "Bearer \(hubToken)"
     check(signed && !String(describing: listed).contains(hubToken), "account: a project read is signed here and answered as status, type and base64, without the session")
+    bench.hub.routes["GET /api/tracker-overview"] = { _ in HubAccountReply(status: 200, contentType: "application/json", data: Data("{}".utf8)) }
+    let overview = (try? bench.request("/api/tracker-overview")?.get())?.object ?? [:]
+    check(overview["data"] as? String == "e30=" && bench.hub.bearer("/api/tracker-overview") == "Bearer \(hubToken)", "account: the tracker overview is signed with the kept session and answered without it")
+    let sent = bench.hub.seen.count
+    let aliased = ["/api/tracker-overview?x=1", "/api/tracker-overview/", "/api/tracker-overview?"]
+    check(aliased.allSatisfy { bench.request($0)?.refusal == .refused } && bench.request("/api/tracker-overview", "POST")?.refusal == .refused && bench.hub.seen.count == sent, "account: the tracker overview refuses queries, aliases and other methods without sending them")
     let before = bench.hub.seen.count
     check(bench.request("/api/auth/logout", "POST")?.refusal == .refused && bench.hub.seen.count == before, "account: an auth route asked by the page is refused and never sent")
     bench.hub.holding = true
@@ -188,6 +202,7 @@ func accountRequestChecks() {
     check(late?.refusal == .superseded, "account: an answer asked for before Disconnect reaches nobody")
     check(ended?["state"] as? String == "signed-out" && bench.vault.credential == nil && bench.vault.wipes > 0, "account: Disconnect erases the session from the vault")
     check(bench.hub.bearer("/api/auth/logout") == "Bearer \(hubToken)" && bench.request("/api/projects")?.refusal == .signedOut, "account: Disconnect ends the session at the Hub, and nothing is signed after it")
+    check(bench.request("/api/tracker-overview")?.refusal == .signedOut && bench.hub.asked("/api/tracker-overview").count == 1, "account: after Disconnect the tracker overview is not sent and no earlier answer is kept")
 }
 
 func accountReuseChecks() {
