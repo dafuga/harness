@@ -1,3 +1,4 @@
+import { shortCommit } from '../packages/reports/src/helpers/strings/shortCommit';
 import type { HookStatus } from './hooks-commit-msg.e2e.test.types';
 import { chmod, mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
@@ -155,7 +156,7 @@ test('a message that skipped the hook does not pass verification of the commit t
 	expect(
 		(await commit(repo, [long, hash], {}, ['--no-verify', '--cleanup=verbatim'])).exitCode
 	).toBe(0);
-	const short = (await head(repo)).slice(0, 12);
+	const short = shortCommit(await head(repo));
 	const refused = await repo.verify();
 	expect(refused.record.status).toBe('failed');
 	expect(refused.record.failures).toEqual(
