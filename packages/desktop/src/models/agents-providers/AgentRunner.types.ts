@@ -14,6 +14,8 @@ export interface AgentTurn {
 	cwd: string;
 	prompt: string;
 	reference?: string | null;
+	/** A Claude authoring turn may request validated structured output. */
+	outputSchema?: string;
 	/** `read-only` may inspect the project; `write` may change files under `cwd`. */
 	access: 'read-only' | 'write';
 	signal: AbortSignal;

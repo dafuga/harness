@@ -1,7 +1,9 @@
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { join } from 'node:path';
 import { PNG } from 'pngjs';
 import type { MockupCapture } from '../../src/utils/planning-collaboration/mockupSource.types';
-import { mockupCapture } from '../../src/utils/planning-collaboration/mockupCapture';
 import { mockupHtml } from '../../src/utils/planning-collaboration/mockupSource';
 import { expect, type Page } from '../../../../test/support/browserTest';
 
@@ -39,6 +41,51 @@ function comparison(title: string, after: boolean) {
 	);
 }
 
+// Compile with the same options as Electron main, then exercise the external package under Node.
+async function packagedCaptures(captures: MockupCapture[]) {
+	const directory = await mkdtemp(join(process.cwd(), '.mockup-node-'));
+	try {
+		execFileSync(
+			'bun',
+			[
+				'-e',
+				`
+import { desktopNodeOptions } from './scripts/build-main.ts';
+const result = await Bun.build({
+	...desktopNodeOptions, entrypoints: ['src/utils/planning-collaboration/mockupCapture.ts'],
+	outdir: process.argv[1], naming: 'capture.cjs'
+});
+if (!result.success) throw new Error(result.logs.map(String).join('\\n'));
+`,
+				directory
+			],
+			{ stdio: 'pipe' }
+		);
+		execFileSync(
+			process.execPath,
+			[
+				'-e',
+				`
+const { readFileSync, writeFileSync } = require('node:fs');
+const { join } = require('node:path');
+const directory = process.argv[1];
+const { mockupCapture } = require(join(directory, 'capture.cjs'));
+const captures = JSON.parse(readFileSync(0, 'utf8'));
+mockupCapture(captures, AbortSignal.timeout(90000)).then(
+	pngs => pngs.forEach((png, at) => writeFileSync(join(directory, at + '.png'), png)),
+	error => { console.error(error); process.exitCode = 1; }
+);
+`,
+				directory
+			],
+			{ input: JSON.stringify(captures), timeout: 100000 }
+		);
+		return await Promise.all(captures.map((_, at) => readFile(join(directory, at + '.png'))));
+	} finally {
+		await rm(directory, { recursive: true, force: true });
+	}
+}
+
 async function planFixtureCaptures() {
 	const captures: MockupCapture[] = sizes.flatMap((viewport) => [
 		{
@@ -70,7 +117,7 @@ async function planFixtureCaptures() {
 			html: comparison('Refreshing activity', false)
 		}
 	]);
-	const bytes = await mockupCapture(captures, new AbortController().signal);
+	const bytes = await packagedCaptures(captures);
 	return bytes.map((buffer, index) => {
 		const png = Buffer.from(buffer);
 		const { width, height } = PNG.sync.read(png);

@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import type { RunContext } from '../../models/development-tooling/RunContext.types';
 import { RunCancelled } from '../../models/agents-providers/AgentRunner.types';
 import { gitRead, gitText } from '../projects-sessions/gitRead';
@@ -82,7 +83,7 @@ async function projectCss(context: RunContext, answer: MockupAnswer) {
 	).join('\n');
 }
 
-async function ask(context: RunContext, model: string, prompt: string) {
+async function ask(context: RunContext, model: string, prompt: string, schema: z.ZodType) {
 	const { signal, root, id, emit, mockupRunner } = context;
 	if (signal.aborted) throw new RunCancelled();
 	if (!mockupRunner) throw new Error('Claude CLI is required for visual Plans.');
@@ -97,6 +98,7 @@ async function ask(context: RunContext, model: string, prompt: string) {
 		model,
 		cwd: root,
 		prompt,
+		outputSchema: JSON.stringify(z.toJSONSchema(schema, { target: 'draft-7' })),
 		effort: null,
 		access: 'read-only',
 		signal,
@@ -112,7 +114,7 @@ async function ask(context: RunContext, model: string, prompt: string) {
 }
 
 async function authored(context: RunContext, prompt: string): Promise<MockupSource> {
-	const answer = answerSchema.parse(await ask(context, sonnet, prompt));
+	const answer = answerSchema.parse(await ask(context, sonnet, prompt, answerSchema));
 	if (answer.options.length !== designCount(context.request))
 		throw new Error('Sonnet did not return the requested number of mockup options.');
 	if (Boolean(answer.before) === context.entity.planned)
@@ -155,7 +157,7 @@ async function expanded(context: RunContext, source: MockupSource) {
 		'Request: ' + context.request.text,
 		'Saved mockup: ' + JSON.stringify(source)
 	].join('\n');
-	const extra = variationSchema.parse(await ask(context, haiku, prompt));
+	const extra = variationSchema.parse(await ask(context, haiku, prompt, variationSchema));
 	return mergeVariations(source, extra);
 }
 

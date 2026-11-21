@@ -11,7 +11,10 @@
 		"source": [
 			"packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts"
 		],
-		"symbols": ["PlanRunService", "PlanRunService.run"]
+		"symbols": [
+			"PlanRunService",
+			"PlanRunService.run"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -20,7 +23,7 @@
 				"name": "PlanRunService.run.context",
 				"type": "RunContext",
 				"required": true,
-				"description": "The RunContext the caller passes in: the run id, the RunRequest, the project root path, the entity and its revision, the planning port, the agent runner, the image generator, the image model, the project session service, an AbortSignal and an emit callback for run events. run reads id, request, root, runner, signal and emit itself and passes the whole object on to runContext and planDesign; run does not validate it."
+				"description": "Prepared run context with the target entity, selected project revision, planning port, runners, screenshot renderer, cancellation signal, and progress callbacks. Visual entities use the Claude mockup runner. Headless entities use the selected chat runner."
 			}
 		],
 		"outputs": [
@@ -28,7 +31,11 @@
 				"name": "PlanRunService.run",
 				"type": "unknown",
 				"description": "The string run resolves to: the result of planDesign after it has saved the design and appended the agent's message, 'Saved <version> for review.', where <version> is 'v' followed by the plan's existing design count plus one, zero-padded to at least three digits. The design is saved for review only and is not approved, and DesktopRunService reports this string as the summary of the finished run.",
-				"examples": ["Saved v001 for review.", "Saved v002 for review.", "Saved v013 for review."]
+				"examples": [
+					"Saved v001 for review.",
+					"Saved v002 for review.",
+					"Saved v013 for review."
+				]
 			}
 		],
 		"errors": [
@@ -121,7 +128,10 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-project-runs"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

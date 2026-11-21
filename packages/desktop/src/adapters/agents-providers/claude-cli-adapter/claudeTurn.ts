@@ -29,6 +29,7 @@ async function runClaudeTurn(command: CliCommand, turn: AgentTurn, resources: Re
 	];
 	if (turn.effort) args.push('--effort', turn.effort);
 	if (turn.access === 'read-only') args.push('--tools', 'Read,Glob,Grep');
+	if (turn.outputSchema) args.push('--json-schema', turn.outputSchema);
 	await cliProcess(
 		{ ...command, args },
 		{
@@ -54,7 +55,12 @@ async function runClaudeTurn(command: CliCommand, turn: AgentTurn, resources: Re
 	const final = result as Record<string, unknown> | null;
 	if (!final || final.is_error)
 		throw new Error(String(final?.result ?? 'Claude returned no completed result.'));
-	return { text: String(final.result ?? ''), model: actual };
+	if (turn.outputSchema && !final.structured_output)
+		throw new Error('Claude did not return the requested structured mockup.');
+	const text = turn.outputSchema
+		? JSON.stringify(final.structured_output)
+		: String(final.result ?? '');
+	return { text, model: actual };
 }
 
 function observeClaudeFiles(event: Record<string, unknown>, turn: AgentTurn): void {

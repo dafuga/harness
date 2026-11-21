@@ -35,7 +35,7 @@
 				"name": "changeExecute.options",
 				"type": "{ directory: string; observe: (path: string) => void; }",
 				"required": true,
-				"description": "The options for one run: directory, where approved.png is written when the approval has a first image hash, and observe, which receives each file path the runner reports. Nothing here creates directory, so it must already exist for that write, and observe is passed to the runner unchanged."
+				"description": "The temporary directory for the exact approved source, screenshots, and review manifest, plus a callback to observe paths written by the Change agent. Legacy approvals supply their first reference image."
 			},
 			{
 				"name": "recordChange.context",
@@ -189,7 +189,11 @@
 			}
 		]
 	},
-	"scenarios": ["agent-references", "desktop-native", "desktop-project-runs"],
+	"scenarios": [
+		"agent-references",
+		"desktop-native",
+		"desktop-project-runs"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
