@@ -1,17 +1,23 @@
 // @harness-uid u_c5mwmd6z6z
 import { trackerItemFields } from '../../adapters/projects-sessions/TrackerSchemaAdapter';
 import type { SqliteDatabase, SqliteValue } from '../../core/development-tooling/sqliteTypes';
+import { trackerClockMilliseconds } from '../../utils/projects-sessions/nextTrackerClock';
 import type {
 	TrackerAppliedOperations,
+	TrackerLocalOperation,
 	TrackerOperation,
 	TrackerOperationFilter,
 	TrackerSequencedOperation,
 	TrackerStoredOperation
 } from './TrackerOperationRepository.types';
 
+import {
+	localTrackerOperation,
+	operationActor
+} from './tracker-operation-repository/localTrackerOperation';
+
 const itemFields = new Set<string>(trackerItemFields);
 const appendNoteField = 'note+';
-const clockPattern = /^(\d{15})-\d{6}-.+$/;
 
 export class TrackerOperationRepository {
 	constructor(
@@ -24,16 +30,20 @@ export class TrackerOperationRepository {
 		operations: readonly TrackerOperation[],
 		persist?: () => void
 	): TrackerAppliedOperations {
-		this.database.exec('BEGIN IMMEDIATE');
-		try {
+		return trackerWrite(this.database, () => {
 			const applied = operations.filter((operation) => this.applyOperation(operation));
 			persistReceipt(persist);
-			this.database.exec('COMMIT');
 			return { operations: applied, itemIds: [...new Set(applied.map(({ item_id }) => item_id))] };
-		} catch (error) {
-			this.database.exec('ROLLBACK');
-			throw error;
-		}
+		});
+	}
+
+	appendLocal(request: TrackerLocalOperation, persist?: () => void): TrackerOperation {
+		return trackerWrite(this.database, () => {
+			const operation = localTrackerOperation(this.database, request, this.now());
+			if (!this.applyOperation(operation)) throw new TypeError('Tracker operation clock collision');
+			persistReceipt(persist);
+			return operation;
+		});
 	}
 
 	maxSeq(): number {
@@ -113,7 +123,7 @@ export class TrackerOperationRepository {
 		const values: SqliteValue[] = [];
 		for (const [field, value] of Object.entries(fields)) {
 			if (field === appendNoteField) {
-				this.appendNote(operation, value);
+				appendTrackerNote(this.database, operation, value);
 				if (!clocks.notes_log || hlc > clocks.notes_log) clocks.notes_log = hlc;
 			} else if (itemFields.has(field) && (!clocks[field] || hlc > clocks[field])) {
 				clocks[field] = hlc;
@@ -126,12 +136,16 @@ export class TrackerOperationRepository {
 			.prepare(`UPDATE items SET ${columns.join(', ')} WHERE id = ?`)
 			.run(...values, JSON.stringify(clocks), itemUpdatedAt(clocks), item);
 	}
+}
 
-	private appendNote(operation: TrackerOperation, value: unknown): void {
-		this.database
-			.prepare('INSERT OR IGNORE INTO item_notes(item_id, hlc, node, text) VALUES (?, ?, ?, ?)')
-			.run(operation.item_id, operation.hlc, String(operation.node), String(value));
-	}
+function appendTrackerNote(
+	database: SqliteDatabase,
+	operation: TrackerOperation,
+	value: unknown
+): void {
+	database
+		.prepare('INSERT OR IGNORE INTO item_notes(item_id, hlc, node, text) VALUES (?, ?, ?, ?)')
+		.run(operation.item_id, operation.hlc, String(operation.node), String(value));
 }
 
 function assertOperation(operation: TrackerOperation): void {
@@ -146,17 +160,9 @@ function assertOperation(operation: TrackerOperation): void {
 		throw new TypeError('malformed op fields');
 }
 
-function operationActor(actor: string | null | undefined): string | null {
-	if (actor == null) return null;
-	// eslint-disable-next-line no-control-regex -- The Tracker actor field excludes ASCII control characters.
-	const printable = String(actor).replace(/[\x00-\x1f\x7f]/g, '');
-	return printable.trim().slice(0, 80) || null;
-}
-
 function itemUpdatedAt(clocks: Readonly<Record<string, string>>): string {
 	const latest = Object.values(clocks).sort().at(-1) ?? '';
-	const milliseconds = Number(clockPattern.exec(latest)?.[1] ?? 0);
-	return new Date(milliseconds).toISOString();
+	return new Date(trackerClockMilliseconds(latest)).toISOString();
 }
 
 function itemValue(value: unknown): SqliteValue {
@@ -177,8 +183,21 @@ function persistReceipt(persist: (() => void) | undefined): void {
 		throw new TypeError('Tracker operation receipts must be synchronous');
 }
 
+function trackerWrite<T>(database: SqliteDatabase, write: () => T): T {
+	database.exec('BEGIN IMMEDIATE');
+	try {
+		const result = write();
+		database.exec('COMMIT');
+		return result;
+	} catch (error) {
+		database.exec('ROLLBACK');
+		throw error;
+	}
+}
+
 export type {
 	TrackerAppliedOperations,
+	TrackerLocalOperation,
 	TrackerOperation,
 	TrackerOperationFilter,
 	TrackerSequencedOperation

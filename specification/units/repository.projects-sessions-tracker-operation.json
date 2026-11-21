@@ -10,16 +10,19 @@
 	"owns": {
 		"source": [
 			"src/repositories/projects-sessions/TrackerOperationRepository.ts",
-			"src/repositories/projects-sessions/TrackerOperationRepository.types.ts"
+			"src/repositories/projects-sessions/TrackerOperationRepository.types.ts",
+			"src/repositories/projects-sessions/tracker-operation-repository/localTrackerOperation.ts"
 		],
 		"symbols": [
 			"TrackerOperationRepository",
 			"TrackerOperationRepository.constructor",
 			"TrackerOperationRepository.applyOps",
+			"TrackerOperationRepository.appendLocal",
 			"TrackerOperationRepository.maxSeq",
 			"TrackerOperationRepository.opsSince",
 			"TrackerOperationRepository.countOpsSince",
 			"TrackerAppliedOperations",
+			"TrackerLocalOperation",
 			"TrackerOperation",
 			"TrackerOperationFilter",
 			"TrackerSequencedOperation",
@@ -27,7 +30,10 @@
 			"TrackerAppliedOperations",
 			"TrackerSequencedOperation",
 			"TrackerStoredOperation",
-			"TrackerOperationFilter"
+			"TrackerOperationFilter",
+			"TrackerLocalOperation",
+			"localTrackerOperation",
+			"operationActor"
 		]
 	},
 	"contract": {
@@ -50,6 +56,16 @@
 			},
 			{
 				"name": "TrackerOperationRepository.applyOps.persist",
+				"type": "() => void",
+				"required": false
+			},
+			{
+				"name": "TrackerOperationRepository.appendLocal.request",
+				"type": "TrackerLocalOperation",
+				"required": true
+			},
+			{
+				"name": "TrackerOperationRepository.appendLocal.persist",
 				"type": "() => void",
 				"required": false
 			},
@@ -78,12 +94,36 @@
 				"name": "TrackerOperationRepository.countOpsSince.onlyNode",
 				"type": "string",
 				"required": false
+			},
+			{
+				"name": "localTrackerOperation.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "localTrackerOperation.request",
+				"type": "TrackerLocalOperation",
+				"required": true
+			},
+			{
+				"name": "localTrackerOperation.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "operationActor.actor",
+				"type": "string | null | undefined",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "TrackerOperationRepository.applyOps",
 				"type": "TrackerAppliedOperations"
+			},
+			{
+				"name": "TrackerOperationRepository.appendLocal",
+				"type": "TrackerOperation"
 			},
 			{
 				"name": "TrackerOperationRepository.maxSeq",
@@ -96,6 +136,14 @@
 			{
 				"name": "TrackerOperationRepository.countOpsSince",
 				"type": "number"
+			},
+			{
+				"name": "localTrackerOperation",
+				"type": "TrackerOperation"
+			},
+			{
+				"name": "operationActor",
+				"type": "string | null"
 			}
 		],
 		"errors": [
@@ -124,6 +172,29 @@
 					{
 						"name": "TrackerOperationRepository.applyOps",
 						"type": "TrackerAppliedOperations"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerOperationRepository.appendLocal",
+				"inputs": [
+					{
+						"name": "TrackerOperationRepository.appendLocal.request",
+						"type": "TrackerLocalOperation",
+						"required": true
+					},
+					{
+						"name": "TrackerOperationRepository.appendLocal.persist",
+						"type": "() => void",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOperationRepository.appendLocal",
+						"type": "TrackerOperation"
 					}
 				],
 				"errors": [],
@@ -192,6 +263,57 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "localTrackerOperation",
+				"inputs": [
+					{
+						"name": "localTrackerOperation.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "localTrackerOperation.request",
+						"type": "TrackerLocalOperation",
+						"required": true
+					},
+					{
+						"name": "localTrackerOperation.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "localTrackerOperation",
+						"type": "TrackerOperation"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "operationActor",
+				"inputs": [
+					{
+						"name": "operationActor.actor",
+						"type": "string | null | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "operationActor",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -223,6 +345,11 @@
 	"dependencies": [
 		{
 			"unit": "adapter.projects-sessions-tracker-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-next-tracker-clock",
 			"via": "import",
 			"origin": "derived"
 		},

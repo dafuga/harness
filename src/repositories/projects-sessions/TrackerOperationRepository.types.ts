@@ -23,3 +23,10 @@ export interface TrackerStoredOperation extends Omit<TrackerSequencedOperation, 
 export interface TrackerOperationFilter {
 	onlyNode?: string;
 }
+
+export interface TrackerLocalOperation {
+	node: string;
+	itemId: string;
+	fields: TrackerOperation['fields'];
+	actor?: string | null;
+}
