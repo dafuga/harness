@@ -195,3 +195,5 @@ export { nextTrackerClock } from './utils/projects-sessions/nextTrackerClock';
 export { TrackerPersistenceService } from './services/projects-sessions/TrackerPersistenceService';
 export { TrackerCutoverCommand } from './commands/projects-sessions/TrackerCutoverCommand';
 export { TrackerLocalApiService } from './services/projects-sessions/TrackerLocalApiService';
+export { TrackerRehearsalCommand } from './commands/projects-sessions/TrackerRehearsalCommand';
+export { TrackerRehearsalService } from './services/projects-sessions/TrackerRehearsalService';

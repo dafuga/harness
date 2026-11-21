@@ -1,11 +1,74 @@
 import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { spawn } from 'node:child_process';
+import { once } from 'node:events';
 import { join, resolve } from 'node:path';
+import { createInterface } from 'node:readline';
 import { DatabaseSync } from 'node:sqlite';
 import { expect, test } from 'vitest';
 import { runCommand, runHarness } from './support/cli';
 import { withTempDir } from './support/temporary';
 
 const root = resolve(import.meta.dirname, '..');
+
+test(
+	'Tracker rehearsal owns one loopback endpoint and persists across restart',
+	() =>
+		withTempDir('harness-tracker-rehearsal-', async (home) => {
+			const database = join(home, 'copy.sqlite');
+			await writeFile(database, '', { mode: 0o600 });
+			const args = ['tracker', 'rehearse', database, '--node', 'fixture-mac'];
+			const cli = join(root, 'src/index.ts');
+			const env = { HOME: home, HARNESS_TRACKER_LEGACY_BIN: '/dev/null/tracker' };
+			const candidate = spawn('bun', [cli, ...args], {
+				cwd: home,
+				env: { ...process.env, ...env },
+				stdio: ['ignore', 'pipe', 'pipe']
+			});
+			const output = createInterface({ input: candidate.stdout });
+			const exited = once(candidate, 'exit');
+			try {
+				const [line] = await Promise.race([
+					once(output, 'line'),
+					exited.then(([code]) => {
+						throw new Error(`Tracker rehearsal exited before readiness (${code})`);
+					})
+				]);
+				const ready = JSON.parse(line);
+				expect(ready).toMatchObject({ node: 'fixture-mac', pid: candidate.pid });
+				const base = `http://127.0.0.1:${ready.port}`;
+				expect(await (await fetch(base + '/health')).json()).toMatchObject({
+					app: 'tracker',
+					pid: candidate.pid,
+					node: 'fixture-mac'
+				});
+				const duplicate = await runHarness(
+					[...args, '--port', String(ready.port)],
+					home,
+					false,
+					env
+				);
+				expect(duplicate.exitCode).toBe(1);
+				const response = await fetch(base + '/items', {
+					method: 'POST',
+					body: JSON.stringify({ title: 'Rehearsal journal canary' })
+				});
+				expect(response.status).toBe(201);
+			} finally {
+				output.close();
+				candidate.kill('SIGTERM');
+				await exited;
+			}
+			const stopped = new DatabaseSync(database, { readOnly: true });
+			try {
+				expect(stopped.prepare('SELECT title FROM items').all()).toEqual([
+					{ title: 'Rehearsal journal canary' }
+				]);
+			} finally {
+				stopped.close();
+			}
+		}),
+	30_000
+);
 
 test('JSON larger than a pipe buffer reaches a piped reader whole', async () => {
 	const graph = await runHarness(['units', 'graph', '--json'], root);
