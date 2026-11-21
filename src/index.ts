@@ -188,3 +188,8 @@ export { staleBuild } from './utils/development-tooling/staleBuild';
 export { scenarioHealth } from './utils/verification-evidence/scenarioHealth';
 export { TaskOrchestrationCommand } from './commands/agents-providers/TaskOrchestrationCommand';
 export { ProviderSessionAdapter } from './adapters/agents-providers/ProviderSessionAdapter';
+export { classifyResourceHost } from './services/execution-runtimes/resource-placement/classifyResourceHost';
+export { scoreResourceHost } from './services/execution-runtimes/resource-placement/scoreResourceHost';
+export { rankResourcePlacement } from './services/execution-runtimes/resource-placement/rankResourcePlacement';
+export { admitResourceHost } from './services/execution-runtimes/resource-placement/admitResourceHost';
+export { chooseResourceHost } from './services/execution-runtimes/resource-placement/chooseResourceHost';
