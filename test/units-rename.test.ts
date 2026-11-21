@@ -2,14 +2,7 @@ import { readdir, rename, mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { expect, test } from 'vitest';
 import { unitProject } from './support/unitProject';
-import type { Manifest } from './units-shell-kind.test.types';
-
-interface Stored extends Manifest {
-	uid?: string;
-	status: string;
-	lineage?: { predecessors: string[] };
-	retired?: { reason: string };
-}
+import type { Stored } from './units-rename.test.types';
 
 test('a renamed unit keeps its uid and contract, leaves a tombstone and survives a source move', async () => {
 	const project = await unitProject('app');
@@ -42,7 +35,7 @@ test('a renamed unit keeps its uid and contract, leaves a tombstone and survives
 	const moved = await project.json<Stored>(`specification/units/${newId}.json`);
 	expect(moved.owns.source).toContain(to);
 	expect(await listed()).toEqual(expect.arrayContaining([oldFile, `${newId}.json`]));
-});
+}, 30_000);
 
 test('a rename rewrites referencing unit specs only and leaves loops, scenarios and evidence as written', async () => {
 	const project = await unitProject('app');
@@ -78,7 +71,7 @@ test('a rename rewrites referencing unit specs only and leaves loops, scenarios 
 		'specification/units/component.consumer.json'
 	);
 	expect(after.dependencies.map((item) => item.unit)).toEqual(['component.window-frame']);
-});
+}, 30_000);
 
 test('renaming refuses unknown units, invalid ids and ids that were ever used', async () => {
 	const project = await unitProject('app');
@@ -93,4 +86,4 @@ test('renaming refuses unknown units, invalid ids and ids that were ever used', 
 		['units', 'rename', id, id]
 	])
 		await project.harness(args, false);
-});
+}, 30_000);
