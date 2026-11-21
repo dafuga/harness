@@ -19,6 +19,7 @@
 			"TrackerPersistenceService.countLocalOpsSince",
 			"TrackerPersistenceService.applyOps",
 			"TrackerPersistenceService.appendLocal",
+			"TrackerPersistenceService.commitLocal",
 			"TrackerPersistenceService.subscribe"
 		]
 	},
@@ -87,6 +88,11 @@
 				"required": false
 			},
 			{
+				"name": "TrackerPersistenceService.commitLocal.decide",
+				"type": "() => TrackerLocalCommit<T>",
+				"required": true
+			},
+			{
 				"name": "TrackerPersistenceService.subscribe.listener",
 				"type": "() => void",
 				"required": true
@@ -120,6 +126,10 @@
 			{
 				"name": "TrackerPersistenceService.appendLocal",
 				"type": "TrackerOperation"
+			},
+			{
+				"name": "TrackerPersistenceService.commitLocal",
+				"type": "T"
 			},
 			{
 				"name": "TrackerPersistenceService.subscribe",
@@ -264,6 +274,24 @@
 					{
 						"name": "TrackerPersistenceService.appendLocal",
 						"type": "TrackerOperation"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerPersistenceService.commitLocal",
+				"inputs": [
+					{
+						"name": "TrackerPersistenceService.commitLocal.decide",
+						"type": "() => TrackerLocalCommit<T>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerPersistenceService.commitLocal",
+						"type": "T"
 					}
 				],
 				"errors": [],

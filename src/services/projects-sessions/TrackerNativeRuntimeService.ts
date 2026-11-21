@@ -14,6 +14,8 @@ import { TrackerNotificationService } from './TrackerNotificationService';
 import { TrackerPersistenceService } from './TrackerPersistenceService';
 import { TrackerSpokeLoopService } from './TrackerSpokeLoopService';
 
+export { TrackerLocalApiService, TrackerNotificationService, TrackerPersistenceService };
+
 /** Composes the Tracker node's API, delivery and link workers over one SQLite journal. */
 export class TrackerNativeRuntimeService {
 	readonly role: 'hub' | 'spoke';

@@ -175,9 +175,7 @@
 			"TrackerOperationRepository",
 			"TrackerSchemaAdapter",
 			"nextTrackerClock",
-			"TrackerPersistenceService",
 			"TrackerCutoverCommand",
-			"TrackerLocalApiService",
 			"classifyResourceHost",
 			"scoreResourceHost",
 			"rankResourcePlacement",
@@ -194,10 +192,11 @@
 			"groupAttentionLines",
 			"clockMinutes",
 			"planDigestAlertTick",
-			"TrackerNotificationService",
 			"planGithubIssueIntake",
-			"TrackerNativeRuntimeService",
-			"TrackerAdapterLeaseAdapter"
+			"TrackerAdapterLeaseAdapter",
+			"TrackerDispatchRepository",
+			"TrackerDispatchSchedulerService",
+			"TrackerSupervisorService"
 		]
 	},
 	"contract": {
@@ -711,6 +710,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.projects-sessions-tracker-dispatch",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.projects-sessions-tracker-operation",
 			"via": "reexport",
 			"origin": "derived"
@@ -886,7 +890,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "service.projects-sessions-tracker-local-api",
+			"unit": "service.projects-sessions-tracker-dispatch-scheduler",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -896,17 +900,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "service.projects-sessions-tracker-notification",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.projects-sessions-tracker-persistence",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
 			"unit": "service.projects-sessions-tracker-spoke-loop",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-supervisor",
 			"via": "reexport",
 			"origin": "derived"
 		},

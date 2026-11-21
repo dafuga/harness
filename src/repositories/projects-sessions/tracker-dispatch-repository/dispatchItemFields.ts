@@ -51,7 +51,8 @@ function launchIntent(row: TrackerDispatchRow): TrackerLaunchIntent | null {
 	return {
 		token: row.auto,
 		source: row.launch_source === 'due' ? 'due' : 'manual',
-		target: row.launch_target ?? (row.computer === 'auto' ? null : row.computer),
+		target:
+			(row.launch_target ?? row.computer) === 'auto' ? null : (row.launch_target ?? row.computer),
 		...(row.launch_pick && { scheduledPick: JSON.parse(row.launch_pick) })
 	};
 }
@@ -62,9 +63,9 @@ function answeredBlock(
 	runs: readonly TrackerRunReceipt[]
 ): boolean {
 	const answer = clocks.answer ?? '';
-	if (!row.answered_at || !row.resolved || row.needs_daniel || answer <= (clocks.question ?? ''))
-		return false;
-	if (row.status === 'blocked') return answer > (clocks.status ?? '');
+	const status = clocks.status ?? '';
+	if (!hasRecentAnswer(row, answer, clocks.question ?? '')) return false;
+	if (row.status === 'blocked') return answer > status;
 	if (
 		row.status !== 'in_progress' ||
 		(row.blocked_reason && answer <= (clocks.blocked_reason ?? ''))
@@ -74,10 +75,20 @@ function answeredBlock(
 		0,
 		...runs.filter((run) => run.outcome === 'blocked').map((run) => run.ended_at ?? 0)
 	);
-	return (
-		Math.max(trackerClockMilliseconds(answer), trackerClockMilliseconds(clocks.status ?? '')) >=
-		ended
-	);
+	return Math.max(trackerClockMilliseconds(answer), trackerClockMilliseconds(status)) >= ended;
+}
+
+function hasRecentAnswer(row: TrackerDispatchRow, answer: string, question: string): boolean {
+	return Boolean(row.answered_at && row.resolved && !row.needs_daniel && answer > question);
+}
+
+function launchJournalFields(intent: TrackerLaunchIntent | null) {
+	return {
+		auto: intent?.token ?? null,
+		launch_target: intent?.target ?? null,
+		launch_source: intent?.source ?? null,
+		launch_pick: intent?.scheduledPick ? JSON.stringify(intent.scheduledPick) : null
+	};
 }
 
 export function dispatchJournalFields(item: NonNullable<TrackerDispatchWrites['item']>) {
@@ -85,14 +96,7 @@ export function dispatchJournalFields(item: NonNullable<TrackerDispatchWrites['i
 	for (const key of ['computer', 'project', 'repo', 'model', 'sensitive', 'status'] as const) {
 		if (item[key] !== undefined) fields[key] = item[key];
 	}
-	if (item.launch !== undefined) {
-		fields.auto = item.launch?.token ?? null;
-		fields.launch_target = item.launch?.target ?? null;
-		fields.launch_source = item.launch?.source ?? null;
-		fields.launch_pick = item.launch?.scheduledPick
-			? JSON.stringify(item.launch.scheduledPick)
-			: null;
-	}
+	if (item.launch !== undefined) Object.assign(fields, launchJournalFields(item.launch));
 	if (item.blockedReason !== undefined) fields.blocked_reason = item.blockedReason;
 	if (item.awaitingAnswer !== undefined) fields.needs_daniel = item.awaitingAnswer;
 	if (item.answeredCurrentBlock === false) fields.resolved = false;

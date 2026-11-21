@@ -18,6 +18,7 @@
 			"TrackerOperationRepository.constructor",
 			"TrackerOperationRepository.applyOps",
 			"TrackerOperationRepository.appendLocal",
+			"TrackerOperationRepository.commitLocal",
 			"TrackerOperationRepository.maxSeq",
 			"TrackerOperationRepository.opsSince",
 			"TrackerOperationRepository.countOpsSince",
@@ -32,6 +33,7 @@
 			"TrackerStoredOperation",
 			"TrackerOperationFilter",
 			"TrackerLocalOperation",
+			"TrackerLocalCommit",
 			"localTrackerOperation",
 			"operationActor"
 		]
@@ -68,6 +70,16 @@
 				"name": "TrackerOperationRepository.appendLocal.persist",
 				"type": "() => void",
 				"required": false
+			},
+			{
+				"name": "TrackerOperationRepository.commitLocal.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerOperationRepository.commitLocal.decide",
+				"type": "() => TrackerLocalCommit<T>",
+				"required": true
 			},
 			{
 				"name": "TrackerOperationRepository.opsSince.seq",
@@ -125,6 +137,10 @@
 			{
 				"name": "TrackerOperationRepository.appendLocal",
 				"type": "TrackerOperation"
+			},
+			{
+				"name": "TrackerOperationRepository.commitLocal",
+				"type": "unknown"
 			},
 			{
 				"name": "TrackerOperationRepository.maxSeq",
@@ -196,6 +212,29 @@
 					{
 						"name": "TrackerOperationRepository.appendLocal",
 						"type": "TrackerOperation"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerOperationRepository.commitLocal",
+				"inputs": [
+					{
+						"name": "TrackerOperationRepository.commitLocal.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerOperationRepository.commitLocal.decide",
+						"type": "() => TrackerLocalCommit<T>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOperationRepository.commitLocal",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

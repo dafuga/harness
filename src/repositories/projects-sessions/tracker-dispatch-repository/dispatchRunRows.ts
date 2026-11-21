@@ -98,7 +98,7 @@ export function persistDispatchRun(
 	node: string
 ): void {
 	if (run.node !== node || run.revision < 0)
-		throw new Error('Cannot write an unowned Tracker attempt');
+		throw new DOMException('Cannot write an unowned Tracker attempt', 'InvalidStateError');
 	const previous = localRows(store.database, 'WHERE r.id = ?', run.id)[0];
 	if (previous) assertRunVersion(previous, run, node);
 	const command = previous
@@ -129,7 +129,7 @@ function assertRunVersion(
 		run.auto_token !== version.auto_token ||
 		run.attempt !== version.attempt
 	) {
-		throw new Error('Tracker attempt version changed');
+		throw new DOMException('Tracker attempt version changed', 'InvalidStateError');
 	}
 }
 

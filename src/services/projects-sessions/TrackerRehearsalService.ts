@@ -11,7 +11,8 @@ const host = '127.0.0.1';
 export class TrackerRehearsalService {
 	async start(databasePath: string, node: string, port: number) {
 		const release = tryAcquireTrackerSqliteLease(databasePath + '.supervisor-lock.sqlite');
-		if (!release) throw new Error('Tracker rehearsal database is already owned');
+		if (!release)
+			throw new DOMException('Tracker rehearsal database is already owned', 'InvalidStateError');
 		const controller = new AbortController();
 		const health = rehearsalHealth(node);
 		let database: SqliteDatabase | undefined;
