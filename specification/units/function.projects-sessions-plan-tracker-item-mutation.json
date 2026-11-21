@@ -8,40 +8,170 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/projects-sessions/planTrackerItemMutation.ts"],
-		"symbols": ["planTrackerItemMutation"]
+		"source": [
+			"src/utils/projects-sessions/planTrackerItemMutation.ts",
+			"src/utils/projects-sessions/planTrackerItemMutation.types.ts",
+			"src/utils/projects-sessions/trackerItemInput.ts",
+			"src/utils/projects-sessions/trackerItemTransitions.ts"
+		],
+		"symbols": [
+			"TrackerItemMutation",
+			"TrackerItemMutationContext",
+			"TrackerItemMutationPlan",
+			"TrackerItemSnapshot",
+			"planTrackerItemMutation",
+			"TrackerItemSnapshot",
+			"TrackerItemAction",
+			"TrackerItemMutation",
+			"TrackerItemMutationContext",
+			"TrackerItemMutationPlan",
+			"TrackerItemChange",
+			"TrackerItemTransition",
+			"TrackerDuplicateProbe",
+			"trackerItemInput",
+			"guardTrackerDuplicate",
+			"trackerItemTransitions"
+		]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "planTrackerItemMutation.value",
-				"type": "string",
+				"name": "planTrackerItemMutation.request",
+				"type": "TrackerItemMutation<Receipt>",
+				"required": true
+			},
+			{
+				"name": "planTrackerItemMutation.context",
+				"type": "TrackerItemMutationContext",
+				"required": true
+			},
+			{
+				"name": "trackerItemInput.body",
+				"type": "TrackerItemInput",
+				"required": true
+			},
+			{
+				"name": "trackerItemInput.context",
+				"type": "TrackerItemMutationContext",
+				"required": true
+			},
+			{
+				"name": "trackerItemInput.current",
+				"type": "TrackerItemSnapshot",
+				"required": false
+			},
+			{
+				"name": "guardTrackerDuplicate.context",
+				"type": "TrackerItemMutationContext",
+				"required": true
+			},
+			{
+				"name": "guardTrackerDuplicate.probe",
+				"type": "TrackerDuplicateProbe",
 				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "planTrackerItemMutation",
-				"type": "string"
+				"type": "TrackerItemMutationPlan<Receipt>"
+			},
+			{
+				"name": "trackerItemInput",
+				"type": "TrackerItemInput"
+			},
+			{
+				"name": "guardTrackerDuplicate",
+				"type": "void"
+			},
+			{
+				"name": "trackerItemTransitions",
+				"type": "Record< Exclude<TrackerItemAction, 'update'>, TrackerItemTransition >"
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
 		"errorStatus": "unknown",
 		"operations": [
 			{
 				"name": "planTrackerItemMutation",
 				"inputs": [
 					{
-						"name": "planTrackerItemMutation.value",
-						"type": "string",
+						"name": "planTrackerItemMutation.request",
+						"type": "TrackerItemMutation<Receipt>",
+						"required": true
+					},
+					{
+						"name": "planTrackerItemMutation.context",
+						"type": "TrackerItemMutationContext",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
 						"name": "planTrackerItemMutation",
-						"type": "string"
+						"type": "TrackerItemMutationPlan<Receipt>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerItemInput",
+				"inputs": [
+					{
+						"name": "trackerItemInput.body",
+						"type": "TrackerItemInput",
+						"required": true
+					},
+					{
+						"name": "trackerItemInput.context",
+						"type": "TrackerItemMutationContext",
+						"required": true
+					},
+					{
+						"name": "trackerItemInput.current",
+						"type": "TrackerItemSnapshot",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerItemInput",
+						"type": "TrackerItemInput"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "guardTrackerDuplicate",
+				"inputs": [
+					{
+						"name": "guardTrackerDuplicate.context",
+						"type": "TrackerItemMutationContext",
+						"required": true
+					},
+					{
+						"name": "guardTrackerDuplicate.probe",
+						"type": "TrackerDuplicateProbe",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "guardTrackerDuplicate",
+						"type": "void"
 					}
 				],
 				"errors": [],
@@ -50,7 +180,18 @@
 		],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-normalize-tracker-item-fields",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/utils/projects-sessions/planTrackerItemMutation.ts",

@@ -8,22 +8,66 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/projects-sessions/checkTrackerItem.ts"],
-		"symbols": ["checkTrackerItem"]
+		"source": [
+			"src/utils/projects-sessions/checkTrackerItem.ts",
+			"src/utils/projects-sessions/checkTrackerItem.types.ts",
+			"src/utils/projects-sessions/trackerItemError.ts"
+		],
+		"symbols": [
+			"checkTrackerItem",
+			"TrackerMatchRow",
+			"TrackerMatchOptions",
+			"TrackerItemMatch",
+			"TrackerItemMatches",
+			"TrackerDuplicateDetails",
+			"TrackerCandidateRow",
+			"trackerItemError"
+		]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "checkTrackerItem.value",
+				"name": "checkTrackerItem.rows",
+				"type": "readonly TrackerMatchRow[]",
+				"required": true
+			},
+			{
+				"name": "checkTrackerItem.text",
+				"type": "string | null | undefined",
+				"required": true
+			},
+			{
+				"name": "checkTrackerItem.options",
+				"type": "TrackerMatchOptions",
+				"required": false,
+				"default": {}
+			},
+			{
+				"name": "trackerItemError.message",
 				"type": "string",
 				"required": true
+			},
+			{
+				"name": "trackerItemError.status",
+				"type": "number",
+				"required": false,
+				"default": 400
+			},
+			{
+				"name": "trackerItemError.body",
+				"type": "TrackerDuplicateDetails",
+				"required": false
 			}
 		],
 		"outputs": [
 			{
 				"name": "checkTrackerItem",
-				"type": "string"
+				"type": "TrackerItemMatches"
+			},
+			{
+				"name": "trackerItemError",
+				"type": "unknown"
 			}
 		],
 		"errors": [],
@@ -33,15 +77,55 @@
 				"name": "checkTrackerItem",
 				"inputs": [
 					{
-						"name": "checkTrackerItem.value",
-						"type": "string",
+						"name": "checkTrackerItem.rows",
+						"type": "readonly TrackerMatchRow[]",
 						"required": true
+					},
+					{
+						"name": "checkTrackerItem.text",
+						"type": "string | null | undefined",
+						"required": true
+					},
+					{
+						"name": "checkTrackerItem.options",
+						"type": "TrackerMatchOptions",
+						"required": false,
+						"default": {}
 					}
 				],
 				"outputs": [
 					{
 						"name": "checkTrackerItem",
-						"type": "string"
+						"type": "TrackerItemMatches"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerItemError",
+				"inputs": [
+					{
+						"name": "trackerItemError.message",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerItemError.status",
+						"type": "number",
+						"required": false,
+						"default": 400
+					},
+					{
+						"name": "trackerItemError.body",
+						"type": "TrackerDuplicateDetails",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerItemError",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
