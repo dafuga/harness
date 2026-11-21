@@ -6,14 +6,13 @@ import { afterEach, test, vi } from 'vitest';
 import type { PreparedBenchmark } from '../../src/cli/program/benchmark-service/benchmarkDefinition';
 import { BenchmarkDefinitionValidator } from '../../src/cli/program/benchmark-service/benchmark-definition/BenchmarkDefinitionValidator';
 import { BenchmarkService } from '../../src/cli/program/benchmark-service/BenchmarkService';
-import type {
-	BenchmarkRun,
-	BenchmarkTrial
-} from '../../src/core/agents-providers/subagentBenchmarkTypes';
+import type { BenchmarkRun } from '../../src/core/agents-providers/subagentBenchmarkTypes';
 import { ExpectedCliError } from '../../src/core/development-tooling/errors';
 import { BenchmarkRepository } from '../../src/repositories/agents-providers/BenchmarkRepository';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
+import type { Rendered } from './service.benchmark.test.types';
+import { failedTrial, passedTrial } from './service.benchmark.fixtures';
 
 /** Each state calls BenchmarkService.execute once; what it was given and what it returned are recorded. */
 const unitId = 'service.benchmark';
@@ -30,38 +29,6 @@ const definitionSource = {
 	checks: [{ id: 'contract', command: 'bun check.ts' }],
 	candidates: [{ id: 'agent', runner: 'codex', model: 'explicit-model', effort: 'medium' }],
 	budget: { repetitions: 2, timeoutMs: 10000, repairs: 2 }
-};
-type Rendered = { run: BenchmarkRun; comparison: Array<Record<string, unknown>> };
-const passedTrial: BenchmarkTrial = {
-	id: 'trial-1',
-	candidate: 'agent',
-	repetition: 1,
-	status: 'passed',
-	firstSubmissionPassed: true,
-	submissions: [],
-	turns: [
-		{
-			session: 'session-1',
-			usage: { inputTokens: 10, outputTokens: 2, cacheReadTokens: 4, reportedCostUsd: 0.01 }
-		}
-	],
-	agentDurationMs: 1100,
-	evaluationDurationMs: 300,
-	durationMs: 1400,
-	repairs: 0
-};
-const failedTrial: BenchmarkTrial = {
-	id: 'trial-2',
-	candidate: 'agent',
-	repetition: 2,
-	status: 'failed',
-	firstSubmissionPassed: false,
-	submissions: [],
-	turns: [{ session: 'session-2', usage: { inputTokens: 12, outputTokens: 3 } }],
-	agentDurationMs: 1300,
-	evaluationDurationMs: 250,
-	durationMs: 1550,
-	repairs: 0
 };
 const owned: string[] = [];
 

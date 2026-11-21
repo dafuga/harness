@@ -1,3 +1,14 @@
+import {
+	readme,
+	onlyInCode,
+	boundaries,
+	pathNotes,
+	guide,
+	prose,
+	resolvingProject,
+	brokenProject,
+	missingProject
+} from './script.check-doc-links.fixtures';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -18,75 +29,6 @@ import { expect } from '../verificationExpect';
  * given and what it returned is asserted and recorded as the cases of its state. brokenDocLinks
  * reads a temporary project folder, which is removed after each call.
  */
-
-const doc = (...lines: string[]) => lines.join('\n');
-const readme = doc(
-	'# Demo',
-	'',
-	'See [the guide](docs/guide.md#setup-steps) and [home](#demo).',
-	'Inline `[not a link](nowhere.md)` stays as written.',
-	'```md',
-	'[fenced](fenced.md)',
-	'```',
-	'Read [the boundaries](ARCHITECTURE-BOUNDARIES.md "Owners") or [the site](https://example.com).'
-);
-const onlyInCode = doc('Run `[x](y.md)` here:', '```md', '[z](w.md)', '```');
-const boundaries = doc(
-	'# Architecture Boundaries',
-	'',
-	'| Owner | File |',
-	'| --- | --- |',
-	'| Files | `src/core/files.ts` and `scripts/check-doc-links.ts` |',
-	'| Notes | docs/plain.md and `README.md` are not repository paths |'
-);
-const pathNotes = doc(
-	'Run the check on `packages/reports/src/index.ts` and `test/examples/x.test.ts`.',
-	'`src/no-extension` is not a file path.',
-	'```ts',
-	'`src/inside/fence.ts`',
-	'```'
-);
-const guide = doc(
-	'# Setup',
-	'## Setup',
-	'## Setup ##',
-	'### Run `files` & check: Café!',
-	'#hashtag is not a heading',
-	'```md',
-	'# Inside a fence',
-	'```'
-);
-const prose = doc('Just prose with a `# not a heading` code span.', '```', '# fenced', '```');
-const resolvingProject = {
-	'README.md': doc(
-		'# Demo',
-		'See [the guide](docs/guide.md#setup-steps) and [the boundaries](ARCHITECTURE-BOUNDARIES.md#owners).',
-		'Back to [home](#demo). The [site](https://example.com) is never fetched.'
-	),
-	'docs/guide.md': doc('# Guide', '## Setup steps', 'Back to [the readme](../README.md#demo).'),
-	'ARCHITECTURE-BOUNDARIES.md': doc('# Boundaries', '## Owners', 'See `src/core/files.ts`.'),
-	'src/core/files.ts': 'export {};'
-};
-const brokenProject = {
-	'README.md': doc(
-		'# Demo',
-		'Read [the missing page](docs/missing.md) and [the guide](docs/guide.md#no-such-heading).',
-		'Outside the repository: [secret](../secret.md). External: [site](https://example.com).'
-	),
-	'docs/guide.md': doc(
-		'# Guide',
-		'## Setup steps',
-		'Back to [the readme](../README.md#missing-anchor).'
-	),
-	'ARCHITECTURE-BOUNDARIES.md': doc(
-		'# Boundaries',
-		'Owners: `src/core/files.ts` and `src/missing/owner.ts`.'
-	),
-	'src/core/files.ts': 'export {};'
-};
-const missingProject = {
-	'README.md': doc('# Demo', 'Owners are in [the boundaries](ARCHITECTURE-BOUNDARIES.md).')
-};
 
 /** brokenDocLinks as the script calls it, reading the files of a temporary project folder. */
 function checkProject(name: string, files: Record<string, string>) {
