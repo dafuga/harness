@@ -39,7 +39,7 @@ test('Harbor inspection forwards fixed argv without provider or signing credenti
 		`
 		console.log(JSON.stringify({
 			args: process.argv.slice(2),
-			safe: !process.env.OPENAI_API_KEY && !process.env.HARBOR_PRIVATE_KEY && !process.env.NODE_OPTIONS
+			safe: !process.env.OPENAI_API_KEY && !process.env.HARBOR_PRIVATE_KEY && !process.env.NODE_OPTIONS && !process.env.BUN_OPTIONS
 		}));`
 	);
 	vi.stubEnv('HARNESS_HARBOR_CLI_PATH', entry);
@@ -48,73 +48,9 @@ test('Harbor inspection forwards fixed argv without provider or signing credenti
 	vi.stubEnv('OPENAI_API_KEY', 'synthetic-provider-key');
 	vi.stubEnv('HARBOR_PRIVATE_KEY', 'synthetic-harbor-key');
 	vi.stubEnv('NODE_OPTIONS', '--require /fixture/not-imported.cjs');
-	const rpc = 'http://127.0.0.1:18900';
-	const config = join(root, 'operator config.json');
+	vi.stubEnv('BUN_OPTIONS', '--preload /fixture/not-imported.ts');
 	try {
-		const commands = [
-			{ name: 'version', input: ['version'], expected: ['--version'] },
-			{
-				name: 'chain-info',
-				input: ['chain', 'info', '--url', rpc],
-				expected: ['chain', 'info', '--json', '--url', rpc]
-			},
-			{
-				name: 'agent-status',
-				input: ['agent', 'status', '--config', config],
-				expected: ['agent', 'status', '--config', config]
-			},
-			{
-				name: 'publish-review',
-				input: [
-					'publish',
-					root,
-					'--commit',
-					'a'.repeat(40),
-					'--artifact',
-					'out/app.harborapp',
-					'--profile',
-					config
-				],
-				expected: [
-					'publish',
-					root,
-					'--commit',
-					'a'.repeat(40),
-					'--artifact',
-					'out/app.harborapp',
-					'--profile',
-					config
-				]
-			},
-			{
-				name: 'publish-approved',
-				input: [
-					'publish',
-					root,
-					'--commit',
-					'a'.repeat(40),
-					'--artifact',
-					'out/app.harborapp',
-					'--profile',
-					config,
-					'--approve',
-					'b'.repeat(64)
-				],
-				expected: [
-					'publish',
-					root,
-					'--commit',
-					'a'.repeat(40),
-					'--artifact',
-					'out/app.harborapp',
-					'--profile',
-					config,
-					'--approve',
-					'b'.repeat(64)
-				]
-			}
-		];
-		for (const { name, input, expected } of commands) {
+		for (const { name, input, expected } of harborDispatchCases(root)) {
 			const args = ['harbor', ...input];
 			const cli = await loadCliProgram(args);
 			expect(cli.commands.some((command) => command.name() === 'harbor')).toBe(true);
@@ -132,3 +68,34 @@ test('Harbor inspection forwards fixed argv without provider or signing credenti
 		await rm(root, { recursive: true, force: true });
 	}
 });
+
+function harborDispatchCases(root: string) {
+	const rpc = 'http://127.0.0.1:18900';
+	const config = join(root, 'operator config.json');
+	const review = [
+		'publish',
+		root,
+		'--commit',
+		'a'.repeat(40),
+		'--artifact',
+		'out/app.harborapp',
+		'--profile',
+		config
+	];
+	const approved = [...review, '--approve', 'b'.repeat(64)];
+	return [
+		{ name: 'version', input: ['version'], expected: ['--version'] },
+		{
+			name: 'chain-info',
+			input: ['chain', 'info', '--url', rpc],
+			expected: ['chain', 'info', '--json', '--url', rpc]
+		},
+		{
+			name: 'agent-status',
+			input: ['agent', 'status', '--config', config],
+			expected: ['agent', 'status', '--config', config]
+		},
+		{ name: 'publish-review', input: review, expected: review },
+		{ name: 'publish-approved', input: approved, expected: approved }
+	];
+}

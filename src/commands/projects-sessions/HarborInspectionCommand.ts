@@ -6,6 +6,8 @@ import type { Command } from 'commander';
 import { ExpectedCliError } from '../../core/development-tooling/errors';
 
 const execute = promisify(execFile);
+type Execution = ReturnType<typeof execute>;
+const CANCEL_GRACE_MS = 35_000;
 const RUNTIME_ENV = [
 	'PATH',
 	'HOME',
@@ -28,6 +30,11 @@ export class HarborInspectionCommand {
 		const harbor = program
 			.command('harbor')
 			.description('Use Harbor capabilities from its installed CLI and SDK.');
+		this.registerInspection(harbor);
+		this.registerPublish(harbor);
+	}
+
+	private registerInspection(harbor: Command): void {
 		harbor
 			.command('version')
 			.description('Show the installed Harbor CLI version.')
@@ -51,6 +58,9 @@ export class HarborInspectionCommand {
 			.action((options: { config?: string }) =>
 				this.run(['agent', 'status', ...(options.config ? ['--config', options.config] : [])])
 			);
+	}
+
+	private registerPublish(harbor: Command): void {
 		harbor
 			.command('publish <project>')
 			.description(
@@ -61,51 +71,25 @@ export class HarborInspectionCommand {
 			.requiredOption('--profile <file>', 'Trusted local Harbor testnet profile.')
 			.option('--approve <digest>', 'Approval digest from the matching review.')
 			.action((project: string, options: PublishOptions) =>
-				this.run(
-					[
-						'publish',
-						project,
-						'--commit',
-						options.commit,
-						'--artifact',
-						options.artifact,
-						'--profile',
-						options.profile,
-						...(options.approve === undefined ? [] : ['--approve', options.approve])
-					],
-					true
-				)
+				this.run(publishArgs(project, options), true)
 			);
 	}
 
 	private async run(args: string[], publish = false): Promise<void> {
-		const entryVariable = publish ? 'HARNESS_HARBOR_APP_SDK_PATH' : 'HARNESS_HARBOR_CLI_PATH';
-		const entry = process.env[entryVariable];
-		if (!entry || !isAbsolute(entry) || !['.js', '.cjs', '.mjs'].includes(extname(entry))) {
-			throw new ExpectedCliError(`Set ${entryVariable} to the installed Harbor package entry.`);
-		}
-		const node = process.env.HARNESS_HARBOR_NODE_PATH || Bun.which('node');
-		if (!node || !isAbsolute(node) || /\.(?:bat|cmd)$/i.test(node)) {
-			throw new ExpectedCliError('Set HARNESS_HARBOR_NODE_PATH to an absolute Node executable.');
-		}
-		const env = Object.fromEntries(RUNTIME_ENV.map((key) => [key, process.env[key]]));
-		if (publish) {
-			env.HARNESS_CLI_PATH = resolve(process.argv[1]);
-			env.HARNESS_HARBOR_CLI_PATH = process.env.HARNESS_HARBOR_CLI_PATH;
-			env.HARNESS_HARBOR_NODE_PATH = node;
-		}
+		const entry = installedEntry(publish);
+		const node = nodeExecutable();
 		try {
 			const child = execute(node, [entry, ...args], {
-				env,
+				env: runtimeEnv(publish, node),
 				windowsHide: true,
 				timeout: publish ? 780_000 : 3000,
 				killSignal: publish ? 'SIGTERM' : 'SIGKILL',
 				maxBuffer: 1024 * 1024
 			});
 			const result = await (publish ? waitForPublication(child) : child);
-			console.log(result.stdout.replace(/\r?\n$/, ''));
+			console.log(String(result.stdout).replace(/\r?\n$/, ''));
 		} catch (error) {
-			const code = (error as NodeJS.ErrnoException).code;
+			const code = (error as { code?: unknown }).code;
 			if (typeof code === 'number') {
 				console.error(
 					publish
@@ -124,20 +108,76 @@ export class HarborInspectionCommand {
 	}
 }
 
-async function waitForPublication(child: ReturnType<typeof execute>) {
-	const cancel = () => child.child.kill('SIGTERM');
-	process.on('SIGINT', cancel);
-	process.on('SIGTERM', cancel);
+function publishArgs(project: string, options: PublishOptions): string[] {
+	return [
+		'publish',
+		project,
+		'--commit',
+		options.commit,
+		'--artifact',
+		options.artifact,
+		'--profile',
+		options.profile,
+		...(options.approve === undefined ? [] : ['--approve', options.approve])
+	];
+}
+
+function installedEntry(publish: boolean): string {
+	const variable = publish ? 'HARNESS_HARBOR_APP_SDK_PATH' : 'HARNESS_HARBOR_CLI_PATH';
+	const entry = process.env[variable];
+	if (!entry || !isAbsolute(entry) || !['.js', '.cjs', '.mjs'].includes(extname(entry))) {
+		throw new ExpectedCliError(`Set ${variable} to the installed Harbor package entry.`);
+	}
+	return entry;
+}
+
+function nodeExecutable(): string {
+	const node = unsetIfEmpty(process.env.HARNESS_HARBOR_NODE_PATH) ?? Bun.which('node');
+	if (!node || !isAbsolute(node) || /\.(?:bat|cmd)$/i.test(node)) {
+		throw new ExpectedCliError('Set HARNESS_HARBOR_NODE_PATH to an absolute Node executable.');
+	}
+	return node;
+}
+
+function runtimeEnv(publish: boolean, node: string): Record<string, string | undefined> {
+	const env: Record<string, string | undefined> = Object.fromEntries(
+		RUNTIME_ENV.map((key) => [key, process.env[key]])
+	);
+	if (!publish) return env;
+	return {
+		...env,
+		HARNESS_CLI_PATH: resolve(process.argv[1]),
+		HARNESS_HARBOR_CLI_PATH: process.env.HARNESS_HARBOR_CLI_PATH,
+		HARNESS_HARBOR_NODE_PATH: node
+	};
+}
+
+async function waitForPublication(child: Execution) {
+	let grace: ReturnType<typeof setTimeout> | undefined;
+	const cancel = (signal: 'SIGINT' | 'SIGTERM') => {
+		child.child.kill(signal);
+		grace ??= setTimeout(() => child.child.kill('SIGKILL'), CANCEL_GRACE_MS);
+	};
+	const onInterrupt = () => cancel('SIGINT');
+	const onTerminate = () => cancel('SIGTERM');
+	process.on('SIGINT', onInterrupt);
+	process.on('SIGTERM', onTerminate);
 	try {
 		return await child;
 	} finally {
-		process.off('SIGINT', cancel);
-		process.off('SIGTERM', cancel);
+		process.off('SIGINT', onInterrupt);
+		process.off('SIGTERM', onTerminate);
+		clearTimeout(grace);
 	}
 }
 
+// Empty values count as unset, matching the earlier `||` fallback.
+function unsetIfEmpty(value: string | undefined): string | undefined {
+	return value === '' ? undefined : value;
+}
+
 function rpcArgs(raw: string | undefined): string[] {
-	const value = raw || process.env.HARBOR_API_URL;
+	const value = unsetIfEmpty(raw) ?? unsetIfEmpty(process.env.HARBOR_API_URL);
 	if (!value) return [];
 	try {
 		const url = new URL(value);
