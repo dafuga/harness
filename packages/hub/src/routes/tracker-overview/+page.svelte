@@ -43,13 +43,9 @@
 	});
 </script>
 
+<!-- The harness-build slot lives in app.html; `verify stamp` writes the build identity there. -->
 <svelte:head>
 	<title>Harness · Project overview</title>
-	<!-- The build slot: `bun src/index.ts verify stamp` writes this page's build identity here. -->
-	<meta
-		name="harness-build"
-		content="harness-build:0000000000000000000000000000000000000000000000000000000000000000"
-	/>
 </svelte:head>
 <HubFrame>
 	{#if !session.actor}

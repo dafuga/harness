@@ -1,4 +1,4 @@
-// @harness-uid u_3kq7ov1ptb
+// @harness-uid u_yd5wcp6sz3
 import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
 
 /**
