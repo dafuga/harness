@@ -19,6 +19,11 @@
 			"builds": ["shell-fixture"]
 		},
 		{
+			"command": "bun run --cwd packages/hub build",
+			"timeoutMs": 600000,
+			"builds": ["hub"]
+		},
+		{
 			"command": "cd packages/reports && ENTITY_PREVIEW_HOME=output/entity-preview bun -e \"import setup from './test/entityPreviewSetup'; await setup()\"",
 			"timeoutMs": 300000,
 			"builds": ["entity-preview"]
@@ -320,6 +325,10 @@
 		{
 			"id": "reports",
 			"directory": "packages/reports/build"
+		},
+		{
+			"id": "hub",
+			"directory": "packages/hub/.svelte-kit"
 		},
 		{
 			"id": "planning",
