@@ -45,7 +45,7 @@ function nativeTrackerRequest(
 	words: string[],
 	values: Record<string, unknown>
 ): NativeTrackerRequest {
-	const item = itemQuery(command, words, values);
+	const item = itemQuery(command, words, values) ?? runReadRequest(command, words, values);
 	if (item) return item;
 	if (idVerbs.has(command)) return itemAction(command, words, values);
 	if (words.length) throw new TypeError(`usage: tracker ${command}`);
@@ -55,6 +55,27 @@ function nativeTrackerRequest(
 		method: 'GET',
 		path: path + (command === 'digest' && !values.json ? '?format=text' : '')
 	};
+}
+
+function runReadRequest(
+	command: string,
+	words: string[],
+	values: Record<string, unknown>
+): NativeTrackerRequest | undefined {
+	switch (command) {
+		case 'runs':
+			if (words.length) throw new TypeError('usage: tracker runs [--item ID] [--limit N]');
+			return { method: 'GET', path: '/runs' + query({ item: values.item, limit: values.limit }) };
+		case 'models':
+			if (words.length !== 1 || words[0] !== 'report')
+				throw new TypeError('usage: tracker models report');
+			return { method: 'GET', path: '/models/report' };
+		case 'pick':
+			if (words.length !== 1) throw new TypeError('usage: tracker pick <id>');
+			return { method: 'GET', path: '/items/' + encodeURIComponent(words[0]) + '/pick' };
+		default:
+			return undefined;
+	}
 }
 
 function itemQuery(
