@@ -1,3 +1,4 @@
+// @harness-uid u_earfvkmyr2
 export interface TrackerSnapshotFingerprint {
 	rowCount: number;
 	sha256: string;
