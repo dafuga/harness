@@ -175,7 +175,8 @@
 			"TrackerOperationRepository",
 			"TrackerSchemaAdapter",
 			"nextTrackerClock",
-			"TrackerPersistenceService"
+			"TrackerPersistenceService",
+			"TrackerCutoverCommand"
 		]
 	},
 	"contract": {
@@ -305,6 +306,11 @@
 		},
 		{
 			"unit": "command.projects-sessions-tracker",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-cutover",
 			"via": "reexport",
 			"origin": "derived"
 		},

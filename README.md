@@ -68,6 +68,19 @@ shim, retain a link to its versioned executable at
 reach the same service. The retained executable must point to the client
 release. Keep the previous CLI target available for rollback.
 
+Compare quiesced SQLite backup copies before changing a Tracker service.
+`--node` is the spoke's configured name. Add `--hub-relay-ops` when the spoke
+relays other nodes' operations to the hub and `--peer-relay-ops` when it uses a
+peer link.
+
+```bash
+harness tracker verify-cutover before.sqlite after.sqlite --node my-spoke
+```
+
+The command emits JSON with schema, table, and pending-operation fingerprints.
+It exits with 0 when the copies match, 1 when they differ, and 2 when a copy
+cannot be verified or the arguments are invalid.
+
 ## API access from the CLI
 
 `harness api` calls the same HTTP APIs as the app. It works from any directory;

@@ -193,3 +193,4 @@ export { TrackerOperationRepository } from './repositories/projects-sessions/Tra
 export { TrackerSchemaAdapter } from './adapters/projects-sessions/TrackerSchemaAdapter';
 export { nextTrackerClock } from './utils/projects-sessions/nextTrackerClock';
 export { TrackerPersistenceService } from './services/projects-sessions/TrackerPersistenceService';
+export { TrackerCutoverCommand } from './commands/projects-sessions/TrackerCutoverCommand';

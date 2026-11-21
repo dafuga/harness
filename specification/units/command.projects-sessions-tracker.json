@@ -77,7 +77,13 @@
 		],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "command.projects-sessions-tracker-cutover",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/commands/projects-sessions/TrackerCommand.ts",
