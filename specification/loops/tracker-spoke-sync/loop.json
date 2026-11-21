@@ -1,0 +1,45 @@
+{
+	"name": "tracker-spoke-sync",
+	"goal": "Prove durable Tracker spoke push and pull against pinned legacy wire behavior, including lost receipts, database identity replacement and isolated hub/peer cursors.",
+	"createdAt": "2026-11-21T15:10:13.450Z",
+	"updatedAt": "2026-11-21T15:22:42.995Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:10:49.123Z",
+			"evidence": "Pinned 122e190 wire handler and PR #140 signer. Declare push drain and retry, pull commit and retry, hub identity replay, stale response rejection, and independent hub/peer cursor states. All tests use in-memory synthetic state without listeners; vendor SQLite journal and scheduling stay with parent."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:22:39.959Z",
+			"evidence": "TrackerSpokeSyncService reuses the PR #140 signer, reads legacy metadata, and persists push and pull progress via the injected journal. Identity replacement atomically resets only the affected link. Delayed responses captured before the identity change cannot write cursors."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:22:42.995Z",
+			"evidence": "Harness retained the unchanged six-case red checkpoint bd8b8ea9e5 and green checkpoint a6910710a8, with all fixture files frozen. The pinned 122e190 legacy handler is exercised in memory on MB2, with no listener or database."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -1,0 +1,45 @@
+{
+	"name": "zrett1-tracker-item-transitions",
+	"goal": "Produce pure Tracker 122e190 item mutation fields, duplicate decisions and receipt intents from explicit inputs, item rows and a fixed clock.",
+	"createdAt": "2026-11-21T15:08:16.324Z",
+	"updatedAt": "2026-11-21T15:26:30.154Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:08:18.625Z",
+			"evidence": "Use the Tracker 122e190 HTTP routes and Store op fields as the oracle. Cover item and question lifecycles, recurring and ignore boundaries, input errors, duplicate ranking and outcomes, and atomic receipt handoff without using live state."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:26:28.376Z",
+			"evidence": "Registered three portable units. The planner consumes caller-supplied rows, time and launch/model policy, returns scalar journal fields plus an optional atomic receipt intent, and includes no persistence."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:26:30.154Z",
+			"evidence": "The 15 focused cases fail at f798fddb0e and pass with implementation. The HTTP and Store comparison on harbor-mbp-2 matched 25 writes, 21 errors, 5 checks and 11 normalization cases at Tracker 122e190. Parent journal 497061b290 applied the emitted op and receipt atomically and passed rollback and replay on an in-memory legacy schema."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
