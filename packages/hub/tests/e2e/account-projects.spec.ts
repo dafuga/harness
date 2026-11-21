@@ -1,10 +1,13 @@
 import type { Page, TestInfo } from '@playwright/test';
 import { expect as baseExpect, test } from '../../../../test/support/browserTest';
+import type { ScenarioManifest } from '../../../../src/core/unitTypes';
 import { buildStamp } from '../../../../src/utils/buildStamp';
 import {
 	evidenceRequested,
 	recordCapture
 } from '../../../../src/utils/reports-media/record-capture/recordCapture';
+import { pageWorkload } from '../../../desktop/tests/e2e/page-workload';
+import scenario from '../../../../specification/scenarios/project-overview-hub-projects.json' with { type: 'json' };
 import { ada, hostedFixture } from './hosted-fixture';
 import { grace, overviewFixture, refusal, viewports, open } from './tracker-overview-fixture';
 import type { Viewport } from './tracker-overview-fixture';
@@ -12,25 +15,21 @@ import type { Viewport } from './tracker-overview-fixture';
 const expect = baseExpect.configure({ timeout: 25_000 });
 test.setTimeout(90_000);
 
-/** The owner endpoint answers a signed-in account that is not the owner with 403, on purpose. */
 const forbidden = {
 	status: 403,
 	text: 'Forbidden',
 	reason: 'The owner endpoint refuses a signed-in account that is not the owner, on purpose.'
 };
 
-/** The owner endpoint answers 503 on purpose when no current snapshot exists; the link still shows. */
 const unavailable = {
 	status: 503,
 	text: 'Service Unavailable',
 	reason: 'The owner endpoint answers 503 on purpose when no current snapshot exists.'
 };
 
-/** The shared Project Overview renderer on /projects; present only for the owner. */
 const overviewRoot =
 	'[data-harness-component="projects-sessions-project-overview-project-overview"]';
 
-/** The synthetic unavailable notice the shared renderer shows for an owner whose read answered 503. */
 const unavailableNotice =
 	'The tracker could not be reached from this host, so no projects are shown.';
 
@@ -71,6 +70,8 @@ async function attachShot(
 		},
 		body
 	);
+	const workload = { state, name: 'account', viewport: viewport.id, buildId };
+	await pageWorkload(page, scenario as ScenarioManifest, workload);
 }
 
 test('the owner sees the Project overview link on /projects and it opens the overview', async ({

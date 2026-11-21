@@ -27,7 +27,7 @@
 			"id": "github-connected",
 			"title": "The verified GitHub callback result appears in the signed-in dashboard",
 			"coverage": "required",
-			"units": ["hub.controller.github-connection"]
+			"units": ["hub.page.projects", "hub.controller.github-connection"]
 		}
 	],
 	"viewports": [
@@ -74,6 +74,24 @@
 			"viewports": ["desktop"],
 			"provenance": "actual-capture",
 			"capture": "viewport",
+			"build": "hub",
+			"required": true
+		},
+		{
+			"id": "account-benchmarks",
+			"kind": "benchmark",
+			"states": ["owner", "non-owner", "signed-out"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"build": "hub",
+			"required": true
+		},
+		{
+			"id": "github-benchmark",
+			"kind": "benchmark",
+			"states": ["github-connected"],
+			"viewports": ["desktop"],
+			"provenance": "actual-capture",
 			"build": "hub",
 			"required": true
 		}
