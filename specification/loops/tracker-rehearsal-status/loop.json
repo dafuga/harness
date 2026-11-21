@@ -2,7 +2,7 @@
 	"name": "tracker-rehearsal-status",
 	"goal": "Report configured Tracker fleet and spoke sync state through native status using signed disposable fixture evidence.",
 	"createdAt": "2026-11-21T18:34:15.347Z",
-	"updatedAt": "2026-11-21T18:35:34.132Z",
+	"updatedAt": "2026-11-21T18:45:40.702Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T18:45:38.357Z",
+			"evidence": "Exact fd8412eebc on MB2: expected computers and connected sync, got empty computers and disabled sync."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T18:45:39.080Z",
+			"evidence": "Project actual link acknowledgements and signed fleet runner samples through the native supervisor."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T18:45:40.702Z",
+			"evidence": "Exact 9860910033 on MB2 with one worker passes the unchanged status and lifecycle assertions."
 		},
 		{
 			"id": "verify",

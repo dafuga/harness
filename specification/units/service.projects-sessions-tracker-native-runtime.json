@@ -19,6 +19,7 @@
 		"symbols": [
 			"TrackerNativeRuntimeService",
 			"TrackerNativeRuntimeService.constructor",
+			"TrackerNativeRuntimeService.spokeStatus",
 			"TrackerNativeRuntimeService.runLinks",
 			"TrackerLegacyDestinationBindings",
 			"TrackerNativeNotificationOptions",
@@ -28,7 +29,8 @@
 			"liveTrackerDuePolicy",
 			"observeTrackerDuePolicy",
 			"composeTrackerLinks",
-			"composeTrackerTelemetry"
+			"composeTrackerTelemetry",
+			"trackerSpokeStatus"
 		]
 	},
 	"contract": {
@@ -113,9 +115,18 @@
 				"name": "composeTrackerTelemetry.options",
 				"type": "TrackerNativeRuntimeOptions",
 				"required": true
+			},
+			{
+				"name": "trackerSpokeStatus.links",
+				"type": "readonly TrackerSpokeLoopService[]",
+				"required": true
 			}
 		],
 		"outputs": [
+			{
+				"name": "TrackerNativeRuntimeService.spokeStatus",
+				"type": "unknown"
+			},
 			{
 				"name": "TrackerNativeRuntimeService.runLinks",
 				"type": "Promise<void>"
@@ -143,6 +154,10 @@
 			{
 				"name": "composeTrackerTelemetry",
 				"type": "unknown"
+			},
+			{
+				"name": "trackerSpokeStatus",
+				"type": "unknown"
 			}
 		],
 		"errors": [
@@ -153,6 +168,18 @@
 		],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "TrackerNativeRuntimeService.spokeStatus",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerNativeRuntimeService.spokeStatus",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "TrackerNativeRuntimeService.runLinks",
 				"inputs": [
@@ -308,6 +335,24 @@
 				"outputs": [
 					{
 						"name": "composeTrackerTelemetry",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerSpokeStatus",
+				"inputs": [
+					{
+						"name": "trackerSpokeStatus.links",
+						"type": "readonly TrackerSpokeLoopService[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerSpokeStatus",
 						"type": "unknown"
 					}
 				],

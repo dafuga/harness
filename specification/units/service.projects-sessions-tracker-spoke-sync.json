@@ -16,6 +16,7 @@
 			"src/services/projects-sessions/TrackerSpokeSyncService.types.ts"
 		],
 		"symbols": [
+			"trackerMetaKeys",
 			"TrackerSpokeSyncService",
 			"TrackerSpokeSyncService.constructor",
 			"TrackerSpokeSyncService.push",
@@ -25,7 +26,6 @@
 			"TrackerSpokeSyncService.#post",
 			"TrackerSpokeSyncService.#acceptIdentity",
 			"TrackerSpokeSyncService.#cursor",
-			"TrackerSpokeSyncService.#request",
 			"TrackerSpokeOperation",
 			"TrackerSpokeJournalEntry",
 			"TrackerSpokeStore",
@@ -38,6 +38,11 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "trackerMetaKeys.prefix",
+				"type": "string",
+				"required": true
+			},
 			{
 				"name": "TrackerSpokeSyncService.constructor.options",
 				"type": "TrackerSpokeOptions",
@@ -85,18 +90,6 @@
 				"type": "string",
 				"required": true,
 				"description": "Legacy metadata key for the local push or remote pull sequence."
-			},
-			{
-				"name": "TrackerSpokeSyncService.#request.request",
-				"type": "Omit<TrackerSpokeRequest, 'headers' | 'timeoutMs'>",
-				"required": true,
-				"description": "HTTP method, exact path and query, and optional serialized body."
-			},
-			{
-				"name": "TrackerSpokeSyncService.#request.timeoutMs",
-				"type": "number",
-				"required": true,
-				"description": "Request deadline in milliseconds."
 			}
 		],
 		"outputs": [
@@ -135,6 +128,24 @@
 		],
 		"errorStatus": "declared",
 		"operations": [
+			{
+				"name": "trackerMetaKeys",
+				"inputs": [
+					{
+						"name": "trackerMetaKeys.prefix",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerMetaKeys",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
 			{
 				"name": "TrackerSpokeSyncService.push",
 				"inputs": [],
@@ -287,32 +298,6 @@
 					}
 				],
 				"errorStatus": "declared"
-			},
-			{
-				"name": "TrackerSpokeSyncService.#request",
-				"inputs": [
-					{
-						"name": "TrackerSpokeSyncService.#request.request",
-						"type": "Omit<TrackerSpokeRequest, 'headers' | 'timeoutMs'>",
-						"required": true,
-						"description": "HTTP method, exact path and query, and optional serialized body."
-					},
-					{
-						"name": "TrackerSpokeSyncService.#request.timeoutMs",
-						"type": "number",
-						"required": true,
-						"description": "Request deadline in milliseconds."
-					}
-				],
-				"outputs": [
-					{
-						"name": "TrackerSpokeSyncService.#request",
-						"type": "Promise<unknown>",
-						"description": "Decoded JSON from the configured transport."
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [

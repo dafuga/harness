@@ -4,6 +4,11 @@
 	"title": "Tracker worker lifecycle and durable recovery",
 	"kind": "headless",
 	"units": [
+		"service.agents-providers-tracker-dispatcher",
+		"service.projects-sessions-tracker-native-runtime",
+		"service.projects-sessions-tracker-persistence",
+		"service.projects-sessions-tracker-spoke-loop",
+		"service.projects-sessions-tracker-spoke-sync",
 		"service.projects-sessions-tracker-supervisor",
 		"service.projects-sessions-tracker-dispatch-scheduler",
 		"service.projects-sessions-tracker-recurring"

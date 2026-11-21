@@ -9,13 +9,22 @@ import { fixturePolicy, primary, secondary } from '../../support/trackerDispatch
 
 const now = () => 1780000000000;
 const timestamp = new Date(now()).toISOString();
+const statusUnits = [
+	'service.projects-sessions-tracker-supervisor',
+	'service.projects-sessions-tracker-native-runtime',
+	'service.projects-sessions-tracker-persistence',
+	'service.projects-sessions-tracker-spoke-loop',
+	'service.projects-sessions-tracker-spoke-sync',
+	'service.projects-sessions-tracker-dispatch-scheduler',
+	'service.agents-providers-tracker-dispatcher'
+];
 
 test('reports node status and waits for in-flight work after cancellation', async () => {
-	await measureWorkload(
-		'service.projects-sessions-tracker-supervisor',
-		'worker-lifecycle',
+	const measureStatus = statusUnits.reduceRight(
+		(run, unit) => () => measureWorkload(unit, 'worker-lifecycle', run),
 		proveWorkerLifecycle
 	);
+	await measureStatus();
 });
 
 async function proveWorkerLifecycle() {
