@@ -16,6 +16,12 @@ Harness exposes `harness harbor version`, `harness harbor chain info` and `harne
 The operator supplies the trusted Harbor CLI package entry point through `HARNESS_HARBOR_CLI_PATH`
 and can select the installed Node runtime through `HARNESS_HARBOR_NODE_PATH`.
 
+`harness harbor service status [service]` and `harness harbor doctor` expose the
+installed Harbor CLI runtime diagnostics as JSON. Service status accepts `--system`
+for the system service manager. Doctor accepts `--service`, `--config` and `--strict`.
+The existing dispatch case verifies fixed argv and keeps signing and provider credentials
+out of the runtime environment.
+
 Commands preserve the installed Harbor package’s stdout and exit status for these operations.
 Harness invokes Node with literal arguments, a limited runtime environment and a finite deadline.
 Chain inspection supports the existing `--url` option and prints JSON. Agent status supports the
