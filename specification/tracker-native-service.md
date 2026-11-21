@@ -85,6 +85,11 @@ operator verifies the stopped database and chooses a rollback.
   `launch`, `status`, `digest`, and `sync`, plus the item and inspection
   commands listed in `tracker help`. Item commands accept unique ID
   prefixes and JSON output. Duplicate exit codes 4 and 5 are retained.
+  `runs`, `models report`, and `pick` read the same native journal and keep
+  the established human-readable and JSON formats.
+  `show` includes retained run history and the local schedule preview.
+  `ignore` and `unignore` use journal transitions and retain the actor, notes,
+  and prior status. Automatic expiry for `ignore --until` is still pending.
   `sync` wakes the configured spoke links. Native launch writes a durable
   intent for the selected node. A fenced host can also run the scheduler
   and reconcile launches. Commands outside the native list fail explicitly.
@@ -253,6 +258,44 @@ For an explicitly qualified external watchdog bridge, use
 in the batch and return the same receipt shape). The bridge owns any
 cross-host reads. The direct tmux binding uses the default socket on the
 primary Mac and the `claude` and default sockets on MB2.
+
+### Legacy CLI inventory and remaining checks
+
+Compared the `7acf3ca` CLI command switch and daemon routes with the native
+routes. The primary Mac's `~/.local/bin/tracker` resolved to that release
+during the inventory. The installed Codex and Claude instructions use it
+for task updates, duplicate checks, and service status. The Chief of Staff
+skill and briefs use `show`, and its cost-review brief uses `autolaunch status`,
+`runs`, and `models report`. The `com.danielfugere.cos-tracker-alert` LaunchAgent
+uses `tracker-alert.py` for `list --flagged --json`. The
+`com.danielfugere.tracker-backup-pull` LaunchAgent runs `pull-tracker-backup.sh`
+and writes the weekly artifact under `~/backups/tracker` independently of
+the CLI. The inventory used local installation files and did not probe MB2.
+
+| Legacy commands                                                                                                                                                           | Native path and scope                                                                                                                                                                                                                                                              |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `add/plan/goal`, `list/show/update/rm`, `start/reopen/done/history`, `note/progress`, `block/unblock`, `ignore/unignore`, `flag/unflag/answer/resolve`, `check`, `digest` | Native item, history, check and digest routes. History remains hub-owned.                                                                                                                                                                                                          |
+| `launch`, `launch on/off`, `unlaunch`, `pick`, `runs`, `models report`                                                                                                    | Native item and run routes. Launch records intent. The host runner executes it.                                                                                                                                                                                                    |
+| `autolaunch [status]`, `autolaunch dry-run`                                                                                                                               | `GET /autolaunch` and `GET /autolaunch/dry-run` use the local runtime, stored state and configured due decisions. Dry-run inspects each due item without writing a token, reserving a slot, or contacting another node. Capacity across a batch remains a host admission decision. |
+| `adapter list`                                                                                                                                                            | `GET /adapters` reads non-removed source records on the persisted or configured runner. Other nodes return the legacy ownership error.                                                                                                                                             |
+| `backup list`                                                                                                                                                             | `GET /backup/list` reports regular backup files in `~/backups/tracker` or an absolute `backupDirectory` in native config. The native scheduler is external. The listing reports file metadata without opening backup contents.                                                     |
+| `status`, `sync`, `ensure`, `help`                                                                                                                                        | Native status, sync and health routes, plus local help. Native `ensure` checks the configured supervisor listener.                                                                                                                                                                 |
+
+- [ ] Wire owner-approved admin commands for `autolaunch pause/resume/clear-quota`
+      and `reject`. Verify host admission, launcher limits, `ready/skipped`,
+      repository mappings and live provider hold data before claiming full
+      autolaunch status parity. Persisted quota holds are visible in status.
+- [ ] Reconcile `machines`, `place`, `watchdog dry-run/alerts`, and `health
+[--alert]` with the native host-process integration.
+- [ ] Wire `adapter add/run/pause/resume/remove`, including preview and backfill,
+      through runner ownership and the injected GitHub transport.
+- [ ] Bind external backup receipts for last result and next run. Qualify
+      `backup now` and `restore --yes` with the backup owner and an isolated
+      restore rehearsal.
+- [ ] Qualify `agent register/list/rm`, `webhook status/pause/resume/test`,
+      `cos-test`, `job set/list/rm/test`, and local `instructions [--check]`.
+- [ ] Schedule ignore expiry on the hub. Compare remaining legacy output for
+      recurring `history`, `check` match details, `rm`, and empty `list`.
 
 ## Rollback evidence
 

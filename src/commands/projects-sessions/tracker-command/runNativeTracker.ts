@@ -4,8 +4,17 @@ import { homedir, userInfo } from 'node:os';
 import { join } from 'node:path';
 import { loadTrackerNodeConfig } from '../../../services/projects-sessions/tracker-node-service/trackerNodeConfig';
 import type { TrackerNodeConfig } from '../../../services/projects-sessions/tracker-node-service/trackerNodeConfig.types';
-import { formatNativeTrackerItem, nativeItemPrefix } from './formatNativeTrackerItem';
-import type { NativeTrackerItem } from './nativeTrackerCli.types';
+import {
+	formatNativeTrackerItem,
+	formatNativeTrackerRunRead,
+	nativeItemPrefix
+} from './formatNativeTrackerItem';
+import { formatNativeTrackerInspection } from './formatNativeTrackerInspection';
+import type {
+	NativeTrackerInspection,
+	NativeTrackerItem,
+	NativeTrackerRunRead
+} from './nativeTrackerCli.types';
 import { nativeTrackerArgs, nativeTrackerCommands } from './nativeTrackerRequest';
 
 export function selectedTrackerConfig(): string | undefined {
@@ -24,7 +33,8 @@ export function selectedTrackerConfig(): string | undefined {
 export async function runNativeTracker(args: string[], path: string): Promise<number> {
 	if (!args.length || args[0] === 'help' || args.includes('--help') || args.includes('-h')) {
 		console.log(
-			`Usage: tracker <command> [arguments] [--json]\nNative commands: ${nativeTrackerCommands}`
+			`Usage: tracker <command> [arguments] [--json]\nNative commands: ${nativeTrackerCommands}\n` +
+				'Inspection subcommands: autolaunch [status|dry-run], adapter list, backup list'
 		);
 		return 0;
 	}
@@ -56,11 +66,13 @@ async function sendNativeTracker(
 ) {
 	const { command, values, request, words } = input;
 	const actor = String(
-		values.by ?? process.env.TRACKER_AS ?? `${userInfo().username}@${config.node}`
+		[values.by, process.env.TRACKER_AS].find(Boolean) ?? `${userInfo().username}@${config.node}`
 	);
+	const body =
+		command === 'ignore' || command === 'unignore' ? { ...request.body, by: actor } : request.body;
 	const response = await fetch(`http://127.0.0.1:${config.apiPort}/native/v1${request.path}`, {
 		method: request.method,
-		body: JSON.stringify(request.body),
+		body: JSON.stringify(body),
 		headers: {
 			'content-type': 'application/json',
 			'x-tracker-as': actor.replace(/[^\x20-\x7e]/g, '?').slice(0, 80),
@@ -122,7 +134,7 @@ function renderNativeTracker(
 			console.log(String(data).trimEnd());
 			return;
 		case 'status':
-		case 'show':
+		case 'autolaunch':
 		case 'history':
 			console.log(JSON.stringify(data, null, 2));
 			return;
@@ -131,9 +143,15 @@ function renderNativeTracker(
 				(data as NativeTrackerItem[]).map(formatNativeTrackerItem).join('\n') || '(none)'
 			);
 			return;
-		default: {
-			const item = data as NativeTrackerItem;
-			console.log(nativeItemPrefix(command, options.first, item) + formatNativeTrackerItem(item));
-		}
+		default:
+			renderNativeTrackerItemOrReport(command, data, options.first);
 	}
+}
+
+function renderNativeTrackerItemOrReport(command: string, data: unknown, first?: string): void {
+	const rendered =
+		formatNativeTrackerInspection(command, data as NativeTrackerInspection) ??
+		formatNativeTrackerRunRead(command, data as NativeTrackerRunRead);
+	const item = data as NativeTrackerItem;
+	console.log(rendered ?? nativeItemPrefix(command, first, item) + formatNativeTrackerItem(item));
 }

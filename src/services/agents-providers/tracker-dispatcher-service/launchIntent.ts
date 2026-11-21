@@ -16,6 +16,7 @@ import {
 	inactive,
 	knownNode,
 	mayScheduleHere,
+	schedulingHold,
 	skip,
 	startable
 } from './launchEligibility';
@@ -126,8 +127,25 @@ function dueIntent(
 	if (hold) return skip('held', hold);
 	if (snapshot.runs.some((run) => run.auto_token === token))
 		return skip('conflict', 'launch token was already used');
-	const requestedNode = dueOwner(item, due, policy) ?? preferredComputer(item, policy);
-	return assignedDueIntent(item, { token, requestedNode }, policy);
+	const choice = selectDueLaunch(item, dueOwner(item, due, policy), policy);
+	if (!choice.pick) return skip('held', choice.reason);
+	return writeIntent({ token, target: choice.target, source: 'due', scheduledPick: choice.pick });
+}
+
+/** Read the same item, session, host and model admission facts as a due request. */
+export function previewDueLaunch(
+	snapshot: TrackerDispatchSnapshot,
+	policy: TrackerDispatchPolicy,
+	now: number
+) {
+	const { item, due } = snapshot;
+	if (!item || inactive(item)) return { reason: 'item is missing or inactive' };
+	const hold = schedulingHold(item) ?? dueIntentHold(snapshot, item, policy, now);
+	if (hold) return { reason: hold };
+	if (due?.paused) return { reason: 'due scheduling is paused' };
+	if (!due || !mayScheduleHere(item, due, policy))
+		return { reason: 'due scheduler is unavailable for this item' };
+	return selectDueLaunch(item, dueOwner(item, due, policy), policy);
 }
 
 function preferredComputer(item: TrackerDispatchItem, policy: TrackerDispatchPolicy) {
@@ -135,19 +153,20 @@ function preferredComputer(item: TrackerDispatchItem, policy: TrackerDispatchPol
 	return preferred && preferred !== 'auto' ? canonicalNode(preferred, policy) : null;
 }
 
-function assignedDueIntent(
+function selectDueLaunch(
 	item: TrackerDispatchItem,
-	{ token, requestedNode }: { token: string; requestedNode: string | null },
+	owner: string | null,
 	policy: TrackerDispatchPolicy
-): TrackerDispatchDecision {
+) {
+	const requestedNode = owner ?? preferredComputer(item, policy);
 	const choice = policy.chooseHost(item, { source: 'due', requestedNode });
-	if (!choice.node) return skip('held', choice.why);
+	if (!choice.node) return { reason: choice.why };
 	const target = canonicalNode(choice.node, policy);
 	if (requestedNode && target !== requestedNode)
-		return skip('held', 'due launch assigned to a different computer');
+		return { reason: 'due launch assigned to a different computer' };
 	const pick = policy.pickModel(item);
-	if ('error' in pick) return skip('held', pick.error);
-	return writeIntent({ token, target, source: 'due', scheduledPick: pick });
+	if ('error' in pick) return { reason: pick.error };
+	return { target, pick, reason: choice.why } as const;
 }
 
 function dueIntentHold(

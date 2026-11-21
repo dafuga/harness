@@ -15,6 +15,9 @@ import {
 	adapterTimeline,
 	adapterWrite
 } from './trackerHostAdapterSchema';
+import { TrackerAdapterPollService } from '../TrackerAdapterPollService';
+import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
+import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 
 const designatedRunner = 'daniel-primary-mbp';
 
@@ -70,4 +73,17 @@ function redactGithubText(text: string): string {
 			'[redacted]'
 		)
 		.replace(/\b(?:bearer\s+|(?:api[_ -]?key|token|secret)\s*[:=]\s*)[^\s,;]+/gi, '[redacted]');
+}
+
+/** Poll configured adapters through the shared journal when the host enables them. */
+export function configuredHostAdapter(
+	store: TrackerPersistenceService,
+	runs: TrackerRunReadRepository,
+	options: TrackerNativeRuntimeOptions,
+	now: () => number
+) {
+	const { adapter, hostEffects } = options;
+	const binding = hostEffects?.adapter;
+	const dependencies = adapter ?? (binding && trackerHostAdapter(binding, runs, now));
+	return dependencies ? new TrackerAdapterPollService(store, dependencies) : undefined;
 }

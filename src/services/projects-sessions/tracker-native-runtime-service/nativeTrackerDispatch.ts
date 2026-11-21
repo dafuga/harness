@@ -1,8 +1,17 @@
 // @harness-uid u_bl6xl2h4a3
 import { TrackerDispatchRepository } from '../../../repositories/projects-sessions/TrackerDispatchRepository';
+import { trackerTimeZone } from '../../../utils/projects-sessions/normalizeTrackerDue';
+import { previewDueLaunch } from '../../agents-providers/tracker-dispatcher-service/launchIntent';
 import { TrackerDispatcherService } from '../../agents-providers/TrackerDispatcherService';
+import type {
+	TrackerDispatchPolicy,
+	TrackerDuePolicy
+} from '../../agents-providers/TrackerDispatcherService.types';
 import { TrackerDispatchSchedulerService } from '../TrackerDispatchSchedulerService';
-import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
+import type {
+	TrackerDuePreviewPolicy,
+	TrackerNativeRuntimeOptions
+} from '../TrackerNativeRuntimeService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { TrackerSpokeSyncService } from '../TrackerSpokeSyncService';
 import { liveTrackerDuePolicy } from './nativeTrackerDuePolicy';
@@ -11,7 +20,15 @@ export function composeTrackerDispatch(
 	store: TrackerPersistenceService,
 	options: TrackerNativeRuntimeOptions
 ) {
-	if (!options.dispatch) return { dispatch: undefined, scheduler: undefined };
+	if (!options.dispatch)
+		return {
+			dispatch: undefined,
+			scheduler: undefined,
+			duePreview: {
+				timeZone: options.timeZone ?? trackerTimeZone,
+				due: () => liveTrackerDuePolicy(store, { enabled: false, paused: false }, options.role)
+			} satisfies TrackerDuePreviewPolicy
+		};
 	const {
 		policy: supplied,
 		due,
@@ -33,12 +50,36 @@ export function composeTrackerDispatch(
 	const grant = configuredGrant ?? spokeGrant(store, options);
 	return {
 		dispatch,
+		duePreview: configuredDuePreview(repository, policy, { duePolicy, scheduleDue }),
 		scheduler: new TrackerDispatchSchedulerService(repository, dispatch, {
 			runner,
 			scheduleDue,
 			policy,
 			grant
 		})
+	};
+}
+
+function configuredDuePreview(
+	repository: TrackerDispatchRepository,
+	policy: TrackerDispatchPolicy,
+	{ duePolicy, scheduleDue }: { duePolicy?: () => TrackerDuePolicy; scheduleDue?: boolean }
+): TrackerDuePreviewPolicy {
+	const enabled = scheduleDue === true && policy.enabled !== false;
+	const due = () => {
+		const current = duePolicy?.();
+		return {
+			...current,
+			enabled: enabled && current?.enabled === true,
+			adapterDue: enabled && current?.adapterDue === true,
+			paused: current?.paused ?? false
+		};
+	};
+	return {
+		timeZone: policy.timezone,
+		due,
+		preview: (id) =>
+			previewDueLaunch({ ...repository.readSnapshot(id), due: due() }, policy, policy.now())
 	};
 }
 
