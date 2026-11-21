@@ -24,13 +24,13 @@ export function trackerWorkerClient(directory: string, address: TrackerWorkerCli
 
 export function trackerGuestAuthFile(
 	directory: string,
-	{ itemId, runId }: { itemId: string; runId: number },
+	{ itemId, runId, key }: { itemId: string; runId: number; key: string },
 	address: Pick<TrackerWorkerClient, 'writeGuestAuth' | 'apiPort'>
 ): string | undefined {
 	const { writeGuestAuth, apiPort } = address;
 	if (!writeGuestAuth) return undefined;
 	const path = join(directory, 'guest-auth.json');
-	writeGuestAuth({ path, itemId, runId, apiPort });
+	writeGuestAuth({ path, itemId, runId, key, apiPort });
 	const file = lstatSync(path);
 	if (
 		!file.isFile() ||

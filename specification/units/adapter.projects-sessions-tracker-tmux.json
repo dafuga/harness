@@ -284,6 +284,11 @@
 				"required": true
 			},
 			{
+				"name": "trackerGuestAuthFile.key",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "trackerGuestAuthFile.address",
 				"type": "Pick<TrackerWorkerClient, 'writeGuestAuth' | 'apiPort'>",
 				"required": true
@@ -804,6 +809,11 @@
 					{
 						"name": "trackerGuestAuthFile.runId",
 						"type": "number",
+						"required": true
+					},
+					{
+						"name": "trackerGuestAuthFile.key",
+						"type": "string",
 						"required": true
 					},
 					{
