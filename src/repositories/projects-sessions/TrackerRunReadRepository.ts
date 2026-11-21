@@ -1,5 +1,6 @@
 // @harness-uid u_lahmutfc24
 import type { SqliteDatabase, SqliteValue } from '../../core/development-tooling/sqliteTypes';
+import type { TrackerWireValue } from '../../services/projects-sessions/TrackerHubSyncService.types';
 import { SqliteAdapter } from '../../adapters/development-tooling/SqliteAdapter';
 import {
 	importTrackerRunHistory,
@@ -45,14 +46,14 @@ export class TrackerRunReadRepository {
 		return [...local, ...relayedTrackerRunHistory(this.database, peer)];
 	}
 
-	importRemote(peer: string, rows: readonly unknown[]): void {
+	importRemote(peer: string, rows: readonly TrackerWireValue[]): void {
 		if (peer === this.node || peer === '?') return;
 		new SqliteAdapter(this.database, []).transaction(() =>
 			importTrackerRunHistory(this.database, rows, () => peer)
 		);
 	}
 
-	importHubHistory(rows: readonly unknown[]): void {
+	importHubHistory(rows: readonly TrackerWireValue[]): void {
 		new SqliteAdapter(this.database, []).transaction(() =>
 			importTrackerRunHistory(this.database, rows, ({ node }) =>
 				typeof node === 'string' && node !== this.node ? node : undefined

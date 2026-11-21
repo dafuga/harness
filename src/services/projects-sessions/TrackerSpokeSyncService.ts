@@ -1,11 +1,13 @@
 // @harness-uid u_657a3wmun2
 import { z } from 'zod';
+import type { TrackerWireValue } from './TrackerHubSyncService.types';
 import { TrackerSyncAuthService } from '../networking-security/TrackerSyncAuthService';
 import type {
 	TrackerSpokeOptions,
 	TrackerSpokePullResult,
 	TrackerSpokeRequest,
-	TrackerSpokeStore
+	TrackerSpokeStore,
+	TrackerSpokePostBody
 } from './TrackerSpokeSyncService.types';
 
 const pushBatchSize = 500;
@@ -80,12 +82,12 @@ export class TrackerSpokeSyncService {
 		return duePermit.parse(response).allowed;
 	}
 
-	async exchangeMachine(sample: unknown, runs: readonly unknown[]) {
+	async exchangeMachine(sample: TrackerWireValue | undefined, runs: readonly TrackerWireValue[]) {
 		const response = await this.#post('/sync/machine', { sample, runs });
 		return telemetryResponse.parse(response);
 	}
 
-	#post(pathAndQuery: string, body: unknown) {
+	#post(pathAndQuery: string, body: TrackerSpokePostBody) {
 		return this.#request({ method: 'POST', pathAndQuery, body: JSON.stringify(body) }, 30_000);
 	}
 
@@ -161,7 +163,7 @@ const duePermit = z.object({ allowed: z.boolean() });
 const telemetryResponse = z.object({
 	ok: z.literal(true),
 	machines: z.array(z.unknown()),
-	run_history: z.array(z.unknown()).optional()
+	run_history: z.array(z.json()).optional()
 });
 const sequence = z.int().nonnegative();
 const pushReceipt = z.object({ ok: z.literal(true), db_id: identity });
@@ -170,7 +172,7 @@ const pullPage = z.object({
 	hub: z.string(),
 	last: sequence,
 	max: sequence,
-	due_policy: z.unknown().optional(),
+	due_policy: z.json().optional(),
 	ops: z.array(
 		z.looseObject({
 			seq: sequence,

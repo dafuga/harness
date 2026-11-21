@@ -61,12 +61,12 @@
 			},
 			{
 				"name": "TrackerRunReadRepository.importRemote.rows",
-				"type": "readonly unknown[]",
+				"type": "readonly TrackerWireValue[]",
 				"required": true
 			},
 			{
 				"name": "TrackerRunReadRepository.importHubHistory.rows",
-				"type": "readonly unknown[]",
+				"type": "readonly TrackerWireValue[]",
 				"required": true
 			},
 			{
@@ -96,12 +96,12 @@
 			},
 			{
 				"name": "importTrackerRunHistory.rows",
-				"type": "readonly unknown[]",
+				"type": "readonly TrackerWireValue[]",
 				"required": true
 			},
 			{
 				"name": "importTrackerRunHistory.nodeFor",
-				"type": "(row: Record<string, unknown>) => string | undefined",
+				"type": "(row: TrackerWireObject) => string | undefined",
 				"required": true
 			}
 		],
@@ -132,7 +132,7 @@
 			},
 			{
 				"name": "localTrackerRunHistory",
-				"type": "Record<string, SqliteValue>[]"
+				"type": "TrackerWireObject[]"
 			},
 			{
 				"name": "relayedTrackerRunHistory",
@@ -217,7 +217,7 @@
 					},
 					{
 						"name": "TrackerRunReadRepository.importRemote.rows",
-						"type": "readonly unknown[]",
+						"type": "readonly TrackerWireValue[]",
 						"required": true
 					}
 				],
@@ -235,7 +235,7 @@
 				"inputs": [
 					{
 						"name": "TrackerRunReadRepository.importHubHistory.rows",
-						"type": "readonly unknown[]",
+						"type": "readonly TrackerWireValue[]",
 						"required": true
 					}
 				],
@@ -265,7 +265,7 @@
 				"outputs": [
 					{
 						"name": "localTrackerRunHistory",
-						"type": "Record<string, SqliteValue>[]"
+						"type": "TrackerWireObject[]"
 					}
 				],
 				"errors": [],
@@ -304,12 +304,12 @@
 					},
 					{
 						"name": "importTrackerRunHistory.rows",
-						"type": "readonly unknown[]",
+						"type": "readonly TrackerWireValue[]",
 						"required": true
 					},
 					{
 						"name": "importTrackerRunHistory.nodeFor",
-						"type": "(row: Record<string, unknown>) => string | undefined",
+						"type": "(row: TrackerWireObject) => string | undefined",
 						"required": true
 					}
 				],
@@ -362,6 +362,11 @@
 		},
 		{
 			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-hub-sync",
 			"via": "import",
 			"origin": "derived"
 		}

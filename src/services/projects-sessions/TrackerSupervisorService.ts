@@ -26,7 +26,10 @@ export class TrackerSupervisorService {
 
 	assertLegacyRollbackSafe(): void {
 		if (this.running)
-			throw new Error('Stop and drain the native Tracker workers before checking rollback');
+			throw new DOMException(
+				'Stop and drain the native Tracker workers before checking rollback',
+				'InvalidStateError'
+			);
 		assertTrackerLegacyRollbackSafe(this.runtime.store.database);
 	}
 

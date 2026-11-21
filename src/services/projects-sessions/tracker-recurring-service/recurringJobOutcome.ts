@@ -1,7 +1,7 @@
 // @harness-uid u_adwgoryfne
 import type {
 	TrackerRecurringResult,
-	TrackerRecurringWork
+	TrackerClaimedJob
 } from '../../../repositories/projects-sessions/TrackerRecurringRepository.types';
 import {
 	trackerIsoTime,
@@ -10,14 +10,14 @@ import {
 import type { TrackerRecurringJobReceipt } from '../TrackerRecurringService.types';
 
 export function recurringJobOutcome(
-	work: Extract<TrackerRecurringWork, { job: unknown }>,
+	work: TrackerClaimedJob,
 	receipt: TrackerRecurringJobReceipt,
 	now: number
 ) {
 	const { job, wake } = work;
-	const { code, timedOut } = receipt;
-	const finding = code === 10 && !timedOut;
-	const failed = timedOut || (code !== 0 && !finding);
+	const status = jobStatus(receipt);
+	const failed = status === 'failed';
+	const finding = status === 'finding';
 	const output = redactOutput(receipt.output.slice(0, 8192)).trim();
 	const last =
 		output
@@ -25,13 +25,7 @@ export function recurringJobOutcome(
 			.filter((line) => line.trim())
 			.at(-1)
 			?.slice(0, 300) ?? '';
-	const summary = timedOut
-		? `timed out after ${job.timeout_s}s`
-		: finding
-			? `finding: ${last}`
-			: failed
-				? `exit ${code}: ${last}`
-				: last || 'ok';
+	const summary = summarizeJob(receipt, status, job.timeout_s, last);
 	const result: TrackerRecurringResult = {
 		occurrence: trackerIsoTime(wake.at),
 		status: failed ? 'failed' : 'done',
@@ -45,9 +39,9 @@ export function recurringJobOutcome(
 	const payload = {
 		...wake.payload,
 		box_job: {
-			exit_code: timedOut ? null : code,
-			timed_out: timedOut,
-			status: failed ? 'failed' : finding ? 'finding' : 'ok'
+			exit_code: receipt.timedOut ? null : receipt.code,
+			timed_out: receipt.timedOut,
+			status
 		},
 		finding: output.slice(-4000) || null
 	};
@@ -56,6 +50,24 @@ export function recurringJobOutcome(
 		note,
 		wake: notify ? { phase: 'wake' as const, wake: { ...wake, payload } } : undefined
 	};
+}
+
+function jobStatus({ code, timedOut }: TrackerRecurringJobReceipt): 'failed' | 'finding' | 'ok' {
+	if (timedOut) return 'failed';
+	if (code === 10) return 'finding';
+	return code === 0 ? 'ok' : 'failed';
+}
+
+function summarizeJob(
+	{ code, timedOut }: TrackerRecurringJobReceipt,
+	status: ReturnType<typeof jobStatus>,
+	timeoutSeconds: number,
+	last: string
+): string {
+	if (timedOut) return `timed out after ${timeoutSeconds}s`;
+	if (status === 'finding') return `finding: ${last}`;
+	if (status === 'failed') return `exit ${code}: ${last}`;
+	return last || 'ok';
 }
 
 function redactOutput(value: string): string {

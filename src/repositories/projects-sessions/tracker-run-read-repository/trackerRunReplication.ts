@@ -1,6 +1,11 @@
 // @harness-uid u_lahmutfc24
 import type { SqliteDatabase, SqliteValue } from '../../../core/development-tooling/sqliteTypes';
 
+import type {
+	TrackerWireObject,
+	TrackerWireValue
+} from '../../../services/projects-sessions/TrackerHubSyncService.types';
+
 const columns = [
 	'item_id',
 	'attempt',
@@ -34,16 +39,13 @@ const columns = [
 ] as const;
 const projection = columns.join(', ');
 
-export function localTrackerRunHistory(
-	db: SqliteDatabase,
-	limit: number
-): Record<string, SqliteValue>[] {
+export function localTrackerRunHistory(db: SqliteDatabase, limit: number): TrackerWireObject[] {
 	return db
 		.prepare(
 			`SELECT id, ${projection} FROM runs
 		WHERE state IN ('finished','queued','running','verifying','observed') ORDER BY id DESC LIMIT ?`
 		)
-		.all(limit) as Record<string, SqliteValue>[];
+		.all(limit) as TrackerWireObject[];
 }
 
 export function relayedTrackerRunHistory(db: SqliteDatabase, peer: string): unknown[] {
@@ -57,8 +59,8 @@ export function relayedTrackerRunHistory(db: SqliteDatabase, peer: string): unkn
 
 export function importTrackerRunHistory(
 	db: SqliteDatabase,
-	rows: readonly unknown[],
-	nodeFor: (row: Record<string, unknown>) => string | undefined
+	rows: readonly TrackerWireValue[],
+	nodeFor: (row: TrackerWireObject) => string | undefined
 ): void {
 	const record = db.prepare(`INSERT INTO remote_runs (node, id, ${projection})
 		VALUES (${Array(columns.length + 2)
@@ -79,9 +81,9 @@ export function importTrackerRunHistory(
 	}
 }
 
-function isRunRecord(value: unknown): value is Record<string, unknown> {
+function isRunRecord(value: TrackerWireValue): value is TrackerWireObject {
 	if (value === null || typeof value !== 'object' || Array.isArray(value)) return false;
-	const row = value as Record<string, unknown>;
+	const row = value as TrackerWireObject;
 	return (
 		typeof row.item_id === 'string' &&
 		typeof row.state === 'string' &&

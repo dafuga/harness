@@ -17,13 +17,15 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerLinks.ts"
 		],
 		"symbols": [
-			"TrackerLocalApiService",
-			"TrackerNotificationService",
-			"TrackerPersistenceService",
 			"TrackerNativeRuntimeService",
 			"TrackerNativeRuntimeService.constructor",
 			"TrackerNativeRuntimeService.spokeStatus",
 			"TrackerNativeRuntimeService.runLinks",
+			"TrackerLocalApiService",
+			"TrackerNotificationService",
+			"TrackerPersistenceService",
+			"TrackerRecurringRepository",
+			"TrackerRecurringService",
 			"TrackerLegacyDestinationBindings",
 			"TrackerNativeNotificationOptions",
 			"TrackerNativeRuntimeOptions",
@@ -90,8 +92,8 @@
 				"required": true
 			},
 			{
-				"name": "observeTrackerDuePolicy.value",
-				"type": "unknown",
+				"name": "observeTrackerDuePolicy.snapshot",
+				"type": "TrackerWireValue",
 				"required": true
 			},
 			{
@@ -279,8 +281,8 @@
 						"required": true
 					},
 					{
-						"name": "observeTrackerDuePolicy.value",
-						"type": "unknown",
+						"name": "observeTrackerDuePolicy.snapshot",
+						"type": "TrackerWireValue",
 						"required": true
 					}
 				],

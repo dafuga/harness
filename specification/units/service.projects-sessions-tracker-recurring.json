@@ -62,7 +62,7 @@
 			},
 			{
 				"name": "recurringJobOutcome.work",
-				"type": "Extract<TrackerRecurringWork, { job: unknown }>",
+				"type": "TrackerClaimedJob",
 				"required": true
 			},
 			{
@@ -165,7 +165,7 @@
 				"inputs": [
 					{
 						"name": "recurringJobOutcome.work",
-						"type": "Extract<TrackerRecurringWork, { job: unknown }>",
+						"type": "TrackerClaimedJob",
 						"required": true
 					},
 					{

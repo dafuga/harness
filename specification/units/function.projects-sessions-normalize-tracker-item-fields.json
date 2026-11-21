@@ -63,12 +63,14 @@
 			{
 				"name": "trackerCronOccurrences.raw",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Five-field cron expression or supported shorthand used to build the schedule."
 			},
 			{
 				"name": "trackerCronOccurrences.timeZone",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "IANA time zone used to locate each occurrence in local wall-clock order."
 			},
 			{
 				"name": "trackerDateFormatter.timeZone",
@@ -214,12 +216,14 @@
 					{
 						"name": "trackerCronOccurrences.raw",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Five-field cron expression or supported shorthand used to build the schedule."
 					},
 					{
 						"name": "trackerCronOccurrences.timeZone",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "IANA time zone used to locate each occurrence in local wall-clock order."
 					}
 				],
 				"outputs": [

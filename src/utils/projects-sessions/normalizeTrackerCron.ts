@@ -148,6 +148,7 @@ function nextWallTime(day: number, after: number, options: CronTimeCache): numbe
 		resolved.set(time, epoch);
 		if (epoch > after) return epoch;
 	}
+	return undefined;
 }
 
 function wallTime(guess: number, formatter: Intl.DateTimeFormat): number {

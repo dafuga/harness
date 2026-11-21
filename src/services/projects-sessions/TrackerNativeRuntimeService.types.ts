@@ -5,7 +5,7 @@ import type { TrackerDispatchSchedulerOptions } from './TrackerDispatchScheduler
 import type { TrackerSchemaAdapterConfig } from '../../adapters/projects-sessions/TrackerSchemaAdapter.types';
 import type { TrackerNotificationSourceOptions } from '../../repositories/projects-sessions/TrackerNotificationSourceRepository.types';
 import type { TrackerAdapterPollDependencies } from './TrackerAdapterPollService.types';
-import type { TrackerHubOptions } from './TrackerHubSyncService.types';
+import type { TrackerHubOptions, TrackerWireValue } from './TrackerHubSyncService.types';
 import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
 import type { TrackerNotificationOptions } from './TrackerNotificationService.types';
 import type { TrackerRecurringJobRunner } from './TrackerRecurringService.types';
@@ -38,7 +38,10 @@ export interface TrackerNativeRuntimeOptions extends Omit<
 	dispatch?: Omit<TrackerDispatchSchedulerOptions, 'policy'> &
 		Pick<TrackerDispatchRepositoryOptions, 'due' | 'sessions'> & {
 			policy: Omit<TrackerDispatchPolicy, 'node' | 'now' | 'hub'>;
-			telemetry?: { sample(): unknown; onMachines?(machines: readonly unknown[]): void };
+			telemetry?: {
+				sample(): TrackerWireValue | undefined;
+				onMachines?(machines: readonly unknown[]): void;
+			};
 		};
 	syncResponder?: Omit<TrackerHubOptions, 'store'>;
 	links?: readonly Omit<TrackerSpokeLoopOptions, 'store'>[];

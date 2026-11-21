@@ -146,6 +146,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "service.projects-sessions-tracker-hub-sync",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-persistence",
 			"via": "import",
 			"origin": "derived"

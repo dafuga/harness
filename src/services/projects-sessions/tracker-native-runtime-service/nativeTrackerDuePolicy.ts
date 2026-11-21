@@ -1,6 +1,7 @@
 // @harness-uid u_bl6xl2h4a3
 import { z } from 'zod';
 import type { TrackerDuePolicy } from '../../agents-providers/TrackerDispatcherService.types';
+import type { TrackerWireValue } from '../TrackerHubSyncService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 
 const peerPolicy = z.object({
@@ -25,8 +26,11 @@ export function liveTrackerDuePolicy(
 	};
 }
 
-export function observeTrackerDuePolicy(store: TrackerPersistenceService, value: unknown): void {
-	const incoming = peerPolicy.safeParse(value);
+export function observeTrackerDuePolicy(
+	store: TrackerPersistenceService,
+	snapshot: TrackerWireValue
+): void {
+	const incoming = peerPolicy.safeParse(snapshot);
 	if (!incoming.success || incoming.data.at <= (readPolicy(store)?.at ?? -1)) return;
 	store.writeMeta({ [metaKey]: JSON.stringify(incoming.data) });
 }

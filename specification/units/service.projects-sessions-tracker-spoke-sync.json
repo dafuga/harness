@@ -32,7 +32,8 @@
 			"TrackerSpokeRequest",
 			"TrackerSpokeTransport",
 			"TrackerSpokeOptions",
-			"TrackerSpokePullResult"
+			"TrackerSpokePullResult",
+			"TrackerSpokePostBody"
 		]
 	},
 	"contract": {
@@ -61,12 +62,12 @@
 			},
 			{
 				"name": "TrackerSpokeSyncService.exchangeMachine.sample",
-				"type": "unknown",
+				"type": "TrackerWireValue | undefined",
 				"required": true
 			},
 			{
 				"name": "TrackerSpokeSyncService.exchangeMachine.runs",
-				"type": "readonly unknown[]",
+				"type": "readonly TrackerWireValue[]",
 				"required": true
 			},
 			{
@@ -76,7 +77,7 @@
 			},
 			{
 				"name": "TrackerSpokeSyncService.#post.body",
-				"type": "unknown",
+				"type": "TrackerSpokePostBody",
 				"required": true
 			},
 			{
@@ -212,12 +213,12 @@
 				"inputs": [
 					{
 						"name": "TrackerSpokeSyncService.exchangeMachine.sample",
-						"type": "unknown",
+						"type": "TrackerWireValue | undefined",
 						"required": true
 					},
 					{
 						"name": "TrackerSpokeSyncService.exchangeMachine.runs",
-						"type": "readonly unknown[]",
+						"type": "readonly TrackerWireValue[]",
 						"required": true
 					}
 				],
@@ -240,7 +241,7 @@
 					},
 					{
 						"name": "TrackerSpokeSyncService.#post.body",
-						"type": "unknown",
+						"type": "TrackerSpokePostBody",
 						"required": true
 					}
 				],
@@ -326,6 +327,11 @@
 	"dependencies": [
 		{
 			"unit": "service.networking-security-tracker-sync-auth",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-hub-sync",
 			"via": "import",
 			"origin": "derived"
 		}

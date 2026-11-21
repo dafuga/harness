@@ -36,3 +36,14 @@ export interface TrackerRecurringJob {
 export type TrackerRecurringWork =
 	| { phase: 'wake'; wake: TrackerRecurringWake }
 	| { phase: 'queued' | 'claimed'; wake: TrackerRecurringWake; job: TrackerRecurringJob };
+
+export type TrackerClaimedJob = Extract<TrackerRecurringWork, { phase: 'queued' | 'claimed' }>;
+export type TrackerCurrentOccurrence = Pick<
+	TrackerRecurringItem,
+	'status' | 'occurrence' | 'last_result'
+>;
+export type TrackerRecurringSettlement = {
+	result: TrackerRecurringResult;
+	note: string;
+	wake?: TrackerRecurringWork;
+};

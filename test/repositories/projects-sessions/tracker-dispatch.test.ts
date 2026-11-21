@@ -3,6 +3,7 @@ import { onTestFinished, test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { TrackerDispatchRepository } from '../../../src/repositories/projects-sessions/TrackerDispatchRepository';
 import { TrackerRunReadRepository } from '../../../src/repositories/projects-sessions/TrackerRunReadRepository';
+import type { TrackerRunReceipt } from '../../../src/services/agents-providers/TrackerDispatcherService.types';
 import { TrackerDispatcherService } from '../../../src/services/agents-providers/TrackerDispatcherService';
 import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
 import {
@@ -47,18 +48,7 @@ test('commits one local claim and atomically rolls back an item transition with 
 		'Tracker rollback blocked by run 1 (queued)'
 	);
 
-	const seq = store.maxSeq();
-	database.exec(
-		"CREATE TRIGGER reject_item_update BEFORE UPDATE ON items BEGIN SELECT RAISE(ABORT, 'fixture write failed'); END"
-	);
-	await expect(
-		repo.update(sampleId, () => ({
-			result: { status: 'ignored', reason: 'fixture' },
-			writes: { item: { status: 'blocked' }, runs: [{ ...run, revision: 2, state: 'finished' }] }
-		}))
-	).rejects.toThrow('fixture write failed');
-	expect(store.maxSeq()).toBe(seq);
-	expect(repo.managedRuns()).toEqual([run]);
+	await expectAtomicRollback(database, store, repo, run);
 	database.exec("UPDATE runs SET state = 'running', session_id = 'legacy-session' WHERE id = 1");
 	expect(repo.managedRuns()).toEqual([]);
 	expect(reads.list()).toMatchObject([{ id: 1, state: 'running', session_id: 'legacy-session' }]);
@@ -72,3 +62,23 @@ test('commits one local claim and atomically rolls back an item transition with 
 	database.exec("UPDATE runs SET state = 'finished', outcome = 'done' WHERE id = 1");
 	expect(() => repo.assertLegacyRollbackSafe()).not.toThrow();
 });
+
+async function expectAtomicRollback(
+	database: DatabaseSync,
+	store: TrackerPersistenceService,
+	repo: TrackerDispatchRepository,
+	run: TrackerRunReceipt
+) {
+	const seq = store.maxSeq();
+	database.exec(
+		"CREATE TRIGGER reject_item_update BEFORE UPDATE ON items BEGIN SELECT RAISE(ABORT, 'fixture write failed'); END"
+	);
+	await expect(
+		repo.update(sampleId, () => ({
+			result: { status: 'ignored', reason: 'fixture' },
+			writes: { item: { status: 'blocked' }, runs: [{ ...run, revision: 2, state: 'finished' }] }
+		}))
+	).rejects.toThrow('fixture write failed');
+	expect(store.maxSeq()).toBe(seq);
+	expect(repo.managedRuns()).toEqual([run]);
+}
