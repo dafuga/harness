@@ -1,0 +1,94 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.projects-sessions-tracker-snapshot",
+	"uid": "u_earfvkmyr2",
+	"kind": "adapter",
+	"title": "TrackerSnapshotAdapter",
+	"responsibility": "Compare standalone Tracker SQLite checkpoints using schema and typed row fingerprints.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/projects-sessions/TrackerSnapshotAdapter.ts",
+			"src/adapters/projects-sessions/TrackerSnapshotAdapter.types.ts"
+		],
+		"symbols": [
+			"TrackerSnapshotAdapter",
+			"TrackerSnapshotAdapter.constructor",
+			"TrackerSnapshotAdapter.connect",
+			"TrackerSnapshotAdapterConfig",
+			"TrackerSnapshotAdapterConfig"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerSnapshotAdapter.constructor.config",
+				"type": "TrackerSnapshotAdapterConfig",
+				"required": false,
+				"default": {}
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerSnapshotAdapter.connect",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "TrackerSnapshotAdapter.connect",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerSnapshotAdapter.connect",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerSnapshotAdapter.constructor",
+				"inputs": [
+					{
+						"name": "TrackerSnapshotAdapter.constructor.config",
+						"type": "TrackerSnapshotAdapterConfig",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSnapshotAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/projects-sessions/TrackerSnapshotAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/projects-sessions/TrackerSnapshotAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
