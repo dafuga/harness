@@ -21,6 +21,7 @@ export class SnapshotRunService {
 
 	async execute(plan: PlannedCheck[], artifactPaths: string[] = []): Promise<Executed> {
 		const { root, config, context, needed = 'all' } = this.run;
+		context.signal?.throwIfAborted();
 		const snapshot = await SnapshotAdapter.create(root, context.commit, config.outputs);
 		const drift = trackDrift(snapshot);
 		try {
@@ -34,6 +35,7 @@ export class SnapshotRunService {
 			const compiled = await this.identities.declared(snapshot.directory, wanted);
 			await drift.observe();
 			const outcomes = await runChecks(runner, setupFailures.length > 0 ? [] : plan, drift.observe);
+			context.signal?.throwIfAborted();
 			const artifacts = await built(snapshot, artifactPaths);
 			const moved = await this.identities.changed(snapshot.directory, compiled.found);
 			const builds = config.builds.length > 0 ? { builds: compiled.found } : {};

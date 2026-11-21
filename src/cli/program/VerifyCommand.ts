@@ -106,6 +106,23 @@ function renderPlan(report: Awaited<ReturnType<typeof verifyPlan>>): string {
 }
 
 async function runVerification(flags: Flags): Promise<void> {
+	if (flags.retainArtifact === undefined) {
+		await printVerification(flags);
+		return;
+	}
+	const abort = new AbortController();
+	const cancel = () => abort.abort(new Error('Verification cancelled.'));
+	process.on('SIGINT', cancel);
+	process.on('SIGTERM', cancel);
+	try {
+		await printVerification({ ...flags, signal: abort.signal });
+	} finally {
+		process.removeListener('SIGINT', cancel);
+		process.removeListener('SIGTERM', cancel);
+	}
+}
+
+async function printVerification(flags: Flags): Promise<void> {
 	const stored = await verifyRun(flags);
 	console.log(flags.json ? JSON.stringify(stored, null, 2) : renderVerify(stored));
 	if (['failed', 'skipped'].includes(stored.attachment?.status ?? stored.record.status))

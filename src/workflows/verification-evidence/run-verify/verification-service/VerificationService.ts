@@ -57,6 +57,7 @@ export class VerificationService {
 			store: this.store
 		});
 		const record = await assembly.assemble({ startedAt, executed, scenarios, referenced });
+		context.signal?.throwIfAborted();
 		await this.store.save(record, directory);
 		return { record, directory };
 	}
@@ -96,8 +97,8 @@ export class VerificationService {
 
 	/** A scoped run passes the builds its scenarios need; a full run passes none. */
 	private snapshotRun(directory: string, needed?: ReadonlySet<string> | 'all'): SnapshotRunService {
-		const { root, config, commit, tree, env, retainArtifact } = this.context;
-		const context = { directory, commit, tree, profile: this.profile.id, env };
+		const { root, config, commit, tree, env, retainArtifact, signal } = this.context;
+		const context = { directory, commit, tree, profile: this.profile.id, env, signal };
 		return new SnapshotRunService({ root, config, context, needed, retainArtifact });
 	}
 

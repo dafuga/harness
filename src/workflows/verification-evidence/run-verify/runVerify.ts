@@ -7,6 +7,7 @@ export { verifyPlan } from './verifyPlanWorkflow';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { fail } from '../../../core/development-tooling/errors';
+import { resourcePriority } from '../../../core/execution-runtimes/resourceTypes';
 import {
 	defaultVerifyConfig,
 	verifyConfigFile,
@@ -34,6 +35,7 @@ import {
 	type RevisionSide
 } from '../../development-tooling/loadRevisions';
 import { runtimeKind } from '../../development-tooling/runImpact';
+import { resourceWork } from '../../../utils/execution-runtimes/resourceWork';
 import { TrustedBaseService } from './TrustedBaseService';
 import { VerificationService } from './verification-service/VerificationService';
 
@@ -62,12 +64,28 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<VerifyResu
 	const git = new GitAdapter(root);
 	if (!(await git.isRepository())) return fail('harness verify needs a Git repository.');
 	const commit = await resolveCommit(git, options.commit ?? 'HEAD');
-	return options.entity
-		? verifyEntity(git, commit, { ...options, root })
-		: verifyFull(git, commit, { ...options, root });
+	const request = { ...options, root };
+	if (options.entity) return verifyEntity(git, commit, request);
+	const env = verifyEnv(request);
+	if (options.retainArtifact === undefined || env.HARNESS_RESOURCE_LEASE)
+		return verifyFull(git, commit, request, env);
+	return resourceWork(
+		{
+			priority: resourcePriority.parse(env.HARNESS_RESOURCE_PRIORITY),
+			label: 'Verification export'
+		},
+		(lease) => verifyFull(git, commit, request, lease.env),
+		env,
+		{ signal: options.signal }
+	);
 }
 
-async function verifyFull(git: GitAdapter, commit: string, options: VerifyOptions) {
+async function verifyFull(
+	git: GitAdapter,
+	commit: string,
+	options: VerifyOptions,
+	env: ReturnType<typeof verifyEnv>
+) {
 	const root = options.root!;
 	const { requestedBase, proven } = await provenBase(git, commit, options.base);
 	const baseCommit = proven?.commit ?? null;
@@ -99,9 +117,10 @@ async function verifyFull(git: GitAdapter, commit: string, options: VerifyOption
 		impact,
 		config,
 		retainArtifact: options.retainArtifact,
+		signal: options.signal,
 		requirePerformance: requiresPerformance(options, config),
 		testTimeoutMs: options.testTimeout ? Number(options.testTimeout) : undefined,
-		env: verifyEnv(options),
+		env,
 		// What was written about the range is held to the writing limits: its reasons, and the
 		// stored messages of its commits, so a commit made past the hook does not pass.
 		explained: async () => reasons

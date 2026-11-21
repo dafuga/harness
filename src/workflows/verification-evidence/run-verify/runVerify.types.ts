@@ -29,6 +29,7 @@ export interface VerifyOptions {
 	entity?: string;
 	/** A declared generated file to retain from a passing full verification. */
 	retainArtifact?: string;
+	signal?: AbortSignal;
 	testTimeout?: string;
 	record?: string;
 }

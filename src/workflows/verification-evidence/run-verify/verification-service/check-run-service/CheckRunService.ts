@@ -35,6 +35,7 @@ export class CheckRunService {
 		const leaf = check.scenario ? check.name : slug;
 		const evidencePath = `evidence/${commit}/${check.scenario ?? 'checks'}/${leaf}`;
 		const result = await this.execute(check, evidencePath, slug);
+		this.context.signal?.throwIfAborted();
 		// Nothing a stopped check wrote is trusted: a timeout yields no captures at all.
 		const captures = result.timedOut
 			? { gathered: [], failures: [] }
@@ -68,7 +69,7 @@ export class CheckRunService {
 		evidencePath: string,
 		slug: string
 	): Promise<IsolatedResult> {
-		const { directory } = this.context;
+		const { directory, signal } = this.context;
 		return resourceWork(
 			{
 				priority: resourcePriority.parse(
@@ -86,11 +87,13 @@ export class CheckRunService {
 						...resourceEnvironment(context.env)
 					},
 					onSpawn: context.track,
+					signal,
 					timeoutMs: check.timeoutMs,
 					log: join(directory, 'logs', `${slug}.log`),
 					maxLogBytes
 				}),
-			this.context.env
+			this.context.env,
+			{ signal }
 		);
 	}
 
@@ -102,10 +105,12 @@ export class CheckRunService {
 			args: ['-c', tool.command],
 			cwd: this.context.snapshot,
 			env: { ...this.context.env },
+			signal: this.context.signal,
 			timeoutMs: 60_000,
 			log,
 			maxLogBytes
 		});
+		this.context.signal?.throwIfAborted();
 		if (result.status !== 'passed') return undefined;
 		const printed = await readFile(log, 'utf8').catch(() => '');
 		return firstPrintedLine(printed);
