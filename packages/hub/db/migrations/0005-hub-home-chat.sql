@@ -1,4 +1,4 @@
--- Rollback for a separately approved migration: DROP TABLE hub_home_chat;
+-- Rollback for a separately approved migration: DROP TABLE hub_home_chat
 CREATE TABLE hub_home_chat (
   actor_id TEXT NOT NULL,
   id TEXT NOT NULL,
