@@ -14,10 +14,17 @@ umask 077
 run_dir=$1
 token=$2
 shift 2
+remove_guest_auth() {
+	if [ "\${HARNESS_TRACKER_GUEST_AUTH_FILE:-}" = "$run_dir/guest-auth.json" ]; then
+		/bin/rm -f "$run_dir/guest-auth.json"
+	fi
+}
+trap 'remove_guest_auth' 0
 printf '%s\\n' "$token" > "$run_dir/started.tmp" || exit 125
 /bin/mv "$run_dir/started.tmp" "$run_dir/started" || exit 125
 "$@"
 result=$?
+remove_guest_auth
 printf '%s\\n' "$result" > "$run_dir/exit.tmp"
 /bin/mv "$run_dir/exit.tmp" "$run_dir/exit"
 exit "$result"
@@ -26,10 +33,11 @@ exit "$result"
 export async function launchTmux(
 	{ tmux, trackerBin, trackerExecutable, worktree }: TrackerManagedTarget,
 	receipt: TrackerManagedReceipt,
-	{ script, command, clientPath, guestAuthFile }: TrackerManagedExec,
+	execution: TrackerManagedExec,
 	signal: AbortSignal
 ): Promise<void> {
 	const { node, itemId, runId, token } = receipt;
+	const { script, command, clientPath, guestAuthFile } = execution;
 	const environment = [
 		`HOME=${command.profile}`,
 		`HARNESS_TRACKER_CONFIG=${clientPath}`,

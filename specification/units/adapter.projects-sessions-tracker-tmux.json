@@ -203,23 +203,8 @@
 				"required": true
 			},
 			{
-				"name": "launchTmux.script",
-				"type": "string",
-				"required": true
-			},
-			{
-				"name": "launchTmux.command",
-				"type": "TrackerManagedCommand",
-				"required": true
-			},
-			{
-				"name": "launchTmux.clientPath",
-				"type": "string",
-				"required": true
-			},
-			{
-				"name": "launchTmux.guestAuthFile",
-				"type": "unknown",
+				"name": "launchTmux.execution",
+				"type": "TrackerManagedExec",
 				"required": true
 			},
 			{
@@ -296,6 +281,11 @@
 			{
 				"name": "trackerGuestAuthFile.runId",
 				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerGuestAuthFile.key",
+				"type": "string",
 				"required": true
 			},
 			{
@@ -647,23 +637,8 @@
 						"required": true
 					},
 					{
-						"name": "launchTmux.script",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "launchTmux.command",
-						"type": "TrackerManagedCommand",
-						"required": true
-					},
-					{
-						"name": "launchTmux.clientPath",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "launchTmux.guestAuthFile",
-						"type": "unknown",
+						"name": "launchTmux.execution",
+						"type": "TrackerManagedExec",
 						"required": true
 					},
 					{
@@ -834,6 +809,11 @@
 					{
 						"name": "trackerGuestAuthFile.runId",
 						"type": "number",
+						"required": true
+					},
+					{
+						"name": "trackerGuestAuthFile.key",
+						"type": "string",
 						"required": true
 					},
 					{
