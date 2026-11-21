@@ -1058,7 +1058,8 @@ The managed provider runtime has an offline Linux Docker pilot. Set
 `"platform": "linux"` in a module task input or pass `--platform linux` to
 `harness task add` or `harness task orchestrate`. Set
 `HARNESS_TASK_DOCKER_IMAGE` on the worker or orchestrator to the full
-`sha256:…` ID of a trusted, locally installed Linux fixture image. The image
+`sha256:…` ID of a trusted, locally installed Linux fixture image built for the
+Docker daemon's architecture. The image
 must provide the selected provider command as a synthetic executable on its
 PATH. Run the pilot as a non-root user against a local Docker Unix socket.
 

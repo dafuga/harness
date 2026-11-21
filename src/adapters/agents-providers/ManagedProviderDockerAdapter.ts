@@ -40,7 +40,6 @@ export class ManagedProviderDockerAdapter {
 			'--interactive',
 			'--init',
 			'--pull=never',
-			'--platform=linux',
 			'--network=none',
 			'--cap-drop=ALL',
 			'--security-opt=no-new-privileges',

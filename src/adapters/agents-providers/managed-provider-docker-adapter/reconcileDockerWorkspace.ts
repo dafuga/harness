@@ -16,6 +16,7 @@ import {
 	symlink
 } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
+import { ModuleTaskRunError } from '../module-task-runner-adapter/ModuleTaskRunError';
 
 /** Reconcile a fully extracted snapshot without following worktree links. */
 export async function reconcileDockerWorkspace(from: string, to: string): Promise<void> {
@@ -43,7 +44,7 @@ async function entries(path: string, directory: string): Promise<Map<string, Dir
 		if (reserved(entry.name, directory)) continue;
 		if (entry.isDirectory() && (await lstat(join(path, entry.name))).dev !== dev) continue;
 		if (!entry.isFile() && !entry.isDirectory() && !entry.isSymbolicLink())
-			throw new Error('Workspace contains an unsupported file type.');
+			throw new ModuleTaskRunError('Workspace contains an unsupported file type.');
 		result.set(entry.name, entry);
 	}
 	return result;

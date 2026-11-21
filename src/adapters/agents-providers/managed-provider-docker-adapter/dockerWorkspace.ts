@@ -8,6 +8,7 @@ import type { DockerTaskDaemon } from '../ManagedProviderDockerAdapter.types';
 
 export const bunCache = '.cache/harness/bun';
 export const storagePath = '/storage';
+const portableMetadata = ['--no-acls', '--no-xattrs'];
 const exclude = ['.git', 'node_modules', bunCache, '.cache/harness/task-worktrees'].map(
 	(path) => `--exclude=${path}`
 );
@@ -27,13 +28,26 @@ export async function seedDockerWorkspace(
 	signal: AbortSignal
 ): Promise<void> {
 	await transfer(
-		['tar', '--one-file-system', ...exclude, '-C', dirname(cwd), '-cf', '-', '--', basename(cwd)],
+		[
+			'tar',
+			'--one-file-system',
+			...portableMetadata,
+			...exclude,
+			'-C',
+			dirname(cwd),
+			'-cf',
+			'-',
+			'--',
+			basename(cwd)
+		],
 		['docker', '--host', daemon.host, 'cp', '-a', '-', `${storage}:${storagePath}`],
 		daemon.env,
 		AbortSignal.any([signal, AbortSignal.timeout(120_000)])
-	).catch(() => {
+	).catch((error: unknown) => {
 		signal.throwIfAborted();
-		throw new ModuleTaskRunError('Could not stage the worktree in the Docker volume.');
+		throw new ModuleTaskRunError('Could not stage the worktree in the Docker volume.', {
+			cause: error
+		});
 	});
 }
 
@@ -46,7 +60,17 @@ export async function recoverDockerWorkspace(
 	try {
 		await transfer(
 			['docker', '--host', daemon.host, 'cp', `${storage}:${storagePath}/${basename(cwd)}/.`, '-'],
-			['tar', '--no-same-owner', '--no-same-permissions', ...exclude, '-C', directory, '-xf', '-'],
+			[
+				'tar',
+				'--no-same-owner',
+				'--no-same-permissions',
+				...portableMetadata,
+				...exclude,
+				'-C',
+				directory,
+				'-xf',
+				'-'
+			],
 			daemon.env,
 			AbortSignal.timeout(120_000)
 		);
@@ -72,8 +96,9 @@ async function transfer(
 	try {
 		const target = Bun.spawn(to, { env, signal, stdin: source.stdout, stderr: 'ignore' });
 		const actual = await target.exited;
-		if (actual !== 0) throw new Error('Workspace archive destination failed.');
-		if ((await source.exited) !== 0) throw new Error('Workspace archive source failed.');
+		if (actual !== 0) throw new ModuleTaskRunError('Workspace archive destination failed.');
+		if ((await source.exited) !== 0)
+			throw new ModuleTaskRunError('Workspace archive source failed.');
 	} finally {
 		if (source.exitCode === null) source.kill();
 		await source.exited;

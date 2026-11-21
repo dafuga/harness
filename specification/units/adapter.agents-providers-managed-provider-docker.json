@@ -44,7 +44,7 @@
 		]
 	},
 	"contract": {
-		"origin": "declared",
+		"origin": "derived",
 		"inputs": [
 			{
 				"name": "ManagedProviderDockerAdapter.command.[executable, ...args]",
@@ -70,6 +70,136 @@
 				"name": "ManagedProviderDockerAdapter.run.collect",
 				"type": "(child: ChildProcessWithoutNullStreams) => Promise<T>",
 				"required": true
+			},
+			{
+				"name": "createStorageContainer.daemon",
+				"type": "DockerTaskDaemon",
+				"required": true
+			},
+			{
+				"name": "createStorageContainer.task",
+				"type": "DockerTaskCreate",
+				"required": true
+			},
+			{
+				"name": "createVolume.daemon",
+				"type": "DockerTaskDaemon",
+				"required": true
+			},
+			{
+				"name": "createVolume.owner",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "removeVolume.daemon",
+				"type": "DockerTaskDaemon",
+				"required": true
+			},
+			{
+				"name": "removeVolume.owner",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "createContainer.daemon",
+				"type": "DockerTaskDaemon",
+				"required": true
+			},
+			{
+				"name": "createContainer.args",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "createContainer.label",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "removeContainers.daemon",
+				"type": "DockerTaskDaemon",
+				"required": true
+			},
+			{
+				"name": "removeContainers.ids",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "dockerArgs.daemon",
+				"type": "DockerTaskDaemon",
+				"required": true
+			},
+			{
+				"name": "dockerArgs.args",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "stopContainer.daemon",
+				"type": "DockerTaskDaemon",
+				"required": true
+			},
+			{
+				"name": "stopContainer.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "workspaceVolume.owner",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "workspaceSubpath.cwd",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "seedDockerWorkspace.daemon",
+				"type": "DockerTaskDaemon",
+				"required": true
+			},
+			{
+				"name": "seedDockerWorkspace.storage",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "seedDockerWorkspace.cwd",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "seedDockerWorkspace.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "recoverDockerWorkspace.daemon",
+				"type": "DockerTaskDaemon",
+				"required": true
+			},
+			{
+				"name": "recoverDockerWorkspace.storage",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recoverDockerWorkspace.cwd",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "reconcileDockerWorkspace.from",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "reconcileDockerWorkspace.to",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -84,6 +214,66 @@
 			{
 				"name": "ManagedProviderDockerAdapter.run",
 				"type": "Promise<T>"
+			},
+			{
+				"name": "createStorageContainer",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "createVolume",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "removeVolume",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "dockerDaemon",
+				"type": "Promise<DockerTaskDaemon>"
+			},
+			{
+				"name": "createContainer",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "removeContainers",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "dockerArgs",
+				"type": "unknown"
+			},
+			{
+				"name": "stopContainer",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "bunCache",
+				"type": "unknown"
+			},
+			{
+				"name": "storagePath",
+				"type": "unknown"
+			},
+			{
+				"name": "workspaceVolume",
+				"type": "string"
+			},
+			{
+				"name": "workspaceSubpath",
+				"type": "string"
+			},
+			{
+				"name": "seedDockerWorkspace",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "recoverDockerWorkspace",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "reconcileDockerWorkspace",
+				"type": "Promise<void>"
 			}
 		],
 		"errors": [
@@ -140,6 +330,329 @@
 					{
 						"name": "ManagedProviderDockerAdapter.run",
 						"type": "Promise<T>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "createStorageContainer",
+				"inputs": [
+					{
+						"name": "createStorageContainer.daemon",
+						"type": "DockerTaskDaemon",
+						"required": true
+					},
+					{
+						"name": "createStorageContainer.task",
+						"type": "DockerTaskCreate",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createStorageContainer",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "createVolume",
+				"inputs": [
+					{
+						"name": "createVolume.daemon",
+						"type": "DockerTaskDaemon",
+						"required": true
+					},
+					{
+						"name": "createVolume.owner",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createVolume",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "removeVolume",
+				"inputs": [
+					{
+						"name": "removeVolume.daemon",
+						"type": "DockerTaskDaemon",
+						"required": true
+					},
+					{
+						"name": "removeVolume.owner",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "removeVolume",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "dockerDaemon",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "dockerDaemon",
+						"type": "Promise<DockerTaskDaemon>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "createContainer",
+				"inputs": [
+					{
+						"name": "createContainer.daemon",
+						"type": "DockerTaskDaemon",
+						"required": true
+					},
+					{
+						"name": "createContainer.args",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "createContainer.label",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createContainer",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "removeContainers",
+				"inputs": [
+					{
+						"name": "removeContainers.daemon",
+						"type": "DockerTaskDaemon",
+						"required": true
+					},
+					{
+						"name": "removeContainers.ids",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "removeContainers",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "dockerArgs",
+				"inputs": [
+					{
+						"name": "dockerArgs.daemon",
+						"type": "DockerTaskDaemon",
+						"required": true
+					},
+					{
+						"name": "dockerArgs.args",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "dockerArgs",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "stopContainer",
+				"inputs": [
+					{
+						"name": "stopContainer.daemon",
+						"type": "DockerTaskDaemon",
+						"required": true
+					},
+					{
+						"name": "stopContainer.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "stopContainer",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "workspaceVolume",
+				"inputs": [
+					{
+						"name": "workspaceVolume.owner",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "workspaceVolume",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "workspaceSubpath",
+				"inputs": [
+					{
+						"name": "workspaceSubpath.cwd",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "workspaceSubpath",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "seedDockerWorkspace",
+				"inputs": [
+					{
+						"name": "seedDockerWorkspace.daemon",
+						"type": "DockerTaskDaemon",
+						"required": true
+					},
+					{
+						"name": "seedDockerWorkspace.storage",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "seedDockerWorkspace.cwd",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "seedDockerWorkspace.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "seedDockerWorkspace",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recoverDockerWorkspace",
+				"inputs": [
+					{
+						"name": "recoverDockerWorkspace.daemon",
+						"type": "DockerTaskDaemon",
+						"required": true
+					},
+					{
+						"name": "recoverDockerWorkspace.storage",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recoverDockerWorkspace.cwd",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recoverDockerWorkspace",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "reconcileDockerWorkspace",
+				"inputs": [
+					{
+						"name": "reconcileDockerWorkspace.from",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "reconcileDockerWorkspace.to",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reconcileDockerWorkspace",
+						"type": "Promise<void>"
 					}
 				],
 				"errors": [],
