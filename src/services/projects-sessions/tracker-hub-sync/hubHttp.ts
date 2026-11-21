@@ -1,10 +1,11 @@
 // @harness-uid u_jkomno4o5u
-import type { TrackerHubRequest } from '../TrackerHubSyncService.types';
+import type { TrackerHubPayload, TrackerHubRequest } from '../TrackerHubSyncService.types';
 import { TrackerHubInputError } from './TrackerHubInputError';
 
 const maxBodyBytes = 8 * 1024 * 1024;
 
-export async function readTrackerHubBody({ body, signal }: TrackerHubRequest): Promise<string> {
+export async function readTrackerHubBody(request: TrackerHubRequest): Promise<string> {
+	const { body, signal } = request;
 	if (!body) return '';
 	const reader = body.getReader();
 	const cancel = () => void reader.cancel().catch(() => {});
@@ -36,7 +37,7 @@ function decodeUtf8(bytes: Uint8Array): string {
 	}
 }
 
-export function trackerHubResponse(status: number, payload: unknown): Response {
+export function trackerHubResponse(status: number, payload: TrackerHubPayload): Response {
 	const body = JSON.stringify(payload);
 	return new Response(body, {
 		status,
@@ -45,11 +46,4 @@ export function trackerHubResponse(status: number, payload: unknown): Response {
 			'content-length': String(Buffer.byteLength(body))
 		}
 	});
-}
-
-export function trackerHubError(error: unknown): Response {
-	if (error instanceof TrackerHubInputError) {
-		return trackerHubResponse(error.status, { error: error.message });
-	}
-	return trackerHubResponse(500, { error: 'internal server error' });
 }

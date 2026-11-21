@@ -5,11 +5,12 @@ import { trackerHubResponse } from './hubHttp';
 import { TrackerHubInputError } from './TrackerHubInputError';
 
 export async function readJournalPage(
-	{ store, duePolicy }: TrackerHubOptions,
+	options: TrackerHubOptions,
 	polls: TrackerHubPolls,
 	query: URLSearchParams,
 	signal: AbortSignal | undefined
 ): Promise<Response> {
+	const { store, duePolicy } = options;
 	const since = nonnegativeInteger(query, 'since', 0);
 	const limit = Math.min(nonnegativeInteger(query, 'limit', 1000), 5000);
 	const wait = Math.min(nonnegativeNumber(query, 'wait', 0), 60) * 1000;

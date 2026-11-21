@@ -7,6 +7,9 @@
 	"responsibility": "Handle authenticated Tracker journal sync, health, due permission, and machine telemetry requests using injected stores.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": [
 			"src/services/projects-sessions/TrackerHubSyncService.ts",
@@ -22,12 +25,10 @@
 			"TrackerHubSyncService.constructor",
 			"TrackerHubSyncService.handle",
 			"TrackerHubSyncService.peers",
-			"TrackerHubSyncService.#authenticateAndRoute",
-			"TrackerHubOptions",
-			"TrackerHubRequest",
 			"TrackerHubRequest",
 			"TrackerHubOperation",
 			"TrackerHubJournalEntry",
+			"TrackerHubPayload",
 			"TrackerHubStore",
 			"TrackerHubMachineStore",
 			"TrackerHubRunStore",
@@ -37,10 +38,8 @@
 			"TrackerHubPolls",
 			"TrackerHubPolls.constructor",
 			"TrackerHubPolls.wait",
-			"TrackerHubPolls.#unsubscribeWhenIdle",
 			"readTrackerHubBody",
 			"trackerHubResponse",
-			"trackerHubError",
 			"receiveJournalPush",
 			"grantDuePermission",
 			"recordFleetTelemetry",
@@ -61,6 +60,106 @@
 				"type": "TrackerHubRequest",
 				"required": true,
 				"description": "The HTTP method, original path and query, headers, optional UTF-8 POST stream and optional transport cancellation signal."
+			},
+			{
+				"name": "TrackerHubInputError.constructor.status",
+				"type": "400 | 413",
+				"required": true
+			},
+			{
+				"name": "TrackerHubInputError.constructor.message",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerHubPolls.constructor.subscribe",
+				"type": "TrackerHubStore['subscribe']",
+				"required": true
+			},
+			{
+				"name": "TrackerHubPolls.wait.timeout",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "TrackerHubPolls.wait.signal",
+				"type": "AbortSignal | undefined",
+				"required": true
+			},
+			{
+				"name": "readTrackerHubBody.request",
+				"type": "TrackerHubRequest",
+				"required": true
+			},
+			{
+				"name": "trackerHubResponse.status",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerHubResponse.payload",
+				"type": "TrackerHubPayload",
+				"required": true
+			},
+			{
+				"name": "receiveJournalPush.store",
+				"type": "TrackerHubStore",
+				"required": true
+			},
+			{
+				"name": "receiveJournalPush.body",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "grantDuePermission.options",
+				"type": "TrackerHubOptions",
+				"required": true
+			},
+			{
+				"name": "grantDuePermission.body",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "grantDuePermission.peer",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordFleetTelemetry.options",
+				"type": "TrackerHubOptions",
+				"required": true
+			},
+			{
+				"name": "recordFleetTelemetry.body",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordFleetTelemetry.peer",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readJournalPage.options",
+				"type": "TrackerHubOptions",
+				"required": true
+			},
+			{
+				"name": "readJournalPage.polls",
+				"type": "TrackerHubPolls",
+				"required": true
+			},
+			{
+				"name": "readJournalPage.query",
+				"type": "URLSearchParams",
+				"required": true
+			},
+			{
+				"name": "readJournalPage.signal",
+				"type": "AbortSignal | undefined",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -73,6 +172,34 @@
 				"name": "TrackerHubSyncService.peers",
 				"type": "Readonly<Record<string, string>>",
 				"description": "A fresh snapshot mapping node labels reported by authenticated callers to their last contact time in ISO format."
+			},
+			{
+				"name": "TrackerHubPolls.wait",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "readTrackerHubBody",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "trackerHubResponse",
+				"type": "Response"
+			},
+			{
+				"name": "receiveJournalPush",
+				"type": "Response"
+			},
+			{
+				"name": "grantDuePermission",
+				"type": "Response"
+			},
+			{
+				"name": "recordFleetTelemetry",
+				"type": "Response"
+			},
+			{
+				"name": "readJournalPage",
+				"type": "Promise<Response>"
 			}
 		],
 		"errors": [
@@ -121,7 +248,193 @@
 					}
 				],
 				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerHubPolls.wait",
+				"inputs": [
+					{
+						"name": "TrackerHubPolls.wait.timeout",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "TrackerHubPolls.wait.signal",
+						"type": "AbortSignal | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerHubPolls.wait",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "readTrackerHubBody",
+				"inputs": [
+					{
+						"name": "readTrackerHubBody.request",
+						"type": "TrackerHubRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerHubBody",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerHubInputError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerHubResponse",
+				"inputs": [
+					{
+						"name": "trackerHubResponse.status",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "trackerHubResponse.payload",
+						"type": "TrackerHubPayload",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHubResponse",
+						"type": "Response"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "receiveJournalPush",
+				"inputs": [
+					{
+						"name": "receiveJournalPush.store",
+						"type": "TrackerHubStore",
+						"required": true
+					},
+					{
+						"name": "receiveJournalPush.body",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "receiveJournalPush",
+						"type": "Response"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "grantDuePermission",
+				"inputs": [
+					{
+						"name": "grantDuePermission.options",
+						"type": "TrackerHubOptions",
+						"required": true
+					},
+					{
+						"name": "grantDuePermission.body",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "grantDuePermission.peer",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "grantDuePermission",
+						"type": "Response"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordFleetTelemetry",
+				"inputs": [
+					{
+						"name": "recordFleetTelemetry.options",
+						"type": "TrackerHubOptions",
+						"required": true
+					},
+					{
+						"name": "recordFleetTelemetry.body",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recordFleetTelemetry.peer",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordFleetTelemetry",
+						"type": "Response"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerHubInputError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readJournalPage",
+				"inputs": [
+					{
+						"name": "readJournalPage.options",
+						"type": "TrackerHubOptions",
+						"required": true
+					},
+					{
+						"name": "readJournalPage.polls",
+						"type": "TrackerHubPolls",
+						"required": true
+					},
+					{
+						"name": "readJournalPage.query",
+						"type": "URLSearchParams",
+						"required": true
+					},
+					{
+						"name": "readJournalPage.signal",
+						"type": "AbortSignal | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readJournalPage",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -140,6 +453,47 @@
 						"name": "TrackerHubSyncService.constructor",
 						"type": "TrackerHubSyncService",
 						"description": "A handler with independent peer state that subscribes to journal changes while pulls wait."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "TrackerHubInputError.constructor",
+				"inputs": [
+					{
+						"name": "TrackerHubInputError.constructor.status",
+						"type": "400 | 413",
+						"required": true
+					},
+					{
+						"name": "TrackerHubInputError.constructor.message",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerHubInputError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerHubPolls.constructor",
+				"inputs": [
+					{
+						"name": "TrackerHubPolls.constructor.subscribe",
+						"type": "TrackerHubStore['subscribe']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerHubPolls.constructor",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -169,8 +523,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }

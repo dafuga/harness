@@ -24,6 +24,21 @@ export interface TrackerHubJournalEntry extends TrackerHubOperation {
 	seq: number;
 }
 
+export type TrackerHubPayload =
+	| { error: string }
+	| { ok: true; applied: number; db_id: string; last: number }
+	| {
+			ops: readonly TrackerHubJournalEntry[];
+			last: number;
+			max: number;
+			db_id: string;
+			hub: string;
+			due_policy?: unknown;
+	  }
+	| { ok: true; hub: string; db_id: string; max: number }
+	| { allowed: boolean }
+	| { ok: true; machines: readonly unknown[]; run_history?: readonly unknown[] };
+
 export interface TrackerHubStore {
 	readonly node: string;
 	readonly dbId: string;

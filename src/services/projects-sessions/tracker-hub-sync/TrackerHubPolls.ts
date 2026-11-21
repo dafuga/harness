@@ -15,7 +15,7 @@ export class TrackerHubPolls {
 				clearTimeout(timer);
 				signal?.removeEventListener('abort', done);
 				try {
-					this.#unsubscribeWhenIdle();
+					this.unsubscribeWhenIdle();
 					resolve();
 				} catch (error) {
 					reject(error);
@@ -34,7 +34,7 @@ export class TrackerHubPolls {
 					for (const wake of this.#pending) wake();
 				});
 				// A store may report a change synchronously during subscription.
-				this.#unsubscribeWhenIdle();
+				this.unsubscribeWhenIdle();
 			} catch (error) {
 				reject(error);
 				done();
@@ -42,7 +42,7 @@ export class TrackerHubPolls {
 		});
 	}
 
-	#unsubscribeWhenIdle(): void {
+	private unsubscribeWhenIdle(): void {
 		if (this.#pending.size > 0) return;
 		const unsubscribe = this.#unsubscribe;
 		this.#unsubscribe = undefined;
