@@ -7,6 +7,10 @@ export interface TrackerLocalApiOptions {
 	now?: () => number;
 	timeZone?: string;
 	runs?: TrackerRunReadRepository;
+	recurring?: {
+		role: 'hub' | 'spoke';
+		history?: (id: string, limit: number) => unknown;
+	};
 	ladderConfig?: TrackerLadderConfig;
 	validateModel?: TrackerItemMutationContext['validateModel'];
 	planLaunch?: TrackerItemMutationContext['planLaunch'];

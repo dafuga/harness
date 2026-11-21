@@ -3,6 +3,7 @@ import { onTestFinished, test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { TrackerDispatchRepository } from '../../../src/repositories/projects-sessions/TrackerDispatchRepository';
 import { TrackerRunReadRepository } from '../../../src/repositories/projects-sessions/TrackerRunReadRepository';
+import type { TrackerRunReceipt } from '../../../src/services/agents-providers/TrackerDispatcherService.types';
 import { TrackerDispatcherService } from '../../../src/services/agents-providers/TrackerDispatcherService';
 import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
 import {
@@ -43,7 +44,31 @@ test('commits one local claim and atomically rolls back an item transition with 
 	expect(reads.list()).toMatchObject([
 		{ id: 1, item_id: sampleId, auto_token: sampleToken, state: 'queued' }
 	]);
+	expect(() => repo.assertLegacyRollbackSafe()).toThrow(
+		'Tracker rollback blocked by run 1 (queued)'
+	);
 
+	await expectAtomicRollback(database, store, repo, run);
+	database.exec("UPDATE runs SET state = 'running', session_id = 'legacy-session' WHERE id = 1");
+	expect(repo.managedRuns()).toEqual([]);
+	expect(reads.list()).toMatchObject([{ id: 1, state: 'running', session_id: 'legacy-session' }]);
+	expect(() => repo.assertLegacyRollbackSafe()).toThrow(
+		'Tracker rollback blocked by run 1 (running)'
+	);
+	database.exec("UPDATE runs SET state = 'verifying' WHERE id = 1");
+	expect(() => repo.assertLegacyRollbackSafe()).toThrow(
+		'Tracker rollback blocked by run 1 (verifying)'
+	);
+	database.exec("UPDATE runs SET state = 'finished', outcome = 'done' WHERE id = 1");
+	expect(() => repo.assertLegacyRollbackSafe()).not.toThrow();
+});
+
+async function expectAtomicRollback(
+	database: DatabaseSync,
+	store: TrackerPersistenceService,
+	repo: TrackerDispatchRepository,
+	run: TrackerRunReceipt
+) {
 	const seq = store.maxSeq();
 	database.exec(
 		"CREATE TRIGGER reject_item_update BEFORE UPDATE ON items BEGIN SELECT RAISE(ABORT, 'fixture write failed'); END"
@@ -56,7 +81,4 @@ test('commits one local claim and atomically rolls back an item transition with 
 	).rejects.toThrow('fixture write failed');
 	expect(store.maxSeq()).toBe(seq);
 	expect(repo.managedRuns()).toEqual([run]);
-	database.exec("UPDATE runs SET state = 'running', session_id = 'legacy-session' WHERE id = 1");
-	expect(repo.managedRuns()).toEqual([]);
-	expect(reads.list()).toMatchObject([{ id: 1, state: 'running', session_id: 'legacy-session' }]);
-});
+}

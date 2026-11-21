@@ -18,8 +18,10 @@
 		],
 		"symbols": [
 			"normalizeTrackerCron",
+			"trackerCronOccurrences",
 			"CronField",
 			"CronSchedule",
+			"CronTimeCache",
 			"trackerTimeZone",
 			"trackerDateFormatter",
 			"trackerDateParts",
@@ -57,6 +59,18 @@
 				"type": "number",
 				"required": true,
 				"description": "Epoch milliseconds used to start the schedule's five-year search window."
+			},
+			{
+				"name": "trackerCronOccurrences.raw",
+				"type": "string",
+				"required": true,
+				"description": "Five-field cron expression or supported shorthand used to build the schedule."
+			},
+			{
+				"name": "trackerCronOccurrences.timeZone",
+				"type": "string",
+				"required": true,
+				"description": "IANA time zone used to locate each occurrence in local wall-clock order."
 			},
 			{
 				"name": "trackerDateFormatter.timeZone",
@@ -191,6 +205,31 @@
 					{
 						"name": "normalizeTrackerCron",
 						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerCronOccurrences",
+				"inputs": [
+					{
+						"name": "trackerCronOccurrences.raw",
+						"type": "string",
+						"required": true,
+						"description": "Five-field cron expression or supported shorthand used to build the schedule."
+					},
+					{
+						"name": "trackerCronOccurrences.timeZone",
+						"type": "string",
+						"required": true,
+						"description": "IANA time zone used to locate each occurrence in local wall-clock order."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerCronOccurrences",
+						"type": "(after: number)"
 					}
 				],
 				"errors": [],
