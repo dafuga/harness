@@ -80,6 +80,7 @@
 			"trackerHostEffectsSchema",
 			"trackerHostInventory",
 			"trackerHostLaunch",
+			"configuredHostDispatch",
 			"TrackerHostSession",
 			"TrackerHostRouteItem",
 			"TrackerHostRoute",
@@ -311,6 +312,16 @@
 				"type": "{ tmuxExecutable?: string; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; }",
 				"required": false,
 				"default": {}
+			},
+			{
+				"name": "configuredHostDispatch.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "configuredHostDispatch.effects",
+				"type": "TrackerNativeRuntimeOptions['hostEffects']",
+				"required": true
 			},
 			{
 				"name": "trackerHostLaunchPort.config",
@@ -546,6 +557,10 @@
 			{
 				"name": "trackerHostLaunch",
 				"type": "NonNullable<TrackerNativeRuntimeOptions['dispatch']>"
+			},
+			{
+				"name": "configuredHostDispatch",
+				"type": "unknown"
 			},
 			{
 				"name": "trackerHostLaunchPort",
@@ -1033,6 +1048,29 @@
 					{
 						"name": "trackerHostLaunch",
 						"type": "NonNullable<TrackerNativeRuntimeOptions['dispatch']>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "configuredHostDispatch",
+				"inputs": [
+					{
+						"name": "configuredHostDispatch.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "configuredHostDispatch.effects",
+						"type": "TrackerNativeRuntimeOptions['hostEffects']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "configuredHostDispatch",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
