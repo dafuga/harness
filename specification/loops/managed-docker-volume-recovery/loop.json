@@ -2,9 +2,11 @@
 	"name": "managed-docker-volume-recovery",
 	"goal": "Keep offline worktree volume and tmpfs defaults while recovering only the exact task, staging container, and volume after supervisor death; preserve v1 bind recovery, concurrent live tasks, and synthetic Tracker relay.",
 	"createdAt": "2026-11-21T21:24:12.618Z",
-	"updatedAt": "2026-11-21T21:35:00.528Z",
+	"updatedAt": "2026-11-21T21:41:05.796Z",
 	"template": "bug-fix",
-	"templateLineage": ["bug-fix"],
+	"templateLineage": [
+		"bug-fix"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -39,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T21:41:05.796Z",
+			"evidence": "Frozen test corpus red at ae0e4df448 (85911116838d), unchanged green at 909a50cd0b (aebfd87305c7), same isolated shell/runtime profile. Related local unit checks and synthetic cleanup scope checks passed. Exact MB2 Docker and relay proof remains pending."
 		},
 		{
 			"id": "verify",
