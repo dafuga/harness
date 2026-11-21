@@ -4,6 +4,7 @@ import { NativeConnectionService } from '../NativeConnectionService';
 import { ProjectRegistryService } from '../../../../services/projects-sessions/ProjectRegistryService';
 import { CommentOutboxService } from '../../../../services/projects-sessions/CommentOutboxService';
 import { ProjectionCacheService } from '../projection-cache-service/ProjectionCacheService';
+import { createTrackerOverviewPublisher } from '../tracker-overview-publisher/createTrackerOverviewPublisher';
 import {
 	app,
 	BrowserWindow,
@@ -89,7 +90,7 @@ function desktopBackend() {
 		registry = new ProjectRegistryService(resolve(directory, 'projects.json')),
 		outbox = new CommentOutboxService(resolve(directory, 'outbox/comments.json')),
 		arbiter = new RepositoryArbiterService();
-	const connection = new NativeConnectionService().create(
+	const { authority, ...connection } = new NativeConnectionService().create(
 		{
 			origin,
 			onCacheStatus: (status) => windows.current?.client.emit('cache', status),
@@ -130,7 +131,9 @@ function desktopBackend() {
 	});
 	lifecycle.start();
 	const transport = new LocalTransportService();
-	return { shared: { ...stores, ...connection }, remote, lifecycle, transport };
+	const publisher = createTrackerOverviewPublisher({ authority, env: process.env });
+	publisher?.start();
+	return { shared: { ...stores, ...connection }, remote, lifecycle, transport, publisher };
 }
 
 /**
@@ -149,6 +152,7 @@ function appLifecycle(backend: Backend): void {
 		if (quitting) return;
 		quitting = true;
 		event.preventDefault();
+		backend.publisher?.stop();
 		void backend.lifecycle
 			.quit()
 			.then(() => backend.transport.close())

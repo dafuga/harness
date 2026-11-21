@@ -1,0 +1,68 @@
+{
+	"schemaVersion": 1,
+	"id": "project-overview-publisher",
+	"title": "Desktop background tracker overview publisher",
+	"kind": "headless",
+	"units": ["desktop.module.tracker-overview-publisher"],
+	"states": [
+		{
+			"id": "publish",
+			"title": "Verified owner publishes the display snapshot on each interval",
+			"coverage": "required",
+			"units": ["desktop.module.tracker-overview-publisher"]
+		},
+		{
+			"id": "absent",
+			"title": "No verified connection reads or publishes nothing",
+			"coverage": "required",
+			"units": ["desktop.module.tracker-overview-publisher"]
+		},
+		{
+			"id": "denied",
+			"title": "A refused owner stops publishing",
+			"coverage": "required",
+			"units": ["desktop.module.tracker-overview-publisher"]
+		},
+		{
+			"id": "race",
+			"title": "Stop or account change discards an in-flight flight",
+			"coverage": "required",
+			"units": ["desktop.module.tracker-overview-publisher"]
+		}
+	],
+	"tests": [
+		{
+			"id": "publisher-unit",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/services/tracker-overview-publisher.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 60000
+		},
+		{
+			"id": "publisher-admission",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/services/tracker-overview-publisher-admission.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 60000
+		},
+		{
+			"id": "publisher-wire",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test tests/e2e/project-overview-publisher.spec.ts --project=chromium --workers=1",
+			"cwd": "packages/desktop"
+		}
+	],
+	"evidence": [
+		{
+			"id": "assertions",
+			"kind": "assertions",
+			"states": ["publish", "absent", "denied", "race"],
+			"required": true,
+			"viewports": []
+		}
+	],
+	"viewports": []
+}

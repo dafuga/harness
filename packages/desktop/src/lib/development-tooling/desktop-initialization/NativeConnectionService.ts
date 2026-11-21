@@ -7,6 +7,24 @@ import {
 import { HostedHttpAdapter } from '../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 import { RemoteHttpProjectAdapter } from './remote-http-project-adapter/RemoteHttpProjectAdapter';
 import { NativeAuthService } from './NativeAuthService';
+import type { TrackerOverviewAuthority } from './tracker-overview-publisher/TrackerOverviewPublisher.types';
+
+/** The owner-only Hub endpoint the background publisher writes; only the native bearer may use it. */
+const TRACKER_OVERVIEW_PATH = '/api/tracker-overview';
+
+/** The publisher's view of the main-process session: verified owner, its version, and one PUT. */
+function overviewAuthority(
+	http: HostedHttpAdapter,
+	store: NativeSessionAdapter
+): TrackerOverviewAuthority {
+	return {
+		authorize: () => http.authorize(),
+		version: () => store.generation,
+		put: (credential, body) =>
+			http.request(TRACKER_OVERVIEW_PATH, credential, { method: 'PUT', body }).then(() => undefined)
+	};
+}
+
 export class NativeConnectionService {
 	create(options: NativeConnectionOptions, encryption: NativeEncryption) {
 		if (!options.origin) return {};
@@ -19,6 +37,7 @@ export class NativeConnectionService {
 		};
 		const http = new HostedHttpAdapter(transport);
 		return {
+			authority: overviewAuthority(http, store),
 			remote: new RemoteHttpProjectAdapter({
 				...transport,
 				cache: options.cache,
