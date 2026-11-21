@@ -9,6 +9,7 @@ import { registerCodexCommand } from './program/CodexCommand';
 import { registerBenchmarkCommand } from './program/BenchmarkCommand';
 import { registerAnalyticsCommand } from './program/AnalyticsCommand';
 import { registerActivityCommand } from './program/ActivityCommand';
+import { HarborInspectionCommand } from '../commands/projects-sessions/HarborInspectionCommand';
 import { registerReportCommand } from './program/ReportCommand';
 import { registerResourcesCommand } from './program/ResourcesCommand';
 import { Command } from 'commander';
@@ -39,6 +40,7 @@ export function buildProgram(): Command {
 
 	registerCodexCommand(program);
 	new ProviderSignInCommand().register(program);
+	new HarborInspectionCommand().register(program);
 	registerBenchmarkCommand(program);
 	registerResourcesCommand(program);
 	registerAnalyticsCommand(program);

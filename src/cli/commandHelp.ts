@@ -16,6 +16,13 @@ export const commandHelp = [
 		aliases: []
 	},
 	{
+		name: 'harbor',
+		signature: 'harbor',
+		description: 'Inspect Harbor using its installed CLI package.',
+		term: 'harbor',
+		aliases: []
+	},
+	{
 		name: 'benchmark',
 		signature: 'benchmark',
 		description: 'Compare subagents against fixed component contracts.',
