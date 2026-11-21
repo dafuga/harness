@@ -1,0 +1,43 @@
+{
+	"name": "completion-hooks",
+	"goal": "Run configured completion checks after successful managed orchestration and module execution, keep refused changes out of handoff, and preserve measured and Tracker-linked receipts.",
+	"createdAt": "2026-11-21T19:43:37.420Z",
+	"updatedAt": "2026-11-21T19:45:11.439Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T19:45:11.439Z",
+			"evidence": "Per-project named checks, provider-independent automatic gates, disposable module candidate, fresh test and LCOV receipts, real managed worker and orchestrator proof."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
