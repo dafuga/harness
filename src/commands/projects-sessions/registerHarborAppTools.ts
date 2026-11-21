@@ -1,5 +1,5 @@
 import type { Command } from 'commander';
-import type { RunHarborSdkTool, ScaffoldOptions } from './HarborInspectionCommand.types';
+import type { RunHarborSdkTool, ScaffoldArguments } from './HarborInspectionCommand.types';
 
 // Adds SDK app-development commands to the existing `harbor` group; the SDK owns all bundle logic.
 export function registerHarborAppTools(harbor: Command, run: RunHarborSdkTool): void {
@@ -11,24 +11,16 @@ export function registerHarborAppTools(harbor: Command, run: RunHarborSdkTool): 
 		.command('scaffold <template> <dir> [id] [name]')
 		.description('Create a Harbor app from an SDK template.')
 		.option('--mobile', 'Include the mobile target.')
-		.action(
-			(
-				template: string,
-				dir: string,
-				id: string | undefined,
-				name: string | undefined,
-				options: ScaffoldOptions
-			) => {
-				const fields = [template, dir];
-				if (id !== undefined) fields.push(id);
-				if (name !== undefined) fields.push(name);
-				const flags = options.mobile ? ['--mobile'] : [];
-				const args = fields.some((field) => field.startsWith('-'))
-					? [...flags, '--', ...fields]
-					: [...fields, ...flags];
-				return run(['scaffold', ...args], 'scaffold');
-			}
-		);
+		.action((...[template, dir, id, name, options]: ScaffoldArguments) => {
+			const fields = [template, dir];
+			if (id !== undefined) fields.push(id);
+			if (name !== undefined) fields.push(name);
+			const flags = options.mobile ? ['--mobile'] : [];
+			const args = fields.some((field) => field.startsWith('-'))
+				? [...flags, '--', ...fields]
+				: [...fields, ...flags];
+			return run(['scaffold', ...args], 'scaffold');
+		});
 	harbor
 		.command('check [dir]')
 		.description('Check a Harbor app with the installed SDK.')
