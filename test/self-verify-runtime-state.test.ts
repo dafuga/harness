@@ -21,7 +21,17 @@ const runtimeState = stores.flatMap((store) =>
 		(suffix) => `packages/hub/.wrangler/state/v3/${store}/metadata.sqlite${suffix}`
 	)
 );
-/** Not that state: beside it, ignored by Git, named like it, or in another package. */
+const wranglerOutputs = [
+	'packages/hub/.wrangler/cache/',
+	'packages/hub/.wrangler/state/',
+	'packages/hub/.wrangler/tmp/'
+];
+const wranglerFiles = [
+	...runtimeState,
+	`${wranglerOutputs[0]}bundle.js`,
+	`${wranglerOutputs[2]}bundle.js`
+];
+/** Check siblings, misleading names, ignored files, and the same directory in another package. */
 const undeclared = [
 	'.wrangler/state/v3/d1/metadata.sqlite',
 	'packages/desktop/.wrangler/state/v3/d1/metadata.sqlite',
@@ -29,7 +39,6 @@ const undeclared = [
 	'packages/hub/.env.local',
 	'packages/hub/.wrangler/deploy/config.json',
 	'packages/hub/.wrangler/state.json',
-	'packages/hub/.wrangler/tmp/bundle.js',
 	'packages/hub/.wranglerx/state/v3/d1/metadata.sqlite',
 	'packages/hub/metadata.sqlite',
 	'packages/hub/src/generated.ts',
@@ -62,22 +71,23 @@ async function hubSnapshot(extraTracked: string[] = []): Promise<SnapshotAdapter
 	return snapshot;
 }
 
-test('the local Cloudflare state of the Hub dev server is a declared output', async () => {
+test('the Hub dev server keeps local Cloudflare output inside the declared directories', async () => {
 	const snapshot = await hubSnapshot();
-	for (const path of runtimeState) await put(snapshot.directory, path);
+	for (const path of wranglerFiles) await put(snapshot.directory, path);
 	expect(await snapshot.drift()).toEqual({ mutated: [], added: [] });
 	expect(snapshot.misdeclared()).toEqual([]);
 });
 
-test('exactly that state is declared, and tracked state is rejected by the exported snapshot', async () => {
-	const about = declared().filter((output) => output.includes('wrangler'));
-	expect(about).toEqual(['packages/hub/.wrangler/state/']);
+test('only the declared Hub runtime directories are admitted and tracked files stay protected', async () => {
+	expect(declared().filter((output) => output.includes('wrangler'))).toEqual(wranglerOutputs);
 	expect((await hubSnapshot()).misdeclared()).toEqual([]);
-	const file = runtimeState[0];
-	const invalid = await hubSnapshot([file]);
-	expect(invalid.misdeclared()).toEqual([{ output: about[0], file }]);
-	await put(invalid.directory, file, 'modified tracked state');
-	expect((await invalid.drift()).mutated).toEqual([file]);
+	const files = wranglerOutputs.map((output) => `${output}tracked.txt`);
+	const invalid = await hubSnapshot(files);
+	expect(invalid.misdeclared()).toEqual(
+		wranglerOutputs.map((output, index) => ({ output, file: files[index] }))
+	);
+	for (const file of files) await put(invalid.directory, file, 'modified tracked output');
+	expect((await invalid.drift()).mutated).toEqual(files);
 });
 
 test('any other file a check leaves still fails: beside the state, ignored, or elsewhere', async () => {
