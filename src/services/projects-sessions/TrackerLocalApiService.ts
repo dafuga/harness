@@ -46,12 +46,11 @@ export class TrackerLocalApiService {
 
 	private read(parts: string[], query: Record<string, string>): Response | undefined {
 		switch (parts[0]) {
-			case 'items':
-				if (parts.length === 1) return trackerResponse(200, this.items.list(query));
-				if (parts.length === 2) return trackerResponse(200, this.items.get(parts[1]));
-				if (parts.length === 3 && parts[2] === 'history' && this.options.recurring)
-					return this.readHistory(parts[1], query.limit);
+			case 'items': {
+				const response = this.readItems(parts, query);
+				if (response) return response;
 				break;
+			}
 			case 'check':
 				return trackerResponse(
 					200,
@@ -69,6 +68,14 @@ export class TrackerLocalApiService {
 		}
 		const run = readTrackerRunEndpoint(parts, query, { ...this.options, items: this.items });
 		return run === undefined ? undefined : trackerResponse(200, run);
+	}
+
+	private readItems(parts: string[], query: Record<string, string>): Response | undefined {
+		if (parts.length === 1) return trackerResponse(200, this.items.list(query));
+		if (parts.length === 2) return trackerResponse(200, this.items.get(parts[1]));
+		if (parts.length === 3 && parts[2] === 'history' && this.options.recurring)
+			return this.readHistory(parts[1], query.limit);
+		return undefined;
 	}
 
 	private readHistory(id: string, rawLimit?: string): Response {
