@@ -2,7 +2,7 @@
 	"name": "tracker-cutover-cli",
 	"goal": "Compare two quiesced Tracker SQLite snapshots and their pending sync operations through the shared Harness CLI.",
 	"createdAt": "2026-11-21T15:12:54.186Z",
-	"updatedAt": "2026-11-21T15:12:54.269Z",
+	"updatedAt": "2026-11-21T15:17:10.391Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -17,7 +17,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T15:17:10.391Z",
+			"evidence": "The native CLI subcommand passes explicit local backup paths and selected sync-link modes into TrackerSnapshotAdapter. It emits only the comparison result on stdout, and separates mismatch from unverified input."
 		},
 		{
 			"id": "test",
