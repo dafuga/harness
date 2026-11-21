@@ -60,3 +60,22 @@ export interface TrackerItemMutationPlan<Receipt extends object = object> {
 	/** The caller may persist this alongside the operation in one journal transaction. */
 	receipt?: Receipt;
 }
+
+export interface TrackerItemChange {
+	fields: TrackerItemInput;
+	appendNote?: unknown;
+}
+
+export type TrackerItemTransition = (
+	item: TrackerItemSnapshot,
+	body: TrackerItemInput,
+	context: TrackerItemMutationContext
+) => TrackerItemChange;
+
+export interface TrackerDuplicateProbe {
+	text: string;
+	agent?: unknown;
+	excludeId?: string;
+	force?: unknown;
+	askingDaniel?: boolean;
+}

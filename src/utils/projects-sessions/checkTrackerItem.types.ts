@@ -15,7 +15,7 @@ export interface TrackerMatchRow {
 }
 
 export interface TrackerMatchOptions {
-	readonly agent?: string | null;
+	readonly agent?: unknown;
 	readonly excludeId?: string;
 }
 
@@ -45,3 +45,5 @@ export interface TrackerDuplicateDetails {
 	code: 'ignored_duplicate' | 'open_duplicate';
 	matches: TrackerItemMatch[];
 }
+
+export type TrackerCandidateRow = TrackerMatchRow & { title: string; status: string };
