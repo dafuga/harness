@@ -37,6 +37,13 @@ export const commandHelp = [
 		aliases: []
 	},
 	{
+		name: 'projects',
+		signature: 'projects',
+		description: 'Read local Harness project cards.',
+		term: 'projects',
+		aliases: []
+	},
+	{
 		name: 'report',
 		signature: 'report [args...]',
 		description: 'Record media reports and serve the website.',
