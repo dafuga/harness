@@ -2,7 +2,7 @@
 	"name": "tracker-notification-delivery",
 	"goal": "Prove legacy callback identity, durable webhook retry, send-time eligibility, grouped quiet-hour delivery and reminder transitions using synthetic destinations.",
 	"createdAt": "2026-11-21T15:45:05.782Z",
-	"updatedAt": "2026-11-21T16:16:15.817Z",
+	"updatedAt": "2026-11-21T16:20:34.249Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T16:20:34.249Z",
+			"evidence": "c4a9f64c1e passed all 12 unchanged cases. MB2 retained output and matcher assertions for the four declared delivery states and matched 19 pinned legacy payloads. SQLite replay preserved one receipt after a rolled-back acknowledgement."
 		},
 		{
 			"id": "verify",
