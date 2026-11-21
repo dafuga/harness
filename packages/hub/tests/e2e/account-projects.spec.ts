@@ -88,6 +88,18 @@ test('the owner sees the Project overview link on /projects and it opens the ove
 	expect(overview.calls.every((call) => call.query === '')).toBe(true);
 });
 
+test('the signed-in Projects link on /tracker-overview opens the /projects dashboard', async ({
+	page
+}) => {
+	await overviewFixture(page, 'ready');
+	await page.goto('/tracker-overview');
+	const projects = page.getByRole('link', { name: 'Projects', exact: true });
+	await expect(projects).toBeVisible();
+	await projects.click();
+	await expect(page).toHaveURL(/\/projects$/);
+	await expect(page.getByRole('heading', { name: 'Shared projects' })).toBeVisible();
+});
+
 test('an unavailable owner read still offers the link on /projects', async ({
 	page,
 	browserErrors,
