@@ -29,7 +29,8 @@ function bearerOf(request: IncomingMessage): string | null {
 async function answer(
 	request: IncomingMessage,
 	response: ServerResponse,
-	records: HubSpyRecord[]
+	records: HubSpyRecord[],
+	readsDenied: boolean
 ): Promise<void> {
 	const path = request.url ?? '';
 	const bearer = bearerOf(request);
@@ -47,6 +48,14 @@ async function answer(
 		if (actor?.id !== OWNER.id) return send(response, actor ? 403 : 401, {});
 		return send(response, 204);
 	}
+	if (request.method === 'GET' && path === '/api/tracker-overview') {
+		if (readsDenied || actor?.id !== OWNER.id) return send(response, actor ? 403 : 401, {});
+		const previous = records.findLast(
+			(entry) => entry.method === 'PUT' && entry.bearer === OWNER.token
+		);
+		if (!previous) return send(response, 503, { status: 'unavailable' });
+		return send(response, 200, JSON.parse(previous.body));
+	}
 	return send(response, 404, {});
 }
 
@@ -61,8 +70,9 @@ function send(response: ServerResponse, status: number, body?: unknown): void {
  */
 export async function startHubSpy(): Promise<HubSpy> {
 	const records: HubSpyRecord[] = [];
+	let readsDenied = false;
 	const server: Server = createServer((request, response) => {
-		void answer(request, response, records);
+		void answer(request, response, records, readsDenied);
 	});
 	await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
 	const address = server.address();
@@ -70,6 +80,9 @@ export async function startHubSpy(): Promise<HubSpy> {
 	return {
 		origin: `http://127.0.0.1:${address.port}`,
 		records,
+		denyOverviewReads() {
+			readsDenied = true;
+		},
 		close: () => new Promise<void>((resolve) => server.close(() => resolve()))
 	};
 }

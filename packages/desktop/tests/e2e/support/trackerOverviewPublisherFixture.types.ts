@@ -9,5 +9,6 @@ export type HubSpyRecord = {
 export type HubSpy = {
 	origin: string;
 	records: HubSpyRecord[];
+	denyOverviewReads(): void;
 	close(): Promise<void>;
 };

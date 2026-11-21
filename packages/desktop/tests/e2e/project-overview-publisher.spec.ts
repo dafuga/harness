@@ -74,7 +74,10 @@ async function capturePublishedOverview(app: ElectronApplication) {
 	}, size);
 	const page = await app.firstWindow();
 	await page.getByRole('link', { name: 'Project Overview', exact: true }).click();
-	await expect(page.getByText('fixture-needs', { exact: true }).first()).toBeVisible();
+	await expect(page.getByText('fixture-needs', { exact: true }).first()).toBeVisible({
+		timeout: 25_000
+	});
+	if (!evidenceRequested()) return page;
 	await expect.poll(() => page.evaluate(() => innerWidth)).toBe(size.width);
 	await page.evaluate(async () => {
 		await document.fonts.ready;
@@ -101,6 +104,7 @@ async function capturePublishedOverview(app: ElectronApplication) {
 		},
 		await page.screenshot({ animations: 'disabled', caret: 'hide', scale: 'css' })
 	);
+	return page;
 }
 
 test('the verified owner publishes the display snapshot over the real wire', async () => {
@@ -122,7 +126,20 @@ test('the verified owner publishes the display snapshot over the real wire', asy
 		const snapshot = JSON.parse(put?.body ?? 'null') as { status?: string };
 		expect(snapshot.status).toBe('ready');
 		for (const sentinel of LEAK_SENTINELS) expect(put?.body ?? '').not.toContain(sentinel);
-		if (evidenceRequested()) await capturePublishedOverview(app);
+		const page = await capturePublishedOverview(app);
+		expect(
+			hub.records.some(
+				(record) =>
+					record.method === 'GET' &&
+					record.bearer === OWNER.token &&
+					record.path === '/api/tracker-overview'
+			)
+		).toBe(true);
+		hub.denyOverviewReads();
+		await page.evaluate(() => window.dispatchEvent(new Event('focus')));
+		await expect(page.getByText('fixture-needs', { exact: true })).toHaveCount(0, {
+			timeout: 25_000
+		});
 	} finally {
 		await app.close();
 		await hub.close();
@@ -148,6 +165,20 @@ test('a signed-in non-owner is never read for and never sent to', async () => {
 		const readsAfterCheck = (await trackerRequests(app)).length;
 		await new Promise((done) => setTimeout(done, 2_000));
 		expect(hub.records.some((record) => record.method === 'PUT')).toBe(false);
+		expect((await trackerRequests(app)).length).toBe(readsAfterCheck);
+		const page = await app.firstWindow();
+		await page.getByRole('link', { name: 'Project Overview', exact: true }).click();
+		await expect(page.getByRole('alert')).toContainText('The tracker could not be reached', {
+			timeout: 25_000
+		});
+		expect(
+			hub.records.some(
+				(record) =>
+					record.method === 'GET' &&
+					record.bearer === OTHER.token &&
+					record.path === '/api/tracker-overview'
+			)
+		).toBe(true);
 		expect((await trackerRequests(app)).length).toBe(readsAfterCheck);
 	} finally {
 		await app.close();
