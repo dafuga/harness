@@ -2,7 +2,7 @@
 	"name": "website-first-pending-copy",
 	"goal": "Visitors see Mac app coming soon while the Hub archive is unavailable",
 	"createdAt": "2026-11-21T12:04:09.385Z",
-	"updatedAt": "2026-11-21T12:16:21.583Z",
+	"updatedAt": "2026-11-21T12:24:40.166Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -46,7 +46,9 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T12:24:40.166Z",
+			"evidence": "The compiled Workerd homepage passes the nine unchanged browser cases at 91de9f3246. All pending and available home states also pass in the 70-case Hub matrix at 43f4b86d1d, sealed capture e064d0674bf5."
 		}
 	],
 	"evaluators": [
