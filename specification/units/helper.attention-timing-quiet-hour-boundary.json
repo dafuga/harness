@@ -1,0 +1,106 @@
+{
+	"schemaVersion": 1,
+	"id": "helper.attention-timing-quiet-hour-boundary",
+	"uid": "u_dhzfrqpvy4",
+	"kind": "helper",
+	"title": "quietHourBoundary",
+	"responsibility": "Owns the quietHourBoundary helper unit.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/helpers/attention-timing/quietHourBoundary.ts"],
+		"symbols": ["quietHourBoundary"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "quietHourBoundary.atMs",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "quietHourBoundary.quiet",
+				"type": "QuietHours | null | undefined",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "quietHourBoundary",
+				"type": "number"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "quietHourBoundary",
+				"inputs": [
+					{
+						"name": "quietHourBoundary.atMs",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "quietHourBoundary.quiet",
+						"type": "QuietHours | null | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "quietHourBoundary",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "helper.attention-timing-attention-timing-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-clock-minutes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-is-quiet-hour",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-wall-clock-to-epoch-ms",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-zoned-wall-clock",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/helpers/attention-timing/quietHourBoundary.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/helpers/attention-timing/quietHourBoundary.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

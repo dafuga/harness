@@ -175,7 +175,30 @@
 			"TrackerOperationRepository",
 			"TrackerSchemaAdapter",
 			"nextTrackerClock",
-			"TrackerPersistenceService"
+			"TrackerPersistenceService",
+			"TrackerCutoverCommand",
+			"TrackerLocalApiService",
+			"TrackerRehearsalService",
+			"classifyResourceHost",
+			"scoreResourceHost",
+			"rankResourcePlacement",
+			"admitResourceHost",
+			"chooseResourceHost",
+			"TrackerRunReadRepository",
+			"TrackerSpokeLoopService",
+			"quietHourBoundary",
+			"isQuietHour",
+			"zonedWallClock",
+			"wallClockToEpochMs",
+			"nextReminderAt",
+			"nextReminderSlotAt",
+			"nextAttentionBatchAt",
+			"groupAttentionLines",
+			"clockMinutes",
+			"planDigestAlertTick",
+			"TrackerNotificationService",
+			"planGithubIssueIntake",
+			"TrackerNotificationSourceRepository"
 		]
 	},
 	"contract": {
@@ -309,6 +332,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "command.projects-sessions-tracker-cutover",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.resources",
 			"via": "reexport",
 			"origin": "derived"
@@ -350,6 +378,31 @@
 		},
 		{
 			"unit": "function.development-tooling-stale-build",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-admit-resource-host",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-choose-resource-host",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-classify-resource-host",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-rank-resource-placement",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-score-resource-host",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -519,7 +572,62 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "helper.attention-timing-clock-minutes",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-group-attention-lines",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-is-quiet-hour",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-next-attention-batch-at",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-next-reminder-at",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-next-reminder-slot-at",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-plan-digest-alert-tick",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-quiet-hour-boundary",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-wall-clock-to-epoch-ms",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-zoned-wall-clock",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "helper.module-system-module-resource-location",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.planning-collaboration-plan-github-issue-intake",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -599,7 +707,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.projects-sessions-tracker-notification-source",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.projects-sessions-tracker-operation",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-run-read",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -640,6 +758,11 @@
 		},
 		{
 			"unit": "service.agents-providers-module-task-worker",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-tracker-dispatcher",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -764,7 +887,32 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-adapter-poll",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-local-api",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-notification",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-rehearsal",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-spoke-loop",
 			"via": "reexport",
 			"origin": "derived"
 		},

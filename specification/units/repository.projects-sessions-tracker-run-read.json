@@ -1,0 +1,152 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.projects-sessions-tracker-run-read",
+	"uid": "u_lahmutfc24",
+	"kind": "repository",
+	"title": "TrackerRunReadRepository",
+	"responsibility": "Owns the TrackerRunReadRepository persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/projects-sessions/TrackerRunReadRepository.ts",
+			"src/repositories/projects-sessions/TrackerRunReadRepository.types.ts"
+		],
+		"symbols": [
+			"TrackerRunReadRepository",
+			"TrackerRunReadRepository.constructor",
+			"TrackerRunReadRepository.list",
+			"TrackerRunReadRepository.finished",
+			"TrackerRunFilters",
+			"TrackerListedRun",
+			"TrackerRunTable"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerRunReadRepository.constructor.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "TrackerRunReadRepository.constructor.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerRunReadRepository.list.itemId",
+				"type": "unknown",
+				"required": false
+			},
+			{
+				"name": "TrackerRunReadRepository.list.limit",
+				"type": "unknown",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerRunReadRepository.list",
+				"type": "TrackerListedRun[]"
+			},
+			{
+				"name": "TrackerRunReadRepository.finished",
+				"type": "TrackerListedRun[]"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerRunReadRepository.list",
+				"inputs": [
+					{
+						"name": "TrackerRunReadRepository.list.itemId",
+						"type": "unknown",
+						"required": false
+					},
+					{
+						"name": "TrackerRunReadRepository.list.limit",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerRunReadRepository.list",
+						"type": "TrackerListedRun[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRunReadRepository.finished",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerRunReadRepository.finished",
+						"type": "TrackerListedRun[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerRunReadRepository.constructor",
+				"inputs": [
+					{
+						"name": "TrackerRunReadRepository.constructor.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "TrackerRunReadRepository.constructor.node",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerRunReadRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-tracker-run-report",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/projects-sessions/TrackerRunReadRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/projects-sessions/TrackerRunReadRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

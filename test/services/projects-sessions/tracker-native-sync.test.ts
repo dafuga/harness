@@ -1,13 +1,13 @@
 import { DatabaseSync } from 'node:sqlite';
 import { expect, test } from 'vitest';
+import { TrackerItemReadRepository } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerSyncAuthService } from '../../../src/services/networking-security/TrackerSyncAuthService';
 import { TrackerHubSyncService } from '../../../src/services/projects-sessions/TrackerHubSyncService';
+import { TrackerLocalApiService } from '../../../src/services/projects-sessions/TrackerLocalApiService';
 import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
 import { TrackerSpokeSyncService } from '../../../src/services/projects-sessions/TrackerSpokeSyncService';
 import type { TrackerSpokeTransport } from '../../../src/services/projects-sessions/TrackerSpokeSyncService.types';
-import { planTrackerItemMutation } from '../../../src/utils/projects-sessions/planTrackerItemMutation';
 
-const item = { id: 'fixture-item', title: 'Fixture task', status: 'open' };
 const fixtureSecret = 'synthetic-tracker-wire-secret';
 
 function nativeStore(node: string) {
@@ -16,7 +16,10 @@ function nativeStore(node: string) {
 		now: () => 5000,
 		databaseId: () => `fixture-${node}`
 	});
-	return { database, store };
+	const api = new TrackerLocalApiService(store, new TrackerItemReadRepository(database), {
+		now: () => 5000
+	});
+	return { api, database, store };
 }
 
 function wire(hub: TrackerHubSyncService): TrackerSpokeTransport {
@@ -46,18 +49,12 @@ function spoke(store: TrackerPersistenceService, transport: TrackerSpokeTranspor
 	});
 }
 
-function editWhileDisconnected(alpha: TrackerPersistenceService, beta: TrackerPersistenceService) {
-	alpha.appendLocal(
-		planTrackerItemMutation(
-			{ action: 'note', item, body: { text: 'Alpha note' } },
-			{ node: alpha.node, now: 5000, candidates: [] }
-		)
-	);
-	beta.appendLocal(
-		planTrackerItemMutation(
-			{ action: 'update', item, body: { owner: 'fixture-owner', append_note: 'Beta note' } },
-			{ node: beta.node, now: 5000, candidates: [] }
-		)
+function local(api: TrackerLocalApiService, path: string, method = 'GET', body?: object) {
+	return api.handle(
+		new Request('http://tracker-fixture.invalid' + path, {
+			method,
+			body: JSON.stringify(body)
+		})
 	);
 }
 
@@ -82,12 +79,10 @@ test('native hub and two native spokes converge after a lost receipt and offline
 			return reply;
 		});
 		const betaLink = spoke(beta.store, transport);
-		alpha.store.appendLocal(
-			planTrackerItemMutation(
-				{ action: 'add', itemId: item.id, body: { title: item.title } },
-				{ node: alpha.store.node, now: 5000, candidates: [] }
-			)
-		);
+		const created = await local(alpha.api, '/items', 'POST', { title: 'Fixture task' });
+		expect(created.status).toBe(201);
+		const { id } = await created.json();
+		const path = '/items/' + id;
 		await expect(alphaLink.push()).rejects.toThrow('fixture lost push receipt');
 		expect(central.store.maxSeq()).toBe(1);
 		expect(alpha.store.countLocalOpsSince(Number(alpha.store.getMeta('pushed_seq')))).toBe(1);
@@ -95,20 +90,24 @@ test('native hub and two native spokes converge after a lost receipt and offline
 		expect(central.store.maxSeq()).toBe(1);
 		await betaLink.pull();
 
-		editWhileDisconnected(alpha.store, beta.store);
+		const [alphaEdit, betaEdit] = await Promise.all([
+			local(alpha.api, path + '/note', 'POST', { text: 'Alpha note' }),
+			local(beta.api, path, 'PATCH', { owner: 'fixture-owner', append_note: 'Beta note' })
+		]);
+		expect([alphaEdit.status, betaEdit.status]).toEqual([200, 200]);
 		await Promise.all([alphaLink.push(), betaLink.push()]);
 		await Promise.all([alphaLink.pull(), betaLink.pull()]);
-		for (const { database, store } of [alpha, beta, central]) {
+		for (const { api, store } of [alpha, beta, central]) {
 			expect(store.maxSeq()).toBe(3);
-			expect(database.prepare('SELECT title, owner, status FROM items').get()).toEqual({
+			expect(await (await local(api, path)).json()).toMatchObject({
 				title: 'Fixture task',
 				owner: 'fixture-owner',
-				status: 'open'
+				status: 'open',
+				notes_log: [
+					{ node: 'alpha', text: 'Alpha note' },
+					{ node: 'beta', text: 'Beta note' }
+				]
 			});
-			expect(database.prepare('SELECT node, text FROM item_notes ORDER BY hlc').all()).toEqual([
-				{ node: 'alpha', text: 'Alpha note' },
-				{ node: 'beta', text: 'Beta note' }
-			]);
 		}
 	} finally {
 		alpha.database.close();

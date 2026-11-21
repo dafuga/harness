@@ -1,0 +1,134 @@
+{
+	"schemaVersion": 1,
+	"id": "function.agents-providers-tracker-run-report",
+	"uid": "u_lst54o5ptr",
+	"kind": "function",
+	"title": "trackerRunReport",
+	"responsibility": "Summarize completed Tracker attempts for the legacy model report and historical ladder learning.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/agents-providers/trackerRunReport.ts",
+			"src/utils/agents-providers/trackerRunReport.types.ts"
+		],
+		"symbols": [
+			"trackerModelHistory",
+			"trackerRunReport",
+			"TrackerRunOutcome",
+			"TrackerRunRow",
+			"TrackerHistoryScope"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "trackerModelHistory.rows",
+				"type": "readonly TrackerRunRow[]",
+				"required": true
+			},
+			{
+				"name": "trackerModelHistory.scope",
+				"type": "TrackerHistoryScope",
+				"required": true
+			},
+			{
+				"name": "trackerModelHistory.minSamples",
+				"type": "number",
+				"required": false,
+				"default": 3
+			},
+			{
+				"name": "trackerRunReport.rows",
+				"type": "readonly TrackerRunRow[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerModelHistory",
+				"type": "TrackerModelHistory"
+			},
+			{
+				"name": "trackerRunReport",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerModelHistory",
+				"inputs": [
+					{
+						"name": "trackerModelHistory.rows",
+						"type": "readonly TrackerRunRow[]",
+						"required": true
+					},
+					{
+						"name": "trackerModelHistory.scope",
+						"type": "TrackerHistoryScope",
+						"required": true
+					},
+					{
+						"name": "trackerModelHistory.minSamples",
+						"type": "number",
+						"required": false,
+						"default": 3
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerModelHistory",
+						"type": "TrackerModelHistory"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerRunReport",
+				"inputs": [
+					{
+						"name": "trackerRunReport.rows",
+						"type": "readonly TrackerRunRow[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerRunReport",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-pick-tracker-model",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/agents-providers/trackerRunReport.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/agents-providers/trackerRunReport.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
