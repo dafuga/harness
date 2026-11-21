@@ -1,0 +1,126 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-watchdog-recovery",
+	"uid": "u_5lrhbf453w",
+	"kind": "service",
+	"title": "WatchdogRecoveryService",
+	"responsibility": "Decides whether a missing Tracker run may be relaunched and whether an answered run may resume.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/WatchdogRecoveryService.ts",
+			"src/services/projects-sessions/WatchdogRecoveryService.types.ts"
+		],
+		"symbols": [
+			"WatchdogRecoveryService",
+			"WatchdogRecoveryService.plan",
+			"WatchdogRecoveryService.resume",
+			"RecoveryItem",
+			"PeerWatchdogSample",
+			"RecoverySnapshot",
+			"RecoveryDecision",
+			"AnsweredItem",
+			"ResumeSnapshot",
+			"ResumeDecision"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "WatchdogRecoveryService.plan.input",
+				"type": "RecoverySnapshot",
+				"required": true
+			},
+			{
+				"name": "WatchdogRecoveryService.resume.input",
+				"type": "ResumeSnapshot",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "WatchdogRecoveryService.plan",
+				"type": "RecoveryDecision | null",
+				"description": "Recovery status and refusal reason where applicable. Null means excluded from this scan or no verified pane inventory."
+			},
+			{
+				"name": "WatchdogRecoveryService.resume",
+				"type": "ResumeDecision | null",
+				"description": "Original run ID, item reopen decision, and fresh monotonic resumption time, or null when the run is ineligible."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none",
+		"operations": [
+			{
+				"name": "WatchdogRecoveryService.plan",
+				"inputs": [
+					{
+						"name": "WatchdogRecoveryService.plan.input",
+						"type": "RecoverySnapshot",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WatchdogRecoveryService.plan",
+						"type": "RecoveryDecision | null",
+						"description": "Recovery status and refusal reason where applicable. Null means excluded from this scan or no verified pane inventory."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none"
+			},
+			{
+				"name": "WatchdogRecoveryService.resume",
+				"inputs": [
+					{
+						"name": "WatchdogRecoveryService.resume.input",
+						"type": "ResumeSnapshot",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WatchdogRecoveryService.resume",
+						"type": "ResumeDecision | null",
+						"description": "Original run ID, item reopen decision, and fresh monotonic resumption time, or null when the run is ineligible."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-watchdog-pane",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-watchdog-recovery-service-watchdog-recovery-sessions",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/WatchdogRecoveryService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/WatchdogRecoveryService.ts"
+			}
+		]
+	},
+	"scenarios": ["tracker-watchdog-parity"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

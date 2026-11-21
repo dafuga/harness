@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"id": "tracker-watchdog-parity",
+	"title": "Tracker watchdog decisions on synthetic snapshots",
+	"kind": "headless",
+	"units": [
+		"service.projects-sessions-watchdog-idle",
+		"service.projects-sessions-watchdog-pane",
+		"service.projects-sessions-watchdog-recovery",
+		"service.projects-sessions-watchdog-recovery-service-watchdog-recovery-sessions",
+		"service.projects-sessions-watchdog-startup"
+	],
+	"states": [
+		{
+			"id": "pane",
+			"title": "Interprets empty and busy composers, startup dialogs, and manual handoff panes.",
+			"coverage": "required",
+			"units": ["service.projects-sessions-watchdog-pane"]
+		},
+		{
+			"id": "idle",
+			"title": "Nudges eligible panes once and escalates, while protecting other sessions.",
+			"coverage": "required",
+			"units": ["service.projects-sessions-watchdog-idle"]
+		},
+		{
+			"id": "startup",
+			"title": "Proposes trust only for an eligible owned launch and tracks startup alerts.",
+			"coverage": "required",
+			"units": ["service.projects-sessions-watchdog-startup"]
+		},
+		{
+			"id": "recovery",
+			"title": "Protects live runs and recovers missing runs under the current holds.",
+			"coverage": "required",
+			"units": [
+				"service.projects-sessions-watchdog-recovery",
+				"service.projects-sessions-watchdog-recovery-service-watchdog-recovery-sessions"
+			]
+		},
+		{
+			"id": "resume",
+			"title": "Reopens an answered run with its original live pane.",
+			"coverage": "required",
+			"units": ["service.projects-sessions-watchdog-recovery"]
+		}
+	],
+	"tests": [
+		{
+			"id": "pane-methods",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/services/projects-sessions/watchdog-pane.test.ts",
+			"timeoutMs": 60000
+		},
+		{
+			"id": "idle-methods",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/services/projects-sessions/watchdog-idle.test.ts",
+			"timeoutMs": 60000
+		},
+		{
+			"id": "startup-methods",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/services/projects-sessions/watchdog-startup.test.ts",
+			"timeoutMs": 60000
+		},
+		{
+			"id": "recovery-methods",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/services/projects-sessions/watchdog-recovery.test.ts",
+			"timeoutMs": 60000
+		}
+	],
+	"evidence": [],
+	"viewports": []
+}

@@ -1,4 +1,9 @@
-import type { StartupPromptKind, WatchdogScan } from './WatchdogPaneService.types';
+import type {
+	StartupPromptKind,
+	WatchdogItem,
+	WatchdogRun,
+	WatchdogScan
+} from './WatchdogPaneService.types';
 
 export interface StartupTrustEvidence {
 	/** The launch workspace's verified real path. */
@@ -43,4 +48,12 @@ export type StartupDecision =
 export interface StartupPlan {
 	actions: StartupDecision[];
 	clearAlerts: { id: string; clearQuestion: boolean }[];
+}
+
+export interface StartupCandidates {
+	items: ReadonlyMap<string, WatchdogItem>;
+	running: ReadonlyMap<string | null | undefined, WatchdogRun>;
+	previous: ReadonlyMap<string, StartupAlert>;
+	pending: Set<string>;
+	actions: Map<string, StartupDecision>;
 }

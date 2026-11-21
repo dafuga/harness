@@ -1,0 +1,148 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-watchdog-recovery-service-watchdog-recovery-sessions",
+	"uid": "u_uydo5fzp4r",
+	"kind": "service",
+	"title": "watchdogRecoverySessions",
+	"responsibility": "Evaluates whether local panes, handoff aliases or a fresh peer signal protect a Tracker run.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/watchdog-recovery-service/watchdogRecoverySessions.ts"
+		],
+		"symbols": ["recoveryGrace", "stoppedAliases", "hasLiveSession"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "stoppedAliases.input",
+				"type": "RecoverySnapshot",
+				"required": true
+			},
+			{
+				"name": "stoppedAliases.panes",
+				"type": "readonly WatchdogPane[]",
+				"required": true
+			},
+			{
+				"name": "hasLiveSession.input",
+				"type": "RecoverySnapshot",
+				"required": true
+			},
+			{
+				"name": "hasLiveSession.panes",
+				"type": "readonly WatchdogPane[]",
+				"required": true
+			},
+			{
+				"name": "hasLiveSession.stopped",
+				"type": "readonly string[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "recoveryGrace",
+				"type": "unknown"
+			},
+			{
+				"name": "stoppedAliases",
+				"type": "string[]",
+				"description": "Manual aliases safe to disregard because all matching panes ended or were handed off quietly."
+			},
+			{
+				"name": "hasLiveSession",
+				"type": "boolean",
+				"description": "True when an active run, pane, or alias provides evidence that the item still has a live session."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none",
+		"operations": [
+			{
+				"name": "stoppedAliases",
+				"inputs": [
+					{
+						"name": "stoppedAliases.input",
+						"type": "RecoverySnapshot",
+						"required": true
+					},
+					{
+						"name": "stoppedAliases.panes",
+						"type": "readonly WatchdogPane[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "stoppedAliases",
+						"type": "string[]",
+						"description": "Manual aliases safe to disregard because all matching panes ended or were handed off quietly."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none"
+			},
+			{
+				"name": "hasLiveSession",
+				"inputs": [
+					{
+						"name": "hasLiveSession.input",
+						"type": "RecoverySnapshot",
+						"required": true
+					},
+					{
+						"name": "hasLiveSession.panes",
+						"type": "readonly WatchdogPane[]",
+						"required": true
+					},
+					{
+						"name": "hasLiveSession.stopped",
+						"type": "readonly string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hasLiveSession",
+						"type": "boolean",
+						"description": "True when an active run, pane, or alias provides evidence that the item still has a live session."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-watchdog-pane",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-watchdog-recovery",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/watchdog-recovery-service/watchdogRecoverySessions.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/watchdog-recovery-service/watchdogRecoverySessions.ts"
+			}
+		]
+	},
+	"scenarios": ["tracker-watchdog-parity"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
