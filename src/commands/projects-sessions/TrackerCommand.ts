@@ -5,6 +5,7 @@ import { existsSync } from 'node:fs';
 import { constants, homedir } from 'node:os';
 import { isAbsolute, join } from 'node:path';
 import { TrackerCutoverCommand } from './TrackerCutoverCommand';
+import { TrackerRehearsalCommand } from './TrackerRehearsalCommand';
 
 export class TrackerCommand {
 	register(program: Command): void {
@@ -12,7 +13,11 @@ export class TrackerCommand {
 			.command('tracker [args...]')
 			.description('Use the shared Tracker service.')
 			.allowUnknownOption()
-			.action((args: string[]) => {
+			.action(async (args: string[]) => {
+				if (args[0] === 'rehearse') {
+					process.exitCode = await new TrackerRehearsalCommand().run(args.slice(1));
+					return;
+				}
 				process.exitCode = this.run(args);
 			});
 	}
