@@ -4,8 +4,8 @@
 	"uid": "u_pl4cmnt2aa",
 	"kind": "function",
 	"title": "resourcePlacementTypes",
-	"responsibility": "Owns the resourcePlacementTypes shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Declares the placement vocabulary types and the default placement policy shared by the placement functions.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -43,12 +43,13 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "defaultResourcePlacementPolicy",
-				"type": "ResourcePlacementPolicy"
+				"type": "ResourcePlacementPolicy",
+				"description": "Tracker-equivalent placement defaults: five minutes to offline, 4 GiB kept free on the shared box and 2 GiB elsewhere."
 			}
 		],
 		"errors": [],

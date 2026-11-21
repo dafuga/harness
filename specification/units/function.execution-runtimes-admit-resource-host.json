@@ -55,22 +55,26 @@
 					{
 						"name": "admitResourceHost.host",
 						"type": "ResourceHost",
-						"required": true
+						"required": true,
+						"description": "The computer that may start the work."
 					},
 					{
 						"name": "admitResourceHost.work",
 						"type": "ResourceWork",
-						"required": true
+						"required": true,
+						"description": "The work request, including any explicit due computer."
 					},
 					{
 						"name": "admitResourceHost.candidate",
 						"type": "ResourceCandidate",
-						"required": true
+						"required": true,
+						"description": "The scored candidate for this computer from scoreResourceHost."
 					},
 					{
 						"name": "admitResourceHost.reservations",
 						"type": "ResourceReservation[]",
-						"required": true
+						"required": true,
+						"description": "Sessions already reserved in this placement round, by computer and project."
 					}
 				],
 				"outputs": [

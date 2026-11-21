@@ -37,7 +37,8 @@
 					{
 						"name": "chooseResourceHost.input",
 						"type": "{ hosts: ResourceHost[]; work: ResourceWork; reservations: ResourceReservation[]; policy: ResourcePlacementPolicy; now: number; }",
-						"required": true
+						"required": true,
+						"description": "One placement round: computers, work, reservations, policy and the current time."
 					}
 				],
 				"outputs": [

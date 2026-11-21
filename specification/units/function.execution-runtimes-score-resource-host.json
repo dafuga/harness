@@ -55,22 +55,26 @@
 					{
 						"name": "scoreResourceHost.host",
 						"type": "ResourceHost",
-						"required": true
+						"required": true,
+						"description": "The computer to score, with its snapshot, workload and launcher state."
 					},
 					{
 						"name": "scoreResourceHost.work",
 						"type": "ResourceWork",
-						"required": true
+						"required": true,
+						"description": "The work request: kind, memory, project, provider and whether it is heavy or light."
 					},
 					{
 						"name": "scoreResourceHost.classification",
 						"type": "ResourceHostClassification",
-						"required": true
+						"required": true,
+						"description": "The result of classifyResourceHost for this computer."
 					},
 					{
 						"name": "scoreResourceHost.policy",
 						"type": "ResourcePlacementPolicy",
-						"required": true
+						"required": true,
+						"description": "Keep-free RAM by role and the other placement rules."
 					}
 				],
 				"outputs": [

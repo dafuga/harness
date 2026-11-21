@@ -55,22 +55,26 @@
 					{
 						"name": "rankResourcePlacement.hosts",
 						"type": "ResourceHost[]",
-						"required": true
+						"required": true,
+						"description": "Every computer to consider for the work."
 					},
 					{
 						"name": "rankResourcePlacement.work",
 						"type": "ResourceWork",
-						"required": true
+						"required": true,
+						"description": "The work request to place."
 					},
 					{
 						"name": "rankResourcePlacement.policy",
 						"type": "ResourcePlacementPolicy",
-						"required": true
+						"required": true,
+						"description": "Stale limit and reserve rules."
 					},
 					{
 						"name": "rankResourcePlacement.now",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Current time in milliseconds."
 					}
 				],
 				"outputs": [
