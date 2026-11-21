@@ -10,12 +10,27 @@
 	import ProjectCreate from '../components/projects-sessions/ProjectCreate.svelte';
 	import ProjectList from '../components/projects-sessions/ProjectList.svelte';
 	import { browserContext } from '../utils/development-tooling/browserContext';
+	import { readOverview } from './tracker-overview/overviewClient';
 	const { session, projects } = browserContext();
 	let list = $state<ProjectSummary[] | null>(null);
 	let error = $state('');
 	/** Who the server names; the same person answered again changes nothing here. */
 	const actor = $derived(session.actor?.id ?? null);
 	const configured = $derived(session.status?.configured === true);
+	/** The Project Overview is offered only to the owner the server names; nobody else sees the link. */
+	let owner = $state(false);
+	$effect(() => {
+		const id = actor;
+		owner = false;
+		if (!id) return;
+		let current = true;
+		void readOverview().then((value) => {
+			if (current && id === actor) owner = value.kind === 'owner';
+		});
+		return () => {
+			current = false;
+		};
+	});
 	/** Counts list reads; one answered after a later read, another person or leaving is dropped. */
 	let asked = 0;
 	/** What the GitHub connection ended with. The reason for a failure is never in the address. */
@@ -62,7 +77,9 @@
 <svelte:head><title>Harness · Shared projects</title></svelte:head>
 <HubFrame>
 	<hx-h1>Shared projects</hx-h1>
-	{#if !session.actor}<LoginPanel />{:else}{#if github === 'connected'}<hx-p role="status">
+	{#if !session.actor}<LoginPanel />{:else}{#if owner}<hx-p class="overview-link"
+				><hx-a href={resolve('/tracker-overview')}>Project overview</hx-a></hx-p
+			>{/if}{#if github === 'connected'}<hx-p role="status">
 				GitHub is connected.
 			</hx-p>{:else if github === 'failed'}<hx-p class="error" role="alert">
 				GitHub could not be connected. Try again.
