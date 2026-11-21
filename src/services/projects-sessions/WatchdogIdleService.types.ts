@@ -1,3 +1,4 @@
+// @harness-uid u_3jxqtek5x2
 import type { WatchdogCli, WatchdogScan } from './WatchdogPaneService.types';
 
 export interface IdleScan extends WatchdogScan {
