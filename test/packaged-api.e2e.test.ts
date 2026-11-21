@@ -169,7 +169,8 @@ test('a packed consumer imports typed contracts and calls real adapters without 
 	const { root, project } = await packedConsumer();
 	await expectTypes(project);
 	await expectPackagedSqlite(project);
-	const manifest = await readFile(resolve('specification/units/function.stable-json.json'), 'utf8');
+	const manifestId = 'function.activity-types';
+	const manifest = await readFile(resolve(`specification/units/${manifestId}.json`), 'utf8');
 	const native = kernelArtifacts().native ?? '';
 	const expected = { ok: true, output: { contract: 'impact-kernel/1' } };
 	const printed: Record<string, unknown> = {};
@@ -188,7 +189,7 @@ test('a packed consumer imports typed contracts and calls real adapters without 
 		printed[runner] = result;
 		expect(result, runner).toMatchObject({
 			resources: { request: 'agent-test', reserve: 10 },
-			id: 'function.stable-json',
+			id: manifestId,
 			errors: [],
 			scenario: true,
 			record: true,

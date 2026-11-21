@@ -28,6 +28,7 @@ beforeAll(async () => {
 		'/harness/branch/main/pages',
 		`/harness/branch/main/commit/${target.commit}/pages/page.titles/details?tab=source`,
 		`/harness/commit/${target.commit}/map`,
+		`/harness/export/${target.commit}`,
 		'/harness/data/index.json',
 		`/harness/data/revisions/${target.commit}.json`,
 		`/harness/media/${target.media}`
@@ -125,9 +126,14 @@ test('in workerd only the host administrator reaches the console, its data and i
 	expect(createHash('sha256').update(bytes).digest('hex')).toBe(media.slice(0, 64));
 	const part = await get(`/harness/media/${media}`, { ...admin, range: 'bytes=0-7' });
 	expect([part.status, Buffer.from(await part.arrayBuffer())]).toEqual([206, bytes.subarray(0, 8)]);
-	for (const path of [`/harness/export/${commit}`, '/harness/data/secret.json']) {
-		expect([path, (await get(path, admin)).status]).toEqual([path, 404]);
-	}
+	// The retired export path falls back to the same private app shell.
+	const retired = await get(`/harness/export/${commit}`, admin);
+	expect([retired.status, retired.headers.get('cache-control')]).toEqual([
+		200,
+		'private, no-store'
+	]);
+	expect(await retired.text()).toBe(html);
+	expect((await get('/harness/data/secret.json', admin)).status).toBe(404);
 }, 300_000);
 
 test('no static path or alias reaches history, and the host keeps its own pages', async () => {
