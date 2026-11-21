@@ -2,7 +2,7 @@
 	"name": "managed-docker-crash-recovery",
 	"goal": "Prove that a restarted offline Docker task supervisor reclaims a killed supervisor’s task container with daemon, owner and workspace evidence while concurrent live tasks and shared Docker resources survive.",
 	"createdAt": "2026-11-21T19:08:27.541Z",
-	"updatedAt": "2026-11-21T19:08:53.137Z",
+	"updatedAt": "2026-11-21T19:18:02.996Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T19:18:02.996Z",
+			"evidence": "MB2 Docker Desktop 29.4.0, one worker and cached no-network image. Commit 46f050ac45 reported recovered:false after the next managed launch. Exit 37, cancellation, live bystander and cached-image assertions passed. Sealed Harness regression 833611546695051f2131398bfd3b4cc0992a635eb920741cd7890e5ed461a2fe."
 		},
 		{
 			"id": "implement",

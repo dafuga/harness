@@ -4,7 +4,7 @@
 	"uid": "u_ymrcybx25k",
 	"kind": "adapter",
 	"title": "ManagedProviderDockerAdapter",
-	"responsibility": "Start offline Linux provider fixtures with an explicit Docker policy, attach their standard streams and remove the task-owned container on completion.",
+	"responsibility": "Run offline Linux provider fixtures, attach their standard streams, and reclaim task-owned containers on completion or a later launch.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"catalog": {
@@ -13,7 +13,9 @@
 	"owns": {
 		"source": [
 			"src/adapters/agents-providers/ManagedProviderDockerAdapter.ts",
-			"src/adapters/agents-providers/ManagedProviderDockerAdapter.types.ts"
+			"src/adapters/agents-providers/ManagedProviderDockerAdapter.types.ts",
+			"src/adapters/agents-providers/managed-provider-docker-adapter/dockerContainerScope.ts",
+			"src/adapters/agents-providers/managed-provider-docker-adapter/dockerLaunchJournal.ts"
 		],
 		"symbols": [
 			"managedProviderDockerResources",
@@ -22,7 +24,21 @@
 			"ManagedProviderDockerAdapter.run",
 			"DockerTaskWorkspace",
 			"DockerTaskCreate",
-			"DockerTaskDaemon"
+			"DockerTaskDaemon",
+			"DockerTaskLaunch",
+			"containerIdPattern",
+			"dockerSocketPattern",
+			"daemonIdPattern",
+			"taskLabel",
+			"dockerDaemon",
+			"createContainer",
+			"removeScopedContainer",
+			"dockerArgs",
+			"launchDirectory",
+			"newLaunch",
+			"writeLaunch",
+			"forgetLaunch",
+			"recoverLaunches"
 		]
 	},
 	"contract": {
@@ -52,6 +68,86 @@
 				"name": "ManagedProviderDockerAdapter.run.collect",
 				"type": "(child: ChildProcessWithoutNullStreams) => Promise<T>",
 				"required": true
+			},
+			{
+				"name": "createContainer.daemon",
+				"type": "DockerTaskDaemon",
+				"required": true
+			},
+			{
+				"name": "createContainer.args",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "removeScopedContainer.daemon",
+				"type": "DockerTaskDaemon",
+				"required": true
+			},
+			{
+				"name": "removeScopedContainer.launch",
+				"type": "DockerTaskLaunch",
+				"required": true
+			},
+			{
+				"name": "dockerArgs.daemon",
+				"type": "Pick<DockerTaskDaemon, 'host'>",
+				"required": true
+			},
+			{
+				"name": "dockerArgs.args",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "launchDirectory.cwd",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "newLaunch.daemon",
+				"type": "DockerTaskDaemon",
+				"required": true
+			},
+			{
+				"name": "newLaunch.cwd",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "writeLaunch.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "writeLaunch.launch",
+				"type": "DockerTaskLaunch",
+				"required": true
+			},
+			{
+				"name": "forgetLaunch.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "forgetLaunch.launch",
+				"type": "DockerTaskLaunch",
+				"required": true
+			},
+			{
+				"name": "recoverLaunches.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recoverLaunches.daemon",
+				"type": "DockerTaskDaemon",
+				"required": true
+			},
+			{
+				"name": "recoverLaunches.signal",
+				"type": "AbortSignal",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -66,6 +162,58 @@
 			{
 				"name": "ManagedProviderDockerAdapter.run",
 				"type": "Promise<T>"
+			},
+			{
+				"name": "containerIdPattern",
+				"type": "unknown"
+			},
+			{
+				"name": "dockerSocketPattern",
+				"type": "unknown"
+			},
+			{
+				"name": "daemonIdPattern",
+				"type": "unknown"
+			},
+			{
+				"name": "taskLabel",
+				"type": "unknown"
+			},
+			{
+				"name": "dockerDaemon",
+				"type": "Promise<DockerTaskDaemon>"
+			},
+			{
+				"name": "createContainer",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "removeScopedContainer",
+				"type": "Promise<boolean>"
+			},
+			{
+				"name": "dockerArgs",
+				"type": "unknown"
+			},
+			{
+				"name": "launchDirectory",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "newLaunch",
+				"type": "DockerTaskLaunch"
+			},
+			{
+				"name": "writeLaunch",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "forgetLaunch",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "recoverLaunches",
+				"type": "Promise<void>"
 			}
 		],
 		"errors": [
@@ -126,6 +274,227 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "dockerDaemon",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "dockerDaemon",
+						"type": "Promise<DockerTaskDaemon>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "createContainer",
+				"inputs": [
+					{
+						"name": "createContainer.daemon",
+						"type": "DockerTaskDaemon",
+						"required": true
+					},
+					{
+						"name": "createContainer.args",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createContainer",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "removeScopedContainer",
+				"inputs": [
+					{
+						"name": "removeScopedContainer.daemon",
+						"type": "DockerTaskDaemon",
+						"required": true
+					},
+					{
+						"name": "removeScopedContainer.launch",
+						"type": "DockerTaskLaunch",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "removeScopedContainer",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "dockerArgs",
+				"inputs": [
+					{
+						"name": "dockerArgs.daemon",
+						"type": "Pick<DockerTaskDaemon, 'host'>",
+						"required": true
+					},
+					{
+						"name": "dockerArgs.args",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "dockerArgs",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "launchDirectory",
+				"inputs": [
+					{
+						"name": "launchDirectory.cwd",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "launchDirectory",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "newLaunch",
+				"inputs": [
+					{
+						"name": "newLaunch.daemon",
+						"type": "DockerTaskDaemon",
+						"required": true
+					},
+					{
+						"name": "newLaunch.cwd",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "newLaunch",
+						"type": "DockerTaskLaunch"
+					}
+				],
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeLaunch",
+				"inputs": [
+					{
+						"name": "writeLaunch.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "writeLaunch.launch",
+						"type": "DockerTaskLaunch",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeLaunch",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "forgetLaunch",
+				"inputs": [
+					{
+						"name": "forgetLaunch.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "forgetLaunch.launch",
+						"type": "DockerTaskLaunch",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "forgetLaunch",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recoverLaunches",
+				"inputs": [
+					{
+						"name": "recoverLaunches.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recoverLaunches.daemon",
+						"type": "DockerTaskDaemon",
+						"required": true
+					},
+					{
+						"name": "recoverLaunches.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recoverLaunches",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
@@ -133,6 +502,16 @@
 	"dependencies": [
 		{
 			"unit": "adapter.agents-providers-module-task-runner",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.process-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-config",
 			"via": "import",
 			"origin": "derived"
 		}

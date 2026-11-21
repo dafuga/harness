@@ -1069,6 +1069,20 @@ workspace. Networking, host login files, and the Docker socket are outside
 the container. Harness removes the task container before returning the
 result. Git operations on linked worktree metadata run on the host.
 
+Before creating a container, Harness records its supervisor and workspace in
+a private journal under the host's Harness resource directory. The next
+explicit Linux Docker launch on the same host and engine can reclaim a
+container after the recorded supervisor exits. Recovery checks the engine,
+full container ID, task owner label and workspace bind. Active supervisors
+keep their containers. Keep the resource directory on disk across runs and
+outside any task workspace.
+
+Recovery runs when another pilot task launches. It needs a journal entry from
+the generation that created the container. If Docker create was interrupted
+and its container has yet to appear, Harness keeps the entry for a later
+launch. An ambiguous owner, workspace or container match stops recovery and
+keeps the entry for inspection.
+
 Set `--platform macos` (or `"platform": "macos"` in the task JSON) for Xcode,
 simulators, computer use, Apple signing, and other tasks that require a Mac.
 Harness runs those commands natively on macOS. Tasks without a platform
