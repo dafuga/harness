@@ -3,6 +3,7 @@ import { writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { measureWorkload } from '../../support/measureWorkload';
 import { withTempDir } from '../../support/temporary';
+import { checkHarborMcp } from './harborMcpFixture';
 import { buildProgram } from '../../../src/cli/program';
 import { loadCliProgram } from '../../../src/cli/loadCliProgram';
 
@@ -81,6 +82,12 @@ test('Harbor tooling forwards fixed argv without provider or signing credentials
 			output.mockRestore();
 		}
 	}));
+
+test.each(process.platform === 'win32' ? ['eof'] : ['eof', 'interrupt', 'stubborn'])(
+	'Harbor MCP streams fixed SDK arguments and shuts down on %s',
+	checkHarborMcp,
+	12_000
+);
 
 function harborDispatchCases(root: string) {
 	const rpc = 'http://127.0.0.1:18900';
