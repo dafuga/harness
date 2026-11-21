@@ -12,6 +12,9 @@ async function run(cwd: string) {
 	cwd = join(await realpath(cwd), 'workspace, with "quotes"');
 	await mkdir(cwd);
 	await writeFile(join(cwd, 'remove-me'), 'old');
+	if (process.platform === 'darwin') {
+		await $`xattr -w com.harness.fixture synthetic ${join(cwd, 'remove-me')}`.quiet();
+	}
 	await writeFile(join(cwd, '.git'), 'host metadata');
 	await mkdir(join(cwd, 'node_modules'));
 	await writeFile(join(cwd, 'node_modules/host-only'), 'host dependency');
