@@ -2791,13 +2791,13 @@
 			"unit": "workflow.run-verify",
 			"from": "src/workflows/runVerify.ts",
 			"to": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-			"definition": "a2e278d182469096dbace16fc9c02992d19254af4c73a9c81b9352f02013f77c",
+			"definition": "39760d24d34ed1909950c97bf6ee8dcdd3b786f47c2cd2ed01c4635e6ceac498",
 			"relocationDefinition": "e0409b5f004bb8a3d911c1b43ea9f69717d3d9f5ba894bfc7c741da424850a38",
 			"review": {
-				"commit": "2ac7147eec73a3948bd95cb3cf8eb473b3b099ea",
+				"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
 				"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-				"definition": "a2e278d182469096dbace16fc9c02992d19254af4c73a9c81b9352f02013f77c",
-				"reason": "Return automatic entity attachment results without changing whole-commit verification."
+				"definition": "39760d24d34ed1909950c97bf6ee8dcdd3b786f47c2cd2ed01c4635e6ceac498",
+				"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
 			},
 			"previousReviews": [
 				{
@@ -2847,6 +2847,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
 					"definition": "52242a062d31ccfb295d263aff09bdf1eddb419254c83e487acefcc7d0e82d83",
 					"reason": "Record main’s scoped entity verification path, preserving full verification behavior and priority handling."
+				},
+				{
+					"commit": "2ac7147eec73a3948bd95cb3cf8eb473b3b099ea",
+					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+					"definition": "a2e278d182469096dbace16fc9c02992d19254af4c73a9c81b9352f02013f77c",
+					"reason": "Return automatic entity attachment results without changing whole-commit verification."
 				}
 			]
 		},
@@ -2854,13 +2860,13 @@
 			"unit": "service.verification",
 			"from": "src/services/verification-service/VerificationService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-			"definition": "95c001160c34bf95bcf7242ecb31190f2f9624511ad8afe02fc69fb5031e3622",
+			"definition": "23dfd0980a8a12620e8cc8f32380158792eef707e221c4f9dc8f899160d9c762",
 			"relocationDefinition": "146b117282696844fcc9506d83b7d30df30482554e3603d38b08b295272e02c9",
 			"review": {
-				"commit": "b29d2f723b940748d5ec7b0f64f0fdabd6156be6",
+				"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-				"definition": "95c001160c34bf95bcf7242ecb31190f2f9624511ad8afe02fc69fb5031e3622",
-				"reason": "Retain the reviewed change: entity-scoped verify computes the needed builds; skipped builds are not 'not produced' failures."
+				"definition": "23dfd0980a8a12620e8cc8f32380158792eef707e221c4f9dc8f899160d9c762",
+				"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
 			},
 			"previousReviews": [
 				{
@@ -2886,6 +2892,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
 					"definition": "c9aa478ccf7e7e02411860996eb13858665fa60f1b48cbc491581a6734c4f1dc",
 					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				},
+				{
+					"commit": "b29d2f723b940748d5ec7b0f64f0fdabd6156be6",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
+					"definition": "95c001160c34bf95bcf7242ecb31190f2f9624511ad8afe02fc69fb5031e3622",
+					"reason": "Retain the reviewed change: entity-scoped verify computes the needed builds; skipped builds are not 'not produced' failures."
 				}
 			]
 		},
@@ -2911,13 +2923,13 @@
 			"unit": "service.record-assembly",
 			"from": "src/services/record-assembly-service/RecordAssemblyService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-			"definition": "d2c41ff73865a9c2c9c3a94e5de16153c26ef52ee57ce2c04ccc3a70e6dd2e7c",
+			"definition": "8033d686762a5793b2494eaeceb0633d45505ac72a71b4e3b11803ddda5ba09f",
 			"relocationDefinition": "cf89f78b86c140f16a7bc001d974c7f60504d60cea4223b556f1521081274936",
 			"review": {
-				"commit": "ecf3fe78354597ca168b43168d96ff4bc1ce5ab0",
+				"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-				"definition": "d2c41ff73865a9c2c9c3a94e5de16153c26ef52ee57ce2c04ccc3a70e6dd2e7c",
-				"reason": "Retain the reviewed change: record assembly writes skippedBuilds from the snapshot run."
+				"definition": "8033d686762a5793b2494eaeceb0633d45505ac72a71b4e3b11803ddda5ba09f",
+				"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
 			},
 			"previousReviews": [
 				{
@@ -2949,6 +2961,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 					"definition": "e14baa2aef4dfe2844469c25187534f635897ea8b60bcba78c5bfdc94c4dee4b",
 					"reason": "Mark newly assembled component identities as source-contract schema 2 for explicit historical verification."
+				},
+				{
+					"commit": "ecf3fe78354597ca168b43168d96ff4bc1ce5ab0",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "d2c41ff73865a9c2c9c3a94e5de16153c26ef52ee57ce2c04ccc3a70e6dd2e7c",
+					"reason": "Retain the reviewed change: record assembly writes skippedBuilds from the snapshot run."
 				}
 			]
 		},
@@ -4002,13 +4020,13 @@
 			"unit": "service.snapshot-run",
 			"from": "src/services/SnapshotRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
-			"definition": "c0083e8dd28bf5e0abc9724719de679fdb12b452e2586e14443630668a638656",
+			"definition": "c62d507d7ae396d54b30acbaf032f14020f0cdc72839b48f7553d07ab0b49ea7",
 			"relocationDefinition": "6c3ff0bd50e6e2875d27738b036a234a6c7ee208b4687d4a4b94f53319e3e740",
 			"review": {
-				"commit": "4d13df49eba238879e7c326676162a68df3fb85a",
+				"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
-				"definition": "c0083e8dd28bf5e0abc9724719de679fdb12b452e2586e14443630668a638656",
-				"reason": "Retain the reviewed change: snapshot run: skip setup steps and builds a scoped run does not need."
+				"definition": "c62d507d7ae396d54b30acbaf032f14020f0cdc72839b48f7553d07ab0b49ea7",
+				"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
 			},
 			"previousReviews": [
 				{
@@ -4022,6 +4040,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
 					"definition": "5b0ec5ba4312b32ffdec01e7fe07b875c29d81bf3cf17d17d12bda29ce34f864",
 					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				},
+				{
+					"commit": "4d13df49eba238879e7c326676162a68df3fb85a",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
+					"definition": "c0083e8dd28bf5e0abc9724719de679fdb12b452e2586e14443630668a638656",
+					"reason": "Retain the reviewed change: snapshot run: skip setup steps and builds a scoped run does not need."
 				}
 			]
 		},
@@ -4106,13 +4130,13 @@
 			"unit": "command.verify",
 			"from": "src/commands/VerifyCommand.ts",
 			"to": "src/cli/program/VerifyCommand.ts",
-			"definition": "c7edca0fd25fc68ba3b4dd2e638dceacc4dfa7d4cb05930ef04bab7d04bfb6ad",
+			"definition": "e5a9cf22a3638e998edb3885810edad89285d7dd42b1e6b39587cb024b41ac97",
 			"relocationDefinition": "9bdae348aa1c461f5189e3ab3900c11dec68f78ec4a82c0d9c7986c56cfabbfc",
 			"review": {
-				"commit": "ae524672e7e16f8c98f5809aa9ae64716eacf0a3",
+				"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
 				"path": "src/cli/program/VerifyCommand.ts",
-				"definition": "c7edca0fd25fc68ba3b4dd2e638dceacc4dfa7d4cb05930ef04bab7d04bfb6ad",
-				"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				"definition": "e5a9cf22a3638e998edb3885810edad89285d7dd42b1e6b39587cb024b41ac97",
+				"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
 			},
 			"previousReviews": [
 				{
@@ -4162,6 +4186,12 @@
 					"path": "src/cli/program/VerifyCommand.ts",
 					"definition": "1f7f5d31e2fb879f78b853cc1706fdd7936408b953c804de6620fca6dd679a80",
 					"reason": "Keep verification action logic separate so registration stays within complexity limits."
+				},
+				{
+					"commit": "ae524672e7e16f8c98f5809aa9ae64716eacf0a3",
+					"path": "src/cli/program/VerifyCommand.ts",
+					"definition": "c7edca0fd25fc68ba3b4dd2e638dceacc4dfa7d4cb05930ef04bab7d04bfb6ad",
+					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
 				}
 			]
 		},
