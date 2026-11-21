@@ -8,6 +8,8 @@ import { renderFileList } from '../../../core/development-tooling/renderFileList
 import { validateProjectName } from './validation';
 import { join } from 'node:path';
 import { projectFiles } from '../../../templates/projects-sessions/project';
+import type { AppAdapter, ProjectKind } from '../../../templates/projects-sessions/project.types';
+import { fail } from '../../../core/development-tooling/errors';
 
 export type { ProjectKind } from '../../../templates/projects-sessions/project';
 
@@ -15,13 +17,21 @@ export async function createProject(input: CreateProjectInput): Promise<CreatePr
 	const name = validateProjectName(input.name);
 	if (input.dimension && !['2d', '3d'].includes(input.dimension))
 		throw new Error('Dimension must be 2d or 3d.');
-	const files = projectFiles({ kind: input.kind, name, dimension: input.dimension });
+	const adapter = appAdapter(input.kind, input.adapter);
+	const files = projectFiles({ kind: input.kind, name, dimension: input.dimension, adapter });
 
 	const directory = input.parent ? join(input.parent, name) : name;
 	await ensureParents(directory, files);
 	const writes = await writePlannedFiles(directory, files, { force: input.force });
 
 	return { kind: input.kind, name, writes };
+}
+
+function appAdapter(kind: ProjectKind, adapter?: string): AppAdapter | undefined {
+	if (adapter === undefined) return undefined;
+	if (kind !== 'app') return fail('The SvelteKit adapter is only available for app projects.');
+	if (adapter === 'auto' || adapter === 'static') return adapter;
+	return fail('Unsupported app adapter. Use auto or static.');
 }
 
 export function renderCreateProject(result: CreateProjectResult): string {

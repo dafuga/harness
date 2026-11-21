@@ -8,6 +8,7 @@ export interface CreateProjectInput {
 	force?: boolean;
 	parent?: string;
 	dimension?: '2d' | '3d';
+	adapter?: string;
 }
 
 export interface CreateProjectResult {
