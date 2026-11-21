@@ -9,8 +9,7 @@ import {
 	brokenProject,
 	missingProject
 } from './script.check-doc-links.fixtures';
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { test } from 'vitest';
 import {
@@ -22,6 +21,7 @@ import {
 	pathCheckedDocuments
 } from '../../scripts/check-doc-links';
 import { recordExampleCases } from '../support/recordExampleCases';
+import { createTempDirectory } from '../support/temporary';
 import { expect } from '../verificationExpect';
 
 /**
@@ -31,8 +31,8 @@ import { expect } from '../verificationExpect';
  */
 
 /** brokenDocLinks as the script calls it, reading the files of a temporary project folder. */
-function checkProject(name: string, files: Record<string, string>) {
-	const root = mkdtempSync(join(tmpdir(), 'check-doc-links-'));
+async function checkProject(name: string, files: Record<string, string>) {
+	const root = await createTempDirectory('check-doc-links-');
 	try {
 		for (const [path, text] of Object.entries(files)) {
 			mkdirSync(dirname(join(root, path)), { recursive: true });
@@ -137,13 +137,19 @@ test('headingAnchors slugged each heading as GitHub does, numbered repeats, and 
 	);
 });
 
-test('brokenDocLinks returned no problems when every link resolves, and one sorted line for each broken link, owner path or missing checked document', () => {
-	const resolved = checkProject('every link resolves and the URL is not fetched', resolvingProject);
-	const broken = checkProject(
+test('brokenDocLinks returned no problems when every link resolves, and one sorted line for each broken link, owner path or missing checked document', async () => {
+	const resolved = await checkProject(
+		'every link resolves and the URL is not fetched',
+		resolvingProject
+	);
+	const broken = await checkProject(
 		'a missing file, heading and owner path, and a link out of the repository',
 		brokenProject
 	);
-	const missing = checkProject('the checked architecture document is missing', missingProject);
+	const missing = await checkProject(
+		'the checked architecture document is missing',
+		missingProject
+	);
 	expect(resolved.output).toEqual([]);
 	expect(broken.output).toEqual([
 		'ARCHITECTURE-BOUNDARIES.md:2: `src/missing/owner.ts` does not exist',

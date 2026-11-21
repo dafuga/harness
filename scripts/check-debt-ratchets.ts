@@ -156,8 +156,7 @@ function temporaryCallBase(ref: string): TemporaryCallBaseline {
 	// present on its local main base. Preserve only their exact current counts; any growth fails.
 	const inheritedBranchCalls: TemporaryCallBaseline = {
 		'test/adapters/git.test.ts': 1,
-		'test/claude-picker-start.test.ts': 1,
-		'test/workflows/record-command-analytics.test.ts': 1
+		'test/claude-picker-start.test.ts': 1
 	};
 	for (const [path, count] of Object.entries(inheritedBranchCalls)) {
 		baseline[path] = Math.max(baseline[path] ?? 0, count);

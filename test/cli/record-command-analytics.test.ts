@@ -1,7 +1,6 @@
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
-import { chmod, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { chmod, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import type { recordAnalytics } from '../../src/workflows/reports-media/analyticsRecord';
@@ -12,10 +11,12 @@ import {
 import { runCommand } from '../support/cli';
 import { measureWorkload } from '../support/measureWorkload';
 
+import { createTempDirectory } from '../support/temporary';
+
 const cli = join(process.cwd(), 'src/index.ts');
 let scratch = '';
 beforeEach(async () => {
-	scratch = await mkdtemp(join(tmpdir(), 'record-command-analytics-'));
+	scratch = await createTempDirectory('record-command-analytics-');
 });
 afterEach(async () => {
 	vi.unstubAllEnvs();
