@@ -2,7 +2,7 @@
 	"name": "project-overview",
 	"goal": "Prove the approved Project Overview states and read-only tracker boundary on the native app and website, with exact-revision tests and screenshots.",
 	"createdAt": "2026-11-20T22:52:32.565Z",
-	"updatedAt": "2026-11-20T22:54:32.667Z",
+	"updatedAt": "2026-11-21T00:21:22.944Z",
 	"agentModel": "gpt-6.2-sol",
 	"template": "feature",
 	"templateLineage": ["feature"],
@@ -18,12 +18,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T00:21:21.598Z",
+			"evidence": "Integrated and reviewed four Haiku modules for the local tracker projection, shared cards, Explorer route, and Electron app. Built Explorer and Electron run the fixed read boundary. Hosted Hub and paired iOS remain a scope decision."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T00:21:22.944Z",
+			"evidence": "Frozen tracker red/green 92f28fd643 and 3d35015a0f. The missing-route assertion reproduced before implementation at all widths. MB2 passed 37 Explorer tests at 7e260f1679 with 33 required captures and navigation and heap observations. The a63bba4bb3 build passed 9 renderer and 3 Electron tests, including the phone layout red-green. 201 focused tests and both Svelte type checks passed. Broad checks remain pending."
 		},
 		{
 			"id": "verify",
