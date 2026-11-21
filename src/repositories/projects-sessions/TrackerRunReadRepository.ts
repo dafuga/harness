@@ -34,6 +34,18 @@ export class TrackerRunReadRepository {
 		return this.rows("WHERE state = 'finished'");
 	}
 
+	activeLocal() {
+		return this.select('runs', "WHERE state IN ('queued','running','verifying') ORDER BY id", []);
+	}
+
+	pendingEvents(): number | undefined {
+		if (!this.hasTable('launch_events')) return undefined;
+		const row = this.database
+			.prepare('SELECT count(*) AS total FROM launch_events WHERE batched = 0')
+			.get() as { total: number };
+		return row.total;
+	}
+
 	exportLocal() {
 		return localTrackerRunHistory(this.database, 5000);
 	}
@@ -68,13 +80,18 @@ export class TrackerRunReadRepository {
 	}
 
 	private select(table: TrackerRunTable, clause: string, bindings: SqliteValue[]) {
-		const exists = this.database
-			.prepare("SELECT 1 FROM sqlite_schema WHERE type = 'table' AND name = ?")
-			.get(table);
-		if (!exists) return [];
+		if (!this.hasTable(table)) return [];
 		return this.database
 			.prepare(`SELECT * FROM ${table} ${clause}`)
 			.all(...bindings) as TrackerListedRun[];
+	}
+
+	private hasTable(table: TrackerRunTable | 'launch_events'): boolean {
+		return Boolean(
+			this.database
+				.prepare("SELECT 1 FROM sqlite_schema WHERE type = 'table' AND name = ?")
+				.get(table)
+		);
 	}
 }
 

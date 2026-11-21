@@ -3,27 +3,13 @@ import { resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import type { NativeTrackerRequest } from './nativeTrackerCli.types';
 
-import { nativeTrackerCommandOptions, nativeTrackerCommonOptions } from './nativeTrackerOptions';
-
-const idVerbs = new Set([
-	'show',
-	'update',
-	'rm',
-	'history',
-	'launch',
-	'unlaunch',
-	'start',
-	'reopen',
-	'note',
-	'progress',
-	'flag',
-	'block',
-	'unblock',
-	'answer',
-	'resolve',
-	'done',
-	'unflag'
-]);
+import {
+	nativeTrackerCommandOptions,
+	nativeTrackerCommonOptions,
+	nativeTrackerIdVerbs,
+	nativeTrackerIgnoreRequest,
+	nativeTrackerInspectionRequest
+} from './nativeTrackerOptions';
 
 export const nativeTrackerCommands = [...nativeTrackerCommandOptions.keys()].join(', ');
 
@@ -43,12 +29,14 @@ export function nativeTrackerArgs(args: string[]) {
 function nativeTrackerRequest(
 	command: string,
 	words: string[],
-	values: Record<string, unknown>
+	values: Record<string, string | boolean | undefined>
 ): NativeTrackerRequest {
-	if (command === 'watchdog') return watchdogRequest(words, values);
-	const item = itemQuery(command, words, values);
+	const item =
+		itemQuery(command, words, values) ??
+		runReadRequest(command, words, values) ??
+		nativeTrackerInspectionRequest(command, words);
 	if (item) return item;
-	if (idVerbs.has(command)) return itemAction(command, words, values);
+	if (nativeTrackerIdVerbs.has(command)) return itemAction(command, words, values);
 	if (words.length) throw new TypeError(`usage: tracker ${command}`);
 	if (command === 'sync') return { method: 'POST', path: '/sync' };
 	const path = command === 'ensure' ? '/health' : `/${command}`;
@@ -56,6 +44,29 @@ function nativeTrackerRequest(
 		method: 'GET',
 		path: path + (command === 'digest' && !values.json ? '?format=text' : '')
 	};
+}
+
+function runReadRequest(
+	command: string,
+	words: string[],
+	values: Record<string, unknown>
+): NativeTrackerRequest | undefined {
+	switch (command) {
+		case 'watchdog':
+			return watchdogRequest(words, values);
+		case 'runs':
+			if (words.length) throw new TypeError('usage: tracker runs [--item ID] [--limit N]');
+			return { method: 'GET', path: '/runs' + query({ item: values.item, limit: values.limit }) };
+		case 'models':
+			if (words.length !== 1 || words[0] !== 'report')
+				throw new TypeError('usage: tracker models report');
+			return { method: 'GET', path: '/models/report' };
+		case 'pick':
+			if (words.length !== 1) throw new TypeError('usage: tracker pick <id>');
+			return { method: 'GET', path: '/items/' + encodeURIComponent(words[0]) + '/pick' };
+		default:
+			return undefined;
+	}
 }
 
 function watchdogRequest(
@@ -72,7 +83,7 @@ function watchdogRequest(
 function itemQuery(
 	command: string,
 	words: string[],
-	values: Record<string, unknown>
+	values: Record<string, string | boolean | undefined>
 ): NativeTrackerRequest | undefined {
 	const fields = Object.fromEntries(
 		Object.entries(values).filter(([key]) => !Object.hasOwn(nativeTrackerCommonOptions, key))
@@ -98,7 +109,7 @@ function itemQuery(
 				path: '/check' + query({ ...fields, text: requiredText(words, command) })
 			};
 		default:
-			return undefined;
+			return nativeTrackerIgnoreRequest(command, words, values);
 	}
 }
 
@@ -190,6 +201,12 @@ function itemFields(input: Record<string, unknown>) {
 	};
 }
 
+function requiredText(words: string[], command: string): string {
+	const value = words.join(' ');
+	if (!value) throw new TypeError(`usage: tracker ${command} <text...>`);
+	return value;
+}
+
 function query(fields: Record<string, unknown>): string {
 	const params = new URLSearchParams();
 	for (const [key, value] of Object.entries(fields)) {
@@ -197,10 +214,4 @@ function query(fields: Record<string, unknown>): string {
 			params.set(key, value === true ? '1' : String(value));
 	}
 	return params.size ? '?' + params.toString() : '';
-}
-
-function requiredText(words: string[], command: string): string {
-	const value = words.join(' ');
-	if (!value) throw new TypeError(`usage: tracker ${command} <text...>`);
-	return value;
 }

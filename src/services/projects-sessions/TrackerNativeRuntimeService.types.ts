@@ -1,5 +1,8 @@
 // @harness-uid u_bl6xl2h4a3
-import type { TrackerDispatchPolicy } from '../agents-providers/TrackerDispatcherService.types';
+import type {
+	TrackerDispatchPolicy,
+	TrackerDuePolicy
+} from '../agents-providers/TrackerDispatcherService.types';
 import type { TrackerDispatchRepositoryOptions } from '../../repositories/projects-sessions/TrackerDispatchRepository.types';
 import type { TrackerDispatchSchedulerOptions } from './TrackerDispatchSchedulerService.types';
 import type { TrackerSchemaAdapterConfig } from '../../adapters/projects-sessions/TrackerSchemaAdapter.types';
@@ -11,6 +14,13 @@ import type { TrackerNotificationOptions } from './TrackerNotificationService.ty
 import type { TrackerRecurringJobRunner } from './TrackerRecurringService.types';
 import type { TrackerSpokeLoopOptions } from './TrackerSpokeLoopService.types';
 import type { TrackerHostEffects } from './tracker-native-runtime-service/nativeTrackerHostEffects.types';
+import type { previewDueLaunch } from '../agents-providers/tracker-dispatcher-service/launchIntent';
+
+export interface TrackerDuePreviewPolicy {
+	timeZone: string;
+	due(): TrackerDuePolicy;
+	preview?(id: string): ReturnType<typeof previewDueLaunch>;
+}
 
 export interface TrackerLegacyDestinationBindings {
 	urls?: ReadonlyMap<string, string>;
@@ -28,10 +38,11 @@ export interface TrackerNativeNotificationOptions extends Omit<
 
 export interface TrackerNativeRuntimeOptions extends Omit<
 	TrackerLocalApiOptions,
-	'runs' | 'recurring'
+	'runs' | 'recurring' | 'schedulePreview'
 > {
 	node: string;
 	role: 'hub' | 'spoke';
+	backupDirectory?: string;
 	storage?: Omit<TrackerSchemaAdapterConfig, 'now'>;
 	notification?: TrackerNativeNotificationOptions;
 	adapter?: TrackerAdapterPollDependencies;

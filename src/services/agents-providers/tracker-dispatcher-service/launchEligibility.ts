@@ -15,6 +15,17 @@ const fleetAliases = new Map([
 	['box', 'grok-box']
 ]);
 export const trackerFleetNodes = [...fleetAliases.values()];
+
+export function trackerNodeNames(node: string, hub: boolean): string[] {
+	return [
+		...new Set([
+			node,
+			...(hub ? ['box'] : []),
+			...[...fleetAliases].filter(([, target]) => target === node).map(([alias]) => alias)
+		])
+	];
+}
+
 const nonWorkAgent =
 	/^(?:(?:cos|chief[-_ ]of[-_ ]staff|personal|brainstorm(?:ing)?)(?:$|[-_ ])|(?:daniel|dad|coach|claire|boating|doc|email-router|recruiting)$)/i;
 const nonWorkTitle = /^\s*(?:decision|reminder|brainstorm(?:ing)?)(?::|\s+for\b)/i;
@@ -102,7 +113,7 @@ export function dueItemHold(item: TrackerDispatchItem, policy: TrackerDispatchPo
 	);
 }
 
-function schedulingHold(item: TrackerDispatchItem): string | null {
+export function schedulingHold(item: TrackerDispatchItem): string | null {
 	if (item.scheduleOff) return 'automatic launch opted out';
 	if (item.kind !== 'task') return `item is a ${item.kind}; only tasks can launch`;
 	if (item.recurring) return 'recurring item';
@@ -120,7 +131,7 @@ function nonWorkReason(item: TrackerDispatchItem): string | null {
 		: null;
 }
 
-function isDueNow(due: string | null | undefined, timezone: string, now: number): boolean {
+export function isDueNow(due: string | null | undefined, timezone: string, now: number): boolean {
 	if (!due) return false;
 	if (due.length !== 10) return Date.parse(due) <= now;
 	const parts = new Intl.DateTimeFormat('en', {

@@ -25,6 +25,7 @@
 			"TrackerDispatchRepository.assertLegacyRollbackSafe",
 			"TrackerDispatchRepository.candidates",
 			"TrackerDispatchRepository.stuckRequests",
+			"TrackerDispatchRepository.readSnapshot",
 			"TrackerDispatchRepositoryOptions",
 			"TrackerDispatchCandidate",
 			"TrackerDispatchRow",
@@ -73,6 +74,11 @@
 			{
 				"name": "TrackerDispatchRepository.adoptLegacy.session",
 				"type": "TrackerSessionEvidence",
+				"required": true
+			},
+			{
+				"name": "TrackerDispatchRepository.readSnapshot.itemId",
+				"type": "string",
 				"required": true
 			},
 			{
@@ -189,6 +195,10 @@
 			{
 				"name": "TrackerDispatchRepository.stuckRequests",
 				"type": "unknown"
+			},
+			{
+				"name": "TrackerDispatchRepository.readSnapshot",
+				"type": "TrackerDispatchSnapshot"
 			},
 			{
 				"name": "dispatchItem",
@@ -336,6 +346,24 @@
 					{
 						"name": "TrackerDispatchRepository.stuckRequests",
 						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerDispatchRepository.readSnapshot",
+				"inputs": [
+					{
+						"name": "TrackerDispatchRepository.readSnapshot.itemId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerDispatchRepository.readSnapshot",
+						"type": "TrackerDispatchSnapshot"
 					}
 				],
 				"errors": [],

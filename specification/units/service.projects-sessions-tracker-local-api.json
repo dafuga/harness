@@ -20,6 +20,7 @@
 			"TrackerLocalApiService.constructor",
 			"TrackerLocalApiService.handle",
 			"TrackerLocalApiOptions",
+			"readTrackerItemDetail",
 			"readTrackerRunEndpoint",
 			"itemMutation",
 			"itemAction",
@@ -49,6 +50,16 @@
 			{
 				"name": "TrackerLocalApiService.handle.request",
 				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "readTrackerItemDetail.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "readTrackerItemDetail.options",
+				"type": "TrackerLocalApiOptions",
 				"required": true
 			},
 			{
@@ -133,6 +144,10 @@
 				"type": "Promise<Response>"
 			},
 			{
+				"name": "readTrackerItemDetail",
+				"type": "unknown"
+			},
+			{
 				"name": "readTrackerRunEndpoint",
 				"type": "unknown"
 			},
@@ -169,6 +184,29 @@
 					{
 						"name": "TrackerLocalApiService.handle",
 						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readTrackerItemDetail",
+				"inputs": [
+					{
+						"name": "readTrackerItemDetail.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "readTrackerItemDetail.options",
+						"type": "TrackerLocalApiOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerItemDetail",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

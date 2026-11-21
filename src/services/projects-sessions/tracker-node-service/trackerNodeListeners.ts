@@ -1,6 +1,7 @@
 // @harness-uid u_gvqtr5mdwv
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerSupervisorService } from '../TrackerSupervisorService';
+import { readTrackerNodeInspection } from './readTrackerNodeInspection';
 
 const host = '127.0.0.1';
 const nativePrefix = '/native/v1';
@@ -106,8 +107,11 @@ function trackerCompatibleApi(
 		case 'POST /sync':
 			runtime.kickLinks();
 			return Response.json({ ok: true });
-		default:
-			return runtime.items.handle(request);
+		default: {
+			const inspection =
+				request.method === 'GET' ? readTrackerNodeInspection(path, runtime, supervisor) : undefined;
+			return inspection ?? runtime.items.handle(request);
+		}
 	}
 }
 

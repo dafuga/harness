@@ -8,6 +8,7 @@ export interface TrackerRunFilters {
 
 export interface TrackerListedRun extends TrackerRunRow {
 	queued_at: number | null;
+	tmux?: string | null;
 }
 
 export type TrackerRunTable = 'runs' | 'remote_runs';
