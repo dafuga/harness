@@ -62,6 +62,11 @@ function workCards(data: MockupHomeData): OverviewCard[] {
 			card.state = 'needs-you';
 			card.attention = { item: details, text: 'Approve the Nudge production window, Sat 09:00?' };
 		}
+
+		if (item.status === 'Blocked' && card.state !== 'needs-you') {
+			card.state = 'blocked';
+			card.blocked = { item: details, text: 'Waiting for the synthetic signing fixture' };
+		}
 		cards.set(item.project, card);
 	});
 	if (cards.size)

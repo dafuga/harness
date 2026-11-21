@@ -178,3 +178,8 @@
 		grid-column: 2;
 	}
 }
+
+/* The dialog already names the view and shows its totals. Keep the original overview cards. */
+.hh-home .hh-overview .po-head {
+	display: none;
+}

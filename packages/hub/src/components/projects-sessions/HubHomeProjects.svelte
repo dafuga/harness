@@ -17,13 +17,17 @@
 	let {
 		projects,
 		readProject
-	}: { projects: ProjectSummary[] | null; readProject: ReadHomeProject } = $props();
+	}: {
+		projects: ProjectSummary[] | null;
+		snapshots: Record<string, ProjectSnapshot>;
+		readProject: ReadHomeProject;
+	} = $props();
 	let chosen = $state<string>();
 	let failed = $state(false);
 	let loaded = $state<Record<string, ProjectSnapshot>>({});
 	let showAll = $state(false);
 	const current = $derived(projects?.find((project) => project.id === chosen) ?? projects?.[0]);
-	const detail = $derived(current ? loaded[current.id] : undefined);
+	const detail = $derived(current ? (loaded[current.id] ?? snapshots[current.id]) : undefined);
 	const inventory = $derived(detail ? projectInventory(detail) : null);
 
 	$effect(() => {
@@ -77,13 +81,16 @@
 		<hx-div class="hh-split-list">
 			<hx-ul class="po-items">
 				{#each projects as project (project.id)}
-					{@const last = loaded[project.id]?.commits[0]}
+					{@const snapshot = loaded[project.id] ?? snapshots[project.id]}
+					{@const last = snapshot?.commits[0]}
 					<hx-li class="po-item" aria-current={project.id === current.id ? 'true' : undefined}>
 						<hx-button type="button" class="po-item-open" onclick={() => (chosen = project.id)}>
 							<hx-span class="po-item-text"
 								><hx-span class="po-item-title">{project.name}</hx-span>
 								<hx-span class="po-item-meta"
-									>{project.sourceRepository.owner}/{project.sourceRepository.name}</hx-span
+									>{snapshot
+										? inventorySummary(projectInventory(snapshot))
+										: `${project.sourceRepository.owner}/${project.sourceRepository.name}`}</hx-span
 								></hx-span
 							>
 							{#if last}<hx-span class="hh-change"

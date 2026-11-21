@@ -86,7 +86,7 @@
 		{:else if selected === 'scheduled'}
 			<HubHomeSchedule runs={view.schedule} now={view.now} connected={view.routinesConnected} />
 		{:else if selected === 'projects'}
-			<HubHomeProjects projects={view.projects} {readProject} />
+			<HubHomeProjects projects={view.projects} snapshots={view.projectSnapshots} {readProject} />
 		{:else if selected === 'quota'}
 			<HubHomeQuota quota={view.quota} now={view.now} connected={view.quotaConnected} {reload} />
 		{:else}

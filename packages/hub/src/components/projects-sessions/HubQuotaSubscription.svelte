@@ -24,6 +24,12 @@
 		reload?: () => void;
 	} = $props();
 	const stale = $derived(staleReading(subscription.readAt, now));
+	const chartMax = $derived(
+		Math.max(
+			10,
+			Math.ceil(Math.max(...subscription.history.map((reading) => reading.used)) / 10) * 10
+		)
+	);
 	const warnings = $derived(
 		subscription.limits.filter((limit) => warningFor(limit.left) === 'critical')
 	);
@@ -104,11 +110,13 @@
 					>
 						{#each subscription.history as reading (reading.day)}
 							<hx-div class="hh-q-history-col" title={`${reading.day} · ${reading.used}% used`}
-								><hx-span style:height={`${reading.used}%`}></hx-span></hx-div
+								><hx-span style:height={`${(reading.used / chartMax) * 100}%`}></hx-span></hx-div
 							>
 						{/each}
 					</hx-div>
 				{:else}<hx-p class="po-sessions">No usage history yet.</hx-p>{/if}
+			</hx-div>
+			<hx-div class="hh-q-agents">
 				<hx-h4 class="po-label">Top agents this week</hx-h4>
 				{#if !subscription.agents.length}<hx-p class="po-sessions"
 						>No per-agent usage available.</hx-p

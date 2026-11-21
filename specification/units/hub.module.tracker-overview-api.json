@@ -9,6 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/hub/src/routes/api/tracker-overview/trackerOverviewBody.ts",
 			"packages/hub/src/routes/api/tracker-overview/trackerOverviewCache.ts",
 			"packages/hub/src/routes/api/tracker-overview/trackerOverviewCache.types.ts",
 			"packages/hub/src/routes/api/tracker-overview/trackerOverviewInput.ts",
@@ -17,6 +18,8 @@
 			"packages/hub/src/routes/api/tracker-overview/trackerOverviewPolicy.types.ts"
 		],
 		"symbols": [
+			"MAX_BODY_BYTES",
+			"readOverviewText",
 			"OVERVIEW_TTL_MS",
 			"overviewKey",
 			"storeOverview",
@@ -40,6 +43,16 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "readOverviewText.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "readOverviewText.maximum",
+				"type": "number",
+				"required": false
+			},
 			{
 				"name": "overviewKey.ownerId",
 				"type": "string",
@@ -91,16 +104,6 @@
 				"required": true
 			},
 			{
-				"name": "readOverviewText.request",
-				"type": "Request",
-				"required": true
-			},
-			{
-				"name": "readOverviewText.maximum",
-				"type": "number",
-				"required": false
-			},
-			{
 				"name": "parseOverviewPayload.text",
 				"type": "string",
 				"required": true
@@ -142,6 +145,29 @@
 		],
 		"errorStatus": "declared",
 		"operations": [
+			{
+				"name": "readOverviewText",
+				"inputs": [
+					{
+						"name": "readOverviewText.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "readOverviewText.maximum",
+						"type": "number",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "readOverviewText",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "overviewKey",
 				"inputs": [
@@ -239,29 +265,6 @@
 					{
 						"name": "readOverview",
 						"type": "Promise<ReadyOverviewPayload | null>"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "readOverviewText",
-				"inputs": [
-					{
-						"name": "readOverviewText.request",
-						"type": "Request",
-						"required": true
-					},
-					{
-						"name": "readOverviewText.maximum",
-						"type": "number",
-						"required": false
-					}
-				],
-				"outputs": [
-					{
-						"name": "readOverviewText",
-						"type": "Promise<string>"
 					}
 				],
 				"errors": [],

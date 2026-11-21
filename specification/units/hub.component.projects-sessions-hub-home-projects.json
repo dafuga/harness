@@ -40,6 +40,11 @@
 				"required": true
 			},
 			{
+				"name": "HubHomeProjects.snapshots",
+				"type": "Record<string, ProjectSnapshot>",
+				"required": true
+			},
+			{
 				"name": "HubHomeProjects.readProject",
 				"type": "ReadHomeProject",
 				"required": true
