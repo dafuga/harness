@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"id": "script.tracker-docker-relay-scope",
+	"uid": "u_ytbtrpmwmw",
+	"kind": "script",
+	"title": "scope",
+	"responsibility": "Owns the scope build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/tracker-docker-relay/scope.mjs"],
+		"symbols": ["spokeNode", "spokeItem", "fixtureClock", "relayScope", "deniedRequests"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "relayScope.signAndSend",
+				"type": "(request: TrackerSyncRequest) => Promise<[number, object?]>",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "spokeNode",
+				"type": "unknown"
+			},
+			{
+				"name": "spokeItem",
+				"type": "unknown"
+			},
+			{
+				"name": "fixtureClock",
+				"type": "unknown"
+			},
+			{
+				"name": "relayScope",
+				"type": "unknown"
+			},
+			{
+				"name": "deniedRequests",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "relayScope",
+				"inputs": [
+					{
+						"name": "relayScope.signAndSend",
+						"type": "(request: TrackerSyncRequest) => Promise<[number, object?]>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "relayScope",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/tracker-docker-relay/scope.mjs",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/tracker-docker-relay/scope.mjs"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

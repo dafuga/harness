@@ -1,0 +1,40 @@
+--- a/src/services/projects-sessions/TrackerSpokeSyncService.ts
++++ b/src/services/projects-sessions/TrackerSpokeSyncService.ts
+@@ -3 +2,0 @@
+-import { TrackerSyncAuthService } from '../networking-security/TrackerSyncAuthService';
+@@ -23,17 +21,0 @@
+-function signTrackerSpokeRequest(
+-	auth: TrackerSyncAuthService,
+-	node: string,
+-	request: Omit<TrackerSpokeRequest, 'headers' | 'timeoutMs'>,
+-	timeoutMs: number
+-): TrackerSpokeRequest {
+-	return {
+-		...request,
+-		timeoutMs,
+-		headers: {
+-			authorization: auth.authorizationHeader(request),
+-			'content-type': 'application/json',
+-			'x-tracker-node': node
+-		}
+-	};
+-}
+-
+@@ -44 +25,0 @@
+-	readonly #auth: TrackerSyncAuthService;
+@@ -56 +36,0 @@
+-		this.#auth = new TrackerSyncAuthService(options.secret);
+@@ -146 +126 @@
+-		request: Omit<TrackerSpokeRequest, 'headers' | 'timeoutMs'>,
++		request: Omit<TrackerSpokeRequest, 'timeoutMs'>,
+@@ -149,3 +129 @@
+-		return this.#transport(
+-			signTrackerSpokeRequest(this.#auth, this.#store.node, request, timeoutMs)
+-		);
++		return this.#transport({ ...request, timeoutMs });
+--- a/src/services/projects-sessions/TrackerSpokeSyncService.types.ts
++++ b/src/services/projects-sessions/TrackerSpokeSyncService.types.ts
+@@ -35 +34,0 @@
+-	headers: Readonly<Record<string, string>>;
+@@ -45 +43,0 @@
+-	secret: string | Uint8Array;
