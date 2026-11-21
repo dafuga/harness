@@ -1,0 +1,149 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.public-site-home-hero",
+	"uid": "u_fef6uljonw",
+	"kind": "component",
+	"title": "HomeHero",
+	"responsibility": "Introduce Harness and offer the main download and projects actions on the public homepage.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-a",
+			"reports.component.shared-primitives-atoms-html-code",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-figcaption",
+			"reports.component.shared-primitives-atoms-html-figure",
+			"reports.component.shared-primitives-atoms-html-h1",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-ol",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-span"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/hub/src/components/public-site/HomeHero.svelte",
+			"packages/hub/src/lib/styles/home-hero.css"
+		],
+		"symbols": ["HomeHero"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HomeHero.download",
+				"type": "string",
+				"required": true,
+				"description": "The current Mac archive URL or an anchor to its availability section."
+			},
+			{
+				"name": "HomeHero.iosReady",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "True when the approved iPhone distribution URL is present."
+			},
+			{
+				"name": "HomeHero.projects",
+				"type": "string",
+				"required": false,
+				"default": "/projects",
+				"description": "The resolved path to the signed-in Projects and Google sign-in page."
+			},
+			{
+				"name": "HomeHero.entry",
+				"type": "string",
+				"required": false,
+				"default": "Log in",
+				"description": "The visible label for the projects action, based on the known session."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HomeHero",
+				"type": "markup",
+				"description": "The public hero with product description, navigation actions, and a sample verification loop."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-code",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-figcaption",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-figure",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h1",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ol",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/public-site/HomeHero.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/public-site/HomeHero.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

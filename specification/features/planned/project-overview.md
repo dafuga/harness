@@ -12,6 +12,8 @@ unitIds:
   - hub.endpoint.api-tracker-overview
   - hub.module.tracker-overview-api
   - hub.page.tracker-overview
+  - hub.page.projects
+  - hub.endpoint.download-mac
 owner: null
 reviewedAt: null
 ---
@@ -82,6 +84,14 @@ Daniel approved the same read-only cards for the hosted Hub, Electron, local Exp
 - The hosted page uses the established signed-in Hub shell and the existing overview renderer. An eligible owner can navigate to it from the Hub. Verify loading, ready, empty, unavailable, signed out, denied and account-switch states, and the read-only item detail at desktop, tablet and phone widths.
 - Paired iOS uses its existing Hub account to read the same owner-only endpoint through a fixed native GET. The project overview is offered while the paired connection is online and the account is eligible. Credentials and request origin stay in native Keychain-backed code. Loss of pairing or account invalidates in-flight responses and clears visible rows. Existing paired project grants, relay protocol and tracker mutation permissions are unchanged.
 - Each of the API, hosted page, desktop publisher, native iOS HTTP admission and paired renderer units requires independent focused tests and screenshots from an integrated committed build. Service/API screenshots show the consuming surface and its own exercised state. Synthetic owner, unauthenticated, non-owner, expired, revoked, malformed, credential redaction and stale fixtures are used for browser evidence. Production acceptance requires an owner-approved read of fresh live data and a denied non-owner or anonymous read, with private tracker text omitted from retained evidence.
+
+## Release acceptance
+
+- Serve the public homepage at `/` and send Log in to `/projects`. The signed-in owner sees the tracker cards directly on `/projects`, beside that account's shared projects. A different authenticated account never receives the tracker snapshot.
+- The downloaded Apple-silicon Mac app pins the verified Hub HTTPS origin at build time. It uses that account's native read path and refreshes while visible. Without a configured Hub, local development Desktop uses its fixed local tracker read.
+- The Mac button becomes active after the fixed, same-origin download endpoint confirms a ZIP. The endpoint streams one vetted immutable archive from a dedicated private download bucket. The private tracker cache is separate. The public download requires verified Developer ID signing, notarization and a checked archive digest.
+- Ship the paired iOS experience under the verified Apple team and app identity. Publish its homepage link when the authorized distribution URL works. Preserve the paired host gate and native credential custody.
+- Chief of Staff executes production commands. Record the verified main revision, build and artifact identifiers, public URL, authorized live-data and anonymous-denial smoke checks, and rollback identifiers.
 
 ## Future Enhancements
 

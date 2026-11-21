@@ -14,6 +14,7 @@
 			"hub.component.login-panel",
 			"hub.component.project-create",
 			"hub.component.project-list",
+			"reports.component.projects-sessions-project-overview-project-overview",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-h1",
 			"reports.component.shared-primitives-atoms-html-p"
@@ -32,6 +33,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.service.project-sync",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "hub.component.hub-frame",
 			"via": "import",
@@ -59,6 +65,11 @@
 		},
 		{
 			"unit": "hub.page.tracker-overview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-project-overview-project-overview",
 			"via": "import",
 			"origin": "derived"
 		},

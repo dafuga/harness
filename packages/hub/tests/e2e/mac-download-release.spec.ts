@@ -43,6 +43,7 @@ test('the public homepage links to the live compiled download', async ({ page })
 	const downloadLink = page.locator('#download').getByRole('link', { name: 'Download for Mac' });
 	await expect(downloadLink).toHaveAttribute('href', path, { timeout: 25_000 });
 	if (evidenceRequested()) {
+		await downloadLink.scrollIntoViewIfNeeded();
 		await page.evaluate(async () => {
 			await document.fonts.ready;
 			await new Promise<void>((resolve) =>

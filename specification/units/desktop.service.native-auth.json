@@ -18,6 +18,7 @@
 			"NativeAuthService.connect",
 			"NativeAuthService.status",
 			"NativeAuthService.disconnect",
+			"NativeAuthService.overview",
 			"AuthOptions",
 			"Pending"
 		]
@@ -204,6 +205,18 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "NativeAuthService.overview",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "NativeAuthService.overview",
+						"type": "Promise<OverviewSnapshot>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -257,6 +270,11 @@
 		},
 		{
 			"unit": "desktop.validator.remote-project-response",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
 			"via": "import",
 			"origin": "derived"
 		}
