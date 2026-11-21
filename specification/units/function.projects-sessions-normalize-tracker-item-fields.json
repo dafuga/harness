@@ -1,0 +1,412 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-normalize-tracker-item-fields",
+	"uid": "u_dv4lnm54rz",
+	"kind": "function",
+	"title": "normalizeTrackerItemFields",
+	"responsibility": "Normalize Tracker item input into scalar fields accepted by the operation journal.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/projects-sessions/normalizeTrackerCron.ts",
+			"src/utils/projects-sessions/normalizeTrackerCron.types.ts",
+			"src/utils/projects-sessions/normalizeTrackerDue.ts",
+			"src/utils/projects-sessions/normalizeTrackerItemFields.ts",
+			"src/utils/projects-sessions/normalizeTrackerItemFields.types.ts",
+			"src/utils/projects-sessions/trackerItemValueOr.ts"
+		],
+		"symbols": [
+			"normalizeTrackerCron",
+			"CronField",
+			"CronSchedule",
+			"trackerTimeZone",
+			"trackerDateFormatter",
+			"trackerDateParts",
+			"trackerLocalStamp",
+			"normalizeTrackerDue",
+			"trackerIsoTime",
+			"validateTrackerTimeZone",
+			"normalizeTrackerItemFields",
+			"clearsTrackerRecurrence",
+			"requestsTrackerLaunch",
+			"TrackerItemClock",
+			"TrackerItemValue",
+			"TrackerItemInput",
+			"TrackerItemFields",
+			"trackerItemValueOr"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "normalizeTrackerCron.value",
+				"type": "TrackerItemValue",
+				"required": true
+			},
+			{
+				"name": "normalizeTrackerCron.timeZone",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "normalizeTrackerCron.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerDateFormatter.timeZone",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerDateParts.time",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerDateParts.formatter",
+				"type": "Intl.DateTimeFormat",
+				"required": true
+			},
+			{
+				"name": "trackerLocalStamp.time",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerLocalStamp.timeZone",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "normalizeTrackerDue.value",
+				"type": "TrackerItemValue",
+				"required": true
+			},
+			{
+				"name": "normalizeTrackerDue.clock",
+				"type": "TrackerItemClock",
+				"required": true
+			},
+			{
+				"name": "trackerIsoTime.epoch",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "validateTrackerTimeZone.timeZone",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "normalizeTrackerItemFields.input",
+				"type": "TrackerItemInput",
+				"required": true,
+				"description": "The Store field map with unvalidated values. Undefined values are omitted and recorded values are journal-ready scalars."
+			},
+			{
+				"name": "normalizeTrackerItemFields.clock",
+				"type": "TrackerItemClock",
+				"required": true,
+				"description": "The caller supplies the node, epoch milliseconds and applicable policy or time-zone inputs."
+			},
+			{
+				"name": "clearsTrackerRecurrence.value",
+				"type": "TrackerItemValue",
+				"required": true
+			},
+			{
+				"name": "requestsTrackerLaunch.value",
+				"type": "TrackerItemValue",
+				"required": true
+			},
+			{
+				"name": "trackerItemValueOr.value",
+				"type": "Value",
+				"required": true
+			},
+			{
+				"name": "trackerItemValueOr.fallback",
+				"type": "Fallback",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "normalizeTrackerItemFields",
+				"type": "TrackerItemFields"
+			}
+		],
+		"errors": [
+			{
+				"name": "TrackerItemRequestError",
+				"type": "thrown",
+				"description": "A request with invalid Tracker input carries status 400 and a compatibility message."
+			}
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "normalizeTrackerCron",
+				"inputs": [
+					{
+						"name": "normalizeTrackerCron.value",
+						"type": "TrackerItemValue",
+						"required": true
+					},
+					{
+						"name": "normalizeTrackerCron.timeZone",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "normalizeTrackerCron.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "normalizeTrackerCron",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerDateFormatter",
+				"inputs": [
+					{
+						"name": "trackerDateFormatter.timeZone",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerDateFormatter",
+						"type": "Intl.DateTimeFormat"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "trackerDateParts",
+				"inputs": [
+					{
+						"name": "trackerDateParts.time",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "trackerDateParts.formatter",
+						"type": "Intl.DateTimeFormat",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerDateParts",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerLocalStamp",
+				"inputs": [
+					{
+						"name": "trackerLocalStamp.time",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "trackerLocalStamp.timeZone",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerLocalStamp",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "normalizeTrackerDue",
+				"inputs": [
+					{
+						"name": "normalizeTrackerDue.value",
+						"type": "TrackerItemValue",
+						"required": true
+					},
+					{
+						"name": "normalizeTrackerDue.clock",
+						"type": "TrackerItemClock",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "normalizeTrackerDue",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerIsoTime",
+				"inputs": [
+					{
+						"name": "trackerIsoTime.epoch",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerIsoTime",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "validateTrackerTimeZone",
+				"inputs": [
+					{
+						"name": "validateTrackerTimeZone.timeZone",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateTrackerTimeZone",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "normalizeTrackerItemFields",
+				"inputs": [
+					{
+						"name": "normalizeTrackerItemFields.input",
+						"type": "TrackerItemInput",
+						"required": true,
+						"description": "The Store field map with unvalidated values. Undefined values are omitted and recorded values are journal-ready scalars."
+					},
+					{
+						"name": "normalizeTrackerItemFields.clock",
+						"type": "TrackerItemClock",
+						"required": true,
+						"description": "The caller supplies the node, epoch milliseconds and applicable policy or time-zone inputs."
+					}
+				],
+				"outputs": [
+					{
+						"name": "normalizeTrackerItemFields",
+						"type": "TrackerItemFields"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "clearsTrackerRecurrence",
+				"inputs": [
+					{
+						"name": "clearsTrackerRecurrence.value",
+						"type": "TrackerItemValue",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "clearsTrackerRecurrence",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "requestsTrackerLaunch",
+				"inputs": [
+					{
+						"name": "requestsTrackerLaunch.value",
+						"type": "TrackerItemValue",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "requestsTrackerLaunch",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerItemValueOr",
+				"inputs": [
+					{
+						"name": "trackerItemValueOr.value",
+						"type": "Value",
+						"required": true
+					},
+					{
+						"name": "trackerItemValueOr.fallback",
+						"type": "Fallback",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerItemValueOr",
+						"type": "NonNullable<Value> | Fallback"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/normalizeTrackerItemFields.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/normalizeTrackerItemFields.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
