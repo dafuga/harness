@@ -74,7 +74,7 @@ test('a page one run has open keeps what was opened on it when another run start
 	runs.push(first);
 	let over = false;
 	void first.finished.then(() => (over = true));
-	await serving(first.url);
+	await serving(first);
 	const [history] = await eventually(() => {
 		const found = seededHistories(scratch);
 		return found.length === 1 ? found : undefined;
@@ -106,7 +106,7 @@ test('a page one run has open keeps what was opened on it when another run start
 	// The second run goes on as well, so its server is still there to be asked what it serves.
 	const second = await browserRun('second', scratch, quick, held);
 	runs.push(second);
-	await serving(second.url);
+	await serving(second);
 	// A reload is sent the moment the other server writes its files; this is time for it to land.
 	await eventually(() => (loads > 0 ? loads : undefined), 'a reload', 5).catch(() => 0);
 
