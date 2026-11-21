@@ -10,6 +10,7 @@
 	let {
 		available,
 		local = true,
+		overview = false,
 		busy,
 		open,
 		projects = [],
@@ -19,6 +20,8 @@
 		available: boolean;
 		/** False on a phone: its projects are those of a computer, and it has no folder to open. */
 		local?: boolean;
+		/** True while the bridge offers the Project Overview, which a paired phone may do too. */
+		overview?: boolean;
 		busy: boolean;
 		open: () => void;
 		projects?: DesktopProject[];
@@ -47,8 +50,9 @@
 		>{/if}
 	<hx-p class="muted">{hint}</hx-p>
 	<!-- Only the desktop app owns a local tracker: a phone, a cloud page or a preview offers no link. -->
-	{#if available && local}<hx-a class="project-overview-link" href={resolve('/projects' as '/')}
-			>Project Overview</hx-a
+	{#if (available && local) || overview}<hx-a
+			class="project-overview-link"
+			href={resolve('/projects' as '/')}>Project Overview</hx-a
 		>{/if}
 	<!-- A new project is made on this device, so a phone or a browser preview offers none. -->
 	{#if available && local}<GameCreate />{/if}

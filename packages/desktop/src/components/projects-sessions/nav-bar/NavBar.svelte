@@ -25,8 +25,8 @@
 	/** Deployments are of this device's host: only a local bridge that reports them shows them. */
 	const activity = $derived(workspace.local && !!workspace.bridge?.deploymentActivities);
 	const gameViews = $derived(workspaceGameViews(workspace));
-	/** The overview reads the tracker of this computer: only a local bridge that offers it shows the link. */
-	const overview = $derived(workspace.local && !!workspace.bridge?.projectOverview);
+	/** Offered by this computer's bridge, or by a paired phone's while it is online and signed in. */
+	const overview = $derived(!!workspace.bridge?.projectOverview);
 </script>
 
 <!-- Focus follows the visible rows: project and identity, context and search, then categories. -->

@@ -1,0 +1,55 @@
+{
+	"schemaVersion": 1,
+	"id": "project-overview-ios-renderer",
+	"title": "Project Overview in the paired iOS renderer",
+	"kind": "ui",
+	"units": ["desktop.page.projects", "desktop.adapter.ios-account"],
+	"states": [
+		{
+			"id": "ready",
+			"title": "Paired owner reads the read-only overview through this phone's account",
+			"coverage": "required",
+			"units": ["desktop.page.projects", "desktop.adapter.ios-account"]
+		},
+		{
+			"id": "denied",
+			"title": "A denied read clears the rows and shows no account data",
+			"coverage": "required",
+			"units": ["desktop.page.projects", "desktop.adapter.ios-account"]
+		},
+		{
+			"id": "unavailable",
+			"title": "An authorized 503 shows unavailable with no rows",
+			"coverage": "required",
+			"units": ["desktop.page.projects", "desktop.adapter.ios-account"]
+		}
+	],
+	"viewports": [
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "overview",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test tests/e2e/project-overview-paired-ios.spec.ts --project=chromium --workers=1",
+			"cwd": "packages/desktop"
+		}
+	],
+	"evidence": [
+		{
+			"id": "screens",
+			"kind": "screenshot",
+			"states": ["ready", "denied", "unavailable"],
+			"viewports": ["mobile"],
+			"provenance": "actual-capture",
+			"capture": "viewport",
+			"build": "desktop-renderer",
+			"required": true
+		}
+	]
+}
