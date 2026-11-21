@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import type { NativeTrackerRequest } from './nativeTrackerCli.types';
 
-import { nativeTrackerCommandOptions, nativeTrackerCommonOptions } from './nativeTrackerOptions';
+import { nativeTrackerCommandOptions, nativeTrackerCommonOptions, query } from './nativeTrackerOptions';
 
 const idVerbs = new Set([
 	'show',
@@ -46,7 +46,7 @@ function nativeTrackerRequest(
 	values: Record<string, unknown>
 ): NativeTrackerRequest {
 	if (command === 'watchdog') return watchdogRequest(words, values);
-	const item = itemQuery(command, words, values);
+	const item = itemQuery(command, words, values) ?? runReadRequest(command, words, values);
 	if (item) return item;
 	if (idVerbs.has(command)) return itemAction(command, words, values);
 	if (words.length) throw new TypeError(`usage: tracker ${command}`);
@@ -56,6 +56,27 @@ function nativeTrackerRequest(
 		method: 'GET',
 		path: path + (command === 'digest' && !values.json ? '?format=text' : '')
 	};
+}
+
+function runReadRequest(
+	command: string,
+	words: string[],
+	values: Record<string, unknown>
+): NativeTrackerRequest | undefined {
+	switch (command) {
+		case 'runs':
+			if (words.length) throw new TypeError('usage: tracker runs [--item ID] [--limit N]');
+			return { method: 'GET', path: '/runs' + query({ item: values.item, limit: values.limit }) };
+		case 'models':
+			if (words.length !== 1 || words[0] !== 'report')
+				throw new TypeError('usage: tracker models report');
+			return { method: 'GET', path: '/models/report' };
+		case 'pick':
+			if (words.length !== 1) throw new TypeError('usage: tracker pick <id>');
+			return { method: 'GET', path: '/items/' + encodeURIComponent(words[0]) + '/pick' };
+		default:
+			return undefined;
+	}
 }
 
 function watchdogRequest(
@@ -188,15 +209,6 @@ function itemFields(input: Record<string, unknown>) {
 		every_tz: tz,
 		repo: typeof repo === 'string' && repo ? resolve(repo) : repo
 	};
-}
-
-function query(fields: Record<string, unknown>): string {
-	const params = new URLSearchParams();
-	for (const [key, value] of Object.entries(fields)) {
-		if (value !== undefined && value !== false)
-			params.set(key, value === true ? '1' : String(value));
-	}
-	return params.size ? '?' + params.toString() : '';
 }
 
 function requiredText(words: string[], command: string): string {

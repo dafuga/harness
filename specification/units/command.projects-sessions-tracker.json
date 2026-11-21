@@ -22,8 +22,13 @@
 			"TrackerCommand.run",
 			"formatNativeTrackerItem",
 			"nativeItemPrefix",
+			"formatNativeTrackerRunRead",
 			"NativeTrackerRequest",
 			"NativeTrackerItem",
+			"NativeTrackerListedRun",
+			"NativeTrackerRunReport",
+			"NativeTrackerPick",
+			"NativeTrackerRunRead",
 			"nativeTrackerCommonOptions",
 			"nativeTrackerCommandOptions",
 			"nativeTrackerCommands",
@@ -66,6 +71,16 @@
 				"required": true
 			},
 			{
+				"name": "formatNativeTrackerRunRead.command",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "formatNativeTrackerRunRead.data",
+				"type": "NativeTrackerRunRead",
+				"required": true
+			},
+			{
 				"name": "nativeTrackerArgs.args",
 				"type": "string[]",
 				"required": true
@@ -97,6 +112,10 @@
 			{
 				"name": "nativeItemPrefix",
 				"type": "unknown"
+			},
+			{
+				"name": "formatNativeTrackerRunRead",
+				"type": "string | undefined"
 			},
 			{
 				"name": "nativeTrackerCommonOptions",
@@ -214,6 +233,29 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "formatNativeTrackerRunRead",
+				"inputs": [
+					{
+						"name": "formatNativeTrackerRunRead.command",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "formatNativeTrackerRunRead.data",
+						"type": "NativeTrackerRunRead",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "formatNativeTrackerRunRead",
+						"type": "string | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "nativeTrackerArgs",
 				"inputs": [
 					{
@@ -287,6 +329,16 @@
 		},
 		{
 			"unit": "command.projects-sessions-tracker-serve",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-tracker-run-report",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-run-read",
 			"via": "import",
 			"origin": "derived"
 		},

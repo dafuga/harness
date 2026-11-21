@@ -4,8 +4,12 @@ import { homedir, userInfo } from 'node:os';
 import { join } from 'node:path';
 import { loadTrackerNodeConfig } from '../../../services/projects-sessions/tracker-node-service/trackerNodeConfig';
 import type { TrackerNodeConfig } from '../../../services/projects-sessions/tracker-node-service/trackerNodeConfig.types';
-import { formatNativeTrackerItem, nativeItemPrefix } from './formatNativeTrackerItem';
-import type { NativeTrackerItem } from './nativeTrackerCli.types';
+import {
+	formatNativeTrackerItem,
+	formatNativeTrackerRunRead,
+	nativeItemPrefix
+} from './formatNativeTrackerItem';
+import type { NativeTrackerItem, NativeTrackerRunRead } from './nativeTrackerCli.types';
 import { nativeTrackerArgs, nativeTrackerCommands } from './nativeTrackerRequest';
 
 export function selectedTrackerConfig(): string | undefined {
@@ -131,9 +135,13 @@ function renderNativeTracker(
 				(data as NativeTrackerItem[]).map(formatNativeTrackerItem).join('\n') || '(none)'
 			);
 			return;
-		default: {
-			const item = data as NativeTrackerItem;
-			console.log(nativeItemPrefix(command, options.first, item) + formatNativeTrackerItem(item));
-		}
+		default:
+			renderNativeTrackerItemOrReport(command, data, options.first);
 	}
+}
+
+function renderNativeTrackerItemOrReport(command: string, data: unknown, first?: string): void {
+	const runRead = formatNativeTrackerRunRead(command, data as NativeTrackerRunRead);
+	const item = data as NativeTrackerItem;
+	console.log(runRead ?? nativeItemPrefix(command, first, item) + formatNativeTrackerItem(item));
 }

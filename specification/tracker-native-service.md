@@ -85,6 +85,8 @@ operator verifies the stopped database and chooses a rollback.
   `launch`, `status`, `digest`, and `sync`, plus the item and inspection
   commands listed in `tracker help`. Item commands accept unique ID
   prefixes and JSON output. Duplicate exit codes 4 and 5 are retained.
+  `runs`, `models report`, and `pick` read the same native journal and keep
+  the established human-readable and JSON formats.
   `sync` wakes the configured spoke links. Native launch writes a durable
   intent for the selected node. A fenced host can also run the scheduler
   and reconcile launches. Commands outside the native list fail explicitly.
