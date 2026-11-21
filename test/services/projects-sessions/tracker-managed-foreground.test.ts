@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { expect, test } from 'vitest';
@@ -28,6 +28,7 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 			database,
 			trackerNodeRuntime(foregroundConfig(root, config), (scope) => {
 				expect(scope).toMatchObject({ itemId, runId: 1, apiPort: 49281 });
+				expect(JSON.parse(scope.key)).toEqual([itemId, expect.any(String), 1]);
 				writeFileSync(scope.path, 'synthetic host-signer fixture', { flag: 'wx', mode: 0o600 });
 			})
 		);
@@ -49,10 +50,13 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 			.trim()
 			.split('\n');
 		expect(outputs).toHaveLength(1);
-		expect(JSON.parse(outputs[0])).toMatchObject({
+		const launched = JSON.parse(outputs[0]);
+		expect(launched).toMatchObject({
 			brief: expect.stringContaining('tracker done abc123'),
 			guestAuthFile: expect.stringMatching(/\/effects\/[a-f0-9]{64}\/guest-auth\.json$/)
 		});
+		expect(launched.guestAuthFile.startsWith(launched.cwd + '/')).toBe(false);
+		expect(existsSync(launched.guestAuthFile)).toBe(false);
 	} finally {
 		database.close();
 	}
