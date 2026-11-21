@@ -11,7 +11,10 @@ import {
 	attemptKey,
 	ownsLaunch
 } from '../agents-providers/tracker-dispatcher-service/launchEligibility';
-import type { TrackerDispatchSchedulerOptions } from './TrackerDispatchSchedulerService.types';
+import type {
+	TrackerDispatchRunner,
+	TrackerDispatchSchedulerOptions
+} from './TrackerDispatchSchedulerService.types';
 
 /** Reconcile committed attempts before reserving new work for the node. */
 export class TrackerDispatchSchedulerService {
@@ -51,6 +54,9 @@ export class TrackerDispatchSchedulerService {
 		this.ticking = true;
 		this.waits.clear();
 		try {
+			await this.options.runner.refresh?.(signal, this.repository.managedRuns());
+			signal.throwIfAborted();
+			adoptLegacyRuns(this.repository, this.options.runner);
 			if (!(await this.reconcile(signal))) await this.requestWork(signal);
 			if (signal.aborted) return;
 			this.lastTickAt = new Date((this.options.policy?.now ?? Date.now)()).toISOString();
@@ -137,4 +143,15 @@ function launchCompletionInstructions(itemId: string): string {
 		'Remove a task-owned worktree only as the final step, after leaving it and only when authorized.',
 		'Never remove your current working directory. Leave cleanup to the launcher or a separate session if you are still in the worktree.'
 	].join('\n');
+}
+
+function adoptLegacyRuns(
+	repository: TrackerDispatchRepository,
+	runner: TrackerDispatchRunner
+): void {
+	if (!runner.legacySession) return;
+	for (const run of repository.legacyRuns()) {
+		const session = runner.legacySession(run);
+		if (session) repository.adoptLegacy(run, session);
+	}
 }

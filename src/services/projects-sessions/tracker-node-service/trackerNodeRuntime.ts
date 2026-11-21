@@ -1,4 +1,5 @@
 // @harness-uid u_gvqtr5mdwv
+import { dirname, join } from 'node:path';
 import { TrackerSyncAuthService } from '../../networking-security/TrackerSyncAuthService';
 import {
 	canonicalNode,
@@ -11,21 +12,28 @@ import {
 import type { TrackerItemInput } from '../../../utils/projects-sessions/normalizeTrackerItemFields.types';
 import type { TrackerItemSnapshot } from '../../../utils/projects-sessions/planTrackerItemMutation.types';
 import { trackerItemError } from '../../../utils/projects-sessions/trackerItemError';
+import type { TrackerGuestAuthWriter } from '../tracker-native-runtime-service/nativeTrackerHostEffects.types';
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
-import { readPrivateText } from './trackerNodeConfig';
+import { readPrivateText, trackerSyncPort } from './trackerNodeConfig';
 import type { TrackerNodeConfig } from './trackerNodeConfig.types';
 import { trackerNodeNotifications } from './trackerNodeNotifications';
 import { trackerUpstreamLink } from './trackerUpstreamLink';
 
-export function trackerNodeRuntime(config: TrackerNodeConfig): TrackerNativeRuntimeOptions {
+export function trackerNodeRuntime(
+	config: TrackerNodeConfig,
+	writeGuestAuth?: TrackerGuestAuthWriter
+): TrackerNativeRuntimeOptions {
 	const secret = readPrivateText(config.syncSecretFile).trim();
 	if (secret.length < 16) throw new TypeError('Tracker sync key is too short');
-	const notification = trackerNodeNotifications(config);
+	const hostEffectsHeld = config.hostEffects?.mode === 'held';
+	const notification = hostEffectsHeld ? undefined : trackerNodeNotifications(config);
 	const ladder = ladderFrom();
 	return {
 		node: config.node,
 		role: config.role,
 		notification,
+		hostEffects: configuredHostEffects(config, writeGuestAuth),
+		hostEffectsHeld,
 		manualLaunch: true,
 		...(config.role === 'hub' || config.peer
 			? { syncResponder: { auth: new TrackerSyncAuthService(secret) } }
@@ -36,6 +44,30 @@ export function trackerNodeRuntime(config: TrackerNodeConfig): TrackerNativeRunt
 			parseTrackerModelSpec(String(model), ladder, project ? String(project) : null);
 		},
 		planLaunch: (fields, current) => planNativeLaunch(fields, current, config.node)
+	};
+}
+
+function configuredHostEffects(
+	config: TrackerNodeConfig,
+	writeGuestAuth?: TrackerGuestAuthWriter
+): TrackerNativeRuntimeOptions['hostEffects'] {
+	const effects = config.hostEffects;
+	if (effects?.mode !== 'active') return undefined;
+	const { launch, watchdog, adapter } = effects;
+	return {
+		launch,
+		watchdog,
+		workerClient: {
+			node: config.node,
+			role: config.role,
+			apiPort: config.apiPort,
+			syncPort: trackerSyncPort(config),
+			writeGuestAuth
+		},
+		adapter: adapter && {
+			...adapter,
+			leaseFile: join(dirname(config.database), 'adapter-runner.lock')
+		}
 	};
 }
 

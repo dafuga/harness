@@ -4,12 +4,16 @@ import type {
 	TrackerDispatchPolicy,
 	TrackerDispatchResult,
 	TrackerDueGrant,
-	TrackerRunReceipt
+	TrackerRunReceipt,
+	TrackerSessionEvidence
 } from '../agents-providers/TrackerDispatcherService.types';
 
 export type TrackerReservedStart = Extract<TrackerDispatchResult, { status: 'start' }>;
 
 export interface TrackerDispatchRunner {
+	/** Refresh authoritative session evidence before reconciling or claiming work. */
+	refresh?(signal: AbortSignal, runs: readonly TrackerRunReceipt[]): Promise<void>;
+	legacySession?(run: TrackerRunReceipt): TrackerSessionEvidence | undefined;
 	/** Append the completion instructions to the launch brief and launch only the committed attempt key. */
 	start(
 		reservation: TrackerReservedStart,

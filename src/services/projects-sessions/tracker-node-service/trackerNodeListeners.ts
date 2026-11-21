@@ -98,25 +98,48 @@ function trackerCompatibleApi(
 				role: runtime.role
 			});
 		case 'GET /status':
-			return Response.json({
-				...supervisor.status(),
-				native: {
-					checkpoint,
-					watchdog: 'external process ports required',
-					cos_watchdog_tick: 'external scheduler required',
-					provider_runner: 'disabled',
-					job_runner: 'disabled',
-					adapter_runner: 'disabled',
-					notification_tick: Boolean(runtime.notifications),
-					recurrence_tick: Boolean(runtime.recurring)
-				}
-			});
+			return trackerNodeStatus(runtime, supervisor, checkpoint);
+		case 'GET /watchdog/dry-run':
+			return trackerWatchdogDryRun(request, runtime);
+		case 'GET /watchdog/alerts':
+			return Response.json(runtime.watchdog?.alerts() ?? []);
 		case 'POST /sync':
 			runtime.kickLinks();
 			return Response.json({ ok: true });
 		default:
 			return runtime.items.handle(request);
 	}
+}
+
+function trackerNodeStatus(
+	runtime: TrackerNativeRuntimeService,
+	supervisor: TrackerSupervisorService,
+	checkpoint: string
+) {
+	return Response.json({
+		...supervisor.status(),
+		native: {
+			checkpoint,
+			watchdog: runtime.watchdog ? 'configured' : 'external process ports required',
+			cos_watchdog_tick: runtime.watchdog?.chiefOfStaff
+				? 'configured'
+				: 'external scheduler required',
+			provider_runner: runtime.scheduler ? 'configured' : 'disabled',
+			job_runner: 'disabled',
+			adapter_runner: runtime.adapter ? 'configured' : 'disabled',
+			host_effects_held: runtime.hostEffectsHeld,
+			notification_tick: Boolean(runtime.notifications),
+			recurrence_tick: Boolean(runtime.recurring)
+		}
+	});
+}
+
+async function trackerWatchdogDryRun(request: Request, runtime: TrackerNativeRuntimeService) {
+	const item = new URL(request.url).searchParams.get('item');
+	const result = await runtime.watchdog?.inspect(item, request.signal);
+	return Response.json(
+		result ?? { computer: runtime.store.node, available: false, sessions: [], recovery: [] }
+	);
 }
 
 export function trackerNodeSync(request: Request, runtime: TrackerNativeRuntimeService) {

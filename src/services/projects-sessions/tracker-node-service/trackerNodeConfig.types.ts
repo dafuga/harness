@@ -1,4 +1,6 @@
 // @harness-uid u_gvqtr5mdwv
+import type { TrackerHostEffectsMode } from '../tracker-native-runtime-service/nativeTrackerHostEffects.types';
+
 interface TrackerNodeConfigFields {
 	version: 1;
 	node: string;
@@ -7,6 +9,7 @@ interface TrackerNodeConfigFields {
 	legacyFenceFile: string;
 	legacySupervisorSocket?: string;
 	syncSecretFile: string;
+	hostEffects?: TrackerHostEffectsMode;
 	notifications?: {
 		targets: Record<string, { url: string; bearerFile?: string }>;
 		itemCallbacks?: string[];
