@@ -41,6 +41,16 @@ test(
 					pid: candidate.pid,
 					node: 'fixture-mac'
 				});
+				expect(await (await fetch(base + '/status')).json()).toMatchObject({
+					node: 'fixture-mac',
+					role: 'spoke',
+					pid: candidate.pid,
+					db_id: expect.any(String),
+					ops: 0,
+					sync: { disabled: true },
+					deliveries: {},
+					active_reminders: 0
+				});
 				const duplicate = await runHarness(
 					[...args, '--port', String(ready.port)],
 					home,
@@ -48,6 +58,8 @@ test(
 					env
 				);
 				expect(duplicate.exitCode).toBe(1);
+				const secondOwner = await runHarness(args, home, false, env);
+				expect(secondOwner.exitCode).toBe(1);
 				const livePort = await runHarness([...args, '--port', '7701'], home, false, env);
 				expect(livePort.exitCode).toBe(2);
 				const crossOrigin = await fetch(base + '/items', {
