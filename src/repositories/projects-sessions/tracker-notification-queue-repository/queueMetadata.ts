@@ -5,6 +5,7 @@ import type {
 	DeliveryAttempt,
 	TrackerNotificationState
 } from '../../../services/projects-sessions/tracker-notification-service/notificationState.types';
+import { TrackerNotificationQueueError } from './TrackerNotificationQueueError';
 
 const attemptSchema = z.strictObject({
 	kind: z.enum(['callback', 'reminders', 'outbox', 'attention']),
@@ -34,7 +35,7 @@ function integer(value: string | undefined, key: string): number | undefined {
 	if (value === undefined) return undefined;
 	const number = Number(value);
 	if (!/^\d+$/.test(value) || !Number.isSafeInteger(number))
-		throw new Error(`Invalid Tracker notification metadata: ${key}`);
+		throw new TrackerNotificationQueueError(`Invalid Tracker notification metadata: ${key}`);
 	return number;
 }
 
@@ -43,7 +44,9 @@ function parsePause(value: string | undefined): TrackerNotificationState['paused
 	const { at, by } = pauseSchema.parse(JSON.parse(value));
 	const time = Date.parse(at);
 	if (!Number.isFinite(time))
-		throw new Error('Invalid Tracker notification metadata: webhook_paused');
+		throw new TrackerNotificationQueueError(
+			'Invalid Tracker notification metadata: webhook_paused'
+		);
 	return { at: time, by };
 }
 
@@ -59,7 +62,7 @@ function readAttempt(database: SqliteDatabase): DeliveryAttempt | undefined {
 
 function validateAttempt(attempt: unknown): asserts attempt is DeliveryAttempt {
 	if (!attemptSchema.safeParse(attempt).success)
-		throw new Error('Invalid persisted Tracker notification attempt');
+		throw new TrackerNotificationQueueError('Invalid persisted Tracker notification attempt');
 }
 
 export function readQueueMetadata(database: SqliteDatabase) {

@@ -3,6 +3,7 @@ import { realpathSync } from 'node:fs';
 import { TrackerAdapterLeaseAdapter } from '../../../adapters/projects-sessions/TrackerAdapterLeaseAdapter';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import type { TrackerNotificationQueue } from '../../../services/projects-sessions/TrackerNotificationService.types';
+import { TrackerNotificationQueueError } from './TrackerNotificationQueueError';
 
 const fileTails = new Map<string, Promise<unknown>>();
 const memoryTails = new WeakMap<SqliteDatabase, Promise<unknown>>();
@@ -44,7 +45,7 @@ export function notificationExclusivity(
 	return (work) =>
 		queue(async () => {
 			const release = lease.tryAcquire();
-			if (!release) throw new Error('Tracker notification queue is busy');
+			if (!release) throw new TrackerNotificationQueueError('Tracker notification queue is busy');
 			try {
 				return await work();
 			} finally {

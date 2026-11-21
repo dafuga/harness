@@ -1,5 +1,6 @@
 // @harness-uid u_e7x5dhawh4
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
+import { TrackerNotificationQueueError } from './TrackerNotificationQueueError';
 
 // The core Tracker schema already creates deliveries, reminders and meta.
 // These tables match Tracker 4a6be709 src/webhook.js. The last table is native-only.
@@ -46,5 +47,5 @@ export function validateQueueTable(
 		keys[0]?.name !== key ||
 		columns.some((name) => !existing.some((column) => column.name === name))
 	)
-		throw new Error(`Incompatible Tracker notification schema: ${table}`);
+		throw new TrackerNotificationQueueError(`Incompatible Tracker notification schema: ${table}`);
 }
