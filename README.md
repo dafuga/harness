@@ -62,8 +62,11 @@ executable path for an isolated test or a separately installed client.
 
 The packaged [Tracker shim](scripts/tracker-shim.sh) forwards the old
 `tracker` entry point to Harness. Set `HARNESS_EXECUTABLE` when staging it
-against a specific Harness binary. Before replacing a live client with the
-shim, retain a link to its versioned executable at
+against a specific Harness binary. For service callers with a restricted
+`PATH`, install an executable Harness launcher at
+`~/.local/libexec/harness/harness` that uses its runtime by absolute path.
+The shim checks this launcher before looking up `harness` on `PATH`. Before
+replacing a live client with the shim, retain a link to its versioned executable at
 `~/.local/libexec/harness/tracker-legacy` and confirm that both entry points
 reach the same service. The retained executable must point to the client
 release. Keep the previous CLI target available for rollback.
