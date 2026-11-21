@@ -15,6 +15,9 @@ import { TrackerNotificationService } from './TrackerNotificationService';
 import { TrackerPersistenceService } from './TrackerPersistenceService';
 import type { TrackerSpokeLoopService } from './TrackerSpokeLoopService';
 import { TrackerRecurringService } from './TrackerRecurringService';
+import { trackerHostAdapter } from './tracker-native-runtime-service/trackerHostAdapter';
+import { trackerHostWatchdog } from './tracker-native-runtime-service/trackerHostWatchdog';
+import { configuredHostDispatch } from './tracker-native-runtime-service/trackerHostLaunch';
 import { composeTrackerDispatch } from './tracker-native-runtime-service/nativeTrackerDispatch';
 import {
 	composeTrackerLinks,
@@ -32,6 +35,8 @@ export class TrackerNativeRuntimeService {
 	readonly items: TrackerLocalApiService;
 	readonly notifications?: TrackerNotificationService;
 	readonly adapter?: TrackerAdapterPollService;
+	readonly watchdog?: ReturnType<typeof trackerHostWatchdog>;
+	readonly hostEffectsHeld: boolean;
 	readonly sync?: TrackerHubSyncService;
 	readonly recurring?: TrackerRecurringService;
 	readonly telemetry?: (signal: AbortSignal) => Promise<void>;
@@ -41,26 +46,30 @@ export class TrackerNativeRuntimeService {
 
 	constructor(database: SqliteDatabase, options: TrackerNativeRuntimeOptions) {
 		validateLinks(options);
-		const { node, now, storage, adapter } = options;
+		const { node, now, storage, hostEffects } = options;
 		const store = new TrackerPersistenceService(database, node, { ...storage, now });
 		this.store = store;
 		this.role = options.role;
 		this.now = now ?? Date.now;
+		this.hostEffectsHeld = options.hostEffectsHeld === true;
+		this.watchdog = configuredHostWatchdog(store, hostEffects?.watchdog, this.now);
 		const runs = new TrackerRunReadRepository(database, node);
 		this.notifications = composeNotifications(store, options);
 		const recurring = composeRecurrence(store, options, this.notifications);
 		this.recurring = recurring?.worker;
 		this.items = composeItemApi(store, runs, options, recurring?.repo);
 		this.links = composeTrackerLinks(store, options);
-		if (adapter) this.adapter = new TrackerAdapterPollService(store, adapter);
+		this.adapter = configuredHostAdapter(store, runs, options, this.now);
+		const dispatch = options.dispatch ?? configuredHostDispatch(store, hostEffects);
+		const workerOptions = { ...options, dispatch };
 		({ dispatch: this.dispatch, scheduler: this.scheduler } = composeTrackerDispatch(
 			store,
-			options
+			workerOptions
 		));
 		({ tick: this.telemetry, samples: this.fleetSamples } = composeTrackerTelemetry(
 			store,
 			runs,
-			options
+			workerOptions
 		));
 		this.sync = composeResponder(store, runs, options, this.dispatch);
 	}
@@ -182,3 +191,22 @@ export {
 	TrackerRecurringRepository,
 	TrackerRecurringService
 };
+
+function configuredHostWatchdog(
+	store: TrackerPersistenceService,
+	watchdog: NonNullable<TrackerNativeRuntimeOptions['hostEffects']>['watchdog'],
+	now: () => number
+) {
+	return watchdog ? trackerHostWatchdog(store, watchdog, now) : undefined;
+}
+
+function configuredHostAdapter(
+	store: TrackerPersistenceService,
+	runs: TrackerRunReadRepository,
+	{ adapter, hostEffects }: TrackerNativeRuntimeOptions,
+	now: () => number
+) {
+	const binding = hostEffects?.adapter;
+	const dependencies = adapter ?? (binding && trackerHostAdapter(binding, runs, now));
+	return dependencies ? new TrackerAdapterPollService(store, dependencies) : undefined;
+}

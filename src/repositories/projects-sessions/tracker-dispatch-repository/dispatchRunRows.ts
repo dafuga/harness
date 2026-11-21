@@ -1,7 +1,11 @@
 // @harness-uid u_ksy76trvsj
 import { createHash } from 'node:crypto';
 import type { SqliteDatabase, SqliteValue } from '../../../core/development-tooling/sqliteTypes';
-import type { TrackerRunReceipt } from '../../../services/agents-providers/TrackerDispatcherService.types';
+import type {
+	TrackerRunReceipt,
+	TrackerSessionEvidence
+} from '../../../services/agents-providers/TrackerDispatcherService.types';
+import { attemptKey } from '../../../services/agents-providers/tracker-dispatcher-service/launchEligibility';
 import type { TrackerPersistenceService } from '../../../services/projects-sessions/TrackerPersistenceService';
 import type {
 	TrackerRunReservation,
@@ -83,6 +87,46 @@ export function managedDispatchRuns(database: SqliteDatabase, node: string): Tra
 		.filter((row) => row.revision >= 0);
 }
 
+export function legacyDispatchRuns(database: SqliteDatabase, node: string): TrackerRunReceipt[] {
+	return localRows(
+		database,
+		`WHERE m.k IS NULL AND r.auto_token IS NOT NULL
+		AND r.state IN ('running','verifying') AND r.tmux IS NOT NULL
+		AND r.cli IN ('codex','claude') AND r.started_at IS NOT NULL`
+	).map((row) => receipt(row, node));
+}
+
+export function adoptLegacyDispatchRun(
+	store: TrackerPersistenceService,
+	run: TrackerRunReceipt,
+	session: TrackerSessionEvidence
+): void {
+	store.commitLocal(() => {
+		const row = localRows(store.database, 'WHERE r.id = ? AND m.k IS NULL', run.id)[0];
+		if (
+			row &&
+			row.tmux === run.tmux &&
+			signature(row) === signature(run) &&
+			validLegacySession(run, session)
+		) {
+			writeReservation(store, { ...run, revision: 0, host_session_id: session.id });
+		}
+		return { result: undefined };
+	});
+}
+
+function validLegacySession(run: TrackerRunReceipt, session: TrackerSessionEvidence): boolean {
+	return (
+		(run.state === 'running' || run.state === 'verifying') &&
+		run.started_at !== null &&
+		session.key === attemptKey(run) &&
+		Boolean(session.id) &&
+		session.tmux === run.tmux &&
+		session.startedAt >= run.started_at - 60_000 &&
+		session.startedAt <= run.started_at + 1_000
+	);
+}
+
 function localRows(database: SqliteDatabase, where: string, ...bindings: SqliteValue[]) {
 	return database
 		.prepare(
@@ -93,12 +137,9 @@ function localRows(database: SqliteDatabase, where: string, ...bindings: SqliteV
 }
 
 function receipt(row: TrackerStoredDispatchRun, node: string): TrackerRunReceipt {
-	const reservation = row.reservation
-		? (JSON.parse(row.reservation) as TrackerRunReservation)
-		: undefined;
-	const metadata = reservation?.signature === signature(row) ? reservation : undefined;
 	const fields = { ...row };
 	delete fields.reservation;
+	const metadata = readReservation(row);
 	return {
 		...fields,
 		node,
@@ -106,8 +147,15 @@ function receipt(row: TrackerStoredDispatchRun, node: string): TrackerRunReceipt
 		launch_source: metadata?.launch_source ?? 'manual',
 		dispatch_at: metadata?.dispatch_at,
 		verificationFor: metadata?.verificationFor,
+		host_session_id: metadata?.hostSessionId,
 		revision: metadata?.revision ?? -1
 	};
+}
+
+function readReservation(row: TrackerStoredDispatchRun): TrackerRunReservation | undefined {
+	if (!row.reservation) return undefined;
+	const reservation = JSON.parse(row.reservation) as TrackerRunReservation;
+	return reservation.signature === signature(row) ? reservation : undefined;
 }
 
 export function persistDispatchRun(
@@ -119,16 +167,22 @@ export function persistDispatchRun(
 		throw new DOMException('Cannot write an unowned Tracker attempt', 'InvalidStateError');
 	const previous = localRows(store.database, 'WHERE r.id = ?', run.id)[0];
 	if (previous) assertRunVersion(previous, run, node);
+	const fields = [...columns, 'tmux'];
 	const command = previous
-		? `UPDATE runs SET ${columns.map((column) => `${column} = ?`).join(', ')} WHERE id = ?`
-		: `INSERT INTO runs (${columns.join(', ')}, id) VALUES (${columns.map(() => '?').join(', ')}, ?)`;
-	store.database.prepare(command).run(...values(run), run.id);
+		? `UPDATE runs SET ${fields.map((column) => `${column} = ?`).join(', ')} WHERE id = ?`
+		: `INSERT INTO runs (${fields.join(', ')}, id) VALUES (${fields.map(() => '?').join(', ')}, ?)`;
+	store.database.prepare(command).run(...values(run), run.tmux ?? null, run.id);
+	writeReservation(store, run);
+}
+
+function writeReservation(store: TrackerPersistenceService, run: TrackerRunReceipt): void {
 	const { revision, launch_source, dispatch_at, verificationFor } = run;
 	const metadata = {
 		revision,
 		launch_source,
 		dispatch_at,
 		verificationFor,
+		hostSessionId: run.host_session_id,
 		signature: signature(run)
 	};
 	store.writeMeta({ [reservationPrefix + run.id]: JSON.stringify(metadata) });
