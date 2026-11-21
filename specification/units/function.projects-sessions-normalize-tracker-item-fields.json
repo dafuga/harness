@@ -1,0 +1,70 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-normalize-tracker-item-fields",
+	"uid": "u_dv4lnm54rz",
+	"kind": "function",
+	"title": "normalizeTrackerItemFields",
+	"responsibility": "Normalize Tracker item input into scalar fields accepted by the operation journal.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/projects-sessions/normalizeTrackerItemFields.ts"],
+		"symbols": ["normalizeTrackerItemFields"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "normalizeTrackerItemFields.value",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "normalizeTrackerItemFields",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "normalizeTrackerItemFields",
+				"inputs": [
+					{
+						"name": "normalizeTrackerItemFields.value",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "normalizeTrackerItemFields",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/normalizeTrackerItemFields.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/normalizeTrackerItemFields.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
