@@ -2,7 +2,7 @@
 	"name": "scripted-deploy",
 	"goal": "Build a script-only Docker deployment command with exact release gates and prove the authorized Fluora staging path.",
 	"createdAt": "2026-11-21T20:49:07.760Z",
-	"updatedAt": "2026-11-21T20:57:06.367Z",
+	"updatedAt": "2026-11-21T21:23:48.467Z",
 	"template": "feature",
 	"templateLineage": [
 		"feature"
@@ -19,12 +19,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T21:23:48.406Z",
+			"evidence": "Guarded CLI, ARM64 runner, immutable build input and release identity, migration drift gate, and Fluora phase scripts implemented. Capability bridge and live staging rollout remain gated."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T21:23:48.467Z",
+			"evidence": "Six focused deployment unit tests and three repository contract guard suites passed in a 22-test run. Seven CLI E2Es passed on harbor-mbp-2, covering signed promotion, drift, malformed and expired approvals, artifact tampering and rollback recovery."
 		},
 		{
 			"id": "verify",
