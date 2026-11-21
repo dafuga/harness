@@ -8,7 +8,7 @@ import { TrackerNotificationQueueRepository } from '../../repositories/projects-
 import { TrackerNotificationSourceRepository } from '../../repositories/projects-sessions/TrackerNotificationSourceRepository';
 import { TrackerRunReadRepository } from '../../repositories/projects-sessions/TrackerRunReadRepository';
 import { TrackerRecurringRepository } from '../../repositories/projects-sessions/TrackerRecurringRepository';
-import { TrackerAdapterPollService } from './TrackerAdapterPollService';
+import type { TrackerAdapterPollService } from './TrackerAdapterPollService';
 import { TrackerHubSyncService } from './TrackerHubSyncService';
 import { TrackerLocalApiService } from './TrackerLocalApiService';
 import type {
@@ -19,7 +19,7 @@ import { TrackerNotificationService } from './TrackerNotificationService';
 import { TrackerPersistenceService } from './TrackerPersistenceService';
 import type { TrackerSpokeLoopService } from './TrackerSpokeLoopService';
 import { TrackerRecurringService } from './TrackerRecurringService';
-import { trackerHostAdapter } from './tracker-native-runtime-service/trackerHostAdapter';
+import { configuredHostAdapter } from './tracker-native-runtime-service/trackerHostAdapter';
 import { trackerHostWatchdog } from './tracker-native-runtime-service/trackerHostWatchdog';
 import { configuredHostDispatch } from './tracker-native-runtime-service/trackerHostLaunch';
 import { composeTrackerDispatch } from './tracker-native-runtime-service/nativeTrackerDispatch';
@@ -211,15 +211,4 @@ function configuredHostWatchdog(
 	now: () => number
 ) {
 	return watchdog ? trackerHostWatchdog(store, watchdog, now) : undefined;
-}
-
-function configuredHostAdapter(
-	store: TrackerPersistenceService,
-	runs: TrackerRunReadRepository,
-	{ adapter, hostEffects }: TrackerNativeRuntimeOptions,
-	now: () => number
-) {
-	const binding = hostEffects?.adapter;
-	const dependencies = adapter ?? (binding && trackerHostAdapter(binding, runs, now));
-	return dependencies ? new TrackerAdapterPollService(store, dependencies) : undefined;
 }

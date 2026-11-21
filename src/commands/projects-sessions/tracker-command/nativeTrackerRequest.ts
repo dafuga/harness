@@ -31,7 +31,6 @@ function nativeTrackerRequest(
 	words: string[],
 	values: Record<string, string | boolean | undefined>
 ): NativeTrackerRequest {
-	if (command === 'watchdog') return watchdogRequest(words, values);
 	const item =
 		itemQuery(command, words, values) ??
 		runReadRequest(command, words, values) ??
@@ -53,6 +52,8 @@ function runReadRequest(
 	values: Record<string, unknown>
 ): NativeTrackerRequest | undefined {
 	switch (command) {
+		case 'watchdog':
+			return watchdogRequest(words, values);
 		case 'runs':
 			if (words.length) throw new TypeError('usage: tracker runs [--item ID] [--limit N]');
 			return { method: 'GET', path: '/runs' + query({ item: values.item, limit: values.limit }) };

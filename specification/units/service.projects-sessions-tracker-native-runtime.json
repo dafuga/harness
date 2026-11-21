@@ -74,6 +74,7 @@
 			"trackerDueItemPreview",
 			"trackerGithubCli",
 			"trackerHostAdapter",
+			"configuredHostAdapter",
 			"adapterIssues",
 			"adapterTimeline",
 			"adapterComments",
@@ -233,6 +234,31 @@
 			},
 			{
 				"name": "trackerHostAdapter.now",
+				"type": "() => number",
+				"required": true
+			},
+			{
+				"name": "configuredHostAdapter.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "configuredHostAdapter.runs",
+				"type": "TrackerRunReadRepository",
+				"required": true
+			},
+			{
+				"name": "configuredHostAdapter.adapter",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "configuredHostAdapter.hostEffects",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "configuredHostAdapter.now",
 				"type": "() => number",
 				"required": true
 			},
@@ -544,6 +570,10 @@
 			{
 				"name": "trackerHostAdapter",
 				"type": "TrackerAdapterPollDependencies"
+			},
+			{
+				"name": "configuredHostAdapter",
+				"type": "unknown"
 			},
 			{
 				"name": "adapterIssues",
@@ -955,6 +985,44 @@
 					{
 						"name": "trackerHostAdapter",
 						"type": "TrackerAdapterPollDependencies"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "configuredHostAdapter",
+				"inputs": [
+					{
+						"name": "configuredHostAdapter.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "configuredHostAdapter.runs",
+						"type": "TrackerRunReadRepository",
+						"required": true
+					},
+					{
+						"name": "configuredHostAdapter.adapter",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "configuredHostAdapter.hostEffects",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "configuredHostAdapter.now",
+						"type": "() => number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "configuredHostAdapter",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
