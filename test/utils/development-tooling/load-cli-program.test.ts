@@ -124,21 +124,24 @@ test('Harbor inspection forwards fixed argv without provider or signing credenti
 	const rpc = 'http://127.0.0.1:18900';
 	const config = join(root, 'operator config.json');
 	try {
-		for (const [input, expected] of [
-			[['version'], ['--version']],
-			[
-				['chain', 'info', '--url', rpc],
-				['chain', 'info', '--json', '--url', rpc]
-			],
-			[
-				['agent', 'status', '--config', config],
-				['agent', 'status', '--config', config]
-			]
-		]) {
+		const commands = [
+			{ name: 'version', input: ['version'], expected: ['--version'] },
+			{
+				name: 'chain-info',
+				input: ['chain', 'info', '--url', rpc],
+				expected: ['chain', 'info', '--json', '--url', rpc]
+			},
+			{
+				name: 'agent-status',
+				input: ['agent', 'status', '--config', config],
+				expected: ['agent', 'status', '--config', config]
+			}
+		];
+		for (const { name, input, expected } of commands) {
 			const args = ['harbor', ...input];
 			const cli = await loadCliProgram(args);
 			expect(cli.commands.some((command) => command.name() === 'harbor')).toBe(true);
-			await measureWorkload('command.projects-sessions-harbor-inspection', expected.join(' '), () =>
+			await measureWorkload('command.projects-sessions-harbor-inspection', name, () =>
 				cli.parseAsync(args, { from: 'user' })
 			);
 			expect(JSON.parse(output.mock.lastCall?.[0] as string)).toStrictEqual({
