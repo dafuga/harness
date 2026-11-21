@@ -1,3 +1,4 @@
+// @harness-uid u_zxcs33stsc
 import type { OverviewCard } from '../../packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types';
 
 export interface ProjectListRow {
