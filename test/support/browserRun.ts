@@ -7,6 +7,9 @@ import { runFailures, type RunReport } from './runFailures';
 import { teardownGate } from './runGate';
 import { freePort } from './workers';
 
+// Match the normal Reports Playwright web-server startup deadline.
+export const reportsBrowserStartupSeconds = 420;
+
 const runControls = ['--reporter=json', '--max-failures=1'];
 const reports = resolve(import.meta.dirname, '../../packages/reports');
 const ports = [
@@ -114,7 +117,10 @@ export async function runPassed(run: Ended, name: string): Promise<void> {
 }
 
 /** Wait for the app without polling for five minutes after its browser runner has exited. */
-export async function serving(run: BrowserRun, seconds = 300): Promise<void> {
+export async function serving(
+	run: BrowserRun,
+	seconds = reportsBrowserStartupSeconds
+): Promise<void> {
 	let exitCode: number | undefined;
 	void run.finished.then((code) => (exitCode = code));
 	for (let attempt = 0; attempt < seconds * 2; attempt += 1) {

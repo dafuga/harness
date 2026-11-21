@@ -7,6 +7,7 @@ import {
 	beforeDeadline,
 	browserRun,
 	concurrentBrowserRunRepetitions,
+	reportsBrowserStartupSeconds,
 	eventually,
 	runPassed as passed,
 	seededHistories,
@@ -39,10 +40,14 @@ const media = (home: string) =>
 /** Waits until exactly this many runs have seeded a history somewhere below the scratch. */
 const histories = async (count: number, wanted: string): Promise<SeededHistory[]> => {
 	try {
-		return await eventually(() => {
-			const found = seededHistories(scratch);
-			return found.length === count ? found : undefined;
-		}, wanted);
+		return await eventually(
+			() => {
+				const found = seededHistories(scratch);
+				return found.length === count ? found : undefined;
+			},
+			wanted,
+			reportsBrowserStartupSeconds
+		);
 	} catch (error) {
 		const output = runs.map((run) => run.output().slice(-6000)).join('\n');
 		throw new Error(`${String(error)}\nBrowser run diagnostics:\n${output}`, { cause: error });
