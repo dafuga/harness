@@ -1,0 +1,45 @@
+{
+	"name": "tracker-native-local-api",
+	"goal": "Serve core Tracker loopback item reads and writes through the native SQLite journal, with legacy HTTP shapes and isolated replication proof.",
+	"createdAt": "2026-11-21T15:58:36.541Z",
+	"updatedAt": "2026-11-21T16:10:59.447Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:58:48.425Z",
+			"evidence": "Pinned 4a6be709 loopback request/response contract. Accept list, item detail, digest, duplicate check and journal mutations in isolated SQLite without effectful fleet adapters. Prove JSON/text, status, actor/note persistence, duplicate rejection without writes and propagation through the signed hub."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-21T16:10:58.077Z",
+			"evidence": "Core item routes, duplicate diagnostics and text/JSON digest share the existing SQLite journal and read repository."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-21T16:10:59.447Z",
+			"evidence": "MB2 focused cases were red at 1437329b1c and passed at ebd1b34e3e: 74/74 in the aggregate. Extended native sync case to round-trip mutations through the item API."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -1,0 +1,63 @@
+// @harness-uid u_xba7ieg4je
+import type {
+	TrackerDigest,
+	TrackerDigestItem,
+	TrackerRecurringProblem
+} from '../TrackerItemReadRepository.types';
+
+/** Render the legacy text digest. Blocked items stay in the first section of the due and flag views. */
+export function formatTrackerDigest(digest: TrackerDigest): string {
+	const notBlocked = (item: TrackerDigestItem) => item.status !== 'blocked';
+	return [
+		`Tracker digest - ${digest.local_time}`,
+		...section('BLOCKED', digest.blocked, blockedDetail),
+		...section('NEEDS DANIEL', digest.needs_daniel.filter(notBlocked), (item) =>
+			item.question ? `Q: ${item.question}` : ''
+		),
+		...section('OVERDUE', digest.overdue.filter(notBlocked), (item) => `due ${item.due}`),
+		...section('DUE TODAY', digest.due_today.filter(notBlocked), (item) =>
+			item.due && item.due.length > 10 ? `due ${item.due}` : ''
+		),
+		...section('RECURRING: MISSED OR FAILED', digest.recurring_missed, recurrenceDetail)
+	].join('\n');
+}
+
+function section<T extends TrackerDigestItem>(
+	title: string,
+	items: T[],
+	detail: (item: T) => string
+): string[] {
+	const heading = `${title} (${items.length})`;
+	return items.length
+		? [heading, ...items.map((item) => line(item, detail(item)))]
+		: [heading, '  (none)'];
+}
+
+function line(item: TrackerDigestItem, detail: string): string {
+	const assignees = [item.owner && `owner ${item.owner}`, item.agent && `agent ${item.agent}`]
+		.filter(Boolean)
+		.join(', ');
+	const context = assignees ? `${item.kind}; ${assignees}` : item.kind;
+	return `  - [${item.id.slice(0, 6)}] ${item.title}${detail ? ` - ${detail}` : ''} (${context})`;
+}
+
+function blockedDetail(item: TrackerDigestItem): string {
+	return [
+		item.blocked_reason && `blocked: ${item.blocked_reason}`,
+		item.needs_daniel && 'NEEDS DANIEL',
+		item.due && `due ${item.due}`
+	]
+		.filter(Boolean)
+		.join('; ');
+}
+
+function recurrenceDetail(item: TrackerRecurringProblem): string {
+	const failedNote = item.failed?.note ? `: ${item.failed.note}` : '';
+	return [
+		item.missed && `missed ${item.missed_local}`,
+		item.failed && `failed ${item.failed_local}${failedNote}`,
+		`every '${item.every}'`
+	]
+		.filter(Boolean)
+		.join('; ');
+}

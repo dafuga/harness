@@ -1,0 +1,114 @@
+{
+	"schemaVersion": 1,
+	"id": "function.execution-runtimes-classify-resource-host",
+	"uid": "u_lad4jddhgv",
+	"kind": "function",
+	"title": "classifyResourceHost",
+	"responsibility": "Classify a computer's resource sample as offline, overloaded, busy or ok for placement",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/execution-runtimes/resource-placement/classifyResourceHost.ts"],
+		"symbols": ["classifyResourceHost"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "classifyResourceHost.host",
+				"type": "ResourceHost",
+				"required": true,
+				"description": "One computer's latest Harness resource snapshot, workload and launcher state; a null snapshot means it never reported."
+			},
+			{
+				"name": "classifyResourceHost.policy",
+				"type": "ResourcePlacementPolicy",
+				"required": true,
+				"description": "Stale limit and reserve rules; the defaults mirror the Tracker placement thresholds."
+			},
+			{
+				"name": "classifyResourceHost.now",
+				"type": "number",
+				"required": true,
+				"description": "Current time in milliseconds, used to age the snapshot."
+			}
+		],
+		"outputs": [
+			{
+				"name": "classifyResourceHost",
+				"type": "ResourceHostClassification",
+				"description": "Offline, overloaded, busy or ok, with the reasons and the sample age in milliseconds (null when never reported)."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "classifyResourceHost",
+				"inputs": [
+					{
+						"name": "classifyResourceHost.host",
+						"type": "ResourceHost",
+						"required": true,
+						"description": "One computer's latest Harness resource snapshot, workload and launcher state; a null snapshot means it never reported."
+					},
+					{
+						"name": "classifyResourceHost.policy",
+						"type": "ResourcePlacementPolicy",
+						"required": true,
+						"description": "Stale limit and reserve rules; the defaults mirror the Tracker placement thresholds."
+					},
+					{
+						"name": "classifyResourceHost.now",
+						"type": "number",
+						"required": true,
+						"description": "Current time in milliseconds, used to age the snapshot."
+					}
+				],
+				"outputs": [
+					{
+						"name": "classifyResourceHost",
+						"type": "ResourceHostClassification",
+						"description": "Offline, overloaded, busy or ok, with the reasons and the sample age in milliseconds (null when never reported)."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.execution-runtimes-resource-placement-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-policy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/resource-placement/classifyResourceHost.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/resource-placement/classifyResourceHost.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

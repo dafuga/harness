@@ -1,0 +1,45 @@
+{
+	"name": "tracker-watchdog-parity",
+	"goal": "Prove synthetic idle, startup, recovery and answer-resume decisions against Tracker release 2ccd898 and saved prompt patch 5c70a23, with live actions outside the module.",
+	"createdAt": "2026-11-21T14:43:27.568Z",
+	"updatedAt": "2026-11-21T14:56:03.167Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T14:47:01.945Z",
+			"evidence": "Synthetic method/state matrix covers the installed 2ccd898 decisions and 5c70a23 startup patch. Runtime boundaries use pane captures, peer telemetry, run and item snapshots, and attested worktree ownership. No dispatcher wiring."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-21T14:56:03.167Z",
+			"evidence": "Decision services and registry scenario implemented. All 20 fixture cases pass, including live settled panes, startup prompt ownership, one nudge then alert, restart holds, and answered-run identity."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-21T14:47:18.897Z",
+			"evidence": "Red on decision stubs: watchdog focused Vitest, 17 failed and 3 passed. The unchanged matrix will be rerun after implementation."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

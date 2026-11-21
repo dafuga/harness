@@ -1,0 +1,123 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-spoke-loop",
+	"uid": "u_7763mfxmkn",
+	"kind": "service",
+	"title": "TrackerSpokeLoopService",
+	"responsibility": "Owns the TrackerSpokeLoopService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/TrackerSpokeLoopService.ts",
+			"src/services/projects-sessions/TrackerSpokeLoopService.types.ts"
+		],
+		"symbols": [
+			"TrackerSpokeLoopService",
+			"TrackerSpokeLoopService.constructor",
+			"TrackerSpokeLoopService.run",
+			"TrackerSpokeLoopOptions"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerSpokeLoopService.constructor.options",
+				"type": "TrackerSpokeLoopOptions",
+				"required": true
+			},
+			{
+				"name": "TrackerSpokeLoopService.run.signal",
+				"type": "AbortSignal",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerSpokeLoopService.run",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerSpokeLoopService.run",
+				"inputs": [
+					{
+						"name": "TrackerSpokeLoopService.run.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSpokeLoopService.run",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerSpokeLoopService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerSpokeLoopService.constructor.options",
+						"type": "TrackerSpokeLoopOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSpokeLoopService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-spoke-sync",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/TrackerSpokeLoopService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/TrackerSpokeLoopService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

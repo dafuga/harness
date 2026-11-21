@@ -27,6 +27,10 @@ export interface TrackerItemSnapshot extends TrackerMatchRow {
 export type TrackerItemAction =
 	| 'update'
 	| 'start'
+	| 'reopen'
+	| 'remove'
+	| 'block'
+	| 'unblock'
 	| 'progress'
 	| 'note'
 	| 'flag'
