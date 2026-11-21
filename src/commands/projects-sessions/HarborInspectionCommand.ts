@@ -25,9 +25,8 @@ const RUNTIME_ENV = [
 
 export class HarborInspectionCommand {
 	register(program: Command): void {
-		const harbor = program
-			.command('harbor')
-			.description('Use Harbor capabilities from its installed CLI and SDK.');
+		const harbor = program.command('harbor');
+		harbor.description('Use Harbor capabilities from its installed CLI and SDK.');
 		this.registerInspection(harbor);
 		this.registerRuntime(harbor);
 		this.registerPublish(harbor);
@@ -115,13 +114,15 @@ export class HarborInspectionCommand {
 			const result = await (publish ? waitForPublication(child) : child);
 			console.log(String(result.stdout).replace(/\r?\n$/, ''));
 		} catch (error) {
-			const code = (error as { code?: unknown }).code;
+			const { code, stdout } = error as { code?: unknown; stdout?: string };
 			if (typeof code === 'number') {
-				console.error(
-					publish
-						? 'Harbor could not complete publication. Check the testnet profile and local verification record.'
-						: 'The installed Harbor CLI reported an inspection error.'
-				);
+				if (isStrictDiagnostic(args, code, stdout)) console.log(stdout.trimEnd());
+				else
+					console.error(
+						publish
+							? 'Harbor could not complete publication. Check the testnet profile and local verification record.'
+							: 'The installed Harbor CLI reported an inspection error.'
+					);
 				process.exitCode = code;
 				return;
 			}
@@ -134,6 +135,9 @@ export class HarborInspectionCommand {
 	}
 }
 
+function isStrictDiagnostic(args: string[], code: number, stdout?: string): stdout is string {
+	return args[0] === 'doctor' && args.at(-1) === '--strict' && code === 1 && Boolean(stdout);
+}
 function publishArgs(project: string, options: PublishOptions): string[] {
 	const { commit, artifact, profile, approve } = options;
 	const verification = ['--commit', commit, '--artifact', artifact, '--profile', profile];
