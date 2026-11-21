@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/unitsUid.ts"],
-		"symbols": ["registerUnitsUid", "registerUnitsRename"]
+		"source": ["src/cli/program/unitsUid.ts", "src/cli/program/unitsUid.types.ts"],
+		"symbols": ["registerUnitsUid", "registerUnitsRename", "UidFlags"]
 	},
 	"contract": {
 		"origin": "declared",

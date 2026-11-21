@@ -1,14 +1,9 @@
 // @harness-uid u_hbdc5y2sd2
+import type { UidFinding } from './uidFindings.types';
+export type * from './uidFindings.types';
 import type { SourceFile } from '../../core/development-tooling/sourceTypes';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 import { uidComment } from '../../utils/development-tooling/unitUid';
-
-export interface UidFinding {
-	unit: string;
-	kind: 'uid-missing' | 'uid-mismatch' | 'uid-duplicate' | 'uid-copied';
-	detail: string;
-	where: string;
-}
 
 /**
  * Where a unit's stable uid is missing, disagrees with its source or is held twice. Only active
