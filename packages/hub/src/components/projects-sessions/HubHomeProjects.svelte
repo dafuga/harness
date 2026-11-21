@@ -16,6 +16,7 @@
 
 	let {
 		projects,
+		snapshots,
 		readProject
 	}: {
 		projects: ProjectSummary[] | null;
