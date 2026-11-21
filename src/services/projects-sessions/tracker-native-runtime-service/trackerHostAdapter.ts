@@ -79,9 +79,10 @@ function redactGithubText(text: string): string {
 export function configuredHostAdapter(
 	store: TrackerPersistenceService,
 	runs: TrackerRunReadRepository,
-	{ adapter, hostEffects }: TrackerNativeRuntimeOptions,
+	options: TrackerNativeRuntimeOptions,
 	now: () => number
 ) {
+	const { adapter, hostEffects } = options;
 	const binding = hostEffects?.adapter;
 	const dependencies = adapter ?? (binding && trackerHostAdapter(binding, runs, now));
 	return dependencies ? new TrackerAdapterPollService(store, dependencies) : undefined;

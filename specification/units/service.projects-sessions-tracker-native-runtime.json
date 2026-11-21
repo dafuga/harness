@@ -248,13 +248,8 @@
 				"required": true
 			},
 			{
-				"name": "configuredHostAdapter.adapter",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "configuredHostAdapter.hostEffects",
-				"type": "unknown",
+				"name": "configuredHostAdapter.options",
+				"type": "TrackerNativeRuntimeOptions",
 				"required": true
 			},
 			{
@@ -1004,13 +999,8 @@
 						"required": true
 					},
 					{
-						"name": "configuredHostAdapter.adapter",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "configuredHostAdapter.hostEffects",
-						"type": "unknown",
+						"name": "configuredHostAdapter.options",
+						"type": "TrackerNativeRuntimeOptions",
 						"required": true
 					},
 					{
