@@ -29,6 +29,7 @@ export class HarborInspectionCommand {
 			.command('harbor')
 			.description('Use Harbor capabilities from its installed CLI and SDK.');
 		this.registerInspection(harbor);
+		this.registerRuntime(harbor);
 		this.registerPublish(harbor);
 	}
 
@@ -56,6 +57,33 @@ export class HarborInspectionCommand {
 			.action((options: { config?: string }) =>
 				this.run(['agent', 'status', ...(options.config ? ['--config', options.config] : [])])
 			);
+	}
+
+	private registerRuntime(harbor: Command): void {
+		const service = harbor.command('service').description('Inspect Harbor runtime services.');
+		service
+			.command('status [service]')
+			.description('Report Harbor service status as JSON.')
+			.option('--system', 'Inspect the system service manager.')
+			.action((name: string | undefined, options: { system?: boolean }) => {
+				const args = ['service', 'status', '--json'];
+				if (name !== undefined) args.push(name);
+				if (options.system) args.push('--system');
+				return this.run(args);
+			});
+		harbor
+			.command('doctor')
+			.description('Diagnose the Harbor runtime as JSON.')
+			.option('--service <name>', 'Harbor service to diagnose.')
+			.option('--config <path>', 'Harbor runtime config path.')
+			.option('--strict', 'Fail when diagnostics report problems.')
+			.action((options: { service?: string; config?: string; strict?: boolean }) => {
+				const args = ['doctor', '--json'];
+				if (options.service !== undefined) args.push('--service', options.service);
+				if (options.config !== undefined) args.push('--config', options.config);
+				if (options.strict) args.push('--strict');
+				return this.run(args);
+			});
 	}
 
 	private registerPublish(harbor: Command): void {
@@ -107,17 +135,10 @@ export class HarborInspectionCommand {
 }
 
 function publishArgs(project: string, options: PublishOptions): string[] {
-	return [
-		'publish',
-		project,
-		'--commit',
-		options.commit,
-		'--artifact',
-		options.artifact,
-		'--profile',
-		options.profile,
-		...(options.approve === undefined ? [] : ['--approve', options.approve])
-	];
+	const { commit, artifact, profile, approve } = options;
+	const verification = ['--commit', commit, '--artifact', artifact, '--profile', profile];
+	if (approve !== undefined) verification.push('--approve', approve);
+	return ['publish', project, ...verification];
 }
 
 function installedEntry(publish: boolean): string {
