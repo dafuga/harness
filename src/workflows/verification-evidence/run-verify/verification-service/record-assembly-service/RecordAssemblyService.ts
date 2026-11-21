@@ -28,13 +28,20 @@ import { recordedBuilds } from './recordedBuilds';
 import { benchmarkMeasurements, recordComponents } from './sealRecord';
 import { unmeasured } from './unmeasured';
 import { ledgerGate, registryGate } from './VerificationGates';
+function componentSnapshots(context: AssemblyContext, measurements: Measurement[]) {
+	return recordComponents(
+		context.impact,
+		recordSides(context),
+		measurements.map((item) => item.unit)
+	);
+}
+
 function outcome(failures: string[]): 'passed' | 'failed' {
 	return failures.length === 0 ? 'passed' : 'failed';
 }
 /** Turns what a run observed into one sealed record, with every gate judged. */
 export class RecordAssemblyService {
 	constructor(private readonly context: AssemblyContext) {}
-	// eslint-disable-next-line harness/max-method-lines -- this service definition is ownership-reviewed
 	async assemble(input: AssemblyInput): Promise<VerificationRecord> {
 		const { context } = this;
 		const measurements = this.measurements(input.executed);
@@ -52,11 +59,7 @@ export class RecordAssemblyService {
 			startedAt: input.startedAt,
 			finishedAt: new Date().toISOString(),
 			status: outcome(failures),
-			components: recordComponents(
-				context.impact,
-				recordSides(context),
-				measurements.map((item) => item.unit)
-			),
+			components: componentSnapshots(context, measurements),
 			measurements,
 			impact: recordedImpact(context.impact),
 			tests: input.executed.outcomes

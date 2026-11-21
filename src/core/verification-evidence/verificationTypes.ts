@@ -212,12 +212,4 @@ export const verificationRecordSchema = z.strictObject({
 	failures: z.array(text)
 });
 
-export type {
-	Capture,
-	ScenarioResult,
-	VerificationProfile,
-	BudgetFinding,
-	RecordedComponent,
-	Measurement,
-	VerificationRecord
-} from './verificationTypes.types';
+export type * from './verificationTypes.types';
