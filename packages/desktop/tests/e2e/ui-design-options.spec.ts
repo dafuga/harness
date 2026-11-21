@@ -39,7 +39,12 @@ test('an entity Plan offers three design options and sends the count that was ch
 	await remember(page, info, 'thread-count');
 	await page.getByRole('textbox', { name: 'Message', exact: true }).fill('Two directions, please');
 	await page.getByRole('button', { name: 'Send plan', exact: true }).click();
-	expect(await sentRun(page)).toMatchObject({ mode: 'plan', designOptions: 2 });
+	expect(await sentRun(page)).toMatchObject({
+		mode: 'plan',
+		designOptions: 2,
+		provider: 'claude',
+		model: 'claude-sonnet-5-5'
+	});
 });
 
 test('an entity Plan that keeps the default asks for three design options', async ({

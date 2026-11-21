@@ -3,6 +3,7 @@ import { RunCancelled } from '../../models/agents-providers/AgentRunner.types';
 import { gitRead, gitText } from '../projects-sessions/gitRead';
 import { sourceSnapshot } from '../verification-evidence/sourceSnapshot';
 import { sourceChanges } from '../git-source-history/sourceChanges';
+import { mockupModels } from '../explorer-ui/composeModes';
 import { designCount } from './designCount';
 import { designDirections } from './plan-design/designDirections';
 import {
@@ -15,8 +16,7 @@ import {
 import { mockupMatrix } from './mockupMatrix';
 import type { MockupAnswer, MockupSource, MockupVariation } from './mockupSource.types';
 
-export const sonnet = 'claude-sonnet-5-5';
-export const haiku = 'claude-haiku-5-5';
+const { author: sonnet, variations: haiku } = mockupModels;
 export const defaultWidths = [390, 834, 1440, 1920];
 export { visualCategory as visualPlan } from '../explorer-ui/composeModes';
 
@@ -47,6 +47,7 @@ function authorPrompt(context: RunContext, proposal: string): string {
 		proposal,
 		'Plan only. Read the assigned entity and its real project components, styles and tokens. Do not write files.',
 		'Build static responsive HTML/CSS snapshots using the existing component structure and design tokens.',
+		'Use representative fixture data. Keep credentials, private data and environment files out of the mockup.',
 		'Use native HTML for the rendered representation of actual project components. Reuse their styles and markup.',
 		'Respond with JSON only: {sources: [repo-relative paths read], stylesheets: [repo-relative CSS paths to inline in order], before, options: [{direction,html,css}]}.',
 		'Each html field contains only a body fragment. Include no scripts, iframes, navigation, remote resources or full documents.',
@@ -54,7 +55,7 @@ function authorPrompt(context: RunContext, proposal: string): string {
 		'Before must be ' + before + '.',
 		'Each option must render at 390, 834, 1440 and 1920px.',
 		'Design option count: ' + designCount(context.request),
-		'Directions:',
+		'Write each direction as a short sentence. Directions:',
 		...designDirections(designCount(context.request))
 	].join('\n');
 }

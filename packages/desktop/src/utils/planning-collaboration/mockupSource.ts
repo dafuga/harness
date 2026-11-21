@@ -21,7 +21,7 @@ const html = z
 const document = z.object({ html, css });
 const paths = z.array(z.string().min(1).max(240)).max(20);
 const options = z
-	.array(document.extend({ direction: z.string().trim().min(1).max(200) }))
+	.array(document.extend({ direction: z.string().trim().min(1).max(2000) }))
 	.min(1)
 	.max(10);
 

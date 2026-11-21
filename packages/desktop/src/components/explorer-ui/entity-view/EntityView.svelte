@@ -33,7 +33,6 @@
 	let { workspace }: { workspace: Workspace } = $props();
 	/** A function has a plan and no designs; every other entity has designs and no plan section. */
 	const headless = $derived(workspace.entity?.category === 'functions');
-	/** A component keeps its runtime evidence between its name and every section it opens. */
 	const pictured = $derived(workspace.entity?.category === 'components');
 	const visual = $derived(
 		['pages', 'components', 'layouts'].includes(workspace.entity?.category ?? '')

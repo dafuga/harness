@@ -74,7 +74,7 @@ function providers(runner: AgentRunner) {
 		}
 	});
 }
-export async function fixture(action: (turn: AgentTurn) => Promise<void> = async () => {}) {
+async function repository() {
 	const root = await realpath(await mkdtemp(join(tmpdir(), 'harness-run-')));
 	roots.push(root);
 	git(root, 'init', '-b', 'main');
@@ -85,6 +85,11 @@ export async function fixture(action: (turn: AgentTurn) => Promise<void> = async
 	await writeFile(join(root, 'src/owned.ts'), 'committed source');
 	git(root, 'add', '.');
 	git(root, 'commit', '-m', 'initial');
+	return root;
+}
+
+export async function fixture(action: (turn: AgentTurn) => Promise<void> = async () => {}) {
+	const root = await repository();
 	const session = new ProjectSessionService();
 	await session.open(root);
 	const { planning } = session.requireProject();

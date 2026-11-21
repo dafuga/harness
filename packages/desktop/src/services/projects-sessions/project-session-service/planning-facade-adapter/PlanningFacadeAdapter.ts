@@ -6,6 +6,7 @@ import type {
 	PlanningPort,
 	DesignDraft,
 	MessageDraft,
+	PlanImagesQuery,
 	PlanImageQuery
 } from '../../../../models/planning-collaboration/PlanningPort.types';
 import type {
@@ -54,6 +55,10 @@ export class PlanningFacadeAdapter implements PlanningPort {
 	}
 	image(query: PlanImageQuery) {
 		return readPlanImage(this.context, query);
+	}
+	async images({ entityId, ...query }: PlanImagesQuery) {
+		const captures = await this.context.api.readImages({ ...query, unitId: entityId });
+		return captures.map((capture) => capture.bytes);
 	}
 	history(entityId: string, revision: string) {
 		return readPlanHistory(this.context, entityId, revision);

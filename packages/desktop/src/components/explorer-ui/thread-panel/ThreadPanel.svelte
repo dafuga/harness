@@ -36,7 +36,6 @@
 		option = $bindable(''),
 		close
 	}: ThreadPanelProps = $props();
-	/** One workspace store lives as long as the page; its run and comments belong to this view. */
 	const store = untrack(() => workspace);
 	const run = createThreadRunStore(store);
 	const comments = createThreadCommentsStore(store);
@@ -105,7 +104,6 @@
 	async function progress(value: RunEvent) {
 		if (await run.event(value)) version = entity.latestVersion || version;
 	}
-	/** Plan and Change need a planning thread; it is opened for exactly what is in view. */
 	async function planningThread(mode: 'plan' | 'change') {
 		const active = mode === 'change' ? designTarget(headless ? undefined : design, option) : aim;
 		if (thread && (mode === 'plan' || !thread.version || thread.version === active.version))
@@ -208,6 +206,7 @@
 		failureReported={Boolean(error)}
 		{notice}
 		visual={visualCategory(entity.category)}
+		fixedVisual
 		{comment}
 		{send}
 	/>{#if design && workspace.capabilities.approval}<ApprovalButton

@@ -79,6 +79,10 @@ export interface PlanImageQuery {
 	option?: string;
 }
 
+export interface PlanImagesQuery extends Omit<PlanImageQuery, 'sha256'> {
+	hashes: string[];
+}
+
 /**
  * What the desktop needs from the planning package of one repository. The planning facade
  * is adapted to this port, so nothing else here depends on that package's own types.
@@ -92,5 +96,6 @@ export interface PlanningPort {
 	appendMessage(draft: MessageDraft): Promise<ThreadMessage>;
 	approve(draft: ApprovalDraft): Promise<ApprovalInfo>;
 	image(query: PlanImageQuery): Promise<Uint8Array>;
+	images(query: PlanImagesQuery): Promise<Uint8Array[]>;
 	history(entityId: string, revision: string): Promise<HistoryEvent[]>;
 }

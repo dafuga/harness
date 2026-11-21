@@ -96,6 +96,8 @@ export async function viewPlanMockup(
 	const tabs = page.getByRole('navigation', { name: 'Entity sections' });
 	await tabs.getByRole('button', { name: 'Overview', exact: true }).click();
 	const panel = page.locator('.design-panel');
+	if (process.env.SCREENSHOT_LABEL === 'before')
+		await checkpoint(page, 'planned-design-overview-before');
 	await expect(panel.getByRole('heading', { name: 'Planned design', exact: true })).toBeVisible();
 	const widths = [
 		['Phone · 390px', 390],
@@ -124,6 +126,7 @@ export async function viewPlanMockup(
 	await expect(panel.getByRole('img', { name: /current .* busy/ })).toBeVisible();
 	await page.setViewportSize({ width: 1920, height: 1080 });
 	await checkpoint(page, 'planned-design-wide');
+	await page.getByRole('button', { name: 'Close conversation', exact: true }).click();
 	await page.setViewportSize({ width: 834, height: 1194 });
 	await panel.getByRole('button', { name: 'Tablet · 834px', exact: true }).click();
 	await expect(panel.getByRole('img', { name: /current Tablet .* busy/ })).toBeVisible();

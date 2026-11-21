@@ -152,6 +152,11 @@ export interface ReadImageInput extends RevisionInput {
 	option?: string;
 }
 
+export interface ReadImagesInput extends Omit<ReadImageInput, 'file' | 'sha256'> {
+	/** Exact hashes in the requested order, from one design version. */
+	hashes: Sha256[];
+}
+
 export interface ReadPlanInput extends RevisionInput {
 	unitId: string;
 }
@@ -175,6 +180,7 @@ export interface PlanningApi {
 	appendMessage(input: AppendMessageInput): Promise<Committed<ThreadMessage>>;
 	approveDesign(input: ApproveDesignInput): Promise<Committed<ApprovalRecord>>;
 	readImage(input: ReadImageInput): Promise<ImageContent>;
+	readImages(input: ReadImagesInput): Promise<ImageContent[]>;
 	entityHistory(input: EntityHistoryInput): Promise<EntityHistory>;
 }
 
