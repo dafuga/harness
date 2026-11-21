@@ -3,6 +3,7 @@
 	"id": "tracker-watchdog-parity",
 	"title": "Tracker watchdog decisions on synthetic snapshots",
 	"kind": "headless",
+	"builds": [],
 	"units": [
 		"service.projects-sessions-watchdog-idle",
 		"service.projects-sessions-watchdog-pane",
