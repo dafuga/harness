@@ -1,6 +1,7 @@
 // @harness-uid u_bl6xl2h4a3
 import type { SqliteDatabase } from '../../core/development-tooling/sqliteTypes';
 import { TrackerItemReadRepository } from '../../repositories/projects-sessions/TrackerItemReadRepository';
+import { TrackerNotificationQueueRepository } from '../../repositories/projects-sessions/TrackerNotificationQueueRepository';
 import { TrackerNotificationSourceRepository } from '../../repositories/projects-sessions/TrackerNotificationSourceRepository';
 import { TrackerRunReadRepository } from '../../repositories/projects-sessions/TrackerRunReadRepository';
 import { TrackerAdapterPollService } from './TrackerAdapterPollService';
@@ -66,11 +67,14 @@ function composeNotifications(
 	options: TrackerNativeRuntimeOptions,
 	notification: NonNullable<TrackerNativeRuntimeOptions['notification']>
 ) {
-	const { resolveDestination, ...delivery } = notification;
+	const { resolveDestination, queue, ...delivery } = notification;
+	const now = options.now ?? Date.now;
 	return new TrackerNotificationService({
 		...delivery,
 		role: options.role,
-		now: options.now ?? Date.now,
+		now,
+		queue:
+			queue ?? new TrackerNotificationQueueRepository(store.database, { resolveDestination, now }),
 		source: new TrackerNotificationSourceRepository(store, {
 			timeZone: options.timeZone ?? 'Europe/Lisbon',
 			resolveDestination

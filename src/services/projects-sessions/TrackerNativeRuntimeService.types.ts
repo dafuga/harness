@@ -9,8 +9,9 @@ import type { TrackerSpokeLoopOptions } from './TrackerSpokeLoopService.types';
 
 export interface TrackerNativeNotificationOptions extends Omit<
 	TrackerNotificationOptions,
-	'source' | 'role' | 'now'
+	'source' | 'role' | 'now' | 'queue'
 > {
+	queue?: TrackerNotificationOptions['queue'];
 	resolveDestination: TrackerNotificationSourceOptions['resolveDestination'];
 }
 
