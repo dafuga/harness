@@ -82,6 +82,10 @@ export const commandLoaders = {
 		const { TrackerCommand } = await import('../commands/projects-sessions/TrackerCommand');
 		new TrackerCommand().register(program);
 	},
+	deploy: async (program: Command) => {
+		const m = await import('../commands/execution-runtimes/DeployCommand');
+		new m.DeployCommand().register(program);
+	},
 	module: async (program: Command) => {
 		const m = await import('./../commands/module-system/ModuleCommand');
 		new m.ModuleCommand().register(program);

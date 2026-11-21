@@ -1,0 +1,101 @@
+{
+	"schemaVersion": 1,
+	"id": "function.execution-runtimes-scripted-deploy-run-process",
+	"uid": "u_b5ysx34qie",
+	"kind": "function",
+	"title": "runProcess",
+	"responsibility": "Executes one script or tool with explicit argv, a scrubbed process environment, bounded output, and optional cancellation.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/core/execution-runtimes/scripted-deploy/runProcess.ts",
+			"src/core/execution-runtimes/scripted-deploy/runProcess.types.ts"
+		],
+		"symbols": ["runProcess", "RunProcessOptions"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "runProcess.file",
+				"type": "string",
+				"required": true,
+				"description": "Executable or local file path used by this operation."
+			},
+			{
+				"name": "runProcess.args",
+				"type": "string[]",
+				"required": true,
+				"description": "Exact child argv without shell interpolation."
+			},
+			{
+				"name": "runProcess.options",
+				"type": "RunProcessOptions",
+				"required": true,
+				"description": "Child execution or command options including bounds and optional input."
+			}
+		],
+		"outputs": [
+			{
+				"name": "runProcess",
+				"type": "Promise<string>",
+				"description": "The bounded standard output of the successful child process."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "runProcess",
+				"inputs": [
+					{
+						"name": "runProcess.file",
+						"type": "string",
+						"required": true,
+						"description": "Executable or local file path used by this operation."
+					},
+					{
+						"name": "runProcess.args",
+						"type": "string[]",
+						"required": true,
+						"description": "Exact child argv without shell interpolation."
+					},
+					{
+						"name": "runProcess.options",
+						"type": "RunProcessOptions",
+						"required": true,
+						"description": "Child execution or command options including bounds and optional input."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runProcess",
+						"type": "Promise<string>",
+						"description": "The bounded standard output of the successful child process."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/execution-runtimes/scripted-deploy/runProcess.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/execution-runtimes/scripted-deploy/runProcess.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

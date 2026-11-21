@@ -1,0 +1,333 @@
+{
+	"schemaVersion": 1,
+	"id": "function.execution-runtimes-scripted-deploy-parity",
+	"uid": "u_pmxlg3sdum",
+	"kind": "function",
+	"title": "parity",
+	"responsibility": "Compares reviewed target profiles with observed release state, identifies missing candidate migrations, and checks route identity before and after a mutation.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/core/execution-runtimes/scripted-deploy/parity.ts",
+			"src/core/execution-runtimes/scripted-deploy/parity.types.ts"
+		],
+		"symbols": [
+			"assertObservation",
+			"assertTargetProfile",
+			"parityReport",
+			"sameVersion",
+			"assertResult",
+			"Fields",
+			"Difference"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "assertObservation.target",
+				"type": "string",
+				"required": true,
+				"description": "Expected provider resource identifier."
+			},
+			{
+				"name": "assertObservation.actual",
+				"type": "Observation",
+				"required": true,
+				"description": "Provider read-back for the target environment."
+			},
+			{
+				"name": "assertObservation.now",
+				"type": "number",
+				"required": false,
+				"description": "Time in epoch milliseconds, defaulting to the host clock."
+			},
+			{
+				"name": "assertTargetProfile.expected",
+				"type": "Profile",
+				"required": true,
+				"description": "Reviewed target profile or expected signature scope for this verification."
+			},
+			{
+				"name": "assertTargetProfile.actual",
+				"type": "Observation",
+				"required": true,
+				"description": "Provider read-back for the target environment."
+			},
+			{
+				"name": "parityReport.config",
+				"type": "DeployProject",
+				"required": true,
+				"description": "Reviewed project or target settings for this operation."
+			},
+			{
+				"name": "parityReport.observations",
+				"type": "Partial<Record<Environment, Observation>>",
+				"required": true,
+				"description": "Live read-backs keyed by deployment environment."
+			},
+			{
+				"name": "parityReport.candidate",
+				"type": "{ release: Release; target: Environment }",
+				"required": false,
+				"description": "Optional immutable release and destination whose applied migrations must be checked."
+			},
+			{
+				"name": "sameVersion.left",
+				"type": "Observation",
+				"required": true,
+				"description": "First provider observation to compare."
+			},
+			{
+				"name": "sameVersion.right",
+				"type": "Observation",
+				"required": true,
+				"description": "Second provider observation to compare."
+			},
+			{
+				"name": "assertResult.plan",
+				"type": "Plan",
+				"required": true,
+				"description": "Exact deployment attempt including target, release, predecessor and rollback information."
+			},
+			{
+				"name": "assertResult.actual",
+				"type": "Observation",
+				"required": true,
+				"description": "Provider read-back for the target environment."
+			}
+		],
+		"outputs": [
+			{
+				"name": "assertObservation",
+				"type": "void",
+				"description": "No output. Success means the observation has the requested target and a recent timestamp."
+			},
+			{
+				"name": "assertTargetProfile",
+				"type": "void",
+				"description": "No output. Success means the observed profile matches the reviewed target."
+			},
+			{
+				"name": "parityReport",
+				"type": "unknown",
+				"description": "A redacted environment comparison, blocking differences, and a digest of the compared state."
+			},
+			{
+				"name": "sameVersion",
+				"type": "boolean",
+				"description": "Whether two observations identify the same release, runtime profile and routed target."
+			},
+			{
+				"name": "assertResult",
+				"type": "void",
+				"description": "No output. Success means the provider read-back matches the planned artifact or exact rollback target."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The operation could not verify its input, target identity, or expected result."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "assertObservation",
+				"inputs": [
+					{
+						"name": "assertObservation.target",
+						"type": "string",
+						"required": true,
+						"description": "Expected provider resource identifier."
+					},
+					{
+						"name": "assertObservation.actual",
+						"type": "Observation",
+						"required": true,
+						"description": "Provider read-back for the target environment."
+					},
+					{
+						"name": "assertObservation.now",
+						"type": "number",
+						"required": false,
+						"description": "Time in epoch milliseconds, defaulting to the host clock."
+					}
+				],
+				"outputs": [
+					{
+						"name": "assertObservation",
+						"type": "void",
+						"description": "No output. Success means the observation has the requested target and a recent timestamp."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "assertTargetProfile",
+				"inputs": [
+					{
+						"name": "assertTargetProfile.expected",
+						"type": "Profile",
+						"required": true,
+						"description": "Reviewed target profile or expected signature scope for this verification."
+					},
+					{
+						"name": "assertTargetProfile.actual",
+						"type": "Observation",
+						"required": true,
+						"description": "Provider read-back for the target environment."
+					}
+				],
+				"outputs": [
+					{
+						"name": "assertTargetProfile",
+						"type": "void",
+						"description": "No output. Success means the observed profile matches the reviewed target."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "parityReport",
+				"inputs": [
+					{
+						"name": "parityReport.config",
+						"type": "DeployProject",
+						"required": true,
+						"description": "Reviewed project or target settings for this operation."
+					},
+					{
+						"name": "parityReport.observations",
+						"type": "Partial<Record<Environment, Observation>>",
+						"required": true,
+						"description": "Live read-backs keyed by deployment environment."
+					},
+					{
+						"name": "parityReport.candidate",
+						"type": "{ release: Release; target: Environment }",
+						"required": false,
+						"description": "Optional immutable release and destination whose applied migrations must be checked."
+					}
+				],
+				"outputs": [
+					{
+						"name": "parityReport",
+						"type": "unknown",
+						"description": "A redacted environment comparison, blocking differences, and a digest of the compared state."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sameVersion",
+				"inputs": [
+					{
+						"name": "sameVersion.left",
+						"type": "Observation",
+						"required": true,
+						"description": "First provider observation to compare."
+					},
+					{
+						"name": "sameVersion.right",
+						"type": "Observation",
+						"required": true,
+						"description": "Second provider observation to compare."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sameVersion",
+						"type": "boolean",
+						"description": "Whether two observations identify the same release, runtime profile and routed target."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "assertResult",
+				"inputs": [
+					{
+						"name": "assertResult.plan",
+						"type": "Plan",
+						"required": true,
+						"description": "Exact deployment attempt including target, release, predecessor and rollback information."
+					},
+					{
+						"name": "assertResult.actual",
+						"type": "Observation",
+						"required": true,
+						"description": "Provider read-back for the target environment."
+					}
+				],
+				"outputs": [
+					{
+						"name": "assertResult",
+						"type": "void",
+						"description": "No output. Success means the provider read-back matches the planned artifact or exact rollback target."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.execution-runtimes-deploy-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/execution-runtimes/scripted-deploy/parity.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/execution-runtimes/scripted-deploy/parity.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,232 @@
+{
+	"schemaVersion": 1,
+	"id": "function.execution-runtimes-scripted-deploy-contracts",
+	"uid": "u_mo4ka6dupc",
+	"kind": "function",
+	"title": "contracts",
+	"responsibility": "Defines the machine-readable deploy state, evidence and identity schemas and produces stable canonical hashes.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/core/execution-runtimes/scripted-deploy/contracts.ts",
+			"src/core/execution-runtimes/scripted-deploy/contracts.types.ts"
+		],
+		"symbols": [
+			"name",
+			"sha",
+			"digest",
+			"runId",
+			"reference",
+			"environment",
+			"action",
+			"pathFromRoot",
+			"migrations",
+			"profile",
+			"observation",
+			"release",
+			"plan",
+			"signedProof",
+			"deployment",
+			"smoke",
+			"journal",
+			"Environment",
+			"Observation",
+			"Profile",
+			"Release",
+			"Plan",
+			"Journal",
+			"Proof",
+			"Deployment",
+			"Smoke",
+			"canonical",
+			"hash",
+			"Environment",
+			"Observation",
+			"Profile",
+			"Release",
+			"Plan",
+			"Journal",
+			"Proof",
+			"Deployment",
+			"Smoke",
+			"CanonicalValue"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "canonical.value",
+				"type": "CanonicalValue",
+				"required": true,
+				"description": "Plain JSON value whose canonical encoding or digest is requested."
+			},
+			{
+				"name": "hash.value",
+				"type": "CanonicalValue",
+				"required": true,
+				"description": "Plain JSON value whose canonical encoding or digest is requested."
+			}
+		],
+		"outputs": [
+			{
+				"name": "name",
+				"type": "unknown",
+				"description": "Schema for a canonical project or dependency name."
+			},
+			{
+				"name": "sha",
+				"type": "unknown",
+				"description": "Schema for a full SHA-1 Git revision."
+			},
+			{
+				"name": "digest",
+				"type": "unknown",
+				"description": "Schema for a lowercase SHA-256 digest."
+			},
+			{
+				"name": "runId",
+				"type": "unknown",
+				"description": "Schema for the unique deployment attempt UUID."
+			},
+			{
+				"name": "reference",
+				"type": "unknown",
+				"description": "Schema for an opaque provider or Tracker identifier."
+			},
+			{
+				"name": "environment",
+				"type": "unknown",
+				"description": "Schema for the canonical staging, preprod, and prod names."
+			},
+			{
+				"name": "action",
+				"type": "unknown",
+				"description": "Schema for the deploy and rollback action names."
+			},
+			{
+				"name": "pathFromRoot",
+				"type": "unknown",
+				"description": "Schema for a relative path under the reviewed script root."
+			},
+			{
+				"name": "migrations",
+				"type": "unknown",
+				"description": "Schema for ordered migration names and SHA-256 digests."
+			},
+			{
+				"name": "profile",
+				"type": "unknown",
+				"description": "Schema for bindings, secret names, migrations, runtime versions and flags."
+			},
+			{
+				"name": "observation",
+				"type": "unknown",
+				"description": "Schema for a time-stamped provider release and environment profile."
+			},
+			{
+				"name": "release",
+				"type": "unknown",
+				"description": "Schema for the immutable build source, artifact, toolchain, and migration manifest."
+			},
+			{
+				"name": "plan",
+				"type": "unknown",
+				"description": "Schema for one mutation attempt, related approvals and current rollback target."
+			},
+			{
+				"name": "signedProof",
+				"type": "unknown",
+				"description": "Schema for a signed approval or reviewer sign-off envelope."
+			},
+			{
+				"name": "deployment",
+				"type": "unknown",
+				"description": "Schema for a completed provider operation with read-back evidence."
+			},
+			{
+				"name": "smoke",
+				"type": "unknown",
+				"description": "Schema for routed version and passed smoke check names."
+			},
+			{
+				"name": "journal",
+				"type": "unknown",
+				"description": "Schema for the persisted phases, approval and verification results of a deployment run."
+			},
+			{
+				"name": "canonical",
+				"type": "string",
+				"description": "A deterministic JSON encoding with sorted object keys and original array order."
+			},
+			{
+				"name": "hash",
+				"type": "string",
+				"description": "The lowercase SHA-256 digest of the canonical JSON encoding."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "canonical",
+				"inputs": [
+					{
+						"name": "canonical.value",
+						"type": "CanonicalValue",
+						"required": true,
+						"description": "Plain JSON value whose canonical encoding or digest is requested."
+					}
+				],
+				"outputs": [
+					{
+						"name": "canonical",
+						"type": "string",
+						"description": "A deterministic JSON encoding with sorted object keys and original array order."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hash",
+				"inputs": [
+					{
+						"name": "hash.value",
+						"type": "CanonicalValue",
+						"required": true,
+						"description": "Plain JSON value whose canonical encoding or digest is requested."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hash",
+						"type": "string",
+						"description": "The lowercase SHA-256 digest of the canonical JSON encoding."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/execution-runtimes/scripted-deploy/contracts.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/execution-runtimes/scripted-deploy/contracts.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
