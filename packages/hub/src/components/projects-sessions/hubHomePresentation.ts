@@ -6,8 +6,8 @@ import type {
 	HomePlanState,
 	HomeSection,
 	HomeSubscription
-} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
+} from '../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
+import type { OverviewSnapshot } from '../../../../reports/src/lib/projects-sessions/project-overview/projectOverview.types';
 
 export const sections = {
 	agents: { title: 'Agents', noun: 'agents' },

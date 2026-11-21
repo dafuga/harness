@@ -11,6 +11,7 @@
 		"level": "organism",
 		"uses": [
 			"hub.component.projects-sessions-hub-home-skeleton",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -29,6 +30,7 @@
 	},
 	"contract": {
 		"origin": "derived",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
 		"inputs": [
 			{
 				"name": "HubHomeSchedule.runs",
@@ -65,6 +67,11 @@
 		},
 		{
 			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -115,6 +122,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		}

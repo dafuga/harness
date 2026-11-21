@@ -2,8 +2,8 @@ import { z } from 'zod';
 import {
 	homeProviders,
 	homeRunPayload
-} from '$reports/lib/projects-sessions/hub-home/homeProviderPayload';
-import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
+} from '../../../../../reports/src/lib/projects-sessions/hub-home/homeProviderPayload';
+import { sanitizeText } from '../../../../../reports/src/lib/projects-sessions/project-overview/projectOverviewPrivacy';
 import { parseOverviewPayload } from '../tracker-overview/trackerOverviewInput';
 
 const text = (max: number) =>

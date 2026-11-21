@@ -3,8 +3,8 @@
 <!-- @harness-uid u_pkjntjini6 -->
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import BrandMark from '$shared/BrandMark.svelte';
-	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
+	import BrandMark from '../../../../reports/src/components/BrandMark.svelte';
+	import Pill from '../../../../reports/src/components/explorer-ui/explorer-kit/Pill.svelte';
 	import AccountMenu from '../accounts-access/AccountMenu.svelte';
 	import { browserContext } from '../../utils/development-tooling/browserContext';
 	import {

@@ -2,9 +2,9 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_yynkdbd66b -->
 <script lang="ts">
-	import HarnessIcon from '$shared/explorer-ui/HarnessIcon.svelte';
+	import HarnessIcon from '../../../../reports/src/components/explorer-ui/HarnessIcon.svelte';
 	import type { Snippet } from 'svelte';
-	import type { HomeSection } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+	import type { HomeSection } from '../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 	import { sections } from './hubHomePresentation';
 	let {
 		section,

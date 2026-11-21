@@ -2,13 +2,13 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_aigdzmrsfg -->
 <script lang="ts">
-	import EmptyState from '$shared/explorer-ui/explorer-kit/EmptyState.svelte';
-	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
+	import EmptyState from '../../../../reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte';
+	import Pill from '../../../../reports/src/components/explorer-ui/explorer-kit/Pill.svelte';
 	import type {
 		HomeAgent,
 		HomeChatInput,
 		HomeChatReceipt
-	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+	} from '../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 	import {
 		agentGroups,
 		agentLabels,

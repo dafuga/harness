@@ -1,5 +1,5 @@
 // @harness-uid u_xdo57l4rk2
-import type { ProjectSnapshot } from '$desktop/models/development-tooling/Desktop.types';
+import type { ProjectSnapshot } from '../../../../desktop/src/models/development-tooling/Desktop.types';
 import { count } from './hubHomePresentation';
 
 export function projectInventory(snapshot: ProjectSnapshot) {

@@ -16,6 +16,8 @@
 			"hub.component.projects-sessions-hub-home-quota",
 			"hub.component.projects-sessions-hub-home-schedule",
 			"hub.component.projects-sessions-hub-home-work",
+			"reports.component.harness-harness-icon",
+			"reports.component.modal",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button"
 		]
@@ -141,12 +143,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-a",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		}

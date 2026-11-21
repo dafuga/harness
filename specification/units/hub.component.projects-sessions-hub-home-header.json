@@ -11,6 +11,8 @@
 		"level": "organism",
 		"uses": [
 			"hub.component.account-menu",
+			"reports.component.brand-mark",
+			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -28,6 +30,7 @@
 	},
 	"contract": {
 		"origin": "derived",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-pill"],
 		"inputs": [
 			{
 				"name": "HubHomeHeader.view",
@@ -64,6 +67,16 @@
 		},
 		{
 			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.brand-mark",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
 			"via": "import",
 			"origin": "derived"
 		},

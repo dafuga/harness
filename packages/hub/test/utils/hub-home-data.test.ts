@@ -2,8 +2,8 @@ import { expect, test, vi } from 'vitest';
 import {
 	buildHomeSnapshot,
 	noProviders
-} from '$reports/lib/projects-sessions/hub-home/homeTrackerProjection';
-import type { TrackerItemRecord } from '$reports/lib/projects-sessions/project-overview/projectOverviewTracker.types';
+} from '../../../reports/src/lib/projects-sessions/hub-home/homeTrackerProjection';
+import type { TrackerItemRecord } from '../../../reports/src/lib/projects-sessions/project-overview/projectOverviewTracker.types';
 import { deliverHomeChat } from '../../../desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeTrackerChat';
 import {
 	soonestWork,

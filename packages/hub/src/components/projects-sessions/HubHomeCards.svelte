@@ -2,8 +2,8 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_koj2sfjf7g -->
 <script lang="ts">
-	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
-	import EmptyState from '$shared/explorer-ui/explorer-kit/EmptyState.svelte';
+	import Pill from '../../../../reports/src/components/explorer-ui/explorer-kit/Pill.svelte';
+	import EmptyState from '../../../../reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import {
 		agentLabels,
 		count,

@@ -10,6 +10,7 @@
 	"composition": {
 		"level": "molecule",
 		"uses": [
+			"reports.component.harness-harness-icon",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-form",
 			"reports.component.shared-primitives-atoms-html-input",
@@ -73,6 +74,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-button",
 			"via": "import",
 			"origin": "derived"
@@ -109,6 +115,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		}

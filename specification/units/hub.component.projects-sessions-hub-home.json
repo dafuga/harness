@@ -38,6 +38,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.component.projects-sessions-hub-home-cards",
 			"via": "import",
 			"origin": "derived"
@@ -99,6 +104,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		}

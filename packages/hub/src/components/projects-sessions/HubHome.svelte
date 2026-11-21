@@ -4,12 +4,12 @@
 <script lang="ts">
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { ProjectSummary } from 'collaboration';
-	import type { ProjectSnapshot } from '$desktop/models/development-tooling/Desktop.types';
+	import type { ProjectSnapshot } from '../../../../desktop/src/models/development-tooling/Desktop.types';
 	import type {
 		HomeChatInput,
 		HomeChatReceipt,
 		HomeSection
-	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+	} from '../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 	import { onMount, tick } from 'svelte';
 	import { browserContext } from '../../utils/development-tooling/browserContext';
 	import { watchWhileVisible } from '../../routes/tracker-overview/overviewClient';

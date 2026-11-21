@@ -12,6 +12,8 @@
 		"uses": [
 			"hub.component.projects-sessions-hub-home-row",
 			"hub.component.projects-sessions-hub-home-skeleton",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.projects-sessions-project-overview-project-overview",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-span",
@@ -24,6 +26,7 @@
 	},
 	"contract": {
 		"origin": "derived",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
 		"inputs": [
 			{
 				"name": "HubHomeWork.overview",
@@ -88,6 +91,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-project-overview-project-overview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-button",
 			"via": "import",
 			"origin": "derived"
@@ -104,6 +117,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-project-overview-project-overview-presentation",
 			"via": "import",
 			"origin": "derived"
 		}

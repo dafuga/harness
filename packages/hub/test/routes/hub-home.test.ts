@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { expect, test } from 'vitest';
-import type { HomeChatInput } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+import type { HomeChatInput } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 import { Miniflare } from 'miniflare';
 import { serveHubHome } from '../../src/routes/api/hub-home/homePolicy';
 import { SESSION_COOKIE } from '../../src/utils/accounts-access/authCookies';

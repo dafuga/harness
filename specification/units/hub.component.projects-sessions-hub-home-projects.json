@@ -11,6 +11,7 @@
 		"level": "organism",
 		"uses": [
 			"hub.component.projects-sessions-hub-home-skeleton",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-code",
@@ -33,6 +34,7 @@
 	},
 	"contract": {
 		"origin": "derived",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
 		"inputs": [
 			{
 				"name": "HubHomeProjects.projects",
@@ -88,6 +90,16 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.development-tooling-desktop-entity-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.component.projects-sessions-hub-home-skeleton",
 			"via": "import",
 			"origin": "derived"
@@ -104,6 +116,11 @@
 		},
 		{
 			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -174,6 +191,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
 			"via": "import",
 			"origin": "derived"
 		}

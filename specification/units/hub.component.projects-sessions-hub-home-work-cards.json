@@ -13,6 +13,7 @@
 			"hub.component.projects-sessions-hub-home-card",
 			"hub.component.projects-sessions-hub-home-row",
 			"hub.component.projects-sessions-hub-home-skeleton",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-code",
 			"reports.component.shared-primitives-atoms-html-p",
@@ -33,6 +34,7 @@
 	},
 	"contract": {
 		"origin": "derived",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
 		"inputs": [
 			{
 				"name": "HubHomeWorkCards.view",
@@ -156,6 +158,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-a",
 			"via": "import",
 			"origin": "derived"
@@ -177,6 +184,16 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-project-overview-project-overview-presentation",
 			"via": "import",
 			"origin": "derived"
 		}

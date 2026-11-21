@@ -12,6 +12,7 @@
 		"uses": [
 			"hub.component.projects-sessions-hub-home-skeleton",
 			"hub.component.projects-sessions-hub-quota-subscription",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div"
 		]
@@ -22,6 +23,7 @@
 	},
 	"contract": {
 		"origin": "derived",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
 		"inputs": [
 			{
 				"name": "HubHomeQuota.quota",
@@ -67,12 +69,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-button",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -1,5 +1,5 @@
 // @harness-uid u_kqbmr6buaf
-import type { OwnerHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+import type { OwnerHomeSnapshot } from '../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 import type { BrowserApi } from '../../utils/browserApi';
 import type { ReadHomeResult } from './hubHomeView.types';
 

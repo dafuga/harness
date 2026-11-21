@@ -2,12 +2,12 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_bizwcg2fkv -->
 <script lang="ts">
-	import HarnessIcon from '$shared/explorer-ui/HarnessIcon.svelte';
+	import HarnessIcon from '../../../../reports/src/components/explorer-ui/HarnessIcon.svelte';
 	import type {
 		HomeAgent,
 		HomeChatInput,
 		HomeChatReceipt
-	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+	} from '../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 	import { currentAgent } from './hubHomePresentation';
 	import type { SendHomeChat } from './hubHomeView.types';
 

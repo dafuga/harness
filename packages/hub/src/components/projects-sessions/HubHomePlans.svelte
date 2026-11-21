@@ -2,13 +2,13 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_jz3ojqls6h -->
 <script lang="ts">
-	import EmptyState from '$shared/explorer-ui/explorer-kit/EmptyState.svelte';
-	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
+	import EmptyState from '../../../../reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte';
+	import Pill from '../../../../reports/src/components/explorer-ui/explorer-kit/Pill.svelte';
 	import type {
 		HomeAgent,
 		HomePlan,
 		HomePlanState
-	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+	} from '../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 	import { count, planLabels, planStates, when } from './hubHomePresentation';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 
