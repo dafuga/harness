@@ -2,7 +2,7 @@
 	"name": "project-overview",
 	"goal": "Prove the approved Project Overview states and read-only tracker boundary on the native app and website, with exact-revision tests and screenshots.",
 	"createdAt": "2026-11-20T22:52:32.565Z",
-	"updatedAt": "2026-11-21T00:21:22.944Z",
+	"updatedAt": "2026-11-21T08:46:19.056Z",
 	"agentModel": "gpt-6.2-sol",
 	"template": "feature",
 	"templateLineage": ["feature"],
@@ -32,6 +32,21 @@
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		},
+		{
+			"id": "hosted-proof",
+			"title": "Prove owner-only fresh tracker data on hosted Hub and the background publisher",
+			"status": "pending"
+		},
+		{
+			"id": "paired-ios-proof",
+			"title": "Prove the paired iOS path using native credential custody and read-only account access",
+			"status": "pending"
+		},
+		{
+			"id": "hub-production",
+			"title": "Verify approved Hub production release identity, owner read, and anonymous denial",
 			"status": "pending"
 		}
 	],
