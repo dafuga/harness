@@ -12,6 +12,12 @@ function withText(title: string, note: string) {
 	return { ...base, projects: [{ ...card, items: [item], attention: { item, text: note } }] };
 }
 
+async function storedOverview(fixture: ReturnType<typeof overviewFixture>, bearer: string) {
+	const response = await fixture.handle(overviewRequest('GET', { bearer }));
+	expect(response.status).toBe(200);
+	return (await response.json()) as ReturnType<typeof snapshot>;
+}
+
 test('oversized live title and note are excerpted instead of discarding the snapshot', async () => {
 	const f = overviewFixture();
 	const bearer = await f.native();
@@ -19,11 +25,11 @@ test('oversized live title and note are excerpted instead of discarding the snap
 		overviewRequest('PUT', { bearer }, withText('T'.repeat(617), 'N'.repeat(1921)))
 	);
 	expect(put.status).toBe(204);
-	const stored = await (await f.handle(overviewRequest('GET', { bearer }))).json();
+	const stored = await storedOverview(f, bearer);
 	const card = stored.projects[0];
 	expect(card.items[0].title).toBe('T'.repeat(499) + '…');
-	expect(card.attention.text).toBe('N'.repeat(999) + '…');
-	expect(card.attention.item).toEqual(card.items[0]);
+	expect(card.attention?.text).toBe('N'.repeat(999) + '…');
+	expect(card.attention?.item).toEqual(card.items[0]);
 	const original = snapshot();
 	expect(card.agent).toBe(original.projects[0].agent);
 	expect(card.state).toBe(original.projects[0].state);
@@ -42,7 +48,7 @@ test('the other approved cards survive when one card carries oversized text', as
 	const body = { ...base, projects: [base.projects[0], other], liveSessions: 2 };
 	const put = await f.handle(overviewRequest('PUT', { bearer }, body));
 	expect(put.status).toBe(204);
-	const stored = await (await f.handle(overviewRequest('GET', { bearer }))).json();
+	const stored = await storedOverview(f, bearer);
 	expect(stored.projects.map((p: { agent: string }) => p.agent)).toEqual([
 		'synthetic-project',
 		'other-project'
@@ -56,7 +62,7 @@ test('a recognized secret that crosses the excerpt boundary is never retained', 
 	const title = 'a'.repeat(490) + ' ' + SECRET + ' ' + 'b'.repeat(100);
 	const put = await f.handle(overviewRequest('PUT', { bearer }, withText(title, 'quiet')));
 	expect(put.status).toBe(204);
-	const stored = await (await f.handle(overviewRequest('GET', { bearer }))).json();
+	const stored = await storedOverview(f, bearer);
 	const excerpt: string = stored.projects[0].items[0].title;
 	expect(excerpt).not.toContain('SYNTHETICEXCERPT');
 	expect(excerpt).not.toContain('sk-');
@@ -70,7 +76,7 @@ test('an excerpt never splits a surrogate pair', async () => {
 	const title = 'a'.repeat(498) + '😀' + 'b'.repeat(10);
 	const put = await f.handle(overviewRequest('PUT', { bearer }, withText(title, 'quiet')));
 	expect(put.status).toBe(204);
-	const stored = await (await f.handle(overviewRequest('GET', { bearer }))).json();
+	const stored = await storedOverview(f, bearer);
 	const excerpt: string = stored.projects[0].items[0].title;
 	expect(excerpt).toBe('a'.repeat(498) + '…');
 	expect(excerpt).not.toMatch(

@@ -50,13 +50,14 @@
 				"name": "ProjectGate.overview",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Shows the Project Overview link only when the current desktop or paired account can offer it."
 			},
 			{
 				"name": "ProjectGate.busy",
 				"type": "boolean",
 				"required": true,
-				"description": "Whether a project operation is in progress. While it is true, the local Open Project button (rendered only when local is true) is disabled, has aria-busy set and reads Opening project…, and every recent-project button is disabled.",
+				"description": "Whether a project operation is in progress. While it is true, the local Open Project button (rendered only when local is true) is disabled, has aria-busy set and reads Opening project\u2026, and every recent-project button is disabled.",
 				"examples": [false, true]
 			},
 			{
@@ -121,7 +122,7 @@
 			{
 				"name": "ProjectGate",
 				"type": "markup",
-				"description": "Welcome markup: the brand mark, the Harness heading and tagline, the Open Project button when local is true (disabled while available is false or busy is true), a hint line, the GameCreate component when available and local are true, a Recent projects list when projects is non-empty (its buttons disabled while busy is true), then the children snippet. The hint is 'Choose a local Git project to begin.' when local and available are true, 'Browser preview · read-only. Open the desktop app to choose a local project.' when local is true and available is false, 'Choose a project of your computer.' when local is false and projects is non-empty, and 'The projects of your computer appear here once this phone is connected.' when local is false and projects is empty."
+				"description": "Welcome markup: the brand mark, the Harness heading and tagline, the Open Project button when local is true (disabled while available is false or busy is true), a hint line, the GameCreate component when available and local are true, a Recent projects list when projects is non-empty (its buttons disabled while busy is true), then the children snippet. The hint is 'Choose a local Git project to begin.' when local and available are true, 'Browser preview \u00b7 read-only. Open the desktop app to choose a local project.' when local is true and available is false, 'Choose a project of your computer.' when local is false and projects is non-empty, and 'The projects of your computer appear here once this phone is connected.' when local is false and projects is empty."
 			}
 		],
 		"errors": [
