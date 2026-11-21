@@ -13,7 +13,10 @@ import {
 	readTrackerComments,
 	readTrackerIssues
 } from './tracker-adapter-poll-service/readTrackerIntake';
-import { assertTrackerPollActive } from './tracker-adapter-poll-service/assertTrackerPollActive';
+import {
+	assertTrackerPollActive,
+	TrackerAdapterPollError
+} from './tracker-adapter-poll-service/trackerAdapterPollError';
 
 export type {
 	TrackerAdapterIntakePolicy,
@@ -106,7 +109,7 @@ export class TrackerAdapterPollService {
 		} catch {
 			assertTrackerPollActive(signal);
 			if (!dryRun) this.sources.recordRun(source.id, this.now(), intakeError);
-			throw new Error(intakeError);
+			throw new TrackerAdapterPollError(intakeError);
 		}
 	}
 

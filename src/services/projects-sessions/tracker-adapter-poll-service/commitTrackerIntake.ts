@@ -14,10 +14,11 @@ import type {
 import { matchesGithubIssue } from './githubIntakeRecord';
 
 export function planTrackerIntake(
-	{ repository, policy }: TrackerAdapterIntakeContext,
+	context: TrackerAdapterIntakeContext,
 	source: TrackerAdapterSource,
 	record: TrackerAdapterIntakeRecord
 ): TrackerAdapterAction {
+	const { repository, policy } = context;
 	const manual = repository
 		.candidates()
 		.find((item) => matchesGithubIssue(source, record, item, policy?.matchesItem));
