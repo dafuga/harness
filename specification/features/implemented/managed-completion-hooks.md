@@ -1,7 +1,9 @@
 ---
 status: implemented
 shippedIn: null
-unitIds: []
+unitIds:
+  - config.agents-providers-completion-hooks
+  - service.agents-providers-completion-hooks
 owner: null
 reviewedAt: null
 ---
@@ -45,6 +47,6 @@ The comparison uses line, function and branch coverage when the runner reports t
 
 ## Run records
 
-The orchestration Tracker item lists check outcomes and links the private JSON receipt. `harness task show` retains module outcomes and measurement data in the worker result and points to the claim's full JSON receipt. Receipts are stored under `harness-completion/` in the repository's Git common directory. The module outcome travels with the Git-backed task queue and the detailed JSON receipt stays on the executing host.
+The orchestration Tracker item lists check outcomes and links the private JSON receipt. If Tracker is unavailable, Harness prints the receipt path and records that delivery could not be confirmed. `harness task show` retains module outcomes and measurement data in the worker result and points to the claim's full JSON receipt. Receipts are stored under `harness-completion/` in the repository's Git common directory. The module outcome travels with the Git-backed task queue and the detailed JSON receipt stays on the executing host.
 
 The check gates the managed Harness handoff. Land approved work only after the required checks pass.
