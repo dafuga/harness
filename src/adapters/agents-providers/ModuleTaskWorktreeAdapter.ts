@@ -1,6 +1,6 @@
 // @harness-uid u_vwqx4shw5t
 import type { TaskCheckpointInput } from './ModuleTaskWorktreeAdapter.types';
-import { TaskWorktreeChangedError } from './ModuleTaskWorktreeAdapter.types';
+import { TaskWorktreeChangedError } from './TaskWorktreeChangedError';
 import { mkdtemp, realpath, rm } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
 import { tmpdir } from 'node:os';
