@@ -15,7 +15,7 @@ const sizes = {
 	laptop: { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 },
 	wide: { viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 }
 };
-const modals = ['agents', 'plans', 'scheduled', 'projects', 'wip', 'wip-projects'];
+const modals = ['agents', 'quota', 'plans', 'scheduled', 'projects', 'wip', 'wip-projects'];
 const states = ['busy', 'empty', 'loading'];
 const schemes = ['dark', 'light'];
 

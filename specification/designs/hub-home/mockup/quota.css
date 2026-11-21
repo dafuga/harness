@@ -1,0 +1,134 @@
+/* Quota meters, warnings and the per-subscription panels. Low uses the warning token and Almost
+   out the error token; each also carries a mark and a word. The bar shows what is left. */
+.home-scheme {
+	--hh-light-warning: color-mix(in srgb, var(--hx-color-warning) 55%, var(--home-ink));
+	--hh-light-chart: color-mix(in srgb, var(--hx-color-tertiary) 62%, var(--home-ink));
+}
+@media (prefers-color-scheme: light) {
+	.home-page {
+		--hx-color-warning: var(--hh-light-warning);
+		--hx-color-tertiary: var(--hh-light-chart);
+	}
+}
+.hh-tone.po-blocked,
+.hh-q-callout[data-level='critical'] {
+	--po-accent: var(--po-error-text, var(--hx-color-error));
+	--po-wash: var(--hx-color-error-soft);
+}
+.hh-q-callout[data-level='low'] {
+	--po-accent: var(--hx-color-warning);
+	--po-wash: var(--hx-color-warning-soft);
+}
+.hh-q-sub {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-6);
+}
+.hh-q-sub + .hh-q-sub {
+	margin-top: var(--hx-space-10);
+	padding-top: var(--hx-space-12);
+	border-top: var(--hx-border-thin) solid var(--hx-color-border);
+}
+.hh-q-sub-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--hx-space-4) var(--hx-space-10);
+}
+.hh-q-provider {
+	font-size: var(--hx-type-size-sm);
+	font-weight: var(--hx-style-weight-semibold);
+}
+.hh-q-meters {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-10);
+}
+.hh-q-meter,
+.hh-q-credits {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-4);
+}
+.hh-q-credits {
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--hx-space-4) var(--hx-space-8);
+}
+.hh-q-line {
+	display: flex;
+	align-items: baseline;
+	gap: var(--hx-space-8);
+}
+.hh-q-label {
+	font-size: var(--hx-type-size-compact);
+	color: var(--hx-color-text-supporting);
+}
+.hh-q-value {
+	margin-left: auto;
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-xs);
+	font-variant-numeric: var(--hx-style-numeric-tabular);
+	white-space: nowrap;
+}
+.hh-q-value strong {
+	color: var(--hx-color-text);
+	font-size: var(--hx-type-size-sm);
+}
+.hh-q-bar {
+	display: block;
+	height: var(--hx-space-6);
+	overflow: hidden;
+	border-radius: var(--hx-radius-pill);
+	background: var(--hx-color-border);
+}
+.hh-q-bar > span {
+	display: block;
+	height: 100%;
+	border-radius: var(--hx-radius-pill);
+	background: var(--hx-color-text-muted);
+}
+.hh-q-meter[data-level='low'] .hh-q-bar > span {
+	background: var(--hx-color-warning);
+}
+.hh-q-meter[data-level='critical'] .hh-q-bar > span {
+	background: var(--hx-color-error);
+}
+.hh-q-reset {
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-2xs);
+}
+.hh-q-flag {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--hx-space-4);
+	color: var(--hx-color-warning);
+	font-size: var(--hx-type-size-2xs);
+	font-weight: var(--hx-style-weight-bold);
+	letter-spacing: var(--hx-style-tracking-wide);
+	text-transform: uppercase;
+}
+.hh-q-flag[data-level='critical'] {
+	color: var(--po-error-text, var(--hx-color-error));
+}
+.hh-q-mark {
+	width: var(--hx-space-7);
+	height: var(--hx-space-7);
+	background: currentColor;
+	transform: rotate(45deg);
+}
+.hh-q-flag[data-level='critical'] .hh-q-mark {
+	transform: none;
+}
+[data-stale] .hh-q-provider::after {
+	content: ' · stale';
+	color: var(--hx-color-text-muted);
+	font-weight: var(--hx-style-weight-regular);
+}
+.hh-q-headflag[data-level='low'] {
+	border-color: var(--hx-color-warning-line);
+}
+.hh-q-headflag[data-level='critical'] {
+	border-color: var(--hx-color-error-line);
+}

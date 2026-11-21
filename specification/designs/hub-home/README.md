@@ -1,7 +1,7 @@
 # Hub home redesign: design proposal
 
 Designs only. Nothing here changes app code. This proposes a new root summary page for the
-Harness Hub with five sections. Each section shows a short preview and a **See all** button that
+Harness Hub with six sections: the brief's five plus **Quota** (added 21 Nov 22:05). Each section shows a short preview and a **See all** button that
 opens a modal. It revisits the approved Project Overview cards page (tracker n79x63, xm64q4): that
 page moves, unchanged, into the Work in progress modal.
 
@@ -24,7 +24,7 @@ Render all screens (headless Chromium; no window opens):
 
 ```sh
 bun install
-node specification/designs/hub-home/render.mjs            # all 130 screens
+node specification/designs/hub-home/render.mjs            # all 146 screens
 HH_ONLY=agents node specification/designs/hub-home/render.mjs   # one screen
 ```
 
@@ -36,7 +36,7 @@ To view a single screen in a browser, open
 `screens/<size>/<screen>--<state>--<scheme>[--full].png`
 
 - **Sizes:** phone 390 (2x), tablet 834, laptop 1440, wide 1920.
-- **Screens:** `root`, `agents`, `agent-chat` (phone only: the chat step), `plans`,
+- **Screens:** `root`, `agents`, `quota`, `agent-chat` (phone only: the chat step), `plans`,
   `scheduled`, `projects`, `wip` (soonest first), `wip-projects` (by project: the current
   overview).
 - **States:** `default`, `busy`, `empty`, `loading`.
@@ -56,6 +56,8 @@ Start with:
 [phone root, light](screens/phone/root--default--light.png) ·
 [wide root, busy](screens/wide/root--busy--dark.png) ·
 [Agents](screens/laptop/agents--default--dark.png) ·
+[Quota](screens/laptop/quota--default--dark.png) ·
+[Quota, almost out](screens/laptop/quota--busy--dark.png) ·
 [Work in progress by project](screens/laptop/wip-projects--default--dark--full.png) ·
 [Projects](screens/laptop/projects--default--light.png) ·
 [phone chat](screens/phone/agent-chat--default--light.png) ·
@@ -71,12 +73,14 @@ Start with:
 2. **The headline answers "what needs me?"** For example: "3 agents working, 1 needs you". It is
    followed by a totals line and the computer pills from the overview.
 3. **Layout by width.**
-   - Laptop: three columns, with Agents spanning two because it holds the chat entry.
-   - Wide: four columns, capped at 1800px. Projects and Work in progress each span two, and the
-     wide Projects card lists twice as many projects.
-   - Tablet: two columns, with Agents across the top.
-   - Phone: one column in the order given in the brief.
-     The DOM order is always Agents, Plans, Scheduled, Projects, Work in progress.
+   - Laptop: three columns. Agents (two wide, it holds the chat entry) and Quota on top; Plans,
+     Scheduled and Projects; then Work in progress across the full width with its rows in two
+     columns.
+   - Wide: four columns, capped at 1800px: Agents (two wide), Quota and Plans on top; then
+     Scheduled, Projects and Work in progress (two wide).
+   - Tablet: two columns, with Agents across the top and Work in progress across the bottom.
+   - Phone: one column.
+     The DOM order is always Agents, Quota, Plans, Scheduled, Projects, Work in progress.
 4. **Previews are short and end in a count.** There are four rows on laptop and two on phone,
    using the overview's own `data-extra` phone rule. **See all** names the total ("All 15
    agents"), so the busy state never grows the page.
@@ -97,20 +101,36 @@ Start with:
    ordered soonest to finish first, and overdue items come first with the overview's red ETA
    chip. The modal has two tabs: **Soonest first** (default) and **By project**, which is the
    current Project Overview with its chips, bands and cards, unchanged.
-10. **Modals reuse the overview's dialog frame** (`hub.css` `.viewer-dialog`): a strong border, a
+10. **Quota** shows usage _left_ on each subscription, so a shrinking bar means less room.
+    - Claude Code: 5-hour session, weekly all models and weekly Fable, each with its reset time.
+      Codex: 5-hour session and weekly, plus credits. Each subscription names its plan, account
+      and when usage was last read.
+    - Under 25% left is **Low** (amber, diamond mark) and under 10% is **Almost out** (red, square
+      mark). The mark and the word are always shown, so colour is never the only signal.
+    - The tightest limit is repeated in the header pills, so it is seen without scrolling. An
+      Almost out limit also gets a callout in the card: what, how much, and when it resets.
+    - The root card shows up to two subscriptions ("1 more subscription" past that). The modal
+      has one panel per subscription: limits with reset countdowns; a 7-day chart of the weekly
+      limit used per day (one series in tertiary blue, so it never looks like the amber warning;
+      one axis; only today is labelled; each bar has a hover title); the agents that used the
+      most this week; a "Warn me at 25% left" threshold; and a link to the provider's usage page.
+    - Usage that was not read recently is marked stale, with **Read now**. An **Add a
+      subscription** tile at the end leaves room for more accounts and providers.
+11. **Modals reuse the overview's dialog frame** (`hub.css` `.viewer-dialog`): a strong border, a
     16px radius, and a blurred strong scrim. They are 1240px wide on laptop, 1500px on wide and a
     full-screen sheet on phone. The header (title, summary line, optional primary action, 44px
     close) stays fixed and the body scrolls.
-11. **States.**
+12. **States.**
     - Loading keeps every card in place with skeleton rows the height of real rows, so nothing
       shifts when data arrives.
     - Empty keeps the card and gives one next step ("Start a plan", "Schedule a task").
-    - Busy shows an overloaded computer, two agents needing you, a two-line clamped long title and
-      "+N" totals.
-12. **Light scheme.** It uses the Hub homepage pattern: colours mixed from catalog tokens and
-    reassigned on `.home-page`. Three additions were needed and are in `mockup/base.css` and
-    `mockup/sections.css`:
-    - a darker info colour (the dark-scheme info blue is too faint on paper)
+    - Busy shows an overloaded computer, two agents needing you, a two-line clamped long title,
+      "+N" totals, and two subscriptions almost out plus a third whose usage is stale.
+13. **Light scheme.** It uses the Hub homepage pattern: colours mixed from catalog tokens and
+    reassigned on `.home-page`. The additions needed are in `mockup/base.css`,
+    `mockup/sections.css` and `mockup/quota.css`:
+    - darker info, warning and chart (tertiary) colours (the dark-scheme values are too faint on
+      paper)
     - a light strong scrim
     - gold _text_ (the needs-you pill, the kicker, commit hashes) drawn from `--home-accent`, not
       `--hx-color-primary`
@@ -134,6 +154,14 @@ Start with:
 6. **Done and quiet projects.** The overview shows Quiet and Done bands. The Work in progress
    modal keeps only active work. Should finished projects stay reachable from it, for example
    with an "Include done" chip?
+
+7. **Quota source.** Where should the numbers come from? Options: Claude Code's `/usage` (or
+   the usage headers its sessions see), Codex's rate-limit status, and the OpenAI credits API.
+   Each is read on the computer that holds the login and published like the tracker overview.
+   How often should it be read? These mockups assume every few minutes, with a stale mark past
+   one hour.
+8. **What happens when a limit runs out.** Should Harness only warn, or also hold new work for
+   agents on that subscription, or move it to another subscription?
 
 ## Files
 

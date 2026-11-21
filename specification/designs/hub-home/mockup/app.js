@@ -8,6 +8,7 @@
 	const modals = {
 		agents: () => HH.modals.agents(data, {}),
 		'agent-chat': () => HH.modals.agents(data, { chat: true }),
+		quota: () => HH.modals.quota(data),
 		plans: () => HH.modals.plans(data),
 		scheduled: () => HH.modals.scheduled(data),
 		projects: () => HH.modals.projects(data),

@@ -28,7 +28,7 @@ HH.root.head = function (data) {
 		)
 		.join('');
 	return `<header class="po-head hh-head"><p class="po-kicker">Home</p><h1 class="po-title">${title}</h1>
-		<p class="po-totals">${HH.root.totals(data)}</p><ul class="po-machines" aria-label="Computers">${machines}</ul></header>`;
+		<p class="po-totals">${HH.root.totals(data)}</p><ul class="po-machines" aria-label="Computers">${machines}${HH.root.quotaFlag(data)}</ul></header>`;
 };
 
 HH.root.totals = function (data) {
@@ -101,4 +101,11 @@ HH.root.composer = function (name) {
 		<span class="hh-to-chip">${HH.ui.esc(name)} ▾</span></label>
 		<input class="hh-composer-input" placeholder="Message ${HH.ui.esc(name)}…" aria-label="Message" />
 		<button type="submit" class="hh-send" aria-label="Send">${HH.ui.icon('send')}</button></form>`;
+};
+
+/** The header repeats the tightest quota warning, so a low limit is seen without scrolling. */
+HH.root.quotaFlag = function (data) {
+	const low = HH.quota.lows(data.quota)[0];
+	if (!low) return '';
+	return `<li class="po-machine hh-q-headflag" data-level="${low.level}">${HH.quota.flag(low.level)}${low.sub.provider} ${low.limit.label.toLowerCase()} <span class="po-machine-status">${low.limit.left}% left</span></li>`;
 };

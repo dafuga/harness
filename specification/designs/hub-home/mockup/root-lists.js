@@ -141,16 +141,18 @@ HH.root.wip = function (data) {
 			body: HH.ui.skeleton(n),
 			total: 0
 		});
+	// Two rows past the preview fill the second column when the card runs full width.
 	const rows = data.wip
-		.slice(0, n)
-		.map((w, i) =>
-			HH.ui.row(
+		.slice(0, n + 2)
+		.map((w, i) => {
+			const row = HH.ui.row(
 				w.title,
 				`${w.project} · ${w.agent} · ${w.status}`,
 				HH.ui.eta(w.eta, w.tone),
 				i >= 2
-			)
-		)
+			);
+			return i < n ? row : row.replace('<li class="po-item"', '<li class="po-item" data-wide');
+		})
 		.join('');
 	const body = data.wip.length
 		? `<p class="hh-wip-line">${HH.root.wipLine(data)}</p><ul class="po-items">${rows}</ul>`
@@ -173,7 +175,7 @@ HH.root.wipLine = function (data) {
 };
 
 HH.root.render = function (data) {
-	const sections = ['agents', 'plans', 'scheduled', 'projects', 'wip']
+	const sections = ['agents', 'quota', 'plans', 'scheduled', 'projects', 'wip']
 		.map((id) => HH.root[id](data))
 		.join('');
 	return `${HH.root.topbar()}<main class="po-page hh-page">${HH.root.head(data)}<div class="hh-grid">${sections}</div></main>`;
