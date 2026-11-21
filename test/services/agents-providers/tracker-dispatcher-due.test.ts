@@ -40,7 +40,12 @@ test('due intent uses a local-zone date, holds future or ineligible work and kee
 		status: 'held',
 		reason: 'item is already in progress'
 	});
-	changeItem({ status: 'open' });
+	changeItem({ status: 'open', notes: 'Synthetic scope for model classification.' });
+	const defaultPick = policy.pickModel;
+	policy.pickModel = (item) => {
+		expect(item.notes).toBe('Synthetic scope for model classification.');
+		return defaultPick(item);
+	};
 	expect(await service.request(sampleId, due)).toMatchObject({
 		status: 'requested',
 		intent: { source: 'due', target: primary, scheduledPick: { rung: { id: 'haiku' } } }

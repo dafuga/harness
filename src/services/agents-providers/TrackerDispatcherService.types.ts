@@ -36,6 +36,7 @@ export interface TrackerLaunchIntent {
 export interface TrackerDispatchItem extends TrackerLaunchOptions {
 	id: string;
 	title: string;
+	notes?: string | null;
 	kind: string;
 	status: TrackerItemStatus;
 	agent?: string | null;
