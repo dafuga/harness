@@ -1,6 +1,6 @@
 import { expect, test, vi } from 'vitest';
 import { writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { measureWorkload } from '../../support/measureWorkload';
 import { withTempDir } from '../../support/temporary';
 import { buildProgram } from '../../../src/cli/program';
@@ -30,7 +30,7 @@ test('selected command registrations preserve every help surface and alias', asy
 	);
 });
 
-test('Harbor inspection forwards fixed argv without provider or signing credentials', () =>
+test('Harbor tooling forwards fixed argv without provider or signing credentials', () =>
 	withTempDir('harness-harbor-inspect-', async (root) => {
 		const entry = join(root, 'harbor tool.cjs');
 		const initialExitCode = process.exitCode;
@@ -40,6 +40,7 @@ test('Harbor inspection forwards fixed argv without provider or signing credenti
 			`
 		console.log(JSON.stringify({
 			args: process.argv.slice(2),
+			harnessEntry: process.env.HARNESS_CLI_PATH ?? null,
 			safe: !process.env.OPENAI_API_KEY && !process.env.HARBOR_PRIVATE_KEY && !process.env.NODE_OPTIONS && !process.env.BUN_OPTIONS
 		}));
 		if (process.argv[2] === 'doctor' && process.argv.includes('--strict')) process.exitCode = 1;`
@@ -51,8 +52,9 @@ test('Harbor inspection forwards fixed argv without provider or signing credenti
 		vi.stubEnv('HARBOR_PRIVATE_KEY', 'synthetic-harbor-key');
 		vi.stubEnv('NODE_OPTIONS', '--require /fixture/not-imported.cjs');
 		vi.stubEnv('BUN_OPTIONS', '--preload /fixture/not-imported.ts');
+		vi.stubEnv('HARNESS_CLI_PATH', '/fixture/not-used.js');
 		try {
-			for (const { name, input, expected } of harborDispatchCases(root)) {
+			for (const { name, input, expected, sdk } of harborDispatchCases(root)) {
 				const args = ['harbor', ...input];
 				output.mockClear();
 				const cli = await loadCliProgram(args);
@@ -69,6 +71,7 @@ test('Harbor inspection forwards fixed argv without provider or signing credenti
 				if (name === 'runtime-doctor') expect(process.exitCode).toBe(1);
 				expect(JSON.parse(output.mock.lastCall?.[0] as string)).toStrictEqual({
 					args: expected,
+					harnessEntry: sdk ? resolve(process.argv[1]) : null,
 					safe: true
 				});
 			}
@@ -120,7 +123,48 @@ function harborDispatchCases(root: string) {
 			input: ['doctor', '--service', 'nodeos', '--config', config, '--strict'],
 			expected: ['doctor', '--json', '--service', 'nodeos', '--config', config, '--strict']
 		},
-		{ name: 'publish-review', input: review, expected: review },
-		{ name: 'publish-approved', input: approved, expected: approved }
+		{ name: 'publish-review', input: review, expected: review, sdk: true },
+		{ name: 'publish-approved', input: approved, expected: approved, sdk: true },
+		...harborSdkDispatchCases(root)
+	];
+}
+
+function harborSdkDispatchCases(root: string) {
+	const scaffold = [
+		'scaffold',
+		'tool',
+		join(root, 'an app'),
+		'example-app',
+		'Example App',
+		'--mobile'
+	];
+	const check = ['check', root];
+	const pack = ['pack', root, join(root, 'my app.harborapp')];
+	const stageAndroid = [
+		'stage-android',
+		join(root, 'game.harborapp'),
+		join(root, 'android assets')
+	];
+	return [
+		{ name: 'templates', input: ['templates'], expected: ['templates'], sdk: true },
+		{ name: 'scaffold-mobile', input: scaffold, expected: scaffold, sdk: true },
+		{
+			name: 'scaffold-defaults',
+			input: scaffold.slice(0, 3),
+			expected: scaffold.slice(0, 3),
+			sdk: true
+		},
+		{
+			name: 'scaffold-id-default-name',
+			input: scaffold.slice(0, 4),
+			expected: scaffold.slice(0, 4),
+			sdk: true
+		},
+		{ name: 'check-default', input: ['check'], expected: ['check'], sdk: true },
+		{ name: 'check', input: check, expected: check, sdk: true },
+		{ name: 'pack-defaults', input: ['pack'], expected: ['pack'], sdk: true },
+		{ name: 'pack-default-output', input: pack.slice(0, 2), expected: pack.slice(0, 2), sdk: true },
+		{ name: 'pack', input: pack, expected: pack, sdk: true },
+		{ name: 'stage-android', input: stageAndroid, expected: stageAndroid, sdk: true }
 	];
 }
