@@ -24,7 +24,7 @@ export class ProviderSessionAdapter {
 
 	constructor(
 		private readonly provider: TaskSelection['provider'],
-		private readonly codexHome: string
+		private readonly codexHome: string | undefined
 	) {}
 
 	event(line: string): void {
@@ -41,7 +41,7 @@ export class ProviderSessionAdapter {
 	}
 
 	sample(): SessionObservation {
-		if (this.provider === 'codex' && this.state.sessionId) {
+		if (this.provider === 'codex' && this.codexHome && this.state.sessionId) {
 			this.rolloutPath ??= findCodexRollout(this.codexHome, this.state.sessionId, this.startedAt);
 			if (this.rolloutPath)
 				this.rollout.read(this.rolloutPath, (event) => this.observeCodex(event));

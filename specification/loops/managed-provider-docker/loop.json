@@ -2,7 +2,7 @@
 	"name": "managed-provider-docker",
 	"goal": "Prove explicit Linux Docker and native macOS routing through the shared provider runner, preserving argv, stdio, exits and cleanup with synthetic commands on MB2.",
 	"createdAt": "2026-11-21T16:47:31.291Z",
-	"updatedAt": "2026-11-21T16:48:10.645Z",
+	"updatedAt": "2026-11-21T17:01:13.741Z",
 	"template": "feature",
 	"templateLineage": [
 		"feature"
@@ -19,12 +19,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T16:58:53.547Z",
+			"evidence": "The shared task process selects Docker for explicit Linux, validates macOS for native runs, and uses one task-owned attached container per generation. Native provider request admission and checkpoint logic continue on the host."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T17:01:13.741Z",
+			"evidence": "Test-only checkpoint 21652c59d5 reproduced four missing-platform failures on MB2 with one Vitest worker. The same four cases passed after implementation. Full module-tasks E2E passed 13/13, including exact exit 37, byte-for-byte prompt and argv fixture output, cancellation, and removal of its running container. Docker argv policy and routing passed 2/2."
 		},
 		{
 			"id": "verify",

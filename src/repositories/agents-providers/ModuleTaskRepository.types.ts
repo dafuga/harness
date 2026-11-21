@@ -19,11 +19,13 @@ export type TaskFeature = z.infer<typeof featureSchema>;
 export type ModuleTaskInput = z.infer<typeof taskInputSchema>;
 export type ModuleTaskQueue = z.infer<typeof queueSchema>;
 export type ModuleTask = ModuleTaskQueue['tasks'][number];
+export type TaskPlatform = NonNullable<ModuleTaskInput['platform']>;
 export type TaskSelection = { provider: 'claude' | 'codex'; model: string; intelligence: string };
 export interface TaskRunInput extends TaskSelection {
 	cwd: string;
 	prompt: string;
 	signal: AbortSignal;
+	platform?: TaskPlatform;
 	supervision?: TaskSupervision;
 	onRotation?: (checkpoint: string, session: TaskSessionMetric) => Promise<void>;
 }

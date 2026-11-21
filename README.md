@@ -1108,6 +1108,26 @@ disable Codex Apps so their model traffic stays on the supervised transport.
 `--context-tokens` lowers the orchestrator threshold for a controlled trial.
 Harness declines an initial provider prompt larger than 96 KiB.
 
+The managed provider runtime has an offline Linux Docker pilot. Set
+`"platform": "linux"` in a module task input or pass `--platform linux` to
+`harness task add` or `harness task orchestrate`. Set
+`HARNESS_TASK_DOCKER_IMAGE` on the worker or orchestrator to the full
+`sha256:…` ID of a trusted, locally installed Linux fixture image. The image
+must provide the selected provider command as a synthetic executable on its
+PATH. Run the pilot as a non-root user against a local Docker Unix socket.
+
+Each Docker generation reserves 2 CPUs and 6 GiB through Harness and applies
+matching container limits. It uses a read-only image, a temporary home, and
+one writable mount at `/workspace`. Use a disposable, credential-free
+workspace. Networking, host login files, and the Docker socket are outside
+the container. Harness removes the task container before returning the
+result. Git operations on linked worktree metadata run on the host.
+
+Set `--platform macos` (or `"platform": "macos"` in the task JSON) for Xcode,
+simulators, computer use, Apple signing, and other tasks that require a Mac.
+Harness runs those commands natively on macOS. Tasks without a platform
+continue to use the host's native provider CLI and existing login.
+
 Keep the current state, branch, verified evidence, and next steps in the
 checkpoint file named in the agent prompt. Harness saves a Tracker handoff and
 starts a fresh provider session in the same worktree. The Tracker note carries

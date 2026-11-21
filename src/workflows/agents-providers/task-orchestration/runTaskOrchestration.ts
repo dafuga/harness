@@ -65,6 +65,7 @@ async function supervise(
 		...selection,
 		id,
 		tracker: flags.tracker,
+		platform: flags.platform,
 		status: 'running',
 		file: join(directory, `${id}.json`),
 		checkpoint: join(directory, 'checkpoint.md'),
@@ -78,6 +79,7 @@ async function supervise(
 			...selection,
 			cwd: root,
 			signal,
+			platform: flags.platform,
 			prompt:
 				brief +
 				'\n\nUse Harness task commands to manage assignments and preserve verification evidence. Follow this brief and repository limits. Use configured independent Harness worker processes. Do not launch provider CLIs, subagents or detached watchers from this session.',

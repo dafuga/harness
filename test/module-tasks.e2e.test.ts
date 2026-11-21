@@ -7,21 +7,26 @@ import { verifyOrchestratorRotation } from './support/moduleTaskContextFixture';
 import { moduleTaskFixture } from './support/moduleTaskFixture';
 import { runHarness } from './support/cli';
 import { GitAdapter } from '../src/adapters/git-source-history/GitAdapter';
-import { verifyDockerWorker, verifyDockerOrchestrator } from './support/moduleTaskDockerFixture';
+import {
+	verifyDockerWorker,
+	verifyDockerOrchestrator,
+	verifyDockerProcess
+} from './support/moduleTaskDockerFixture';
 
 const dockerBase = process.env.HARNESS_TEST_DOCKER_BASE;
 test.skipIf(!dockerBase)(
 	'Linux worker runs the provider fixture in Docker',
-	async () => {
-		await verifyDockerWorker(dockerBase!);
-	},
+	() => verifyDockerWorker(dockerBase!),
 	60000
 );
 test.skipIf(!dockerBase)(
 	'Linux orchestrator uses the same Docker provider fixture',
-	async () => {
-		await verifyDockerOrchestrator(dockerBase!);
-	},
+	() => verifyDockerOrchestrator(dockerBase!),
+	60000
+);
+test.skipIf(!dockerBase)(
+	'Linux process preserves its exit and cleans up after cancellation',
+	() => verifyDockerProcess(dockerBase!),
 	60000
 );
 
