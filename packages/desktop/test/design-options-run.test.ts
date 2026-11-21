@@ -23,17 +23,33 @@ async function versions(f: Made) {
 	return plan.versions as unknown as Array<{ options?: Array<{ images: { sha256: string }[] }> }>;
 }
 
-test('a page Plan generates three separately directed options and commits them once', async () => {
+test('a page Plan saves three Sonnet mockups across all default widths in one version', async () => {
 	const f = await fixture();
 	distinct(f);
+	const options = ['One', 'Two', 'Three'].map((direction) => ({
+		direction,
+		html: '<main>' + direction + '</main>',
+		css: 'main { padding: 1rem; }'
+	}));
+	f.run.mockImplementation(async (turn) => ({
+		model: turn.model,
+		text: JSON.stringify({ sources: ['src/owned.ts'], stylesheets: [], before: null, options })
+	}));
 	const head = git(f.root, 'rev-parse', 'HEAD');
 	await settled(f);
-	const prompts = vi.mocked(f.generator.generateImage).mock.calls.map(([input]) => input.prompt);
-	expect(new Set(prompts).size).toBe(3);
+	const plan = await (await createPlanning(f.root)).readPlan({ unitId: f.request.entityId });
+	expect(plan.versions[0]?.generator).toEqual({ provider: 'claude', model: 'claude-sonnet-5-5' });
+	expect(
+		plan.versions[0]?.options?.map((option) =>
+			option.images.map(
+				({ file }) => plan.versions[0].images.find((image) => image.file === file)?.viewport
+			)
+		)
+	).toEqual(
+		Array.from({ length: 3 }, () => ['width-390', 'width-834', 'width-1440', 'width-1920'])
+	);
 	expect(designCommits(f, head)).toHaveLength(1);
-	const [saved] = await versions(f);
-	const hashes = saved.options?.flatMap((option) => option.images.map((image) => image.sha256));
-	expect(new Set(hashes).size).toBe(3);
+	expect(f.generator.generateImage).not.toHaveBeenCalled();
 }, 60000);
 
 test('a Plan that asks for two options generates two', async () => {
