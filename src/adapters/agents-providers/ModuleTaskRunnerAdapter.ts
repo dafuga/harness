@@ -9,6 +9,7 @@ import type { TaskProcessExecutor, TaskPublicEvent } from './ModuleTaskRunnerAda
 import { ModuleTaskRunError } from './ModuleTaskRunnerAdapter.types';
 import { taskProcess } from './module-task-runner-adapter/taskProcess';
 import { managedTaskSessions } from './module-task-runner-adapter/managedTaskSessions';
+import { completeOrchestration } from '../../services/agents-providers/completion-hooks/orchestratorCompletion';
 import {
 	hardContextTokens,
 	providerCompactionTokens
@@ -42,9 +43,15 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 		];
 	}
 	async run(input: TaskRunInput): Promise<TaskRunResult> {
+		if (input.supervision)
+			return completeOrchestration(input, (task, readOnly) => this.runProvider(task, readOnly));
+		return this.runProvider(input, false);
+	}
+	private runProvider(input: TaskRunInput, readOnly: boolean): Promise<TaskRunResult> {
 		return managedTaskSessions(
 			input,
-			(current) => this.execute(this.command(current), current),
+			(current) =>
+				this.execute(completionCommand(this.command(current), current.provider, readOnly), current),
 			(events, code, current) =>
 				current.provider === 'claude'
 					? this.claude(events, code, current)
@@ -86,6 +93,16 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 				.slice(-16000)
 		};
 	}
+}
+function completionCommand(
+	command: string[],
+	provider: TaskSelection['provider'],
+	readOnly: boolean
+): string[] {
+	if (!readOnly) return command;
+	const flags = provider === 'claude' ? ['--tools', '--allowedTools'] : ['--sandbox'];
+	const setting = provider === 'claude' ? 'Read,Glob,Grep' : 'read-only';
+	return command.map((part, index) => (flags.includes(command[index - 1]) ? setting : part));
 }
 function claudeTaskCommand(selection: TaskSelection): string[] {
 	return [

@@ -35,12 +35,22 @@ export async function trackerHandoff(
 			: `Refused provider request estimated at ${session.preRequestEstimateTokens} tokens before dispatch.`,
 		next
 	].join(' ');
+	await recordTrackerNote(root, report.tracker, text);
+}
+
+/** Record host-generated run metadata with the existing Tracker transport. */
+export async function recordTrackerNote(
+	root: string,
+	tracker: string,
+	text: string
+): Promise<void> {
+	validateTrackerId(tracker);
 	try {
-		await exec('tracker', ['note', report.tracker, text], { cwd: root, timeout: 10000 });
+		await exec('tracker', ['note', tracker, text], { cwd: root, timeout: 10000 });
 	} catch (error) {
 		if ((error as { code?: string }).code !== 'ENOENT') throw trackerFailure();
 		try {
-			await exec(join(homedir(), '.local/bin/tracker'), ['note', report.tracker, text], {
+			await exec(join(homedir(), '.local/bin/tracker'), ['note', tracker, text], {
 				cwd: root,
 				timeout: 10000
 			});
