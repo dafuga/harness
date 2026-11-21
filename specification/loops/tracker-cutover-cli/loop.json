@@ -1,0 +1,43 @@
+{
+	"name": "tracker-cutover-cli",
+	"goal": "Compare two quiesced Tracker SQLite snapshots and their pending sync operations through the shared Harness CLI.",
+	"createdAt": "2026-11-21T15:12:54.186Z",
+	"updatedAt": "2026-11-21T15:17:10.391Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:12:54.269Z",
+			"evidence": "Native read-only check of explicitly named local SQLite backup copies. Verify schema, all typed rows and configured link queues. Return a nonzero status for a mismatch. Keep all existing Tracker command routing unchanged."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:17:10.391Z",
+			"evidence": "The native CLI subcommand passes explicit local backup paths and selected sync-link modes into TrackerSnapshotAdapter. It emits only the comparison result on stdout, and separates mismatch from unverified input."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

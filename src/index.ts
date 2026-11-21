@@ -191,3 +191,4 @@ export { ProviderSessionAdapter } from './adapters/agents-providers/ProviderSess
 export { TrackerCommand } from './commands/projects-sessions/TrackerCommand';
 export { TrackerOperationRepository } from './repositories/projects-sessions/TrackerOperationRepository';
 export { TrackerSchemaAdapter } from './adapters/projects-sessions/TrackerSchemaAdapter';
+export { TrackerCutoverCommand } from './commands/projects-sessions/TrackerCutoverCommand';

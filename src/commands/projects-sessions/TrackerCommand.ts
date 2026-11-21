@@ -4,6 +4,7 @@ import { spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { constants, homedir } from 'node:os';
 import { isAbsolute, join } from 'node:path';
+import { TrackerCutoverCommand } from './TrackerCutoverCommand';
 
 export class TrackerCommand {
 	register(program: Command): void {
@@ -17,6 +18,7 @@ export class TrackerCommand {
 	}
 
 	run(args: string[]): number {
+		if (args[0] === 'verify-cutover') return new TrackerCutoverCommand().run(args.slice(1));
 		if (process.env.HARNESS_TRACKER_FORWARD_PARENT === String(process.ppid)) {
 			console.error('tracker: the shim needs a retained legacy client.');
 			return 126;
