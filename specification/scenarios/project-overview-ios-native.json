@@ -3,13 +3,13 @@
 	"id": "project-overview-ios-native",
 	"title": "Native iOS admission of the tracker overview GET",
 	"kind": "headless",
-	"units": ["desktop.module.ios-tracker-overview-admission"],
+	"units": ["desktop.adapter.ios-account"],
 	"states": [
 		{
 			"id": "overview-admission",
 			"title": "Compiled Swift admits one plain GET of the overview and refuses every alias, query, body and other method",
 			"coverage": "required",
-			"units": ["desktop.module.ios-tracker-overview-admission"]
+			"units": ["desktop.adapter.ios-account"]
 		}
 	],
 	"viewports": [],
