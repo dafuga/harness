@@ -26,7 +26,7 @@ exit "$result"
 export async function launchTmux(
 	{ tmux, trackerBin, trackerExecutable, worktree }: TrackerManagedTarget,
 	receipt: TrackerManagedReceipt,
-	{ script, command, clientPath }: TrackerManagedExec,
+	{ script, command, clientPath, guestAuthFile }: TrackerManagedExec,
 	signal: AbortSignal
 ): Promise<void> {
 	const { node, itemId, runId, token } = receipt;
@@ -39,7 +39,8 @@ export async function launchTmux(
 		`TRACKER_RUN_ID=${runId}`,
 		'TERM=xterm-256color',
 		`PATH=${trackerBin}:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin`,
-		...(command.image ? [`HARNESS_TASK_DOCKER_IMAGE=${command.image}`] : [])
+		...(command.image ? [`HARNESS_TASK_DOCKER_IMAGE=${command.image}`] : []),
+		...(command.image && guestAuthFile ? [`HARNESS_TRACKER_GUEST_AUTH_FILE=${guestAuthFile}`] : [])
 	];
 	await runTrackerHostCommand(
 		tmux,

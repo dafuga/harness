@@ -49,7 +49,8 @@
 			"trackerTmuxPane",
 			"matchesTrackerTmuxPane",
 			"trackerTmuxKeys",
-			"trackerWorkerClient"
+			"trackerWorkerClient",
+			"trackerGuestAuthFile"
 		]
 	},
 	"contract": {
@@ -217,6 +218,11 @@
 				"required": true
 			},
 			{
+				"name": "launchTmux.guestAuthFile",
+				"type": "unknown",
+				"required": true
+			},
+			{
 				"name": "launchTmux.signal",
 				"type": "AbortSignal",
 				"required": true
@@ -275,6 +281,26 @@
 			{
 				"name": "trackerWorkerClient.address",
 				"type": "TrackerWorkerClient",
+				"required": true
+			},
+			{
+				"name": "trackerGuestAuthFile.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerGuestAuthFile.itemId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerGuestAuthFile.runId",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerGuestAuthFile.address",
+				"type": "Pick<TrackerWorkerClient, 'writeGuestAuth' | 'apiPort'>",
 				"required": true
 			}
 		],
@@ -636,6 +662,11 @@
 						"required": true
 					},
 					{
+						"name": "launchTmux.guestAuthFile",
+						"type": "unknown",
+						"required": true
+					},
+					{
 						"name": "launchTmux.signal",
 						"type": "AbortSignal",
 						"required": true
@@ -785,6 +816,44 @@
 					}
 				],
 				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerGuestAuthFile",
+				"inputs": [
+					{
+						"name": "trackerGuestAuthFile.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerGuestAuthFile.itemId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerGuestAuthFile.runId",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "trackerGuestAuthFile.address",
+						"type": "Pick<TrackerWorkerClient, 'writeGuestAuth' | 'apiPort'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerGuestAuthFile",
+						"type": "string | undefined"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
 				"errorStatus": "unknown"
 			}
 		],

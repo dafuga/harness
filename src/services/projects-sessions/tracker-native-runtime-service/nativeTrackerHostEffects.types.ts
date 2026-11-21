@@ -49,4 +49,13 @@ export interface TrackerWorkerClient {
 	role: 'hub' | 'spoke';
 	apiPort: number;
 	syncPort?: number;
+	writeGuestAuth?: TrackerGuestAuthWriter;
 }
+
+/** Injected by the node's host signer. The managed launcher owns the private per-run path. */
+export type TrackerGuestAuthWriter = (scope: {
+	path: string;
+	itemId: string;
+	runId: number;
+	apiPort: number;
+}) => void;
