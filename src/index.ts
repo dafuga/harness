@@ -217,4 +217,3 @@ export { planGithubIssueIntake } from './helpers/planning-collaboration/planGith
 export * from './services/projects-sessions/TrackerAdapterPollService';
 export { TrackerNativeRuntimeService } from './services/projects-sessions/TrackerNativeRuntimeService';
 export { TrackerAdapterLeaseAdapter } from './adapters/projects-sessions/TrackerAdapterLeaseAdapter';
-export { TrackerNotificationQueueRepository } from './repositories/projects-sessions/TrackerNotificationQueueRepository';

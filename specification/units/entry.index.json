@@ -197,8 +197,7 @@
 			"TrackerNotificationService",
 			"planGithubIssueIntake",
 			"TrackerNativeRuntimeService",
-			"TrackerAdapterLeaseAdapter",
-			"TrackerNotificationQueueRepository"
+			"TrackerAdapterLeaseAdapter"
 		]
 	},
 	"contract": {
@@ -708,11 +707,6 @@
 		},
 		{
 			"unit": "repository.codex-session",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "repository.projects-sessions-tracker-notification-queue",
 			"via": "reexport",
 			"origin": "derived"
 		},
